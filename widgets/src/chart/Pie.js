@@ -20,8 +20,8 @@
             .value(function (d) { return d.weight; })
         ;
         this.d3Arc = d3.svg.arc()
-            .outerRadius(50)
-            .innerRadius(0)
+            .outerRadius(this._radius)
+            .innerRadius(this._innerRadius)
         ;
     };
     Pie.prototype = Object.create(D3Widget.prototype);
@@ -32,12 +32,20 @@
     Pie.prototype.radius = function (_) {
         if (!arguments.length) return this.d3Arc.outerRadius();
         this.d3Arc.outerRadius(_);
+        this._radius = _;
         return this;
     };
 
     Pie.prototype.innerRadius = function (_) {
         if (!arguments.length) return this.d3Arc.innerRadius();
         this.d3Arc.innerRadius(_);
+        this._innerRadius = _;
+        return this;
+    };
+
+    Pie.prototype.outerText = function (_) {
+        if (!arguments.length) return this._outerText;
+        this._outerText = _;
         return this;
     };
 
@@ -63,9 +71,9 @@
                     .attr("d", context.d3Arc)
                     .append("title")
                 ;
-                if (d.data.faChar) {
+                if (d.data.__viz_faChar) {
                     context.labelWidgets[d.data.label] = new FAChar()
-                        .char(d.data.faChar)
+                        .char(d.data.__viz_faChar)
                         .target(this)
                         .render()
                     ;
@@ -82,15 +90,28 @@
         //  Update  ---
         arc
             .each(function (d) {
+                var pos = { x: 0, y: 1 };
+                if (context._outerText) {
+                    var xFactor = Math.cos((d.startAngle + d.endAngle - Math.PI) / 2);
+                    var yFactor = Math.sin((d.startAngle + d.endAngle - Math.PI) / 2);
+
+                    var textBBox = context.labelWidgets[d.data.label].getBBox();
+                    var textOffset = Math.abs(xFactor) > Math.abs(yFactor) ? textBBox.width : textBBox.height;
+                    pos.x = xFactor * (context._radius + textOffset);
+                    pos.y = yFactor * (context._radius + textOffset);
+                } else {
+                    var centroid = context.d3Arc.centroid(d);
+                    pos = { x: centroid[0], y: centroid[1] };
+                }
+
                 var element = d3.select(this);
                 element.select("path").transition()
                     .attr("d", context.d3Arc)
                     .select("title")
                         .text(function (d) { return d.data.label + " (" + d.data.weight + ")"; })
                 ;
-                var centroid = context.d3Arc.centroid(d);
                 context.labelWidgets[d.data.label]
-                    .pos({ x: centroid[0], y: centroid[1] })
+                    .pos(pos)
                     .render()
                 ;
             })
@@ -100,6 +121,27 @@
         arc.exit().transition()
             .remove()
         ;
+
+        //  Label Lines  ---
+        if (context._outerText) {
+            var lines = element.selectAll("line").data(this.d3Pie(this._data), function (d) { return d.data.label; });
+            var r = this.radius();
+            lines.enter().append("line")
+              .attr("x1", 0)
+              .attr("x2", 0)
+              .attr("y1", -this._radius - 3)
+              .attr("y2", -this._radius - 8)
+              .attr("stroke", "gray")
+              .attr("transform", function (d) {
+                  return "rotate(" + (d.startAngle + d.endAngle) / 2 * (180 / Math.PI) + ")";
+              });
+            lines.transition()
+              .attr("transform", function (d) {
+                  return "rotate(" + (d.startAngle + d.endAngle) / 2 * (180 / Math.PI) + ")";
+              });
+            lines.exit().remove();
+        }
+
     };
 
     return Pie;

@@ -68,7 +68,8 @@
                 break;
             case "PIE":
                 this.widget = new Pie()
-                    .radius(90)
+                    .radius(55)
+                    .outerText(true)
                 ;
                 break;
             default:

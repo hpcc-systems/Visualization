@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "topojson/topojson", "./us-states"], factory);
+        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "topojson/topojson", "./us-states"], factory);
     } else {
-        root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.topojson, root.usStates);
+        root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.Palette, root.topojson, root.usStates);
     }
-}(this, function (d3, D3Widget, IChoropleth, topojson, usStates) {
+}(this, function (d3, D3Widget, IChoropleth, Palette, topojson, usStates) {
     function Choropleth() {
         D3Widget.call(this);
         IChoropleth.call(this);
@@ -13,6 +13,7 @@
 
         this._dataMap = {};
         this._dataMaxWeight = 0;
+        this.d3Color = Palette.brewer("Reds");
     };
     Choropleth.prototype = Object.create(D3Widget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
@@ -21,29 +22,52 @@
         var retVal = D3Widget.prototype.data.call(this, _);
         if (arguments.length) {
             this._dataMap = {};
-            this._dataMaxWeight = 0;
+            this._dataMinWeight = null;
+            this._dataMaxWeight = null;
 
             var context = this;
             this._data.forEach(function (item) {
                 context._dataMap[item.state] = item.weight;
-                if (item.weight > context._dataMaxWeight) {
+                if (!context._dataMinWeight || item.weight < context._dataMinWeight) {
+                    context._dataMinWeight = item.weight;
+                }
+                if (!context._dataMaxWeight || item.weight > context._dataMaxWeight) {
                     context._dataMaxWeight = item.weight;
                 }
             });
+            //"#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"
+            this.d3Color = Palette.brewer("YlOrRd", this._dataMinWeight, this._dataMaxWeight);
+            //this.d3Color = Palette.Domain("Reds", this._dataMinWeight, this._dataMaxWeight, this._data.length);
         }
         return retVal;
     };
 
+    Choropleth.prototype.enter = function (domNode, element) {
+        var defs = this._parentElement.insert("defs", ":first-child");
+        var g = defs.append("pattern")
+            .attr('id', 'hash')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', '10')
+            .attr('height', '10')
+            .attr("x", 0).attr("y", 0)
+            .append("g");
+        g.append("rect").style("fill", "lightgrey").style("stroke", "none")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 5)
+            .attr("height", 5)
+        ;
+        g.append("rect").style("fill", "lightgrey").style("stroke", "none")
+            .attr("x", 5)
+            .attr("y", 5)
+            .attr("width", 5)
+            .attr("height", 5)
+        ;
+        //g.append("rect").attr("d", "M10,0 l-10,10");
+    };
+
     Choropleth.prototype.update = function (domNode, element) {
         var context = this;
-
-        var quantize = d3.scale.quantize()
-            .domain([0, this._dataMaxWeight])
-            .range(d3.range(255).map(function (i) {
-                var negRed = 255 - i;
-                return "rgb(255, " + negRed + ", " + negRed + ")";
-            }))
-        ;
 
         var projection = this.albersUsaPr()
             .scale(this.size().width * 120 / 100)
@@ -72,7 +96,11 @@
         choroPaths.transition()
             .style("fill", function (d) {
                 var code = usStates.stateNames[d.id].code;
-                return quantize(context._dataMap[code]);
+                var weight = context._dataMap[code];
+                if (weight === undefined) {
+                    return "url(#hash)";
+                }
+                return context.d3Color(context._dataMap[code]);
             })
         ;
         choroPaths.select("title")

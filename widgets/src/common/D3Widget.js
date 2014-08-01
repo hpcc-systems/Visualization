@@ -78,6 +78,18 @@
         return this;
     };
 
+    D3Widget.prototype.width = function (_) {
+        if (!arguments.length) return this._size.width;
+        this.size({ width: _, height: this._size.height })
+        return this;
+    };
+
+    D3Widget.prototype.height = function (_) {
+        if (!arguments.length) return this._size.height;
+        this.size({ width: this._size.width, height: _ })
+        return this;
+    };
+
     D3Widget.prototype.data = function (_) {
         if (!arguments.length) return this._data;
         this._data = _;

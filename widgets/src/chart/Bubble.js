@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./I2DChart", "../common/Text", "../common/FAChar"], factory);
+        define(["d3/d3", "../common/D3Widget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
     } else {
         root.Bubble = factory(root.d3, root.D3Widget, root.I2DChart, root.Text, root.FAChar);
     }

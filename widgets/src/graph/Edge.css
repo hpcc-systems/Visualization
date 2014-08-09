@@ -1,0 +1,16 @@
+.edge {
+    fill: none;
+    stroke: #656565;
+    stroke-width: 1.0px;
+}
+
+.edge .textbox .text {
+    fill: black;
+    stroke: none;
+}
+
+.edge .textbox .shape {
+    fill: none;
+    stroke: none;
+}
+

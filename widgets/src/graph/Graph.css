@@ -1,0 +1,12 @@
+.graph .marker {
+    fill: #656565;
+    stroke: none;
+    stroke-width: 1.0px;
+}
+
+.graph .zoom {
+    fill: none;
+    pointer-events: all;
+}
+
+

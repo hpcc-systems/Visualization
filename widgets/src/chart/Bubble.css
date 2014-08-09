@@ -1,0 +1,12 @@
+.bubble circle {
+    cursor: pointer;
+}
+
+.bubble .faChar {
+    fill: white;
+    pointer-events: none;
+}
+
+.bubble .text {
+    pointer-events: none;
+}

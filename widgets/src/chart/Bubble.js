@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
+        define(["d3/d3", "../common/D3Widget", "./I2DChart", "../common/Palette", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
     } else {
-        root.Bubble = factory(root.d3, root.D3Widget, root.I2DChart, root.Text, root.FAChar);
+        root.Bubble = factory(root.d3, root.D3Widget, root.I2DChart, root.Palette, root.Text, root.FAChar);
     }
-}(this, function (d3, D3Widget, I2DChart, Text, FAChar) {
+}(this, function (d3, D3Widget, I2DChart, Palette, Text, FAChar) {
     function Bubble(target) {
         D3Widget.call(this);
         I2DChart.call(this);
@@ -17,21 +17,21 @@
             .sort(function (a, b) { return a < b ? -1 : a > b ? 1 : 0; })
             .size([this.width(), this.height()])
             .value(function (d) { return d.weight; })
-            .padding(1.5)
         ;
     };
     Bubble.prototype = Object.create(D3Widget.prototype);
     Bubble.prototype.implements(I2DChart.prototype);
 
-    Bubble.prototype.d3Color = d3.scale.category20();
+    Bubble.prototype.d3Color = Palette.ordinal("category20");
 
     Bubble.prototype.size = function (_) {
-        if (!arguments.length) return D3Widget.prototype.size.call(this);
-        D3Widget.prototype.size.call(this, _);
-        this.d3Pack
-            .size([this.width(), this.height()])
-        ;
-        return this;
+        var retVal = D3Widget.prototype.size.call(this, _);
+        if (arguments.length) {
+            this.d3Pack
+                .size([this.width(), this.height()])
+            ;
+        }
+        return retVal;
     };
 
     Bubble.prototype.update = function (domNode, element) {
@@ -44,6 +44,7 @@
         //  Enter  ---
         node.enter().append("g")
             .attr("class", "node")
+            .attr("opacity", 0)
             .on("click", function (d) {
                 context.click(d);
             })
@@ -71,7 +72,8 @@
         ;
 
         //  Update  ---
-        node
+        node.transition()
+            .attr("opacity", 1)
             .each(function (d) {
                 var element = d3.select(this);
                 var pos = { x: d.x - context._size.width / 2, y: d.y - context._size.height / 2 }

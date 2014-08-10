@@ -1,4 +1,4 @@
-.surface rect {
+.surface .container {
     cursor: default;
     fill: #dcf1ff;
     stroke: #1f77b4;
@@ -8,6 +8,8 @@
 .surface .title rect {
     cursor: move;
     fill: #1f77b4;
+    stroke: #1f77b4;
+    stroke-width: 1.0px;
 }
 
 .surface .title text {

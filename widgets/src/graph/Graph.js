@@ -24,9 +24,16 @@
     Graph.prototype.implements(IGraph.prototype);
     
     //  Properties  ---
+    Graph.prototype.target = function (_) {
+        var retVal = D3Widget.prototype.target.call(this, _);
+        if (arguments.length) {
+            this.pos({x:0,y:0});
+        }
+        return retVal;
+    };
     Graph.prototype.size = function (_) {
         var retVal = D3Widget.prototype.size.call(this, _);
-        if (this._svgZoom) {
+        if (arguments.length && this._svgZoom) {
             this._svgZoom
                 .attr("width", this._size.width)
                 .attr("height", this._size.height)
@@ -343,7 +350,7 @@
 
     //  Events  ---
     Graph.prototype.vertex_click = function (d) {
-        d.element().node().parentNode.appendChild(d.element().node());
+        d._parentElement.node().parentNode.appendChild(d._parentElement.node());
         IGraph.prototype.vertex_click.call(this, d);
     };
 

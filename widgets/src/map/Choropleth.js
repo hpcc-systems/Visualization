@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "topojson/topojson", "./us-states", "css!./Choropleth"], factory);
+        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "css!./Choropleth"], factory);
     } else {
-        root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.Palette, root.topojson, root.usStates);
+        root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.Palette);
     }
-}(this, function (d3, D3Widget, IChoropleth, Palette, topojson, usStates) {
+}(this, function (d3, D3Widget, IChoropleth, Palette) {
     function Choropleth() {
         D3Widget.call(this);
         IChoropleth.call(this);
@@ -23,27 +23,6 @@
         this._palette = _;
         return this;
     }
-
-    Choropleth.prototype.data = function (_) {
-        var retVal = D3Widget.prototype.data.call(this, _);
-        if (arguments.length) {
-            this._dataMap = {};
-            this._dataMinWeight = null;
-            this._dataMaxWeight = null;
-
-            var context = this;
-            this._data.forEach(function (item) {
-                context._dataMap[item.state] = item.weight;
-                if (!context._dataMinWeight || item.weight < context._dataMinWeight) {
-                    context._dataMinWeight = item.weight;
-                }
-                if (!context._dataMaxWeight || item.weight > context._dataMaxWeight) {
-                    context._dataMaxWeight = item.weight;
-                }
-            });
-        }
-        return retVal;
-    };
 
     Choropleth.prototype.enter = function (domNode, element) {
         var defs = this._parentElement.insert("defs", ":first-child");
@@ -79,40 +58,8 @@
             .translate([this.size().width * 2.5 / 100, 0])
         ;
 
-        var path = d3.geo.path()
+        this.d3Path = d3.geo.path()
             .projection(projection)
-        ;
-
-        var choroPaths = element.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
-
-        //  Enter  ---
-        choroPaths.enter().append("path")
-            .attr("d", path)
-            .on("click", function (d) {
-                context.click({ state: usStates.stateNames[d.id].code });
-            })
-            .attr("id", function (d) {
-                return usStates.stateNames[d.id].code;
-            })
-            .append("title")
-        ;
-
-        //  Update  ---
-        choroPaths.transition()
-            .style("fill", function (d) {
-                var code = usStates.stateNames[d.id].code;
-                var weight = context._dataMap[code];
-                if (weight === undefined) {
-                    return "url(#hash)";
-                }
-                return context.d3Color(context._dataMap[code]);
-            })
-        ;
-        choroPaths.select("title")
-            .text(function (d) {
-                var code = usStates.stateNames[d.id].code;
-                return usStates.stateNames[d.id].name + " (" + context._dataMap[code] + ")";
-            })
         ;
     };
 

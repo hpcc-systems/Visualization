@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../chart/MultiChartSurface", "../map/Choropleth", "../other/Slider"], factory);
+        define(["../chart/MultiChartSurface", "../map/ChoroplethStates", "../other/Slider"], factory);
     } else {
-        root.Marshaller = factory(root.MultiChartSurface, root.Choropleth, root.Slider);
+        root.Marshaller = factory(root.MultiChartSurface, root.ChoroplethStates, root.Slider);
     }
-}(this, function (MultiChartSurface, Choropleth, Slider) {
+}(this, function (MultiChartSurface, ChoroplethStates, Slider) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -62,7 +62,7 @@
 
         switch (this.type) {
             case "CHORO":
-                this.widget = new Choropleth()
+                this.widget = new ChoroplethStates()
                     .size({ width: 310, height: 210 })
                 ;
                 break;

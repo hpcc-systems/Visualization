@@ -33,6 +33,7 @@
         this._charElement = element.append("text")
             .attr("font-family", "FontAwesome")
             .attr("text-anchor", "middle")
+            .attr("class", "fa-fw")
         ;
     };
 

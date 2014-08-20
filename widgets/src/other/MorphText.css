@@ -1,0 +1,15 @@
+.demoText {
+  font: bold 48px "Courier New", Courier, monospace;
+}
+
+.demoText .enter {
+  fill: green;
+}
+
+.demoText .update {
+  fill: #333;
+}
+
+.demoText .exit {
+  fill: brown;
+}

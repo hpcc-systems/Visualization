@@ -41,12 +41,14 @@
                     var colCount = Math.ceil(Math.sqrt(dashboard.visualizationTotal));
                     var width = Math.floor(context._size.width / colCount) - 10;
                     dashboard.visualizationsArray.forEach(function (item) {
-                        item.widget
-                            .pos({ x: width / 2, y: width / 2 })
-                            .size({ width: width, height: width })
-                            .target(context._target)
-                            .render()
-                        ;
+                        if (item.widget) {
+                            item.widget
+                                .pos({ x: width / 2, y: width / 2 })
+                                .size({ width: width, height: width })
+                                .target(context._target)
+                                .render()
+                            ;
+                        }
                     });
                     for (var key in dashboard.datasources) {
                         dashboard.datasources[key].processResponse(response);

@@ -1,0 +1,31 @@
+.slider .axis {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.slider .axis .domain {
+    stroke: lightgray;
+    stroke-width: 10px;
+    stroke-linecap: round;
+}
+
+.slider .axis .halo {
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 8px;
+    stroke-linecap: round;
+}
+
+.slider .extent {
+    fill: #fff;
+    opacity: 0.5;
+}
+
+.slider .handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: .5;
+    stroke-width: 1.00px;
+    pointer-events: none;
+}

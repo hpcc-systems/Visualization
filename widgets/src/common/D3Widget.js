@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Widget", "d3/d3"], factory);
+        define(["./Widget", "./Transition", "d3/d3"], factory);
     } else {
-        root.D3Widget = factory(root.Widget, root.d3);
+        root.D3Widget = factory(root.Widget, root.Transition, root.d3);
     }
-}(this, function (Widget, d3) {
+}(this, function (Widget, Transition, d3) {
     function D3Widget() {
         Widget.call(this);
 
@@ -18,6 +18,8 @@
         this._boundingBox = null;
         this._data = [];
         this._element = d3.select();
+
+        this.transition = new Transition(this);
 
         this._renderCount = 0;
     };

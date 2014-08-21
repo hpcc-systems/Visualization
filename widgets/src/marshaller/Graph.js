@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/Surface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/Surface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
     } else {
-        root.Graph = factory(root.d3, root.D3Widget, root.Surface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
+        root.Graph = factory(root.d3, root.SVGWidget, root.Surface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
-}(this, function (d3, D3Widget, Surface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
+}(this, function (d3, SVGWidget, Surface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
     function Graph(target) {
         GraphWidget.call(this);
 

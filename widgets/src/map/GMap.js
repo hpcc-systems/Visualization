@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../graph/Graph", "./IGMap", "async!http://maps.google.com/maps/api/js?sensor=false", "css!./GMap"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../graph/Graph", "./IGMap", "async!http://maps.google.com/maps/api/js?sensor=false", "css!./GMap"], factory);
     } else {
-        root.GMap = factory(root.d3, root.D3Widget, root.Graph, root.IGMap);
+        root.GMap = factory(root.d3, root.SVGWidget, root.Graph, root.IGMap);
     }
-}(this, function (d3, D3Widget, Graph, IGMap) {
+}(this, function (d3, SVGWidget, Graph, IGMap) {
     function GMap(target) {
         Graph.call(this);
         IGMap.call(this);
@@ -13,7 +13,7 @@
     GMap.prototype.implements(IGMap.prototype);
 
     GMap.prototype.enter = function (domNode, element, d) {
-        Graph.prototype.enter.call(this, domNode, element, d);
+        Graph.prototype.enter.apply(this, arguments);
 
         this._googleMap = new google.maps.Map(d3.select(this._target).node(), {
             zoom: 3,

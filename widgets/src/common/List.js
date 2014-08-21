@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IList", "../common/TextBox", "css!./List"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./IList", "../common/TextBox", "css!./List"], factory);
     } else {
-        root.List = factory(root.d3, root.D3Widget, root.IList, root.TextBox);
+        root.List = factory(root.d3, root.SVGWidget, root.IList, root.TextBox);
     }
-}(this, function (d3, D3Widget, IList, TextBox) {
+}(this, function (d3, SVGWidget, IList, TextBox) {
     function List(target) {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         IList.call(this);
 
         this._class = "list";
@@ -16,7 +16,7 @@
         this._listWidth = 0;
         this._listItemHeight = 0;
     };
-    List.prototype = Object.create(D3Widget.prototype);
+    List.prototype = Object.create(SVGWidget.prototype);
     List.prototype.implements(IList.prototype);
 
     List.prototype.enter = function (domNode, element) {

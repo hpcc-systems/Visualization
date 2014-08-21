@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "css!./Graph"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "css!./Graph"], factory);
     } else {
-        root.Graph = factory(root.d3, root.D3Widget, root.IGraph, root.Vertex, root.GraphData, root.GraphLayouts);
+        root.Graph = factory(root.d3, root.SVGWidget, root.IGraph, root.Vertex, root.GraphData, root.GraphLayouts);
     }
-}(this, function (d3, D3Widget, IGraph, Vertex, GraphData, GraphLayouts) {
+}(this, function (d3, SVGWidget, IGraph, Vertex, GraphData, GraphLayouts) {
     function Graph() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         IGraph.call(this);
 
         this.graphData = new GraphData();
@@ -20,19 +20,19 @@
         this._class = "graph";
         this._layout = "";
     };
-    Graph.prototype = Object.create(D3Widget.prototype);
+    Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype.implements(IGraph.prototype);
     
     //  Properties  ---
     Graph.prototype.target = function (_) {
-        var retVal = D3Widget.prototype.target.call(this, _);
+        var retVal = SVGWidget.prototype.target.apply(this, arguments);
         if (arguments.length) {
             this.pos({x:0,y:0});
         }
         return retVal;
     };
     Graph.prototype.size = function (_) {
-        var retVal = D3Widget.prototype.size.call(this, _);
+        var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length && this._svgZoom) {
             this._svgZoom
                 .attr("width", this._size.width)
@@ -43,26 +43,26 @@
     };
 
     Graph.prototype.data = function (_) {
-        var retVal = D3Widget.prototype.data.call(this, _);
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            if (!this._data.merge) {
+                this.graphData = new GraphData();
+            }
+            var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.merge);
 
-        if (!this._data.merge) {
-            this.graphData = new GraphData();
+            var context = this;
+            data.addedVertices.forEach(function (item) {
+                item.x = context._size.width / 2 + Math.random() * 10 / 2 - 5;
+                item.y = context._size.height / 2 + Math.random() * 10 / 2 - 5;
+            })
+            data.addedEdges.forEach(function (item) {
+                if (item._sourceMarker)
+                    item._sourceMarker = context._id + "_" + item._sourceMarker;
+                if (item._targetMarker)
+                    item._targetMarker = context._id + "_" + item._targetMarker;
+            })
+            this.layout(this.layout());
         }
-        var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.merge);
-
-        var context = this;
-        data.addedVertices.forEach(function (item) {
-            item.x = context._size.width / 2 + Math.random() * 10 / 2 - 5;
-            item.y = context._size.height / 2 + Math.random() * 10 / 2 - 5;
-        })
-        data.addedEdges.forEach(function (item) {
-            if (item._sourceMarker)
-                item._sourceMarker = context._id + "_" + item._sourceMarker;
-            if (item._targetMarker)
-                item._targetMarker = context._id + "_" + item._targetMarker;
-        })
-        this.layout(this.layout());
-
         return retVal;
     };
 
@@ -357,7 +357,7 @@
     //  Events  ---
     Graph.prototype.vertex_click = function (d) {
         d._parentElement.node().parentNode.appendChild(d._parentElement.node());
-        IGraph.prototype.vertex_click.call(this, d);
+        IGraph.prototype.vertex_click.apply(this, arguments);
     };
 
     Graph.prototype.vertex_mouseover = function (element, d) {

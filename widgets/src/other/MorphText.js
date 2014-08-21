@@ -1,18 +1,18 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/D3Widget", "css!./MorphText"], factory);
+        define(["../common/SVGWidget", "css!./MorphText"], factory);
     } else {
-        root.Entity = factory(root.D3Widget);
+        root.Entity = factory(root.SVGWidget);
     }
-}(this, function (D3Widget) {
+}(this, function (SVGWidget) {
     function MorphText() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._class = "demoText";
         this._text = "";
         this._anchor = "middle";
     };
-    MorphText.prototype = Object.create(D3Widget.prototype);
+    MorphText.prototype = Object.create(SVGWidget.prototype);
 
     MorphText.prototype.text = function (_) {
         if (!arguments.length) return this._text;

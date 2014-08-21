@@ -1,17 +1,17 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "css!lib/Font-Awesome/css/font-awesome", "css!./FAChar"], factory);
+        define(["./SVGWidget", "css!lib/Font-Awesome/css/font-awesome", "css!./FAChar"], factory);
     } else {
-        root.Entity = factory(root.D3Widget);
+        root.Entity = factory(root.SVGWidget);
     }
-}(this, function (D3Widget) {
+}(this, function (SVGWidget) {
     function FAChar() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         this._class = "faChar";
         this._char = "";
         this._fontSize = 0;
     };
-    FAChar.prototype = Object.create(D3Widget.prototype);
+    FAChar.prototype = Object.create(SVGWidget.prototype);
 
     FAChar.prototype.fontSize = function (_) {
         if (!arguments.length) return this._fontSize;

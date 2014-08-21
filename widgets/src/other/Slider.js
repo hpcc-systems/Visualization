@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/D3Widget", "./ISlider", "css!./Slider"], factory);
+        define(["../common/SVGWidget", "./ISlider", "css!./Slider"], factory);
     } else {
-        root.Entity = factory(root.D3Widget, root.ISlider);
+        root.Entity = factory(root.SVGWidget, root.ISlider);
     }
-}(this, function (D3Widget, ISlider) {
+}(this, function (SVGWidget, ISlider) {
     function Slider() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         ISlider.call(this);
 
         this._class = "slider";
@@ -34,7 +34,7 @@
               .tickPadding(12)
         ;
     };
-    Slider.prototype = Object.create(D3Widget.prototype);
+    Slider.prototype = Object.create(SVGWidget.prototype);
     Slider.prototype.implements(ISlider.prototype);
 
     Slider.prototype.allowRange = function (_) {

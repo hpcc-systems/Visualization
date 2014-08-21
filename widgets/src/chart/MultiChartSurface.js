@@ -60,7 +60,7 @@
 
 
     MultiChartSurface.prototype.data = function (_) {
-        var retVal = Surface.prototype.data.call(this, _);
+        var retVal = Surface.prototype.data.apply(this, arguments);
         if (arguments.length && this._content) {
             this._content.data(_);
         }

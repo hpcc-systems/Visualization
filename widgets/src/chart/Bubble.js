@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./I2DChart", "../common/Palette", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Palette", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
     } else {
-        root.Bubble = factory(root.d3, root.D3Widget, root.I2DChart, root.Palette, root.Text, root.FAChar);
+        root.Bubble = factory(root.d3, root.SVGWidget, root.I2DChart, root.Palette, root.Text, root.FAChar);
     }
-}(this, function (d3, D3Widget, I2DChart, Palette, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Palette, Text, FAChar) {
     function Bubble(target) {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         I2DChart.call(this);
 
         this._class = "bubble";
@@ -19,13 +19,13 @@
             .value(function (d) { return d.weight; })
         ;
     };
-    Bubble.prototype = Object.create(D3Widget.prototype);
+    Bubble.prototype = Object.create(SVGWidget.prototype);
     Bubble.prototype.implements(I2DChart.prototype);
 
     Bubble.prototype.d3Color = Palette.ordinal("category20");
 
     Bubble.prototype.size = function (_) {
-        var retVal = D3Widget.prototype.size.call(this, _);
+        var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
             this.d3Pack
                 .size([this.width(), this.height()])

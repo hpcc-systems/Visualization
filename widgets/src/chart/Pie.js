@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/Palette", "./IPie", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/Palette", "./IPie", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
     } else {
-        root.Pie = factory(root.d3, root.D3Widget, root.Palette, root.IPie, root.Text, root.FAChar);
+        root.Pie = factory(root.d3, root.SVGWidget, root.Palette, root.IPie, root.Text, root.FAChar);
     }
-}(this, function (d3, D3Widget, Palette, IPie, Text, FAChar) {
+}(this, function (d3, SVGWidget, Palette, IPie, Text, FAChar) {
     function Pie(target) {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         IPie.call(this);
 
         this._class = "pie";
@@ -24,13 +24,13 @@
             .innerRadius(this._innerRadius)
         ;
     };
-    Pie.prototype = Object.create(D3Widget.prototype);
+    Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.implements(IPie.prototype);
 
     Pie.prototype.d3Color = Palette.ordinal("category20");
 
     Pie.prototype.size = function (_) {
-        var retVal = D3Widget.prototype.size.call(this, _);
+        var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
             this.radius(Math.min(this._size.width, this._size.height) / 2);
         }

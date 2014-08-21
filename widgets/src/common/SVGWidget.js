@@ -2,54 +2,53 @@
     if (typeof define === "function" && define.amd) {
         define(["./Widget", "./Transition", "d3/d3"], factory);
     } else {
-        root.D3Widget = factory(root.Widget, root.Transition, root.d3);
+        root.SVGWidget = factory(root.Widget, root.Transition, root.d3);
     }
 }(this, function (Widget, Transition, d3) {
-    function D3Widget() {
+    function SVGWidget() {
         Widget.call(this);
 
-        this._target = null;
-        this._parentElement = null;
-        this._parentWidget = null;
+        this._tag = "g";
 
-        this._class = "";
-        this._pos = { x: 0, y: 0 };
-        this._size = { width: 0, height: 0 };
         this._boundingBox = null;
-        this._data = [];
-        this._element = d3.select();
 
         this.transition = new Transition(this);
 
         this._renderCount = 0;
     };
-    D3Widget.prototype = Object.create(Widget.prototype);
+    SVGWidget.prototype = Object.create(Widget.prototype);
 
     //  Properties  ---
-    D3Widget.prototype.class = function (_) {
-        if (!arguments.length) return this._class;
-        this._class = _;
-        return this;
+    SVGWidget.prototype.resize = function () {
+        var style = window.getComputedStyle(this._target, null);
+        var width = parseInt(style.getPropertyValue("width"));
+        var height = parseInt(style.getPropertyValue("height"));
+        this.size({
+            width: width,
+            height: height
+        });
+        this._parentRelativeDiv
+            .style({
+                width: this._size.width + "px",
+                height: this._size.height + "px"
+            })
+        ;
+        this._parentElement
+            .attr("width", this._size.width)
+            .attr("height", this._size.height)
+        ;
     };
 
-    D3Widget.prototype.target = function (_) {
+    SVGWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
+        if (this._target && _ && (this._target.__data__.id !== _.__data__.id)) {
+            throw "Target can only be assigned once."
+        }
         this._target = _;
 
         //  Target is a DOM Node ID ---
         if (typeof (this._target) === 'string' || this._target instanceof String) {
             this._target = document.getElementById(this._target);
-        } else if (this._target instanceof D3Widget) {
-            //  Share target with other D3Widget  ---
-            this._id = _._id;
-            this._parentElement = _._parentElement;
-            this._parentWidget = _._parentWidget;
-            this._target = _._target;
-            this._element = _._element;
-            this.pos(_._pos);
-            this.size(_._size);
-            this.data(_._data);
-            return this;
         }
 
         if (this._target instanceof SVGElement) {
@@ -58,131 +57,71 @@
             if (!this._parentWidget || this._parentWidget._id === this._id) {
                 this._parentWidget = this.locateParentWidget(this._target.parentNode);
             }
-        } else {
+        } else if (this._target) {
             //  Target is a DOM Node, so create a SVG Element  ---
-            var style = window.getComputedStyle(this._target, null);
+            this._parentRelativeDiv = d3.select(this._target).append("div")
+                .style({
+                    position: "relative",
+                })
+            ;
+            this._parentElement = this._parentRelativeDiv.append("svg")
+                .style({
+                    position: "absolute",
+                    top: 0,
+                    left: 0
+                })
+            ;
+            this._parentOverlay = this._parentRelativeDiv.append("div")
+                .style({
+                    position: "absolute",
+                    top: 0,
+                    left: 0
+                })
+            ;
             if (!this._size.width && !this._size.height) {
-                //  TODO - What happens if size is "AUTO"?
-                var width = parseInt(style.getPropertyValue("width"));
-                var height = parseInt(style.getPropertyValue("height"));
+                this.resize();
                 this.pos({
-                    x: width / 2,
-                    y: height / 2
-                });
-                this.size({
-                    width: width,
-                    height: height
+                    x: this._size.width / 2,
+                    y: this._size.height / 2
                 });
             }
-            this._parentElement = d3.select(this._target).append("svg")
-                .attr("width", this._size.width)
-                .attr("height", this._size.height)
+        } else {
+            if (this._parentRelativeDiv) {
+                this._parentOverlay.remove();
+                this._parentElement.remove();
+                this._parentRelativeDiv.remove();
+            }
+        }
+        return this;
+    };
+
+    SVGWidget.prototype.enter = function (domeNode, element, d) {
+        Widget.prototype.enter.apply(this, arguments);
+    };
+    SVGWidget.prototype.exit = function (domeNode, element, d) {
+        if (this._parentRelativeDiv) {
+            this._parentOverlay.remove();
+            this._parentElement.remove();
+            this._parentRelativeDiv.remove();
+        }
+        Widget.prototype.exit.apply(this, arguments);
+    };
+
+
+    SVGWidget.prototype.pos = function (_, transition) {
+        var retVal = Widget.prototype.pos.apply(this, arguments);
+        if (arguments.length) {
+            (transition ? this._element.transition() : this._element)
+                .attr("transform", "translate(" + _.x + " " + _.y + ")")
             ;
         }
-        return this;
+        return retVal;
     };
 
-    D3Widget.prototype.pos = function (_, transition) {
-        if (!arguments.length) return this._pos;
-        this._pos = _;
-        (transition ? this._element.transition() : this._element)
-            .attr("transform", "translate(" + _.x + " " + _.y + ")")
-        ;
-        return this;
-    };
-
-    D3Widget.prototype.size = function (_) {
-        if (!arguments.length) return this._size;
-        this._size = _;
-        return this;
-    };
-
-    D3Widget.prototype.width = function (_) {
-        if (!arguments.length) return this._size.width;
-        this.size({ width: _, height: this._size.height })
-        return this;
-    };
-
-    D3Widget.prototype.height = function (_) {
-        if (!arguments.length) return this._size.height;
-        this.size({ width: this._size.width, height: _ })
-        return this;
-    };
-
-    D3Widget.prototype.data = function (_) {
-        if (!arguments.length) return this._data;
-        this._data = _;
-        return this;
-    };
-
-    //  Render  ---
-    D3Widget.prototype.render = function () {
-        if (!this._parentElement)
-            return this;
-
-        var elements = this._parentElement.selectAll("#" + this._id).data([this], function (d) { return d._id; });
-        elements.enter().append("g")
-            .classed(this._class, true)
-            .attr("id", this._id)
-            //.attr("opacity", 0.50)  //  Uncomment to help debugging position offsets  ---
-            .each(function (context) {
-                context._element = d3.select(this);
-                if (context._pos.x || context._pos.y) {
-                    context._element.attr("transform", function (d) { return "translate(" + context._pos.x + " " + context._pos.y + ")"; });
-                }
-                context.enter(this, context._element, context);
-            })
-        ;
-        elements
-            .each(function (context) {
-                context.update(this, context._element, context);
-            })
-        ;
-        elements.exit()
-            .each(function exit(context) {
-                context.exit(this, context._element, context);
-            })
-            .remove()
-        ;
-        this._renderCount++;
-
-        return this;
-    };
-
-    D3Widget.prototype.refresh = function () {
-        this._element
-            .each(function (context) {
-                context.update(this, context._element, context);
-            })
-        ;
-        //  Refresh BBox Size ---
-        this.getBBox(true);
-        return this;
-    };
-
-    D3Widget.prototype.enter = function (domeNode, element, d) { };
-    D3Widget.prototype.update = function (domeNode, element, d) { };
-    D3Widget.prototype.exit = function (domeNode, element, d) { };
-
-    //  Methods  --- 
-    D3Widget.prototype.locateParentWidget = function (domNode) {
-        if (!domNode || !(domNode instanceof SVGElement)) {
-            return null;
-        }
-        var element = d3.select(domNode);
-        if (element) {
-            var widget = element.datum();
-            if (widget) {
-                return widget;
-            }
-        }
-        return this.locateParentWidget(domNode.parentNode);
-    }
-
-    D3Widget.prototype.getAbsolutePos = function () {
+    SVGWidget.prototype.getOffsetPos = function () {
         var retVal = { x: 0, y: 0 }
         if (this._parentWidget) {
-            retVal = this._parentWidget.getAbsolutePos();
+            retVal = this._parentWidget.getOffsetPos();
             retVal.x += this._pos.x;
             retVal.y += this._pos.y;
             return retVal;
@@ -190,7 +129,7 @@
         return retVal;
     },
 
-    D3Widget.prototype.getBBox = function (refresh) {
+    SVGWidget.prototype.getBBox = function (refresh) {
         if (refresh || this._boundingBox === null) {
             var svgNode = this._element.node();
             if (svgNode instanceof SVGElement) {
@@ -208,12 +147,8 @@
         return this._boundingBox;
     };
 
-    D3Widget.prototype.element = function () {
-        return this._element;
-    };
-
     //  Intersections  ---
-    D3Widget.prototype.intersection = function (pointA, pointB) {
+    SVGWidget.prototype.intersection = function (pointA, pointB) {
         return this.intersectRect(pointA, pointB);
     };
 
@@ -256,8 +191,8 @@
         return result;
     };
 
-    D3Widget.prototype.intersectRect = function (pointA, pointB) {
-        var center = this.getAbsolutePos();
+    SVGWidget.prototype.intersectRect = function (pointA, pointB) {
+        var center = this.getOffsetPos();
         var size = this.getBBox();
         if (pointA.x === pointB.x && pointA.y === pointB.y) {
             return pointA;
@@ -326,8 +261,8 @@
         return result;
     };
 
-    D3Widget.prototype.intersectCircle = function (pointA, pointB) {
-        var center = this.getAbsolutePos();
+    SVGWidget.prototype.intersectCircle = function (pointA, pointB) {
+        var center = this.getOffsetPos();
         var radius = this.radius();
         var intersection = intersectCircleLine(center, radius, pointA, pointB);
         if (intersection.points.length) {
@@ -336,12 +271,12 @@
         return null;
     };
 
-    D3Widget.prototype.distance = function (pointA, pointB) {
+    SVGWidget.prototype.distance = function (pointA, pointB) {
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
     };
 
     //  IE Fixers  ---    
-    D3Widget.prototype._pushMarkers = function (element, d) {
+    SVGWidget.prototype._pushMarkers = function (element, d) {
         if (this.isIE) {
             element = element || this._element;
             element.selectAll("path[marker-start],path[marker-end]")
@@ -353,7 +288,7 @@
         }
     };
 
-    D3Widget.prototype._popMarkers = function (element, d) {
+    SVGWidget.prototype._popMarkers = function (element, d) {
         if (this.isIE) {
             element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
@@ -368,18 +303,18 @@
         }
     }
 
-    D3Widget.prototype._popMarkersDebounced = Widget.prototype.debounce(function (element, d) {
+    SVGWidget.prototype._popMarkersDebounced = Widget.prototype.debounce(function (element, d) {
         if (this.isIE) {
             this._popMarkers(element, d);
         }
     }, 250);
 
-    D3Widget.prototype._fixIEMarkers = function (element, d) {
+    SVGWidget.prototype._fixIEMarkers = function (element, d) {
         if (this.isIE) {
             this._pushMarkers(element, d);
             this._popMarkersDebounced(element, d);
         }
     };
 
-    return D3Widget;
+    return SVGWidget;
 }));

@@ -70,7 +70,7 @@
     };
 
     Menu.prototype.enter = function (domNode, element) {
-        Icon.prototype.enter.call(this, domNode, element);
+        Icon.prototype.enter.apply(this, arguments);
 
         this._list
             .target(domNode)

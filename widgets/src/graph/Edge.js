@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/TextBox", "css!./Edge"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "css!./Edge"], factory);
     } else {
-        root.Entity = factory(root.d3, root.D3Widget, root.TextBox);
+        root.Entity = factory(root.d3, root.SVGWidget, root.TextBox);
     }
-}(this, function (d3, D3Widget, TextBox) {
+}(this, function (d3, SVGWidget, TextBox) {
     function Edge() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._class = "edge";
         this._points = [];
@@ -16,7 +16,7 @@
             .padding({left: 0,top: 0,right: 0,bottom: 0})
         ;
     };
-    Edge.prototype = Object.create(D3Widget.prototype);
+    Edge.prototype = Object.create(SVGWidget.prototype);
 
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;

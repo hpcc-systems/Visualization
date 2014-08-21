@@ -15,7 +15,7 @@
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
 
     ChoroplethCounties.prototype.data = function (_) {
-        var retVal = Choropleth.prototype.data.call(this, _);
+        var retVal = Choropleth.prototype.data.apply(this, arguments);
         if (arguments.length) {
             this._dataMap = {};
             this._dataMinWeight = null;
@@ -36,7 +36,7 @@
     };
 
     ChoroplethCounties.prototype.update = function (domNode, element) {
-        Choropleth.prototype.update.call(this, domNode, element);
+        Choropleth.prototype.update.apply(this, arguments);
 
         var context = this;
 

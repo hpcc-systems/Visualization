@@ -1,0 +1,35 @@
+.table {
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+
+.table th {
+    padding:5px 10px;
+	background-color:#1f77b4;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #a9c6c9;
+    color:white;
+    white-space: nowrap;
+}
+
+.table tr {
+	background-color:#dcf1ff;
+    color:black;
+}
+
+.table tr:hover {
+	background-color:#ff7f0e;
+    color:white;
+}
+
+.table td {
+	border-width: 1px;
+    padding:2px 5px;
+	border-style: solid;
+	border-color: #a9c6c9;
+    white-space: nowrap;
+}
+

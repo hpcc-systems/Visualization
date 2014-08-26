@@ -153,6 +153,7 @@
         ;
 
         content.exit().transition()
+            .each(function (d) { d.target(null); })
             .remove()
         ;
 

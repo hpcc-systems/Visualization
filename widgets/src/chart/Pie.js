@@ -20,8 +20,8 @@
             .value(function (d) { return d.weight; })
         ;
         this.d3Arc = d3.svg.arc()
-            .outerRadius(50)
-            .innerRadius(0)
+            .outerRadius(this._radius)
+            .innerRadius(this._innerRadius)
         ;
     };
     Pie.prototype = Object.create(D3Widget.prototype);
@@ -63,9 +63,9 @@
                     .attr("d", context.d3Arc)
                     .append("title")
                 ;
-                if (d.data.faChar) {
+                if (d.data.__viz_faChar) {
                     context.labelWidgets[d.data.label] = new FAChar()
-                        .char(d.data.faChar)
+                        .char(d.data.__viz_faChar)
                         .target(this)
                         .render()
                     ;

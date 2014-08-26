@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IPie", "../common/Text", "../common/FAChar"], factory);
+        define(["d3/d3", "../common/D3Widget", "../common/Palette", "./IPie", "../common/Text", "../common/FAChar"], factory);
     } else {
-        root.Pie = factory(root.d3, root.D3Widget, root.IPie, root.Text, root.FAChar);
+        root.Pie = factory(root.d3, root.D3Widget, root.Palette, root.IPie, root.Text, root.FAChar);
     }
-}(this, function (d3, D3Widget, IPie, Text, FAChar) {
+}(this, function (d3, D3Widget, Palette, IPie, Text, FAChar) {
     function Pie(target) {
         D3Widget.call(this);
         IPie.call(this);
@@ -27,7 +27,7 @@
     Pie.prototype = Object.create(D3Widget.prototype);
     Pie.prototype.implements(IPie.prototype);
 
-    Pie.prototype.d3Color = d3.scale.category20();
+    Pie.prototype.d3Color = Palette.ordinal("category20");
 
     Pie.prototype.radius = function (_) {
         if (!arguments.length) return this.d3Arc.outerRadius();

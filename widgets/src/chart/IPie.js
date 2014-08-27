@@ -21,6 +21,7 @@
 
     //  Properties  ---
     //  TODO  IPie.prototype._palette = "category20";     //TODO Create a IColor (or such like file with the various palettes)
+    IPie.prototype._outerText = false;  //  Put label inside pie or outside (true/false)
     IPie.prototype._radius = 100;       // px
     IPie.prototype._innerRadius = 0;    // px
 

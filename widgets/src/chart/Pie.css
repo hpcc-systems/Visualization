@@ -1,0 +1,27 @@
+.pie path {
+    cursor: pointer;
+}
+
+.pie .faChar {
+    pointer-events: none;
+}
+
+.pie .text {
+    pointer-events: none;
+}
+
+.pie .innerLabel.faChar {
+    fill: white;
+}
+
+.pie .outerLabel.faChar {
+    fill: black;
+}
+
+.pie .innerLabel.text {
+    fill: white;
+}
+
+.pie .outerLabel.text {
+    fill: black;
+}

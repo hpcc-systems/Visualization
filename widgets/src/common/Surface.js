@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Icon", "./Shape", "./Text", "./FAChar"], factory);
+        define(["./D3Widget", "./Icon", "./Shape", "./Text", "./FAChar", "css!./Surface"], factory);
     } else {
         root.Graph = factory(root.D3Widget, root.Icon, root.Shape, root.Text, root.FAChar);
     }

@@ -29,6 +29,7 @@
             var edge = edges[i];
             if (!merge || !this.hasEdge(edge._id)) {
                 this.addEdge(edge._id, edge._sourceVertex._id, edge._targetVertex._id, edge);
+                retVal.addedEdges.push(edge);
             }
         }
         //  Remove old items  ---

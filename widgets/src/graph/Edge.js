@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/TextBox"], factory);
+        define(["d3/d3", "../common/D3Widget", "../common/TextBox", "css!./Edge"], factory);
     } else {
         root.Entity = factory(root.d3, root.D3Widget, root.TextBox);
     }

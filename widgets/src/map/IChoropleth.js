@@ -27,7 +27,7 @@
     
 
     //  Events  ---
-    IChoropleth.prototype.click = function (element, d) {
+    IChoropleth.prototype.click = function (d) {
         console.log("Choropleth Click:  " + d.state);
     };
 

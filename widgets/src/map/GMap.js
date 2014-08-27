@@ -1,6 +1,6 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../graph/Graph", "./IGMap", "async!http://maps.google.com/maps/api/js?sensor=false"], factory);
+        define(["d3/d3", "../common/D3Widget", "../graph/Graph", "./IGMap", "async!http://maps.google.com/maps/api/js?sensor=false", "css!./GMap"], factory);
     } else {
         root.GMap = factory(root.d3, root.D3Widget, root.Graph, root.IGMap);
     }
@@ -8,8 +8,6 @@
     function GMap(target) {
         Graph.call(this);
         IGMap.call(this);
-
-        this._class = "gmap";
     };
     GMap.prototype = Object.create(Graph.prototype);
     GMap.prototype.implements(IGMap.prototype);

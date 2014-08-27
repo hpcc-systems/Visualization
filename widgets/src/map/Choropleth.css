@@ -1,0 +1,15 @@
+.choropleth rect {
+    fill: #dcf1ff;
+    stroke: #1f77b4;
+    stroke-width: 1.0px;
+}
+
+.choropleth path {
+    cursor: pointer;
+    fill: whitesmoke;
+    stroke: #6d6e71;
+    stroke-width: 0.5px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+

@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget"], factory);
+        define(["./D3Widget", "css!lib/Font-Awesome/css/font-awesome", "css!./FAChar"], factory);
     } else {
         root.Entity = factory(root.D3Widget);
     }

@@ -341,7 +341,7 @@
     //  IE Fixers  ---    
     D3Widget.prototype._pushMarkers = function (element, d) {
         if (this.isIE) {
-            element = element || this._parentElement;
+            element = element || this._element;
             element.selectAll("path[marker-start],path[marker-end]")
                 .attr("fixme-start", function (d) { return this.getAttribute("marker-start"); })
                 .attr("fixme-end", function (d) { return this.getAttribute("marker-end"); })
@@ -353,7 +353,7 @@
 
     D3Widget.prototype._popMarkers = function (element, d) {
         if (this.isIE) {
-            element = element || this._parentElement;
+            element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
                 .attr("marker-start", function (d) {
                     var x = this.getAttribute("fixme-start");

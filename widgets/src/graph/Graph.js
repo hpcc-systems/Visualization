@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts"], factory);
+        define(["d3/d3", "../common/D3Widget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "css!./Graph"], factory);
     } else {
         root.Graph = factory(root.d3, root.D3Widget, root.IGraph, root.Vertex, root.GraphData, root.GraphLayouts);
     }
@@ -54,6 +54,12 @@
         data.addedVertices.forEach(function (item) {
             item.x = context._size.width / 2 + Math.random() * 10 / 2 - 5;
             item.y = context._size.height / 2 + Math.random() * 10 / 2 - 5;
+        })
+        data.addedEdges.forEach(function (item) {
+            if (item._sourceMarker)
+                item._sourceMarker = context._id + "_" + item._sourceMarker;
+            if (item._targetMarker)
+                item._targetMarker = context._id + "_" + item._targetMarker;
         })
         this.layout(this.layout());
 
@@ -134,7 +140,7 @@
             ;
             //  SVG  ---
             this._svgZoom = element.append("rect")
-                .attr("class", "zoomLayer")
+                .attr("class", "zoom")
                 .attr("width", this._size.width)
                 .attr("height", this._size.height)
                 .call(this.zoom)
@@ -364,13 +370,13 @@
 
     Graph.prototype.addMarkers = function (clearFirst) {
         if (clearFirst) {
-            this.defs.select("#arrowHead").remove();
-            this.defs.select("#circleFoot").remove();
-            this.defs.select("#circleHead").remove();
+            this.defs.select("#" + this._id + "_arrowHead").remove();
+            this.defs.select("#" + this._id + "_circleFoot").remove();
+            this.defs.select("#" + this._id + "_circleHead").remove();
         }
         this.defs.append("marker")
             .attr("class", "marker")
-            .attr("id", "arrowHead")
+            .attr("id", this._id + "_arrowHead")
             .attr("viewBox", "0 0 10 10")
             .attr("refX", 10)
             .attr("refY", 5)
@@ -383,7 +389,7 @@
         ;
         this.defs.append("marker")
             .attr("class", "marker")
-            .attr("id", "circleFoot")
+            .attr("id",  this._id + "_circleFoot")
             .attr("viewBox", "0 0 10 10")
             .attr("refX", 1)
             .attr("refY", 5)
@@ -398,7 +404,7 @@
         ;
         this.defs.append("marker")
             .attr("class", "marker")
-            .attr("id", "circleHead")
+            .attr("id", this._id + "_circleHead")
             .attr("viewBox", "0 0 10 10")
             .attr("refX", 9)
             .attr("refY", 5)

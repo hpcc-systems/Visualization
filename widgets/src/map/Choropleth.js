@@ -1,6 +1,6 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "topojson/topojson", "./us-states"], factory);
+        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "topojson/topojson", "./us-states", "css!./Choropleth"], factory);
     } else {
         root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.Palette, root.topojson, root.usStates);
     }

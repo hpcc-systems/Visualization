@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Shape", "./Text"], factory);
+        define(["./D3Widget", "./Shape", "./Text", "css!./TextBox"], factory);
     } else {
         root.Entity = factory(root.D3Widget, root.Shape, root.Text);
     }
@@ -15,7 +15,7 @@
             bottom: 8
         };
 
-        this._class = "textBox";
+        this._class = "textbox";
         this._shape = new Shape()
             .shape("rect")
         ;

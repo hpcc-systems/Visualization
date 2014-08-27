@@ -37,6 +37,17 @@
         //  Target is a DOM Node ID ---
         if (typeof (this._target) === 'string' || this._target instanceof String) {
             this._target = document.getElementById(this._target);
+        } else if (this._target instanceof D3Widget) {
+            //  Share target with other D3Widget  ---
+            this._id = _._id;
+            this._parentElement = _._parentElement;
+            this._parentWidget = _._parentWidget;
+            this._target = _._target;
+            this._element = _._element;
+            this.pos(_._pos);
+            this.size(_._size);
+            this.data(_._data);
+            return this;
         }
 
         if (this._target instanceof SVGElement) {
@@ -49,10 +60,16 @@
             //  Target is a DOM Node, so create a SVG Element  ---
             var style = window.getComputedStyle(this._target, null);
             if (!this._size.width && !this._size.height) {
+                //  TODO - What happens if size is "AUTO"?
+                var width = parseInt(style.getPropertyValue("width"));
+                var height = parseInt(style.getPropertyValue("height"));
+                this.pos({
+                    x: width / 2,
+                    y: height / 2
+                });
                 this.size({
-                    //  TODO - What happens if size is "AUTO"?
-                    width: parseInt(style.getPropertyValue("width")),
-                    height: parseInt(style.getPropertyValue("height"))
+                    width: width,
+                    height: height
                 });
             }
             this._parentElement = d3.select(this._target).append("svg")
@@ -105,6 +122,7 @@
         elements.enter().append("g")
             .classed(this._class, true)
             .attr("id", this._id)
+            //.attr("opacity", 0.50)  //  Uncomment to help debugging position offsets  ---
             .each(function (context) {
                 context._element = d3.select(this);
                 if (context._pos.x || context._pos.y) {

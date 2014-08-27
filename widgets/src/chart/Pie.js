@@ -29,6 +29,14 @@
 
     Pie.prototype.d3Color = Palette.ordinal("category20");
 
+    Pie.prototype.size = function (_) {
+        var retVal = D3Widget.prototype.size.call(this, _);
+        if (arguments.length) {
+            this.radius(Math.min(this._size.width, this._size.height) / 2);
+        }
+        return retVal;
+    };
+
     Pie.prototype.radius = function (_) {
         if (!arguments.length) return this.d3Arc.outerRadius();
         this.d3Arc.outerRadius(_);
@@ -61,6 +69,7 @@
         //  Enter  ---
         arc.enter().append("g")
             .attr("class", "arc")
+            .attr("opacity", 0)
             .on("click", function (d) {
                 context.click(d.data);
             })
@@ -88,7 +97,8 @@
         ;
 
         //  Update  ---
-        arc
+        arc.transition()
+            .attr("opacity", 1)
             .each(function (d) {
                 var pos = { x: 0, y: 1 };
                 if (context._outerText) {
@@ -122,6 +132,7 @@
 
         //  Exit  ---
         arc.exit().transition()
+            .style("opacity", 0)
             .remove()
         ;
 

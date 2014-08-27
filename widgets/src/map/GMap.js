@@ -78,8 +78,8 @@
                 });
             }
             pos = projection.fromLatLngToDivPixel(pos);
-            pos.x -= dx + 2;
-            pos.y -= dy + 2;
+            pos.x -= dx;
+            pos.y -= dy;
             item.pos(pos);
         });
         this.graphData.edgeValues().forEach(function (item) {

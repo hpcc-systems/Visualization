@@ -8,6 +8,7 @@
     function TextBox() {
         D3Widget.call(this);
 
+        this._fixedSize = null;
         this._padding = {
             left: 8,
             top: 8,
@@ -23,6 +24,12 @@
     };
     TextBox.prototype = Object.create(D3Widget.prototype);
 
+    TextBox.prototype.fixedSize = function (_) {
+        if (!arguments.length) return this._fixedSize;
+        this._fixedSize = _;
+        return this;
+    };
+
     TextBox.prototype.padding = function (_) {
         if (!arguments.length) return this._padding;
         this._padding = _;
@@ -32,6 +39,12 @@
     TextBox.prototype.text = function (_) {
         if (!arguments.length) return this._text.text();
         this._text.text(_);
+        return this;
+    };
+
+    TextBox.prototype.anchor = function (_) {
+        if (!arguments.length) return this._text.anchor();
+        this._text.anchor(_);
         return this;
     };
 
@@ -52,11 +65,18 @@
         ;
 
         var bbox = this._text.getBBox();
+        var d = this.anchor();
+        var size = {
+            width: this._fixedSize ? this._fixedSize.width : bbox.width + this._padding.left + this._padding.right,
+            height: this._fixedSize ? this._fixedSize.height : bbox.height + this._padding.top + this._padding.bottom
+        };
+        var pos = {
+            x: 0 + (this.anchor() === "middle" ? 0 : size.width / 2 - this._padding.left),
+            y: 0
+        };
         this._shape
-            .size({ 
-                width: bbox.width + this._padding.left + this._padding.right, 
-                height: bbox.height + this._padding.top + this._padding.bottom
-            })
+            .pos(pos)
+            .size(size)
             .render()
         ;
     };

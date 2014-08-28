@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/Surface", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
+        define(["d3/d3", "../common/D3Widget", "../common/Surface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
     } else {
-        root.Graph = factory(root.d3, root.D3Widget, root.Surface, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
+        root.Graph = factory(root.d3, root.D3Widget, root.Surface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
-}(this, function (d3, D3Widget, Surface, GraphWidget, Vertex, Edge, HipieDDL) {
+}(this, function (d3, D3Widget, Surface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
     function Graph(target) {
         GraphWidget.call(this);
 
@@ -56,16 +56,35 @@
                         }
                     } else if (item instanceof HipieDDL.Visualization) {
                         var width = 210;
+                        var newSurface = null;
                         if (item.type === "CHORO") {
                             width = 280;
-                            item.widget.size({width:width, height: 210})
+                            item.widget.size({ width: width, height: 210 })
+                            newSurface = new Surface()
+                                .size({ width: width, height: 210 })
+                                .title(item.id)
+                                .content(item.widget)
+                            ;
+                        } else {
+                            newSurface = item.widget
+                                .size({ width: width, height: 210 })
+                            ;
                         }
-                        vertexMap[item.id] = new Surface()
-                            .size({ width: width, height: 210 })
-                            .title(item.id)
-                            .content(item.widget)
-                        ;
-                        vertices.push(vertexMap[item.id]);
+                        vertexMap[item.id] = newSurface;
+                        vertices.push(newSurface);
+
+                        if (item.type === "CHORO") {
+                            newSurface._menu
+                                .data(Palette.brewer())
+                            ;
+                            var context = this;
+                            newSurface._menu.click = function (d) {
+                                newSurface._content
+                                    .palette(d)
+                                    .render(d)
+                                ;
+                            }
+                        }
                     }
                 }
             });

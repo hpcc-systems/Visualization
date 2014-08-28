@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([ "../chart/Pie", "../map/Choropleth"], factory);
+        define(["../chart/MultiChartSurface", "../map/Choropleth"], factory);
     } else {
-        root.Marshaller = factory(root.Pie, root.Choropleth);
+        root.Marshaller = factory(root.MultiChartSurface, root.Choropleth);
     }
-}(this, function (Pie, Choropleth) {
+}(this, function (MultiChartSurface, Choropleth) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -67,9 +67,8 @@
                 ;
                 break;
             case "PIE":
-                this.widget = new Pie()
-                    .radius(55)
-                    .outerText(true)
+                this.widget = new MultiChartSurface()
+                    .title(this.id)
                 ;
                 break;
             default:

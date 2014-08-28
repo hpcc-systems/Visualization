@@ -1,0 +1,13 @@
+.list .textbox .shape {
+    fill: #dcf1ff;
+    stroke: #dcf1ff;
+}
+
+.list .textbox .text {
+    pointer-events: none;
+}
+
+.list .textbox .shape:hover {
+    fill: white;
+    stroke: white;
+}

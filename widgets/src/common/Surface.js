@@ -1,16 +1,17 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Icon", "./Shape", "./Text", "./FAChar", "css!./Surface"], factory);
+        define(["./D3Widget", "./Icon", "./Shape", "./Text", "./FAChar", "./Menu", "css!./Surface"], factory);
     } else {
-        root.Graph = factory(root.D3Widget, root.Icon, root.Shape, root.Text, root.FAChar);
+        root.Graph = factory(root.D3Widget, root.Icon, root.Shape, root.Text, root.FAChar, root.Menu);
     }
-}(this, function (D3Widget, Icon, Shape, Text, FAChar) {
+}(this, function (D3Widget, Icon, Shape, Text, FAChar, Menu) {
     function Surface() {
         D3Widget.call(this);
 
         this._class = "surface";
         this._icon = new Icon();
         this._container = new Shape()
+            .class("container")
             .shape("rect")
         ;
         this._titleRect = new Shape()
@@ -20,10 +21,10 @@
         this._text = new Text()
             .class("title")
         ;
-        this._menu = new FAChar()
-            .class("more")
-            .char("\uf0c9")
+        this._menu = new Menu()
+            .faChar("\uf0c9")
         ;
+
         this._faChar = "\uf07b";
         this._title = "";
 
@@ -68,10 +69,7 @@
             .target(domNode)
             .render()
         ;
-        this._menu
-            .target(domNode)
-            .render()
-        ;
+        var menuViz = false;
         this._text
             .target(domNode)
             .render()
@@ -80,16 +78,10 @@
             .target(domNode)
             .render()
         ;
-        if (this._content) {
-            var g = element.append("g")
-                .attr("clip-path", "url(#" + this.id() + "_clip)")
-                .node()
-            ;
-            this._content
-                .target(g)
-                .render()
-            ;
-        }
+        this._menu
+            .target(domNode)
+            .render()
+        ;
     };
 
     Surface.prototype.update = function (domNode, element) {
@@ -119,18 +111,52 @@
             .size({ width: this._size.width - xOffset, height: this._size.height - yOffset })
             .render()
         ;
+
+        var context = this;
+        var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
+        content.enter().append("g")
+            .attr("class", "content")
+            .attr("clip-path", "url(#" + this.id() + "_clip)")
+            .each(function (d) {
+                var padding = {
+                    left: 4,
+                    top: 4,
+                    right: 4,
+                    bottom: 4
+                };
+                var containerSize = context._container.getBBox();
+                d
+                    .target(this)
+                    .size({
+                        width: containerSize.width - (padding.left + padding.right),
+                        height: containerSize.height - (padding.top + padding.bottom)
+                    })
+                    .render()
+                ;
+            })
+        ;
         if (this._content) {
             this._clipRect
-                .attr("x", - this._size.width / 2 + xOffset)
+                .attr("x", -this._size.width / 2 + xOffset)
                 .attr("y", -this._size.height / 2 + yOffset)
                 .attr("width", this._size.width - xOffset)
                 .attr("height", this._size.height - yOffset)
             ;
-            this._content
-                .pos({ x: xOffset / 2, y: yOffset / 2 })
-                .render()
-            ;
         }
+        content
+            .each(function (d) {
+                d
+                    .pos({ x: xOffset / 2, y: yOffset / 2 })
+                    .render()
+                ;
+            })
+        ;
+
+        content.exit().transition()
+            .remove()
+        ;
+
+        this._menu.element().node().parentNode.appendChild(this._menu.element().node());
     };
 
     Surface.prototype.intersection = function (pointA, pointB) {

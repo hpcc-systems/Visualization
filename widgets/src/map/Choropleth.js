@@ -13,10 +13,16 @@
 
         this._dataMap = {};
         this._dataMaxWeight = 0;
-        this.d3Color = Palette.brewer("Reds");
+        this._palette = "YlOrRd";
     };
     Choropleth.prototype = Object.create(D3Widget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
+
+    Choropleth.prototype.palette = function (_) {
+        if (!arguments.length) return this._palette;
+        this._palette = _;
+        return this;
+    }
 
     Choropleth.prototype.data = function (_) {
         var retVal = D3Widget.prototype.data.call(this, _);
@@ -35,9 +41,6 @@
                     context._dataMaxWeight = item.weight;
                 }
             });
-            //"#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"
-            this.d3Color = Palette.brewer("YlOrRd", this._dataMinWeight, this._dataMaxWeight);
-            //this.d3Color = Palette.Domain("Reds", this._dataMinWeight, this._dataMaxWeight, this._data.length);
         }
         return retVal;
     };
@@ -68,6 +71,8 @@
 
     Choropleth.prototype.update = function (domNode, element) {
         var context = this;
+
+        this.d3Color = Palette.brewer(this._palette, this._dataMinWeight, this._dataMaxWeight);
 
         var projection = this.albersUsaPr()
             .scale(this.size().width * 120 / 100)

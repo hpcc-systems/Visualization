@@ -47,8 +47,17 @@
     };
 
     Icon.prototype.update = function (domNode, element) {
+        var bbox = this._faChar.getBBox();
+        var size = { width: bbox.width, height: this._faChar.fontSize() };
+        if (this._shape.shape() === "circle") {
+            size.width = (size.height - 1) * 2;
+            size.height = (size.height - 1) * 2;
+        } else if (this._shape.shape() === "rect") {
+            size.width += 3;
+            size.height += 0;
+        }
         this._shape
-            .size({ width: (this._faChar.fontSize() - 1) * 2, height: (this._faChar.fontSize() - 1) * 2 })
+            .size(size)
             .render()
         ;
         this._faChar

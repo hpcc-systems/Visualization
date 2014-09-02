@@ -55,34 +55,37 @@
                             vertices.push(vertexMap[item.dataSource.id + "." + item.id]);
                         }
                     } else if (item instanceof HipieDDL.Visualization) {
-                        var width = 210;
-                        var newSurface = null;
-                        if (item.type === "CHORO") {
-                            width = 280;
-                            item.widget.size({ width: width, height: 210 })
-                            newSurface = new Surface()
-                                .size({ width: width, height: 210 })
-                                .title(item.id)
-                                .content(item.widget)
-                            ;
-                        } else {
-                            newSurface = item.widget
-                                .size({ width: width, height: 210 })
-                            ;
-                        }
-                        vertexMap[item.id] = newSurface;
-                        vertices.push(newSurface);
-
-                        if (item.type === "CHORO") {
-                            newSurface._menu
-                                .data(Palette.brewer())
-                            ;
-                            var context = this;
-                            newSurface._menu.click = function (d) {
-                                newSurface._content
-                                    .palette(d)
-                                    .render(d)
+                        if (item.widget) {
+                            var width = 210;
+                            var newSurface = null;
+                            if (item.widget instanceof Surface) {
+                                newSurface = item.widget
+                                    .size({ width: width, height: 210 })
                                 ;
+                            } else {
+                                width = 280;
+                                newSurface = new Surface()
+                                    .size({ width: width, height: 210 })
+                                    .title(item.id)
+                                    .content(item.widget)
+                                ;
+                            }
+                            if (newSurface) {
+                                vertexMap[item.id] = newSurface;
+                                vertices.push(newSurface);
+
+                                if (item.type === "CHORO") {
+                                    newSurface._menu
+                                        .data(Palette.brewer())
+                                    ;
+                                    var context = this;
+                                    newSurface._menu.click = function (d) {
+                                        newSurface._content
+                                            .palette(d)
+                                            .render(d)
+                                        ;
+                                    }
+                                }
                             }
                         }
                     }

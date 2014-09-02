@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../chart/MultiChartSurface", "../map/Choropleth"], factory);
+        define(["../chart/MultiChartSurface", "../map/Choropleth", "../other/Slider"], factory);
     } else {
-        root.Marshaller = factory(root.MultiChartSurface, root.Choropleth);
+        root.Marshaller = factory(root.MultiChartSurface, root.Choropleth, root.Slider);
     }
-}(this, function (MultiChartSurface, Choropleth) {
+}(this, function (MultiChartSurface, Choropleth, Slider) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -71,14 +71,22 @@
                     .title(this.id)
                 ;
                 break;
+            case "SLIDER":
+                this.widget = new Slider()
+                    .range({ low: +visualization.range[0], high: +visualization.range[1] })
+                    .step(+visualization.range[2])
+                ;
+                break;
             default:
                 throw "Unknown Viz Type" + item.type;
                 break;
         }
 
-        var context = this;
-        this.widget.click = function (d) {
-            context.click(d);
+        if (this.widget) {
+            var context = this;
+            this.widget.click = function (d) {
+                context.click(d);
+            }
         }
     };
 
@@ -91,20 +99,26 @@
 
         var context = this;
         if (dataSource.outputs[this.source.output].data) {
-            var data = dataSource.outputs[this.source.output].data.map(function (item) {
-                var retVal = {};
-                for (var key in context.source.mappings) {
-                    var rhsKey = context.source.mappings[key].toLowerCase();
-                    var val = item[rhsKey];
-                    retVal[key] = val;
-                }
-                return retVal;
-            });
-            this.dashboard.marshaller.updateViz(this, data);
-            this.widget
-                .data(data)
-                .render()
-            ;
+            if (this.widget) {
+                var data = dataSource.outputs[this.source.output].data.map(function (item) {
+                    var retVal = {};
+                    try {
+                        for (var key in context.source.mappings) {
+                            var rhsKey = context.source.mappings[key].toLowerCase();
+                            var val = item[rhsKey];
+                            retVal[key] = val;
+                        }
+                    } catch (e) {
+                        console.log("Invalid Mappings");
+                    }
+                    return retVal;
+                });
+                this.dashboard.marshaller.updateViz(this, data);
+                this.widget
+                    .data(data)
+                    .render()
+                ;
+            }
         }
     };
 

@@ -11,6 +11,7 @@
         this._class = "demoText";
         this._text = "";
         this._anchor = "middle";
+        this._reverse = false;
     };
     MorphText.prototype = Object.create(SVGWidget.prototype);
 
@@ -41,6 +42,12 @@
     MorphText.prototype.fontSize = function (_) {
         if (!arguments.length) return this._fontSize;
         this._fontSize = _;
+        return this;
+    };
+
+    MorphText.prototype.reverse = function (_) {
+        if (!arguments.length) return this._reverse;
+        this._reverse = _;
         return this;
     };
 
@@ -82,7 +89,7 @@
             .attr("class", "enter")
             .attr("font-size", this._fontSize)
             .attr("dy", ".35em")
-            .attr("y", -this._fontWidth * 2)
+            .attr("y", (this._reverse ? +1 : -1) * this._fontWidth * 2)
             .attr("x", function (d, i) { return (-context._data.length / 2 + i) * context._fontWidth + context._fontWidth / 2; })
             .style("fill-opacity", 1e-6)
             .style("text-anchor", this._anchor)
@@ -97,7 +104,7 @@
             .attr("class", "exit")
         ;
         this.transition.apply(text.exit())
-            .attr("y", this._fontWidth * 2)
+            .attr("y", (this._reverse ? -1 : +1) * this._fontWidth * 2)
             .style("fill-opacity", 1e-6)
             .remove()
         ;

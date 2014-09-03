@@ -1,5 +1,5 @@
 define([
-], function (declare) {
+], function () {
     return {
         stateNames: {
             "1": {

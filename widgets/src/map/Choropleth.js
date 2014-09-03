@@ -18,9 +18,45 @@
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
 
+    Choropleth.prototype.size = function (_) {
+        var retVal = SVGWidget.prototype.size.apply(this, arguments);
+        if (arguments.length) {
+            this.d3Projection
+                .scale(this.size().width * 120 / 100)
+                .translate([this.size().width * 2.5 / 100, 0])
+            ;
+        }
+        return retVal;
+    }
+
     Choropleth.prototype.palette = function (_) {
         if (!arguments.length) return this._palette;
         this._palette = _;
+        return this;
+    }
+
+    Choropleth.prototype.projection = function (_) {
+        if (!arguments.length) return this._projection;
+        this._projection = _;
+        switch (this._projection) {
+            case "albersUsaPr":
+                this.d3Projection = this.albersUsaPr()
+                ;
+                break;
+            case "orthographic":
+                this.d3Projection = d3.geo.orthographic()
+                    .clipAngle(90)
+                ;
+                break;
+            case "mercator":
+                this.d3Projection = d3.geo.mercator()
+                ;
+                break;
+        }
+        this.d3Path = d3.geo.path()
+            .projection(this.d3Projection)
+        ;
+
         return this;
     }
 
@@ -45,22 +81,12 @@
             .attr("width", 5)
             .attr("height", 5)
         ;
-        //g.append("rect").attr("d", "M10,0 l-10,10");
     };
 
     Choropleth.prototype.update = function (domNode, element) {
         var context = this;
 
         this.d3Color = Palette.brewer(this._palette, this._dataMinWeight, this._dataMaxWeight);
-
-        var projection = this.albersUsaPr()
-            .scale(this.size().width * 120 / 100)
-            .translate([this.size().width * 2.5 / 100, 0])
-        ;
-
-        this.d3Path = d3.geo.path()
-            .projection(projection)
-        ;
     };
 
     // A modified d3.geo.albersUsa to include Puerto Rico.

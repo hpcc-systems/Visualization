@@ -1,22 +1,26 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Choropleth", "topojson/topojson", "./us-counties"], factory);
+        define(["d3/d3", "./Choropleth", "topojson/topojson", "./countries", "./us-states"], factory);
     } else {
-        root.ChoroplethCounties = factory(root.d3, root.Choropleth, root.topojson, root.usCounties);
+        root.ChoroplethCounties = factory(root.d3, root.Choropleth, root.topojson, root.countries, root.usStates);
     }
-}(this, function (d3, Choropleth, topojson, usCounties) {
+}(this, function (d3, Choropleth, topojson, countries, usStates) {
     function ChoroplethCounties() {
         Choropleth.call(this);
 
         this._dataMap = {};
         this._dataMaxWeight = 0;
         this._dataMinWeight = 0;
-        this.projection("albersUsaPr");
+        this.projection("orthographic");
     };
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
 
+    ChoroplethCounties.prototype.testData = function () {
+        return this;
+    },
+
     ChoroplethCounties.prototype.data = function (_) {
-        var retVal = Choropleth.prototype.data.apply(this, arguments);
+            var retVal = Choropleth.prototype.data.apply(this, arguments);
         if (arguments.length) {
             this._dataMap = {};
             this._dataMinWeight = null;
@@ -37,8 +41,28 @@
     };
 
     ChoroplethCounties.prototype.enter = function (domNode, element) {
+        var context = this;
         Choropleth.prototype.enter.apply(this, arguments);
-        var choroPaths = element.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
+        this.lookup = {};
+        var stateArray = topojson.feature(usStates.topology, usStates.topology.objects.states).features.map(function (item) {
+            item.category = "State";
+            item.name = usStates.stateNames[item.id].code;
+            context.lookup[item.name] = item;
+            return item;
+        });
+        var countryArray = topojson.feature(countries.topology, countries.topology.objects.countries).features.filter(function (item) {
+            return (item.id !== 840);
+        }).map(function (item) {
+            item.category = "Country";
+            if (countries.countryNames[item.id]) {
+                item.name = countries.countryNames[item.id].name;
+                context.lookup[item.name] = item;
+            }
+            return item;
+        });
+        this.ContriesStates = countryArray.concat(stateArray);
+
+        var choroPaths = element.selectAll("path").data(this.ContriesStates);
 
         //  Enter  ---
         this.choroPaths = choroPaths.enter().append("path")
@@ -59,6 +83,7 @@
         Choropleth.prototype.update.apply(this, arguments);
 
         var context = this;
+
         //  Update  ---
         this.transition.apply(this.choroPaths)
             .style("fill", function (d) {
@@ -73,8 +98,11 @@
 
         this.choroPaths.select("title")
             .text(function (d) {
-                var code = usCounties.countyNames[d.id];
-                return usCounties.countyNames[d.id].name + " (" + context._dataMap[code] + ")";
+                var code = countries.countryNames[d.id];
+                if (countries.countryNames[d.id]) {
+                    return countries.countryNames[d.id].name + " (" + context._dataMap[code] + ")";
+                }
+                return "";
             })
         ;
     };

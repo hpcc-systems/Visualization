@@ -78,7 +78,7 @@
                 ;
                 break;
             default:
-                throw "Unknown Viz Type" + item.type;
+                console.log("Unknown Viz Type" + this.type);
                 break;
         }
 

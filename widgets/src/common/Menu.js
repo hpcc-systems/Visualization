@@ -44,6 +44,7 @@
     };
 
     Menu.prototype.showMenu = function () {
+        this.preShowMenu();
         this._visible = true;
         this._list
             .data(this._data)
@@ -67,6 +68,7 @@
             .data([])
             .render()
         ;
+        this.postHideMenu();
     };
 
     Menu.prototype.enter = function (domNode, element) {

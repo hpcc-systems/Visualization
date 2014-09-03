@@ -40,16 +40,25 @@
                 if (dashboard.visualizationTotal) {
                     var colCount = Math.ceil(Math.sqrt(dashboard.visualizationTotal));
                     var width = Math.floor(context._size.width / colCount) - 10;
-                    dashboard.visualizationsArray.forEach(function (item) {
-                        if (item.widget) {
+                    d3.select("#" + context._target).selectAll("marshalViz").data(dashboard.visualizationsArray.filter(function (d) { return d.widget; }), function (d) {
+                        return d.id;
+                    }).enter().append("div")
+                        .attr("class", "marshalViz")
+                        .style({
+                            width: width + "px",
+                            height: width + "px",
+                            display: "inline-block"
+                        })
+                        .each(function (item) {
+                            var element = d3.select(this);
                             item.widget
                                 .pos({ x: width / 2, y: width / 2 })
                                 .size({ width: width, height: width })
-                                .target(context._target)
+                                .target(this)
                                 .render()
                             ;
-                        }
-                    });
+                        })
+                    ;
                     for (var key in dashboard.datasources) {
                         dashboard.datasources[key].processResponse(response);
                     }

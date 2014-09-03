@@ -1,18 +1,18 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "../common/Icon", "../common/TextBox", "css!./Vertex"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/Icon", "../common/TextBox", "css!./Vertex"], factory);
     } else {
-        root.Entity = factory(root.d3, root.D3Widget, root.Icon, root.TextBox);
+        root.Entity = factory(root.d3, root.SVGWidget, root.Icon, root.TextBox);
     }
-}(this, function (d3, D3Widget, Icon, TextBox) {
+}(this, function (d3, SVGWidget, Icon, TextBox) {
     function Vertex() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._class = "vertex";
         this._icon = new Icon();
         this._textBox = new TextBox();
     };
-    Vertex.prototype = Object.create(D3Widget.prototype);
+    Vertex.prototype = Object.create(SVGWidget.prototype);
 
     Vertex.prototype.faChar = function (_) {
         if (!arguments.length) return this._icon.faChar();

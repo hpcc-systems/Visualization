@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Shape", "./Text", "css!./TextBox"], factory);
+        define(["./SVGWidget", "./Shape", "./Text", "css!./TextBox"], factory);
     } else {
-        root.Entity = factory(root.D3Widget, root.Shape, root.Text);
+        root.Entity = factory(root.SVGWidget, root.Shape, root.Text);
     }
-}(this, function (D3Widget, Shape, Text) {
+}(this, function (SVGWidget, Shape, Text) {
     function TextBox() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._fixedSize = null;
         this._padding = {
@@ -22,7 +22,7 @@
         ;
         this._text = new Text();
     };
-    TextBox.prototype = Object.create(D3Widget.prototype);
+    TextBox.prototype = Object.create(SVGWidget.prototype);
 
     TextBox.prototype.fixedSize = function (_) {
         if (!arguments.length) return this._fixedSize;

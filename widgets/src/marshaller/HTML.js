@@ -1,6 +1,6 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./HipieDDL"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./HipieDDL"], factory);
     } else {
         root.HTML = factory(root.d3, root.Widget, root.HipieDDL);
     }

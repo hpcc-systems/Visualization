@@ -1,17 +1,17 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Shape", "./FAChar", "css!./Icon"], factory);
+        define(["./SVGWidget", "./Shape", "./FAChar", "css!./Icon"], factory);
     } else {
-        root.Entity = factory(root.D3Widget, root.Shape, root.FAChar);
+        root.Entity = factory(root.SVGWidget, root.Shape, root.FAChar);
     }
-}(this, function (D3Widget, Shape, FAChar) {
+}(this, function (SVGWidget, Shape, FAChar) {
     function Icon() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         this._class = "icon";
         this._faChar = new FAChar();
         this._shape = new Shape();
     };
-    Icon.prototype = Object.create(D3Widget.prototype);
+    Icon.prototype = Object.create(SVGWidget.prototype);
 
     Icon.prototype.shape = function (_) {
         if (!arguments.length) return this._shape.shape();

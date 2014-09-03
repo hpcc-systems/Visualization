@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "./Icon", "./Shape", "./Text", "./FAChar", "./Menu", "css!./Surface"], factory);
+        define(["./SVGWidget", "./Icon", "./Shape", "./Text", "./FAChar", "./Menu", "css!./Surface"], factory);
     } else {
-        root.Graph = factory(root.D3Widget, root.Icon, root.Shape, root.Text, root.FAChar, root.Menu);
+        root.Graph = factory(root.SVGWidget, root.Icon, root.Shape, root.Text, root.FAChar, root.Menu);
     }
-}(this, function (D3Widget, Icon, Shape, Text, FAChar, Menu) {
+}(this, function (SVGWidget, Icon, Shape, Text, FAChar, Menu) {
     function Surface() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._class = "surface";
         this._icon = new Icon();
@@ -30,7 +30,7 @@
 
         this._content = null;
     };
-    Surface.prototype = Object.create(D3Widget.prototype);
+    Surface.prototype = Object.create(SVGWidget.prototype);
 
     Surface.prototype.faChar = function (_) {
         if (!arguments.length) return this._faChar;

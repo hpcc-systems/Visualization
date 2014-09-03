@@ -1,12 +1,12 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/D3Widget", "./IChoropleth", "../common/Palette", "css!./Choropleth"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./IChoropleth", "../common/Palette", "css!./Choropleth"], factory);
     } else {
-        root.Choropleth = factory(root.d3, root.D3Widget, root.IChoropleth, root.Palette);
+        root.Choropleth = factory(root.d3, root.SVGWidget, root.IChoropleth, root.Palette);
     }
-}(this, function (d3, D3Widget, IChoropleth, Palette) {
+}(this, function (d3, SVGWidget, IChoropleth, Palette) {
     function Choropleth() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
         IChoropleth.call(this);
 
         this._class = "choropleth";
@@ -15,7 +15,7 @@
         this._dataMaxWeight = 0;
         this._palette = "YlOrRd";
     };
-    Choropleth.prototype = Object.create(D3Widget.prototype);
+    Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
 
     Choropleth.prototype.palette = function (_) {

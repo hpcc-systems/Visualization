@@ -1,18 +1,18 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./D3Widget", "css!./Text"], factory);
+        define(["./SVGWidget", "css!./Text"], factory);
     } else {
-        root.Entity = factory(root.D3Widget);
+        root.Entity = factory(root.SVGWidget);
     }
-}(this, function (D3Widget) {
+}(this, function (SVGWidget) {
     function Text() {
-        D3Widget.call(this);
+        SVGWidget.call(this);
 
         this._class = "text";
         this._text = "";
         this._anchor = "middle";
     };
-    Text.prototype = Object.create(D3Widget.prototype);
+    Text.prototype = Object.create(SVGWidget.prototype);
 
     Text.prototype.text = function (_) {
         if (!arguments.length) return this._text;

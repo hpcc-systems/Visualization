@@ -16,7 +16,7 @@
 
     Text.prototype.text = function (_) {
         if (!arguments.length) return this._text;
-        this._text = _;
+        this._text = "" + _;
         return this;
     };
 
@@ -48,7 +48,7 @@
 
         var bbox = this._textElement.node().getBBox();
         this._textElement
-            .attr("transform", function (d) { return "translate(0," + ((-bbox.height / 2)) + ")"; })
+            .attr("transform", function (d) { return "translate(0," + (- bbox.height / 1.7) + ")"; })
         ;
     };
 

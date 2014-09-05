@@ -45,7 +45,9 @@
     Edge.prototype.points = function (_, animate) {
         if (!arguments.length) return this._points;
         this._points = _;
-        this.update(null, this._element, animate);
+        if (this._elementPath) {
+            this.update(null, this._element, animate);
+        }
         return this;
     };
 

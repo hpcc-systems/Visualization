@@ -47,6 +47,7 @@
         if (arguments.length) {
             if (!this._data.merge) {
                 this.graphData = new GraphData();
+                this._renderCount = 0;
             }
             var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.merge);
 

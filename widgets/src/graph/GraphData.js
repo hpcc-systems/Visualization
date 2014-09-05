@@ -34,7 +34,7 @@
         }
         //  Remove old items  ---
         if (merge) {
-            var edgeIDs = edges.map(function (item) { return item.data().id; });
+            var edgeIDs = edges.map(function (item) { return item._id; });
             this.filterEdges(function (item) { return edgeIDs.indexOf(item) < 0; })
                 .forEach(function (item) {
                     try {

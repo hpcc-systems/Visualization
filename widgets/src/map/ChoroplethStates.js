@@ -41,7 +41,7 @@
         Choropleth.prototype.enter.apply(this, arguments);
         var choroPaths = element.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
 
-        //  Enter  ---
+        var context = this;
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
             .on("click", function (d) {
@@ -60,7 +60,6 @@
         Choropleth.prototype.update.apply(this, arguments);
 
         var context = this;
-        //  Update  ---
         this.transition.apply(this.choroPaths)
             .style("fill", function (d) {
                 var code = usStates.stateNames[d.id].code;

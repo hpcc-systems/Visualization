@@ -134,7 +134,7 @@
                 var hackKey = reverseSourceMappings[key];
                 request[key] = d[hackKey];
             }
-            var dataSource = this.dashboard.datasources[this.source.id];
+            var dataSource = this.dashboard.datasources[this.onSelect.updates.datasource];
             dataSource.fetchData(request);
         }
     };

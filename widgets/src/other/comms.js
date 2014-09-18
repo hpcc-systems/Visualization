@@ -5,10 +5,63 @@
         root.Entity = factory();
     }
 }(this, function () {
+    function ESPUrl() {
+    };
+
+    ESPUrl.prototype.url = function (_) {
+        if (!arguments.length) return this._url;
+        this._url = _;
+        var parser = document.createElement('a');
+        parser.href = this._url;
+
+        var params = {};
+        if (parser.search.length) {
+            var tmp = parser.search;
+            if (tmp[0] === "?") {
+                tmp = tmp.substring(1);
+            }
+            tmp = tmp.split("&");
+            tmp.map(function (item) {
+                var tmpItem = item.split("=");
+                params[tmpItem[0]] = tmpItem[1];
+            });
+        }
+        this._protocol = parser.protocol;
+        this._hostname = parser.hostname;
+        this._port = parser.port;
+        this._pathname = parser.pathname;
+        while (this._pathname.length && this._pathname[0] === "/") {
+            this._pathname = this._pathname.substring(1);
+        }
+        this._search = parser.search;
+        this._params = params;
+        this._hash = parser.hash;
+        this._host = parser.host;
+
+        return this;
+    };
+
+    ESPUrl.prototype.isWsWorkunits = function () {
+        return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0;
+    };
+
+    ESPUrl.prototype.isWorkunitResult = function () {
+        return this.isWsWorkunits() && this._params["Wuid"] && (this._params["Sequence"] || this._params["ResultName"]);
+    };
+
+    ESPUrl.prototype.getUrl = function (overrides) {
+        return (overrides.protocol ? overrides.protocol : this._protocol) + "//" +
+                (overrides.hostname ? overrides.hostname : this._hostname) + ":" +
+                (overrides.port ? overrides.port : this._port) + "/" +
+                (overrides.pathname ? overrides.pathname : this._pathname);
+    };
+
     function Comms() {
+        this._url = "";
         this._ssl = false;
         this._ip = "localhost";
         this._port = "";
+
         this._mappings = {};
     };
 
@@ -47,6 +100,19 @@
         var script = document.createElement('script');
         script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'jsonp=' + callbackName + "&" + serialize(request);
         document.body.appendChild(script);
+    };
+
+    Comms.prototype.ddlUrl = function (_) {
+        if (!arguments.length) return this._ddlUrl;
+        this._ddlUrl = _;
+        return this;
+    };
+
+    Comms.prototype.url = function (_) {
+        if (!arguments.length) return this._url;
+        this._url = _;
+        this.ddlUrl(new ESPUrl().url(_));
+        return this;
     };
 
     Comms.prototype.ssl = function (_) {
@@ -114,7 +180,7 @@
     WsECL.prototype.call = function (request, callback) {
         // http://10.239.190.106:8002/WsEcl/submit/query/myroxie_dataland/fetched_ins002_stats/json
         var context = this;
-        var url = "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsEcl/submit/query/" + this._target + "/" + this._query + "/json";
+        var url = this._url ? this._url : "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsEcl/submit/query/" + this._target + "/" + this._query + "/json";
         this.jsonp(url, request, function (response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
@@ -160,7 +226,30 @@
 
     WsWorkunits.prototype.call = function (start, count, callback) {
         var context = this;
-        var url = "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsWorkunits/WUResult.json";
+        var url = "";
+        //  TODO witch to use ESPUrl  ---
+        if (this._url) {
+            var urlParts = this._url.split("?");
+            url = urlParts[0];
+            try {
+                var params = urlParts[1].split("&");
+                var context = this;
+                params.forEach(function (item) {
+                    var parts = item.split("=");
+                    switch (parts[0]) {
+                        case "Wuid":
+                            context.wuid(parts[1]);
+                            break;
+                        case "ResultName":
+                            context.resultName(parts[1]);
+                            break;
+                    }
+                });
+            } catch (e) {
+            }
+        } else {
+            url = this._url ? this._url : "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsWorkunits/WUResult.json";
+        }
         var request = {
             Start: start,
             Count: count,
@@ -197,8 +286,186 @@
         });
     };
 
+    //  HIPIERoxie  ---
+    function HIPIERoxie() {
+        Comms.call(this);
+    };
+    HIPIERoxie.prototype = Object.create(Comms.prototype);
+
+    HIPIERoxie.prototype.fetchResults = function (request, callback) {
+        var url = this._ddlUrl.getUrl({ });
+        this._resultNameCache = {};
+        this._resultNameCacheCount = 0;
+        var context = this;
+        this.jsonp(url, request, function (response) {
+            // Remove "xxxResponse.Result"
+            for (var key in response) {
+                response = response[key].Results;
+                break;
+            }
+            // Remove "response.result.Row"
+            for (var key in response) {
+                context._resultNameCache[key] = response[key].Row;
+                ++context._resultNameCacheCount;
+            }
+            callback(context._resultNameCache);
+        });
+    };
+
+    HIPIERoxie.prototype.fetchResult = function (name, callback) {
+        callback(this._resultNameCache[name]);
+    };
+
+    HIPIERoxie.prototype.call = function (request, callback) {
+        var context = this;
+        this.fetchResults(request, callback);
+    };
+
+    //  HIPIEWorkunit  ---
+    function HIPIEWorkunit() {
+        Comms.call(this);
+
+        this._hipieResults = {};
+    };
+    HIPIEWorkunit.prototype = Object.create(Comms.prototype);
+
+    HIPIEWorkunit.prototype.hipieResults = function (_) {
+        if (!arguments.length) return this._hipieResults;
+        this._hipieResultsLength = 0;
+        this._hipieResults = {};
+        var context = this;
+        _.forEach(function (item) {
+            context._hipieResultsLength++;
+            context._hipieResults[item.id] = item;
+        });
+        return this;
+    };
+
+    HIPIEWorkunit.prototype.fetchResults = function (callback) {
+        var url = this._ddlUrl.getUrl({
+            pathname: "WsWorkunits/WUInfo.json",
+        });
+        var request = {
+            Wuid: this._ddlUrl._params["Wuid"],
+            TruncateEclTo64k: true,
+            IncludeExceptions: false,
+            IncludeGraphs: false,
+            IncludeSourceFiles: false,
+            IncludeResults: true,
+            IncludeResultsViewNames: false,
+            IncludeVariables: false,
+            IncludeTimers: false,
+            IncludeResourceURLs: false,
+            IncludeDebugValues: false,
+            IncludeApplicationValues: false,
+            IncludeWorkflows: false,
+            IncludeXmlSchemas: false,
+            SuppressResultSchemas: true
+        }
+
+        this._resultNameCache = {};
+        this._resultNameCacheCount = 0;
+        var context = this;
+        this.jsonp(url, request, function (response) {
+            if (exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
+                response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
+                    context._resultNameCache[item.Name] = [];
+                    ++context._resultNameCacheCount;
+                });
+                var toFetch = context._hipieResultsLength;
+                if (toFetch > 0) {
+                    for (var key in context._hipieResults) {
+                        var item = context._hipieResults[key];
+                        context.fetchResult(item.from, function (response) {
+                            if (--toFetch <= 0) {
+                                callback(context._resultNameCache);
+                            }
+                        });
+                    };
+                } else {
+                    callback(context._resultNameCache);
+                }
+            }
+        });
+    };
+
+    HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
+        var url = this._ddlUrl.getUrl({
+            pathname: "WsWorkunits/WUResult.json",
+        });
+        var request = {
+            Wuid: this._ddlUrl._params["Wuid"],
+            ResultName: name,
+            SuppressXmlSchema: true,
+            Start: 0,
+            Count: 99999
+        };
+        this._resultNameCache[name].data = [];
+        var context = this;
+        this.jsonp(url, request, function (response) {
+            // Remove "xxxResponse.Result"
+            for (var key in response) {
+                if (!response[key].Result) {
+                    throw "No result found.";
+                }
+                context._total = response[key].Total;
+                response = response[key].Result;
+                for (var key in response) {
+                    response = response[key].Row;
+                    break;
+                }
+                break;
+            }
+            context._resultNameCache[name] = response;
+            context._resultNameCache[name + "_changed"] = [{}];
+            context._resultNameCache[name + "_changed"][0][name + "_changed"] = true;
+            callback(response);
+        });
+    };
+
+    HIPIEWorkunit.prototype.call = function (request, callback) {
+        var context = this;
+        if (request.refresh || !this._resultNameCache) {
+            this.fetchResults(callback);
+        } else {
+            var changedFilter = {};
+            for (var key in request) {
+                if (request[key] && request[key + "_changed"]) {
+                    changedFilter[key] = request[key];
+                }
+            }
+            var retVal = {};
+            for (var key in this._hipieResults) {
+                var item = this._hipieResults[key];
+                var matchedResult = true;
+                for (var key2 in changedFilter) {
+                    if (item.filter.indexOf(key2) < 0) {
+                        matchedResult = false;
+                        break;
+                    }
+                }
+                if (matchedResult) {
+                    retVal[item.from] = this._resultNameCache[item.from].filter(function (row) {
+                        for (var key2 in changedFilter) {
+                            if (row[key2] !== changedFilter[key2]) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                    retVal[item.from + "_changed"] = [{}];
+                    retVal[item.from + "_changed"][0][item.from + "_changed"] = true;
+                }
+            }
+            callback(retVal);
+        }
+    };
+
     return {
+        ESPUrl: ESPUrl,
         WsECL: WsECL,
-        WsWorkunits: WsWorkunits
+        WsWorkunits: WsWorkunits,
+        HIPIERoxie: HIPIERoxie,
+        HIPIEWorkunit: HIPIEWorkunit
 };
 }));

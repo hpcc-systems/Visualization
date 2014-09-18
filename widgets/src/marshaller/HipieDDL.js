@@ -1,10 +1,14 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../chart/MultiChartSurface", "../map/ChoroplethStates", "../other/Slider"], factory);
+        define(["../common/TextBox",
+            "../chart/MultiChartSurface", "../chart/Bar", "../chart/Pie", "../chart/Bubble",
+            "../map/ChoroplethStates", "../map/ChoroplethCounties",
+            "../other/Slider", "../other/Table", "../other/comms"
+        ], factory);
     } else {
-        root.Marshaller = factory(root.MultiChartSurface, root.ChoroplethStates, root.Slider);
+        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.comms);
     }
-}(this, function (MultiChartSurface, ChoroplethStates, Slider) {
+}(this, function (TextBox, MultiChartSurface, Bar, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, comms) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -19,66 +23,155 @@
         return true;
     };
 
-    serialize = function (obj) {
-        var str = [];
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                str.push(encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
-            }
+    //  Mappings ---
+    function SourceMappings(source, mappings) {
+        this.source = source;
+        this.mappings = mappings;
+        this.reverseMappings = {};
+        for (var key in this.mappings) {
+            this.reverseMappings[this.mappings[key]] = key;
         }
-        return str.join("&");
     };
 
-    jsonp = function (url, request, callback) {
-        var callbackName = 'jsonp_callback_' + Math.round(999 * Math.random());
-        window[callbackName] = function (data) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            // Remove "xxxResponse.Result"
-            for (var key in data) {
-                data = data[key].Results;
-                break;
-            }
-            // Remove "xxx.Row"
-            for (var key in data) {
-                data[key] = data[key].Row;
-            }
-            callback(data);
-        };
-
-        var script = document.createElement('script');
-        script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'jsonp=' + callbackName + "&" + serialize(request);
-        document.body.appendChild(script);
+    SourceMappings.prototype.contains = function(key) {
+        return this.mappings[key] !== undefined;
     };
 
+    SourceMappings.prototype.doMap = function (item) {
+        var retVal = item;
+        try {
+            for (var key in this.mappings) {
+                if (this.mappings[key] instanceof Array) {
+                    retVal = {};
+                    this.mappings[key].forEach(function (mapingItem) {
+                        var rhsKey = mapingItem.toLowerCase();
+                        var val = item[rhsKey];
+                        retVal[rhsKey] = val;
+                    });
+                } else {
+                    var rhsKey = this.mappings[key].toLowerCase();
+                    var val = item[rhsKey];
+                    retVal[key] = val;
+                }
+            }
+        } catch (e) {
+            console.log("Invalid Mappings");
+        }
+        return retVal;
+    };
+
+    SourceMappings.prototype.getReverseMap = function (key) {
+        return this.reverseMappings[key];
+    };
+
+    //  Viz Source ---
+    function Source(visualization, source) {
+        this.visualization = visualization;
+        this._id = source.id;
+        this._output = source.output;
+        this.mappings = new SourceMappings(this, source.mappings);
+    };
+
+    Source.prototype.exists = function () {
+        return this._id;
+    };
+
+    Source.prototype.getDatasource = function () {
+        return this.visualization.dashboard.datasources[this._id];
+    };
+
+    Source.prototype.getOutput = function () {
+        return this.getDatasource().outputs[this._output];
+    };
+
+    //  Viz Select ---
+    function Select(visualization, onSelect) {
+        this.visualization = visualization;
+        if (onSelect) {
+            this._updates = onSelect.updates;
+            this.mappings = onSelect.mappings;
+        }
+    };
+
+    Select.prototype.exists = function () {
+        return this._updates !== undefined;
+    };
+
+    Select.prototype.getUpdatesDatasource = function () {
+        if (exists("_updates.datasource", this)) {
+            return this.visualization.dashboard.datasources[this._updates.datasource];
+        }
+        return null;
+    };
+
+    Select.prototype.getUpdatesVisualization = function () {
+        if (exists("_updates.visualization", this)) {
+            return this.visualization.dashboard.visualizations[this._updates.visualization];
+        }
+        return null;
+    };
 
     //  Visualization ---
     function Visualization(dashboard, visualization) {
         this.dashboard = dashboard;
-        this.id = visualization.id
+        this.id = visualization.id;
+        this.label = visualization.label;
         this.type = visualization.type;
-        this.source = visualization.source;
-        this.onSelect = visualization.onSelect;
+        this.source = new Source(this, visualization.source);
+        this.onSelect = new Select(this, visualization.onSelect);
 
         switch (this.type) {
             case "CHORO":
-                this.widget = new ChoroplethStates()
-                    .size({ width: 310, height: 210 })
-                ;
+                if (this.source.mappings.contains("county")) {
+                    this.widget = new ChoroplethCounties()
+                        .size({ width: 310, height: 210 })
+                    ;
+                } else {
+                    this.widget = new ChoroplethStates()
+                        .size({ width: 310, height: 210 })
+                    ;
+                }
                 break;
             case "PIE":
                 this.widget = new MultiChartSurface()
                     .title(this.id)
                 ;
+                /*
+                this.widget = new Pie()
+                ;
+                */
                 break;
-            case "SLIDER":
-                this.widget = new Slider()
-                    .range({ low: +visualization.range[0], high: +visualization.range[1] })
-                    .step(+visualization.range[2])
+            case "BUBBLE":
+                this.widget = new Bubble()
                 ;
                 break;
+            case "BAR":
+                this.widget = new Bar()
+                ;
+                break;
+            case "2DCHART":
+                this.widget = new MultiChartSurface()
+                    .title(this.id)
+                ;
+                break;
+            case "TABLE":
+                this.widget = new Table()
+                    .columns(this.label)
+                ;
+                break;
+            case "SLIDER":
+                this.widget = new Slider();
+                if (visualization.range) {
+                    this.widget
+                        .range({ low: +visualization.range[0], high: +visualization.range[1] })
+                        .step(+visualization.range[2])
+                    ;
+                }
+                break;
             default:
-                console.log("Unknown Viz Type" + this.type);
+                this.widget = new TextBox()
+                    .text(this.id + "\n" + "TODO:  " + this.type)
+                ;
                 break;
         }
 
@@ -95,92 +188,78 @@
     };
 
     Visualization.prototype.notify = function () {
-        var dataSource = this.dashboard.datasources[this.source.id];
-
         var context = this;
-        if (dataSource.outputs[this.source.output].data) {
+        if (this.source.getOutput().data) {
             if (this.widget) {
-                var data = dataSource.outputs[this.source.output].data.map(function (item) {
-                    var retVal = {};
-                    try {
-                        for (var key in context.source.mappings) {
-                            var rhsKey = context.source.mappings[key].toLowerCase();
-                            var val = item[rhsKey];
-                            retVal[key] = val;
-                        }
-                    } catch (e) {
-                        console.log("Invalid Mappings");
-                    }
-                    return retVal;
+                var data = this.source.getOutput().data.map(function (item) {
+                    return context.source.mappings.doMap(item);
                 });
                 this.dashboard.marshaller.updateViz(this, data);
                 this.widget
                     .data(data)
                     .render()
                 ;
+                var params = this.source.getOutput().getParams();
+                if (exists("widget.title", this)) {
+                    this.widget
+                        .title(this.id + (params ? "(" + params + ")" : ""))
+                        .render()
+                    ;
+                } else if (exists("widget._parentWidget.title", this)) {
+                    this.widget._parentWidget
+                        .title(this.id + (params ? "(" + params + ")" : ""))
+                        .render()
+                    ;
+                }
             }
         }
     };
 
     Visualization.prototype.click = function (d) {
-        if (this.onSelect) {
-            var reverseSourceMappings = {};
-            for (var key in this.source.mappings) {
-                reverseSourceMappings[this.source.mappings[key]] = key;
-            }
-
+        if (this.onSelect.exists()) {
             var request = {};
             for (var key in this.onSelect.mappings) {
-                var hackKey = reverseSourceMappings[key];
+                var hackKey = this.source.mappings.getReverseMap(key);
                 request[key] = d[hackKey];
             }
-            var dataSource = this.dashboard.datasources[this.onSelect.updates.datasource];
+            var visualization = this.onSelect.getUpdatesVisualization();
+            var dataSource = this.onSelect.getUpdatesDatasource();
             dataSource.fetchData(request);
         }
-    };
-
-    //  Debug  ---
-    Visualization.prototype.sourceMappingLabel = function () {
-        if (!this.source.mappings)
-            return null;
-
-        var retVal = "";
-        for (var key in this.source.mappings) {
-            if (retVal) {
-                retVal += "\n";
-            }
-            retVal += this.source.mappings[key] + " -> " + key;
-        }
-        return retVal;
-    };
-
-    Visualization.prototype.onSelectMappingLabel = function () {
-        if (!this.onSelect || !this.onSelect.mappings)
-            return null;
-
-        var retVal = "onSelect";
-        for (var key in this.onSelect.mappings) {
-            if (retVal) {
-                retVal += "\n";
-            }
-            retVal += this.onSelect.mappings[key] + " -> " + key;
-        }
-        return retVal;
     };
 
     //  Output  ---
     function Output(dataSource, output) {
         this.dataSource = dataSource;
-        this.id = output.id
-        this.notify = output.notify;
+        this.id = output.id;
+        this.from = output.from;
+        this.request = {};
+        this.notify = output.notify || [];
+        this.filter = output.filter || [];
+    };
+
+    Output.prototype.getQualifiedID = function () {
+        return this.dataSource.id + "." + this.id;
+    };
+
+    Output.prototype.getParams = function () {
+        var retVal = "";
+        for (var key in this.request) {
+            if (retVal.length) {
+                retVal += ", ";
+            }
+            retVal += this.request[key];
+        }
+        return retVal;
     };
 
     Output.prototype.accept = function (visitor) {
         visitor.visit(this);
     };
 
-    Output.prototype.setData = function (data) {
+    Output.prototype.setData = function (data, request) {
         var context = this;
+        this.request = request;
         this.data = data;
         this.notify.forEach(function (item) {
             var viz = context.dataSource.dashboard.visualizations[item];
@@ -192,15 +271,32 @@
     function DataSource(dashboard, dataSource) {
         this.dashboard = dashboard;
         this.id = dataSource.id
-        this.filter = dataSource.filter;
+        this.filter = dataSource.filter || [];
+        this.WUID = dataSource.WUID;
         this.URL = dataSource.URL;
 
         var context = this;
-
         this.outputs = {};
+        var hipieResults = [];
         dataSource.outputs.forEach(function (item) {
             context.outputs[item.id] = new Output(context, item);
+            hipieResults.push({
+                id: item.id,
+                from: item.from,
+                filter: item.filter || []
+            });
         });
+
+        if (this.WUID) {
+            this.comms = new comms.HIPIEWorkunit()
+                .ddlUrl(dashboard.marshaller.espUrl)
+                .hipieResults(hipieResults)
+            ;
+        } else {
+            this.comms = new comms.HIPIERoxie()
+                .url(dataSource.URL)
+            ;
+        }
     };
 
     DataSource.prototype.accept = function (visitor) {
@@ -223,15 +319,20 @@
             this.request[key] = request[key];
             this.request[key + "_changed"] = true;
         }
-        jsonp(this.URL, this.request, function (response) {
-            context.processResponse(response);
+        this.comms.call(this.request, function (response) {
+            context.processResponse(response, request);
         });
     };
 
-    DataSource.prototype.processResponse = function (response) {
+    DataSource.prototype.processResponse = function (response, request) {
         for (var key in this.outputs) {
-            if (exists(key.toLowerCase(), response) && exists(key.toLowerCase() + "_changed", response) && response[key.toLowerCase() + "_changed"].length && response[key.toLowerCase() + "_changed"][0][key.toLowerCase() + "_changed"]) {
-                this.outputs[key].setData(response[key.toLowerCase()]);
+            var from = this.outputs[key].from;
+            if (!from) {
+                //  Temp workaround for older services  ---
+                from = this.outputs[key].id.toLowerCase();
+            }
+            if (exists(from, response) && exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]) {
+                this.outputs[key].setData(response[from], request);
             }
         }
     };
@@ -283,25 +384,44 @@
     };
 
     Marshaller.prototype.url = function (url, callback) {
+        this.espUrl = new comms.ESPUrl()
+            .url(url)
+        ;
+        var transport = null;
+        var hipieResultName = "HIPIE_DDL";
+        if (this.espUrl.isWorkunitResult()) {
+            hipieResultName = this.espUrl._params["ResultName"];
+            transport = new comms.HIPIEWorkunit()
+                .ddlUrl(this.espUrl)
+            ;
+        } else {
+            transport = new comms.HIPIERoxie()
+                .ddlUrl(this.espUrl)
+            ;
+        }
         var request = {
-            refresh: true
+            refresh: false
         };
         var context = this;
-        jsonp(url, request, function (response) {
-            if (exists("HIPIE_DDL", response) && response.HIPIE_DDL.length) {
-                var json = response.HIPIE_DDL[0].HIPIE_DDL;
-                //  Temp Hack  ---
-                var ddlParts = json.split("<RoxieBase>\\");
-                if (ddlParts.length > 1) {
-                    var urlEndQuote = ddlParts[1].indexOf("\"");
-                    ddlParts[1] = ddlParts[1].substring(urlEndQuote);
-                    json = ddlParts.join(url);
+        transport
+            .call(request, function (response) {
+                if (exists(hipieResultName, response)) {
+                    transport.fetchResult(hipieResultName, function (ddlResponse) {
+                        var json = ddlResponse[0][hipieResultName];
+                        //  Temp Hack  ---
+                        var ddlParts = json.split("<RoxieBase>\\");
+                        if (ddlParts.length > 1) {
+                            var urlEndQuote = ddlParts[1].indexOf("\"");
+                            ddlParts[1] = ddlParts[1].substring(urlEndQuote);
+                            json = ddlParts.join(url);
+                        }
+                        //  ---  ---
+                        context.parse(json);
+                        callback(response);
+                    });
                 }
-                //  ---  ---
-                context.parse(json);
-                callback(response);
-            }
-        });
+            })
+        ;
     };
 
     Marshaller.prototype.parse = function (json) {

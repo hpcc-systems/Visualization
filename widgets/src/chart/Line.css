@@ -1,0 +1,17 @@
+.line .dataLine {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.line .axis {
+  fill: black;
+  font: 10px sans-serif;
+}
+
+.line .axis path,
+.line .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

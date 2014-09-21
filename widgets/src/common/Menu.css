@@ -6,6 +6,11 @@
     cursor: pointer;
 }
 
+.menu.disabled .faChar {
+    visibility: hidden;
+    cursor: inherit;
+}
+
 .menu .list .textbox .shape {
     fill: #1f77b4;
     stroke: #1f77b4;

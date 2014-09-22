@@ -90,6 +90,9 @@
 
     Menu.prototype.update = function (domNode, element) {
         Icon.prototype.update.call(this, domNode, element);
+        element
+            .classed("disabled", this._data.length === 0)
+        ;
     };
 
     return Menu;

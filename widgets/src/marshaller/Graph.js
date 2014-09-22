@@ -20,6 +20,14 @@
         return this;
     };
 
+    Graph.prototype.proxyMappings = function (_) {
+        var retVal = this.marshaller.proxyMappings(_);
+        if (arguments.length) {
+            return this;
+        }
+        return retVal;
+    };
+
     Graph.prototype.visualizeRoxie = function (_) {
         if (!arguments.length) return this._visualizeRoxie;
         this._visualizeRoxie = _;

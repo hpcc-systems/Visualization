@@ -268,7 +268,7 @@
     };
 
     //  DataSource  ---
-    function DataSource(dashboard, dataSource) {
+    function DataSource(dashboard, dataSource, proxyMappings) {
         this.dashboard = dashboard;
         this.id = dataSource.id
         this.filter = dataSource.filter || [];
@@ -290,11 +290,13 @@
         if (this.WUID) {
             this.comms = new comms.HIPIEWorkunit()
                 .ddlUrl(dashboard.marshaller.espUrl)
+                .proxyMappings(proxyMappings)
                 .hipieResults(hipieResults)
             ;
         } else {
             this.comms = new comms.HIPIERoxie()
                 .url(dataSource.URL)
+                .proxyMappings(proxyMappings)
             ;
         }
     };
@@ -338,7 +340,7 @@
     };
 
     //  Dashboard  ---
-    function Dashboard(marshaller, dashboard) {
+    function Dashboard(marshaller, dashboard, proxyMappings) {
         this.marshaller = marshaller;
         this.id = dashboard.id;
 
@@ -346,7 +348,7 @@
         this.datasources = {};
         this.datasourceTotal = 0;
         dashboard.datasources.forEach(function (item) {
-            context.datasources[item.id] = new DataSource(context, item);
+            context.datasources[item.id] = new DataSource(context, item, proxyMappings);
             ++this.datasourceTotal;
         });
 
@@ -372,6 +374,7 @@
 
     //  Marshaller  ---
     function Marshaller() {
+        this._proxyMappings = {};
     };
 
     Marshaller.prototype.accept = function (visitor) {
@@ -393,10 +396,12 @@
             hipieResultName = this.espUrl._params["ResultName"];
             transport = new comms.HIPIEWorkunit()
                 .ddlUrl(this.espUrl)
+                .proxyMappings(this._proxyMappings)
             ;
         } else {
             transport = new comms.HIPIERoxie()
                 .ddlUrl(this.espUrl)
+                .proxyMappings(this._proxyMappings)
             ;
         }
         var request = {
@@ -424,12 +429,18 @@
         ;
     };
 
+    Marshaller.prototype.proxyMappings = function (_) {
+        if (!arguments.length) return this._proxyMappings;
+        this._proxyMappings = _;
+        return this;
+    }
+
     Marshaller.prototype.parse = function (json) {
         var context = this;
         var dashboards = JSON.parse(json);
         this.dashboards = {};
         dashboards.forEach(function (item) {
-            context.dashboards[item.id] = new Dashboard(context, item);
+            context.dashboards[item.id] = new Dashboard(context, item, context._proxyMappings);
         });
         return this;
     };

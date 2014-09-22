@@ -15,6 +15,12 @@
     };
     Table.prototype = Object.create(HTMLWidget.prototype);
 
+    Table.prototype.columns = function (_) {
+        if (!arguments.length) return this._columns;
+        this._columns = _;
+        return this;
+    };
+
     Table.prototype.enter = function (domNode, element) {
         this.thead = element.append("thead").append("tr");
         this.tbody = element.append("tbody");
@@ -54,14 +60,16 @@
 
         var cells = rows.selectAll("td")
             .data(function (row) {
-                return context._columns.map(function (column) {
-                    return { column: column, value: "" + (row[column] ? row[column] : "") };
-                });
+                var retVal = [];
+                for (var key in row) {
+                    retVal.push("" + row[key]);
+                }
+                return retVal;
             });
         cells
             .enter().append("td")
                 .text(function (d) {
-                    return d.value.trim();
+                    return d.trim();
                 })
         ;
         cells.exit()
@@ -75,23 +83,6 @@
     };
 
     Table.prototype.click = function (d) {
-    };
-
-    Table.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            this._columns = [];
-            this._columnsIdx = {};
-            if (_.length > 0) {
-                for (var key in _[0]) {
-                    if (!this._columnsIdx[key]) {
-                        this._columns.push(key);
-                        this._columnsIdx[key] = this._columns.length - 1;
-                    }
-                }
-            }
-        }
-        return retVal;
     };
 
     return Table;

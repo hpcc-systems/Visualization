@@ -41,6 +41,7 @@
         var choroPaths = element.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
 
         //  Enter  ---
+        var context = this;
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
             .on("click", function (d) {

@@ -60,7 +60,7 @@
                         })
                     ;
                     for (var key in dashboard.datasources) {
-                        dashboard.datasources[key].processResponse(response);
+                        dashboard.datasources[key].fetchData({}, true);
                     }
                 }
             }

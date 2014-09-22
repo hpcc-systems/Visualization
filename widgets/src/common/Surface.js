@@ -47,6 +47,21 @@
     Surface.prototype.content = function (_) {
         if (!arguments.length) return this._content;
         this._content = _;
+        switch (this._content.class()) {
+            case "bar":
+                this.faChar("\uf080")
+                break;
+            case "bubble":
+                this.faChar("\uf192")
+                break;
+            case "pie":
+                this.faChar("\uf200")
+                break;
+            case "table":
+                this.faChar("\uf0ce")
+                break;
+        }
+
         return this;
     };
 

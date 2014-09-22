@@ -90,7 +90,8 @@
 
     Comms.prototype.jsonp = function (url, request, callback) {
         for (var key in this._proxyMappings) {
-            var newUrl = url.split(key).join(this._proxyMappings[key]);
+            var newUrlParts = url.split(key);
+            var newUrl = newUrlParts.join(this._proxyMappings[key]);
             if (newUrl !== url) {
                 var espUrl = new ESPUrl()
                     .url(url)
@@ -98,6 +99,9 @@
                 url = newUrl;
                 request.IP = espUrl._hostname;
                 request.PORT = espUrl._port;
+                if (newUrlParts.length > 0) {
+                    request.PATH = newUrlParts[1];
+                }
                 break;
             }
         }

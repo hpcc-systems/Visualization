@@ -19,6 +19,14 @@
         this._url = _;
         return this;
     };
+    
+    HTML.prototype.proxyMappings = function (_) {
+        var retVal = this.marshaller.proxyMappings(_);
+        if (arguments.length) {
+            return this;
+        }
+        return retVal;
+    };
 
     HTML.prototype.target = function (_) {
         if (!arguments.length) return this._target;

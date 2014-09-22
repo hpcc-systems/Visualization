@@ -61,7 +61,7 @@
         this._ssl = false;
         this._ip = "localhost";
         this._port = "";
-
+        this._proxyMappings = {};
         this._mappings = {};
     };
 
@@ -89,6 +89,18 @@
     };
 
     Comms.prototype.jsonp = function (url, request, callback) {
+        for (var key in this._proxyMappings) {
+            var newUrl = url.split(key).join(this._proxyMappings[key]);
+            if (newUrl !== url) {
+                var espUrl = new ESPUrl()
+                    .url(url)
+                ;
+                url = newUrl;
+                request.IP = espUrl._hostname;
+                request.PORT = espUrl._port;
+                break;
+            }
+        }
         var context = this;
         var callbackName = 'jsonp_callback_' + Math.round(Math.random() * 999999);
         window[callbackName] = function (response) {
@@ -136,6 +148,12 @@
     Comms.prototype.mappings = function (_) {
         if (!arguments.length) return this._mappings;
         this._mappings = _;
+        return this;
+    };
+
+    Comms.prototype.proxyMappings = function (_) {
+        if (!arguments.length) return this._proxyMappings;
+        this._proxyMappings = _;
         return this;
     };
 

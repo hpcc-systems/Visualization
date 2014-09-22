@@ -1,14 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "css!./XYAxis"], factory);
+        define(["d3/d3", "../common/SVGWidget"], factory);
     } else {
         root.XYAxis = factory(root.d3, root.SVGWidget);
     }
 }(this, function (d3, SVGWidget) {
     function XYAxis(target) {
         SVGWidget.call(this);
-
-        this._class = "bar";
     };
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 

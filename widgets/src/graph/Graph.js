@@ -18,6 +18,7 @@
         };
 
         this._class = "graph";
+        this._shrinkToFitOnLayout = false;
         this._layout = "";
     };
     Graph.prototype = Object.create(SVGWidget.prototype);
@@ -31,6 +32,7 @@
         }
         return retVal;
     };
+
     Graph.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length && this._svgZoom) {
@@ -48,6 +50,7 @@
             if (!this._data.merge) {
                 this.graphData = new GraphData();
                 this._renderCount = 0;
+                this.setZoom([0, 0], 1);
             }
             var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.merge);
 
@@ -67,6 +70,31 @@
         return retVal;
     };
 
+    Graph.prototype.shrinkToFitOnLayout = function (_) {
+        if (!arguments.length) return this._shrinkToFitOnLayout;
+        this._shrinkToFitOnLayout = _;
+        return this;
+    };
+
+    Graph.prototype.setZoom = function (translation, scale) {
+        if (this.zoom) {
+            this.zoom.translate(translation);
+            this.zoom.scale(scale);
+            this.applyZoom();
+        }
+    };
+
+    Graph.prototype.applyZoom = function (transition) {
+        (transition ? this.svg.transition() : this.svg)
+            .attr("transform", "translate(" + this.zoom.translate() + ")scale(" + this.zoom.scale() + ")")
+        ;
+        //  IE Bug Workaround  (Markers) ---
+        if (this.prevScale !== this.zoom.scale()) {
+            this._fixIEMarkers();
+            this.prevScale = this.zoom.scale();
+        }
+    };
+
     Graph.prototype.enter = function (domNode, element, d) {
         var context = this;
 
@@ -75,20 +103,10 @@
             };
         } else {
             //  Zoom  ---
-            var prevScale = 1;
-            function zoom() {
-                context.svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-
-                //  IE Bug Workaround  (Markers) ---
-                if (prevScale !== d3.event.scale) {
-                    context._fixIEMarkers();
-                    prevScale = d3.event.scale;
-                }
-            }
-
+            this.prevScale = 1;
             this.zoom = d3.behavior.zoom()
                 .scaleExtent([0.2, 4])
-                .on("zoom", zoom)
+                .on("zoom", function (d) { context.applyZoom(); })
             ;
 
             //  Drag  ---
@@ -156,6 +174,22 @@
         this.svgV = this.svg.append("g").attr("id", this._id + "V");
     };
 
+    Graph.prototype.shrinkToFit = function (bounds) {
+        var width = this.width();
+        var height = this.height();
+
+        var dx = bounds[1][0] - bounds[0][0],
+            dy = bounds[1][1] - bounds[0][1],
+            x = (bounds[0][0] + bounds[1][0]) / 2,
+            y = (bounds[0][1] + bounds[1][1]) / 2,
+            scale = .9 / Math.max(dx / width, dy / height);
+        if (scale > 1) {
+            scale = 1;
+        }
+        var translate = [width / 2 - scale * x, height / 2 - scale * y];
+        this.setZoom(translate, scale);
+    };
+
     Graph.prototype.layout = function (_) {
         if (!arguments.length) return this._layout;
         this._layout = _;
@@ -188,14 +222,35 @@
                         ;
                     });
                 });
+
                 this.forceLayout.force.start();
             } else if (layoutEngine) {
+                var vBounds = [[null,null],[null,null]];
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
                     item
                         .pos({ x: pos.x, y: pos.y }, true)
                     ;
+                    var leftX = pos.x - pos.width / 2;
+                    var rightX = pos.x + pos.width / 2;
+                    var topY = pos.y - pos.height / 2;
+                    var bottomY = pos.y + pos.height / 2;
+                    if (vBounds[0][0] === null || vBounds[0][0] > leftX) {
+                        vBounds[0][0] = leftX;
+                    }
+                    if (vBounds[0][1] === null || vBounds[0][1] > topY) {
+                        vBounds[0][1] = topY;
+                    }
+                    if (vBounds[1][0] === null || vBounds[1][0] < rightX) {
+                        vBounds[1][0] = rightX;
+                    }
+                    if (vBounds[1][1] === null || vBounds[1][1] < bottomY) {
+                        vBounds[1][1] = bottomY;
+                    }
                 });
+                if (context._shrinkToFitOnLayout) {
+                    context.shrinkToFit(vBounds);
+                }
                 context.graphData.edgeValues().forEach(function (item) {
                     var points = layoutEngine.edgePoints(item._id);
                     item

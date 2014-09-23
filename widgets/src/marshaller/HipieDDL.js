@@ -133,20 +133,11 @@
                 }
                 break;
             case "PIE":
-                this.widget = new MultiChartSurface()
-                    .title(this.id)
-                ;
-                /*
-                this.widget = new Pie()
-                ;
-                */
-                break;
             case "BUBBLE":
-                this.widget = new Bubble()
-                ;
-                break;
             case "BAR":
-                this.widget = new Bar()
+                this.widget = new MultiChartSurface()
+                    .activate(this.type)
+                    .title(this.id)
                 ;
                 break;
             case "2DCHART":

@@ -29,7 +29,9 @@
         this._bubble.click = function (d) {
             context.click(d);
         }
-        this._table = new Table();
+        this._table = new Table()
+            .columns(["Label", "Weight"])
+        ;
         this._table.click = function (d) {
             context.click(d);
         }
@@ -55,25 +57,24 @@
     MultiChartSurface.prototype = Object.create(Surface.prototype);
     MultiChartSurface.prototype.implements(I2DChart.prototype);
 
-    MultiChartSurface.prototype.enter = function (domNode, element) {
+    MultiChartSurface.prototype.getContent = function () {
         switch (this._chart) {
-            case "BAR":
-                this._content = this._bar;
-                break;
-            case "LINE":
-                this._content = this._line;
-                break;
-            case "BUBBLE":
-                this._content = this._bubble;
-                break;
-            case "TABLE":
-                this._content = this._table;
-                break;
             case "PIE":
-            default:
-                this._content = this._pie;
-                break;
+                return this._pie;
+            case "BUBBLE":
+                return this._bubble;
+            case "BAR":
+                return this._bar;
+            case "LINE":
+                return this._line;
+            case "TABLE":
+                return this._table;
         }
+        return this._pie;
+    };
+
+    MultiChartSurface.prototype.enter = function (domNode, element) {
+        this._content = this.getContent();
         Surface.prototype.enter.apply(this, arguments);
     };
 
@@ -81,31 +82,13 @@
         this._chart = chart;
         if (this._renderCount) {
             var oldContent = this._content;
-            var newContent = null;
-            var size = this._container.getBBox();
-            switch (chart) {
-                case "BAR":
-                    newContent = this._bar;
-                    break;
-                case "LINE":
-                    newContent = this._line;
-                    break;
-                case "BUBBLE":
-                    newContent = this._bubble;
-                    break;
-                case "TABLE":
-                    newContent = this._table;
-                    break;
-                case "PIE":
-                default:
-                    newContent = this._pie;
-                    break;
-            }
+            var newContent = this.getContent();
             if (newContent === oldContent) {
                 return;
             }
+            var size = this._container.getBBox();
             this.content(newContent
-                .data(this._data)
+                .data(this._data.map(function (row) { return { label: row.label, weight: row.weight }; }))
                 .size(size)
                 .render()
             );
@@ -118,12 +101,13 @@
             }
             this.render();
         }
+        return this;
     };
 
     MultiChartSurface.prototype.data = function (_) {
         var retVal = Surface.prototype.data.apply(this, arguments);
         if (arguments.length && this._content) {
-            this._content.data(_);
+            this._content.data(_.map(function (row) { return { label: row.label, weight: row.weight }; }));
         }
         return retVal;
     };

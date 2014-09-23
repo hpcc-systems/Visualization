@@ -91,7 +91,7 @@
     Comms.prototype.jsonp = function (url, request, callback) {
         for (var key in this._proxyMappings) {
             var newUrlParts = url.split(key);
-            var newUrl = newUrlParts.join(this._proxyMappings[key]);
+            var newUrl = newUrlParts[0] + this._proxyMappings[key];
             if (newUrl !== url) {
                 var espUrl = new ESPUrl()
                     .url(url)

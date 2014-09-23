@@ -91,12 +91,12 @@
     Comms.prototype.jsonp = function (url, request, callback) {
         for (var key in this._proxyMappings) {
             var newUrlParts = url.split(key);
-            var newUrl = newUrlParts[0] + this._proxyMappings[key];
-            if (newUrl !== url) {
+            var newUrl = newUrlParts[0];
+            if(newUrlParts.length > 1) {
                 var espUrl = new ESPUrl()
                     .url(url)
                 ;
-                url = newUrl;
+                url = newUrl + this._proxyMappings[key];
                 request.IP = espUrl._hostname;
                 request.PORT = espUrl._port;
                 if (newUrlParts.length > 0) {

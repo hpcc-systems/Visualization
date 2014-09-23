@@ -116,7 +116,7 @@
         graphData.eachEdge(function (e, s, t) {
             var value = graphData.edge(e);
             digraph.addEdge(e, s, t, {
-                minLen: value.__labelEntity ? 2 : 1
+                //minLen: value._textBox.text().length ? 2 : 1
             });
         });
         this.dagreLayout = dagre.layout()

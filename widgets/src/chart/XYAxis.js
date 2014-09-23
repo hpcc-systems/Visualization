@@ -56,6 +56,7 @@
         var yAxis = d3.svg.axis()
             .orient("left")
             .scale(y)
+            .tickFormat(d3.format("s"))
         ;
 
         x.domain(this._data.map(function (d) { return d.label; }));
@@ -99,6 +100,7 @@
 
         this.yAxis
             .scale(this.y)
+            .tickFormat(d3.format("s"))
         ;
 
         this.svg.transition()
@@ -106,9 +108,12 @@
         ;
 
         this.x.domain(this._data.map(function (d) { return d.label; }));
-        var min = d3.min(this._data, function (d) { return d.weight; });
         var max = d3.max(this._data, function (d) { return d.weight; });
-        this.y.domain([min - (max - min) / 10, max]);
+        var min = d3.min(this._data, function (d) { return d.weight; });
+        var newMin = min - (max - min) / 10;
+        if (min >= 0 && newMin < 0)
+            newMin = 0;
+        this.y.domain([newMin, max]);
 
         this.svgXAxis.transition()
             .attr("transform", "translate(0," + height + ")")

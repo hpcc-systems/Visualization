@@ -100,24 +100,25 @@
     };
 
     Surface.prototype.update = function (domNode, element) {
-        var iconClientSize = this._icon.getBBox();
-        var menuClientSize = this._menu.getBBox();
+        var textClientSize = this._text.getBBox(true);
+        var iconClientSize = this._icon.getBBox(true);
+        var menuClientSize = this._menu.getBBox(true);
+        var titleHeight = Math.max(textClientSize.height, menuClientSize.height);
         var xOffset = iconClientSize.width / 7;
         var yOffset = iconClientSize.height * 4 / 5;
-        var yOffset2 = iconClientSize.height * 1 / 5;
         this._titleRect
             .pos({ x: xOffset / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
-            .size({ width: this._size.width - xOffset, height: menuClientSize.height })
+            .size({ width: this._size.width - xOffset, height: titleHeight })
             .render()
         ;
         this._icon
             .pos({ x: -(this._size.width / 2) + iconClientSize.width / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
         ;
         this._menu
-            .pos({ x: (this._size.width / 2) - menuClientSize.width / 2 - 2, y: -(this._size.height / 2) + iconClientSize.height / 2})
+            .pos({ x: (this._size.width / 2) - menuClientSize.width / 2 - 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
         ;
         this._text
-            .pos({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 - 1 })
+            .pos({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
             .text(this._title)
             .render()
         ;

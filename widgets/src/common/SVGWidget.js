@@ -129,7 +129,7 @@
         return retVal;
     },
 
-    SVGWidget.prototype.getBBox = function (refresh) {
+    SVGWidget.prototype.getBBox = function (refresh, round) {
         if (refresh || this._boundingBox === null) {
             var svgNode = this._element.node();
             if (svgNode instanceof SVGElement) {
@@ -144,7 +144,12 @@
                 height: 0
             }
         }
-        return this._boundingBox;
+        return {
+            x: round ? Math.round(this._boundingBox.x) : this._boundingBox.x,
+            y: round ? Math.round(this._boundingBox.y) : this._boundingBox.y,
+            width: round ? Math.round(this._boundingBox.width) : this._boundingBox.width,
+            height: round ? Math.round(this._boundingBox.height) : this._boundingBox.height
+        }
     };
 
     //  Intersections  ---

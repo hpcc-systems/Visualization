@@ -10,15 +10,18 @@
 
     IWordCloud.prototype.testData = function () {
         var words = ["Hello", "world", "normally", "you", "want", "more", "words", "than", "this"].map(function (d) {
-            return { text: d, size: 10 + Math.random() * 90 };
+            return { label: d, weight: 10 + Math.random() * 45 };
         });
-        this.words(words);
+        this.data(words);
         return this;
     };
 
     //  Properties  ---
 
     //  Events  ---
+    IWordCloud.prototype.click = function (d) {
+        console.log("Click:  " + d.label);
+    };
 
     return IWordCloud;
 }));

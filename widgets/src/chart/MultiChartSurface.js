@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/Surface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../common/Palette"], factory);
+        define(["d3/d3", "../common/Surface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../other/WordCloud", "../common/Palette"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.Surface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.Surface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.WordCloud, root.Palette);
     }
-}(this, function (d3, Surface, I2DChart, Pie, Bar, Line, Bubble, Table, Palette) {
+}(this, function (d3, Surface, I2DChart, Pie, Bar, Line, Bubble, Table, WordCloud, Palette) {
     function MultiChartSurface() {
         Surface.call(this);
         I2DChart.call(this);
@@ -12,7 +12,7 @@
         this._title = "MultiChartSurface";
 
         this._menu
-            .data(["PIE", "BUBBLE", "BAR", "LINE", "TABLE"])
+            .data(["PIE", "BUBBLE", "BAR", "LINE", "TABLE", "WORD_CLOUD"])
         ;
         var context = this;
         this._pie = new Pie();
@@ -33,6 +33,11 @@
             .columns(["Label", "Weight"])
         ;
         this._table.click = function (d) {
+            context.click(d);
+        }
+        this._wordCloud = new WordCloud()
+        ;
+        this._wordCloud.click = function (d) {
             context.click(d);
         }
         this._content = this._pie;
@@ -69,6 +74,8 @@
                 return this._line;
             case "TABLE":
                 return this._table;
+            case "WORD_CLOUD":
+                return this._wordCloud;
         }
         return this._pie;
     };
@@ -90,7 +97,6 @@
             this.content(newContent
                 .data(this._data.map(function (row) { return { label: row.label, weight: row.weight }; }))
                 .size(size)
-                .render()
             );
             if (oldContent) {
                 oldContent

@@ -147,7 +147,6 @@
                         width: containerSize.width - (padding.left + padding.right),
                         height: containerSize.height - (padding.top + padding.bottom)
                     })
-                    .render()
                 ;
             })
         ;

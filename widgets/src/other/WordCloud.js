@@ -9,7 +9,15 @@
         SVGWidget.call(this);
         IWordCloud.call(this);
 
+        this._font = "Verdana";
         this._class = "WordCloud";
+
+        this._padding = 1;
+        this._angleFrom = -60;
+        this._angleTo = 60;
+        this._angleCount = 5;
+        this._fontSizeFrom = 10;
+        this._fontSizeTo = 48;
     };
     WordCloud.prototype = Object.create(SVGWidget.prototype);
     WordCloud.prototype.implements(IWordCloud.prototype);
@@ -20,87 +28,136 @@
         return this;
     };
 
-    WordCloud.prototype.words = function (_) {
-        if (!arguments.length) return this._words;
-        this._words = _;
+    WordCloud.prototype.angleFrom = function (_) {
+        if (!arguments.length) return this._angleFrom;
+        this._angleFrom = _;
+        return this;
+    };
+
+    WordCloud.prototype.angleTo = function (_) {
+        if (!arguments.length) return this._angleTo;
+        this._angleTo = _;
+        return this;
+    };
+
+    WordCloud.prototype.fontSizeFrom = function (_) {
+        if (!arguments.length) return this._fontSizeFrom;
+        this._fontSizeFrom = _;
+        return this;
+    };
+
+    WordCloud.prototype.fontSizeTo = function (_) {
+        if (!arguments.length) return this._fontSizeTo;
+        this._fontSizeTo = _;
+        return this;
+    };
+
+    WordCloud.prototype.angleTo = function (_) {
+        if (!arguments.length) return this._angleTo;
+        this._angleTo = _;
+        return this;
+    };
+
+    WordCloud.prototype.angleCount = function (_) {
+        if (!arguments.length) return this._angleCount;
+        this._angleCount = _;
+        return this;
+    };
+
+    WordCloud.prototype.padding = function (_) {
+        if (!arguments.length) return this._padding;
+        this._padding = _;
+        return this;
+    };
+
+    WordCloud.prototype.data = function (_) {
+        if (!arguments.length) return this._data;
+        this._data = _.map(function (row) {
+            var retVal = {};
+            for (key in row) {
+                retVal["__viz_" + key] = row[key];
+            }
+            return retVal;
+        });
         return this;
     };
 
     WordCloud.prototype.enter = function (domNode, element) {
-        this.cloud = d3.layout.cloud().size([this.width(), this.height()])
-            .padding(2)
+        this.cloud = d3.layout.cloud()
             .font(this._font)
-            .fontSize(function (d) { return d.size; })
+            .padding(this._padding)
         ;
+        this.svg = element.append("g");
     };
 
     WordCloud.prototype.update = function (domNode, element) {
         var context = this;
-        if (this._words.length && this._words[0].__viz_bounds !== undefined && false) {
-            draw(this._words, this._words[0].__viz_bounds);
-        } else {
-            this.cloud
-                .words(this._words)
-                .rotate(function () {
-                    if (context._words.length > 333) {
-                        return ~~(Math.random() * 2) * 90 - 90;
-                    }
-                    return Math.random() * 180 - 90;
-                })
-                .on("end", draw)
-                .start()
-            ;
-        }
+        var extent = d3.extent(this._data, function (d) {
+            return d.__viz_weight;
+        });
+        var scale = d3.scale.log().domain(extent).range([this._fontSizeFrom, this._fontSizeTo]);
 
-        var context = this;
+        var angleDomain = d3.scale.linear().domain([0, context._angleCount - 1]).range([context._angleFrom, context._angleTo]);
+
+        this.cloud
+            .size([this.width(), this.height()])
+            .words(this._data)
+            .rotate(function () {
+                return angleDomain(~~(Math.random() * context._angleCount));
+            })
+            .fontSize(function (d) {
+                return scale(d.__viz_weight);
+            })
+            .on("end", draw)
+            .start()
+        ;
+
         function draw(data, bounds) {
-            if (data.length) {
-                data[0].__viz_bounds = bounds;
-            }
-            var w = context.width();
-            var h = context.height();
             var fill = d3.scale.category20();
-
-            scale = bounds ? Math.min(
-                w / Math.abs(bounds[1].x - w / 2),
-                w / Math.abs(bounds[0].x - w / 2),
-                h / Math.abs(bounds[1].y - h / 2),
-                h / Math.abs(bounds[0].y - h / 2)) / 2 : 1;
-            words = data;
-            var text = element.selectAll("text")
-                .data(words, function(d) { return d.text.toLowerCase(); });
+            var text = context.svg.selectAll("text")
+                .data(data, function (d) { return d.__viz_label.toLowerCase(); })
+            ;
             text.transition()
                 .duration(1000)
                 .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-                .style("font-size", function(d) { return d.size + "px"; });
+                .style("font-size", function (d) {
+                    return scale(d.__viz_weight) + "px";
+                })
+                .style("opacity", 1)
+            ;
             text.enter().append("text")
                 .attr("text-anchor", "middle")
                 .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-                .style("font-size", function(d) { return d.size + "px"; })
-                .on("click", function(d) {
-                    load(d.text);
+                .style("font-size", function(d) { 
+                    return scale(d.__viz_weight) + "px";
+                })
+                .style("font-family", function (d) { return d.font; })
+                .style("fill", function (d) { return fill(d.__viz_label.toLowerCase()); })
+                .text(function (d) { return d.__viz_label; })
+                .on("click", function (d) {
+                    context.click(d);
                 })
                 .style("opacity", 1e-6)
               .transition()
                 .duration(1000)
-                .style("opacity", 1);
-            text.style("font-family", function(d) { return d.font; })
-                .style("fill", function(d) { return fill(d.text.toLowerCase()); })
-                .text(function(d) { return d.text; });
-            var exitGroup = context._parentElement.append("g")
-                .attr("transform", element.attr("transform"));
-            var exitGroupNode = exitGroup.node();
-            text.exit().each(function() {
-                exitGroupNode.appendChild(this);
-            });
-            exitGroup.transition()
-                .duration(1000)
-                .style("opacity", 1e-6)
-                .remove();
-            element.transition()
-                .delay(1000)
-                .duration(750)
-                .attr("transform", "translate(" + [w >> 1, h >> 1] + ")scale(" + scale + ")");
+                .style("opacity", 1)
+            ;
+
+            text.exit().transition().duration(1000)
+                .style("opacity", 1e-4)
+                .remove()
+            ;
+
+            if (bounds) {
+                var w = context.width();
+                var h = context.height();
+                var dx = bounds[1].x - bounds[0].x,
+                    dy = bounds[1].y - bounds[0].y,
+                    borderScale = .9 / Math.max(dx / w, dy / h);
+                context.svg.transition().delay(1000).duration(750)
+                    .attr("transform", "scale(" + borderScale + ")")
+                ;
+            }
         }
     };
 

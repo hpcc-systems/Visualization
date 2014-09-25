@@ -39,15 +39,14 @@
         GraphWidget.prototype.render.call(this);
 
         var context = this;
-        this.marshaller.url(this._url, function (response) {
-            context.doRender();
-            for (var key in context.marshaller.dashboards) {
-                var dashboard = context.marshaller.dashboards[key];
-                for (var key in dashboard.datasources) {
-                    dashboard.datasources[key].fetchData({}, true);
-                }
-            }
-        });
+        if (this._url[0] === "[" || this._url[0] === "{") {
+            this.marshaller.parse(this._url);
+            this.doRender();
+        } else {
+            this.marshaller.url(this._url, function (response) {
+                context.doRender();
+            });
+        }
         return this;
     };
 
@@ -173,6 +172,13 @@
 
         this.data({ vertices: vertices, edges: edges });
         GraphWidget.prototype.render.call(this);
+
+        for (var key in this.marshaller.dashboards) {
+            var dashboard = this.marshaller.dashboards[key];
+            for (var key in dashboard.datasources) {
+                dashboard.datasources[key].fetchData({}, true);
+            }
+        }
     };
 
     return Graph;

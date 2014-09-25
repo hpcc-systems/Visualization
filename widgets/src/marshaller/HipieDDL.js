@@ -1,21 +1,21 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["../common/TextBox",
-            "../chart/MultiChartSurface", "../chart/Bar", "../chart/Pie", "../chart/Bubble",
+            "../chart/MultiChartSurface", "../chart/Bar", "../chart/Line", "../chart/Pie", "../chart/Bubble",
             "../map/ChoroplethStates", "../map/ChoroplethCounties",
-            "../other/Slider", "../other/Table", "../other/comms"
+            "../other/Slider", "../other/Table", "../other/WordCloud", "../other/comms"
         ], factory);
     } else {
-        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.comms);
+        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Line, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.WordCloud, root.comms);
     }
-}(this, function (TextBox, MultiChartSurface, Bar, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, comms) {
+}(this, function (TextBox, MultiChartSurface, Bar, Line, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, WordCloud, comms) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
         for (var i = 0; i < propParts.length; ++i) {
             var item = propParts[i];
-            if (testScope[item] === undefined) {
+            if (!testScope || testScope[item] === undefined) {
                 return false;
             }
             testScope = testScope[item];
@@ -117,6 +117,7 @@
         this.id = visualization.id;
         this.label = visualization.label;
         this.type = visualization.type;
+        this.properties = visualization.properties || visualization.source.properties || {};
         this.source = new Source(this, visualization.source);
         this.onSelect = new Select(this, visualization.onSelect);
 
@@ -132,16 +133,13 @@
                     ;
                 }
                 break;
+            case "2DCHART":
             case "PIE":
             case "BUBBLE":
             case "BAR":
+            case "WORD_CLOUD":
                 this.widget = new MultiChartSurface()
-                    .activate(this.type)
-                    .title(this.id)
-                ;
-                break;
-            case "2DCHART":
-                this.widget = new MultiChartSurface()
+                    .activate(this.properties.charttype || this.type)
                     .title(this.id)
                 ;
                 break;

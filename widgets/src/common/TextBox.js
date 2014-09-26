@@ -21,6 +21,7 @@
             .shape("rect")
         ;
         this._text = new Text();
+        this._content = null;
     };
     TextBox.prototype = Object.create(SVGWidget.prototype);
 
@@ -48,6 +49,12 @@
         return this;
     };
 
+    TextBox.prototype.content = function (_) {
+        if (!arguments.length) return this._content;
+        this._content = _;
+        return this;
+    };
+
     TextBox.prototype.enter = function (domNode, element) {
         this._shape
             .target(domNode)
@@ -60,11 +67,32 @@
     };
 
     TextBox.prototype.update = function (domNode, element) {
-        this._text
-            .render()
+        var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
+        content.enter().insert("g", "#" + this._text.id())
+            .attr("class", "content")
+            .each(function (d) { d.target(this); })
+        ;
+        content
+            .each(function (d) {d.render();})
+        ;
+        content.exit().transition()
+            .each(function (d) { d.target(null); })
+            .remove()
         ;
 
-        var bbox = this._text.getBBox();
+        var textBBox = this._text.getBBox(true);
+        var contentBBox = { width: 0, height: 0 };
+        if (this._content) {
+            this._content.pos({ x: 0, y: +textBBox.height / 2 });
+
+            var contentBBox = this._content.getBBox(true);
+            this._text.pos({ x: 0, y: -(contentBBox.height) / 2 });
+        }
+
+        var bbox = {
+            width: Math.max(textBBox.width, contentBBox.width),
+            height: textBBox.height + contentBBox.height
+        };
         var d = this.anchor();
         var size = {
             width: this._fixedSize ? this._fixedSize.width : bbox.width + this._padding.left + this._padding.right,

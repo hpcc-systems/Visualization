@@ -40,19 +40,33 @@
     SourceMappings.prototype.doMap = function (item) {
         var retVal = item;
         try {
-            for (var key in this.mappings) {
-                if (this.mappings[key] instanceof Array) {
-                    retVal = {};
-                    this.mappings[key].forEach(function (mapingItem) {
-                        var rhsKey = mapingItem.toLowerCase();
+            switch (this.source.visualization.type) {
+                case "LINE":
+                    retVal = [];
+                    for (var i = 0; i < this.mappings.x.length; ++i) {
+                        retVal.push({
+                            label: item[this.mappings.x[i]],
+                            weight: item[this.mappings.y[i]]
+                        })
+                    }
+                    break;
+                case "TABLE":
+                    for (var key in this.mappings) {
+		                retVal = {};
+                        this.mappings[key].forEach(function (mapingItem) {
+                            var rhsKey = mapingItem.toLowerCase();
+                            var val = item[rhsKey];
+                            retVal[rhsKey] = val;
+                        });
+                    }
+                    break;
+                default:
+                    for (var key in this.mappings) {
+                        var rhsKey = this.mappings[key].toLowerCase();
                         var val = item[rhsKey];
-                        retVal[rhsKey] = val;
-                    });
-                } else {
-                    var rhsKey = this.mappings[key].toLowerCase();
-                    var val = item[rhsKey];
-                    retVal[key] = val;
-                }
+                        retVal[key] = val;
+                    }
+                    break;
             }
         } catch (e) {
             console.log("Invalid Mappings");
@@ -143,6 +157,11 @@
                     .title(this.id)
                 ;
                 break;
+            case "LINE":
+                this.widget = new Line()
+                    //.xScale("time")
+                ;
+                break;
             case "TABLE":
                 this.widget = new Table()
                     .columns(this.label)
@@ -168,6 +187,15 @@
             var context = this;
             this.widget.click = function (d) {
                 context.click(d);
+            }
+            for (var key in this.properties) {
+                if (this.widget[key]) {
+                    try {
+                        this.widget[key](this.properties)
+                    } catch (e) {
+                        console.log("Invalid Property:" + this.id + ".properties." + key);
+                    }
+                }
             }
         }
     };

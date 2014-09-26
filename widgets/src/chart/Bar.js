@@ -17,7 +17,7 @@
     Bar.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
         var bar = this.svgData.selectAll(".barRect")
-            .data(this._data)
+            .data(this._data[0])
         ;
 
         var title = bar
@@ -36,6 +36,7 @@
             .attr("y", function (d) { return context.y(d.weight); })
             .attr("height", function (d) { return height - context.y(d.weight); })
         ;
+
         title
             .text(function (d) { return d.label + " (" + d.weight + ")"; })
         ;

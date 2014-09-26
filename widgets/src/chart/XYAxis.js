@@ -7,13 +7,24 @@
 }(this, function (d3, SVGWidget) {
     function XYAxis(target) {
         SVGWidget.call(this);
+
+        this._data[0] = [];
+        this._xScale = "ordinal";
     };
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
     XYAxis.prototype.enter = function (domNode, element) {
         var context = this;
 
-        this.x = d3.scale.ordinal();
+        this.x = null;
+        switch (this._xScale) {
+            case "time":
+                this.x = d3.time.scale();
+                break;
+            default:
+                this.x = d3.scale.ordinal();
+                break;
+        }
         this.y = d3.scale.linear();
 
         this.xAxis = d3.svg.axis()
@@ -56,11 +67,15 @@
         var yAxis = d3.svg.axis()
             .orient("left")
             .scale(y)
-            .tickFormat(d3.format("s"))
+            .tickFormat(d3.format(".2s"))
         ;
 
-        x.domain(this._data.map(function (d) { return d.label; }));
-        y.domain([d3.min(this._data, function (d) { return d.weight; }), d3.max(this._data, function (d) { return d.weight; })]);
+        x.domain(this._data[0].map(function (d) { return d.label; }));
+        y.domain([d3.min(this._data, function (data) { 
+            return d3.min(data, function (d) { return d.weight; });
+        }), d3.max(this._data, function (data) {
+            return d3.max(data, function (d) { return d.weight; });
+        })]);
 
         var svgXAxis = test.append("g")
             .attr("class", "x axis")
@@ -87,9 +102,12 @@
         var width = this.width() - margin.left - margin.right,
             height = this.height() - margin.top - margin.bottom;
 
-        this.x
-            .rangeRoundBands([0, width], .1)
-        ;
+        if (this.x.rangeRoundBands) {
+            this.x
+                .rangeRoundBands([0, width], .1)
+            ;
+        }
+
         this.y
             .range([height, 0])
         ;
@@ -100,16 +118,20 @@
 
         this.yAxis
             .scale(this.y)
-            .tickFormat(d3.format("s"))
+            .tickFormat(d3.format(".2s"))
         ;
 
         this.svg.transition()
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         ;
 
-        this.x.domain(this._data.map(function (d) { return d.label; }));
-        var max = d3.max(this._data, function (d) { return d.weight; });
-        var min = d3.min(this._data, function (d) { return d.weight; });
+        this.x.domain(this._data[0].map(function (d) { return d.label; }));
+        var min = d3.min(this._data, function (data) {
+            return d3.min(data, function (d) { return d.weight; });
+        });
+        var max = d3.max(this._data, function (data) {
+            return d3.max(data, function (d) { return d.weight; });
+        });
         var newMin = min - (max - min) / 10;
         if (min >= 0 && newMin < 0)
             newMin = 0;

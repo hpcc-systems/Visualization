@@ -36,6 +36,7 @@
         var textParts = this._text.split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
         textLine.enter().append("tspan")
+            .attr("class", function (d, i) { return "tspan_" + i; })
             .attr("dy", "1em")
             .attr("x", "0")
         ;

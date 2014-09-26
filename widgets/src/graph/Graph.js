@@ -271,6 +271,7 @@
         var vertexElements = this.svgV.selectAll("#" + this._id + "V > .vertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
         vertexElements.enter().append("g")
             .attr("class", "vertex")
+            .style("opacity", 1e-6)
              //  TODO:  Events need to be optional  ---
             .on("click", function (d) {
                 context.vertex_click(d);
@@ -287,6 +288,9 @@
                 //context.vertex_mouseout(d3.select(this), d);
             })
             .each(createV)
+            .transition()
+            .duration(750)
+            .style("opacity", 1)
         ;
         function createV(d) {
             d
@@ -301,10 +305,14 @@
         var edgeElements = this.svgE.selectAll("#" + this._id + "E > .edge").data(this.graphData.edgeValues(), function (d) { return d.id(); });
         edgeElements.enter().append("g")
             .attr("class", "edge")
+            .style("opacity", 1e-6)
             .on("click", function (d) {
                 context.edge_click(d);
             })
             .each(createE)
+            .transition()
+            .duration(750)
+            .style("opacity", 1)
         ;
         function createE(d) {
             d

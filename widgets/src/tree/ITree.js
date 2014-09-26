@@ -10,7 +10,7 @@
 
     //  Data ---
     ITree.prototype.testData = function () {
-        var data = [{
+        var data = {label: "root", children: [{
             label: "A",
             children: [{
                 label: "AA",
@@ -36,7 +36,7 @@
                     label: "BBA"
                 }]
             }]
-        }];
+        }]};
         this.data(data);
         return this;
     };

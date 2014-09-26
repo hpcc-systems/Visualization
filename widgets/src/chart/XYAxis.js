@@ -13,6 +13,30 @@
     };
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
+
+    XYAxis.prototype.data = function (_) {
+        if (!arguments.length) return SVGWidget.prototype.data.apply(this, arguments);
+
+        var data = [];
+        data[0] = [];
+        _.map(function (row) {
+            if (row instanceof Array) {
+                row.forEach(function (item, idx) {
+                    if (!data[idx]) {
+                        data[idx] = [];
+                    }
+                    data[idx].push(item);
+                }, this);
+            } else {
+                if (!data[0]) {
+                    data[0] = [];
+                }
+                data[0].push(row);
+            }
+        }, this);
+        return SVGWidget.prototype.data.call(this, data);
+    };
+
     XYAxis.prototype.enter = function (domNode, element) {
         var context = this;
 

@@ -138,13 +138,9 @@
         switch (this.type) {
             case "CHORO":
                 if (this.source.mappings.contains("county")) {
-                    this.widget = new ChoroplethCounties()
-                        .size({ width: 310, height: 210 })
-                    ;
+                    this.widget = new ChoroplethCounties();
                 } else {
-                    this.widget = new ChoroplethStates()
-                        .size({ width: 310, height: 210 })
-                    ;
+                    this.widget = new ChoroplethStates();
                 }
                 break;
             case "2DCHART":

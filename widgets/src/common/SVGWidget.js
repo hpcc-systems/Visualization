@@ -19,10 +19,16 @@
     SVGWidget.prototype = Object.create(Widget.prototype);
 
     //  Properties  ---
-    SVGWidget.prototype.resize = function () {
-        var style = window.getComputedStyle(this._target, null);
-        var width = parseInt(style.getPropertyValue("width"));
-        var height = parseInt(style.getPropertyValue("height"));
+    SVGWidget.prototype.resize = function (size) {
+        var width, height;
+        if (size && size.width && size.height) {
+            width = size.width;
+            height = size.height;
+        } else {
+            var style = window.getComputedStyle(this._target, null);
+            width = parseInt(style.getPropertyValue("width"));
+            height = parseInt(style.getPropertyValue("height"));
+        }
         this.size({
             width: width,
             height: height
@@ -78,13 +84,11 @@
                     left: 0
                 })
             ;
-            if (!this._size.width && !this._size.height) {
-                this.resize();
-                this.pos({
-                    x: this._size.width / 2,
-                    y: this._size.height / 2
-                });
-            }
+            this.resize(this._size);
+            this.pos({
+                x: this._size.width / 2,
+                y: this._size.height / 2
+            });
         } else {
             if (this._parentRelativeDiv) {
                 this._parentOverlay.remove();

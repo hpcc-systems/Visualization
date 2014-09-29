@@ -71,8 +71,6 @@
                     .each(function (item) {
                         var element = d3.select(this);
                         item.widget
-                            .pos({ x: width / 2, y: width / 2 })
-                            .size({ width: width, height: width })
                             .target(this)
                             .render()
                         ;

@@ -111,18 +111,38 @@
         return this._updates !== undefined;
     };
 
-    Select.prototype.getUpdatesDatasource = function () {
-        if (exists("_updates.datasource", this)) {
-            return this.visualization.dashboard.datasources[this._updates.datasource];
+    Select.prototype.getUpdatesDatasources = function () {
+        var dedup = {};
+        var retVal = [];
+        if (exists("_updates", this) && this._updates instanceof Array) {
+            this._updates.forEach(function (item, idx) {
+                var datasource = this.visualization.dashboard.datasources[item.datasource];
+                if (!dedup[datasource.id]) {
+                    dedup[datasource.id] = true;
+                    retVal.push(datasource);
+                }
+            }, this);
+        } else if (exists("_updates.datasource", this)) { //TODO For backward compatability - Remove in the future  ---
+            retVal.push(this.visualization.dashboard.datasources[this._updates.datasource]);
         }
-        return null;
+        return retVal;
     };
 
-    Select.prototype.getUpdatesVisualization = function () {
-        if (exists("_updates.visualization", this)) {
-            return this.visualization.dashboard.visualizations[this._updates.visualization];
+    Select.prototype.getUpdatesVisualizations = function () {
+        var dedup = {};
+        var retVal = [];
+        if (exists("_updates", this) && this._updates instanceof Array) {
+            this._updates.forEach(function (item, idx) {
+                var visualization = this.visualization.dashboard.visualizations[item.visualization];
+                if (!dedup[visualization.id]) {
+                    dedup[visualization.id] = true;
+                    retVal.push(visualization);
+                }
+            }, this);
+        } else if (exists("_updates.visualization", this)) { //TODO For backward compatability - Remove in the future  ---
+            retVal.push(this.visualization.dashboard.visualizations[this._updates.visualization]);
         }
-        return null;
+        return retVal;
     };
 
     //  Visualization ---
@@ -235,9 +255,10 @@
                 var hackKey = this.source.mappings.getReverseMap(key);
                 request[key] = d[hackKey];
             }
-            var visualization = this.onSelect.getUpdatesVisualization();
-            var dataSource = this.onSelect.getUpdatesDatasource();
-            dataSource.fetchData(request);
+            var dataSources = this.onSelect.getUpdatesDatasources();
+            dataSources.forEach(function (item) {
+                item.fetchData(request);
+            });
         }
     };
 

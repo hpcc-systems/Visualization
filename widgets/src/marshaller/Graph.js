@@ -163,9 +163,9 @@
                         }
                     }
 
-                    if (item.onSelect.getUpdatesVisualization()) {
-                        addEdge(item.id, item.onSelect.getUpdatesVisualization().id, undefined, "arrowHead", "on Select");
-                    }
+                    item.onSelect.getUpdatesVisualizations().forEach(function (vizItem) {
+                        addEdge(item.id, vizItem.id, undefined, "arrowHead", "on Select");
+                    });
                 }
             }
         });

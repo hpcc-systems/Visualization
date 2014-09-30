@@ -40,20 +40,19 @@
         this._wordCloud.click = function (d) {
             context.click(d);
         }
-        this._content = this._pie;
         this._menu.click = function (d) {
             context.activate(d);
         }
         this._menu.preShowMenu = function () {
-            if (context._content && context._content._overlayElement) {
-                context._content._parentElement
+            if (context.getContent() && context.getContent()._overlayElement) {
+                context.getContent()._parentElement
                     .style("display", "none");
                 ;
             }
         }
         this._menu.postHideMenu = function () {
-            if (context._content && context._content._overlayElement) {
-                context._content._parentElement
+            if (context.getContent() && context.getContent()._overlayElement) {
+                context.getContent()._parentElement
                     .style("display", null);
                 ;
             }
@@ -112,8 +111,8 @@
 
     MultiChartSurface.prototype.data = function (_) {
         var retVal = Surface.prototype.data.apply(this, arguments);
-        if (arguments.length && this._content) {
-            this._content.data(_.map(function (row) { return { label: row.label, weight: row.weight }; }));
+        if (arguments.length && this.getContent()) {
+            this.getContent().data(_.map(function (row) { return { label: row.label, weight: row.weight }; }));
         }
         return retVal;
     };

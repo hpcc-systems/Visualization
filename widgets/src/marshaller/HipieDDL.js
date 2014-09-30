@@ -220,6 +220,18 @@
         visitor.visit(this);
     };
 
+    Visualization.prototype.getSelectDepth = function () {
+        var retVal = 0;
+        var visualizations = this.onSelect.getUpdatesVisualizations();
+        visualizations.forEach(function (item) {
+            var depth = item.getSelectDepth() + 1;
+            if (depth > retVal) {
+                retVal = depth;
+            }
+        }, this);
+        return retVal;
+    };
+
     Visualization.prototype.notify = function () {
         var context = this;
         if (this.source.getOutput().data) {
@@ -323,7 +335,7 @@
 
         if (this.WUID) {
             this.comms = new comms.HIPIEWorkunit()
-                .ddlUrl(dashboard.marshaller.espUrl)
+                .url(dashboard.marshaller.espUrl.getUrl())
                 .proxyMappings(proxyMappings)
                 .hipieResults(hipieResults)
             ;
@@ -394,6 +406,25 @@
             context.visualizationsArray.push(newItem);
         });
         this.visualizationTotal = this.visualizationsArray.length;
+        this.visualizationsArray.sort(function (l, r) {
+            return r.getSelectDepth() - l.getSelectDepth();
+        });
+        var vizIncluded = {};
+        this.visualizationsTree = [];
+        var walkSelect = function (viz, result) {
+            if (viz && !vizIncluded[viz.id]) {
+                vizIncluded[viz.id] = true;
+                var treeItem = { visualization: viz, children: [] };
+                result.push(treeItem);
+                var visualizations = viz.onSelect.getUpdatesVisualizations();
+                visualizations.forEach(function (item) {
+                    walkSelect(item, treeItem.children);
+                });
+            }
+        };
+        this.visualizationsArray.forEach(function (item) {
+            walkSelect(item, this.visualizationsTree);
+        }, this);
     };
 
     Dashboard.prototype.accept = function (visitor) {
@@ -401,9 +432,9 @@
         for (var key in this.datasources) {
             this.datasources[key].accept(visitor);
         }
-        for (var key in this.visualizations) {
-            this.visualizations[key].accept(visitor);
-        }
+        this.visualizationsArray.forEach(function (item) {
+            item.accept(visitor);
+        }, this);
     };
 
     //  Marshaller  ---
@@ -429,12 +460,12 @@
         if (this.espUrl.isWorkunitResult()) {
             hipieResultName = this.espUrl._params["ResultName"];
             transport = new comms.HIPIEWorkunit()
-                .ddlUrl(this.espUrl)
+                .url(url)
                 .proxyMappings(this._proxyMappings)
             ;
         } else {
             transport = new comms.HIPIERoxie()
-                .ddlUrl(this.espUrl)
+                .url(this.espUrl.getUrl())
                 .proxyMappings(this._proxyMappings)
             ;
         }

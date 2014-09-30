@@ -50,20 +50,65 @@
     };
 
     ESPUrl.prototype.getUrl = function (overrides) {
+        overrides = overrides || {};
         return (overrides.protocol ? overrides.protocol : this._protocol) + "//" +
                 (overrides.hostname ? overrides.hostname : this._hostname) + ":" +
                 (overrides.port ? overrides.port : this._port) + "/" +
                 (overrides.pathname ? overrides.pathname : this._pathname);
     };
 
+    function ESPMappings(mappings) {
+        this._mappings = mappings;
+        this._reverseMappings = {};
+        for (var resultName in this._mappings) {
+            this._reverseMappings[resultName] = {};
+            for (var key in this._mappings[resultName]) {
+                this._reverseMappings[resultName][this._mappings[resultName][key]] = key;
+            }
+        }
+    };
+
+    ESPMappings.prototype.contains = function (resultName, origField) {
+        return exists(resultName + "." + origField, this._mappings);
+    };
+
+    ESPMappings.prototype.mapResult = function (response, resultName) {
+        var mapping = this._mappings[resultName];
+        if (mapping) {
+            response[resultName] = response[resultName].map(function (item) {
+                var row = {};
+                if (mapping.x && mapping.x instanceof Array) {
+                    //  LINE Mapping  ---
+                    row = [];
+                    for (var i = 0; i < mapping.x.length; ++i) {
+                        row.push({
+                            label: item[mapping.x[i]],
+                            weight: item[mapping.y[i]]
+                        })
+                    }
+                } else {
+                    //  Regular Mapping  ---
+                    for (var key in mapping) {
+                        row[mapping[key]] = item[key];
+                    }
+                }
+                return row;
+            }, this);
+        }
+    };
+
+    ESPMappings.prototype.mapResponse = function (response) {
+        for (var key in response) {
+            this.mapResult(response, key);
+        }
+    };
+
     function Comms() {
-        this._url = "";
-        this._ssl = false;
-        this._ip = "localhost";
-        this._port = "";
+        ESPUrl.call(this);
         this._proxyMappings = {};
         this._mappings = {};
     };
+    Comms.prototype = Object.create(ESPUrl.prototype);
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -118,40 +163,9 @@
         document.body.appendChild(script);
     };
 
-    Comms.prototype.ddlUrl = function (_) {
-        if (!arguments.length) return this._ddlUrl;
-        this._ddlUrl = _;
-        return this;
-    };
-
-    Comms.prototype.url = function (_) {
-        if (!arguments.length) return this._url;
-        this._url = _;
-        this.ddlUrl(new ESPUrl().url(_));
-        return this;
-    };
-
-    Comms.prototype.ssl = function (_) {
-        if (!arguments.length) return this._ssl;
-        this._ssl = _;
-        return this;
-    };
-
-    Comms.prototype.ip = function (_) {
-        if (!arguments.length) return this._ip;
-        this._ip = _;
-        return this;
-    };
-
-    Comms.prototype.port = function (_) {
-        if (!arguments.length) return this._port;
-        this._port = _;
-        return this;
-    };
-
     Comms.prototype.mappings = function (_) {
         if (!arguments.length) return this._mappings;
-        this._mappings = _;
+        this._mappings = new ESPMappings(_);
         return this;
     };
 
@@ -159,23 +173,6 @@
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
         return this;
-    };
-
-    Comms.prototype.mapData = function (data) {
-        for (var key in data) {
-            var mapping = this._mappings[key];
-            if (mapping) {
-                data[key] = data[key].map(function (item) {
-                    var row = {};
-                    for (var field in item) {
-                        var mappedField = mapping[field];
-                        row[mappedField ? mappedField : field] = item[field];
-                    }
-                    return row;
-                });
-            }
-            data[key] = data[key];
-        }
     };
 
     function WsECL() {
@@ -186,6 +183,22 @@
         this._query = "";
     };
     WsECL.prototype = Object.create(Comms.prototype);
+
+    WsECL.prototype.url = function (_) {
+        var retVal = Comms.prototype.url.apply(this, arguments);
+        if (arguments.length) {
+            // http://192.168.1.201:8002/WsEcl/res/query/hthor/quicktest/res/index.html
+            var pathParts = this._pathname.split("/res/");
+            if (pathParts.length >= 2) {
+                var queryParts = pathParts[1].split("/");
+                if (queryParts.length >= 3) {
+                    this.target(queryParts[1]);
+                    this.query(queryParts[2]);
+                }
+            }
+        }
+        return retVal;
+    };
 
     WsECL.prototype.target = function (_) {
         if (!arguments.length) return this._target;
@@ -200,9 +213,8 @@
     };
 
     WsECL.prototype.call = function (request, callback) {
-        // http://10.239.190.106:8002/WsEcl/submit/query/myroxie_dataland/fetched_ins002_stats/json
         var context = this;
-        var url = this._url ? this._url : "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsEcl/submit/query/" + this._target + "/" + this._query + "/json";
+        var url = "http" + (this._ssl ? "s" : "") + "://" + this._hostname + ":" + this._port + "/WsEcl/submit/query/" + this._target + "/" + this._query + "/json";
         this.jsonp(url, request, function (response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
@@ -213,7 +225,7 @@
             for (var key in response) {
                 response[key] = response[key].Row;
             }
-            context.mapData(response);
+            context._mappings.mapResponse(response);
             callback(response);
         });
     };
@@ -227,6 +239,34 @@
         this._resultName = null;
     };
     WsWorkunits.prototype = Object.create(Comms.prototype);
+
+    WsWorkunits.prototype.url = function (_) {
+        var retVal = Comms.prototype.url.apply(this, arguments);
+        if (arguments.length) {
+            //  http:x.x.x.x:8010/WsWorkunit/WuResult?Wuid=xxx&ResultName=yyy
+            for (var key in this._params) {
+                switch (key) {
+                    case "Wuid":
+                        context.wuid(this._params[key]);
+                        break;
+                    case "ResultName":
+                        context.resultName(this._params[key]);
+                        break;
+                    case "Sequence":
+                        context.sequence(this._params[key]);
+                        break;
+                }
+            }
+            if (!this._wuid) {
+                //  http://192.168.1.201:8010/WsWorkunits/res/W20140922-213329/res/index.html
+                var urlParts = this._url.split("/res/");
+                if (urlParts.length >= 3) {
+                    this.wuid(urlParts[1]);
+                }
+            }
+        }
+        return retVal;
+    };
 
     WsWorkunits.prototype.wuid = function (_) {
         if (!arguments.length) return this._wuid;
@@ -246,43 +286,19 @@
         return this;
     };
 
-    WsWorkunits.prototype.call = function (start, count, callback) {
-        var context = this;
-        var url = "";
-        //  TODO witch to use ESPUrl  ---
-        if (this._url) {
-            var urlParts = this._url.split("?");
-            url = urlParts[0];
-            try {
-                var params = urlParts[1].split("&");
-                var context = this;
-                params.forEach(function (item) {
-                    var parts = item.split("=");
-                    switch (parts[0]) {
-                        case "Wuid":
-                            context.wuid(parts[1]);
-                            break;
-                        case "ResultName":
-                            context.resultName(parts[1]);
-                            break;
-                    }
-                });
-            } catch (e) {
-            }
-        } else {
-            url = this._url ? this._url : "http" + (this._ssl ? "s" : "") + "://" + this._ip + ":" + this._port + "/WsWorkunits/WUResult.json";
-        }
+    WsWorkunits.prototype.fetchResult = function (name, callback) {
+        var url = this.getUrl({
+            pathname: "WsWorkunits/WUResult.json",
+        });
         var request = {
-            Start: start,
-            Count: count,
             Wuid: this._wuid,
-            SuppressXmlSchema: true
+            ResultName: name,
+            SuppressXmlSchema: true,
+            Start: 0,
+            Count: 99999
         };
-        if (this._sequence !== null) {
-            request.Sequence = this._sequence;
-        } else if (this._resultName !== null) {
-            request.ResultName = this._resultName;
-        }
+        this._resultNameCache[name].data = [];
+        var context = this;
         this.jsonp(url, request, function (response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
@@ -291,21 +307,90 @@
                 }
                 context._total = response[key].Total;
                 response = response[key].Result;
-                if (context._sequence !== null) {
-                    if (!response.Row) {
-                        throw "No Row found.";
-                    }
-                    response = response.Row; 
-                } else if (this._resultName !== null) {
-                    for (var key in response) {
-                        response = response[key].Row;
-                        break;
-                    }
+                for (var key in response) {
+                    response = response[key].Row;
+                    break;
                 }
                 break;
             }
+            context._resultNameCache[name] = response;
             callback(response);
         });
+    };
+
+    WsWorkunits.prototype.fetchResults = function (callback) {
+        var url = this.getUrl({
+            pathname: "WsWorkunits/WUInfo.json",
+        });
+        var request = {
+            Wuid: this._wuid,
+            TruncateEclTo64k: true,
+            IncludeExceptions: false,
+            IncludeGraphs: false,
+            IncludeSourceFiles: false,
+            IncludeResults: true,
+            IncludeResultsViewNames: false,
+            IncludeVariables: false,
+            IncludeTimers: false,
+            IncludeResourceURLs: false,
+            IncludeDebugValues: false,
+            IncludeApplicationValues: false,
+            IncludeWorkflows: false,
+            IncludeXmlSchemas: false,
+            SuppressResultSchemas: true
+        }
+
+        this._resultNameCache = {};
+        this._resultNameCacheCount = 0;
+        var context = this;
+        this.jsonp(url, request, function (response) {
+            if (exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
+                response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
+                    context._resultNameCache[item.Name] = [];
+                    ++context._resultNameCacheCount;
+                });
+                var toFetch = context._resultNameCacheCount;
+                if (toFetch > 0) {
+                    for (var key in context._resultNameCache) {
+                        var item = context._resultNameCache[key];
+                        context.fetchResult(key, function (response) {
+                            if (--toFetch <= 0) {
+                                callback(context._resultNameCache);
+                            }
+                        });
+                    };
+                } else {
+                    callback(context._resultNameCache);
+                }
+            }
+        });
+    };
+
+    WsWorkunits.prototype.postFilter = function (request, response) {
+        var retVal = {};
+        for (var key in response) {
+            retVal[key] = response[key].filter(function (row, idx) {
+                for (var request_key in request) {
+                    if (row[request_key] !== undefined && row[request_key] !== request[request_key]) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
+        this._mappings.mapResponse(retVal);
+        return retVal;
+    };
+
+    WsWorkunits.prototype.call = function (request, callback) {
+        var context = this;
+        if (!this._resultNameCacheCount) {
+            this.fetchResults(function (response) {
+                callback(context.postFilter(request, response));
+            });
+        } else {
+            callback(context.postFilter(request, this._resultNameCache));
+        }
     };
 
     //  HIPIERoxie  ---
@@ -315,7 +400,7 @@
     HIPIERoxie.prototype = Object.create(Comms.prototype);
 
     HIPIERoxie.prototype.fetchResults = function (request, callback) {
-        var url = this._ddlUrl.getUrl({ });
+        var url = this.getUrl({});
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
         var context = this;
@@ -364,11 +449,11 @@
     };
 
     HIPIEWorkunit.prototype.fetchResults = function (callback) {
-        var url = this._ddlUrl.getUrl({
+        var url = this.getUrl({
             pathname: "WsWorkunits/WUInfo.json",
         });
         var request = {
-            Wuid: this._ddlUrl._params["Wuid"],
+            Wuid: this._params["Wuid"],
             TruncateEclTo64k: true,
             IncludeExceptions: false,
             IncludeGraphs: false,
@@ -412,11 +497,11 @@
     };
 
     HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
-        var url = this._ddlUrl.getUrl({
+        var url = this.getUrl({
             pathname: "WsWorkunits/WUResult.json",
         });
         var request = {
-            Wuid: this._ddlUrl._params["Wuid"],
+            Wuid: this._params["Wuid"],
             ResultName: name,
             SuppressXmlSchema: true,
             Start: 0,
@@ -484,10 +569,25 @@
     };
 
     return {
+        ESPMappings: ESPMappings,
         ESPUrl: ESPUrl,
         WsECL: WsECL,
         WsWorkunits: WsWorkunits,
         HIPIERoxie: HIPIERoxie,
-        HIPIEWorkunit: HIPIEWorkunit
-};
+        HIPIEWorkunit: HIPIEWorkunit,
+        createConnection: function (url) {
+            url = url || document.URL;
+            var testURL = new ESPUrl()
+                .url(url)
+            ;
+            if (testURL.isWsWorkunits()) {
+                return new WsWorkunits()
+                    .url(url)
+                ;
+            }
+            return new WsECL()
+                .url(url)
+            ;
+        }
+    };
 }));

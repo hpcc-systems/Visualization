@@ -25,8 +25,10 @@
         var context = this;
         var d3Line = d3.svg.line()
             .x(function (d) {
-                var label = "" + d.label;
-                var d2 = label.substring(0, 4) + "-" + label.substring(4, 6) + "-" + label.substring(6, 8);
+                switch (context._xScale) {
+                    case "DATE":
+                        return context.x(context.parseDate(d.label));
+                }
                 return context.x(d.label) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
             })
             .y(function (d) { return context.y(d.weight); })

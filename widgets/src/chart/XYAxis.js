@@ -9,10 +9,16 @@
         SVGWidget.call(this);
 
         this._data[0] = [];
-        this._xScale = "ordinal";
+        this._xScale = "";
+        this.parseDate = d3.time.format("%Y-%m-%d").parse;
     };
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
+    XYAxis.prototype.xScale = function (_) {
+        if (!arguments.length) return this._xScale;
+        this._xScale = _;
+        return this;
+    };
 
     XYAxis.prototype.data = function (_) {
         if (!arguments.length) return SVGWidget.prototype.data.apply(this, arguments);
@@ -42,7 +48,7 @@
 
         this.x = null;
         switch (this._xScale) {
-            case "time":
+            case "DATE":
                 this.x = d3.time.scale();
                 break;
             default:
@@ -53,10 +59,13 @@
 
         this.xAxis = d3.svg.axis()
             .orient("bottom")
+            .scale(this.x)
         ;
 
         this.yAxis = d3.svg.axis()
             .orient("left")
+            .scale(this.y)
+            .tickFormat(d3.format(".2s"))
             .ticks(10)
         ;
 
@@ -72,43 +81,21 @@
     };
 
     XYAxis.prototype.calcMargin = function (domNode, element) {
+        var context = this;
         var margin = { top: 8, right: 0, bottom: 24, left: 40 };
         var width = this.width() - margin.left - margin.right,
             height = this.height() - margin.top - margin.bottom;
 
         var test = element.append("g");
 
-        var x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1)
-        ;
-        var xAxis = d3.svg.axis()
-            .orient("bottom")
-            .scale(x)
-        ;
-        var y = d3.scale.linear()
-            .range([height, 0])
-        ;
-        var yAxis = d3.svg.axis()
-            .orient("left")
-            .scale(y)
-            .tickFormat(d3.format(".2s"))
-        ;
-
-        x.domain(this._data[0].map(function (d) { return d.label; }));
-        y.domain([d3.min(this._data, function (data) { 
-            return d3.min(data, function (d) { return d.weight; });
-        }), d3.max(this._data, function (data) {
-            return d3.max(data, function (d) { return d.weight; });
-        })]);
-
         var svgXAxis = test.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
+            .call(this.xAxis)
         ;
         var svgYAxis = test.append("g")
             .attr("class", "y axis")
-            .call(yAxis)
+            .call(this.yAxis)
         ;
 
         var x_bbox = svgXAxis.node().getBBox();
@@ -121,35 +108,22 @@
 
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
-        var margin = this.calcMargin(domNode, element);
 
-        var width = this.width() - margin.left - margin.right,
-            height = this.height() - margin.top - margin.bottom;
-
-        if (this.x.rangeRoundBands) {
-            this.x
-                .rangeRoundBands([0, width], .1)
-            ;
+        //  Update Domain  ---
+        switch (this._xScale) {
+            case "DATE":
+                var min = d3.min(this._data, function (data) {
+                    return d3.min(data, function (d) { return context.parseDate(d.label); });
+                });
+                var max = d3.max(this._data, function (data) {
+                    return d3.max(data, function (d) { return context.parseDate(d.label); });
+                });
+                this.x.domain([min, max]);
+                break;
+            default:
+                this.x.domain(this._data[0].map(function (d) { return d.label; }));
+                break;
         }
-
-        this.y
-            .range([height, 0])
-        ;
-
-        this.xAxis
-            .scale(this.x)
-        ;
-
-        this.yAxis
-            .scale(this.y)
-            .tickFormat(d3.format(".2s"))
-        ;
-
-        this.svg.transition()
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        ;
-
-        this.x.domain(this._data[0].map(function (d) { return d.label; }));
         var min = d3.min(this._data, function (data) {
             return d3.min(data, function (d) { return d.weight; });
         });
@@ -160,6 +134,31 @@
         if (min >= 0 && newMin < 0)
             newMin = 0;
         this.y.domain([newMin, max]);
+
+        //  Calculate Range  ---
+        if (this.x.rangeRoundBands) {
+            this.x.rangeRoundBands([0, this.width()], .1);
+        } else if (this.x.rangeRound) {
+            this.x.range([0, this.width()]);
+        }
+        this.y.range([this.height(), 0]);
+        var margin = this.calcMargin(domNode, element);
+
+        //  Update Range  ---
+        var width = this.width() - margin.left - margin.right,
+            height = this.height() - margin.top - margin.bottom;
+
+        if (this.x.rangeRoundBands) {
+            this.x.rangeRoundBands([0, width], .1);
+        } else if (this.x.rangeRound) {
+            this.x.range([0, width]);
+        }
+        this.y.range([height, 0]);
+
+        //  Render  ---
+        this.svg.transition()
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        ;
 
         this.svgXAxis.transition()
             .attr("transform", "translate(0," + height + ")")

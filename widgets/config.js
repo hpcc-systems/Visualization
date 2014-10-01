@@ -2,7 +2,9 @@ requirejs.config({
     baseUrl: ".",
     paths: {
         'async': 'lib/requirejs/plugins/async',
-        'css': 'lib/requirejs/plugins/css'
+        'css': 'lib/requirejs/plugins/css',
+        'goog': 'lib/requirejs/plugins/goog',
+        'propertyParser': 'lib/requirejs/plugins/propertyParser'
     },
     packages: [
         {

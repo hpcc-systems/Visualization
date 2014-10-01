@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/Surface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../other/WordCloud", "../common/Palette"], factory);
+        define(["d3/d3", "../common/Surface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../other/WordCloud", "../common/Palette"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.Surface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.WordCloud, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.Surface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.GPie, root.WordCloud, root.Palette);
     }
-}(this, function (d3, Surface, I2DChart, Pie, Bar, Line, Bubble, Table, WordCloud, Palette) {
+}(this, function (d3, Surface, I2DChart, Pie, Bar, Line, Bubble, Table, GPie, WordCloud, Palette) {
     function MultiChartSurface() {
         Surface.call(this);
         I2DChart.call(this);
@@ -12,11 +12,15 @@
         this._title = "MultiChartSurface";
 
         this._menu
-            .data(["PIE", "BUBBLE", "BAR", "LINE", "TABLE", "WORD_CLOUD"])
+            .data(["PIE", "GOOGLE_PIE", "BUBBLE", "BAR", "LINE", "TABLE", "WORD_CLOUD"])
         ;
         var context = this;
         this._pie = new Pie();
         this._pie.click = function (d) {
+            context.click(d);
+        }
+        this._gpie = new GPie();
+        this._gpie.click = function (d) {
             context.click(d);
         }
         this._bar = new Bar();
@@ -65,6 +69,8 @@
         switch (this._chart) {
             case "PIE":
                 return this._pie;
+            case "GOOGLE_PIE":
+                return this._gpie;
             case "BUBBLE":
                 return this._bubble;
             case "BAR":

@@ -25,6 +25,19 @@
     IPie.prototype._radius = 100;       // px
     IPie.prototype._innerRadius = 0;    // px
 
+    IPie.prototype.radius = function (_) {
+        return this;
+    };
+
+    IPie.prototype.innerRadius = function (_) {
+        return this;
+    };
+
+    IPie.prototype.outerText = function (_) {
+        return this;
+    };
+
+
     //  Events  ---
     IPie.prototype.click = function (d) {
         console.log("Click:  " + d.label);

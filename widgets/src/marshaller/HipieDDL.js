@@ -207,7 +207,7 @@
             for (var key in this.properties) {
                 if (this.widget[key]) {
                     try {
-                        this.widget[key](this.properties)
+                        this.widget[key](this.properties[key])
                     } catch (e) {
                         console.log("Invalid Property:" + this.id + ".properties." + key);
                     }

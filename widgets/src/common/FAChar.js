@@ -29,6 +29,10 @@
         if (!this._fontSize) {
             var style = window.getComputedStyle(domNode, null);
             this._fontSize = parseInt(style.fontSize);
+            if (!this._fontSize) {
+                //  Chromium Issue  ---
+                this._fontSize = 14;
+            }
         }
         this._charElement = element.append("text")
             .attr("font-family", "FontAwesome")

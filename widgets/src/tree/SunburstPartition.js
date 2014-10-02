@@ -40,8 +40,7 @@
             .outerRadius(function (d) { return Math.max(0, context.y(d.y + d.dy)); })
         ;
 
-        this.svg = element.append("g")
-        ;
+        this.svg = element.append("g");
     };
 
     SunburstPartition.prototype.update = function (domNode, element) {

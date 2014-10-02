@@ -106,7 +106,7 @@
     function Comms() {
         ESPUrl.call(this);
         this._proxyMappings = {};
-        this._mappings = {};
+        this._mappings = new ESPMappings({});
     };
     Comms.prototype = Object.create(ESPUrl.prototype);
 
@@ -295,7 +295,7 @@
             ResultName: name,
             SuppressXmlSchema: true,
             Start: 0,
-            Count: 99999
+            Count: -1
         };
         this._resultNameCache[name].data = [];
         var context = this;
@@ -371,7 +371,7 @@
         for (var key in response) {
             retVal[key] = response[key].filter(function (row, idx) {
                 for (var request_key in request) {
-                    if (row[request_key] !== undefined && row[request_key] !== request[request_key]) {
+                    if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] !== request[request_key]) {
                         return false;
                     }
                 }

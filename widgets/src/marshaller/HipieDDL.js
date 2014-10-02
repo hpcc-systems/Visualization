@@ -3,12 +3,12 @@
         define(["../common/TextBox",
             "../chart/MultiChartSurface", "../chart/Bar", "../chart/Line", "../chart/Pie", "../chart/Bubble",
             "../map/ChoroplethStates", "../map/ChoroplethCounties",
-            "../other/Slider", "../other/Table", "../other/WordCloud", "../other/comms"
+            "../other/Slider", "../other/Table", "../other/WordCloud", "../other/Comms"
         ], factory);
     } else {
-        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Line, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.WordCloud, root.comms);
+        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Line, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.WordCloud, root.Comms);
     }
-}(this, function (TextBox, MultiChartSurface, Bar, Line, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, WordCloud, comms) {
+}(this, function (TextBox, MultiChartSurface, Bar, Line, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, WordCloud, Comms) {
 
     exists = function (prop, scope) {
         var propParts = prop.split(".");
@@ -174,9 +174,7 @@
                 ;
                 break;
             case "LINE":
-                this.widget = new Line()
-                    //.xScale("time")
-                ;
+                this.widget = new Line();
                 break;
             case "TABLE":
                 this.widget = new Table()
@@ -334,13 +332,13 @@
         });
 
         if (this.WUID) {
-            this.comms = new comms.HIPIEWorkunit()
+            this.comms = new Comms.HIPIEWorkunit()
                 .url(dashboard.marshaller.espUrl.getUrl())
                 .proxyMappings(proxyMappings)
                 .hipieResults(hipieResults)
             ;
         } else {
-            this.comms = new comms.HIPIERoxie()
+            this.comms = new Comms.HIPIERoxie()
                 .url(dataSource.URL)
                 .proxyMappings(proxyMappings)
             ;
@@ -452,19 +450,19 @@
     };
 
     Marshaller.prototype.url = function (url, callback) {
-        this.espUrl = new comms.ESPUrl()
+        this.espUrl = new Comms.ESPUrl()
             .url(url)
         ;
         var transport = null;
         var hipieResultName = "HIPIE_DDL";
         if (this.espUrl.isWorkunitResult()) {
             hipieResultName = this.espUrl._params["ResultName"];
-            transport = new comms.HIPIEWorkunit()
+            transport = new Comms.HIPIEWorkunit()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
             ;
         } else {
-            transport = new comms.HIPIERoxie()
+            transport = new Comms.HIPIERoxie()
                 .url(this.espUrl.getUrl())
                 .proxyMappings(this._proxyMappings)
             ;

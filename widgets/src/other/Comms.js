@@ -42,11 +42,15 @@
     };
 
     ESPUrl.prototype.isWsWorkunits = function () {
-        return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0;
+        return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0 || this._params["Wuid"];
     };
 
     ESPUrl.prototype.isWorkunitResult = function () {
-        return this.isWsWorkunits() && this._params["Wuid"] && (this._params["Sequence"] || this._params["ResultName"]);
+        return this.isWsWorkunits() && (this._params["Sequence"] || this._params["ResultName"]);
+    };
+
+    ESPUrl.prototype.isWsEcl = function () {
+        return this._pathname.toLowerCase().indexOf("wsecl") >= 0 || (this._params["QuerySetId"] && this._params["Id"]);
     };
 
     ESPUrl.prototype.getUrl = function (overrides) {
@@ -187,13 +191,28 @@
     WsECL.prototype.url = function (_) {
         var retVal = Comms.prototype.url.apply(this, arguments);
         if (arguments.length) {
-            // http://192.168.1.201:8002/WsEcl/res/query/hthor/quicktest/res/index.html
-            var pathParts = this._pathname.split("/res/");
-            if (pathParts.length >= 2) {
-                var queryParts = pathParts[1].split("/");
-                if (queryParts.length >= 3) {
-                    this.target(queryParts[1]);
-                    this.query(queryParts[2]);
+            //  http://192.168.1.201:8010/esp/files/stub.htm?QuerySetId=roxie&Id=stock.3&Widget=QuerySetDetailsWidget
+            this._port = this._port === "8010" ? "8002" : this._port;  //  Need a better way  ---
+            for (var key in this._params) {
+                switch (key) {
+                    case "QuerySetId":
+                        this.target(this._params[key]);
+                        break;
+                    case "Id":
+                        this.query(this._params[key]);
+                        break;
+                }
+            }
+
+            if (!this._target && !this._query) {
+                // http://192.168.1.201:8002/WsEcl/res/query/hthor/quicktest/res/index.html
+                var pathParts = this._pathname.split("/res/");
+                if (pathParts.length >= 2) {
+                    var queryParts = pathParts[1].split("/");
+                    if (queryParts.length >= 3) {
+                        this.target(queryParts[1]);
+                        this.query(queryParts[2]);
+                    }
                 }
             }
         }
@@ -247,13 +266,13 @@
             for (var key in this._params) {
                 switch (key) {
                     case "Wuid":
-                        context.wuid(this._params[key]);
+                        this.wuid(this._params[key]);
                         break;
                     case "ResultName":
-                        context.resultName(this._params[key]);
+                        this.resultName(this._params[key]);
                         break;
                     case "Sequence":
-                        context.sequence(this._params[key]);
+                        this.sequence(this._params[key]);
                         break;
                 }
             }
@@ -575,7 +594,7 @@
         WsWorkunits: WsWorkunits,
         HIPIERoxie: HIPIERoxie,
         HIPIEWorkunit: HIPIEWorkunit,
-        createConnection: function (url) {
+        createESPConnection: function (url) {
             url = url || document.URL;
             var testURL = new ESPUrl()
                 .url(url)
@@ -585,9 +604,12 @@
                     .url(url)
                 ;
             }
-            return new WsECL()
-                .url(url)
-            ;
+            if (testURL.isWsEcl()) {
+                return new WsECL()
+                   .url(url)
+                ;
+            }
+            return null;
         }
     };
 }));

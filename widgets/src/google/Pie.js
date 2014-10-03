@@ -13,6 +13,8 @@
         this._tag = "div";
         this._class = "google_pie";
 
+        this.data([]);
+
         this._is3D = true;
     };
     Pie.prototype = Object.create(HTMLWidget.prototype);

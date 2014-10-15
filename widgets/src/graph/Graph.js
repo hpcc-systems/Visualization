@@ -174,6 +174,30 @@
         this.svgV = this.svg.append("g").attr("id", this._id + "V");
     };
 
+    Graph.prototype.getVertexBounds = function (layoutEngine) {
+        var vBounds = [[null,null],[null,null]];
+        this.graphData.nodeValues().forEach(function (item) {
+            var pos = layoutEngine.nodePos(item._id);
+            var leftX = pos.x - pos.width / 2;
+            var rightX = pos.x + pos.width / 2;
+            var topY = pos.y - pos.height / 2;
+            var bottomY = pos.y + pos.height / 2;
+            if (vBounds[0][0] === null || vBounds[0][0] > leftX) {
+                vBounds[0][0] = leftX;
+            }
+            if (vBounds[0][1] === null || vBounds[0][1] > topY) {
+                vBounds[0][1] = topY;
+            }
+            if (vBounds[1][0] === null || vBounds[1][0] < rightX) {
+                vBounds[1][0] = rightX;
+            }
+            if (vBounds[1][1] === null || vBounds[1][1] < bottomY) {
+                vBounds[1][1] = bottomY;
+            }
+        });
+        return vBounds;
+    };
+        
     Graph.prototype.shrinkToFit = function (bounds) {
         var width = this.width();
         var height = this.height();
@@ -221,42 +245,30 @@
                             .points([])
                         ;
                     });
+                    if (context._shrinkToFitOnLayout) {
+                        var vBounds = context.getVertexBounds(layoutEngine);
+                        context.shrinkToFit(vBounds);
+                    }
                 });
-
                 this.forceLayout.force.start();
             } else if (layoutEngine) {
-                var vBounds = [[null,null],[null,null]];
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
                     item
                         .pos({ x: pos.x, y: pos.y }, true)
                     ;
-                    var leftX = pos.x - pos.width / 2;
-                    var rightX = pos.x + pos.width / 2;
-                    var topY = pos.y - pos.height / 2;
-                    var bottomY = pos.y + pos.height / 2;
-                    if (vBounds[0][0] === null || vBounds[0][0] > leftX) {
-                        vBounds[0][0] = leftX;
-                    }
-                    if (vBounds[0][1] === null || vBounds[0][1] > topY) {
-                        vBounds[0][1] = topY;
-                    }
-                    if (vBounds[1][0] === null || vBounds[1][0] < rightX) {
-                        vBounds[1][0] = rightX;
-                    }
-                    if (vBounds[1][1] === null || vBounds[1][1] < bottomY) {
-                        vBounds[1][1] = bottomY;
-                    }
                 });
-                if (context._shrinkToFitOnLayout) {
-                    context.shrinkToFit(vBounds);
-                }
                 context.graphData.edgeValues().forEach(function (item) {
                     var points = layoutEngine.edgePoints(item._id);
                     item
                         .points(points, true)
                     ;
                 });
+
+                if (context._shrinkToFitOnLayout) {
+                    var vBounds = context.getVertexBounds(layoutEngine);
+                    context.shrinkToFit(vBounds);
+                }
                 this._fixIEMarkers();
             }
         }

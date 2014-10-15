@@ -16,11 +16,12 @@
         var currStep = -Math.PI / 2;
         var step = 2 * Math.PI / order;
         graphData.eachNode(function (u, value) {
+            var size = value.getBBox(true);
             context.pos[u] = {
                 x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * radius,
                 y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * radius,
-                width: value.width,
-                height: value.height
+                width: size.width,
+                height: size.height
             }
             currStep += step; 
         });
@@ -60,10 +61,13 @@
         this.vertexMap = {};
         graphData.eachNode(function (u) {
             var value = graphData.node(u);
+            var size = value.getBBox(true);
             var newItem = {
                 id: u,
                 x: value.pos().x,
                 y: value.pos().y,
+                width: size.width,
+                height: size.height,
                 value: value
             };
             context.vertices.push(newItem);

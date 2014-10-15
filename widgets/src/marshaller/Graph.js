@@ -40,8 +40,9 @@
 
         var context = this;
         if (this._url[0] === "[" || this._url[0] === "{") {
-            this.marshaller.parse(this._url);
-            this.doRender();
+            this.marshaller.parse(this._url, function () {
+                context.doRender();
+            });
         } else {
             this.marshaller.url(this._url, function (response) {
                 context.doRender();

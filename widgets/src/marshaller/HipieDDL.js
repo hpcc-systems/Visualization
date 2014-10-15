@@ -1,15 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/TextBox",
-            "../chart/MultiChartSurface", "../chart/Bar", "../chart/Line", "../chart/Pie", "../chart/Bubble",
-            "../map/ChoroplethStates", "../map/ChoroplethCounties",
-            "../other/Slider", "../other/Table", "../other/WordCloud", "../other/Comms"
-        ], factory);
+        define(["../other/Comms", "../common/Widget"], factory);
     } else {
-        root.Marshaller = factory(root.TextBox, root.MultiChartSurface, root.Bar, root.Line, root.Pie, root.Bubble, root.ChoroplethStates, root.ChoroplethCounties, root.Slider, root.Table, root.WordCloud, root.Comms);
+        root.Marshaller = factory(root.Comms, root.Widget);
     }
-}(this, function (TextBox, MultiChartSurface, Bar, Line, Pie, Bubble, ChoroplethStates, ChoroplethCounties, Slider, Table, WordCloud, Comms) {
-
+}(this, function (Comms, Widget) {
     exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
@@ -155,63 +150,90 @@
         this.source = new Source(this, visualization.source);
         this.onSelect = new Select(this, visualization.onSelect);
 
+        var context = this;
         switch (this.type) {
             case "CHORO":
-                if (this.source.mappings.contains("county")) {
-                    this.widget = new ChoroplethCounties();
-                } else {
-                    this.widget = new ChoroplethStates();
-                }
+                this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates");
                 break;
             case "2DCHART":
             case "PIE":
             case "BUBBLE":
             case "BAR":
             case "WORD_CLOUD":
-                this.widget = new MultiChartSurface()
-                    .activate(this.properties.charttype || this.type)
-                    .title(this.id)
-                ;
+                this.loadWidget("src/chart/MultiChartSurface", function (widget) {
+                    widget
+                        .activate(context.properties.charttype || context.type)
+                        .title(context.id)
+                    ;
+                });
                 break;
             case "LINE":
-                this.widget = new Line();
+                this.loadWidget("src/chart/Line");
                 break;
             case "TABLE":
-                this.widget = new Table()
-                    .columns(this.label)
-                ;
+                this.loadWidget("src/other/Table", function (widget) {
+                    widget
+                        .columns(this.label)
+                    ;
+                });
                 break;
             case "SLIDER":
-                this.widget = new Slider();
-                if (visualization.range) {
-                    this.widget
-                        .range({ low: +visualization.range[0], high: +visualization.range[1] })
-                        .step(+visualization.range[2])
-                    ;
-                }
+                this.loadWidget("src/other/Slider", function (widget) {
+                    if (visualization.range) {
+                        widget
+                            .range({ low: +visualization.range[0], high: +visualization.range[1] })
+                            .step(+visualization.range[2])
+                        ;
+                    }
+                });
                 break;
             default:
-                this.widget = new TextBox()
-                    .text(this.id + "\n" + "TODO:  " + this.type)
-                ;
+                this.loadWidget("src/common/TextBox", function (widget) {
+                    widget
+                        .text(this.id + "\n" + "TODO:  " + this.type)
+                    ;
+                });
                 break;
         }
+    };
 
-        if (this.widget) {
-            var context = this;
-            this.widget.click = function (d) {
-                context.click(d);
+    Visualization.prototype.isLoading = function (widgetPath, callback) {
+        return this.widget === null;
+    };
+
+    Visualization.prototype.isLoaded = function (widgetPath, callback) {
+        return this.widget instanceof Widget;
+    };
+
+    Visualization.prototype.loadWidget = function (widgetPath, callback) {
+        this.widget = null;
+
+        var context = this;
+        require([widgetPath], function (Widget) {
+            context.setWidget(new Widget());
+            if (callback) {
+                callback(context.widget);
             }
-            for (var key in this.properties) {
-                if (this.widget[key]) {
-                    try {
-                        this.widget[key](this.properties[key])
-                    } catch (e) {
-                        console.log("Invalid Property:" + this.id + ".properties." + key);
-                    }
+        });
+    };
+
+    Visualization.prototype.setWidget = function (widget) {
+        this.widget = widget;
+
+        var context = this;
+        this.widget.click = function (d) {
+            context.click(d);
+        }
+        for (var key in this.properties) {
+            if (this.widget[key]) {
+                try {
+                    this.widget[key](this.properties[key])
+                } catch (e) {
+                    console.log("Invalid Property:" + this.id + ".properties." + key);
                 }
             }
         }
+        return this.widget;
     };
 
     Visualization.prototype.accept = function (visitor) {
@@ -435,6 +457,11 @@
         }, this);
     };
 
+    Dashboard.prototype.allVisualizationsLoaded = function () {
+        var notLoaded = this.visualizationsArray.filter(function (item) { return !item.isLoaded(); });
+        return notLoaded.length === 0;
+    };
+
     //  Marshaller  ---
     function Marshaller() {
         this._proxyMappings = {};
@@ -470,6 +497,7 @@
         var request = {
             refresh: false
         };
+
         var context = this;
         transport
             .call(request, function (response) {
@@ -484,8 +512,9 @@
                             json = ddlParts.join(url);
                         }
                         //  ---  ---
-                        context.parse(json);
-                        callback(response);
+                        context.parse(json, function () {
+                            callback(response);
+                        });
                     });
                 }
             })
@@ -498,17 +527,40 @@
         return this;
     }
 
-    Marshaller.prototype.parse = function (json) {
+    Marshaller.prototype.parse = function (json, callback) {
         var context = this;
         var dashboards = JSON.parse(json);
         this.dashboards = {};
+        this.dashboardArray = [];
         dashboards.forEach(function (item) {
-            context.dashboards[item.id] = new Dashboard(context, item, context._proxyMappings);
+            newDashboard = new Dashboard(context, item, context._proxyMappings);
+            context.dashboards[item.id] = newDashboard;
+            context.dashboardArray.push(newDashboard);
         });
+        this.ready(callback);
         return this;
     };
 
-    Marshaller.prototype.updateViz = function(vizInfo, data) {
+    Marshaller.prototype.allDashboardsLoaded = function () {
+        return this.dashboardArray.filter(function (item) { return !item.allVisualizationsLoaded(); }).length === 0;
+    };
+
+    Marshaller.prototype.ready = function (callback) {
+        if (!callback) {
+            return;
+        }
+        var context = this;
+        function waitForLoad(callback) {
+            if (context.allDashboardsLoaded()) {
+                callback();
+            } else {
+                setTimeout(waitForLoad, 100, callback);
+            }
+        };
+        waitForLoad(callback);
+    };
+
+    Marshaller.prototype.updateViz = function (vizInfo, data) {
     };
 
     return {

@@ -10,6 +10,7 @@
   fill-opacity: 1;
 }
 
-.circlepacking text {
-  font: 10px sans-serif;
+.circlepacking .label {
+  fill:white;
+  text-anchor: middle;
 }

@@ -257,6 +257,12 @@
         return this;
     };
 
+    WsECL.prototype.constructUrl = function () {
+        return Comms.prototype.getUrl.call(this, {
+            pathname: "WsEcl/submit/query/" + this._target + "/" + this._query + "/json"
+        });
+    };
+
     WsECL.prototype.call = function (target, request, callback) {
         target = target || {};
         target.target = target.target || this._target;
@@ -350,12 +356,31 @@
         return this;
     };
 
+    WsWorkunits.prototype.appendParam = function (label, value, params) {
+        if (value) {
+            if (params) {
+                params += "&"
+            }
+            return params + label + "=" + value;
+        }
+        return params;
+    };
+
+    WsWorkunits.prototype.constructUrl = function () {
+        var url = Comms.prototype.getUrl.call(this, {
+            pathname: "WsWorkunits/res/" + this._wuid + "/"
+        });
+        var params = "";
+        params = this.appendParam("ResultName", this._resultName, params);
+        return url + (params ? "?" + params : "");
+    };
+
     WsWorkunits.prototype._fetchResult = function (target, callback, skipMapping) {
         target = target || {};
         target._start = target._start || 0;
         target._count = target._count || -1;
         var url = this.getUrl({
-            pathname: "WsWorkunits/WUResult.json",
+            pathname: "WsWorkunits/WUResult.json"
         });
         var request = {
             Wuid: target.wuid,

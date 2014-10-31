@@ -33,7 +33,7 @@
         if (arguments.length) {
             var data = [["", ""]];
             this._data.forEach(function (row) {
-                data.push([row.label, row.weight]);
+                data.push(["" + row.label, row.weight]);
             }, this);
             this._data_google = google.visualization.arrayToDataTable(data);
         }

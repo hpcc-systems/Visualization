@@ -393,6 +393,10 @@
     };
 
     DataSource.prototype.processResponse = function (response, request) {
+        var lowerResponse = {};
+        for (var key in response) {
+            lowerResponse[key.toLowerCase()] = response[key];
+        }
         for (var key in this.outputs) {
             var from = this.outputs[key].from;
             if (!from) {
@@ -401,6 +405,9 @@
             }
             if (exists(from, response) && exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]) {
                 this.outputs[key].setData(response[from], request);
+            } else if (exists(from, lowerResponse)) {// && exists(from + "_changed", lowerResponse) && lowerResponse[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"]) {
+                console.log("DDL 'DataSource.From' case is Incorrect");
+                this.outputs[key].setData(lowerResponse[from], request);
             }
         }
     };

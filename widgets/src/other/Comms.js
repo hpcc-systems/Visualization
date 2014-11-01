@@ -606,8 +606,6 @@
     HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
         var context = this;
         return WsWorkunits.prototype.fetchResult.call(this, { wuid: this._wuid, resultname: name }, function (response) {
-            context._resultNameCache[name + "_changed"] = [{}];
-            context._resultNameCache[name + "_changed"][0][name + "_changed"] = true;
             callback(response);
         });
     };
@@ -642,8 +640,6 @@
                         }
                         return true;
                     });
-                    retVal[item.from + "_changed"] = [{}];
-                    retVal[item.from + "_changed"][0][item.from + "_changed"] = true;
                 }
             }
             callback(retVal);

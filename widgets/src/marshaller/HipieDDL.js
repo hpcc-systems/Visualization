@@ -403,7 +403,7 @@
                 //  Temp workaround for older services  ---
                 from = this.outputs[key].id.toLowerCase();
             }
-            if (exists(from, response) && exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]) {
+            if (exists(from, response) && (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]))) {
                 this.outputs[key].setData(response[from], request);
             } else if (exists(from, lowerResponse)) {// && exists(from + "_changed", lowerResponse) && lowerResponse[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"]) {
                 console.log("DDL 'DataSource.From' case is Incorrect");

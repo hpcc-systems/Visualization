@@ -17,9 +17,10 @@
         var step = 2 * Math.PI / order;
         graphData.eachNode(function (u, value) {
             var size = value.getBBox(true);
+            var maxSize = Math.max(size.width, size.height)
             context.pos[u] = {
-                x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * radius,
-                y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * radius,
+                x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * (radius - maxSize),
+                y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * (radius - maxSize),
                 width: size.width,
                 height: size.height
             }

@@ -173,7 +173,7 @@
             case "TABLE":
                 this.loadWidget("src/other/Table", function (widget) {
                     widget
-                        .columns(this.label)
+                        .columns(context.label)
                     ;
                 });
                 break;
@@ -190,7 +190,7 @@
             default:
                 this.loadWidget("src/common/TextBox", function (widget) {
                     widget
-                        .text(this.id + "\n" + "TODO:  " + this.type)
+                        .text(context.id + "\n" + "TODO:  " + context.type)
                     ;
                 });
                 break;

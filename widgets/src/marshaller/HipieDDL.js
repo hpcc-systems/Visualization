@@ -90,6 +90,9 @@
         this._id = source.id;
         this._output = source.output;
         this.mappings = new SourceMappings(this.visualization, source.mappings);
+        this.first = source.first;
+        this.reverse = source.reverse;
+        this.sort = source.sort;
     };
 
     Source.prototype.exists = function () {
@@ -102,6 +105,41 @@
 
     Source.prototype.getOutput = function () {
         return this.getDatasource().outputs[this._output];
+    };
+
+    Source.prototype.hasData = function () {
+        return this.getOutput().data ? true : false;
+    };
+
+    Source.prototype.getData = function () {
+        var context = this;
+        var data = this.getOutput().data;
+        if (this.sort) {
+            var context = this;
+            data.sort(function (l, r) {
+                for (var i = 0; i < context.sort.length; ++i) {
+                    var sortField = context.sort[i];
+                    var reverse = false;
+                    if (sortField.indexOf("-") === 0) {
+                        sortField = sortField.substring(1);
+                        reverse = true;
+                    }
+                    if (l[sortField] !== r[sortField]) {
+                        return reverse ? r[sortField] - l[sortField] : l[sortField] - r[sortField];
+                    }
+                }
+                return 0;
+            });
+        }
+        if (this.reverse) {
+            data.reverse();
+        }
+        if (this.first && data.length > this.first) {
+            data.length = this.first;
+        }
+        return data.map(function (item) {
+            return context.mappings.doMap(item);
+        });
     };
 
     //  Viz Select ---
@@ -271,11 +309,9 @@
 
     Visualization.prototype.notify = function () {
         var context = this;
-        if (this.source.getOutput().data) {
+        if (this.source.hasData()) {
             if (this.widget) {
-                var data = this.source.getOutput().data.map(function (item) {
-                    return context.source.mappings.doMap(item);
-                });
+                var data = this.source.getData();
                 this.dashboard.marshaller.updateViz(this, data);
                 this.widget
                     .data(data)

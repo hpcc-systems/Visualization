@@ -34,10 +34,9 @@
         return this;
     };
 
-    Graph.prototype.render = function () {
+    Graph.prototype.render = function (callback) {
         this.data({ vertices: [], edges: []});
         GraphWidget.prototype.render.call(this);
-
         var context = this;
         if (this._url[0] === "[" || this._url[0] === "{") {
             this.marshaller.parse(this._url, function () {
@@ -46,6 +45,9 @@
         } else {
             this.marshaller.url(this._url, function (response) {
                 context.doRender();
+                if (callback) {
+                    callback(context);
+                }
             });
         }
         return this;

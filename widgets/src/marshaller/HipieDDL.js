@@ -536,10 +536,11 @@
 
     Marshaller.prototype.parse = function (json, callback) {
         var context = this;
-        var dashboards = JSON.parse(json);
+        this._json = json;
+        this._jsonParsed = JSON.parse(this._json);
         this.dashboards = {};
         this.dashboardArray = [];
-        dashboards.forEach(function (item) {
+        this._jsonParsed.forEach(function (item) {
             newDashboard = new Dashboard(context, item, context._proxyMappings);
             context.dashboards[item.id] = newDashboard;
             context.dashboardArray.push(newDashboard);

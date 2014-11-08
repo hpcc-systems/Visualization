@@ -40,7 +40,7 @@
         return this;
     };
 
-    HTML.prototype.render = function () {
+    HTML.prototype.render = function (callback) {
         var context = this;
         if (this._url[0] === "[" || this._url[0] === "{") {
             this.marshaller.parse(this._url, function () {
@@ -49,6 +49,9 @@
         } else {
             this.marshaller.url(this._url, function (response) {
                 context.doRender();
+                if (callback) {
+                    callback(context);
+                }
             });
         }
         return this;

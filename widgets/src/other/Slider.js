@@ -10,6 +10,7 @@
         ISlider.call(this);
 
         this._class = "slider";
+        this._selectionLabel = "";
 
         this.xScale = d3.scale.linear()
             .clamp(true)
@@ -52,6 +53,12 @@
     Slider.prototype.step = function (_) {
         if (!arguments.length) return this._step;
         this._step = _;
+        return this;
+    };
+
+    Slider.prototype.selectionLabel = function (_) {
+        if (!arguments.length) return this._selectionLabel;
+        this._selectionLabel = _;
         return this;
     };
 
@@ -147,7 +154,13 @@
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
-            this.newSelection(mouseX, mouseX);
+            if (this._selectionLabel) {
+                var clickData = {};
+                clickData[this._selectionLabel] = mouseX;
+                this.click(clickData);
+            } else {
+                this.click(mouseX);
+            }
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);

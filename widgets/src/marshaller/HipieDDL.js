@@ -19,23 +19,37 @@
     };
 
     //  Mappings ---
-    function SourceMappings(source, mappings) {
-        this.source = source;
-        this.mappings = mappings;
+    function SourceMappings(visualization, mappings) {
+        this.visualization = visualization;
+        this.hasMappings = false;
+        this.mappings = {};
+        var context = this;
+        switch (this.visualization.type) {
+            case "TABLE":
+                for (var key in mappings) {
+                    mappings[key].forEach(function (mapingItem, idx) {
+                        context.mappings[visualization.label[idx]] = mapingItem;
+                    });
+                }
+                break;
+            default:
+                this.mappings = mappings;
+        }
         this.reverseMappings = {};
         for (var key in this.mappings) {
             this.reverseMappings[this.mappings[key]] = key;
+            this.hasMappings = true;
         }
     };
 
-    SourceMappings.prototype.contains = function(key) {
+    SourceMappings.prototype.contains = function (key) {
         return this.mappings[key] !== undefined;
     };
 
     SourceMappings.prototype.doMap = function (item) {
-        var retVal = item;
+        var retVal = {};
         try {
-            switch (this.source.visualization.type) {
+            switch (this.visualization.type) {
                 case "LINE":
                     retVal = [];
                     for (var i = 0; i < this.mappings.x.length; ++i) {
@@ -45,20 +59,13 @@
                         })
                     }
                     break;
-                case "TABLE":
-                    for (var key in this.mappings) {
-		                retVal = {};
-                        this.mappings[key].forEach(function (mapingItem) {
-                            var rhsKey = mapingItem.toLowerCase();
-                            var val = item[rhsKey];
-                            retVal[rhsKey] = val;
-                        });
-                    }
-                    break;
                 default:
                     for (var key in this.mappings) {
-                        var rhsKey = this.mappings[key].toLowerCase();
+                        var rhsKey = this.mappings[key];
                         var val = item[rhsKey];
+                        if (val === undefined) {
+                            val = item[rhsKey.toLowerCase()];
+                        }
                         retVal[key] = val;
                     }
                     break;
@@ -67,6 +74,10 @@
             console.log("Invalid Mappings");
         }
         return retVal;
+    };
+
+    SourceMappings.prototype.getMap = function (key) {
+        return this.mappings[key];
     };
 
     SourceMappings.prototype.getReverseMap = function (key) {
@@ -78,7 +89,7 @@
         this.visualization = visualization;
         this._id = source.id;
         this._output = source.output;
-        this.mappings = new SourceMappings(this, source.mappings);
+        this.mappings = new SourceMappings(this.visualization, source.mappings);
     };
 
     Source.prototype.exists = function () {
@@ -284,8 +295,8 @@
         if (this.onSelect.exists()) {
             var request = {};
             for (var key in this.onSelect.mappings) {
-                var hackKey = this.source.mappings.getReverseMap(key);
-                request[key] = d[hackKey];
+                var origKey = this.source.mappings.hasMappings ? this.source.mappings.getReverseMap(key) : key;
+                request[this.onSelect.mappings[key]] = d[origKey];
             }
             var dataSources = this.onSelect.getUpdatesDatasources();
             dataSources.forEach(function (item) {

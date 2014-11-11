@@ -490,7 +490,7 @@
             if (toFetch > 0) {
                 for (var key in context._resultNameCache) {
                     var item = context._resultNameCache[key];
-                    context.fetchResult(key, function (response) {
+                    context.fetchResult({ wuid: context._wuid, resultname: key }, function (response) {
                         if (--toFetch <= 0) {
                             callback(context._resultNameCache);
                         }

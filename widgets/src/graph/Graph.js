@@ -14,7 +14,8 @@
         this.highlight = {
             zoom: 1.1,
             opacity: 0.33,
-            transition: 500
+            edge: "1.25px",
+            transition: 250
         };
 
         this._class = "graph";
@@ -111,23 +112,23 @@
 
             //  Drag  ---
             function dragstart(d) {
-                d._dragging = true;
+                context._dragging = d;
                 if (context.forceLayout) {
                     var forceNode = context.forceLayout.vertexMap[d.id()];
                     forceNode.fixed = true;
                 }
-                context.graphData.incidentEdges(d.id()).forEach(function (id) {
+                context.graphData.nodeEdges(d.id()).forEach(function (id) {
                     var edge = context.graphData.edge(id);
                     context._pushMarkers(edge.element(), edge);
                 })
             }
             function dragend(d) {
-                d._dragging = false;
+                context._dragging = null;
                 if (context.forceLayout) {
                     var forceNode = context.forceLayout.vertexMap[d.id()];
                     forceNode.fixed = false;
                 }
-                context.graphData.incidentEdges(d.id()).forEach(function (id) {
+                context.graphData.nodeEdges(d.id()).forEach(function (id) {
                     var edge = context.graphData.edge(id);
                     context._popMarkers(edge.element(), edge);
                 })
@@ -142,7 +143,7 @@
                     forceNode.x = forceNode.px = d3.event.x;
                     forceNode.y = forceNode.py = d3.event.y;
                 }
-                context.graphData.incidentEdges(d.id()).forEach(function (id) {
+                context.graphData.nodeEdges(d.id()).forEach(function (id) {
                     var edge = context.graphData.edge(id);
                     edge
                         .points([])
@@ -220,7 +221,9 @@
         if (this._renderCount) {
             if (this.forceLayout) {
                 this.forceLayout.force.stop();
+                this.forceLayout = null;
             }
+
             var context = this;
             var layoutEngine = this.getLayoutEngine();
             if (this._layout == "ForceDirected2") {
@@ -252,6 +255,7 @@
                 });
                 this.forceLayout.force.start();
             } else if (layoutEngine) {
+                this.forceLayout = null;
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
                     item
@@ -259,7 +263,7 @@
                     ;
                 });
                 context.graphData.edgeValues().forEach(function (item) {
-                    var points = layoutEngine.edgePoints(item._id);
+                    var points = layoutEngine.edgePoints({v: item._sourceVertex.id(), w: item._targetVertex.id()});
                     item
                         .points(points, true)
                     ;
@@ -289,15 +293,14 @@
                 context.vertex_click(d);
             })
             .on("mouseover", function (d) {
-                if (d._dragging)
+                if (context._dragging)
                     return;
-                //context.vertex_mouseover(d3.select(this), d);
+                context.vertex_mouseover(d3.select(this), d);
             })
             .on("mouseout", function (d) {
-                if (d._dragging)
+                if (context._dragging)
                     return;
-                //  TODO:  Needs to be optional  ---
-                //context.vertex_mouseout(d3.select(this), d);
+                context.vertex_mouseout(d3.select(this), d);
             })
             .each(createV)
             .transition()
@@ -320,6 +323,16 @@
             .style("opacity", 1e-6)
             .on("click", function (d) {
                 context.edge_click(d);
+            })
+            .on("mouseover", function (d) {
+                if (context._dragging)
+                    return;
+                context.edge_mouseover(d3.select(this), d);
+            })
+            .on("mouseout", function (d) {
+                if (context._dragging)
+                    return;
+                context.edge_mouseout(d3.select(this), d);
             })
             .each(createE)
             .transition()
@@ -376,58 +389,109 @@
         return null;//new GraphLayouts.None(this.graphData, this._size.width, this._size.height);
     }
 
-    Graph.prototype.highlightVertex = function (element, d) {
-        //  Causes issues in IE  ---
-        //var zoomScale = this.zoom.scale();
-        //if (zoomScale > 1)
-            zoomScale = 1;
+    Graph.prototype.getNeighborMap = function (vertex) {
+        var vertices = {};
+        var edges = {};
 
-        var context = this;
-        var highlightVertices = {};
-        var highlightEdges = {};
-        if (d) {
-            var edges = this.graphData.incidentEdges(d.id());
+        if (vertex) {
+            var edges = this.graphData.nodeEdges(vertex.id());
             for (var i = 0; i < edges.length; ++i) {
                 var edge = this.graphData.edge(edges[i]);
-                highlightEdges[edge.id()] = true;
-                highlightVertices[edge._sourceVertex.id()] = true;
-                highlightVertices[edge._targetVertex.id()] = true;
+                edges[edge.id()] = edge;
+                if (edge._sourceVertex.id() !== vertex.id()) {
+                    vertices[edge._sourceVertex.id()] = edge._sourceVertex;
+                }
+                if (edge._targetVertex.id() !== vertex.id()) {
+                    vertices[edge._targetVertex.id()] = edge._targetVertex;
+                }
             }
         }
 
+        return {
+            vertices: vertices,
+            edges: edges
+        };
+    };
+
+    Graph.prototype.highlightVerticies = function (vertexMap) {
+        var context = this;
         var vertexElements = this.svgV.selectAll(".vertex");
         vertexElements.transition().duration(this.highlight.transition)
             .each("end", function (d) {
-                if (element) {
-                    element.node().parentNode.appendChild(element.node());
+                if (vertexMap && vertexMap[d.id()]) {
+                    d._parentElement.node().parentNode.appendChild(d._parentElement.node());
                 }
             })
-            .style("opacity", function (o) {
-                if (!d || highlightVertices[o.id()]) {
+            .style("opacity", function (d) {
+                if (!vertexMap || vertexMap[d.id()]) {
                     return 1;
                 }
                 return context.highlight.opacity;
             })
         ;
-        vertexElements.select(".vertexLabelXXX").transition().duration(this.highlight.transition)
-            .attr("transform", function (o) {
-                if (d && highlightVertices[o.id()]) {
+        //  Causes issues in IE  ---
+        /*
+        var zoomScale = this.zoom.scale();
+        if (zoomScale > 1)
+            zoomScale = 1;
+        vertexElements.select(".textbox").transition().duration(this.highlight.transition)
+            .attr("transform", function (d) {
+
+                if (vertexMap && vertexMap[d.id()]) {
                     return "scale(" + context.highlight.zoom / zoomScale + ")";
                 }
                 return "scale(1)";
             })
         ;
-        d3.selectAll(".edge")
-            .classed("edge-active", function (o) {
-                return (d && highlightEdges[o.id()]) ? true : false;
+        */
+    };
+
+    Graph.prototype.highlightEdges = function (edgeMap) {
+        var context = this;
+        var edgeElements = this.svgE.selectAll(".edge");
+        edgeElements
+            .style("stroke-width", function (o) {
+                if (edgeMap && edgeMap[o.id()]) {
+                    return context.highlight.edge;
+                }
+                return "1px";
             }).transition().duration(this.highlight.transition)
             .style("opacity", function (o) {
-                if (!d || highlightEdges[o.id()]) {
+                if (!edgeMap || edgeMap[o.id()]) {
                     return 1;
                 }
                 return context.highlight.opacity;
             })
         ;
+    };
+
+    Graph.prototype.highlightVertex = function (element, d) {
+        var context = this;
+        if (d) {
+            var highlight = this.getNeighborMap(d);
+            highlight.vertices[d.id()] = d;
+            this.highlightVerticies(highlight.vertices);
+            this.highlightEdges(highlight.edges);
+        } else {
+            this.highlightVerticies(null);
+            this.highlightEdges(null);
+        }
+
+    };
+
+    Graph.prototype.highlightEdge = function (element, d) {
+        if (d) {
+            var vertices = {};
+            vertices[d._sourceVertex.id()] = d._sourceVertex;
+            vertices[d._targetVertex.id()] = d._targetVertex;
+            var edges = {};
+            edges[d.id()] = d;
+            this.highlightVerticies(vertices);
+            this.highlightEdges(edges);
+        } else {
+            this.highlightVerticies(null);
+            this.highlightEdges(null);
+        }
     };
 
     //  Events  ---
@@ -442,6 +506,14 @@
 
     Graph.prototype.vertex_mouseout = function (d, self) {
         this.highlightVertex(null, null);
+    };
+
+    Graph.prototype.edge_mouseover = function (element, d) {
+        //this.highlightEdge(element, d);
+    };
+
+    Graph.prototype.edge_mouseout = function (d, self) {
+        //this.highlightEdge(null, null);
     };
 
     Graph.prototype.addMarkers = function (clearFirst) {

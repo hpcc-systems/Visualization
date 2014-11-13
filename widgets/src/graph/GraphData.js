@@ -1,14 +1,16 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["lib/graphlib/graphlib"], factory);
+        define(["lib/dagre/dagre"], factory);
     } else {
-        root.GraphData = factory();
+        root.GraphData = factory(root.dagre);
     }
-}(this, function () {
+}(this, function (dagre) {
     function GraphData() {
-        graphlib.Digraph.call(this);
+        dagre.graphlib.Graph.call(this, { multigraph: true, compound: true });
+        this.setGraph({});
+        this.setDefaultEdgeLabel(function () { return {}; });
     };
-    GraphData.prototype = Object.create(graphlib.Digraph.prototype);
+    GraphData.prototype = Object.create(dagre.graphlib.Graph.prototype);
 
     GraphData.prototype.setData = function (vertices, edges, merge) {
         var context = this;
@@ -21,14 +23,14 @@
         for (var i = 0; i < vertices.length; ++i) {
             var entity = vertices[i];
             if (!merge || !this.hasNode(entity._id)) {
-                this.addNode(entity._id, entity)
+                this.setNode(entity._id, entity)
                 retVal.addedVertices.push(entity);
             }
         }
         for (var i = 0; i < edges.length; ++i) {
             var edge = edges[i];
             if (!merge || !this.hasEdge(edge._id)) {
-                this.addEdge(edge._id, edge._sourceVertex._id, edge._targetVertex._id, edge);
+                this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge);
                 retVal.addedEdges.push(edge);
             }
         }
@@ -70,19 +72,31 @@
 
     GraphData.prototype.nodeValues = function () {
         var retVal = [];
-        this.eachNode(function (u, value) {
-            retVal.push(value);
-        });
+        this.nodes().forEach(function (item, idx) {
+            retVal.push(this.node(item));
+        }, this);
         return retVal;
+    };
+
+    GraphData.prototype.eachNode = function (callback) {
+        this.nodes().forEach(function (item, idx) {
+            callback(item, this.node(item));
+        }, this);
     };
 
     GraphData.prototype.edgeValues = function () {
         var retVal = [];
         var context = this;
-        this.eachEdge(function (e, source, target, value) {
-            retVal.push(value);
-        });
+        this.edges().forEach(function (item, idx) {
+            retVal.push(this.edge(item));
+        }, this);
         return retVal;
+    };
+
+    GraphData.prototype.eachEdge = function (callback) {
+        this.edges().forEach(function (item, idx) {
+            callback(item, item.v, item.w, this.edge(item));
+        }, this);
     };
 
     return GraphData;

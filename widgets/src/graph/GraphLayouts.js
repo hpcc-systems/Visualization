@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["lib/graphlib/graphlib", "lib/dagre/dagre"], factory);
+        define(["lib/dagre/dagre"], factory);
     } else {
-        root.GraphLayouts = factory();
+        root.GraphLayouts = factory(root.dagre);
     }
-}(this, function () {
+}(this, function (dagre) {
     function Circle(graphData, width, height, radius) {
         var context = this;
         this.pos = {};
@@ -12,7 +12,7 @@
         //  Initial Positions  ---
         var padding = 0;
         radius = radius || (width < height ? width - padding : height - padding) / 2;
-        var order = graphData.order();
+        var order = graphData.nodeCount();
         var currStep = -Math.PI / 2;
         var step = 2 * Math.PI / order;
         graphData.eachNode(function (u, value) {
@@ -94,7 +94,7 @@
         ;
         if (oneShot) {
             this.force.start();
-            var total = graphData.size();
+            var total = graphData.edgeCount();
             for (var i = 0; i < total; ++i) {
                 this.force.tick();
             }
@@ -109,42 +109,48 @@
     };
 
     function Hierarchy(graphData, width, height) {
-        var digraph = new graphlib.Digraph();
+        var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
+              .setGraph({})
+              .setDefaultEdgeLabel(function() { return {}; })
+        ;
         graphData.eachNode(function (u) {
             var value = graphData.node(u);
             var clientSize = value.getBBox();
-            digraph.addNode(u, {
+            digraph.setNode(u, {
                 width: clientSize.width,
                 height: clientSize.height
             });
         });
         graphData.eachEdge(function (e, s, t) {
             var value = graphData.edge(e);
-            digraph.addEdge(e, s, t, {
+            digraph.setEdge(s, t, {
                 //minLen: value._textBox.text().length ? 2 : 1
             });
         });
-        this.dagreLayout = dagre.layout()
-            .run(digraph)
+        this.dagreLayout = dagre.layout(digraph)
+            //.run(digraph)
         ;
-        var deltaX = (width - this.dagreLayout._value.width) / 2;
-        var deltaY = (height - this.dagreLayout._value.height) / 2;
-        this.dagreLayout.eachNode(function (u, value) {
+        var deltaX = (width - digraph.graph().width) / 2;
+        var deltaY = (height - digraph.graph().height) / 2;
+        digraph.nodes().forEach(function (u) {
+            var value = digraph.node(u);
             value.x += deltaX;
             value.y += deltaY;
         });
-        this.dagreLayout.eachEdge(function (e, s, t, value) {
+        digraph.edges().forEach(function (e) {
+            var value = digraph.edge(e);
             for (var i = 0; i < value.points.length; ++i) {
                 value.points[i].x += deltaX;
                 value.points[i].y += deltaY;
             }
         });
+        this.digraph = digraph;
     };
     Hierarchy.prototype.nodePos = function (u) {
-        return this.dagreLayout.node(u);
+        return this.digraph.node(u);
     };
     Hierarchy.prototype.edgePoints = function (e) {
-        return this.dagreLayout.edge(e).points;
+        return this.digraph.edge(e).points;
     };
 
     Layouts = {

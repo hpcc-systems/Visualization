@@ -26,13 +26,9 @@
     Graph.prototype.implements(IGraph.prototype);
     
     //  Properties  ---
-    Graph.prototype.target = function (_) {
-        var retVal = SVGWidget.prototype.target.apply(this, arguments);
-        if (arguments.length) {
-            this.pos({x:0,y:0});
-        }
-        return retVal;
-    };
+    Graph.prototype.getOffsetPos = function () {
+        return { x: 0, y: 0 };
+    }
 
     Graph.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -99,76 +95,73 @@
     Graph.prototype.enter = function (domNode, element, d) {
         var context = this;
 
-        if (this._target instanceof SVGElement) {
-            this.drag = function () { 
-            };
-        } else {
-            //  Zoom  ---
-            this.prevScale = 1;
-            this.zoom = d3.behavior.zoom()
-                .scaleExtent([0.2, 4])
-                .on("zoom", function (d) { context.applyZoom(); })
-            ;
+        //  Zoom  ---
+        this.prevScale = 1;
+        this.zoom = d3.behavior.zoom()
+            .scaleExtent([0.2, 4])
+            .on("zoom", function (d) { context.applyZoom(); })
+        ;
 
-            //  Drag  ---
-            function dragstart(d) {
-                context._dragging = d;
-                if (context.forceLayout) {
-                    var forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = true;
-                }
-                context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                    var edge = context.graphData.edge(id);
-                    context._pushMarkers(edge.element(), edge);
-                })
+        //  Drag  ---
+        function dragstart(d) {
+            context._dragging = d;
+            if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
             }
-            function dragend(d) {
-                context._dragging = null;
-                if (context.forceLayout) {
-                    var forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = false;
-                }
-                context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                    var edge = context.graphData.edge(id);
-                    context._popMarkers(edge.element(), edge);
-                })
-            }
-            function drag(d) {
-                d
-                    .pos({ x: d3.event.x, y: d3.event.y })
-                ;
-                if (context.forceLayout) {
-                    var forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = true;
-                    forceNode.x = forceNode.px = d3.event.x;
-                    forceNode.y = forceNode.py = d3.event.y;
-                }
-                context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                    var edge = context.graphData.edge(id);
-                    edge
-                        .points([])
-                    ;
-                })
-            }
-            this.drag = d3.behavior.drag()
-                .origin(function (d) {
-                    return d.pos();
-                })
-                .on("dragstart", dragstart)
-                .on("dragend", dragend)
-                .on("drag", drag)
-            ;
-            //  SVG  ---
-            this._svgZoom = element.append("rect")
-                .attr("class", "zoom")
-                .attr("width", this._size.width)
-                .attr("height", this._size.height)
-                .call(this.zoom)
-            ;
-
-            this.defs = element.append("defs");
-            this.addMarkers();
+            context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                var edge = context.graphData.edge(id);
+                context._pushMarkers(edge.element(), edge);
+            })
         }
+        function dragend(d) {
+            context._dragging = null;
+            if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = false;
+            }
+            context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                var edge = context.graphData.edge(id);
+                context._popMarkers(edge.element(), edge);
+            })
+        }
+        function drag(d) {
+            d
+                .pos({ x: d3.event.x, y: d3.event.y })
+            ;
+            if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
+                forceNode.x = forceNode.px = d3.event.x;
+                forceNode.y = forceNode.py = d3.event.y;
+            }
+            context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                var edge = context.graphData.edge(id);
+                edge
+                    .points([])
+                ;
+            })
+        }
+        this.drag = d3.behavior.drag()
+            .origin(function (d) {
+                return d.pos();
+            })
+            .on("dragstart", dragstart)
+            .on("dragend", dragend)
+            .on("drag", drag)
+        ;
+        //  SVG  ---
+        this._svgZoom = element.append("rect")
+            .attr("class", "zoom")
+            .attr("x", -this._size.width / 2)
+            .attr("y", -this._size.height / 2)
+            .attr("width", this._size.width)
+            .attr("height", this._size.height)
+            .call(this.zoom)
+        ;
+
+        this.defs = element.append("defs");
+        this.addMarkers();
 
         this.svg = element.append("g");
         this.svgE = this.svg.append("g").attr("id", this._id + "E");
@@ -211,7 +204,7 @@
         if (scale > 1) {
             scale = 1;
         }
-        var translate = [width / 2 - scale * x, height / 2 - scale * y];
+        var translate = [-scale * x, -scale * y];
         this.setZoom(translate, scale);
     };
 

@@ -19,8 +19,8 @@
             var size = value.getBBox(true);
             var maxSize = Math.max(size.width, size.height)
             context.pos[u] = {
-                x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * (radius - maxSize),
-                y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * (radius - maxSize),
+                x: value.fixed ? value.x : Math.cos(currStep) * (radius - maxSize),
+                y: value.fixed ? value.y : Math.sin(currStep) * (radius - maxSize),
                 width: size.width,
                 height: size.height
             }
@@ -88,7 +88,6 @@
                 return -25 * Math.max(cs.width, cs.height)
             })
             .linkDistance(300)
-            .size([width, height])
             .nodes(this.vertices)
             .links(this.edges)
         ;
@@ -110,7 +109,7 @@
 
     function Hierarchy(graphData, width, height) {
         var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
-              .setGraph({})
+              .setGraph({width:width, height:height})
               .setDefaultEdgeLabel(function() { return {}; })
         ;
         graphData.eachNode(function (u) {
@@ -130,8 +129,8 @@
         this.dagreLayout = dagre.layout(digraph)
             //.run(digraph)
         ;
-        var deltaX = (width - digraph.graph().width) / 2;
-        var deltaY = (height - digraph.graph().height) / 2;
+        var deltaX = -digraph.graph().width / 2;
+        var deltaY = -digraph.graph().height / 2;
         digraph.nodes().forEach(function (u) {
             var value = digraph.node(u);
             value.x += deltaX;

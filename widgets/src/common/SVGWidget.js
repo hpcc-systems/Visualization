@@ -123,7 +123,7 @@
     };
 
     SVGWidget.prototype.getOffsetPos = function () {
-        var retVal = { x: 0, y: 0 }
+        var retVal = { x: 0, y: 0 };
         if (this._parentWidget) {
             retVal = this._parentWidget.getOffsetPos();
             retVal.x += this._pos.x;

@@ -62,6 +62,8 @@
     };
 
     GMap.prototype.calcLatLong = function (dx, dy) {
+        dx += this.width() / 2;
+        dy += this.height() / 2;
         var projection = this._gmOverlay.getProjection();
 
         var context = this;

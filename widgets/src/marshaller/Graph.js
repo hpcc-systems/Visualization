@@ -88,18 +88,22 @@
                     }
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {
-                        var width = 210;
                         var newSurface = null;
                         if (item.widget instanceof Surface) {
                             newSurface = item.widget
-                                .size({ width: width, height: 210 })
+                                .size({ width: 210, height: 210 })
                             ;
                         } else if (item.widget instanceof TextBox) {
                             newSurface = item.widget;
                         } else {
-                            width = 280;
+                            var width = 280;
+                            var height = 210;
+                            if (item.type === "GRAPH") {
+                                width = 800;
+                                height = 600;
+                            }
                             newSurface = new Surface()
-                                .size({ width: width, height: 210 })
+                                .size({ width: width, height: height })
                                 .title(item.id)
                                 .content(item.widget)
                             ;

@@ -5,6 +5,8 @@
         root.Marshaller = factory(root.Comms, root.Widget);
     }
 }(this, function (Comms, Widget) {
+    var Vertex = null;
+    var Edge = null;
     exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
@@ -22,19 +24,7 @@
     function SourceMappings(visualization, mappings) {
         this.visualization = visualization;
         this.hasMappings = false;
-        this.mappings = {};
-        var context = this;
-        switch (this.visualization.type) {
-            case "TABLE":
-                for (var key in mappings) {
-                    mappings[key].forEach(function (mapingItem, idx) {
-                        context.mappings[visualization.label[idx]] = mapingItem;
-                    });
-                }
-                break;
-            default:
-                this.mappings = mappings;
-        }
+        this.mappings = mappings;
         this.reverseMappings = {};
         for (var key in this.mappings) {
             this.reverseMappings[this.mappings[key]] = key;
@@ -49,31 +39,25 @@
     SourceMappings.prototype.doMap = function (item) {
         var retVal = {};
         try {
-            switch (this.visualization.type) {
-                case "LINE":
-                    retVal = [];
-                    for (var i = 0; i < this.mappings.x.length; ++i) {
-                        retVal.push({
-                            label: item[this.mappings.x[i]],
-                            weight: item[this.mappings.y[i]]
-                        })
-                    }
-                    break;
-                default:
-                    for (var key in this.mappings) {
-                        var rhsKey = this.mappings[key];
-                        var val = item[rhsKey];
-                        if (val === undefined) {
-                            val = item[rhsKey.toLowerCase()];
-                        }
-                        retVal[key] = val;
-                    }
-                    break;
+            for (var key in this.mappings) {
+                var rhsKey = this.mappings[key];
+                var val = item[rhsKey];
+                if (val === undefined) {
+                    val = item[rhsKey.toLowerCase()];
+                }
+                retVal[key] = val;
             }
         } catch (e) {
             console.log("Invalid Mappings");
         }
         return retVal;
+    };
+
+    SourceMappings.prototype.doMapAll = function (data) {
+        var context = this;
+        return data.map(function (item) {
+            return context.doMap(item);
+        });
     };
 
     SourceMappings.prototype.getMap = function (key) {
@@ -84,12 +68,102 @@
         return this.reverseMappings[key];
     };
 
+    function LineMappings(visualization, mappings) {
+        SourceMappings.call(this, visualization, mappings);
+    };
+    LineMappings.prototype = Object.create(SourceMappings.prototype);
+
+    LineMappings.prototype.doMap = function (item) {
+        var retVal = {};
+        try {
+            retVal = [];
+            for (var i = 0; i < this.mappings.x.length; ++i) {
+                retVal.push({
+                    label: item[this.mappings.x[i]],
+                    weight: item[this.mappings.y[i]]
+                })
+            }
+        } catch (e) {
+            console.log("Invalid Mappings");
+        }
+        return retVal;
+    };
+
+    function TableMappings(visualization, mappings) {
+        var newMappings = {};
+        for (var key in mappings) {
+            mappings[key].forEach(function (mapingItem, idx) {
+                newMappings[visualization.label[idx]] = mapingItem;
+            });
+        }
+        SourceMappings.call(this, visualization, newMappings);
+    };
+    TableMappings.prototype = Object.create(SourceMappings.prototype);
+
+    function GraphMappings(visualization, mappings, link) {
+        SourceMappings.call(this, visualization, mappings);
+        this.link = link;
+    };
+    GraphMappings.prototype = Object.create(SourceMappings.prototype);
+
+    GraphMappings.prototype.doMapAll = function (data) {
+        var context = this;
+        var vertexMap = {};
+        var vertices = [];
+        function getVertex(item) {
+            var id = "uid_" + item.uid;
+            var retVal = vertexMap[id];
+            if (!retVal) {
+                retVal = new Vertex().id(id).text(item.label);
+                vertexMap[id] = retVal;
+                vertices.push(retVal);
+            }
+            return retVal;
+        };
+        var edges = [];
+        data.forEach(function (item) {
+            var mappedItem = context.doMap(item);
+            var vertex = getVertex(mappedItem);
+            vertices.push(vertex);
+            if (item[context.link.childfile] && item[context.link.childfile].Row) {
+                var childItems = item[context.link.childfile].Row;
+                childItems.forEach(function (childItem) {
+                    var childMappedItem = context.doMap(childItem);
+                    var childVertex = getVertex(childMappedItem);
+                    vertices.push(childVertex);
+                    var edge = new Edge()
+                        .sourceVertex(vertex)
+                        .targetVertex(childVertex)
+                        .sourceMarker("circleFoot")
+                        .targetMarker("arrowHead")
+                    ;
+                    edges.push(edge);
+                });
+            }
+        })
+        return { vertices: vertices, edges: edges, merge: false };
+    };
+
     //  Viz Source ---
     function Source(visualization, source) {
         this.visualization = visualization;
         this._id = source.id;
         this._output = source.output;
-        this.mappings = new SourceMappings(this.visualization, source.mappings);
+        this.mappings = null;
+        switch(this.visualization.type) {
+            case "LINE":
+                this.mappings = new LineMappings(this.visualization, source.mappings);
+                break;
+            case "TABLE":
+                this.mappings = new TableMappings(this.visualization, source.mappings);
+                break;
+            case "GRAPH":
+                this.mappings = new GraphMappings(this.visualization, source.mappings, source.link);
+                break;
+            default:
+                this.mappings = new SourceMappings(this.visualization, source.mappings);
+                break;
+        }
         this.first = source.first;
         this.reverse = source.reverse;
         this.sort = source.sort;
@@ -137,9 +211,7 @@
         if (this.first && data.length > this.first) {
             data.length = this.first;
         }
-        return data.map(function (item) {
-            return context.mappings.doMap(item);
-        });
+        return this.mappings.doMapAll(data);
     };
 
     //  Viz Select ---
@@ -242,6 +314,16 @@
                     }
                 });
                 break;
+            case "GRAPH":
+                this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
+                    Vertex = widgetClasses[1];
+                    Edge = widgetClasses[2];
+                    widget
+                        .layout("Hierarchy")
+                        .shrinkToFitOnLayout(true)
+                    ;
+                });
+                break;
             default:
                 this.loadWidget("src/common/TextBox", function (widget) {
                     widget
@@ -261,13 +343,17 @@
     };
 
     Visualization.prototype.loadWidget = function (widgetPath, callback) {
+        this.loadWidgets([widgetPath], callback);
+    };
+
+    Visualization.prototype.loadWidgets = function (widgetPaths, callback) {
         this.widget = null;
 
         var context = this;
-        require([widgetPath], function (Widget) {
+        require(widgetPaths, function (Widget) {
             context.setWidget(new Widget());
             if (callback) {
-                callback(context.widget);
+                callback(context.widget, arguments);
             }
         });
     };

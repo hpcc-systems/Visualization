@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "../common/Surface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "../common/Surface", "../common/ResizeSurface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
     } else {
-        root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
+        root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
-}(this, function (d3, SVGWidget, TextBox, Surface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
+}(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
     function Graph(target) {
         GraphWidget.call(this);
 
@@ -69,7 +69,7 @@
                             }
                             params += item;
                         });
-                        params = "(" + params + ")";
+                        params = " (" + params + ")";
                         vertexMap[item.id] = new Vertex()
                             .class("vertexLabel")
                             .faChar("\uf1c0")
@@ -102,7 +102,7 @@
                                 width = 800;
                                 height = 600;
                             }
-                            newSurface = new Surface()
+                            newSurface = new ResizeSurface()
                                 .size({ width: width, height: height })
                                 .title(item.id)
                                 .content(item.widget)
@@ -112,17 +112,30 @@
                             vertexMap[item.id] = newSurface;
                             vertices.push(newSurface);
 
-                            if (item.type === "CHORO") {
-                                newSurface._menu
-                                    .data(Palette.brewer())
-                                ;
-                                var context = this;
-                                newSurface._menu.click = function (d) {
-                                    newSurface._content
-                                        .palette(d)
-                                        .render(d)
+                            switch (item.type) {
+                                case "CHORO":
+                                    newSurface._menu
+                                        .data(Palette.brewer())
                                     ;
-                                }
+                                    var context = this;
+                                    newSurface._menu.click = function (d) {
+                                        newSurface._content
+                                            .palette(d)
+                                            .render(d)
+                                        ;
+                                    }
+                                    break;
+                                case "GRAPH":
+                                    newSurface._menu
+                                        .data(["Circle", "ForceDirected", "ForceDirected2", "Hierarchy"])
+                                    ;
+                                    var context = this;
+                                    newSurface._menu.click = function (d) {
+                                        newSurface._content
+                                            .layout(d)
+                                        ;
+                                    }
+                                    break;
                             }
                         }
                     }

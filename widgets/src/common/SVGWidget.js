@@ -19,6 +19,14 @@
     SVGWidget.prototype = Object.create(Widget.prototype);
 
     //  Properties  ---
+    SVGWidget.prototype.size = function (_) {
+        var retVal = Widget.prototype.size.apply(this, arguments);
+        if (arguments.length) {
+            this._boundingBox = null;
+        }
+        return retVal;
+    };
+
     SVGWidget.prototype.resize = function (size) {
         var width, height;
         if (size && size.width && size.height) {
@@ -112,12 +120,14 @@
     };
 
 
-    SVGWidget.prototype.pos = function (_, transition) {
+    SVGWidget.prototype.pos = function (_, transition, skipRender) {
         var retVal = Widget.prototype.pos.apply(this, arguments);
         if (arguments.length) {
-            (transition ? this._element.transition() : this._element)
-                .attr("transform", "translate(" + _.x + " " + _.y + ")")
-            ;
+            if (!skipRender) {
+                (transition ? this._element.transition() : this._element)
+                    .attr("transform", "translate(" + _.x + " " + _.y + ")")
+                ;
+            }
         }
         return retVal;
     };

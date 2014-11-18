@@ -134,18 +134,21 @@
             .attr("class", "content")
             .attr("clip-path", "url(#" + this.id() + "_clip)")
             .each(function (d) {
+                d.target(this);
+            })
+        ;
+        content
+            .each(function (d) {
                 var padding = {
                     left: 4,
                     top: 4,
                     right: 4,
                     bottom: 4
                 };
-                var containerSize = context._container.getBBox();
                 d
-                    .target(this)
                     .size({
-                        width: containerSize.width - (padding.left + padding.right),
-                        height: containerSize.height - (padding.top + padding.bottom)
+                        width: context._size.width - xOffset - (padding.left + padding.right),
+                        height: context._size.height - yOffset - (padding.top + padding.bottom)
                     })
                 ;
             })

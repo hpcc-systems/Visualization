@@ -1,12 +1,12 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/Surface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../other/WordCloud", "../common/Palette"], factory);
+        define(["d3/d3", "../common/ResizeSurface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../other/WordCloud", "../common/Palette"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.Surface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.GPie, root.WordCloud, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.GPie, root.WordCloud, root.Palette);
     }
-}(this, function (d3, Surface, I2DChart, Pie, Bar, Line, Bubble, Table, GPie, WordCloud, Palette) {
+}(this, function (d3, ResizeSurface, I2DChart, Pie, Bar, Line, Bubble, Table, GPie, WordCloud, Palette) {
     function MultiChartSurface() {
-        Surface.call(this);
+        ResizeSurface.call(this);
         I2DChart.call(this);
 
         this._title = "MultiChartSurface";
@@ -62,7 +62,7 @@
             }
         }
     };
-    MultiChartSurface.prototype = Object.create(Surface.prototype);
+    MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
     MultiChartSurface.prototype.implements(I2DChart.prototype);
 
     MultiChartSurface.prototype.getContent = function () {
@@ -87,7 +87,7 @@
 
     MultiChartSurface.prototype.enter = function (domNode, element) {
         this._content = this.getContent();
-        Surface.prototype.enter.apply(this, arguments);
+        ResizeSurface.prototype.enter.apply(this, arguments);
     };
 
     MultiChartSurface.prototype.activate = function (chart) {
@@ -116,7 +116,7 @@
     };
 
     MultiChartSurface.prototype.data = function (_) {
-        var retVal = Surface.prototype.data.apply(this, arguments);
+        var retVal = ResizeSurface.prototype.data.apply(this, arguments);
         if (arguments.length && this.getContent()) {
             this.getContent().data(_.map(function (row) { return { label: row.label, weight: row.weight }; }));
         }

@@ -43,12 +43,11 @@
         //  Enter  ---
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
-            .attr("d", this.d3Path)
-            .on("click", function (d) {
-                context.click({ county: d.id });
-            })
             .attr("id", function (d) {
                 return d.id;
+            })
+            .on("click", function (d) {
+                context.click({ county: d.id });
             })
         ;
         this.choroPaths
@@ -62,6 +61,7 @@
         var context = this;
         //  Update  ---
         this.transition.apply(this.choroPaths)
+            .attr("d", this.d3Path)
             .style("fill", function (d) {
                 var code = d.id;
                 var weight = context._dataMap[code];

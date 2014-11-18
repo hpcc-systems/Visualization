@@ -34,6 +34,8 @@
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length && this._svgZoom) {
             this._svgZoom
+                .attr("x", -this._size.width / 2)
+                .attr("y", -this._size.height / 2)
                 .attr("width", this._size.width)
                 .attr("height", this._size.height)
             ;
@@ -53,8 +55,10 @@
 
             var context = this;
             data.addedVertices.forEach(function (item) {
-                item.x = context._size.width / 2 + Math.random() * 10 / 2 - 5;
-                item.y = context._size.height / 2 + Math.random() * 10 / 2 - 5;
+                item.pos({
+                    x:  + Math.random() * 10 / 2 - 5,
+                    y:  + Math.random() * 10 / 2 - 5
+                });
             })
             data.addedEdges.forEach(function (item) {
                 if (item._sourceMarker)
@@ -104,6 +108,7 @@
 
         //  Drag  ---
         function dragstart(d) {
+            d3.event.sourceEvent.stopPropagation();
             context._dragging = d;
             if (context.forceLayout) {
                 var forceNode = context.forceLayout.vertexMap[d.id()];
@@ -115,6 +120,8 @@
             })
         }
         function dragend(d) {
+            d3.event.sourceEvent.stopPropagation();
+            context._dragging._dragResize = false;
             context._dragging = null;
             if (context.forceLayout) {
                 var forceNode = context.forceLayout.vertexMap[d.id()];
@@ -126,21 +133,59 @@
             })
         }
         function drag(d) {
-            d
-                .pos({ x: d3.event.x, y: d3.event.y })
-            ;
-            if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
-                forceNode.fixed = true;
-                forceNode.x = forceNode.px = d3.event.x;
-                forceNode.y = forceNode.py = d3.event.y;
+            d3.event.sourceEvent.stopPropagation();
+            if (d._dragResize) {
+                if (d._dragResize.loc === "CONTENT") {
+                } else {
+                    var dx = d3.event.x - d._dragStartPos.x;
+                    var dy = d3.event.y - d._dragStartPos.y;
+                    switch (d._dragResize.loc) {
+                        case "N":
+                            d.pos({ x: d._dragStartPos.x, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width, height: d._dragStartSize.height - dy });
+                            break;
+                        case "NE":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height - dy });
+                            break;
+                        case "E":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y }, false, false);
+                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height });
+                            break;
+                        case "SE":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height + dy });
+                            break;
+                        case "S":
+                            d.pos({ x: d._dragStartPos.x, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width, height: d._dragStartSize.height + dy });
+                            break;
+                        case "SW":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height + dy });
+                            break;
+                        case "W":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y}, false, false);
+                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height });
+                            break;
+                        case "NW":
+                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
+                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height - dy });
+                            break;
+                    }
+                    d.render();
+                    d.getBBox(true);
+                }
+            } else {
+                d.pos({ x: d3.event.x, y: d3.event.y });
+                if (context.forceLayout) {
+                    var forceNode = context.forceLayout.vertexMap[d.id()];
+                    forceNode.fixed = true;
+                    forceNode.x = forceNode.px = d3.event.x;
+                    forceNode.y = forceNode.py = d3.event.y;
+                }
             }
-            context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                var edge = context.graphData.edge(id);
-                edge
-                    .points([])
-                ;
-            })
+            context.refreshIncidentEdges(d);
         }
         this.drag = d3.behavior.drag()
             .origin(function (d) {
@@ -277,9 +322,9 @@
         var context = this;
 
         //  Create  ---
-        var vertexElements = this.svgV.selectAll("#" + this._id + "V > .vertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
+        var vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
         vertexElements.enter().append("g")
-            .attr("class", "vertex")
+            .attr("class", "graphVertex")
             .style("opacity", 1e-6)
              //  TODO:  Events need to be optional  ---
             .on("click", function (d) {
@@ -487,6 +532,16 @@
         }
     };
 
+    Graph.prototype.refreshIncidentEdges = function (d) {
+        var context = this;
+        this.graphData.nodeEdges(d.id()).forEach(function (id) {
+            var edge = context.graphData.edge(id);
+            edge
+                .points([])
+            ;
+        });
+    };
+
     //  Events  ---
     Graph.prototype.vertex_click = function (d) {
         d._parentElement.node().parentNode.appendChild(d._parentElement.node());
@@ -494,11 +549,11 @@
     };
 
     Graph.prototype.vertex_mouseover = function (element, d) {
-        this.highlightVertex(element, d);
+        //this.highlightVertex(element, d);
     };
 
     Graph.prototype.vertex_mouseout = function (d, self) {
-        this.highlightVertex(null, null);
+        //this.highlightVertex(null, null);
     };
 
     Graph.prototype.edge_mouseover = function (element, d) {

@@ -289,7 +289,9 @@
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/chart/Line");
+                this.loadWidget("src/chart/Line", function (widget) {
+                    widget.labels(context.source.mappings.mappings.y);
+                });
                 break;
             case "TABLE":
                 this.loadWidget("src/other/Table", function (widget) {

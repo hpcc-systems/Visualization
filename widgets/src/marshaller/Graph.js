@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "../common/Surface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "../common/Surface", "../common/ResizeSurface", "../chart/MultiChartSurface", "../common/Palette", "../graph/Graph", "../graph/Vertex", "../graph/Edge", "./HipieDDL"], factory);
     } else {
-        root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
+        root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
-}(this, function (d3, SVGWidget, TextBox, Surface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
+}(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
     function Graph(target) {
         GraphWidget.call(this);
 
@@ -69,7 +69,7 @@
                             }
                             params += item;
                         });
-                        params = "(" + params + ")";
+                        params = " (" + params + ")";
                         vertexMap[item.id] = new Vertex()
                             .class("vertexLabel")
                             .faChar("\uf1c0")
@@ -102,27 +102,39 @@
                                 width = 800;
                                 height = 600;
                             }
-                            newSurface = new Surface()
+                            newSurface = new ResizeSurface()
                                 .size({ width: width, height: height })
                                 .title(item.id)
                                 .content(item.widget)
                             ;
                         }
                         if (newSurface) {
+                            item.widgetSurface = newSurface;
                             vertexMap[item.id] = newSurface;
                             vertices.push(newSurface);
 
-                            if (item.type === "CHORO") {
-                                newSurface._menu
-                                    .data(Palette.brewer())
-                                ;
-                                var context = this;
-                                newSurface._menu.click = function (d) {
-                                    newSurface._content
-                                        .palette(d)
-                                        .render(d)
+                            switch (item.type) {
+                                case "CHORO":
+                                    newSurface._menu
+                                        .data(Palette.brewer())
                                     ;
-                                }
+                                    newSurface._menu.click = function (d) {
+                                        newSurface._content
+                                            .palette(d)
+                                            .render(d)
+                                        ;
+                                    }
+                                    break;
+                                case "GRAPH":
+                                    newSurface._menu
+                                        .data(["Circle", "ForceDirected", "ForceDirected2", "Hierarchy"])
+                                    ;
+                                    newSurface._menu.click = function (d) {
+                                        newSurface._content
+                                            .layout(d)
+                                        ;
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -178,8 +190,9 @@
         });
 
         this.data({ vertices: vertices, edges: edges });
-        GraphWidget.prototype.render.call(this);
-
+        if (!this.load()) {
+            GraphWidget.prototype.render.call(this);
+        }
         for (var key in this.marshaller.dashboards) {
             var dashboard = this.marshaller.dashboards[key];
             for (var key in dashboard.datasources) {
@@ -187,6 +200,54 @@
             }
         }
     };
+
+    Graph.prototype.save = function () {
+        var currDashboard = "";
+        var state = {};
+        this.marshaller.accept({
+            visit: function (item) {
+                if (item instanceof HipieDDL.Dashboard) {
+                    currDashboard = item.id;
+                    state[currDashboard] = {};
+                } else if (item instanceof HipieDDL.Visualization) {
+                    if (item.widgetSurface) {
+                        state[currDashboard][item.id] = {
+                            pos: item.widgetSurface.pos(),
+                            size: item.widgetSurface.size()
+                        };
+                    }
+                }
+            }
+        });
+        for (var key in state) {
+            localStorage.setItem(key, JSON.stringify(state[key]));
+        }
+    };
+
+    Graph.prototype.load = function () {
+        var changed = false;
+        this.marshaller.accept({
+            visit: function (item) {
+                if (item instanceof HipieDDL.Visualization) {
+                    var state = JSON.parse(localStorage.getItem(item.dashboard.id));
+                    if (state && state[item.id]) {
+                        item.widgetSurface
+                            .pos(state[item.id].pos)
+                            .size(state[item.id].size)
+                        ;
+                        changed = true;
+                    }
+                }
+            }
+        });
+        if (changed) {
+            this.layout("");
+            GraphWidget.prototype.render.call(this);
+            return true;
+        }
+        return false;
+    }
+
 
     return Graph;
 }));

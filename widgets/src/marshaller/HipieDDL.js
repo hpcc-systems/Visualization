@@ -325,7 +325,7 @@
                     Vertex = widgetClasses[1];
                     Edge = widgetClasses[2];
                     widget
-                        .layout("Hierarchy")
+                        .layout("ForceDirected2")
                         .shrinkToFitOnLayout(true)
                     ;
                 });

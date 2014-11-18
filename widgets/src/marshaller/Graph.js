@@ -215,6 +215,9 @@
                             pos: item.widgetSurface.pos(),
                             size: item.widgetSurface.size()
                         };
+                        if (item.widget.layout) {
+                            state[currDashboard][item.id].layout = item.widget.layout();
+                        }
                     }
                 }
             }
@@ -235,6 +238,9 @@
                             .pos(state[item.id].pos)
                             .size(state[item.id].size)
                         ;
+                        if (item.widget.layout && state[item.id].layout) {
+                            item.widget.layout(state[item.id].layout);
+                        }
                         changed = true;
                     }
                 }

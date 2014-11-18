@@ -109,6 +109,7 @@
                             ;
                         }
                         if (newSurface) {
+                            item.widgetSurface = newSurface;
                             vertexMap[item.id] = newSurface;
                             vertices.push(newSurface);
 
@@ -117,7 +118,6 @@
                                     newSurface._menu
                                         .data(Palette.brewer())
                                     ;
-                                    var context = this;
                                     newSurface._menu.click = function (d) {
                                         newSurface._content
                                             .palette(d)
@@ -129,7 +129,6 @@
                                     newSurface._menu
                                         .data(["Circle", "ForceDirected", "ForceDirected2", "Hierarchy"])
                                     ;
-                                    var context = this;
                                     newSurface._menu.click = function (d) {
                                         newSurface._content
                                             .layout(d)
@@ -191,8 +190,9 @@
         });
 
         this.data({ vertices: vertices, edges: edges });
-        GraphWidget.prototype.render.call(this);
-
+        if (!this.load()) {
+            GraphWidget.prototype.render.call(this);
+        }
         for (var key in this.marshaller.dashboards) {
             var dashboard = this.marshaller.dashboards[key];
             for (var key in dashboard.datasources) {
@@ -200,6 +200,54 @@
             }
         }
     };
+
+    Graph.prototype.save = function () {
+        var currDashboard = "";
+        var state = {};
+        this.marshaller.accept({
+            visit: function (item) {
+                if (item instanceof HipieDDL.Dashboard) {
+                    currDashboard = item.id;
+                    state[currDashboard] = {};
+                } else if (item instanceof HipieDDL.Visualization) {
+                    if (item.widgetSurface) {
+                        state[currDashboard][item.id] = {
+                            pos: item.widgetSurface.pos(),
+                            size: item.widgetSurface.size()
+                        };
+                    }
+                }
+            }
+        });
+        for (var key in state) {
+            localStorage.setItem(key, JSON.stringify(state[key]));
+        }
+    };
+
+    Graph.prototype.load = function () {
+        var changed = false;
+        this.marshaller.accept({
+            visit: function (item) {
+                if (item instanceof HipieDDL.Visualization) {
+                    var state = JSON.parse(localStorage.getItem(item.dashboard.id));
+                    if (state && state[item.id]) {
+                        item.widgetSurface
+                            .pos(state[item.id].pos)
+                            .size(state[item.id].size)
+                        ;
+                        changed = true;
+                    }
+                }
+            }
+        });
+        if (changed) {
+            this.layout("");
+            GraphWidget.prototype.render.call(this);
+            return true;
+        }
+        return false;
+    }
+
 
     return Graph;
 }));

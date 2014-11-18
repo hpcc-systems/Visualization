@@ -114,7 +114,11 @@
             var id = "uid_" + item.uid;
             var retVal = vertexMap[id];
             if (!retVal) {
-                retVal = new Vertex().id(id).text(item.label);
+                retVal = new Vertex()
+                    .id(id)
+                    .faChar("\uf128")
+                    .text(item.label)
+                ;
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
             }
@@ -408,12 +412,12 @@
                 var params = this.source.getOutput().getParams();
                 if (exists("widget.title", this)) {
                     this.widget
-                        .title(this.id + (params ? "(" + params + ")" : ""))
+                        .title(this.id + (params ? " (" + params + ")" : ""))
                         .render()
                     ;
                 } else if (exists("widget._parentWidget.title", this)) {
                     this.widget._parentWidget
-                        .title(this.id + (params ? "(" + params + ")" : ""))
+                        .title(this.id + (params ? " (" + params + ")" : ""))
                         .render()
                     ;
                 }

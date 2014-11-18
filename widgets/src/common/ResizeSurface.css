@@ -1,0 +1,39 @@
+.surface .resizeN {
+    cursor: ns-resize;
+    opacity: 0;
+}
+
+.surface .resizeNE {
+    cursor: ne-resize;
+    opacity: 0;
+}
+
+.surface .resizeE {
+    cursor: ew-resize;
+    opacity: 0;
+}
+
+.surface .resizeSE {
+    cursor: se-resize;
+    opacity: 0;
+}
+
+.surface .resizeS {
+    cursor: ns-resize;
+    opacity: 0;
+}
+
+.surface .resizeSW {
+    cursor: sw-resize;
+    opacity: 0;
+}
+
+.surface .resizeW {
+    cursor: ew-resize;
+    opacity: 0;
+}
+
+.surface .resizeNW {
+    cursor: nw-resize;
+    opacity: 0;
+}

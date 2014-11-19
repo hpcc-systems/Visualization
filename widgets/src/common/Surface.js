@@ -65,7 +65,9 @@
         return this;
     };
 
-    Surface.prototype.enter = function (domNode, element) {
+    Surface.prototype.enter = function (_domNode, _element) {
+        var element = _element.append("g").attr("class", "frame");
+        var domNode = element.node();
         this._clipRect = element.append("defs").append("clipPath")
             .attr("id", this.id() + "_clip")
             .append("rect")
@@ -94,7 +96,7 @@
             .render()
         ;
         this._menu
-            .target(domNode)
+            .target(_domNode)
             .render()
         ;
     };

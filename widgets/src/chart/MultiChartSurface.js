@@ -45,7 +45,7 @@
             context.click(d);
         }
         this._menu.click = function (d) {
-            context.activate(d);
+            context.chartType(d);
         }
         this._menu.preShowMenu = function () {
             if (context.getContent() && context.getContent()._overlayElement) {
@@ -66,7 +66,7 @@
     MultiChartSurface.prototype.implements(I2DChart.prototype);
 
     MultiChartSurface.prototype.getContent = function () {
-        switch (this._chart) {
+        switch (this._chartType) {
             case "PIE":
                 return this._pie;
             case "GOOGLE_PIE":
@@ -90,27 +90,27 @@
         ResizeSurface.prototype.enter.apply(this, arguments);
     };
 
-    MultiChartSurface.prototype.activate = function (chart) {
-        this._chart = chart;
-        if (this._renderCount) {
+    MultiChartSurface.prototype.chartType = function (_, skipRender) {
+        if (!arguments.length) return this._chartType;
+        this._chartType = _;
+        if (!skipRender && this._renderCount) {
             var oldContent = this._content;
             var newContent = this.getContent();
-            if (newContent === oldContent) {
-                return;
+            if (newContent !== oldContent) {
+                var size = this._container.getBBox();
+                this.content(newContent
+                    .data(this._data.map(function (row) { return { label: row.label, weight: row.weight }; }))
+                    .size(size)
+                );
+                if (oldContent) {
+                    oldContent
+                        .data([])
+                        .size({ width: 1, height: 1 })
+                        .render()
+                    ;
+                }
+                this.render();
             }
-            var size = this._container.getBBox();
-            this.content(newContent
-                .data(this._data.map(function (row) { return { label: row.label, weight: row.weight }; }))
-                .size(size)
-            );
-            if (oldContent) {
-                oldContent
-                    .data([])
-                    .size({ width: 1, height: 1 })
-                    .render()
-                ;
-            }
-            this.render();
         }
         return this;
     };

@@ -19,6 +19,8 @@
         };
 
         this._class = "graph";
+        this._highlightOnMouseOverVertex = false;
+        this._highlightOnMouseOverEdge = false;
         this._shrinkToFitOnLayout = false;
         this._layout = "";
     };
@@ -69,6 +71,18 @@
             this.layout(this.layout());
         }
         return retVal;
+    };
+
+    Graph.prototype.highlightOnMouseOverVertex = function (_) {
+        if (!arguments.length) return this._highlightOnMouseOverVertex;
+        this._highlightOnMouseOverVertex = _;
+        return this;
+    };
+
+    Graph.prototype.highlightOnMouseOverEdge = function (_) {
+        if (!arguments.length) return this._highlightOnMouseOverEdge;
+        this._highlightOnMouseOverEdge = _;
+        return this;
     };
 
     Graph.prototype.shrinkToFitOnLayout = function (_) {
@@ -504,31 +518,33 @@
     };
 
     Graph.prototype.highlightVertex = function (element, d) {
-        var context = this;
-        if (d) {
-            var highlight = this.getNeighborMap(d);
-            highlight.vertices[d.id()] = d;
-            this.highlightVerticies(highlight.vertices);
-            this.highlightEdges(highlight.edges);
-        } else {
-            this.highlightVerticies(null);
-            this.highlightEdges(null);
+        if (this._highlightOnMouseOverVertex) {
+            if (d) {
+                var highlight = this.getNeighborMap(d);
+                highlight.vertices[d.id()] = d;
+                this.highlightVerticies(highlight.vertices);
+                this.highlightEdges(highlight.edges);
+            } else {
+                this.highlightVerticies(null);
+                this.highlightEdges(null);
+            }
         }
-
     };
 
     Graph.prototype.highlightEdge = function (element, d) {
-        if (d) {
-            var vertices = {};
-            vertices[d._sourceVertex.id()] = d._sourceVertex;
-            vertices[d._targetVertex.id()] = d._targetVertex;
-            var edges = {};
-            edges[d.id()] = d;
-            this.highlightVerticies(vertices);
-            this.highlightEdges(edges);
-        } else {
-            this.highlightVerticies(null);
-            this.highlightEdges(null);
+        if (this._highlightOnMouseOverEdge) {
+            if (d) {
+                var vertices = {};
+                vertices[d._sourceVertex.id()] = d._sourceVertex;
+                vertices[d._targetVertex.id()] = d._targetVertex;
+                var edges = {};
+                edges[d.id()] = d;
+                this.highlightVerticies(vertices);
+                this.highlightEdges(edges);
+            } else {
+                this.highlightVerticies(null);
+                this.highlightEdges(null);
+            }
         }
     };
 
@@ -549,19 +565,19 @@
     };
 
     Graph.prototype.vertex_mouseover = function (element, d) {
-        //this.highlightVertex(element, d);
+        this.highlightVertex(element, d);
     };
 
     Graph.prototype.vertex_mouseout = function (d, self) {
-        //this.highlightVertex(null, null);
+        this.highlightVertex(null, null);
     };
 
     Graph.prototype.edge_mouseover = function (element, d) {
-        //this.highlightEdge(element, d);
+        this.highlightEdge(element, d);
     };
 
     Graph.prototype.edge_mouseout = function (d, self) {
-        //this.highlightEdge(null, null);
+        this.highlightEdge(null, null);
     };
 
     Graph.prototype.addMarkers = function (clearFirst) {

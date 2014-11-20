@@ -57,26 +57,21 @@
 
     ChoroplethCounties.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-
+        //console.time("ChoroplethCounties.prototype.update");
         var context = this;
         //  Update  ---
         this.choroPaths
             .attr("d", this.d3Path)
-            .style("fill", function (d) {
-                var code = d.id;
-                var weight = context._dataMap[code];
-                if (weight === undefined) {
-                    return "url(#hash)";
-                }
-                return context.d3Color(context._dataMap[code]);
+            .each(function (d) {
+                var weight = context._dataMap[d.id];
+                d3.select(this)
+                    .style("fill", weight === undefined ? "url(#hash)" : context.d3Color(weight))
+                    .select("title")
+                    .text(usCounties.countyNames[d.id] + (weight === undefined ? "" : " (" + context._dataMap[d.id] + ")"))
+                ;
             })
         ;
-
-        this.choroPaths.select("title")
-            .text(function (d) {
-                return usCounties.countyNames[d.id] + " (" + context._dataMap[d.id] + ")";
-            })
-        ;
+        //console.timeEnd("ChoroplethCounties.prototype.update");
     };
 
     return ChoroplethCounties;

@@ -128,10 +128,12 @@
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = true;
             }
-            context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                var edge = context.graphData.edge(id);
-                context._pushMarkers(edge.element(), edge);
-            })
+            if (this.isIE) {
+                context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                    var edge = context.graphData.edge(id);
+                    context._pushMarkers(edge.element(), edge);
+                });
+            }
         }
         function dragend(d) {
             d3.event.sourceEvent.stopPropagation();
@@ -141,10 +143,12 @@
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = false;
             }
-            context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                var edge = context.graphData.edge(id);
-                context._popMarkers(edge.element(), edge);
-            })
+            if (this.isIE) {
+                context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                    var edge = context.graphData.edge(id);
+                    context._popMarkers(edge.element(), edge);
+                });
+            };
         }
         function drag(d) {
             d3.event.sourceEvent.stopPropagation();
@@ -199,7 +203,7 @@
                     forceNode.y = forceNode.py = d3.event.y;
                 }
             }
-            context.refreshIncidentEdges(d);
+            context.refreshIncidentEdges(d, true);
         }
         this.drag = d3.behavior.drag()
             .origin(function (d) {
@@ -297,7 +301,7 @@
                     });
                     context.graphData.edgeValues().forEach(function (item) {
                         item
-                            .points([])
+                            .points([], false, true)
                         ;
                     });
                     if (context._shrinkToFitOnLayout) {
@@ -548,12 +552,12 @@
         }
     };
 
-    Graph.prototype.refreshIncidentEdges = function (d) {
+    Graph.prototype.refreshIncidentEdges = function (d, skipPushMarkers) {
         var context = this;
         this.graphData.nodeEdges(d.id()).forEach(function (id) {
             var edge = context.graphData.edge(id);
             edge
-                .points([])
+                .points([], false, skipPushMarkers)
             ;
         });
     };

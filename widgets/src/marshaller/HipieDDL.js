@@ -128,14 +128,13 @@
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
             var vertex = getVertex(mappedItem);
-            vertices.push(vertex);
             if (item[context.link.childfile] && item[context.link.childfile].Row) {
                 var childItems = item[context.link.childfile].Row;
-                childItems.forEach(function (childItem) {
+                childItems.forEach(function (childItem, i) {
                     var childMappedItem = context.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
-                    vertices.push(childVertex);
                     var edge = new Edge()
+                        .id(vertex.id() + "_" + childVertex.id() + "_" + i)
                         .sourceVertex(vertex)
                         .targetVertex(childVertex)
                         .sourceMarker("circleFoot")
@@ -403,24 +402,18 @@
         var context = this;
         if (this.source.hasData()) {
             if (this.widget) {
+                var params = this.source.getOutput().getParams();
+                if (exists("widget.title", this)) {
+                    this.widget.title(this.id +(params ? " (" +params + ")": ""));
+                } else if (exists("widget._parentWidget.title", this)) {
+                    this.widget._parentWidget.title(this.id + (params ? " (" +params + ")": ""));
+                }
                 var data = this.source.getData();
                 this.dashboard.marshaller.updateViz(this, data);
                 this.widget
                     .data(data)
                     .render()
                 ;
-                var params = this.source.getOutput().getParams();
-                if (exists("widget.title", this)) {
-                    this.widget
-                        .title(this.id + (params ? " (" + params + ")" : ""))
-                        .render()
-                    ;
-                } else if (exists("widget._parentWidget.title", this)) {
-                    this.widget._parentWidget
-                        .title(this.id + (params ? " (" + params + ")" : ""))
-                        .render()
-                    ;
-                }
             }
         }
     };

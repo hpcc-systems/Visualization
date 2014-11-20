@@ -42,11 +42,11 @@
         return this;
     };
 
-    Edge.prototype.points = function (_, animate) {
+    Edge.prototype.points = function (_, animate, skipPushMarkers) {
         if (!arguments.length) return this._points;
         this._points = _;
         if (this._elementPath) {
-            this.update(null, this._element, animate);
+            this.update(null, this._element, animate, skipPushMarkers);
         }
         return this;
     };
@@ -80,18 +80,20 @@
         }
     };
 
-    Edge.prototype.update = function (domNode, element, transition) {
+    Edge.prototype.update = function (domNode, element, transition, skipPushMarkers) {
         var context = this;
         var pathElements = this._elementPath;
 
-        element.transition()
-            .each("start", function (d) {
-                context._pushMarkers(element, d);
-            })
-            .each("end", function (d) {
-                context._popMarkers(element, d);
-            })
-        ;
+        if (this.isIE && !skipPushMarkers) {
+            element.transition()
+                .each("start", function (d) {
+                    context._pushMarkers(element, d);
+                })
+                .each("end", function (d) {
+                    context._popMarkers(element, d);
+                })
+            ;
+        }
         var points = context._calculateEdgePoints(this._sourceVertex, this._targetVertex, this._points);
         var line = "";
         if (this._points.length || transition || true) {

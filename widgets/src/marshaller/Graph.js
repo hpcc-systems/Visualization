@@ -12,7 +12,7 @@
         this._visualizeRoxie = false;
         this._url = "";
 
-        this.widgetAttributes = ["layout", "chartType", "palette"];
+        this.widgetAttributes = ["layout", "chartType", "palette", "selectionValue"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
 

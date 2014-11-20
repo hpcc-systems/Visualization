@@ -11,6 +11,7 @@
 
         this._class = "slider";
         this._selectionLabel = "";
+        this._selectionValue = null;
 
         this.xScale = d3.scale.linear()
             .clamp(true)
@@ -59,6 +60,18 @@
     Slider.prototype.selectionLabel = function (_) {
         if (!arguments.length) return this._selectionLabel;
         this._selectionLabel = _;
+        return this;
+    };
+
+    Slider.prototype.selectionValue = function (_) {
+        if (!arguments.length) return this._selectionValue;
+        this._selectionValue = _;
+        this.brush.extent()
+        if (this.brushg) {
+            this.brushg
+                .call(this.brush.extent([this._selectionValue, this._selectionValue]))
+            ;
+        }
         return this;
     };
 
@@ -124,8 +137,9 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
+            var selVal = this._selectionValue ? this._selectionValue : this._range.low;
             this.brushg
-                .call(this.brush.extent([this._range.low, this._range.low]))
+                .call(this.brush.extent([selVal, selVal]))
             ;
         }
     };
@@ -154,6 +168,7 @@
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
+            this._selectionValue = mouseX;
             if (this._selectionLabel) {
                 var clickData = {};
                 clickData[this._selectionLabel] = mouseX;

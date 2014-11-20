@@ -182,7 +182,11 @@
     };
 
     Source.prototype.getOutput = function () {
-        return this.getDatasource().outputs[this._output];
+        var datasource = this.getDatasource();
+        if (datasource && datasource.outputs) {
+            return datasource.outputs[this._output];
+        }
+        return null;
     };
 
     Source.prototype.hasData = function () {

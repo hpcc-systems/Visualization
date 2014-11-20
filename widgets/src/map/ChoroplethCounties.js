@@ -43,9 +43,6 @@
         //  Enter  ---
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
-            .attr("id", function (d) {
-                return d.id;
-            })
             .on("click", function (d) {
                 context.click({ county: d.id });
             })

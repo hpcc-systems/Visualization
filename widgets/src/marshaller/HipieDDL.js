@@ -181,7 +181,11 @@
     };
 
     Source.prototype.getOutput = function () {
-        return this.getDatasource().outputs[this._output];
+        var datasource = this.getDatasource();
+        if (datasource && datasource.outputs) {
+            return datasource.outputs[this._output];
+        }
+        return null;
     };
 
     Source.prototype.hasData = function () {
@@ -286,7 +290,7 @@
             case "WORD_CLOUD":
                 this.loadWidget("src/chart/MultiChartSurface", function (widget) {
                     widget
-                        .activate(context.properties.charttype || context.type)
+                        .chartType(context.properties.charttype || context.type)
                         .title(context.id)
                     ;
                 });

@@ -11,6 +11,8 @@
         this.marshaller = new HipieDDL.Marshaller();
         this._visualizeRoxie = false;
         this._url = "";
+
+        this.widgetAttributes = ["layout", "chartType", "palette", "selectionValue"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
 
@@ -201,12 +203,47 @@
         }
     };
 
+    Graph.prototype.checksum = function(s) {
+        var hash = 0,
+        strlen = s.length,
+        i,
+        c;
+        if ( strlen === 0 ) {
+            return hash;
+        }
+        for ( i = 0; i < strlen; i++ ) {
+            c = s.charCodeAt( i );
+            hash = ((hash << 5) - hash) + c;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
+    Graph.prototype.calcHash = function () {
+        var context = this;
+        var hash = 0;
+        this.marshaller.accept({
+            visit: function (item) {
+                if (item instanceof HipieDDL.Visualization) {
+                    hash += context.checksum(item.id);
+                }
+            }
+        });
+        return hash;
+    },
+
     Graph.prototype.save = function () {
+        var context = this;
         var currDashboard = "";
         var state = {};
         this.marshaller.accept({
             visit: function (item) {
-                if (item instanceof HipieDDL.Dashboard) {
+                if (item instanceof HipieDDL.Marshaller) {
+                    state["zoom"] = {
+                        translation: context.zoom.translate(),
+                        scale: context.zoom.scale()
+                    };
+                } else if (item instanceof HipieDDL.Dashboard) {
                     currDashboard = item.id;
                     state[currDashboard] = {};
                 } else if (item instanceof HipieDDL.Visualization) {
@@ -215,41 +252,55 @@
                             pos: item.widgetSurface.pos(),
                             size: item.widgetSurface.size()
                         };
-                        if (item.widget.layout) {
-                            state[currDashboard][item.id].layout = item.widget.layout();
-                        }
+                        context.widgetAttributes.forEach(function (attr) {
+                            if (item.widget[attr]) {
+                                state[currDashboard][item.id][attr] = item.widget[attr]();
+                            }
+                        });
                     }
                 }
             }
         });
-        for (var key in state) {
-            localStorage.setItem(key, JSON.stringify(state[key]));
-        }
+        localStorage.setItem("Graph_" + this.calcHash(), JSON.stringify(state));
     };
 
     Graph.prototype.load = function () {
-        var changed = false;
-        this.marshaller.accept({
-            visit: function (item) {
-                if (item instanceof HipieDDL.Visualization) {
-                    var state = JSON.parse(localStorage.getItem(item.dashboard.id));
-                    if (state && state[item.id]) {
-                        item.widgetSurface
-                            .pos(state[item.id].pos)
-                            .size(state[item.id].size)
-                        ;
-                        if (item.widget.layout && state[item.id].layout) {
-                            item.widget.layout(state[item.id].layout);
+        var stateJSON = localStorage.getItem("Graph_" + this.calcHash());
+        if (stateJSON) {
+            var state = JSON.parse(stateJSON);
+            var context = this;
+            var currDashboard = "";
+            var changed = false;
+            this.marshaller.accept({
+                visit: function (item) {
+                    if (item instanceof HipieDDL.Marshaller) {
+                        if (state.zoom) {
+                            context.setZoom(state.zoom.translation, state.zoom.scale);
+                            changed = true;
                         }
-                        changed = true;
+                    } else if (item instanceof HipieDDL.Dashboard) {
+                        currDashboard = item.id;
+                    } else if (item instanceof HipieDDL.Visualization) {
+                        if (state && state[currDashboard][item.id]) {
+                            item.widgetSurface
+                                .pos(state[currDashboard][item.id].pos)
+                                .size(state[currDashboard][item.id].size)
+                            ;
+                            context.widgetAttributes.forEach(function (attr) {
+                                if (item.widget[attr] && state[currDashboard][item.id][attr]) {
+                                    item.widget[attr](state[currDashboard][item.id][attr]);
+                                }
+                            });
+                            changed = true;
+                        }
                     }
                 }
+            });
+            if (changed) {
+                this.layout("");
+                GraphWidget.prototype.render.call(this);
+                return true;
             }
-        });
-        if (changed) {
-            this.layout("");
-            GraphWidget.prototype.render.call(this);
-            return true;
         }
         return false;
     }

@@ -68,7 +68,6 @@
                 if (item._targetMarker)
                     item._targetMarker = context._id + "_" + item._targetMarker;
             })
-            this.layout(this.layout());
         }
         return retVal;
     };
@@ -348,6 +347,9 @@
             .on("click", function (d) {
                 context.vertex_click(d);
             })
+            .on("dblclick", function (d) {
+                context.vertex_dblclick(d);
+            })
             .on("mouseover", function (d) {
                 if (context._dragging)
                     return;
@@ -475,7 +477,9 @@
         vertexElements.transition().duration(this.highlight.transition)
             .each("end", function (d) {
                 if (vertexMap && vertexMap[d.id()]) {
-                    d._parentElement.node().parentNode.appendChild(d._parentElement.node());
+                    if (d._parentElement.node() && d._parentElement.node().parentNode) {
+                        d._parentElement.node().parentNode.appendChild(d._parentElement.node());
+                    }
                 }
             })
             .style("opacity", function (d) {
@@ -566,6 +570,9 @@
     Graph.prototype.vertex_click = function (d) {
         d._parentElement.node().parentNode.appendChild(d._parentElement.node());
         IGraph.prototype.vertex_click.apply(this, arguments);
+    };
+
+    Graph.prototype.vertex_dblclick = function (d) {
     };
 
     Graph.prototype.vertex_mouseover = function (element, d) {

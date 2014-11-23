@@ -93,7 +93,8 @@
         ;
         if (oneShot) {
             this.force.start();
-            var total = graphData.edgeCount();
+            var total = graphData.nodeCount();
+            total = Math.min(total * total, 500);
             for (var i = 0; i < total; ++i) {
                 this.force.tick();
             }
@@ -109,7 +110,11 @@
 
     function Hierarchy(graphData, width, height) {
         var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
-              .setGraph({width:width, height:height})
+              .setGraph({
+                  rankdir: "TB",
+                  nodesep: 20,
+                  ranksep: 10
+              })
               .setDefaultEdgeLabel(function() { return {}; })
         ;
         graphData.eachNode(function (u) {

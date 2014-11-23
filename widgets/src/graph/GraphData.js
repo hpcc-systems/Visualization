@@ -37,7 +37,7 @@
         //  Remove old items  ---
         if (merge) {
             var edgeIDs = edges.map(function (item) { return item._id; });
-            this.filterEdges(function (item) { return edgeIDs.indexOf(item) < 0; })
+            this.filterEdges(function (item) { return edgeIDs.indexOf(item.v + "_" + item.w) < 0; })
                 .forEach(function (item) {
                     try {
                         context.delEdge(item);
@@ -47,7 +47,7 @@
                 })
             ;
             var vertexIDs = vertices.map(function (item) { return item._id; });
-            this.filterNodes(function (item) { return vertexIDs.indexOf(item) < 0; }).nodes()
+            this.filterNodes(function (item) { return vertexIDs.indexOf(item) < 0; })
                 .forEach(function (item) {
                     try {
                         context.delNode(item);
@@ -63,6 +63,16 @@
     GraphData.prototype.filterEdges = function (pred) {
         var filtered = [];
         this.eachEdge(function (e) {
+            if (pred(e)) {
+                filtered.push(e);
+            }
+        });
+        return filtered;
+    };
+
+    GraphData.prototype.filterNodes = function (pred) {
+        var filtered = [];
+        this.eachNode(function (e) {
             if (pred(e)) {
                 filtered.push(e);
             }

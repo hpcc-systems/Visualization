@@ -42,7 +42,7 @@
         ;
 
         var line = this.svgData.selectAll(".dataLine")
-            .data(this._data)
+            .data(this._xyData)
         ;
 
         line.enter().append("path")

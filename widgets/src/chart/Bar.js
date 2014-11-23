@@ -17,7 +17,7 @@
     Bar.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
         var bar = this.svgData.selectAll(".barRect")
-            .data(this._data[0])
+            .data(this._xyData[0])
         ;
 
         var title = bar

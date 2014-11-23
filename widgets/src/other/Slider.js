@@ -11,7 +11,6 @@
 
         this._class = "slider";
         this._selectionLabel = "";
-        this._selectionValue = null;
 
         this.xScale = d3.scale.linear()
             .clamp(true)
@@ -63,16 +62,16 @@
         return this;
     };
 
-    Slider.prototype.selectionValue = function (_) {
-        if (!arguments.length) return this._selectionValue;
-        this._selectionValue = _;
-        this.brush.extent()
-        if (this.brushg) {
-            this.brushg
-                .call(this.brush.extent([this._selectionValue, this._selectionValue]))
-            ;
+    Slider.prototype.data = function (_) {
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            if (this.brushg) {
+                this.brushg
+                    .call(this.brush.extent([this._data, this._data]))
+                ;
+            }
         }
-        return this;
+        return retVal;
     };
 
     Slider.prototype.enter = function (domNode, element) {
@@ -137,7 +136,7 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
-            var selVal = this._selectionValue ? this._selectionValue : this._range.low;
+            var selVal = this._data ? this._data : this._range.low;
             this.brushg
                 .call(this.brush.extent([selVal, selVal]))
             ;
@@ -168,7 +167,7 @@
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
-            this._selectionValue = mouseX;
+            this._data = mouseX;
             if (this._selectionLabel) {
                 var clickData = {};
                 clickData[this._selectionLabel] = mouseX;

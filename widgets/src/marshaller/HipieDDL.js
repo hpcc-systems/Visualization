@@ -406,18 +406,20 @@
         var context = this;
         if (this.source.hasData()) {
             if (this.widget) {
+                var data = this.source.getData();
+                this.dashboard.marshaller.updateViz(this, data);
+                this.widget.data(data);
+
                 var params = this.source.getOutput().getParams();
                 if (exists("widget.title", this)) {
                     this.widget.title(this.id +(params ? " (" +params + ")": ""));
-                } else if (exists("widget._parentWidget.title", this)) {
-                    this.widget._parentWidget.title(this.id + (params ? " (" +params + ")": ""));
+                    this.widget.render();
+                } else if (exists("widgetSurface.title", this)) {
+                    this.widgetSurface.title(this.id + (params ? " (" + params + ")" : ""));
+                    this.widgetSurface.render();
+                } else {
+                    this.widget.render();
                 }
-                var data = this.source.getData();
-                this.dashboard.marshaller.updateViz(this, data);
-                this.widget
-                    .data(data)
-                    .render()
-                ;
             }
         }
     };

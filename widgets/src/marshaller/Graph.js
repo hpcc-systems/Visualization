@@ -12,7 +12,7 @@
         this._visualizeRoxie = false;
         this._url = "";
 
-        this.widgetAttributes = ["layout", "chartType", "palette", "selectionValue"];
+        this.widgetAttributes = ["layout", "chartType", "palette", "title", "data"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
 
@@ -192,13 +192,16 @@
         });
 
         this.data({ vertices: vertices, edges: edges });
-        if (!this.load()) {
+        var loadResult = this.load();
+        if (!loadResult.changed) {
             GraphWidget.prototype.render.call(this);
         }
-        for (var key in this.marshaller.dashboards) {
-            var dashboard = this.marshaller.dashboards[key];
-            for (var key in dashboard.datasources) {
-                dashboard.datasources[key].fetchData({}, true);
+        if (!loadResult.dataChanged) {
+            for (var key in this.marshaller.dashboards) {
+                var dashboard = this.marshaller.dashboards[key];
+                for (var key in dashboard.datasources) {
+                    dashboard.datasources[key].fetchData({}, true);
+                }
             }
         }
     };
@@ -232,6 +235,10 @@
         return hash;
     },
 
+    Graph.prototype.clear = function () {
+        localStorage.setItem("Graph_" + this.calcHash(), "");
+    };
+
     Graph.prototype.save = function () {
         var context = this;
         var currDashboard = "";
@@ -255,6 +262,8 @@
                         context.widgetAttributes.forEach(function (attr) {
                             if (item.widget[attr]) {
                                 state[currDashboard][item.id][attr] = item.widget[attr]();
+                            } else if (item.widgetSurface[attr]) {
+                                state[currDashboard][item.id][attr] = item.widgetSurface[attr]();
                             }
                         });
                     }
@@ -271,6 +280,7 @@
             var context = this;
             var currDashboard = "";
             var changed = false;
+            var dataChanged = false;
             this.marshaller.accept({
                 visit: function (item) {
                     if (item instanceof HipieDDL.Marshaller) {
@@ -289,7 +299,12 @@
                             context.widgetAttributes.forEach(function (attr) {
                                 if (item.widget[attr] && state[currDashboard][item.id][attr]) {
                                     item.widget[attr](state[currDashboard][item.id][attr]);
-                                }
+                                    if (attr === "data") {
+                                        dataChanged = true;
+                                    }
+                                } else if (item.widgetSurface[attr] && state[currDashboard][item.id][attr]) {
+                                    item.widgetSurface[attr](state[currDashboard][item.id][attr]);
+                                };
                             });
                             changed = true;
                         }
@@ -299,10 +314,9 @@
             if (changed) {
                 this.layout("");
                 GraphWidget.prototype.render.call(this);
-                return true;
             }
         }
-        return false;
+        return {changed: changed, dataChanged: dataChanged};
     }
 
 

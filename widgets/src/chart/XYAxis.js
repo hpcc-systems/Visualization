@@ -8,7 +8,8 @@
     function XYAxis(target) {
         SVGWidget.call(this);
 
-        this._data[0] = [];
+        this._xyData = [];
+        this._xyData[0] = [];
         this._xScale = "";
         this.parseDate = d3.time.format("%Y-%m-%d").parse;
     };
@@ -21,26 +22,27 @@
     };
 
     XYAxis.prototype.data = function (_) {
-        if (!arguments.length) return SVGWidget.prototype.data.apply(this, arguments);
-
-        var data = [];
-        data[0] = [];
-        _.map(function (row) {
-            if (row instanceof Array) {
-                row.forEach(function (item, idx) {
-                    if (!data[idx]) {
-                        data[idx] = [];
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._xyData = [];
+            this._xyData[0] = [];
+            _.map(function (row) {
+                if (row instanceof Array) {
+                    row.forEach(function (item, idx) {
+                        if (!this._xyData[idx]) {
+                            this._xyData[idx] = [];
+                        }
+                        this._xyData[idx].push(item);
+                    }, this);
+                } else {
+                    if (!this._xyData[0]) {
+                        this._xyData[0] = [];
                     }
-                    data[idx].push(item);
-                }, this);
-            } else {
-                if (!data[0]) {
-                    data[0] = [];
+                    this._xyData[0].push(row);
                 }
-                data[0].push(row);
-            }
-        }, this);
-        return SVGWidget.prototype.data.call(this, data);
+            }, this);
+        }
+        return retVal;
     };
 
     XYAxis.prototype.enter = function (domNode, element) {
@@ -112,22 +114,22 @@
         //  Update Domain  ---
         switch (this._xScale) {
             case "DATE":
-                var min = d3.min(this._data, function (data) {
+                var min = d3.min(this._xyData, function (data) {
                     return d3.min(data, function (d) { return context.parseDate(d.label); });
                 });
-                var max = d3.max(this._data, function (data) {
+                var max = d3.max(this._xyData, function (data) {
                     return d3.max(data, function (d) { return context.parseDate(d.label); });
                 });
                 this.x.domain([min, max]);
                 break;
             default:
-                this.x.domain(this._data[0].map(function (d) { return d.label; }));
+                this.x.domain(this._xyData[0].map(function (d) { return d.label; }));
                 break;
         }
-        var min = d3.min(this._data, function (data) {
+        var min = d3.min(this._xyData, function (data) {
             return d3.min(data, function (d) { return d.weight; });
         });
-        var max = d3.max(this._data, function (data) {
+        var max = d3.max(this._xyData, function (data) {
             return d3.max(data, function (d) { return d.weight; });
         });
         var newMin = min - (max - min) / 10;

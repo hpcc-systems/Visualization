@@ -10,12 +10,12 @@
         IGraph.call(this);
 
         this.graphData = new GraphData();
-
+        this._transitionDuration = 250;
         this.highlight = {
             zoom: 1.1,
             opacity: 0.33,
             edge: "1.25px",
-            transition: 250
+            transition: this._transitionDuration
         };
 
         this._class = "graph";
@@ -311,16 +311,17 @@
                 this.forceLayout.force.start();
             } else if (layoutEngine) {
                 this.forceLayout = null;
+                context._dragging = true;
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
                     item
-                        .pos({ x: pos.x, y: pos.y }, true)
+                        .pos({ x: pos.x, y: pos.y }, context._transitionDuration)
                     ;
                 });
                 context.graphData.edgeValues().forEach(function (item) {
                     var points = layoutEngine.edgePoints({v: item._sourceVertex.id(), w: item._targetVertex.id()});
                     item
-                        .points(points, true)
+                        .points(points, context._transitionDuration)
                     ;
                 });
 
@@ -329,6 +330,9 @@
                     context.shrinkToFit(vBounds);
                 }
                 this._fixIEMarkers();
+                setTimeout(function() {
+                    context._dragging = false;
+                }, context._transitionDuration + 50);  //  Prevents highlighting during morph  ---
             }
         }
         return this;

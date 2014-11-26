@@ -215,17 +215,17 @@
                 if (context._pos && (context._pos.x || context._pos.y)) {
                     context._element.attr("transform", function (d) { return "translate(" + context._pos.x + " " + context._pos.y + ")"; });
                 }
-                context.enter(this, context._element, context);
+                context.enter(this, context._element);
             })
         ;
         elements
             .each(function (context) {
-                context.update(this, context._element, context);
+                context.update(this, context._element);
             })
         ;
         elements.exit()
             .each(function exit(context) {
-                context.exit(this, context._element, context);
+                context.exit(this, context._element);
             })
             .remove()
         ;

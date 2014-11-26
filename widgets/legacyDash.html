@@ -30,12 +30,13 @@
                 ;
             }
             if (newUrl) {
-                var graphMarshaller = new GraphMarshaller()
-                    .target("graphMarshaller")
-                    .layout("Hierarchy")
-                    .url(newUrl.constructUrl())
-                    .render()
-                ;
+                GraphMarshaller.createSingle(newUrl.constructUrl(), null, false, function (graph, json) {
+                    graph
+                        .target("graphMarshaller")
+                        .layout("Hierarchy")
+                        .render()
+                    ;
+                });
             }
         });
     </script>

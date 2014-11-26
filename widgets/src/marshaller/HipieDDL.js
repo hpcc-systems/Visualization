@@ -172,6 +172,10 @@
         this.sort = source.sort;
     };
 
+    Source.prototype.getQualifiedID = function () {
+        return this.visualization.getQualifiedID() + "." + this.id;
+    };
+
     Source.prototype.exists = function () {
         return this._id;
     };
@@ -343,6 +347,10 @@
         }
     };
 
+    Visualization.prototype.getQualifiedID = function () {
+        return this.dashboard.getQualifiedID() + "." + this.id;
+    };
+
     Visualization.prototype.isLoading = function (widgetPath, callback) {
         return this.widget === null;
     };
@@ -449,7 +457,7 @@
     };
 
     Output.prototype.getQualifiedID = function () {
-        return this.dataSource.id + "." + this.id;
+        return this.dataSource.getQualifiedID() + "." + this.id;
     };
 
     Output.prototype.getParams = function () {
@@ -499,7 +507,7 @@
 
         if (this.WUID) {
             this.comms = new Comms.HIPIEWorkunit()
-                .url(dashboard.marshaller.espUrl.getUrl())
+                .url(dashboard.marshaller.espUrl._url)
                 .proxyMappings(proxyMappings)
                 .hipieResults(hipieResults)
             ;
@@ -509,6 +517,10 @@
                 .proxyMappings(proxyMappings)
             ;
         }
+    };
+
+    DataSource.prototype.getQualifiedID = function () {
+        return this.dashboard.getQualifiedID() + "." + this.id;
     };
 
     DataSource.prototype.accept = function (visitor) {
@@ -560,6 +572,7 @@
     function Dashboard(marshaller, dashboard, proxyMappings) {
         this.marshaller = marshaller;
         this.id = dashboard.id;
+        this.title = dashboard.title;
 
         var context = this;
         this.datasources = {};
@@ -596,6 +609,10 @@
         this.visualizationsArray.forEach(function (item) {
             walkSelect(item, this.visualizationsTree);
         }, this);
+    };
+
+    Dashboard.prototype.getQualifiedID = function () {
+        return this.id;
     };
 
     Dashboard.prototype.accept = function (visitor) {

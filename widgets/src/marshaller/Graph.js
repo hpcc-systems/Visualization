@@ -5,64 +5,20 @@
         root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
 }(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
-    function Graph(target) {
-        GraphWidget.call(this);
-
-        this.marshaller = new HipieDDL.Marshaller();
-        this._visualizeRoxie = false;
-        this._url = "";
-
-        this.widgetAttributes = ["layout", "chartType", "palette", "title", "data"];
-    };
-    Graph.prototype = Object.create(GraphWidget.prototype);
-
-    Graph.prototype.url = function (_) {
-        if (!arguments.length) return this._url;
-        this._url = _;
-        return this;
-    };
-
-    Graph.prototype.proxyMappings = function (_) {
-        var retVal = this.marshaller.proxyMappings(_);
-        if (arguments.length) {
-            return this;
-        }
-        return retVal;
-    };
-
-    Graph.prototype.visualizeRoxie = function (_) {
-        if (!arguments.length) return this._visualizeRoxie;
-        this._visualizeRoxie = _;
-        return this;
-    };
-
-    Graph.prototype.render = function (callback) {
-        this.data({ vertices: [], edges: []});
-        GraphWidget.prototype.render.call(this);
-        var context = this;
-        if (this._url[0] === "[" || this._url[0] === "{") {
-            this.marshaller.parse(this._url, function () {
-                context.doRender();
-            });
-        } else {
-            this.marshaller.url(this._url, function (response) {
-                context.doRender();
-                if (callback) {
-                    callback(context);
-                }
-            });
-        }
-        return this;
-    };
-
-    Graph.prototype.doRender = function () {
-        var context = this;
-        var vertices = [];
-        var vertexMap = {};
-        this.marshaller.accept({
-            _visualizeRoxie: context._visualizeRoxie,
+    function createGraphData(marshaller, visualizeRoxie) {
+        var curr = null;
+        var dashboards = {};
+        marshaller.accept({
+            _visualizeRoxie: visualizeRoxie,
             visit: function (item) {
-                if (item instanceof HipieDDL.DataSource) {
+                if (item instanceof HipieDDL.Dashboard) {
+                    curr = {
+                        dashboard: item,
+                        vertexMap: {},
+                        edges: [],
+                    };
+                    dashboards[item.getQualifiedID()] = curr;
+                } else if (item instanceof HipieDDL.DataSource) {
                     if (this._visualizeRoxie) {
                         var params = "";
                         item.filter.forEach(function (item) {
@@ -72,21 +28,19 @@
                             params += item;
                         });
                         params = " (" + params + ")";
-                        vertexMap[item.id] = new Vertex()
+                        curr.vertexMap[item.getQualifiedID()] = new Vertex()
                             .class("vertexLabel")
                             .faChar("\uf1c0")
                             .text(item.id + params)
                         ;
-                        vertices.push(vertexMap[item.id]);
                     }
                 } else if (item instanceof HipieDDL.Output) {
                     if (this._visualizeRoxie) {
-                        vertexMap[item.dataSource.id + "." + item.id] = new Vertex()
+                        curr.vertexMap[item.getQualifiedID()] = new Vertex()
                             .class("vertexLabel")
                             .faChar("\uf0ce")
                             .text(item.id + "\n[" + item.from + "]")
                         ;
-                        vertices.push(vertexMap[item.dataSource.id + "." + item.id]);
                     }
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {
@@ -112,8 +66,7 @@
                         }
                         if (newSurface) {
                             item.widgetSurface = newSurface;
-                            vertexMap[item.id] = newSurface;
-                            vertices.push(newSurface);
+                            curr.vertexMap[item.getQualifiedID()] = newSurface;
 
                             switch (item.type) {
                                 case "CHORO":
@@ -144,61 +97,103 @@
             }
         });
 
-        var edges = [];
-        function addEdge(sourceID, targetID, sourceMarker, targetMarker, text) {
+        function addEdge(curr, sourceID, targetID, sourceMarker, targetMarker, text) {
             sourceMarker = sourceMarker || "";
             targetMarker = targetMarker || "";
             text = text || "";
-            if (sourceID && targetID && vertexMap[sourceID] && vertexMap[targetID]) {
-                edges.push(new Edge()
-                    .sourceVertex(vertexMap[sourceID])
-                    .targetVertex(vertexMap[targetID])
+            if (sourceID && targetID && curr.vertexMap[sourceID] && curr.vertexMap[targetID]) {
+                curr.edges.push(new Edge()
+                    .sourceVertex(curr.vertexMap[sourceID])
+                    .targetVertex(curr.vertexMap[targetID])
                     .sourceMarker(sourceMarker)
                     .targetMarker(targetMarker)
                     .text(text)
                 );
             } else {
-                if (!vertexMap[sourceID]) {
+                if (!curr.vertexMap[sourceID]) {
                     console.log("Unknown Vertex:  " + sourceID);
                 }
-                if (!vertexMap[targetID]) {
+                if (!curr.vertexMap[targetID]) {
                     console.log("Unknown Vertex:  " + targetID);
                 }
             }
         };
-        this.marshaller.accept({
-            _visualizeRoxie: context._visualizeRoxie,
+
+        curr = null;
+        marshaller.accept({
+            _visualizeRoxie: visualizeRoxie,
             visit: function (item) {
-                if (item instanceof HipieDDL.DataSource) {
+                if (item instanceof HipieDDL.Dashboard) {
+                    curr = dashboards[item.getQualifiedID()];
+                } else if (item instanceof HipieDDL.DataSource) {
                 } else if (item instanceof HipieDDL.Output) {
                     if (this._visualizeRoxie) {
-                        addEdge(item.dataSource.id, item.getQualifiedID(), "circleFoot", "circleHead");
+                        addEdge(curr, item.dataSource.getQualifiedID(), item.getQualifiedID(), "circleFoot", "circleHead");
                     }
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (this._visualizeRoxie) {
                         if (item.source.getDatasource()) {
-                            addEdge(item.id, item.source.getDatasource().id, "", "arrowHead", "update");
+                            addEdge(curr, item.getQualifiedID(), item.source.getDatasource().getQualifiedID(), "", "arrowHead", "update");
                         }
                         if (item.source.getOutput()) {
-                            addEdge(item.source.getOutput().getQualifiedID(), item.id, "", "arrowHead", "notify");
+                            addEdge(curr, item.source.getOutput().getQualifiedID(), item.getQualifiedID(), "", "arrowHead", "notify");
                         }
                     }
 
                     item.onSelect.getUpdatesVisualizations().forEach(function (vizItem) {
-                        addEdge(item.id, vizItem.id, undefined, "arrowHead", "on Select");
+                        addEdge(curr, item.getQualifiedID(), vizItem.getQualifiedID(), undefined, "arrowHead", "on Select");
                     });
                 }
             }
         });
+        return dashboards;
+    };
 
+    function Graph(target) {
+        GraphWidget.call(this);
+
+        this._dashboards = [];
+        this.widgetAttributes = ["layout", "chartType", "palette", "title", "data"];
+    };
+    Graph.prototype = Object.create(GraphWidget.prototype);
+
+    Graph.prototype.dashboards = function (_) {
+        if (!arguments.length) return this._dashboards;
+        this._dashboards = _;
+        return this;
+    };
+
+    Graph.prototype.title = function () {
+        var retVal = "";
+        this._dashboards.forEach(function (item) {
+            if (retVal) {
+                retVal += ", ";
+            }
+            retVal += item.dashboard.title;
+        });
+        return retVal;
+    };
+
+    Graph.prototype.render = function (callback) {
+        this.data({ vertices: [], edges: []});
+        GraphWidget.prototype.render.call(this);
+        var context = this;
+        var vertices = [];
+        var edges = [];
+        for (var key in this._dashboards) {
+            for (var vm_key in this._dashboards[key].vertexMap) {
+                vertices.push(this._dashboards[key].vertexMap[vm_key]);
+            }
+            edges = edges.concat(this._dashboards[key].edges);
+        }
         this.data({ vertices: vertices, edges: edges });
         var loadResult = this.load();
         if (!loadResult.changed) {
             GraphWidget.prototype.render.call(this);
         }
         if (!loadResult.dataChanged) {
-            for (var key in this.marshaller.dashboards) {
-                var dashboard = this.marshaller.dashboards[key];
+            for (var key in this._dashboards) {
+                var dashboard = this._dashboards[key].dashboard;
                 for (var key in dashboard.datasources) {
                     dashboard.datasources[key].fetchData({}, true);
                 }
@@ -225,13 +220,16 @@
     Graph.prototype.calcHash = function () {
         var context = this;
         var hash = 0;
-        this.marshaller.accept({
-            visit: function (item) {
-                if (item instanceof HipieDDL.Visualization) {
-                    hash += context.checksum(item.id);
+        for (var key in this._dashboards) {
+            var currDashboard = this._dashboards[key].dashboard;
+            currDashboard.accept({
+                visit: function (item) {
+                    if (item instanceof HipieDDL.Visualization) {
+                        hash += context.checksum(item.getQualifiedID());
+                    }
                 }
-            }
-        });
+            });
+        }
         return hash;
     },
 
@@ -241,35 +239,35 @@
 
     Graph.prototype.save = function () {
         var context = this;
-        var currDashboard = "";
         var state = {};
-        this.marshaller.accept({
-            visit: function (item) {
-                if (item instanceof HipieDDL.Marshaller) {
-                    state["zoom"] = {
-                        translation: context.zoom.translate(),
-                        scale: context.zoom.scale()
-                    };
-                } else if (item instanceof HipieDDL.Dashboard) {
-                    currDashboard = item.id;
-                    state[currDashboard] = {};
-                } else if (item instanceof HipieDDL.Visualization) {
-                    if (item.widgetSurface) {
-                        state[currDashboard][item.id] = {
-                            pos: item.widgetSurface.pos(),
-                            size: item.widgetSurface.size()
-                        };
-                        context.widgetAttributes.forEach(function (attr) {
-                            if (item.widget[attr]) {
-                                state[currDashboard][item.id][attr] = item.widget[attr]();
-                            } else if (item.widgetSurface[attr]) {
-                                state[currDashboard][item.id][attr] = item.widgetSurface[attr]();
-                            }
-                        });
+        state["zoom"] = {
+            translation: context.zoom.translate(),
+            scale: context.zoom.scale()
+        };
+        for (var key in this._dashboards) {
+            var currDashboard = this._dashboards[key].dashboard;
+            var currDashboardID = currDashboard.getQualifiedID();
+            state[currDashboardID] = {};
+            currDashboard.accept({
+                visit: function (item) {
+                    if (item instanceof HipieDDL.Visualization) {
+                        if (item.widgetSurface) {
+                            state[currDashboardID][item.getQualifiedID()] = {
+                                pos: item.widgetSurface.pos(),
+                                size: item.widgetSurface.size()
+                            };
+                            context.widgetAttributes.forEach(function (attr) {
+                                if (item.widget[attr]) {
+                                    state[currDashboardID][item.getQualifiedID()][attr] = item.widget[attr]();
+                                } else if (item.widgetSurface[attr]) {
+                                    state[currDashboardID][item.getQualifiedID()][attr] = item.widgetSurface[attr]();
+                                }
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
         localStorage.setItem("Graph_" + this.calcHash(), JSON.stringify(state));
     };
 
@@ -281,36 +279,39 @@
             var currDashboard = "";
             var changed = false;
             var dataChanged = false;
-            this.marshaller.accept({
-                visit: function (item) {
-                    if (item instanceof HipieDDL.Marshaller) {
-                        if (state.zoom) {
-                            context.setZoom(state.zoom.translation, state.zoom.scale);
-                            changed = true;
-                        }
-                    } else if (item instanceof HipieDDL.Dashboard) {
-                        currDashboard = item.id;
-                    } else if (item instanceof HipieDDL.Visualization) {
-                        if (state && state[currDashboard][item.id]) {
-                            item.widgetSurface
-                                .pos(state[currDashboard][item.id].pos)
-                                .size(state[currDashboard][item.id].size)
-                            ;
-                            context.widgetAttributes.forEach(function (attr) {
-                                if (item.widget[attr] && state[currDashboard][item.id][attr]) {
-                                    item.widget[attr](state[currDashboard][item.id][attr]);
-                                    if (attr === "data") {
-                                        dataChanged = true;
-                                    }
-                                } else if (item.widgetSurface[attr] && state[currDashboard][item.id][attr]) {
-                                    item.widgetSurface[attr](state[currDashboard][item.id][attr]);
-                                };
-                            });
-                            changed = true;
+
+            if (state.zoom) {
+                this.setZoom(state.zoom.translation, state.zoom.scale);
+                changed = true;
+            }
+
+            for (var key in this._dashboards) {
+                var currDashboard = this._dashboards[key].dashboard;
+                var currDashboardID = currDashboard.getQualifiedID();
+                currDashboard.accept({
+                    visit: function (item) {
+                        if (item instanceof HipieDDL.Visualization) {
+                            if (state && state[currDashboardID][item.getQualifiedID()]) {
+                                item.widgetSurface
+                                    .pos(state[currDashboardID][item.getQualifiedID()].pos)
+                                    .size(state[currDashboardID][item.getQualifiedID()].size)
+                                ;
+                                context.widgetAttributes.forEach(function (attr) {
+                                    if (item.widget[attr] && state[currDashboardID][item.getQualifiedID()][attr]) {
+                                        item.widget[attr](state[currDashboardID][item.getQualifiedID()][attr]);
+                                        if (attr === "data") {
+                                            dataChanged = true;
+                                        }
+                                    } else if (item.widgetSurface[attr] && state[currDashboardID][item.getQualifiedID()][attr]) {
+                                        item.widgetSurface[attr](state[currDashboardID][item.getQualifiedID()][attr]);
+                                    };
+                                });
+                                changed = true;
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
             if (changed) {
                 this.layout("");
                 GraphWidget.prototype.render.call(this);
@@ -319,6 +320,49 @@
         return {changed: changed, dataChanged: dataChanged};
     }
 
+    return {
+        createSingle: function (url, proxyMappings, visualizeRoxie, callback) {
+            var marshaller = new HipieDDL.Marshaller().proxyMappings(proxyMappings);
+            function postParse() {
+                var dashboards = createGraphData(marshaller, visualizeRoxie);
+                var graph = new Graph()
+                    .dashboards(dashboards)
+                ;
+                callback(graph);
+            }
+            if (url[0] === "[" || url[0] === "{") {
+                marshaller.parse(url, function () {
+                    postParse();
+                });
+            } else {
+                marshaller.url(url, function () {
+                    postParse();
+                });
+            }
+        },
+        create: function (url, proxyMappings, visualizeRoxie, callback) {
+            var marshaller = new HipieDDL.Marshaller().proxyMappings(proxyMappings);
+            function postParse() {
+                var dashboards = createGraphData(marshaller, visualizeRoxie);
+                var graphs = [];
+                for (var key in dashboards) {
+                    var graph = new Graph()
+                        .dashboards([dashboards[key]])
+                    ;
+                    graphs.push(graph);
+                }
+                callback(graphs, JSON.stringify(marshaller._jsonParsed, undefined, 2));
+            }
+            if (url[0] === "[" || url[0] === "{") {
+                marshaller.parse(url, function () {
+                    postParse();
+                });
+            } else {
+                marshaller.url(url, function () {
+                    postParse();
+                });
+            }
+        }
 
-    return Graph;
+    };
 }));

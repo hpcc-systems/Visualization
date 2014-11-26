@@ -120,11 +120,14 @@
     };
 
 
-    SVGWidget.prototype.pos = function (_, transition, skipRender) {
+    SVGWidget.prototype.pos = function (_, transitionDuration, skipRender) {
+        if (transitionDuration && (isNaN(transitionDuration) || transitionDuration < 10)) {
+            throw "GJS Remove";
+        }
         var retVal = Widget.prototype.pos.apply(this, arguments);
         if (arguments.length) {
             if (!skipRender) {
-                (transition ? this._element.transition() : this._element)
+                (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)
                     .attr("transform", "translate(" + _.x + " " + _.y + ")")
                 ;
             }

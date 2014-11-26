@@ -42,11 +42,11 @@
         return this;
     };
 
-    Edge.prototype.points = function (_, animate, skipPushMarkers) {
+    Edge.prototype.points = function (_, transitionDuration, skipPushMarkers) {
         if (!arguments.length) return this._points;
         this._points = _;
         if (this._elementPath) {
-            this.update(null, this._element, animate, skipPushMarkers);
+            this.update(null, this._element, transitionDuration, skipPushMarkers);
         }
         return this;
     };
@@ -80,12 +80,12 @@
         }
     };
 
-    Edge.prototype.update = function (domNode, element, transition, skipPushMarkers) {
+    Edge.prototype.update = function (domNode, element, transitionDuration, skipPushMarkers) {
         var context = this;
         var pathElements = this._elementPath;
 
         if (this.isIE && !skipPushMarkers) {
-            element.transition()
+            element.transition().duration((transitionDuration ? transitionDuration : 0) + 20)
                 .each("start", function (d) {
                     context._pushMarkers(element, d);
                 })
@@ -96,7 +96,7 @@
         }
         var points = context._calculateEdgePoints(this._sourceVertex, this._targetVertex, this._points);
         var line = "";
-        if (this._points.length || transition || true) {
+        if (this._points.length || transitionDuration || true) {
             line = d3.svg.line()
                 .x(function (d) { return d.x; })
                 .y(function (d) { return d.y; })
@@ -116,8 +116,8 @@
                         points[2].x + "," +
                         points[2].y;
         }
-        if (transition) {
-            pathElements = pathElements.transition();
+        if (transitionDuration) {
+            pathElements = pathElements.transition().duration(transitionDuration);
         }
         pathElements
             .attr("opacity", this._hidden ? 0 : 1)
@@ -126,7 +126,7 @@
 
         if (this._textBox.text()) {
             this._textBox
-                .pos(this._findMidPoint(points), transition)
+                .pos(this._findMidPoint(points), transitionDuration)
             ;
         }
     };

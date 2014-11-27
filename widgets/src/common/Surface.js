@@ -27,7 +27,7 @@
 
         this._faChar = "\uf07b";
         this._title = "";
-
+        this._showContent = true;
         this._content = null;
     };
     Surface.prototype = Object.create(SVGWidget.prototype);
@@ -41,6 +41,15 @@
     Surface.prototype.title = function (_) {
         if (!arguments.length) return this._title;
         this._title = _;
+        return this;
+    };
+
+    Surface.prototype.showContent = function (_) {
+        if (!arguments.length) return this._showContent;
+        this._showContent = _;
+        if (this._content && this._content._parentElement) {
+            this._content._parentElement.style("visibility", this._showContent ? null : "hidden");
+        }
         return this;
     };
 
@@ -130,52 +139,54 @@
             .render()
         ;
 
-        var context = this;
-        var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
-        content.enter().append("g")
-            .attr("class", "content")
-            .attr("clip-path", "url(#" + this.id() + "_clip)")
-            .each(function (d) {
-                d.target(this);
-            })
-        ;
-        content
-            .each(function (d) {
-                var padding = {
-                    left: 4,
-                    top: 4,
-                    right: 4,
-                    bottom: 4
-                };
-                d
-                    .size({
-                        width: context._size.width - xOffset - (padding.left + padding.right),
-                        height: context._size.height - yOffset - (padding.top + padding.bottom)
-                    })
+        if (this._showContent) {
+            var context = this;
+            var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
+            content.enter().append("g")
+                .attr("class", "content")
+                .attr("clip-path", "url(#" + this.id() + "_clip)")
+                .each(function (d) {
+                    d.target(this);
+                })
+            ;
+            content
+                .each(function (d) {
+                    var padding = {
+                        left: 4,
+                        top: 4,
+                        right: 4,
+                        bottom: 4
+                    };
+                    d
+                        .size({
+                            width: context._size.width - xOffset - (padding.left + padding.right),
+                            height: context._size.height - yOffset - (padding.top + padding.bottom)
+                        })
+                    ;
+                })
+            ;
+            if (this._content) {
+                this._clipRect
+                    .attr("x", -this._size.width / 2 + xOffset)
+                    .attr("y", -this._size.height / 2 + yOffset)
+                    .attr("width", this._size.width - xOffset)
+                    .attr("height", this._size.height - yOffset)
                 ;
-            })
-        ;
-        if (this._content) {
-            this._clipRect
-                .attr("x", -this._size.width / 2 + xOffset)
-                .attr("y", -this._size.height / 2 + yOffset)
-                .attr("width", this._size.width - xOffset)
-                .attr("height", this._size.height - yOffset)
+            }
+            content
+                .each(function (d) {
+                    d
+                        .pos({ x: xOffset / 2, y: yOffset / 2 })
+                        .render()
+                    ;
+                })
+            ;
+
+            content.exit().transition()
+                .each(function (d) { d.target(null); })
+                .remove()
             ;
         }
-        content
-            .each(function (d) {
-                d
-                    .pos({ x: xOffset / 2, y: yOffset / 2 })
-                    .render()
-                ;
-            })
-        ;
-
-        content.exit().transition()
-            .each(function (d) { d.target(null); })
-            .remove()
-        ;
 
         this._menu.element().node().parentNode.appendChild(this._menu.element().node());
     };

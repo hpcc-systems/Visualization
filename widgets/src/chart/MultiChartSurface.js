@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/ResizeSurface", "./I2DChart", "./Pie", "./Bar", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../other/WordCloud", "../common/Palette"], factory);
+        define(["d3/d3", "../common/ResizeSurface", "./I2DChart", "./Pie", "./Column", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../google/Bar", "../google/Column", "../google/Line", "../other/WordCloud", "../common/Palette"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.I2DChart, root.Pie, root.Bar, root.Line, root.Bubble, root.Table, root.GPie, root.WordCloud, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.I2DChart, root.Pie, root.Column, root.Line, root.Bubble, root.Table, root.GPie, root.GBar, root.GColumn, root.GLine, root.WordCloud, root.Palette);
     }
-}(this, function (d3, ResizeSurface, I2DChart, Pie, Bar, Line, Bubble, Table, GPie, WordCloud, Palette) {
+}(this, function (d3, ResizeSurface, I2DChart, Pie, Column, Line, Bubble, Table, GPie, GBar, GColumn, GLine, WordCloud, Palette) {
     function MultiChartSurface() {
         ResizeSurface.call(this);
         I2DChart.call(this);
@@ -12,7 +12,7 @@
         this._title = "MultiChartSurface";
 
         this._menu
-            .data(["PIE", "GOOGLE_PIE", "BUBBLE", "BAR", "LINE", "TABLE", "WORD_CLOUD"])
+            .data(["PIE", "GOOGLE_PIE", "BUBBLE", "GOOGLE_BAR", "COLUMN", "GOOGLE_COLUMN", "LINE", "GOOGLE_LINE", "TABLE", "WORD_CLOUD"])
         ;
         var context = this;
         this._pie = new Pie();
@@ -23,11 +23,20 @@
         this._gpie.click = function (d) {
             context.click(d);
         }
-        this._bar = new Bar();
-        this._bar.click = function (d) {
+        this._column = new Column();
+        this._column.click = function (d) {
+            context.click(d);
+        }
+        this._gbar = new GBar();
+        this._gbar.click = function (d) {
+            context.click(d);
+        }
+        this._gcolumn = new GColumn();
+        this._gcolumn.click = function (d) {
             context.click(d);
         }
         this._line = new Line();
+        this._gline = new GLine();
         this._bubble = new Bubble();
         this._bubble.d3Color = this._pie.d3Color;
         this._bubble.click = function (d) {
@@ -73,10 +82,16 @@
                 return this._gpie;
             case "BUBBLE":
                 return this._bubble;
-            case "BAR":
-                return this._bar;
+            case "GOOGLE_BAR":
+                return this._gbar;
+            case "COLUMN":
+                return this._column;
+            case "GOOGLE_COLUMN":
+                return this._gcolumn;
             case "LINE":
                 return this._line;
+            case "GOOGLE_LINE":
+                return this._gline;
             case "TABLE":
                 return this._table;
             case "WORD_CLOUD":

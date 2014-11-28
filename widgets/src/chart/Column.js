@@ -1,36 +1,36 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./XYAxis", "./IBar", "css!./Bar"], factory);
+        define(["d3/d3", "./XYAxis", "./IBar", "css!./Column"], factory);
     } else {
-        root.Bar = factory(root.d3, root.XYAxis, root.IBar);
+        root.Column = factory(root.d3, root.XYAxis, root.IBar);
     }
 }(this, function (d3, XYAxis, IBar) {
-    function Bar(target) {
+    function Column(target) {
         XYAxis.call(this);
         IBar.call(this);
 
-        this._class = "bar";
+        this._class = "column";
     };
-    Bar.prototype = Object.create(XYAxis.prototype);
-    Bar.prototype.implements(IBar.prototype);
+    Column.prototype = Object.create(XYAxis.prototype);
+    Column.prototype.implements(IBar.prototype);
 
-    Bar.prototype.updateChart = function (domNode, element, margin, width, height) {
+    Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
-        var bar = this.svgData.selectAll(".barRect")
+        var column = this.svgData.selectAll(".columnRect")
             .data(this._xyData[0])
         ;
 
-        var title = bar
+        var title = column
           .enter().append("rect")
-            .attr("class", "barRect")
+            .attr("class", "columnRect")
             .on("click", function (d) {
                 context.click(d);
             })
             .append("title")
         ;
 
-        bar.transition()
-            .attr("class", "barRect")
+        column.transition()
+            .attr("class", "columnRect")
             .attr("x", function (d) { return context.x(d.label); })
             .attr("width", this.x.rangeBand())
             .attr("y", function (d) { return context.y(d.weight); })
@@ -41,10 +41,10 @@
             .text(function (d) { return d.label + " (" + d.weight + ")"; })
         ;
 
-        bar.exit().transition()
+        column.exit().transition()
             .remove()
         ;
     };
 
-    return Bar;
+    return Column;
 }));

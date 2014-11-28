@@ -1,15 +1,20 @@
-.choropleth rect {
-    fill: #dcf1ff;
-    stroke: #1f77b4;
-    stroke-width: 1.0px;
+.noFill {
+    fill: whitesmoke;
+    stroke: none;
+}
+
+.choropleth .zoom {
+    stroke: none;
+    fill: none;
+    pointer-events: all;
 }
 
 .choropleth path {
     cursor: pointer;
     fill: whitesmoke;
     stroke: #6d6e71;
-    stroke-width: 0.5px;
+    stroke-width: 0.125px;
     stroke-linejoin: round;
     stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
 }
-

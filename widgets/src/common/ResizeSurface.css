@@ -1,39 +1,39 @@
-.surface .resizeN {
+.resizeN {
     cursor: ns-resize;
     opacity: 0;
 }
 
-.surface .resizeNE {
+.resizeNE {
     cursor: ne-resize;
     opacity: 0;
 }
 
-.surface .resizeE {
+.resizeE {
     cursor: ew-resize;
     opacity: 0;
 }
 
-.surface .resizeSE {
+.resizeSE {
     cursor: se-resize;
     opacity: 0;
 }
 
-.surface .resizeS {
+.resizeS {
     cursor: ns-resize;
     opacity: 0;
 }
 
-.surface .resizeSW {
+.resizeSW {
     cursor: sw-resize;
     opacity: 0;
 }
 
-.surface .resizeW {
+.resizeW {
     cursor: ew-resize;
     opacity: 0;
 }
 
-.surface .resizeNW {
+.resizeNW {
     cursor: nw-resize;
     opacity: 0;
 }

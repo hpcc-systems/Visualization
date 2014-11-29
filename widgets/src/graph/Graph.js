@@ -122,7 +122,7 @@
         //  Drag  ---
         function dragstart(d) {
             d3.event.sourceEvent.stopPropagation();
-            context._dragging = d;
+            context._dragging = true;
             if (context.forceLayout) {
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = true;
@@ -136,8 +136,7 @@
         }
         function dragend(d) {
             d3.event.sourceEvent.stopPropagation();
-            context._dragging._dragResize = false;
-            context._dragging = null;
+            context._dragging = false;
             if (context.forceLayout) {
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = false;
@@ -151,56 +150,12 @@
         }
         function drag(d) {
             d3.event.sourceEvent.stopPropagation();
-            if (d._dragResize) {
-                if (d._dragResize.loc === "CONTENT") {
-                } else {
-                    var dx = d3.event.x - d._dragStartPos.x;
-                    var dy = d3.event.y - d._dragStartPos.y;
-                    switch (d._dragResize.loc) {
-                        case "N":
-                            d.pos({ x: d._dragStartPos.x, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width, height: d._dragStartSize.height - dy });
-                            break;
-                        case "NE":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height - dy });
-                            break;
-                        case "E":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y }, false, false);
-                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height });
-                            break;
-                        case "SE":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width + dx, height: d._dragStartSize.height + dy });
-                            break;
-                        case "S":
-                            d.pos({ x: d._dragStartPos.x, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width, height: d._dragStartSize.height + dy });
-                            break;
-                        case "SW":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height + dy });
-                            break;
-                        case "W":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y}, false, false);
-                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height });
-                            break;
-                        case "NW":
-                            d.pos({ x: d._dragStartPos.x + dx / 2, y: d._dragStartPos.y + dy / 2 }, false, false);
-                            d.size({ width: d._dragStartSize.width - dx, height: d._dragStartSize.height - dy });
-                            break;
-                    }
-                    d.render();
-                    d.getBBox(true);
-                }
-            } else {
-                d.pos({ x: d3.event.x, y: d3.event.y });
-                if (context.forceLayout) {
-                    var forceNode = context.forceLayout.vertexMap[d.id()];
-                    forceNode.fixed = true;
-                    forceNode.x = forceNode.px = d3.event.x;
-                    forceNode.y = forceNode.py = d3.event.y;
-                }
+            d.pos({ x: d3.event.x, y: d3.event.y });
+            if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
+                forceNode.x = forceNode.px = d3.event.x;
+                forceNode.y = forceNode.py = d3.event.y;
             }
             context.refreshIncidentEdges(d, true);
         }
@@ -377,6 +332,17 @@
             d.element()
                 .call(context.drag)
             ;
+            if (d.dispatch) {
+                d.dispatch.on("sizestart", function (args) {
+                    context._dragging = true;
+                });
+                d.dispatch.on("size", function (args) {
+                    context.refreshIncidentEdges(d, true);
+                });
+                d.dispatch.on("sizeend", function (args) {
+                    context._dragging = false;
+                });
+            }
         }
 
         var edgeElements = this.svgE.selectAll("#" + this._id + "E > .edge").data(this.graphData.edgeValues(), function (d) { return d.id(); });

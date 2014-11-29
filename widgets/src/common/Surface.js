@@ -44,6 +44,12 @@
         return this;
     };
 
+    Surface.prototype.menu = function (_) {
+        if (!arguments.length) return this._menu.data();
+        this._menu.data(_);
+        return this;
+    };
+
     Surface.prototype.showContent = function (_) {
         if (!arguments.length) return this._showContent;
         this._showContent = _;

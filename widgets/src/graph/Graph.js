@@ -23,6 +23,7 @@
         this._highlightOnMouseOverEdge = false;
         this._shrinkToFitOnLayout = false;
         this._layout = "";
+        this._hierarchyOptions = { };
     };
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype.implements(IGraph.prototype);
@@ -87,6 +88,12 @@
     Graph.prototype.shrinkToFitOnLayout = function (_) {
         if (!arguments.length) return this._shrinkToFitOnLayout;
         this._shrinkToFitOnLayout = _;
+        return this;
+    };
+
+    Graph.prototype.hierarchyOptions = function (_) {
+        if (!arguments.length) return this._hierarchyOptions;
+        this._hierarchyOptions = _;
         return this;
     };
 
@@ -446,7 +453,7 @@
             case "ForceDirected2":
                 return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height);
             case "Hierarchy":
-                return new GraphLayouts.Hierarchy(this.graphData, this._size.width, this._size.height);
+                return new GraphLayouts.Hierarchy(this.graphData, this._size.width, this._size.height, this._hierarchyOptions);
         }
         return null;//new GraphLayouts.None(this.graphData, this._size.width, this._size.height);
     }

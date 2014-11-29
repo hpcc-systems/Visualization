@@ -108,13 +108,9 @@
         return [];
     };
 
-    function Hierarchy(graphData, width, height) {
+    function Hierarchy(graphData, width, height, options) {
         var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
-              .setGraph({
-                  rankdir: "TB",
-                  nodesep: 20,
-                  ranksep: 10
-              })
+              .setGraph(options)
               .setDefaultEdgeLabel(function() { return {}; })
         ;
         graphData.eachNode(function (u) {

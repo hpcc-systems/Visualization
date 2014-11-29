@@ -12,7 +12,6 @@
         this._dataMaxWeight = 0;
         this._dataMinWeight = 0;
         this.projection("albersUsaPr");
-
     };
     ChoroplethStates.prototype = Object.create(Choropleth.prototype);
 
@@ -39,16 +38,15 @@
 
     ChoroplethStates.prototype.enter = function (domNode, element) {
         Choropleth.prototype.enter.apply(this, arguments);
-        var choroPaths = element.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
+        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
 
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
-            .attr("d", this.d3Path)
             .on("click", function (d) {
                 context.click({ state: usStates.stateNames[d.id].code });
             })
-            .attr("id", function (d) {
-                return usStates.stateNames[d.id].code;
+            .on("dblclick", function (d) {
+                context.zoomToPath(this, d);
             })
         ;
         this.choroPaths
@@ -58,25 +56,21 @@
 
     ChoroplethStates.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-
+        console.time("ChoroplethStates.prototype.update");
         var context = this;
         this.transition.apply(this.choroPaths)
-            .style("fill", function (d) {
+            .attr("d", this.d3Path)
+            .each(function (d) {
                 var code = usStates.stateNames[d.id].code;
                 var weight = context._dataMap[code];
-                if (weight === undefined) {
-                    return "url(#hash)";
-                }
-                return context.d3Color(context._dataMap[code]);
+                d3.select(this)
+                    .style("fill", weight === undefined ? "url(#hash)" : context.d3Color(weight))
+                    .select("title")
+                    .text(usStates.stateNames[d.id].name + (weight === undefined ? "" : " (" + context._dataMap[code] + ")"))
+                ;
             })
         ;
-
-        this.choroPaths.select("title")
-            .text(function (d) {
-                var code = usStates.stateNames[d.id].code;
-                return usStates.stateNames[d.id].name + " (" + context._dataMap[code] + ")";
-            })
-        ;
+        console.timeEnd("ChoroplethStates.prototype.update");
     };
 
     return ChoroplethStates;

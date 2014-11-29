@@ -38,13 +38,16 @@
 
     ChoroplethCounties.prototype.enter = function (domNode, element) {
         Choropleth.prototype.enter.apply(this, arguments);
-        var choroPaths = element.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
+        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
 
         //  Enter  ---
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
             .on("click", function (d) {
                 context.click({ county: d.id });
+            })
+            .on("dblclick", function (d) {
+                context.zoomToPath(this, d, 0.1);
             })
         ;
         this.choroPaths
@@ -54,7 +57,7 @@
 
     ChoroplethCounties.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-        //console.time("ChoroplethCounties.prototype.update");
+        console.time("ChoroplethCounties.prototype.update");
         var context = this;
         //  Update  ---
         this.choroPaths
@@ -68,7 +71,7 @@
                 ;
             })
         ;
-        //console.timeEnd("ChoroplethCounties.prototype.update");
+        console.timeEnd("ChoroplethCounties.prototype.update");
     };
 
     return ChoroplethCounties;

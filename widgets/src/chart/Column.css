@@ -1,24 +1,24 @@
-.bar .barRect {
+.column .columnRect {
   fill: steelblue;
   cursor: pointer;
 }
 
-.bar .barRect:hover {
+.column .columnRect:hover {
   fill: #ff7f0e;
 }
 
-.bar .axis {
+.column .axis {
   fill: black;
   font: 10px sans-serif;
 }
 
-.bar .axis path,
-.bar .axis line {
+.column .axis path,
+.column .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.bar .x.axis path {
+.column .x.axis path {
   display: none;
 }

@@ -12,6 +12,7 @@
         this._class = "choropleth";
 
         this._dataMap = {};
+        this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
         this._palette = "YlOrRd";
 
@@ -19,6 +20,27 @@
     };
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
+
+    Choropleth.prototype.data = function (_) {
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._dataMap = {};
+            this._dataMinWeight = null;
+            this._dataMaxWeight = null;
+
+            var context = this;
+            this._data.forEach(function (item) {
+                context._dataMap[item[0]] = item;
+                if (!context._dataMinWeight || item[1] < context._dataMinWeight) {
+                    context._dataMinWeight = item[1];
+                }
+                if (!context._dataMaxWeight || item[1] > context._dataMaxWeight) {
+                    context._dataMaxWeight = item[1];
+                }
+            });
+        }
+        return retVal;
+    };
 
     Choropleth.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);

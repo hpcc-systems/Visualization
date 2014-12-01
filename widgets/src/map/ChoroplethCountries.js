@@ -68,7 +68,8 @@
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
             .on("click", function (d) {
-                context.click({ county: d.id });
+                var code = countries.countryNames[d.id];
+                context.click(context.rowToObj(context._dataMap[code]));
             })
             .attr("id", function (d) {
                 return d.id;

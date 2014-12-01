@@ -1,108 +1,117 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/ResizeSurface", "./I2DChart", "./Pie", "./Column", "./Line", "./Bubble", "../other/Table", "../google/Pie", "../google/Bar", "../google/Column", "../google/Line", "../other/WordCloud", "../common/Palette"], factory);
+        define(["d3/d3", "../common/ResizeSurface", "./I2DChart", "../common/Palette"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.I2DChart, root.Pie, root.Column, root.Line, root.Bubble, root.Table, root.GPie, root.GBar, root.GColumn, root.GLine, root.WordCloud, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.I2DChart, root.Palette);
     }
-}(this, function (d3, ResizeSurface, I2DChart, Pie, Column, Line, Bubble, Table, GPie, GBar, GColumn, GLine, WordCloud, Palette) {
+}(this, function (d3, ResizeSurface, I2DChart, Palette) {
     function MultiChartSurface() {
         ResizeSurface.call(this);
         I2DChart.call(this);
 
         this._title = "MultiChartSurface";
 
-        this._menu
-            .data(["PIE", "GOOGLE_PIE", "BUBBLE", "GOOGLE_BAR", "COLUMN", "GOOGLE_COLUMN", "LINE", "GOOGLE_LINE", "TABLE", "WORD_CLOUD"])
-        ;
+        this._chartType = "";
+        this._content = null;
+
+        this._2dChartTypes = [
+            { id: "BUBBLE", display: "Bubble", path: "src/chart/Bubble" },
+            { id: "COLUMN", display: "Column", path: "src/chart/Column" },
+            { id: "PIE", display: "Pie", path: "src/chart/Pie" },
+            { id: "GOOGLE_PIE", display: "Pie (Google)", path: "src/google/Pie" },
+            { id: "WORD_CLOUD", display: "Word Cloud", path: "src/other/WordCloud" }
+        ];
+        this._multiChartTypes = [
+            { id: "GOOGLE_BAR", display: "Bar (Google)", path: "src/google/Bar" },
+            { id: "GOOGLE_COLUMN", display: "Column (Google)", path: "src/google/Column" },
+            { id: "LINE", display: "Line", path: "src/chart/Line" },
+            { id: "GOOGLE_LINE", display: "Line (Google)", path: "src/google/Line" }
+        ];
+        this._anyChartTypes = [
+            { id: "TABLE", display: "Table", path: "src/other/Table" }
+        ];
+        this._allChartTypes = this._2dChartTypes.concat(this._multiChartTypes.concat(this._anyChartTypes));
+        this._allCharts = {};
+        this._allChartTypes.forEach(function (item) {
+            item.widget = null;
+            this._allCharts[item.id] = item;
+            this._allCharts[item.display] = item;
+        }, this);
+        //  Backward compatability until we role our own BAR  ---
+        this._allCharts["BAR"] = this._allCharts["COLUMN"];
+
         var context = this;
-        this._pie = new Pie();
-        this._pie.click = function (d) {
-            context.click(d);
-        }
-        this._gpie = new GPie();
-        this._gpie.click = function (d) {
-            context.click(d);
-        }
-        this._column = new Column();
-        this._column.click = function (d) {
-            context.click(d);
-        }
-        this._gbar = new GBar();
-        this._gbar.click = function (d) {
-            context.click(d);
-        }
-        this._gcolumn = new GColumn();
-        this._gcolumn.click = function (d) {
-            context.click(d);
-        }
-        this._line = new Line();
-        this._gline = new GLine();
-        this._bubble = new Bubble();
-        this._bubble.d3Color = this._pie.d3Color;
-        this._bubble.click = function (d) {
-            context.click(d);
-        }
-        this._table = new Table()
-            .columns(["Label", "Weight"])
-        ;
-        this._table.click = function (d) {
-            context.click(d);
-        }
-        this._wordCloud = new WordCloud()
-        ;
-        this._wordCloud.click = function (d) {
-            context.click(d);
-        }
         this._menu.click = function (d) {
             context.chartType(d);
         }
         this._menu.preShowMenu = function () {
-            if (context.getContent() && context.getContent()._overlayElement) {
-                context.getContent()._parentElement
+            if (context.content() && context.content()._overlayElement) {
+                context.content()._parentElement
                     .style("display", "none");
                 ;
             }
         }
         this._menu.postHideMenu = function () {
-            if (context.getContent() && context.getContent()._overlayElement) {
-                context.getContent()._parentElement
+            if (context.content() && context.content()._overlayElement) {
+                context.content()._parentElement
                     .style("display", null);
                 ;
             }
         }
+        this.mode("all");
     };
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
     MultiChartSurface.prototype.implements(I2DChart.prototype);
 
-    MultiChartSurface.prototype.getContent = function () {
-        switch (this._chartType) {
-            case "PIE":
-                return this._pie;
-            case "GOOGLE_PIE":
-                return this._gpie;
-            case "BUBBLE":
-                return this._bubble;
-            case "GOOGLE_BAR":
-                return this._gbar;
-            case "COLUMN":
-                return this._column;
-            case "GOOGLE_COLUMN":
-                return this._gcolumn;
-            case "LINE":
-                return this._line;
-            case "GOOGLE_LINE":
-                return this._gline;
-            case "TABLE":
-                return this._table;
-            case "WORD_CLOUD":
-                return this._wordCloud;
+    MultiChartSurface.prototype.columns = function (_) {
+        var retVal = ResizeSurface.prototype.columns.apply(this, arguments);
+        if (arguments.length && this.content()) {
+            this.content().columns(_);
         }
-        return this._pie;
+        return this;
     };
 
-    MultiChartSurface.prototype.enter = function (domNode, element) {
-        this._content = this.getContent();
-        ResizeSurface.prototype.enter.apply(this, arguments);
+    MultiChartSurface.prototype.data = function (_) {
+        var retVal = ResizeSurface.prototype.data.apply(this, arguments);
+        if (arguments.length && this.content()) {
+            this.content().data(_);
+        }
+        return retVal;
+    };
+
+    MultiChartSurface.prototype.mode = function (_) {
+        if (!arguments.length) return this._mode;
+        this._mode = _;
+        switch (this._mode) {
+            case "2d":
+                this.menu(this._2dChartTypes.concat(this._anyChartTypes).map(function (item) { return item.display; }).sort());
+                break;
+            case "multi":
+                this.menu(this._multiChartTypes.concat(this._anyChartTypes).map(function (item) { return item.display; }).sort());
+                break;
+            case "all":
+            default:
+                this.menu(this._allChartTypes.map(function (item) { return item.display; }).sort());
+        }
+        return this;
+    };
+
+    MultiChartSurface.prototype.requireContent = function (chartType, callback) {
+        var retVal = this._allCharts[chartType].widget;
+        if (retVal) {
+            callback(retVal);
+            return;
+        }
+
+        var context = this;
+        require([this._allCharts[chartType].path], function (widgetClass) {
+            retVal = new widgetClass();
+            retVal.click = function (d) {
+                context.click(d);
+            }
+            context._allCharts[chartType].widget = retVal;
+            callback(retVal);
+        });
     };
 
     MultiChartSurface.prototype.chartType = function (_, skipRender) {
@@ -110,33 +119,36 @@
         this._chartType = _;
         if (!skipRender && this._renderCount) {
             var oldContent = this._content;
-            var newContent = this.getContent();
-            if (newContent !== oldContent) {
-                var size = this._container.getBBox();
-                this.content(newContent
-                    .data(this._data.map(function (row) { return { label: row.label, weight: row.weight }; }))
-                    .size(size)
-                );
-                if (oldContent) {
-                    oldContent
-                        .data([])
-                        .size({ width: 1, height: 1 })
-                        .render()
-                    ;
+            var context = this;
+            this.requireContent(this._chartType, function (newContent) {
+                if (newContent !== oldContent) {
+                    var size = context._container.getBBox();
+                    context.content(newContent
+                        .columns(context._columns)
+                        .data(context._data)
+                        .size(size)
+                    );
+                    if (oldContent) {
+                        oldContent
+                            .data([])
+                            .size({ width: 1, height: 1 })
+                            .render()
+                        ;
+                    }
+                    context.render();
                 }
-                this.render();
-            }
+            });
         }
         return this;
     };
 
-    MultiChartSurface.prototype.data = function (_) {
-        var retVal = ResizeSurface.prototype.data.apply(this, arguments);
-        if (arguments.length && this.getContent()) {
-            this.getContent().data(_.map(function (row) { return { label: row.label, weight: row.weight }; }));
+    MultiChartSurface.prototype.render = function () {
+        ResizeSurface.prototype.render.apply(this, arguments);
+        if (this._chartType && this._renderCount == 1) {
+            this.chartType(this._chartType);
         }
-        return retVal;
-    };
+        return this;
+    }
 
     return MultiChartSurface;
 }));

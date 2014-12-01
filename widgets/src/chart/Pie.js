@@ -1,15 +1,18 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "../common/Palette", "./IPie", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
+        define(["d3/d3", "../common/SVGWidget", "../common/Palette", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
     } else {
-        root.Pie = factory(root.d3, root.SVGWidget, root.Palette, root.IPie, root.Text, root.FAChar);
+        root.Pie = factory(root.d3, root.SVGWidget, root.Palette, root.I2DChart, root.Text, root.FAChar);
     }
-}(this, function (d3, SVGWidget, Palette, IPie, Text, FAChar) {
+}(this, function (d3, SVGWidget, Palette, I2DChart, Text, FAChar) {
     function Pie(target) {
         SVGWidget.call(this);
-        IPie.call(this);
+        I2DChart.call(this);
 
         this._class = "pie";
+        this._outerText = false;  //  Put label inside pie or outside (true/false)
+        this._radius = 100;       // px
+        this._innerRadius = 0;    // px
 
         this.labelWidgets = {};
 
@@ -17,7 +20,7 @@
             .sort(function (a, b) {
                 return a < b ? -1 : a > b ? 1 : 0;
             })
-            .value(function (d) { return d.weight; })
+            .value(function (d) { return d[1]; })
         ;
         this.d3Arc = d3.svg.arc()
             .outerRadius(this._radius)
@@ -25,7 +28,7 @@
         ;
     };
     Pie.prototype = Object.create(SVGWidget.prototype);
-    Pie.prototype.implements(IPie.prototype);
+    Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.d3Color = Palette.ordinal("category20");
 
@@ -64,31 +67,31 @@
     Pie.prototype.update = function (domNode, element) {
         var context = this;
 
-        var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data.label; });
+        var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 
         //  Enter  ---
         arc.enter().append("g")
             .attr("class", "arc")
             .attr("opacity", 0)
             .on("click", function (d) {
-                context.click(d.data);
+                context.click(context.rowToObj(d.data));
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .style("fill", function (d) { return context.d3Color(d.data.label); })
+                    .style("fill", function (d) { return context.d3Color(d.data[0]); })
                     .attr("d", context.d3Arc)
                     .append("title")
                 ;
                 if (d.data.__viz_faChar) {
-                    context.labelWidgets[d.data.label] = new FAChar()
+                    context.labelWidgets[d.data[0]] = new FAChar()
                         .char(d.data.__viz_faChar)
                         .target(this)
                         .render()
                     ;
                 } else {
-                    context.labelWidgets[d.data.label] = new Text()
-                        .text(d.data.label)
+                    context.labelWidgets[d.data[0]] = new Text()
+                        .text(d.data[0])
                         .target(this)
                         .render()
                     ;
@@ -105,7 +108,7 @@
                     var xFactor = Math.cos((d.startAngle + d.endAngle - Math.PI) / 2);
                     var yFactor = Math.sin((d.startAngle + d.endAngle - Math.PI) / 2);
 
-                    var textBBox = context.labelWidgets[d.data.label].getBBox();
+                    var textBBox = context.labelWidgets[d.data[0]].getBBox();
                     var textOffset = Math.abs(xFactor) > Math.abs(yFactor) ? textBBox.width : textBBox.height;
                     pos.x = xFactor * (context._radius + textOffset);
                     pos.y = yFactor * (context._radius + textOffset);
@@ -118,9 +121,9 @@
                 element.select("path").transition()
                     .attr("d", context.d3Arc)
                     .select("title")
-                        .text(function (d) { return d.data.label + " (" + d.data.weight + ")"; })
+                        .text(function (d) { return d.data[0] + " (" + d.data[1] + ")"; })
                 ;
-                context.labelWidgets[d.data.label]
+                context.labelWidgets[d.data[0]]
                     .pos(pos)
                     .render()
                     .element()
@@ -138,7 +141,7 @@
 
         //  Label Lines  ---
         if (context._outerText) {
-            var lines = element.selectAll("line").data(this.d3Pie(this._data), function (d) { return d.data.label; });
+            var lines = element.selectAll("line").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
             var r = this.radius();
             lines.enter().append("line")
               .attr("x1", 0)

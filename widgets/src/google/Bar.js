@@ -1,46 +1,28 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/HTMLWidget", "../common/Palette", "../chart/IBar", "goog!visualization,1,packages:[corechart]", "css!./Bar"], factory);
+        define(["d3/d3", "./Common", "../common/Palette"], factory);
     } else {
-        root.Bar = factory(root.d3, root.HTMLWidget, root.Palette, root.IBar);
+        root.Bar = factory(root.d3, root.Common, root.Palette);
     }
-}(this, function (d3, HTMLWidget, Palette, IBar) {
+}(this, function (d3, Common, Palette) {
 
     function Bar(tget) {
-        HTMLWidget.call(this);
-        IBar.call(this);
-
-        this._tag = "div";
+        Common.call(this);
         this._class = "google_bar";
-
-        this.data([]);
     };
-    Bar.prototype = Object.create(HTMLWidget.prototype);
-    Bar.prototype.implements(IBar.prototype);
+    Bar.prototype = Object.create(Common.prototype);
 
     Bar.prototype.d3Color = Palette.ordinal("category20");
 
-    Bar.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            var data = [["Label", "Weight"]];
-            this._data.forEach(function (row) {
-                data.push(["" + row.label, row.weight]);
-            }, this);
-            this._data_google = google.visualization.arrayToDataTable(data);
-        }
-        return retVal;
-    };
-
     Bar.prototype.enter = function (domNode, element) {
+        var context = this;
+
         element.style("overflow", "hidden");
         this.barChart = new google.visualization.BarChart(element.node());
-
-        var context = this;
         google.visualization.events.addListener(this.barChart, "select", function () {
             var selectedItem = context.barChart.getSelection()[0];
             if (selectedItem) {
-                context.click(context._data[selectedItem.row]);
+                context.click(context.rowToObj(context._data[selectedItem.row]));
             }
         });
     };
@@ -48,8 +30,8 @@
     Bar.prototype.update = function (domNode, element) {
         var context = this;
 
-        var colors = this._data.map(function (row) {
-            return this.d3Color(row.label);
+        var colors = this._columns.filter(function (d, i) { return i > 0;}).map(function (row) {
+            return this.d3Color(row);
         }, this);
 
         var chartOptions = {

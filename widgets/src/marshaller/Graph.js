@@ -5,6 +5,8 @@
         root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
 }(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
+    var PERSIST_VER = 1;
+
     function createGraphData(marshaller, visualizeRoxie) {
         var curr = null;
         var dashboards = {};
@@ -219,7 +221,7 @@
 
     Graph.prototype.calcHash = function () {
         var context = this;
-        var hash = 0;
+        var hash = PERSIST_VER;
         for (var key in this._dashboards) {
             var currDashboard = this._dashboards[key].dashboard;
             currDashboard.accept({

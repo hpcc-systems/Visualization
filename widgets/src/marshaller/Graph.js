@@ -5,8 +5,6 @@
         root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
 }(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
-    var PERSIST_VER = 1;
-
     function createGraphData(marshaller, visualizeRoxie) {
         var curr = null;
         var dashboards = {};
@@ -151,11 +149,12 @@
         return dashboards;
     };
 
+    var PERSIST_VER = 2;
     function Graph(target) {
         GraphWidget.call(this);
 
         this._dashboards = [];
-        this.widgetAttributes = ["layout", "chartType", "palette", "title", "data"];
+        this.widgetAttributes = ["layout", "chartType", "palette", "title", "columns", "data"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
 

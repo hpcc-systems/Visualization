@@ -68,7 +68,7 @@
         if (arguments.length && this.content()) {
             this.content().columns(_);
         }
-        return this;
+        return retVal;
     };
 
     MultiChartSurface.prototype.data = function (_) {

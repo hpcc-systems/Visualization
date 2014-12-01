@@ -10,13 +10,13 @@
 
     //  Data ---
     I2DChart.prototype.testData = function () {
-        var data = [
-            { label: "Geography", weight: 75 },
-            { label: "English", weight: 45 },
-            { label: "Math", weight: 98 },
-            { label: "Science", weight: 66, __viz_faChar: "\uf0c3" } //  http://fortawesome.github.io/Font-Awesome/cheatsheet/
-        ];
-        this.data(data);
+        this.columns(["Subject", "Year 1", "Year 2", "Year 3"]);//, "__viz_faChar"]);
+        this.data([
+            ["Geography", 75, 68, 65],
+            ["English", 45, 55, 52],
+            ["Math", 98, 92, 90],
+            ["Science", 66, 60, 66]//, "\uf0c3"] //  http://fortawesome.github.io/Font-Awesome/cheatsheet/
+        ]);
         return this;
     };
 

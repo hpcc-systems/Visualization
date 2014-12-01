@@ -97,7 +97,7 @@
     WordCloud.prototype.update = function (domNode, element) {
         var context = this;
         var extent = d3.extent(this._data, function (d) {
-            return d.__viz_weight;
+            return d.__viz_1;
         });
         var scale = d3.scale.log().domain(extent).range([this._fontSizeFrom, this._fontSizeTo]);
 
@@ -110,7 +110,7 @@
                 return angleDomain(~~(Math.random() * context._angleCount));
             })
             .fontSize(function (d) {
-                return scale(d.__viz_weight);
+                return scale(d.__viz_1);
             })
             .on("end", draw)
             .start()
@@ -119,13 +119,13 @@
         function draw(data, bounds) {
             var fill = d3.scale.category20();
             var text = context.svg.selectAll("text")
-                .data(data, function (d) { return d.__viz_label.toLowerCase(); })
+                .data(data, function (d) { return d.__viz_0.toLowerCase(); })
             ;
             text.transition()
                 .duration(1000)
                 .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
                 .style("font-size", function (d) {
-                    return scale(d.__viz_weight) + "px";
+                    return scale(d.__viz_1) + "px";
                 })
                 .style("opacity", 1)
             ;
@@ -133,13 +133,13 @@
                 .attr("text-anchor", "middle")
                 .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
                 .style("font-size", function(d) { 
-                    return scale(d.__viz_weight) + "px";
+                    return scale(d.__viz_1) + "px";
                 })
                 .style("font-family", function (d) { return d.font; })
-                .style("fill", function (d) { return fill(d.__viz_label.toLowerCase()); })
-                .text(function (d) { return d.__viz_label; })
+                .style("fill", function (d) { return fill(d.__viz_0.toLowerCase()); })
+                .text(function (d) { return d.__viz_0; })
                 .on("click", function (d) {
-                    context.click({label:  d.__viz_label, weight: d.__viz_weight});
+                    context.click({label:  d.__viz_0, weight: d.__viz_1});
                 })
                 .style("opacity", 1e-6)
               .transition()

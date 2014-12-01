@@ -16,7 +16,7 @@
         this.d3Pack = d3.layout.pack()
             .sort(function (a, b) { return a < b ? -1 : a > b ? 1 : 0; })
             .size([this.width(), this.height()])
-            .value(function (d) { return d.weight; })
+            .value(function (d) { return d[1]; })
         ;
     };
     Bubble.prototype = Object.create(SVGWidget.prototype);
@@ -38,7 +38,7 @@
         var context = this;
 
         var node = element.selectAll(".node")
-            .data(this._data.length ? this.d3Pack.nodes({ children: this._data }).filter(function (d) { return !d.children; }) : [], function (d) { return d.label; })            
+            .data(this._data.length ? this.d3Pack.nodes({ children: this._data }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })            
         ;
 
         //  Enter  ---
@@ -46,24 +46,24 @@
             .attr("class", "node")
             .attr("opacity", 0)
             .on("click", function (d) {
-                context.click(d);
+                context.click(context.rowToObj(d));
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .style("fill", function (d) { return context.d3Color(d.label); })
+                    .style("fill", function (d) { return context.d3Color(d[0]); })
                     .append("title")
                 ;
                 if (d.__viz_faChar) {
-                    context.labelWidgets[d.label] = new FAChar()
+                    context.labelWidgets[d[0]] = new FAChar()
                         .char(d.__viz_faChar)
                         .target(this)
                         .render()
                     ;
                 } else {
-                    context.labelWidgets[d.label] = new Text()
-                        .text(d.label)
+                    context.labelWidgets[d[0]] = new Text()
+                        .text(d[0])
                         .target(this)
                         .render()
                     ;
@@ -81,22 +81,22 @@
                     .attr("transform", function (d) { return "translate(" + pos.x + "," + pos.y + ")"; })
                     .attr("r", function (d) { return d.r; })
                     .select("title")
-                        .text(function (d) { return d.label + " (" + d.weight + ")"; })
+                        .text(function (d) { return d[0] + " (" + d[1] + ")"; })
                 ;
                 if (d.__viz_faChar) {
-                    context.labelWidgets[d.label]
+                    context.labelWidgets[d[0]]
                         .pos(pos)
                         .render()
                     ;
                 } else {
-                    var label = d.label;
-                    var labelWidth = context.labelWidgets[d.label].getBBox().width;
+                    var label = d[0];
+                    var labelWidth = context.labelWidgets[d[0]].getBBox().width;
                     if (d.r * 2 < 16) {
                         label = "";
                     } else if (d.r * 2 < labelWidth) {
                         label = label[0] + "...";
                     }
-                    context.labelWidgets[d.label]
+                    context.labelWidgets[d[0]]
                         .pos(pos)
                         .text(label)
                         .render()

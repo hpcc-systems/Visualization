@@ -9,8 +9,9 @@
     };
 
     IWordCloud.prototype.testData = function () {
+        this.columns(["Word", "Weight"]);
         var words = ["Hello", "world", "normally", "you", "want", "more", "words", "than", "this"].map(function (d) {
-            return { label: d, weight: 10 + Math.random() * 45 };
+            return [ d, 10 + Math.random() * 45 ];
         });
         this.data(words);
         return this;

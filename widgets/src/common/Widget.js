@@ -9,6 +9,8 @@
     function Widget() {
         this._id = "_w" + widgetID++;
         this._class = "";
+
+        this._columns = [];
         this._data = [];
         this._pos = { x: 0, y: 0 };
         this._size = { width: 0, height: 0 };
@@ -61,10 +63,27 @@
         return this;
     };
 
+    Widget.prototype.columns = function (_) {
+        if (!arguments.length) return this._columns;
+        this._columns = _;
+        return this;
+    };
+
     Widget.prototype.data = function (_) {
         if (!arguments.length) return this._data;
         this._data = _;
         return this;
+    };
+
+    Widget.prototype.rowToObj = function (row) {
+        var retVal = {};
+        if (row.length !== this._columns.length) {
+            throw "Columns and row do not match";
+        }
+        this._columns.forEach(function(col, idx) {
+            retVal[col] = row[idx];
+        });
+        return retVal;
     };
 
     Widget.prototype.pos = function (_) {

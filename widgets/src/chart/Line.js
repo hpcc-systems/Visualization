@@ -1,27 +1,20 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./XYAxis", "./IBar", "../common/Palette", "css!./Line"], factory);
+        define(["d3/d3", "./XYAxis", "./I2DChart", "../common/Palette", "css!./Line"], factory);
     } else {
-        root.Line = factory(root.d3, root.XYAxis, root.IBar, root.Palette);
+        root.Line = factory(root.d3, root.XYAxis, root.I2DChart, root.Palette);
     }
-}(this, function (d3, XYAxis, IBar, Palette) {
+}(this, function (d3, XYAxis, I2DChart, Palette) {
     function Line(target) {
         XYAxis.call(this);
-        IBar.call(this);
+        I2DChart.call(this);
 
         this._class = "line";
-        this._labels = [];
     };
     Line.prototype = Object.create(XYAxis.prototype);
-    Line.prototype.implements(IBar.prototype);
+    Line.prototype.implements(I2DChart.prototype);
 
     Line.prototype.d3Color = Palette.ordinal("category20");
-
-    Line.prototype.labels = function (_) {
-        if (!arguments.length) return this._labels;
-        this._labels = _;
-        return this;
-    },
 
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);
@@ -34,33 +27,27 @@
             .x(function (d) {
                 switch (context._xScale) {
                     case "DATE":
-                        return context.x(context.parseDate(d.label));
+                        return context.x(context.parseDate(d[0]));
                 }
-                return context.x(d.label) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
+                return context.x(d[0]) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
             })
-            .y(function (d) { return context.y(d.weight); })
+            .y(function (d) { return context.y(d[1]); })
         ;
 
         var line = this.svgData.selectAll(".dataLine")
-            .data(this._xyData)
+            .data(this._columns.filter(function(d, i) {return i > 0;}))
         ;
 
         line.enter().append("path")
-            .datum(function (d) { return d; })
             .attr("class", "dataLine")
             .style("stroke", function (d, i) {
-                return context.d3Color(i);
+                return context.d3Color(context._columns[i + 1]);
             })
-            .each(function (d, i) {
-                var element = d3.select(this);
-                if (context._labels[i]) {
-                    element.append("title")
-                        .text(context._labels[i])
-                    ;
-                }
-            })
+            .append("title")
+            .text(function(d) { return d; })
         ;
         line
+            .datum(function (d, i) { return context._data.map(function (row, rowIdx) { return [row[0], row[i + 1]];}); })
             .attr("d", d3Line)
         ;
 

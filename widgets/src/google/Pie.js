@@ -1,24 +1,18 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/HTMLWidget", "../common/Palette", "../chart/IPie", "goog!visualization,1,packages:[corechart]", "css!./Pie"], factory);
+        define(["d3/d3", "./Common", "../common/Palette"], factory);
     } else {
-        root.Pie = factory(root.d3, root.HTMLWidget, root.Palette, root.IPie);
+        root.Pie = factory(root.d3, root.Common, root.Palette);
     }
-}(this, function (d3, HTMLWidget, Palette, IPie) {
+}(this, function (d3, Common, Palette) {
 
     function Pie(tget) {
-        HTMLWidget.call(this);
-        IPie.call(this);
-
-        this._tag = "div";
+        Common.call(this);
         this._class = "google_pie";
-
-        this.data([]);
 
         this._is3D = true;
     };
-    Pie.prototype = Object.create(HTMLWidget.prototype);
-    Pie.prototype.implements(IPie.prototype);
+    Pie.prototype = Object.create(Common.prototype);
 
     Pie.prototype.d3Color = Palette.ordinal("category20");
 
@@ -28,27 +22,16 @@
         return this;
     }
 
-    Pie.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            var data = [["", ""]];
-            this._data.forEach(function (row) {
-                data.push(["" + row.label, row.weight]);
-            }, this);
-            this._data_google = google.visualization.arrayToDataTable(data);
-        }
-        return retVal;
-    };
-
     Pie.prototype.enter = function (domNode, element) {
+        var context = this;
+
         element.style("overflow", "hidden");
         this.pieChart = new google.visualization.PieChart(element.node());
 
-        var context = this;
         google.visualization.events.addListener(this.pieChart, "select", function () {
             var selectedItem = context.pieChart.getSelection()[0];
             if (selectedItem) {
-                context.click(context._data[selectedItem.row]);
+                context.click(context.rowToObj(context._data[selectedItem.row]));
             }
         });
     };
@@ -57,7 +40,7 @@
         var context = this;
 
         var colors = this._data.map(function (row) {
-            return this.d3Color(row.label);
+            return this.d3Color(row[0]);
         }, this);
 
         var chartOptions = {

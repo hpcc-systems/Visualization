@@ -15,12 +15,6 @@
     };
     Table.prototype = Object.create(HTMLWidget.prototype);
 
-    Table.prototype.columns = function (_) {
-        if (!arguments.length) return this._columns;
-        this._columns = _;
-        return this;
-    };
-
     Table.prototype.enter = function (domNode, element) {
         this.thead = element.append("thead").append("tr");
         this.tbody = element.append("tbody");
@@ -41,17 +35,13 @@
             .remove()
         ;
 
-        var rows = this.tbody.selectAll("tr").data(this._data, function (d) {
-            var id = "";
-            for (var key in d) {
-                id += d[key];
-            }
-            return id;
-        });
+        var rows = this.tbody.selectAll("tr").data(this._data, function (d, i) { return i; });
         rows
             .enter()
             .append("tr")
-            .on("click", function (d) { context.click(d); })
+            .on("click", function (d) {
+                context.click(context.rowToObj(d));
+            })
         ;
 
         rows.exit()

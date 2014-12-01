@@ -23,11 +23,25 @@
     //  Mappings ---
     function SourceMappings(visualization, mappings) {
         this.visualization = visualization;
-        this.hasMappings = false;
         this.mappings = mappings;
+
+        this.hasMappings = false;
         this.reverseMappings = {};
+        this.columns = [];
+        this.columnsIdx = {};
+        this.columnsRHS = [];
+        this.columnsRHSIdx = {};
+    };
+
+    SourceMappings.prototype.init = function() {
         for (var key in this.mappings) {
             this.reverseMappings[this.mappings[key]] = key;
+            if (this.columnsIdx[key] === undefined) {
+                this.columns.push(key);
+                this.columnsIdx[key] = this.columns.length - 1;
+            }
+            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
+            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
             this.hasMappings = true;
         }
     };
@@ -37,7 +51,7 @@
     };
 
     SourceMappings.prototype.doMap = function (item) {
-        var retVal = {};
+        var retVal = [];
         try {
             for (var key in this.mappings) {
                 var rhsKey = this.mappings[key];
@@ -45,7 +59,7 @@
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
-                retVal[key] = val;
+                retVal[this.columnsIdx[key]] = val;
             }
         } catch (e) {
             console.log("Invalid Mappings");
@@ -68,26 +82,38 @@
         return this.reverseMappings[key];
     };
 
-    function LineMappings(visualization, mappings) {
+    function ChartMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
+        this.columns = ["label", "weight"];
+        this.columnsIdx = { label: 0, weight: 1 };
+        this.init();
+    };
+    ChartMappings.prototype = Object.create(SourceMappings.prototype);
+
+    function ChoroMappings(visualization, mappings) {
+        SourceMappings.call(this, visualization, mappings);
+        if (mappings.state) {
+            this.columns = ["state", "weight"];
+            this.columnsIdx = { state: 0, weight: 1 };
+        } else if (mappings.county) {
+            this.columns = ["county", "weight"];
+            this.columnsIdx = { county: 0, weight: 1 };
+        }
+        this.init();
+    };
+    ChoroMappings.prototype = Object.create(SourceMappings.prototype);
+
+    function LineMappings(visualization, mappings) {
+        var newMappings = {
+            label: mappings.x[0]
+        };
+        mappings.y.forEach(function(item, idx) {
+            newMappings[item] = item;
+        });
+        SourceMappings.call(this, visualization, newMappings);
+        this.init();
     };
     LineMappings.prototype = Object.create(SourceMappings.prototype);
-
-    LineMappings.prototype.doMap = function (item) {
-        var retVal = {};
-        try {
-            retVal = [];
-            for (var i = 0; i < this.mappings.x.length; ++i) {
-                retVal.push({
-                    label: item[this.mappings.x[i]],
-                    weight: item[this.mappings.y[i]]
-                })
-            }
-        } catch (e) {
-            console.log("Invalid Mappings");
-        }
-        return retVal;
-    };
 
     function TableMappings(visualization, mappings) {
         var newMappings = {};
@@ -97,11 +123,15 @@
             });
         }
         SourceMappings.call(this, visualization, newMappings);
+        this.init();
     };
     TableMappings.prototype = Object.create(SourceMappings.prototype);
 
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
+        this.columns = ["uid", "label", "weight", "flags"];
+        this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
+        this.init();
         this.link = link;
     };
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
@@ -111,13 +141,13 @@
         var vertexMap = {};
         var vertices = [];
         function getVertex(item) {
-            var id = "uid_" + item.uid;
+            var id = "uid_" + item[0];
             var retVal = vertexMap[id];
             if (!retVal) {
                 retVal = new Vertex()
                     .id(id)
                     .faChar("\uf128")
-                    .text(item.label)
+                    .text(item[1])
                 ;
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
@@ -163,8 +193,11 @@
             case "GRAPH":
                 this.mappings = new GraphMappings(this.visualization, source.mappings, source.link);
                 break;
+            case "CHORO":
+                this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                break;
             default:
-                this.mappings = new SourceMappings(this.visualization, source.mappings);
+                this.mappings = new ChartMappings(this.visualization, source.mappings);
                 break;
         }
         this.first = source.first;
@@ -194,6 +227,10 @@
 
     Source.prototype.hasData = function () {
         return this.getOutput().data ? true : false;
+    };
+
+    Source.prototype.getColumns = function () {
+        return this.mappings.columns;
     };
 
     Source.prototype.getData = function () {
@@ -300,8 +337,12 @@
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/chart/Line", function (widget) {
-                    widget.labels(context.source.mappings.mappings.y);
+                this.loadWidget("src/chart/MultiChartSurface", function (widget) {
+                    widget
+                        .mode("multi")
+                        .chartType(context.properties.charttype || context.type)
+                        .title(context.id)
+                    ;
                 });
                 break;
             case "TABLE":
@@ -414,6 +455,8 @@
         var context = this;
         if (this.source.hasData()) {
             if (this.widget) {
+                var columns = this.source.getColumns();
+                this.widget.columns(columns);
                 var data = this.source.getData();
                 this.dashboard.marshaller.updateViz(this, data);
                 this.widget.data(data);

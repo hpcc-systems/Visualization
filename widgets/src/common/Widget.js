@@ -121,6 +121,26 @@
         return this;
     };
 
+    Widget.prototype.calcSnap = function (snapSize) {
+        function snap(x, gridSize) {
+            function snapDelta(x, gridSize) {
+                var dx = x % gridSize;
+                if (Math.abs(dx) > gridSize - Math.abs(dx)) {
+                    dx = (gridSize - Math.abs(dx)) * (dx < 0 ? 1 : -1);
+                }
+                return dx;
+            }
+            return x - snapDelta(x, gridSize);
+        }
+        var l = snap(this._pos.x - this._size.width / 2, snapSize);
+        var t = snap(this._pos.y - this._size.height / 2, snapSize);
+        var r = snap(this._pos.x + this._size.width / 2, snapSize);
+        var b = snap(this._pos.y + this._size.height / 2, snapSize);
+        var w = r - l;
+        var h = b - t;
+        return [{ x: l + w /2, y: t + h / 2 }, { width: w, height: h }];
+    };
+
     //  DOM/SVG Node Helpers  ---
     Widget.prototype.toWidget = function (domNode) {
         if (!domNode) {

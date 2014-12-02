@@ -19,6 +19,7 @@
         };
 
         this._class = "graph";
+        this._showEdges = true;
         this._highlightOnMouseOverVertex = false;
         this._highlightOnMouseOverEdge = false;
         this._shrinkToFitOnLayout = false;
@@ -71,6 +72,12 @@
             })
         }
         return retVal;
+    };
+
+    Graph.prototype.showEdges = function (_) {
+        if (!arguments.length) return this._showEdges;
+        this._showEdges = _;
+        return this;
     };
 
     Graph.prototype.highlightOnMouseOverVertex = function (_) {
@@ -352,7 +359,7 @@
             }
         }
 
-        var edgeElements = this.svgE.selectAll("#" + this._id + "E > .edge").data(this.graphData.edgeValues(), function (d) { return d.id(); });
+        var edgeElements = this.svgE.selectAll("#" + this._id + "E > .edge").data(this._showEdges ? this.graphData.edgeValues() : [], function (d) { return d.id(); });
         edgeElements.enter().append("g")
             .attr("class", "edge")
             .style("opacity", 1e-6)

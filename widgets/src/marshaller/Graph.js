@@ -154,6 +154,7 @@
         GraphWidget.call(this);
 
         this._dashboards = [];
+        this.graphAttributes = ["snapToGrid", "showEdges"];
         this.widgetAttributes = ["layout", "chartType", "palette", "title", "columns", "data"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
@@ -175,9 +176,9 @@
         return retVal;
     };
 
-    Graph.prototype.render = function (callback) {
+    Graph.prototype.renderDashboards = function (callback) {
         this.data({ vertices: [], edges: []});
-        GraphWidget.prototype.render.call(this);
+        this.render();
         var context = this;
         var vertices = [];
         var edges = [];
@@ -190,7 +191,7 @@
         this.data({ vertices: vertices, edges: edges });
         var loadResult = this.load();
         if (!loadResult.changed) {
-            GraphWidget.prototype.render.call(this);
+            this.render();
         }
         if (!loadResult.dataChanged) {
             for (var key in this._dashboards) {
@@ -245,6 +246,11 @@
             translation: context.zoom.translate(),
             scale: context.zoom.scale()
         };
+        this.graphAttributes.forEach(function (attr) {
+            if (this[attr]) {
+                state[attr] = this[attr]();
+            }
+        }, this);
         for (var key in this._dashboards) {
             var currDashboard = this._dashboards[key].dashboard;
             var currDashboardID = currDashboard.getQualifiedID();
@@ -281,6 +287,11 @@
             var changed = false;
             var dataChanged = false;
 
+            this.graphAttributes.forEach(function (attr) {
+                if (this[attr] && state[attr] !== undefined) {
+                    this[attr](state[attr]);
+                }
+            }, this);
             if (state.zoom) {
                 this.setZoom(state.zoom.translation, state.zoom.scale);
                 changed = true;
@@ -298,7 +309,7 @@
                                     .size(state[currDashboardID][item.getQualifiedID()].size)
                                 ;
                                 context.widgetAttributes.forEach(function (attr) {
-                                    if (item.widget[attr] && state[currDashboardID][item.getQualifiedID()][attr]) {
+                                    if (item.widget[attr] && state[currDashboardID][item.getQualifiedID()][attr] !== undefined) {
                                         item.widget[attr](state[currDashboardID][item.getQualifiedID()][attr]);
                                         if (attr === "data") {
                                             dataChanged = true;

@@ -131,6 +131,7 @@
     };
 
     Graph.prototype.enter = function (domNode, element, d) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         var context = this;
 
         //  Zoom  ---
@@ -155,18 +156,27 @@
                 });
             }
         }
+        function drag(d) {
+            d3.event.sourceEvent.stopPropagation();
+            d.move({ x: d3.event.x, y: d3.event.y });
+            if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
+                forceNode.fixed = true;
+                forceNode.x = forceNode.px = d3.event.x;
+                forceNode.y = forceNode.py = d3.event.y;
+            }
+            context.refreshIncidentEdges(d, true);
+        }
         function dragend(d) {
             d3.event.sourceEvent.stopPropagation();
             context._dragging = false;
             if (context._snapToGrid) {
                 var snapLoc = d.calcSnap(context._snapToGrid);
-                d
-                    .pos(snapLoc[0])
-                    .render()
-                ;
+                d.move(snapLoc[0]);
                 context.refreshIncidentEdges(d, true);
             }
             if (context.forceLayout) {
+                var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = false;
             }
             if (this.isIE) {
@@ -175,17 +185,6 @@
                     context._popMarkers(edge.element(), edge);
                 });
             };
-        }
-        function drag(d) {
-            d3.event.sourceEvent.stopPropagation();
-            d.pos({ x: d3.event.x, y: d3.event.y });
-            if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
-                forceNode.fixed = true;
-                forceNode.x = forceNode.px = d3.event.x;
-                forceNode.y = forceNode.py = d3.event.y;
-            }
-            context.refreshIncidentEdges(d, true);
         }
         this.drag = d3.behavior.drag()
             .origin(function (d) {
@@ -277,7 +276,7 @@
                             item.px = item.x;
                             item.py = item.y;
                             vertex
-                                .pos({ x: item.x, y: item.y })
+                                .move({ x: item.x, y: item.y })
                             ;
                         }
                     });
@@ -298,7 +297,7 @@
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
                     item
-                        .pos({ x: pos.x, y: pos.y }, context._transitionDuration)
+                        .move({ x: pos.x, y: pos.y }, context._transitionDuration)
                     ;
                 });
                 context.graphData.edgeValues().forEach(function (item) {
@@ -323,6 +322,7 @@
 
     //  Render  ---
     Graph.prototype.update = function (domNode, element, d) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 
         //  Create  ---

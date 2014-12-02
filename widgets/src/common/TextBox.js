@@ -56,6 +56,7 @@
     };
 
     TextBox.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._shape
             .target(domNode)
             .render()
@@ -67,6 +68,7 @@
     };
 
     TextBox.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
         content.enter().insert("g", "#" + this._text.id())
             .attr("class", "content")

@@ -26,6 +26,7 @@
     };
 
     FAChar.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         if (!this._fontSize) {
             var style = window.getComputedStyle(domNode, null);
             this._fontSize = parseInt(style.fontSize);
@@ -42,6 +43,7 @@
     };
 
     FAChar.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         this._charElement
             .attr("font-size", this._fontSize)
             .attr("x", 0)

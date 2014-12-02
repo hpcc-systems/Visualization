@@ -21,7 +21,7 @@
                 context._dragStartPos = context.pos();
                 context._dragStartSize = context.size();
                 context.showContent(false);
-                context.dispatch.sizestart();
+                context.dispatch.sizestart(context, d.loc);
             })
             .on("drag", function (d) {
                 d3.event.sourceEvent.stopPropagation();
@@ -64,7 +64,7 @@
                     .render()
                     .getBBox(true)
                 ;
-                context.dispatch.size();
+                context.dispatch.size(context, d.loc);
             })
             .on("dragend", function (d) {
                 d3.event.sourceEvent.stopPropagation();
@@ -72,7 +72,7 @@
                     .showContent(true)
                     .render()
                 ;
-                context.dispatch.sizeend();
+                context.dispatch.sizeend(context, d.loc);
             })
         ;
     };

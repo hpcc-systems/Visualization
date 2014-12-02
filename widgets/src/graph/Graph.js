@@ -24,6 +24,7 @@
         this._shrinkToFitOnLayout = false;
         this._layout = "";
         this._hierarchyOptions = { };
+        this._snapToGrid = 0;
     };
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype.implements(IGraph.prototype);
@@ -97,6 +98,12 @@
         return this;
     };
 
+    Graph.prototype.snapToGrid = function (_) {
+        if (!arguments.length) return this._snapToGrid;
+        this._snapToGrid = _;
+        return this;
+    };
+
     Graph.prototype.setZoom = function (translation, scale) {
         if (this.zoom) {
             this.zoom.translate(translation);
@@ -144,8 +151,15 @@
         function dragend(d) {
             d3.event.sourceEvent.stopPropagation();
             context._dragging = false;
+            if (context._snapToGrid) {
+                var snapLoc = d.calcSnap(context._snapToGrid);
+                d
+                    .pos(snapLoc[0])
+                    .render()
+                ;
+                context.refreshIncidentEdges(d, true);
+            }
             if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = false;
             }
             if (this.isIE) {
@@ -346,8 +360,17 @@
                 d.dispatch.on("size", function (args) {
                     context.refreshIncidentEdges(d, true);
                 });
-                d.dispatch.on("sizeend", function (args) {
+                d.dispatch.on("sizeend", function (d) {
                     context._dragging = false;
+                    if (context._snapToGrid) {
+                        var snapLoc = d.calcSnap(context._snapToGrid);
+                        d
+                            .pos(snapLoc[0])
+                            .size(snapLoc[1])
+                            .render()
+                        ;
+                        context.refreshIncidentEdges(d, true);
+                    }
                 });
             }
         }

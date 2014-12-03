@@ -33,12 +33,13 @@
     };
 
     Shape.prototype.enter = function (domNode, element) {
-        var context = this;
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._shapeElement = element.append(this._shape)
         ;
     };
 
     Shape.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         switch (this._shape) {
         case "circle":
             var radius = this.radius();

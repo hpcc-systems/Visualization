@@ -58,7 +58,7 @@
         pos.y += bbox.height / 2 + menuBBox.height / 2;
 
         this._list
-            .pos(pos)
+            .move(pos)
         ;
     };
 

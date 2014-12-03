@@ -27,12 +27,14 @@
     };
 
     Text.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._textElement = element.append("text")
             .style("text-anchor", this._anchor)
         ;
     };
 
     Text.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var textParts = this._text.split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
         textLine.enter().append("tspan")

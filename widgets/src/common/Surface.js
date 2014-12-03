@@ -81,6 +81,7 @@
     };
 
     Surface.prototype.enter = function (_domNode, _element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         var element = _element.append("g").attr("class", "frame");
         var domNode = element.node();
         this._clipRect = element.append("defs").append("clipPath")
@@ -117,6 +118,7 @@
     };
 
     Surface.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var textClientSize = this._text.getBBox(true);
         var iconClientSize = this._icon.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
@@ -129,10 +131,10 @@
             .render()
         ;
         this._icon
-            .pos({ x: -(this._size.width / 2) + iconClientSize.width / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
+            .move({ x: -(this._size.width / 2) + iconClientSize.width / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
         ;
         this._menu
-            .pos({ x: (this._size.width / 2) - menuClientSize.width / 2 - 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
+            .move({ x: (this._size.width / 2) - menuClientSize.width / 2 - 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })
         ;
         this._text
             .pos({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: -(this._size.height / 2) + iconClientSize.height / 2 })

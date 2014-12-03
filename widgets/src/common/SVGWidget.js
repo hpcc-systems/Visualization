@@ -19,6 +19,16 @@
     SVGWidget.prototype = Object.create(Widget.prototype);
 
     //  Properties  ---
+    SVGWidget.prototype.move = function (_, transitionDuration) {
+        var retVal = this.pos.apply(this, arguments);
+        if (arguments.length) {
+            (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)
+                .attr("transform", "translate(" + _.x + " " + _.y + ")")
+            ;
+        }
+        return retVal;
+    };
+
     SVGWidget.prototype.size = function (_) {
         var retVal = Widget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -27,7 +37,7 @@
         return retVal;
     };
 
-    SVGWidget.prototype.resize = function (size) {
+    SVGWidget.prototype._resize = function (size) {
         var width, height;
         if (size && size.width && size.height) {
             width = size.width;
@@ -92,7 +102,7 @@
                     left: 0
                 })
             ;
-            this.resize(this._size);
+            this._resize(this._size);
             this.pos({
                 x: this._size.width / 2,
                 y: this._size.height / 2
@@ -110,6 +120,12 @@
     SVGWidget.prototype.enter = function (domeNode, element, d) {
         Widget.prototype.enter.apply(this, arguments);
     };
+
+    SVGWidget.prototype.update = function (domeNode, element, d) {
+        Widget.prototype.update.apply(this, arguments);
+        element.attr("transform", "translate(" + this._pos.x + " " + this._pos.y + ")");
+    };
+
     SVGWidget.prototype.exit = function (domeNode, element, d) {
         if (this._parentRelativeDiv) {
             this._parentOverlay.remove();
@@ -117,22 +133,6 @@
             this._parentRelativeDiv.remove();
         }
         Widget.prototype.exit.apply(this, arguments);
-    };
-
-
-    SVGWidget.prototype.pos = function (_, transitionDuration, skipRender) {
-        if (transitionDuration && (isNaN(transitionDuration) || transitionDuration < 10)) {
-            throw "GJS Remove";
-        }
-        var retVal = Widget.prototype.pos.apply(this, arguments);
-        if (arguments.length) {
-            if (!skipRender) {
-                (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)
-                    .attr("transform", "translate(" + _.x + " " + _.y + ")")
-                ;
-            }
-        }
-        return retVal;
     };
 
     SVGWidget.prototype.getOffsetPos = function () {

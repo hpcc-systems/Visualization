@@ -20,10 +20,11 @@
     List.prototype.implements(IList.prototype);
 
     List.prototype.enter = function (domNode, element) {
-        var context = this;
+        SVGWidget.prototype.enter.apply(this, arguments);
     },
 
     List.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 
         var line = element.selectAll(".line").data(this._data, function (d) { return d; });

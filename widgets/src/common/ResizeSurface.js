@@ -78,11 +78,9 @@
     };
     ResizeSurface.prototype = Object.create(Surface.prototype);
 
-    ResizeSurface.prototype.pos = function (_) {
-        var retVal = Surface.prototype.pos.apply(this, arguments);
-        if (arguments.length && this._parentElement) {
-            this.updateHandles(this._domNode, this._element);
-        }
+    ResizeSurface.prototype.move = function (_) {
+        var retVal = Surface.prototype.move.apply(this, arguments);
+        this.updateHandles(this._domNode, this._element);
         return retVal;
     };
 
@@ -98,10 +96,10 @@
             .call(this.drag)
         ;
 
-        var l = this.pos().x + this._container.pos().x - this._container.width() / 2;
-        var t = this.pos().y + this._titleRect.pos().y - this._titleRect.height() / 2;
-        var r = this.pos().x + this._container.pos().x + this._container.width() / 2;
-        var b = this.pos().y + this._container.pos().y + this._container.height() / 2;
+        var l = this._pos.x + this._container._pos.x - this._container._size.width / 2;
+        var t = this._pos.y + this._titleRect._pos.y - this._titleRect._size.height / 2;
+        var r = this._pos.x + this._container._pos.x + this._container._size.width / 2;
+        var b = this._pos.y + this._container._pos.y + this._container._size.height / 2;
         var w = r - l;
         var h = b - t;
         var context = this;

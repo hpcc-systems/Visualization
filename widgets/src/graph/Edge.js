@@ -64,6 +64,7 @@
     };
 
     Edge.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._elementPath = element.append("path");
 
         if (this._sourceMarker) {
@@ -81,6 +82,7 @@
     };
 
     Edge.prototype.update = function (domNode, element, transitionDuration, skipPushMarkers) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
         var pathElements = this._elementPath;
 

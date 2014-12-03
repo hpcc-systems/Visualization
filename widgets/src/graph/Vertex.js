@@ -28,6 +28,7 @@
 
     //  Render  ---
     Vertex.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._icon
             .target(domNode)
             .render()
@@ -39,13 +40,14 @@
     };
 
     Vertex.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var pos = this._textBox.pos();
         var bbox = this._textBox.getBBox();
         var w = bbox.width;
         var h = bbox.height;
         var iconClientSize = this._icon.getBBox();
         this._icon
-            .pos({ x: -(w / 2) + (iconClientSize.width / 3), y: -(h / 2) - (iconClientSize.height / 3) })
+            .move({ x: -(w / 2) + (iconClientSize.width / 3), y: -(h / 2) - (iconClientSize.height / 3) })
         ;
     };
 

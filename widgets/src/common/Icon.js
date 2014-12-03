@@ -36,6 +36,7 @@
     };
 
     Icon.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._shape
             .target(domNode)
             .render()
@@ -47,6 +48,7 @@
     };
 
     Icon.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var bbox = this._faChar.getBBox();
         var size = { width: bbox.width, height: this._faChar.fontSize() };
         if (this._shape.shape() === "circle") {

@@ -25,6 +25,11 @@ requirejs.config({
             main: "d3"
         },
         {
+            name: "c3",
+            location: "lib/c3",
+            main: "c3"
+        },
+        {
             name: "topojson",
             location: "lib/topojson",
             main: "topojson"

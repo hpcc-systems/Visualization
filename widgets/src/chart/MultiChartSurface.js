@@ -19,13 +19,19 @@
             { id: "COLUMN", display: "Column", path: "src/chart/Column" },
             { id: "PIE", display: "Pie", path: "src/chart/Pie" },
             { id: "GOOGLE_PIE", display: "Pie (Google)", path: "src/google/Pie" },
+            { id: "C3_PIE", display: "Pie (C3)", path: "src/c3/Pie" },
             { id: "WORD_CLOUD", display: "Word Cloud", path: "src/other/WordCloud" }
         ];
         this._multiChartTypes = [
             { id: "GOOGLE_BAR", display: "Bar (Google)", path: "src/google/Bar" },
             { id: "GOOGLE_COLUMN", display: "Column (Google)", path: "src/google/Column" },
             { id: "LINE", display: "Line", path: "src/chart/Line" },
-            { id: "GOOGLE_LINE", display: "Line (Google)", path: "src/google/Line" }
+            { id: "GOOGLE_LINE", display: "Line (Google)", path: "src/google/Line" },
+            { id: "C3_LINE", display: "Line (C3)", path: "src/c3/Line" },
+            { id: "C3_COLUMN", display: "Column (C3)", path: "src/c3/Column" },
+            { id: "C3_STEP", display: "Step (C3)", path: "src/c3/Step" },
+            { id: "C3_AREA", display: "Area (C3)", path: "src/c3/Area" },
+            { id: "C3_SCATTER", display: "Scatter (C3)", path: "src/c3/Scatter" }
         ];
         this._anyChartTypes = [
             { id: "TABLE", display: "Table", path: "src/other/Table" }

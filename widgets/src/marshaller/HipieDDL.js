@@ -701,7 +701,7 @@
             ;
         } else {
             transport = new Comms.HIPIERoxie()
-                .url(this.espUrl.getUrl())
+                .url(url)
                 .proxyMappings(this._proxyMappings)
             ;
         }

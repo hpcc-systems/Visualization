@@ -80,7 +80,7 @@
             pos = projection.fromLatLngToDivPixel(pos);
             pos.x -= dx;
             pos.y -= dy;
-            item.pos(pos);
+            item.move(pos);
         });
         this.graphData.edgeValues().forEach(function (item) {
             item.points([]);

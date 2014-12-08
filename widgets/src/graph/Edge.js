@@ -128,7 +128,7 @@
 
         if (this._textBox.text()) {
             this._textBox
-                .pos(this._findMidPoint(points), transitionDuration)
+                .move(this._findMidPoint(points), transitionDuration)
             ;
         }
     };

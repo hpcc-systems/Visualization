@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -16,6 +16,7 @@
             var newUrl = null;
             if (myUrl._params["Wuid"]) {
                 newUrl = new Comms.WsWorkunits()
+                    .protocol((myUrl._params["Protocol"] || "http") + ":")
                     .hostname(myUrl._params["Hostname"])
                     .port(myUrl._params["Port"])
                     .wuid(myUrl._params["Wuid"])
@@ -23,6 +24,7 @@
                 ;
             } else if (myUrl._params["QueryID"]) {
                 newUrl = new Comms.WsECL()
+                    .protocol((myUrl._params["Protocol"] || "http") + ":")
                     .hostname(myUrl._params["Hostname"])
                     .port(myUrl._params["Port"])
                     .target(myUrl._params["Target"])
@@ -34,7 +36,7 @@
                     graph
                         .target("graphMarshaller")
                         .layout("Hierarchy")
-                        .render()
+                        .renderDashboards()
                     ;
                 });
             }

@@ -1,0 +1,513 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>HPCC Systems - Visualization Framework</title>
+    <link rel="stylesheet" href="test.css">
+    <script src="../widgets/lib/requirejs/require.js"></script>
+    <script>
+        var graph = null;
+        function doTest() {
+            require(["../widgets/config"], function () {
+                requirejs.config({
+                    baseUrl: "../widgets"
+                });
+                require(["d3/d3",
+                    "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
+                    "src/graph/Edge", "src/graph/Vertex",
+                    "src/tree/SunburstPartition", "src/tree/CirclePacking",
+                    "src/other/MorphText", "src/other/Slider", "src/other/Table"
+                ], function (d3,
+                    Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
+                    Edge, Vertex,
+                    SunburstPartition, CirclePacking,
+                    MorphText, Slider, Table
+                    ) {
+                    function createEdge(source, target, label) {
+                        return new Edge()
+                            .sourceVertex(source)
+                            .targetVertex(target)
+                            .sourceMarker("circleFoot")
+                            .targetMarker("arrowHead")
+                            .text(label || "")
+                        ;
+                    }
+
+                    var timeoutStep = 500;
+                    var timeoutIdx = 0;
+                    setTimeout(function () { displayComposition(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displayCharts(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displayMaps(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displayGraphHierarchies(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
+                    setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+
+                    function displayComposition() {
+                        //  Composition ---
+                        new Vertex()
+                            .text("Graph\nVertex")
+                            .faChar("\uf080")
+                            .target("vertex")
+                            .render()
+                        ;
+                        new Text()
+                            .text("Multi\nLine\nText")
+                            .target("text")
+                            .render()
+                        ;
+                        new Shape()
+                            .shape("circle")
+                            .target("shape")
+                            .size({ width: 32, height: 32 })
+                            .render()
+                        ;
+                        new FAChar()
+                            .char("\uf080")
+                            .target("faChar")
+                            .render()
+                        ;
+                        new TextBox()
+                            .padding({ left: 10, top: 10, right: 10, bottom: 10 })
+                            .text("Text\nBox")
+                            .target("textBox")
+                            .render()
+                        ;
+                        new Icon()
+                            .shape("circle")
+                            .faChar("\uf080")
+                            .target("Icon")
+                            .render()
+                        ;
+                        new List()
+                            .testData()
+                            .target("list")
+                            .render()
+                        ;
+                        new Menu()
+                            .faChar("\uf0c9 Menu")
+                            .data(["Menu A", "And B", "a longer C"])
+                            .target("menu")
+                            .pos({ x: 50, y: 10 })
+                            .render()
+                        ;
+                        new Surface()
+                            .size({ width: 100, height: 100 })
+                            .title("Surface")
+                            .menu(["aaa", "bbb", "ccc"])
+                            .target("surface")
+                            .render()
+                        ;
+                        require(["src/graph/Graph"], function (Graph) {
+                            var vertices = [
+                                new Shape().shape("circle").size({ width: 32, height: 32 }),
+                                new FAChar().char("\uf080"),
+                                new Icon().shape("circle").faChar("\uf080"),
+                                new Shape().class("Shape2").shape("rect").size({ width: 32, height: 32 }),
+                                new Text().text("Multi\nLine\nText"),
+                                new TextBox().padding({ left: 10, top: 10, right: 10, bottom: 10 }).text("Text\nBox"),
+                                new Vertex().text("Graph\nVertex").faChar("\uf080"),
+                                new Shape().shape("rect").size({ width: 48, height: 22 }),
+                                new List().testData(),
+                                new Menu().faChar("\uf0c9 Menu").data(["Menu A", "And B", "a longer C"]),
+                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).faChar("\uf047")
+                            ];
+                            var edges = [
+                                createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),
+                                createEdge(vertices[3], vertices[5]), createEdge(vertices[4], vertices[5]),
+                                createEdge(vertices[2], vertices[6]), createEdge(vertices[5], vertices[6], "test label"),
+                                createEdge(vertices[7], vertices[9]), createEdge(vertices[1], vertices[9]), createEdge(vertices[8], vertices[9]),
+                                createEdge(vertices[6], vertices[10]), createEdge(vertices[7], vertices[10]), createEdge(vertices[9], vertices[10])
+                            ];
+                            graph = new Graph()
+                                .target("composition")
+                                .data({ vertices: vertices, edges: edges })
+                                .layout("Hierarchy")
+                                .render()
+                            ;
+                            graph.vertex_dblclick = function (element, d) {
+                            };
+                        });
+                    }
+
+                    function displayCharts() {
+                        require(["src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line",
+                            "src/google/Pie", "src/google/Bar", "src/google/Column", "src/google/Line",
+                            "src/c3/Pie", "src/c3/Line", "src/c3/Column", "src/c3/Step", "src/c3/Area", "src/c3/Scatter"
+                        ], function (Pie, Bubble, Column, Line,
+                            GPie, GBar, GColumn, GLine,
+                            C3Pie, C3Line, C3Column, C3Step, C3Area, C3Scatter) {
+                            //  C3 Charts ---
+                            new C3Pie()
+                                .target("c3pie")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Line()
+                                .target("c3line")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Column()
+                                .target("c3column")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Step()
+                                .target("c3step")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Area()
+                                .target("c3area")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Scatter()
+                                .target("c3scatter")
+                                .testData()
+                                .render()
+                            ;
+
+                            //  D3 Charts  ---
+                            new Pie()
+                                .testData()
+                                .target("pie")
+                                .render()
+                            ;
+                            new Bubble()
+                                .testData()
+                                .target("bubble")
+                                .render()
+                            ;
+                            new Column()
+                                .target("column")
+                                .testData()
+                                .render()
+                            ;
+                            new Line()
+                                .target("line")
+                                .testData()
+                                .render()
+                            ;
+
+                            //  Google Charts ---
+                            new GPie()
+                                .target("gpie")
+                                .testData()
+                                .render()
+                            ;
+                            new GBar()
+                                .target("gbar")
+                                .testData()
+                                .render()
+                            ;
+                            new GColumn()
+                                .target("gcolumn")
+                                .testData()
+                                .render()
+                            ;
+                            new GLine()
+                                .target("gline")
+                                .testData()
+                                .render()
+                            ;
+                        });
+                    }
+
+                    function displayMaps() {
+                        //  Maps ---
+                        require(["src/map/ChoroplethStates"], function (ChoroplethStates) {
+                            new ChoroplethStates()
+                                .testStateData()
+                                .target("choropleth")
+                                .render()
+                            ;
+                        });
+                        require(["src/map/ChoroplethCounties"], function (ChoroplethCounties) {
+                            new ChoroplethCounties()
+                                .target("choroplethCounties")
+                                .render()
+                            ;
+                        });
+                        require(["src/map/GMap"], function (GMap) {
+                            var gmap = new GMap()
+                                .target("gmap")
+                                .testData()
+                                .render()
+                            ;
+                        });
+                    }
+
+                    function displayGraphHierarchies() {
+                        //  Graphs / Hierarchies ---
+                        require(["src/graph/Graph"], function (Graph) {
+                            var vertices = [
+                                new TextBox().text("G'Pa"),
+                                new TextBox().text("G'Ma"),
+                                new TextBox().text("Mother"),
+                                new TextBox().text("Father"),
+                                new TextBox().text("Child")
+                            ];
+                            var edges = [
+                                createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),
+                                createEdge(vertices[2], vertices[4]),
+                                createEdge(vertices[3], vertices[4])
+                            ];
+                            new Graph()
+                                .target("graph")
+                                .hierarchyOptions({ rankSep: 18 })
+                                .data({ vertices: vertices, edges: edges })
+                                .layout("Hierarchy")
+                                .render()
+                            ;
+                        });
+                        new SunburstPartition()
+                            .target("sunburst")
+                            .testData()
+                            .render()
+                        ;
+                        new CirclePacking()
+                            .target("circlePacking")
+                            .testData()
+                            .render()
+                        ;
+                    }
+
+                    function displaySurfaces() {
+                        require(["src/chart/MultiChartSurface"], function(MultiChartSurface) {
+                            //  Surfaces ---
+                            new MultiChartSurface()
+                                .target("twoDSurface")
+                                .testData()
+                                .chartType("COLUMN")
+                                .title("2D Charts")
+                                .faChar("\uf080")
+                                .mode("2d")
+                                .render()
+                            ;
+                            new MultiChartSurface()
+                                .target("multiSurface")
+                                .testData()
+                                .chartType("GOOGLE_COLUMN")
+                                .title("Multi Charts")
+                                .faChar("\uf080")
+                                .mode("multi")
+                                .render()
+                            ;
+                            require(["src/map/ChoroplethStates"], function (ChoroplethStates) {
+                                var choroSurface = new Surface()
+                                    .target("choroSurface")
+                                    .title("States/Palette")
+                                    .faChar("\uf024")
+                                    .content(new ChoroplethStates().testStateData().palette("BuPu"))
+                                    .menu(Palette.brewer())
+                                    .render()
+                                ;
+                                choroSurface._menu.click = function (d) {
+                                    choroSurface._content
+                                        .palette(d)
+                                        .render(d)
+                                    ;
+                                }
+                            });
+                        });
+                    }
+
+                    function displayOther() {
+                        //  Other  ---
+                        var slider = new Slider()
+                            .target("slider")
+                            .range({ low: 2000, high: 2010 })
+                            .step(2)
+                            .render();
+                        ;
+                        var slider = new Slider()
+                            .target("rangeSlider")
+                            .allowRange(true)
+                            .range({ low: 2000, high: 2010 })
+                            .step(2)
+                            .render();
+                        ;
+
+                        require(["src/other/WordCloud", "lib/wordcloud/d3.layout.cloud"], function (WordCloud) {
+                            var wordCloud = new WordCloud()
+                                .target("wordCloud")
+                                .testData()
+                                .render()
+                            ;
+                        });
+
+                        new Table()
+                            .target("table")
+                            .columns(["Lat", "Long", "Pin"])
+                            .data([
+                                { "geo_lat": "37.665074", "geo_long": "-122.384375", __viz_markerIcon: "green-dot.png" },
+                                { "geo_lat": "32.690680", "geo_long": "-117.178540" },
+                                { "geo_lat": "39.709455", "geo_long": "-104.969859" },
+                                { "geo_lat": "41.244123", "geo_long": "-95.961610" },
+                                { "geo_lat": "32.688980", "geo_long": "-117.192040" },
+                                { "geo_lat": "45.786490", "geo_long": "-108.526600" },
+                                { "geo_lat": "45.796180", "geo_long": "-108.535652" },
+                                { "geo_lat": "45.774320", "geo_long": "-108.494370" },
+                                { "geo_lat": "45.777062", "geo_long": "-108.549835", __viz_markerIcon: "red-dot.png" }
+                            ])
+                            .render()
+                        ;
+                        var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+                        var morphText = new MorphText()
+                            .target("morphText")
+                            .text(alphabet.join(""))
+                            .render()
+                        ;
+                        function shuffle(array) {
+                            var m = array.length, t, i;
+                            while (m) {
+                                i = Math.floor(Math.random() * m--);
+                                t = array[m], array[m] = array[i], array[i] = t;
+                            }
+                            return array;
+                        }
+                        setInterval(function () {
+                            var randomAlphabet = shuffle(alphabet)
+                                .slice(0, Math.floor(Math.random() * 26))
+                                .sort()
+                            ;
+                            morphText
+                                .text(randomAlphabet.join(""))
+                                .render()
+                            ;
+                        }, 1500);
+                    }
+
+                    function displayPalettes() {
+                        //  Palettes  ---
+                        require(["d3/d3", "src/common/Palette"], function (d3, Palette) {
+                            var customArr = document.getElementById("customColors").value.split("\n");
+                            var steps = document.getElementById("steps").value;
+                            Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);
+                        });
+                    }
+                });
+            });
+        }
+        doLayout = function (graph, layout) {
+            graph.layout(layout);
+        }
+        function doPalette() {
+            require([
+                    "d3/d3", "src/common/Palette"
+                ], function (d3, Palette) {
+                var customArr = document.getElementById("customColors").value.split("\n");
+                var steps = document.getElementById("steps").value;
+                Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);
+            });
+        }
+    </script>
+</head>
+<body onload="doTest()">
+    <div class="wrapper">
+        <header>
+            <h1>Visualization Framework</h1>
+            <p>The goal of the visualization framework is to simplify the construction of visualizations and dashboards for Big Data on the HPCC Platform.</p>
+            <ul>
+                <li><a href="https://github.com/hpcc-systems/Visualization/zipball/master">Download <strong>ZIP File</strong></a></li>
+                <li><a href="https://github.com/hpcc-systems/Visualization/tarball/master">Download <strong>TAR Ball</strong></a></li>
+                <li><a href="https://github.com/hpcc-systems/Visualization">View On <strong>GitHub</strong></a></li>
+            </ul>
+        </header>
+        <section>
+            Composition
+            <br style="clear:both" />
+            <div id="text" class="small thumb"></div>
+            <div id="shape" class="small thumb"></div>
+            <div id="faChar" class="small thumb"></div>
+            <div id="textBox" class="small thumb"></div>
+            <div id="Icon" class="small thumb"></div>
+            <div id="vertex" class="small thumb"></div>
+            <div id="list" class="small thumb"></div>
+            <div id="menu" class="small thumb"></div>
+            <div id="surface" class="small thumb"></div>
+             <br style="clear:both" />
+            <div id="composition" class="thumb" style="width: 640px; height: 440px">
+                <div style="float:right;position:relative;top:4px;right:4px;z-index:99">
+                    <button onclick="doLayout(graph, 'Circle')">C</button>
+                    <button onclick="doLayout(graph, 'ForceDirected')">F</button>
+                    <button onclick="doLayout(graph, 'ForceDirected2')">F2</button>
+                    <button onclick="doLayout(graph, 'Hierarchy')">H</button>
+                </div>
+            </div>
+            <br style="clear:both" />
+            C3 Charts
+            <br style="clear:both" />
+            <div id="c3pie" class="large thumb"></div>
+            <div id="c3line" class="large thumb"></div>
+            <div id="c3column" class="large thumb"></div>
+            <div id="c3step" class="large thumb"></div>
+            <div id="c3area" class="large thumb"></div>
+            <div id="c3scatter" class="large thumb"></div>
+            <br style="clear:both" />
+            D3 Charts
+            <br style="clear:both" />
+            <div id="pie" class="small thumb"></div>
+            <div id="bubble" class="small thumb"></div>
+            <div id="column" class="small thumb"></div>
+            <div id="line" class="small thumb"></div>
+            <br style="clear:both" />
+            Google Charts
+            <br style="clear:both" />
+            <div id="gpie" class="small thumb"></div>
+            <div id="gbar" class="small thumb"></div>
+            <div id="gcolumn" class="small thumb"></div>
+            <div id="gline" class="small thumb"></div>
+            <br style="clear:both" />
+            Maps
+            <br style="clear:both" />
+            <div id="choropleth" class="large thumb"></div>
+            <div id="choroplethCounties" class="large thumb"></div>
+            <div id="gmap" class="large thumb"></div>
+            <br style="clear:both" />
+            Graphs/Hierarchies
+            <br style="clear:both" />
+            <div id="graph" class="large thumb"></div>
+            <div id="sunburst" class="large thumb"></div>
+            <div id="circlePacking" class="large thumb"></div>
+            <br style="clear:both" />
+            Surfaces
+            <br style="clear:both" />
+            <div id="twoDSurface" class="large thumb"></div>
+            <div id="multiSurface" class="large thumb"></div>
+            <div id="choroSurface" class="large thumb"></div>
+            <br style="clear:both" />
+            Other
+            <br style="clear:both" />
+            <div id="slider" class="wide thumb"></div>
+            <div id="rangeSlider" class="wide thumb"></div>
+            <div id="wordCloud" class="large wide thumb"></div>
+            <div id="table" class="large wide thumb" style="overflow:auto;"></div>
+            <div id="morphText" class="wide thumb" style="font-size:14px;"></div>
+            <br style="clear:both" />
+            Palette - Ordinal
+            <br style="clear:both" />
+            <div id="ordinal" class="thumb"></div>
+            <br style="clear:both" />
+            Palette - Brewer
+            <br style="clear:both" />
+            <div id="brewer" class="thumb"></div>
+            <br style="clear:both" />
+            Palette - Custom
+            <br style="clear:both" />
+            <div style="float:left">
+                <button onclick="doPalette()" type="button">Submit</button>
+                <input id="steps" type="text" value="32" style="width:40px" /><br>
+                <textarea id="customColors" rows="10" cols="12">red&#010;#FFA500&#010;green</textarea>
+            </div>
+            <div id="custom" class="thumb"></div>
+        </section>
+        <footer>
+            <p>This project is maintained by <a href="https://github.com/hpcc-systems">HPCC Systems</a></p>
+        </footer>
+    </div>
+</body>
+</html>

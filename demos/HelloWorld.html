@@ -1,0 +1,26 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="../widgets/lib/requirejs/require.js"></script>
+    <script src="../widgets/config.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: "../widgets"
+        });
+    </script>
+</head>
+<body>
+    <div id="helloWorld" style="width:100%; height:100vh">
+    </div>
+    <script>
+        require(["src/common/TextBox"], function (TextBox) {
+            var helloWorld = new TextBox()
+                .target("helloWorld")
+                .text("Hello\nWorld!")
+                .render()
+            ;
+        });
+    </script>
+</body>
+</html>

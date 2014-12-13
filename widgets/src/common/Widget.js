@@ -21,27 +21,89 @@
 
         this._element = d3.select();
     };
-    Widget.prototype.isIE = (/trident/i.test(navigator.userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []));
+    Widget.prototype.ieVersion = (function () {
+        var ua = navigator.userAgent, tem,
+            M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if (/trident/i.test(M[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return parseFloat(tem[1]);
+        }
+        if (/msie/i.test(M[1])) {
+            return parseFloat(M[2]);
+        }
+        return null;
+    })();
+    Widget.prototype.isIE = Widget.prototype.ieVersion !== null;
+    Widget.prototype.svgMarkerGlitch = Widget.prototype.isIE && Widget.prototype.ieVersion < 11;
     Widget.prototype.MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || function (callback) {
+        //  Just enough for HTMLOverlay and C3  ---
         this.callback = callback;
-        this.domNodes = [];
+        this.listeners = [];
 
-        this.listener = function () {
-            callback();
+        var MutationListener = function (callback, domNode, type) {
+            this.callback = callback;
+            this.domNode = domNode;
+            this.type = type;
+        };
+        MutationListener.prototype = {
+            handleEvent: function (evt) {
+                var mutation = {
+                    type: this.type,
+                    target: this.domNode,
+                    addedNodes: [],
+                    removedNodes: [],
+                    previousSibling: evt.target.previousSibling,
+                    nextSibling: evt.target.nextSibling,
+                    attributeName: null,
+                    attributeNamespace: null,
+                    oldValue: null
+                }
+                this.callback([mutation]);
+            }
         };
 
         this.observe = function (domNode, config) {
             if (config.attributes) {
-                this.domNode = domNode;
-                this.domNode.addEventListener("DOMAttrModified", this.listener, false);
+                var listener = new MutationListener(this.callback, domNode, "attributes");
+                this.listeners.push(listener);
+                domNode.addEventListener('DOMAttrModified', listener, true);
+            }
+
+            if (config.characterData) {
+                var listener = new MutationListener(this.callback, domNode, "characterData");
+                this.listeners.push(listener);
+                domNode.addEventListener('DOMCharacterDataModified', listener, true);
+            }
+
+            if (config.childList) {
+                var listener = new MutationListener(this.callback, domNode, "childList");
+                this.listeners.push(listener);
+                domNode.addEventListener('DOMNodeInserted', listener, true);
+                domNode.addEventListener('DOMNodeRemoved', listener, true);
             }
         }
+
         this.disconnect = function () {
-            if (this.domNode) {
-                this.domNode.removeEventListener("DOMAttrModified", this.listener, false);
-            }
+            this.listeners.forEach(function (item) {
+                switch (item.type) {
+                    case "attributes":
+                        item.domNode.removeEventListener('DOMAttrModified', item, true);
+                        break;
+                    case "characterData":
+                        item.domNode.removeEventListener('DOMCharacterDataModified', item, true);
+                        break;
+                    case "childList":
+                        item.domNode.removeEventListener('DOMNodeRemoved', item, true);
+                        item.domNode.removeEventListener('DOMNodeInserted', item, true);
+                        break;
+                }
+            });
+            this.listeners = [];
         }
     };
+    if (!window.MutationObserver) {
+        window.MutationObserver = Widget.prototype.MutationObserver;
+    }
 
     Widget.prototype.implements = function (source) {
         for (var prop in source) {

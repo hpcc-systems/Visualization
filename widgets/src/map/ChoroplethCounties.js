@@ -35,7 +35,7 @@
 
     ChoroplethCounties.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-        console.time("ChoroplethCounties.prototype.update");
+        //console.time("ChoroplethCounties.prototype.update");
         var context = this;
         //  Update  ---
         this.choroPaths
@@ -49,7 +49,7 @@
                 ;
             })
         ;
-        console.timeEnd("ChoroplethCounties.prototype.update");
+        //console.timeEnd("ChoroplethCounties.prototype.update");
     };
 
     return ChoroplethCounties;

@@ -36,7 +36,7 @@
 
     ChoroplethStates.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-        console.time("ChoroplethStates.prototype.update");
+        //console.time("ChoroplethStates.prototype.update");
         var context = this;
         //  Update  ---
         this.transition.apply(this.choroPaths)
@@ -51,7 +51,7 @@
                 ;
             })
         ;
-        console.timeEnd("ChoroplethStates.prototype.update");
+        //console.timeEnd("ChoroplethStates.prototype.update");
     };
 
     return ChoroplethStates;

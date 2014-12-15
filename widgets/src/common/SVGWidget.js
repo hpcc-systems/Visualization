@@ -299,7 +299,7 @@
 
     //  IE Fixers  ---    
     SVGWidget.prototype._pushMarkers = function (element, d) {
-        if (this.isIE) {
+        if (this.svgMarkerGlitch) {
             element = element || this._element;
             element.selectAll("path[marker-start],path[marker-end]")
                 .attr("fixme-start", function (d) { return this.getAttribute("marker-start"); })
@@ -311,7 +311,7 @@
     };
 
     SVGWidget.prototype._popMarkers = function (element, d) {
-        if (this.isIE) {
+        if (this.svgMarkerGlitch) {
             element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
                 .attr("marker-start", function (d) {
@@ -326,13 +326,13 @@
     }
 
     SVGWidget.prototype._popMarkersDebounced = Widget.prototype.debounce(function (element, d) {
-        if (this.isIE) {
+        if (this.svgMarkerGlitch) {
             this._popMarkers(element, d);
         }
     }, 250);
 
     SVGWidget.prototype._fixIEMarkers = function (element, d) {
-        if (this.isIE) {
+        if (this.svgMarkerGlitch) {
             this._pushMarkers(element, d);
             this._popMarkersDebounced(element, d);
         }

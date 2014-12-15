@@ -86,8 +86,8 @@
         var context = this;
         var pathElements = this._elementPath;
 
-        if (this.isIE && !skipPushMarkers) {
-            element.transition().duration((transitionDuration ? transitionDuration : 0) + 20)
+        if (this.svgMarkerGlitch && !skipPushMarkers) {
+            element.transition().duration((transitionDuration ? transitionDuration : 0) + 100) 
                 .each("start", function (d) {
                     context._pushMarkers(element, d);
                 })

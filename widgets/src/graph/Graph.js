@@ -149,7 +149,7 @@
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = true;
             }
-            if (this.isIE) {
+            if (context.svgMarkerGlitch) {
                 context.graphData.nodeEdges(d.id()).forEach(function (id) {
                     var edge = context.graphData.edge(id);
                     context._pushMarkers(edge.element(), edge);
@@ -179,7 +179,7 @@
                 var forceNode = context.forceLayout.vertexMap[d.id()];
                 forceNode.fixed = false;
             }
-            if (this.isIE) {
+            if (context.svgMarkerGlitch) {
                 context.graphData.nodeEdges(d.id()).forEach(function (id) {
                     var edge = context.graphData.edge(id);
                     context._popMarkers(edge.element(), edge);
@@ -282,7 +282,7 @@
                     });
                     context.graphData.edgeValues().forEach(function (item) {
                         item
-                            .points([], false, true)
+                            .points([], false, false)
                         ;
                     });
                     if (context._shrinkToFitOnLayout) {

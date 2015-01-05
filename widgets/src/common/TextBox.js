@@ -82,6 +82,7 @@
             .remove()
         ;
 
+        this._text.render();
         var textBBox = this._text.getBBox(true);
         var contentBBox = { width: 0, height: 0 };
         if (this._content) {

@@ -111,7 +111,8 @@
     function Hierarchy(graphData, width, height, options) {
         var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
               .setGraph(options)
-              .setDefaultEdgeLabel(function() { return {}; })
+              .setDefaultNodeLabel(function () { return {}; })
+              .setDefaultEdgeLabel(function () { return {}; })
         ;
         graphData.eachNode(function (u) {
             var value = graphData.node(u);
@@ -124,12 +125,13 @@
         graphData.eachEdge(function (e, s, t) {
             var value = graphData.edge(e);
             digraph.setEdge(s, t, {
-                //minLen: value._textBox.text().length ? 2 : 1
+                weight: value.weight()
             });
         });
-        this.dagreLayout = dagre.layout(digraph)
-            //.run(digraph)
-        ;
+        graphData.eachNode(function (u) {
+            digraph.setParent(u, graphData.parent(u));
+        });
+        this.dagreLayout = dagre.layout(digraph);
         var deltaX = -digraph.graph().width / 2;
         var deltaY = -digraph.graph().height / 2;
         digraph.nodes().forEach(function (u) {

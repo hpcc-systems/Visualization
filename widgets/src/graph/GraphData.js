@@ -8,11 +8,12 @@
     function GraphData() {
         dagre.graphlib.Graph.call(this, { multigraph: true, compound: true });
         this.setGraph({});
+        this.setDefaultNodeLabel(function () { return {}; });
         this.setDefaultEdgeLabel(function () { return {}; });
     };
     GraphData.prototype = Object.create(dagre.graphlib.Graph.prototype);
 
-    GraphData.prototype.setData = function (vertices, edges, merge) {
+    GraphData.prototype.setData = function (vertices, edges, hierarchy, merge) {
         var context = this;
         var retVal = {
             addedVertices: [],
@@ -34,6 +35,12 @@
                 retVal.addedEdges.push(edge);
             }
         }
+        if (hierarchy) {
+            for (var i = 0; i < hierarchy.length; ++i) {
+                this.setParent(hierarchy[i].child._id, hierarchy[i].parent._id);
+            }
+        }
+
         //  Remove old items  ---
         if (merge) {
             var edgeIDs = edges.map(function (item) { return item._id; });
@@ -107,6 +114,19 @@
         this.edges().forEach(function (item, idx) {
             callback(item, item.v, item.w, this.edge(item));
         }, this);
+    };
+
+    GraphData.prototype.getJSON = function () {
+        var graphObj = dagre.graphlib.json.write(this);
+        return JSON.stringify(graphObj, function (key, value) {
+            if (key === "value") {
+                if (value._text && value._text._text) {
+                    return value._text._text;
+                }
+                return value._id;
+            }
+            return value;
+        }, "  ");
     };
 
     return GraphData;

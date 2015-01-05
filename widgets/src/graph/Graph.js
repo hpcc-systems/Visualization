@@ -55,7 +55,6 @@
             if (!this._data.merge) {
                 this.graphData = new GraphData();
                 this._renderCount = 0;
-                this.setZoom([0, 0], 1);
             }
             var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.hierarchy, this._data.merge);
 
@@ -118,19 +117,25 @@
         return this;
     };
 
-    Graph.prototype.setZoom = function (translation, scale) {
+    Graph.prototype.setZoom = function (translation, scale, transitionDuration) {
         if (this.zoom) {
             this.zoom.translate(translation);
             this.zoom.scale(scale);
-            this.applyZoom();
+            this.applyZoom(transitionDuration);
         }
     };
 
-    Graph.prototype.applyZoom = function (transition) {
-        (transition ? this.svg.transition() : this.svg)
+    Graph.prototype.applyZoom = function (transitionDuration) {
+        if (d3.event && d3.event.sourceEvent && !d3.event.sourceEvent.ctrlKey && (d3.event.sourceEvent.type === "wheel" || d3.event.sourceEvent.type === "mousewheel" || d3.event.sourceEvent.type === "DOMMouseScroll")) {
+            if (d3.event.sourceEvent.wheelDelta) {
+                this.zoom.translate([this.prevTranslate[0], this.prevTranslate[1] + d3.event.sourceEvent.wheelDelta]);
+                this.zoom.scale(this.prevScale);
+            }
+        }
+        (transitionDuration ? this.svg.transition().duration(transitionDuration) : this.svg)
             .attr("transform", "translate(" + this.zoom.translate() + ")scale(" + this.zoom.scale() + ")")
         ;
-        //  IE Bug Workaround  (Markers) ---
+        this.prevTranslate = this.zoom.translate();
         if (this.prevScale !== this.zoom.scale()) {
             this._fixIEMarkers();
             this.prevScale = this.zoom.scale();
@@ -142,10 +147,13 @@
         var context = this;
 
         //  Zoom  ---
+        this.prevTranslate = [0, 0];
         this.prevScale = 1;
         this.zoom = d3.behavior.zoom()
-            .scaleExtent([0.2, 4])
-            .on("zoom", function (d) { context.applyZoom(); })
+            .scaleExtent([0.01, 4])
+            .on("zoom", function (d) {
+                context.applyZoom();
+            })
         ;
 
         //  Drag  ---
@@ -219,10 +227,10 @@
         this.svgV = this.svg.append("g").attr("id", this._id + "V");
     };
 
-    Graph.prototype.getVertexBounds = function (layoutEngine) {
-        var vBounds = [[null,null],[null,null]];
-        this.graphData.nodeValues().forEach(function (item) {
-            var pos = layoutEngine.nodePos(item._id);
+    Graph.prototype.getBounds = function (items, layoutEngine) {
+        var vBounds = [[null, null], [null, null]];
+        items.forEach(function (item) {
+            var pos = layoutEngine ? layoutEngine.nodePos(item._id) : {x: item.x(), y: item.y(), width: item.width(), height: item.height()};
             var leftX = pos.x - pos.width / 2;
             var rightX = pos.x + pos.width / 2;
             var topY = pos.y - pos.height / 2;
@@ -242,8 +250,12 @@
         });
         return vBounds;
     };
+
+    Graph.prototype.getVertexBounds = function (layoutEngine) {
+        return this.getBounds(this.graphData.nodeValues(), layoutEngine);
+    };
         
-    Graph.prototype.shrinkToFit = function (bounds) {
+    Graph.prototype.shrinkToFit = function (bounds, transitionDuration) {
         var width = this.width();
         var height = this.height();
 
@@ -251,12 +263,19 @@
             dy = bounds[1][1] - bounds[0][1],
             x = (bounds[0][0] + bounds[1][0]) / 2,
             y = (bounds[0][1] + bounds[1][1]) / 2,
-            scale = .9 / Math.max(dx / width, dy / height);
+            scale = 1.0 / Math.max(dx / width, dy / height);
         if (scale > 1) {
             scale = 1;
         }
         var translate = [-scale * x, -scale * y];
-        this.setZoom(translate, scale);
+        this.setZoom(translate, scale, transitionDuration);
+    };
+
+    Graph.prototype.centerOn = function (bounds, transitionDuration) {
+        var x = (bounds[0][0] + bounds[1][0]) / 2,
+            y = (bounds[0][1] + bounds[1][1]) / 2
+        var translate = [x, y];
+        this.setZoom(translate, 1, transitionDuration);
     };
 
     Graph.prototype.layout = function (_) {
@@ -303,9 +322,13 @@
                 context._dragging = true;
                 context.graphData.nodeValues().forEach(function (item) {
                     var pos = layoutEngine.nodePos(item._id);
-                    item
-                        .move({ x: pos.x, y: pos.y }, context._transitionDuration)
-                    ;
+                    item.move({ x: pos.x, y: pos.y }, context._transitionDuration);
+                    if (pos.width && pos.height && !item.width() && !item.height()) {
+                        item
+                            .size({ width: pos.width, height: pos.height }, context._transitionDuration)
+                            .render()
+                        ;
+                    }
                 });
                 context.graphData.edgeValues().forEach(function (item) {
                     var points = layoutEngine.edgePoints({v: item._sourceVertex.id(), w: item._targetVertex.id()});
@@ -444,6 +467,7 @@
         edgeElements.exit().remove();
 
         if (!this._renderCount++) {
+            this.setZoom([0, 0], 1);
             this.layout(this.layout());
         }
     };

@@ -56,7 +56,7 @@
                 this._renderCount = 0;
                 this.setZoom([0, 0], 1);
             }
-            var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.merge);
+            var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.hierarchy, this._data.merge);
 
             var context = this;
             data.addedVertices.forEach(function (item) {

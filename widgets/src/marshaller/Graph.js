@@ -176,7 +176,7 @@
         return retVal;
     };
 
-    Graph.prototype.renderDashboards = function (callback) {
+    Graph.prototype.renderDashboards = function (restorePersist) {
         this.data({ vertices: [], edges: []});
         this.render();
         var context = this;
@@ -189,21 +189,28 @@
             edges = edges.concat(this._dashboards[key].edges);
         }
         this.data({ vertices: vertices, edges: edges });
-        var loadResult = this.load();
-        if (!loadResult.changed) {
-            this.render();
+        var loadResult = restorePersist ? this.load() : { changed: false, dataChanged: false };
+        if (loadResult.changed) {
+            this.layout("");
         }
+        this.render();
         if (!loadResult.dataChanged) {
-            for (var key in this._dashboards) {
-                var dashboard = this._dashboards[key].dashboard;
-                for (var key in dashboard.datasources) {
-                    dashboard.datasources[key].fetchData({}, true);
-                }
-            }
+            this.fetchData();
         }
+        return this;
     };
 
-    Graph.prototype.checksum = function(s) {
+    Graph.prototype.fetchData = function () {
+        for (var key in this._dashboards) {
+            var dashboard = this._dashboards[key].dashboard;
+            for (var key in dashboard.datasources) {
+                dashboard.datasources[key].fetchData({}, true);
+            }
+        }
+        return this;
+    };
+
+    Graph.prototype.checksum = function (s) {
         var hash = 0,
         strlen = s.length,
         i,
@@ -239,14 +246,16 @@
         localStorage.setItem("Graph_" + this.calcHash(), "");
     };
 
-    Graph.prototype.save = function () {
-        var context = this;
+    Graph.prototype.serialize = function (graphAttributes, widgetAttributes) {
+        graphAttributes = graphAttributes || [];
+        widgetAttributes = widgetAttributes || [];
+
         var state = {};
         state["zoom"] = {
-            translation: context.zoom.translate(),
-            scale: context.zoom.scale()
+            translation: this.zoom.translate(),
+            scale: this.zoom.scale()
         };
-        this.graphAttributes.forEach(function (attr) {
+        graphAttributes.forEach(function (attr) {
             if (this[attr]) {
                 state[attr] = this[attr]();
             }
@@ -259,77 +268,83 @@
                 visit: function (item) {
                     if (item instanceof HipieDDL.Visualization) {
                         if (item.widgetSurface) {
-                            state[currDashboardID][item.getQualifiedID()] = {
+                            var vizState = {
                                 pos: item.widgetSurface.pos(),
                                 size: item.widgetSurface.size()
                             };
-                            context.widgetAttributes.forEach(function (attr) {
+                            widgetAttributes.forEach(function (attr) {
                                 if (item.widget[attr]) {
-                                    state[currDashboardID][item.getQualifiedID()][attr] = item.widget[attr]();
+                                    vizState[attr] = item.widget[attr]();
                                 } else if (item.widgetSurface[attr]) {
-                                    state[currDashboardID][item.getQualifiedID()][attr] = item.widgetSurface[attr]();
+                                    vizState[attr] = item.widgetSurface[attr]();
                                 }
                             });
+                            state[currDashboardID][item.getQualifiedID()] = vizState;
                         }
                     }
                 }
             });
         }
-        localStorage.setItem("Graph_" + this.calcHash(), JSON.stringify(state));
+        return JSON.stringify(state);
+    };
+
+    Graph.prototype.save = function () {
+        localStorage.setItem("Graph_" + this.calcHash(), this.serialize(this.graphAttributes, this.widgetAttributes));
+    };
+
+    Graph.prototype.deserialize = function (state, graphAttributes, widgetAttributes) {
+        graphAttributes = graphAttributes || [];
+        widgetAttributes = widgetAttributes || [];
+
+        var changed = false;
+        var dataChanged = false;
+
+        graphAttributes.forEach(function (attr) {
+            if (this[attr] && state[attr] !== undefined) {
+                this[attr](state[attr]);
+            }
+        }, this);
+        if (state.zoom) {
+            this.setZoom(state.zoom.translation, state.zoom.scale);
+            changed = true;
+        }
+
+        for (var key in this._dashboards) {
+            var currDashboard = this._dashboards[key].dashboard;
+            var currDashboardID = currDashboard.getQualifiedID();
+            currDashboard.accept({
+                visit: function (item) {
+                    if (item instanceof HipieDDL.Visualization && state[currDashboardID] && state[currDashboardID][item.getQualifiedID()]) {
+                        var vizState = state[currDashboardID][item.getQualifiedID()];
+                        item.widgetSurface
+                            .pos(vizState.pos)
+                            .size(vizState.size)
+                        ;
+                        changed = true;
+                        widgetAttributes.forEach(function (attr) {
+                            if (item.widget[attr] && vizState[attr] !== undefined) {
+                                item.widget[attr](vizState[attr]);
+                                if (attr === "data") {
+                                    dataChanged = true;
+                                }
+                            } else if (item.widgetSurface[attr] && vizState[attr]) {
+                                item.widgetSurface[attr](vizState[attr]);
+                            };
+                        });
+                    }
+                }
+            });
+        }
+        return { changed: changed, dataChanged: dataChanged };
     };
 
     Graph.prototype.load = function () {
+        var retVal = { changed: false, dataChanged: false };
         var stateJSON = localStorage.getItem("Graph_" + this.calcHash());
         if (stateJSON) {
-            var state = JSON.parse(stateJSON);
-            var context = this;
-            var currDashboard = "";
-            var changed = false;
-            var dataChanged = false;
-
-            this.graphAttributes.forEach(function (attr) {
-                if (this[attr] && state[attr] !== undefined) {
-                    this[attr](state[attr]);
-                }
-            }, this);
-            if (state.zoom) {
-                this.setZoom(state.zoom.translation, state.zoom.scale);
-                changed = true;
-            }
-
-            for (var key in this._dashboards) {
-                var currDashboard = this._dashboards[key].dashboard;
-                var currDashboardID = currDashboard.getQualifiedID();
-                currDashboard.accept({
-                    visit: function (item) {
-                        if (item instanceof HipieDDL.Visualization) {
-                            if (state && state[currDashboardID][item.getQualifiedID()]) {
-                                item.widgetSurface
-                                    .pos(state[currDashboardID][item.getQualifiedID()].pos)
-                                    .size(state[currDashboardID][item.getQualifiedID()].size)
-                                ;
-                                context.widgetAttributes.forEach(function (attr) {
-                                    if (item.widget[attr] && state[currDashboardID][item.getQualifiedID()][attr] !== undefined) {
-                                        item.widget[attr](state[currDashboardID][item.getQualifiedID()][attr]);
-                                        if (attr === "data") {
-                                            dataChanged = true;
-                                        }
-                                    } else if (item.widgetSurface[attr] && state[currDashboardID][item.getQualifiedID()][attr]) {
-                                        item.widgetSurface[attr](state[currDashboardID][item.getQualifiedID()][attr]);
-                                    };
-                                });
-                                changed = true;
-                            }
-                        }
-                    }
-                });
-            }
-            if (changed) {
-                this.layout("");
-                GraphWidget.prototype.render.call(this);
-            }
+            retVal = this.deserialize(JSON.parse(stateJSON), this.graphAttributes, this.widgetAttributes);
         }
-        return {changed: changed, dataChanged: dataChanged};
+        return retVal;
     }
 
     return {

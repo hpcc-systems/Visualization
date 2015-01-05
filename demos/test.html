@@ -134,13 +134,19 @@
                     function displayCharts() {
                         require(["src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line",
                             "src/google/Pie", "src/google/Bar", "src/google/Column", "src/google/Line",
-                            "src/c3/Pie", "src/c3/Line", "src/c3/Column", "src/c3/Step", "src/c3/Area", "src/c3/Scatter"
+                            "src/c3/Pie", "src/c3/Donut", "src/c3/Line", "src/c3/Column", "src/c3/Bar", "src/c3/Step", "src/c3/Area", "src/c3/Scatter"
                         ], function (Pie, Bubble, Column, Line,
                             GPie, GBar, GColumn, GLine,
-                            C3Pie, C3Line, C3Column, C3Step, C3Area, C3Scatter) {
+                            C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter) {
                             //  C3 Charts ---
                             new C3Pie()
                                 .target("c3pie")
+                                .testData()
+                                .render()
+                            ;
+                            var donut = new C3Donut()
+                                .target("c3donut")
+                                .title("MMMmmm")
                                 .testData()
                                 .render()
                             ;
@@ -151,6 +157,11 @@
                             ;
                             new C3Column()
                                 .target("c3column")
+                                .testData()
+                                .render()
+                            ;
+                            new C3Bar()
+                                .target("c3bar")
                                 .testData()
                                 .render()
                             ;
@@ -442,8 +453,10 @@
             C3 Charts
             <br style="clear:both" />
             <div id="c3pie" class="large thumb"></div>
+            <div id="c3donut" class="large thumb"></div>
             <div id="c3line" class="large thumb"></div>
             <div id="c3column" class="large thumb"></div>
+            <div id="c3bar" class="large thumb"></div>
             <div id="c3step" class="large thumb"></div>
             <div id="c3area" class="large thumb"></div>
             <div id="c3scatter" class="large thumb"></div>

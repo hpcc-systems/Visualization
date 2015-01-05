@@ -159,6 +159,18 @@
         return this;
     };
 
+    Widget.prototype.x = function (_) {
+        if (!arguments.length) return this._pos.x;
+        this.size({ x: _, y: this._pos.y })
+        return this;
+    };
+
+    Widget.prototype.y = function (_) {
+        if (!arguments.length) return this._pos.y;
+        this.size({ x: this._pos.x, y: _ })
+        return this;
+    };
+
     Widget.prototype.size = function (_) {
         if (!arguments.length) return this._size;
         this._size = _;

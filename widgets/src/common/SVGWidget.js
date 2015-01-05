@@ -37,7 +37,7 @@
         return retVal;
     };
 
-    SVGWidget.prototype._resize = function (size) {
+    SVGWidget.prototype.resize = function (size) {
         var width, height;
         if (size && size.width && size.height) {
             width = size.width;
@@ -61,6 +61,11 @@
             .attr("width", this._size.width)
             .attr("height", this._size.height)
         ;
+        this.pos({
+            x: this._size.width / 2,
+            y: this._size.height / 2
+        });
+        return this;
     };
 
     SVGWidget.prototype.target = function (_) {
@@ -85,7 +90,7 @@
             //  Target is a DOM Node, so create a SVG Element  ---
             this._parentRelativeDiv = d3.select(this._target).append("div")
                 .style({
-                    position: "relative",
+                    position: "relative"
                 })
             ;
             this._parentElement = this._parentRelativeDiv.append("svg")
@@ -102,11 +107,7 @@
                     left: 0
                 })
             ;
-            this._resize(this._size);
-            this.pos({
-                x: this._size.width / 2,
-                y: this._size.height / 2
-            });
+            this.resize(this._size);
         } else {
             if (this._parentRelativeDiv) {
                 this._parentOverlay.remove();

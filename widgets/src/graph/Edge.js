@@ -10,6 +10,8 @@
 
         this._class = "edge";
         this._points = [];
+        this._weight = 100;
+        this._strokeDasharray = null;
         this._hidden = false;
 
         this._textBox = new TextBox()
@@ -39,6 +41,18 @@
     Edge.prototype.targetMarker = function (_) {
         if (!arguments.length) return this._targetMarker;
         this._targetMarker = _;
+        return this;
+    };
+
+    Edge.prototype.weight = function (_) {
+        if (!arguments.length) return this._weight;
+        this._weight = _;
+        return this;
+    };
+
+    Edge.prototype.strokeDasharray = function (_) {
+        if (!arguments.length) return this._strokeDasharray;
+        this._strokeDasharray = _;
         return this;
     };
 
@@ -123,6 +137,7 @@
         }
         pathElements
             .attr("opacity", this._hidden ? 0 : 1)
+            .attr("stroke-dasharray", this._strokeDasharray)
             .attr("d", line)
         ;
 

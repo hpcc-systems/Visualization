@@ -20,6 +20,7 @@
             { id: "PIE", display: "Pie", path: "src/chart/Pie" },
             { id: "GOOGLE_PIE", display: "Pie (Google)", path: "src/google/Pie" },
             { id: "C3_PIE", display: "Pie (C3)", path: "src/c3/Pie" },
+            { id: "C3_DONUT", display: "Donut (C3)", path: "src/c3/Donut" },
             { id: "WORD_CLOUD", display: "Word Cloud", path: "src/other/WordCloud" }
         ];
         this._multiChartTypes = [
@@ -28,6 +29,7 @@
             { id: "LINE", display: "Line", path: "src/chart/Line" },
             { id: "GOOGLE_LINE", display: "Line (Google)", path: "src/google/Line" },
             { id: "C3_LINE", display: "Line (C3)", path: "src/c3/Line" },
+            { id: "C3_BAR", display: "Bar (C3)", path: "src/c3/Bar" },
             { id: "C3_COLUMN", display: "Column (C3)", path: "src/c3/Column" },
             { id: "C3_STEP", display: "Step (C3)", path: "src/c3/Step" },
             { id: "C3_AREA", display: "Area (C3)", path: "src/c3/Area" },

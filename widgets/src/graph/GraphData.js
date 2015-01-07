@@ -47,7 +47,7 @@
             this.filterEdges(function (item) { return edgeIDs.indexOf(item.v + "_" + item.w) < 0; })
                 .forEach(function (item) {
                     try {
-                        context.delEdge(item);
+                        //TODO:  context.delEdge(item);
                     } catch (e) {
                         var d = 0;
                     }

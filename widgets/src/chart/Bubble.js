@@ -38,7 +38,7 @@
         var context = this;
 
         var node = element.selectAll(".node")
-            .data(this._data.length ? this.d3Pack.nodes({ children: this._data }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })            
+            .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })            
         ;
 
         //  Enter  ---

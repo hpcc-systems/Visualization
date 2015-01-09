@@ -137,6 +137,10 @@
         return this;
     };
 
+    Widget.prototype.cloneData = function () {
+        return this._data.map(function (row) { return row.slice(0); });
+    };
+
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
         if (row.length !== this._columns.length) {

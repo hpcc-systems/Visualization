@@ -35,7 +35,7 @@
             .remove()
         ;
 
-        var rows = this.tbody.selectAll("tr").data(this._data, function (d, i) { return i; });
+        var rows = this.tbody.selectAll("tr").data(this._data);
         rows
             .enter()
             .append("tr")
@@ -48,19 +48,20 @@
             .remove()
         ;
 
-        var cells = rows.selectAll("td")
-            .data(function (row) {
-                var retVal = [];
-                for (var key in row) {
-                    retVal.push("" + row[key]);
-                }
-                return retVal;
-            });
+        var cells = rows.selectAll("td").data(function (row, i) {
+            var retVal = [];
+            for (var key in row) {
+                retVal.push("" + row[key]);
+            }
+            return retVal;
+        });
+        cells.enter()
+            .append("td")
+        ;
         cells
-            .enter().append("td")
-                .text(function (d) {
-                    return d.trim();
-                })
+            .text(function (d) {
+                return d.trim();
+            })
         ;
         cells.exit()
             .remove()

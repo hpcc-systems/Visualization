@@ -53,8 +53,8 @@
     Surface.prototype.showContent = function (_) {
         if (!arguments.length) return this._showContent;
         this._showContent = _;
-        if (this._content && this._content._parentElement) {
-            this._content._parentElement.style("visibility", this._showContent ? null : "hidden");
+        if (this._content) {
+            this._content.visible(this._showContent);
         }
         return this;
     };

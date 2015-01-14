@@ -1,56 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "css!./Graph"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "../other/Bag", "css!./Graph"], factory);
     } else {
-        root.Graph = factory(root.d3, root.SVGWidget, root.IGraph, root.Vertex, root.GraphData, root.GraphLayouts);
+        root.Graph = factory(root.d3, root.SVGWidget, root.IGraph, root.Vertex, root.GraphData, root.GraphLayouts, root.Bag);
     }
-}(this, function (d3, SVGWidget, IGraph, Vertex, GraphData, GraphLayouts) {
-    function SelectionBag() {
-        this.items = {};
-    };
-
-    SelectionBag.prototype = {
-        clear: function () {
-            for (var key in this.items) {
-                this.items[key].element().classed("selected", false);
-            }
-            this.items = {};
-        },
-        append: function (item) {
-            this.items[item._id] = item;
-            item.element().classed("selected", true);
-        },
-        remove: function (item) {
-            this.items[item._id].element().classed("selected", false);
-            delete this.items[item._id];
-        },
-        get: function () {
-            var retVal = [];
-            for (var key in this.items) {
-                retVal.push(this.items[key]);
-            }
-            return retVal;
-        },
-        set: function (itemArray) {
-            this.clear();
-            itemArray.forEach(function (item, idx) {
-                this.append(item);
-            }, this);
-        },
-        click: function (item, d3Event) {
-            if (d3Event.ctrlKey) {
-                if (this.items[item._id]) {
-                    this.remove(item);
-                } else {
-                    this.append(item);
-                }
-            } else {
-                this.clear();
-                this.append(item);
-            }
-        }
-    };
-
+}(this, function (d3, SVGWidget, IGraph, Vertex, GraphData, GraphLayouts, Bag) {
     function Graph() {
         SVGWidget.call(this);
         IGraph.call(this);
@@ -73,7 +27,7 @@
         this._hierarchyOptions = { };
         this._snapToGrid = 0;
         this._allowDragging = true;
-        this._selection = new SelectionBag();
+        this._selection = new Bag.Selection();
     };
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype.implements(IGraph.prototype);

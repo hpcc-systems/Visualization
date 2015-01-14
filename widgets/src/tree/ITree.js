@@ -31,10 +31,7 @@
                     label: "BAA"
                 }]
             }, {
-                label: "BB",
-                children: [{
-                    label: "BBA"
-                }]
+                label: "BB"
             }]
         }]};
         this.data(data);

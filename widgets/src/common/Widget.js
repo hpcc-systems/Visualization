@@ -199,6 +199,15 @@
         return this;
     };
 
+    Widget.prototype.visible = function (_) {
+        if (!arguments.length) return this._visible;
+        this._visible = _;
+        if (this._parentElement) {
+            this._parentElement.style("visibility", this._visible ? null : "hidden");
+        }
+        return this;
+    };
+
     Widget.prototype.calcSnap = function (snapSize) {
         function snap(x, gridSize) {
             function snapDelta(x, gridSize) {
@@ -287,6 +296,10 @@
             retVal.height = size.y - pos.y;
         }
         return retVal;
+    };
+
+    Widget.prototype.hasOverlay = function () {
+        return this._overlayElement;
     };
 
     Widget.prototype.syncOverlay = function () {

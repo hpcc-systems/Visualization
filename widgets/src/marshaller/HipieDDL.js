@@ -145,10 +145,10 @@
             var retVal = vertexMap[id];
             if (!retVal) {
                 retVal = new Vertex()
-                    .id(id)
                     .faChar("\uf128")
                     .text(item[1])
                 ;
+                retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
             }
@@ -163,14 +163,15 @@
                 childItems.forEach(function (childItem, i) {
                     var childMappedItem = context.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
-                    var edge = new Edge()
-                        .id(vertex.id() + "_" + childVertex.id() + "_" + i)
-                        .sourceVertex(vertex)
-                        .targetVertex(childVertex)
-                        .sourceMarker("circleFoot")
-                        .targetMarker("arrowHead")
-                    ;
-                    edges.push(edge);
+                    if (vertex.id() !== childVertex.id()) {
+                        var edge = new Edge()
+                            .sourceVertex(vertex)
+                            .targetVertex(childVertex)
+                            .sourceMarker("circleFoot")
+                            .targetMarker("arrowHead")
+                        ;
+                        edges.push(edge);
+                    }
                 });
             }
         })
@@ -420,8 +421,16 @@
         this.widget = widget;
 
         var context = this;
-        this.widget.click = function (d) {
-            context.click(d);
+        if (this.widget.vertex_dblclick) {
+            this.widget.vertex_dblclick = function (d) {
+                context.click({
+                    uid: d.__hpcc_uid
+                });
+            }
+        } else if (this.widget.click) {
+            this.widget.click = function (d) {
+                context.click(d);
+            }
         }
         for (var key in this.properties) {
             if (this.widget[key]) {
@@ -437,18 +446,6 @@
 
     Visualization.prototype.accept = function (visitor) {
         visitor.visit(this);
-    };
-
-    Visualization.prototype.getSelectDepth = function () {
-        var retVal = 0;
-        var visualizations = this.onSelect.getUpdatesVisualizations();
-        visualizations.forEach(function (item) {
-            var depth = item.getSelectDepth() + 1;
-            if (depth > retVal) {
-                retVal = depth;
-            }
-        }, this);
-        return retVal;
     };
 
     Visualization.prototype.notify = function () {
@@ -633,9 +630,6 @@
             context.visualizationsArray.push(newItem);
         });
         this.visualizationTotal = this.visualizationsArray.length;
-        this.visualizationsArray.sort(function (l, r) {
-            return r.getSelectDepth() - l.getSelectDepth();
-        });
         var vizIncluded = {};
         this.visualizationsTree = [];
         var walkSelect = function (viz, result) {

@@ -16,12 +16,12 @@
                 require(["d3/d3",
                     "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Edge", "src/graph/Vertex",
-                    "src/tree/SunburstPartition", "src/tree/CirclePacking",
+                    "src/tree/SunburstPartition", "src/tree/CirclePacking", "src/tree/Dendrogram",
                     "src/other/MorphText", "src/other/Slider", "src/other/Table"
                 ], function (d3,
                     Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
                     Edge, Vertex,
-                    SunburstPartition, CirclePacking,
+                    SunburstPartition, CirclePacking, Dendrogram,
                     MorphText, Slider, Table
                     ) {
                     function createEdge(source, target, label) {
@@ -111,7 +111,7 @@
                                 new Shape().shape("rect").size({ width: 48, height: 22 }),
                                 new List().testData(),
                                 new Menu().faChar("\uf0c9 Menu").data(["Menu A", "And B", "a longer C"]),
-                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).faChar("\uf047")
+                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).faChar("\uf047").content(new Dendrogram().testData())
                             ];
                             var edges = [
                                 createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),
@@ -281,6 +281,11 @@
                         ;
                         new CirclePacking()
                             .target("circlePacking")
+                            .testData()
+                            .render()
+                        ;
+                        new Dendrogram()
+                            .target("dendrogram")
                             .testData()
                             .render()
                         ;
@@ -486,6 +491,7 @@
             <div id="graph" class="large thumb"></div>
             <div id="sunburst" class="large thumb"></div>
             <div id="circlePacking" class="large thumb"></div>
+            <div id="dendrogram" class="large thumb"></div>
             <br style="clear:both" />
             Surfaces
             <br style="clear:both" />

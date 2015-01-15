@@ -461,7 +461,7 @@
                     context._dragging = true;
                 });
                 d.dispatch.on("size", function (args) {
-                    context.refreshIncidentEdges(d, true);
+                    context.refreshIncidentEdges(d, false);
                 });
                 d.dispatch.on("sizeend", function (d) {
                     context._dragging = false;
@@ -472,7 +472,7 @@
                             .size(snapLoc[1])
                             .render()
                         ;
-                        context.refreshIncidentEdges(d, true);
+                        context.refreshIncidentEdges(d, false);
                     }
                 });
             }

@@ -9,28 +9,19 @@
         SVGWidget.call(this);
 
         this._class = "text";
-        this._text = "";
-        this._anchor = "middle";
     };
     Text.prototype = Object.create(SVGWidget.prototype);
+    Text.prototype.publish("text", "", "string", "Display Text");
+    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["", "start", "middle", "end"]);
 
-    Text.prototype.text = function (_) {
-        if (!arguments.length) return this._text;
-        this._text = "" + _;
+    Text.prototype.testData = function () {
+        this.text("Hello\nand\nWelcome!");
         return this;
-    };
-
-    Text.prototype.anchor = function (_) {
-        if (!arguments.length) return this._anchor;
-        this._anchor = _;
-        return this;
-    };
+    }
 
     Text.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-        this._textElement = element.append("text")
-            .style("text-anchor", this._anchor)
-        ;
+        this._textElement = element.append("text");
     };
 
     Text.prototype.update = function (domNode, element) {
@@ -50,8 +41,21 @@
         ;
 
         var bbox = this._textElement.node().getBBox();
+        var xOffset = 0;
+        switch(this._anchor) {
+            case "start":
+                xOffset = -bbox.width / 2;
+                break;
+            case "end":
+                xOffset = bbox.width / 2;
+                break;
+        };
+        var baselineOffset = -(bbox.height / textParts.length) * 1 / 8;  //Aprox. adjustment for baseline.
+        var yOffset = -bbox.height / 2 + baselineOffset;
+        
         this._textElement
-            .attr("transform", function (d) { return "translate(0," + (- bbox.height / 1.7) + ")"; })
+            .style("text-anchor", this._anchor)
+            .attr("transform", function (d) { return "translate(" + xOffset + "," + yOffset + ")"; })
         ;
     };
 

@@ -15,7 +15,7 @@
         this._hidden = false;
 
         this._textBox = new TextBox()
-            .padding({left: 0,top: 0,right: 0,bottom: 0})
+            .padding(0)
         ;
     };
     Edge.prototype = Object.create(SVGWidget.prototype);

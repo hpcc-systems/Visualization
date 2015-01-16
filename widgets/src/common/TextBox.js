@@ -8,52 +8,34 @@
     function TextBox() {
         SVGWidget.call(this);
 
-        this._fixedSize = null;
-        this._padding = {
-            left: 8,
-            top: 8,
-            right: 8,
-            bottom: 8
-        };
-
         this._class = "textbox";
         this._shape = new Shape()
             .shape("rect")
         ;
         this._text = new Text();
-        this._content = null;
     };
     TextBox.prototype = Object.create(SVGWidget.prototype);
-
-    TextBox.prototype.fixedSize = function (_) {
-        if (!arguments.length) return this._fixedSize;
-        this._fixedSize = _;
-        return this;
-    };
+    TextBox.prototype.publishProxy("text", "_text");
+    TextBox.prototype.publish("padding_left", 4, "number", "Padding:  Left");
+    TextBox.prototype.publish("padding_right", 4, "number", "Padding:  Right");
+    TextBox.prototype.publish("padding_top", 4, "number", "Padding:  Top");
+    TextBox.prototype.publish("padding_bottom", 4, "number", "Padding:  Bottom");
 
     TextBox.prototype.padding = function (_) {
-        if (!arguments.length) return this._padding;
-        this._padding = _;
+        this._padding_left = _;
+        this._padding_right = _;
+        this._padding_top = _;
+        this._padding_bottom = _;
         return this;
     };
 
-    TextBox.prototype.text = function (_) {
-        if (!arguments.length) return this._text.text();
-        this._text.text(_);
-        return this;
-    };
+    TextBox.prototype.publishProxy("anchor", "_text");
+    TextBox.prototype.publish("fixedSize", null);
 
-    TextBox.prototype.anchor = function (_) {
-        if (!arguments.length) return this._text.anchor();
-        this._text.anchor(_);
+    TextBox.prototype.testData = function () {
+        this._text.testData();
         return this;
-    };
-
-    TextBox.prototype.content = function (_) {
-        if (!arguments.length) return this._content;
-        this._content = _;
-        return this;
-    };
+    }
 
     TextBox.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
@@ -69,47 +51,44 @@
 
     TextBox.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
-        content.enter().insert("g", "#" + this._text.id())
-            .attr("class", "content")
-            .each(function (d) { d.target(this); })
-        ;
-        content
-            .each(function (d) {d.render();})
-        ;
-        content.exit().transition()
-            .each(function (d) { d.target(null); })
-            .remove()
-        ;
 
-        this._text.render();
-        var textBBox = this._text.getBBox(true);
-        var contentBBox = { width: 0, height: 0 };
-        if (this._content) {
-            this._content.pos({ x: 0, y: +textBBox.height / 2 });
-
-            var contentBBox = this._content.getBBox(true);
-            this._text.pos({ x: 0, y: -(contentBBox.height) / 2 });
-        }
-
-        var bbox = {
-            width: Math.max(textBBox.width, contentBBox.width),
-            height: textBBox.height + contentBBox.height
-        };
-        var d = this.anchor();
-        var size = {
-            width: this._fixedSize ? this._fixedSize.width : bbox.width + this._padding.left + this._padding.right,
-            height: this._fixedSize ? this._fixedSize.height : bbox.height + this._padding.top + this._padding.bottom
-        };
-        var pos = {
-            x: 0 + (this.anchor() === "middle" ? 0 : size.width / 2 - this._padding.left),
-            y: 0
-        };
-        this._shape
-            .pos(pos)
-            .size(size)
+        this._text
+            .pos({
+                x: (this._padding_left - this._padding_right) / 2,
+                y: (this._padding_top - this._padding_bottom) / 2
+            })
             .render()
         ;
+        var textBBox = this._text.getBBox(true);
+        var bbox = {
+            width: textBBox.width,
+            height: textBBox.height
+        };
+        var size = {
+            width: this._fixedSize ? this._fixedSize.width : bbox.width + this._padding_left + this._padding_right,
+            height: this._fixedSize ? this._fixedSize.height : bbox.height + this._padding_top + this._padding_bottom
+        };
+        this._shape
+            .width(size.width)
+            .height(size.height)
+            .render()
+        ;
+        if (this._fixedSize) {
+            switch (this.anchor()) {
+                case "start":
+                    this._text
+                        .x(-this._fixedSize.width / 2 + textBBox.width / 2 + (this._padding_left + this._padding_right) / 2)
+                        .render()
+                    ;
+                    break;
+                case "end":
+                    this._text
+                        .x(this._fixedSize.width / 2 - textBBox.width / 2 - (this._padding_left + this._padding_right) / 2)
+                        .render()
+                    ;
+                    break;
+            }
+        }
     };
 
     return TextBox;

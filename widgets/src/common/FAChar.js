@@ -1,54 +1,40 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./SVGWidget", "css!lib/Font-Awesome/css/font-awesome", "css!./FAChar"], factory);
+        define(["./SVGWidget", "./Text", "css!lib/Font-Awesome/css/font-awesome", "css!./FAChar"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget);
+        root.Entity = factory(root.SVGWidget, root.Text);
     }
-}(this, function (SVGWidget) {
+}(this, function (SVGWidget, Text) {
     function FAChar() {
         SVGWidget.call(this);
         this._class = "faChar";
-        this._char = "";
-        this._fontSize = 0;
+
+        this._text = new Text();
     };
     FAChar.prototype = Object.create(SVGWidget.prototype);
+    FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
 
-    FAChar.prototype.fontSize = function (_) {
-        if (!arguments.length) return this._fontSize;
-        this._fontSize = _;
+    FAChar.prototype.testData = function () {
+        this.char("\uf128");
         return this;
-    };
-
-    FAChar.prototype.char = function (_) {
-        if (!arguments.length) return this._char;
-        this._char = _;
-        return this;
-    };
+    }
 
     FAChar.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-        if (!this._fontSize) {
-            var style = window.getComputedStyle(domNode, null);
-            this._fontSize = parseInt(style.fontSize);
-            if (!this._fontSize) {
-                //  Chromium Issue  ---
-                this._fontSize = 14;
-            }
-        }
-        this._charElement = element.append("text")
+        this._text
+            .target(domNode)
+            .render()
+        ;
+        this._text._element
             .attr("font-family", "FontAwesome")
-            .attr("text-anchor", "middle")
-            .attr("class", "fa-fw")
         ;
     };
 
     FAChar.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        this._charElement
-            .attr("font-size", this._fontSize)
-            .attr("x", 0)
-            .attr("y", this._fontSize / 3) //  Aproximation for font "drop" offset
+        this._text
             .text(this._char)
+            .render()
         ;
     };
 

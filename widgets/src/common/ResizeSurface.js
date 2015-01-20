@@ -96,10 +96,10 @@
             .call(this.drag)
         ;
 
-        var l = this._pos.x + this._container._pos.x - this._container._size.width / 2;
-        var t = this._pos.y + this._titleRect._pos.y - this._titleRect._size.height / 2;
-        var r = this._pos.x + this._container._pos.x + this._container._size.width / 2;
-        var b = this._pos.y + this._container._pos.y + this._container._size.height / 2;
+        var l = this._pos.x + this._container._pos.x - this._container.width() / 2;
+        var t = this._pos.y + this._titleRect._pos.y - this._titleRect.height() / 2;
+        var r = this._pos.x + this._container._pos.x + this._container.width() / 2;
+        var b = this._pos.y + this._container._pos.y + this._container.height() / 2;
         var w = r - l;
         var h = b - t;
         var context = this;

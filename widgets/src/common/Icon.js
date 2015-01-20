@@ -8,26 +8,18 @@
     function Icon() {
         SVGWidget.call(this);
         this._class = "icon";
-        this._faChar = new FAChar();
         this._shape = new Shape();
+        this._faChar = new FAChar();
     };
-    Icon.prototype = Object.create(SVGWidget.prototype);
+    Icon.prototype = Object.create(SVGWidget.prototype);    
 
-    Icon.prototype.shape = function (_) {
-        if (!arguments.length) return this._shape.shape();
-        this._shape.shape(_);
-        return this;
-    };
+    Icon.prototype.publishProxy("shape", "_shape");
+    Icon.prototype.publishProxy("faChar", "_faChar", "char");
+    Icon.prototype.publish("padding", 4, "number", "Padding");
+    Icon.prototype.publish("scale", 1, "number", "Scale");
 
-    Icon.prototype.fontSize = function (_) {
-        if (!arguments.length) return this._faChar.fontSize();
-        this._faChar.fontSize(_);
-        return this;
-    };
-
-    Icon.prototype.faChar = function (_) {
-        if (!arguments.length) return this._faChar.char();
-        this._faChar.char(_);
+    Icon.prototype.testData = function () {
+        this._faChar.testData();
         return this;
     };
 
@@ -49,20 +41,15 @@
 
     Icon.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        var bbox = this._faChar.getBBox();
-        var size = { width: bbox.width, height: this._faChar.fontSize() };
-        if (this._shape.shape() === "circle") {
-            size.width = (size.height - 1) * 2;
-            size.height = (size.height - 1) * 2;
-        } else if (this._shape.shape() === "rect") {
-            size.width += 3;
-            size.height += 0;
-        }
-        this._shape
-            .size(size)
+        this._faChar
+            .scale(this._scale)
             .render()
         ;
-        this._faChar
+
+        var bbox = this._faChar.getBBox(true);
+        this._shape
+            .width(bbox.width + this._padding * this._scale)
+            .height(bbox.height + this._padding * this._scale)
             .render()
         ;
     };

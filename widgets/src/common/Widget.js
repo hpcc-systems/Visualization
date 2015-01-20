@@ -6,6 +6,7 @@
     }
 }(this, function (d3) {
     var widgetID = 0;
+    var widgetMeta = {};
     function Widget() {
         this._id = "_w" + widgetID++;
         this._class = "";
@@ -14,6 +15,7 @@
         this._data = [];
         this._pos = { x: 0, y: 0 };
         this._size = { width: 0, height: 0 };
+        this._scale = 1;
 
         this._target = null;
         this._parentElement = null;
@@ -113,6 +115,101 @@
         }
     };
 
+    // Serialization  ---
+    Widget.prototype.publish = function (id, defaultValue, type, description, options, ext) {
+        if (this["__meta_" + id] !== undefined) {
+            throw id + " is already published."
+        }
+        if (type) {
+            this["__meta_" + id] = {
+                id: id,
+                type: type,
+                options: options,
+                description: description,
+                ext: ext || {}
+            }
+        }
+        this[id] = function (_) {
+            if (!arguments.length) return this["_" + id];
+            switch (type) {
+                case "set":
+                    if (!options || options.indexOf(_) < 0) {
+                        throw "Invalid value for '" + id + "':  " + _;
+                    }
+                    break;
+                case "boolean":
+                    _ = Boolean(_);
+                    break;
+                case "number":
+                    _ = Number(_);
+                    break;
+                case "string":
+                    _ = String(_);
+                    break;
+            }
+            this["_" + id] = _;
+            return this;
+        };
+        this["_" + id] = defaultValue;
+    };
+
+    Widget.prototype.publishProxy = function (id, proxy, method, _private) {
+        method = method || id;
+        if (this["__meta_" + id] !== undefined) {
+            throw id + " is already published."
+        }
+        if (!_private) {
+            this["__meta_" + id] = {
+                id: id,
+                type: "proxy",
+                proxy: proxy,
+                method: method
+            }
+        }
+        this[id] = function (_) {
+            if (!arguments.length) return this[proxy][method]();
+            this[proxy][method](_);
+            return this;
+        };
+    };
+
+    Widget.prototype.discover = function () {
+        var retVal = [];
+        for (var key in this) {
+            if (key.indexOf("__meta_") >= 0) {
+                var item = this;
+                var meta = item[key];
+                while (meta.type === "proxy") {
+                    item = item[meta.proxy];
+                    meta = item["__meta_" + meta.method];
+                }
+                if (meta.id !== this[key].id) {
+                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                    meta.id = this[key].id;
+                }
+                retVal.push(meta);
+            }
+        }
+        return retVal;
+    }
+
+    Widget.prototype.serialize = function () {
+        var retVal = {};
+        this.discover().forEach(function (item) {
+            retVal[item.id] = this[item.id]();
+        }, this);
+        return JSON.stringify(retVal);
+    };
+
+    Widget.prototype.deserialize = function (stateJSON) {
+        var state = JSON.parse(stateJSON);
+        for (var key in state) {
+            this[key](state[key]);
+        }
+        return this;
+    };
+
+    //  Implementation  ---
     Widget.prototype.id = function (_) {
         if (!arguments.length) return this._id;
         this._id = _;
@@ -157,7 +254,7 @@
         this._pos = _;
         if (this._overlayElement) {
             this._overlayElement
-                .attr("transform", "translate(" + _.x + " " + _.y + ")")
+                .attr("transform", "translate(" + _.x + "," + _.y + ")scale(" + this._scale + ")")
             ;
         }
         return this;
@@ -165,13 +262,13 @@
 
     Widget.prototype.x = function (_) {
         if (!arguments.length) return this._pos.x;
-        this.size({ x: _, y: this._pos.y })
+        this.pos({ x: _, y: this._pos.y })
         return this;
     };
 
     Widget.prototype.y = function (_) {
         if (!arguments.length) return this._pos.y;
-        this.size({ x: this._pos.x, y: _ })
+        this.pos({ x: this._pos.x, y: _ })
         return this;
     };
 
@@ -196,6 +293,17 @@
     Widget.prototype.height = function (_) {
         if (!arguments.length) return this._size.height;
         this.size({ width: this._size.width, height: _ })
+        return this;
+    };
+
+    Widget.prototype.scale = function (_) {
+        if (!arguments.length) return this._scale;
+        this._scale = _;
+        if (this._overlayElement) {
+            this._overlayElement
+                .attr("transform", "translate(" + _.x + "," + _.y + ")scale(" + this._scale + ")")
+            ;
+        }
         return this;
     };
 
@@ -339,18 +447,16 @@
         elements.enter().append(this._tag)
             .classed(this._class, true)
             .attr("id", this._id)
-            //.attr("opacity", 0.50)  //Uncomment to debug position offsets  ---
+            //.attr("opacity", 0.50)  //  Uncomment to debug position offsets  ---
             .each(function (context) {
                 context._element = d3.select(this);
-                if (context._pos && (context._pos.x || context._pos.y)) {
-                    context._element.attr("transform", function (d) { return "translate(" + context._pos.x + " " + context._pos.y + ")"; });
-                }
                 context.enter(this, context._element);
             })
         ;
         elements
             .each(function (context) {
                 context.update(this, context._element);
+                context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
             })
         ;
         elements.exit()

@@ -31,6 +31,7 @@
     };
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
     MultiChartSurface.prototype.implements(I2DChart.prototype);
+    MultiChartSurface.prototype.testData = I2DChart.prototype.testData;
 
     MultiChartSurface.prototype.columns = function (_) {
         if (!arguments.length) return this._content.columns();

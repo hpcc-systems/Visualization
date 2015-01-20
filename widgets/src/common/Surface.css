@@ -1,4 +1,4 @@
-.surface .container {
+.surface .container .shape {
     fill: #f9fcff;
     stroke: #1f77b4;
     stroke-width: 1.0px;
@@ -8,7 +8,7 @@
     cursor: move;
 }
 
-.surface .title rect {
+.surface .title .shape {
     fill: #1f77b4;
     stroke: #1f77b4;
     stroke-width: 1.0px;

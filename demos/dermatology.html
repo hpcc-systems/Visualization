@@ -1,0 +1,153 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>HPCC Systems - Dermatology Test</title>
+    <link rel="stylesheet" href="test.css">
+    <script src="../widgets/lib/requirejs/require.js"></script>
+    <script src="../widgets/config.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: "../widgets"
+        });
+    </script>
+</head>
+<body>
+    <p>
+        <prompt>Widget To Test:</prompt>
+        <select id="widgetSelect" onchange="testWidget(this.value);">
+            <option value="src/common/Shape">Shape</option>
+            <option value="src/common/Text">Text</option>
+            <option value="src/common/TextBox">TextBox</option>
+            <option value="src/common/FAChar">FAChar</option>
+            <option value="src/common/Icon">Icon</option>
+            <option value="src/common/List">List</option>
+            <option value="src/common/Menu">Menu</option>
+            <option value="src/common/Surface">Surface</option>
+        </select>
+    </p>
+    <p>
+        <table style="width:auto">
+            <thead>
+                <tr>
+                    <th>Serialize/Deserialize</th>
+                    <th>Properties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <table border="0">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center;border-bottom:none">
+                                        <div id="source" class="large wide thumb"></div>
+                                        <p><b>Original</b></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border-bottom:none">
+                                        <div id="target" class="large wide thumb"></div>
+                                        <p><b>Clone</b></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td align="center" valign="top">
+                        <table>
+                            <thead align="left">
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="props"></tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <script>
+        function serializeTest(source, target) {
+            target
+                .deserialize(source.serialize())
+                .render()
+            ;
+        }
+        function displayProperties(sourceWidget, targetWidget) {
+            var props = sourceWidget.discover();
+            var propsTable = props.map(function (row) {
+                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
+                var td = tr.appendChild(document.createElement('td'));
+                td.appendChild(document.createTextNode(row.id));
+                td = tr.appendChild(document.createElement('td'));
+                switch (row.type) {
+                    case "boolean":
+                        var checkbox = document.createElement('input');
+                        checkbox.type = "checkbox";
+                        var input = td.appendChild(checkbox);
+                        input.checked = sourceWidget[row.id]();
+                        input.onchange = function () {
+                            sourceWidget[row.id](input.checked).render();
+                            serializeTest(sourceWidget, targetWidget)
+                        }
+                        break;
+                    case "number":
+                        var input = td.appendChild(document.createElement("input"));
+                        input.value = sourceWidget[row.id]();
+                        input.onchange = function () {
+                            sourceWidget[row.id](input.value).render();
+                            serializeTest(sourceWidget, targetWidget)
+                        }
+                        break;
+                    case "string":
+                        var input = td.appendChild(document.createElement("input"));
+                        input.value = sourceWidget[row.id]();
+                        input.onchange = function () {
+                            sourceWidget[row.id](input.value).render();
+                            serializeTest(sourceWidget, targetWidget)
+                        }
+                        break;
+                    case "set":
+                        var select = td.appendChild(document.createElement('select'));
+                        row.options.forEach(function (item) {
+                            var option = select.appendChild(document.createElement("option"));
+                            option.value = item;
+                            option.text = item;
+                        });
+                        select.value = sourceWidget[row.id]();
+                        select.onchange = function () {
+                            sourceWidget[row.id](select.value).render();
+                            serializeTest(sourceWidget, targetWidget)
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+        function testWidget(widgetPath) {
+            require([widgetPath], function (Widget) {
+                document.getElementById("source").innerHTML = "";
+                var sourceWidget = new Widget()
+                    .target("source")
+                    .testData()
+                    .render()
+                ;
+                document.getElementById("target").innerHTML = "";
+                var targetWidget = new Widget()
+                    .target("target")
+                    .testData()
+                ;
+                serializeTest(sourceWidget, targetWidget);
+                document.getElementById("props").innerHTML = "";
+                displayProperties(sourceWidget, targetWidget);
+            });
+        }
+        testWidget(document.getElementById("widgetSelect").value);
+    </script>
+</body>
+</html>

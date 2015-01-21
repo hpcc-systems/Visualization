@@ -316,6 +316,15 @@
         return this;
     };
 
+    Widget.prototype.display = function (_) {
+        if (!arguments.length) return this._display;
+        this._display = _;
+        if (this._element) {
+            this._element.style("display", this._display ? null : "none");
+        }
+        return this;
+    };
+
     Widget.prototype.calcSnap = function (snapSize) {
         function snap(x, gridSize) {
             function snapDelta(x, gridSize) {

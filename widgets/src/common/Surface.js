@@ -24,6 +24,17 @@
         this._menu = new Menu()
             .faChar("\uf0c9")
         ;
+        var context = this;
+        this._menu.preShowMenu = function () {
+            if (context._content.hasOverlay()) {
+                context._content.visible(false);
+            }
+        }
+        this._menu.postHideMenu = function () {
+            if (context._content.hasOverlay()) {
+                context._content.visible(true);
+            }
+        }
 
         this._faChar = "\uf07b";
         this._title = "";

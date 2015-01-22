@@ -44,9 +44,9 @@
     };
     Surface.prototype = Object.create(SVGWidget.prototype);
 
+    Surface.prototype.publish("show_title", true, "boolean", "Show Title");
     Surface.prototype.publish("faChar", "\uf07b", "string", "Title");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
-
     Surface.prototype.publish("title", "", "string", "Title");
 
     Surface.prototype.menu = function (_) {
@@ -128,6 +128,7 @@
         this._icon
             .faChar(this._faChar)
             .shape(this.icon_shape())
+            .display(this._show_title)
             .render()
         ;
         this._menu
@@ -135,6 +136,7 @@
         ;
         this._text
             .text(this._title)
+            .display(this._show_title)
             .render()
         ;
         var iconClientSize = this._icon.getBBox(true);
@@ -152,6 +154,7 @@
             .pos({ x: leftMargin, y: yTitle })
             .width(this._size.width - leftMargin * 2)
             .height(titleTextHeight)
+            .display(this._show_title)
             .render()
         ;
         this._icon
@@ -163,12 +166,21 @@
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
-        this._container
-            .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
-            .width(this._size.width - leftMargin)
-            .height(this._size.height - titleRegionHeight + topMargin)
-            .render()
-        ;
+        if (this._show_title) {
+            this._container
+                .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
+                .width(this._size.width - leftMargin)
+                .height(this._size.height - titleRegionHeight + topMargin)
+                .render()
+            ;
+        } else {
+            this._container
+                .pos({ x: 0, y: 0 })
+                .width(this._size.width)
+                .height(this._size.height)
+                .render()
+            ;
+        }
 
         if (this._showContent) {
             var xOffset = leftMargin;

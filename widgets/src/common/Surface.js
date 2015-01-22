@@ -27,6 +27,17 @@
             .faChar("\uf0c9")
             .padding(4)
         ;
+        var context = this;
+        this._menu.preShowMenu = function () {
+            if (context._content.hasOverlay()) {
+                context._content.visible(false);
+            }
+        }
+        this._menu.postHideMenu = function () {
+            if (context._content.hasOverlay()) {
+                context._content.visible(true);
+            }
+        }
 
         this._showContent = true;
         this._content = null;

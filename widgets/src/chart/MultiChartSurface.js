@@ -17,16 +17,6 @@
         this._menu.click = function (d) {
             context._content.chartType(d);
         }
-        this._menu.preShowMenu = function () {
-            if (context._content.hasOverlay()) {
-                context._content.visible(false);
-            }
-        }
-        this._menu.postHideMenu = function () {
-            if (context._content.hasOverlay()) {
-                context._content.visible(true);
-            }
-        }
         this.mode("all");
     };
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);

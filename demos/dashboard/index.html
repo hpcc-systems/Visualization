@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body, .Main {
+            width: 100%;
+            height: 100%;
+        }
+
+        .Main {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .claro .dijitBorderContainer-child {
+            border: none;
+        }
+
+        .claro .dijitContentPane nav {
+            margin:0px;
+        }
+
+        .claro .dijitContentPane {
+            padding:0px;
+        }
+    </style>
+</head>
+
+<body class ="claro">
+    <!-- overlay -->
+    <div id="loadingOverlay" class="pageOverlay">
+    </div>
+    <!-- application -->
+    <script>
+        var dojoConfig = {
+            baseUrl: ".",
+            async: true,
+            paths: {
+                "async": "../../widgets/lib/requirejs/plugins/async",
+                "css": "../../widgets/lib/requirejs/plugins/css",
+                "goog": "../../widgets/lib/requirejs/plugins/goog",
+                "propertyParser": "../../widgets/lib/requirejs/plugins/propertyParser"
+            },
+            packages: [
+                {
+                    name: "bootstrap",
+                    location: "../lib/Dojo-Bootstrap"
+                }, {
+                    name: "d3",
+                    location: "../../widgets/lib/d3",
+                    main: "d3"
+                }, {
+                    name: "c3",
+                    location: "../../widgets/lib/c3",
+                    main: "c3"
+                }, {
+                    name: "topojson",
+                    location: "../../widgets/lib/topojson",
+                    main: "topojson"
+                }, {
+                    name: "app",
+                    location: "app"
+                }, {
+                    name: "lib",
+                    location: "../../widgets/lib"
+                }, {
+                    name: "src",
+                    location: "../../widgets/src"
+                }
+
+            ]
+        };
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/dijit.js"></script>
+
+    <script>
+        require([
+            "dijit/registry",
+    
+            "app/Main",
+
+            "dojo/domReady!"],
+            function (registry, Main) {
+                var widget = new Main();
+                widget.placeAt(dojo.body());
+                widget.startup();
+            });
+    </script>
+</body>
+</html>

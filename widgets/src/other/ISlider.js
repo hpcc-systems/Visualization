@@ -14,9 +14,11 @@
     ISlider.prototype._allowRange = false;   //  TODO:  range selections is not supported yet  ---
 
     //  Events  ---
+    ISlider.prototype.click = function (value) {
+        console.log("click:  " + value);
+    };
     ISlider.prototype.newSelection = function (value, value2) {
         console.log("newSelection:  " + value + ", " + value2);
     };
-
     return ISlider;
 }));

@@ -74,7 +74,7 @@
             .attr("class", "arc")
             .attr("opacity", 0)
             .on("click", function (d) {
-                context.click(context.rowToObj(d.data));
+                context.click(context.rowToObj(d.data), context._columns[1]);
             })
             .each(function (d) {
                 var element = d3.select(this);

@@ -35,7 +35,7 @@
                 columns: [],
                 rows: [],
                 onclick: function (d, element) {
-                    context.click(context.rowToObj(context._data[d.index]));
+                    context.click(context.rowToObj(context._data[d.index]), d.x ? d.id : context._columns[1]);
                 }
             }
         };

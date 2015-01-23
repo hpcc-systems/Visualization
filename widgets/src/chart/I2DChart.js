@@ -24,8 +24,8 @@
     //TODO:  I2DChart.prototype._palette = "category20";
 
     //  Events  ---
-    I2DChart.prototype.click = function (d) {
-        console.log("Click:  " + JSON.stringify(d));
+    I2DChart.prototype.click = function (row, column) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column);
     };
 
     return I2DChart;

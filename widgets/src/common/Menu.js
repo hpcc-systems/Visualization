@@ -17,14 +17,6 @@
         this.padding(0);
 
         var context = this;
-        d3.select("body")
-            .on("click." + this._id, function () {
-                console.log("click:  body - " + context._id)
-                if (context._visible) {
-                    context.hideMenu();
-                }
-            })
-        ;
         this._list.click = function (d) {
             d3.event.stopPropagation();
             context.hideMenu();
@@ -60,9 +52,21 @@
         this._list
             .move(pos)
         ;
+        var context = this;
+        d3.select("body")
+            .on("click." + this._id, function () {
+                console.log("click:  body - " + context._id)
+                if (context._visible) {
+                    context.hideMenu();
+                }
+            })
+        ;
     };
 
     Menu.prototype.hideMenu = function () {
+        d3.select("body")
+            .on("click." + this._id, null)
+        ;
         this._visible = false;
         this._list
             .data([])

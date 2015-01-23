@@ -25,7 +25,7 @@
 
     //  Events  ---
     I2DChart.prototype.click = function (d) {
-        console.log("Click:  " + d.label);
+        console.log("Click:  " + JSON.stringify(d));
     };
 
     return I2DChart;

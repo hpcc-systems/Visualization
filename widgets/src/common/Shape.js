@@ -35,7 +35,7 @@
     };
 
     Shape.prototype.update = function (domNode, element) {
-        var shape = element.selectAll("rect,circle,ellipse").data([this._shape], function (d) { return d; });
+        var shape = element.selectAll(".shape").data([this._shape], function (d) { return d; });
         
         shape.enter().append(this._shape === "square" ? "rect" : this._shape)
             .attr("class", "common_Shape")

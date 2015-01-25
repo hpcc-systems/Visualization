@@ -9,13 +9,15 @@
         SVGWidget.call(this);
         this._class = "common_FAChar";
 
-        this._text = new Text();
+        this._text = new Text()
+            .fontFamily("FontAwesome")
+        ;
     };
     FAChar.prototype = Object.create(SVGWidget.prototype);
     FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
 
     FAChar.prototype.testData = function () {
-        this.char("\uf128");
+        this.char("\uf118");
         return this;
     }
 
@@ -23,10 +25,6 @@
         SVGWidget.prototype.enter.apply(this, arguments);
         this._text
             .target(domNode)
-            .render()
-        ;
-        this._text._element
-            .attr("font-family", "FontAwesome")
         ;
     };
 

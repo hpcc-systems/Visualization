@@ -11,6 +11,7 @@
     };
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype.publish("text", "", "string", "Display Text");
+    Text.prototype.publish("fontFamily", "", "string", "Font Family");
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["", "start", "middle", "end"]);
 
     Text.prototype.testData = function () {
@@ -25,6 +26,7 @@
 
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
+        this._textElement.attr("font-family", this._fontFamily);
         var textParts = this._text.split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
         textLine.enter().append("tspan")

@@ -338,7 +338,8 @@
                     item.move({ x: pos.x, y: pos.y }, transitionDuration);
                     if (pos.width && pos.height && !item.width() && !item.height()) {
                         item
-                            .size({ width: pos.width, height: pos.height }, transitionDuration)
+                            .width(pos.width)
+                            .height(pos.height)
                             .render()
                         ;
                     }

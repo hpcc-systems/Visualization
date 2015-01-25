@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Scatter(target) {
         Common.call(this);
-
         this._class = "c3_Scatter";
+
         this._type = "scatter";
     };
     Scatter.prototype = Object.create(Common.prototype);

@@ -3,13 +3,13 @@
     stroke: none;
 }
 
-.choropleth .zoom {
+.map_Choropleth .zoom {
     stroke: none;
     fill: none;
     pointer-events: all;
 }
 
-.choropleth path {
+.map_Choropleth path {
     cursor: pointer;
     fill: whitesmoke;
     stroke: #6d6e71;

@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Area(target) {
         Common.call(this);
-
         this._class = "c3_Area";
+
         this._type = "area";
     };
     Area.prototype = Object.create(Common.prototype);

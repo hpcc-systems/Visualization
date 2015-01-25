@@ -8,7 +8,7 @@
 
     function Line(tget) {
         Common.call(this);
-        this._class = "google_line";
+        this._class = "google_Line";
 
         this.data([]);
     };

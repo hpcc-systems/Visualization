@@ -8,8 +8,7 @@
     function Menu() {
         Icon.call(this);
         IMenu.call(this);
-
-        this._class = "menu";
+        this._class = "common_Menu";
 
         this._shape
             .shape("rect")

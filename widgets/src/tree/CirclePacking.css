@@ -1,16 +1,16 @@
-.circlepacking circle {
+.tree_CirclePacking circle {
   fill: rgb(31, 119, 180);
   fill-opacity: .25;
   stroke: rgb(31, 119, 180);
   stroke-width: 1px;
 }
 
-.circlepacking .leaf circle {
+.tree_CirclePacking .leaf circle {
   fill: #ff7f0e;
   fill-opacity: 1;
 }
 
-.circlepacking .label {
+.tree_CirclePacking .label {
   fill:white;
   text-anchor: middle;
 }

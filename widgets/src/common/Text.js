@@ -7,8 +7,7 @@
 }(this, function (SVGWidget) {
     function Text() {
         SVGWidget.call(this);
-
-        this._class = "text";
+        this._class = "common_Text";
     };
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype.publish("text", "", "string", "Display Text");

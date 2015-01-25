@@ -8,7 +8,7 @@
 
     function Column() {
         Common.call(this);
-        this._class = "google_column";
+        this._class = "google_Column";
     };
     Column.prototype = Object.create(Common.prototype);
 

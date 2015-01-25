@@ -7,7 +7,7 @@
 }(this, function (SVGWidget, Text) {
     function FAChar() {
         SVGWidget.call(this);
-        this._class = "faChar";
+        this._class = "common_FAChar";
 
         this._text = new Text();
     };

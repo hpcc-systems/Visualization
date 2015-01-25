@@ -4,7 +4,7 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html lang="en">
- <!--<![endif]-->
+<!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -21,6 +21,7 @@
             bottom: 8px;
             top: 8px;
         }
+
         .tableDiv {
             margin: 40px auto 0px;
             overflow: auto;
@@ -30,31 +31,39 @@
             bottom: 8px;
             top: 8px;
         }
+
         #table table {
-            width: 100%
+            width: 100%;
         }
+
         div.container {
             width: 800px;
         }
-        .vertex .icon .shape {
+
+        .graph_Vertex .common_Icon .common_Shape {
             fill: white;
             stroke: #1f77b4;
         }
-        .vertex .icon .faChar{
+
+        .graph_Vertex .common_Icon .common_FAChar {
             fill: #1f77b4;
         }
-        .vertex.expanding .icon .shape {
+
+        .graph_Vertex.expanding .common_Icon .common_Shape {
             fill: #b41f3a;
             stroke: none;
         }
-        .vertex.expanding .icon .faChar{
+
+        .graph_Vertex.expanding .common_Icon .common_FAChar {
             fill: white;
         }
-        .vertex.expanded .icon .shape {
+
+        .graph_Vertex.expanded .common_Icon .common_Shape {
             fill: #1f77b4;
             stroke: none;
         }
-        .vertex.expanded .icon .faChar{
+
+        .graph_Vertex.expanded .common_Icon .common_FAChar {
             fill: white;
         }
     </style>
@@ -130,11 +139,11 @@
                 return retVal;
             }
 
-            doRandom = function() {
+            doRandom = function () {
                 var maxV = Math.floor(Math.random() * 100);
                 var maxE = Math.floor(Math.random() * 100);
                 for (var i = 0; i < maxV; ++i) {
-                    var fromV =  getVertex("v" + i, "", i);
+                    var fromV = getVertex("v" + i, "", i);
                 }
                 for (var i = 0; i < maxE; ++i) {
                     var fromIdx = Math.floor(Math.random() * vertices.length);
@@ -161,7 +170,7 @@
                         request = { claim_ids: catId[1] };
                         break;
                     case "p":
-                        request = { person_ids: catId[1]};
+                        request = { person_ids: catId[1] };
                         break;
                     case "pol":
                         break;
@@ -175,7 +184,7 @@
                         element.classed("expanded", true);
                     }
                 } else {
-                    service.send(request, function(response) {
+                    service.send(request, function (response) {
                         if (element) {
                             element.classed("expanding", false);
                             element.classed("expanded", true);

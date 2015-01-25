@@ -222,6 +222,6 @@ header nav span {
   -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.2);
 }
-.graph .graphVertex .vertex.selected .shape {
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
     stroke: red;
 }

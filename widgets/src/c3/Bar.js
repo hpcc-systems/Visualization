@@ -7,8 +7,8 @@
 }(this, function (Column) {
     function Bar(target) {
         Column.call(this);
+        this._class = "c3_Bar";
 
-        this._class = "c3_bar";
         this._config.axis.rotated = true;
     };
     Bar.prototype = Object.create(Column.prototype);

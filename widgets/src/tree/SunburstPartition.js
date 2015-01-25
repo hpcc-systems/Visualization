@@ -8,8 +8,7 @@
     function SunburstPartition(target) {
         SVGWidget.call(this);
         ITree.call(this);
-
-        this._class = "sunburst";
+        this._class = "tree_Sunburst";
     };
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
     SunburstPartition.prototype.implements(ITree.prototype);

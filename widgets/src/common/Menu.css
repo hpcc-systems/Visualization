@@ -1,26 +1,23 @@
-.menu {
-}
-
-.menu .faChar {
+.common_Menu .common_FAChar {
     fill: white;
     cursor: pointer;
 }
 
-.menu.disabled .faChar {
+.common_Menu.disabled .common_FAChar {
     visibility: hidden;
     cursor: inherit;
 }
 
-.menu .list .textbox .shape {
+.common_Menu .common_List .common_TextBox .common_Shape {
     fill: #1f77b4;
     stroke: #1f77b4;
 }
 
-.menu .list .textbox .text {
+.common_Menu .common_List .common_TextBox .common_Text {
     fill: white;
 }
 
-.menu .list .textbox .shape:hover {
+.common_Menu .common_List .common_TextBox .common_Shape:hover {
     fill: #ff7f0e;
     stroke: #ff7f0e;
 }

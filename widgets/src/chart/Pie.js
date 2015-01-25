@@ -8,8 +8,8 @@
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
+        this._class = "chart_Pie";
 
-        this._class = "pie";
         this._outerText = false;  //  Put label inside pie or outside (true/false)
         this._radius = 100;       // px
         this._innerRadius = 0;    // px

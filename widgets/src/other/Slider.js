@@ -8,8 +8,8 @@
     function Slider() {
         SVGWidget.call(this);
         ISlider.call(this);
+        this._class = "other_Slider";
 
-        this._class = "slider";
         this._selectionLabel = "";
 
         this.xScale = d3.scale.linear()

@@ -265,7 +265,7 @@ footer {
     overflow: hidden;
 }
 
-.thumb .surface .title text {
+.thumb .common_Surface .title text {
     font-size: 14px;
 }
 
@@ -295,7 +295,7 @@ footer {
     stroke-width: 1.0px;
 }
 
-#composition .edge .shape {
+#composition .graph_Edge .common_Shape {
     fill: #f8f8f8;
 }
 

@@ -7,9 +7,9 @@
 }(this, function (HTMLWidget) {
     function Table() {
         HTMLWidget.call(this);
+        this._class = "other_Table";
 
         this._tag = "table";
-        this._class = "table";
 
         this._columns = [];
     };

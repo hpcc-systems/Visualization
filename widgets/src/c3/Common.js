@@ -11,7 +11,7 @@
         this.d3Color = Palette.ordinal("category20");
 
         this._tag = "div";
-        this._class = "Common";
+        this._class = "c3_Common";
         this._type = "unknown";
         var context = this;
         this._config = {

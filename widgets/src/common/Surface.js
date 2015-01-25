@@ -7,8 +7,8 @@
 }(this, function (SVGWidget, Icon, Shape, Text, FAChar, Menu) {
     function Surface() {
         SVGWidget.call(this);
+        this._class = "common_Surface";
 
-        this._class = "surface";
         this._icon = new Icon()
             .padding(4)
         ;
@@ -29,12 +29,12 @@
         ;
         var context = this;
         this._menu.preShowMenu = function () {
-            if (context._content.hasOverlay()) {
+            if (context._content && context._content.hasOverlay()) {
                 context._content.visible(false);
             }
         }
         this._menu.postHideMenu = function () {
-            if (context._content.hasOverlay()) {
+            if (context._content && context._content.hasOverlay()) {
                 context._content.visible(true);
             }
         }
@@ -48,6 +48,7 @@
     Surface.prototype.publish("faChar", "\uf07b", "string", "Title");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
     Surface.prototype.publish("title", "", "string", "Title");
+    Surface.prototype.publish("menu");
 
     Surface.prototype.menu = function (_) {
         if (!arguments.length) return this._menu.data();

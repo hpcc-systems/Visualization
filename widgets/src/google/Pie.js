@@ -8,7 +8,7 @@
 
     function Pie(tget) {
         Common.call(this);
-        this._class = "google_pie";
+        this._class = "google_Pie";
 
         this._is3D = true;
     };

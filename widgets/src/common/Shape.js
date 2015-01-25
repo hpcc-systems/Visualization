@@ -7,7 +7,7 @@
 }(this, function (SVGWidget) {
     function Shape() {
         SVGWidget.call(this);
-        this._class = "shape";
+        this._class = "common_Shape";
     };
     Shape.prototype = Object.create(SVGWidget.prototype);
 
@@ -35,10 +35,10 @@
     };
 
     Shape.prototype.update = function (domNode, element) {
-        var shape = element.selectAll(".shape").data([this._shape], function (d) { return d; });
+        var shape = element.selectAll("rect,circle,ellipse").data([this._shape], function (d) { return d; });
         
         shape.enter().append(this._shape === "square" ? "rect" : this._shape)
-            .attr("class", "shape")
+            .attr("class", "common_Shape")
         ;
         var context = this;
         shape.each(function (d) {

@@ -120,14 +120,12 @@
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published."
         }
-        if (type) {
-            this["__meta_" + id] = {
-                id: id,
-                type: type,
-                options: options,
-                description: description,
-                ext: ext || {}
-            }
+        this["__meta_" + id] = {
+            id: id,
+            type: type,
+            options: options,
+            description: description,
+            ext: ext || {}
         }
         this[id] = function (_) {
             if (!arguments.length) return this["_" + id];
@@ -171,42 +169,6 @@
             this[proxy][method](_);
             return this;
         };
-    };
-
-    Widget.prototype.discover = function () {
-        var retVal = [];
-        for (var key in this) {
-            if (key.indexOf("__meta_") >= 0) {
-                var item = this;
-                var meta = item[key];
-                while (meta.type === "proxy") {
-                    item = item[meta.proxy];
-                    meta = item["__meta_" + meta.method];
-                }
-                if (meta.id !== this[key].id) {
-                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                    meta.id = this[key].id;
-                }
-                retVal.push(meta);
-            }
-        }
-        return retVal;
-    }
-
-    Widget.prototype.serialize = function () {
-        var retVal = {};
-        this.discover().forEach(function (item) {
-            retVal[item.id] = this[item.id]();
-        }, this);
-        return JSON.stringify(retVal);
-    };
-
-    Widget.prototype.deserialize = function (stateJSON) {
-        var state = JSON.parse(stateJSON);
-        for (var key in state) {
-            this[key](state[key]);
-        }
-        return this;
     };
 
     //  Implementation  ---

@@ -8,7 +8,7 @@
 
     function Bar(tget) {
         Common.call(this);
-        this._class = "google_bar";
+        this._class = "google_Bar";
     };
     Bar.prototype = Object.create(Common.prototype);
 

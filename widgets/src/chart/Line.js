@@ -8,8 +8,7 @@
     function Line(target) {
         XYAxis.call(this);
         I2DChart.call(this);
-
-        this._class = "line";
+        this._class = "chart_Line";
     };
     Line.prototype = Object.create(XYAxis.prototype);
     Line.prototype.implements(I2DChart.prototype);

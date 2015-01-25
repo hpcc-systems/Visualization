@@ -8,6 +8,7 @@
     function Graph() {
         SVGWidget.call(this);
         IGraph.call(this);
+        this._class = "graph_Graph";
 
         this.graphData = new GraphData();
         this._transitionDuration = 250;
@@ -18,7 +19,6 @@
             transition: this._transitionDuration
         };
 
-        this._class = "graph";
         this._showEdges = true;
         this._highlightOnMouseOverVertex = false;
         this._highlightOnMouseOverEdge = false;

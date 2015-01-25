@@ -1,27 +1,27 @@
-.pie path {
+.chart_Pie path {
     cursor: pointer;
 }
 
-.pie .faChar {
+.chart_Pie .common_FAChar {
     pointer-events: none;
 }
 
-.pie .text {
+.chart_Pie .common_Text {
     pointer-events: none;
 }
 
-.pie .innerLabel.faChar {
+.chart_Pie .innerLabel.common_FAChar {
     fill: white;
 }
 
-.pie .outerLabel.faChar {
+.chart_Pie .outerLabel.common_FAChar {
     fill: black;
 }
 
-.pie .innerLabel.text {
+.chart_Pie .innerLabel.common_Text {
     fill: white;
 }
 
-.pie .outerLabel.text {
+.chart_Pie .outerLabel.common_Text {
     fill: black;
 }

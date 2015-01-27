@@ -7,7 +7,8 @@
 }(this, function (SVGWidget, Shape, FAChar) {
     function Icon() {
         SVGWidget.call(this);
-        this._class = "icon";
+        this._class = "common_Icon";
+
         this._shape = new Shape();
         this._faChar = new FAChar();
     };

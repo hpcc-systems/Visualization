@@ -8,8 +8,7 @@
     function Choropleth() {
         SVGWidget.call(this);
         IChoropleth.call(this);
-
-        this._class = "choropleth";
+        this._class = "map_Choropleth";
 
         this._dataMap = {};
         this._dataMinWeight = 0;

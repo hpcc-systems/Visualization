@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Donut(target) {
         Common.call(this);
+        this._class = "c3_Donut";
 
-        this._class = "c3_donut";
         this._type = "donut";
         this._config.donut = {
             title: ""

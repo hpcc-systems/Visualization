@@ -7,8 +7,8 @@
 }(this, function (d3, SVGWidget, Icon, TextBox) {
     function Vertex() {
         SVGWidget.call(this);
+        this._class = "graph_Vertex";
 
-        this._class = "vertex";
         this._icon = new Icon();
         this._textBox = new TextBox();
     };

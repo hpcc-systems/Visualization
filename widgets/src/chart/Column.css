@@ -1,24 +1,24 @@
-.column .columnRect {
+.chart_Column .columnRect {
   fill: steelblue;
   cursor: pointer;
 }
 
-.column .columnRect:hover {
+.chart_Column .columnRect:hover {
   fill: #ff7f0e;
 }
 
-.column .axis {
+.chart_Column .axis {
   fill: black;
   font: 10px sans-serif;
 }
 
-.column .axis path,
-.column .axis line {
+.chart_Column .axis path,
+.chart_Column .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.column .x.axis path {
+.chart_Column .x.axis path {
   display: none;
 }

@@ -1,20 +1,20 @@
-.surface .container .shape {
+.common_Surface .container .common_Shape {
     fill: #f9fcff;
     stroke: #1f77b4;
     stroke-width: 1.0px;
 }
 
-.surface .title {
+.common_Surface .title {
     cursor: move;
 }
 
-.surface .title .shape {
+.common_Surface .title .common_Shape {
     fill: #1f77b4;
     stroke: #1f77b4;
     stroke-width: 1.0px;
 }
 
-.surface .title text {
+.common_Surface .title text {
     fill: white;
     stroke: none;
 }

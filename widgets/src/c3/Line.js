@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Line(target) {
         Common.call(this);
+        this._class = "c3_Line";
 
-        this._class = "c3_line";
         this._type = "line";
     };
     Line.prototype = Object.create(Common.prototype);

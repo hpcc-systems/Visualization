@@ -7,8 +7,8 @@
 }(this, function (SVGWidget) {
     function MorphText() {
         SVGWidget.call(this);
+        this._class = "other_MorphText";
 
-        this._class = "demoText";
         this._text = "";
         this._anchor = "middle";
         this._reverse = false;

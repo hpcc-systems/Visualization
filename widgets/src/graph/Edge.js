@@ -7,8 +7,8 @@
 }(this, function (d3, SVGWidget, TextBox) {
     function Edge() {
         SVGWidget.call(this);
+        this._class = "graph_Edge";
 
-        this._class = "edge";
         this._points = [];
         this._weight = 100;
         this._strokeDasharray = null;

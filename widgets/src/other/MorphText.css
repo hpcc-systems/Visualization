@@ -1,14 +1,11 @@
-.demoText {
-}
-
-.demoText .enter {
+.other_MorphText .enter {
   fill: green;
 }
 
-.demoText .update {
+.other_MorphText .update {
   fill: #333;
 }
 
-.demoText .exit {
+.other_MorphText .exit {
   fill: brown;
 }

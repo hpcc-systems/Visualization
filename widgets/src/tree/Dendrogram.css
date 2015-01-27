@@ -1,13 +1,13 @@
-.dendrogram .node circle {
+.tree_Dendrogram .node circle {
     fill: #dcf1ff;
     stroke: #1f77b4;
     stroke-width: 1.0px;
 }
 
-.dendrogram .node {
+.tree_Dendrogram .node {
 }
 
-.dendrogram .link {
+.tree_Dendrogram .link {
     fill: none;
     stroke: #656565;
     stroke-width: 1.0px;

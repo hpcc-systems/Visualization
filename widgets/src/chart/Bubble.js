@@ -8,8 +8,7 @@
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
-
-        this._class = "bubble";
+        this._class = "chart_Bubble";
 
         this.labelWidgets = {};
 

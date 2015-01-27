@@ -9,9 +9,9 @@
     function Common(tget) {
         HTMLWidget.call(this);
         I2DChart.call(this);
+        this._class = "google_Common";
 
         this._tag = "div";
-        this._class = "google_common";
 
         this.columns([]);
         this.data([]);

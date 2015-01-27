@@ -71,83 +71,92 @@
         </table>
     </p>
     <script>
-        function serializeTest(source, target) {
-            target
-                .deserialize(source.serialize())
-                .render()
-            ;
-        }
-        function displayProperties(sourceWidget, targetWidget) {
-            var props = sourceWidget.discover();
-            var propsTable = props.map(function (row) {
-                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
-                var td = tr.appendChild(document.createElement('td'));
-                td.appendChild(document.createTextNode(row.id));
-                td = tr.appendChild(document.createElement('td'));
-                switch (row.type) {
-                    case "boolean":
-                        var checkbox = document.createElement('input');
-                        checkbox.type = "checkbox";
-                        var input = td.appendChild(checkbox);
-                        input.checked = sourceWidget[row.id]();
-                        input.onchange = function () {
-                            sourceWidget[row.id](input.checked).render();
-                            serializeTest(sourceWidget, targetWidget)
-                        }
-                        break;
-                    case "number":
-                        var input = td.appendChild(document.createElement("input"));
-                        input.value = sourceWidget[row.id]();
-                        input.onchange = function () {
-                            sourceWidget[row.id](input.value).render();
-                            serializeTest(sourceWidget, targetWidget)
-                        }
-                        break;
-                    case "string":
-                        var input = td.appendChild(document.createElement("input"));
-                        input.value = sourceWidget[row.id]();
-                        input.onchange = function () {
-                            sourceWidget[row.id](input.value).render();
-                            serializeTest(sourceWidget, targetWidget)
-                        }
-                        break;
-                    case "set":
-                        var select = td.appendChild(document.createElement('select'));
-                        row.options.forEach(function (item) {
-                            var option = select.appendChild(document.createElement("option"));
-                            option.value = item;
-                            option.text = item;
-                        });
-                        select.value = sourceWidget[row.id]();
-                        select.onchange = function () {
-                            sourceWidget[row.id](select.value).render();
-                            serializeTest(sourceWidget, targetWidget)
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            });
-        }
-        function testWidget(widgetPath) {
-            require([widgetPath], function (Widget) {
-                document.getElementById("source").innerHTML = "";
-                var sourceWidget = new Widget()
-                    .target("source")
-                    .testData()
-                    .render()
-                ;
+        var testWidget = null;
+        require(["src/other/Persist"], function (Persist) {
+
+            function serializeTest(source, target) {
                 document.getElementById("target").innerHTML = "";
-                var targetWidget = new Widget()
-                    .target("target")
-                    .testData()
-                ;
-                serializeTest(sourceWidget, targetWidget);
-                document.getElementById("props").innerHTML = "";
-                displayProperties(sourceWidget, targetWidget);
-            });
-        }
-        testWidget(document.getElementById("widgetSelect").value);
+                Persist.clone(source, function (widget) {
+                    widget
+                        .target("target")
+                        //.testData()
+                        .render()
+                    ;
+                });
+            }
+            function displayProperties(sourceWidget) {
+                var props = Persist.discover(sourceWidget);
+                var propsTable = props.map(function (row) {
+                    var tr = document.getElementById("props").appendChild(document.createElement('tr'));
+                    var td = tr.appendChild(document.createElement('td'));
+                    td.appendChild(document.createTextNode(row.id));
+                    td = tr.appendChild(document.createElement('td'));
+                    switch (row.type) {
+                        case "boolean":
+                            var checkbox = document.createElement('input');
+                            checkbox.type = "checkbox";
+                            var input = td.appendChild(checkbox);
+                            input.checked = sourceWidget[row.id]();
+                            input.onchange = function () {
+                                sourceWidget[row.id](input.checked).render();
+                                serializeTest(sourceWidget)
+                            }
+                            break;
+                        case "number":
+                            var input = td.appendChild(document.createElement("input"));
+                            input.value = sourceWidget[row.id]();
+                            input.onchange = function () {
+                                sourceWidget[row.id](input.value).render();
+                                serializeTest(sourceWidget)
+                            }
+                            break;
+                        case "string":
+                            var input = td.appendChild(document.createElement("input"));
+                            input.value = sourceWidget[row.id]();
+                            input.onchange = function () {
+                                sourceWidget[row.id](input.value).render();
+                                serializeTest(sourceWidget)
+                            }
+                            break;
+                        case "set":
+                            var select = td.appendChild(document.createElement('select'));
+                            row.options.forEach(function (item) {
+                                var option = select.appendChild(document.createElement("option"));
+                                option.value = item;
+                                option.text = item;
+                            });
+                            select.value = sourceWidget[row.id]();
+                            select.onchange = function () {
+                                sourceWidget[row.id](select.value).render();
+                                serializeTest(sourceWidget)
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+            testWidget = function(widgetPath) {
+                require([widgetPath], function (Widget) {
+                    document.getElementById("source").innerHTML = "";
+                    var sourceWidget = new Widget()
+                        .target("source")
+                        .testData()
+                        .render()
+                    ;
+                    /*
+                    var targetWidget = new Widget()
+                        .target("target")
+                        .testData()
+                    ;
+                    */
+                    serializeTest(sourceWidget);
+                    document.getElementById("props").innerHTML = "";
+                    displayProperties(sourceWidget);
+                });
+            }
+            testWidget(document.getElementById("widgetSelect").value);
+        });
     </script>
 </body>
 </html>

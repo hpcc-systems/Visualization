@@ -8,8 +8,7 @@
     function Dendrogram(target) {
         SVGWidget.call(this);
         ITree.call(this);
-
-        this._class = "dendrogram";
+        this._class = "tree_Dendrogram";
     };
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
     Dendrogram.prototype.implements(ITree.prototype);

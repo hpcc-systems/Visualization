@@ -1,16 +1,16 @@
-.line .dataLine {
+.chart_Line .dataLine {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
 }
 
-.line .axis {
+.chart_Line .axis {
   fill: black;
   font: 10px sans-serif;
 }
 
-.line .axis path,
-.line .axis line {
+.chart_Line .axis path,
+.chart_Line .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;

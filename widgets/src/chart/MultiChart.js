@@ -8,6 +8,7 @@
     function MultiChart() {
         SVGWidget.call(this);
         I2DChart.call(this);
+        this.class = "chart_MultiChart";
 
         this._chartType = "";
         this._chart = null;

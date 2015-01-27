@@ -12,9 +12,9 @@
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
+        this._class = "other_Wordcloud";
 
         this._font = "Verdana";
-        this._class = "wordcloud";
 
         this._padding = 1;
         this._angleFrom = -60;

@@ -7,8 +7,8 @@
 }(this, function (SVGWidget, Shape, Text) {
     function TextBox() {
         SVGWidget.call(this);
+        this._class = "common_TextBox";
 
-        this._class = "textbox";
         this._shape = new Shape()
             .shape("rect")
         ;

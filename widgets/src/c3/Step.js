@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Step(target) {
         Common.call(this);
-
         this._class = "c3_Step";
+
         this._type = "step";
     };
     Step.prototype = Object.create(Common.prototype);

@@ -7,8 +7,8 @@
 }(this, function (Common) {
     function Column(target) {
         Common.call(this);
+        this._class = "c3_Column";
 
-        this._class = "c3_column";
         this._type = "bar";
     };
     Column.prototype = Object.create(Common.prototype);

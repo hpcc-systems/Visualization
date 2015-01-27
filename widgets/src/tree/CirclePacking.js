@@ -8,8 +8,7 @@
     function CirclePacking(target) {
         SVGWidget.call(this);
         ITree.call(this);
-
-        this._class = "circlepacking";
+        this._class = "tree_CirclePacking";
     };
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
     CirclePacking.prototype.implements(ITree.prototype);

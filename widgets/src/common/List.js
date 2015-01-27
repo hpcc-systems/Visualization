@@ -8,8 +8,7 @@
     function List(target) {
         SVGWidget.call(this);
         IList.call(this);
-
-        this._class = "list";
+        this._class = "common_List";
 
         this._listWidgets = {};
     };

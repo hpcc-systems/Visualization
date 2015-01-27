@@ -46,7 +46,7 @@
             .attr("class", "node")
             .attr("opacity", 0)
             .on("click", function (d) {
-                context.click(context.rowToObj(d));
+                context.click(context.rowToObj(d), context._columns[1]);
             })
             .each(function (d) {
                 var element = d3.select(this);

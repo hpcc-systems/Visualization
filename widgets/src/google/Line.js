@@ -24,7 +24,7 @@
         google.visualization.events.addListener(this.lineChart, "select", function () {
             var selectedItem = context.lineChart.getSelection()[0];
             if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]));
+                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[selectedItem.column]);
             }
         });
     };

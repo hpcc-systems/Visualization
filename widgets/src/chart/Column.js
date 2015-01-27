@@ -24,7 +24,7 @@
           .enter().append("rect")
             .attr("class", "columnRect")
             .on("click", function (d) {
-                context.click(context.rowToObj(d));
+                context.click(context.rowToObj(d), context._columns[1]);
             })
             .append("title")
         ;

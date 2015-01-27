@@ -10,9 +10,6 @@
 
         this._class = "c3_donut";
         this._type = "donut";
-        this._config.data = {
-            columns: []
-        };
         this._config.donut = {
             title: ""
         };

@@ -10,9 +10,6 @@
 
         this._class = "c3_pie";
         this._type = "pie";
-        this._config.data = {
-            columns: []
-        };
     };
     Pie.prototype = Object.create(Common.prototype);
 

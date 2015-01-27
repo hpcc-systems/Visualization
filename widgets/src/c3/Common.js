@@ -32,7 +32,11 @@
                 pattern: d3.scale.category20().range()
             },
             data: {
-                rows: []
+                columns: [],
+                rows: [],
+                onclick: function (d, element) {
+                    context.click(context.rowToObj(context._data[d.index]));
+                }
             }
         };
     };

@@ -15,7 +15,19 @@
         };
     };
     Gauge.prototype = Object.create(Common.prototype);
-      
+    
+    Gauge.prototype.publish("low", 0, "number", "Gauge lower bound");
+    Gauge.prototype.publish("high", 100, "number", "Gauge higher bound");
+
+    Gauge.prototype.enter = function (domNode, element) {
+        this._config.gauge = {
+            min: this.low(),
+            max: this.high()
+        };
+
+        Common.prototype.enter.apply(this, arguments);     
+    };
+
     Gauge.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
         

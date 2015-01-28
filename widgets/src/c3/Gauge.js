@@ -18,22 +18,26 @@
     
     Gauge.prototype.publish("low", 0, "number", "Gauge lower bound");
     Gauge.prototype.publish("high", 100, "number", "Gauge higher bound");
-
+    Gauge.prototype.publish("units", "%", "string", "Gauge unit data is represented in. Default: %");
+    Gauge.prototype.publish("arcWidth", 75, "number", "Gauge width of arc");
+    
     Gauge.prototype.enter = function (domNode, element) {
         this._config.gauge = {
             min: this.low(),
-            max: this.high()
+            max: this.high(),
+            units: this.units(),
+            width: this.arcWidth(),
         };
+        
+        this._config.data = { columns: [[this.columns()[0], this._data]] }; // 1D
 
         Common.prototype.enter.apply(this, arguments);     
     };
 
     Gauge.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
-        
-        var data = this._data.map(function (row, idx) {
-            return [row[0], row[1]];
-        }, this);
+
+        var data = [[this.columns()[0], this._data]];
         
         this.c3Chart.load({
             columns: data

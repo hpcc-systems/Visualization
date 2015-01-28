@@ -27,49 +27,49 @@
             <option value="src/common/Surface">Surface</option>
         </select>
     </p>
-    <p>
-        <table style="width:auto">
-            <thead>
-                <tr>
-                    <th>Serialize/Deserialize</th>
-                    <th>Properties</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td align="center">
-                        <table border="0">
-                            <tbody>
-                                <tr>
-                                    <td style="text-align:center;border-bottom:none">
-                                        <div id="source" class="large wide thumb"></div>
-                                        <p><b>Original</b></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:center;border-bottom:none">
-                                        <div id="target" class="large wide thumb"></div>
-                                        <p><b>Clone</b></p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td align="center" valign="top">
-                        <table>
-                            <thead align="left">
-                                <tr>
-                                    <th>Key</th>
-                                    <th>Value</th>
-                                </tr>
-                            </thead>
-                            <tbody id="props"></tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </p>
+    <table style="width:auto">
+        <thead>
+            <tr>
+                <th>Serialize/Deserialize</th>
+                <th>Properties</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td align="center">
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center;border-bottom:none">
+                                    <div id="source" class="large wide thumb"></div>
+                                    <br />
+                                    <b>Original</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;border-bottom:none">
+                                    <div id="target" class="large wide thumb"></div>
+                                    <br />
+                                    <b>Clone</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td align="center" valign="top">
+                    <table>
+                        <thead align="left">
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="props"></tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <script>
         var testWidget = null;
         require(["src/other/Persist"], function (Persist) {

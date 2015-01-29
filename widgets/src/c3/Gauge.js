@@ -8,7 +8,7 @@
     function Gauge(target) {
         Common.call(this);
 
-        this._class = "c3_gauge";
+        this._class = "c3_Gauge";
         this._type = "gauge";
         this._config.data = {
             columns: []

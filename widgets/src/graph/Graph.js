@@ -379,11 +379,9 @@
                 context._selection.click(d, d3.event);
             })
             .on("click", function (d) {
-                d3.event.stopPropagation();
                 context.vertex_click(d, d3.event);
             })
             .on("dblclick", function (d) {
-                d3.event.stopPropagation();
                 context.vertex_dblclick(d, d3.event);
             })
             .on("mouseover", function (d) {

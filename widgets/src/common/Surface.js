@@ -9,6 +9,7 @@
         SVGWidget.call(this);
         this._class = "common_Surface";
 
+        this._menuPadding = 2;
         this._icon = new Icon()
             .padding(4)
         ;
@@ -25,7 +26,7 @@
         ;
         this._menu = new Menu()
             .faChar("\uf0c9")
-            .padding(4)
+            .padding(0)
         ;
         var context = this;
         this._menu.preShowMenu = function () {
@@ -142,7 +143,7 @@
         ;
         var iconClientSize = this._icon.getBBox(true);
         var textClientSize = this._text.getBBox(true);
-        var menuClientSize = this._menu.getBBox(true);
+        var menuClientSize = this._menu._faChar.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height);
         var yTitle = (-this._size.height + titleRegionHeight) / 2;
 
@@ -162,7 +163,7 @@
             .move({ x: -this._size.width / 2 + iconClientSize.width / 2, y: yTitle })
         ;
         this._menu
-            .move({ x: this._size.width / 2 - menuClientSize.width / 2, y: yTitle })
+            .move({ x: this._size.width / 2 - menuClientSize.width / 2 - this._menuPadding, y: yTitle })
         ;
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })

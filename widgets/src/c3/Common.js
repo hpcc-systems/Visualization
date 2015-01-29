@@ -1,13 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "c3/c3", "../common/HTMLWidget", "../common/Palette", "../chart/I2DChart", "css!c3/c3"], factory);
+        define(["d3/d3", "c3/c3", "../common/HTMLWidget", "../common/Palette", "css!c3/c3"], factory);
     } else {
-        root.Pie = factory(root.d3, root.c3, root.HTMLWidget, root.Palette, root.I2DChart);
+        root.Pie = factory(root.d3, root.c3, root.HTMLWidget, root.Palette);
     }
-}(this, function (d3, c3, HTMLWidget, Palette, I2DChart) {
+}(this, function (d3, c3, HTMLWidget, Palette) {
     function Common(target) {
         HTMLWidget.call(this);
-        I2DChart.call(this);
         this.d3Color = Palette.ordinal("category20");
 
         this._tag = "div";
@@ -33,15 +32,11 @@
             },
             data: {
                 columns: [],
-                rows: [],
-                onclick: function (d, element) {
-                    context.click(context.rowToObj(context._data[d.index]), d.x ? d.id : context._columns[1]);
-                }
+                rows: []
             }
         };
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
-    Common.prototype.implements(I2DChart.prototype);
 
     Common.prototype.d3Color = Palette.ordinal("category20");
 

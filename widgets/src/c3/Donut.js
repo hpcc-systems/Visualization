@@ -1,30 +1,46 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common"], factory);
+        define(["./Common2D"], factory);
     } else {
-        root.Donut = factory(root.Common);
+        root.Donut = factory(root.Common2D);
     }
-}(this, function (Common) {
+}(this, function (Common2D) {
     function Donut(target) {
-        Common.call(this);
+        Common2D.call(this);
         this._class = "c3_Donut";
 
         this._type = "donut";
-        this._config.donut = {
-            title: ""
-        };
     };
-    Donut.prototype = Object.create(Common.prototype);
+    Donut.prototype = Object.create(Common2D.prototype);
 
-    Donut.prototype.title = function (_) {
-        if (!arguments.length) return this._config.donut.title;
-        this._config.donut.title = _;
-        return this;
+    Donut.prototype.publish("label_show", true, "boolean", "Show Label");
+    //Donut.prototype.publish("label_format", null, "function", "???");
+    //Donut.prototype.publish("label_threshold", 0.05, "number", "???");
+    Donut.prototype.publish("arc_width", 45, "number", "Arc Width");
+    Donut.prototype.publish("expand", true, "boolean", "Arc Explode");
+    Donut.prototype.publish("title", "xxx", "string", "Label");
+
+    Donut.prototype.enter = function (domNode, element) {
+        this._config.donut = {
+            label_show: this.label_show(),
+            width: this.arc_width(),
+            expand: this.expand(),
+            title: this.title()
+        }
+
+        Common2D.prototype.enter.apply(this, arguments);
     };
 
     Donut.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
+        Common2D.prototype.update.apply(this, arguments);
         
+        this.c3Chart.internal.config.donut_label_show = this.label_show();
+//        this.c3Chart.internal.config.donut_label_format = this.high();
+//        this.c3Chart.internal.config.donut_label_threshold = this.show_value_label() ? this.columns() : "";
+        this.c3Chart.internal.config.donut_width = this.arc_width();
+        this.c3Chart.internal.config.donut_expand = this.expand();
+        this.c3Chart.internal.config.donut_title = this.title();
+
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);

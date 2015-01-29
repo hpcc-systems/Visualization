@@ -25,6 +25,10 @@
             <option value="src/common/List">List</option>
             <option value="src/common/Menu">Menu</option>
             <option value="src/common/Surface">Surface</option>
+            <option value="src/c3/Bar">C3 Bar</option>
+            <option value="src/c3/Column">C3 Column</option>
+            <option value="src/c3/Donut">C3 Donut</option>
+            <option value="src/c3/Gauge">C3 Gauge</option>
         </select>
     </p>
     <table style="width:auto">
@@ -72,12 +76,13 @@
     </table>
     <script>
         var testWidget = null;
+        var cloneWidget = null;
         require(["src/other/Persist"], function (Persist) {
 
             function serializeTest(source, target) {
                 document.getElementById("target").innerHTML = "";
                 Persist.clone(source, function (widget) {
-                    widget
+                    cloneWidget = widget
                         .target("target")
                         //.testData()
                         .render()
@@ -135,6 +140,38 @@
                             break;
                     }
                 });
+                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
+                var td = tr.appendChild(document.createElement('td'));
+                td.appendChild(document.createTextNode("data_columns"));
+                td = tr.appendChild(document.createElement('td'));
+                var input = td.appendChild(document.createElement("textarea"));
+                input.value = JSON.stringify(sourceWidget._columns);
+                input.onchange = function () {
+                    sourceWidget
+                        .columns(JSON.parse(input.value))
+                        .render()
+                    ;
+                    cloneWidget
+                        .columns(sourceWidget.columns())
+                        .render()
+                    ;
+                }
+                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
+                var td = tr.appendChild(document.createElement('td'));
+                td.appendChild(document.createTextNode("data_data"));
+                td = tr.appendChild(document.createElement('td'));
+                var input2 = td.appendChild(document.createElement("textarea"));
+                input2.value = JSON.stringify(sourceWidget._data);
+                input2.onchange = function () {
+                    sourceWidget
+                        .data(JSON.parse(input2.value))
+                        .render()
+                    ;
+                    cloneWidget
+                        .data(sourceWidget.data())
+                        .render()
+                    ;
+                }
             }
             testWidget = function(widgetPath) {
                 require([widgetPath], function (Widget) {

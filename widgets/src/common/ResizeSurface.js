@@ -20,6 +20,14 @@
                 context._dragHandlePos = { x: d.x, y: d.y };
                 context._dragStartPos = context.pos();
                 context._dragStartSize = context.size();
+                context._prevPosSize = {
+                    x: context._dragStartPos.x,
+                    y: context._dragStartPos.y,
+                    width: context._dragStartSize.width,
+                    height: context._dragStartSize.height
+                }
+                context._textPosSize = context._text.getBBox(true);
+                context._iconPosSize = context._icon.getBBox(true);
                 context.showContent(false);
                 context.dispatch.sizestart(context, d.loc);
             })
@@ -58,13 +66,28 @@
                         delta.w = -_dx;
                         break;
                 }
+                var posSize = {
+                    x: context._dragStartPos.x + delta.x,
+                    y: context._dragStartPos.y + delta.y,
+                    width: context._dragStartSize.width + delta.w,
+                    height: context._dragStartSize.height + delta.h
+                };
+                if (posSize.width < context._iconPosSize.width * 2 + context._textPosSize.width) {
+                    posSize.x = context._prevPosSize.x;
+                    posSize.width = context._prevPosSize.width;
+                }
+                if (posSize.height < context._textPosSize.height + 48) {
+                    posSize.y = context._prevPosSize.y;
+                    posSize.height = context._prevPosSize.height;
+                }
                 context
-                    .pos({ x: context._dragStartPos.x + delta.x, y: context._dragStartPos.y + delta.y }, false, false)
-                    .size({ width: context._dragStartSize.width + delta.w, height: context._dragStartSize.height + delta.h })
+                    .pos({ x: posSize.x, y: posSize.y }, false, false)
+                    .size({ width: posSize.width, height: posSize.height })
                     .render()
                     .getBBox(true)
                 ;
                 context.dispatch.size(context, d.loc);
+                context._prevPosSize = posSize;
             })
             .on("dragend", function (d) {
                 d3.event.sourceEvent.stopPropagation();

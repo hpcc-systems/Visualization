@@ -1,19 +1,17 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common", "../common/Palette"], factory);
+        define(["d3/d3", "./Common"], factory);
     } else {
-        root.Column = factory(root.d3, root.Common, root.Palette);
+        root.Column = factory(root.d3, root.Common);
     }
-}(this, function (d3, Common, Palette) {
+}(this, function (d3, Common) {
 
     function Column() {
         Common.call(this);
         this._class = "google_Column";
     };
     Column.prototype = Object.create(Common.prototype);
-
-    Column.prototype.d3Color = Palette.ordinal("category20");
-
+    
     Column.prototype.enter = function (domNode, element) {
         var context = this;
 
@@ -31,7 +29,7 @@
         var context = this;
 
         var colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
-            return this.d3Color(row);
+            return this._palette(row);
         }, this);
 
         var chartOptions = {

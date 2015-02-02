@@ -316,7 +316,6 @@
             element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
                 .attr("marker-start", function (d) {
-                    var x = this.getAttribute("fixme-start");
                     return this.getAttribute("fixme-start");
                 })
                 .attr("marker-end", function (d) { return this.getAttribute("fixme-end"); })

@@ -241,6 +241,7 @@
                 .highlightOnMouseOverVertex(true)
             ;
             graph.vertex_dblclick = function (d) {
+                d3.event.stopPropagation();
                 callService(d._id, d.element());
             };
             graph.vertex_click = function (d) {

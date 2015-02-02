@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "../common/Palette", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
     } else {
-        root.Pie = factory(root.d3, root.SVGWidget, root.Palette, root.I2DChart, root.Text, root.FAChar);
+        root.Pie = factory(root.d3, root.SVGWidget, root.I2DChart, root.Text, root.FAChar);
     }
-}(this, function (d3, SVGWidget, Palette, I2DChart, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -29,8 +29,6 @@
     };
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
-
-    Pie.prototype.d3Color = Palette.ordinal("category20");
 
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -79,7 +77,7 @@
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .style("fill", function (d) { return context.d3Color(d.data[0]); })
+                    .style("fill", function (d) { return context._palette(d.data[0]); })
                     .attr("d", context.d3Arc)
                     .append("title")
                 ;

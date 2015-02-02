@@ -7,6 +7,7 @@
 }(this, function (d3, Choropleth, topojson, countries, usStates) {
     function ChoroplethCounties() {
         Choropleth.call(this);
+        this._class = "map_ChoroplethCountries";
 
         this._dataMap = {};
         this._dataMaxWeight = 0;
@@ -41,8 +42,9 @@
     };
 
     ChoroplethCounties.prototype.enter = function (domNode, element) {
-        var context = this;
         Choropleth.prototype.enter.apply(this, arguments);
+        element.classed("map_Choropleth", true);    
+
         this.lookup = {};
         var stateArray = topojson.feature(usStates.topology, usStates.topology.objects.states).features.map(function (item) {
             item.category = "State";
@@ -93,7 +95,7 @@
                 if (weight === undefined) {
                     return "url(#hash)";
                 }
-                return context.d3Color(context._dataMap[code]);
+                return context._palette(weight, context._dataMinWeight, context._dataMaxWeight);
             })
         ;
 

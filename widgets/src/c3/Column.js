@@ -10,6 +10,7 @@
         this._class = "c3_Column";
 
         this._type = "bar";
+        this._prevRows = [];
     };
     Column.prototype = Object.create(Common2D.prototype);
 
@@ -18,8 +19,12 @@
         
         this.c3Chart.load({
             categories: this.getC3Categories(),
-            rows: this.getC3Rows()
+            rows: this.getC3Rows(),
+            unload: this._prevRows.map(function (row) {
+                return row[0];  //TODO Check if it is in new data
+            })
         });
+        this._prevRows = this._data;
     };
 
     return Column;

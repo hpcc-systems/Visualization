@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Palette", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
     } else {
-        root.Bubble = factory(root.d3, root.SVGWidget, root.I2DChart, root.Palette, root.Text, root.FAChar);
+        root.Bubble = factory(root.d3, root.SVGWidget, root.I2DChart, root.Text, root.FAChar);
     }
-}(this, function (d3, SVGWidget, I2DChart, Palette, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -20,8 +20,6 @@
     };
     Bubble.prototype = Object.create(SVGWidget.prototype);
     Bubble.prototype.implements(I2DChart.prototype);
-
-    Bubble.prototype.d3Color = Palette.ordinal("category20");
 
     Bubble.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -51,7 +49,7 @@
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .style("fill", function (d) { return context.d3Color(d[0]); })
+                    .style("fill", function (d) { return context._palette(d[0]); })
                     .append("title")
                 ;
                 if (d.__viz_faChar) {

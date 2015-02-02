@@ -1,18 +1,16 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common", "../common/Palette"], factory);
+        define(["d3/d3", "./Common"], factory);
     } else {
-        root.Bar = factory(root.d3, root.Common, root.Palette);
+        root.Bar = factory(root.d3, root.Common);
     }
-}(this, function (d3, Common, Palette) {
+}(this, function (d3, Common) {
 
     function Bar(tget) {
         Common.call(this);
         this._class = "google_Bar";
     };
     Bar.prototype = Object.create(Common.prototype);
-
-    Bar.prototype.d3Color = Palette.ordinal("category20");
 
     Bar.prototype.enter = function (domNode, element) {
         var context = this;
@@ -31,7 +29,7 @@
         var context = this;
 
         var colors = this._columns.filter(function (d, i) { return i > 0;}).map(function (row) {
-            return this.d3Color(row);
+            return this._palette(row);
         }, this);
 
         var chartOptions = {

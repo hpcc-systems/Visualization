@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common", "../common/Palette"], factory);
+        define(["d3/d3", "./Common"], factory);
     } else {
-        root.Line = factory(root.d3, root.Common, root.Palette);
+        root.Line = factory(root.d3, root.Common);
     }
-}(this, function (d3, Common, Palette) {
+}(this, function (d3, Common) {
 
     function Line(tget) {
         Common.call(this);
@@ -13,8 +13,6 @@
         this.data([]);
     };
     Line.prototype = Object.create(Common.prototype);
-
-    Line.prototype.d3Color = Palette.ordinal("category20");
 
     Line.prototype.enter = function (domNode, element) {
         var context = this;
@@ -33,7 +31,7 @@
         var context = this;
 
         var colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
-            return this.d3Color(row);
+            return this._palette(row);
         }, this);
 
         var chartOptions = {

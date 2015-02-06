@@ -25,7 +25,7 @@
             .on("click", function (d) {
                 var code = usStates.stateNames[d.id].code;
                 if (context._dataMap[code]) {
-                    context.click(context.rowToObj(context._dataMap[code]));
+                    context.click(context.rowToObj(context._dataMap[code]), "weight");
                 }
             })
             .on("dblclick", function (d) {

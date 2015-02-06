@@ -1,21 +1,21 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common2D"], factory);
+        define(["./CommonND"], factory);
     } else {
-        root.Line = factory(root.Common2D);
+        root.Line = factory(root.CommonND);
     }
-}(this, function (Common2D) {
+}(this, function (CommonND) {
     function Line(target) {
-        Common2D.call(this);
+        CommonND.call(this);
         this._class = "c3_Line";
 
         this._type = "line";
         this._prevRows = [];
     };
-    Line.prototype = Object.create(Common2D.prototype);
+    Line.prototype = Object.create(CommonND.prototype);
 
     Line.prototype.update = function (domNode, element) {
-        Common2D.prototype.update.apply(this, arguments);
+        CommonND.prototype.update.apply(this, arguments);
 
         this.c3Chart.load({
             categories: this.getC3Categories(),

@@ -85,7 +85,9 @@
             return ordinal;
         }
         ordinal.clone = function (newID) {
-            ordinalCache[newID] = palette_ordinal(newID, this.color());
+            ordinalCache[newID] = palette_ordinal(newID, this.colors());
+            return ordinalCache[newID];
+
         }
         ordinal.switch = function (_id, _colors) {
             if (id === _id) {
@@ -179,6 +181,7 @@
         };
         rainbow.clone = function (newID) {
             rainbowCache[newID] = palette_rainbow(newID, this.color());
+            return rainbowCache[newID];
         };
         rainbow.switch = function (_id, _colors) {
             if (id === _id) {

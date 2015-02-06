@@ -1,17 +1,17 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./XYAxis", "./I2DChart", "css!./Line"], factory);
+        define(["d3/d3", "./XYAxis", "./INDChart", "css!./Line"], factory);
     } else {
-        root.Line = factory(root.d3, root.XYAxis, root.I2DChart);
+        root.Line = factory(root.d3, root.XYAxis, root.INDChart);
     }
-}(this, function (d3, XYAxis, I2DChart) {
+}(this, function (d3, XYAxis, INDChart) {
     function Line(target) {
         XYAxis.call(this);
-        I2DChart.call(this);
+        INDChart.call(this);
         this._class = "chart_Line";
     };
     Line.prototype = Object.create(XYAxis.prototype);
-    Line.prototype.implements(I2DChart.prototype);
+    Line.prototype.implements(INDChart.prototype);
 
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);

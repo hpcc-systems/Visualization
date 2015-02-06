@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>HPCC Systems - Dermatology Test</title>
     <link rel="stylesheet" href="test.css" />
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/prettify.js"></script>
     <script src="../widgets/lib/requirejs/require.js"></script>
     <script src="../widgets/config.js"></script>
     <script>
@@ -42,6 +43,7 @@
             <tr>
                 <th>Serialize/Deserialize</th>
                 <th>Properties</th>
+                <th>Source Code</th>
             </tr>
         </thead>
         <tbody>
@@ -76,6 +78,9 @@
                         </thead>
                         <tbody id="props"></tbody>
                     </table>
+                </td>
+                <td valign="top">
+                    <pre id="github" class="prettyprint"></pre>
                 </td>
             </tr>
         </tbody>
@@ -193,7 +198,9 @@
                 }
             }
             testWidget = function (widgetPath) {
-                require([widgetPath], function (Widget) {
+                require([widgetPath, "text!" + widgetPath + ".js"], function (Widget, src) {
+                    document.getElementById("github").setAttribute("class", "prettyprint");
+                    document.getElementById("github").innerText = src;
                     document.getElementById("source").innerHTML = "";
                     var sourceWidget = new Widget()
                         .target("source")
@@ -209,6 +216,7 @@
                     serializeTest(sourceWidget);
                     document.getElementById("props").innerHTML = "";
                     displayProperties(sourceWidget);
+                    prettyPrint();
                 });
             }
             testWidget(document.getElementById("widgetSelect").value);

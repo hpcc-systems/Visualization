@@ -1,3 +1,4 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "lib/colorbrewer/colorbrewer"], factory);
@@ -125,7 +126,7 @@
         var scale = null;
         var colors = _colors;
 
-        _custom = function (colors, steps) {
+        var _custom = function (colors, steps) {
             steps = steps || 32;
             var subPaletteSize = Math.ceil(steps / (colors.length - 1));
             var range = [];
@@ -193,7 +194,7 @@
         return rainbow;
     };
 
-    test = function(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
+    var test = function(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         d3.select(ordinalDivID)
           .selectAll(".palette")
             .data(palette_ordinal(), function (d) { return d; })

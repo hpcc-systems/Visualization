@@ -1,4 +1,5 @@
-﻿(function (root, factory) {
+"use strict";
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
@@ -141,7 +142,7 @@
     };
     Comms.prototype = Object.create(ESPUrl.prototype);
 
-    exists = function (prop, scope) {
+    var exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
         for (var i = 0; i < propParts.length; ++i) {
@@ -154,7 +155,7 @@
         return true;
     };
 
-    serialize = function (obj) {
+    var serialize = function (obj) {
         var str = [];
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {

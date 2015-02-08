@@ -1,3 +1,4 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["./Widget", "./Transition", "d3/d3"], factory);
@@ -175,7 +176,7 @@
         return this.intersectRect(pointA, pointB);
     };
 
-    lerp = function (point, that, t) {
+    var lerp = function (point, that, t) {
         //  From https://github.com/thelonious/js-intersections
         return {
             x: point.x + (that.x - point.x) * t,
@@ -183,7 +184,7 @@
         };
     };
 
-    intersectLineLine = function (a1, a2, b1, b2) {
+    var intersectLineLine = function (a1, a2, b1, b2) {
         //  From https://github.com/thelonious/js-intersections
         var result = { type: "", points: [] };
         var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
@@ -274,10 +275,10 @@
                 result.type = "Intersection";
 
                 if (0 <= u1 && u1 <= 1)
-                    result.points.push(this.lerp(a1, a2, u1));
+                    result.points.push(lerp(a1, a2, u1));
 
                 if (0 <= u2 && u2 <= 1)
-                    result.points.push(this.lerp(a1, a2, u2));
+                    result.points.push(lerp(a1, a2, u2));
             }
         }
 

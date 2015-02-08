@@ -1,4 +1,5 @@
-﻿(function (root, factory) {
+"use strict";
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/I1DChart"], factory);
     } else {

@@ -1,3 +1,4 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["lib/dagre/dagre"], factory);
@@ -155,7 +156,7 @@
         return this.digraph.edge(e).points;
     };
 
-    Layouts = {
+    var Layouts = {
         None: None,
         Circle: Circle,
         ForceDirected: ForceDirected,

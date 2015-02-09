@@ -10,9 +10,25 @@
         Common.call(this);
         this._class = "google_Pie";
 
-        this._is3D = true;
     };
     Pie.prototype = Object.create(Common.prototype);
+    
+    Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
+    Pie.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width");
+    Pie.prototype.publish("chartAreaHeight", "80%", "string", "Chart Area Height");
+    Pie.prototype.publish("fontSize", 12, "number", "Font Size");
+    Pie.prototype.publish("fontName", "Calibri", "string", "Font Name");
+    Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size");
+    
+    Pie.prototype.publish("pieStartAngle", 0, "number", "Pie Start Angle");
+    
+    Pie.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["","start","center","end"]);
+    Pie.prototype.publish("legendPosition", "top", "set", "Legend Position", ["","bottom","labeled","left","none","right","top"]);
+    Pie.prototype.publish("legendFontColor", "#000", "html-color", "Legend Font Color");
+    Pie.prototype.publish("legendFontName", "Calibri", "string", "Legend Font Name");
+    Pie.prototype.publish("legendFontSize", 12, "number", "Legend Font Size");
+    Pie.prototype.publish("legendFontBold", true, "boolean", "Legend Font Bold");
+    Pie.prototype.publish("legendFontItalic", true, "boolean", "Legend Font Italic");
 
     Pie.prototype.is3D = function (_) {
         if (!arguments.length) return this._is3D;
@@ -45,10 +61,28 @@
             backgroundColor: "none",
             width: this.width(),
             height: this.height(),
-            chartArea: { width: "100%", height: "100%" },
+            fontSize:this._fontSize,
+            fontName:this._fontName,
+            chartArea: { 
+                width: this._chartAreaWidth, 
+                height: this._chartAreaHeight 
+            },
             colors: colors,
             is3D: this._is3D,
-            legend: { alignment: "center" }
+            pieStartAngle:this._pieStartAngle,
+            legend: { 
+                alignment: this._legendAlignment,
+                position: this._legendPosition,
+                maxLines:2,
+                textStyle: {
+                    color: this._legendFontColor,
+                    fontName: this._legendFontName,
+                    fontSize: this._legendFontSize,
+                    bold: this._legendFontBold,
+                    italic: this._legendFontItalic,
+                }
+            },
+            pieHole:this._pieHole
         };
 
         this.pieChart.draw(this._data_google, chartOptions);

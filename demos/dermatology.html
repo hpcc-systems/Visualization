@@ -33,6 +33,8 @@
             <option value="src/c3/Gauge">C3 Gauge</option>
             <option value="src/map/ChoroplethStates">US States</option>
             <option value="src/map/ChoroplethCounties">US Counties</option>
+            <option value="src/google/Pie">Google Pie</option>
+            <option value="src/google/Bar">Google Bar</option>
         </select>
     </p>
     <table style="width:auto">
@@ -121,6 +123,15 @@
                             break;
                         case "string":
                             var input = td.appendChild(document.createElement("input"));
+                            input.value = sourceWidget[row.id]();
+                            input.onchange = function () {
+                                sourceWidget[row.id](input.value).render();
+                                serializeTest(sourceWidget)
+                            }
+                            break;
+                        case "html-color":
+                            var input = td.appendChild(document.createElement("input"));
+                            input.type = 'color';
                             input.value = sourceWidget[row.id]();
                             input.onchange = function () {
                                 sourceWidget[row.id](input.value).render();

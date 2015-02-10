@@ -15,6 +15,8 @@
         this.transition = new Transition(this);
 
         this._renderCount = 0;
+        
+        this._scale = 1;
     };
     SVGWidget.prototype = Object.create(Widget.prototype);
 
@@ -117,6 +119,13 @@
         }
         return this;
     };
+    
+    SVGWidget.prototype.scale = function (_) {
+        if (!arguments.length) return this._scale;
+        this._scale = _;
+        return this;
+    };
+    
 
     SVGWidget.prototype.enter = function (domeNode, element, d) {
         Widget.prototype.enter.apply(this, arguments);
@@ -124,7 +133,9 @@
 
     SVGWidget.prototype.update = function (domeNode, element, d) {
         Widget.prototype.update.apply(this, arguments);
-        element.attr("transform", "translate(" + this._pos.x + " " + this._pos.y + ")");
+        //element.attr("transform", "translate(" + this._pos.x + " " + this._pos.y + ")");
+        element.attr("transform", "translate(" + this._pos.x + " " + this._pos.y + ")scale(" + this._scale + ")");
+
     };
 
     SVGWidget.prototype.exit = function (domeNode, element, d) {
@@ -316,7 +327,6 @@
             element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
                 .attr("marker-start", function (d) {
-                    var x = this.getAttribute("fixme-start");
                     return this.getAttribute("fixme-start");
                 })
                 .attr("marker-end", function (d) { return this.getAttribute("fixme-end"); })

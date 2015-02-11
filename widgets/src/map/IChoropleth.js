@@ -28,9 +28,10 @@
     
 
     //  Events  ---
-    IChoropleth.prototype.click = function (d) {
-        console.log("Choropleth Click:  " + d.state);
+    IChoropleth.prototype.click = function (row, column) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column);
     };
+
 
     return IChoropleth;
 }));

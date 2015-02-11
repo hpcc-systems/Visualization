@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Palette"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./I2DChart"], factory);
     } else {
-        root.MultiChart = factory(root.d3, root.SVGWidget, root.I2DChart, root.Palette);
+        root.MultiChart = factory(root.d3, root.SVGWidget, root.I2DChart);
     }
-}(this, function (d3, SVGWidget, I2DChart, Palette) {
+}(this, function (d3, SVGWidget, I2DChart) {
     function MultiChart() {
         SVGWidget.call(this);
         I2DChart.call(this);

@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common", "../common/Palette"], factory);
+        define(["d3/d3", "./Common"], factory);
     } else {
-        root.Pie = factory(root.d3, root.Common, root.Palette);
+        root.Pie = factory(root.d3, root.Common);
     }
-}(this, function (d3, Common, Palette) {
+}(this, function (d3, Common) {
 
     function Pie(tget) {
         Common.call(this);
@@ -13,8 +13,6 @@
         this._is3D = true;
     };
     Pie.prototype = Object.create(Common.prototype);
-
-    Pie.prototype.d3Color = Palette.ordinal("category20");
 
     Pie.prototype.is3D = function (_) {
         if (!arguments.length) return this._is3D;
@@ -40,7 +38,7 @@
         var context = this;
 
         var colors = this._data.map(function (row) {
-            return this.d3Color(row[0]);
+            return this._palette(row[0]);
         }, this);
 
         var chartOptions = {

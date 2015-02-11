@@ -1,10 +1,10 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./XYAxis", "./I2DChart", "../common/Palette", "css!./Line"], factory);
+        define(["d3/d3", "./XYAxis", "./I2DChart", "css!./Line"], factory);
     } else {
-        root.Line = factory(root.d3, root.XYAxis, root.I2DChart, root.Palette);
+        root.Line = factory(root.d3, root.XYAxis, root.I2DChart);
     }
-}(this, function (d3, XYAxis, I2DChart, Palette) {
+}(this, function (d3, XYAxis, I2DChart) {
     function Line(target) {
         XYAxis.call(this);
         I2DChart.call(this);
@@ -12,8 +12,6 @@
     };
     Line.prototype = Object.create(XYAxis.prototype);
     Line.prototype.implements(I2DChart.prototype);
-
-    Line.prototype.d3Color = Palette.ordinal("category20");
 
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);
@@ -40,7 +38,7 @@
         line.enter().append("path")
             .attr("class", "dataLine")
             .style("stroke", function (d, i) {
-                return context.d3Color(context._columns[i + 1]);
+                return context._palette(context._columns[i + 1]);
             })
             .append("title")
             .text(function(d) { return d; })

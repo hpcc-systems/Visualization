@@ -71,11 +71,11 @@
                             switch (item.type) {
                                 case "CHORO":
                                     newSurface._menu
-                                        .data(Palette.brewer())
+                                        .data(Palette.rainbow())
                                     ;
                                     newSurface._menu.click = function (d) {
                                         newSurface._content
-                                            .palette(d)
+                                            .paletteID(d)
                                             .render(d)
                                         ;
                                     }

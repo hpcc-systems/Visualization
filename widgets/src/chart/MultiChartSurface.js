@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/ResizeSurface", "./MultiChart", "./I2DChart", "../common/Palette"], factory);
+        define(["d3/d3", "../common/ResizeSurface", "./MultiChart", "./I2DChart"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.MultiChart, root.I2DChart, root.Palette);
+        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.MultiChart, root.I2DChart);
     }
-}(this, function (d3, ResizeSurface, MultiChart, I2DChart, Palette) {
+}(this, function (d3, ResizeSurface, MultiChart, I2DChart) {
     function MultiChartSurface() {
         ResizeSurface.call(this);
         I2DChart.call(this);
@@ -12,6 +12,10 @@
 
         this._title = "MultiChartSurface";
         this._content = new MultiChart();
+        this._content.click = function (d) {
+            context.click(d);
+        }
+
         var context = this;
         this._menu.click = function (d) {
             context._content.chartType(d);

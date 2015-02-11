@@ -1,10 +1,10 @@
 ﻿(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./IChoropleth", "../common/Palette", "css!./Choropleth"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./IChoropleth", "css!./Choropleth"], factory);
     } else {
-        root.Choropleth = factory(root.d3, root.SVGWidget, root.IChoropleth, root.Palette);
+        root.Choropleth = factory(root.d3, root.SVGWidget, root.IChoropleth);
     }
-}(this, function (d3, SVGWidget, IChoropleth, Palette) {
+}(this, function (d3, SVGWidget, IChoropleth) {
     function Choropleth() {
         SVGWidget.call(this);
         IChoropleth.call(this);
@@ -13,12 +13,12 @@
         this._dataMap = {};
         this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
-        this._palette = "YlOrRd";
 
         this.active = d3.select(null);
     };
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
+    Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch());
 
     Choropleth.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -58,12 +58,6 @@
             ;
         }
         return retVal;
-    }
-
-    Choropleth.prototype.palette = function (_) {
-        if (!arguments.length) return this._palette;
-        this._palette = _;
-        return this;
     }
 
     Choropleth.prototype.projection = function (_) {
@@ -132,9 +126,7 @@
     };
 
     Choropleth.prototype.update = function (domNode, element) {
-        var context = this;
-
-        this.d3Color = Palette.brewer(this._palette, this._dataMinWeight, this._dataMaxWeight);
+        this._palette = this._palette.switch(this._paletteID);
     };
 
     // A modified d3.geo.albersUsa to include Puerto Rico.

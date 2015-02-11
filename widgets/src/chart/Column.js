@@ -34,6 +34,7 @@
             .attr("width", this.x.rangeBand())
             .attr("y", function (d) { return context.y(d[1]); })
             .attr("height", function (d) { return height - context.y(d[1]); })
+            .style("fill", function (d) { return context._palette(d[0]); })
         ;
 
         title

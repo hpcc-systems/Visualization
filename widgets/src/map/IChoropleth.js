@@ -1,14 +1,15 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./us-states"], factory);
+        define(["../common/Palette", "./us-states"], factory);
     } else {
-        root.IChoropleth = factory(root.usStates);
+        root.IChoropleth = factory(root.Palette, root.usStates);
     }
-}(this, function (usStates) {
+}(this, function (Palette, usStates) {
     function IChoropleth() {
     };
-    
-    IChoropleth.prototype.testStateData = function() {
+    IChoropleth.prototype._palette = Palette.rainbow("default");
+
+    IChoropleth.prototype.testData = function() {
         var nameCodeMap = {};
         for (var key in usStates.stateNames) {
             var item = usStates.stateNames[key];

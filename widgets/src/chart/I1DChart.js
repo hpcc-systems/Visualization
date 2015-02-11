@@ -1,12 +1,13 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["../common/Palette"], factory);
     } else {
-        root.I1DChart = factory();
+        root.I1DChart = factory(root.Palette);
     }
-}(this, function () {
+}(this, function (Palette) {
     function I1DChart() {
     };
+    I1DChart.prototype._palette = Palette.rainbow("default");
 
     //  Data ---
     I1DChart.prototype.testData = function () {

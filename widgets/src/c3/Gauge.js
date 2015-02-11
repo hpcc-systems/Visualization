@@ -18,6 +18,9 @@
             clickEvent[d.id] = d.value;
             context.click(clickEvent, d.id);
         };
+        this._config.data.color = function (color, d) {
+            return context._palette(context._data, context._low, context._high);
+        };
     };
     Gauge.prototype = Object.create(Common.prototype);
     Gauge.prototype.implements(I1DChart.prototype);
@@ -25,12 +28,14 @@
     Gauge.prototype.publish("low", 0, "number", "Gauge lower bound");
     Gauge.prototype.publish("high", 100, "number", "Gauge higher bound");
     Gauge.prototype.publish("value_format", "Percent", "set", "Value Display Format", ["Percent", "Value"]);
-    Gauge.prototype.publish("arc_width", 75, "number", "Gauge width of arc");
+    Gauge.prototype.publish("arc_width", 50, "number", "Gauge width of arc");
     Gauge.prototype.publish("show_labels", true, "boolean", "Show Labels");
     Gauge.prototype.publish("show_value_label", true, "boolean", "Show Value Label");
+    Gauge.prototype.publish("paletteID", "RdYlGn", "set", "Palette ID", Gauge.prototype._palette.switch());
 
     Gauge.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
+        this._palette = this._palette.switch(this._paletteID);
 
         this.c3Chart.internal.config.gauge_min = this.low();
         this.c3Chart.internal.config.gauge_max = this.high();

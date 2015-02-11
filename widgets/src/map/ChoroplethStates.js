@@ -7,6 +7,7 @@
 }(this, function (d3, Choropleth, topojson, usStates) {
     function ChoroplethStates() {
         Choropleth.call(this);
+        this._class = "map_ChoroplethStates";
 
         this.projection("albersUsaPr");
     };
@@ -14,6 +15,8 @@
 
     ChoroplethStates.prototype.enter = function (domNode, element) {
         Choropleth.prototype.enter.apply(this, arguments);
+        element.classed("map_Choropleth", true);
+
         var choroPaths = this._svg.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
 
         //  Enter  ---
@@ -45,7 +48,7 @@
                 var code = usStates.stateNames[d.id].code;
                 var weight = context._dataMap[code] ? context._dataMap[code][1] : undefined;
                 d3.select(this)
-                    .style("fill", weight === undefined ? "url(#hash)" : context.d3Color(weight))
+                    .style("fill", weight === undefined ? "url(#hash)" : context._palette(weight, context._dataMinWeight, context._dataMaxWeight))
                     .select("title")
                     .text(usStates.stateNames[d.id].name + (weight === undefined ? "" : " (" + weight + ")"))
                 ;

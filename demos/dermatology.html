@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>HPCC Systems - Dermatology Test</title>
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="test.css" />
     <script src="../widgets/lib/requirejs/require.js"></script>
     <script src="../widgets/config.js"></script>
     <script>
@@ -29,6 +29,8 @@
             <option value="src/c3/Column">C3 Column</option>
             <option value="src/c3/Donut">C3 Donut</option>
             <option value="src/c3/Gauge">C3 Gauge</option>
+            <option value="src/map/ChoroplethStates">US States</option>
+            <option value="src/map/ChoroplethCounties">US Counties</option>
         </select>
     </p>
     <table style="width:auto">
@@ -40,7 +42,7 @@
         </thead>
         <tbody>
             <tr>
-                <td align="center">
+                <td align="center" valign="top">
                     <table border="0">
                         <tbody>
                             <tr>
@@ -145,6 +147,8 @@
                 td.appendChild(document.createTextNode("data_columns"));
                 td = tr.appendChild(document.createElement('td'));
                 var input = td.appendChild(document.createElement("textarea"));
+                input.setAttribute("rows", "4");
+                input.setAttribute("cols", "25");
                 input.value = JSON.stringify(sourceWidget._columns);
                 input.onchange = function () {
                     sourceWidget
@@ -161,6 +165,8 @@
                 td.appendChild(document.createTextNode("data_data"));
                 td = tr.appendChild(document.createElement('td'));
                 var input2 = td.appendChild(document.createElement("textarea"));
+                input2.setAttribute("rows", "4");
+                input2.setAttribute("cols", "25");
                 input2.value = JSON.stringify(sourceWidget._data);
                 input2.onchange = function () {
                     sourceWidget
@@ -173,7 +179,7 @@
                     ;
                 }
             }
-            testWidget = function(widgetPath) {
+            testWidget = function (widgetPath) {
                 require([widgetPath], function (Widget) {
                     document.getElementById("source").innerHTML = "";
                     var sourceWidget = new Widget()

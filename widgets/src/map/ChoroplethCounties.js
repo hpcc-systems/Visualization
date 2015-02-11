@@ -7,6 +7,7 @@
 }(this, function (d3, Choropleth, topojson, usCounties) {
     function ChoroplethCounties() {
         Choropleth.call(this);
+        this._class = "map_ChoroplethCounties";
 
         this.projection("albersUsaPr");
     };
@@ -14,6 +15,8 @@
 
     ChoroplethCounties.prototype.enter = function (domNode, element) {
         Choropleth.prototype.enter.apply(this, arguments);
+        element.classed("map_Choropleth", true);
+
         var choroPaths = this._svg.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
 
         //  Enter  ---
@@ -35,6 +38,7 @@
 
     ChoroplethCounties.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
+
         //console.time("ChoroplethCounties.prototype.update");
         var context = this;
         //  Update  ---
@@ -43,7 +47,7 @@
             .each(function (d) {
                 var weight = context._dataMap[d.id] ? context._dataMap[d.id][1] : undefined;
                 d3.select(this)
-                    .style("fill", weight === undefined ? "url(#hash)" : context.d3Color(weight))
+                    .style("fill", weight === undefined ? "url(#hash)" : context._palette(weight, context._dataMinWeight, context._dataMaxWeight))
                     .select("title")
                     .text(usCounties.countyNames[d.id] + (weight === undefined ? "" : " (" + weight + ")"))
                 ;

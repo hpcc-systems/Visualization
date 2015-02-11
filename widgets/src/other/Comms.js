@@ -106,20 +106,21 @@
         var mapping = this._mappings[resultName];
         if (mapping) {
             response[resultName] = response[resultName].map(function (item) {
-                var row = {};
+                var row = [];
                 if (mapping.x && mapping.x instanceof Array) {
                     //  LINE Mapping  ---
                     row = [];
                     for (var i = 0; i < mapping.x.length; ++i) {
-                        row.push({
-                            label: item[mapping.x[i]],
-                            weight: item[mapping.y[i]]
-                        })
+                        row.push(item[mapping.y[i]]);
                     }
                 } else {
                     //  Regular Mapping  ---
                     for (var key in mapping) {
-                        row[mapping[key]] = item[key];
+                        if (mapping[key] === "label") {
+                            row[0] = item[key];
+                        } else if (mapping[key] === "weight") {
+                            row[1] = item[key];
+                        }
                     }
                 }
                 return row;

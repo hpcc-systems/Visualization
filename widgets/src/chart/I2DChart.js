@@ -1,12 +1,13 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["../common/Palette"], factory);
     } else {
-        root.I2DChart = factory();
+        root.I2DChart = factory(root.Palette);
     }
-}(this, function () {
+}(this, function (Palette) {
     function I2DChart() {
     };
+    I2DChart.prototype._palette = Palette.ordinal("default");
 
     //  Data ---
     I2DChart.prototype.testData = function () {
@@ -19,9 +20,6 @@
         ]);
         return this;
     };
-
-    //  Properties  ---
-    //TODO:  I2DChart.prototype._palette = "category20";
 
     //  Events  ---
     I2DChart.prototype.click = function (row, column) {

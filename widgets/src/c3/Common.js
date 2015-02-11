@@ -1,13 +1,12 @@
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "c3/c3", "../common/HTMLWidget", "../common/Palette", "css!c3/c3"], factory);
+        define(["d3/d3", "c3/c3", "../common/HTMLWidget", "css!c3/c3"], factory);
     } else {
-        root.Pie = factory(root.d3, root.c3, root.HTMLWidget, root.Palette);
+        root.Pie = factory(root.d3, root.c3, root.HTMLWidget);
     }
-}(this, function (d3, c3, HTMLWidget, Palette) {
+}(this, function (d3, c3, HTMLWidget) {
     function Common(target) {
         HTMLWidget.call(this);
-        this.d3Color = Palette.ordinal("category20");
 
         this._tag = "div";
         this._class = "c3_Common";
@@ -27,9 +26,6 @@
                 position: 'bottom',
                 show: true
             },
-            color: {
-                pattern: d3.scale.category20().range()
-            },
             data: {
                 columns: [],
                 rows: []
@@ -37,8 +33,6 @@
         };
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
-
-    Common.prototype.d3Color = Palette.ordinal("category20");
 
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;

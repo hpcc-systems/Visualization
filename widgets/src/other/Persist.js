@@ -52,7 +52,7 @@
         },
 
         serialize: function (widget, properties, includeData) {
-            return JSON.stringify(serializeToObject(widget, properties, includeData));
+            return JSON.stringify(this.serializeToObject(widget, properties, includeData));
         },
 
         deserialize: function (widget, state) {

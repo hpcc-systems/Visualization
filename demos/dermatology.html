@@ -48,6 +48,9 @@
             <option value="src/tree/Dendrogram">Dendrogram (Tree)</option>
             <option value="src/tree/CirclePacking">CirclePacking (Tree)</option>
             <option value="src/tree/SunburstPartition">SunburstPartition (Tree)</option>
+            <option value="src/google/Pie">Google Pie</option>
+            <option value="src/google/Bar">Google Bar</option>
+            <option value="src/graph/Vertex">Graph Vertex</option>
         </select>
     </p>
     <table style="width:auto">
@@ -117,59 +120,62 @@
                 var propsTable = props.map(function (row) {
                     var tr = document.getElementById("props").appendChild(document.createElement('tr'));
                     var td = tr.appendChild(document.createElement('td'));
-                    td.appendChild(document.createTextNode(row.id));
+                    var label = td.appendChild(document.createElement("label"));
+                    var enable = label.appendChild(document.createElement("input"));
+                    enable.setAttribute("type", "checkbox");
+                    label.appendChild(document.createTextNode(row.id));
                     td = tr.appendChild(document.createElement('td'));
+                    var input = null;
                     switch (row.type) {
                         case "boolean":
-                            var checkbox = document.createElement('input');
-                            checkbox.type = "checkbox";
-                            var input = td.appendChild(checkbox);
-                            input.checked = sourceWidget[row.id]();
-                            input.onchange = function () {
-                                sourceWidget[row.id](input.checked).render();
+                            var checkbox = td.appendChild(document.createElement('input'));
+                            checkbox.setAttribute("type", "checkbox");
+                            checkbox.checked = sourceWidget[row.id]();
+                            checkbox.onchange = function () {
+                                sourceWidget[row.id](checkbox.checked).render();
                                 serializeTest(sourceWidget)
                             }
                             break;
                         case "number":
-                            var input = td.appendChild(document.createElement("input"));
-                            input.value = sourceWidget[row.id]();
-                            input.onchange = function () {
-                                sourceWidget[row.id](input.value).render();
-                                serializeTest(sourceWidget)
-                            }
+                            input = td.appendChild(document.createElement("input"));
                             break;
                         case "string":
-                            var input = td.appendChild(document.createElement("input"));
-                            input.value = sourceWidget[row.id]();
-                            input.onchange = function () {
-                                sourceWidget[row.id](input.value).render();
-                                serializeTest(sourceWidget)
-                            }
+                            input = td.appendChild(document.createElement("input"));
                             break;
                         case "html-color":
-                            var input = td.appendChild(document.createElement("input"));
+                            input = td.appendChild(document.createElement("input"));
                             input.setAttribute("type", "color");
-                            input.value = sourceWidget[row.id]();
-                            input.onchange = function () {
-                                sourceWidget[row.id](input.value).render();
-                                serializeTest(sourceWidget)
-                            }
                             break;
                         case "set":
-                            var select = td.appendChild(document.createElement('select'));
-                            row.options.forEach(function (item) {
-                                var option = select.appendChild(document.createElement("option"));
+                            input = td.appendChild(document.createElement('select'));
+                            row.set.forEach(function (item) {
+                                var option = input.appendChild(document.createElement("option"));
                                 option.value = item;
                                 option.text = item;
                             });
-                            select.value = sourceWidget[row.id]();
-                            select.onchange = function () {
-                                sourceWidget[row.id](select.value).render();
-                                serializeTest(sourceWidget)
-                            }
                             break;
                         default:
                             break;
+                    }
+                    if (input) {
+                        input.value = sourceWidget[row.id]();
+                        input.onchange = function () {
+                            sourceWidget[row.id](input.value).render();
+                            serializeTest(sourceWidget)
+                        }
+                    }
+                    if (row.optional) {
+                        enable.checked = sourceWidget[row.id + "_enable"]();
+                        input.disabled = !enable.checked;
+                        enable.onchange = function () {
+                            sourceWidget[row.id + "_enable"](enable.checked).render();
+                            serializeTest(sourceWidget)
+                            if (input) {
+                                input.disabled = !enable.checked;
+                            }
+                        }
+                    } else {
+                        enable.disabled = true;
                     }
                 });
                 var tr = document.getElementById("props").appendChild(document.createElement('tr'));

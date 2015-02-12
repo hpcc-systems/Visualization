@@ -11,11 +11,13 @@
         this._class = "common_FAChar";
 
         this._text = new Text()
+            .fontFamily_enable(true)
             .fontFamily("FontAwesome")
         ;
     };
     FAChar.prototype = Object.create(SVGWidget.prototype);
     FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
+    FAChar.prototype.publishProxy("color_fill", "_text");
 
     FAChar.prototype.testData = function () {
         this.char("\uf118");

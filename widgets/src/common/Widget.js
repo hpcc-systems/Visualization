@@ -117,22 +117,29 @@
     };
 
     // Serialization  ---
-    Widget.prototype.publish = function (id, defaultValue, type, description, options, ext) {
+    Widget.prototype.publish = function (id, defaultValue, type, description, set, optional, ext) {
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published."
         }
         this["__meta_" + id] = {
             id: id,
             type: type,
-            options: options,
             description: description,
+            set: set,
+            optional: optional,
             ext: ext || {}
         }
+        this[id + "_enable"] = function (_) {
+            if (!arguments.length) return this["_" + id + "_enable"];
+            this["_" + id + "_enable"] = _;
+            return this;
+        };
+        this["_" + id + "_enable"] = false;
         this[id] = function (_) {
             if (!arguments.length) return this["_" + id];
             switch (type) {
                 case "set":
-                    if (!options || options.indexOf(_) < 0) {
+                    if (!set || set.indexOf(_) < 0) {
                         console.log("Invalid value for '" + id + "':  " + _);
                     }
                     break;
@@ -175,6 +182,11 @@
                 method: method
             }
         }
+        this[id + "_enable"] = function (_) {
+            if (!arguments.length) return this[proxy][method + "_enable"]();
+            this[proxy][method + "_enable"](_);
+            return this;
+        };
         this[id] = function (_) {
             if (!arguments.length) return this[proxy][method]();
             this[proxy][method](_);

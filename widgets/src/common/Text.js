@@ -12,8 +12,9 @@
     };
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype.publish("text", "", "string", "Display Text");
-    Text.prototype.publish("fontFamily", "", "string", "Font Family");
+    Text.prototype.publish("fontFamily", "", "string", "Font Family", null, true);
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["", "start", "middle", "end"]);
+    Text.prototype.publish("color_fill", "#000000", "html-color", "Fill Color", null, true);
 
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");
@@ -27,7 +28,7 @@
 
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        this._textElement.attr("font-family", this._fontFamily);
+        this._textElement.attr("font-family", this._fontFamily_enable ? this._fontFamily : null);
         var textParts = this._text.split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
         textLine.enter().append("tspan")
@@ -36,6 +37,7 @@
             .attr("x", "0")
         ;
         textLine
+            .style("fill", this._color_fill_enable ? this._color_fill : null)
             .text(function (d) { return d; })
         ;
         textLine.exit()

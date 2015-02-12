@@ -1,3 +1,4 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["../common/SVGWidget", "./IWordCloud", "d3/d3", "css!./WordCloud"], factory);
@@ -78,7 +79,7 @@
         if (!arguments.length) return this._data;
         this._data = _.map(function (row) {
             var retVal = {};
-            for (key in row) {
+            for (var key in row) {
                 retVal["__viz_" + key] = row[key];
             }
             return retVal;

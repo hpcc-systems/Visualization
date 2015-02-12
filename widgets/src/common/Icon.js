@@ -1,3 +1,4 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["./SVGWidget", "./Shape", "./FAChar", "css!./Icon"], factory);

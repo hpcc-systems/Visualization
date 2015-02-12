@@ -26,8 +26,6 @@
     
     Bar.prototype.publish("orientation", "vertical", "set", "Bar Orientation", ["","vertical","horizontal"]);
     
-    Bar.prototype.d3Color = Palette.ordinal("category20");
-    
     Bar.prototype.enter = function (domNode, element) {
         var context = this;
 

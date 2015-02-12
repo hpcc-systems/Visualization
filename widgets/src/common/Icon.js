@@ -10,7 +10,9 @@
         this._class = "common_Icon";
 
         this._shape = new Shape();
-        this._faChar = new FAChar();
+        this._faChar = new FAChar()
+            .color_fill("#ffffff")
+        ;
     };
     Icon.prototype = Object.create(SVGWidget.prototype);    
 
@@ -18,6 +20,9 @@
     Icon.prototype.publishProxy("faChar", "_faChar", "char");
     Icon.prototype.publish("padding", 4, "number", "Padding");
     Icon.prototype.publish("scale", 1, "number", "Scale");
+    Icon.prototype.publishProxy("shape_color_fill", "_shape", "color_fill");
+    Icon.prototype.publishProxy("shape_color_stroke", "_shape", "color_stroke");
+    Icon.prototype.publishProxy("image_color_fill", "_faChar", "color_fill");
 
     Icon.prototype.testData = function () {
         this._faChar.testData();

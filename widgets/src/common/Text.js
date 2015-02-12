@@ -13,6 +13,7 @@
     Text.prototype.publish("text", "", "string", "Display Text");
     Text.prototype.publish("fontFamily", "", "string", "Font Family");
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["", "start", "middle", "end"]);
+    Text.prototype.publish("color_fill", "#000000", "html-color", "Fill Color");
 
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");
@@ -35,6 +36,7 @@
             .attr("x", "0")
         ;
         textLine
+            .style("fill", this._color_fill)
             .text(function (d) { return d; })
         ;
         textLine.exit()

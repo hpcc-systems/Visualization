@@ -15,6 +15,7 @@
     };
     FAChar.prototype = Object.create(SVGWidget.prototype);
     FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
+    FAChar.prototype.publishProxy("color_fill", "_text");
 
     FAChar.prototype.testData = function () {
         this.char("\uf118");

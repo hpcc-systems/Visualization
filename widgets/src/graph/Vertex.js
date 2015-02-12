@@ -15,18 +15,22 @@
     };
     Vertex.prototype = Object.create(SVGWidget.prototype);
 
-    Vertex.prototype.faChar = function (_) {
-        if (!arguments.length) return this._icon.faChar();
-        this._icon.faChar(_);
+    Vertex.prototype.publishProxy("faChar", "_icon");
+    Vertex.prototype.publishProxy("icon_shape_color_fill", "_icon", "shape_color_fill");
+    Vertex.prototype.publishProxy("icon_shape_color_stroke", "_icon", "shape_color_stroke");
+    Vertex.prototype.publishProxy("icon_image_color_fill", "_icon", "image_color_fill");
+
+    Vertex.prototype.publishProxy("text", "_textBox");
+    Vertex.prototype.publishProxy("anchor", "_textBox");
+    Vertex.prototype.publishProxy("textbox_shape_color_stroke", "_textBox", "shape_color_stroke");
+    Vertex.prototype.publishProxy("textbox_shape_color_fill", "_textBox", "shape_color_fill");
+    Vertex.prototype.publishProxy("textbox_text_color_fill", "_textBox", "text_color_fill");
+
+    Vertex.prototype.testData = function (_) {
+        this._icon.testData();
+        this._textBox.testData();
         return this;
     };
-
-    Vertex.prototype.text = function (_) {
-        if (!arguments.length) return this._textBox.text();
-        this._textBox.text(_);
-        return this;
-    };
-
     //  Render  ---
     Vertex.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
@@ -42,13 +46,12 @@
 
     Vertex.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        var pos = this._textBox.pos();
-        var bbox = this._textBox.getBBox();
-        var w = bbox.width;
-        var h = bbox.height;
-        var iconClientSize = this._icon.getBBox();
+        this._icon.render();
+        var iconClientSize = this._icon.getBBox(true);
+        this._textBox.render();
+        var bbox = this._textBox.getBBox(true);
         this._icon
-            .move({ x: -(w / 2) + (iconClientSize.width / 3), y: -(h / 2) - (iconClientSize.height / 3) })
+            .move({ x: -(bbox.width / 2) + (iconClientSize.width / 3), y: -(bbox.height / 2) - (iconClientSize.height / 3) })
         ;
     };
 

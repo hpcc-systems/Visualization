@@ -12,11 +12,16 @@
 
         this._shape = new Shape()
             .shape("rect")
+            .color_fill("#dcf1ff")
         ;
-        this._text = new Text();
+        this._text = new Text()
+        ;
     };
     TextBox.prototype = Object.create(SVGWidget.prototype);
     TextBox.prototype.publishProxy("text", "_text");
+    TextBox.prototype.publishProxy("shape_color_stroke", "_shape", "color_stroke");
+    TextBox.prototype.publishProxy("shape_color_fill", "_shape", "color_fill");
+    TextBox.prototype.publishProxy("text_color_fill", "_text", "color_fill");
     TextBox.prototype.publish("padding_left", 4, "number", "Padding:  Left");
     TextBox.prototype.publish("padding_right", 4, "number", "Padding:  Right");
     TextBox.prototype.publish("padding_top", 4, "number", "Padding:  Top");

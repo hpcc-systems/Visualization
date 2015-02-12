@@ -15,6 +15,8 @@
     Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"]);
     Shape.prototype.publish("width", 24, "number", "Width");
     Shape.prototype.publish("height", 24, "number", "Height");
+    Shape.prototype.publish("color_stroke", "#1f77b4", "html-color", "Stroke Color");
+    Shape.prototype.publish("color_fill", "#1f77b4", "html-color", "Fill Color");
 
     Shape.prototype.radius = function (_) {
         if (!arguments.length) return Math.sqrt(Math.pow(this._width / 2, 2) + Math.pow(this._height / 2, 2));
@@ -43,17 +45,21 @@
         ;
         var context = this;
         shape.each(function (d) {
-            var elemeent = d3.select(this);
+            var element = d3.select(this);
+            element.style({
+                fill: context._color_fill,
+                stroke: context._color_stroke
+            });
             switch (context._shape) {
                 case "circle":
                     var radius = context.radius();
-                    elemeent
+                    element
                         .attr("r", radius)
                     ;
                     break;
                 case "square":
                     var width = Math.max(context._width, context._height);
-                    elemeent
+                    element
                         .attr("x", -width / 2)
                         .attr("y", -width / 2)
                         .attr("width", width)
@@ -61,7 +67,7 @@
                     ;
                     break;
                 case "rect":
-                    elemeent
+                    element
                         .attr("x", -context._width / 2)
                         .attr("y", -context._height / 2)
                         .attr("width", context._width)
@@ -69,7 +75,7 @@
                     ;
                     break;
                 case "ellipse":
-                    elemeent
+                    element
                         .attr("rx", context._width / 2)
                         .attr("ry", context._height / 2)
                     ;

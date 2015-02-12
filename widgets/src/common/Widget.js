@@ -135,6 +135,16 @@
                         console.log("Invalid value for '" + id + "':  " + _);
                     }
                     break;
+                case "html-color":
+                    var litmus = 'red';
+                    var d = document.createElement('div');
+                    d.style.color=litmus;
+                    d.style.color=_;
+                    //Element's style.color will be reverted to litmus or set to '' if an invalid color is given
+                    if( _ !== litmus && (d.style.color === litmus || d.style.color === '')){
+                        throw "Invalid value for '" + id + "':  " + _;
+                    }
+                    break;
                 case "boolean":
                     _ = Boolean(_);
                     break;

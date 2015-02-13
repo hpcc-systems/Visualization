@@ -231,14 +231,22 @@
                         //  Maps ---
                         require(["src/map/ChoroplethStates"], function (ChoroplethStates) {
                             new ChoroplethStates()
-                                .testStateData()
                                 .target("choropleth")
+                                .testData()
                                 .render()
                             ;
                         });
                         require(["src/map/ChoroplethCounties"], function (ChoroplethCounties) {
                             new ChoroplethCounties()
                                 .target("choroplethCounties")
+                                .testData()
+                                .render()
+                            ;
+                        });
+                        require(["src/map/ChoroplethCountries"], function (ChoroplethCountries) {
+                            new ChoroplethCountries()
+                                .target("choroplethCountries")
+                                .testData()
                                 .render()
                             ;
                         });
@@ -317,13 +325,13 @@
                                     .target("choroSurface")
                                     .title("States/Palette")
                                     .faChar("\uf024")
-                                    .content(new ChoroplethStates().testStateData().palette("BuPu"))
-                                    .menu(Palette.brewer())
+                                    .content(new ChoroplethStates().testData().paletteID("BuPu"))
+                                    .menu(Palette.rainbow())
                                     .render()
                                 ;
                                 choroSurface._menu.click = function (d) {
                                     choroSurface._content
-                                        .palette(d)
+                                        .paletteID(d)
                                         .render(d)
                                     ;
                                 }
@@ -484,6 +492,7 @@
             <br style="clear:both" />
             <div id="choropleth" class="large thumb"></div>
             <div id="choroplethCounties" class="large thumb"></div>
+            <div id="choroplethCountries" class="large thumb"></div>
             <div id="gmap" class="large thumb"></div>
             <br style="clear:both" />
             Graphs/Hierarchies

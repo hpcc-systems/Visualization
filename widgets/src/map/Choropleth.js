@@ -14,8 +14,6 @@
         this._dataMap = {};
         this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
-
-        this.active = d3.select(null);
     };
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.implements(IChoropleth.prototype);
@@ -53,10 +51,6 @@
                     .attr("height", this._size.height)
                 ;
             }
-            this.d3Projection
-                .scale(this.size().width * 120 / 100)
-                .translate([this.size().width * 2.5 / 100, 0])
-            ;
         }
         return retVal;
     }
@@ -66,8 +60,7 @@
         this._projection = _;
         switch (this._projection) {
             case "albersUsaPr":
-                this.d3Projection = this.albersUsaPr()
-                ;
+                this.d3Projection = this.albersUsaPr();
                 break;
             case "orthographic":
                 this.d3Projection = d3.geo.orthographic()
@@ -75,14 +68,20 @@
                 ;
                 break;
             case "mercator":
-                this.d3Projection = d3.geo.mercator()
-                ;
+                this.d3Projection = d3.geo.mercator();
                 break;
         }
         this.d3Path = d3.geo.path()
             .projection(this.d3Projection)
         ;
+        return this;
+    }
 
+    Choropleth.prototype.render = function () {
+        SVGWidget.prototype.render.apply(this, arguments);
+        if (this._renderCount === 1) {
+            this.zoomToFit();
+        }
         return this;
     }
 
@@ -96,7 +95,7 @@
             .attr("width", this._size.width)
             .attr("height", this._size.height)
             .on("dblclick", function (d) {
-                context.resetZoom();
+                context.zoomToFit(null, 750);
             })
         ;
 
@@ -278,33 +277,17 @@
         return albersUsa.scale(1070);
     }
 
-    Choropleth.prototype.zoomToPath = function (self, d, scaleFactor) {
-        if (this.active.node() === self) return this.resetZoom();
-        scaleFactor = scaleFactor || 0.9;
+    Choropleth.prototype.zoomToFit = function (node, transitionDuration, scaleFactor) {
+        var scaleFactor = scaleFactor || 0.9;
 
-        this.active.classed("active", false);
-        this.active = d3.select(self).classed("active", true);
+        var bbox = node ? node.getBBox() : this._svg.node().getBBox();
+        var x = bbox.x + bbox.width / 2;
+        var y = bbox.y + bbox.height / 2;
+        var scale = scaleFactor / Math.max(bbox.width / this.width(), bbox.height / this.height());
+        var translate = [-scale * x, -scale * y];
 
-        var bounds = this.d3Path.bounds(d),
-            dx = bounds[1][0] - bounds[0][0],
-            dy = bounds[1][1] - bounds[0][1],
-            x = (bounds[0][0] + bounds[1][0]) / 2,
-            y = (bounds[0][1] + bounds[1][1]) / 2,
-            scale = scaleFactor / Math.max(dx / this.width(), dy / this.height()),
-            translate = [- scale * x, - scale * y];
-
-        this._svg.transition()
-            .duration(750)
-            .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-    }
-
-    Choropleth.prototype.resetZoom = function () {
-        this.active.classed("active", false);
-        this.active = d3.select(null);
-
-        this._svg.transition()
-            .duration(750)
-            .attr("transform", "")
+        (transitionDuration ? this._svg.transition().duration(transitionDuration) : this._svg)
+            .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
         ;
     }
 

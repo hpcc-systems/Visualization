@@ -51,7 +51,9 @@
         });
     };
 
-    Pie.prototype.update = function (domNode, element) {
+    Pie.prototype.update = function (domNode, element) {     
+        Common.prototype.update.apply(this, arguments);
+
         var context = this;
 
         var colors = this._data.map(function (row) {

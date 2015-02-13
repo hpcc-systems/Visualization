@@ -28,7 +28,9 @@
         });
     };
 
-    Line.prototype.update = function (domNode, element) {
+    Line.prototype.update = function (domNode, element) {     
+        Common.prototype.update.apply(this, arguments);
+
         var context = this;
 
         var colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {

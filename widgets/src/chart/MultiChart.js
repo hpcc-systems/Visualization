@@ -153,7 +153,7 @@
 
     MultiChart.prototype.render = function () {
         SVGWidget.prototype.render.apply(this, arguments);
-        if (this._chartType && this._renderCount == 1) {
+        if (this._chartType && this._renderCount === 1) {
             this.chartType(this._chartType);
         }
         return this;

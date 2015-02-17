@@ -26,7 +26,7 @@
             tmp = tmp.split("&");
             tmp.map(function (item) {
                 var tmpItem = item.split("=");
-                params[tmpItem[0]] = tmpItem[1];
+                params[decodeURIComponent(tmpItem[0])] = decodeURIComponent(tmpItem[1]);
             });
         }
         this._protocol = parser.protocol;

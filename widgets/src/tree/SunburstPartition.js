@@ -52,14 +52,15 @@
             .style("stroke", function (d) {
                 return d.value > 16 ? "white" : "none";
             })
-            .on("click", click)
+            .on("click", function (d) { context.click(d); })
+            .on("dblclick", dblclick)
         ;
 
         path.append("title")
             .text(function (d) { return d.label })
         ;
 
-        function click(d) {
+        function dblclick(d) {
             path.transition()
                 .duration(750)
                 .attrTween("d", arcTween(d))

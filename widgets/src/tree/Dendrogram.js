@@ -56,9 +56,12 @@
             .attr("class", "node")
         ;
         var context = this;
+        node.on("click", function (d) { context.click(d); })
         node.append("circle")
             .attr("r", 4.5)
             .style("fill", function (d) { return context._palette(d.label); })
+            .append("title")
+            .text(function (d) { return d.label; })
         ;
         node.append("text")
             .attr("dx", function (d) { return d.children ? -8 : 8; })

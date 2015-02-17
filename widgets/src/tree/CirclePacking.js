@@ -46,8 +46,10 @@
           .enter().append("circle")
             .attr("class", function (d) { return d.parent ? d.children ? "node" : "node leaf" : "node root"; })
             .style("fill", function (d) { return context._palette(d.label); })
-            .on("click", function (d) { if (focus !== d) context.zoom(d), d3.event.stopPropagation(); })
+            .on("click", function (d) { context.click(d); })
+            .on("dblclick", function (d) { if (focus !== d) context.zoom(d), d3.event.stopPropagation(); })
         ;
+        this.circle.append("title").text(function (d) { return d.label; });
 
         var text = this.svg.selectAll("text")
             .data(nodes)
@@ -87,9 +89,8 @@
             })
         ;
 
-        var transition = d3.transition()
-            .delay(1000)
-            .duration(3000)
+        var transition = this.svg.transition()
+            .duration(1000)
             .tween("zoom", function (d) {
                 var i = d3.interpolateZoom(context.view, [focus.x, focus.y, focus.r * 2]);
                 return function (t) { context.zoomTo(i(t)); };

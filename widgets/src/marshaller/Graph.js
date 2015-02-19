@@ -61,7 +61,7 @@
                             }
                             newSurface = new ResizeSurface()
                                 .size({ width: width, height: height })
-                                .title(item.id)
+                                .title(item.title)
                                 .content(item.widget)
                             ;
                         }

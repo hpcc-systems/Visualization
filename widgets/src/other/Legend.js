@@ -15,7 +15,7 @@
        
     Legend.prototype._columns = ["Label", "Count"];  
     Legend.prototype.publish("paletteID", "default", "set", "Palette ID", Legend.prototype._palette.switch());
-    Legend.prototype.publish("col_count", 2, "number", "Col Count");
+    Legend.prototype.publish("col_count", 2, "number", "Column Count");
     
     Legend.prototype.publish("shape_type", "rect", "set", "Sample Shape", ["","rect","circle"]);
     Legend.prototype.publish("shape_width", 18, "number", "Sample Width");
@@ -79,19 +79,20 @@
         ;
         
         var col_padding = 8;
-        var total_cols_width = (col_width * context._col_count) + (col_padding * (context._col_count - 1));
+        var col_ct = this._col_count > legend.size() ? legend.size() : this._col_count;
+        var total_cols_width = (col_width * col_ct) + (col_padding * (col_ct - 1));
         var centering_xOffset = total_cols_width/2;
 
         var total_cols_height = col_height;
         var centering_yOffset = total_cols_height/2;
         
-        d3.select(this._target).select("g")
-            .selectAll("g").attr("transform", function(d, i) {
+        element.selectAll("g")
+                .attr("transform", function(d, i) {
                 
-                var row_offset = Math.ceil((i+1) / context._col_count) - 1;
+                var row_offset = Math.ceil((i+1) / col_ct) - 1;
         
-                var trans_x = (col_width * (i%context._col_count)) - centering_xOffset;
-                trans_x += i%context._col_count > 0 ? col_padding : 0;
+                var trans_x = (col_width * (i%col_ct)) - centering_xOffset;
+                trans_x += i%col_ct > 0 ? col_padding : 0;
                 var trans_y = (row_offset * (context._shape_height + (2*context._shape_margin))) - centering_yOffset;
                 
                 return "translate(" + trans_x + "," + trans_y + ")";

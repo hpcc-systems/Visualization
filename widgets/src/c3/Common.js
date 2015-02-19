@@ -15,13 +15,6 @@
         var context = this;
         this._config = {
             axis: {
-                x: {
-                    type: 'category',
-                    tick: {
-                        centered: true,
-                        multiline: false
-                    }
-                }
             },
             legend: {
                 position: 'bottom',
@@ -65,7 +58,7 @@
     };
 
     Common.prototype.getC3Columns = function (total) {
-        total = total || this._data.length;
+        total = total || this._columns.length;
         var retVal = [];
         for (var i = 1; i < total; ++i) {
             retVal.push(this.getC3Column(i));

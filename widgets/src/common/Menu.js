@@ -1,21 +1,22 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Icon", "./IMenu", "./List", "css!./Menu"], factory);
+        define(["./SVGWidget", "./IMenu", "./Icon", "./List", "css!./Menu"], factory);
     } else {
-        root.Entity = factory(root.Icon, root.IMenu, root.List);
+        root.Entity = factory(root.SVGWidget, root.IMenu, root.Icon, root.List);
     }
-}(this, function (Icon, IMenu, List) {
+}(this, function (SVGWidget, IMenu, Icon, List) {
     function Menu() {
-        Icon.call(this);
+        SVGWidget.call(this);
         IMenu.call(this);
         this._class = "common_Menu";
 
-        this._shape
+        this._icon = new Icon()
             .shape("rect")
+            .diameter(14)
+            .padding_percent(10)
         ;
         this._list = new List();
-        this.padding(0);
 
         var context = this;
         this._list.click = function (d) {
@@ -25,8 +26,12 @@
         };
         this._visible = false;
     };
-    Menu.prototype = Object.create(Icon.prototype);
+    Menu.prototype = Object.create(SVGWidget.prototype);
     Menu.prototype.implements(IMenu.prototype);
+
+    Menu.prototype.publishProxy("faChar", "_icon");
+    Menu.prototype.publishProxy("diameter", "_icon");
+    Menu.prototype.publishProxy("padding_percent", "_icon");
 
     Menu.prototype.toggleMenu = function () {
         if (!this._visible) {
@@ -44,7 +49,7 @@
             .render()
         ;
 
-        var bbox = this._shape.getBBox(true);
+        var bbox = this._icon.getBBox(true);
         var menuBBox = this._list.getBBox(true);
         var pos = {
             x: bbox.width / 2 - menuBBox.width / 2,
@@ -77,15 +82,22 @@
     };
 
     Menu.prototype.testData = function () {
+        this._icon
+            .faChar("\uf0c9")
+        ;
         this
-            .faChar("\uf0c9 Menu")
             .data(["Menu A", "And B", "a longer C"])
         ;
         return this;
     }
 
     Menu.prototype.enter = function (domNode, element) {
-        Icon.prototype.enter.apply(this, arguments);
+        SVGWidget.prototype.enter.apply(this, arguments);
+
+        this._icon
+            .target(domNode)
+            .render()
+        ;
 
         this._list
             .target(domNode)
@@ -93,7 +105,7 @@
         ;
 
         var context = this;
-        this._faChar.element()
+        this._icon.element()
             .on("click", function (d) {
                 d3.event.stopPropagation();
                 context.toggleMenu();
@@ -102,7 +114,7 @@
     };
 
     Menu.prototype.update = function (domNode, element) {
-        Icon.prototype.update.apply(this, arguments);
+        SVGWidget.prototype.update.apply(this, arguments);
         element
             .classed("disabled", this._data.length === 0)
         ;

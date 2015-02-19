@@ -58,20 +58,12 @@
         SVGWidget.prototype.update.apply(this, arguments);
 
         this._text
-            .pos({
-                x: (this._padding_left - this._padding_right) / 2,
-                y: (this._padding_top - this._padding_bottom) / 2
-            })
             .render()
         ;
         var textBBox = this._text.getBBox(true);
-        var bbox = {
-            width: textBBox.width,
-            height: textBBox.height
-        };
         var size = {
-            width: this._fixedSize ? this._fixedSize.width : bbox.width + this._padding_left + this._padding_right,
-            height: this._fixedSize ? this._fixedSize.height : bbox.height + this._padding_top + this._padding_bottom
+            width: this._fixedSize ? this._fixedSize.width : textBBox.width + this._padding_left + this._padding_right,
+            height: this._fixedSize ? this._fixedSize.height : textBBox.height + this._padding_top + this._padding_bottom
         };
         this._shape
             .width(size.width)

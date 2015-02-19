@@ -13,7 +13,9 @@
     };
     Line.prototype = Object.create(XYAxis.prototype);
     Line.prototype.implements(INDChart.prototype);
-
+	
+    Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch());
+	
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);
         var context = this;
@@ -21,6 +23,8 @@
 
     Line.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
+		
+        this._palette = this._palette.switch(this._paletteID);
         var d3Line = d3.svg.line()
             .x(function (d) {
                 switch (context._xScale) {
@@ -38,6 +42,8 @@
 
         line.enter().append("path")
             .attr("class", "dataLine")
+        ;
+        line 
             .style("stroke", function (d, i) {
                 return context._palette(context._columns[i + 1]);
             })

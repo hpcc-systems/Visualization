@@ -26,5 +26,12 @@
     Common1D.prototype = Object.create(Common.prototype);
     Common1D.prototype.implements(I1DChart.prototype);
 
+    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch());
+	
+    Common1D.prototype.update = function (domNode, element) {
+        Common.prototype.update.apply(this, arguments);
+        this._palette = this._palette.switch(this._paletteID);
+    };
+
     return Common1D;
 }));

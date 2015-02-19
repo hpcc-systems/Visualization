@@ -1,16 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common", "../chart/I1DChart"], factory);
+        define(["./Common1D"], factory);
     } else {
-        root.Gauge = factory(root.Common, root.I1DChart);
+        root.Gauge = factory(root.Common1D);
     }
-}(this, function (Common, I1DChart) {
+}(this, function (Common1D) {
     function Gauge(target) {
-        Common.call(this);
-        I1DChart.call(this);
-        this._class = "c3_Gauge";
+        Common1D.call(this);
 
+        this._class = "c3_Gauge";
         this._type = "gauge";
 
         var context = this;
@@ -23,8 +22,7 @@
             return context._palette(context._data, context._low, context._high);
         };
     };
-    Gauge.prototype = Object.create(Common.prototype);
-    Gauge.prototype.implements(I1DChart.prototype);
+    Gauge.prototype = Object.create(Common1D.prototype);
 
     Gauge.prototype.publish("low", 0, "number", "Gauge lower bound");
     Gauge.prototype.publish("high", 100, "number", "Gauge higher bound");
@@ -32,11 +30,9 @@
     Gauge.prototype.publish("arc_width", 50, "number", "Gauge width of arc");
     Gauge.prototype.publish("show_labels", true, "boolean", "Show Labels");
     Gauge.prototype.publish("show_value_label", true, "boolean", "Show Value Label");
-    Gauge.prototype.publish("paletteID", "RdYlGn", "set", "Palette ID", Gauge.prototype._palette.switch());
 
     Gauge.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
-        this._palette = this._palette.switch(this._paletteID);
+        Common1D.prototype.update.apply(this, arguments);
 
         this.c3Chart.internal.config.gauge_min = this.low();
         this.c3Chart.internal.config.gauge_max = this.high();

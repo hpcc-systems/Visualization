@@ -21,7 +21,9 @@
     };
     Bubble.prototype = Object.create(SVGWidget.prototype);
     Bubble.prototype.implements(I2DChart.prototype);
-
+	
+    Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch());
+	
     Bubble.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -35,6 +37,7 @@
     Bubble.prototype.update = function (domNode, element) {
         var context = this;
 
+        this._palette = this._palette.switch(this._paletteID);
         var node = element.selectAll(".node")
             .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })            
         ;
@@ -50,7 +53,6 @@
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .style("fill", function (d) { return context._palette(d[0]); })
                     .append("title")
                 ;
                 if (d.__viz_faChar) {
@@ -77,6 +79,7 @@
                 var pos = { x: d.x - context._size.width / 2, y: d.y - context._size.height / 2 }
                 element.select("circle").transition()
                     .attr("transform", function (d) { return "translate(" + pos.x + "," + pos.y + ")"; })
+                    .style("fill", function (d) { return context._palette(d[0]); })
                     .attr("r", function (d) { return d.r; })
                     .select("title")
                         .text(function (d) { return d[0] + " (" + d[1] + ")"; })

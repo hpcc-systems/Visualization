@@ -13,7 +13,9 @@
     };
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
     CirclePacking.prototype.implements(ITree.prototype);
-
+	
+    CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch());
+	
     CirclePacking.prototype.enter = function (domNode, element) {
         var context = this;
 
@@ -33,7 +35,8 @@
 
     CirclePacking.prototype.update = function (domNode, element) {
         var context = this;
-
+		
+        this._palette = this._palette.switch(this._paletteID);
         this.svg.selectAll("circle").remove();
         this.svg.selectAll("text").remove();
 

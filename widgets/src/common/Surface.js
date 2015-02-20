@@ -12,7 +12,7 @@
 
         this._menuPadding = 2;
         this._icon = new Icon()
-            .padding(4)
+            .padding_percent(50)
         ;
         this._container = new Shape()
             .class("container")
@@ -27,7 +27,7 @@
         ;
         this._menu = new Menu()
             .faChar("\uf0c9")
-            .padding(0)
+            .padding_percent(0)
         ;
         var context = this;
         this._menu.preShowMenu = function () {
@@ -144,7 +144,7 @@
         ;
         var iconClientSize = this._icon.getBBox(true);
         var textClientSize = this._text.getBBox(true);
-        var menuClientSize = this._menu._faChar.getBBox(true);
+        var menuClientSize = this._menu.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height);
         var yTitle = (-this._size.height + titleRegionHeight) / 2;
 

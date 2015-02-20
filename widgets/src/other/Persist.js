@@ -37,13 +37,15 @@
             };
             if (properties && properties.length) {
                 properties.forEach.forEach(function (item) {
-                    retVal.__properties[item + "_enable"] = widget[item + "_enable"]();
-                    retVal.__properties[item] = widget[item]();
+                    if (item.defaultValue !== widget[item.id]()) {
+                        retVal.__properties[item] = widget[item]();
+                    }
                 });
             } else {
                 this.discover(widget, true).forEach(function (item) {
-                    retVal.__properties[item.id + "_enable"] = widget[item.id + "_enable"]();
-                    retVal.__properties[item.id] = widget[item.id]();
+                    if (item.defaultValue !== widget[item.id]()) {
+                        retVal.__properties[item.id] = widget[item.id]();
+                    }
                 });
             }
             if (includeData) {

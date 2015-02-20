@@ -117,24 +117,18 @@
     };
 
     // Serialization  ---
-    Widget.prototype.publish = function (id, defaultValue, type, description, set, optional, ext) {
+    Widget.prototype.publish = function (id, defaultValue, type, description, set, ext) {
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published."
         }
         this["__meta_" + id] = {
             id: id,
             type: type,
+            defaultValue: defaultValue,
             description: description,
             set: set,
-            optional: optional,
             ext: ext || {}
         }
-        this[id + "_enable"] = function (_) {
-            if (!arguments.length) return this["_" + id + "_enable"];
-            this["_" + id + "_enable"] = _;
-            return this;
-        };
-        this["_" + id + "_enable"] = false;
         this[id] = function (_) {
             if (!arguments.length) return this["_" + id];
             switch (type) {
@@ -150,7 +144,7 @@
                     d.style.color=_;
                     //Element's style.color will be reverted to litmus or set to '' if an invalid color is given
                     if( _ !== litmus && (d.style.color === litmus || d.style.color === '')){
-                        throw "Invalid value for '" + id + "':  " + _;
+                        console.log("Invalid value for '" + id + "':  " + _);
                     }
                     break;
                 case "boolean":
@@ -162,11 +156,25 @@
                 case "string":
                     _ = String(_);
                     break;
+                case "array":
+                    if (!(_ instanceof Array)) {
+                        console.log("Invalid value for '" + id);
+                    }
+                    break;
             }
             this["_" + id] = _;
             return this;
         };
         this["_" + id] = defaultValue;
+    };
+
+    Widget.prototype.publishWidget = function (prefix, WidgetType, id) {
+        for (var key in WidgetType.prototype) {
+            if (key.indexOf("__meta") === 0) {
+                var publishItem = WidgetType.prototype[key];
+                this.publishProxy(prefix + "_" + publishItem.id, id, publishItem.method || publishItem.id)
+            }
+        }
     };
 
     Widget.prototype.publishProxy = function (id, proxy, method, _private) {
@@ -182,11 +190,6 @@
                 method: method
             }
         }
-        this[id + "_enable"] = function (_) {
-            if (!arguments.length) return this[proxy][method + "_enable"]();
-            this[proxy][method + "_enable"](_);
-            return this;
-        };
         this[id] = function (_) {
             if (!arguments.length) return this[proxy][method]();
             this[proxy][method](_);

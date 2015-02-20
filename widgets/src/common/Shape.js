@@ -15,13 +15,13 @@
     Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"]);
     Shape.prototype.publish("width", 24, "number", "Width");
     Shape.prototype.publish("height", 24, "number", "Height");
-    Shape.prototype.publish("color_stroke", "#1f77b4", "html-color", "Stroke Color", null, true);
-    Shape.prototype.publish("color_fill", "#1f77b4", "html-color", "Fill Color", null, true);
+    Shape.prototype.publish("color_stroke", "#1f77b4", "html-color", "Stroke Color", null);
+    Shape.prototype.publish("color_fill", "#1f77b4", "html-color", "Fill Color", null);
 
     Shape.prototype.radius = function (_) {
-        if (!arguments.length) return Math.sqrt(Math.pow(this._width / 2, 2) + Math.pow(this._height / 2, 2));
-        this._width = _ * Math.sqrt(2);
-        this._height = this._width;
+        if (!arguments.length) return Math.max(this._width, this._height) / 2;
+        this._width = _;
+        this._height = _;
         return this;
     };
 
@@ -47,8 +47,8 @@
         shape.each(function (d) {
             var element = d3.select(this);
             element.style({
-                fill: context._color_fill_enable ? context._color_fill : null,
-                stroke: context._color_stroke_enable ? context._color_stroke : null
+                fill: context._color_fill !== context.__meta_color_fill.defaultValue ? context._color_fill : null,
+                stroke: context._color_stroke !== context.__meta_color_stroke.defaultValue ? context._color_stroke : null
             });
             switch (context._shape) {
                 case "circle":

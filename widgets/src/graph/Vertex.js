@@ -12,6 +12,7 @@
 
         this._icon = new Icon();
         this._textBox = new TextBox();
+        this._annotationWidgets = {};
     };
     Vertex.prototype = Object.create(SVGWidget.prototype);
 
@@ -26,9 +27,14 @@
     Vertex.prototype.publishProxy("textbox_shape_color_fill", "_textBox", "shape_color_fill");
     Vertex.prototype.publishProxy("textbox_text_color_fill", "_textBox", "text_color_fill");
 
+    Vertex.prototype.publish("annotation_diameter", 14, "number", "Annotation Diameter");
+    Vertex.prototype.publish("annotation_spacing", 3, "number", "Annotation Spacing");
+    Vertex.prototype.publish("annotation_icons", [], "array", "Annotations");
+
     Vertex.prototype.testData = function (_) {
         this._icon.testData();
         this._textBox.testData();
+        this.annotation_icons([{ faChar: "\uf188", tooltip: "Test A", shape_color_fill: "white", image_color_fill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_color_fill: "green", shape_color_stroke: "green", image_color_fill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_color_fill: "navy", shape_color_stroke: "navy", image_color_fill: "white" }])
         return this;
     };
 
@@ -53,6 +59,53 @@
         var bbox = this._textBox.getBBox(true);
         this._icon
             .move({ x: -(bbox.width / 2) + (iconClientSize.width / 3), y: -(bbox.height / 2) - (iconClientSize.height / 3) })
+        ;
+
+        var context = this;
+        var annotations = element.selectAll(".annotation").data(this._annotation_icons);
+        annotations.enter().append("g")
+            .attr("class", "annotation")
+            .each(function (d, idx) {
+                context._annotationWidgets[idx] = new Icon()
+                    .target(this)
+                    .shape("square")
+                ;
+            })
+        ;
+        var xOffset = bbox.width / 2;
+        var yOffset = bbox.height / 2;
+        annotations
+            .each(function (d, idx) {
+                var annotationWidget = context._annotationWidgets[idx];
+                var ddd = context.textbox_shape_color_stroke();
+                annotationWidget
+                    .diameter(context._annotation_diameter)
+                    .shape_color_fill(context.textbox_shape_color_fill())
+                    .shape_color_stroke(context.textbox_shape_color_stroke())
+                ;
+                for (var key in d) {
+                    if (annotationWidget[key]) {
+                        annotationWidget[key](d[key]);
+                    }
+                }
+                annotationWidget.render();
+
+                var aBBox = annotationWidget.getBBox(true);
+                annotationWidget
+                    .move({
+                        x: xOffset - aBBox.width / 4,
+                        y: yOffset + aBBox.height / 4
+                    })
+                ;
+                xOffset -= aBBox.width + context._annotation_spacing;
+            })
+        ;
+        annotations.exit()
+            .each(function (d, idx) {
+                var element = d3.select(this);
+                delete context._annotationWidgets[idx];
+                element.remove();
+            })
         ;
     };
 

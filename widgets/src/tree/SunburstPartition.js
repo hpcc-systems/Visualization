@@ -13,7 +13,9 @@
     };
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
     SunburstPartition.prototype.implements(ITree.prototype);
-
+	
+    SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch());
+	
     SunburstPartition.prototype.enter = function (domNode, element) {
         var context = this;
 
@@ -43,7 +45,8 @@
 
     SunburstPartition.prototype.update = function (domNode, element) {
         var context = this;
-
+		
+        this._palette = this._palette.switch(this._paletteID);
         var path = this.svg.selectAll("path")
             .data(this.partition.nodes(this._data))
             .enter().append("path")

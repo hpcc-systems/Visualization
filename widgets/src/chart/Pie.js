@@ -30,7 +30,9 @@
     };
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
-
+	
+    Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch());
+	
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -65,7 +67,8 @@
 
     Pie.prototype.update = function (domNode, element) {
         var context = this;
-
+		
+        this._palette = this._palette.switch(this._paletteID);
         var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 
         //  Enter  ---
@@ -78,7 +81,6 @@
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .style("fill", function (d) { return context._palette(d.data[0]); })
                     .attr("d", context.d3Arc)
                     .append("title")
                 ;
@@ -119,6 +121,7 @@
                 var element = d3.select(this);
                 element.select("path").transition()
                     .attr("d", context.d3Arc)
+                    .style("fill", function (d) { return context._palette(d.data[0]); })
                     .select("title")
                         .text(function (d) { return d.data[0] + " (" + d.data[1] + ")"; })
                 ;

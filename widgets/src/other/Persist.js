@@ -31,16 +31,18 @@
 
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
-                __version: 1,
+                __version: 2,
                 __class: widget._class,
                 __properties: {}
             };
             if (properties && properties.length) {
                 properties.forEach.forEach(function (item) {
+                    retVal.__properties[item + "_enable"] = widget[item + "_enable"]();
                     retVal.__properties[item] = widget[item]();
                 });
             } else {
                 this.discover(widget, true).forEach(function (item) {
+                    retVal.__properties[item.id + "_enable"] = widget[item.id + "_enable"]();
                     retVal.__properties[item.id] = widget[item.id]();
                 });
             }

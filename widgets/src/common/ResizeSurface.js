@@ -96,6 +96,8 @@
                     .showContent(true)
                     .render()
                 ;
+                context._container.getBBox(true);
+                context._titleRect.getBBox(true);
                 context.dispatch.sizeend(context, d.loc);
             })
         ;

@@ -60,9 +60,7 @@
             .attr("class", "node")
         ;
 
-        node.on("click", function (d) { context.click(d); })
-        node.append("circle")
-        
+        node_enter.on("click", function (d) { context.click(d); });
         node_enter.append("circle");
         node_enter.append("text");
         

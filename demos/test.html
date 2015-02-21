@@ -86,7 +86,7 @@
                             .render()
                         ;
                         new Menu()
-                            .faChar("\uf0c9 Menu")
+                            .faChar("\uf0c9")
                             .data(["Menu A", "And B", "a longer C"])
                             .target("menu")
                             .pos({ x: 50, y: 10 })
@@ -110,8 +110,8 @@
                                 new Vertex().text("Graph\nVertex").faChar("\uf080"),
                                 new Shape().shape("rect").size({ width: 48, height: 22 }),
                                 new List().testData(),
-                                new Menu().faChar("\uf0c9 Menu").data(["Menu A", "And B", "a longer C"]),
-                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).faChar("\uf047").content(new Dendrogram().testData())
+                                new Menu().faChar("\uf0c9").data(["Menu A", "And B", "a longer C"]),
+                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(new Dendrogram().testData())
                             ];
                             var edges = [
                                 createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),
@@ -307,7 +307,7 @@
                                 .testData()
                                 .chartType("COLUMN")
                                 .title("2D Charts")
-                                .faChar("\uf080")
+                                .icon_faChar("\uf080")
                                 .mode("2d")
                                 .render()
                             ;
@@ -316,7 +316,7 @@
                                 .testData()
                                 .chartType("GOOGLE_COLUMN")
                                 .title("Multi Charts")
-                                .faChar("\uf080")
+                                .icon_faChar("\uf080")
                                 .mode("multi")
                                 .render()
                             ;
@@ -324,7 +324,7 @@
                                 var choroSurface = new Surface()
                                     .target("choroSurface")
                                     .title("States/Palette")
-                                    .faChar("\uf024")
+                                    .icon_faChar("\uf024")
                                     .content(new ChoroplethStates().testData().paletteID("BuPu"))
                                     .menu(Palette.rainbow())
                                     .render()

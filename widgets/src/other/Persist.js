@@ -37,13 +37,13 @@
             };
             if (properties && properties.length) {
                 properties.forEach.forEach(function (item) {
-                    if (item.defaultValue !== widget[item.id]()) {
+                    if (widget[item.id + "_modified"]()) {
                         retVal.__properties[item] = widget[item]();
                     }
                 });
             } else {
                 this.discover(widget, true).forEach(function (item) {
-                    if (item.defaultValue !== widget[item.id]()) {
+                    if (widget[item.id + "_modified"]()) {
                         retVal.__properties[item.id] = widget[item.id]();
                     }
                 });

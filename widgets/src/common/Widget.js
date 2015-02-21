@@ -165,6 +165,12 @@
             this["_" + id] = _;
             return this;
         };
+        this[id + "_modified"] = function () {
+            return this["_" + id] !== defaultValue;
+        }
+        this[id + "_reset"] = function () {
+            this["_" + id] = defaultValue;
+        }
         this["_" + id] = defaultValue;
     };
 
@@ -177,24 +183,33 @@
         }
     };
 
-    Widget.prototype.publishProxy = function (id, proxy, method, _private) {
+    Widget.prototype.publishProxy = function (id, proxy, method, defaultValue) {
         method = method || id;
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published."
         }
-        if (!_private) {
-            this["__meta_" + id] = {
-                id: id,
-                type: "proxy",
-                proxy: proxy,
-                method: method
-            }
+        this["__meta_" + id] = {
+            id: id,
+            type: "proxy",
+            proxy: proxy,
+            method: method,
+            defaultValue: defaultValue
         }
         this[id] = function (_) {
-            if (!arguments.length) return this[proxy][method]();
-            this[proxy][method](_);
+            if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
+            if (defaultValue && _ === defaultValue) {
+                this[proxy][method + "_reset"]();
+            } else {
+                this[proxy][method](_);
+            }
             return this;
         };
+        this[id + "_modified"] = function (_) {
+            return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
+        }
+        this[id + "_reset"] = function () {
+            this[proxy][method + "_reset"]();
+        }
     };
 
     //  Implementation  ---

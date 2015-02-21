@@ -1,54 +1,82 @@
-﻿(function (root, factory) {
+﻿
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./INDChart"], factory);
+        define(["d3/d3", "../common/SVGWidget", "./INDChart", "../other/Persist", "require"], factory);
     } else {
-        root.MultiChart = factory(root.d3, root.SVGWidget, root.INDChart);
+        root.MultiChart = factory(root.d3, root.SVGWidget, root.INDChart, root.Persist, root.require);
     }
-}(this, function (d3, SVGWidget, INDChart) {
+}(this, function (d3, SVGWidget, INDChart, Persist, require) {
+    var _2dChartTypes = [
+        { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
+        { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
+        { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
+        { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
+        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3_Pie" },
+        { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3_Donut" },
+        { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
+    ];
+    var _multiChartTypes = [
+        { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
+        { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
+        { id: "LINE", display: "Line", widgetClass: "chart_Line" },
+        { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
+        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3_Line" },
+        { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3_Bar" },
+        { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3_Column" },
+        { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3_Step" },
+        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3_Area" },
+        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3_Scatter" }
+    ];
+    var _anyChartTypes = [
+        { id: "TABLE", display: "Table", widgetClass: "other_Table" }
+    ];
+    var _allChartTypes = _2dChartTypes.concat(_multiChartTypes.concat(_anyChartTypes));
+
     function MultiChart() {
         SVGWidget.call(this);
         INDChart.call(this);
-        this.class = "chart_MultiChart";
+        this._class = "chart_MultiChart";
 
-        this._chartType = "";
         this._chart = null;
 
-        this._2dChartTypes = [
-            { id: "BUBBLE", display: "Bubble", path: "src/chart/Bubble" },
-            { id: "COLUMN", display: "Column", path: "src/chart/Column" },
-            { id: "PIE", display: "Pie", path: "src/chart/Pie" },
-            { id: "GOOGLE_PIE", display: "Pie (Google)", path: "src/google/Pie" },
-            { id: "C3_PIE", display: "Pie (C3)", path: "src/c3/Pie" },
-            { id: "C3_DONUT", display: "Donut (C3)", path: "src/c3/Donut" },
-            { id: "WORD_CLOUD", display: "Word Cloud", path: "src/other/WordCloud" }
-        ];
-        this._multiChartTypes = [
-            { id: "GOOGLE_BAR", display: "Bar (Google)", path: "src/google/Bar" },
-            { id: "GOOGLE_COLUMN", display: "Column (Google)", path: "src/google/Column" },
-            { id: "LINE", display: "Line", path: "src/chart/Line" },
-            { id: "GOOGLE_LINE", display: "Line (Google)", path: "src/google/Line" },
-            { id: "C3_LINE", display: "Line (C3)", path: "src/c3/Line" },
-            { id: "C3_BAR", display: "Bar (C3)", path: "src/c3/Bar" },
-            { id: "C3_COLUMN", display: "Column (C3)", path: "src/c3/Column" },
-            { id: "C3_STEP", display: "Step (C3)", path: "src/c3/Step" },
-            { id: "C3_AREA", display: "Area (C3)", path: "src/c3/Area" },
-            { id: "C3_SCATTER", display: "Scatter (C3)", path: "src/c3/Scatter" }
-        ];
-        this._anyChartTypes = [
-            { id: "TABLE", display: "Table", path: "src/other/Table" }
-        ];
-        this._allChartTypes = this._2dChartTypes.concat(this._multiChartTypes.concat(this._anyChartTypes));
+        this._2dChartTypes = _2dChartTypes;
+        this._multiChartTypes = _multiChartTypes;
+        this._anyChartTypes = _anyChartTypes;
+        this._allChartTypes = _allChartTypes;
+
         this._allCharts = {};
         this._allChartTypes.forEach(function (item) {
             item.widget = null;
             this._allCharts[item.id] = item;
             this._allCharts[item.display] = item;
+            this._allCharts[item.widgetClass] = item;
         }, this);
         //  Backward compatability until we roll our own BAR  ---
         this._allCharts["BAR"] = this._allCharts["COLUMN"];
     };
     MultiChart.prototype = Object.create(SVGWidget.prototype);
     MultiChart.prototype.implements(INDChart.prototype);
+
+    MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
+
+    MultiChart.prototype.chart_persist = function (_, callback) {
+        if (!arguments.length) {
+            if (this._chart) {
+                return Persist.serializeToObject(this._chart);
+            }
+            return null;
+        }
+        var context = this;
+        Persist.create(_, function (widget) {
+            context._chart_type = context._allCharts[widget._class].id;
+            context._chart = widget
+                .columns(context._columns)
+                .data(context._data)
+            ;
+            callback(this);
+        });
+        return this;
+    };
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);
@@ -86,47 +114,44 @@
         }
 
         var context = this;
-        require([this._allCharts[chartType].path], function (widgetClass) {
+        var path = "../" + this._allCharts[chartType].widgetClass.split("_").join("/");
+        require([path], function (widgetClass) {
             retVal = new widgetClass();
-            retVal.click = function (row, column) {
-                context.click(row, column);
-            }
             context._allCharts[chartType].widget = retVal;
             callback(retVal);
         });
     };
 
-    MultiChart.prototype.chartType = function (_, skipRender) {
-        if (!arguments.length) return this._chartType;
-        this._chartType = _;
-        if (!skipRender && this._renderCount) {
-            var oldContent = this._chart;
-            var context = this;
-            this.requireContent(this._chartType, function (newContent) {
-                if (newContent !== oldContent) {
-                    var size = context.size();
-                    context._chart = newContent
-                        .columns(context._columns)
-                        .data(context._data)
-                        .size(size)
-                    ;
-                    if (oldContent) {
-                        oldContent
-                            .data([])
-                            .size({ width: 1, height: 1 })
-                            .render()
-                        ;
-                    }
-                    context.render();
+    MultiChart.prototype.switchChart = function (callback) {
+        var oldContent = this._chart;
+        var context = this;
+        this.requireContent(this._chart_type, function (newContent) {
+            if (newContent !== oldContent) {
+                var size = context.size();
+                context._chart = newContent
+                    .columns(context._columns)
+                    .data(context._data)
+                    .size(size)
+                ;
+                newContent.click = function (row, column) {
+                    context.click(row, column);
                 }
-            });
-        }
-        return this;
+                if (oldContent) {
+                    oldContent
+                        .data([])
+                        .size({ width: 1, height: 1 })
+                        .render()
+                    ;
+                }
+            }
+            if (callback) {
+                callback(this);
+            }
+        });
     };
 
     MultiChart.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-
         var content = element.selectAll(".multiChart").data(this._chart ? [this._chart] : [], function (d) { return d._id; });
         content.enter().append("g")
             .attr("class", "multiChart")
@@ -151,12 +176,24 @@
         ;
     };
 
-    MultiChart.prototype.render = function () {
-        SVGWidget.prototype.render.apply(this, arguments);
-        if (this._chartType && this._renderCount === 1) {
-            this.chartType(this._chartType);
+    MultiChart.prototype.exit = function (domNode, element) {
+        if (this._chart) {
+            this._chart.target(null);
         }
-        return this;
+        SVGWidget.prototype.exit.apply(this, arguments);
+    };
+
+
+    MultiChart.prototype.render = function (callback) {
+        if (this._chart_type && (!this._chart || (this._chart._class !== this._allCharts[this._chart_type].widgetClass))) {
+            var context = this;
+            var args = arguments;
+            this.switchChart(function () {
+                SVGWidget.prototype.render.apply(context, args);
+            });
+            return this;
+        }
+        return SVGWidget.prototype.render.apply(this, arguments);
     }
 
     return MultiChart;

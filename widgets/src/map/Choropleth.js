@@ -95,6 +95,7 @@
             .attr("width", this._size.width)
             .attr("height", this._size.height)
             .on("dblclick", function (d) {
+                d3.event.stopPropagation();
                 context.zoomToFit(null, 750);
             })
         ;

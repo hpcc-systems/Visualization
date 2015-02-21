@@ -359,14 +359,14 @@
                 this.loadWidget("src/other/Slider", function (widget) {
                     if (visualization.range) {
                         var selectionLabel = "";
-                        for (key in visualization.onSelect.mappings) {
-                            selectioLabel = key;
+                        for (var key in visualization.onSelect.mappings) {
+                            selectionLabel = key;
                             break;
                         }
                         widget
                             .range({ low: +visualization.range[0], high: +visualization.range[1] })
                             .step(+visualization.range[2])
-                            .selectionLabel(selectioLabel)
+                            .selectionLabel(selectionLabel)
                         ;
                     }
                 });

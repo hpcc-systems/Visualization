@@ -64,6 +64,7 @@
         ;
 
         function dblclick(d) {
+            d3.event.stopPropagation();
             path.transition()
                 .duration(750)
                 .attrTween("d", arcTween(d))

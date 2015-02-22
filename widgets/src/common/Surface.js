@@ -47,10 +47,12 @@
     Surface.prototype = Object.create(SVGWidget.prototype);
 
     Surface.prototype.publish("show_title", true, "boolean", "Show Title");
+    Surface.prototype.publish("title", "", "string", "Title");
+    Surface.prototype.publish("show_icon", true, "boolean", "Show Title");
     Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
-    Surface.prototype.publish("title", "", "string", "Title");
-    Surface.prototype.publish("menu");
+    //Surface.prototype.publish("menu");
+    Surface.prototype.publish("content", null, "widget", "Content");
 
     Surface.prototype.menu = function (_) {
         if (!arguments.length) return this._menu.data();
@@ -112,6 +114,7 @@
         ;
         this._icon
             .target(domNode)
+            .display(this._show_title && this._show_icon)
         ;
         var menuViz = false;
         this._menu
@@ -129,7 +132,7 @@
         SVGWidget.prototype.update.apply(this, arguments);
 
         this._icon
-            .display(this._show_title)
+            .display(this._show_title && this._show_icon)
             .render()
         ;
         this._menu
@@ -140,7 +143,7 @@
             .display(this._show_title)
             .render()
         ;
-        var iconClientSize = this._icon.getBBox(true);
+        var iconClientSize = this._show_icon ? this._icon.getBBox(true) : {width:0, height: 0};
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height);
@@ -204,6 +207,7 @@
                         bottom: 4
                     };
                     d
+                        .pos({ x: xOffset / 2, y: yOffset / 2 })
                         .size({
                             width: context._size.width - xOffset - (padding.left + padding.right),
                             height: context._size.height - yOffset - (padding.top + padding.bottom)
@@ -219,15 +223,6 @@
                     .attr("height", this._size.height - yOffset)
                 ;
             }
-            content
-                .each(function (d) {
-                    d
-                        .pos({ x: xOffset / 2, y: yOffset / 2 })
-                        .render()
-                    ;
-                })
-            ;
-
             content.exit().transition()
                 .each(function (d) { d.target(null); })
                 .remove()
@@ -250,11 +245,13 @@
         }
         SVGWidget.prototype.render.call(this);
         var context = this;
-        this._content.render(function (contentWidget) {
-            if (callback) {
-                callback(context);
-            }
-        });
+        if (this._content) {
+            this._content.render(function (contentWidget) {
+                if (callback) {
+                    callback(context);
+                }
+            });
+        }
         return this;
     }
 

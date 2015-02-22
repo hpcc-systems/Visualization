@@ -58,25 +58,7 @@
     MultiChart.prototype.implements(INDChart.prototype);
 
     MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
-
-    MultiChart.prototype.chart_persist = function (_, callback) {
-        if (!arguments.length) {
-            if (this._chart) {
-                return Persist.serializeToObject(this._chart);
-            }
-            return null;
-        }
-        var context = this;
-        Persist.create(_, function (widget) {
-            context._chart_type = context._allCharts[widget._class].id;
-            context._chart = widget
-                .columns(context._columns)
-                .data(context._data)
-            ;
-            callback(this);
-        });
-        return this;
-    };
+    MultiChart.prototype.publish("chart", null, "widget", "Chart");
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);

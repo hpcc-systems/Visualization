@@ -433,7 +433,7 @@
     };
 
     //  Render  ---
-    Widget.prototype.render = function () {
+    Widget.prototype.render = function (callback) {
         if (!this._parentElement)
             return this;
 
@@ -463,6 +463,10 @@
             .remove()
         ;
         this._renderCount++;
+
+        if (callback) {
+            callback(this);
+        }
 
         return this;
     };

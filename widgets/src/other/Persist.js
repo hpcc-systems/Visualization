@@ -48,6 +48,9 @@
                     }
                 });
             }
+            if (widget._class === "chart_MultiChart" && widget._chart) {
+                retVal.__chart = widget.chart_persist();
+            }
             if (includeData) {
                 retVal.__data = {};
                 retVal.__data.columns = widget.columns();
@@ -60,7 +63,7 @@
             return JSON.stringify(this.serializeToObject(widget, properties, includeData));
         },
 
-        deserialize: function (widget, state) {
+        deserialize: function (widget, state, callback) {
             if (state instanceof String) {
                 state = JSON.parse(state)
             }
@@ -71,6 +74,11 @@
                 for (var key in state.__data) {
                     widget[key](state.__data[key]);
                 }
+            }
+            if (state.__chart && widget._class === "chart_MultiChart") {
+                widget.chart_persist(state.__chart, callback);
+            } else {
+                callback(widget);
             }
             return widget;
         },
@@ -83,8 +91,9 @@
             var path = "../" + state.__class.split("_").join("/");
             require([path], function (Widget) {
                 var widget = new Widget();
-                context.deserialize(widget, state);
-                callback(widget);
+                context.deserialize(widget, state, function () {
+                    callback(widget);
+                });
             });
         },
 

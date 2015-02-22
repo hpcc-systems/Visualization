@@ -481,8 +481,14 @@
         }
 
         //  Exit  ---
-        vertexElements.exit().remove();
-        edgeElements.exit().remove();
+        vertexElements.exit()
+            .each(function (d) { d.target(null); })
+            .remove()
+        ;
+        edgeElements.exit()
+            .each(function (d) { d.target(null); })
+            .remove()
+        ;
 
         if (!this._renderCount++) {
             this.setZoom([0, 0], 1);

@@ -239,6 +239,13 @@
         this._menu.element().node().parentNode.appendChild(this._menu.element().node());
     };
 
+    Surface.prototype.exit = function (domNode, element) {
+        if (this._content) {
+            this._content.target(null);
+        }
+        SVGWidget.prototype.exit.apply(this, arguments);
+    };
+
     Surface.prototype.intersection = function (pointA, pointB) {
         var hits = [];
         var i1 = this._icon.intersection(pointA, pointB, this._pos);

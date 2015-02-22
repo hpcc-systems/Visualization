@@ -46,10 +46,11 @@
 
         this._allCharts = {};
         this._allChartTypes.forEach(function (item) {
-            item.widget = null;
-            this._allCharts[item.id] = item;
-            this._allCharts[item.display] = item;
-            this._allCharts[item.widgetClass] = item;
+            var newItem = JSON.parse(JSON.stringify(item));
+            newItem.widget = null;
+            this._allCharts[item.id] = newItem;
+            this._allCharts[item.display] = newItem;
+            this._allCharts[item.widgetClass] = newItem;
         }, this);
         //  Backward compatability until we roll our own BAR  ---
         this._allCharts["BAR"] = this._allCharts["COLUMN"];
@@ -58,25 +59,7 @@
     MultiChart.prototype.implements(INDChart.prototype);
 
     MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
-
-    MultiChart.prototype.chart_persist = function (_, callback) {
-        if (!arguments.length) {
-            if (this._chart) {
-                return Persist.serializeToObject(this._chart);
-            }
-            return null;
-        }
-        var context = this;
-        Persist.create(_, function (widget) {
-            context._chart_type = context._allCharts[widget._class].id;
-            context._chart = widget
-                .columns(context._columns)
-                .data(context._data)
-            ;
-            callback(this);
-        });
-        return this;
-    };
+    MultiChart.prototype.publish("chart", null, "widget", "Chart");
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);

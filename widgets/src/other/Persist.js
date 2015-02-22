@@ -44,9 +44,17 @@
             } else {
                 this.discover(widget, true).forEach(function (item) {
                     if (widget[item.id + "_modified"]()) {
-                        retVal.__properties[item.id] = widget[item.id]();
+                        retVal.__properties[item.id] = item.type === "widget" ? this.serializeToObject(widget[item.id](), null, includeData) : widget[item.id]();
                     }
-                });
+                }, this);
+            }
+            if (widget._class === "marshaller_Graph") {
+                var vertices = widget.data().vertices;
+                if (vertices) {
+                    this.__vertices = vertices.map(function (item) {
+                        return this.serializeToObject(item, null, includeData);
+                    }, this);
+                }
             }
             if (includeData) {
                 retVal.__data = {};
@@ -60,17 +68,39 @@
             return JSON.stringify(this.serializeToObject(widget, properties, includeData));
         },
 
-        deserialize: function (widget, state) {
+        deserialize: function (widget, state, callback) {
+            var context = this;
             if (state instanceof String) {
                 state = JSON.parse(state)
             }
+            var widgets = [];
             for (var key in state.__properties) {
-                widget[key](state.__properties[key]);
-            }
-            if (state.__data) {
-                for (var key in state.__data) {
-                    widget[key](state.__data[key]);
+                if (widget["__meta_" + key].type === "widget") {
+                    widgets.push(key);
+                } else {
+                    widget[key](state.__properties[key]);
                 }
+            }
+            var completed = widgets.length;
+            if (completed) {
+                widgets.forEach(function (key) {
+                    this.create(state.__properties[key], function (_widget) {
+                        widget[key](_widget);
+                        if (--completed <= 0) {
+                            doNext();
+                        }
+                    });
+                }, this);
+            } else {
+                doNext();
+            }
+            function doNext() {
+                if (state.__data) {
+                    for (var key in state.__data) {
+                        widget[key](state.__data[key]);
+                    }
+                }
+                callback(widget);
             }
             return widget;
         },
@@ -83,8 +113,9 @@
             var path = "../" + state.__class.split("_").join("/");
             require([path], function (Widget) {
                 var widget = new Widget();
-                context.deserialize(widget, state);
-                callback(widget);
+                context.deserialize(widget, state, function () {
+                    callback(widget);
+                });
             });
         },
 

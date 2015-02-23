@@ -411,13 +411,23 @@
         if (this._size.width && this._size.height) {
             var newPos = this.getAbsolutePos(this._overlayElement.node(), this._size.width, this._size.height);
             if (newPos && (this.oldPos === null || this.oldPos === undefined || newPos.x !== this.oldPos.x || newPos.y !== this.oldPos.y || newPos.width !== this.oldPos.width || newPos.height !== this.oldPos.height)) {
+                var xScale = newPos.width / this._size.width;
+                var yScale = newPos.height / this._size.height;
                 this._parentElement
                     .style({
-                        left: newPos.x - newPos.width / 2 + "px",
-                        top: newPos.y - newPos.height / 2 + "px",
-                        width: newPos.width + "px",
-                        height: newPos.height + "px"
+                        left: newPos.x - (newPos.width / xScale) / 2 + "px",
+                        top: newPos.y - (newPos.height / yScale) / 2 + "px",
+                        width: newPos.width / xScale + "px",
+                        height: newPos.height / yScale + "px"
                     })
+                ;
+                var transform = "scale(" + xScale + "," + yScale + ")";
+                this._parentElement
+                    .style("transform", transform)
+                    .style("-moz-transform", transform)
+                    .style("-ms-transform", transform)
+                    .style("-webkit-transform", transform)
+                    .style("-o-transform", transform)
                 ;
             }
             this.oldPos = newPos;

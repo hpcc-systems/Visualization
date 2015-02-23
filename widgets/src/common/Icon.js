@@ -11,9 +11,7 @@
         this._class = "common_Icon";
 
         this._shapeWidget = new Shape();
-        this._faChar = new FAChar()
-            .color_fill("#ffffff")
-        ;
+        this._faChar = new FAChar();
     };
     Icon.prototype = Object.create(SVGWidget.prototype);    
 
@@ -22,7 +20,7 @@
     Icon.prototype.publishProxy("image_color_fill", "_faChar", "color_fill");
     Icon.prototype.publish("tooltip", "", "string", "Tooltip");
     Icon.prototype.publish("diameter", 24, "number", "Diameter");
-    Icon.prototype.publish("padding_percent", 33, "number", "Padding Percent");
+    Icon.prototype.publish("padding_percent", 45, "number", "Padding Percent");
     Icon.prototype.publishProxy("shape_color_fill", "_shapeWidget", "color_fill");
     Icon.prototype.publishProxy("shape_color_stroke", "_shapeWidget", "color_stroke");
 

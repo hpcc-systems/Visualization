@@ -111,7 +111,7 @@
                 var label = pathParts[pathParts.length - 1];
                 var props = Persist.discover(source);
                 var propsStr = props.map(function (prop) {
-                    if (prop.defaultValue === source[prop.id]()) {
+                    if (!source[prop.id + "_modified"]()) {
                         return "";
                     }
                     return "        ." + prop.id + "(" + JSON.stringify(source[prop.id]()) + ")"
@@ -179,12 +179,12 @@
                 });
             }
             function displayProperties(sourceWidget) {
+                document.getElementById("props").innerHTML = "";
                 var props = Persist.discover(sourceWidget);
                 var propsTable = props.map(function (row) {
                     var tr = document.getElementById("props").appendChild(document.createElement('tr'));
                     var td = tr.appendChild(document.createElement('td'));
-                    var label = td.appendChild(document.createElement("label"));
-                    label.appendChild(document.createTextNode(row.id));
+                    td.appendChild(document.createTextNode(row.id));
                     td = tr.appendChild(document.createElement('td'));
                     var input = null;
                     switch (row.type) {
@@ -205,7 +205,17 @@
                             break;
                         case "html-color":
                             input = td.appendChild(document.createElement("input"));
-                            input.setAttribute("type", "color");
+                            try {
+                                var inputColor = td.appendChild(document.createElement("input"));
+                                inputColor.type = "color";
+                                inputColor.value = sourceWidget[row.id]();
+                                inputColor.onchange = function (args) {
+                                    input.value = inputColor.value;
+                                    input.onchange();
+                                }
+                            } catch (e) {
+                                td.removeChild(inputColor);
+                            }
                             break;
                         case "set":
                             input = td.appendChild(document.createElement('select'));
@@ -230,11 +240,20 @@
                     }
                     if (input) {
                         input.value = sourceWidget[row.id]();
-                        input.onchange = function () {
+                        input.onchange = function (args) {
                             sourceWidget[row.id](input.value).render();
                             serializeTest(sourceWidget)
                         }
                     }
+                    var td = tr.appendChild(document.createElement('td'));
+                    var button = td.appendChild(document.createElement("a"));
+                    button.appendChild(document.createTextNode(" Reset"))
+                    button.onclick = function () {
+                        sourceWidget[row.id + "_reset"]();
+                        sourceWidget.render();
+                        displayProperties(sourceWidget);
+                        serializeTest(sourceWidget)
+                    };
                 });
                 var tr = document.getElementById("props").appendChild(document.createElement('tr'));
                 var td = tr.appendChild(document.createElement('td'));
@@ -288,7 +307,6 @@
                     ;
                     */
                     serializeTest(sourceWidget);
-                    document.getElementById("props").innerHTML = "";
                     displayProperties(sourceWidget);
                 });
             }

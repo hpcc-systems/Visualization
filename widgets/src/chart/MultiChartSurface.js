@@ -19,7 +19,7 @@
 
         var context = this;
         this._menu.click = function (d) {
-            context._content.chartType(d);
+            context._content.chart_type(d).render();
         }
         this.mode("all");
     };
@@ -58,7 +58,7 @@
 
     MultiChartSurface.prototype.chartType = function (_, skipRender) {
         if (!arguments.length) return this._content.chartType();
-        this._content.chartType(_);
+        this._content.chart_type(_);
         return this;
     };
 

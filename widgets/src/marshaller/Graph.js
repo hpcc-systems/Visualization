@@ -151,14 +151,44 @@
     };
 
     var PERSIST_VER = 2;
-    function Graph(target) {
+    function Graph() {
         GraphWidget.call(this);
+        this._class = "marshaller_Graph";
 
+        this._design_mode = false;
         this._dashboards = [];
         this.graphAttributes = ["snapToGrid", "showEdges"];
         this.widgetAttributes = ["layout", "chartType", "palette", "title", "columns", "data"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
+    Graph.prototype.publish("ddl_url", "", "string", "DDL URL");
+    Graph.prototype.publish("proxy_mappings", [], "array", "Proxy Mappings");
+    Graph.prototype.publish("visualize_roxie", false, "boolean", "Show Roxie Data Sources");
+
+    Graph.prototype.publish()
+    
+    Graph.prototype.testData = function () {
+        this.ddl_url("http://10.173.147.1:8002/WsEcl/submit/query/roxie/drealeed_testaddressclean.ins002_service/json");
+        return this;
+    };
+
+    Graph.prototype.design_mode = function (_) {
+        if (!arguments.length) return this._design_mode;
+        this._design_mode = _;
+        this
+            .showEdges(this._designMode)
+            .snapToGrid(this._designMode ? 12 : 0)
+            .allowDragging(this._designMode)
+        ;
+        if (this._data.vertices) {
+            this._data.vertices.forEach(function (row) {
+                row.show_title(this._design_mode)
+                    .render()
+                ;
+            }, this);
+        }
+        return this;
+    };
 
     Graph.prototype.dashboards = function (_) {
         if (!arguments.length) return this._dashboards;
@@ -179,7 +209,6 @@
 
     Graph.prototype.renderDashboards = function (restorePersist) {
         this.data({ vertices: [], edges: []});
-        this.render();
         var context = this;
         var vertices = [];
         var edges = [];
@@ -194,7 +223,6 @@
         if (loadResult.changed) {
             this.layout("");
         }
-        this.render();
         if (!loadResult.dataChanged) {
             this.fetchData();
         }
@@ -347,6 +375,50 @@
         }
         return retVal;
     }
+
+    Graph.prototype.enter = function (domNode, element) {
+        GraphWidget.prototype.enter.apply(this, arguments);
+        element.classed("graph_Graph", true);
+    };
+
+    Graph.prototype.update = function (domNode, element) {
+        GraphWidget.prototype.update.apply(this, arguments);
+    };
+
+    Graph.prototype.render = function (callback) {
+        //this.data({ vertices: [], edges: [], subgraphs: [] });
+        //GraphWidget.prototype.render.call(this);
+        //this._renderCount = 0;
+        if (this._ddl_url === this._prev_ddl_url) {
+            return GraphWidget.prototype.render.apply(this, arguments);
+        }
+        this._prev_ddl_url = this._ddl_url;
+        var marshaller = new HipieDDL.Marshaller().proxyMappings(this._proxy_mappings);
+        var context = this;
+        var args = arguments;
+        function postParse() {
+            var dashboards = createGraphData(marshaller, context._visualize_roxie);
+            context.dashboards(dashboards);
+            context
+                .shrinkToFitOnLayout(true)
+                .layout("Hierarchy")
+                .renderDashboards(false)
+            ;
+            GraphWidget.prototype.render.apply(context, args);
+        }
+        if (this._ddl_url[0] === "[" || this._ddl_url[0] === "{") {
+            marshaller.parse(this._ddl_url, function () {
+                postParse();
+            });
+        } else {
+            marshaller.url(this._ddl_url, function () {
+                postParse();
+            });
+        }
+        return this;
+    }
+
+    return Graph;
 
     return {
         createSingle: function (url, proxyMappings, visualizeRoxie, callback) {

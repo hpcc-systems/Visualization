@@ -110,11 +110,7 @@
             ;
             this.resize(this._size);
         } else {
-            if (this._parentRelativeDiv) {
-                this._parentOverlay.remove();
-                this._parentElement.remove();
-                this._parentRelativeDiv.remove();
-            }
+            this.exit();
         }
         return this;
     };

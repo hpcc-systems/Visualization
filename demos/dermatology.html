@@ -15,46 +15,47 @@
     </script>
 </head>
 <body>
-    <p>
-        <prompt>Widget To Test:</prompt>
-        <select id="widgetSelect" onchange="testWidget(this.value);">
-            <option value="src/common/Shape">Shape</option>
-            <option value="src/common/Text">Text</option>
-            <option value="src/common/TextBox">TextBox</option>
-            <option value="src/common/FAChar">FAChar</option>
-            <option value="src/common/Icon">Icon</option>
-            <option value="src/common/List">List</option>
-            <option value="src/common/Menu">Menu</option>
-            <option value="src/common/Surface">Surface</option>
-            <option value="src/c3/Area">C3 Area</option>
-            <option value="src/c3/Bar">C3 Bar</option>
-            <option value="src/c3/Column">C3 Column</option>
-            <option value="src/c3/Line">C3 Line</option>
-            <option value="src/c3/Scatter">C3 Scatter</option>
-            <option value="src/c3/Step">C3 Step</option>
-            <option value="src/c3/Pie">C3 Pie</option>
-            <option value="src/c3/Donut">C3 Donut</option>
-            <option value="src/c3/Gauge">C3 Gauge</option>
-            <option value="src/google/Pie">Google Pie</option>
-            <option value="src/google/Bar">Google Bar</option>
-            <option value="src/chart/Bubble">D3 Bubble</option>
-            <option value="src/chart/Line">D3 Line</option>
-            <option value="src/chart/Pie">D3 Pie</option>
-            <option value="src/map/ChoroplethStates">Choropleth States</option>
-            <option value="src/map/ChoroplethCounties">Choropleth Counties</option>
-            <option value="src/map/ChoroplethCountries">Choropleth Countries</option>
-            <option value="src/tree/Dendrogram">Tree Dendrogram</option>
-            <option value="src/tree/CirclePacking">Tree CirclePacking</option>
-            <option value="src/tree/SunburstPartition">Tree SunburstPartition</option>
-            <option value="src/graph/Vertex">Graph Vertex</option>
-        </select>
-    </p>
     <table style="width:auto">
         <thead>
             <tr>
-                <th>Serialize/Deserialize</th>
+                <th>
+                    <prompt>Widget To Test:</prompt>
+                    <select id="widgetSelect" onchange="testWidget(this.value);">
+                        <option value="src/common/Shape">Shape</option>
+                        <option value="src/common/Text">Text</option>
+                        <option value="src/common/TextBox">TextBox</option>
+                        <option value="src/common/FAChar">FAChar</option>
+                        <option value="src/common/Icon">Icon</option>
+                        <option value="src/common/List">List</option>
+                        <option value="src/common/Menu">Menu</option>
+                        <option value="src/common/Surface">Surface</option>
+                        <option value="src/c3/Area">C3 Area</option>
+                        <option value="src/c3/Bar">C3 Bar</option>
+                        <option value="src/c3/Column">C3 Column</option>
+                        <option value="src/c3/Line">C3 Line</option>
+                        <option value="src/c3/Scatter">C3 Scatter</option>
+                        <option value="src/c3/Step">C3 Step</option>
+                        <option value="src/c3/Pie">C3 Pie</option>
+                        <option value="src/c3/Donut">C3 Donut</option>
+                        <option value="src/c3/Gauge">C3 Gauge</option>
+                        <option value="src/google/Pie">Google Pie</option>
+                        <option value="src/google/Bar">Google Bar</option>
+                        <option value="src/chart/Bubble">D3 Bubble</option>
+                        <option value="src/chart/Line">D3 Line</option>
+                        <option value="src/chart/Pie">D3 Pie</option>
+                        <option value="src/chart/MultiChart">Multi Chart</option>
+                        <option value="src/chart/MultiChartSurface">Multi Chart Surface</option>
+                        <option value="src/map/ChoroplethStates">Choropleth States</option>
+                        <option value="src/map/ChoroplethCounties">Choropleth Counties</option>
+                        <option value="src/map/ChoroplethCountries">Choropleth Countries</option>
+                        <option value="src/tree/Dendrogram">Tree Dendrogram</option>
+                        <option value="src/tree/CirclePacking">Tree CirclePacking</option>
+                        <option value="src/tree/SunburstPartition">Tree SunburstPartition</option>
+                        <option value="src/graph/Vertex">Graph Vertex</option>
+                        <option value="src/marshaller/Graph">Marshaller Graph</option>
+                    </select>
+                </th>
                 <th>Properties</th>
-                <th>Sample Code</th>
             </tr>
         </thead>
         <tbody>
@@ -64,34 +65,45 @@
                         <tbody>
                             <tr>
                                 <td style="text-align:center;border-bottom:none">
-                                    <div id="source" class="large wide thumb"></div>
+                                    <div id="source" class="large wide thumb" style="width:640px;height:480px"></div>
                                     <br />
                                     <b>Original</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;border-bottom:none">
-                                    <div id="target" class="large wide thumb"></div>
-                                    <br />
-                                    <b>Clone</b>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </td>
                 <td align="center" valign="top">
-                    <table>
-                        <thead align="left">
-                            <tr>
-                                <th>Key</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody id="props"></tbody>
-                    </table>
+                    <div id="propEditor">
+                    </div>
+                    <div id="innerPropEditor">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="width:auto">
+        <thead>
+            <tr>
+                <th>JavaScript</th>
+                <th>Serialization</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td valign="top">
+                    <pre id="jsText" class="prettyprint"></pre>
                 </td>
                 <td valign="top">
-                    <pre id="github" class="prettyprint"></pre>
+                    <pre id="serializationText" class="prettyprint"></pre>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;border-bottom:none">
+                    <div id="divID" class="large wide thumb"></div>
+                </td>
+                <td style="text-align:center;border-bottom:none">
+                    <div id="serializationTest" class="large wide thumb"></div>
                 </td>
             </tr>
         </tbody>
@@ -102,176 +114,76 @@
             document.getElementById("widgetSelect").value = def;
         }
         var testWidget = null;
+        var jsWidget = null;
         var cloneWidget = null;
-        require(["src/other/Persist"], function (Persist) {
+        require(["src/other/Persist", "src/other/PropertyEditor"], function (Persist, PropertyEditor) {
 
-            function serializeTest(source, target) {
-                var path = document.getElementById("widgetSelect").value;
-                var pathParts = path.split("/");
-                var label = pathParts[pathParts.length - 1];
-                var props = Persist.discover(source);
-                var propsStr = props.map(function (prop) {
-                    if (prop.defaultValue === source[prop.id]()) {
-                        return "";
-                    }
-                    return "        ." + prop.id + "(" + JSON.stringify(source[prop.id]()) + ")"
-                }).filter(function (str) {
-                    return str !== "";
-                }).join("\n");
-                if (propsStr.length) {
-                    propsStr += "\n";
-                }
-                var columns = source.columns(), columnsStr = "";
-                if (columns instanceof Array) {
-                    if (columns.length) {
-                        columnsStr = "        .columns(" + JSON.stringify(columns) + ")\n"
-                    }
-                } else if (columns) {
-                    columnsStr = "        .columns(" + JSON.stringify(columns) + ")\n"
-                }
-                var data = source.data(), dataStr = "";
-                if (data instanceof Array) {
-                    if (data.length) {
-                        dataStr = "        .data(" + JSON.stringify(data) + ")\n"
-                    }
-                } else if (data) {
-                    dataStr = "        .data(" + JSON.stringify(data) + ")\n"
-                }
-                var src =
+            function serializeTest(propEditor) {
+                document.getElementById("jsText").setAttribute("class", "prettyprint");
+                document.getElementById("jsText").innerText =
                     "//  JavaScript  ---\n" +
-                    "require[\"" + path + "\"], function(" + label + ") {\n" +
-                    "    var widget = new " + label + "()\n" +
-                    "        .target(\"divID\")\n" +
-                    propsStr +
-                    columnsStr +
-                    dataStr +
-                    "        .render()\n" +
-                    "    ;\n" +
-                    "});\n" +
-                    "\n" +
-                    "//  Serialize ---\n" +
-                    "var persistObj = " + JSON.stringify(Persist.serializeToObject(source), null, "  ") + ";\n" +
-                    "\n" +
-                    "//  Deserialize  ---\n" +
-                    "require[\"src/other/Persist\"], function(Persist) {\n" +
-                    "    Persist.create(persistObj, function(widget) {\n" +
-                    "        widget\n" +
-                    "            .target(\"divID\")\n" +
-                    (columnsStr.length ? "    " : "") + columnsStr +
-                    (dataStr.length ? "    " : "") + dataStr +
-                    "            .render()\n" +
-                    "        ;\n" +
-                    "    });\n" +
-                    "});" +
-                    "";
-
-                document.getElementById("github").setAttribute("class", "prettyprint");
-                document.getElementById("github").innerText = src;
+                    propEditor.getJavaScript("widget", true, true);
+                document.getElementById("serializationText").setAttribute("class", "prettyprint");
+                document.getElementById("serializationText").innerText =
+                    "//  Serialization String  ---\n" +
+                    propEditor.getPersistString("widgetJSON");
                 prettyPrint();
+               // return;
+                /*
+                try {
+                    document.getElementById("divID").innerHTML = "";
+                    var script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.text = "try {" + propEditor.getJavaScript("widget", true, true, "jsWidget=widget;") + "} catch(e) { console.log(e); }";
+                    document.body.appendChild(script);
+                    document.body.removeChild(script);
+                } catch (e) {
+                }
 
-                document.getElementById("target").innerHTML = "";
-                Persist.clone(source, function (widget) {
+                document.getElementById("serializationTest").innerHTML = "";
+                Persist.clone(propEditor.data(), function (widget) {
                     cloneWidget = widget
-                        .target("target")
-                        //.testData()
+                        .target("serializationTest")
                         .render()
                     ;
                 });
+                */
             }
             function displayProperties(sourceWidget) {
-                var props = Persist.discover(sourceWidget);
-                var propsTable = props.map(function (row) {
-                    var tr = document.getElementById("props").appendChild(document.createElement('tr'));
-                    var td = tr.appendChild(document.createElement('td'));
-                    var label = td.appendChild(document.createElement("label"));
-                    label.appendChild(document.createTextNode(row.id));
-                    td = tr.appendChild(document.createElement('td'));
-                    var input = null;
-                    switch (row.type) {
-                        case "boolean":
-                            var checkbox = td.appendChild(document.createElement('input'));
-                            checkbox.setAttribute("type", "checkbox");
-                            checkbox.checked = sourceWidget[row.id]();
-                            checkbox.onchange = function () {
-                                sourceWidget[row.id](checkbox.checked).render();
-                                serializeTest(sourceWidget)
-                            }
-                            break;
-                        case "number":
-                            input = td.appendChild(document.createElement("input"));
-                            break;
-                        case "string":
-                            input = td.appendChild(document.createElement("input"));
-                            break;
-                        case "html-color":
-                            input = td.appendChild(document.createElement("input"));
-                            input.setAttribute("type", "color");
-                            break;
-                        case "set":
-                            input = td.appendChild(document.createElement('select'));
-                            row.set.forEach(function (item) {
-                                var option = input.appendChild(document.createElement("option"));
-                                option.value = item;
-                                option.text = item;
-                            });
-                            break;
-                        case "array":
-                            inputArray = td.appendChild(document.createElement("textarea"));
-                            inputArray.setAttribute("rows", "4");
-                            inputArray.setAttribute("cols", "25");
-                            inputArray.value = JSON.stringify(sourceWidget[row.id](), null, "  ");
-                            inputArray.onchange = function () {
-                                sourceWidget[row.id](JSON.parse(inputArray.value)).render();
-                                serializeTest(sourceWidget)
-                            }
-                            break;
-                        default:
-                            break;
+                document.getElementById("propEditor").innerHTML = "";
+                document.getElementById("innerPropEditor").innerHTML = "";
+                var propEditor = new PropertyEditor()
+                    .target("propEditor")
+                    .show_columns(false)
+                    .show_data(false)
+                    .data(sourceWidget)
+                    .render(function (self) {
+                        serializeTest(self);
+                    })
+                ;
+                propEditor.onChange = function (propID) {
+                    if (propID === "columns") {
+                        cloneWidget
+                            .columns(sourceWidget.columns())
+                            .render()
+                        ;
+                        jsWidget
+                            .columns(sourceWidget.columns())
+                            .render()
+                        ;
+                    } else if (propID === "data") {
+                        cloneWidget
+                            .data(sourceWidget.data())
+                            .render()
+                        ;
+                        jsWidget
+                            .data(sourceWidget.data())
+                            .render()
+                        ;
+                    } else {
+                        serializeTest(propEditor);
                     }
-                    if (input) {
-                        input.value = sourceWidget[row.id]();
-                        input.onchange = function () {
-                            sourceWidget[row.id](input.value).render();
-                            serializeTest(sourceWidget)
-                        }
-                    }
-                });
-                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
-                var td = tr.appendChild(document.createElement('td'));
-                td.appendChild(document.createTextNode("data_columns"));
-                td = tr.appendChild(document.createElement('td'));
-                var input = td.appendChild(document.createElement("textarea"));
-                input.setAttribute("rows", "4");
-                input.setAttribute("cols", "25");
-                input.value = JSON.stringify(sourceWidget._columns);
-                input.onchange = function () {
-                    sourceWidget
-                        .columns(JSON.parse(input.value))
-                        .render()
-                    ;
-                    cloneWidget
-                        .columns(sourceWidget.columns())
-                        .render()
-                    ;
-                }
-                var tr = document.getElementById("props").appendChild(document.createElement('tr'));
-                var td = tr.appendChild(document.createElement('td'));
-                td.appendChild(document.createTextNode("data_data"));
-                td = tr.appendChild(document.createElement('td'));
-                var input2 = td.appendChild(document.createElement("textarea"));
-                input2.setAttribute("rows", "4");
-                input2.setAttribute("cols", "25");
-                input2.value = JSON.stringify(sourceWidget._data);
-                input2.onchange = function () {
-                    sourceWidget
-                        .data(JSON.parse(input2.value))
-                        .render()
-                    ;
-                    cloneWidget
-                        .data(sourceWidget.data())
-                        .render()
-                    ;
-                }
+                };
             }
             testWidget = function (widgetPath) {
                 require([widgetPath], function (Widget) {
@@ -279,17 +191,10 @@
                     var sourceWidget = new Widget()
                         .target("source")
                         .testData()
-                        .render()
+                        .render(function (widget) {
+                            displayProperties(widget);
+                        })
                     ;
-                    /*
-                    var targetWidget = new Widget()
-                        .target("target")
-                        .testData()
-                    ;
-                    */
-                    serializeTest(sourceWidget);
-                    document.getElementById("props").innerHTML = "";
-                    displayProperties(sourceWidget);
                 });
             }
             testWidget(document.getElementById("widgetSelect").value);

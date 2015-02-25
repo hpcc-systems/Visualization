@@ -13,9 +13,9 @@
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype.publish("text", "", "string", "Display Text");
     Text.prototype.publish("font_family", "", "string", "Font Family");
-    Text.prototype.publish("font_size", 12, "number", "Font Size (px)");
-    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["", "start", "middle", "end"]);
-    Text.prototype.publish("color_fill", "#000000", "html-color", "Fill Color");
+    Text.prototype.publish("font_size", null, "number", "Font Size (px)");
+    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"]);
+    Text.prototype.publish("color_fill", null, "html-color", "Fill Color");
 
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");

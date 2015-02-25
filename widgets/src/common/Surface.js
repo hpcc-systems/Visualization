@@ -12,6 +12,7 @@
 
         this._menuPadding = 2;
         this._icon = new Icon()
+            .faChar("\uf07b")
             .padding_percent(50)
         ;
         this._container = new Shape()
@@ -26,7 +27,6 @@
             .class("title")
         ;
         this._menu = new Menu()
-            .faChar("\uf0c9")
             .padding_percent(0)
         ;
         var context = this;
@@ -47,7 +47,7 @@
     Surface.prototype = Object.create(SVGWidget.prototype);
 
     Surface.prototype.publish("show_title", true, "boolean", "Show Title");
-    Surface.prototype.publish("faChar", "\uf07b", "string", "Title");
+    Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
     Surface.prototype.publish("title", "", "string", "Title");
     Surface.prototype.publish("menu");
@@ -72,16 +72,16 @@
         this._content = _;
         switch (this._content.class()) {
             case "bar":
-                this.faChar("\uf080")
+                this.icon_faChar("\uf080")
                 break;
             case "bubble":
-                this.faChar("\uf192")
+                this.icon_faChar("\uf192")
                 break;
             case "pie":
-                this.faChar("\uf200")
+                this.icon_faChar("\uf200")
                 break;
             case "table":
-                this.faChar("\uf0ce")
+                this.icon_faChar("\uf0ce")
                 break;
         }
 
@@ -129,8 +129,6 @@
         SVGWidget.prototype.update.apply(this, arguments);
 
         this._icon
-            .faChar(this._faChar)
-            .shape(this.icon_shape())
             .display(this._show_title)
             .render()
         ;

@@ -14,7 +14,6 @@
         this._icon = new Icon()
             .shape("rect")
             .diameter(14)
-            .padding_percent(10)
         ;
         this._list = new List();
 
@@ -29,9 +28,8 @@
     Menu.prototype = Object.create(SVGWidget.prototype);
     Menu.prototype.implements(IMenu.prototype);
 
-    Menu.prototype.publishProxy("faChar", "_icon");
-    Menu.prototype.publishProxy("diameter", "_icon");
-    Menu.prototype.publishProxy("padding_percent", "_icon");
+    Menu.prototype.publishProxy("faChar", "_icon", null, "\uf0c9");
+    Menu.prototype.publishProxy("padding_percent", "_icon", null, 10);
 
     Menu.prototype.toggleMenu = function () {
         if (!this._visible) {
@@ -82,9 +80,6 @@
     };
 
     Menu.prototype.testData = function () {
-        this._icon
-            .faChar("\uf0c9")
-        ;
         this
             .data(["Menu A", "And B", "a longer C"])
         ;
@@ -117,6 +112,12 @@
         SVGWidget.prototype.update.apply(this, arguments);
         element
             .classed("disabled", this._data.length === 0)
+        ;
+
+        this._icon
+            .faChar(this.faChar())
+            .padding_percent(this.padding_percent())
+            .render()
         ;
     };
 

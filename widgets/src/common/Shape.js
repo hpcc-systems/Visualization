@@ -15,8 +15,8 @@
     Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"]);
     Shape.prototype.publish("width", 24, "number", "Width");
     Shape.prototype.publish("height", 24, "number", "Height");
-    Shape.prototype.publish("color_stroke", "#1f77b4", "html-color", "Stroke Color", null);
-    Shape.prototype.publish("color_fill", "#1f77b4", "html-color", "Fill Color", null);
+    Shape.prototype.publish("color_stroke", null, "html-color", "Stroke Color", null);
+    Shape.prototype.publish("color_fill", null, "html-color", "Fill Color", null);
 
     Shape.prototype.radius = function (_) {
         if (!arguments.length) return Math.max(this._width, this._height) / 2;

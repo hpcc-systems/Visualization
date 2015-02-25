@@ -12,7 +12,6 @@
 
         this._shape = new Shape()
             .shape("rect")
-            .color_fill("#dcf1ff")
         ;
         this._text = new Text();
     };
@@ -25,6 +24,8 @@
     TextBox.prototype.publish("padding_right", 4, "number", "Padding:  Right");
     TextBox.prototype.publish("padding_top", 4, "number", "Padding:  Top");
     TextBox.prototype.publish("padding_bottom", 4, "number", "Padding:  Bottom");
+    TextBox.prototype.publishProxy("anchor", "_text");
+    TextBox.prototype.publish("fixedSize", null);
 
     TextBox.prototype.padding = function (_) {
         this._padding_left = _;
@@ -33,9 +34,6 @@
         this._padding_bottom = _;
         return this;
     };
-
-    TextBox.prototype.publishProxy("anchor", "_text");
-    TextBox.prototype.publish("fixedSize", null);
 
     TextBox.prototype.testData = function () {
         this._text.testData();

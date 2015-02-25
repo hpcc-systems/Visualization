@@ -72,6 +72,7 @@
                 }
             })
             .on("dblclick", function (d) {
+                d3.event.stopPropagation();
                 context.zoomToFit(context.active === this ? null : this, 750);
                 context.active = this;
             })

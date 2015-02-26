@@ -107,7 +107,7 @@
         var testWidget = null;
         var jsWidget = null;
         var cloneWidget = null;
-        require(["src/other/Persist", "src/other/PropertyEditor"], function (Persist, PropertyEditor) {
+        require(["d3", "src/other/Persist", "src/other/PropertyEditor"], function (d3, Persist, PropertyEditor) {
 
             var propEditor = new PropertyEditor()
                 .target("propEditor")
@@ -139,29 +139,14 @@
             };
 
             function serializeTest(propEditor) {
-                /*
-                document.getElementById("jsText").setAttribute("class", "prettyprint");
-                document.getElementById("jsText").innerText =
-                    "//  JavaScript  ---\n" +
-                    propEditor.getJavaScript("widget", true, true);
-                */
-                document.getElementById("serializationText").setAttribute("class", "prettyprint");
-                document.getElementById("serializationText").innerText =
-                    "//  Serialization String  ---\n" +
-                    propEditor.getPersistString("widgetJSON");
+                d3.select("#serializationText")
+                    .attr("class", "prettyprint")
+                    .text("//  Serialization String  ---\n" +
+                        propEditor.getPersistString("widgetJSON")
+                    )
+                ;
                 prettyPrint();
-                /*
-                try {
-                    document.getElementById("divID").innerHTML = "";
-                    var script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.text = "try {" + propEditor.getJavaScript("widget", true, true, "jsWidget=widget;") + "} catch(e) { console.log(e); }";
-                    document.body.appendChild(script);
-                    document.body.removeChild(script);
-                } catch (e) {
-                }
-                */
-                document.getElementById("serializationTest").innerHTML = "";
+                d3.select("#serializationTest").html("");
                 Persist.clone(propEditor.data(), function (widget) {
                     cloneWidget = widget
                         .target("serializationTest")
@@ -170,8 +155,6 @@
                 });
             }
             function displayProperties(sourceWidget) {
-                //document.getElementById("propEditor").innerHTML = "";
-                //document.getElementById("innerPropEditor").innerHTML = "";
                 propEditor 
                     .data(sourceWidget)
                     .render(function (self) {

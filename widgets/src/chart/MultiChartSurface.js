@@ -27,6 +27,8 @@
     MultiChartSurface.prototype.implements(INDChart.prototype);
     MultiChartSurface.prototype.testData = INDChart.prototype.testData;
 
+    MultiChartSurface.prototype.publishProxy("chart_type", "_content");
+
     MultiChartSurface.prototype.columns = function (_) {
         if (!arguments.length) return this._content.columns();
         this._content.columns(_);
@@ -53,12 +55,6 @@
             default:
                 this.menu(this._content._allChartTypes.map(function (item) { return item.display; }).sort());
         }
-        return this;
-    };
-
-    MultiChartSurface.prototype.chartType = function (_, skipRender) {
-        if (!arguments.length) return this._content.chartType();
-        this._content.chart_type(_);
         return this;
     };
 

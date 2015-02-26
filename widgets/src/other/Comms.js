@@ -80,6 +80,10 @@
         return this._pathname.toLowerCase().indexOf("wsecl") >= 0 || (this._params["QuerySetId"] && this._params["Id"]);
     };
 
+    ESPUrl.prototype.isWsWorkunits_GetStats = function () {
+        return this._pathname.toLowerCase().indexOf("wsworkunits/wugetstats") >= 0 && this._params["WUID"];
+    };
+
     ESPUrl.prototype.getUrl = function (overrides) {
         overrides = overrides || {};
         return (overrides.protocol ? overrides.protocol : this._protocol) + "//" +
@@ -531,6 +535,55 @@
         }
     };
 
+    function WsWorkunits_GetStats() {
+        Comms.call(this);
+
+        this._port = "8010";
+        this._wuid = null;
+    };
+    WsWorkunits_GetStats.prototype = Object.create(Comms.prototype);
+
+    WsWorkunits_GetStats.prototype.url = function (_) {
+        var retVal = Comms.prototype.url.apply(this, arguments);
+        if (arguments.length) {
+            //  http://192.168.1.201:8010/WsWorkunits/WUGetStats?WUID="xxx"
+            for (var key in this._params) {
+                switch (key) {
+                    case "WUID":
+                        this.wuid(this._params[key]);
+                        break;
+                }
+            }
+        }
+        return retVal;
+    };
+
+    WsWorkunits_GetStats.prototype.wuid = function (_) {
+        if (!arguments.length) return this._wuid;
+        this._wuid = _;
+        return this;
+    };
+
+    WsWorkunits_GetStats.prototype.constructUrl = function () {
+        return Comms.prototype.getUrl.call(this, {
+            pathname: "WsWorkunits/WUGetStats?WUID=" + this._wuid
+        });
+    };
+
+    WsWorkunits_GetStats.prototype.send = function (request, callback) {
+        var context = this;
+        var url = this.getUrl({
+            pathname: "WsWorkunits/WUGetStats.json?WUID=" + this._wuid
+        });
+        this.jsonp(url, request, function (response) {
+            if (exists("WUGetStatsResponse.Statistics.WUStatisticItem", response)) {
+                callback(response.WUGetStatsResponse.Statistics.WUStatisticItem);
+            } else {
+                callback([]);
+            }
+        });
+    };
+
     //  HIPIERoxie  ---
     function HIPIERoxie() {
         Comms.call(this);
@@ -660,6 +713,11 @@
             var testURL = new ESPUrl()
                 .url(url)
             ;
+            if (testURL.isWsWorkunits_GetStats()) {
+                return new WsWorkunits_GetStats()
+                   .url(url)
+                ;
+            }
             if (testURL.isWsWorkunits()) {
                 return new WsWorkunits()
                     .url(url)

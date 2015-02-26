@@ -30,7 +30,9 @@
         ;
 
         this.partition = d3.layout.partition()
-            .value(function (d) { return 1; })
+            .value(function (d) {
+                return d.value === undefined ? 1 : d.value;
+            })
         ;
 
         this.arc = d3.svg.arc()
@@ -47,25 +49,29 @@
         var context = this;
 		
         this._palette = this._palette.switch(this._paletteID);
-        var path = this.svg.selectAll("path")
-            .data(this.partition.nodes(this._data))
-            .enter().append("path")
-            .attr("d", this.arc)
+        var paths = this.svg.selectAll("path").data(this.partition.nodes(this._data), function (d) { return d.id; });
+        var path = paths.enter().append("path")
             .style("fill", function (d) { return d.__viz_fill ? d.__viz_fill : context._palette(d.label); })
             .style("stroke", function (d) {
                 return d.value > 16 ? "white" : "none";
             })
             .on("click", function (d) { context.click(d); })
             .on("dblclick", dblclick)
+            .append("title")
+                .text(function (d) { return d.label })
+        ;
+        paths.transition()
+            .attr("d", this.arc)
         ;
 
-        path.append("title")
-            .text(function (d) { return d.label })
-        ;
+        paths.exit().transition().remove();
+        //dblclick.call(this._data);
 
         function dblclick(d) {
-            d3.event.stopPropagation();
-            path.transition()
+            if (d3.event) {
+                d3.event.stopPropagation();
+            }
+            paths.transition()
                 .duration(750)
                 .attrTween("d", arcTween(d))
             ;

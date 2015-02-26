@@ -1,0 +1,430 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Dasher</title>
+    <!--
+    <link rel="stylesheet" href="../test.css">
+    -->
+    <style>
+        .thumb {
+            font-size:12px;
+            padding:2px 2px 2px 2px;
+            background: #f8f8f8;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .large.vwide.thumb {
+            width: 600px;
+            height: 200px;
+        }
+
+        .vlarge.vwide.thumb {
+            width: 600px;
+            height: 400px;
+        }
+
+        .top.thumb {
+            width: 300px;
+            height: 200px;
+        }
+
+        .middle.thumb {
+            width: 400px;
+            height: 414px;
+        }
+
+        .bottom.thumb {
+            width: 1024px;
+            height: 400px;
+        }
+
+        .common_List text {
+            font-family: Calibri;
+            fill: black;
+        }
+
+        .thumb .common_Menu .common_List .common_TextBox .common_Shape {
+            fill: lightgrey;
+            stroke: lightgrey;
+        }
+
+        .thumb .common_Menu .common_List .common_TextBox .common_Shape:hover {
+            fill: #f8f8f8;
+            stroke: #f8f8f8;
+        }
+        
+        .frame .common_Icon {
+            display: none;
+        }
+
+        .thumb .common_Surface .title text {
+            font-size:14px;
+            font-weight:bold;
+            fill: black;
+        }
+
+        .thumb .common_Surface .container .common_Shape {
+            fill: none;
+            stroke: none;
+        }
+
+        .thumb .common_Surface .common_Menu .common_Icon .common_Shape {
+            fill: none;
+            stroke: none;
+        }
+
+        .thumb .common_Surface .common_Menu .common_Icon .common_FAChar .common_Text {
+            font-weight:normal;
+            fill: black;
+        }
+
+        .thumb .common_Surface .title .common_Shape {
+            fill:none;
+            stroke:none;
+        }
+
+    </style>
+    <script src="../../widgets/lib/requirejs/require.js"></script>
+    <script src="../../widgets/config.js"></script>
+    <script src="../../widgets/lib/crossfilter/crossfilter.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: "../../widgets"
+        });
+    </script>
+</head>
+<body style="width:1024px">
+    <button onclick="doReset();">Reset</button>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><div id="tdPie1" class="top thumb"></div></td>
+                                <td><div id="tdPie2" class="top thumb"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div id="tdPie3" class="top thumb"></div></td>
+                                <td><div id="tdPie4" class="top thumb"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><div id="sunburst" class="middle thumb"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><div id="bar" class="bottom thumb"></div></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        var doReset = null;
+
+        function CFGroup() {
+        }
+        /*
+        require(["lib/d3/d3"], function (d3) {
+            var root = d3.select("#bar");
+            var data = [["a", "b"], ["c", "d"]];
+            var data2 = [["ca", "db"], ["ec", "fd"]];
+            var paragarphs = root.selectAll("p").data(data);//, function (d) { return d; });
+            var p_enter = paragarphs.enter()
+                .append("p")
+                .each(function (d) {
+                    var d = 0;
+                });
+            ;
+
+            var spans = p_enter.selectAll("span").data(data2);
+            var span_enter = spans.enter()
+                .append("span")
+                .text(function (d) {
+                    return "";
+                })
+            ;
+
+
+            var d = 0;
+
+        });
+        */
+        require(["src/other/Comms", "src/chart/MultiChartSurface", "src/common/Surface", "src/tree/SunburstPartition", "src/other/Table"], function (Comms, MultiChartSurface, Surface, SunburstPartition, Table) {
+            //  create tree data  ---
+            function formatTree(data, label) {
+                var cache = {};
+                var treeDedup = {
+                    "": {
+                        parentID: null,
+                        id: "",
+                        label: label,
+                        children: [],
+                        childrenDedup: {}
+                    }
+                };
+                data.forEach(function (row, idx) {
+                    var i = 1;
+                    var scopeParts = row.key.split(":");
+                    var scope = "";
+                    scopeParts.forEach(function (item, idx) {
+                        var prevScope = scope;
+                        scope += (scope.length ? ":" : "") + item;
+                        if (!treeDedup[scope]) {
+                            var newTreeItem = {
+                                parentID: prevScope,
+                                id: scope,
+                                children: [],
+                                childrenDedup: {}
+                            }
+                            treeDedup[scope] = newTreeItem;
+                            treeDedup[prevScope].children.push(newTreeItem);
+                            treeDedup[prevScope].childrenDedup[scope] = newTreeItem;
+                        }
+                        var scopeItem = treeDedup[scope];
+                        if (idx === scopeParts.length - 1) {
+                            scopeItem.__data = row;
+                            scopeItem.label = row.key;
+                            scopeItem.value = row.value;
+                        };
+                    });
+                });
+                function trimTree(node) {
+                    var newChildren = [];
+                    node.children.forEach(function (childNode) {
+                        trimTree(childNode);
+                        if (childNode.value || childNode.children.length) {
+                            newChildren.push(childNode);
+                        }
+                    })
+                    node.children = newChildren;
+                    return node;
+                }
+                var retVal = trimTree(treeDedup[""]);
+                return retVal;
+            }
+            var searchParts = window.location.search.split("?");
+            searchParts.shift();
+            var url = searchParts.join("?") || "http://192.168.1.201:8010/WsWorkunits/WUGetStats.json?WUID=W20150107-071050";
+
+            //var url = searchParts[searchParts.length - 1] || "http://localhost:8010/WsWorkunits/WUGetStats.json?WUID=W20150219-122914";
+            //var url = searchParts[searchParts.length - 1] || "http://192.168.1.201:8010/WsWorkunits/WUGetStats.json?WUID=W20150107-071050";
+            var service = Comms.createESPConnection(url);
+            service.send({}, function (response) {
+                var stats = crossfilter(response.filter(function (row) {
+                    return row.ScopeType !== "global" && row.Scope !== "Process";
+                }));
+                function CFGroup(crossfilter, dimensionID, targetID) {
+                    this.targetID = targetID;
+                    this.dimensionID = dimensionID;
+                    this.dimension = crossfilter.dimension(function (d) { return d[dimensionID]; });
+                    this.group = this.dimension.group().reduceCount();
+
+                    this.widget = new MultiChartSurface()
+                        .target("td" + targetID)
+                        .title(dimensionID)
+                        .columns([dimensionID, "Total"])
+                        .show_icon(false)
+                        .menu(["Pie (Google)", "Pie (C3)", "Table"])
+                        .chart_type("GOOGLE_PIE")
+                    ;
+                    this.render();
+
+                    this.filter = null;
+                    var context = this;
+                    this.widget.click = function (row, column) {
+                        if (context.filter === row[dimensionID]) {
+                            context.filter = null;
+                        } else {
+                            context.filter = row[dimensionID];
+                        }
+                        context.dimension.filter(context.filter);
+                        context.click(row, column);
+                        context.render();
+                    };
+                }
+                CFGroup.prototype.click = function (row, column) {
+                }
+                CFGroup.prototype.resetFilter = function () {
+                    this.filter = null;
+                    this.dimension.filter(null);
+                }
+                CFGroup.prototype.render = function () {
+                    this.widget
+                        .title(this.dimensionID + (this.filter ? " (" + this.filter + ")" : ""))
+                        .data(this.group.all().map(function (row) {
+                            return [row.key, row.value];
+                        }))
+                        .render()
+                    ;
+                }
+
+                //return;
+                var pieKind = new CFGroup(stats, "Kind", "Pie1");
+                pieKind.click = function (row, column) {
+                    doRender(pieKind);
+                }
+
+                var pieCreatorType = new CFGroup(stats, "CreatorType", "Pie2");
+                pieCreatorType.click = function (row, column) {
+                    doRender(pieCreatorType);
+                }
+
+                var pieScopeType = new CFGroup(stats, "ScopeType", "Pie3");
+                pieScopeType.click = function (row, column) {
+                    doRender(pieScopeType);
+                }
+
+                var pieMeasure = new CFGroup(stats, "Measure", "Pie4");
+                pieMeasure.click = function (row, column) {
+                    doRender(pieMeasure);
+                }
+
+                var summaryByScope = stats.dimension(function (d) { return d.Scope; });
+                var groupByScope = summaryByScope.group().reduceSum(function (d) { return d.RawValue; });
+
+                var scopes = new SunburstPartition();
+                var scopesSurface = new Surface()
+                    .target("sunburst")
+                    .show_icon(false)
+                    .title("Scope")
+                    .content(scopes)
+                ;
+
+                var prevScope;
+                scopes.click = function (row, column) {
+                    setTimeout(function () {
+                        if (row.id === "") {
+                            prevScope = row.id;
+                        }
+                        prevScope === row.id ? summaryByScope.filter(null) : summaryByScope.filter(function (d) {
+                            return d.indexOf(row.id + ":") === 0;
+                        });
+                        if (prevScope === row.id) {
+                            prevScope = null;
+                        } else {
+                            prevScope = row.id;
+                        }
+                        scopesSurface.title("Scope (" + prevScope + ")").render();
+                        doRender(scopes);
+                    }, 300);
+                };
+
+                /*
+                var debug = new Table()
+                    .target("debug")
+                ;
+                var debug2 = new Table()
+                    .target("debug2")
+                ;
+                */
+
+                var bar = new MultiChartSurface()
+                    .target("bar")
+                    .show_icon(false)
+                    .menu(["Bar (Google)", "Bar (C3)", "Column (Google)", "Column (C3)", "Table"])
+                    .chart_type("GOOGLE_COLUMN")
+                ;
+
+                doReset = function () {
+                    pieMeasure.resetFilter();
+                    pieKind.resetFilter();
+                    pieCreatorType.resetFilter();
+                    pieScopeType.resetFilter();
+                    prevScope = null;
+                    summaryByScope.filterAll();
+                    doRender();
+                };
+
+                var doRender = function (source) {
+                    if (source !== pieMeasure) pieMeasure.render();
+                    if (source !== pieKind) pieKind.render();
+                    if (source !== pieCreatorType) pieCreatorType.render();
+                    if (source !== pieScopeType) pieScopeType.render();
+
+                    if (source !== scopes) {
+                        var tree = formatTree(groupByScope.all(), service.wuid());
+                        scopes
+                            .data(tree)
+                        ;
+                        scopesSurface
+                            .render()
+                        ;
+                    }
+
+                    var scopeData = summaryByScope.top(Infinity);
+                    var columns = ["Creator", "CreatorType", "Scope", "ScopeType", "Description", "TimeStamp", "Measure", "Kind", "Value", "RawValue", "Count", "Max"];
+                    var data = scopeData.map(function (row, idx) {
+                        var rowData = [];
+                        columns.forEach(function (column) {
+                            rowData.push(row[column]);
+                        });
+                        return rowData;
+                    });
+                    /*
+                    debug
+                        .columns(columns)
+                        .data(data)
+                        .render()
+                    ;
+
+                    var scopeData2 = groupByScope.all();
+                    var columns2 = ["key", "value"];
+                    var data2 = scopeData2.map(function (row, idx) {
+                        var rowData = [];
+                        columns2.forEach(function (column) {
+                            rowData.push(row[column]);
+                        });
+                        return rowData;
+                    });
+
+                    debug2
+                        .columns(columns2)
+                        .data(data2)
+                        .render()
+                    ;
+                    */
+
+                    var statsData = [];
+                    if (pieMeasure.filter || pieKind.filter || pieCreatorType.filter || pieScopeType.filter || prevScope) {
+                        statsData = scopeData.map(function (row) {
+                            if (prevScope === row.Scope) {
+                                return [row.Scope, row.RawValue];
+                            }
+                            return [(prevScope && row.Scope.indexOf(prevScope) === 0 ? row.Scope.substring(prevScope.length + 1) : row.Scope), row.RawValue];
+                        });
+                    }
+                    var statsLabel = [pieKind.filter, pieCreatorType.filter, pieScopeType.filter, prevScope].filter(function (item) {
+                        return item;
+                    }).join(", ") || "Unknown";
+                    statsLabel += (scopeData[0] ? " (" + scopeData[0].Measure + ")" : "");
+                    bar
+                        .title(statsLabel)
+                        .columns(["Stat", statsLabel])
+                        .data(statsData)
+                        .render(function (d) {
+                            if (d._content && d._content._chart && d._content._chart.legendShow) {
+                                d._content._chart.legendShow(false);
+                            }
+                        })
+                    ;
+                }
+                doRender();
+            });
+        });
+    </script>
+</body>
+</html>

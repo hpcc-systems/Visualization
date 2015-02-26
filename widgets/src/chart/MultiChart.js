@@ -46,10 +46,11 @@
 
         this._allCharts = {};
         this._allChartTypes.forEach(function (item) {
-            item.widget = null;
-            this._allCharts[item.id] = item;
-            this._allCharts[item.display] = item;
-            this._allCharts[item.widgetClass] = item;
+            var newItem = JSON.parse(JSON.stringify(item));
+            newItem.widget = null;
+            this._allCharts[item.id] = newItem;
+            this._allCharts[item.display] = newItem;
+            this._allCharts[item.widgetClass] = newItem;
         }, this);
         //  Backward compatability until we roll our own BAR  ---
         this._allCharts["BAR"] = this._allCharts["COLUMN"];

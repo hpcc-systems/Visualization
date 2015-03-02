@@ -1,35 +1,33 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common"], factory);
+        define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Column = factory(root.d3, root.Common);
+        root.Column = factory(root.d3, root.CommonND);
     }
-}(this, function (d3, Common) {
+}(this, function (d3, CommonND) {
 
     function Column() {
-        Common.call(this);
+        CommonND.call(this);
         this._class = "google_Column";
+
+        this._chartType = "ColumnChart";
     };
-    Column.prototype = Object.create(Common.prototype);
+    Column.prototype = Object.create(CommonND.prototype);
+    //  TODO:  Publish Column Properties Here
+
+    Column.prototype.getChartOptions = function () {
+        var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
+        //  TODO:  Add Column Properties Here
+        return retVal;
+    };
     
     Column.prototype.enter = function (domNode, element) {
-        var context = this;
-
-        element.style("overflow", "hidden");
-        this.columnChart = new google.visualization.ColumnChart(element.node());
-        google.visualization.events.addListener(this.columnChart, "select", function () {
-            var selectedItem = context.columnChart.getSelection()[0];
-            if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[selectedItem.column]);
-            }
-        });
+        CommonND.prototype.enter.apply(this, arguments);
     };
 
     Column.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
-
-        this.columnChart.draw(this._data_google, this._chartOptions);
+        CommonND.prototype.update.apply(this, arguments);
     };
 
     return Column;

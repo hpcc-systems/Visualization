@@ -1,68 +1,42 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common"], factory);
+        define(["d3/d3", "./Common2D"], factory);
     } else {
-        root.Pie = factory(root.d3, root.Common);
+        root.Pie = factory(root.d3, root.Common2D);
     }
-}(this, function (d3, Common) {
+}(this, function (d3, Common2D) {
 
-    function Pie(tget) {
-        Common.call(this);
+    function Pie() {
+        Common2D.call(this);
         this._class = "google_Pie";
 
+        this._chartType = "PieChart";
     };
-    Pie.prototype = Object.create(Common.prototype);
+    Pie.prototype = Object.create(Common2D.prototype);
     
     Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
-    Pie.prototype.publish("fontSize", 12, "number", "Font Size");
-    Pie.prototype.publish("fontName", "Calibri", "string", "Font Name");
     Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size");
-    
     Pie.prototype.publish("pieStartAngle", 0, "number", "Pie Start Angle");
+
+    Pie.prototype.getChartOptions = function () {
+        var retVal = Common2D.prototype.getChartOptions.apply(this, arguments);
+
+        retVal.colors = this._data.map(function (row) {
+            return this._palette(row[0]);
+        }, this);
+        retVal.is3D = this._is3D;
+        retVal.pieHole = this._pieHole;
+        retVal.pieStartAngle = this._pieStartAngle;
+        return retVal;
+    };
     
-    Pie.prototype.is3D = function (_) {
-        if (!arguments.length) return this._is3D;
-        this._is3D = _;
-        return this;
-    }
-
     Pie.prototype.enter = function (domNode, element) {
-        var context = this;
-
-        element.style("overflow", "hidden");
-        this.pieChart = new google.visualization.PieChart(element.node());
-
-        google.visualization.events.addListener(this.pieChart, "select", function () {
-            var selectedItem = context.pieChart.getSelection()[0];
-            if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[1]);
-            }
-        });
+        Common2D.prototype.enter.apply(this, arguments);
     };
 
-    Pie.prototype.update = function (domNode, element) {     
-        Common.prototype.update.apply(this, arguments);
-
-        var context = this;
-
-        var colors = this._data.map(function (row) {
-            return this._palette(row[0]);
-        }, this);
-
-
-        var colors = this._data.map(function (row) {
-            return this._palette(row[0]);
-        }, this);
-            
-        this._chartOptions.colors = colors;
-        this._chartOptions.fontSize = this._fontSize;
-        this._chartOptions.fontName = this._fontName;
-        this._chartOptions.is3D = this._is3D;
-        this._chartOptions.pieStartAngle = this._pieStartAngle;
-        this._chartOptions.pieHole = this._pieHole;
-
-        this.pieChart.draw(this._data_google, this._chartOptions);
+    Pie.prototype.update = function (domNode, element) {
+        Common2D.prototype.update.apply(this, arguments);
     };
 
     return Pie;

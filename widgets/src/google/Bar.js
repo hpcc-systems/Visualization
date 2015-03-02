@@ -1,50 +1,34 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common"], factory);
+        define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Bar = factory(root.d3, root.Common);
+        root.Bar = factory(root.d3, root.CommonND);
     }
-}(this, function (d3, Common) {
+}(this, function (d3, CommonND) {
 
-    function Bar(tget) {
-        Common.call(this);
+    function Bar() {
+        CommonND.call(this);
         this._class = "google_Bar";
+
+        this._chartType = "BarChart";
     };
-    Bar.prototype = Object.create(Common.prototype);
+    Bar.prototype = Object.create(CommonND.prototype);
 
-    Bar.prototype.publish("animationDuration", 0, "number", "Animation Duration");
-    Bar.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup");
-    Bar.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["","linear","in","out","inAndOut"]);
-    
-    Bar.prototype.publish("orientation", "vertical", "set", "Bar Orientation", ["","vertical","horizontal"]);
-    
+    //  TODO:  Publish Bar Properties Here
+   
+    Bar.prototype.getChartOptions = function () {
+        var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
+        //  TODO:  Add Bar Properties Here
+        return retVal;
+    };
+
     Bar.prototype.enter = function (domNode, element) {
-        var context = this;
-
-        element.style("overflow", "hidden");
-        this.barChart = new google.visualization.BarChart(element.node());
-        google.visualization.events.addListener(this.barChart, "select", function () {
-            var selectedItem = context.barChart.getSelection()[0];
-            if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[selectedItem.column]);
-            }
-        });
+        CommonND.prototype.enter.apply(this, arguments);
     };
 
     Bar.prototype.update = function (domNode, element) {      
-        Common.prototype.update.apply(this, arguments);
-
-        var context = this;
-
-        this._chartOptions.animation = {
-            duration:this._animationDuration,
-            startup:this._animationOnStartup,
-            easing:this._animationEasing
-        };
-        this._chartOptions.orientation = this._orientation;
-
-        this.barChart.draw(this._data_google, this._chartOptions);
+        CommonND.prototype.update.apply(this, arguments);
     };
 
     return Bar;

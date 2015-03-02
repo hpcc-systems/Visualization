@@ -1,17 +1,19 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common"], factory);
+        define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Bar = factory(root.d3, root.Common);
+        root.Bar = factory(root.d3, root.CommonND);
     }
-}(this, function (d3, Common) {
+}(this, function (d3, CommonND) {
 
-    function Bar(tget) {
-        Common.call(this);
+    function Bar() {
+        CommonND.call(this);
         this._class = "google_Bar";
+        this._type = "bar";
     };
-    Bar.prototype = Object.create(Common.prototype);
+    
+    Bar.prototype = Object.create(CommonND.prototype);
 
     Bar.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["","start","center","end"]);
     Bar.prototype.publish("legendPosition", "top", "set", "Legend Position", ["","bottom","labeled","left","none","right","top"]);
@@ -29,54 +31,12 @@
     
     Bar.prototype.enter = function (domNode, element) {
         var context = this;
-
-        element.style("overflow", "hidden");
-        this.barChart = new google.visualization.BarChart(element.node());
-        google.visualization.events.addListener(this.barChart, "select", function () {
-            var selectedItem = context.barChart.getSelection()[0];
-            if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[selectedItem.column]);
-            }
-        });
+        CommonND.prototype.enter.apply(this, arguments);
     };
 
-    Bar.prototype.update = function (domNode, element) {      
-        Common.prototype.update.apply(this, arguments);
-
-        var context = this;
-
-        var colors = this._columns.filter(function (d, i) { return i > 0;}).map(function (row) {
-            return this._palette(row);
-        }, this);
-
-        var chartOptions = {
-            backgroundColor: "none",
-            width: this.width(),
-            height: this.height(),
-            //chartArea: { width: "100%", height: "100%" },
-            colors: colors,
-            ///is3D: this._is3D,
-            animation: {
-                duration:this._animationDuration,
-                startup:this._animationOnStartup,
-                easing:this._animationEasing
-            },
-            legend: { 
-                alignment: this._legendAlignment,
-                position: this._legendPosition,
-                maxLines:2,
-                textStyle: {
-                    color: this._legendFontColor,
-                    fontName: this._legendFontName,
-                    fontSize: this._legendFontSize,
-                    bold: this._legendFontBold,
-                    italic: this._legendFontItalic,
-                }
-            },
-            orientation:this._orientation
-        };
-
-        this.barChart.draw(this._data_google, chartOptions);
+    Bar.prototype.update = function (domNode, element) {
+        var context = this;      
+        CommonND.prototype.update.apply(this, arguments);
     };
 
     return Bar;

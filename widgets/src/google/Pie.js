@@ -1,18 +1,20 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Common"], factory);
+        define(["d3/d3", "./Common2D"], factory);
     } else {
-        root.Pie = factory(root.d3, root.Common);
+        root.Pie = factory(root.d3, root.Common2D);
     }
-}(this, function (d3, Common) {
+}(this, function (d3, Common2D) {
 
-    function Pie(tget) {
-        Common.call(this);
+    function Pie() {
+        Common2D.call(this);
         this._class = "google_Pie";
+        this._type = "pie";
 
     };
-    Pie.prototype = Object.create(Common.prototype);
+
+    Pie.prototype = Object.create(Common2D.prototype);
     
     Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
     Pie.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width");
@@ -39,56 +41,12 @@
 
     Pie.prototype.enter = function (domNode, element) {
         var context = this;
-
-        element.style("overflow", "hidden");
-        this.pieChart = new google.visualization.PieChart(element.node());
-
-        google.visualization.events.addListener(this.pieChart, "select", function () {
-            var selectedItem = context.pieChart.getSelection()[0];
-            if (selectedItem) {
-                context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[1]);
-            }
-        });
+        Common2D.prototype.enter.apply(this, arguments);
     };
 
-    Pie.prototype.update = function (domNode, element) {     
-        Common.prototype.update.apply(this, arguments);
-
-        var context = this;
-
-        var colors = this._data.map(function (row) {
-            return this._palette(row[0]);
-        }, this);
-
-        var chartOptions = {
-            backgroundColor: "none",
-            width: this.width(),
-            height: this.height(),
-            fontSize:this._fontSize,
-            fontName:this._fontName,
-            chartArea: { 
-                width: this._chartAreaWidth, 
-                height: this._chartAreaHeight 
-            },
-            colors: colors,
-            is3D: this._is3D,
-            pieStartAngle:this._pieStartAngle,
-            legend: { 
-                alignment: this._legendAlignment,
-                position: this._legendPosition,
-                maxLines:2,
-                textStyle: {
-                    color: this._legendFontColor,
-                    fontName: this._legendFontName,
-                    fontSize: this._legendFontSize,
-                    bold: this._legendFontBold,
-                    italic: this._legendFontItalic,
-                }
-            },
-            pieHole:this._pieHole
-        };
-
-        this.pieChart.draw(this._data_google, chartOptions);
+    Pie.prototype.update = function (domNode, element) {
+        var context = this;      
+        Common2D.prototype.update.apply(this, arguments);
     };
 
     return Pie;

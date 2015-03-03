@@ -48,7 +48,11 @@
             .remove()
         ;
 
-        var bbox = this._textElement.node().getBBox();
+        var bbox = { width: 0, height: 0 };
+        try {   //  https://bugzilla.mozilla.org/show_bug.cgi?id=612118
+            bbox = this._textElement.node().getBBox();
+        } catch (e) {
+        }
         var xOffset = 0;
         switch(this._anchor) {
             case "start":

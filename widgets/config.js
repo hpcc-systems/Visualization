@@ -31,6 +31,11 @@ requirejs.config({
             main: "c3"
         },
         {
+            name: "crossfilter",
+            location: "lib/crossfilter",
+            main: "crossfilter"
+        },
+        {
             name: "topojson",
             location: "lib/topojson",
             main: "topojson"

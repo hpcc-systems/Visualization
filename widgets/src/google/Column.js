@@ -28,24 +28,8 @@
 
     Column.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
-        
-        var context = this;
 
-        var colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
-            return this._palette(row);
-        }, this);
-
-        var chartOptions = {
-            backgroundColor: "none",
-            width: this.width(),
-            height: this.height(),
-            //chartArea: { width: "100%", height: "100%" },
-            colors: colors,
-            ///is3D: this._is3D,
-            legend: { alignment: "center" }
-        };
-
-        this.columnChart.draw(this._data_google, chartOptions);
+        this.columnChart.draw(this._data_google, this._chartOptions);
     };
 
     return Column;

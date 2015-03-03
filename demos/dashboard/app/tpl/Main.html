@@ -16,7 +16,17 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#" data-dojo-attach-event="onClick:_onDesign">Design</a></li>
+                            <li><a href="#" data-dojo-attach-event="onClick:_onSave">Save</a></li>
+                            <li><a href="#" data-dojo-attach-event="onClick:_onReset">Reset</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Advanced <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#" data-dojo-attach-event="onClick:_toggleEdges">Show/Hide Edges</a></li>
+                                    <li><a href="#" data-dojo-attach-event="onClick:_toggleSnap">Toggle Snap to Grid (12px)</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">About...</a></li>
+                                </ul>
+                            </li>
                         </ul>
                         <form class="navbar-form">
                             <div class="form-group" style="display:inline;">
@@ -28,7 +38,7 @@
                                     <input id="${id}Url" class="form-control" name="search" placeholder="HIPIE URL" autocomplete="off" autofocus="autofocus" type="text" value="http://10.173.147.1:8002/WsEcl/submit/query/roxie/drealeed_testaddressclean.ins002_service/json">
                                     <input id="${id}Url" class="form-control" name="search" placeholder="HIPIE URL" autocomplete="off" autofocus="autofocus" type="text" value="http://10.239.227.24:8002/WsEcl/submit/query/roxie/hipie_testrelavatorsmall1.ins002_service/json">
                                     -->
-                                    <input id="${id}Url" class="form-control" name="search" placeholder="HIPIE URL" autocomplete="off" autofocus="autofocus" type="text" value="http://10.239.227.24:8002/WsEcl/submit/query/roxie/hipie_testgraph2.ins001_service/json" />
+                                    <input id="${id}Url" class="form-control" name="search" placeholder="HIPIE URL" autocomplete="off" autofocus="autofocus" type="text" value="http://10.239.227.24:8010/WsWorkunits/WUResult?Wuid=W20150210-173407&ResultName=leeddx_TestServiceViz_Comp_Ins001_DDL">
                                     <span class="input-group-addon" data-dojo-attach-event="onClick:_onGo"><span class="glyphicon glyphicon-arrow-right"></span></span>
                                 </div>
                             </div>
@@ -37,26 +47,7 @@
                 </div>
             </nav>
         </div>
-        <div id="${id}TabContainer" class="centerPanel" data-dojo-props="region: 'center', tabPosition: 'top'" data-dojo-type="dijit/layout/TabContainer">
-        </div>
-        <div id="${id}Props" style="width: 0px;" data-dojo-props="region:'trailing', splitter:true" data-dojo-type="dijit/layout/ContentPane">
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" data-dojo-attach-event="onClick:_onSave">Save</a></li>
-                        <li><a href="#" data-dojo-attach-event="onClick:_onReset">Reset</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Advanced <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#" data-dojo-attach-event="onClick:_toggleEdges">Show/Hide Edges</a></li>
-                                <li><a href="#" data-dojo-attach-event="onClick:_toggleSnap">Toggle Snap to Grid (12px)</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">About...</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+        <div id="${id}TabContainer" class="centerPanel" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center', tabPosition: 'top'">
         </div>
     </div>
 </div>

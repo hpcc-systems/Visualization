@@ -334,7 +334,7 @@
             case "WORD_CLOUD":
                 this.loadWidget("src/chart/MultiChartSurface", function (widget) {
                     widget
-                        .chartType(context.properties.charttype || context.type)
+                        .chart_type(context.properties.charttype || context.type)
                         .title(context.title)
                     ;
                 });
@@ -343,7 +343,7 @@
                 this.loadWidget("src/chart/MultiChartSurface", function (widget) {
                     widget
                         .mode("multi")
-                        .chartType(context.properties.charttype || context.type)
+                        .chart_type(context.properties.charttype || context.type)
                         .title(context.title)
                     ;
                 });

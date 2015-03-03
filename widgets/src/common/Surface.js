@@ -114,7 +114,7 @@
         ;
         this._icon
             .target(domNode)
-            .display(this._show_title && this._show_icon)
+            .render()
         ;
         var menuViz = false;
         this._menu

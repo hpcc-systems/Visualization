@@ -49,6 +49,10 @@
         var context = this;
 		
         this._palette = this._palette.switch(this._paletteID);
+        this.radius = Math.min(this.width(), this.height()) / 2;
+        this.x.range([0, 2 * Math.PI]);
+        this.y.range([0, this.radius]);
+
         var paths = this.svg.selectAll("path").data(this.partition.nodes(this._data), function (d) { return d.id; });
         var path = paths.enter().append("path")
             .style("fill", function (d) { return d.__viz_fill ? d.__viz_fill : context._palette(d.label); })

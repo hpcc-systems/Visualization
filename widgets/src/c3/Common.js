@@ -28,6 +28,8 @@
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
 
+    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"]);
+
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;
         this._type = _;
@@ -58,6 +60,9 @@
     };
 
     Common.prototype.getC3Columns = function (total) {
+        if (!this._data.length) {
+            return [];
+        }
         total = total || this._columns.length;
         var retVal = [];
         for (var i = 1; i < total; ++i) {
@@ -74,8 +79,11 @@
             height: this.height()
         };
         this._config.data.type = this._type;
+        this._config.legend = {
+            position: this._legendPosition
+        };
+        this._config.bindto = element.append("div").datum(null);
         this.c3Chart = c3.generate(this._config);
-        element.node().appendChild(this.c3Chart.element);
     };
 
     Common.prototype.update = function (domNode, element) {

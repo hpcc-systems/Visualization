@@ -9,7 +9,7 @@
     function SunburstPartition(target) {
         SVGWidget.call(this);
         ITree.call(this);
-        this._class = "tree_Sunburst";
+        this._class = "tree_SunburstPartition";
     };
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
     SunburstPartition.prototype.implements(ITree.prototype);
@@ -30,7 +30,9 @@
         ;
 
         this.partition = d3.layout.partition()
-            .value(function (d) { return 1; })
+            .value(function (d) {
+                return d.value !== undefined ? d.value : 1;
+            })
         ;
 
         this.arc = d3.svg.arc()
@@ -47,26 +49,41 @@
         var context = this;
 		
         this._palette = this._palette.switch(this._paletteID);
-        var path = this.svg.selectAll("path")
-            .data(this.partition.nodes(this._data))
-            .enter().append("path")
-            .attr("d", this.arc)
-            .style("fill", function (d) { return d.__viz_fill ? d.__viz_fill : context._palette(d.label); })
-            .style("stroke", function (d) {
-                return d.value > 16 ? "white" : "none";
-            })
+        this.radius = Math.min(this.width(), this.height()) / 2;
+        this.x.range([0, 2 * Math.PI]);
+        this.y.range([0, this.radius]);
+
+        var nodes = this.partition.nodes(this._data);
+
+        var paths = this.svg.selectAll("path").data(nodes, function (d, i) { 
+            return d.id !== undefined ? d.id : i; 
+        });
+        var path = paths.enter().append("path")
             .on("click", function (d) { context.click(d); })
             .on("dblclick", dblclick)
+            .append("title")
+        ;
+        paths
+            .attr("d", this.arc)
+            .style("fill", function (d) { 
+            	return d.__viz_fill ? d.__viz_fill : context._palette(d.label); 
+            })
+            .style("stroke", function (d) { 
+            	return d.value > 16 ? "white" : "none"; 
+           	})
+            .select("title")
+                .text(function (d) { return d.label })
         ;
 
-        path.append("title")
-            .text(function (d) { return d.label })
+        paths.exit()
+            .remove()
         ;
 
         function dblclick(d) {
-            d3.event.stopPropagation();
-            path.transition()
-                .duration(750)
+            if (d3.event) {
+                d3.event.stopPropagation();
+            }
+            paths.transition()
                 .attrTween("d", arcTween(d))
             ;
         }

@@ -15,7 +15,28 @@
     SunburstPartition.prototype.implements(ITree.prototype);
 	
     SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch());
-	
+
+    SunburstPartition.prototype.root = function (_) {
+        if (!arguments.length) return this._root || this._data;
+        this._root = _;
+
+        if (this.svg) {
+            this.svg.selectAll("path").transition()
+                .duration(750)
+                .attrTween("d", this.arcTweenFunc(this._root))
+            ;
+        }
+        return this;
+    };
+
+    SunburstPartition.prototype.data = function () {
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._resetRoot = true;
+        }
+        return this;
+    };
+
     SunburstPartition.prototype.enter = function (domNode, element) {
         var context = this;
 
@@ -47,17 +68,14 @@
 
     SunburstPartition.prototype.update = function (domNode, element) {
         var context = this;
-		
+
         this._palette = this._palette.switch(this._paletteID);
         this.radius = Math.min(this.width(), this.height()) / 2;
         this.x.range([0, 2 * Math.PI]);
         this.y.range([0, this.radius]);
 
-        var nodes = this.partition.nodes(this._data);
-
-        var paths = this.svg.selectAll("path").data(nodes, function (d, i) { 
-            return d.id !== undefined ? d.id : i; 
-        });
+        this._dataNodes = this.partition.nodes(this._data);
+        var paths = this.svg.selectAll("path").data(this._dataNodes, function (d) { return d.id !== undefined ? d.id : i; });
         var path = paths.enter().append("path")
             .on("click", function (d) { context.click(d); })
             .on("dblclick", dblclick)
@@ -66,38 +84,40 @@
         paths
             .attr("d", this.arc)
             .style("fill", function (d) { 
-            	return d.__viz_fill ? d.__viz_fill : context._palette(d.label); 
+                return d.__viz_fill ? d.__viz_fill : context._palette(d.label); 
             })
             .style("stroke", function (d) { 
-            	return d.value > 16 ? "white" : "none"; 
-           	})
+                return d.value > 16 ? "white" : "none"; 
+            })
             .select("title")
                 .text(function (d) { return d.label })
         ;
 
-        paths.exit()
-            .remove()
-        ;
+        paths.exit().remove();
+
+        if (this._resetRoot) {
+            this._resetRoot = false;
+            this.root(this._dataNodes[0]);
+        }
 
         function dblclick(d) {
             if (d3.event) {
                 d3.event.stopPropagation();
             }
-            paths.transition()
-                .attrTween("d", arcTween(d))
-            ;
+            context.root(d);
         }
+    };
 
-        function arcTween(d) {
-            var xd = d3.interpolate(context.x.domain(), [d.x, d.x + d.dx]),
-                yd = d3.interpolate(context.y.domain(), [d.y, 1]),
-                yr = d3.interpolate(context.y.range(), [d.y ? 20 : 0, context.radius]);
-            return function (d, i) {
-                return i
-                    ? function (t) { return context.arc(d); }
-                    : function (t) { context.x.domain(xd(t)); context.y.domain(yd(t)).range(yr(t)); return context.arc(d); };
-            };
-        }
+    SunburstPartition.prototype.arcTweenFunc = function (d) {
+        var xd = d3.interpolate(this.x.domain(), [d.x, d.x + d.dx]),
+            yd = d3.interpolate(this.y.domain(), [d.y, 1]),
+            yr = d3.interpolate(this.y.range(), [d.y ? 20 : 0, this.radius]);
+        var context = this;
+        return function (d, i) {
+            return i
+                ? function (t) { return context.arc(d); }
+                : function (t) { context.x.domain(xd(t)); context.y.domain(yd(t)).range(yr(t)); return context.arc(d); };
+        };
     };
 
     return SunburstPartition;

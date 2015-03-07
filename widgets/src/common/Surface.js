@@ -48,6 +48,7 @@
 
     Surface.prototype.publish("show_title", true, "boolean", "Show Title");
     Surface.prototype.publish("title", "", "string", "Title");
+    Surface.prototype.publishProxy("title_font_size", "_text", "font_size");
     Surface.prototype.publish("show_icon", true, "boolean", "Show Title");
     Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
@@ -111,10 +112,11 @@
         this._titleRect
             .target(domNode)
             .render()
+            .display(this._show_title && this._show_icon)
         ;
         this._icon
             .target(domNode)
-            .display(this._show_title && this._show_icon)
+            .render()
         ;
         var menuViz = false;
         this._menu

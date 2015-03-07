@@ -402,7 +402,7 @@
             context
                 .shrinkToFitOnLayout(true)
                 .layout("Hierarchy")
-                .renderDashboards(false)
+                .renderDashboards(true)
             ;
             GraphWidget.prototype.render.apply(context, args);
         }

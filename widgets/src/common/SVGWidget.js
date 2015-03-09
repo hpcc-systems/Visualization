@@ -16,6 +16,8 @@
         this.transition = new Transition(this);
 
         this._renderCount = 0;
+
+        this._drawStartPos = "center"; // overridable default svg draw start position
     };
     SVGWidget.prototype = Object.create(Widget.prototype);
 
@@ -62,10 +64,12 @@
             .attr("width", this._size.width)
             .attr("height", this._size.height)
         ;
-        this.pos({
-            x: this._size.width / 2,
-            y: this._size.height / 2
-        });
+        if (this._drawStartPos == 'center') {
+            this.pos({
+                x: this._size.width / 2,
+                y: this._size.height / 2
+            });
+        }
         return this;
     };
 

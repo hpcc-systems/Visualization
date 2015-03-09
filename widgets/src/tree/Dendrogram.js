@@ -9,13 +9,18 @@
     function Dendrogram(target) {
         SVGWidget.call(this);
         ITree.call(this);
+
         this._class = "tree_Dendrogram";
+
+        this._drawStartPos = "origin";
+        this._maxTextWidth = 0;
     };
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
     Dendrogram.prototype.implements(ITree.prototype);
 	
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch());
-	
+    Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle");
+
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
 
@@ -24,28 +29,26 @@
         this.diagonal = d3.svg.diagonal()
             .projection(function (d) { return [d.y, d.x]; })
         ;
-
-        this.g = element.append("g");
     };
 
-    Dendrogram.prototype.update = function (domNode, element) {
+    Dendrogram.prototype.update = function (domNode, element, secondPass) {
         var context = this;
         SVGWidget.prototype.update.apply(this, arguments);
 		
         this._palette = this._palette.switch(this._paletteID);
-        var width = this.width() - 60;  //  Pad to allow text to display
+
+        //  Pad to allow text to display  ---
+        this.x(this._maxTextWidth);
+        var width = this.width() - this._maxTextWidth * 2;
         this.layout
             .size([this.height(), width])
-        ;
-        this.g
-            .attr("transform", "translate(" + (-width  / 2) + "," + (-this.height() / 2) + ")");
         ;
 
         var nodes = this.layout.nodes(this.data());
         var links = this.layout.links(nodes);
 
         //  Lines  ---
-        var lines = this.g.selectAll(".link").data(links);
+        var lines = element.selectAll(".link").data(links);
         lines.enter().append("path")
             .attr("class", "link")
         ;
@@ -55,15 +58,22 @@
         lines.exit().remove();
 
         //  Nodes  ---
-        var nodes = this.g.selectAll(".node").data(nodes);
-        var node_enter = nodes.enter().append("g")
+        var nodes = element.selectAll(".node").data(nodes);
+
+        nodes.enter().append("g")
             .attr("class", "node")
+            .on("click", function (d) { context.click(d); })
+            .each(function (d) {
+                var element = d3.select(this);
+                element.append("circle");
+                element.append("text");
+            })
         ;
 
-        node_enter.on("click", function (d) { context.click(d); });
-        node_enter.append("circle");
-        node_enter.append("text");
-        
+        var maxTextWidth = 0;
+        nodes
+            .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; })
+        ;
         nodes.select("circle")
             .attr("r", 4.5)
             .style("fill", function (d) { return context._palette(d.label); })
@@ -71,17 +81,27 @@
             .text(function (d) { return d.label; })
         ;
         nodes.select("text")
-            .attr("dx", function (d) { return d.children ? -8 : 8; })
-            .attr("dy", 3)
-        ;
-        nodes
-            .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; })
-        ;
-        nodes.select("text")
             .style("text-anchor", function (d) { return d.children ? "end" : "start"; })
+            .attr("dx", function (d) { return d.children ? -context._textOffset : context._textOffset; })
+            .attr("dy", 3)
             .text(function (d) { return d.label; })
+            .each(function (d) {
+                if (!secondPass) {
+                    var bbox = d3.select(this).node().getBBox();
+                    if (bbox.width > maxTextWidth) {
+                        maxTextWidth = bbox.width;
+                    }
+                }
+            })
         ;
+        maxTextWidth += this._textOffset;
+
         nodes.exit().remove();
+
+        if (!secondPass && this._maxTextWidth !== maxTextWidth) {
+            this._maxTextWidth = maxTextWidth;
+            this.update(domNode, element, true);
+        }
     };
 
     return Dendrogram;

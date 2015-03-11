@@ -6,7 +6,7 @@
         root.GMap = factory(root.d3, root.SVGWidget, root.Graph, root.IGMap);
     }
 }(this, function (d3, SVGWidget, Graph, IGMap) {
-    function GMap(target) {
+    function GMap() {
         Graph.call(this);
         IGMap.call(this);
         this._class = "map_GMap";
@@ -17,7 +17,8 @@
     GMap.prototype.enter = function (domNode, element, d) {
         Graph.prototype.enter.apply(this, arguments);
 
-        this._googleMap = new google.maps.Map(d3.select(this._target).node(), {
+        this._googleMapParentElement = d3.select(this._target);
+        this._googleMap = new google.maps.Map(this._googleMapParentElement.node(), {
             zoom: 3,
             center: new google.maps.LatLng(41.850033, -87.6500523),
             mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -56,11 +57,24 @@
                     context.calcLatLong(sw.x, ne.y);
                 }
             };
-            google.maps.event.addListener(context._googleMap, "center_changed", function () {
+            context.mapListener = google.maps.event.addListener(context._googleMap, "center_changed", function () {
                 context._gmOverlay.draw();
             });
         };
         this._gmOverlay.setMap(this._googleMap);
+    };
+
+    GMap.prototype.exit = function (domNode, element, d) {
+        Graph.prototype.exit.apply(this, arguments);
+        if (this.mapListener) {
+            google.maps.event.removeListener(this.mapListener);
+        }
+        if (this.layer) {
+            this.layer.remove()
+        }
+        if (this._googleMapParentElement) {
+            this._googleMapParentElement.style("background-color", null).html("");
+        }
     };
 
     GMap.prototype.calcLatLong = function (dx, dy) {

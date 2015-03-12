@@ -58,11 +58,13 @@
                     height: height
                 });
             }
-            this._parentElement = d3.select(this._target);
+            this._parentElement = d3.select(this._target).append("div");
         } else {
-            if (this._overlayElement) {
+            if (this.observer) {
                 this.observer.disconnect();
-                this.oldPos = null;
+            }
+            this.oldPos = null;
+            if (this._parentElement) {
                 this._parentElement.remove();
             }
         }

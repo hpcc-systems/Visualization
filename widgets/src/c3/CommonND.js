@@ -74,11 +74,8 @@
 
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
+        
         this._palette = this._palette.switch(this._paletteID);
-    };
-
-    CommonND.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
 
         switch (this._xaxis_type) {
             case "category":

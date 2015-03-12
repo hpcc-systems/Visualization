@@ -517,5 +517,10 @@
         }
     };
 
+    Widget.prototype.onEvent = function(event, func) {
+        this[event] = func;
+        return this;
+    }
+
     return Widget;
 }));

@@ -248,8 +248,17 @@
                         sortField = sortField.substring(1);
                         reverse = true;
                     }
-                    if (l[sortField] !== r[sortField]) {
-                        return reverse ? r[sortField] - l[sortField] : l[sortField] - r[sortField];
+                    var lVal = l[sortField];
+                    if (lVal === undefined) {
+                        lVal = l[sortField.toLowerCase()];
+                    }
+                    var rVal = r[sortField];
+                    if (rVal === undefined) {
+                        rVal = r[sortField.toLowerCase()];
+                    }
+
+                    if (lVal !== rVal) {
+                        return reverse ? rVal - lVal : lVal - rVal;
                     }
                 }
                 return 0;

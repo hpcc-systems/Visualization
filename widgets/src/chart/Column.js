@@ -14,8 +14,13 @@
     Column.prototype = Object.create(XYAxis.prototype);
     Column.prototype.implements(I2DChart.prototype);
 
+    Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch());
+
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
+
+        this._palette = this._palette.switch(this._paletteID);
+        
         var column = this.svgData.selectAll(".columnRect")
             .data(this._data)
         ;

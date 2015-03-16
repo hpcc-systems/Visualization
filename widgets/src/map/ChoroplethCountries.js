@@ -20,11 +20,29 @@
     ChoroplethCountries.prototype.publish("world_projection", "mercator", "set", "Map Projection", ["mercator", "orthographic"]);
 
     ChoroplethCountries.prototype.testData = function () {
+        
+        var nameCodeMap = {};
+        for (var key in countries.countryNames) {
+            var item = countries.countryNames[key];
+            nameCodeMap[item.name] = key;
+        }
+        
+        var rawData = [
+            { "name": "United States", "weight": 29.946185501741 }, { "name": "China", "weight": 229.946185501741 }
+        ];
+        
+        var countryData = rawData.map(function (item) {
+            return { "country": nameCodeMap[item.name], "weight": item.weight, "label":item.name };
+        });
+        
+        this.columns(["Country", "Weight", "Label"]);
+        this.data(countryData);
+        
         return this;
-    },
+    };
 
     ChoroplethCountries.prototype.data = function (_) {
-            var retVal = Choropleth.prototype.data.apply(this, arguments);
+        var retVal = Choropleth.prototype.data.apply(this, arguments);
         if (arguments.length) {
             this._dataMap = {};
             this._dataMinWeight = null;
@@ -32,7 +50,7 @@
 
             var context = this;
             this._data.forEach(function (item) {
-                context._dataMap[item.county] = item.weight;
+                context._dataMap[item.country] = item.weight;
                 if (!context._dataMinWeight || item.weight < context._dataMinWeight) {
                     context._dataMinWeight = item.weight;
                 }
@@ -41,6 +59,7 @@
                 }
             });
         }
+
         return retVal;
     };
 
@@ -66,9 +85,9 @@
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
             .on("click", function (d) {
-                var code = countries.countryNames[d.id];
-                if (context._dataMap[code]) {
-                    context.click(context.rowToObj(context._dataMap[code]), "weight");
+                if (context._dataMap[d.id]) {
+                    var obj = [d.id, context._dataMap[d.id], d.name];
+                    context.click(context.rowToObj(obj), "weight");
                 }
             })
             .on("dblclick", function (d) {

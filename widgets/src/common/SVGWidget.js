@@ -14,8 +14,6 @@
         this._boundingBox = null;
 
         this.transition = new Transition(this);
-
-        this._renderCount = 0;
     };
     SVGWidget.prototype = Object.create(Widget.prototype);
 

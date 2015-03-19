@@ -23,6 +23,10 @@
         this._parentWidget = null;
 
         this._element = d3.select();
+
+        this._watchArr = [];
+
+        this._renderCount = 0;
     };
     Widget.prototype.ieVersion = (function () {
         var ua = navigator.userAgent, tem,
@@ -162,6 +166,7 @@
                     }
                     break;
             }
+            this.broadcast(id, _, this["_" + id]);
             this["_" + id] = _;
             return this;
         };
@@ -210,6 +215,26 @@
         this[id + "_reset"] = function () {
             this[proxy][method + "_reset"]();
         }
+    };
+
+    Widget.prototype.watch = function (func) {
+        var context = this;
+        var idx = this._watchArr.push(func) - 1;
+        return {
+            remove: function () {
+                delete context._watchArr[idx];
+            }
+        };
+    };
+
+    Widget.prototype.broadcast = function (key, newVal, oldVal) {
+        this._watchArr.forEach(function (func) {
+            if (func) {
+                setTimeout(function () {
+                    func(key, newVal, oldVal);
+                }, 0);
+            }
+        });
     };
 
     //  Implementation  ---

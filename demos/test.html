@@ -343,14 +343,16 @@
                         //  Other  ---
                         var slider = new Slider()
                             .target("slider")
-                            .range({ low: 2000, high: 2010 })
+                            .low(2000)
+                            .high(2010)
                             .step(2)
                             .render();
                         ;
                         var slider = new Slider()
                             .target("rangeSlider")
                             .allowRange(true)
-                            .range({ low: 2000, high: 2010 })
+                            .low(2000)
+                            .high(2010)
                             .step(2)
                             .render();
                         ;

@@ -39,27 +39,22 @@
     Slider.prototype = Object.create(SVGWidget.prototype);
     Slider.prototype.implements(ISlider.prototype);
 
-    Slider.prototype.allowRange = function (_) {
-        if (!arguments.length) return this._allowRange;
-        this._allowRange = _;
+    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");
+    Slider.prototype.publish("low", 0, "number", "Low");
+    Slider.prototype.publish("high", 100, "number", "High");
+    Slider.prototype.publish("step", 10, "number", "Step");
+    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
+
+    Slider.prototype.testData = function (_) {
+        this.columns("Percent");
+        this.data(66);
         return this;
     };
 
-    Slider.prototype.range = function (_) {
-        if (!arguments.length) return this._range;
-        this._range = _;
-        return this;
-    };
-
-    Slider.prototype.step = function (_) {
-        if (!arguments.length) return this._step;
-        this._step = _;
-        return this;
-    };
-
-    Slider.prototype.selectionLabel = function (_) {
-        if (!arguments.length) return this._selectionLabel;
-        this._selectionLabel = _;
+    Slider.prototype.testData2 = function (_) {
+        this.allowRange(true);
+        this.columns("Percent");
+        this.data([44, 66]);
         return this;
     };
 
@@ -68,7 +63,7 @@
         if (arguments.length) {
             if (this.brushg) {
                 this.brushg
-                    .call(this.brush.extent([this._data, this._data]))
+                    .call(this.brush.extent(this._allowRange ? this._data : [this._data, this._data]))
                 ;
             }
         }
@@ -76,8 +71,8 @@
     };
 
     Slider.prototype.enter = function (domNode, element) {
-        if ((this._range.high - this._range.low) / this._step <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this._range.low, this._range.high, this._step), [this._range.high]]));
+        if ((this._high - this._low) / this._step <= 10) {
+            this.axis.tickValues(d3.merge([d3.range(this._low, this._high, this._step), [this._high]]));
         }
 
         this.axisElement = element.append("g")
@@ -117,7 +112,7 @@
         var width = this.width() - 50;  //TODO - 50 should be "padding"
 
         this.xScale
-            .domain([this._range.low, this._range.high])
+            .domain([this._low, this._high])
             .range([-width/2, width/2])
         ;
 
@@ -137,9 +132,14 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
-            var selVal = this._data ? this._data : this._range.low;
+            var selVal = [this._low, this._low];
+            if (this._allowRange && this._data) {
+                var selVal = this._data;
+            } else if (this._data){
+                selVal = [this._data, this._data];
+            }
             this.brushg
-                .call(this.brush.extent([selVal, selVal]))
+                .call(this.brush.extent(selVal))
             ;
         }
     };
@@ -180,6 +180,7 @@
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);
             extent[1] = this.nearestStep(extent[1]);
+            this._data = extent;
             d3.select(self)
                 .call(this.brush.extent(extent))
             ;
@@ -188,7 +189,7 @@
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this._range.low + Math.round((value - this._range.low) / this._step) * this._step;
+        return this._low + Math.round((value - this._low) / this._step) * this._step;
     }
 
     Slider.prototype.handlePath = function (d, i) {

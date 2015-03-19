@@ -404,7 +404,11 @@
                 .layout("Hierarchy")
                 .renderDashboards(true)
             ;
-            GraphWidget.prototype.render.apply(context, args);
+            GraphWidget.prototype.render.call(context, function (widget) {
+                if (callback) 
+                    callback(widget);
+                }
+            });
         }
         if (this._ddl_url[0] === "[" || this._ddl_url[0] === "{") {
             marshaller.parse(this._ddl_url, function () {

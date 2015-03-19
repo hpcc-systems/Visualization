@@ -334,38 +334,45 @@
         var context = this;
         switch (this.type) {
             case "CHORO":
-                this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates");
+                this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates", function (widget) {
+                    widget
+                        .id(visualization.id)
+                    ;
+                });
                 break;
             case "2DCHART":
             case "PIE":
             case "BUBBLE":
             case "BAR":
             case "WORD_CLOUD":
-                this.loadWidget("src/chart/MultiChartSurface", function (widget) {
+                this.loadWidget("src/chart/MultiChart", function (widget) {
                     widget
+                        .id(visualization.id)
                         .chart_type(context.properties.charttype || context.type)
-                        .title(context.title)
                     ;
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/chart/MultiChartSurface", function (widget) {
+                this.loadWidget("src/chart/MultiChart", function (widget) {
                     widget
-                        .mode("multi")
+                        .id(visualization.id)
                         .chart_type(context.properties.charttype || context.type)
-                        .title(context.title)
                     ;
                 });
                 break;
             case "TABLE":
                 this.loadWidget("src/other/Table", function (widget) {
                     widget
+                        .id(visualization.id)
                         .columns(context.label)
                     ;
                 });
                 break;
             case "SLIDER":
                 this.loadWidget("src/other/Slider", function (widget) {
+                    widget
+                        .id(visualization.id)
+                    ;
                     if (visualization.range) {
                         var selectionLabel = "";
                         for (var key in visualization.onSelect.mappings) {
@@ -373,7 +380,8 @@
                             break;
                         }
                         widget
-                            .range({ low: +visualization.range[0], high: +visualization.range[1] })
+                            .low(+visualization.range[0])
+                            .high(+visualization.range[1])
                             .step(+visualization.range[2])
                             .selectionLabel(selectionLabel)
                         ;
@@ -385,6 +393,7 @@
                     Vertex = widgetClasses[1];
                     Edge = widgetClasses[2];
                     widget
+                        .id(visualization.id)
                         .layout("ForceDirected2")
                         .shrinkToFitOnLayout(true)
                     ;
@@ -393,6 +402,7 @@
             default:
                 this.loadWidget("src/common/TextBox", function (widget) {
                     widget
+                        .id(visualization.id)
                         .text(context.id + "\n" + "TODO:  " + context.type)
                     ;
                 });
@@ -428,7 +438,7 @@
         });
     };
 
-    Visualization.prototype.setWidget = function (widget) {
+    Visualization.prototype.setWidget = function (widget, skipProperties) {
         this.widget = widget;
 
         var context = this;
@@ -443,12 +453,14 @@
                 context.click(d);
             }
         }
-        for (var key in this.properties) {
-            if (this.widget[key]) {
-                try {
-                    this.widget[key](this.properties[key])
-                } catch (e) {
-                    console.log("Invalid Property:" + this.id + ".properties." + key);
+        if (!skipProperties) {
+            for (var key in this.properties) {
+                if (this.widget[key]) {
+                    try {
+                        this.widget[key](this.properties[key])
+                    } catch (e) {
+                        console.log("Invalid Property:" + this.id + ".properties." + key);
+                    }
                 }
             }
         }

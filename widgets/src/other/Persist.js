@@ -31,8 +31,9 @@
 
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
-                __version: 2,
+                __version: 3,
                 __class: widget._class,
+                __id: widget._id,
                 __properties: {}
             };
             if (properties && properties.length) {
@@ -44,7 +45,21 @@
             } else {
                 this.discover(widget, true).forEach(function (item) {
                     if (widget[item.id + "_modified"]()) {
-                        retVal.__properties[item.id] = item.type === "widget" ? this.serializeToObject(widget[item.id](), null, includeData) : widget[item.id]();
+                        switch (item.type) {
+                            case "widget":
+                                retVal.__properties[item.id] = this.serializeToObject(widget[item.id](), null, includeData);
+                                break;
+                            case "widgetArray":
+                                retVal.__properties[item.id] = [];
+                                var widgetArray = widget[item.id]();
+                                widgetArray.forEach(function (widget, idx) {
+                                    retVal.__properties[item.id].push(this.serializeToObject(widget, null, includeData));
+                                }, this);
+                                break;
+                            default:
+                                retVal.__properties[item.id] = widget[item.id]();
+                                break;
+                        }
                     }
                 }, this);
             }
@@ -68,55 +83,79 @@
             return JSON.stringify(this.serializeToObject(widget, properties, includeData));
         },
 
-        deserialize: function (widget, state, callback) {
-            var context = this;
-            if (state instanceof String) {
-                state = JSON.parse(state)
-            }
-            var widgets = [];
-            for (var key in state.__properties) {
-                if (widget["__meta_" + key].type === "widget") {
-                    widgets.push(key);
-                } else {
-                    widget[key](state.__properties[key]);
-                }
-            }
-            var completed = widgets.length;
-            if (completed) {
-                widgets.forEach(function (key) {
-                    this.create(state.__properties[key], function (_widget) {
-                        widget[key](_widget);
-                        if (--completed <= 0) {
-                            doNext();
-                        }
-                    });
-                }, this);
-            } else {
-                doNext();
-            }
-            function doNext() {
-                if (state.__data) {
-                    for (var key in state.__data) {
-                        widget[key](state.__data[key]);
-                    }
-                }
-                callback(widget);
-            }
-            return widget;
-        },
-
-        create: function (state, callback) {
-            if (state instanceof String) {
-                state = JSON.parse(state)
-            }
+        deserialize: function (state, callback) {
             var context = this;
             var path = "../" + state.__class.split("_").join("/");
             require([path], function (Widget) {
                 var widget = new Widget();
-                context.deserialize(widget, state, function () {
-                    callback(widget);
-                });
+                if (state instanceof String) {
+                    state = JSON.parse(state)
+                }
+                if (state.__id.indexOf("_w") !== 0) {
+                    widget._id = state.__id;
+                }
+                var widgets = [];
+                var createCount = 0;
+                for (var key in state.__properties) {
+                    if (widget["__meta_" + key]) {
+                        switch (widget["__meta_" + key].type) {
+                            case "widget":
+                                ++createCount;
+                                context.deserialize(state.__properties[key], function (widgetItem) {
+                                    widget[key](widgetItem);
+                                    --createCount;
+                                });
+                                break;
+                            case "widgetArray":
+                                ++createCount;
+                                var widgetStateArray = state.__properties[key];
+                                var widgetArray = [];
+                                widgetArray.length = widgetStateArray.length;
+                                var arrayCreateCount = 0;
+                                widgetStateArray.forEach(function (widgetState, idx) {
+                                    ++arrayCreateCount;
+                                    context.deserialize(widgetState, function (widgetItem) {
+                                        widgetArray[idx] = widgetItem;
+                                        --arrayCreateCount;
+                                    });
+                                    var arrayIntervalHandler = setInterval(function () {
+                                        if (arrayCreateCount <= 0) {
+                                            clearInterval(arrayIntervalHandler);
+                                            arrayCreateCount = undefined;
+                                            widget[key](widgetArray);
+                                            --createCount;
+                                        }
+                                    }, 20);
+                                });
+                                break;
+                            default:
+                                widget[key](state.__properties[key]);
+                                break;
+                        }
+                    } else {
+                        var d = 0;
+                    }
+                }
+                var intervalHandler = setInterval(function () {
+                    if (createCount <= 0) {
+                        clearInterval(intervalHandler);
+                        createCount = undefined;
+                        if (state.__data) {
+                            for (var key in state.__data) {
+                                widget[key](state.__data[key]);
+                            }
+                        }
+                        callback(widget);
+                    }
+                }, 20);
             });
+        },
+
+        create: function (state, callback) {
+            if (typeof state === "string") {
+                state = JSON.parse(state)
+            }
+            this.deserialize(state, callback);
         },
 
         clone: function (widget, callback) {

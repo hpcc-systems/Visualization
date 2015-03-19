@@ -11,6 +11,53 @@
     };
     HTMLWidget.prototype = Object.create(Widget.prototype);
 
+    HTMLWidget.prototype.calcFrameWidth = function (element) {
+        var retVal = parseFloat(element.style("padding-left"))
+            + parseFloat(element.style("padding-right"))
+            + parseFloat(element.style("margin-left"))
+            + parseFloat(element.style("margin-right"))
+            + parseFloat(element.style("border-left-width"))
+            + parseFloat(element.style("border-right-width"))
+        ;
+        return retVal;
+    };
+
+    HTMLWidget.prototype.calcWidth = function (element) {
+        return parseFloat(element.style("width")) - this.calcFrameWidth(element);
+    };
+
+    HTMLWidget.prototype.calcFrameHeight = function (element) {
+        var retVal = parseFloat(element.style("padding-top"))
+            + parseFloat(element.style("padding-bottom"))
+            + parseFloat(element.style("margin-top"))
+            + parseFloat(element.style("margin-bottom"))
+            + parseFloat(element.style("border-top-width"))
+            + parseFloat(element.style("border-bottom-width"))
+        ;
+        return retVal;
+    };
+
+    HTMLWidget.prototype.calcHeight = function (element) {
+        return parseFloat(element.style("height")) + this.calcFrameHeight(element);
+    };
+
+    HTMLWidget.prototype.clientWidth = function () {
+        return this._size.width - this.calcFrameWidth(this._element);
+    };
+
+    HTMLWidget.prototype.clientHeight = function () {
+        return this._size.height - this.calcFrameHeight(this._element);
+    };
+
+    HTMLWidget.prototype.resize = function (size) {
+        var retVal = Widget.prototype.resize.apply(this, arguments);
+        this._parentElement
+            .style("width", this._size.width + "px")
+            .style("height", this._size.height + "px")
+        ;
+        return retVal;
+    };
+
     //  Properties  ---
     HTMLWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
@@ -32,7 +79,7 @@
                     position: "absolute",
                     top: 0,
                     left: 0,
-                    overflow: "auto"
+                    overflow: "hidden"
                 })
             ;
             this._overlayElement = d3.select(this._target);
@@ -49,10 +96,10 @@
                 domNode = domNode.parentNode
             }
         } else if (this._target) {
-            var style = window.getComputedStyle(this._target, null);
+            this._parentElement = d3.select(this._target);
             if (!this._size.width && !this._size.height) {
-                var width = parseInt(style.getPropertyValue("width"));
-                var height = parseInt(style.getPropertyValue("height"));
+                var width = parseFloat(this._parentElement.style("width"));
+                var height = parseFloat(this._parentElement.style("height"));
                 this.size({
                     width: width,
                     height: height
@@ -60,15 +107,20 @@
             }
             this._parentElement = d3.select(this._target).append("div");
         } else {
-            if (this.observer) {
-                this.observer.disconnect();
-            }
-            this.oldPos = null;
-            if (this._parentElement) {
-                this._parentElement.remove();
-            }
+            this.exit();
         }
         return this;
+    };
+
+    HTMLWidget.prototype.exit = function (domeNode, element, d) {
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+        this.oldPos = null;
+        if (this._parentElement) {
+            this._parentElement.remove();
+        }
+        Widget.prototype.exit.apply(this, arguments);
     };
 
     return HTMLWidget;

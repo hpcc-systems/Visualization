@@ -39,19 +39,7 @@
     };
 
     SVGWidget.prototype.resize = function (size) {
-        var width, height;
-        if (size && size.width && size.height) {
-            width = size.width;
-            height = size.height;
-        } else {
-            var style = window.getComputedStyle(this._target, null);
-            width = parseInt(style.getPropertyValue("width"));
-            height = parseInt(style.getPropertyValue("height"));
-        }
-        this.size({
-            width: width,
-            height: height
-        });
+        var retVal = Widget.prototype.resize.apply(this, arguments);
         this._parentRelativeDiv
             .style({
                 width: this._size.width + "px",
@@ -66,7 +54,7 @@
             x: this._size.width / 2,
             y: this._size.height / 2
         });
-        return this;
+        return retVal;
     };
 
     SVGWidget.prototype.target = function (_) {

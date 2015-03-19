@@ -299,6 +299,50 @@
         return this;
     };
 
+    Widget.prototype.resize = function (size, delta) {
+        delta = delta || { width: 0, height: 0 };
+        var width, height;
+        if (size && size.width && size.height) {
+            width = size.width;
+            height = size.height;
+        } else {
+            var style = window.getComputedStyle(this._target, null);
+            width = parseFloat(style.getPropertyValue("width")) - delta.width;
+            height = parseFloat(style.getPropertyValue("height")) - delta.height;
+        }
+        this.size({
+            width: width,
+            height: height
+        });
+        return this;
+    };
+
+    Widget.prototype._scrollBarWidth = null;
+    Widget.prototype.getScrollbarWidth = function () {
+        if (Widget.prototype._scrollBarWidth === null) {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar";
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            outer.style.overflow = "scroll";
+
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            outer.parentNode.removeChild(outer);
+
+            Widget.prototype._scrollBarWidth = widthNoScroll - widthWithScroll;
+        }
+        return Widget.prototype._scrollBarWidth;
+    };
+
     Widget.prototype.scale = function (_) {
         if (!arguments.length) return this._scale;
         this._scale = _;

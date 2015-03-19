@@ -1,0 +1,15 @@
+.layout_Grid .cell {
+    paddingXXX:2px 2px 2px 2px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.layout_Grid .cell h2 {
+    margin: 0px;
+    padding-top: 4px;
+    -webkit-margin: 0px;
+    text-align: center;
+}

@@ -170,48 +170,54 @@
 
         //  Drag  ---
         function dragstart(d) {
-            d3.event.sourceEvent.stopPropagation();
-            context._dragging = true;
-            if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
-                forceNode.fixed = true;
-            }
-            if (context.svgMarkerGlitch) {
-                context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                    var edge = context.graphData.edge(id);
-                    context._pushMarkers(edge.element(), edge);
-                });
+            if (context._allowDragging) {
+                d3.event.sourceEvent.stopPropagation();
+                context._dragging = true;
+                if (context.forceLayout) {
+                    var forceNode = context.forceLayout.vertexMap[d.id()];
+                    forceNode.fixed = true;
+                }
+                if (context.svgMarkerGlitch) {
+                    context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                        var edge = context.graphData.edge(id);
+                        context._pushMarkers(edge.element(), edge);
+                    });
+                }
             }
         }
         function drag(d) {
-            d3.event.sourceEvent.stopPropagation();
-            d.move({ x: d3.event.x, y: d3.event.y });
-            if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
-                forceNode.fixed = true;
-                forceNode.x = forceNode.px = d3.event.x;
-                forceNode.y = forceNode.py = d3.event.y;
-            }
-            context.refreshIncidentEdges(d, true);
-        }
-        function dragend(d) {
-            d3.event.sourceEvent.stopPropagation();
-            context._dragging = false;
-            if (context._snapToGrid) {
-                var snapLoc = d.calcSnap(context._snapToGrid);
-                d.move(snapLoc[0]);
+            if (context._allowDragging) {
+                d3.event.sourceEvent.stopPropagation();
+                d.move({ x: d3.event.x, y: d3.event.y });
+                if (context.forceLayout) {
+                    var forceNode = context.forceLayout.vertexMap[d.id()];
+                    forceNode.fixed = true;
+                    forceNode.x = forceNode.px = d3.event.x;
+                    forceNode.y = forceNode.py = d3.event.y;
+                }
                 context.refreshIncidentEdges(d, true);
             }
-            if (context.forceLayout) {
-                var forceNode = context.forceLayout.vertexMap[d.id()];
-                forceNode.fixed = false;
+        }
+        function dragend(d) {
+            if (context._allowDragging) {
+                d3.event.sourceEvent.stopPropagation();
+                context._dragging = false;
+                if (context._snapToGrid) {
+                    var snapLoc = d.calcSnap(context._snapToGrid);
+                    d.move(snapLoc[0]);
+                    context.refreshIncidentEdges(d, true);
+                }
+                if (context.forceLayout) {
+                    var forceNode = context.forceLayout.vertexMap[d.id()];
+                    forceNode.fixed = false;
+                }
+                if (context.svgMarkerGlitch) {
+                    context.graphData.nodeEdges(d.id()).forEach(function (id) {
+                        var edge = context.graphData.edge(id);
+                        context._popMarkers(edge.element(), edge);
+                    });
+                };
             }
-            if (context.svgMarkerGlitch) {
-                context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                    var edge = context.graphData.edge(id);
-                    context._popMarkers(edge.element(), edge);
-                });
-            };
         }
         this.drag = d3.behavior.drag()
             .origin(function (d) {
@@ -405,19 +411,20 @@
                 .target(this)
                 .render()
             ;
-            if (context._allowDragging) {
-                d.element()
-                    .call(context.drag)
-                ;
-            }
+            d.element()
+                .call(context.drag)
+            ;
             if (d.dispatch) {
-                d.dispatch.on("sizestart", function (args) {
-                    context._dragging = true;
+                d.dispatch.on("sizestart", function (d, loc) {
+                    d.allowResize(context._allowDragging);
+                    if (context._allowDragging) {
+                        context._dragging = true;
+                    }
                 });
-                d.dispatch.on("size", function (args) {
+                d.dispatch.on("size", function (d, loc) {
                     context.refreshIncidentEdges(d, false);
                 });
-                d.dispatch.on("sizeend", function (d) {
+                d.dispatch.on("sizeend", function (d, loc) {
                     context._dragging = false;
                     if (context._snapToGrid) {
                         var snapLoc = d.calcSnap(context._snapToGrid);

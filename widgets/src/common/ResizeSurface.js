@@ -12,97 +12,111 @@
         this.handleWidth = 8;
         this.handles = [{ loc: "NW" }, { loc: "N" }, { loc: "NE" }, { loc: "E" }, { loc: "SE" }, { loc: "S" }, { loc: "SW" }, { loc: "W" }];
 
+        this._allowResize = true;
+
         var context = this;
         this.dispatch = d3.dispatch("sizestart", "size", "sizeend");
         this.drag = d3.behavior.drag()
             .origin(function (d) { return d; })
             .on("dragstart", function (d) {
-                d3.event.sourceEvent.stopPropagation();
-                context._dragHandlePos = { x: d.x, y: d.y };
-                context._dragStartPos = context.pos();
-                context._dragStartSize = context.size();
-                context._prevPosSize = {
-                    x: context._dragStartPos.x,
-                    y: context._dragStartPos.y,
-                    width: context._dragStartSize.width,
-                    height: context._dragStartSize.height
-                }
-                context._textPosSize = context._text.getBBox(true);
-                context._iconPosSize = context._icon.getBBox(true);
-                context.showContent(false);
                 context.dispatch.sizestart(context, d.loc);
+                if (context._allowResize) {
+                    d3.event.sourceEvent.stopPropagation();
+                    context._dragHandlePos = { x: d.x, y: d.y };
+                    context._dragStartPos = context.pos();
+                    context._dragStartSize = context.size();
+                    context._prevPosSize = {
+                        x: context._dragStartPos.x,
+                        y: context._dragStartPos.y,
+                        width: context._dragStartSize.width,
+                        height: context._dragStartSize.height
+                    }
+                    context._textPosSize = context._text.getBBox(true);
+                    context._iconPosSize = context._icon.getBBox(true);
+                    context.showContent(false);
+                }
             })
             .on("drag", function (d) {
-                d3.event.sourceEvent.stopPropagation();
-                var _dx = d3.event.x - context._dragHandlePos.x;
-                var _dy = d3.event.y - context._dragHandlePos.y;
-                var delta = { x: 0, y: 0, w: 0, h: 0 };
-                switch (d.loc) {
-                    case "NW":
-                        delta.x = _dx / 2;
-                        delta.w = -_dx;
-                    case "N":
-                        delta.y = _dy / 2;
-                        delta.h = -_dy;
-                        break;
-                    case "NE":
-                        delta.y = _dy / 2;
-                        delta.h = -_dy;
-                    case "E":
-                        delta.x = _dx / 2;
-                        delta.w = _dx;
-                        break;
-                    case "SE":
-                        delta.x = _dx / 2;
-                        delta.w = _dx;
-                    case "S":
-                        delta.y = _dy / 2;
-                        delta.h = _dy;
-                        break;
-                    case "SW":
-                        delta.y = _dy / 2;
-                        delta.h = _dy;
-                    case "W":
-                        delta.x = _dx / 2;
-                        delta.w = -_dx;
-                        break;
+                if (context._allowResize) {
+                    d3.event.sourceEvent.stopPropagation();
+                    var _dx = d3.event.x - context._dragHandlePos.x;
+                    var _dy = d3.event.y - context._dragHandlePos.y;
+                    var delta = { x: 0, y: 0, w: 0, h: 0 };
+                    switch (d.loc) {
+                        case "NW":
+                            delta.x = _dx / 2;
+                            delta.w = -_dx;
+                        case "N":
+                            delta.y = _dy / 2;
+                            delta.h = -_dy;
+                            break;
+                        case "NE":
+                            delta.y = _dy / 2;
+                            delta.h = -_dy;
+                        case "E":
+                            delta.x = _dx / 2;
+                            delta.w = _dx;
+                            break;
+                        case "SE":
+                            delta.x = _dx / 2;
+                            delta.w = _dx;
+                        case "S":
+                            delta.y = _dy / 2;
+                            delta.h = _dy;
+                            break;
+                        case "SW":
+                            delta.y = _dy / 2;
+                            delta.h = _dy;
+                        case "W":
+                            delta.x = _dx / 2;
+                            delta.w = -_dx;
+                            break;
+                    }
+                    var posSize = {
+                        x: context._dragStartPos.x + delta.x,
+                        y: context._dragStartPos.y + delta.y,
+                        width: context._dragStartSize.width + delta.w,
+                        height: context._dragStartSize.height + delta.h
+                    };
+                    if (posSize.width < context._iconPosSize.width * 2 + context._textPosSize.width) {
+                        posSize.x = context._prevPosSize.x;
+                        posSize.width = context._prevPosSize.width;
+                    }
+                    if (posSize.height < context._textPosSize.height + 48) {
+                        posSize.y = context._prevPosSize.y;
+                        posSize.height = context._prevPosSize.height;
+                    }
+                    context
+                        .pos({ x: posSize.x, y: posSize.y }, false, false)
+                        .size({ width: posSize.width, height: posSize.height })
+                        .render()
+                        .getBBox(true)
+                    ;
+                    context.dispatch.size(context, d.loc);
+                    context._prevPosSize = posSize;
                 }
-                var posSize = {
-                    x: context._dragStartPos.x + delta.x,
-                    y: context._dragStartPos.y + delta.y,
-                    width: context._dragStartSize.width + delta.w,
-                    height: context._dragStartSize.height + delta.h
-                };
-                if (posSize.width < context._iconPosSize.width * 2 + context._textPosSize.width) {
-                    posSize.x = context._prevPosSize.x;
-                    posSize.width = context._prevPosSize.width;
-                }
-                if (posSize.height < context._textPosSize.height + 48) {
-                    posSize.y = context._prevPosSize.y;
-                    posSize.height = context._prevPosSize.height;
-                }
-                context
-                    .pos({ x: posSize.x, y: posSize.y }, false, false)
-                    .size({ width: posSize.width, height: posSize.height })
-                    .render()
-                    .getBBox(true)
-                ;
-                context.dispatch.size(context, d.loc);
-                context._prevPosSize = posSize;
             })
             .on("dragend", function (d) {
-                d3.event.sourceEvent.stopPropagation();
-                context
-                    .showContent(true)
-                    .render()
-                ;
-                context._container.getBBox(true);
-                context._titleRect.getBBox(true);
-                context.dispatch.sizeend(context, d.loc);
+                if (context._allowResize) {
+                    d3.event.sourceEvent.stopPropagation();
+                    context
+                        .showContent(true)
+                        .render()
+                    ;
+                    context._container.getBBox(true);
+                    context._titleRect.getBBox(true);
+                    context.dispatch.sizeend(context, d.loc);
+                }
             })
         ;
     };
     ResizeSurface.prototype = Object.create(Surface.prototype);
+
+    ResizeSurface.prototype.allowResize = function (_) {
+        if (!arguments.length) return this._allowResize;
+        this._allowResize = _;
+        return this;
+    };
 
     ResizeSurface.prototype.move = function (_) {
         var retVal = Surface.prototype.move.apply(this, arguments);

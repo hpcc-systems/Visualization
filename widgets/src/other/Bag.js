@@ -25,6 +25,9 @@
             this.items[item._id].element().classed("selected", false);
             delete this.items[item._id];
         },
+        isSelected: function(item) {
+            return this.items[item._id];
+        },
         get: function () {
             var retVal = [];
             for (var key in this.items) {

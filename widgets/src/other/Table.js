@@ -17,11 +17,14 @@
     Table.prototype = Object.create(HTMLWidget.prototype);
 
     Table.prototype.enter = function (domNode, element) {
+        HTMLWidget.prototype.enter.apply(this, arguments);
+        this._parentElement.style("overflow", "auto");
         this.thead = element.append("thead").append("tr");
         this.tbody = element.append("tbody");
     };
 
     Table.prototype.update = function (domNode, element) {
+        HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
         var th = this.thead.selectAll("th").data(this._columns, function (d) { return d;});

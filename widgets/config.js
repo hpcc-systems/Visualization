@@ -36,6 +36,11 @@ requirejs.config({
             main: "crossfilter"
         },
         {
+            name: "lodash",
+            location: "lib/lodash",
+            main: "lodash"
+        },
+        {
             name: "topojson",
             location: "lib/topojson",
             main: "topojson"

@@ -14,6 +14,7 @@
 
     HTML.prototype.publish("ddl_url", "", "string", "DDL URL");
     HTML.prototype.publish("proxy_mappings", [], "array", "Proxy Mappings");
+    HTML.prototype.publish("databomb", "", "string", "Data Bomb");
 
     HTML.prototype.testData = function () {
         //this.ddl_url("http://10.239.227.24:8010/WsWorkunits/WUResult?Wuid=W20150311-200229&ResultName=leeddx_issue_652_nestedfunctions_Comp_Ins002_DDL");
@@ -32,7 +33,11 @@
         Grid.prototype.enter.apply(this, arguments);
     };
 
-    function createGraphData(marshaller) {
+    function createGraphData(marshaller, databomb) {
+        if (databomb instanceof Object) {
+        } else {
+            databomb = JSON.parse(databomb);
+        }
         var curr = null;
         var dashboards = {};
         marshaller.accept({
@@ -44,6 +49,9 @@
                     };
                     dashboards[item.getQualifiedID()] = curr;
                 } else if (item instanceof HipieDDL.DataSource) {
+                    if (item.databomb && databomb[item.id]) {
+                        item.comms.databomb(databomb[item.id]);
+                    }
                 } else if (item instanceof HipieDDL.Output) {
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {
@@ -75,7 +83,7 @@
             });
         }
         function postParse() {
-            var dashboards = createGraphData(marshaller);
+            var dashboards = createGraphData(marshaller, context._databomb);
             var row = 0;
             for (var key in dashboards) {
                 var cellRow = 0;

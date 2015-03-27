@@ -554,6 +554,7 @@
         this.filter = dataSource.filter || [];
         this.WUID = dataSource.WUID;
         this.URL = dataSource.URL;
+        this.databomb = dataSource.databomb;
 
         var context = this;
         this.outputs = {};
@@ -563,14 +564,18 @@
             hipieResults.push({
                 id: item.id,
                 from: item.from,
-                filter: item.filter || []
+                filter: item.filter || this.filter
             });
-        });
+        }, this);
 
         if (this.WUID) {
             this.comms = new Comms.HIPIEWorkunit()
                 .url(dashboard.marshaller.espUrl._url)
                 .proxyMappings(proxyMappings)
+                .hipieResults(hipieResults)
+            ;
+        } else if (this.databomb) {
+            this.comms = new Comms.HIPIEDatabomb()
                 .hipieResults(hipieResults)
             ;
         } else {

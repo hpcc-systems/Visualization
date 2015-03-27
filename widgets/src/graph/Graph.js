@@ -354,7 +354,7 @@
 
                 if (context._shrinkToFitOnLayout) {
                     var vBounds = context.getVertexBounds(layoutEngine);
-                    context.shrinkToFit(vBounds);
+                    context.shrinkToFit(vBounds, transitionDuration);
                 }
                 this._fixIEMarkers();
                 setTimeout(function() {
@@ -537,7 +537,7 @@
 
     Graph.prototype.highlightVerticies = function (vertexMap) {
         var context = this;
-        var vertexElements = this.svgV.selectAll(".vertex");
+        var vertexElements = this.svgV.selectAll(".graphVertex");
         vertexElements.transition().duration(this.highlight.transition)
             .each("end", function (d) {
                 if (vertexMap && vertexMap[d.id()]) {

@@ -70,6 +70,28 @@
                             curr.vertexMap[item.getQualifiedID()] = newSurface;
 
                             switch (item.type) {
+                                case "2DCHART":
+                                case "PIE":
+                                case "BUBBLE":
+                                case "BAR":
+                                case "WORD_CLOUD":
+                                    newSurface.menu(item.widget._2dChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
+                                    newSurface._menu.click = function (d) {
+                                        item.widget
+                                            .chart_type(d)
+                                            .render()
+                                        ;
+                                    }
+                                    break;
+                                case "LINE":
+                                    newSurface.menu(item.widget._multiChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
+                                    newSurface._menu.click = function (d) {
+                                        item.widget
+                                            .chart_type(d)
+                                            .render()
+                                        ;
+                                    }
+                                    break;
                                 case "CHORO":
                                     newSurface._menu
                                         .data(Palette.rainbow())
@@ -405,7 +427,7 @@
                 .renderDashboards(true)
             ;
             GraphWidget.prototype.render.call(context, function (widget) {
-                if (callback) 
+                if (callback) {
                     callback(widget);
                 }
             });

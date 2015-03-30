@@ -8,3 +8,8 @@
     fill: none;
     pointer-events: all;
 }
+
+.graph_Graph .selectionBrush {
+    fill: none;
+    stroke: darkgray;
+}

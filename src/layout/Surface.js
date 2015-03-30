@@ -23,6 +23,17 @@
         return this;
     };
 
+    Surface.prototype.widgetSize = function (titleDiv, widgetDiv) {
+        var width = this.clientWidth();
+        var height = this.clientHeight();
+        if (this.title()) {
+            height -= this.calcHeight(titleDiv);
+        }
+        height -= this.calcFrameHeight(widgetDiv);
+        width -= this.calcFrameWidth(widgetDiv);
+        return { width: width, height: height };
+    };
+
     Surface.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
     };
@@ -51,16 +62,9 @@
         widgets
             .each(function (d) {
                 //console.log("surface update:" + d._class + d._id);
-                var width = context.clientWidth();
-                var height = context.clientHeight();
-                if (context.title()) {
-                    height -= context.calcHeight(element.select("h3"));
-                }
-                var widgetDiv = d3.select(this);
-                height -= context.calcFrameHeight(widgetDiv);
-                width -= context.calcFrameWidth(widgetDiv);
+                var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
                 d
-                    .resize({ width: width, height: height })
+                    .resize({ width: widgetSize.width, height: widgetSize.height })
                 ;
             })
         ;

@@ -17,6 +17,8 @@
     <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
     <script src="../src/config.js"></script>
     <!--  Uncomment to develop
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="../src/config.js"></script>
     -->
     <!--  Uncomment to test build
     <script src="../dist/amd/hpcc-viz.js"></script>
@@ -142,9 +144,9 @@
             var serializationTextSurface = new Surface()
                 .id("testJSON")
             ;
-            main = new Grid()
-                .setContent(0, 2, propEditor, "", 2, 1)
-            ;
+            main = new Grid();
+            main.setContent(0, 2, propEditor, "", 2, 1);
+
             frame = new Surface()
                 .widget(main)
                 .target("main")

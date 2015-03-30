@@ -269,6 +269,10 @@
         return this.getBounds(this.graphData.nodeValues(), layoutEngine);
     };
         
+    Graph.prototype.getSelectionBounds = function (layoutEngine) {
+        return this.getBounds(this._selection.get(), layoutEngine);
+    };
+
     Graph.prototype.shrinkToFit = function (bounds, transitionDuration) {
         var width = this.width();
         var height = this.height();
@@ -283,6 +287,28 @@
         }
         var translate = [-scale * x, -scale * y];
         this.setZoom(translate, scale, transitionDuration);
+    };
+
+    Graph.prototype.zoomToLevels = ["all", "width", "selection", "100%"];
+    Graph.prototype.zoomTo = function (level, transitionDuration) {
+        switch (level) {
+            case "all":
+                this.shrinkToFit(this.getVertexBounds(), transitionDuration);
+                break;
+            case "width":
+                var bounds = this.getVertexBounds();
+                bounds[0][1] = 0;
+                bounds[1][1] = 0;
+                this.shrinkToFit(bounds, transitionDuration);
+                break;
+            case "selection":
+                this.shrinkToFit(this._selection.isEmpty() ? this.getVertexBounds() : this.getSelectionBounds(), transitionDuration);
+                break;
+            case "100%":
+                this.zoom.scale(1.0);
+                this.applyZoom(transitionDuration);
+                break;
+        }
     };
 
     Graph.prototype.centerOn = function (bounds, transitionDuration) {

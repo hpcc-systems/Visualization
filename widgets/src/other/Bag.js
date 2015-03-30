@@ -17,6 +17,12 @@
             }
             this.items = {};
         },
+        isEmpty: function() {
+            for (var key in this.items) {
+                return false;
+            }
+            return true;
+        },
         append: function (item) {
             this.items[item._id] = item;
             item.element().classed("selected", true);

@@ -1,4 +1,4 @@
-/* look at potentially limiting the amount of publish params and/or handling diff way */
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["../common/HTMLWidget", "../chart/INDChart", "d3/d3", "dygraphs"], factory);
@@ -18,25 +18,25 @@
     
     dyChart.prototype = Object.create(HTMLWidget.prototype);
     dyChart.prototype.implements(INDChart.prototype);
-    //dyChart.prototype.implements(IDygraph.prototype);
-    
     
     dyChart.prototype.dataHandler = null;
     dyChart.prototype.annotationClickHandler = null;
     dyChart.prototype.annotationDblClickHandler = null;
     dyChart.prototype.annotationMouseOutHandler = null;
     dyChart.prototype.annotationMouseOverHandler = null;
-    
+
     dyChart.prototype.axisLabelFormatter = {
        x: null, // function place holder
        y: null,
        y2: null
     };
+    
     dyChart.prototype.ticker = {
        x: null, // function place holder
        y: null,
        y2: null
     };
+    
     dyChart.prototype.valueFormatter = {
        x: null, // function place holder
        y: null,
@@ -78,60 +78,7 @@
     dyChart.prototype.publish("axisLabelColor", [,{'x':"#000000",'y':"#000000",'y2':"#000000"},], "array", '{type:"custom-html-color"}');
     dyChart.prototype.publish("axisLabelFontSize", [,{'x':14,'y':14,'y2':14},], "array", '{type:"custom-number"}');
     dyChart.prototype.publish("axisLabelWidth", [,{x:60,y:50},], "array", '{type:"custom-number"}'); 
-
-        var axisLineColorStruct = [
-            {
-                dataType: "html-color",
-                mandatory: false,
-                name: "global",
-                serializable: true,
-            },
-            {
-                sections: [
-                    {
-                        dataType: "html-color",
-                        mandatory: false,
-                        name: "x",
-                    },
-                    {
-                        dataType: "html-color",
-                        mandatory: false,
-                        name: "y",
-                    },
-                    { 
-                        dataType: "html-color",
-                        mandatory: false,
-                        name: "y2",
-                    }
-                ],
-                sectionsType: "fixed",
-                mandatory: false,
-                name: "axis",
-                serializable: true,
-            },
-            {
-                sections: function(instance) { var arr = []; var seriesArr = Object.keys(instance._chart.user_attrs_.series); for (var i = 0, j = seriesArr.length; i < j; i++) { arr.push({name:seriesArr[i],dataType:"html-color"}); } return arr; },
-                sectionType: "custom",
-                mandatory: false,
-                name: "series",
-                serializable: false,
-            }
-        ]
-    
-    var extAxisLineColor = {
-        structure: axisLineColorStruct,
-        globalParam: true,
-        type:"custom-html-color",
-        
-        publishCallBack: function(_) {},
-        inputCallBack: null,
-        outputCallBack: null,
-        // (callback/formatter)
-    }
-    
-
-    
-    dyChart.prototype.publish("axisLineColor", [,{'x':"#000000",'y':"#000000",'y2':"#000000"},], "array", "desc.", null, extAxisLineColor);
+    dyChart.prototype.publish("axisLineColor", [,{'x':"#000000",'y':"#000000",'y2':"#000000"},], "array", '{type:"custom-html-color"}');
     dyChart.prototype.publish("axisLineWidth", [,{x:0.3,y:0.3},], "array", '{type:"custom-number"}');
     dyChart.prototype.publish("axisTickSize", [,{x:3,y:3},], "array", '{type:"custom-number"}');
     dyChart.prototype.publish("drawAxesAtZero", false, "boolean", "");
@@ -168,7 +115,7 @@
     dyChart.prototype.publish("drawPoints", [false,{},{}],"array", '{type:"custom-boolean"}');
     dyChart.prototype.publish("fillGraph", [false,,{}],"array", '{type:"custom-boolean"}');
 
-    dyChart.prototype.publish("pointSize", [1,{},{}],"array", '{type:"custom-array"}'); // only works when drawpoints = true
+    dyChart.prototype.publish("pointSize", [1,{},{}], "custom-array", ""); // only works when drawpoints = true
     dyChart.prototype.publish("stackedGraph", false, "boolean", "");
     dyChart.prototype.publish("stackedGraphNaNFill", "all", "set",null,["all","inside","none"]);
     dyChart.prototype.publish("stepPlot", [false,{},{}],"array", '{type:"custom-boolean"}');
@@ -213,7 +160,7 @@
     dyChart.prototype.publish("digitsAfterDecimal", 2.0, "number", "");
     dyChart.prototype.publish("maxNumberWidth", 6, "number", "");
     dyChart.prototype.publish("sigFigs", null, "number", ""); 
-     
+
     dyChart.prototype.enter = function (domNode, element) {
         this._chart = new Dygraph(domNode,[[0]],{width:this.width(),height:this.height()}); // our weird way of init with 0 data ... width and height must be set on init (div size overrides)
     };  
@@ -325,7 +272,7 @@
         // Axis
         var perAxisParams = [
             "drawAxis","pixelsPerLabel","independentTicks","gridLineWidth","gridLineColor","drawGrid","labelsKMB","labelsKMG2",
-            "axisLabelColor","axisLabelFontSize","axisLabelWidth","axisLineColor","axisLineWidth","axisTickSize"
+            "axisLabelColor","axisLabelFontSize","axisLabelWidth","axisLineColor","axisLineWidth","axisTickSize",
         ];
         for (var i = 0, j = this._axesList.length; i < j; i++) {
              if (typeof chartOptions['axes'][this._axesList[i]] === "undefined") { chartOptions['axes'][this._axesList[i]] = {}; } // init
@@ -382,7 +329,7 @@
         
         console.log('Chart Options:');
         console.log(co);
-
+        
         this._chart.resize(this.size().width,this.size().height);
         this._chart.updateOptions(co,isZoomedIgnoreProgrammaticZoom);
     };
@@ -606,6 +553,5 @@
         
         return this;
     }
-    
     return dyChart;
 }));

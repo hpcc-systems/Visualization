@@ -7,7 +7,6 @@
  * labelsFromColumns - cant find
  * per series plotter not implimented 
  * selection not implimented
- * valueFormatter not implimented
  * showInRangeSelector not implimented
  * labelsDivStyles not implimented
  * 

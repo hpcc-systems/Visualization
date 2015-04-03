@@ -94,9 +94,6 @@
     dyChart.prototype.publish("axisLineColor_y", "#000000", "html-color", "");
     dyChart.prototype.publish("axisLineColor_y2", "#000000", "html-color", "");
     
-    dyChart.prototype.publish("axisLineWidth", [,{x:0.3,y:0.3},], "array", '{type:"custom-number"}');
-    dyChart.prototype.publish("axisTickSize", [,{x:3,y:3},], "array", '{type:"custom-number"}');
-    
     dyChart.prototype.publish("axisLineWidth_x", 0.3, "number", "");
     dyChart.prototype.publish("axisLineWidth_y", 0.3, "number", "");
     
@@ -155,15 +152,15 @@
     dyChart.prototype.publish("drawPoints", [false], "array", "series-boolean");
     dyChart.prototype.publish("fillGraph", [false],"array", 'series-boolean');
 
-    dyChart.prototype.publish("pointSize", [1.0], "array", "series-number");
+    dyChart.prototype.publish("pointSize", [], "array", "series-number"); // todo global def: 1.0
     
     dyChart.prototype.publish("stackedGraph", false, "boolean", "");
     dyChart.prototype.publish("stackedGraphNaNFill", "all", "set",null,["all","inside","none"]);
-    dyChart.prototype.publish("stepPlot", [false], "array", "series-boolean");
-    dyChart.prototype.publish("strokeBorderColor", ["#FFFFFF"], "array", "series-html-color");
-    dyChart.prototype.publish("strokeBorderWidth", [null], "array", "series-number");
+    dyChart.prototype.publish("stepPlot", [], "array", "series-boolean");
+    dyChart.prototype.publish("strokeBorderColor", [], "array", "series-html-color"); // todo global def: #FFFFFF
+    dyChart.prototype.publish("strokeBorderWidth", [], "array", "series-number"); // todo global def: null
     dyChart.prototype.publish("strokePattern", [], "array", "series-array");
-    dyChart.prototype.publish("strokeWidth", [1], "array", "series-number");
+    dyChart.prototype.publish("strokeWidth", [], "array", "series-number"); //// todo global def: 1.0
     
     // Other misc.
     dyChart.prototype.publish("sigma", 2.0, "number", "");

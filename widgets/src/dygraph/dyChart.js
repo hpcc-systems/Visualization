@@ -368,7 +368,7 @@
              if (typeof chartOptions['axes'][this._axesList[i]] === "undefined") { chartOptions['axes'][this._axesList[i]] = {}; } // init
              for (var axisIdx = 0; axisIdx < perAxisFuncs.length; axisIdx++) {
                 var val = this[perAxisFuncs[axisIdx]][this._axesList[i]];
-                if (val === 'undefined' || val === null) {
+                if (val === undefined || val === null) {
                     continue;
                 }
                 chartOptions['axes'][this._axesList[i]][perAxisFuncs[axisIdx]] = val;

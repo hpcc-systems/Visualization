@@ -351,13 +351,13 @@
         
         for (var i = 0, j = this._series.length; i < j; i++) {
              chartOptions['series'][this._series[i]] = {}; // init
-             for (var axisIdx = 0; axisIdx < perSeriesParams.length; axisIdx++) {
-                var val = this['_'+perSeriesParams[axisIdx]][i];
+             for (var seriesIdx = 0; seriesIdx < perSeriesParams.length; seriesIdx++) {
+                var val = this['_'+perSeriesParams[seriesIdx]][i];
                 //TODO a way of removing/resetting if null?
                 if (val === undefined || val === null) {
                     continue;
                 }
-                chartOptions['series'][this._series[i]][perSeriesParams[axisIdx]] = val;
+                chartOptions['series'][this._series[i]][perSeriesParams[seriesIdx]] = val;
             }
         }
        

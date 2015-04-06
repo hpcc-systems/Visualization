@@ -14,11 +14,15 @@
         this._chartType = "ColumnChart";
     };
     Column.prototype = Object.create(CommonND.prototype);
-    //  TODO:  Publish Column Properties Here
+    
+    Column.prototype.publish("isStacked", false, "boolean", "create stackable column chart");
 
     Column.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
-        //  TODO:  Add Column Properties Here
+        
+        // TODO: more options here
+        retVal.isStacked = this._isStacked;
+        
         return retVal;
     };
     

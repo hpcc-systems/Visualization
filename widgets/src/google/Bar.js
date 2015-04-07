@@ -15,11 +15,16 @@
     };
     Bar.prototype = Object.create(CommonND.prototype);
 
-    //  TODO:  Publish Bar Properties Here
+    Bar.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series");
+    Bar.prototype.publish("groupWidth", "", "string", "Stacks the elements in a series"); // number or string
    
     Bar.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
-        //  TODO:  Add Bar Properties Here
+        // TODO: more options here
+        retVal.isStacked = this._isStacked;
+        retVal.bar = {
+            groupWidth: this._groupWidth
+        }
         return retVal;
     };
 

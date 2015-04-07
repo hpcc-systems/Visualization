@@ -6,7 +6,11 @@
         root.Graph = factory(root.d3, root.SVGWidget, root.TextBox, root.Surface, root.ResizeSurface, root.MultiChartSurface, root.Palette, root.GraphWidget, root.Vertex, root.Edge, root.HipieDDL);
     }
 }(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
-    function createGraphData(marshaller, visualizeRoxie) {
+    function createGraphData(marshaller, databomb, visualizeRoxie) {
+        if (databomb instanceof Object) {
+        } else {
+            databomb = JSON.parse(databomb);
+        }
         var curr = null;
         var dashboards = {};
         marshaller.accept({
@@ -20,6 +24,9 @@
                     };
                     dashboards[item.getQualifiedID()] = curr;
                 } else if (item instanceof HipieDDL.DataSource) {
+                    if (item.databomb && databomb[item.id]) {
+                        item.comms.databomb(databomb[item.id]);
+                    }
                     if (this._visualizeRoxie) {
                         var params = "";
                         item.filter.forEach(function (item) {
@@ -184,6 +191,7 @@
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
     Graph.prototype.publish("ddl_url", "", "string", "DDL URL");
+    Graph.prototype.publish("databomb", "", "string", "Data Bomb");
     Graph.prototype.publish("proxy_mappings", [], "array", "Proxy Mappings");
     Graph.prototype.publish("visualize_roxie", false, "boolean", "Show Roxie Data Sources");
 
@@ -408,18 +416,24 @@
     };
 
     Graph.prototype.render = function (callback) {
-        //this.data({ vertices: [], edges: [], subgraphs: [] });
-        //GraphWidget.prototype.render.call(this);
-        //this._renderCount = 0;
-        if (this._ddl_url === this._prev_ddl_url) {
+        if (this._ddl_url === "" || this._ddl_url === this._prev_ddl_url) {
             return GraphWidget.prototype.render.apply(this, arguments);
         }
         this._prev_ddl_url = this._ddl_url;
         var marshaller = new HipieDDL.Marshaller().proxyMappings(this._proxy_mappings);
         var context = this;
         var args = arguments;
+        if (this._ddl_url[0] === "[" || this._ddl_url[0] === "{") {
+            marshaller.parse(this._ddl_url, function () {
+                postParse();
+            });
+        } else {
+            marshaller.url(this._ddl_url, function () {
+                postParse();
+            });
+        }
         function postParse() {
-            var dashboards = createGraphData(marshaller, context._visualize_roxie);
+            var dashboards = createGraphData(marshaller, context._databomb, context._visualize_roxie);
             context.dashboards(dashboards);
             context
                 .shrinkToFitOnLayout(true)
@@ -432,63 +446,8 @@
                 }
             });
         }
-        if (this._ddl_url[0] === "[" || this._ddl_url[0] === "{") {
-            marshaller.parse(this._ddl_url, function () {
-                postParse();
-            });
-        } else {
-            marshaller.url(this._ddl_url, function () {
-                postParse();
-            });
-        }
         return this;
     }
 
     return Graph;
-
-    return {
-        createSingle: function (url, proxyMappings, visualizeRoxie, callback) {
-            var marshaller = new HipieDDL.Marshaller().proxyMappings(proxyMappings);
-            function postParse() {
-                var dashboards = createGraphData(marshaller, visualizeRoxie);
-                var graph = new Graph()
-                    .dashboards(dashboards)
-                ;
-                callback(graph);
-            }
-            if (url[0] === "[" || url[0] === "{") {
-                marshaller.parse(url, function () {
-                    postParse();
-                });
-            } else {
-                marshaller.url(url, function () {
-                    postParse();
-                });
-            }
-        },
-        create: function (url, proxyMappings, visualizeRoxie, callback) {
-            var marshaller = new HipieDDL.Marshaller().proxyMappings(proxyMappings);
-            function postParse() {
-                var dashboards = createGraphData(marshaller, visualizeRoxie);
-                var graphs = [];
-                for (var key in dashboards) {
-                    var graph = new Graph()
-                        .dashboards([dashboards[key]])
-                    ;
-                    graphs.push(graph);
-                }
-                callback(graphs, JSON.stringify(marshaller._jsonParsed, undefined, 2));
-            }
-            if (url[0] === "[" || url[0] === "{") {
-                marshaller.parse(url, function () {
-                    postParse();
-                });
-            } else {
-                marshaller.url(url, function () {
-                    postParse();
-                });
-            }
-        }
-
-    };
 }));

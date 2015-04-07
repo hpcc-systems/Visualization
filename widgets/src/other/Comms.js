@@ -701,6 +701,30 @@
         }
     };
 
+    //  HIPIEDatabomb  ---
+    function HIPIEDatabomb() {
+        HIPIEWorkunit.call(this);
+    };
+    HIPIEDatabomb.prototype = Object.create(HIPIEWorkunit.prototype);
+
+    HIPIEDatabomb.prototype.databomb = function (_) {
+        if (!arguments.length) return this._databomb;
+        this._databomb = _;
+        return this;
+    };
+
+    HIPIEDatabomb.prototype.fetchResults = function (callback) {
+        var context = this;
+        setTimeout(function () {
+            context._resultNameCacheCount = 0;
+            context._resultNameCache = context._databomb;
+            for (var key in context._databomb) {
+                context._resultNameCacheCount++;
+            }
+            callback(context._resultNameCache);
+        }, 0);
+    };
+
     return {
         ESPMappings: ESPMappings,
         ESPUrl: ESPUrl,
@@ -708,6 +732,7 @@
         WsWorkunits: WsWorkunits,
         HIPIERoxie: HIPIERoxie,
         HIPIEWorkunit: HIPIEWorkunit,
+        HIPIEDatabomb: HIPIEDatabomb,
         createESPConnection: function (url) {
             url = url || document.URL;
             var testURL = new ESPUrl()

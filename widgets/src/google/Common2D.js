@@ -17,11 +17,27 @@
 
     Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch());
 
+    Common2D.prototype.getChartOptions = function () {
+        var chartOptions = Common.prototype.getChartOptions.call(this);
+        chartOptions.series = initSeries(this.getNumSeries());
+        chartOptions.axes = {};
+
+        return chartOptions;
+    };
+
     Common2D.prototype.update = function(domNode, element) {
         this._palette = this._palette.switch(this._paletteID);
-
         Common.prototype.update.apply(this, arguments);
+        this._chart.draw(this._data_google, this.getChartOptions());
     }
+    
+    function initSeries(num) {
+        var series = [];
+        for (var i = 0; i < num; i++) {
+            series.push({});
+        }
+        return series;
+    }   
 
     return Common2D;
 }));

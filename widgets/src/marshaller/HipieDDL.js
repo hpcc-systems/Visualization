@@ -556,6 +556,7 @@
         this.WUID = dataSource.WUID;
         this.URL = dataSource.URL;
         this.databomb = dataSource.databomb;
+        this.request = {};
 
         var context = this;
         this.outputs = {};
@@ -600,9 +601,7 @@
 
     DataSource.prototype.fetchData = function (request, refresh) {
         var context = this;
-        this.request = {
-            refresh: refresh ? true : false
-        };
+        this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
             context.request[item + "_changed"] = false;
         });

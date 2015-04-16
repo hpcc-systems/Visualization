@@ -8,7 +8,7 @@
 }(this, function (d3, SVGWidget, TextBox, Surface, ResizeSurface, MultiChartSurface, Palette, GraphWidget, Vertex, Edge, HipieDDL) {
     function createGraphData(marshaller, databomb, visualizeRoxie) {
         if (databomb instanceof Object) {
-        } else {
+        } else if (databomb){
             databomb = JSON.parse(databomb);
         }
         var curr = null;

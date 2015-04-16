@@ -16,6 +16,24 @@
     };
     Table.prototype = Object.create(HTMLWidget.prototype);
 
+    Table.prototype.testData = function () {
+        this
+            .columns(["Lat", "Long", "Pin"])
+            .data([
+                [37.665074, -122.384375, "green-dot.png"],
+                [32.690680, -117.178540],
+                [39.709455, -104.969859],
+                [41.244123, -95.961610],
+                [32.688980, -117.192040],
+                [45.786490, -108.526600],
+                [45.796180, -108.535652],
+                [45.774320, -108.494370],
+                [45.777062, -108.549835, "red-dot.png"]
+            ])
+        ;
+        return this;
+    };
+
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");

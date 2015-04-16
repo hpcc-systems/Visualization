@@ -35,7 +35,7 @@
 
     function createGraphData(marshaller, databomb) {
         if (databomb instanceof Object) {
-        } else {
+        } else if (databomb){
             databomb = JSON.parse(databomb);
         }
         var curr = null;

@@ -14,6 +14,8 @@
         this._boundingBox = null;
 
         this.transition = new Transition(this);
+
+        this._drawStartPos = "center"; 
     };
     SVGWidget.prototype = Object.create(Widget.prototype);
 
@@ -48,10 +50,21 @@
             .attr("width", this._size.width)
             .attr("height", this._size.height)
         ;
-        this.pos({
-            x: this._size.width / 2,
-            y: this._size.height / 2
-        });
+        switch (this._drawStartPos) {
+            case "origin":
+                this.pos({
+                    x: 0,
+                    y: 0
+                });
+                break;
+            case "center":
+            default:
+                this.pos({
+                    x: this._size.width / 2,
+                    y: this._size.height / 2
+                });
+                break;
+        }
         return retVal;
     };
 

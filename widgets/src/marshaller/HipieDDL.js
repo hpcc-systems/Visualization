@@ -504,8 +504,10 @@
             }
             var dataSources = this.onSelect.getUpdatesDatasources();
             dataSources.forEach(function (item) {
-                item.fetchData(request);
-            });
+                item.fetchData(request, false, this.onSelect._updates.map(function(item) {
+                    return item.visualization;
+                }));
+            }, this);
         }
     };
 
@@ -538,13 +540,15 @@
         visitor.visit(this);
     };
 
-    Output.prototype.setData = function (data, request) {
+    Output.prototype.setData = function (data, request, updates) {
         var context = this;
         this.request = request;
         this.data = data;
         this.notify.forEach(function (item) {
-            var viz = context.dataSource.dashboard.visualizations[item];
-            viz.notify();
+            if (!updates || updates.indexOf(item) >= 0) {
+                var viz = context.dataSource.dashboard.visualizations[item];
+                viz.notify();
+            }
         });
     };
 
@@ -599,7 +603,7 @@
         }
     };
 
-    DataSource.prototype.fetchData = function (request, refresh) {
+    DataSource.prototype.fetchData = function (request, refresh, updates) {
         var context = this;
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
@@ -610,11 +614,11 @@
             this.request[key + "_changed"] = true;
         }
         this.comms.call(this.request, function (response) {
-            context.processResponse(response, request);
+            context.processResponse(response, request, updates);
         });
     };
 
-    DataSource.prototype.processResponse = function (response, request) {
+    DataSource.prototype.processResponse = function (response, request, updates) {
         var lowerResponse = {};
         for (var key in response) {
             lowerResponse[key.toLowerCase()] = response[key];
@@ -626,10 +630,10 @@
                 from = this.outputs[key].id.toLowerCase();
             }
             if (exists(from, response) && (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]))) {
-                this.outputs[key].setData(response[from], request);
+                this.outputs[key].setData(response[from], request, updates);
             } else if (exists(from, lowerResponse)) {// && exists(from + "_changed", lowerResponse) && lowerResponse[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"]) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                this.outputs[key].setData(lowerResponse[from], request);
+                this.outputs[key].setData(lowerResponse[from], request, updates);
             }
         }
     };

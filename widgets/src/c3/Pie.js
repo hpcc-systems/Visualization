@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common2D"], factory);
     } else {
-        root.Pie = factory(root.Common2D);
+        root.c3_Pie = factory(root.c3_Common2D);
     }
 }(this, function (Common2D) {
     function Pie(target) {
@@ -16,7 +16,7 @@
 
     Pie.prototype.update = function (domNode, element) {
         Common2D.prototype.update.apply(this, arguments);
-        
+
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);

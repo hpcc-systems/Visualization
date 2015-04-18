@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/HTMLWidget", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
-        root.Common = factory(root.d3, root.HTMLWidget);
+        root.google_Common = factory(root.d3, root.common_HTMLWidget);
     }
 }(this, function (d3, HTMLWidget) {
 
@@ -112,6 +112,6 @@
 
         this._chart.draw(this._data_google, this.getChartOptions());
     };
-    
+
     return Common;
 }));

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/Widget", "../common/HTMLWidget", "./Persist"], factory);
     } else {
-        root.Entity = factory(root.Widget, root.HTMLWidget, root.Persist);
+        root.other_PropertyEditor = factory(root.Common_Widget, root.common_HTMLWidget, root.other_Persist);
     }
 }(this, function (Widget, HTMLWidget, Persist) {
     function PropertyEditor() {
@@ -36,10 +36,10 @@
         return "require([\"" + path + "\"], function(" + label + ") {\n" +
         "    var " + fieldName + " = new " + label + "()\n" +
         "        .target(\"divID\")\n" +
-        propertiesString + 
+        propertiesString +
         "        .render(" + renderCallback.split("\n").join("\n        ") +")\n" +
         "    ;\n" +
-        postCreate + 
+        postCreate +
         "});"
     };
 
@@ -98,7 +98,7 @@
         }
         return propsStr;
     };
-    
+
     PropertyEditor.prototype.getJavaScript = function (fieldName, includeColumns, includeData, postCreate) {
         postCreate = postCreate || "";
         var callbackJS = "";

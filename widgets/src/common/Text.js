@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./SVGWidget", "css!./Text"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget);
+        root.common_Text = factory(root.common_SVGWidget);
     }
 }(this, function (SVGWidget) {
     function Text() {
@@ -63,7 +63,7 @@
                 break;
         };
         var yOffset = -(bbox.y + bbox.height / 2);
-        
+
         this._textElement
             .style("text-anchor", this._anchor)
             .attr("transform", function (d) { return "translate(" + xOffset + "," + yOffset + ")"; })

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./INDChart", "../other/Persist", "require"], factory);
     } else {
-        root.MultiChart = factory(root.d3, root.SVGWidget, root.INDChart, root.Persist, root.require);
+        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.other_Persist, root.require);
     }
 }(this, function (d3, SVGWidget, INDChart, Persist, require) {
     var _2dChartTypes = [

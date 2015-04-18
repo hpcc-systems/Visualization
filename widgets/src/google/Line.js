@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Line = factory(root.d3, root.CommonND);
+        root.google_Line = factory(root.d3, root.google_CommonND);
     }
 }(this, function (d3, CommonND) {
 
@@ -29,6 +29,6 @@
     Line.prototype.update = function (domNode, element) {
         CommonND.prototype.update.apply(this, arguments);
     };
-    
+
     return Line;
 }));

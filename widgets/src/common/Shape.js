@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./SVGWidget", "css!./Shape"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget);
+        root.common_Shape = factory(root.common_SVGWidget);
     }
 }(this, function (SVGWidget) {
     function Shape() {
@@ -39,7 +39,7 @@
 
     Shape.prototype.update = function (domNode, element) {
         var shape = element.selectAll("rect,circle,ellipse").data([this._shape], function (d) { return d; });
-        
+
         shape.enter().append(this._shape === "square" ? "rect" : this._shape)
             .attr("class", "common_Shape")
         ;

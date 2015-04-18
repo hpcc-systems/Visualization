@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.IWordCloud = factory();
+        root.other_IWordCloud = factory();
     }
 }(this, function () {
     function IWordCloud() {

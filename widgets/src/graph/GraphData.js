@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["lib/dagre/dagre"], factory);
     } else {
-        root.GraphData = factory(root.dagre);
+        root.graph_GraphData = factory(root.dagre);
     }
 }(this, function (dagre) {
     function GraphData() {

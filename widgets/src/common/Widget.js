@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3"], factory);
     } else {
-        root.Widget = factory(root.d3);
+        root.common_Widget = factory(root.d3);
     }
 }(this, function (d3) {
     var widgetID = 0;

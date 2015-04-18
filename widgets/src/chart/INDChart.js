@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/Palette"], factory);
     } else {
-        root.INDChart = factory(root.Palette);
+        root.chart_INDChart = factory(root.common_Palette);
     }
 }(this, function (Palette) {
     function INDChart() {

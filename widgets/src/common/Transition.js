@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.Entity = factory();
+        root.common_Transition = factory();
     }
 }(this, function () {
     function Transition(widget) {

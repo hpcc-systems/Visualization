@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/SVGWidget", "css!./MorphText"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget);
+        root.other_MorphText = factory(root.common_SVGWidget);
     }
 }(this, function (SVGWidget) {
     function MorphText() {
@@ -27,7 +27,7 @@
             if (usedChars[id] === undefined) {
                 usedChars[id] = 0;
             }
-            usedChars[id]++;   
+            usedChars[id]++;
             return {text: d, id: d.charCodeAt(0) + (1024 * usedChars[id])};
         }));
 

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Column"], factory);
     } else {
-        root.Bar = factory(root.Column);
+        root.c3_Bar = factory(root.c3_Column);
     }
 }(this, function (Column) {
     function Bar(target) {

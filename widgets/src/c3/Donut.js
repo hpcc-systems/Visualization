@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common2D"], factory);
     } else {
-        root.Donut = factory(root.Common2D);
+        root.c3_Donut = factory(root.c3_Common2D);
     }
 }(this, function (Common2D) {
     function Donut(target) {
@@ -34,7 +34,7 @@
 
     Donut.prototype.update = function (domNode, element) {
         Common2D.prototype.update.apply(this, arguments);
-        
+
         this.c3Chart.internal.config.donut_label_show = this.label_show();
 //        this.c3Chart.internal.config.donut_label_format = this.high();
 //        this.c3Chart.internal.config.donut_label_threshold = this.show_value_label() ? this.columns() : "";

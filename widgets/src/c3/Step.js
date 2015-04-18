@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./CommonND"], factory);
     } else {
-        root.Step = factory(root.CommonND);
+        root.c3_Step = factory(root.c3_CommonND);
     }
 }(this, function (CommonND) {
     function Step(target) {

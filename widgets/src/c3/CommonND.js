@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/INDChart"], factory);
     } else {
-        root.CommonND = factory(root.Common, root.INDChart);
+        root.c3_CommonND = factory(root.c3_Common, root.chart_INDChart);
     }
 }(this, function (Common, INDChart) {
     function CommonND(target) {
@@ -74,7 +74,7 @@
 
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
-        
+
         this._palette = this._palette.switch(this._paletteID);
 
         switch (this._xaxis_type) {

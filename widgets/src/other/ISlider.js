@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.ISlider = factory();
+        root.other_ISlider = factory();
     }
 }(this, function () {
     function ISlider() {

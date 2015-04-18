@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
     } else {
-        root.Bubble = factory(root.d3, root.SVGWidget, root.I2DChart, root.Text, root.FAChar);
+        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.chart_I2DChart, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
     function Bubble(target) {
@@ -21,9 +21,9 @@
     };
     Bubble.prototype = Object.create(SVGWidget.prototype);
     Bubble.prototype.implements(I2DChart.prototype);
-	
+
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch());
-	
+
     Bubble.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -39,7 +39,7 @@
 
         this._palette = this._palette.switch(this._paletteID);
         var node = element.selectAll(".node")
-            .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })            
+            .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })
         ;
 
         //  Enter  ---

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Widget", "./Transition", "d3/d3"], factory);
     } else {
-        root.HTMLWidget = factory(root.Widget, root.Transition, root.d3);
+        root.common_HTMLWidget = factory(root.common_Widget, root.common_Transition, root.d3);
     }
 }(this, function (Widget, Transition, d3) {
     function HTMLWidget() {

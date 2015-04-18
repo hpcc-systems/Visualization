@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "../graph/Graph", "./IGMap", "async!http://maps.google.com/maps/api/js?sensor=false", "css!./GMap"], factory);
     } else {
-        root.GMap = factory(root.d3, root.SVGWidget, root.Graph, root.IGMap);
+        root.map_GMap = factory(root.d3, root.common_SVGWidget, root.graph_Graph, root.map_IGMap);
     }
 }(this, function (d3, SVGWidget, Graph, IGMap) {
     function GMap(target) {

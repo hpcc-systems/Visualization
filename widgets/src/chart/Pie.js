@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
     } else {
-        root.Pie = factory(root.d3, root.SVGWidget, root.I2DChart, root.Text, root.FAChar);
+        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.chart_I2DChart, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
     function Pie(target) {
@@ -30,9 +30,9 @@
     };
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
-	
+
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch());
-	
+
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -67,7 +67,7 @@
 
     Pie.prototype.update = function (domNode, element) {
         var context = this;
-		
+
         this._palette = this._palette.switch(this._paletteID);
         var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 

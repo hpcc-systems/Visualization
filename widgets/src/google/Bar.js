@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Bar = factory(root.d3, root.CommonND);
+        root.google_Bar = factory(root.d3, root.google_CommonND);
     }
 }(this, function (d3, CommonND) {
 
@@ -16,7 +16,7 @@
     Bar.prototype = Object.create(CommonND.prototype);
 
     //  TODO:  Publish Bar Properties Here
-   
+
     Bar.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
         //  TODO:  Add Bar Properties Here
@@ -27,7 +27,7 @@
         CommonND.prototype.enter.apply(this, arguments);
     };
 
-    Bar.prototype.update = function (domNode, element) {      
+    Bar.prototype.update = function (domNode, element) {
         CommonND.prototype.update.apply(this, arguments);
     };
 

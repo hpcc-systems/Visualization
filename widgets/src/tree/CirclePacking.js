@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./ITree", "../common/Text", "../common/FAChar", "css!./CirclePacking"], factory);
     } else {
-        root.CirclePacking = factory(root.d3, root.SVGWidget, root.ITree, root.Text, root.FAChar);
+        root.tree_CirclePacking = factory(root.d3, root.common_SVGWidget, root.tree_ITree, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, ITree, Text, FAChar) {
     function CirclePacking(target) {
@@ -13,9 +13,9 @@
     };
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
     CirclePacking.prototype.implements(ITree.prototype);
-	
+
     CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch());
-	
+
     CirclePacking.prototype.enter = function (domNode, element) {
         var context = this;
 
@@ -35,7 +35,7 @@
 
     CirclePacking.prototype.update = function (domNode, element) {
         var context = this;
-		
+
         this._palette = this._palette.switch(this._paletteID);
         this.svg.selectAll("circle").remove();
         this.svg.selectAll("text").remove();

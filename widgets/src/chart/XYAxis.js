@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget"], factory);
     } else {
-        root.XYAxis = factory(root.d3, root.SVGWidget);
+        root.chart_XYAxis = factory(root.d3, root.common_SVGWidget);
     }
 }(this, function (d3, SVGWidget) {
     function XYAxis(target) {

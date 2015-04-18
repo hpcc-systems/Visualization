@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Surface", "css!./ResizeSurface"], factory);
     } else {
-        root.Graph = factory(root.Surface);
+        root.common_ResizeSurface = factory(root.common_Surface);
     }
 }(this, function (Surface) {
     function ResizeSurface() {

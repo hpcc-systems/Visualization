@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/I2DChart"], factory);
     } else {
-        root.Common2D = factory(root.Common, root.I2DChart);
+        root.c3_Common2D = factory(root.c3_Common, root.chart_I2DChart);
     }
 }(this, function (Common, I2DChart) {
     function Common2D(target) {

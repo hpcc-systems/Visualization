@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./ITree", "../common/Text", "../common/FAChar", "css!./SunburstPartition"], factory);
     } else {
-        root.SunburstPartition = factory(root.d3, root.SVGWidget, root.ITree, root.Text, root.FAChar);
+        root.tree_SunburstPartition = factory(root.d3, root.common_SVGWidget, root.tree_ITree, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, ITree, Text, FAChar) {
     function SunburstPartition(target) {
@@ -13,7 +13,7 @@
     };
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
     SunburstPartition.prototype.implements(ITree.prototype);
-	
+
     SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch());
 
     SunburstPartition.prototype.root = function (_) {
@@ -83,11 +83,11 @@
         ;
         paths
             .attr("d", this.arc)
-            .style("fill", function (d) { 
-                return d.__viz_fill ? d.__viz_fill : context._palette(d.label); 
+            .style("fill", function (d) {
+                return d.__viz_fill ? d.__viz_fill : context._palette(d.label);
             })
-            .style("stroke", function (d) { 
-                return d.value > 16 ? "white" : "none"; 
+            .style("stroke", function (d) {
+                return d.value > 16 ? "white" : "none";
             })
             .select("title")
                 .text(function (d) { return d.label })

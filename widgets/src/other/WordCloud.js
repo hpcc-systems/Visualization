@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/SVGWidget", "./IWordCloud", "d3/d3", "css!./WordCloud"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget, root.IWordCloud, root.d3);
+        root.other_WordCloud = factory(root.common_SVGWidget, root.other_IWordCloud, root.d3);
     }
 }(this, function (SVGWidget, IWordCloud, d3) {
     function WordCloud() {
@@ -82,7 +82,7 @@
             text.enter().append("text")
                 .attr("text-anchor", "middle")
                 .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-                .style("font-size", function(d) { 
+                .style("font-size", function(d) {
                     return scale(d.__viz_1) + "px";
                 })
                 .style("font-family", function (d) { return d.font; })

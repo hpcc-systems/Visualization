@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "../common/Icon", "../common/TextBox", "css!./Vertex"], factory);
     } else {
-        root.Entity = factory(root.d3, root.SVGWidget, root.Icon, root.TextBox);
+        root.graph_Vertex = factory(root.d3, root.common_SVGWidget, root.common_Icon, root.common_TextBox);
     }
 }(this, function (d3, SVGWidget, Icon, TextBox) {
     function Vertex() {

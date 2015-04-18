@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "lib/colorbrewer/colorbrewer"], factory);
     } else {
-        root.Entity = factory(root.d3);
+        root.common_Palette = factory(root.d3);
     }
 }(this, function (d3) {
     var d3Ordinal = [
@@ -201,8 +201,8 @@
           .enter().append("span")
             .attr("class", "palette")
             .attr("title", function(d) { return d; })
-            .on("click", function(d) { 
-                console.log(d3.values(d.value).map(JSON.stringify).join("\n")); 
+            .on("click", function(d) {
+                console.log(d3.values(d.value).map(JSON.stringify).join("\n"));
             })
           .selectAll(".swatch").data(function (d) { return palette_ordinal(d).colors(); })
           .enter().append("span")
@@ -215,15 +215,15 @@
           .enter().append("span")
             .attr("class", "palette")
             .attr("title", function(d) { return d; })
-            .on("click", function(d) { 
-                console.log(d3.values(d.value).map(JSON.stringify).join("\n")); 
+            .on("click", function(d) {
+                console.log(d3.values(d.value).map(JSON.stringify).join("\n"));
             })
           .selectAll(".swatch2").data(function (d) { return palette_rainbow(d).colors(); })
           .enter().append("span")
             .attr("class", "swatch2")
             .style("height", (256 / 32)+"px")
             .style("background-color", function(d) { return d; });
-            
+
         var palette = { id: customArr.join("_") + steps, scale: palette_rainbow("custom", customArr, steps) };
         d3.select(customDivID)
           .selectAll(".palette")
@@ -231,8 +231,8 @@
           .enter().append("span")
             .attr("class", "palette")
             .attr("title", function(d) { return "aaa";/*d.from + "->" + d.to;*/ })
-            .on("click", function(d) { 
-                console.log(d3.values(d.value).map(JSON.stringify).join("\n")); 
+            .on("click", function(d) {
+                console.log(d3.values(d.value).map(JSON.stringify).join("\n"));
             })
           .selectAll(".swatch2").data(function(d) {
                 var retVal = [];
@@ -244,7 +244,7 @@
           .enter().append("span")
             .attr("class", "swatch2")
             .style("background-color", function(d) { return d; });
-    };    
+    };
 
     return {
         ordinal: fetchOrdinalItem,

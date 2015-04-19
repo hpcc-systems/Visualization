@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../google/Common", "../chart/I2DChart", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
-        root.Common2D = factory(root.d3, root.Common, root.I2DChart);
+        root.google_Common2D = factory(root.d3, root.google_Common, root.chart_I2DChart);
     }
 }(this, function (d3, Common, I2DChart) {
 
@@ -19,7 +19,7 @@
 
     Common2D.prototype.update = function(domNode, element) {
         this._palette = this._palette.switch(this._paletteID);
-        
+
         Common.prototype.update.apply(this, arguments);
     }
 

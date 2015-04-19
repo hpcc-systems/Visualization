@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["lib/dagre/dagre"], factory);
     } else {
-        root.GraphLayouts = factory(root.dagre);
+        root.graph_GraphLayouts = factory(root.dagre);
     }
 }(this, function (dagre) {
     function Circle(graphData, width, height, radius) {
@@ -25,11 +25,11 @@
                 width: size.width,
                 height: size.height
             }
-            currStep += step; 
+            currStep += step;
         });
     };
     Circle.prototype.nodePos = function(u) {
-        return this.pos[u];        
+        return this.pos[u];
     };
     Circle.prototype.edgePoints = function(e) {
         return [];

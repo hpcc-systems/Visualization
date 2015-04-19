@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./CommonND"], factory);
     } else {
-        root.Line = factory(root.CommonND);
+        root.c3_Line = factory(root.c3_CommonND);
     }
 }(this, function (CommonND) {
     function Line(target) {

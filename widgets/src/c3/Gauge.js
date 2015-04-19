@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common1D"], factory);
     } else {
-        root.Gauge = factory(root.Common1D);
+        root.c3_Gauge = factory(root.c3_Common1D);
     }
 }(this, function (Common1D) {
     function Gauge(target) {

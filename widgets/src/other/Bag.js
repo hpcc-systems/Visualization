@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.Entity = factory();
+        root.other_Bag = factory();
     }
 }(this, function () {
     function SelectionBag() {

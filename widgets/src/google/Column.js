@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "./CommonND"], factory);
     } else {
-        root.Column = factory(root.d3, root.CommonND);
+        root.google_Column = factory(root.d3, root.google_CommonND);
     }
 }(this, function (d3, CommonND) {
 
@@ -21,7 +21,7 @@
         //  TODO:  Add Column Properties Here
         return retVal;
     };
-    
+
     Column.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this, arguments);
     };

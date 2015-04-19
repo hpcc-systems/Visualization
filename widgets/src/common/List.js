@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./IList", "../common/TextBox", "css!./List"], factory);
     } else {
-        root.List = factory(root.d3, root.SVGWidget, root.IList, root.TextBox);
+        root.common_List = factory(root.d3, root.common_SVGWidget, root.common_IList, root.common_TextBox);
     }
 }(this, function (d3, SVGWidget, IList, TextBox) {
     function List(target) {

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "../common/TextBox", "css!./Edge"], factory);
     } else {
-        root.Entity = factory(root.d3, root.SVGWidget, root.TextBox);
+        root.graph_Edge = factory(root.d3, root.common_SVGWidget, root.common_TextBox);
     }
 }(this, function (d3, SVGWidget, TextBox) {
     function Edge() {
@@ -102,7 +102,7 @@
         var pathElements = this._elementPath;
 
         if (this.svgMarkerGlitch && !skipPushMarkers) {
-            element.transition().duration((transitionDuration ? transitionDuration : 0) + 100) 
+            element.transition().duration((transitionDuration ? transitionDuration : 0) + 100)
                 .each("start", function (d) {
                     context._pushMarkers(element, d);
                 })

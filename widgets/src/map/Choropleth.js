@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/SVGWidget", "./IChoropleth", "css!./Choropleth"], factory);
     } else {
-        root.Choropleth = factory(root.d3, root.SVGWidget, root.IChoropleth);
+        root.map_Choropleth = factory(root.d3, root.common_SVGWidget, root.map_IChoropleth);
     }
 }(this, function (d3, SVGWidget, IChoropleth) {
     function Choropleth() {

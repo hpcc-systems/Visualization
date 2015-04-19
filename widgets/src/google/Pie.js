@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "./Common2D"], factory);
     } else {
-        root.Pie = factory(root.d3, root.Common2D);
+        root.google_Pie = factory(root.d3, root.google_Common2D);
     }
 }(this, function (d3, Common2D) {
 
@@ -14,7 +14,7 @@
         this._chartType = "PieChart";
     };
     Pie.prototype = Object.create(Common2D.prototype);
-    
+
     Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
     Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size");
     Pie.prototype.publish("pieStartAngle", 0, "number", "Pie Start Angle");
@@ -30,7 +30,7 @@
         retVal.pieStartAngle = this._pieStartAngle;
         return retVal;
     };
-    
+
     Pie.prototype.enter = function (domNode, element) {
         Common2D.prototype.enter.apply(this, arguments);
     };

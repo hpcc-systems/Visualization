@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../other/Comms", "../common/Widget"], factory);
     } else {
-        root.Marshaller = factory(root.Comms, root.Widget);
+        root.marshaller_HipieDDL = factory(root.other_Comms, root.common_Widget);
     }
 }(this, function (Comms, Widget) {
     var Vertex = null;

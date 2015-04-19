@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../common/ResizeSurface", "./MultiChart", "./INDChart"], factory);
     } else {
-        root.MultiChartSurface = factory(root.d3, root.ResizeSurface, root.MultiChart, root.INDChart);
+        root.chart_MultiChartSurface = factory(root.d3, root.common_ResizeSurface, root.chart_MultiChart, root.chart_INDChart);
     }
 }(this, function (d3, ResizeSurface, MultiChart, INDChart) {
     function MultiChartSurface() {

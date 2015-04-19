@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./SVGWidget", "./Shape", "./Text", "css!./TextBox"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget, root.Shape, root.Text);
+        root.common_TextBox = factory(root.common_SVGWidget, root.common_Shape, root.common_Text);
     }
 }(this, function (SVGWidget, Shape, Text) {
     function TextBox() {

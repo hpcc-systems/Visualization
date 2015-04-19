@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/Shape", "../graph/Edge"], factory);
     } else {
-        root.IGMap = factory(root.Shape, root.Edge);
+        root.map_IGMap = factory(root.common_Shape, root.graph_Edge);
     }
 }(this, function (Shape, Edge) {
     function IGMap() {

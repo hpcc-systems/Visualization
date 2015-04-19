@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "c3/c3", "../common/HTMLWidget", "css!c3/c3"], factory);
     } else {
-        root.Pie = factory(root.d3, root.c3, root.HTMLWidget);
+        root.c3_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
     }
 }(this, function (d3, c3, HTMLWidget) {
     function Common(target) {
@@ -39,7 +39,7 @@
     Common.prototype.getC3Series = function() {
         return this._columns.filter(function (d, i) { return i > 0;});
     };
- 
+
     Common.prototype.getC3Rows = function () {
         var retVal = [this._columns.filter(function (item, idx) { return idx > 0; })].concat(this._data.map(function (row) {
             return row.filter(function (cell, idx) {

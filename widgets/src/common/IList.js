@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.IList = factory();
+        root.common_IList = factory();
     }
 }(this, function () {
     function IList() {

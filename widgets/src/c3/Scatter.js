@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./CommonND"], factory);
     } else {
-        root.Scatter = factory(root.CommonND);
+        root.c3_Scatter = factory(root.c3_CommonND);
     }
 }(this, function (CommonND) {
     function Scatter(target) {

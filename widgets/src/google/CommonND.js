@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "../google/Common", "../chart/INDChart", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
-        root.CommonND = factory(root.d3, root.Common, root.INDChart);
+        root.google_CommonND = factory(root.d3, root.google_Common, root.chart_INDChart);
     }
 }(this, function (d3, Common, INDChart) {
 
@@ -17,7 +17,7 @@
 
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch());
 
-    CommonND.prototype.update = function(domNode, element) {   
+    CommonND.prototype.update = function(domNode, element) {
         this._palette = this._palette.switch(this._paletteID);
 
         Common.prototype.update.apply(this, arguments);

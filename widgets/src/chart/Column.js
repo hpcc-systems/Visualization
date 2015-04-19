@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3/d3", "./XYAxis", "./I2DChart", "css!./Column"], factory);
     } else {
-        root.Column = factory(root.d3, root.XYAxis, root.I2DChart);
+        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.chart_I2DChart);
     }
 }(this, function (d3, XYAxis, I2DChart) {
     function Column(target) {
@@ -20,7 +20,7 @@
         var context = this;
 
         this._palette = this._palette.switch(this._paletteID);
-        
+
         var column = this.svgData.selectAll(".columnRect")
             .data(this._data)
         ;

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/Palette"], factory);
     } else {
-        root.ITree = factory(root.Palette);
+        root.tree_ITree = factory(root.common_Palette);
     }
 }(this, function (Palette) {
     function ITree() {

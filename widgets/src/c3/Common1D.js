@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/I1DChart"], factory);
     } else {
-        root.Common1D = factory(root.Common, root.I1DChart);
+        root.c3_Common1D = factory(root.c3_Common, root.chart_I1DChart);
     }
 }(this, function (Common, I1DChart) {
     function Common1D(target) {
@@ -27,7 +27,7 @@
     Common1D.prototype.implements(I1DChart.prototype);
 
     Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch());
-	
+
     Common1D.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
         this._palette = this._palette.switch(this._paletteID);

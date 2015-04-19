@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.Entity = factory();
+        root.other_ESPUrl = factory();
     }
 }(this, function () {
     function ESPUrl() {
@@ -49,25 +49,25 @@
         this._protocol = _;
         return this;
     };
-    
+
     ESPUrl.prototype.hostname = function (_) {
         if (!arguments.length) return this._hostname;
         this._hostname = _;
         return this;
     };
-    
+
     ESPUrl.prototype.port = function (_) {
         if (!arguments.length) return this._port;
         this._port = _;
         return this;
     };
-    
+
     ESPUrl.prototype.pathname = function (_) {
         if (!arguments.length) return this._pathname;
         this._pathname = _;
         return this;
     };
-    
+
     ESPUrl.prototype.isWsWorkunits = function () {
         return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0 || this._params["Wuid"];
     };
@@ -414,7 +414,7 @@
             }
             context._resultNameCache[target.resultname] = response;
             if (!skipMapping) {
-                context._mappings.mapResult(context._resultNameCache, target.resultname);            
+                context._mappings.mapResult(context._resultNameCache, target.resultname);
             }
             callback(context._resultNameCache[target.resultname]);
         });
@@ -422,16 +422,16 @@
 
     WsWorkunits.prototype.fetchResult = function (target, callback, skipMapping) {
         if (target.wuid) {
-            this._fetchResult(target, callback, skipMapping);        
+            this._fetchResult(target, callback, skipMapping);
         } else if (target.jobname) {
             var context = this;
             this.WUQuery(target, function(response) {
                 target.wuid = response[0].Wuid;
-                context._fetchResult(target, callback, skipMapping);        
+                context._fetchResult(target, callback, skipMapping);
             });
         }
     },
-    
+
     WsWorkunits.prototype.WUQuery = function (request, callback) {
         var url = this.getUrl({
             pathname: "WsWorkunits/WUQuery.json",

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./SVGWidget", "./Shape", "./FAChar", "css!./Icon"], factory);
     } else {
-        root.Entity = factory(root.SVGWidget, root.Shape, root.FAChar);
+        root.common_Icon = factory(root.common_SVGWidget, root.common_Shape, root.common_FAChar);
     }
 }(this, function (SVGWidget, Shape, FAChar) {
     function Icon() {
@@ -13,7 +13,7 @@
         this._shapeWidget = new Shape();
         this._faChar = new FAChar();
     };
-    Icon.prototype = Object.create(SVGWidget.prototype);    
+    Icon.prototype = Object.create(SVGWidget.prototype);
 
     Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"]);
     Icon.prototype.publishProxy("faChar", "_faChar", "char");

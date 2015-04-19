@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.IMenu = factory();
+        root.common_IMenu = factory();
     }
 }(this, function () {
     function IMenu() {

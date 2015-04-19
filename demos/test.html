@@ -37,13 +37,40 @@
                     var timeoutStep = 500;
                     var timeoutIdx = 0;
 
-                    setTimeout(function () { displayComposition(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displayCharts(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displayMaps(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displayGraphHierarchies(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
-                    setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+                    var def = window.location.search.split("?")[1];
+                    switch (def) {
+                        case "composition":
+                            displayComposition();
+                            break;
+                        case "charts":
+                            displayCharts();
+                            break;
+                        case "maps":
+                            displayMaps();
+                            break;
+                        case "hierarchies":
+                            displayGraphHierarchies();
+                            break;
+                        case "surfaces":
+                            displaySurfaces();
+                            break;
+                        case "other":
+                            displayOther();
+                            break;
+                        case "palettes":
+                            displayPalettes();
+                            break;
+                        default:
+                            setTimeout(function () { displayComposition(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayCharts(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayMaps(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayGraphHierarchies(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+                            break;
+                    }
+
 
                     function displayComposition() {
                         //  Composition ---

@@ -8,6 +8,7 @@
 }(this, function (d3, SVGWidget) {
     function XYAxis(target) {
         SVGWidget.call(this);
+        this._drawStartPos = "origin";
 
         this._xScale = "";
         this.parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -46,8 +47,7 @@
             .ticks(10)
         ;
 
-        this.recenterG = element.append("g");
-        this.svg = this.recenterG.append("g");
+        this.svg = element.append("g");
         this.svgData = this.svg.append("g");
         this.svgXAxis = this.svg.append("g")
             .attr("class", "x axis")
@@ -147,10 +147,6 @@
         ;
 
         this.updateChart(domNode, element, margin, width, height);
-
-        this.recenterG.transition()
-            .attr("transform", "translate(" + -this.width() / 2 + "," + -this.height() / 2 + ")")
-        ;
     };
 
     XYAxis.prototype.updateChart = function (domNode, element, margin, width, height) {

@@ -5,8 +5,60 @@ requirejs.config({
         'css': 'lib/requirejs/plugins/css',
         'text': 'lib/requirejs/plugins/text',
         'goog': 'lib/requirejs/plugins/goog',
-        'propertyParser': 'lib/requirejs/plugins/propertyParser'
+        'propertyParser': 'lib/requirejs/plugins/propertyParser',
+
+        'amcharts'          : 'lib/amcharts/amcharts',
+        'amcharts.funnel'   : 'lib/amcharts/funnel',
+        'amcharts.gauge'    : 'lib/amcharts/gauge',
+        'amcharts.pie'      : 'lib/amcharts/pie',
+        'amcharts.radar'    : 'lib/amcharts/radar',
+        'amcharts.serial'   : 'lib/amcharts/serial',
+        'amcharts.xy'       : 'lib/amcharts/xy'           
     },
+     shim: {
+        'amcharts.funnel': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts.gauge': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts.pie': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts.radar': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts.serial': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts.xy': {
+            deps: ['amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        }
+    },    
     packages: [
         {
             name: "src",

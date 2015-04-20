@@ -547,7 +547,11 @@
         elements
             .each(function (context) {
                 context.update(this, context._element);
-                context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
+                if (context._drawStartPos === "origin" && context._target instanceof SVGElement) {
+                    context._element.attr("transform", function (d) { return "translate(" + (context._pos.x - context._size.width / 2) + "," + (context._pos.y - context._size.height / 2) + ")scale(" + context._scale + ")"; });
+                } else {
+                    context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
+                }
             })
         ;
         elements.exit()

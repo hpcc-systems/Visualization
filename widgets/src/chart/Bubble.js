@@ -10,6 +10,7 @@
         SVGWidget.call(this);
         I2DChart.call(this);
         this._class = "chart_Bubble";
+        this._drawStartPos = "origin";
 
         this.labelWidgets = {};
 
@@ -76,7 +77,7 @@
             .attr("opacity", 1)
             .each(function (d) {
                 var element = d3.select(this);
-                var pos = { x: d.x - context._size.width / 2, y: d.y - context._size.height / 2 }
+                var pos = { x: d.x, y: d.y }
                 element.select("circle").transition()
                     .attr("transform", function (d) { return "translate(" + pos.x + "," + pos.y + ")"; })
                     .style("fill", function (d) { return context._palette(d[0]); })

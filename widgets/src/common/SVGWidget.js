@@ -120,7 +120,6 @@
 
     SVGWidget.prototype.update = function (domeNode, element, d) {
         Widget.prototype.update.apply(this, arguments);
-        element.attr("transform", "translate(" + this._pos.x + " " + this._pos.y + ")");
     };
 
     SVGWidget.prototype.exit = function (domeNode, element, d) {

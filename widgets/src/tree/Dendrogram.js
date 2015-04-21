@@ -17,32 +17,39 @@
     };
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
     Dendrogram.prototype.implements(ITree.prototype);
-	
+    
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch());
     Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle");
-
+    Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"]); 
+     
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-
+        var context = this;
         this.layout = d3.layout.cluster();
 
         this.diagonal = d3.svg.diagonal()
-            .projection(function (d) { return [d.y, d.x]; })
+            .projection(function (d) { return context._orientation === "horizontal" ? [d.y, d.x] : [d.x, d.y]; })
         ;
     };
 
     Dendrogram.prototype.update = function (domNode, element, secondPass) {
         var context = this;
         SVGWidget.prototype.update.apply(this, arguments);
-		
+        
         this._palette = this._palette.switch(this._paletteID);
 
         //  Pad to allow text to display  ---
         this.x(this._maxTextWidth);
         var width = this.width() - this._maxTextWidth * 2;
-        this.layout
-            .size([this.height(), width])
-        ;
+        if(this._orientation === "horizontal"){
+            this.layout
+                .size([this.height(), width])
+            ;
+        } else {
+            this.layout
+                .size([width, this.height()])
+            ;            
+        }
 
         var nodes = this.layout.nodes(this.data());
         var links = this.layout.links(nodes);
@@ -72,7 +79,7 @@
 
         var maxTextWidth = 0;
         nodes
-            .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; })
+            .attr("transform", function (d) { return context._orientation === "horizontal" ? "translate(" + d.y + "," + d.x + ")" : "translate(" + d.x + "," + d.y + ")";  })
         ;
         nodes.select("circle")
             .attr("r", 4.5)

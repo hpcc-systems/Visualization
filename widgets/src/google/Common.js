@@ -26,6 +26,7 @@
 
     Common.prototype.publish("fontSize", null, "number", "Font Size");
     Common.prototype.publish("fontName", null, "string", "Font Name");
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color");
 
     Common.prototype.publish("legendShow", true, "boolean", "Show Legend");
     Common.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["", "start", "center", "end"]);
@@ -39,6 +40,11 @@
     Common.prototype.publish("animationDuration", 0, "number", "Animation Duration");
     Common.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup");
     Common.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["", "linear", "in", "out", "inAndOut"]);
+    
+    Common.prototype.publish("title", "", "string", "Text to display above the chart"); // does not support alignment (TODO make our own title functons)
+    Common.prototype.publish("titlePosition", null, "number", "Legend Font Size");
+
+
 
     Common.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
@@ -69,6 +75,9 @@
             colors: colors,
             fontSize: this._fontSize,
             fontName: this._fontName,
+            fontColor: this._fontColor,
+            title: this._title,
+            titlePosition: this._titlePosition,
             chartArea: {
                 width: this._chartAreaWidth,
                 height: this._chartAreaHeight
@@ -91,7 +100,7 @@
                 }
             },
         };
-    },
+    };
 
     Common.prototype.enter = function (domNode, element) {
         element.style("overflow", "hidden");

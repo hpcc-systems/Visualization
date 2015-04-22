@@ -5,7 +5,13 @@ requirejs.config({
         'css': 'lib/requirejs/plugins/css',
         'text': 'lib/requirejs/plugins/text',
         'goog': 'lib/requirejs/plugins/goog',
-        'propertyParser': 'lib/requirejs/plugins/propertyParser'
+        'propertyParser': 'lib/requirejs/plugins/propertyParser',
+        'dygraphs': 'lib/dygraph/dygraph'
+    },
+     shim: {
+        'dygraphs': {
+            exports: 'Dygraph,DygraphCanvasRenderer,DygraphLayout,DygraphOptions'
+        },
     },
     packages: [
         {

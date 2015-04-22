@@ -166,103 +166,115 @@
                             .each(function () {
                                 var td = d3.select(this);
                                 var input = null;
-                                switch (d.type) {
-                                    case "boolean":
-                                        input = td.append("input")
-                                            .attr("class", "input_" + widget._id)
-                                            .attr("type", "checkbox")
-                                            .on("change", function () {
-                                                widget[d.id](this.checked).render(function () {
-                                                    context.onChange(widget, d.id);
-                                                    context.render();
-                                                })
-                                            })
-                                        ;
-                                        break;
-                                    case "number":
-                                    case "string":
-                                        input = td.append("input")
-                                            .attr("class", "input_" + widget._id)
-                                            .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
-                                                    context.onChange(widget, d.id);
-                                                    context.render();
-                                                })
-                                            })
-                                        ;
-                                        break;
-                                    case "html-color":
-                                        input = td.append("input")
-                                            .attr("class", "input_" + widget._id)
-                                            .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
-                                                    context.onChange(widget, d.id);
-                                                    context.render();
-                                                })
-                                            })
-                                        ;
-                                        if (!context.isIE) {
-                                            try {
-                                                var colorInput = input;
-                                                var inputColor = td.append("input")
-                                                    .attr("type", "color")
-                                                    .on("change", function () {
-                                                        var node = colorInput.node();
-                                                        node.value = this.value;
-                                                        colorInput.on("change").apply(colorInput.node());
+                                
+                                var param = widget['__meta_'+d.id];
+                                var paramDefaultValue = param.defaultValue;
+                                var paramExt = param.ext;
+                                var paramStruct = param.structure;
+        
+                                if ((paramExt.hasOwnProperty('type') && paramExt.type.indexOf("custom") === -1) || !paramExt.hasOwnProperty('type')) {
+                                
+                                    switch (d.type) {
+                                        case "boolean":
+                                            input = td.append("input")
+                                                .attr("class", "input_" + widget._id)
+                                                .attr("type", "checkbox")
+                                                .on("change", function () {
+                                                    widget[d.id](this.checked).render(function () {
+                                                        context.onChange(widget, d.id);
+                                                        context.render();
                                                     })
-                                                ;
-                                                inputColor.node().value = widget[d.id]();
-                                            } catch (e) {
-                                                inputColor.remove();
-                                            }
-                                        }
-                                        break;
-                                    case "set":
-                                        input = td.append("select")
-                                            .attr("class", "input_" + widget._id)
-                                            .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
-                                                    context.onChange(widget, d.id);
-                                                    context.render();
                                                 })
-                                            })
-                                        ;
-                                        d.set.forEach(function (item) {
-                                            var option = input.append("option")
-                                                .attr("value", item)
-                                                .text(item)
                                             ;
-                                        });
-                                        break;
-                                    case "array":
-                                        input = td.append("textarea")
-                                            .attr("class", "input_" + widget._id)
-                                            .attr("rows", "4")
-                                            .attr("cols", "25")
-                                            .on("change", function () {
-                                                widget[d.id](JSON.parse(this.value)).render(function () {
-                                                    context.onChange(widget, d.id);
-                                                    context.render();
+                                            break;
+                                        case "number":
+                                        case "string":
+                                            input = td.append("input")
+                                                .attr("class", "input_" + widget._id)
+                                                .on("change", function () {
+                                                    widget[d.id](this.value).render(function (widget) {
+                                                        context.onChange(widget, d.id);
+                                                        context.render();
+                                                    })
                                                 })
-                                            })
-                                        ;
-                                        break;
-                                    case "widget":
-                                    case "widgetArray":
-                                        input = td.append("div")
-                                            .attr("class", "input_" + widget._id)
-                                        ;
-                                        widget["_propertyEditor_" + d.id] = new PropertyEditor()
-                                            .target(input.node())
-                                        ;
-                                        widget["_propertyEditor_" + d.id].onChange = function (widget, propID) {
-                                            context.onChange(widget, propID)
-                                            //  No render needed  ---
-                                        };
-                                        break;
-                                    default:
-                                        break;
+                                            ;
+                                            break;
+                                        case "html-color":
+                                            input = td.append("input")
+                                                .attr("class", "input_" + widget._id)
+                                                .on("change", function () {
+                                                    widget[d.id](this.value).render(function (widget) {
+                                                        context.onChange(widget, d.id);
+                                                        context.render();
+                                                    })
+                                                })
+                                            ;
+                                            if (!context.isIE) {
+                                                try {
+                                                    var colorInput = input;
+                                                    var inputColor = td.append("input")
+                                                        .attr("type", "color")
+                                                        .on("change", function () {
+                                                            var node = colorInput.node();
+                                                            node.value = this.value;
+                                                            colorInput.on("change").apply(colorInput.node());
+                                                        })
+                                                    ;
+                                                    inputColor.node().value = widget[d.id]();
+                                                } catch (e) {
+                                                    inputColor.remove();
+                                                }
+                                            }
+                                            break;
+                                        case "set":
+                                            input = td.append("select")
+                                                .attr("class", "input_" + widget._id)
+                                                .on("change", function () {
+                                                    widget[d.id](this.value).render(function (widget) {
+                                                        context.onChange(widget, d.id);
+                                                        context.render();
+                                                    })
+                                                })
+                                            ;
+                                            d.set.forEach(function (item) {
+                                                var option = input.append("option")
+                                                    .attr("value", item)
+                                                    .text(item)
+                                                ;
+                                            });
+                                            break;
+                                        case "array":
+                                            input = td.append("textarea")
+                                                .attr("class", "input_" + widget._id)
+                                                .attr("rows", "4")
+                                                .attr("cols", "25")
+                                                .on("change", function () {
+                                                    widget[d.id](JSON.parse(this.value)).render(function () {
+                                                        context.onChange(widget, d.id);
+                                                        context.render();
+                                                    })
+                                                })
+                                            ;
+                                            break;
+                                        case "widget":
+                                        case "widgetArray":
+                                            input = td.append("div")
+                                                .attr("class", "input_" + widget._id)
+                                            ;
+                                            widget["_propertyEditor_" + d.id] = new PropertyEditor()
+                                                .target(input.node())
+                                            ;
+                                            widget["_propertyEditor_" + d.id].onChange = function (widget, propID) {
+                                                context.onChange(widget, propID)
+                                                //  No render needed  ---
+                                            };
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } else if(paramExt.hasOwnProperty('type') && paramExt.type.indexOf("custom") !== -1) {
+                                    var pStructure = paramExt.structure;
+                                    createInputs(d,widget,td,pStructure);
                                 }
                             })
                         ;
@@ -282,6 +294,81 @@
                         */
                     })
                 ;
+                
+/* start func */
+
+        function createInputs(row, widget, td, d, l) {
+            l = typeof l !== 'undefined' ? l : 0;
+            
+            for (var i = 0, j = d.length; i < j; i++) {
+
+                if (d[i].hasOwnProperty("sections") && d[i].sections.length > 0) {
+                    switch(typeof(d[i].sections)) {
+                        case "function":
+                            createInputs(row, widget,td,d[i].sections(widget), i);
+                            break;
+                        default:
+                            createInputs(row, widget,td,d[i].sections, i);
+                            break;
+                    }
+                } else {
+                    
+                    switch(d[i].dataType) {
+                    //case "html-color":
+                    default:    
+                        var name = d[i].name;
+                        
+                        var div = document.createElement("div");
+                        var input = document.createElement("input");
+                        input.setAttribute("param-idx",l+","+i);
+                        input.setAttribute("param-idx-name",name);
+                        var label = document.createElement("Label");
+                        label.setAttribute("for",input);
+                        label.innerHTML = name+": ";
+                        div.appendChild(label);
+                        div.appendChild(input);
+                        td.node().appendChild(div);
+                        
+                        if (l == 0) {
+                            input.value = widget[row.id]()[i] !== undefined ? JSON.stringify(widget[row.id]()[i]) : 'none';
+                        }
+                        else {
+                            if (
+                                widget[row.id]() &&
+                                widget[row.id]()[l] &&
+                                widget[row.id]()[l][name]
+                            ) {
+                                input.value = widget[row.id]()[l][name] !== undefined ? JSON.stringify(widget[row.id]()[l][name]) : 'none';
+                            }
+                        }
+                        
+                        input.onchange = function(val) {
+                            var paramIdx = this.getAttribute("param-idx").split(',');
+                            var paramIdxName = this.getAttribute("param-idx-name")
+                            var currentVal = widget[row.id]();
+                            
+
+                            if (paramIdxName && paramIdxName != 'global') {
+                                currentVal[paramIdx[0]][paramIdxName] = JSON.parse(val.target.value);
+                            } else {
+                                currentVal[paramIdx[0]] = JSON.parse(val.target.value);
+                            }
+
+                            widget[row.id](currentVal).render();
+                        };
+                        break;
+
+                    } 
+                    div.style.display = "table-row";
+                    input.style.display = "table-row";
+                    label.style.display = "table-cell";
+                    label.style.margin = "2px";
+                    input.style.margin = "2px";
+                }
+            }
+        }
+
+/* end func */
                 rows.select(".input_" + widget._id)
                     .each(function (d) {
                         //console.log("PE: <tbody>: Update: widget:  " + widget._id + " <input_" + widget._id + ">: Update: widget:  " + widget._id + " Property:" + d.id);

@@ -21,7 +21,6 @@
     PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
     PropertyEditor.prototype.publish("show_columns", true, "boolean", "Show Columns");
     PropertyEditor.prototype.publish("show_data", true, "boolean", "Show Data");
-//    PropertyEditor.prototype.publish("show_settings", true, "boolean", "Show Settings");
     PropertyEditor.prototype.publish("share_count_min", 2, "number", "Share Count Min");
     PropertyEditor.prototype.publish("param_grouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"]);
     PropertyEditor.prototype.publish("section_title", "", "string", "Section Title");

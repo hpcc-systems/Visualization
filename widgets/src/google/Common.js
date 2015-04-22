@@ -21,11 +21,15 @@
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
 
-    Common.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width");
+    Common.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width"); // num or string
     Common.prototype.publish("chartAreaHeight", "80%", "string", "Chart Area Height");
 
+    Common.prototype.publish("chartAreaTop", null, "string", "Chart Area Distance From Top"); // num or string (google default auto)
+    Common.prototype.publish("chartAreaLeft", null, "string", "Chart Area Distance From Left");
+    
     Common.prototype.publish("fontSize", null, "number", "Font Size");
     Common.prototype.publish("fontName", null, "string", "Font Name");
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color");
 
     Common.prototype.publish("legendShow", true, "boolean", "Show Legend");
     Common.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["", "start", "center", "end"]);
@@ -38,8 +42,15 @@
 
     Common.prototype.publish("animationDuration", 0, "number", "Animation Duration");
     Common.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup");
-    Common.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["", "linear", "in", "out", "inAndOut"]);
+    Common.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["linear", "in", "out", "inAndOut"]);
+    
+    Common.prototype.publish("title", "", "string", "Text to display above the chart"); // does not support alignment (TODO make our own title functons)
+    Common.prototype.publish("titlePosition", "out", "set", "Position of title",["in","out","none"]);
 
+    Common.prototype.publish("backgroundColorStroke", "#666", "html-color", "Background Border Color");
+    Common.prototype.publish("backgroundColorStrokeWidth", 0, "number", "Background Border Width");
+    Common.prototype.publish("backgroundColorFill", "#FFFFFF", "html-color", "Background Color");
+   
     Common.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -62,16 +73,26 @@
             return this._palette(row);
         }, this);
 
-        return {
-            backgroundColor: "none",
+        var chartOptions =  {
+            backgroundColor: {
+                stroke: this._backgroundColorStroke,
+                strokeWidth: this._backgroundColorStrokeWidth,
+                fill: this._backgroundColorFill,
+            },
             width: this.width(),
             height: this.height(),
             colors: colors,
             fontSize: this._fontSize,
             fontName: this._fontName,
+            fontColor: this._fontColor,
+            title: this._title,
+            titlePosition: this._titlePosition,
+            
             chartArea: {
                 width: this._chartAreaWidth,
-                height: this._chartAreaHeight
+                height: this._chartAreaHeight,
+                left: this._chartAreaLeft,
+                top: this._chartAreaTop
             },
             animation: {
                 duration: this._animationDuration,
@@ -91,7 +112,15 @@
                 }
             },
         };
-    },
+        if(this._smoothLines){
+            chartOptions.curveType = "function";
+        }
+        return chartOptions;
+    };
+    
+    Common.prototype.getNumSeries = function() {
+        return this._columns.slice(1).length;
+    } 
 
     Common.prototype.enter = function (domNode, element) {
         element.style("overflow", "hidden");
@@ -108,9 +137,7 @@
     }
 
     Common.prototype.update = function(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
-
-        this._chart.draw(this._data_google, this.getChartOptions());
+        HTMLWidget.prototype.update.apply(this, arguments); 
     };
 
     return Common;

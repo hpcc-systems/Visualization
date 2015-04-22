@@ -1,14 +1,15 @@
 "use strict";
-(function(root, factory) {
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["../common/Widget", "../common/HTMLWidget", "./Persist", "css!./PropertyEditor"], factory);
     } else {
         root.other_PropertyEditor = factory(root.common_Widget, root.common_HTMLWidget, root.other_Persist);
     }
-}(this, function(Widget, HTMLWidget, Persist) {
+}(this, function (Widget, HTMLWidget, Persist) {
     function PropertyEditor() {
         HTMLWidget.call(this);
         this._class = "other_PropertyEditor";
+
         this._tag = "div";
         this._current_grouping;
         this._showing_columns;
@@ -33,29 +34,31 @@
         this._show_settings = _;
         return this;
     }
-    var formatJSRequire = function(widget, fieldName, properties, renderCallback, postCreate) {
+    var formatJSRequire = function (widget, fieldName, properties, renderCallback, postCreate) {
         if (!widget) {
             return "";
         }
         var classParts = widget._class.split("_");
         var path = "src/" + classParts.join("/");
         var label = classParts[classParts.length - 1];
-        var propertiesString = properties.split("\n").map(function(item) {
+        var propertiesString = properties.split("\n").map(function (item) {
             return item.length ? "        " + item : "";
         }).join("\n");
         propertiesString += propertiesString.length ? "\n" : "";
+
         postCreate += postCreate.length ? "\n" : "";
         return "require([\"" + path + "\"], function(" + label + ") {\n" +
         "    var " + fieldName + " = new " + label + "()\n" +
         "        .target(\"divID\")\n" +
         propertiesString +
-        "        .render(" + renderCallback.split("\n").join("\n        ") + ")\n" +
+        "        .render(" + renderCallback.split("\n").join("\n        ") +")\n" +
         "    ;\n" +
         postCreate +
         "});"
     };
-    var formatJSCallback = function(innerProp, properties, renderCallback) {
-        var propertiesString = properties.split("\n").map(function(item) {
+
+    var formatJSCallback = function (innerProp, properties, renderCallback) {
+        var propertiesString = properties.split("\n").map(function (item) {
             return item.length ? "        " + item : "";
         }).join("\n");
         propertiesString += propertiesString.length ? "\n" : "";
@@ -66,16 +69,17 @@
         "    ;\n" +
         "}"
     };
-    var formatJSProperties = function(widget, includeColumns, includeData) {
+
+    var formatJSProperties = function (widget, includeColumns, includeData) {
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(widget).map(function(prop) {
+        var propsStr = Persist.discover(widget).map(function (prop) {
             if (!widget[prop.id + "_modified"]()) {
                 return "";
             }
             return "." + prop.id + "(" + JSON.stringify(widget[prop.id]()) + ")"
-        }).filter(function(str) {
+        }).filter(function (str) {
             return str !== "";
         }).join("\n");
         if (includeColumns) {
@@ -108,22 +112,26 @@
         }
         return propsStr;
     };
-    PropertyEditor.prototype.getJavaScript = function(fieldName, includeColumns, includeData, postCreate) {
+
+    PropertyEditor.prototype.getJavaScript = function (fieldName, includeColumns, includeData, postCreate) {
         postCreate = postCreate || "";
         var callbackJS = "";
         /*if (this._data._class === "chart_MultiChart" && this._data._chart) {
-         callbackJS = formatJSCallback("_chart", formatJSProperties(this._data._chart, includeColumns, includeData), "");
-         } else*/ if (this._data._content) {
+            callbackJS = formatJSCallback("_chart", formatJSProperties(this._data._chart, includeColumns, includeData), "");
+        } else*/ if (this._data._content) {
             callbackJS = formatJSCallback("_content", formatJSProperties(this._data._content, includeColumns, includeData), "");
         }
         return formatJSRequire(this._data, fieldName, formatJSProperties(this._data, includeColumns, includeData), callbackJS, postCreate);
     };
-    PropertyEditor.prototype.getPersistString = function(fieldName) {
+
+    PropertyEditor.prototype.getPersistString = function (fieldName) {
         return "var " + fieldName + " = " + JSON.stringify(Persist.serializeToObject(this._data, null, false), null, "  ") + ";"
     };
-    PropertyEditor.prototype.onChange = function(widget, propID) {
+
+    PropertyEditor.prototype.onChange = function (widget, propID) {
     };
-    PropertyEditor.prototype.enter = function(domNode, element) {
+
+    PropertyEditor.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
@@ -196,7 +204,7 @@
         }
         return needsRedraw;
     };
-    PropertyEditor.prototype.update = function(domNode, element) {
+    PropertyEditor.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
         if (tableNeedsRedraw(this)) {
@@ -850,10 +858,13 @@
         }
         table.exit().remove();
     }
-    PropertyEditor.prototype.exit = function(domNode, element) {
+
+    PropertyEditor.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
-    PropertyEditor.prototype.click = function(d) {
+
+    PropertyEditor.prototype.click = function (d) {
     };
+
     return PropertyEditor;
 }));

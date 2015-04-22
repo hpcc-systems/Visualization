@@ -334,7 +334,7 @@
         var context = this;
         switch (this.type) {
             case "CHORO":
-                this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates", function (widget) {
+                this.loadWidget(this.source.mappings.contains("county") ? "../map/ChoroplethCounties" : "../map/ChoroplethStates", function (widget) {
                     widget
                         .id(visualization.id)
                     ;
@@ -345,7 +345,7 @@
             case "BUBBLE":
             case "BAR":
             case "WORD_CLOUD":
-                this.loadWidget("src/chart/MultiChart", function (widget) {
+                this.loadWidget("../chart/MultiChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .chart_type(context.properties.charttype || context.type)
@@ -353,7 +353,7 @@
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/chart/MultiChart", function (widget) {
+                this.loadWidget("../chart/MultiChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .chart_type(context.properties.charttype || context.type)
@@ -361,7 +361,7 @@
                 });
                 break;
             case "TABLE":
-                this.loadWidget("src/other/Table", function (widget) {
+                this.loadWidget("../other/Table", function (widget) {
                     widget
                         .id(visualization.id)
                         .columns(context.label)
@@ -369,7 +369,7 @@
                 });
                 break;
             case "SLIDER":
-                this.loadWidget("src/other/Slider", function (widget) {
+                this.loadWidget("../other/Slider", function (widget) {
                     widget
                         .id(visualization.id)
                     ;
@@ -389,7 +389,7 @@
                 });
                 break;
             case "GRAPH":
-                this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
+                this.loadWidgets(["../graph/Graph", "../graph/Vertex", "../graph/Edge"], function (widget, widgetClasses) {
                     Vertex = widgetClasses[1];
                     Edge = widgetClasses[2];
                     widget
@@ -400,7 +400,7 @@
                 });
                 break;
             default:
-                this.loadWidget("src/common/TextBox", function (widget) {
+                this.loadWidget("../common/TextBox", function (widget) {
                     widget
                         .id(visualization.id)
                         .text(context.id + "\n" + "TODO:  " + context.type)

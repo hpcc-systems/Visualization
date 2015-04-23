@@ -10,6 +10,9 @@
             }
 
             var objs = paths.map(function (path) {
+                if (path === "d3-cloud/d3.layout.cloud") {
+                    return root.d3.layout.cloud;
+                }
                 var prop = path.substring("../".length).split("/").join("_");
                 return root[prop];
             })

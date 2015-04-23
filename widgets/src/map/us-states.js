@@ -1,5 +1,11 @@
-define([
-], function () {
+"use strict";
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define([], factory);
+    } else {
+        root.map_usStates = factory();
+    }
+}(this, function () {
     return {
         stateNames: {
             "1": {
@@ -458,4 +464,4 @@ define([
             }
         }
     };
-});
+}));

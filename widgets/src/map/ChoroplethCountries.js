@@ -26,16 +26,21 @@
             var item = countries.countryNames[key];
             nameCodeMap[item.name] = key;
         }
-        
+
         var rawData = [
-            { "name": "United States", "weight": 29.946185501741 }, { "name": "China", "weight": 229.946185501741 }
+            { "country": 840, "name": "United States", "weight": 29.946185501741 },{ "country": 156, "name": "China", "weight": 229.946185501741 }
         ];
         
+        var rawData = [
+            { "name": "United States", "data": 29.946185501741 },{ "name": "China", "data": 229.946185501741 }
+        ];
+        
+        this.columns(["Country", "Weight", "Data", "Label"]);
+        
         var countryData = rawData.map(function (item) {
-            return { "country": nameCodeMap[item.name], "weight": item.weight, "label":item.name };
+            return { "country": nameCodeMap[item.name], "weight": item.weight, "data": item.data, "label":item.name };
         });
         
-        this.columns(["Country", "Weight", "Label"]);
         this.data(countryData);
         
         return this;
@@ -45,17 +50,18 @@
         var retVal = Choropleth.prototype.data.apply(this, arguments);
         if (arguments.length) {
             this._dataMap = {};
-            this._dataMinWeight = null;
-            this._dataMaxWeight = null;
+            this._dataMinData = null;
+            this._dataMaxData = null;
 
             var context = this;
             this._data.forEach(function (item) {
-                context._dataMap[item.country] = item.weight;
-                if (!context._dataMinWeight || item.weight < context._dataMinWeight) {
-                    context._dataMinWeight = item.weight;
+               
+                context._dataMap[item.country] = item.data;
+                if (!context._dataMinData || item.data < context._dataMinData) {
+                    context._dataMinData = item.data;
                 }
-                if (!context._dataMaxWeight || item.weight > context._dataMaxWeight) {
-                    context._dataMaxWeight = item.weight;
+                if (!context._dataMaxData || item.data > context._dataMaxData) {
+                    context._dataMaxData = item.data;
                 }
             });
         }
@@ -85,9 +91,11 @@
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
             .on("click", function (d) {
+
+                var code = countries.countryNames[d.id];
                 if (context._dataMap[d.id]) {
-                    var obj = [d.id, context._dataMap[d.id], d.name];
-                    context.click(context.rowToObj(obj), "weight");
+                    var obj = [d.id, d.name, context._dataMap[d.id]];
+                    context.click(context.rowToObj(obj), "data");
                 }
             })
             .on("dblclick", function (d) {
@@ -118,7 +126,7 @@
                 if (weight === undefined) {
                     return "url(#hash)";
                 }
-                return context._palette(weight, context._dataMinWeight, context._dataMaxWeight);
+                return context._palette(weight, context._dataMinData, context._dataMaxData);
             })
         ;
 

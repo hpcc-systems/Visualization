@@ -1,5 +1,11 @@
-define([
-], function (declare) {
+"use strict";
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define([], factory);
+    } else {
+        root.map_usCounties = factory();
+    }
+}(this, function () {
     return {
         stateNames: {
             "1": {
@@ -16550,4 +16556,4 @@ define([
             }
         }
     };
-});
+}));

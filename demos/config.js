@@ -1,4 +1,4 @@
-var develop_mode = false;
+var develop_mode = true;
 var lib_folder = develop_mode ? "../bower_components" : "../dist/amd/lib";
 var src_folder = develop_mode ? "../src" : "../dist/amd/src";
 

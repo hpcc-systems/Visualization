@@ -9,7 +9,7 @@
     function Table() {
         HTMLWidget.call(this);
         this._class = "other_Table";
-        this._tag = "table";
+        this._tag = "div";
 
         this._columns = [];
         this._paginator = new Paginator();
@@ -36,14 +36,16 @@
     
     Table.prototype.publish("pagination", true, "boolean", "enable or disable pagination");
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
-    Table.prototype.publishProxy("_numItems", "_paginator", "numItems", true);
-    Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber", true);
+    //Table.prototype.publishProxy("numItems", "_paginator", "numItems");
+    Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
-        this.thead = element.append("thead").append("tr");
-        this.tbody = element.append("tbody");
+
+        this.table = element.append("table");
+        this.thead = this.table.append("thead").append("tr");
+        this.tbody = this.table.append("tbody");
     };
 
     Table.prototype.update = function (domNode, element) {
@@ -64,23 +66,24 @@
 
         if (this.pagination()) {
             if (this._paginator.target() == null) {
-                var pnode = document.getElementById(this.id()).parentNode.id 
+                //var pnode = document.getElementById(this.id()).parentNode.id 
+                var pnode = document.getElementById(this.id());
                 this._paginator.target(pnode); 
             }
 
-            this._numItems(this._data.length);
-            this._tNumPages = Math.ceil(this._numItems() / this.itemsPerPage()) || 1; 
+            this._paginator.numItems(this._data.length);
+            this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1; 
             if (this.pageNumber() > this._tNumPages ) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
                 console.log('page: '+p);
-                // context.pageNumber(p);
+                context.pageNumber(p);
                 context.render();
                 return;
             };
             
         } else {
-            this._numItems(0); // remove widget
+            this._paginator.numItems(0); // remove widget
         }
         
         // pageNumber starts at index 1
@@ -126,8 +129,9 @@
         cells.exit()
             .remove()
         ;
-
+        console.log('here');
         this._paginator.render();
+        console.log(this._paginator);
     };
 
     Table.prototype.exit = function (domNode, element) {

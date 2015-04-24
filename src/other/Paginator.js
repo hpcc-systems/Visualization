@@ -21,10 +21,11 @@
     Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page");
     Paginator.prototype.publish("numItems", 10, "number", "Pagination total number of items");
     Paginator.prototype.publish("pageNumber", 1, "number", "Pagination set or get the page number");
-
+console.log('xxxx');
     Paginator.prototype.enter = function (domNode, element) {
+console.log('bo');
         HTMLWidget.prototype.enter.apply(this, arguments);
-
+console.log('bob');
         this.paginator = element.append("ul").attr("class","paginator pagination pagination-sm");     
     };
 

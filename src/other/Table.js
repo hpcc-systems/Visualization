@@ -1,18 +1,18 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "css!./Table"], factory);
+        define(["../common/HTMLWidget","../other/Paginator", "css!./Table"], factory);
     } else {
-        root.other_Table = factory(root.common_HTMLWidget);
+        root.other_Table = factory(root.common_HTMLWidget, root.other_Paginator);
     }
-}(this, function (HTMLWidget) {
+}(this, function (HTMLWidget, Paginator) {
     function Table() {
         HTMLWidget.call(this);
         this._class = "other_Table";
-
         this._tag = "table";
 
         this._columns = [];
+        this._paginator = new Paginator();
     };
     Table.prototype = Object.create(HTMLWidget.prototype);
 
@@ -33,6 +33,11 @@
         ;
         return this;
     };
+    
+    Table.prototype.publish("pagination", true, "boolean", "enable or disable pagination");
+    Table.prototype.publishProxy("itemsPerPage", "_paginator");
+    Table.prototype.publishProxy("_numItems", "_paginator", "numItems", true);
+    Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber", true);
 
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -57,7 +62,41 @@
             .remove()
         ;
 
-        var rows = this.tbody.selectAll("tr").data(this._data);
+        if (this.pagination()) {
+            if (this._paginator.target() == null) {
+                var pnode = document.getElementById(this.id()).parentNode.id 
+                this._paginator.target(pnode); 
+            }
+
+            this._numItems(this._data.length);
+            this._tNumPages = Math.ceil(this._numItems() / this.itemsPerPage()) || 1; 
+            if (this.pageNumber() > this._tNumPages ) { this.pageNumber(1); } // resets if current pagenum selected out of range
+
+            this._paginator._onSelect = function(p, d) {
+                console.log('page: '+p);
+                // context.pageNumber(p);
+                context.render();
+                return;
+            };
+            
+        } else {
+            this._numItems(0); // remove widget
+        }
+        
+        // pageNumber starts at index 1
+        var startIndex = this.pageNumber()-1;
+        var itemsOnPage = this.itemsPerPage();
+        
+        var start = startIndex * itemsOnPage;
+        var end = parseInt(startIndex * itemsOnPage) + parseInt(itemsOnPage);
+
+        if (this.pagination()) {
+            var tData = this._data.slice(start,end);
+        } else {
+            var tData = this._data;
+        }
+
+        var rows = this.tbody.selectAll("tr").data(tData);
         rows
             .enter()
             .append("tr")
@@ -65,6 +104,7 @@
                 context.click(context.rowToObj(d));
             })
         ;
+
         rows.exit()
             .remove()
         ;
@@ -86,6 +126,8 @@
         cells.exit()
             .remove()
         ;
+
+        this._paginator.render();
     };
 
     Table.prototype.exit = function (domNode, element) {

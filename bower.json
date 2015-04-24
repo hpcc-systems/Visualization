@@ -1,0 +1,47 @@
+{
+  "name": "viz",
+  "version": "0.0.1",
+  "description": "Common visualization components",
+  "keywords": [
+    "visualization"
+  ],
+  "main": [
+    "dist/optimized/viz.min.css",
+    "dist/optimized/viz.common.min.js",
+    "dist/optimized/viz.other.min.js",
+    "dist/optimized/viz.tree.min.js",
+    "dist/optimized/viz.chart.min.js",
+    "dist/optimized/viz.graph.min.js",
+    "dist/optimized/viz.c3.min.js", 
+    "dist/optimized/viz.google.min.js",
+    "dist/optimized/viz.map.min.js",
+    "dist/optimized/viz.layout.min.js",
+    "dist/optimized/viz.marshaller.min.js",
+    "dist/optimized/viz.amcharts.min.js"
+  ],
+  "ignore": [
+    ".gitignore",
+    "viz",
+    "package.json",
+    "demos",
+    "gulpfile.js",
+    "rjs.noop.js"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.17",
+    "requirejs-plugins": "~1.0.3",
+    "require-css": "~0.1.8",
+    "c3": "~0.4.9",
+    "colorbrewer": "~1.0.0",
+    "d3": "~3.5.0",
+    "font-awesome": "~4.3.0",
+    "topojson": "~1.6.18",
+    "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.1/dist/dagre.js",
+    "d3-cloud": "git://github.com/jasondavies/d3-cloud.git#v1.0.5",
+    "amcharts": "~3.13.3"
+  },
+  "license": "Apache",
+  "authors": [
+    "HPCC Systems"
+  ]
+}

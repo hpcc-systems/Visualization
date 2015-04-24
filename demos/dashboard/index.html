@@ -39,42 +39,45 @@
     </div>
     <!-- application -->
     <script>
+        var debug_mode = false;
+        var lib_folder = debug_mode ? "../../bower_components" : "../../dist/amd/lib";
+        var src_folder = debug_mode ? "../../src" : "../../dist/amd/src";
+
         var dojoConfig = {
             baseUrl: ".",
             async: true,
             paths: {
-                "async": "../../widgets/lib/requirejs/plugins/async",
-                "css": "../../widgets/lib/requirejs/plugins/css",
-                "goog": "../../widgets/lib/requirejs/plugins/goog",
-                "propertyParser": "../../widgets/lib/requirejs/plugins/propertyParser"
+                'async': '../../bower_components/requirejs-plugins/src/async',
+                'css': '../../bower_components/require-css/css',
+                'text': '../../bower_components/text/text',
+                'goog': '../../bower_components/requirejs-plugins/src/goog',
+                'propertyParser': '../../bower_components/requirejs-plugins/src/propertyParser',
+
+                'dagre/dagre': lib_folder + "/dagre/index",
+                'topojson': lib_folder + "/topojson",
+                'colorbrewer': lib_folder + "/colorbrewer",
+                'd3-cloud': lib_folder + "/d3-cloud",
+                'font-awesome': lib_folder + "/font-awesome"
             },
             packages: [
                 {
                     name: "bootstrap",
                     location: "../lib/Dojo-Bootstrap"
                 }, {
-                    name: "d3",
-                    location: "../../widgets/lib/d3",
+                    name: 'd3',
+                    location: lib_folder + "/d3",
                     main: "d3"
                 }, {
-                    name: "c3",
-                    location: "../../widgets/lib/c3",
+                    name: 'c3',
+                    location: lib_folder + "/c3",
                     main: "c3"
                 }, {
-                    name: "topojson",
-                    location: "../../widgets/lib/topojson",
-                    main: "topojson"
+                    name: 'src',
+                    location: src_folder
                 }, {
                     name: "app",
                     location: "app"
-                }, {
-                    name: "lib",
-                    location: "../../widgets/lib"
-                }, {
-                    name: "src",
-                    location: "../../widgets/src"
                 }
-
             ]
         };
     </script>

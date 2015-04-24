@@ -5,14 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>HPCC Systems - Visualization Framework</title>
     <link rel="stylesheet" href="test.css">
-    <script src="../widgets/lib/requirejs/require.js"></script>
+    <script src="../bower_components/requirejs/require.js"></script> 
+    <script src="./config.js"></script>
+    <!--  Uncomment to test build
+    <script src="../dist/amd/layers/all.js"></script>
+    -->
     <script>
         var graph = null;
+
         function doTest() {
-            require(["../widgets/config"], function () {
-                requirejs.config({
-                    baseUrl: "../widgets"
-                });
                 require(["d3/d3",
                     "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Edge", "src/graph/Vertex",
@@ -384,7 +385,7 @@
                             .render();
                         ;
 
-                        require(["src/other/WordCloud", "lib/wordcloud/d3.layout.cloud"], function (WordCloud) {
+                        require(["src/other/WordCloud"], function (WordCloud) {
                             var wordCloud = new WordCloud()
                                 .target("wordCloud")
                                 .testData()
@@ -431,7 +432,7 @@
                             Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);
                         });
                     }
-                });
+
             });
         }
         doLayout = function (graph, layout) {

@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - "0.10"
+before_script:
+  - npm install -g bower
+  - npm install -g gulp
+  - bower install
+  - gulp
+deploy:
+  provider: releases
+  api_key:
+    secure: mU0HBX2E8MGpscZX5ppC497j2rlWJg347mov50hzNjuFqEYNeD7Y2/bBZCRhF8Z/3bB+6t52XoYCfhFm2Dv2PPCwWG5zJuGe9STHfoWbzAdOaD/nVF/fCEJAf7JWqpv7FInFMKRD1L955/1mljIUVTBbhXJcW7RK2syhszYTb4g=
+  file: 
+  - "./dist/optimized/viz.min.css"
+  - "./dist/optimized/viz.common.min.js"
+  - "./dist/optimized/viz.other.min.js"
+  - "./dist/optimized/viz.tree.min.js"
+  - "./dist/optimized/viz.chart.min.js"
+  - "./dist/optimized/viz.graph.min.js"
+  - "./dist/optimized/viz.c3.min.js"
+  - "./dist/optimized/viz.google.min.js"
+  - "./dist/optimized/viz.map.min.js"
+  - "./dist/optimized/viz.layout.min.js"
+  - "./dist/optimized/viz.marshaller.min.js"
+  skip_cleanup: true
+  on:
+    tags: true

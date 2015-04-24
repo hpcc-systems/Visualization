@@ -14,13 +14,11 @@
             overflow:hidden;
         }
     </style>
-    <script src="../widgets/lib/requirejs/require.js"></script>
-    <script src="../widgets/config.js"></script>
-    <script>
-        requirejs.config({
-            baseUrl: "../widgets"
-        });
-    </script>
+    <script src="../bower_components/requirejs/require.js"></script>
+    <script src="./config.js"></script>
+    <!--  Uncomment to test build
+    <script src="../dist/amd/layers/all.js"></script>
+    -->
 </head>
 <body onresize="doResize();">
     <header>
@@ -71,6 +69,17 @@
                             <option value="src/layout/Surface">Surface Layout</option>
                             <option value="src/layout/Cell">Cell Layout</option>
                             <option value="src/layout/Grid">Grid Layout</option>
+                            <option value="src/other/WordCloud">WordCloud</option>
+                            
+                            <option value="src/amcharts/Area">AmCharts Area</option>
+                            <option value="src/amcharts/Bar">AmCharts Bar</option>
+                            <option value="src/amcharts/Pyramid">AmCharts Pyramid</option>
+                            <option value="src/amcharts/Funnel">AmCharts Funnel</option>
+                            <option value="src/amcharts/Polar">AmCharts Polar</option>
+                            <option value="src/amcharts/Candle">AmCharts Candle</option>
+                            <option value="src/amcharts/Line">AmCharts Line</option>
+                            <option value="src/amcharts/FloatingColumn">AmCharts Floating Column</option>
+                            <option value="src/amcharts/Gauge">AmCharts Gauge</option>
                         </select>
                     </li>
                     <li>

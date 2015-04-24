@@ -31,7 +31,8 @@ const modules = {
   map: ['graph', 'topojson/topojson' /* , Google Map */],
   
   layout: ['c3'],
-  marshaller: ['chart', 'graph', 'layout']
+  marshaller: ['chart', 'graph', 'layout'],
+  amcharts: ['amcharts/amcharts','amcharts/funnel','amcharts/gauge','amcharts/pie','amcharts/radar','amcharts/serial','amcharts/xy','chart']
 }
 
 // Helpers

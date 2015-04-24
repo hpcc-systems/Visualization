@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/GordonSmith/Visualization.svg?branch=TRAVIS-CI)](https://travis-ci.org/GordonSmith/Visualization)
 # Visualization Framework 
 * _[Demo/Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html)_
 * _[Dermatology Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html)_

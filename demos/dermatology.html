@@ -14,13 +14,11 @@
             overflow:hidden;
         }
     </style>
-    <script src="../widgets/lib/requirejs/require.js"></script>
-    <script src="../widgets/config.js"></script>
-    <script>
-        requirejs.config({
-            baseUrl: "../widgets"
-        });
-    </script>
+    <script src="../bower_components/requirejs/require.js"></script>
+    <script src="./config.js"></script>
+    <!--  Uncomment to test build
+    <script src="../dist/amd/layers/all.js"></script>
+    -->
 </head>
 <body onresize="doResize();">
     <header>

@@ -128,7 +128,15 @@ gulp.task('amd_bower_stage', function () {
         "bower_components/topojson/topojson.js",
         "bower_components/d3-cloud/d3.layout.cloud.js",
         'bower_components/font-awesome/css/font-awesome.css',
-        'bower_components/font-awesome/fonts/fontawesome-webfont.woff'
+        'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
+        'bower_components/amcharts/dist/amcharts/amcharts.js',
+        'bower_components/amcharts/dist/amcharts/funnel.js',
+        'bower_components/amcharts/dist/amcharts/gauge.js',
+        'bower_components/amcharts/dist/amcharts/pie.js',
+        'bower_components/amcharts/dist/amcharts/radar.js',
+        'bower_components/amcharts/dist/amcharts/serial.js',
+        'bower_components/amcharts/dist/amcharts/xy.js',
+
     ], { base: 'bower_components/' })
         .pipe(gulp.dest(appPaths.dist + "/amd/stage"))
     ;
@@ -181,12 +189,13 @@ gulp.task("amd_layers", ["amd_third_party", "amd_src"], function (done) {
             'topojson': '../dist/amd/lib/topojson',
             'colorbrewer': '../dist/amd/lib/colorbrewer',
             'd3-cloud': '../dist/amd/lib/d3-cloud',
-            "font-awesome": "../dist/amd/lib/font-awesome"
+            "font-awesome": "../dist/amd/lib/font-awesome",
+            "amcharts": "../dist/amd/lib/amcharts/dist/amcharts",
         }),
         modules: [
             {
                 name: "all",
-                include: getJSFiles("src/marshaller", "viz").concat(getJSFiles("src/chart", "viz")).concat(getJSFiles("src/common", "viz")).concat(getJSFiles("src/c3", "viz")).concat(getJSFiles("src/google", "viz")).concat(getJSFiles("src/graph", "viz")).concat(getJSFiles("src/map", "viz")).concat(getJSFiles("src/other", "viz")).concat(getJSFiles("src/tree", "viz")),
+                include: getJSFiles("src/marshaller", "viz").concat(getJSFiles("src/chart", "viz")).concat(getJSFiles("src/common", "viz")).concat(getJSFiles("src/c3", "viz")).concat(getJSFiles("src/google", "viz")).concat(getJSFiles("src/graph", "viz")).concat(getJSFiles("src/map", "viz")).concat(getJSFiles("src/other", "viz")).concat(getJSFiles("src/tree", "viz")).concat(getJSFiles("src/amcharts", "viz")),
                 excludeShallow: [
                     "viz/map/us-counties",
                     "viz/map/us-states",

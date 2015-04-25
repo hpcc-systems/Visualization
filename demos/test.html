@@ -5,21 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>HPCC Systems - Visualization Framework</title>
     <link rel="stylesheet" href="test.css">
-    <script src="../bower_components/requirejs/require.js"></script> 
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
     <script src="./config.js"></script>
+    <!--  Uncomment to develop
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="./config.js"></script>
+    -->
     <!--  Uncomment to test build
-    <script src="../dist/amd/layers/all.js"></script>
+    <script src="../dist/amd/hpcc-viz.js"></script>
+    <script src="../dist/amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "src": "../dist/amd",
+                "font-awesome": "../dist/amd/font-awesome/css/font-awesome.min"
+            }
+        });
+    </script>
     -->
     <script>
         var graph = null;
 
         function doTest() {
-                require(["d3/d3",
+                require([
                     "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Edge", "src/graph/Vertex",
                     "src/tree/SunburstPartition", "src/tree/CirclePacking", "src/tree/Dendrogram",
                     "src/other/MorphText", "src/other/Slider", "src/other/Table"
-                ], function (d3,
+                ], function (
                     Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
                     Edge, Vertex,
                     SunburstPartition, CirclePacking, Dendrogram,
@@ -426,7 +439,7 @@
 
                     function displayPalettes() {
                         //  Palettes  ---
-                        require(["d3/d3", "src/common/Palette"], function (d3, Palette) {
+                        require(["src/common/Palette"], function (Palette) {
                             var customArr = document.getElementById("customColors").value.split("\n");
                             var steps = document.getElementById("steps").value;
                             Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);
@@ -440,8 +453,8 @@
         }
         function doPalette() {
             require([
-                    "d3/d3", "src/common/Palette"
-                ], function (d3, Palette) {
+                    "src/common/Palette"
+                ], function (Palette) {
                 var customArr = document.getElementById("customColors").value.split("\n");
                 var steps = document.getElementById("steps").value;
                 Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);

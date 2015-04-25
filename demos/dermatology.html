@@ -14,10 +14,23 @@
             overflow:hidden;
         }
     </style>
-    <script src="../bower_components/requirejs/require.js"></script>
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
     <script src="./config.js"></script>
+    <!--  Uncomment to develop
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="./config.js"></script>
+    -->
     <!--  Uncomment to test build
-    <script src="../dist/amd/layers/all.js"></script>
+    <script src="../dist/amd/hpcc-viz.js"></script>
+    <script src="../dist/amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "src": "../dist/amd",
+                "font-awesome": "../dist/amd/font-awesome/css/font-awesome.min"
+            }
+        });
+    </script>
     -->
 </head>
 <body onresize="doResize();">
@@ -104,9 +117,9 @@
         var showProperties = null;
         var debouncedResize = null;
 
-        require(["lodash/lodash", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (_, Surface, Grid, Persist, PropertyEditor) {
+        require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
             var propEditor = new PropertyEditor().show_columns(false).show_data(false);
-            propEditor.onChange =  _.debounce(function (widget, propID) {
+            propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {
                 } else {
@@ -218,7 +231,7 @@
                     .render()
                 ;
             };
-            debouncedResize = _.debounce(function () {
+            debouncedResize = Surface.prototype.debounce(function () {
                 resize();
             }, 250);
             resize();

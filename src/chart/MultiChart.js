@@ -1,11 +1,11 @@
 ﻿
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./INDChart", "../other/Persist", "require"], factory);
+        define(["d3", "../common/SVGWidget", "./INDChart", "require"], factory);
     } else {
-        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.other_Persist, root.require);
+        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.require);
     }
-}(this, function (d3, SVGWidget, INDChart, Persist, require) {
+}(this, function (d3, SVGWidget, INDChart, require) {
     var _2dChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },

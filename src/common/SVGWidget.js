@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Widget", "./Transition", "d3/d3"], factory);
+        define(["d3", "./Widget", "./Transition"], factory);
     } else {
-        root.common_SVGWidget = factory(root.common_Widget, root.common_Transition, root.d3);
+        root.common_SVGWidget = factory(root.d3, root.common_Widget, root.common_Transition);
     }
-}(this, function (Widget, Transition, d3) {
+}(this, function (d3, Widget, Transition) {
     function SVGWidget() {
         Widget.call(this);
 

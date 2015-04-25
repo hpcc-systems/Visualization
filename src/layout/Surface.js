@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "../chart/MultiChart", "../c3/Column", "../c3/Line", "css!./Surface"], factory);
+        define(["../common/HTMLWidget", "../chart/MultiChart", "css!./Surface"], factory);
     } else {
-        root.layout_Surface = factory(root.common_HTMLWidget, root.chart_MultiChart, root.c3_Column, root.c3_Line);
+        root.layout_Surface = factory(root.common_HTMLWidget, root.chart_MultiChart);
     }
-}(this, function (HTMLWidget, MultiChart, Column, Line) {
+}(this, function (HTMLWidget, MultiChart) {
     function Surface() {
         HTMLWidget.call(this);
         this._class = "layout_Surface";

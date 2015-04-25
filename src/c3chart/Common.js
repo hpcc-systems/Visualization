@@ -1,16 +1,16 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "c3/c3", "../common/HTMLWidget", "css!c3/c3"], factory);
+        define(["d3", "c3", "../common/HTMLWidget", "css!c3"], factory);
     } else {
-        root.c3_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
+        root.c3chart_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
     }
 }(this, function (d3, c3, HTMLWidget) {
     function Common(target) {
         HTMLWidget.call(this);
 
         this._tag = "div";
-        this._class = "c3_Common";
+        this._class = "c3chart_Common";
         this._type = "unknown";
         var context = this;
         this._config = {

@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./Choropleth", "topojson/topojson", "./us-counties"], factory);
+        define(["d3", "./Choropleth", "topojson", "./us-counties"], factory);
     } else {
         root.map_ChoroplethCounties = factory(root.d3, root.map_Choropleth, root.topojson, root.map_usCounties);
     }

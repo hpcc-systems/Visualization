@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Surface", "../chart/Pie", "../c3/Column", "../c3/Line", "css!./Cell"], factory);
+        define(["./Surface", "css!./Cell"], factory);
     } else {
-        root.layout_Cell = factory(root.layout_Surface, root.chart_Pie, root.c3_Column, root.c3_Line);
+        root.layout_Cell = factory(root.layout_Surface);
     }
-}(this, function (Surface, Pie, Column, Line) {
+}(this, function (Surface) {
     function Cell() {
         Surface.call(this);
         this._class = "layout_Cell";

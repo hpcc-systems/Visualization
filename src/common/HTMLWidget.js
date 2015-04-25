@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Widget", "./Transition", "d3/d3"], factory);
+        define(["d3", "./Widget", "./Transition"], factory);
     } else {
-        root.common_HTMLWidget = factory(root.common_Widget, root.common_Transition, root.d3);
+        root.common_HTMLWidget = factory(root.d3, root.common_Widget, root.common_Transition);
     }
-}(this, function (Widget, Transition, d3) {
+}(this, function (d3, Widget, Transition) {
     function HTMLWidget() {
         Widget.call(this);
     };

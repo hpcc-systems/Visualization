@@ -3,13 +3,13 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common1D"], factory);
     } else {
-        root.c3_Gauge = factory(root.c3_Common1D);
+        root.c3chart_Gauge = factory(root.c3chart_Common1D);
     }
 }(this, function (Common1D) {
     function Gauge(target) {
         Common1D.call(this);
 
-        this._class = "c3_Gauge";
+        this._class = "c3chart_Gauge";
         this._type = "gauge";
 
         var context = this;

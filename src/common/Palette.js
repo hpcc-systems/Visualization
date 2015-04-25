@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "colorbrewer/colorbrewer"], factory);
+        define(["d3", "colorbrewer"], factory);
     } else {
         root.common_Palette = factory(root.d3);
     }

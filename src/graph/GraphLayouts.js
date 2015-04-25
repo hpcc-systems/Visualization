@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["dagre/dagre"], factory);
+        define(["dagre"], factory);
     } else {
         root.graph_GraphLayouts = factory(root.dagre);
     }

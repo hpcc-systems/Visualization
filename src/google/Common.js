@@ -49,7 +49,7 @@
 
     Common.prototype.publish("backgroundColorStroke", "#666", "html-color", "Background Border Color");
     Common.prototype.publish("backgroundColorStrokeWidth", 0, "number", "Background Border Width");
-    Common.prototype.publish("backgroundColorFill", "#FFFFFF", "html-color", "Background Color");
+    Common.prototype.publish("backgroundColorFill", "transparent", "html-color", "Background Color");
    
     Common.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);

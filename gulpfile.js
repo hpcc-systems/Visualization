@@ -31,7 +31,9 @@ const modules = {
   map: ['graph', 'topojson' /* , Google Map */],
   
   layout: ['c3chart'],
-  marshaller: ['chart', 'graph', 'layout']
+  marshaller: ['chart', 'graph', 'layout'],
+
+  amcharts: ['amcharts/amcharts', 'amcharts/funnel', 'amcharts/gauge', 'amcharts/pie', 'amcharts/radar', 'amcharts/serial', 'amcharts/xy', 'chart']
 }
 
 // Helpers
@@ -127,7 +129,7 @@ function getJSFiles(dir, prefix) {
     return retVal;
 }
 
-var bundles = ["common", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller"];  //  Order is important ---
+var bundles = ["common", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller", "amcharts"];  //  Order is important ---
 var amd_bundles = {};
 var amd_modules = bundles.map(function (bundle, idx) {
     var name = "hpcc-" + bundle;
@@ -170,6 +172,7 @@ gulp.task("amd_bundles_src", function (done) {
             'colorbrewer': '../bower_components/colorbrewer/colorbrewer',
             'd3.layout.cloud': '../bower_components/d3-cloud/d3.layout.cloud',
             'font-awesome': '../bower_components/font-awesome/css/font-awesome',
+            'amcharts': '../bower_components/amcharts/dist/amcharts',
 
             "src": "../src"
         },

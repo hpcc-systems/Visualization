@@ -36,7 +36,8 @@
     "font-awesome": "~4.3.0",
     "topojson": "~1.6.18",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.1/dist/dagre.js",
-    "d3-cloud": "git://github.com/jasondavies/d3-cloud.git#v1.0.5"
+    "d3-cloud": "git://github.com/jasondavies/d3-cloud.git#v1.0.5",
+    "amcharts": "~3.13.3"
   },
   "license": "Apache",
   "authors": [

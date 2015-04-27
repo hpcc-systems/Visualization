@@ -24,8 +24,7 @@
 
     Paginator.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-
-        this.paginator = element.append("ul").attr("class","paginator pagination pagination-sm");     
+        this.paginator = element.append("ul").attr("class","paginator pagination pagination-sm");
     };
 
     Paginator.prototype.update = function (domNode, element) {

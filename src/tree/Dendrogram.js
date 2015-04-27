@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./ITree", "css!./Dendrogram"], factory);
+        define(["d3", "../common/SVGWidget", "./ITree", "css!./Dendrogram"], factory);
     } else {
         root.tree_Dendrogram = factory(root.d3, root.common_SVGWidget, root.tree_ITree);
     }

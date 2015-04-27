@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./ITree", "../common/Text", "../common/FAChar", "css!./SunburstPartition"], factory);
+        define(["d3", "../common/SVGWidget", "./ITree", "../common/Text", "../common/FAChar", "css!./SunburstPartition"], factory);
     } else {
         root.tree_SunburstPartition = factory(root.d3, root.common_SVGWidget, root.tree_ITree, root.common_Text, root.common_FAChar);
     }

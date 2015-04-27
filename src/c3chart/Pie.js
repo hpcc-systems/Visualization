@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common2D"], factory);
     } else {
-        root.c3_Pie = factory(root.c3_Common2D);
+        root.c3chart_Pie = factory(root.c3chart_Common2D);
     }
 }(this, function (Common2D) {
     function Pie(target) {
         Common2D.call(this);
-        this._class = "c3_Pie";
+        this._class = "c3chart_Pie";
 
         this._type = "pie";
     };

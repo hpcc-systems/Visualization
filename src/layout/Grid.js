@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "./Cell", "../common/Text", "../chart/Pie", "../chart/MultiChart", "../c3/Column", "../c3/Line", "css!./Grid"], factory);
+        define(["../common/HTMLWidget", "./Cell", "../common/Text", "../chart/Pie", "../chart/MultiChart", "../c3chart/Line", "css!./Grid"], factory);
     } else {
-        root.layout_Grid = factory(root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3_Column, root.c3_Line);
+        root.layout_Grid = factory(root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3chart_Line);
     }
-}(this, function (HTMLWidget, Cell, Text, Pie, MultiChart, Column, Line) {
+}(this, function (HTMLWidget, Cell, Text, Pie, MultiChart, Line) {
 	function Grid() {
         HTMLWidget.call(this);
         this._class = "layout_Grid";

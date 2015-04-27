@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/HTMLWidget", "goog!visualization,1,packages:[corechart]"], factory);
+        define(["d3", "../common/HTMLWidget", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
         root.google_Common = factory(root.d3, root.common_HTMLWidget);
     }

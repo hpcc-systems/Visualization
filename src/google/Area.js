@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "./CommonND"], factory);
+        define(["d3", "./CommonND"], factory);
     } else {
         root.google_Area = factory(root.d3, root.google_CommonND);
     }

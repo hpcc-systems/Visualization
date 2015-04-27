@@ -3,16 +3,16 @@
     if (typeof define === "function" && define.amd) {
         define(["./CommonND"], factory);
     } else {
-        root.c3_Column = factory(root.c3_CommonND);
+        root.c3chart_Line = factory(root.c3chart_CommonND);
     }
 }(this, function (CommonND) {
-    function Column(target) {
+    function Line(target) {
         CommonND.call(this);
-        this._class = "c3_Column";
+        this._class = "c3chart_Line";
 
-        this._type = "bar";
+        this._type = "line";
     };
-    Column.prototype = Object.create(CommonND.prototype);
+    Line.prototype = Object.create(CommonND.prototype);
 
-    return Column;
+    return Line;
 }));

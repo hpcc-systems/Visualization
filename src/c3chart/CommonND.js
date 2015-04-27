@@ -3,13 +3,13 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/INDChart"], factory);
     } else {
-        root.c3_CommonND = factory(root.c3_Common, root.chart_INDChart);
+        root.c3chart_CommonND = factory(root.c3chart_Common, root.chart_INDChart);
     }
 }(this, function (Common, INDChart) {
     function CommonND(target) {
         Common.call(this);
         INDChart.call(this);
-        this._class = "c3_CommonND";
+        this._class = "c3chart_CommonND";
 
         var context = this;
         this._config.color = {

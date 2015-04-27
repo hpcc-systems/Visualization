@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3"], factory);
+        define(["d3"], factory);
     } else {
         root.require = root.require || function (paths, cb) {
             if (typeof paths === 'function') {

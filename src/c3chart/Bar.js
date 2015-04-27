@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["./Column"], factory);
     } else {
-        root.c3_Bar = factory(root.c3_Column);
+        root.c3chart_Bar = factory(root.c3chart_Column);
     }
 }(this, function (Column) {
     function Bar(target) {
         Column.call(this);
-        this._class = "c3_Bar";
+        this._class = "c3chart_Bar";
 
         this._config.axis.rotated = true;
     };

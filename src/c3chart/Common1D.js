@@ -3,13 +3,13 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../chart/I1DChart"], factory);
     } else {
-        root.c3_Common1D = factory(root.c3_Common, root.chart_I1DChart);
+        root.c3chart_Common1D = factory(root.c3chart_Common, root.chart_I1DChart);
     }
 }(this, function (Common, I1DChart) {
     function Common1D(target) {
         Common.call(this);
         I1DChart.call(this);
-        this._class = "c3_Common1D";
+        this._class = "c3chart_Common1D";
 
         var context = this;
         this._config.color = {

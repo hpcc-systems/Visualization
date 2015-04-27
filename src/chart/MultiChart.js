@@ -1,18 +1,18 @@
 ﻿
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3/d3", "../common/SVGWidget", "./INDChart", "../other/Persist", "require"], factory);
+        define(["d3", "../common/SVGWidget", "./INDChart", "require"], factory);
     } else {
-        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.other_Persist, root.require);
+        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.require);
     }
-}(this, function (d3, SVGWidget, INDChart, Persist, require) {
+}(this, function (d3, SVGWidget, INDChart, require) {
     var _2dChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
-        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3_Pie" },
-        { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3_Donut" },
+        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
+        { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3chart_Donut" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
     var _multiChartTypes = [
@@ -20,12 +20,12 @@
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
-        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3_Line" },
-        { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3_Bar" },
-        { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3_Column" },
-        { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3_Step" },
-        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3_Area" },
-        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3_Scatter" }
+        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
+        { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
+        { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
+        { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
+        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
+        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" }
     ];
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }

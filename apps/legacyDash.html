@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="../dist/amd/hpcc-viz.js"></script>
+    <script src="../dist/amd/hpcc-common.js"></script>
+    <script src="../dist/amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "font-awesome": "../dist/amd/font-awesome/css/font-awesome.min",
+                "src": "../dist/amd"
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="graphMarshaller" style="width:100%; height:100vh">
+    </div>
+    <script>
+        require(["src/other/Comms", "src/marshaller/Graph"], function (Comms, GraphMarshaller) {
+            var myUrl = new Comms.ESPUrl()
+                .url(document.URL)
+            ;
+            var newUrl = null;
+            if (myUrl._params["Wuid"]) {
+                newUrl = new Comms.WsWorkunits()
+                    .protocol((myUrl._params["Protocol"] || "http") + ":")
+                    .hostname(myUrl._params["Hostname"])
+                    .port(myUrl._params["Port"])
+                    .wuid(myUrl._params["Wuid"])
+                    .resultName(myUrl._params["ResultName"])
+                ;
+            } else if (myUrl._params["QueryID"]) {
+                newUrl = new Comms.WsECL()
+                    .protocol((myUrl._params["Protocol"] || "http") + ":")
+                    .hostname(myUrl._params["Hostname"])
+                    .port(myUrl._params["Port"])
+                    .target(myUrl._params["Target"])
+                    .query(myUrl._params["QueryID"])
+                ;
+            }
+            if (newUrl) {
+                var garph = new GraphMarshaller()
+                    .target("graphMarshaller")
+                    .ddl_url(newUrl.constructUrl())
+                    .layout("Hierarchy")
+                    .render()
+                ;
+            }
+        });
+    </script>
+</body>
+</html>

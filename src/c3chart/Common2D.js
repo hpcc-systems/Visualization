@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common", "../chart/I2DChart"], factory);
+        define(["./Common", "../api/I2DChart"], factory);
     } else {
         root.c3chart_Common2D = factory(root.c3chart_Common, root.chart_I2DChart);
     }

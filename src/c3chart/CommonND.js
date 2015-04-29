@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common", "../chart/INDChart"], factory);
+        define(["./Common", "../api/INDChart"], factory);
     } else {
         root.c3chart_CommonND = factory(root.c3chart_Common, root.chart_INDChart);
     }

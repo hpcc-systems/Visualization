@@ -1,7 +1,7 @@
 ﻿
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./INDChart", "require"], factory);
+        define(["d3", "../common/SVGWidget", "../api/INDChart", "require"], factory);
     } else {
         root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.chart_INDChart, root.require);
     }

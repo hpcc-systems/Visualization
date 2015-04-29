@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "../other/Bag", "css!./Graph"], factory);
+        define(["d3", "../common/SVGWidget", "../api/IGraph", "./Vertex", "./GraphData", "./GraphLayouts", "../other/Bag", "css!./Graph"], factory);
     } else {
         root.graph_Graph = factory(root.d3, root.common_SVGWidget, root.graph_IGraph, root.graph_Vertex, root.graph_GraphData, root.graph_GraphLayouts, root.other_Bag);
     }

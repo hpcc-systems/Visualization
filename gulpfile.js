@@ -16,46 +16,16 @@ const appPaths = {
   src: 'src',
   dist: 'dist'
 }
-
-const modules = {
-  common: ['d3', 'colorbrewer', 'font-awesome', 'require'],
-
-  other: ['common'],
-  tree: ['common'],
-
-  chart: ['other'],
-  graph: ['dagre', 'other'],
-
-  c3chart: ['c3', 'chart'],
-  google: ['chart' /* Google Visualization */],
-  map: ['graph', 'topojson' /* , Google Map */],
-  
-  layout: ['c3chart'],
-  marshaller: ['chart', 'graph', 'layout']
-}
-
-// Helpers
-function getModuleDeps(module) {
-  if (!modules[module]) return []
-
-  return modules[module]
-    .reduce(function (deps, dep) { 
-      return deps.concat(dep).concat(getModuleDeps(dep)) 
-    }, [])
-    .filter(function (dep, index, col) { 
-      return col.indexOf(dep) === index 
-    })
-}
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3.layout.cloud", "font-awesome"];
+const bundles = ["common", "api", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller"];  //  Order is important ---
 
 function buildModule(module, cb) {
   gutil.log('Building ' + module + '...')
 
-  dir.files(appPaths.src, function (err, files) {
-    if (err) return done(err)
-    
-    const deps = getModuleDeps(module).reduce(function (dict, dep) { 
-      return (dict[dep] = 'empty:') && dict 
-    }, {})
+  var files = getJSFiles(appPaths.src + "/" + module, appPaths.src).map(function (file) { return file + ".js"; });
+    const deps = libs.concat(bundles.filter(function (bundle) { return bundle !== module; })).reduce(function (dict, dep) {
+      return (dict[dep] = 'empty:') && dict
+    }, {});
 
     const plugins = {
       'async': '../rjs.noop',
@@ -81,7 +51,6 @@ function buildModule(module, cb) {
       optimize.bind(null, _.extend({out: (appPaths.dist + '/optimized/viz.' + module + '.min.js')}, opts)),
       optimize.bind(null, _.extend({out: (appPaths.dist + '/optimized/viz.' + module + '.js'), optimize: 'none'}, opts))
     ], cb)
-  }) 
 }
 
 function css(minify) {
@@ -106,7 +75,7 @@ gulp.task('build-css', css.bind(null, false))
 gulp.task('optimize-css', css.bind(null, true))
 
 gulp.task('build-all', ['build-css', 'optimize-css'], function (cb) {
-  async.each(Object.keys(modules), buildModule, cb) 
+  async.each(bundles, buildModule, cb) 
 })
 
 //  AMD Tasks  ---
@@ -127,7 +96,6 @@ function getJSFiles(dir, prefix) {
     return retVal;
 }
 
-var bundles = ["common", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller"];  //  Order is important ---
 var amd_bundles = {};
 var amd_modules = bundles.map(function (bundle, idx) {
     var name = "hpcc-" + bundle;

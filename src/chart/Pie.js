@@ -68,7 +68,7 @@
     Pie.prototype.update = function (domNode, element) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
         var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 
         //  Enter  ---

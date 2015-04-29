@@ -30,7 +30,7 @@
 
     Common2D.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
     };
 
     return Common2D;

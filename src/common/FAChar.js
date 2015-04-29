@@ -34,7 +34,7 @@
     FAChar.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._text
-            .text(this._char)
+            .text(this.char())
             .scale((this.font_size() || 14) / 14) //  Scale rather than font_size to prevent Chrome glitch  ---
             .render()
         ;

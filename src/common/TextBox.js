@@ -28,10 +28,10 @@
     TextBox.prototype.publish("fixedSize", null);
 
     TextBox.prototype.padding = function (_) {
-        this._padding_left = _;
-        this._padding_right = _;
-        this._padding_top = _;
-        this._padding_bottom = _;
+        this.padding_left(_);
+        this.padding_right(_);
+        this.padding_top(_);
+        this.padding_bottom(_);
         return this;
     };
 
@@ -60,25 +60,25 @@
         ;
         var textBBox = this._text.getBBox(true);
         var size = {
-            width: this._fixedSize ? this._fixedSize.width : textBBox.width + this._padding_left + this._padding_right,
-            height: this._fixedSize ? this._fixedSize.height : textBBox.height + this._padding_top + this._padding_bottom
+            width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.padding_left() + this.padding_right(),
+            height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.padding_top() + this.padding_bottom()
         };
         this._shape
             .width(size.width)
             .height(size.height)
             .render()
         ;
-        if (this._fixedSize) {
+        if (this.fixedSize()) {
             switch (this.anchor()) {
                 case "start":
                     this._text
-                        .x(-this._fixedSize.width / 2 + textBBox.width / 2 + (this._padding_left + this._padding_right) / 2)
+                        .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.padding_left() + this.padding_right()) / 2)
                         .render()
                     ;
                     break;
                 case "end":
                     this._text
-                        .x(this._fixedSize.width / 2 - textBBox.width / 2 - (this._padding_left + this._padding_right) / 2)
+                        .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.padding_left() + this.padding_right()) / 2)
                         .render()
                     ;
                     break;

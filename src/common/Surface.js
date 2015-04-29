@@ -112,7 +112,7 @@
         this._titleRect
             .target(domNode)
             .render()
-            .display(this._show_title && this._show_icon)
+            .display(this.show_title() && this.show_icon())
         ;
         this._icon
             .target(domNode)
@@ -134,18 +134,18 @@
         SVGWidget.prototype.update.apply(this, arguments);
 
         this._icon
-            .display(this._show_title && this._show_icon)
+            .display(this.show_title() && this.show_icon())
             .render()
         ;
         this._menu
             .render()
         ;
         this._text
-            .text(this._title)
-            .display(this._show_title)
+            .text(this.title())
+            .display(this.show_title())
             .render()
         ;
-        var iconClientSize = this._show_icon ? this._icon.getBBox(true) : {width:0, height: 0};
+        var iconClientSize = this.show_icon() ? this._icon.getBBox(true) : {width:0, height: 0};
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height);
@@ -160,7 +160,7 @@
             .pos({ x: leftMargin, y: yTitle })
             .width(this._size.width - leftMargin * 2)
             .height(titleTextHeight)
-            .display(this._show_title)
+            .display(this.show_title())
             .render()
         ;
         this._icon
@@ -172,7 +172,7 @@
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
-        if (this._show_title) {
+        if (this.show_title()) {
             this._container
                 .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
                 .width(this._size.width - leftMargin)
@@ -192,7 +192,7 @@
             var xOffset = leftMargin;
             var yOffset = titleRegionHeight - topMargin;
             var context = this;
-            var content = element.selectAll(".content").data(this._content ? [this._content] : [], function (d) { return d._id; });
+            var content = element.selectAll(".content").data(this.content() ? [this.content()] : [], function (d) { return d._id; });
             content.enter().append("g")
                 .attr("class", "content")
                 .attr("clip-path", "url(#" + this.id() + "_clip)")
@@ -217,7 +217,7 @@
                     ;
                 })
             ;
-            if (this._content) {
+            if (this.content()) {
                 this._clipRect
                     .attr("x", -this._size.width / 2 + xOffset)
                     .attr("y", -this._size.height / 2 + yOffset)
@@ -235,20 +235,20 @@
     };
 
     Surface.prototype.exit = function (domNode, element) {
-        if (this._content) {
-            this._content.target(null);
+        if (this.content()) {
+            this.content().target(null);
         }
         SVGWidget.prototype.exit.apply(this, arguments);
     };
 
     Surface.prototype.render = function (callback) {
-        if (!this._content) {
+        if (!this.content()) {
             SVGWidget.prototype.render.apply(this, arguments);
         }
         SVGWidget.prototype.render.call(this);
         var context = this;
-        if (this._content) {
-            this._content.render(function (contentWidget) {
+        if (this.content()) {
+            this.content().render(function (contentWidget) {
                 if (callback) {
                     callback(context);
                 }

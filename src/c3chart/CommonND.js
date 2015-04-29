@@ -42,7 +42,7 @@
     };
 
     CommonND.prototype.enter = function (domNode, element) {
-        if (this._subchart) {
+        if (this.subchart()) {
             this._config.subchart = {
                 show: true, size: {
                     height: 20
@@ -51,10 +51,10 @@
         }
 
         this._config.axis.x = {
-            type: this._xaxis_type
+            type: this.xaxis_type()
         };
 
-        switch (this._xaxis_type) {
+        switch (this.xaxis_type()) {
         case "category":
             this._config.axis.tick = {
                 centered: true,
@@ -75,9 +75,9 @@
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
 
-        switch (this._xaxis_type) {
+        switch (this.xaxis_type()) {
             case "category":
                 this.c3Chart.load({
                     categories: this.getC3Categories(),

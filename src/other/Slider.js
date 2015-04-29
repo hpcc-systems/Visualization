@@ -11,7 +11,7 @@
         ISlider.call(this);
         this._class = "other_Slider";
 
-        this._selectionLabel = "";
+        this.selectionLabel("");
 
         this.xScale = d3.scale.linear()
             .clamp(true)
@@ -63,7 +63,7 @@
         if (arguments.length) {
             if (this.brushg) {
                 this.brushg
-                    .call(this.brush.extent(this._allowRange ? this._data : [this._data, this._data]))
+                    .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
                 ;
             }
         }
@@ -71,8 +71,8 @@
     };
 
     Slider.prototype.enter = function (domNode, element) {
-        if ((this._high - this._low) / this._step <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this._low, this._high, this._step), [this._high]]));
+        if ((this.high() - this.allowRange()) / this.step() <= 10) {
+            this.axis.tickValues(d3.merge([d3.range(this.allowRange(), this.high(), this.step()), [this.high()]]));
         }
 
         this.axisElement = element.append("g")
@@ -112,7 +112,7 @@
         var width = this.width() - 50;  //TODO - 50 should be "padding"
 
         this.xScale
-            .domain([this._low, this._high])
+            .domain([this.allowRange(), this.high()])
             .range([-width/2, width/2])
         ;
 
@@ -132,8 +132,8 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
-            var selVal = [this._low, this._low];
-            if (this._allowRange && this._data) {
+            var selVal = [this.allowRange(), this.allowRange()];
+            if (this.allowRange() && this._data) {
                 var selVal = this._data;
             } else if (this._data){
                 selVal = [this._data, this._data];
@@ -152,7 +152,7 @@
     Slider.prototype.brushmove = function (d, self) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
-        if (!this._allowRange) {
+        if (!this.allowRange()) {
             var mouseX = this.xScale.invert(d3.mouse(self)[0]);
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
@@ -163,15 +163,15 @@
     Slider.prototype.brushend = function (d, self) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
-        if (!this._allowRange) {
+        if (!this.allowRange()) {
             var mouseX = this.nearestStep(this.xScale.invert(d3.mouse(self)[0]));
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
             this._data = mouseX;
-            if (this._selectionLabel) {
+            if (this.selectionLabel()) {
                 var clickData = {};
-                clickData[this._selectionLabel] = mouseX;
+                clickData[this.selectionLabel()] = mouseX;
                 this.click(clickData);
             } else {
                 this.click(mouseX);
@@ -189,20 +189,20 @@
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this._low + Math.round((value - this._low) / this._step) * this._step;
+        return this.allowRange() + Math.round((value - this.allowRange()) / this.step()) * this.step();
     }
 
     Slider.prototype.handlePath = function (d, i) {
         var e = +(d === "e");
         var x = e ? 1 : -1;
-        var xOffset = this._allowRange ? 0.5 : 0.0;
+        var xOffset = this.allowRange() ? 0.5 : 0.0;
         var y = 18;
         var retVal = "M" + (xOffset * x) + "," + y
             + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6)
             + "V" + (2 * y - 6)
             + "A6,6 0 0 " + e + " " + (xOffset * x) + "," + (2 * y)
         ;
-        if (this._allowRange) {
+        if (this.allowRange()) {
             retVal += "Z"
                 + "M" + (2.5 * x) + "," + (y + 8)
                 + "V" + (2 * y - 8)

@@ -26,7 +26,7 @@
     };
     
     CommonND.prototype.update = function(domNode, element) {
-    	this._palette = this._palette.switch(this._paletteID); 
+    	this._palette = this._palette.switch(this.paletteID()); 
         Common.prototype.update.apply(this, arguments);
         this._chart.draw(this._data_google, this.getChartOptions());
     }

@@ -80,7 +80,7 @@
         };
         this._config.data.type = this._type;
         this._config.legend = {
-            position: this._legendPosition
+            position: this.legendPosition()
         };
         this._config.bindto = element.append("div").datum(null);
         this.c3Chart = c3.generate(this._config);

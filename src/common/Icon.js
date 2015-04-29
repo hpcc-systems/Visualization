@@ -49,16 +49,16 @@
     Icon.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._faChar
-            .font_size(this._diameter * (100 - this._padding_percent) / 100)
+            .font_size(this.diameter() * (100 - this.padding_percent()) / 100)
             .render()
         ;
         this._shapeWidget
-            .shape(this._shape)
-            .width(this._diameter)
-            .height(this._diameter)
+            .shape(this.shape())
+            .width(this.diameter())
+            .height(this.diameter())
             .render()
         ;
-        this._tooltipElement.text(this._tooltip);
+        this._tooltipElement.text(this.tooltip());
     };
 
     return Icon;

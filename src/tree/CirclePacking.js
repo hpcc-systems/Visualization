@@ -36,7 +36,7 @@
     CirclePacking.prototype.update = function (domNode, element) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
         this.svg.selectAll("circle").remove();
         this.svg.selectAll("text").remove();
 

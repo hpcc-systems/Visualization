@@ -38,7 +38,7 @@
     Bubble.prototype.update = function (domNode, element) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
         var node = element.selectAll(".node")
             .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })
         ;

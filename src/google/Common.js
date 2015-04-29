@@ -75,46 +75,43 @@
 
         var chartOptions =  {
             backgroundColor: {
-                stroke: this._backgroundColorStroke,
-                strokeWidth: this._backgroundColorStrokeWidth,
-                fill: this._backgroundColorFill,
+                stroke: this.backgroundColorStroke(),
+                strokeWidth: this.backgroundColorStrokeWidth(),
+                fill: this.backgroundColorFill(),
             },
             width: this.width(),
             height: this.height(),
             colors: colors,
-            fontSize: this._fontSize,
-            fontName: this._fontName,
-            fontColor: this._fontColor,
-            title: this._title,
-            titlePosition: this._titlePosition,
+            fontSize: this.fontSize(),
+            fontName: this.fontName(),
+            fontColor: this.fontColor(),
+            title: this.title(),
+            titlePosition: this.titlePosition(),
             
             chartArea: {
-                width: this._chartAreaWidth,
-                height: this._chartAreaHeight,
-                left: this._chartAreaLeft,
-                top: this._chartAreaTop
+                width: this.chartAreaWidth(),
+                height: this.chartAreaHeight(),
+                left: this.chartAreaLeft(),
+                top: this.chartAreaTop()
             },
             animation: {
-                duration: this._animationDuration,
-                startup: this._animationOnStartup,
-                easing: this._animationEasing
+                duration: this.animationDuration(),
+                startup: this.animationOnStartup(),
+                easing: this.animationEasing()
             },
             legend: {
-                alignment: this._legendAlignment,
-                position: this._legendShow ? this._legendPosition : "none",
+                alignment: this.legendAlignment(),
+                position: this.legendShow ()? this.legendPosition (): "none",
                 maxLines: 2,
                 textStyle: {
-                    color: this._legendFontColor,
-                    fontName: this._legendFontName,
-                    fontSize: this._legendFontSize,
-                    bold: this._legendFontBold,
-                    italic: this._legendFontItalic
+                    color: this.legendFontColor(),
+                    fontName: this.legendFontName(),
+                    fontSize: this.legendFontSize(),
+                    bold: this.legendFontBold(),
+                    italic: this.legendFontItalic()
                 }
             },
         };
-        if(this._smoothLines){
-            chartOptions.curveType = "function";
-        }
         return chartOptions;
     };
     

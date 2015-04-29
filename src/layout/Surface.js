@@ -29,7 +29,7 @@
 
     Surface.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        var titles = element.selectAll(".surfaceTitle").data(this._title ? [this._title] : []);
+        var titles = element.selectAll(".surfaceTitle").data(this.title() ? [this.title()] : []);
         titles.enter().insert("h3", "div")
             .attr("class", "surfaceTitle")
         ;
@@ -38,7 +38,7 @@
         ;
         titles.exit().remove();
 
-        var widgets = element.selectAll("#" + this._id + " > .surfaceWidget").data(this._widget ? [this._widget] : [], function (d) { return d._id; });
+        var widgets = element.selectAll("#" + this._id + " > .surfaceWidget").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
 
         var context = this;
         widgets.enter().append("div")
@@ -53,7 +53,7 @@
                 //console.log("surface update:" + d._class + d._id);
                 var width = context.clientWidth();
                 var height = context.clientHeight();
-                if (context._title) {
+                if (context.title()) {
                     height -= context.calcHeight(element.select("h3"));
                 }
                 var widgetDiv = d3.select(this);
@@ -71,8 +71,8 @@
     };
 
     Surface.prototype.exit = function (domNode, element) {
-        if (this._widget) {
-            this._widget = null;
+        if (this.widget()) {
+            this.widget(null);
             this.render();
         }
         HTMLWidget.prototype.exit.apply(this, arguments);
@@ -81,8 +81,8 @@
     Surface.prototype.render = function (callback) {
         var context = this;
         HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context._widget) {
-                context._widget.render(function (widget) {
+            if (context.widget()) {
+                context.widget().render(function (widget) {
                     if (callback) {
                         callback(widget);
                     }

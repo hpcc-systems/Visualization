@@ -416,24 +416,24 @@
     };
 
     Graph.prototype.render = function (callback) {
-        if (this._ddl_url === "" || this._ddl_url === this._prev_ddl_url) {
+        if (this.ddl_url() === "" || this.ddl_url() === this._prev_ddl_url) {
             return GraphWidget.prototype.render.apply(this, arguments);
         }
-        this._prev_ddl_url = this._ddl_url;
-        var marshaller = new HipieDDL.Marshaller().proxyMappings(this._proxy_mappings);
+        this._prev_ddl_url = this.ddl_url();
+        var marshaller = new HipieDDL.Marshaller().proxyMappings(this.proxy_mappings());
         var context = this;
         var args = arguments;
-        if (this._ddl_url[0] === "[" || this._ddl_url[0] === "{") {
-            marshaller.parse(this._ddl_url, function () {
+        if (this.ddl_url()[0] === "[" || this.ddl_url()[0] === "{") {
+            marshaller.parse(this.ddl_url(), function () {
                 postParse();
             });
         } else {
-            marshaller.url(this._ddl_url, function () {
+            marshaller.url(this.ddl_url(), function () {
                 postParse();
             });
         }
         function postParse() {
-            var dashboards = createGraphData(marshaller, context._databomb, context._visualize_roxie);
+            var dashboards = createGraphData(marshaller, context.databomb(), context.visualize_roxie());
             context.dashboards(dashboards);
             context
                 .shrinkToFitOnLayout(true)

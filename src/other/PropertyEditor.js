@@ -190,13 +190,13 @@
             needsRedraw = true;
         }
         if (typeof (context._showing_columns) === 'undefined') {
-            context._showing_columns = context._show_columns;
-        } else if (context._showing_columns !== context._show_columns) {
+            context._showing_columns = context.show_columns();
+        } else if (context._showing_columns !== context.show_columns()) {
             needsRedraw = true;
         }
         if (typeof (context._showing_data) === 'undefined') {
-            context._showing_data = context._show_data;
-        } else if (context._showing_data !== context._show_data) {
+            context._showing_data = context.show_data();
+        } else if (context._showing_data !== context.show_data()) {
             needsRedraw = true;
         }
         return needsRedraw;
@@ -207,7 +207,7 @@
         if (tableNeedsRedraw(this)) {
             element.selectAll("#" + this._id + " > table").remove();
         }
-        this._current_grouping = this._param_grouping;
+        this._current_grouping = this.param_grouping();
         if (this._show_settings) {
             //Display table containing PropertyEditor settings
             var editorTable = element.selectAll("#" + this._id + " > div").data([this], function (d) {
@@ -228,7 +228,7 @@
         }
         //Update tables based on "group by" setting
         var tableData = [];
-        if (this._param_grouping === "By Param") {
+        if (this.param_grouping() === "By Param") {
             var sharedPropsMainSections = [];
             var sPropSections = [];
             if (this._data.length > 0) {
@@ -240,7 +240,7 @@
                         sharedPropsMainSections[k1][k2].arr.forEach(function (n) {
                             widgetArr.push(n.widget);
                         });
-                        if (this._share_count_min <= widgetArr.length || widgetArr[0]._class.indexOf('PropertyEditor') !== -1) {
+                        if (this.share_count_min() <= widgetArr.length || widgetArr[0]._class.indexOf('PropertyEditor') !== -1) {
                             sectionArr.push({
                                 rowType: 'shared',
                                 widgetArr: widgetArr,
@@ -274,7 +274,7 @@
                 .each(function (widget) {
                     var element = d3.select(this);
                     var thead = element.append("thead");
-                    if (context._collapsible_sections) {
+                    if (context.collapsible_sections()) {
                         thead.attr("class", "mm-label max").on("click", function () {
                             var elm = d3.select(this);
                             if (elm.classed("min")) {
@@ -289,8 +289,8 @@
 
                     thead.append("tr").append("th").attr("colspan", context._columns.length).attr("class", "th-widget-class").text(function () {
                         var text = '';
-                        if (context._section_title) {
-                            text = context._section_title;
+                        if (context.section_title()) {
+                            text = context.section_title();
                         } else {
                             var splitClass = widget._class.split('_');
                             if (splitClass.length > 1) {
@@ -322,7 +322,7 @@
                 var tbody = d3.select(this);
                 var rows;
                 //  Columns  ---
-                if (context._show_columns) {
+                if (context.show_columns()) {
                     var tr = tbody.append("tr");
                     var td = tr.append("td").text("Columns")
                     td = tr.append("td")
@@ -341,7 +341,7 @@
                     input.node().value = JSON.stringify(widget._columns);
                 }
                 //  Data  ---
-                if (context._show_data) {
+                if (context.show_data()) {
                     var tr = tbody.append("tr");
                     var td = tr.append("td")
                         .text("Data")
@@ -366,7 +366,7 @@
                     }
                 }
                 //Updating TR 'By Param'
-                if (context._param_grouping === "By Param") {
+                if (context.param_grouping() === "By Param") {
                     rows = tbody.selectAll(".tr_" + widget._id).data(sPropSections[widgetIdx]);
                     rows.enter().append("tr").each(function (d) {
                         var tr = d3.select(this);
@@ -623,7 +623,7 @@
                                 break;
                         }
                     }).remove();
-                } else if (context._param_grouping === "By Widget") {
+                } else if (context.param_grouping() === "By Widget") {
                     //Updating TR 'By Widget'
                     rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
@@ -749,8 +749,8 @@
                                         ;
                                         widget["_propertyEditor_" + d.id] = new PropertyEditor()
                                             .param_grouping('By Widget')
-                                            .show_columns(context._show_columns)
-                                            .show_data(context._show_data)
+                                            .show_columns(context.show_columns())
+                                            .show_data(context.show_data())
                                             .show_settings(false)
                                             .target(input.node())
                                         ;

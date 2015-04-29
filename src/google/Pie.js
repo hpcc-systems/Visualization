@@ -41,35 +41,35 @@
             return this._palette(row[0]);
         }, this);
         
-        retVal.is3D = this._is3D;
-        retVal.pieHole = this._pieHole;
-        retVal.pieStartAngle = this._pieStartAngle;
-        retVal.pieSliceText = this._pieSliceText;
+        retVal.is3D = this.is3D();
+        retVal.pieHole = this.pieHole();
+        retVal.pieStartAngle = this.pieStartAngle();
+        retVal.pieSliceText = this.pieSliceText();
         retVal.pieSliceTextStyle = {
-            color: this._pieSliceTextStyleColor,
-            fontName: this.__pieSliceTextStyleFontName,
-            fontSize: this.__pieSliceTextStyleFontSize
+            color: this.pieSliceTextStyleColor(),
+            fontName: this.pieSliceTextStyleFontName(),
+            fontSize: this.pieSliceTextStyleFontSize()
         }
-        retVal.pieSliceBorderColor = this._pieSliceBorderColor;
-        retVal.pieResidueSliceColor = this._pieResidueSliceColor;
-        retVal.pieResidueSliceLabel = this._pieResidueSliceLabel;
-        retVal.sliceVisibilityThreshold = this._sliceVisibilityThreshold;
+        retVal.pieSliceBorderColor = this.pieSliceBorderColor();
+        retVal.pieResidueSliceColor = this.pieResidueSliceColor();
+        retVal.pieResidueSliceLabel = this.pieResidueSliceLabel();
+        retVal.sliceVisibilityThreshold = this.sliceVisibilityThreshold();
         
         retVal.slices = initSlices(this.getNumSlices());
         
-        this._slicesColor.forEach(function(d,i) {
+        this.slicesColor().forEach(function(d,i) {
             if (typeof(retVal.slices[i])==='undefined') {
                retVal.slices[i] = {}; 
             }
             retVal.slices[i].color = d;
         });
-        this._slicesOffset.forEach(function(d,i) {
+        this.slicesOffset().forEach(function(d,i) {
             if (typeof(retVal.slices[i])==='undefined') {
                retVal.slices[i] = {}; 
             }
             retVal.slices[i].offset = d;
         });  
-        this._slicesTextStyle.forEach(function(d,i) {
+        this.slicesTextStyle().forEach(function(d,i) {
             if (typeof(retVal.slices[i])==='undefined') {
                retVal.slices[i] = {}; 
             }
@@ -79,7 +79,7 @@
     };
 
     Pie.prototype.getNumSlices = function() {
-        return this._data.length;
+        return this.data().length;
     }
 
     function initSlices(num) {

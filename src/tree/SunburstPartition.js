@@ -69,7 +69,7 @@
     SunburstPartition.prototype.update = function (domNode, element) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
         this.radius = Math.min(this.width(), this.height()) / 2;
         this._xScale.range([0, 2 * Math.PI]);
         this._yScale.range([0, this.radius]);

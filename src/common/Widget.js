@@ -151,7 +151,9 @@
             ext: ext || {}
         }
         this[id] = function (_) {
-            if (!arguments.length) return this["_" + id];
+            if (!arguments.length) {
+                return this._id !== undefined && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
+            }
             switch (type) {
                 case "set":
                     if (!set || set.indexOf(_) < 0) {
@@ -183,24 +185,28 @@
                     }
                     break;
             }
-            this.broadcast(id, _, this["_" + id]);
-            this["_" + id] = _;
+            if (this._id !== undefined) {
+                this.broadcast(id, _, this["__prop_" + id]);
+                this["__prop_" + id] = _;
+            } else {
+                this["__meta_" + id].defaultValue = _;
+            }
             return this;
         };
         this[id + "_modified"] = function () {
-            return this["_" + id] !== defaultValue;
+            return this["__prop_" + id] !== undefined;
         }
         this[id + "_reset"] = function () {
-            this["_" + id] = defaultValue;
+            this["__prop_" + id] = undefined;
         }
-        this["_" + id] = defaultValue;
+        this["__prop_" + id] = undefined;
     };
 
     Widget.prototype.publishWidget = function (prefix, WidgetType, id) {
         for (var key in WidgetType.prototype) {
             if (key.indexOf("__meta") === 0) {
                 var publishItem = WidgetType.prototype[key];
-                this.publishProxy(prefix + "_" + publishItem.id, id, publishItem.method || publishItem.id)
+                this.publishProxy(prefix + "__prop_" + publishItem.id, id, publishItem.method || publishItem.id)
             }
         }
     };
@@ -245,13 +251,15 @@
     };
 
     Widget.prototype.broadcast = function (key, newVal, oldVal) {
-        this._watchArr.forEach(function (func) {
-            if (func) {
-                setTimeout(function () {
-                    func(key, newVal, oldVal);
-                }, 0);
-            }
-        });
+        if (this._watchArr) {
+            this._watchArr.forEach(function (func) {
+                if (func) {
+                    setTimeout(function () {
+                        func(key, newVal, oldVal);
+                    }, 0);
+                }
+            });
+        }
     };
 
     //  Implementation  ---

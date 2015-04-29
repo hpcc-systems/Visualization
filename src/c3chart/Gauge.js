@@ -19,7 +19,7 @@
             context.click(clickEvent, d.id);
         };
         this._config.data.color = function (color, d) {
-            return context._palette(context._data, context._low, context._high);
+            return context._palette(context._data, context.low(), context.high());
         };
     };
     Gauge.prototype = Object.create(Common1D.prototype);

@@ -127,7 +127,7 @@
     };
 
     Choropleth.prototype.update = function (domNode, element) {
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
     };
 
     // A modified d3.geo.albersUsa to include Puerto Rico.

@@ -24,7 +24,7 @@
     Line.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
         var d3Line = d3.svg.line()
             .x(function (d) {
                 switch (context._xScale) {

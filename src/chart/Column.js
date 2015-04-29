@@ -19,7 +19,7 @@
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
 
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
 
         var column = this.svgData.selectAll(".columnRect")
             .data(this._data)

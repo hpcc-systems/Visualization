@@ -12,7 +12,7 @@
 
         this._tag = "div";
 
-        this._content = [];
+        this.content([]);
     };
     Grid.prototype = Object.create(HTMLWidget.prototype);
 
@@ -32,7 +32,7 @@
 
     Grid.prototype.getDimensions = function () {
         var size = { width: 0, height: 0 };
-        this._content.forEach(function (cell) {
+        this.content().forEach(function (cell) {
             if (size.width < cell.gridCol() + cell.gridColSpan()) {
             	size.width = cell.gridCol() + cell.gridColSpan();
             }
@@ -44,23 +44,23 @@
     };
 
     Grid.prototype.clearContent = function () {
-        this._content = this._content.filter(function (contentWidget) {
+        this.content(this.content().filter(function (contentWidget) {
             contentWidget.target(null);
             return false;
-        });
+        }));
     };
 
     Grid.prototype.setContent = function (row, col, widget, title, rowSpan, colSpan) {
         rowSpan = rowSpan || 1;
         colSpan = colSpan || 1;
         title = title || "";
-        this._content = this._content.filter(function (contentWidget) {
-            if (contentWidget._gridRow === row && contentWidget._gridCol === col) {
+        this.content(this.content().filter(function (contentWidget) {
+            if (contentWidget.gridRow() === row && contentWidget.gridCol() === col) {
                 contentWidget.target(null);
                 return false;
             }
             return true;
-        });
+        }));
 
         if (widget) {
             var cell = new Cell()
@@ -71,16 +71,16 @@
                 .gridRowSpan(rowSpan)
                 .gridColSpan(colSpan)
             ;
-            this._content.push(cell);
+            this.content().push(cell);
         }
         return this;
     };
 
     Grid.prototype.getContent = function (id) {
         var retVal = null;
-        this._content.some(function (cell) {
-            if (cell._widget._id === id) {
-                retVal = cell._widget;
+        this.content().some(function (cell) {
+            if (cell.widget()._id === id) {
+                retVal = cell.widget();
                 return true;
             }
             return false;
@@ -100,14 +100,14 @@
 
     Grid.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        this._parentElement.style("overflow-x", this._fitTo === "width" ? "hidden" : null);
-        this._parentElement.style("overflow-y", this._fitTo === "width" ? "scroll" : null);
+        this._parentElement.style("overflow-x", this.fitTo() === "width" ? "hidden" : null);
+        this._parentElement.style("overflow-y", this.fitTo() === "width" ? "scroll" : null);
         var dimensions = this.getDimensions();
-        var cellWidth = (this.width() - (this._fitTo === "width" ? this._scrollBarWidth : 0)) / dimensions.width;
-        var cellHeight = this._fitTo === "all" ? this.height() / dimensions.height : cellWidth;
+        var cellWidth = (this.width() - (this.fitTo() === "width" ? this._scrollBarWidth : 0)) / dimensions.width;
+        var cellHeight = this.fitTo() === "all" ? this.height() / dimensions.height : cellWidth;
 
         var context = this;
-        var rows = element.selectAll(".cell_" + this._id).data(this._content, function (d) { return d._id; });
+        var rows = element.selectAll(".cell_" + this._id).data(this.content(), function (d) { return d._id; });
         rows.enter().append("div")
             .attr("class", "cell_" + this._id)
             .style("position", "absolute")
@@ -124,10 +124,10 @@
             })
         ;
         rows
-            .style("left", function (d) { return d.gridCol() * cellWidth + context._gutter / 2 + "px"; })
-            .style("top", function (d) { return d.gridRow() * cellHeight + context._gutter / 2 + "px"; })
-            .style("width", function (d) { return d.gridColSpan() * cellWidth - context._gutter + "px"; })
-            .style("height", function (d) { return d.gridRowSpan() * cellHeight - context._gutter + "px"; })
+            .style("left", function (d) { return d.gridCol() * cellWidth + context.gutter() / 2 + "px"; })
+            .style("top", function (d) { return d.gridRow() * cellHeight + context.gutter() / 2 + "px"; })
+            .style("width", function (d) { return d.gridColSpan() * cellWidth - context.gutter() + "px"; })
+            .style("height", function (d) { return d.gridRowSpan() * cellHeight - context.gutter() + "px"; })
             .each(function (d) {
                 //console.log("Grid :update - " + d._class + d._id);
                 d
@@ -153,9 +153,9 @@
     Grid.prototype.render = function (callback) {
         var context = this;
         HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context._content.length) {
-                var renderCount = context._content.length;
-                context._content.forEach(function (contentWidget, idx) {
+            if (context.content().length) {
+                var renderCount = context.content().length;
+                context.content().forEach(function (contentWidget, idx) {
                     setTimeout(function () {
                         contentWidget.render(function () {
                             if (--renderCount === 0) {

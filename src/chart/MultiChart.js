@@ -37,7 +37,7 @@
         INDChart.call(this);
         this._class = "chart_MultiChart";
 
-        this._chart = null;
+        this.chart(null);
 
         this._2dChartTypes = _2dChartTypes;
         this._multiChartTypes = _multiChartTypes;
@@ -63,28 +63,28 @@
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length && this._chart) {
-            this._chart.columns(_);
+        if (arguments.length && this.chart()) {
+            this.chart().columns(_);
         }
         return retVal;
     };
 
     MultiChart.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
-        if (arguments.length && this._chart) {
-            this._chart.data(_);
+        if (arguments.length && this.chart()) {
+            this.chart().data(_);
         }
         return retVal;
     };
 
     MultiChart.prototype.hasOverlay = function () {
-        return this._chart && this._chart.hasOverlay();
+        return this.chart() && this.chart().hasOverlay();
     };
 
     MultiChart.prototype.visible = function (_) {
-        if (!arguments.length) return this._chart.visible();
-        if (this._chart) {
-            this._chart.visible(_);
+        if (!arguments.length) return this.chart() && this.chart().visible();
+        if (this.chart()) {
+            this.chart().visible(_);
         }
         return this;
     };
@@ -106,16 +106,17 @@
     };
 
     MultiChart.prototype.switchChart = function (callback) {
-        var oldContent = this._chart;
+        var oldContent = this.chart();
         var context = this;
-        this.requireContent(this._chart_type, function (newContent) {
+        this.requireContent(this.chart_type(), function (newContent) {
             if (newContent !== oldContent) {
                 var size = context.size();
-                context._chart = newContent
+                newContent
                     .columns(context._columns)
                     .data(context._data)
                     .size(size)
                 ;
+                context.chart(newContent)
                 newContent.click = function (row, column) {
                     context.click(row, column);
                 }
@@ -135,7 +136,7 @@
 
     MultiChart.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        var content = element.selectAll(".multiChart").data(this._chart ? [this._chart] : [], function (d) { return d._id; });
+        var content = element.selectAll(".multiChart").data(this.chart() ? [this.chart()] : [], function (d) { return d._id; });
         content.enter().append("g")
             .attr("class", "multiChart")
             .each(function (d) {
@@ -160,15 +161,15 @@
     };
 
     MultiChart.prototype.exit = function (domNode, element) {
-        if (this._chart) {
-            this._chart.target(null);
+        if (this.chart()) {
+            this.chart().target(null);
         }
         SVGWidget.prototype.exit.apply(this, arguments);
     };
 
 
     MultiChart.prototype.render = function (callback) {
-        if (this._chart_type && (!this._chart || (this._chart._class !== this._allCharts[this._chart_type].widgetClass))) {
+        if (this.chart_type() && (!this.chart() || (this.chart()._class !== this._allCharts[this.chart_type()].widgetClass))) {
             var context = this;
             var args = arguments;
             this.switchChart(function () {

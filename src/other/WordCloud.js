@@ -38,8 +38,8 @@
 
     WordCloud.prototype.enter = function (domNode, element) {
         this.cloud = d3.layout.cloud()
-            .font(this._font)
-            .padding(this._padding)
+            .font(this.font())
+            .padding(this.padding())
         ;
         this.svg = element.append("g");
     };
@@ -49,15 +49,15 @@
         var extent = d3.extent(this._vizData, function (d) {
             return d.__viz_1;
         });
-        var scale = d3.scale.log().domain(extent).range([this._fontSizeFrom, this._fontSizeTo]);
+        var scale = d3.scale.log().domain(extent).range([this.fontSizeFrom(), this.fontSizeTo()]);
 
-        var angleDomain = d3.scale.linear().domain([0, context._angleCount - 1]).range([context._angleFrom, context._angleTo]);
+        var angleDomain = d3.scale.linear().domain([0, context.angleCount() - 1]).range([context.angleFrom(), context.angleTo()]);
 
         this.cloud
             .size([this.width(), this.height()])
             .words(this._vizData)
             .rotate(function () {
-                return angleDomain(~~(Math.random() * context._angleCount));
+                return angleDomain(~~(Math.random() * context.angleCount()));
             })
             .fontSize(function (d) {
                 return scale(d.__viz_1);

@@ -30,10 +30,10 @@
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._textElement
-            .attr("font-family", this.__meta_font_family.defaultValue !== this._font_family ? this._font_family : null)
-            .attr("font-size", this.__meta_font_size.defaultValue !== this._font_size ? this._font_size : null)
+            .attr("font-family", this.font_family())
+            .attr("font-size", this.font_size())
         ;
-        var textParts = this._text.split("\n");
+        var textParts = this.text().split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
         textLine.enter().append("tspan")
             .attr("class", function (d, i) { return "tspan_" + i; })
@@ -41,7 +41,7 @@
             .attr("x", "0")
         ;
         textLine
-            .style("fill", this.__meta_color_fill.defaultValue !== this._color_fill ? this._color_fill : null)
+            .style("fill", this.color_fill())
             .text(function (d) { return d; })
         ;
         textLine.exit()
@@ -54,7 +54,7 @@
         } catch (e) {
         }
         var xOffset = 0;
-        switch(this._anchor) {
+        switch(this.anchor()) {
             case "start":
                 xOffset = -bbox.width / 2;
                 break;
@@ -65,7 +65,7 @@
         var yOffset = -(bbox.y + bbox.height / 2);
 
         this._textElement
-            .style("text-anchor", this._anchor)
+            .style("text-anchor", this.anchor())
             .attr("transform", function (d) { return "translate(" + xOffset + "," + yOffset + ")"; })
         ;
     };

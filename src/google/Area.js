@@ -78,7 +78,7 @@
     Area.prototype.publish("vAxisViewWindowMax", null, "number", "The maximum vertical data value to render");
     Area.prototype.publish("vAxisViewWindowMin", null, "number", "The minimum vertical data value to render");
 
-    Area.prototype.publish("hAxisAllowContainerBoundaryTextCufoff", false, "boolean", "Hide outermost labels rather than allow them to be cropped by the chart container.");
+    Area.prototype.publish("hAxisAllowContainerBoundaryTextCutoff", false, "boolean", "Hide outermost labels rather than allow them to be cropped by the chart container.");
     Area.prototype.publish("hAxisSlantedText", null, "boolean", "Draw the horizontal axis text at an angle");
     Area.prototype.publish("hAxisSlantedTextAngle", 30, "number", "The angle of the horizontal axis text");
     Area.prototype.publish("hAxisMaxAlternation", 2, "number", "Maximum number of levels of horizontal axis text");
@@ -91,94 +91,94 @@
     Area.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
         
-        retVal.selectionMode = this._selectionMode;
-        retVal.dataOpacity = this._dataOpacity;
+        retVal.selectionMode = this.selectionMode();
+        retVal.dataOpacity = this.dataOpacity();
         
-        retVal.isStacked = this._isStacked;
-        retVal.areaOpacity = this._areaOpacity;
+        retVal.isStacked = this.isStacked();
+        retVal.areaOpacity = this.areaOpacity();
         
         retVal.hAxis = {};
         retVal.vAxis = {};
         
-        retVal.hAxis.baseline = this._hAxisBaseline;
-        retVal.hAxis.baselineColor = this._hAxisBaselineColor;
-        retVal.hAxis.direction = this._hAxisDirection;
+        retVal.hAxis.baseline = this.hAxisBaseline();
+        retVal.hAxis.baselineColor = this.hAxisBaselineColor();
+        retVal.hAxis.direction = this.hAxisDirection();
         retVal.hAxis.gridlines = {
-            count: this._hAxisGridlinesCount,
-            color: this._hAxisGridlinesColor
+            count: this.hAxisGridlinesCount(),
+            color: this.hAxisGridlinesColor()
         }
         retVal.hAxis.minorGridlines = {
-            count: this._hAxisMinorGridlinesCount,
-            color: this._hAxisMinorGridlinesColor
+            count: this.hAxisMinorGridlinesCount(),
+            color: this.hAxisMinorGridlinesColor()
         }        
-        retVal.hAxis.logScale = this._hAxisLogScale;
-        retVal.hAxis.textPosition = this._hAxisTextPosition;
-        retVal.hAxis.title = this._hAxisTitle;
-        retVal.hAxis.minValue = this._hAxisMinValue;
-        retVal.hAxis.maxValue = this._hAxisMaxValue;
+        retVal.hAxis.logScale = this.hAxisLogScale();
+        retVal.hAxis.textPosition = this.hAxisTextPosition();
+        retVal.hAxis.title = this.hAxisTitle();
+        retVal.hAxis.minValue = this.hAxisMinValue();
+        retVal.hAxis.maxValue = this.hAxisMaxValue();
         
-        retVal.hAxis.hAxisAllowContainerBoundaryTextCufoff = this._hAxisAllowContainerBoundaryTextCufoff;
-        retVal.hAxis.slantedText = this._hAxisSlantedText;
-        retVal.hAxis.slantedTextAngle = this._hAxisSlantedTextAngle;
-        retVal.hAxis.maxAlternation = this._hAxisMaxAlternation;
-        retVal.hAxis.maxTextLines = this._hAxisMaxTextLines;
-        retVal.hAxis.minTextSpacing = this._hAxisMinTextSpacing;
+        retVal.hAxis.hAxisAllowContainerBoundaryTextCutoff = this.hAxisAllowContainerBoundaryTextCutoff();
+        retVal.hAxis.slantedText = this.hAxisSlantedText();
+        retVal.hAxis.slantedTextAngle = this.hAxisSlantedTextAngle();
+        retVal.hAxis.maxAlternation = this.hAxisMaxAlternation();
+        retVal.hAxis.maxTextLines = this.hAxisMaxTextLines();
+        retVal.hAxis.minTextSpacing = this.hAxisMinTextSpacing();
         
-        retVal.hAxis.format = this._hAxisFormat;
+        retVal.hAxis.format = this.hAxisFormat();
         retVal.hAxis.textStyle = {
-            color: this._hAxisTextStyleColor,
-            fontName: this._hAxisTextStyleFontName,
-            fontSize: this._hAxisTextStyleFontSize
+            color: this.hAxisTextStyleColor(),
+            fontName: this.hAxisTextStyleFontName(),
+            fontSize: this.hAxisTextStyleFontSize()
         }
-        if (this._hAxisTicks.length > 0) {
-            retVal.hAxis.ticks = this._hAxisTicks;
+        if (this.hAxisTicks().length > 0) {
+            retVal.hAxis.ticks = this.hAxisTicks();
         }
         retVal.hAxis.titleTextStyle = {
-            color: this._hAxisTitleTextStyleColor,
-            fontName: this._hAxisTitleTextStyleFontName,
-            fontSize: this._hAxisTitleTextStyleFontSize
+            color: this.hAxisTitleTextStyleColor(),
+            fontName: this.hAxisTitleTextStyleFontName(),
+            fontSize: this.hAxisTitleTextStyleFontSize()
         }
-        retVal.hAxis.viewWindowMode = this._hAxisViewWindowMode;
+        retVal.hAxis.viewWindowMode = this.hAxisViewWindowMode();
         retVal.hAxis.viewWindow = {
-            min: this._hAxisViewWindowMin,
-            max: this._hAxisViewWindowMax
+            min: this.hAxisViewWindowMin(),
+            max: this.hAxisViewWindowMax()
         }
         
-        retVal.vAxis.baseline = this._vAxisBaseline;
-        retVal.vAxis.baselineColor = this._vAxisBaselineColor;
-        retVal.vAxis.direction = this._vAxisDirection;
+        retVal.vAxis.baseline = this.vAxisBaseline();
+        retVal.vAxis.baselineColor = this.vAxisBaselineColor();
+        retVal.vAxis.direction = this.vAxisDirection();
         retVal.vAxis.gridlines = {
-            count: this._vAxisGridlinesCount,
-            color: this._vAxisGridlinesColor
+            count: this.vAxisGridlinesCount(),
+            color: this.vAxisGridlinesColor()
         }
         retVal.vAxis.minorGridlines = {
-            count: this._vAxisMinorGridlinesCount,
-            color: this._vAxisMinorGridlinesColor
+            count: this.vAxisMinorGridlinesCount(),
+            color: this.vAxisMinorGridlinesColor()
         }        
-        retVal.vAxis.logScale = this._vAxisLogScale;
-        retVal.vAxis.textPosition = this._vAxisTextPosition;
-        retVal.vAxis.title = this._vAxisTitle;
-        retVal.vAxis.minValue = this._vAxisMinValue;
-        retVal.vAxis.maxValue = this._vAxisMaxValue;
+        retVal.vAxis.logScale = this.vAxisLogScale();
+        retVal.vAxis.textPosition = this.vAxisTextPosition();
+        retVal.vAxis.title = this.vAxisTitle();
+        retVal.vAxis.minValue = this.vAxisMinValue();
+        retVal.vAxis.maxValue = this.vAxisMaxValue();
         
-        retVal.vAxis.format = this._vAxisFormat;
+        retVal.vAxis.format = this.vAxisFormat();
         retVal.vAxis.textStyle = {
-            color: this._vAxisTextStyleColor,
-            fontName: this._vAxisTextStyleFontName,
-            fontSize: this._vAxisTextStyleFontSize
+            color: this.vAxisTextStyleColor(),
+            fontName: this.vAxisTextStyleFontName(),
+            fontSize: this.vAxisTextStyleFontSize()
         }
-        if (this._vAxisTicks.length > 0) {
-            retVal.vAxis.ticks = this._vAxisTicks;
+        if (this.vAxisTicks().length > 0) {
+            retVal.vAxis.ticks = this.vAxisTicks();
         }
         retVal.vAxis.titleTextStyle = {
-            color: this._vAxisTitleTextStyleColor,
-            fontName: this._vAxisTitleTextStyleFontName,
-            fontSize: this._vAxisTitleTextStyleFontSize
+            color: this.vAxisTitleTextStyleColor(),
+            fontName: this.vAxisTitleTextStyleFontName(),
+            fontSize: this.vAxisTitleTextStyleFontSize()
         }
-        retVal.vAxis.viewWindowMode = this._vAxisViewWindowMode;
+        retVal.vAxis.viewWindowMode = this.vAxisViewWindowMode();
         retVal.vAxis.viewWindow = {
-            min: this._vAxisViewWindowMin,
-            max: this._vAxisViewWindowMax
+            min: this.vAxisViewWindowMin(),
+            max: this.vAxisViewWindowMax()
         }        
         return retVal;
     };

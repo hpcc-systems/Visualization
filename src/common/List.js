@@ -64,7 +64,7 @@
                 var bbox = widget.getBBox();
                 widget
                     .pos({ x: 0, y: yPos + bbox.height / 2 })
-                    .anchor(context._anchor)
+                    .anchor(context.anchor())
                     .fixedSize({ width: listWidth, height: bbox.height })
                     .render()
                 ;

@@ -62,11 +62,11 @@
         ;
 
         var context = this;
-        var annotations = element.selectAll(".annotation").data(this._annotation_icons);
+        var annotations = element.selectAll(".annotation").data(this.annotation_icons());
         annotations.enter().append("g")
             .attr("class", "annotation")
             .each(function (d, idx) {
-                context._annotationWidgets[idx] = new Icon()
+                context.annotationWidgets()[idx] = new Icon()
                     .target(this)
                     .shape("square")
                 ;
@@ -76,10 +76,10 @@
         var yOffset = bbox.height / 2;
         annotations
             .each(function (d, idx) {
-                var annotationWidget = context._annotationWidgets[idx];
+                var annotationWidget = context.annotationWidgets()[idx];
                 var ddd = context.textbox_shape_color_stroke();
                 annotationWidget
-                    .diameter(context._annotation_diameter)
+                    .diameter(context.annotation_diameter())
                     .shape_color_fill(context.textbox_shape_color_fill())
                     .shape_color_stroke(context.textbox_shape_color_stroke())
                 ;
@@ -97,13 +97,13 @@
                         y: yOffset + aBBox.height / 4
                     })
                 ;
-                xOffset -= aBBox.width + context._annotation_spacing;
+                xOffset -= aBBox.width + context.annotation_spacing();
             })
         ;
         annotations.exit()
             .each(function (d, idx) {
                 var element = d3.select(this);
-                delete context._annotationWidgets[idx];
+                delete context.annotationWidgets()[idx];
                 element.remove();
             })
         ;

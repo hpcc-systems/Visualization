@@ -28,7 +28,7 @@
         this.layout = d3.layout.cluster();
 
         this.diagonal = d3.svg.diagonal()
-            .projection(function (d) { return context._orientation === "horizontal" ? [d.y, d.x] : [d.x, d.y]; })
+            .projection(function (d) { return context.orientation() === "horizontal" ? [d.y, d.x] : [d.x, d.y]; })
         ;
     };
 
@@ -36,12 +36,12 @@
         var context = this;
         SVGWidget.prototype.update.apply(this, arguments);
         
-        this._palette = this._palette.switch(this._paletteID);
+        this._palette = this._palette.switch(this.paletteID());
 
         //  Pad to allow text to display  ---
         this.x(this._maxTextWidth);
         var width = this.width() - this._maxTextWidth * 2;
-        if(this._orientation === "horizontal"){
+        if(this.orientation() === "horizontal"){
             this.layout
                 .size([this.height(), width])
             ;
@@ -79,7 +79,7 @@
 
         var maxTextWidth = 0;
         nodes
-            .attr("transform", function (d) { return context._orientation === "horizontal" ? "translate(" + d.y + "," + d.x + ")" : "translate(" + d.x + "," + d.y + ")";  })
+            .attr("transform", function (d) { return context.orientation() === "horizontal" ? "translate(" + d.y + "," + d.x + ")" : "translate(" + d.x + "," + d.y + ")";  })
         ;
         nodes.select("circle")
             .attr("r", 4.5)
@@ -89,7 +89,7 @@
         ;
         nodes.select("text")
             .style("text-anchor", function (d) { return d.children ? "end" : "start"; })
-            .attr("dx", function (d) { return d.children ? -context._textOffset : context._textOffset; })
+            .attr("dx", function (d) { return d.children ? -context.textOffset() : context.textOffset(); })
             .attr("dy", 3)
             .text(function (d) { return d.label; })
             .each(function (d) {
@@ -101,7 +101,7 @@
                 }
             })
         ;
-        maxTextWidth += this._textOffset;
+        maxTextWidth += this.textOffset();
 
         nodes.exit().remove();
 

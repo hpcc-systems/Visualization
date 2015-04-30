@@ -8,7 +8,6 @@
 }(this, function (SVGWidget, Icon, Shape, Text, FAChar, Menu) {
     function Surface() {
         SVGWidget.call(this);
-        this._class = "common_Surface";
 
         this._menuPadding = 2;
         this._icon = new Icon()
@@ -45,6 +44,7 @@
         this._content = null;
     };
     Surface.prototype = Object.create(SVGWidget.prototype);
+    Surface.prototype._class += " common_Surface";
 
     Surface.prototype.publish("show_title", true, "boolean", "Show Title");
     Surface.prototype.publish("title", "", "string", "Title");
@@ -73,21 +73,6 @@
     Surface.prototype.content = function (_) {
         if (!arguments.length) return this._content;
         this._content = _;
-        switch (this._content.class()) {
-            case "bar":
-                this.icon_faChar("\uf080")
-                break;
-            case "bubble":
-                this.icon_faChar("\uf192")
-                break;
-            case "pie":
-                this.icon_faChar("\uf200")
-                break;
-            case "table":
-                this.icon_faChar("\uf0ce")
-                break;
-        }
-
         return this;
     };
 
@@ -135,6 +120,7 @@
 
         this._icon
             .display(this.show_title() && this.show_icon())
+            .shape(this.icon_shape())
             .render()
         ;
         this._menu

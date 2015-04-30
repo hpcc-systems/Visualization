@@ -8,9 +8,9 @@
 }(this, function (SVGWidget) {
     function Shape() {
         SVGWidget.call(this);
-        this._class = "common_Shape";
     };
     Shape.prototype = Object.create(SVGWidget.prototype);
+    Shape.prototype._class += " common_Shape";
 
     Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"]);
     Shape.prototype.publish("width", 24, "number", "Width");

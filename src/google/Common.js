@@ -9,7 +9,6 @@
 
     function Common(tget) {
         HTMLWidget.call(this);
-        this._class = "google_Common";
 
         this._tag = "div";
 
@@ -20,6 +19,7 @@
         this._chart = null;
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
+    Common.prototype._class += " google_Common";
 
     Common.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width"); // num or string
     Common.prototype.publish("chartAreaHeight", "80%", "string", "Chart Area Height");

@@ -9,7 +9,6 @@
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
-        this._class = "chart_Pie";
 
         this._outerText = false;  //  Put label inside pie or outside (true/false)
         this._radius = 100;       // px
@@ -29,6 +28,7 @@
         ;
     };
     Pie.prototype = Object.create(SVGWidget.prototype);
+    Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch());

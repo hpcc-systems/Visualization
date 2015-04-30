@@ -8,11 +8,11 @@
 }(this, function (Column) {
     function Bar(target) {
         Column.call(this);
-        this._class = "c3chart_Bar";
 
         this._config.axis.rotated = true;
     };
     Bar.prototype = Object.create(Column.prototype);
+    Bar.prototype._class += " c3chart_Bar";
 
     return Bar;
 }));

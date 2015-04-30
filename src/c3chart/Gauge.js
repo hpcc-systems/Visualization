@@ -9,7 +9,6 @@
     function Gauge(target) {
         Common1D.call(this);
 
-        this._class = "c3chart_Gauge";
         this._type = "gauge";
 
         var context = this;
@@ -23,6 +22,7 @@
         };
     };
     Gauge.prototype = Object.create(Common1D.prototype);
+    Gauge.prototype._class += " c3chart_Gauge";
 
     Gauge.prototype.publish("low", 0, "number", "Gauge lower bound");
     Gauge.prototype.publish("high", 100, "number", "Gauge higher bound");

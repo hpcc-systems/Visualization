@@ -9,11 +9,11 @@
 
     function Pie() {
         Common2D.call(this);
-        this._class = "google_Pie";
 
         this._chartType = "PieChart";
     };
     Pie.prototype = Object.create(Common2D.prototype);
+    Pie.prototype._class += " google_Pie";
 
     Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
     Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size",null,{min:0,max:0.9,step:0.1});

@@ -10,9 +10,9 @@
     function CommonND() {
         Common.call(this);
         INDChart.call(this);
-        this._class = "google_CommonND";
     };
     CommonND.prototype = Object.create(Common.prototype);
+    CommonND.prototype._class += " google_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch());

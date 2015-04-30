@@ -9,9 +9,9 @@
     function Column(target) {
         XYAxis.call(this);
         I2DChart.call(this);
-        this._class = "chart_Column";
     };
     Column.prototype = Object.create(XYAxis.prototype);
+    Column.prototype._class += " chart_Column";
     Column.prototype.implements(I2DChart.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch());

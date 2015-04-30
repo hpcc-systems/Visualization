@@ -9,7 +9,6 @@
     function Slider() {
         SVGWidget.call(this);
         ISlider.call(this);
-        this._class = "other_Slider";
 
         this.selectionLabel("");
 
@@ -37,6 +36,7 @@
         ;
     };
     Slider.prototype = Object.create(SVGWidget.prototype);
+    Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(ISlider.prototype);
 
     Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");

@@ -8,7 +8,6 @@
 }(this, function (d3, SVGWidget, TextBox) {
     function Edge() {
         SVGWidget.call(this);
-        this._class = "graph_Edge";
 
         this._points = [];
         this._weight = 100;
@@ -20,6 +19,7 @@
         ;
     };
     Edge.prototype = Object.create(SVGWidget.prototype);
+    Edge.prototype._class += " graph_Edge";
 
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;

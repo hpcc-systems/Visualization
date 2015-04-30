@@ -8,11 +8,11 @@
 }(this, function (CommonND) {
     function Line(target) {
         CommonND.call(this);
-        this._class = "c3chart_Line";
 
         this._type = "line";
     };
     Line.prototype = Object.create(CommonND.prototype);
+    Line.prototype._class += " c3chart_Line";
 
     Line.prototype.publish("lineWidth", 1.0, "number", "LineWidth");
     Line.prototype.publish("dashedLine", [], "array", "Dashed Lines");

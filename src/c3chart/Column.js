@@ -8,14 +8,13 @@
 }(this, function (CommonND) {
     function Column(target) {
         CommonND.call(this);
-        this._class = "c3chart_Column";
 
         this._type = "bar";
     };
     Column.prototype = Object.create(CommonND.prototype);
+    Column.prototype._class += " c3chart_Column";
     
     Column.prototype.publish("isStacked", false, "boolean", "Stack BarChart");
-
     Column.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this,arguments);
     }

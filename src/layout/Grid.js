@@ -8,13 +8,13 @@
 }(this, function (HTMLWidget, Cell, Text, Pie, MultiChart, Line) {
     function Grid() {
         HTMLWidget.call(this);
-        this._class = "layout_Grid";
 
         this._tag = "div";
 
         this.content([]);
     };
     Grid.prototype = Object.create(HTMLWidget.prototype);
+    Grid.prototype._class += " layout_Grid";
 
     Grid.prototype.publish("designMode", false, "boolean", "Design Mode");
     Grid.prototype.publish("gutter", 4, "number", "Gap Between Widgets");

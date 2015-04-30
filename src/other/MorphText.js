@@ -8,13 +8,13 @@
 }(this, function (SVGWidget) {
     function MorphText() {
         SVGWidget.call(this);
-        this._class = "other_MorphText";
 
         this._text = "";
         this._anchor = "middle";
         this._reverse = false;
     };
     MorphText.prototype = Object.create(SVGWidget.prototype);
+    MorphText.prototype._class += " other_MorphText";
 
     MorphText.prototype.text = function (_) {
         if (!arguments.length) return this._text;

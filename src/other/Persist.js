@@ -7,22 +7,25 @@
     }
 }(this, function (require) {
     return {
-        discover: function (widget, includePrivate) {
+        discover: function (widget) {
             var retVal = [];
+            var isPrototype = widget._id === undefined;
             for (var key in widget) {
                 if (key.indexOf("__meta_") >= 0) {
                     var item = widget;
                     var meta = item[key];
-                    if (meta.type || includePrivate) {
-                        while (meta.type === "proxy") {
-                            item = item[meta.proxy];
-                            meta = item["__meta_" + meta.method];
+                    if (meta.type) {
+                        if (!(isPrototype && meta.type === "proxy")) {
+                            while (meta.type === "proxy") {
+                                item = item[meta.proxy];
+                                meta = item["__meta_" + meta.method];
+                            }
+                            if (meta.id !== widget[key].id) {
+                                meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                                meta.id = widget[key].id;
+                            }
+                            retVal.push(meta);
                         }
-                        if (meta.id !== widget[key].id) {
-                            meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                            meta.id = widget[key].id;
-                        }
-                        retVal.push(meta);
                     }
                 }
             }
@@ -30,6 +33,7 @@
         },
 
         serializeToObject: function (widget, properties, includeData) {
+            var isPrototype = widget._id === undefined;
             var retVal = {
                 __version: 3,
                 __class: widget._class,
@@ -43,7 +47,7 @@
                     }
                 });
             } else {
-                this.discover(widget, true).forEach(function (item) {
+                this.discover(widget).forEach(function (item) {
                     if (widget[item.id + "_modified"]()) {
                         switch (item.type) {
                             case "widget":

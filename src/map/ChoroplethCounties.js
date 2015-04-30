@@ -8,11 +8,11 @@
 }(this, function (d3, Choropleth, topojson, usCounties) {
     function ChoroplethCounties() {
         Choropleth.call(this);
-        this._class = "map_ChoroplethCounties";
 
         this.projection("albersUsaPr");
     };
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
+    ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
 
     ChoroplethCounties.prototype.testData = function () {
         var rawData = [

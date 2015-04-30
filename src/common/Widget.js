@@ -26,8 +26,8 @@
     var widgetID = 0;
     var widgetMeta = {};
     function Widget() {
+        this._class = this.__proto__._class;
         this._id = "_w" + widgetID++;
-        this._class = "";
 
         this._columns = [];
         this._data = [];
@@ -45,6 +45,8 @@
 
         this._renderCount = 0;
     };
+    Widget.prototype._class = " common_Widget";
+
     Widget.prototype.ieVersion = (function () {
         var ua = navigator.userAgent, tem,
             M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -151,8 +153,9 @@
             ext: ext || {}
         }
         this[id] = function (_) {
+            var isPrototype = this._id === undefined;
             if (!arguments.length) {
-                return this._id !== undefined && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
+                return !isPrototype && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
             }
             switch (type) {
                 case "set":
@@ -185,15 +188,19 @@
                     }
                     break;
             }
-            if (this._id !== undefined) {
+            if (isPrototype) {
+                this["__meta_" + id].defaultValue = _;
+            } else {
                 this.broadcast(id, _, this["__prop_" + id]);
                 this["__prop_" + id] = _;
-            } else {
-                this["__meta_" + id].defaultValue = _;
             }
             return this;
         };
         this[id + "_modified"] = function () {
+            var isPrototype = this._id === undefined;
+            if (isPrototype) {
+                return this["__meta_" + id].defaultValue !== defaultValue;
+            }
             return this["__prop_" + id] !== undefined;
         }
         this[id + "_reset"] = function () {
@@ -224,6 +231,10 @@
             defaultValue: defaultValue
         }
         this[id] = function (_) {
+            var isPrototype = this._id === undefined;
+            if (isPrototype) {
+                throw "Setting default value of proxied properties is not supported."
+            }
             if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
             if (defaultValue && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
@@ -233,9 +244,17 @@
             return this;
         };
         this[id + "_modified"] = function (_) {
+            var isPrototype = this._id === undefined;
+            if (isPrototype) {
+                throw "Setting default values of proxied properties is not supported."
+            }
             return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
         }
         this[id + "_reset"] = function () {
+            var isPrototype = this._id === undefined;
+            if (isPrototype) {
+                throw "Setting default values of proxied properties is not supported."
+            }
             this[proxy][method + "_reset"]();
         }
     };

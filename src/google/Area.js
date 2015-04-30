@@ -9,12 +9,12 @@
 
     function Area() {
         CommonND.call(this);
-        this._class = "google_Area";
 
         this._chartType = "AreaChart";
     };
     Area.prototype = Object.create(CommonND.prototype);
-    
+    Area.prototype._class += " google_Area";
+
     Area.prototype.publish("areaOpacity", null, "number", "Opacity of Area under line");
     Area.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series");
 

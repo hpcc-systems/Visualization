@@ -9,9 +9,9 @@
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
-        this._class = "other_WordCloud";
     };
     WordCloud.prototype = Object.create(SVGWidget.prototype);
+    WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
 
     WordCloud.prototype.publish("padding", 1, "number", "Padding");

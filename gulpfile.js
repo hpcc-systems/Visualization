@@ -96,22 +96,21 @@ function getJSFiles(dir, prefix) {
     return retVal;
 }
 
+const excludeShallow = ["src/map/us-counties", "src/map/us-states", "src/map/countries"];
 var amd_bundles = {};
-var amd_modules = bundles.map(function (bundle, idx) {
+const amd_modules = bundles.map(function (bundle, idx) {
     var name = "hpcc-" + bundle;
-    var include = [];
-    var excludeShallow = ["css!font-awesome", "src/map/us-counties", "src/map/us-states", "src/map/countries"];
+    var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
     switch (bundle) {
         case "common":
-            include = ["d3", "d3.layout.cloud"];
+            include = ["d3", "d3.layout.cloud"].concat(include);
             break;
     }
-    include = include.concat(getJSFiles("src/" + bundle, "src").filter(function(item) {return excludeShallow.indexOf(item) < 0; }));
     amd_bundles["src/" + name] = include;
-    return module = {
+    return {
         name: name,
         include: include,
-        exclude: bundles.filter(function (bundle2, idx2) { return bundle2 !== bundle && idx2 < idx }).map(function (bundle) { return "hpcc-" + bundle }),
+        exclude: ["hpcc-viz", "css!font-awesome"].concat(bundles.filter(function (bundle2, idx2) { return bundle2 !== bundle && idx2 < idx }).map(function (bundle) { return "hpcc-" + bundle })),
         excludeShallow: excludeShallow,
         create: true
     };
@@ -122,25 +121,7 @@ gulp.task("amd_bundles_src", function (done) {
         baseUrl: ".",
         appDir: "src",
         dir: "dist/amd",
-        paths: {
-            "requireLib": '../bower_components/requirejs/require',
-            'css': '../bower_components/require-css/css',
-            'css-builder': '../bower_components/require-css/css-builder',
-            'normalize': '../bower_components/require-css/normalize',
-            'async': '../bower_components/requirejs-plugins/src/async',
-            'propertyParser': '../bower_components/requirejs-plugins/src/propertyParser',
-            'goog': '../bower_components/requirejs-plugins/src/goog',
-
-            'c3': '../bower_components/c3/c3',
-            'd3': '../bower_components/d3/d3',
-            'dagre': '../bower_components/dagre/index',
-            'topojson': '../bower_components/topojson/topojson',
-            'colorbrewer': '../bower_components/colorbrewer/colorbrewer',
-            'd3.layout.cloud': '../bower_components/d3-cloud/d3.layout.cloud',
-            'font-awesome': '../bower_components/font-awesome/css/font-awesome',
-
-            "src": "../src"
-        },
+        mainConfigFile: "src/config.js",
         modules: [{
             name: "hpcc-viz",
             include: ["requireLib", "css", "normalize"],

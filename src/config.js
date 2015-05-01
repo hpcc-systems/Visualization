@@ -16,8 +16,60 @@ require.config({
         "colorbrewer": "../bower_components/colorbrewer/colorbrewer",
         "d3.layout.cloud": "../bower_components/d3-cloud/d3.layout.cloud",
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
+        "amcharts": "../bower_components/amcharts/dist/amcharts/amcharts",
+        "amcharts.funnel": "../bower_components/amcharts/dist/amcharts/funnel",
+        "amcharts.gauge": "../bower_components/amcharts/dist/amcharts/gauge",
+        "amcharts.pie": "../bower_components/amcharts/dist/amcharts/pie",
+        "amcharts.radar": "../bower_components/amcharts/dist/amcharts/radar",
+        "amcharts.serial": "../bower_components/amcharts/dist/amcharts/serial",
+        "amcharts.xy": "../bower_components/amcharts/dist/amcharts/xy",
+        "amcharts.plugins.responsive": "../bower_components/amcharts/dist/amcharts/plugins/responsive/responsive",
 
         "src": "../src"
+    },
+    shim: {
+        "amcharts.funnel": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.gauge": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.pie": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.radar": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.serial": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        "amcharts.xy": {
+            deps: ["amcharts"],
+            exports: "AmCharts",
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        }
     }
 });
 
@@ -38,6 +90,15 @@ if (window.location.hostname === "rawgit.com") {
             "colorbrewer": "http://rawgit.com/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3.layout.cloud": "http://rawgit.com/jasondavies/d3-cloud/v1.0.5/d3.layout.cloud",
             "font-awesome": "http://rawgit.com/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
+            "amcharts": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/amcharts",
+            "amcharts.funnel": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/funnel",
+            "amcharts.gauge": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/gauge",
+            "amcharts.pie": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/pie",
+            "amcharts.radar": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/radar",
+            "amcharts.serial": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/serial",
+            "amcharts.xy": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/xy",
+            "amcharts.plugins.responsive": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/responsive/responsive",
+            "amcharts.plugins.dataloader": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader",
 
             "src": "../src"
         }

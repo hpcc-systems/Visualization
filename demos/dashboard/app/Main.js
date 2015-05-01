@@ -95,7 +95,7 @@ define([
 
             var context = this;
             var graph = new GraphMarshaller()
-                .ddl_url(this.url.value)
+                .ddlUrl(this.url.value)
             ;
             context.graphWidgets["???"] = {
                 graph: graph,

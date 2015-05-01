@@ -34,7 +34,7 @@
         return this;
     };
     
-    Table.prototype.publish("pagination", true, "boolean", "enable or disable pagination");
+    Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination");
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -132,10 +132,8 @@
 
     
     Table.prototype.exit = function (domNode, element) {
-        this.thead.remove();
-        this.tbody.remove();
-        this.table.remove();
         this._paginator.target(null);
+        HTMLWidget.prototype.exit.apply(this, arguments);
     };
     
 

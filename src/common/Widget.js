@@ -601,7 +601,7 @@
     //  Util  ---
     Widget.prototype.debounce = function (func, threshold, execAsap) {
         return function debounced() {
-            var obj = this, args = arguments;
+            var obj = this || {}, args = arguments;
             function delayed() {
                 if (!execAsap)
                     func.apply(obj, args);

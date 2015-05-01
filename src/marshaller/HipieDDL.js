@@ -634,6 +634,12 @@
             } else if (exists(from, lowerResponse)) {// && exists(from + "_changed", lowerResponse) && lowerResponse[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"]) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
                 this.outputs[key].setData(lowerResponse[from], request, updates);
+            } else {
+                var responseItems = [];
+                for (var key in response) {
+                    responseItems.push(key);
+                }
+                console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
     };

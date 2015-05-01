@@ -713,14 +713,16 @@
         return this;
     };
 
+    HIPIEDatabomb.prototype.databombOutput = function (_) {
+        if (!arguments.length) return undefined;
+        this._resultNameCacheCount++;
+        this._resultNameCache[_] = this._databomb;
+        return this;
+    };
+
     HIPIEDatabomb.prototype.fetchResults = function (callback) {
         var context = this;
         setTimeout(function () {
-            context._resultNameCacheCount = 0;
-            context._resultNameCache = context._databomb;
-            for (var key in context._databomb) {
-                context._resultNameCacheCount++;
-            }
             callback(context._resultNameCache);
         }, 0);
     };

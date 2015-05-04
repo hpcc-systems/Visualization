@@ -97,7 +97,7 @@
         }
 
         var context = this;
-        var path = "../" + this._allCharts[chartType].widgetClass.split("_").join("/");
+        var path = "src/" + this._allCharts[chartType].widgetClass.split("_").join("/");
         require([path], function (widgetClass) {
             retVal = new widgetClass();
             context._allCharts[chartType].widget = retVal;

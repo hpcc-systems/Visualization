@@ -39,6 +39,7 @@
     Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size");
     Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold");
     Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic");
+    //TODO CHANGE legend fontbold/italic to style and make it a dropdown
 
     Common.prototype.publish("animationDuration", 0, "number", "Animation Duration");
     Common.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup");

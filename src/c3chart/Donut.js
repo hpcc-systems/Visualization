@@ -48,7 +48,13 @@
         this.c3Chart.load({
             columns: data
         });
+        
+        this.updateStyles.call(this,element);
     };
+
+    Donut.prototype.updateStyles = function(element) {
+        Common2D.prototype.updateStyles.call(this,element);
+    }
 
     return Donut;
 }));

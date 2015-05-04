@@ -13,6 +13,10 @@
         this._type = "scatter";
     };
     Scatter.prototype = Object.create(CommonND.prototype);
-
+    
+    Scatter.prototype.update = function(domNode, element) {
+        CommonND.prototype.update.apply(this,arguments);
+    }
+    
     return Scatter;
 }));

@@ -14,13 +14,22 @@
             overflow:hidden;
         }
     </style>
-    <script src="../widgets/lib/requirejs/require.js"></script>
-    <script src="../widgets/config.js"></script>
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="../src/config.js"></script>
+    <!--  Uncomment to develop
+    -->
+    <!--  Uncomment to test build
+    <script src="../dist/amd/hpcc-viz.js"></script>
+    <script src="../dist/amd/hpcc-bundles.js"></script>
     <script>
-        requirejs.config({
-            baseUrl: "../widgets"
+        require.config({
+            paths: {
+                "src": "../dist/amd",
+                "font-awesome": "../dist/amd/font-awesome/css/font-awesome.min"
+            }
         });
     </script>
+    -->
 </head>
 <body onresize="doResize();">
     <header>
@@ -39,15 +48,15 @@
                             <option value="src/common/List">List</option>
                             <option value="src/common/Menu">Menu</option>
                             <option value="src/common/Surface">Surface</option>
-                            <option value="src/c3/Area">C3 Area</option>
-                            <option value="src/c3/Bar">C3 Bar</option>
-                            <option value="src/c3/Column">C3 Column</option>
-                            <option value="src/c3/Line">C3 Line</option>
-                            <option value="src/c3/Scatter">C3 Scatter</option>
-                            <option value="src/c3/Step">C3 Step</option>
-                            <option value="src/c3/Pie">C3 Pie</option>
-                            <option value="src/c3/Donut">C3 Donut</option>
-                            <option value="src/c3/Gauge">C3 Gauge</option>
+                            <option value="src/c3chart/Area">C3 Area</option>
+                            <option value="src/c3chart/Bar">C3 Bar</option>
+                            <option value="src/c3chart/Column">C3 Column</option>
+                            <option value="src/c3chart/Line">C3 Line</option>
+                            <option value="src/c3chart/Scatter">C3 Scatter</option>
+                            <option value="src/c3chart/Step">C3 Step</option>
+                            <option value="src/c3chart/Pie">C3 Pie</option>
+                            <option value="src/c3chart/Donut">C3 Donut</option>
+                            <option value="src/c3chart/Gauge">C3 Gauge</option>
                             <option value="src/google/Pie">Google Pie</option>
                             <option value="src/google/Bar">Google Bar</option>
                             <option value="src/google/Column">Google Column</option>
@@ -68,9 +77,21 @@
                             <option value="src/graph/Vertex">Graph Vertex</option>
                             <option value="src/other/Table">Table</option>
                             <option value="src/marshaller/HTML">HTML Marshaller</option>
+                            <option value="src/marshaller/Graph">Graph Marshaller</option>
                             <option value="src/layout/Surface">Surface Layout</option>
                             <option value="src/layout/Cell">Cell Layout</option>
                             <option value="src/layout/Grid">Grid Layout</option>
+                            <option value="src/amchart/Area">AmChart Area</option>
+                            <option value="src/amchart/Bar">AmChart Bar</option>
+                            <option value="src/amchart/Bubble">AmChart Bubble</option>
+                            <option value="src/amchart/Candle">AmChart Candle</option>
+                            <option value="src/amchart/Funnel">AmChart Funnel</option>
+                            <option value="src/amchart/Gauge">AmChart Gauge</option>
+                            <option value="src/amchart/Line">AmChart Line</option>
+                            <option value="src/amchart/Pie">AmChart Pie</option>
+                            <option value="src/amchart/Polar">AmChart Polar</option>
+                            <option value="src/amchart/Pyramid">AmChart Pyramid</option>
+                            <option value="src/amchart/Scatter">AmChart Scatter</option>
                         </select>
                     </li>
                     <li>
@@ -106,9 +127,9 @@
         var showProperties = null;
         var debouncedResize = null;
 
-        require(["lodash/lodash", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (_, Surface, Grid, Persist, PropertyEditor) {
+        require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
             var propEditor = new PropertyEditor().show_columns(false).show_data(false);
-            propEditor.onChange =  _.debounce(function (widget, propID) {
+            propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {
                 } else {
@@ -220,7 +241,7 @@
                     .render()
                 ;
             };
-            debouncedResize = _.debounce(function () {
+            debouncedResize = Surface.prototype.debounce(function () {
                 resize();
             }, 250);
             resize();

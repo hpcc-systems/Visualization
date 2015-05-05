@@ -173,8 +173,8 @@
                         }
                     }
 
-                    item.onSelect.getUpdatesVisualizations().forEach(function (vizItem) {
-                        addEdge(curr, item.getQualifiedID(), vizItem.getQualifiedID(), undefined, "arrowHead", "on Select");
+                    item.events.getUpdates().forEach(function (updates) {
+                        addEdge(curr, item.getQualifiedID(), updates.visualization.getQualifiedID(), undefined, "arrowHead", "on " + updates.eventID);
                     });
                 }
             }

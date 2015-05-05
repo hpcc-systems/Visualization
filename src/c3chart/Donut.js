@@ -49,7 +49,7 @@
             columns: data
         });
         
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     };
 
     Donut.prototype.updateStyles = function(element) {

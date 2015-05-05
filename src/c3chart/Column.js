@@ -30,7 +30,7 @@
 
         CommonND.prototype.update.apply(this, arguments);
 
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     }
     
     Donut.prototype.updateStyles = function(element) {

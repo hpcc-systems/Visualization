@@ -24,7 +24,7 @@
     
     Line.prototype.update = function (domNode, element) {      
         CommonND.prototype.update.apply(this, arguments);
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     }
     
     Line.prototype.updateStyles = function(element) {

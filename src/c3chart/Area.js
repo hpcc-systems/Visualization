@@ -32,7 +32,7 @@
         }
 
         CommonND.prototype.update.apply(this, arguments);
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     }
     
     Area.prototype.updateStyles = function(element) {

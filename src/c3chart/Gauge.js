@@ -44,7 +44,7 @@
             columns: [[this._columns, this._data]]
         });
 
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     };
 
     Gauge.prototype.updateStyles = function(element) {

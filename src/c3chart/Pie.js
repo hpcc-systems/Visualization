@@ -23,7 +23,7 @@
         this.c3Chart.load({
             columns: data
         });
-        this.updateStyles.call(this,element);
+        this.updateStyles(element);
     };
     
     Pie.prototype.updateStyles = function(element) {

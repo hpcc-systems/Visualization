@@ -13,6 +13,29 @@
         this._type = "bar";
     };
     Column.prototype = Object.create(CommonND.prototype);
+    
+    Column.prototype.publish("isStacked", false, "boolean", "Stack BarChart");
+
+    Column.prototype.enter = function (domNode, element) {
+        CommonND.prototype.enter.apply(this,arguments);
+    }
+
+    Column.prototype.update = function (domNode, element) {
+
+        if (this.isStacked()) {
+            this.c3Chart.groups([this._columns.slice(1,this._columns.length)]);
+        } else {
+            this.c3Chart.groups([]);
+        }
+
+        CommonND.prototype.update.apply(this, arguments);
+
+        this.updateStyles(element);
+    }
+    
+    Donut.prototype.updateStyles = function(element) {
+        CommonND.prototype.updateStyles.call(this,element);
+    }
 
     return Column;
 }));

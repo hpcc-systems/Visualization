@@ -33,5 +33,9 @@
         this._palette = this._palette.switch(this.paletteID());
     };
 
+    Common1D.prototype.updateStyles = function(element) {
+        Common.prototype.updateStyles.call(this,element);
+    }
+
     return Common1D;
 }));

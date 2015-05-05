@@ -43,7 +43,13 @@
         this.c3Chart.load({
             columns: [[this._columns, this._data]]
         });
+
+        this.updateStyles(element);
     };
+
+    Gauge.prototype.updateStyles = function(element) {
+        Common1D.prototype.updateStyles.call(this,element);
+    }
 
     return Gauge;
 }));

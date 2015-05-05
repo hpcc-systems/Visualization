@@ -23,7 +23,12 @@
         this.c3Chart.load({
             columns: data
         });
+        this.updateStyles(element);
     };
+    
+    Pie.prototype.updateStyles = function(element) {
+        Common2D.prototype.updateStyles.call(this,element);
+    }
 
     return Pie;
 }));

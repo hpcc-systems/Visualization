@@ -25,6 +25,7 @@
                 rows: []
             }
         };
+        this._c3LoadDataObj = {};
     };
     Common.prototype = Object.create(HTMLWidget.prototype);
 
@@ -109,19 +110,45 @@
             height: this.height()
         });
 
-    };
-    
-    Common.prototype.updateStyles = function(element) {
-        this.updateStyle(element,".c3 svg","font-size",this.fontSize()+"px");
-        this.updateStyle(element,".c3 svg text","font-family",this.fontName());
+        this.c3Chart.load(this._c3LoadDataObj);
 
-        this.updateStyle(element,".c3 .c3-legend-item text","fill",this.legendFontColor());
-        this.updateStyle(element,".c3-legend-item","font-size",this.legendFontSize()+"px");
-    }
+        var chartOptions = this.getChartOptions();
+        for (var opt in chartOptions) {
+            this.updateStyle(element,chartOptions[opt].selector,chartOptions[opt].property,chartOptions[opt].value);
+        }
+
+    };
 
     Common.prototype.updateStyle = function(element,selector,property,value) {
         element.selectAll(selector).style(property,value);
     }
+
+    Common.prototype.getChartOptions = function (domNode, element) {
+        var chartOptions = {};
+
+        chartOptions.fontSize = {
+            selector: ".c3 svg",
+            property: "font-size",
+            value: this.fontSize()+"px"
+        }
+        chartOptions.fontName = {
+            selector: ".c3 svg text",
+            property: "font-family",
+            value: this.fontName()
+        }
+        chartOptions.legendFontColor = {
+            selector: ".c3 .c3-legend-item text",
+            property: "fill",
+            value: this.legendFontColor()
+        }
+        chartOptions.legendFontSize = {
+            selector: ".c3 .c3-legend-item",
+            property: "font-size",
+            value: this.legendFontSize()+"px"
+        }
+
+        return chartOptions;
+    };
 
     return Common;
 }));

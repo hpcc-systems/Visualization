@@ -74,31 +74,43 @@
     };
 
     CommonND.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
         this._palette = this._palette.switch(this.paletteID());
 
         switch (this.xaxis_type()) {
             case "category":
-                this.c3Chart.load({
+                this._c3LoadDataObj = {
                     categories: this.getC3Categories(),
                     columns: this.getC3Columns(),
                     unload: this.getDiffC3Columns()
-                });
+                };
                 break;
             case "indexed":
             case "timeseries":
-                this.c3Chart.load({
+                this._c3LoadDataObj = {
                     columns: this.getC3Columns(),
-                    unload: this.getDiffC3Columns(),
-                });
+                    unload: this.getDiffC3Columns()
+                };
                 break;
         }
+
+        Common.prototype.update.apply(this, arguments);
     };
 
-    CommonND.prototype.updateStyles = function(element) {
-        Common.prototype.updateStyles.call(this,element);
-        this.updateStyle(element,".c3 .c3-axis text","fill",this.fontColor());
-        this.updateStyle(element,".c3 .c3-axis path","stroke-width",this.axisLineWidth()+"px");
+    CommonND.prototype.getChartOptions = function () {
+        var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
+        
+        chartOptions.fontColor = {
+            selector: ".c3 .c3-axis text",
+            property: "fill",
+            value: this.fontColor()
+        }
+        chartOptions.axisLineWidth = {
+            selector: ".c3 .c3-axis path",
+            property: "stroke-width",
+            value: this.axisLineWidth()+"px"
+        }
+        
+        return chartOptions;
     }
 
     return CommonND;

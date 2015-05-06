@@ -29,12 +29,11 @@
         }
 
         CommonND.prototype.update.apply(this, arguments);
-
-        this.updateStyles(element);
     }
-    
-    Donut.prototype.updateStyles = function(element) {
-        CommonND.prototype.updateStyles.call(this,element);
+
+    Column.prototype.getChartOptions = function () {
+        var chartOptions = CommonND.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
     }
 
     return Column;

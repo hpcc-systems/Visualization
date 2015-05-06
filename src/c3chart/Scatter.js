@@ -16,11 +16,11 @@
     
     Scatter.prototype.update = function(domNode, element) {
         CommonND.prototype.update.apply(this,arguments);
-        this.updateStyles(element);
     }
 
-    Scatter.prototype.updateStyles = function(element) {
-        CommonND.prototype.updateStyles.call(this,element);
+    Scatter.prototype.getChartOptions = function () {
+        var chartOptions = CommonND.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
     }
     
     return Scatter;

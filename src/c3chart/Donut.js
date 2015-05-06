@@ -48,12 +48,11 @@
         this.c3Chart.load({
             columns: data
         });
-        
-        this.updateStyles(element);
     };
 
-    Donut.prototype.updateStyles = function(element) {
-        Common2D.prototype.updateStyles.call(this,element);
+    Donut.prototype.getChartOptions = function () {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
     }
 
     return Donut;

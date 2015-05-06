@@ -24,15 +24,30 @@
     
     Line.prototype.update = function (domNode, element) {      
         CommonND.prototype.update.apply(this, arguments);
-        this.updateStyles(element);
     }
     
-    Line.prototype.updateStyles = function(element) {
-        CommonND.prototype.updateStyles.call(this,element);
-        this.updateStyle(element,".c3-line","stroke-width",this.lineWidth()+"px");
-        this.updateStyle(element,".c3-line","stroke-opacity",this.lineOpacity());
-        this.updateStyle(element,".c3-line","stroke-dasharray",this.dashedLine().toString());
+    Line.prototype.getChartOptions = function () {
+        var chartOptions = CommonND.prototype.getChartOptions.apply(this, arguments);
+
+        chartOptions.lineWidth = {
+            selector: ".c3-line",
+            property: "stroke-width",
+            value: this.lineWidth()+"px"
+        }
+        chartOptions.lineOpacity = {
+            selector: ".c3-line",
+            property: "stroke-opacity",
+            value: this.lineOpacity()
+        }
+        chartOptions.dashedLine = {
+            selector: ".c3-line",
+            property: "stroke-dasharray",
+            value: this.dashedLine().toString()
+        }
+        
+        return chartOptions;
     }
+
 
     return Line;
 }));

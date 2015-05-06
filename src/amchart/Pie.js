@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart"], factory);
     } else {
-        root.amcharts_Pie = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I2DChart);
+        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I2DChart);
     }
 }(this, function(d3, HTMLWidget, AmCharts, I2DChart) {
     function Pie() {
         HTMLWidget.call(this);
-        this._class = "amcharts_Pie";
+        this._class = "amchart_Pie";
         this._tag = "div";
 
         this._chart = {};

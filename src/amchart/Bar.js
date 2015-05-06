@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "css!./Bar"], factory);
     } else {
-        root.amcharts_Bar = factory(root.d3, root.amcharts_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_Bar = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function Bar() {
         CommonSerial.call(this);
-        this._class = "amcharts_Bar";
+        this._class = "amchart_Bar";
         this._tag = "div";
         
         this._gType = "column";

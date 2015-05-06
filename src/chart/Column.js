@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./XYAxis", "../api/I2DChart", "css!./Column"], factory);
     } else {
-        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.chart_I2DChart);
+        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.api_I2DChart);
     }
 }(this, function (d3, XYAxis, I2DChart) {
     function Column(target) {

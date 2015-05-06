@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart"], factory);
     } else {
-        root.amcharts_FloatingColumn = factory(root.d3, root.amcharts_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_FloatingColumn = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function FloatingColumn() {
         CommonSerial.call(this);
-        this._class = "amcharts_FloatingColumn";
+        this._class = "amchart_FloatingColumn";
         this._tag = "div";
         
         this._gType = "column";

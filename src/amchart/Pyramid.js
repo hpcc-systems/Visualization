@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonFunnel", "amcharts.funnel", "../api/I2DChart"], factory);
     } else {
-        root.amcharts_Pyramid = factory(root.d3, root.amcharts_CommonFunnel, root.amcharts, root.api_I2DChart);
+        root.amchart_Pyramid = factory(root.d3, root.amchart_CommonFunnel, root.amcharts, root.api_I2DChart);
     }
 }(this, function(d3, CommonFunnel, AmCharts, I2DChart) {
     function Pyramid() {
         CommonFunnel.call(this);
-        this._class = "amcharts_Pyramid";
+        this._class = "amchart_Pyramid";
         this._tag = "div";
     };
     

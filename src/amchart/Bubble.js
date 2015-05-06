@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonXY", "amcharts.xy", "../api/INDChart", "css!./Bar"], factory);
     } else {
-        root.amcharts_Bubble = factory(root.d3, root.amcharts_CommonXY, root.amcharts, root.api_INDChart);
+        root.amchart_Bubble = factory(root.d3, root.amchart_CommonXY, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonXY, AmCharts, INDChart) {
     function Bubble() {
         CommonXY.call(this);
-        this._class = "amcharts_Bubble";
+        this._class = "amchart_Bubble";
         this._tag = "div";
         
         this._type = "Bubble";

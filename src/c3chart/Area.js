@@ -14,7 +14,7 @@
     };
     Area.prototype = Object.create(CommonND.prototype);
     
-    Area.prototype.publish("isStacked", false, "boolean", "Show SubChart");
+    Area.prototype.publish("isStacked", false, "boolean", "Stack Chart");
     Area.prototype.publish("lineWidth", 1.0, "number", "LineWidth");
     Area.prototype.publish("dashedLine", [5,5], "array", "Dashed Lines");
     Area.prototype.publish("lineOpacity", 1.0, "number", "LineWidth");

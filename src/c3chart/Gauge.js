@@ -40,10 +40,15 @@
         this.c3Chart.internal.config.gauge_width = this.arc_width();
         this.c3Chart.internal.config.gauge_label_format = this.value_format() === "Percent" ? null : function (value, ratio) { return value; };
         this.c3Chart.internal.config.gauge_label_show = this.show_labels();
-        this.c3Chart.load({
-            columns: [[this._columns, this._data]]
-        });
     };
+
+    Gauge.prototype.getChartOptions = function() {
+        var chartOptions = Common1D.prototype.getChartOptions.apply(this, arguments);
+
+        chartOptions.columns = [[this._columns, this._data]];
+
+        return chartOptions;
+    }
 
     return Gauge;
 }));

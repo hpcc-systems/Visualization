@@ -30,6 +30,7 @@
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch());
     CommonND.prototype.publish("xaxis_type", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"]);
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart");
+    CommonND.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width");
 
     CommonND.prototype.getDiffC3Columns = function () {
         return this._prevColumns.filter(function (i) { return this._columns.indexOf(i) < 0; }, this);
@@ -74,26 +75,30 @@
 
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
-
         this._palette = this._palette.switch(this.paletteID());
+
+        element.selectAll(".c3 .c3-axis text").style({ "fill": this.fontColor() });
+        element.selectAll(".c3 .c3-axis path").style({ "stroke-width": this.axisLineWidth()+"px" });
+    };
+
+    CommonND.prototype.getChartOptions = function() {
+        var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
 
         switch (this.xaxis_type()) {
             case "category":
-                this.c3Chart.load({
-                    categories: this.getC3Categories(),
-                    columns: this.getC3Columns(),
-                    unload: this.getDiffC3Columns()
-                });
+                chartOptions.categories = this.getC3Categories();
+                chartOptions.columns = this.getC3Columns();
+                chartOptions.unload = this.getDiffC3Columns()
                 break;
             case "indexed":
             case "timeseries":
-                this.c3Chart.load({
-                    columns: this.getC3Columns(),
-                    unload: this.getDiffC3Columns()
-                });
+                chartOptions.columns = this.getC3Columns();
+                chartOptions.unload =  this.getDiffC3Columns();
                 break;
         }
-    };
+
+        return chartOptions;
+    }
 
     return CommonND;
 }));

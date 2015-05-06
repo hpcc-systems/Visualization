@@ -30,6 +30,7 @@
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch());
     CommonND.prototype.publish("xaxis_type", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"]);
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart");
+    CommonND.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width");
 
     CommonND.prototype.getDiffC3Columns = function () {
         return this._prevColumns.filter(function (i) { return this._columns.indexOf(i) < 0; }, this);
@@ -73,27 +74,44 @@
     };
 
     CommonND.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
-
         this._palette = this._palette.switch(this.paletteID());
 
         switch (this.xaxis_type()) {
             case "category":
-                this.c3Chart.load({
+                this._c3LoadDataObj = {
                     categories: this.getC3Categories(),
                     columns: this.getC3Columns(),
                     unload: this.getDiffC3Columns()
-                });
+                };
                 break;
             case "indexed":
             case "timeseries":
-                this.c3Chart.load({
+                this._c3LoadDataObj = {
                     columns: this.getC3Columns(),
                     unload: this.getDiffC3Columns()
-                });
+                };
                 break;
         }
+
+        Common.prototype.update.apply(this, arguments);
     };
+
+    CommonND.prototype.getChartOptions = function () {
+        var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
+        
+        chartOptions.fontColor = {
+            selector: ".c3 .c3-axis text",
+            property: "fill",
+            value: this.fontColor()
+        }
+        chartOptions.axisLineWidth = {
+            selector: ".c3 .c3-axis path",
+            property: "stroke-width",
+            value: this.axisLineWidth()+"px"
+        }
+        
+        return chartOptions;
+    }
 
     return CommonND;
 }));

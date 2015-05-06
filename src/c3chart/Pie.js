@@ -24,6 +24,11 @@
             columns: data
         });
     };
+    
+    Pie.prototype.getChartOptions = function () {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
+    }
 
     return Pie;
 }));

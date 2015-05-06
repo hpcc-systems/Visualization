@@ -45,5 +45,10 @@
         });
     };
 
+    Gauge.prototype.getChartOptions = function () {
+        var chartOptions = Common1D.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions
+    }
+
     return Gauge;
 }));

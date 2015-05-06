@@ -50,5 +50,10 @@
         });
     };
 
+    Donut.prototype.getChartOptions = function () {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
+    }
+
     return Donut;
 }));

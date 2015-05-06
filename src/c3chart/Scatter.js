@@ -13,6 +13,15 @@
         this._type = "scatter";
     };
     Scatter.prototype = Object.create(CommonND.prototype);
+    
+    Scatter.prototype.update = function(domNode, element) {
+        CommonND.prototype.update.apply(this,arguments);
+    }
 
+    Scatter.prototype.getChartOptions = function () {
+        var chartOptions = CommonND.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
+    }
+    
     return Scatter;
 }));

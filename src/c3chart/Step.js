@@ -14,5 +14,14 @@
     };
     Step.prototype = Object.create(CommonND.prototype);
 
+    Step.prototype.update = function(domNode, element) {
+        CommonND.prototype.update.apply(this,arguments);
+    }
+    
+    Step.prototype.getChartOptions = function () {
+        var chartOptions = CommonND.prototype.getChartOptions.apply(this, arguments);
+        return chartOptions;
+    }
+
     return Step;
 }));

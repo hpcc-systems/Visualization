@@ -41,14 +41,19 @@
         this.c3Chart.internal.config.donut_width = this.arc_width();
         this.c3Chart.internal.config.donut_expand = this.expand();
         this.c3Chart.internal.config.donut_title = this.title();
+    };
 
+    Donut.prototype.getChartOptions = function() {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+        
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);
-        this.c3Chart.load({
-            columns: data
-        });
-    };
+
+        chartOptions.columns = data;
+
+        return chartOptions;
+    }
 
     return Donut;
 }));

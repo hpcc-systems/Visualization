@@ -16,14 +16,19 @@
 
     Pie.prototype.update = function (domNode, element) {
         Common2D.prototype.update.apply(this, arguments);
+    };
 
+    Pie.prototype.getChartOptions = function() {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+        
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);
-        this.c3Chart.load({
-            columns: data
-        });
-    };
+
+        chartOptions.columns = data;
+
+        return chartOptions;
+    }
 
     return Pie;
 }));

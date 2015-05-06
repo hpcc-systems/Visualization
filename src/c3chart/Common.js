@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "c3", "../common/HTMLWidget", "css!c3"], factory);
+        define(["d3", "c3", "../common/HTMLWidget"], factory);
     } else {
         root.c3chart_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
     }
@@ -26,9 +26,16 @@
             }
         };
     };
+
     Common.prototype = Object.create(HTMLWidget.prototype);
 
     Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"]);
+    Common.prototype.publish("fontSize", 10, "number", "Font Size");
+    Common.prototype.publish("fontName", "sans-serif", "string", "Font Name");
+    Common.prototype.publish("fontColor", "#000", "html-color", "Font Color");
+    Common.prototype.publish("legendFontColor", "#000", "html-color", "Font Color");
+    Common.prototype.publish("legendFontSize", 10, "number", "Font Size");
+    Common.prototype.publish("showLegend", true, "boolean", "Show/Hide Legend");
 
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;
@@ -74,6 +81,7 @@
     Common.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
+
         this._config.size = {
             width: this.width(),
             height: this.height()
@@ -91,11 +99,31 @@
     Common.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
+        if (this.showLegend()) {
+            this.c3Chart.legend.show();
+        } else {
+            this.c3Chart.legend.hide();
+        }
+
         this.c3Chart.resize({
             width: this.width(),
             height: this.height()
         });
+
+        this.c3Chart.load(this.getChartOptions());
+
+        element.selectAll(".c3 svg").style({ "font-size": this.fontSize()+"px" });
+        element.selectAll(".c3 svg text").style({ "font-family": this.fontName() });
+
+        element.selectAll(".c3 .c3-legend-item text").style({ 
+            "fill": this.legendFontColor(), 
+            "font-size": this.legendFontSize()+"px" 
+        });
     };
+    
+    Common.prototype.getChartOptions = function() {
+        return {};
+    }
 
     return Common;
 }));

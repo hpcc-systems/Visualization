@@ -8,7 +8,6 @@
 }(this, function (Widget, HTMLWidget, Persist) {
     function PropertyEditor() {
         HTMLWidget.call(this);
-        this._class = "other_PropertyEditor";
 
         this._tag = "div";
         this._current_grouping;
@@ -18,14 +17,17 @@
         this._contentEditors = [];
         this._show_settings = true;
     }
-    ;
     PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
+    PropertyEditor.prototype._class += " other_PropertyEditor";
+
+    PropertyEditor.prototype.publish("theme_mode", false, "boolean", "Edit default values");
     PropertyEditor.prototype.publish("show_columns", true, "boolean", "Show Columns");
     PropertyEditor.prototype.publish("show_data", true, "boolean", "Show Data");
     PropertyEditor.prototype.publish("share_count_min", 2, "number", "Share Count Min");
     PropertyEditor.prototype.publish("param_grouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"]);
     PropertyEditor.prototype.publish("section_title", "", "string", "Section Title");
     PropertyEditor.prototype.publish("collapsible_sections", true, "boolean", "Collapsible Sections");
+
     PropertyEditor.prototype.show_settings = function (_) {
         if (!arguments.length) {
             return this._show_settings;
@@ -73,11 +75,11 @@
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(widget).map(function (prop) {
-            if (!widget[prop.id + "_modified"]()) {
+        var propsStr = Persist.discover(context.theme_mode() ? widget.__proto__ : widget).map(function (prop) {
+            if (!context.widgetPropertyModified(widget, prop.id)) {
                 return "";
             }
-            return "." + prop.id + "(" + JSON.stringify(widget[prop.id]()) + ")"
+            return "." + prop.id + "(" + JSON.stringify(context.widgetProperty(widget, prop.id)) + ")"
         }).filter(function (str) {
             return str !== "";
         }).join("\n");
@@ -132,12 +134,12 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
-    var findSharedProperties = function (data) {
+    var findSharedProperties = function (data, theme_mode) {
         if (typeof (data) !== 'undefined' && data.length > 0) {
             var allProps = [];
             var propsByID = {};
             data.forEach(function (widget) {
-                var gpResponse = _getParams(widget, 0);
+                var gpResponse = _getParams(theme_mode ? widget.__proto__ : widget, 0);
                 allProps = allProps.concat(gpResponse);
             });
             allProps.forEach(function (prop) {
@@ -167,14 +169,14 @@
                     widget: widgetObj
                 })
                 if (param.type === "widgetArray") {
-                    var childWidgetArray = widgetObj[param.id]();
+                    var childWidgetArray = context.widgetProperty(widgetObj, param.id);
                     childWidgetArray.forEach(function (childWidget) {
                         var cwArr = _getParams(childWidget, depth + 1);
                         retArr = retArr.concat(cwArr);
                     });
                 }
                 else if (param.type === "widget") {
-                    var childWidget = widgetObj[param.id]();
+                    var childWidget = context.widgetProperty(widgetObj, param.id);
                     var temp = _getParams(childWidget, depth + 1);
                     retArr = retArr.concat(temp);
                 }
@@ -199,8 +201,23 @@
         } else if (context._showing_data !== context.show_data()) {
             needsRedraw = true;
         }
+        if (typeof (context._showing_theme_mode) === 'undefined') {
+            context._showing_theme_mode = context.theme_mode();
+        } else if (context._showing_theme_mode !== context.theme_mode()) {
+            needsRedraw = true;
+        }
         return needsRedraw;
     };
+    PropertyEditor.prototype.widgetPropertyModified = function (widget, propID) {
+        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : widget.__proto__[propID + "_modified"]();
+    };
+    PropertyEditor.prototype.widgetProperty = function (widget, propID, _) {
+        if (_ === undefined) {
+            return !this.theme_mode() || this === widget ? widget[propID]() : widget.__proto__[propID]();
+        }
+        return !this.theme_mode() || this === widget ? widget[propID](_) : widget.__proto__[propID](_);
+    };
+
     PropertyEditor.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
@@ -232,7 +249,7 @@
             var sharedPropsMainSections = [];
             var sPropSections = [];
             if (this._data.length > 0) {
-                sharedPropsMainSections.push(findSharedProperties(this._data));
+                sharedPropsMainSections.push(findSharedProperties(this._data, this.theme_mode()));
                 for (var k1 in sharedPropsMainSections) {
                     var sectionArr = [];
                     for (var k2 in sharedPropsMainSections[k1]) {
@@ -427,8 +444,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                //
-                                                w[d.id](that.checked).render(function (w) {
+                                                context.widgetProperty(w, d.id, that.checked).render(function (w) {
                                                     context.onChange(w, d.id);
                                                     context.render();
                                                 });
@@ -458,7 +474,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                w[d.id](that.value);
+                                                context.widgetProperty(w, d.id, that.value);
                                             });
                                             widget.render();
                                         })
@@ -477,7 +493,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                w[d.id](that.value);
+                                                context.widgetProperty(w, d.id, that.value);
                                             });
                                             widget.render();
                                         })
@@ -489,7 +505,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                w[d.id](that.value).render(function (w) {
+                                                context.widgetProperty(w, d.id, that.value).render(function (w) {
                                                     context.onChange(w, d.id);
                                                     context.render();
                                                 })
@@ -508,7 +524,7 @@
                                                 })
                                             ;
                                             d.widgetArr.forEach(function (w) {
-                                                inputColor.node().value = w[d.id]();
+                                                inputColor.node().value = context.widgetProperty(w, d.id);
                                             });
                                         } catch (e) {
                                             inputColor.remove();
@@ -521,7 +537,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                w[d.id](that.value).render(function (w) {
+                                                context.widgetProperty(w, d.id, that.value).render(function (w) {
                                                     context.onChange(w, d.id);
                                                     context.render();
                                                 });
@@ -543,7 +559,7 @@
                                         .on("change", function () {
                                             var that = this;
                                             d.widgetArr.forEach(function (w) {
-                                                w[d.id](JSON.parse(that.value)).render(function (w) {
+                                                context.widgetProperty(w, d.id, JSON.parse(that.value)).render(function (w) {
                                                     context.onChange(w, d.id);
                                                     context.render();
                                                 });
@@ -577,16 +593,16 @@
                             sProp.widgetArr.forEach(function (w) {
                                 switch (sProp.type) {
                                     case "boolean":
-                                        input.node().checked = w[sProp.id]();
+                                        input.node().checked = context.widgetProperty(w, sProp.id);
                                         break
                                     case "html-color":
-                                        input.node().value = w[sProp.id]();
+                                        input.node().value = context.widgetProperty(w, sProp.id);
                                         break;
                                     case "array":
-                                        input.node().value = JSON.stringify(w[sProp.id](), null, "  ");
+                                        input.node().value = JSON.stringify(context.widgetProperty(w, sProp.id), null, "  ");
                                         break;
                                     case "widget":
-                                        var innerWidget = w[sProp.id]();
+                                        var innerWidget = context.widgetProperty(w, sProp.id);
                                         w["_propertyEditor_" + sProp.id]
                                             .data(innerWidget ? [innerWidget] : [])
                                             .render()
@@ -594,7 +610,7 @@
                                         break;
                                     case "widgetArray":
                                         w["_propertyEditor_" + sProp.id]
-                                            .data(sProp.widget[sProp.id]())
+                                            .data(context.widgetProperty(sProp.widget, sProp.id))
                                             .render()
                                         ;
                                         break;
@@ -602,7 +618,7 @@
                                     case "string":
                                     case "set":
                                     default:
-                                        input.node().value = w[sProp.id]();
+                                        input.node().value = context.widgetProperty(w, sProp.id);
                                         break;
                                 }
                             });
@@ -625,7 +641,7 @@
                     }).remove();
                 } else if (context.param_grouping() === "By Widget") {
                     //Updating TR 'By Widget'
-                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(widget), function (d) {
+                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? widget.__proto__ : widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
                     rows.enter().append("tr").each(function (d) {
@@ -651,7 +667,7 @@
                                             .attr("class", "input_" + widget._id)
                                             .attr("type", "checkbox")
                                             .on("change", function () {
-                                                widget[d.id](this.checked).render(function () {
+                                                context.widgetProperty(widget, d.id, this.checked).render(function () {
                                                     context.onChange(widget, d.id);
                                                     context.render();
                                                 })
@@ -679,7 +695,7 @@
                                         }
                                         input.attr("class", "input_" + widget._id)
                                             .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
+                                                context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
                                                 })
@@ -689,7 +705,7 @@
                                         input = td.append("input")
                                             .attr("class", "input_" + widget._id)
                                             .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
+                                                context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
                                                 })
@@ -706,7 +722,7 @@
                                                         colorInput.on("change").apply(colorInput.node());
                                                     })
                                                 ;
-                                                inputColor.node().value = widget[d.id]();
+                                                inputColor.node().value = context.widgetProperty(widget, d.id);
                                             } catch (e) {
                                                 inputColor.remove();
                                             }
@@ -716,7 +732,7 @@
                                         input = td.append("select")
                                             .attr("class", "input_" + widget._id)
                                             .on("change", function () {
-                                                widget[d.id](this.value).render(function (widget) {
+                                                context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
                                                 })
@@ -735,7 +751,7 @@
                                             .attr("rows", "4")
                                             .attr("cols", "25")
                                             .on("change", function () {
-                                                widget[d.id](JSON.parse(this.value)).render(function () {
+                                                context.widgetProperty(widget, d.id, JSON.parse(this.value)).render(function () {
                                                     context.onChange(widget, d.id);
                                                     context.render();
                                                 });
@@ -769,26 +785,26 @@
                         var input = d3.select(this);
                         switch (d.type) {
                             case "boolean":
-                                input.node().checked = widget[d.id]();
+                                input.node().checked = context.widgetProperty(widget, d.id);
                                 break
                             case "html-color":
-                                input.node().value = widget[d.id]();
+                                input.node().value = context.widgetProperty(widget, d.id);
                                 break;
                             case "array":
-                                input.node().value = JSON.stringify(widget[d.id](), null, "  ");
+                                input.node().value = JSON.stringify(context.widgetProperty(widget, d.id), null, "  ");
                                 break;
                             case "widget":
-                                var innerWidget = widget[d.id]();
+                                var innerWidget = context.widgetProperty(widget, d.id);
                                 widget["_propertyEditor_" + d.id].data(innerWidget ? [innerWidget] : []).render();
                                 break;
                             case "widgetArray":
-                                widget["_propertyEditor_" + d.id].data(widget[d.id]()).render();
+                                widget["_propertyEditor_" + d.id].data(context.widgetProperty(widget, d.id)).render();
                                 break;
                             case "number":
                             case "string":
                             case "set":
                             default:
-                                input.node().value = widget[d.id]();
+                                input.node().value = context.widgetProperty(widget, d.id);
                                 break;
                         }
                     });

@@ -8,13 +8,13 @@
 }(this, function (d3, SVGWidget, Icon, TextBox) {
     function Vertex() {
         SVGWidget.call(this);
-        this._class = "graph_Vertex";
 
         this._icon = new Icon();
         this._textBox = new TextBox();
         this._annotationWidgets = {};
     };
     Vertex.prototype = Object.create(SVGWidget.prototype);
+    Vertex.prototype._class += " graph_Vertex";
 
     Vertex.prototype.publishProxy("faChar", "_icon");
     Vertex.prototype.publishProxy("icon_shape_color_fill", "_icon", "shape_color_fill");
@@ -66,7 +66,7 @@
         annotations.enter().append("g")
             .attr("class", "annotation")
             .each(function (d, idx) {
-                context.annotationWidgets()[idx] = new Icon()
+                context._annotationWidgets[idx] = new Icon()
                     .target(this)
                     .shape("square")
                 ;
@@ -76,7 +76,7 @@
         var yOffset = bbox.height / 2;
         annotations
             .each(function (d, idx) {
-                var annotationWidget = context.annotationWidgets()[idx];
+                var annotationWidget = context._annotationWidgets[idx];
                 var ddd = context.textbox_shape_color_stroke();
                 annotationWidget
                     .diameter(context.annotation_diameter())
@@ -103,7 +103,7 @@
         annotations.exit()
             .each(function (d, idx) {
                 var element = d3.select(this);
-                delete context.annotationWidgets()[idx];
+                delete context._annotationWidgets[idx];
                 element.remove();
             })
         ;

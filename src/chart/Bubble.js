@@ -9,7 +9,6 @@
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
-        this._class = "chart_Bubble";
         this._drawStartPos = "origin";
 
         this.labelWidgets = {};
@@ -21,6 +20,7 @@
         ;
     };
     Bubble.prototype = Object.create(SVGWidget.prototype);
+    Bubble.prototype._class += " chart_Bubble";
     Bubble.prototype.implements(I2DChart.prototype);
 
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch());

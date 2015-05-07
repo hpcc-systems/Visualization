@@ -9,7 +9,6 @@
     function Common2D(target) {
         Common.call(this);
         I2DChart.call(this);
-        this._class = "c3chart_Common2D";
 
         var context = this;
         this._config.color = {
@@ -24,6 +23,7 @@
         };
     };
     Common2D.prototype = Object.create(Common.prototype);
+    Common2D.prototype._class += " c3chart_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);
 
     Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch());

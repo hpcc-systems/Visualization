@@ -8,11 +8,11 @@
 }(this, function (d3, Choropleth, topojson, usStates) {
     function ChoroplethStates() {
         Choropleth.call(this);
-        this._class = "map_ChoroplethStates";
 
         this.projection("albersUsaPr");
     };
     ChoroplethStates.prototype = Object.create(Choropleth.prototype);
+    ChoroplethStates.prototype._class += " map_ChoroplethStates";
 
     ChoroplethStates.prototype.testData = function () {
         var nameCodeMap = {};

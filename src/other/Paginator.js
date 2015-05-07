@@ -7,7 +7,6 @@
 }(this, function (HTMLWidget) {
     function Paginator() {
         HTMLWidget.call(this);
-        this._class = "other_Paginator";
 
         this._tag = "div";
 
@@ -15,9 +14,9 @@
 
         this._numList = []; //pn
     };
-    
     Paginator.prototype = Object.create(HTMLWidget.prototype);
-    
+    Paginator.prototype._class += " other_Paginator";
+
     Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page");
     Paginator.prototype.publish("numItems", 10, "number", "Pagination total number of items");
     Paginator.prototype.publish("pageNumber", 1, "number", "Pagination set or get the page number");

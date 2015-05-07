@@ -8,9 +8,10 @@
 }(this, function (SVGWidget) {
     function Text() {
         SVGWidget.call(this);
-        this._class = "common_Text";
     };
     Text.prototype = Object.create(SVGWidget.prototype);
+    Text.prototype._class += " common_Text";
+
     Text.prototype.publish("text", "", "string", "Display Text");
     Text.prototype.publish("font_family", "", "string", "Font Family");
     Text.prototype.publish("font_size", null, "number", "Font Size (px)");

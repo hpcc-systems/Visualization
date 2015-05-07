@@ -8,11 +8,11 @@
 }(this, function (HTMLWidget, MultiChart) {
     function Surface() {
         HTMLWidget.call(this);
-        this._class = "layout_Surface";
 
         this._tag = "div";
     };
     Surface.prototype = Object.create(HTMLWidget.prototype);
+    Surface.prototype._class += " layout_Surface";
 
     Surface.prototype.publish("title", "", "string", "Title");
     Surface.prototype.publish("widget", null, "widget", "Widget");

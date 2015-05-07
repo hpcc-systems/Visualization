@@ -9,12 +9,12 @@
 
     function Line() {
         CommonND.call(this);
-        this._class = "google_Line";
 
         this._chartType = "LineChart";
     };
     Line.prototype = Object.create(CommonND.prototype);
-    
+    Line.prototype._class += " google_Line";
+
     Line.prototype.publish("lineWidth", 2, "number", "Line Width");
     Line.prototype.publish("globalLineDashStyle", [], "array", "Line Dash Style");
     Line.prototype.publish("lineDashStyle", [], "array", "Line Dash Style");

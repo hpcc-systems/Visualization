@@ -9,11 +9,11 @@
 
     function Bar() {
         CommonND.call(this);
-        this._class = "google_Bar";
 
         this._chartType = "BarChart";
     };
     Bar.prototype = Object.create(CommonND.prototype);
+    Bar.prototype._class += " google_Bar";
 
     Bar.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series");
     Bar.prototype.publish("groupWidth", "", "string", "The width of a group of bars, Percent or Pixels");

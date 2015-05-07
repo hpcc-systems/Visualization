@@ -9,7 +9,6 @@
     function Common1D(target) {
         Common.call(this);
         I1DChart.call(this);
-        this._class = "c3chart_Common1D";
 
         var context = this;
         this._config.color = {
@@ -24,6 +23,7 @@
         };
     };
     Common1D.prototype = Object.create(Common.prototype);
+    Common1D.prototype._class += " c3chart_Common1D";
     Common1D.prototype.implements(I1DChart.prototype);
 
     Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch());

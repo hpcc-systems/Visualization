@@ -9,11 +9,11 @@
     function List(target) {
         SVGWidget.call(this);
         IList.call(this);
-        this._class = "common_List";
 
         this._listWidgets = {};
     };
     List.prototype = Object.create(SVGWidget.prototype);
+    List.prototype._class += " common_List";
     List.prototype.implements(IList.prototype);
 
     List.prototype.publish("anchor", "start", "set", "Anchor Position", ["", "start", "middle", "end"]);

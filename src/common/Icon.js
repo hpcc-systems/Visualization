@@ -8,12 +8,12 @@
 }(this, function (SVGWidget, Shape, FAChar) {
     function Icon() {
         SVGWidget.call(this);
-        this._class = "common_Icon";
 
         this._shapeWidget = new Shape();
         this._faChar = new FAChar();
     };
     Icon.prototype = Object.create(SVGWidget.prototype);
+    Icon.prototype._class += " common_Icon";
 
     Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"]);
     Icon.prototype.publishProxy("faChar", "_faChar", "char");

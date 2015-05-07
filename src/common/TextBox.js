@@ -8,7 +8,6 @@
 }(this, function (SVGWidget, Shape, Text) {
     function TextBox() {
         SVGWidget.call(this);
-        this._class = "common_TextBox";
 
         this._shape = new Shape()
             .shape("rect")
@@ -16,6 +15,8 @@
         this._text = new Text();
     };
     TextBox.prototype = Object.create(SVGWidget.prototype);
+    TextBox.prototype._class += " common_TextBox";
+
     TextBox.prototype.publishProxy("text", "_text");
     TextBox.prototype.publishProxy("shape_color_stroke", "_shape", "color_stroke");
     TextBox.prototype.publishProxy("shape_color_fill", "_shape", "color_fill");

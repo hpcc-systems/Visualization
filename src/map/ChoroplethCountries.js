@@ -8,7 +8,6 @@
 }(this, function (d3, Choropleth, topojson, countries) {
     function ChoroplethCountries() {
         Choropleth.call(this);
-        this._class = "map_ChoroplethCountries";
 
         this._dataMap = {};
         this._dataMaxWeight = 0;
@@ -16,6 +15,7 @@
         this.projection(this.world_projection());
     };
     ChoroplethCountries.prototype = Object.create(Choropleth.prototype);
+    ChoroplethCountries.prototype._class += " map_ChoroplethCountries";
 
     ChoroplethCountries.prototype.publish("world_projection", "mercator", "set", "Map Projection", ["mercator", "orthographic"]);
 

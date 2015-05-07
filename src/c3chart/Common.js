@@ -10,7 +10,6 @@
         HTMLWidget.call(this);
 
         this._tag = "div";
-        this._class = "c3chart_Common";
         this._type = "unknown";
         var context = this;
         this._config = {
@@ -28,6 +27,7 @@
     };
 
     Common.prototype = Object.create(HTMLWidget.prototype);
+    Common.prototype._class += " c3chart_Common";
 
     Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"]);
 

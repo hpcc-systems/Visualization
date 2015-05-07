@@ -8,11 +8,11 @@
 }(this, function (Surface, Pie, Column, Line) {
     function Cell() {
         Surface.call(this);
-        this._class = "layout_Cell";
         //this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
         this._dragHandles = ["se"];
     };
     Cell.prototype = Object.create(Surface.prototype);
+    Cell.prototype._class += " layout_Cell";
 
     Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position");
     Cell.prototype.publish("gridCol", 0, "number", "Grid Column Position");

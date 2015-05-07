@@ -9,9 +9,9 @@
     function CirclePacking(target) {
         SVGWidget.call(this);
         ITree.call(this);
-        this._class = "tree_CirclePacking";
     };
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
+    CirclePacking.prototype._class += " tree_CirclePacking";
     CirclePacking.prototype.implements(ITree.prototype);
 
     CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch());

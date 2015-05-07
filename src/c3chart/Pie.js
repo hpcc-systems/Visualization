@@ -8,11 +8,11 @@
 }(this, function (Common2D) {
     function Pie(target) {
         Common2D.call(this);
-        this._class = "c3chart_Pie";
 
         this._type = "pie";
     };
     Pie.prototype = Object.create(Common2D.prototype);
+    Pie.prototype._class += " c3chart_Pie";
 
     Pie.prototype.update = function (domNode, element) {
         Common2D.prototype.update.apply(this, arguments);

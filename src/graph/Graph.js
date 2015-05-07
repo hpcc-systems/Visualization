@@ -9,7 +9,6 @@
     function Graph() {
         SVGWidget.call(this);
         IGraph.call(this);
-        this._class = "graph_Graph";
 
         this.graphData = new GraphData();
         this._transitionDuration = 250;
@@ -31,6 +30,7 @@
         this._selection = new Bag.Selection();
     };
     Graph.prototype = Object.create(SVGWidget.prototype);
+    Graph.prototype._class += " graph_Graph";
     Graph.prototype.implements(IGraph.prototype);
 
     //  Properties  ---

@@ -9,14 +9,15 @@
     function Choropleth() {
         SVGWidget.call(this);
         IChoropleth.call(this);
-        this._class = "map_Choropleth";
 
         this._dataMap = {};
         this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
     };
     Choropleth.prototype = Object.create(SVGWidget.prototype);
+    Choropleth.prototype._class += " map_Choropleth";
     Choropleth.prototype.implements(IChoropleth.prototype);
+
     Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch());
 
     Choropleth.prototype.data = function (_) {

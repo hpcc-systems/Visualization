@@ -44,13 +44,13 @@
                         case "ne":
                         case "e":
                         case "se":
-                            return context._size.width - context._handleSize + "px";
+                            return context._size.width - context.handleSize() + "px";
                         case "nw":
                         case "w":
                         case "sw":
                             return "0px";
                         default:
-                            return context._size.width / 2 - context._handleSize / 2 + "px";
+                            return context._size.width / 2 - context.handleSize() / 2 + "px";
                     }
                 },
                 top: function (d) {
@@ -62,13 +62,13 @@
                         case "sw":
                         case "s":
                         case "se":
-                            return context._size.height - context._handleSize + "px";
+                            return context._size.height - context.handleSize() + "px";
                         default:
-                            return context._size.height / 2 - context._handleSize / 2 + "px";
+                            return context._size.height / 2 - context.handleSize() / 2 + "px";
                     }
                 },
-                width: context._handleSize + "px",
-                height: context._handleSize + "px"
+                width: context.handleSize() + "px",
+                height: context.handleSize() + "px"
             })
             .on("dragstart", function (d) {
                 //d3.event.stopPropagation();

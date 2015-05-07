@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../api/INDChart"], factory);
     } else {
-        root.c3chart_CommonND = factory(root.c3chart_Common, root.chart_INDChart);
+        root.c3chart_CommonND = factory(root.c3chart_Common, root.api_INDChart);
     }
 }(this, function (Common, INDChart) {
     function CommonND(target) {
@@ -27,10 +27,29 @@
     CommonND.prototype = Object.create(Common.prototype);
     CommonND.prototype.implements(INDChart.prototype);
 
+    /**
+     * Publish Params Unique To This Library
+     */
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch());
     CommonND.prototype.publish("xaxis_type", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"]);
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart");
     CommonND.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width");
+    CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid");
+    CommonND.prototype.publish("showYGrid", false, "boolean", "Show Y Grid");
+
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    CommonND.prototype.publish("xAxisBaselineColor", "#000", "html-color", "X Axis Baseline Color");
+    CommonND.prototype.publish("yAxisBaselineColor", "#000", "html-color", "Y Axis Baseline Color");
+
+    Common.prototype.publish("xAxisFontColor", "#000", "html-color", "Font Color");
+    Common.prototype.publish("yAxisFontColor", "#000", "html-color", "Font Color");
+
+    Common.prototype.publish("axisFontSize", 10, "number", "Font Size");
+    Common.prototype.publish("axisFontFamily", "sans-serif", "string", "Font Name");
+
+    Common.prototype.publish("xAxisLabelRotation", 0, "number", "Font Size");
 
     CommonND.prototype.getDiffC3Columns = function () {
         return this._prevColumns.filter(function (i) { return this._columns.indexOf(i) < 0; }, this);
@@ -52,8 +71,21 @@
         }
 
         this._config.axis.x = {
-            type: this.xaxis_type()
+            type: this.xaxis_type(),
+            tick: {
+                rotate: this.xAxisLabelRotation(), 
+                multiline: false 
+            }
         };
+
+        this._config.grid = {
+            x: {
+                show: this.showXGrid(),
+            },
+            y: {
+                show: this.showYGrid(),
+            }
+        }
 
         switch (this.xaxis_type()) {
         case "category":
@@ -75,10 +107,17 @@
 
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
+        
         this._palette = this._palette.switch(this.paletteID());
+        element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
+        element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
 
-        element.selectAll(".c3 .c3-axis text").style({ "fill": this.fontColor() });
+        element.selectAll(".c3 .c3-axis.c3-axis-x text").style({ "fill": this.xAxisFontColor() });
+        element.selectAll(".c3 .c3-axis.c3-axis-y text").style({ "fill": this.yAxisFontColor() });
+
         element.selectAll(".c3 .c3-axis path").style({ "stroke-width": this.axisLineWidth()+"px" });
+        element.selectAll(".c3 .c3-axis.c3-axis-x path").style({ "stroke": this.xAxisBaselineColor() });
+        element.selectAll(".c3 .c3-axis.c3-axis-y path").style({ "stroke": this.yAxisBaselineColor() });
     };
 
     CommonND.prototype.getChartOptions = function() {

@@ -15,7 +15,7 @@
     Line.prototype = Object.create(CommonND.prototype);
 
     Line.prototype.publish("lineWidth", 1.0, "number", "LineWidth");
-    Line.prototype.publish("dashedLine", [5,5], "array", "Dashed Lines");
+    Line.prototype.publish("dashedLine", [], "array", "Dashed Lines");
     Line.prototype.publish("lineOpacity", 1.0, "number", "LineWidth");
 
     Line.prototype.enter = function (domNode, element) {

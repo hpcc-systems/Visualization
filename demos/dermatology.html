@@ -144,8 +144,9 @@
             var serializationTextSurface = new Surface()
                 .id("testJSON")
             ;
-            main = new Grid();
-            main.setContent(0, 2, propEditor, "", 2, 1);
+            main = new Grid()
+                .setContent(0, 2, propEditor, "", 2, 1)
+            ;
 
             frame = new Surface()
                 .widget(main)

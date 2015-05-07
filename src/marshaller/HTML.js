@@ -104,7 +104,6 @@
                     if (existingWidget) {
                         viz.setWidget(existingWidget, true);
                     } else {
-                        var d = 0;
                         context.setContent(cellRow, cellCol, viz.widget, viz.title);
                     }
                     cellCol++;

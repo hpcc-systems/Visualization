@@ -10,12 +10,11 @@
         SVGWidget.call(this);
         ITree.call(this);
 
-        this._class = "tree_Dendrogram";
-
         this._drawStartPos = "origin";
         this._maxTextWidth = 0;
     };
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
+    Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
     
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch());

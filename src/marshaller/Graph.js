@@ -185,7 +185,6 @@
     var PERSIST_VER = 2;
     function Graph() {
         GraphWidget.call(this);
-        this._class = "marshaller_Graph";
 
         this._design_mode = false;
         this._dashboards = [];
@@ -193,6 +192,8 @@
         this.widgetAttributes = ["layout", "chartType", "palette", "title", "columns", "data"];
     };
     Graph.prototype = Object.create(GraphWidget.prototype);
+    Graph.prototype._class += " marshaller_Graph";
+
     Graph.prototype.publish("ddlUrl", "", "string", "DDL URL");
     Graph.prototype.publish("databomb", "", "string", "Data Bomb");
     Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources");

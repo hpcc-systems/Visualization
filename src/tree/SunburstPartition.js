@@ -9,9 +9,9 @@
     function SunburstPartition(target) {
         SVGWidget.call(this);
         ITree.call(this);
-        this._class = "tree_SunburstPartition";
     };
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
+    SunburstPartition.prototype._class += " tree_SunburstPartition";
     SunburstPartition.prototype.implements(ITree.prototype);
 
     SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch());

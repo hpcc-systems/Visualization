@@ -8,13 +8,14 @@
 }(this, function (SVGWidget, Text) {
     function FAChar() {
         SVGWidget.call(this);
-        this._class = "common_FAChar";
 
         this._text = new Text()
             .font_family("FontAwesome")
         ;
     };
     FAChar.prototype = Object.create(SVGWidget.prototype);
+    FAChar.prototype._class += " common_FAChar";
+
     FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
     FAChar.prototype.publish("font_size", null, "number", "Font Size");
     FAChar.prototype.publishProxy("color_fill", "_text");

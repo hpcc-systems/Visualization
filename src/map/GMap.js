@@ -9,9 +9,9 @@
     function GMap(target) {
         Graph.call(this);
         IGMap.call(this);
-        this._class = "map_GMap";
     };
     GMap.prototype = Object.create(Graph.prototype);
+    GMap.prototype._class += " map_GMap";
     GMap.prototype.implements(IGMap.prototype);
 
     GMap.prototype.enter = function (domNode, element, d) {

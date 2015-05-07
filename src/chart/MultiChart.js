@@ -1,4 +1,4 @@
-﻿
+﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../api/INDChart", "require"], factory);
@@ -35,7 +35,6 @@
     function MultiChart() {
         SVGWidget.call(this);
         INDChart.call(this);
-        this._class = "chart_MultiChart";
 
         this.chart(null);
 
@@ -56,6 +55,7 @@
         this._allCharts["BAR"] = this._allCharts["COLUMN"];
     };
     MultiChart.prototype = Object.create(SVGWidget.prototype);
+    MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 
     MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));

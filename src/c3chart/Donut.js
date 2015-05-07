@@ -8,11 +8,11 @@
 }(this, function (Common2D) {
     function Donut(target) {
         Common2D.call(this);
-        this._class = "c3chart_Donut";
 
         this._type = "donut";
     };
     Donut.prototype = Object.create(Common2D.prototype);
+    Donut.prototype._class += " c3chart_Donut";
 
     Donut.prototype.publish("label_show", true, "boolean", "Show Label");
     //Donut.prototype.publish("label_format", null, "function", "???");

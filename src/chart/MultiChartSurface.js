@@ -9,7 +9,6 @@
     function MultiChartSurface() {
         ResizeSurface.call(this);
         INDChart.call(this);
-        this.class = "chart_MultiChartSurface";
 
         this._title = "MultiChartSurface";
         this._content = new MultiChart();
@@ -24,7 +23,9 @@
         this.mode("all");
     };
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
+    MultiChartSurface.prototype._class += " chart_MultiChartSurface";
     MultiChartSurface.prototype.implements(INDChart.prototype);
+
     MultiChartSurface.prototype.testData = INDChart.prototype.testData;
 
     MultiChartSurface.prototype.publishProxy("chart_type", "_content");

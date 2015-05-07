@@ -9,9 +9,9 @@
     function Line(target) {
         XYAxis.call(this);
         INDChart.call(this);
-        this._class = "chart_Line";
     };
     Line.prototype = Object.create(XYAxis.prototype);
+    Line.prototype._class += " chart_Line";
     Line.prototype.implements(INDChart.prototype);
 
     Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch());

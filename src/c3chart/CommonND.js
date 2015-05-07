@@ -9,7 +9,6 @@
     function CommonND(target) {
         Common.call(this);
         INDChart.call(this);
-        this._class = "c3chart_CommonND";
 
         var context = this;
         this._config.color = {
@@ -25,6 +24,7 @@
         this._prevColumns = [];
     };
     CommonND.prototype = Object.create(Common.prototype);
+    CommonND.prototype._class += " c3chart_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 
     /**

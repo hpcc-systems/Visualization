@@ -8,7 +8,6 @@
 }(this, function (HTMLWidget) {
     function Audio() {
         HTMLWidget.call(this);
-        this._class = "other_Audio";
 
         this._tag = "audio";
 
@@ -16,6 +15,7 @@
         this._sections = {};
     };
     Audio.prototype = Object.create(HTMLWidget.prototype);
+    Audio.prototype._class += " other_Audio";
 
     Audio.prototype.source = function (_) {
         if (!arguments.length) return this._source;

@@ -9,12 +9,12 @@
 
     function Column() {
         CommonND.call(this);
-        this._class = "google_Column";
 
         this._chartType = "ColumnChart";
     };
     Column.prototype = Object.create(CommonND.prototype);
-    
+    Column.prototype._class += " google_Column";
+
     Column.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series");
     Column.prototype.publish("groupWidth", "", "string", "The width of a group of bars, Percent or Pixels");
     Column.prototype.publish("dataOpacity", 1.0, "number", "Transparency of Data Points");

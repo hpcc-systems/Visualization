@@ -8,9 +8,9 @@
 }(this, function (d3, Grid, HipieDDL, Surface, Cell) {
     function HTML() {
         Grid.call(this);
-        this._class = "marshaller_HTML";
     };
     HTML.prototype = Object.create(Grid.prototype);
+    HTML.prototype._class += " marshaller_HTML";
 
     HTML.prototype.publish("ddlUrl", "", "string", "DDL URL");
     HTML.prototype.publish("databomb", "", "string", "Data Bomb");

@@ -9,7 +9,6 @@
     function Menu() {
         SVGWidget.call(this);
         IMenu.call(this);
-        this._class = "common_Menu";
 
         this._icon = new Icon()
             .shape("rect")
@@ -26,6 +25,7 @@
         this._visible = false;
     };
     Menu.prototype = Object.create(SVGWidget.prototype);
+    Menu.prototype._class += " common_Menu";
     Menu.prototype.implements(IMenu.prototype);
 
     Menu.prototype.publishProxy("faChar", "_icon", null, "\uf0c9");

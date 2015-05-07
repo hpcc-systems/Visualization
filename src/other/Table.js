@@ -8,13 +8,13 @@
 }(this, function (HTMLWidget, Paginator) {
     function Table() {
         HTMLWidget.call(this);
-        this._class = "other_Table";
         this._tag = "div";
 
         this._columns = [];
         this._paginator = new Paginator();
     };
     Table.prototype = Object.create(HTMLWidget.prototype);
+    Table.prototype._class += " other_Table";
 
     Table.prototype.testData = function () {
         this

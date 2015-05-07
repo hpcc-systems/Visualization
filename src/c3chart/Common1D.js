@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["./Common", "../api/I1DChart"], factory);
     } else {
-        root.c3chart_Common1D = factory(root.c3chart_Common, root.chart_I1DChart);
+        root.c3chart_Common1D = factory(root.c3chart_Common, root.api_I1DChart);
     }
 }(this, function (Common, I1DChart) {
     function Common1D(target) {

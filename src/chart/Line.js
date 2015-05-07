@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./XYAxis", "../api/INDChart", "css!./Line"], factory);
     } else {
-        root.chart_Line = factory(root.d3, root.chart_XYAxis, root.chart_INDChart);
+        root.chart_Line = factory(root.d3, root.chart_XYAxis, root.api_INDChart);
     }
 }(this, function (d3, XYAxis, INDChart) {
     function Line(target) {

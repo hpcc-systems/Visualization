@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.serial"], factory);
     } else {
-        root.amcharts_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.amcharts);
     }
 
 }(this, function(d3, HTMLWidget, AmCharts) {

@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart"], factory);
     } else {
-        root.amcharts_Gauge = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I1DChart);
+        root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I1DChart);
     }
 }(this, function(d3, HTMLWidget, AmCharts, I1DChart) {
     function Gauge() {
         HTMLWidget.call(this);
-        this._class = "amcharts_Gauge";
+        this._class = "amchart_Gauge";
         this._tag = "div";
 
         this._chart = {};

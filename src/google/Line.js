@@ -14,7 +14,15 @@
         this._chartType = "LineChart";
     };
     Line.prototype = Object.create(CommonND.prototype);
+
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    //
     
+    /**
+     * Publish Params Unique To This Widget
+     */
     Line.prototype.publish("lineWidth", 2, "number", "Line Width");
     Line.prototype.publish("globalLineDashStyle", [], "array", "Line Dash Style");
     Line.prototype.publish("lineDashStyle", [], "array", "Line Dash Style");
@@ -26,76 +34,75 @@
 
     Line.prototype.publish("smoothLines", true, "boolean", "Causes chart data lines to draw smoothly");
     
-    Line.prototype.publish("globalPointShape", null, "set", "The shape of individual data elements", ["circle","triagle","square","diamond","star","polygon"]);
+    Line.prototype.publish("globalPointShape", null, "set", "The shape of individual data elements", ["circle","triangle","square","diamond","star","polygon"]);
     Line.prototype.publish("pointShape", [], "array", "The shape of individual data elements"); // TODO convert to object
     
-    Line.prototype.publish("hAxisBaseline", null, "number", "The baseline for the horizontal axis");
-    Line.prototype.publish("hAxisBaselineColor", "#000000", "html-color", "Specifies the color of the baseline for the horizontal axis");
-    Line.prototype.publish("hAxisDirection", 1, "number", "The direction in which the values along the horizontal axis grow. Specify -1 to reverse the order of the values.");
-    Line.prototype.publish("hAxisFormat", "", "string", "A format string for numeric axis labels", ["","decimal","scientific","currency","percent","short","long"]);
-    Line.prototype.publish("hAxisGridlinesCount", 5, "number", "The number of horizontal gridlines between two regular gridlines");
-    Line.prototype.publish("hAxisGridlinesColor", "#CCC", "html-color", "The color of the horizontal gridlines inside the chart area");
+    Line.prototype.publish("xAxisBaseline", null, "number", "The baseline for the horizontal axis");
+    Line.prototype.publish("xAxisBaselineColor", "#000000", "html-color", "Specifies the color of the baseline for the horizontal axis");
+    Line.prototype.publish("xAxisInversed", false, "boolean", "The direction in which the values along the horizontal axis grow.");
+    Line.prototype.publish("xAxisFormat", "", "string", "A format string for numeric axis labels", ["","decimal","scientific","currency","percent","short","long"]);
+    Line.prototype.publish("xAxisGridlinesCount", 5, "number", "The number of horizontal gridlines between two regular gridlines");
+    Line.prototype.publish("xAxisGridlinesColor", "#CCC", "html-color", "The color of the horizontal gridlines inside the chart area");
     // TODO units
-    Line.prototype.publish("hAxisMinorGridlinesCount", 0, "number", "The number of horizontal minor gridlines between two regular gridlines");
-    Line.prototype.publish("hAxisMinorGridlinesColor", "#FFFFFF", "html-color", "The color of the horizontal minor gridlines inside the chart area");
-    Line.prototype.publish("hAxisLogScale", false, "boolean", "Makes horizontal axis a log scale");
+    Line.prototype.publish("xAxisMinorGridlinesCount", 0, "number", "The number of horizontal minor gridlines between two regular gridlines");
+    Line.prototype.publish("xAxisMinorGridlinesColor", "#FFFFFF", "html-color", "The color of the horizontal minor gridlines inside the chart area");
+    Line.prototype.publish("xAxisLogScale", false, "boolean", "Makes horizontal axis a log scale");
     
-    Line.prototype.publish("hAxisTextPosition", "out", "set", "Position of the horizontal axis text, relative to the chart area", ["out","in","none"]);
-    Line.prototype.publish("hAxisTextStyleColor", null, "html-color", "Horizontal axis text style (Color)");
-    Line.prototype.publish("hAxisTextStyleFontName", null, "string", "Horizontal axis text style (Font Name)");
-    Line.prototype.publish("hAxisTextStyleFontSize", null, "number", "Horizontal axis text style (Font Size)");
+    Line.prototype.publish("xAxisTextPosition", "out", "set", "Position of the horizontal axis text, relative to the chart area", ["out","in","none"]);
+    Line.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal axis text style (Color)");
+    Line.prototype.publish("xAxisFontFamily", null, "string", "Horizontal axis text style (Font Name)");
+    Line.prototype.publish("xAxisFontSize", null, "number", "Horizontal axis text style (Font Size)");
     
-    Line.prototype.publish("hAxisTicks", [], "array", "Replaces the automatically generated X-axis ticks with the specified array");
+    Line.prototype.publish("xAxisTicks", [], "array", "Replaces the automatically generated X-axis ticks with the specified array");
 
-    Line.prototype.publish("hAxisTitle", "", "string", "Specifies a title for the horizontal axis");
-    Line.prototype.publish("hAxisTitleTextStyleColor", null, "html-color", "Horizontal axis title text style (Color)");
-    Line.prototype.publish("hAxisTitleTextStyleFontName", null, "string", "Horizontal axis title text style (Font Name)");
-    Line.prototype.publish("hAxisTitleTextStyleFontSize", null, "number", "Horizontal axis titletext style (Font Size)");
+    Line.prototype.publish("xAxisTitle", "", "string", "Specifies a title for the horizontal axis");
+    Line.prototype.publish("xAxisTitleFontColor", null, "html-color", "Horizontal axis title text style (Color)");
+    Line.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal axis title text style (Font Name)");
+    Line.prototype.publish("xAxisTitleFontSize", null, "number", "Horizontal axis titletext style (Font Size)");
     
-    Line.prototype.publish("hAxisMaxValue", null, "number", "Moves the max value of the horizontal axis to the specified value");
-    Line.prototype.publish("hAxisMinValue", null, "number", "Moves the min value of the horizontal axis to the specified value");
+    Line.prototype.publish("xAxisMaxValue", null, "number", "Moves the max value of the horizontal axis to the specified value");
+    Line.prototype.publish("xAxisMinValue", null, "number", "Moves the min value of the horizontal axis to the specified value");
     
-    Line.prototype.publish("hAxisViewWindowMode", "pretty", "set", "Specifies how to scale the horizontal axis to render the values within the chart area", ["pretty","maximized","explicit"]);
-    Line.prototype.publish("hAxisViewWindowMax", null, "number", "The maximum horizontal data value to render");
-    Line.prototype.publish("hAxisViewWindowMin", null, "number", "The minimum horizontal data value to render");
+    Line.prototype.publish("xAxisViewWindowMode", "pretty", "set", "Specifies how to scale the horizontal axis to render the values within the chart area", ["pretty","maximized","explicit"]);
+    Line.prototype.publish("xAxisViewWindowMax", null, "number", "The maximum horizontal data value to render");
+    Line.prototype.publish("xAxisViewWindowMin", null, "number", "The minimum horizontal data value to render");
     
-    Line.prototype.publish("vAxisBaseline", null, "number", "The baseline for the horizontal axis");
-    Line.prototype.publish("vAxisBaselineColor", "#000000", "html-color", "Specifies the color of the baseline for the vertical axis");
-    Line.prototype.publish("vAxisDirection", 1, "number", "The direction in which the values along the vertical axis grow. Specify -1 to reverse the order of the values.");
-    Line.prototype.publish("vAxisFormat", "", "string", "A format string for numeric axis labels", ["","decimal","scientific","currency","percent","short","long"]);
+    Line.prototype.publish("yAxisBaseline", null, "number", "The baseline for the horizontal axis");
+    Line.prototype.publish("yAxisBaselineColor", "#000000", "html-color", "Specifies the color of the baseline for the vertical axis");
+    Line.prototype.publish("yAxisInversed", false, "boolean", "The direction in which the values along the vertical axis grow. Specify -1 to reverse the order of the values.");
+    Line.prototype.publish("yAxisFormat", "", "string", "A format string for numeric axis labels", ["","decimal","scientific","currency","percent","short","long"]);
     
-    Line.prototype.publish("vAxisGridlinesCount", 5, "number", "The number of vertical gridlines between two regular gridlines");
-    Line.prototype.publish("vAxisGridlinesColor", "#CCC", "html-color", "The color of the vertical gridlines inside the chart area");
-    Line.prototype.publish("vAxisMinorGridlinesCount", 0, "number", "The number of vertical minor gridlines between two regular gridlines");
-    Line.prototype.publish("vAxisMinorGridlinesColor", "#FFFFFF", "html-color", "The color of the vertical minor gridlines inside the chart area");
-    Line.prototype.publish("vAxisLogScale", false, "boolean", "Makes vertical axis a log scale");
+    Line.prototype.publish("yAxisGridlinesCount", 5, "number", "The number of vertical gridlines between two regular gridlines");
+    Line.prototype.publish("yAxisGridlinesColor", "#CCC", "html-color", "The color of the vertical gridlines inside the chart area");
+    Line.prototype.publish("yAxisMinorGridlinesCount", 0, "number", "The number of vertical minor gridlines between two regular gridlines");
+    Line.prototype.publish("yAxisMinorGridlinesColor", "#FFFFFF", "html-color", "The color of the vertical minor gridlines inside the chart area");
+    Line.prototype.publish("yAxisLogScale", false, "boolean", "Makes vertical axis a log scale");
     
-    Line.prototype.publish("vAxisTextPosition", "out", "set", "Position of the vertical axis text, relative to the chart area", ["out","in","none"]);
-    Line.prototype.publish("vAxisTextStyleColor", null, "html-color", "Vertical axis text style (Color)");
-    Line.prototype.publish("vAxisTextStyleFontName", null, "string", "Vertical axis text style (Font Name)");
-    Line.prototype.publish("vAxisTextStyleFontSize", null, "number", "Vertical axis text style (Font Size)");
+    Line.prototype.publish("yAxisTextPosition", "out", "set", "Position of the vertical axis text, relative to the chart area", ["out","in","none"]);
+    Line.prototype.publish("yAxisFontColor", null, "html-color", "Vertical axis text style (Color)");
+    Line.prototype.publish("yAxisFontFamily", null, "string", "Vertical axis text style (Font Name)");
+    Line.prototype.publish("yAxisFontSize", null, "number", "Vertical axis text style (Font Size)");
     
-    Line.prototype.publish("vAxisTicks", [], "array", "Replaces the automatically generated Y-axis ticks with the specified array");
+    Line.prototype.publish("yAxisTicks", [], "array", "Replaces the automatically generated Y-axis ticks with the specified array");
     
-    Line.prototype.publish("vAxisTitle", "", "string", "Specifies a title for the vertical axis");
-    Line.prototype.publish("vAxisTitleTextStyleColor", null, "html-color", "Vertical axis title text style (Color)");
-    Line.prototype.publish("vAxisTitleTextStyleFontName", null, "string", "Vertical axis title text style (Font Name)");
-    Line.prototype.publish("vAxisTitleTextStyleFontSize", null, "number", "Vertical axis titletext style (Font Size)");
+    Line.prototype.publish("yAxisTitle", "", "string", "Specifies a title for the vertical axis");
+    Line.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical axis title text style (Color)");
+    Line.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical axis title text style (Font Name)");
+    Line.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical axis titletext style (Font Size)");
     
-    Line.prototype.publish("vAxisMaxValue", null, "number", "Moves the max value of the vertical axis to the specified value");
-    Line.prototype.publish("vAxisMinValue", null, "number", "Moves the min value of the vertical axis to the specified value");
+    Line.prototype.publish("yAxisMaxValue", null, "number", "Moves the max value of the vertical axis to the specified value");
+    Line.prototype.publish("yAxisMinValue", null, "number", "Moves the min value of the vertical axis to the specified value");
 
-    Line.prototype.publish("vAxisViewWindowMode", "pretty", "set", "Specifies how to scale the vertical axis to render the values within the chart area", ["pretty","maximized","explicit"]);
-    Line.prototype.publish("vAxisViewWindowMax", null, "number", "The maximum vertical data value to render");
-    Line.prototype.publish("vAxisViewWindowMin", null, "number", "The minimum vertical data value to render");
+    Line.prototype.publish("yAxisViewWindowMode", "pretty", "set", "Specifies how to scale the vertical axis to render the values within the chart area", ["pretty","maximized","explicit"]);
+    Line.prototype.publish("yAxisViewWindowMax", null, "number", "The maximum vertical data value to render");
+    Line.prototype.publish("yAxisViewWindowMin", null, "number", "The minimum vertical data value to render");
 
     // Area & Line Only
-    Line.prototype.publish("hAxisAllowContainerBoundaryTextCutoff", false, "boolean", "Hide outermost labels rather than allow them to be cropped by the chart container.");
-    Line.prototype.publish("hAxisSlantedText", null, "boolean", "Draw the horizontal axis text at an angle");
-    Line.prototype.publish("hAxisSlantedTextAngle", 30, "number", "The angle of the horizontal axis text");
-    Line.prototype.publish("hAxisMaxAlternation", 2, "number", "Maximum number of levels of horizontal axis text");
-    Line.prototype.publish("hAxisMaxTextLines", null, "number", "Maximum number of lines allowed for the text labels");
-    Line.prototype.publish("hAxisMinTextSpacing", null, "number", "Minimum horizontal spacing, in pixels, allowed between two adjacent text labels");
+    //Line.prototype.publish("xAxisAllowContainerBoundaryTextCutoff", false, "boolean", "Hide outermost labels rather than allow them to be cropped by the chart container.");
+    Line.prototype.publish("xAxisLabelRotation", 0, "number", "The angle of the horizontal axis text");
+    Line.prototype.publish("xAxisMaxAlternation", 2, "number", "Maximum number of levels of horizontal axis text");
+    Line.prototype.publish("xAxisMaxTextLines", null, "number", "Maximum number of lines allowed for the text labels");
+    Line.prototype.publish("xAxisMinTextSpacing", null, "number", "Minimum horizontal spacing, in pixels, allowed between two adjacent text labels");
     
     Line.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
@@ -110,86 +117,86 @@
         retVal.vAxis = {};
         
         // hAxis
-        retVal.hAxis.baseline = this.hAxisBaseline();
-        retVal.hAxis.baselineColor = this.hAxisBaselineColor();
-        retVal.hAxis.direction = this.hAxisDirection();
+        retVal.hAxis.baseline = this.xAxisBaseline();
+        retVal.hAxis.baselineColor = this.xAxisBaselineColor();
+        retVal.hAxis.direction = this.xAxisInversed() ? -1 : 1;
         retVal.hAxis.gridlines = {
-            count: this.hAxisGridlinesCount(),
-            color: this.hAxisGridlinesColor()
+            count: this.xAxisGridlinesCount(),
+            color: this.xAxisGridlinesColor()
         }
         retVal.hAxis.minorGridlines = {
-            count: this.hAxisMinorGridlinesCount(),
-            color: this.hAxisMinorGridlinesColor()
+            count: this.xAxisMinorGridlinesCount(),
+            color: this.xAxisMinorGridlinesColor()
         }        
-        retVal.hAxis.logScale = this.hAxisLogScale();
-        retVal.hAxis.textPosition = this.hAxisTextPosition();
-        retVal.hAxis.title = this.hAxisTitle();
-        retVal.hAxis.minValue = this.hAxisMinValue();
-        retVal.hAxis.maxValue = this.hAxisMaxValue();
+        retVal.hAxis.logScale = this.xAxisLogScale();
+        retVal.hAxis.textPosition = this.xAxisTextPosition();
+        retVal.hAxis.title = this.xAxisTitle();
+        retVal.hAxis.minValue = this.xAxisMinValue();
+        retVal.hAxis.maxValue = this.xAxisMaxValue();
         
-        retVal.hAxis.hAxisAllowContainerBoundaryTextCutoff = this.hAxisAllowContainerBoundaryTextCutoff();
-        retVal.hAxis.slantedText = this.hAxisSlantedText();
-        retVal.hAxis.slantedTextAngle = this.hAxisSlantedTextAngle();
-        retVal.hAxis.maxAlternation = this.hAxisMaxAlternation();
-        retVal.hAxis.maxTextLines = this.hAxisMaxTextLines();
-        retVal.hAxis.minTextSpacing = this.hAxisMinTextSpacing();
+        //retVal.hAxis.allowContainerBoundaryTextCutoff = this.xAxisAllowContainerBoundaryTextCutoff();
+        retVal.hAxis.slantedText = this.xAxisLabelRotation() !== 0;
+        retVal.hAxis.slantedTextAngle = this.xAxisLabelRotation();
+        retVal.hAxis.maxAlternation = this.xAxisMaxAlternation();
+        retVal.hAxis.maxTextLines = this.xAxisMaxTextLines();
+        retVal.hAxis.minTextSpacing = this.xAxisMinTextSpacing();
         
-        retVal.hAxis.format = this.hAxisFormat();
+        retVal.hAxis.format = this.xAxisFormat();
         retVal.hAxis.textStyle = {
-            color: this.hAxisTextStyleColor(),
-            fontName: this.hAxisTextStyleFontName(),
-            fontSize: this.hAxisTextStyleFontSize()
+            color: this.xAxisFontColor() ? this.xAxisFontColor() : this.fontColor(),
+            fontName: this.xAxisFontFamily() ? this.xAxisFontFamily() : this.fontFamily(),
+            fontSize: this.xAxisFontSize() ? this.xAxisFontSize() : this.fontSize()
         }
-        if (this.hAxisTicks().length > 0) {
-            retVal.hAxis.ticks = this.hAxisTicks();
+        if (this.xAxisTicks().length > 0) {
+            retVal.hAxis.ticks = this.xAxisTicks();
         }
         retVal.hAxis.titleTextStyle = {
-            color: this.hAxisTitleTextStyleColor(),
-            fontName: this.hAxisTitleTextStyleFontName(),
-            fontSize: this.hAxisTitleTextStyleFontSize()
+            color: this.xAxisTitleFontColor() ? this.xAxisTitleFontColor() : this.fontColor(),
+            fontName: this.xAxisTitleFontFamily() ? this.xAxisTitleFontFamily() : this.fontFamily(),
+            fontSize: this.xAxisTitleFontSize() ? this.xAxisTitleFontSize() : this.fontSize()
         }
-        retVal.hAxis.viewWindowMode = this.hAxisViewWindowMode();
+        retVal.hAxis.viewWindowMode = this.xAxisViewWindowMode();
         retVal.hAxis.viewWindow = {
-            min: this.hAxisViewWindowMin(),
-            max: this.hAxisViewWindowMax()
+            min: this.xAxisViewWindowMin(),
+            max: this.xAxisViewWindowMax()
         }
         
         // vAxis
-        retVal.vAxis.baseline = this.vAxisBaseline();
-        retVal.vAxis.baselineColor = this.vAxisBaselineColor();
-        retVal.vAxis.direction = this.vAxisDirection();
+        retVal.vAxis.baseline = this.yAxisBaseline();
+        retVal.vAxis.baselineColor = this.yAxisBaselineColor();
+        retVal.vAxis.direction = this.yAxisInversed() ? -1 : 1;
         retVal.vAxis.gridlines = {
-            count: this.vAxisGridlinesCount(),
-            color: this.vAxisGridlinesColor()
+            count: this.yAxisGridlinesCount(),
+            color: this.yAxisGridlinesColor()
         }
         retVal.vAxis.minorGridlines = {
-            count: this.vAxisMinorGridlinesCount(),
-            color: this.vAxisMinorGridlinesColor()
+            count: this.yAxisMinorGridlinesCount(),
+            color: this.yAxisMinorGridlinesColor()
         }        
-        retVal.vAxis.logScale = this.vAxisLogScale();
-        retVal.vAxis.textPosition = this.vAxisTextPosition();
-        retVal.vAxis.title = this.vAxisTitle();
-        retVal.vAxis.minValue = this.vAxisMinValue();
-        retVal.vAxis.maxValue = this.vAxisMaxValue();
+        retVal.vAxis.logScale = this.yAxisLogScale();
+        retVal.vAxis.textPosition = this.yAxisTextPosition();
+        retVal.vAxis.title = this.yAxisTitle();
+        retVal.vAxis.minValue = this.yAxisMinValue();
+        retVal.vAxis.maxValue = this.yAxisMaxValue();
         
-        retVal.vAxis.format = this.vAxisFormat();
+        retVal.vAxis.format = this.yAxisFormat();
         retVal.vAxis.textStyle = {
-            color: this.vAxisTextStyleColor(),
-            fontName: this.vAxisTextStyleFontName(),
-            fontSize: this.vAxisTextStyleFontSize()
+            color: this.yAxisFontColor(),
+            fontName: this.yAxisFontFamily(),
+            fontSize: this.yAxisFontSize()
         }
-        if (this.vAxisTicks().length > 0) {
-            retVal.vAxis.ticks = this.vAxisTicks();
+        if (this.yAxisTicks().length > 0) {
+            retVal.vAxis.ticks = this.yAxisTicks();
         }
         retVal.vAxis.titleTextStyle = {
-            color: this.vAxisTitleTextStyleColor(),
-            fontName: this.vAxisTitleTextStyleFontName(),
-            fontSize: this.vAxisTitleTextStyleFontSize()
+            color: this.yAxisTitleFontColor() ? this.yAxisTitleFontColor() : this.fontColor(),
+            fontName: this.yAxisTitleFontFamily() ? this.yAxisTitleFontFamily() : this.fontFamily(),
+            fontSize: this.yAxisTitleFontSize() ? this.yAxisTitleFontSize() : this.fontSize()
         }
-        retVal.vAxis.viewWindowMode = this.vAxisViewWindowMode();
+        retVal.vAxis.viewWindowMode = this.yAxisViewWindowMode();
         retVal.vAxis.viewWindow = {
-            min: this.vAxisViewWindowMin(),
-            max: this.vAxisViewWindowMax()
+            min: this.yAxisViewWindowMin(),
+            max: this.yAxisViewWindowMax()
         }        
         
         this.lineDashStyle().forEach(function(d,i) {

@@ -312,12 +312,12 @@
 
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
-        if (row.length !== this._columns.length) {
-            throw "Columns and row do not match";
-        }
         this._columns.forEach(function(col, idx) {
             retVal[col] = row[idx];
         });
+        if (row.length === this._columns.length + 1) {
+            retVal.__lparam = row[this._columns.length];
+        }
         return retVal;
     };
 

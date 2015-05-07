@@ -89,7 +89,7 @@
 
         deserialize: function (state, callback) {
             var context = this;
-            var path = "src/" + state.__class.split("_").join("/");
+            var path = "src/" + state.__class.split(' ').pop().split("_").join("/");
             require([path], function (Widget) {
                 var widget = new Widget();
                 if (state instanceof String) {

@@ -21,21 +21,28 @@
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " google_Common";
 
-    Common.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width"); // num or string
-    Common.prototype.publish("chartAreaHeight", "80%", "string", "Chart Area Height");
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Common.prototype.publish("fontSize", null, "number", "Font Size");
+    Common.prototype.publish("fontFamily", null, "string", "Font Name");
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color");
+    Common.prototype.publish("showLegend", true, "boolean", "Show Legend");
+
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Common.prototype.publish("chartAreaWidth", null, "string", "Chart Area Width"); // num or string (%)
+    Common.prototype.publish("chartAreaHeight", null, "string", "Chart Area Height");
 
     Common.prototype.publish("chartAreaTop", null, "string", "Chart Area Distance From Top"); // num or string (google default auto)
     Common.prototype.publish("chartAreaLeft", null, "string", "Chart Area Distance From Left");
     
-    Common.prototype.publish("fontSize", null, "number", "Font Size");
-    Common.prototype.publish("fontName", null, "string", "Font Name");
-    Common.prototype.publish("fontColor", null, "html-color", "Font Color");
-
-    Common.prototype.publish("legendShow", true, "boolean", "Show Legend");
+    
     Common.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["", "start", "center", "end"]);
     Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["", "bottom", "labeled", "left", "right", "top"]);
     Common.prototype.publish("legendFontColor", "#000", "html-color", "Legend Font Color");
-    Common.prototype.publish("legendFontName", null, "string", "Legend Font Name");
+    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name");
     Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size");
     Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold");
     Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic");
@@ -83,7 +90,7 @@
             height: this.height(),
             colors: colors,
             fontSize: this.fontSize(),
-            fontName: this.fontName(),
+            fontName: this.fontFamily(),
             fontColor: this.fontColor(),
             title: this.title(),
             titlePosition: this.titlePosition(),
@@ -101,11 +108,11 @@
             },
             legend: {
                 alignment: this.legendAlignment(),
-                position: this.legendShow ()? this.legendPosition (): "none",
+                position: this.showLegend ()? this.legendPosition (): "none",
                 maxLines: 2,
                 textStyle: {
                     color: this.legendFontColor(),
-                    fontName: this.legendFontName(),
+                    fontName: this.legendFontFamily(),
                     fontSize: this.legendFontSize(),
                     bold: this.legendFontBold(),
                     italic: this.legendFontItalic()
@@ -134,7 +141,8 @@
     }
 
     Common.prototype.update = function(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments); 
+        HTMLWidget.prototype.update.apply(this, arguments);
+        this._chart.draw(this._data_google, this.getChartOptions());
     };
 
     return Common;

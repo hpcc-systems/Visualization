@@ -3,12 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonRadar", "amcharts.radar", "../api/INDChart"], factory);
     } else {
-        root.amcharts_Polar = factory(root.d3, root.amcharts_CommonRadar, root.amcharts, root.api_INDChart);
+        root.amchart_Polar = factory(root.d3, root.amchart_CommonRadar, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonRadar, AmCharts, INDChart) {
     function Polar() {
         CommonRadar.call(this);
-        this._class = "amcharts_Polar";
+        this._class = "amchart_Polar";
         this._tag = "div";
         this._gType = "column";
     };

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.xy"], factory);
     } else {
-        root.amcharts_CommonXY = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.amcharts);
     }
 }(this, function(d3, HTMLWidget, AmCharts) {
     function CommonXY() {

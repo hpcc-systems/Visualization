@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../api/ITree", "../common/Text", "../common/FAChar", "css!./CirclePacking"], factory);
     } else {
-        root.tree_CirclePacking = factory(root.d3, root.common_SVGWidget, root.tree_ITree, root.common_Text, root.common_FAChar);
+        root.tree_CirclePacking = factory(root.d3, root.common_SVGWidget, root.api_ITree, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, ITree, Text, FAChar) {
     function CirclePacking(target) {

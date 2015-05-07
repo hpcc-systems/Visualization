@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../google/Common", "../api/INDChart", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
-        root.google_CommonND = factory(root.d3, root.google_Common, root.chart_INDChart);
+        root.google_CommonND = factory(root.d3, root.google_Common, root.api_INDChart);
     }
 }(this, function (d3, Common, INDChart) {
 

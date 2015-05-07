@@ -22,12 +22,14 @@
     Grid.prototype.publish("content", [], "widgetArray", "widgets");
 
     Grid.prototype.testData = function () {
-        this.setContent(0, 0, new Pie().testData());
-        this.setContent(0, 1, new Pie().testData());
-        this.setContent(1, 0, new Pie().testData());
-        this.setContent(1, 1, new Pie().testData());
-        this.setContent(0, 2, new MultiChart().testData(), "Title AAA", 2, 2);
-        this.setContent(2, 0, new Line().testData(), "Title BBB", 2, 4);
+        this
+            .setContent(0, 0, new Pie().testData())
+            .setContent(0, 1, new Pie().testData())
+            .setContent(1, 0, new Pie().testData())
+            .setContent(1, 1, new Pie().testData())
+            .setContent(0, 2, new MultiChart().testData(), "Title AAA", 2, 2)
+            .setContent(2, 0, new Line().testData(), "Title BBB", 2, 4)
+        ;
         return this;
     };
 
@@ -73,9 +75,8 @@
                 .gridColSpan(colSpan)
             ;
             this.content().push(cell);
-            return cell;
         }
-        return null;
+        return this;
     };
 
     Grid.prototype.getCell = function (row, col) {

@@ -273,20 +273,38 @@
         return this.mappings.doMapAll(data);
     };
 
-    //  Viz Select ---
-    function Select(visualization, onSelect) {
+    //  Viz Events ---
+    function Event(visualization, eventID, event) {
         this.visualization = visualization;
-        if (onSelect) {
-            this._updates = onSelect.updates;
-            this.mappings = onSelect.mappings;
+        this.eventID = eventID;
+        if (event) {
+            this._updates = event.updates;
+            this.mappings = event.mappings;
         }
     };
 
-    Select.prototype.exists = function () {
+    Event.prototype.exists = function () {
         return this._updates !== undefined;
     };
 
-    Select.prototype.getUpdatesDatasources = function () {
+    Event.prototype.getUpdates = function () {
+        var dedup = {};
+        var retVal = [];
+        if (exists("_updates", this) && this._updates instanceof Array) {
+            this._updates.forEach(function (item, idx) {
+                var datasource = this.visualization.dashboard.datasources[item.datasource];
+                var visualization = this.visualization.dashboard.visualizations[item.visualization];
+                retVal.push({
+                    eventID: this.eventID,
+                    datasource: datasource,
+                    visualization: visualization
+                });
+            }, this);
+        }
+        return retVal;
+    };
+
+    Event.prototype.getUpdatesDatasources = function () {
         var dedup = {};
         var retVal = [];
         if (exists("_updates", this) && this._updates instanceof Array) {
@@ -297,13 +315,11 @@
                     retVal.push(datasource);
                 }
             }, this);
-        } else if (exists("_updates.datasource", this)) { //TODO For backward compatability - Remove in the future  ---
-            retVal.push(this.visualization.dashboard.datasources[this._updates.datasource]);
         }
         return retVal;
     };
 
-    Select.prototype.getUpdatesVisualizations = function () {
+    Event.prototype.getUpdatesVisualizations = function () {
         var dedup = {};
         var retVal = [];
         if (exists("_updates", this) && this._updates instanceof Array) {
@@ -314,8 +330,57 @@
                     retVal.push(visualization);
                 }
             }, this);
-        } else if (exists("_updates.visualization", this)) { //TODO For backward compatability - Remove in the future  ---
-            retVal.push(this.visualization.dashboard.visualizations[this._updates.visualization]);
+        }
+        return retVal;
+    };
+
+    function Events(visualization, events) {
+        this.visualization = visualization;
+        this.events = {};
+        for (var key in events) {
+            this.events[key] = new Event(visualization, key, events[key]);
+        }
+    };
+
+    Events.prototype.setWidget = function (widget) {
+        var context = this;
+        for (var key in this.events) {
+            if (widget["vertex_" + key]) {
+                widget["vertex_" + key] = function (d) {
+                    context.visualization.onEvent(key, context.events[key], d);
+                };
+            } else if (widget[key]) {
+                widget[key] = function (d) {
+                    context.visualization.onEvent(key, context.events[key], d);
+                };
+            }
+        }
+    };
+
+    Events.prototype.exists = function () {
+        return this._updates !== undefined;
+    };
+
+    Events.prototype.getUpdates = function () {
+        var retVal = [];
+        for (var key in this.events) {
+            retVal = retVal.concat(this.events[key].getUpdates());
+        }
+        return retVal;
+    };
+
+    Events.prototype.getUpdatesDatasources = function () {
+        var retVal = [];
+        for (var key in this.events) {
+            retVal = retVal.concat(this.events[key].getUpdatesDatasources());
+        }
+        return retVal;
+    };
+
+    Events.prototype.getUpdatesVisualizations = function () {
+        var retVal = [];
+        for (var key in this.events) {
+            retVal = retVal.concat(this.events[key].getUpdatesVisualizations());
         }
         return retVal;
     };
@@ -329,7 +394,7 @@
         this.type = visualization.type;
         this.properties = visualization.properties || visualization.source.properties || {};
         this.source = new Source(this, visualization.source);
-        this.onSelect = new Select(this, visualization.onSelect);
+        this.events = new Events(this, visualization.events);
 
         var context = this;
         switch (this.type) {
@@ -375,7 +440,7 @@
                     ;
                     if (visualization.range) {
                         var selectionLabel = "";
-                        for (var key in visualization.onSelect.mappings) {
+                        for (var key in visualization.events.events.mappings) {
                             selectionLabel = key;
                             break;
                         }
@@ -440,19 +505,7 @@
 
     Visualization.prototype.setWidget = function (widget, skipProperties) {
         this.widget = widget;
-
-        var context = this;
-        if (this.widget.vertex_dblclick) {
-            this.widget.vertex_dblclick = function (d) {
-                context.click({
-                    uid: d.__hpcc_uid
-                });
-            }
-        } else if (this.widget.click) {
-            this.widget.click = function (d) {
-                context.click(d);
-            }
-        }
+        this.events.setWidget(widget);
         if (!skipProperties) {
             for (var key in this.properties) {
                 if (this.widget[key]) {
@@ -495,19 +548,19 @@
         }
     };
 
-    Visualization.prototype.click = function (d) {
-        if (this.onSelect.exists()) {
+    Visualization.prototype.onEvent = function (eventID, event, d) {
+        if (event.exists()) {
             var request = {};
-            for (var key in this.onSelect.mappings) {
+            for (var key in event.mappings) {
                 var origKey = this.source.mappings.hasMappings ? this.source.mappings.getReverseMap(key) : key;
-                request[this.onSelect.mappings[key]] = d[origKey];
+                request[event.mappings[key]] = d[origKey];
             }
-            var dataSources = this.onSelect.getUpdatesDatasources();
+            var dataSources = event.getUpdatesDatasources();
             dataSources.forEach(function (item) {
-                item.fetchData(request, false, this.onSelect._updates.map(function(item) {
+                item.fetchData(request, false, event._updates.map(function (item) {
                     return item.visualization;
                 }));
-            }, this);
+            });
         }
     };
 
@@ -673,7 +726,7 @@
                 vizIncluded[viz.id] = true;
                 var treeItem = { visualization: viz, children: [] };
                 result.push(treeItem);
-                var visualizations = viz.onSelect.getUpdatesVisualizations();
+                var visualizations = viz.events.getUpdatesVisualizations();
                 visualizations.forEach(function (item) {
                     walkSelect(item, treeItem.children);
                 });

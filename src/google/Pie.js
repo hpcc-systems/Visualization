@@ -15,14 +15,14 @@
     Pie.prototype = Object.create(Common2D.prototype);
     Pie.prototype._class += " google_Pie";
 
-    Pie.prototype.publish("is3D", true, "boolean", "Enable 3D");
+    Pie.prototype.publish("is3D", false, "boolean", "Enable 3D");
     Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size",null,{min:0,max:0.9,step:0.1});
     Pie.prototype.publish("pieStartAngle", 0, "number", "Pie Start Angle");
     
     Pie.prototype.publish("pieSliceText", "percentage", "set", "The content of the text displayed on the slice" ,["none","label","value","percentage"]);
-    Pie.prototype.publish("pieSliceTextStyleColor", "#FFFFFF", "hmtl-color", "Specifies the slice text style.");
-    Pie.prototype.publish("pieSliceTextStyleFontName", null, "string", "Specifies the slice text style.");
-    Pie.prototype.publish("pieSliceTextStyleFontSize", null, "number", "Specifies the slice text style.");
+    Pie.prototype.publish("pieSliceFontColor", "#FFFFFF", "hmtl-color", "Specifies the slice text style.");
+    Pie.prototype.publish("pieSliceFontFamily", null, "string", "Specifies the slice text style.");
+    Pie.prototype.publish("pieSliceFontSize", null, "number", "Specifies the slice text style.");
 
     Pie.prototype.publish("pieSliceBorderColor", "#FFFFFF", "html-color", "The color of the slice borders");
     Pie.prototype.publish("pieResidueSliceColor", "#ccc", "html-color", "Color for the combination slice that holds all slices below sliceVisibilityThreshold");
@@ -46,9 +46,9 @@
         retVal.pieStartAngle = this.pieStartAngle();
         retVal.pieSliceText = this.pieSliceText();
         retVal.pieSliceTextStyle = {
-            color: this.pieSliceTextStyleColor(),
-            fontName: this.pieSliceTextStyleFontName(),
-            fontSize: this.pieSliceTextStyleFontSize()
+            color: this.pieSliceFontColor(),
+            fontName: this.pieSliceFontFamily(),
+            fontSize: this.pieSliceFontSize()
         }
         retVal.pieSliceBorderColor = this.pieSliceBorderColor();
         retVal.pieResidueSliceColor = this.pieResidueSliceColor();

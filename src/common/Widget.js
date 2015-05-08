@@ -26,7 +26,7 @@
     var widgetID = 0;
     var widgetMeta = {};
     function Widget() {
-        this._class = this.__proto__._class;
+        this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
 
         this._columns = [];

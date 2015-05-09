@@ -2,10 +2,23 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="../src/config.js"></script>
+    <!--  Uncomment to develop
     <script src="../bower_components/requirejs/require.js"></script>
-    <script src="./config.js"></script>
+    <script src="../src/config.js"></script>
+    -->
     <!--  Uncomment to test build
-    <script src="../dist/amd/layers/all.js"></script>
+    <script src="../dist-amd/hpcc-viz.js"></script>
+    <script src="../dist-amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "src": "../dist-amd",
+                "font-awesome": "../dist-amd/font-awesome/css/font-awesome.min"
+            }
+        });
+    </script>
     -->
 </head>
 <body>

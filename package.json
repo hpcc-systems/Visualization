@@ -29,6 +29,10 @@
     "type": "git",
     "url": "https://github.com/hpcc-systems/Visualization"
   },
+  "scripts": {
+    "start": "node server.js",
+    "test": "gulp lint"
+  },
   "author": "HPCC Systems",
   "license": "Apache",
   "homepage": "https://github.com/hpcc-systems/Visualization"

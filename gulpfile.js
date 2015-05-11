@@ -91,7 +91,7 @@ gulp.task('jscs', function() {
 });
 
 gulp.task('lint', function() {
-    gulp.src(cfg.src + '/**/*.js')
+    return gulp.src(cfg.src + '/**/*.js')
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(jshint.reporter('fail'))

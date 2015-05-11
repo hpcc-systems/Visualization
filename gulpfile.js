@@ -15,6 +15,8 @@ const bump = require('gulp-bump');
 const argv = require('yargs').argv;
 const filter = require('gulp-filter');
 const tag_version = require('gulp-tag-version');
+const jscs = require('gulp-jscs');
+const jshint = require('gulp-jshint');
 
 // Consts
 const cfg = {
@@ -82,9 +84,23 @@ gulp.task('build-css', css.bind(null, false));
 
 gulp.task('optimize-css', css.bind(null, true));
 
+gulp.task('jscs', function() {
+    gutil.log("JSCS the files...." + '\n');
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(jscs());
+});
+
+gulp.task('lint', function() {
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(jshint('.jshintrc'))
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('fail'))
+});
+
+
 gulp.task('build-nonamd', ['build-css', 'optimize-css'], function (cb) {
     async.each(bundles, buildModule, cb);
-})
+});
 
 //  AMD Tasks  ---
 function getJSFolders(dir) {

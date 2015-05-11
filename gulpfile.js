@@ -15,7 +15,6 @@ const bump = require('gulp-bump');
 const argv = require('yargs').argv;
 const filter = require('gulp-filter');
 const tag_version = require('gulp-tag-version');
-const notify = require('gulp-notify');
 const jscs = require('gulp-jscs');
 const jshint = require('gulp-jshint');
 

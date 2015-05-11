@@ -85,7 +85,7 @@ gulp.task('build-css', css.bind(null, false));
 gulp.task('optimize-css', css.bind(null, true));
 
 gulp.task('jscs', function() {
-    process.stdout.write("JSCS the files...." + '\n');
+    gutil.log("JSCS the files...." + '\n');
     return gulp.src(cfg.src + '/**/*.js')
         .pipe(jscs());
 });

@@ -10,7 +10,7 @@
         Column.call(this);
 
         this._config.axis.rotated = true;
-    };
+    }
     Bar.prototype = Object.create(Column.prototype);
     Bar.prototype._class += " c3chart_Bar";
 

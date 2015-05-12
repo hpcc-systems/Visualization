@@ -32,7 +32,7 @@
         this.columnsIdx = {};
         this.columnsRHS = [];
         this.columnsRHSIdx = {};
-    };
+    }
 
     SourceMappings.prototype.init = function() {
         for (var key in this.mappings) {
@@ -88,7 +88,7 @@
         this.columns = ["label", "weight"];
         this.columnsIdx = { label: 0, weight: 1 };
         this.init();
-    };
+    }
     ChartMappings.prototype = Object.create(SourceMappings.prototype);
 
     function ChoroMappings(visualization, mappings) {
@@ -101,7 +101,7 @@
             this.columnsIdx = { county: 0, weight: 1 };
         }
         this.init();
-    };
+    }
     ChoroMappings.prototype = Object.create(SourceMappings.prototype);
 
     function LineMappings(visualization, mappings) {
@@ -113,7 +113,7 @@
         });
         SourceMappings.call(this, visualization, newMappings);
         this.init();
-    };
+    }
     LineMappings.prototype = Object.create(SourceMappings.prototype);
 
     function TableMappings(visualization, mappings) {
@@ -125,7 +125,7 @@
         }
         SourceMappings.call(this, visualization, newMappings);
         this.init();
-    };
+    }
     TableMappings.prototype = Object.create(SourceMappings.prototype);
 
     function GraphMappings(visualization, mappings, link) {
@@ -134,7 +134,7 @@
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
-    };
+    }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
     GraphMappings.prototype.doMapAll = function (data) {
@@ -154,7 +154,7 @@
                 vertices.push(retVal);
             }
             return retVal;
-        };
+        }
         var edges = [];
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
@@ -175,7 +175,7 @@
                     }
                 });
             }
-        })
+        });
         return { vertices: vertices, edges: edges, merge: false };
     };
 
@@ -205,7 +205,7 @@
         this.first = source.first;
         this.reverse = source.reverse;
         this.sort = source.sort;
-    };
+    }
 
     Source.prototype.getQualifiedID = function () {
         return this.visualization.getQualifiedID() + "." + this.id;
@@ -239,7 +239,6 @@
         var context = this;
         var data = this.getOutput().data;
         if (this.sort) {
-            var context = this;
             data.sort(function (l, r) {
                 for (var i = 0; i < context.sort.length; ++i) {
                     var sortField = context.sort[i];
@@ -280,7 +279,7 @@
             this._updates = onSelect.updates;
             this.mappings = onSelect.mappings;
         }
-    };
+    }
 
     Select.prototype.exists = function () {
         return this._updates !== undefined;
@@ -408,7 +407,7 @@
                 });
                 break;
         }
-    };
+    }
 
     Visualization.prototype.getQualifiedID = function () {
         return this.dashboard.getQualifiedID() + "." + this.id;
@@ -447,17 +446,17 @@
                 context.click({
                     uid: d.__hpcc_uid
                 });
-            }
+            };
         } else if (this.widget.click) {
             this.widget.click = function (d) {
                 context.click(d);
-            }
+            };
         }
         if (!skipProperties) {
             for (var key in this.properties) {
                 if (this.widget[key]) {
                     try {
-                        this.widget[key](this.properties[key])
+                        this.widget[key](this.properties[key]);
                     } catch (e) {
                         console.log("Invalid Property:" + this.id + ".properties." + key);
                     }
@@ -472,7 +471,6 @@
     };
 
     Visualization.prototype.notify = function () {
-        var context = this;
         if (this.source.hasData()) {
             if (this.widget) {
                 var columns = this.source.getColumns();
@@ -519,7 +517,7 @@
         this.request = {};
         this.notify = output.notify || [];
         this.filter = output.filter || [];
-    };
+    }
 
     Output.prototype.getQualifiedID = function () {
         return this.dataSource.getQualifiedID() + "." + this.id;
@@ -555,7 +553,7 @@
     //  DataSource  ---
     function DataSource(dashboard, dataSource, proxyMappings) {
         this.dashboard = dashboard;
-        this.id = dataSource.id
+        this.id = dataSource.id;
         this.filter = dataSource.filter || [];
         this.WUID = dataSource.WUID;
         this.URL = dataSource.URL;
@@ -590,7 +588,7 @@
                 .proxyMappings(proxyMappings)
             ;
         }
-    };
+    }
 
     DataSource.prototype.getQualifiedID = function () {
         return this.dashboard.getQualifiedID() + "." + this.id;
@@ -620,8 +618,8 @@
 
     DataSource.prototype.processResponse = function (response, request, updates) {
         var lowerResponse = {};
-        for (var key in response) {
-            lowerResponse[key.toLowerCase()] = response[key];
+        for (var responseKey in response) {
+            lowerResponse[responseKey.toLowerCase()] = response[responseKey];
         }
         for (var key in this.outputs) {
             var from = this.outputs[key].from;
@@ -636,8 +634,8 @@
                 this.outputs[key].setData(lowerResponse[from], request, updates);
             } else {
                 var responseItems = [];
-                for (var key in response) {
-                    responseItems.push(key);
+                for (var responseKey2 in response) {
+                    responseItems.push(responseKey2);
                 }
                 console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
@@ -682,7 +680,7 @@
         this.visualizationsArray.forEach(function (item) {
             walkSelect(item, this.visualizationsTree);
         }, this);
-    };
+    }
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
@@ -706,7 +704,7 @@
     //  Marshaller  ---
     function Marshaller() {
         this._proxyMappings = {};
-    };
+    }
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
@@ -766,7 +764,7 @@
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
         return this;
-    }
+    };
 
     Marshaller.prototype.parse = function (json, callback) {
         var context = this;
@@ -798,7 +796,7 @@
             } else {
                 setTimeout(waitForLoad, 100, callback);
             }
-        };
+        }
         waitForLoad(callback);
     };
 

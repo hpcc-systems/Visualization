@@ -12,7 +12,7 @@
         this._tag = "div";
         
         this._gType = "column";
-    };
+    }
     Bar.prototype = Object.create(CommonSerial.prototype);
     Bar.prototype.implements(INDChart.prototype);
     
@@ -76,7 +76,7 @@
         this.buildGraphs(this._gType);
         
         return this._chart;
-    }
+    };
     
     Bar.prototype.buildGraphs = function(gType) {
         var context = this;
@@ -112,7 +112,7 @@
 
             return gObj;
         }
-    }
+    };
     
     Bar.prototype.update = function(domNode, element) {
         this.updateChartOptions();

@@ -1,16 +1,16 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "../chart/MultiChart", "css!./Surface"], factory);
+        define(["d3", "../common/HTMLWidget", "../chart/MultiChart", "css!./Surface"], factory);
     } else {
-        root.layout_Surface = factory(root.common_HTMLWidget, root.chart_MultiChart);
+        root.layout_Surface = factory(root.d3, root.common_HTMLWidget, root.chart_MultiChart);
     }
-}(this, function (HTMLWidget, MultiChart) {
+}(this, function (d3, HTMLWidget, MultiChart) {
     function Surface() {
         HTMLWidget.call(this);
 
         this._tag = "div";
-    };
+    }
     Surface.prototype = Object.create(HTMLWidget.prototype);
     Surface.prototype._class += " layout_Surface";
 
@@ -97,7 +97,7 @@
                 }
             }
         });
-    }
+    };
 
     return Surface;
 }));

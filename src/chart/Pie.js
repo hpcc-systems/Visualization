@@ -26,7 +26,7 @@
             .outerRadius(this._radius)
             .innerRadius(this._innerRadius)
         ;
-    };
+    }
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
@@ -144,7 +144,6 @@
         //  Label Lines  ---
         if (context._outerText) {
             var lines = element.selectAll("line").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
-            var r = this.radius();
             lines.enter().append("line")
               .attr("x1", 0)
               .attr("x2", 0)

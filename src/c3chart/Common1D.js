@@ -21,7 +21,7 @@
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
         };
-    };
+    }
     Common1D.prototype = Object.create(Common.prototype);
     Common1D.prototype._class += " c3chart_Common1D";
     Common1D.prototype.implements(I1DChart.prototype);

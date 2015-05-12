@@ -11,7 +11,7 @@
         Common2D.call(this);
 
         this._chartType = "PieChart";
-    };
+    }
     Pie.prototype = Object.create(Common2D.prototype);
     Pie.prototype._class += " google_Pie";
 
@@ -49,7 +49,7 @@
             color: this.pieSliceTextStyleColor(),
             fontName: this.pieSliceTextStyleFontName(),
             fontSize: this.pieSliceTextStyleFontSize()
-        }
+        };
         retVal.pieSliceBorderColor = this.pieSliceBorderColor();
         retVal.pieResidueSliceColor = this.pieResidueSliceColor();
         retVal.pieResidueSliceLabel = this.pieResidueSliceLabel();
@@ -78,9 +78,9 @@
         return retVal;
     };
 
-    Pie.prototype.getNumSlices = function() {
+    Pie.prototype.getNumSlices = function () {
         return this.data().length;
-    }
+    };
 
     function initSlices(num) {
         var slices = [];

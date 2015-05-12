@@ -33,7 +33,6 @@
         },
 
         serializeToObject: function (widget, properties, includeData) {
-            var isPrototype = widget._id === undefined;
             var retVal = {
                 __version: 3,
                 __class: widget._class,
@@ -93,12 +92,11 @@
             require([path], function (Widget) {
                 var widget = new Widget();
                 if (state instanceof String) {
-                    state = JSON.parse(state)
+                    state = JSON.parse(state);
                 }
                 if (state.__id.indexOf("_w") !== 0) {
                     widget._id = state.__id;
                 }
-                var widgets = [];
                 var createCount = 0;
                 for (var key in state.__properties) {
                     if (widget["__meta_" + key]) {
@@ -136,8 +134,6 @@
                                 widget[key](state.__properties[key]);
                                 break;
                         }
-                    } else {
-                        var d = 0;
                     }
                 }
                 var intervalHandler = setInterval(function () {
@@ -157,7 +153,7 @@
 
         create: function (state, callback) {
             if (typeof state === "string") {
-                state = JSON.parse(state)
+                state = JSON.parse(state);
             }
             this.deserialize(state, callback);
         },

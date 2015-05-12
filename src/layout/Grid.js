@@ -1,18 +1,18 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "./Cell", "../common/Text", "../chart/Pie", "../chart/MultiChart", "../c3chart/Line", "css!./Grid"], factory);
+        define(["d3", "../common/HTMLWidget", "./Cell", "../common/Text", "../chart/Pie", "../chart/MultiChart", "../c3chart/Line", "css!./Grid"], factory);
     } else {
-        root.layout_Grid = factory(root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3chart_Line);
+        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3chart_Line);
     }
-}(this, function (HTMLWidget, Cell, Text, Pie, MultiChart, Line) {
+}(this, function (d3, HTMLWidget, Cell, Text, Pie, MultiChart, Line) {
     function Grid() {
         HTMLWidget.call(this);
 
         this._tag = "div";
 
         this.content([]);
-    };
+    }
     Grid.prototype = Object.create(HTMLWidget.prototype);
     Grid.prototype._class += " layout_Grid";
 
@@ -90,7 +90,7 @@
             return false;
         });
         return retVal;
-    }
+    };
 
     Grid.prototype.getContent = function (id) {
         var retVal = null;
@@ -230,7 +230,7 @@
             .on("dragenter", function (targetElement) {
                 d3.event.stopPropagation();
                 console.log("dragenter:  " + (context._dragCell ? context._dragCell._id : "") + " - " + targetElement.x + ", " + targetElement.y + " - " + context._dragCell._dragHandle);
-                var overSelection = context.selectOverElement(targetElement.y, targetElement.x, this)
+                context.selectOverElement(targetElement.y, targetElement.x, this)
                     .classed("over", true)
                 ;
             })
@@ -246,7 +246,7 @@
                 d3.event.stopPropagation();
                 console.log("drop:  " + (context._dragCell ? context._dragCell._id : "") + " - " + targetElement.x + ", " + targetElement.y + " - " + context._dragCell._dragHandle);
                 var overSelection = context.selectOverElement(targetElement.y, targetElement.x, this)
-                    .classed("over", false);
+                    .classed("over", false)
                 ;
                 if (overSelection.empty()) {
                     return;
@@ -381,7 +381,7 @@
             }
         });
         return this;
-    }
+    };
 
     return Grid;
 }));

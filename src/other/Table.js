@@ -12,7 +12,7 @@
 
         this._columns = [];
         this._paginator = new Paginator();
-    };
+    }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype._class += " other_Table";
 
@@ -90,10 +90,11 @@
         var start = startIndex * itemsOnPage;
         var end = parseInt(startIndex * itemsOnPage) + parseInt(itemsOnPage);
 
+        var tData = null;
         if (this.pagination()) {
-            var tData = this._data.slice(start,end);
+            tData = this._data.slice(start,end);
         } else {
-            var tData = this._data;
+            tData = this._data;
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);

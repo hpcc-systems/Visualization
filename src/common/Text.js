@@ -8,7 +8,7 @@
 }(this, function (SVGWidget) {
     function Text() {
         SVGWidget.call(this);
-    };
+    }
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype._class += " common_Text";
 
@@ -21,7 +21,7 @@
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");
         return this;
-    }
+    };
 
     Text.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
@@ -62,7 +62,7 @@
             case "end":
                 xOffset = bbox.width / 2;
                 break;
-        };
+        }
         var yOffset = -(bbox.y + bbox.height / 2);
 
         this._textElement

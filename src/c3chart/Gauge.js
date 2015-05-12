@@ -20,7 +20,7 @@
         this._config.data.color = function (color, d) {
             return context._palette(context._data, context.low(), context.high());
         };
-    };
+    }
     Gauge.prototype = Object.create(Common1D.prototype);
     Gauge.prototype._class += " c3chart_Gauge";
 
@@ -42,13 +42,13 @@
         this.c3Chart.internal.config.gauge_label_show = this.show_labels();
     };
 
-    Gauge.prototype.getChartOptions = function() {
+    Gauge.prototype.getChartOptions = function () {
         var chartOptions = Common1D.prototype.getChartOptions.apply(this, arguments);
 
         chartOptions.columns = [[this._columns, this._data]];
 
         return chartOptions;
-    }
+    };
 
     return Gauge;
 }));

@@ -17,7 +17,7 @@
         this._data_google = [];
 
         this._chart = null;
-    };
+    }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " google_Common";
 
@@ -77,7 +77,7 @@
             backgroundColor: {
                 stroke: this.backgroundColorStroke(),
                 strokeWidth: this.backgroundColorStrokeWidth(),
-                fill: this.backgroundColorFill(),
+                fill: this.backgroundColorFill()
             },
             width: this.width(),
             height: this.height(),
@@ -110,14 +110,14 @@
                     bold: this.legendFontBold(),
                     italic: this.legendFontItalic()
                 }
-            },
+            }
         };
         return chartOptions;
     };
     
-    Common.prototype.getNumSeries = function() {
+    Common.prototype.getNumSeries = function () {
         return this._columns.slice(1).length;
-    } 
+    };
 
     Common.prototype.enter = function (domNode, element) {
         element.style("overflow", "hidden");
@@ -131,7 +131,7 @@
                 context.click(context.rowToObj(context._data[selectedItem.row]), context._columns[selectedItem.column]);
             }
         });
-    }
+    };
 
     Common.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments); 

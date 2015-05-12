@@ -9,7 +9,7 @@
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
-    };
+    }
     WordCloud.prototype = Object.create(SVGWidget.prototype);
     WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
@@ -107,7 +107,7 @@
                 var h = context.height();
                 var dx = bounds[1].x - bounds[0].x,
                     dy = bounds[1].y - bounds[0].y,
-                    borderScale = .9 / Math.max(dx / w, dy / h);
+                    borderScale = 0.9 / Math.max(dx / w, dy / h);
                 context.svg.transition().delay(1000).duration(750)
                     .attr("transform", "scale(" + borderScale + ")")
                 ;

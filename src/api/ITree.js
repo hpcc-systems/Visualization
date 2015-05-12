@@ -7,8 +7,7 @@
     }
 }(this, function (Palette) {
     function ITree() {
-    };
-
+    }
     ITree.prototype._palette = Palette.ordinal("default");
 
     //  Data ---

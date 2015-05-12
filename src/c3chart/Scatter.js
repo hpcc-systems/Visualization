@@ -10,7 +10,7 @@
         CommonND.call(this);
 
         this._type = "scatter";
-    };
+    }
     Scatter.prototype = Object.create(CommonND.prototype);
     Scatter.prototype._class += " c3chart_Scatter";
 

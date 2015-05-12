@@ -16,7 +16,7 @@
         this.transition = new Transition(this);
 
         this._drawStartPos = "center"; 
-    };
+    }
     SVGWidget.prototype = Object.create(Widget.prototype);
 
     //  Properties  ---
@@ -58,6 +58,7 @@
                 });
                 break;
             case "center":
+            /* falls through */
             default:
                 this.pos({
                     x: this._size.width / 2,
@@ -71,7 +72,7 @@
     SVGWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
         if (this._target && _ && (this._target.__data__.id !== _.__data__.id)) {
-            throw "Target can only be assigned once."
+            throw "Target can only be assigned once.";
         }
         this._target = _;
 
@@ -140,7 +141,7 @@
             return retVal;
         }
         return retVal;
-    },
+    };
 
     SVGWidget.prototype.getBBox = function (refresh, round) {
         if (refresh || this._boundingBox === null) {
@@ -155,14 +156,14 @@
                 y: 0,
                 width: 0,
                 height: 0
-            }
+            };
         }
         return {
             x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._scale,
             y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._scale,
             width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._scale,
             height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._scale
-        }
+        };
     };
 
     //  Intersections  ---
@@ -185,7 +186,7 @@
         var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
         var u_b = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
 
-        if (u_b != 0) {
+        if (u_b !== 0) {
             var ua = ua_t / u_b;
             var ub = ub_t / u_b;
 
@@ -199,7 +200,7 @@
                 result.type = "No Intersection";
             }
         } else {
-            if (ua_t == 0 || ub_t == 0) {
+            if (ua_t === 0 || ub_t === 0) {
                 result.type = "Coincident";
             } else {
                 result.type = "Parallel";
@@ -251,7 +252,7 @@
 
         if (deter < 0) {
             result.type = "Outside";
-        } else if (deter == 0) {
+        } else if (deter === 0) {
             result.type = "Tangent";
             // NOTE: should calculate this point
         } else {
@@ -318,7 +319,7 @@
                 .attr("fixme-end", null)
             ;
         }
-    }
+    };
 
     SVGWidget.prototype._popMarkersDebounced = Widget.prototype.debounce(function (element, d) {
         if (this.svgMarkerGlitch) {

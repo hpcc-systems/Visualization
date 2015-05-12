@@ -10,7 +10,7 @@
         CommonFunnel.call(this);
         this._class = "amchart_Pyramid";
         this._tag = "div";
-    };
+    }
     
     Pyramid.prototype = Object.create(CommonFunnel.prototype);
     Pyramid.prototype.implements(I2DChart.prototype);
@@ -39,11 +39,9 @@
     
     Pyramid.prototype.updateChartOptions = function() {
         CommonFunnel.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
-    }
+    };
 
     Pyramid.prototype.update = function(domNode, element) {
-        var context = this;   
         CommonFunnel.prototype.update.apply(this, arguments);
         this.updateChartOptions();
         

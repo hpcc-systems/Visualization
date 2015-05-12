@@ -11,7 +11,7 @@
         CommonND.call(this);
 
         this._chartType = "BarChart";
-    };
+    }
     Bar.prototype = Object.create(CommonND.prototype);
     Bar.prototype._class += " google_Bar";
 
@@ -87,7 +87,7 @@
         retVal.isStacked = this.isStacked();
         retVal.bar = {
             groupWidth: this.groupWidth()
-        }
+        };
         
         retVal.hAxis = {};
         retVal.vAxis = {};
@@ -99,11 +99,11 @@
         retVal.hAxis.gridlines = {
             count: this.hAxisGridlinesCount(),
             color: this.hAxisGridlinesColor()
-        }
+        };
         retVal.hAxis.minorGridlines = {
             count: this.hAxisMinorGridlinesCount(),
             color: this.hAxisMinorGridlinesColor()
-        }        
+        };
         retVal.hAxis.logScale = this.hAxisLogScale();
         retVal.hAxis.textPosition = this.hAxisTextPosition();
         retVal.hAxis.title = this.hAxisTitle();
@@ -115,7 +115,7 @@
             color: this.hAxisTextStyleColor(),
             fontName: this.hAxisTextStyleFontName(),
             fontSize: this.hAxisTextStyleFontSize()
-        }
+        };
         if (this.hAxisTicks().length > 0) {
             retVal.hAxis.ticks = this.hAxisTicks();
         }
@@ -123,12 +123,12 @@
             color: this.hAxisTitleTextStyleColor(),
             fontName: this.hAxisTitleTextStyleFontName(),
             fontSize: this.hAxisTitleTextStyleFontSize()
-        }
+        };
         retVal.hAxis.viewWindowMode = this.hAxisViewWindowMode();
         retVal.hAxis.viewWindow = {
             min: this.hAxisViewWindowMin(),
             max: this.hAxisViewWindowMax()
-        }
+        };
         
         // vAxis
         retVal.vAxis.baseline = this.vAxisBaseline();
@@ -137,11 +137,11 @@
         retVal.vAxis.gridlines = {
             count: this.vAxisGridlinesCount(),
             color: this.vAxisGridlinesColor()
-        }
+        };
         retVal.vAxis.minorGridlines = {
             count: this.vAxisMinorGridlinesCount(),
             color: this.vAxisMinorGridlinesColor()
-        }        
+        };
         retVal.vAxis.logScale = this.vAxisLogScale();
         retVal.vAxis.textPosition = this.vAxisTextPosition();
         retVal.vAxis.title = this.vAxisTitle();
@@ -153,7 +153,7 @@
             color: this.vAxisTextStyleColor(),
             fontName: this.vAxisTextStyleFontName(),
             fontSize: this.vAxisTextStyleFontSize()
-        }
+        };
         if (this.vAxisTicks().length > 0) {
             retVal.vAxis.ticks = this.vAxisTicks();
         }
@@ -161,12 +161,12 @@
             color: this.vAxisTitleTextStyleColor(),
             fontName: this.vAxisTitleTextStyleFontName(),
             fontSize: this.vAxisTitleTextStyleFontSize()
-        }
+        };
         retVal.vAxis.viewWindowMode = this.vAxisViewWindowMode();
         retVal.vAxis.viewWindow = {
             min: this.vAxisViewWindowMin(),
             max: this.vAxisViewWindowMax()
-        }        
+        };
         return retVal;
     };
 

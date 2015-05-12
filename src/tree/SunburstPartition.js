@@ -9,7 +9,7 @@
     function SunburstPartition(target) {
         SVGWidget.call(this);
         ITree.call(this);
-    };
+    }
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
     SunburstPartition.prototype._class += " tree_SunburstPartition";
     SunburstPartition.prototype.implements(ITree.prototype);
@@ -34,7 +34,7 @@
         if (arguments.length) {
             this._resetRoot = true;
         }
-        return this;
+        return retVal;
     };
 
     SunburstPartition.prototype.enter = function (domNode, element) {
@@ -76,7 +76,7 @@
 
         this._dataNodes = this.partition.nodes(this._data);
         var paths = this.svg.selectAll("path").data(this._dataNodes, function (d, i) { return d.id !== undefined ? d.id : i; });
-        var path = paths.enter().append("path")
+        paths.enter().append("path")
             .on("click", function (d) { context.click(d); })
             .on("dblclick", dblclick)
             .append("title")
@@ -90,7 +90,7 @@
                 return d.value > 16 ? "white" : "none";
             })
             .select("title")
-                .text(function (d) { return d.label })
+                .text(function (d) { return d.label; })
         ;
 
         paths.exit().remove();
@@ -114,9 +114,9 @@
             yr = d3.interpolate(this._yScale.range(), [d.y ? 20 : 0, this.radius]);
         var context = this;
         return function (d, i) {
-            return i
-                ? function (t) { return context.arc(d); }
-                : function (t) { context._xScale.domain(xd(t)); context._yScale.domain(yd(t)).range(yr(t)); return context.arc(d); };
+            return i ?
+                function (t) { return context.arc(d); } :
+                function (t) { context._xScale.domain(xd(t)); context._yScale.domain(yd(t)).range(yr(t)); return context.arc(d); };
         };
     };
 

@@ -10,7 +10,7 @@
     function CommonND() {
         Common.call(this);
         INDChart.call(this);
-    };
+    }
     CommonND.prototype = Object.create(Common.prototype);
     CommonND.prototype._class += " google_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
@@ -25,11 +25,11 @@
         return chartOptions;
     };
     
-    CommonND.prototype.update = function(domNode, element) {
-    	this._palette = this._palette.switch(this.paletteID()); 
+    CommonND.prototype.update = function (domNode, element) {
+        this._palette = this._palette.switch(this.paletteID());
         Common.prototype.update.apply(this, arguments);
         this._chart.draw(this._data_google, this.getChartOptions());
-    }
+    };
 
     function initSeries(num) {
         var series = [];

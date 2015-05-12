@@ -12,12 +12,11 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data;
-        this._columns;
-        this._valueField;
+        this._data = undefined;
+        this._columns = undefined;
+        this._valueField = undefined;
         this._colors = [];
-    };
-    
+    }
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
     
     CommonFunnel.prototype.publish("flip", true, "boolean", "Flip Chart");
@@ -95,11 +94,11 @@
             var dataObj = {};
             context._columns.forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
-            })
+            });
             dataObjArr.push(dataObj);
-        })
+        });
         return dataObjArr;
-    }
+    };
     
     CommonFunnel.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
@@ -123,13 +122,12 @@
             theme: "none",
             type: "funnel",
             chartScrollbar: {}
-        }
+        };
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
 
     CommonFunnel.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        var context = this;
         
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px'; 

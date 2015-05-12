@@ -11,7 +11,6 @@
 
         this._tag = "div";
         this._type = "unknown";
-        var context = this;
         this._config = {
             axis: {
             },
@@ -24,8 +23,7 @@
                 rows: []
             }
         };
-    };
-
+    }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " c3chart_Common";
 
@@ -49,7 +47,7 @@
         var retVal = [this._columns.filter(function (item, idx) { return idx > 0; })].concat(this._data.map(function (row) {
             return row.filter(function (cell, idx) {
                 return idx > 0;
-            })
+            });
         }));
         return retVal;
     };
@@ -116,9 +114,9 @@
         });
     };
     
-    Common.prototype.getChartOptions = function() {
+    Common.prototype.getChartOptions = function () {
         return {};
-    }
+    };
 
     return Common;
 }));

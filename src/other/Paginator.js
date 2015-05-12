@@ -1,10 +1,11 @@
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget","css!./Paginator"], factory);
+        define(["d3", "../common/HTMLWidget","css!./Paginator"], factory);
     } else {
-        root.other_Paginator = factory(root.common_HTMLWidget);
+        root.other_Paginator = factory(root.d3, root.common_HTMLWidget);
     }
-}(this, function (HTMLWidget) {
+}(this, function (d3, HTMLWidget) {
     function Paginator() {
         HTMLWidget.call(this);
 
@@ -13,7 +14,7 @@
         this._tNumPages = 1; //np
 
         this._numList = []; //pn
-    };
+    }
     Paginator.prototype = Object.create(HTMLWidget.prototype);
     Paginator.prototype._class += " other_Paginator";
 
@@ -42,7 +43,7 @@
         }
         
         var page = this.paginator.selectAll("li").data(this._numList,function(d) { return d; });
-        var pageText = page 
+        page 
             .enter() 
             .append("li") 
             .append("a") 
@@ -57,16 +58,16 @@
                     }
                 } else if (d==='previous') {
                     if ((context.pageNumber() - 1) >= 1) {
-                        var p = context.pageNumber()-1; 
-                        context.pageNumber(p); 
-                        context._onSelect(p, "previous"); 
+                        var p2 = context.pageNumber()-1; 
+                        context.pageNumber(p2); 
+                        context._onSelect(p2, "previous"); 
                     }
                 } else {
                     context.pageNumber(d); 
                     context._onSelect(d);
                 }
             })
-            ;
+        ;
             
         page.classed("active", function(e, j) { return j === context.pageNumber(); })
             .select("a")

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["dagre"], factory);
+        define(["d3", "dagre"], factory);
     } else {
-        root.graph_GraphLayouts = factory(root.dagre);
+        root.graph_GraphLayouts = factory(root.d3, root.dagre);
     }
-}(this, function (dagre) {
+}(this, function (d3, dagre) {
     function Circle(graphData, width, height, radius) {
         var context = this;
         this.pos = {};
@@ -18,16 +18,16 @@
         var step = 2 * Math.PI / order;
         graphData.eachNode(function (u, value) {
             var size = value.getBBox(true);
-            var maxSize = Math.max(size.width, size.height)
+            var maxSize = Math.max(size.width, size.height);
             context.pos[u] = {
                 x: value.fixed ? value.x : Math.cos(currStep) * (radius - maxSize),
                 y: value.fixed ? value.y : Math.sin(currStep) * (radius - maxSize),
                 width: size.width,
                 height: size.height
-            }
+            };
             currStep += step;
         });
-    };
+    }
     Circle.prototype.nodePos = function(u) {
         return this.pos[u];
     };
@@ -45,9 +45,9 @@
                 y: value.y,
                 width: value.width,
                 height: value.height
-            }
+            };
         });
-    };
+    }
     None.prototype.nodePos = function (u) {
         return this.pos[u];
     };
@@ -77,7 +77,6 @@
         });
         this.edges = [];
         graphData.eachEdge(function (e, s, t) {
-            var value = graphData.edge(e);
             context.edges.push({
                 source: context.vertexMap[s],
                 target: context.vertexMap[t]
@@ -86,7 +85,7 @@
         this.force = d3.layout.force()
             .charge(function (d) {
                 var cs = d.value.getBBox();
-                return -25 * Math.max(cs.width, cs.height)
+                return -25 * Math.max(cs.width, cs.height);
             })
             .linkDistance(300)
             .nodes(this.vertices)
@@ -101,7 +100,7 @@
             }
             this.force.stop();
         }
-    };
+    }
     ForceDirected.prototype.nodePos = function (u) {
         return this.vertexMap[u];
     };
@@ -148,7 +147,7 @@
             }
         });
         this.digraph = digraph;
-    };
+    }
     Hierarchy.prototype.nodePos = function (u) {
         return this.digraph.node(u);
     };

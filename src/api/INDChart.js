@@ -7,7 +7,7 @@
     }
 }(this, function (Palette) {
     function INDChart() {
-    };
+    }
     INDChart.prototype._palette = Palette.ordinal("default");
 
     //  Data ---

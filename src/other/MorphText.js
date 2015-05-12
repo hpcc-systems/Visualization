@@ -12,7 +12,7 @@
         this._text = "";
         this._anchor = "middle";
         this._reverse = false;
-    };
+    }
     MorphText.prototype = Object.create(SVGWidget.prototype);
     MorphText.prototype._class += " other_MorphText";
 
@@ -62,17 +62,16 @@
         ;
     };
 
-    MorphText.prototype.dateTime = function() {
+    MorphText.prototype.dateTime = function () {
         var d = new Date(),
-            seconds = d.getSeconds().toString().length == 1 ? '0' + d.getSeconds() : d.getSeconds(),
-            minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
-            hours = d.getHours().toString().length == 1 ? '0' + d.getHours() : d.getHours(),
+            seconds = d.getSeconds().toString().length === 1 ? '0' + d.getSeconds() : d.getSeconds(),
+            minutes = d.getMinutes().toString().length === 1 ? '0' + d.getMinutes() : d.getMinutes(),
+            hours = d.getHours().toString().length === 1 ? '0' + d.getHours() : d.getHours(),
             ampm = d.getHours() >= 12 ? 'pm' : 'am',
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return days[d.getDay()] + ' ' + months[d.getMonth()] + ' ' + d.getDate() + ' ' + d.getFullYear() + ' ' + hours + ':' + minutes + ':' + seconds + ampm;
-    }
-
+    };
 
     MorphText.prototype.update = function (domNode, element) {
         var context = this;

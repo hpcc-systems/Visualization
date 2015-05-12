@@ -10,7 +10,7 @@
     function Common2D() {
         Common.call(this);
         I2DChart.call(this);
-    };
+    }
     Common2D.prototype = Object.create(Common.prototype);
     Common2D.prototype._class += " google_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);
@@ -25,11 +25,11 @@
         return chartOptions;
     };
 
-    Common2D.prototype.update = function(domNode, element) {
+    Common2D.prototype.update = function (domNode, element) {
         this._palette = this._palette.switch(this.paletteID());
         Common.prototype.update.apply(this, arguments);
         this._chart.draw(this._data_google, this.getChartOptions());
-    }
+    };
     
     function initSeries(num) {
         var series = [];

@@ -9,7 +9,7 @@
     function CirclePacking(target) {
         SVGWidget.call(this);
         ITree.call(this);
-    };
+    }
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
     CirclePacking.prototype._class += " tree_CirclePacking";
     CirclePacking.prototype.implements(ITree.prototype);
@@ -17,8 +17,6 @@
     CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch());
 
     CirclePacking.prototype.enter = function (domNode, element) {
-        var context = this;
-
         this.diameter = Math.min(this.width(), this.height());
 
         this.pack = d3.layout.pack()
@@ -31,6 +29,7 @@
         this.svg = element
             .append("g")
             .attr("transform", "rotate(30)")
+        ;
     };
 
     CirclePacking.prototype.update = function (domNode, element) {
@@ -50,13 +49,16 @@
             .attr("class", function (d) { return d.parent ? d.children ? "node" : "node leaf" : "node root"; })
             .style("fill", function (d) { return context._palette(d.label); })
             .on("click", function (d) { context.click(d); })
-            .on("dblclick", function (d) { if (focus !== d) context.zoom(d), d3.event.stopPropagation(); })
+            .on("dblclick", function (d) {
+                if (focus !== d) {
+                    context.zoom(d);
+                }
+                d3.event.stopPropagation();
+            })
         ;
         this.circle.append("title").text(function (d) { return d.label; });
 
-        var text = this.svg.selectAll("text")
-            .data(nodes)
-          .enter()
+        this.svg.selectAll("text").data(nodes).enter()
             .append("text")
             .attr("class", "label")
             .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
@@ -71,14 +73,13 @@
 
     CirclePacking.prototype.zoom = function (d) {
         var context = this;
-        var focus0 = focus;
         var focus = d;
 
-        var zoomCircleSel = this.svg.selectAll("circle")
-          .filter(function (d) { return d === focus; })
+        this.svg.selectAll("circle")
+            .filter(function (d) { return d === focus; })
         ;
         var zoomTextSel = this.svg.selectAll("text")
-          .filter(function (d) { return d !== focus && this.style.display === "inline"; })
+           .filter(function (d) { return d !== focus && this.style.display === "inline"; })
         ;
         zoomTextSel.transition().duration(500)
             .style("opacity", 0)

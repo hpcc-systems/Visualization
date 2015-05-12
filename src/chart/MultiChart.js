@@ -53,7 +53,7 @@
         }, this);
         //  Backward compatability until we roll our own BAR  ---
         this._allCharts["BAR"] = this._allCharts["COLUMN"];
-    };
+    }
     MultiChart.prototype = Object.create(SVGWidget.prototype);
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
@@ -116,10 +116,10 @@
                     .data(context._data)
                     .size(size)
                 ;
-                context.chart(newContent)
+                context.chart(newContent);
                 newContent.click = function (row, column) {
                     context.click(row, column);
-                }
+                };
                 if (oldContent) {
                     oldContent
                         .data([])
@@ -178,7 +178,7 @@
             return this;
         }
         return SVGWidget.prototype.render.apply(this, arguments);
-    }
+    };
 
     return MultiChart;
 }));

@@ -13,13 +13,12 @@
         
         this._gType = "candlestick";
         
-        this._openField;
-        this._closeField;
-        this._categoryField;
-        this._lowField;
-        this._highField;
-    };
-    
+        this._openField = undefined;
+        this._closeField = undefined;
+        this._categoryField = undefined;
+        this._lowField = undefined;
+        this._highField = undefined;
+    }
     Candle.prototype = Object.create(CommonSerial.prototype);
     Candle.prototype.implements(INDChart.prototype);
 
@@ -75,6 +74,7 @@
             }
         });
         this._columns = colArr;
+        return retVal;
     };
     
     Candle.prototype.enter = function(domNode, element) {
@@ -111,7 +111,7 @@
         this.buildGraphs(this._gType);
         
         return this._chart;
-    }
+    };
 
     Candle.prototype.buildGraphs = function(gType) {
         var context = this;
@@ -147,7 +147,7 @@
 
             return gObj;
         }
-    }
+    };
     
     Candle.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);

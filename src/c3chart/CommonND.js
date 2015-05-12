@@ -22,7 +22,7 @@
             return context._palette(d.id ? d.id : d);
         };
         this._prevColumns = [];
-    };
+    }
     CommonND.prototype = Object.create(Common.prototype);
     CommonND.prototype._class += " c3chart_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
@@ -85,20 +85,20 @@
             y: {
                 show: this.showYGrid(),
             }
-        }
+        };
 
         switch (this.xaxis_type()) {
         case "category":
             this._config.axis.tick = {
                 centered: true,
                 multiline: false
-            }
+            };
             break;
         case "timeseries":
             this._config.data.x = this._columns[0];
             this._config.axis.tick = {
                 format: '%d %b %Y'
-            }
+            };
             break;
         }
 
@@ -120,24 +120,24 @@
         element.selectAll(".c3 .c3-axis.c3-axis-y path").style({ "stroke": this.yAxisBaselineColor() });
     };
 
-    CommonND.prototype.getChartOptions = function() {
+    CommonND.prototype.getChartOptions = function () {
         var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
 
         switch (this.xaxis_type()) {
             case "category":
                 chartOptions.categories = this.getC3Categories();
                 chartOptions.columns = this.getC3Columns();
-                chartOptions.unload = this.getDiffC3Columns()
+                chartOptions.unload = this.getDiffC3Columns();
                 break;
             case "indexed":
             case "timeseries":
                 chartOptions.columns = this.getC3Columns();
-                chartOptions.unload =  this.getDiffC3Columns();
+                chartOptions.unload = this.getDiffC3Columns();
                 break;
         }
 
         return chartOptions;
-    }
+    };
 
     return CommonND;
 }));

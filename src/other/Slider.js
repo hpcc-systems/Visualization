@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/SVGWidget", "./ISlider", "css!./Slider"], factory);
+        define(["d3", "../common/SVGWidget", "./ISlider", "css!./Slider"], factory);
     } else {
-        root.other_Slider = factory(root.common_SVGWidget, root.other_ISlider);
+        root.other_Slider = factory(root.d3, root.common_SVGWidget, root.other_ISlider);
     }
-}(this, function (SVGWidget, ISlider) {
+}(this, function (d3, SVGWidget, ISlider) {
     function Slider() {
         SVGWidget.call(this);
         ISlider.call(this);
@@ -34,7 +34,7 @@
               .tickSize(0)
               .tickPadding(12)
         ;
-    };
+    }
     Slider.prototype = Object.create(SVGWidget.prototype);
     Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(ISlider.prototype);
@@ -134,7 +134,7 @@
             this._initHandle = true;
             var selVal = [this.allowRange(), this.allowRange()];
             if (this.allowRange() && this._data) {
-                var selVal = this._data;
+                selVal = this._data;
             } else if (this._data){
                 selVal = [this._data, this._data];
             }
@@ -190,30 +190,30 @@
 
     Slider.prototype.nearestStep = function (value) {
         return this.allowRange() + Math.round((value - this.allowRange()) / this.step()) * this.step();
-    }
+    };
 
     Slider.prototype.handlePath = function (d, i) {
         var e = +(d === "e");
         var x = e ? 1 : -1;
         var xOffset = this.allowRange() ? 0.5 : 0.0;
         var y = 18;
-        var retVal = "M" + (xOffset * x) + "," + y
-            + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6)
-            + "V" + (2 * y - 6)
-            + "A6,6 0 0 " + e + " " + (xOffset * x) + "," + (2 * y)
+        var retVal = "M" + (xOffset * x) + "," + y + 
+            "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) +
+            "V" + (2 * y - 6) +
+            "A6,6 0 0 " + e + " " + (xOffset * x) + "," + (2 * y)
         ;
         if (this.allowRange()) {
-            retVal += "Z"
-                + "M" + (2.5 * x) + "," + (y + 8)
-                + "V" + (2 * y - 8)
-                + "M" + (4.5 * x) + "," + (y + 8)
-                + "V" + (2 * y - 8)
+            retVal += "Z" +
+                "M" + (2.5 * x) + "," + (y + 8) +
+                "V" + (2 * y - 8) +
+                "M" + (4.5 * x) + "," + (y + 8) +
+                "V" + (2 * y - 8)
             ;
         } else {
-            retVal += "M" + (1 * x) + "," + (y + 8)
-                + "V" + (2 * y - 8)
+            retVal += "M" + (1 * x) + "," + (y + 8) +
+                "V" + (2 * y - 8)
             ;
-        };
+        }
         return retVal;
     };
 

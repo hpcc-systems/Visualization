@@ -13,7 +13,7 @@
         this._dataMap = {};
         this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
-    };
+    }
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype._class += " map_Choropleth";
     Choropleth.prototype.implements(IChoropleth.prototype);
@@ -54,7 +54,7 @@
             }
         }
         return retVal;
-    }
+    };
 
     Choropleth.prototype.projection = function (_) {
         if (!arguments.length) return this._projection;
@@ -76,7 +76,7 @@
             .projection(this.d3Projection)
         ;
         return this;
-    }
+    };
 
     Choropleth.prototype.render = function () {
         SVGWidget.prototype.render.apply(this, arguments);
@@ -84,7 +84,7 @@
             this.zoomToFit();
         }
         return this;
-    }
+    };
 
     Choropleth.prototype.enter = function (domNode, element) {
         //  Zoom  ---
@@ -165,10 +165,10 @@
         function albersUsa(coordinates) {
             var x = coordinates[0], y = coordinates[1];
             point = null;
-            (lower48Point(x, y), point)
-                || (alaskaPoint(x, y), point)
-                || (hawaiiPoint(x, y), point)
-                || (puertoRicoPoint(x, y), point);
+            (lower48Point(x, y), point) ||
+            (alaskaPoint(x, y), point) ||
+            (hawaiiPoint(x, y), point) ||
+            (puertoRicoPoint(x, y), point); // jshint ignore:line
             return point;
         }
 
@@ -177,9 +177,9 @@
                 t = lower48.translate(),
                 x = (coordinates[0] - t[0]) / k,
                 y = (coordinates[1] - t[1]) / k;
-            return (y >= .120 && y < .234 && x >= -.425 && x < -.214 ? alaska
-                : y >= .166 && y < .234 && x >= -.214 && x < -.115 ? hawaii
-                : y >= .204 && y < .234 && x >= .320 && x < .380 ? puertoRico
+            return (y >= 0.120 && y < 0.234 && x >= -0.425 && x < -0.214 ? alaska
+                : y >= 0.166 && y < 0.234 && x >= -0.214 && x < -0.115 ? hawaii
+                : y >= 0.204 && y < 0.234 && x >= 0.320 && x < 0.380 ? puertoRico
                 : lower48).invert(coordinates);
         };
 
@@ -243,7 +243,7 @@
         albersUsa.scale = function (_) {
             if (!arguments.length) return lower48.scale();
             lower48.scale(_);
-            alaska.scale(_ * .35);
+            alaska.scale(_ * 0.35);
             hawaii.scale(_);
             puertoRico.scale(_);
             return albersUsa.translate(lower48.translate());
@@ -255,32 +255,32 @@
 
             lower48Point = lower48
                 .translate(_)
-                .clipExtent([[x - .455 * k, y - .238 * k], [x + .455 * k, y + .238 * k]])
+                .clipExtent([[x - 0.455 * k, y - 0.238 * k], [x + 0.455 * k, y + 0.238 * k]])
                 .stream(pointStream).point;
 
             alaskaPoint = alaska
-                .translate([x - .307 * k, y + .201 * k])
-                .clipExtent([[x - .425 * k + ε, y + .120 * k + ε], [x - .214 * k - ε, y + .234 * k - ε]])
+                .translate([x - 0.307 * k, y + 0.201 * k])
+                .clipExtent([[x - 0.425 * k + ε, y + 0.120 * k + ε], [x - 0.214 * k - ε, y + 0.234 * k - ε]])
                 .stream(pointStream).point;
 
             hawaiiPoint = hawaii
-                .translate([x - .205 * k, y + .212 * k])
-                .clipExtent([[x - .214 * k + ε, y + .166 * k + ε], [x - .115 * k - ε, y + .234 * k - ε]])
+                .translate([x - 0.205 * k, y + 0.212 * k])
+                .clipExtent([[x - 0.214 * k + ε, y + 0.166 * k + ε], [x - 0.115 * k - ε, y + 0.234 * k - ε]])
                 .stream(pointStream).point;
 
             puertoRicoPoint = puertoRico
-                .translate([x + .350 * k, y + .224 * k])
-                .clipExtent([[x + .320 * k, y + .204 * k], [x + .380 * k, y + .234 * k]])
+                .translate([x + 0.350 * k, y + 0.224 * k])
+                .clipExtent([[x + 0.320 * k, y + 0.204 * k], [x + 0.380 * k, y + 0.234 * k]])
                 .stream(pointStream).point;
 
             return albersUsa;
         };
 
         return albersUsa.scale(1070);
-    }
+    };
 
     Choropleth.prototype.zoomToFit = function (node, transitionDuration, scaleFactor) {
-        var scaleFactor = scaleFactor || 0.9;
+        scaleFactor = scaleFactor || 0.9;
 
         var bbox = node ? node.getBBox() : this._svg.node().getBBox();
         var x = bbox.x + bbox.width / 2;
@@ -291,7 +291,7 @@
         (transitionDuration ? this._svg.transition().duration(transitionDuration) : this._svg)
             .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
         ;
-    }
+    };
 
     return Choropleth;
 }));

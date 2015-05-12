@@ -8,16 +8,16 @@
 }(this, function (d3, Widget, Transition) {
     function HTMLWidget() {
         Widget.call(this);
-    };
+    }
     HTMLWidget.prototype = Object.create(Widget.prototype);
 
     HTMLWidget.prototype.calcFrameWidth = function (element) {
-        var retVal = parseFloat(element.style("padding-left"))
-            + parseFloat(element.style("padding-right"))
-            + parseFloat(element.style("margin-left"))
-            + parseFloat(element.style("margin-right"))
-            + parseFloat(element.style("border-left-width"))
-            + parseFloat(element.style("border-right-width"))
+        var retVal = parseFloat(element.style("padding-left")) +
+            parseFloat(element.style("padding-right")) +
+            parseFloat(element.style("margin-left")) +
+            parseFloat(element.style("margin-right")) +
+            parseFloat(element.style("border-left-width")) +
+            parseFloat(element.style("border-right-width"))
         ;
         return retVal;
     };
@@ -27,12 +27,12 @@
     };
 
     HTMLWidget.prototype.calcFrameHeight = function (element) {
-        var retVal = parseFloat(element.style("padding-top"))
-            + parseFloat(element.style("padding-bottom"))
-            + parseFloat(element.style("margin-top"))
-            + parseFloat(element.style("margin-bottom"))
-            + parseFloat(element.style("border-top-width"))
-            + parseFloat(element.style("border-bottom-width"))
+        var retVal = parseFloat(element.style("padding-top")) +
+            parseFloat(element.style("padding-bottom")) +
+            parseFloat(element.style("margin-top")) +
+            parseFloat(element.style("margin-bottom")) +
+            parseFloat(element.style("border-top-width")) +
+            parseFloat(element.style("border-bottom-width"))
         ;
         return retVal;
     };
@@ -62,7 +62,7 @@
     HTMLWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
         if (this._target && _) {
-            throw "Target can only be assigned once."
+            throw "Target can only be assigned once.";
         }
         this._target = _;
 
@@ -93,7 +93,7 @@
             var domNode = this._overlayElement.node();
             while (domNode) {
                 this.observer.observe(domNode, { attributes: true });
-                domNode = domNode.parentNode
+                domNode = domNode.parentNode;
             }
         } else if (this._target) {
             this._parentElement = d3.select(this._target);

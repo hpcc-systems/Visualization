@@ -75,7 +75,7 @@
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(context.theme_mode() ? widget.__proto__ : widget).map(function (prop) {
+        var propsStr = Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
             if (!context.widgetPropertyModified(widget, prop.id)) {
                 return "";
             }
@@ -139,7 +139,7 @@
             var allProps = [];
             var propsByID = {};
             data.forEach(function (widget) {
-                var gpResponse = _getParams(theme_mode ? widget.__proto__ : widget, 0);
+                var gpResponse = _getParams(theme_mode ? Object.getPrototypeOf(widget) : widget, 0);
                 allProps = allProps.concat(gpResponse);
             });
             allProps.forEach(function (prop) {
@@ -209,13 +209,13 @@
         return needsRedraw;
     };
     PropertyEditor.prototype.widgetPropertyModified = function (widget, propID) {
-        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : widget.__proto__[propID + "_modified"]();
+        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : Object.getPrototypeOf(widget)[propID + "_modified"]();
     };
     PropertyEditor.prototype.widgetProperty = function (widget, propID, _) {
         if (_ === undefined) {
-            return !this.theme_mode() || this === widget ? widget[propID]() : widget.__proto__[propID]();
+            return !this.theme_mode() || this === widget ? widget[propID]() : Object.getPrototypeOf(widget)[propID]();
         }
-        return !this.theme_mode() || this === widget ? widget[propID](_) : widget.__proto__[propID](_);
+        return !this.theme_mode() || this === widget ? widget[propID](_) : Object.getPrototypeOf(widget)[propID](_);
     };
 
     PropertyEditor.prototype.update = function (domNode, element) {
@@ -641,7 +641,7 @@
                     }).remove();
                 } else if (context.param_grouping() === "By Widget") {
                     //Updating TR 'By Widget'
-                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? widget.__proto__ : widget), function (d) {
+                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
                     rows.enter().append("tr").each(function (d) {

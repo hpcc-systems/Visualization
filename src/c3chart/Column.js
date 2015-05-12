@@ -13,8 +13,16 @@
     }
     Column.prototype = Object.create(CommonND.prototype);
     Column.prototype._class += " c3chart_Column";
-    
-    Column.prototype.publish("isStacked", false, "boolean", "Stack BarChart");
+
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Column.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:['Basic','Shared']});
+
+    /**
+     * Publish Params Unique To This Widget
+     */   
+
     Column.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this, arguments);
     };

@@ -10,14 +10,14 @@
         SVGWidget.call(this);
 
         this._text = new Text()
-            .font_family("FontAwesome")
+            .fontFamily("FontAwesome")
         ;
     }
     FAChar.prototype = Object.create(SVGWidget.prototype);
     FAChar.prototype._class += " common_FAChar";
 
-    FAChar.prototype.publish("char", "", "string", "Font Awesome Item");
-    FAChar.prototype.publish("font_size", null, "number", "Font Size");
+    FAChar.prototype.publish("char", "", "string", "Font Awesome Item",null,{tags:['Private']});
+    FAChar.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Private']});
     FAChar.prototype.publishProxy("color_fill", "_text");
 
     FAChar.prototype.testData = function () {
@@ -36,7 +36,7 @@
         SVGWidget.prototype.update.apply(this, arguments);
         this._text
             .text(this.char())
-            .scale((this.font_size() || 14) / 14) //  Scale rather than font_size to prevent Chrome glitch  ---
+            .scale((this.fontSize() || 14) / 14) //  Scale rather than fontSize to prevent Chrome glitch  ---
             .render()
         ;
     };

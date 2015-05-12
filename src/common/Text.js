@@ -12,11 +12,11 @@
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype._class += " common_Text";
 
-    Text.prototype.publish("text", "", "string", "Display Text");
-    Text.prototype.publish("font_family", "", "string", "Font Family");
-    Text.prototype.publish("font_size", null, "number", "Font Size (px)");
-    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"]);
-    Text.prototype.publish("color_fill", null, "html-color", "Fill Color");
+    Text.prototype.publish("text", "", "string", "Display Text",null,{tags:['Private']});
+    Text.prototype.publish("fontFamily", "", "string", "Font Family",null,{tags:['Private']});
+    Text.prototype.publish("fontSize", null, "number", "Font Size (px)",null,{tags:['Private']});
+    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"],{tags:['Private']});
+    Text.prototype.publish("colorFill", null, "html-color", "Fill Color",null,{tags:['Private']});
 
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");
@@ -31,8 +31,8 @@
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._textElement
-            .attr("font-family", this.font_family())
-            .attr("font-size", this.font_size())
+            .attr("font-family", this.fontFamily())
+            .attr("font-size", this.fontSize())
         ;
         var textParts = this.text().split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
@@ -42,7 +42,7 @@
             .attr("x", "0")
         ;
         textLine
-            .style("fill", this.color_fill())
+            .style("fill", this.colorFill())
             .text(function (d) { return d; })
         ;
         textLine.exit()

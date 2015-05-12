@@ -1,3 +1,9 @@
+.other_Slider text {
+    color:#000;;
+    font-family:'Verdana';
+    font-size:12px;
+}
+
 .other_Slider .axis {
     -webkit-user-select: none;
     -moz-user-select: none;

@@ -18,8 +18,8 @@
     Dendrogram.prototype.implements(ITree.prototype);
     
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch());
-    Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle");
-    Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"]); 
+    Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle",null,{tags:['Private']});
+    Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"],{tags:['Private']}); 
      
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

@@ -27,11 +27,24 @@
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " c3chart_Common";
 
-    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"]);
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Common.prototype.publish("showLegend", false, "boolean", "Show/Hide Legend",null,{tags:['Basic','Shared']});
+    Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:['Intermediate','Shared']});
+    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:['Intermediate','Shared']});
+    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name",null,{tags:['Private','Shared']});
+    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold",null,{tags:['Private','Shared']});
+    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic",null,{tags:['Private','Shared']});
 
-    Common.prototype.publish("legendFontColor", "#000", "html-color", "Font Color");
-    Common.prototype.publish("legendFontSize", 11, "number", "Font Size");
-    Common.prototype.publish("showLegend", true, "boolean", "Show/Hide Legend");
+    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic','Shared']});
+    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic','Shared','Shared']});
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic','Shared']});
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:['Intermediate']});
+    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:['Advanced']});
 
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;
@@ -82,6 +95,9 @@
             width: this.width(),
             height: this.height()
         };
+        this._config.transition = {
+            duration: this.animationDuration()
+        };
         this._config.data.type = this._type;
         if (this._type !== "gauge") {
             this._config.legend = {
@@ -108,10 +124,24 @@
 
         this.c3Chart.load(this.getChartOptions());
 
-        element.selectAll(".c3 .c3-legend-item text").style({ 
-            "fill": this.legendFontColor(), 
-            "font-size": this.legendFontSize()+"px" 
-        });
+        element.selectAll(".c3 text")
+                .style({
+                    "stroke": this.fontColor(),
+                    "fill": this.fontColor(),
+                    "font-size": this.fontSize()+"px",
+                    "font-family": this.fontFamily(),
+                })
+                .attr("font-family",this.fontFamily());
+
+        element.selectAll(".c3 .c3-legend-item text")
+                .style({
+                    "fill": this.legendFontColor(),
+                    "font-size": this.legendFontSize()+"px",
+                    "font-family": this.legendFontFamily(),
+                    "font-weight": this.legendFontBold() ? "bold" : "normal",
+                    "font-style": this.legendFontItalic() ? "italic" : "normal"
+                })
+                .attr("font-family",this.legendFontFamily());
     };
     
     Common.prototype.getChartOptions = function () {

@@ -18,60 +18,65 @@
         this._categoryField = undefined;
         this._colors = [];
     }
+
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
 
-    Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch());
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), {tags:['Basic','Shared']});
+    Pie.prototype.publish("fontFamily", "Verdana", "string", "Label Font Family",null,{tags:['Basic','Shared']});
+    Pie.prototype.publish("fontSize", 11, "number", "Label Font Size",null,{tags:['Basic','Shared']});
+    Pie.prototype.publish("fontColor", null, "html-color", "Label Font Color",null,{tags:['Basic','Shared']});
 
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Pie.prototype.publish("tooltipTemplate","[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>", "string", "Tooltip Text",null,{tags:['Intermediate']});
 
-    Pie.prototype.publish("globalTooltipText","[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span", "string", "Tooltip Text");
-    
-    Pie.prototype.publish("tooltipText","[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>", "string", "Tooltip Text");
-    
-    Pie.prototype.publish("Depth3D", 10, "number", "3D Depth (px)");
-    Pie.prototype.publish("Angle3D", 15, "number", "3D Angle (Deg)");
-    
-    Pie.prototype.publish("marginLeft", 0, "number", "Margin (Left)");
-    Pie.prototype.publish("marginRight", 0, "number", "Margin (Right)");
-    Pie.prototype.publish("marginTop", 0, "number", "Margin (Top)");
-    Pie.prototype.publish("marginBottom", 0, "number", "Margin (Bottom)");
-   
-    Pie.prototype.publish("reverseDataSorting", false, "boolean", "Reverse Data Sorting");
-    
-    Pie.prototype.publish("holePercent", 0, "number", "holePercent");
-    
-    Pie.prototype.publish("fontFamily", "Verdana", "string", "Label Font Family");
-    Pie.prototype.publish("fontSize", 11, "number", "Label Font Size");
-    
-    Pie.prototype.publish("radius", null, "number", "Radius");
-    Pie.prototype.publish("globalPieAlpha", 1, "number", "Global Pie Alpha");
-    Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice");
+    Pie.prototype.publish("Depth3D", 10, "number", "3D Depth (px)",null,{tags:['Basic']});
+    Pie.prototype.publish("Angle3D", 15, "number", "3D Angle (Deg)",null,{tags:['Basic']});
 
-    Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"]);
-    
+    Pie.prototype.publish("marginLeft", 0, "number", "Margin (Left)",null,{tags:['Intermediate']});
+    Pie.prototype.publish("marginRight", 0, "number", "Margin (Right)",null,{tags:['Intermediate']});
+    Pie.prototype.publish("marginTop", 0, "number", "Margin (Top)",null,{tags:['Intermediate']});
+    Pie.prototype.publish("marginBottom", 0, "number", "Margin (Bottom)",null,{tags:['Intermediate']});
+
+    Pie.prototype.publish("reverseDataSorting", false, "boolean", "Reverse Data Sorting",null,{tags:['Intermediate']});
+
+    Pie.prototype.publish("holePercent", 0, "number", "Hole Size (Percent)",null,{tags:['Basic']});
+
+    Pie.prototype.publish("radius", null, "number", "Radius",null,{tags:['Basic']});
+    Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice",null,{tags:['Basic']});
+
+    Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:['Intermediate']});
+
     Pie.prototype.updateChartOptions = function() {
         var context = this;
 
         this._chart.type = "pie";
         this._chart.radius = this.radius();
-        this._chart.pathToImages = "//cdn.rawgit.com/cdnjs/cdnjs/master/ajax/libs/amcharts/3.13.0/images/";
 
-        this._chart.balloonText = context.globalTooltipText();
-        
+        this._chart.balloonText = context.tooltipTemplate();
+
         this._chart.labelPosition = this.labelPosition();
-        
+
         if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
-        
+
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
         this._chart.innerRadius = this.holePercent()+"%";
         this._chart.fontFamily = this.fontFamily();
         this._chart.fontSize = this.fontSize();
+        this._chart.fontSize = this.fontSize();
+        this._chart.color = this.fontColor();
+
         this._chart.allLabels = [];
-        this._chart.pieAlpha =  this.globalPieAlpha();
+        this._chart.pieAlpha =  this.pieAlpha();
 
         this._chart.titleField = this._columns[0];
         this._chart.valueField = this._columns[1];
@@ -80,26 +85,26 @@
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         }
         this._data = this._data.sort(sortingMethod);
-        
+
         this._chart.dataProvider = this.formatData(this._data);
-        
+
         this._colors = [];
         this._data.forEach(function(dataPoint,i){
             context._colors.push(context._palette(i));
 
         });
         this._chart.colors = this._colors;
-        
+
         this.pieAlpha().forEach(function(d,i) {
             if (typeof(this._chart.chartData[i])==='undefined') { 
                 this._chart.chartData[i] = {};
             }
             this._chart.chartData[i].alpha = d;
         });
-        
+
         return this._chart;
     };
-    
+
     Pie.prototype.formatData = function(dataArr){
         var dataObjArr = [];
         var context = this;
@@ -112,7 +117,7 @@
         });
         return dataObjArr;
     };
-    
+
     Pie.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
@@ -127,7 +132,7 @@
         }
         return retVal;
     };
-    
+
     Pie.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var initObj = {
@@ -142,12 +147,12 @@
 
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px';
-        
+
         this.updateChartOptions();
-        
+
         this._chart.validateNow();
         this._chart.validateData();
     };
-    
+
     return Pie;
 }));

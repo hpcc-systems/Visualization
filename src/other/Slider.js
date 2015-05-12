@@ -39,11 +39,15 @@
     Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(ISlider.prototype);
 
-    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");
-    Slider.prototype.publish("low", 0, "number", "Low");
-    Slider.prototype.publish("high", 100, "number", "High");
-    Slider.prototype.publish("step", 10, "number", "Step");
-    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
+    Slider.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic']});
+    Slider.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic']});
+    Slider.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
+
+    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection",null,{tags:['Intermediate']});
+    Slider.prototype.publish("low", 0, "number", "Low",null,{tags:['Intermediate']});
+    Slider.prototype.publish("high", 100, "number", "High",null,{tags:['Intermediate']});
+    Slider.prototype.publish("step", 10, "number", "Step",null,{tags:['Intermediate']});
+    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label",null,{tags:['Intermediate']});
 
     Slider.prototype.testData = function (_) {
         this.columns("Percent");
@@ -118,6 +122,11 @@
 
         this.axisElement
             .call(this.axis)
+        ;
+        this.axisElement.selectAll('.tick > text')
+                .style('fill',this.fontColor())
+                .style('font-size',this.fontSize())
+                .style('font-family',this.fontFamily())
         ;
 
         var range = this.xScale.range();

@@ -26,7 +26,14 @@
     Common1D.prototype._class += " c3chart_Common1D";
     Common1D.prototype.implements(I1DChart.prototype);
 
-    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch());
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), {tags:['Basic','Shared']});
+
+    /**
+     * Publish Params Unique To This Widget
+     */
 
     Common1D.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);

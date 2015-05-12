@@ -12,12 +12,12 @@
         this._dataMap = {};
         this._dataMaxWeight = 0;
         this._dataMinWeight = 0;
-        this.projection(this.world_projection());
+        this.projection(this.worldProjection());
     }
     ChoroplethCountries.prototype = Object.create(Choropleth.prototype);
     ChoroplethCountries.prototype._class += " map_ChoroplethCountries";
 
-    ChoroplethCountries.prototype.publish("world_projection", "mercator", "set", "Map Projection", ["mercator", "orthographic"]);
+    ChoroplethCountries.prototype.publish("worldProjection", "mercator", "set", "Map Projection", ["mercator", "orthographic"],{tags:['Private']});
 
     ChoroplethCountries.prototype.testData = function () {
         
@@ -67,7 +67,7 @@
         Choropleth.prototype.enter.apply(this, arguments);
         element.classed("map_Choropleth", true);    
 
-        this.projection(this.world_projection());
+        this.projection(this.worldProjection());
 
         var context = this;
         this.lookup = {};
@@ -106,7 +106,7 @@
 
     ChoroplethCountries.prototype.update = function (domNode, element) {
         Choropleth.prototype.update.apply(this, arguments);
-        this.projection(this.world_projection());
+        this.projection(this.worldProjection());
 
         var context = this;
 

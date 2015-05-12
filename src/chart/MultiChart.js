@@ -64,8 +64,8 @@
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 
-    MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
-    MultiChart.prototype.publish("chart", null, "widget", "Chart");
+    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
+    MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:['Basic']});
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);
@@ -114,7 +114,7 @@
     MultiChart.prototype.switchChart = function (callback) {
         var oldContent = this.chart();
         var context = this;
-        this.requireContent(this.chart_type(), function (newContent) {
+        this.requireContent(this.chartType(), function (newContent) {
             if (newContent !== oldContent) {
                 var size = context.size();
                 newContent
@@ -175,7 +175,7 @@
 
 
     MultiChart.prototype.render = function (callback) {
-        if (this.chart_type() && (!this.chart() || (this.chart()._class !== this._allCharts[this.chart_type()].widgetClass))) {
+        if (this.chartType() && (!this.chart() || (this.chart()._class !== this._allCharts[this.chartType()].widgetClass))) {
             var context = this;
             var args = arguments;
             this.switchChart(function () {

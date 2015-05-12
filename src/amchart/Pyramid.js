@@ -11,15 +11,20 @@
         this._class = "amchart_Pyramid";
         this._tag = "div";
     }
-    
+
     Pyramid.prototype = Object.create(CommonFunnel.prototype);
     Pyramid.prototype.implements(I2DChart.prototype);
 
-    Pyramid.prototype.publish("paletteID", "Dark2", "set", "Palette ID", Pyramid.prototype._palette.switch());
-    
-    Pyramid.prototype.publish("globalTooltipText","[[category]]([[title]]): [[value]]", "string", "Tooltip Text");
-    Pyramid.prototype.publish("graphTooltipText",["[[category]]([[title]]): [[value]]"], "array", "Tooltip Text");
-    
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Pyramid.prototype.publish("paletteID", "default", "set", "Palette ID", Pyramid.prototype._palette.switch(), {tags:['Basic','Shared']});
+
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Pyramid.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
+
     Pyramid.prototype.testData = function() {
         this.columns(["Subject", "Year 1"]);
         this.data([
@@ -32,11 +37,11 @@
         this.marginRight(150);
         return this;
     };
-    
-    Pyramid.prototype.enter = function(domNode, element) {       
+
+    Pyramid.prototype.enter = function(domNode, element) {
         CommonFunnel.prototype.enter.apply(this, arguments);
     };
-    
+
     Pyramid.prototype.updateChartOptions = function() {
         CommonFunnel.prototype.updateChartOptions.apply(this, arguments);
     };
@@ -44,10 +49,10 @@
     Pyramid.prototype.update = function(domNode, element) {
         CommonFunnel.prototype.update.apply(this, arguments);
         this.updateChartOptions();
-        
+
         this._chart.validateNow();
         this._chart.validateData();
     };
-    
+
     return Pyramid;
 }));

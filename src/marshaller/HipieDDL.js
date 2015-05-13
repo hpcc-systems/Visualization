@@ -5,7 +5,7 @@
     } else {
         root.marshaller_HipieDDL = factory(root.other_Comms, root.common_Widget, root.require);
     }
-}(this, function (Comms, Widget) {
+}(this, function (Comms, Widget, require) {
     var Vertex = null;
     var Edge = null;
     var exists = function (prop, scope) {

@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../api/INDChart", "require"], factory);
@@ -98,8 +98,8 @@
 
         var context = this;
         var path = "src/" + this._allCharts[chartType].widgetClass.split("_").join("/");
-        require([path], function (widgetClass) {
-            retVal = new widgetClass();
+        require([path], function (WidgetClass) {
+            retVal = new WidgetClass();
             context._allCharts[chartType].widget = retVal;
             callback(retVal);
         });

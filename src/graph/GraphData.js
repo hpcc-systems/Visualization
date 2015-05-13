@@ -11,7 +11,7 @@
         this.setGraph({});
         this.setDefaultNodeLabel(function () { return {}; });
         this.setDefaultEdgeLabel(function () { return {}; });
-    };
+    }
     GraphData.prototype = Object.create(dagre.graphlib.Graph.prototype);
 
     GraphData.prototype.setData = function (vertices, edges, hierarchy, merge) {
@@ -19,17 +19,17 @@
         var retVal = {
             addedVertices: [],
             addedEdges: []
-        }
+        };
 
         //  Add new items  ---
         for (var i = 0; i < vertices.length; ++i) {
             var entity = vertices[i];
             if (!merge || !this.hasNode(entity._id)) {
-                this.setNode(entity._id, entity)
+                this.setNode(entity._id, entity);
                 retVal.addedVertices.push(entity);
             }
         }
-        for (var i = 0; i < edges.length; ++i) {
+        for (i = 0; i < edges.length; ++i) {
             var edge = edges[i];
             if (!merge || !this.hasEdge(edge._id)) {
                 this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge);
@@ -37,7 +37,7 @@
             }
         }
         if (hierarchy) {
-            for (var i = 0; i < hierarchy.length; ++i) {
+            for (i = 0; i < hierarchy.length; ++i) {
                 this.setParent(hierarchy[i].child._id, hierarchy[i].parent._id);
             }
         }
@@ -47,11 +47,13 @@
             var edgeIDs = edges.map(function (item) { return item._id; });
             this.filterEdges(function (item) { return edgeIDs.indexOf(item.v + "_" + item.w) < 0; })
                 .forEach(function (item) {
+                    /*  TODO  ---
                     try {
-                        //TODO:  context.delEdge(item);
+                        context.delEdge(item);
                     } catch (e) {
                         var d = 0;
                     }
+                    */
                 })
             ;
             var vertexIDs = vertices.map(function (item) { return item._id; });
@@ -60,7 +62,6 @@
                     try {
                         context.delNode(item);
                     } catch (e) {
-                        var d = 0;
                     }
                 })
             ;
@@ -104,7 +105,6 @@
 
     GraphData.prototype.edgeValues = function () {
         var retVal = [];
-        var context = this;
         this.edges().forEach(function (item, idx) {
             retVal.push(this.edge(item));
         }, this);

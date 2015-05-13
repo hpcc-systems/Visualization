@@ -12,7 +12,7 @@
 
         this._drawStartPos = "origin";
         this._maxTextWidth = 0;
-    };
+    }
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
@@ -50,8 +50,8 @@
             ;            
         }
 
-        var nodes = this.layout.nodes(this.data());
-        var links = this.layout.links(nodes);
+        var dataNodes = this.layout.nodes(this.data());
+        var links = this.layout.links(dataNodes);
 
         //  Lines  ---
         var lines = element.selectAll(".link").data(links);
@@ -65,7 +65,6 @@
 
         //  Nodes  ---
         var nodes = element.selectAll(".node").data(nodes);
-
         nodes.enter().append("g")
             .attr("class", "node")
             .on("click", function (d) { context.click(d); })

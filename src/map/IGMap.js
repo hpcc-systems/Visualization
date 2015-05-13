@@ -7,7 +7,7 @@
     }
 }(this, function (Shape, Edge) {
     function IGMap() {
-    };
+    }
 
     //  Data ---
     IGMap.prototype.testData = function () {

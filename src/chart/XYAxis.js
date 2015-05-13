@@ -12,7 +12,7 @@
 
         this._xScale = "";
         this.parseDate = d3.time.format("%Y-%m-%d").parse;
-    };
+    }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
     XYAxis.prototype.xScale = function (_) {
@@ -22,8 +22,6 @@
     };
 
     XYAxis.prototype.enter = function (domNode, element) {
-        var context = this;
-
         this.x = null;
         switch (this._xScale) {
             case "DATE":
@@ -58,10 +56,8 @@
     };
 
     XYAxis.prototype.calcMargin = function (domNode, element) {
-        var context = this;
         var margin = { top: 8, right: 0, bottom: 24, left: 40 };
-        var width = this.width() - margin.left - margin.right,
-            height = this.height() - margin.top - margin.bottom;
+        var height = this.height() - margin.top - margin.bottom;
 
         var test = element.append("g");
 
@@ -81,7 +77,7 @@
         margin.left = y_bbox.width;
         test.remove();
         return margin;
-    }
+    };
 
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
@@ -89,13 +85,13 @@
         //  Update Domain  ---
         switch (this._xScale) {
             case "DATE":
-                var min = d3.min(this._data, function (data) {
+                var dateMin = d3.min(this._data, function (data) {
                     return d3.min(data, function (d) { return context.parseDate(d[0]); });
                 });
-                var max = d3.max(this._data, function (data) {
+                var dateMax = d3.max(this._data, function (data) {
                     return d3.max(data, function (d) { return context.parseDate(d[0]); });
                 });
-                this.x.domain([min, max]);
+                this.x.domain([dateMin, dateMax]);
                 break;
             default:
                 this.x.domain(this._data.map(function (d) { return d[0]; }));
@@ -114,7 +110,7 @@
 
         //  Calculate Range  ---
         if (this.x.rangeRoundBands) {
-            this.x.rangeRoundBands([0, this.width()], .1);
+            this.x.rangeRoundBands([0, this.width()], 0.1);
         } else if (this.x.rangeRound) {
             this.x.range([0, this.width()]);
         }
@@ -126,7 +122,7 @@
             height = this.height() - margin.top - margin.bottom;
 
         if (this.x.rangeRoundBands) {
-            this.x.rangeRoundBands([0, width], .1);
+            this.x.rangeRoundBands([0, width], 0.1);
         } else if (this.x.rangeRound) {
             this.x.range([0, width]);
         }

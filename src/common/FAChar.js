@@ -12,7 +12,7 @@
         this._text = new Text()
             .font_family("FontAwesome")
         ;
-    };
+    }
     FAChar.prototype = Object.create(SVGWidget.prototype);
     FAChar.prototype._class += " common_FAChar";
 
@@ -23,7 +23,7 @@
     FAChar.prototype.testData = function () {
         this.char("\uf007");
         return this;
-    }
+    };
 
     FAChar.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

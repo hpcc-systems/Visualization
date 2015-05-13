@@ -9,7 +9,7 @@
     function GMap(target) {
         Graph.call(this);
         IGMap.call(this);
-    };
+    }
     GMap.prototype = Object.create(Graph.prototype);
     GMap.prototype._class += " map_GMap";
     GMap.prototype.implements(IGMap.prototype);
@@ -86,7 +86,7 @@
         });
         this.graphData.edgeValues().forEach(function (item) {
             item.points([]);
-        })
+        });
     };
 
     GMap.prototype.zoomToFit = function () {

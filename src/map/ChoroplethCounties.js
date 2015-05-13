@@ -10,7 +10,7 @@
         Choropleth.call(this);
 
         this.projection("albersUsaPr");
-    };
+    }
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
     ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
 
@@ -31,7 +31,7 @@
         Choropleth.prototype.enter.apply(this, arguments);
         element.classed("map_Choropleth", true);
 
-        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features)
+        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features);
 
         //  Enter  ---
         var context = this;

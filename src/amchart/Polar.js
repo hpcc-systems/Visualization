@@ -11,8 +11,7 @@
         this._class = "amchart_Polar";
         this._tag = "div";
         this._gType = "column";
-    };
-    
+    }
     Polar.prototype = Object.create(CommonRadar.prototype);
     Polar.prototype.implements(INDChart.prototype);
     
@@ -37,7 +36,7 @@
             ["Math II", 76, 30, 34, 6],
             ["Math III", 80, 30, 27, 8],
         ]);
-        this.valueAxesAxisTitleOffset([20])
+        this.valueAxesAxisTitleOffset([20]);
         this.valueAxesMinimum([0]);
         this.valueAxesAxisAlpha([0.15]);
         this.valueAxesDashLength([3]);
@@ -51,15 +50,13 @@
     
     Polar.prototype.updateChartOptions = function() {
         CommonRadar.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
         
         this.buildGraphs(this._gType);
         
         return this._chart;
-    }
+    };
     
     Polar.prototype.buildGraphs = function(gType) {
-        var context = this;
         if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length; 
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
@@ -81,10 +78,9 @@
             gObj.valueField = valueField;
             return gObj;
         }
-    }
+    };
 
     Polar.prototype.update = function(domNode, element) {
-        var context = this;   
         CommonRadar.prototype.update.apply(this, arguments);
         this.updateChartOptions();
         

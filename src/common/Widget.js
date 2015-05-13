@@ -15,7 +15,7 @@
                 }
                 var prop = path.substring("src/".length).split("/").join("_");
                 return root[prop];
-            })
+            });
 
             cb.apply(null, objs);
         };
@@ -24,7 +24,6 @@
     }
 }(this, function (d3) {
     var widgetID = 0;
-    var widgetMeta = {};
     function Widget() {
         this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
@@ -44,7 +43,7 @@
         this._watchArr = [];
 
         this._renderCount = 0;
-    };
+    }
     Widget.prototype._class = " common_Widget";
 
     Widget.prototype.ieVersion = (function () {
@@ -83,31 +82,32 @@
                     attributeName: null,
                     attributeNamespace: null,
                     oldValue: null
-                }
+                };
                 this.callback([mutation]);
             }
         };
 
         this.observe = function (domNode, config) {
+            var listener = null;
             if (config.attributes) {
-                var listener = new MutationListener(this.callback, domNode, "attributes");
+                listener = new MutationListener(this.callback, domNode, "attributes");
                 this.listeners.push(listener);
                 domNode.addEventListener('DOMAttrModified', listener, true);
             }
 
             if (config.characterData) {
-                var listener = new MutationListener(this.callback, domNode, "characterData");
+                listener = new MutationListener(this.callback, domNode, "characterData");
                 this.listeners.push(listener);
                 domNode.addEventListener('DOMCharacterDataModified', listener, true);
             }
 
             if (config.childList) {
-                var listener = new MutationListener(this.callback, domNode, "childList");
+                listener = new MutationListener(this.callback, domNode, "childList");
                 this.listeners.push(listener);
                 domNode.addEventListener('DOMNodeInserted', listener, true);
                 domNode.addEventListener('DOMNodeRemoved', listener, true);
             }
-        }
+        };
 
         this.disconnect = function () {
             this.listeners.forEach(function (item) {
@@ -125,7 +125,7 @@
                 }
             });
             this.listeners = [];
-        }
+        };
     };
     if (!window.MutationObserver) {
         window.MutationObserver = Widget.prototype.MutationObserver;
@@ -142,7 +142,7 @@
     // Serialization  ---
     Widget.prototype.publish = function (id, defaultValue, type, description, set, ext) {
         if (this["__meta_" + id] !== undefined) {
-            throw id + " is already published."
+            throw id + " is already published.";
         }
         this["__meta_" + id] = {
             id: id,
@@ -151,7 +151,7 @@
             description: description,
             set: set,
             ext: ext || {}
-        }
+        };
         this[id] = function (_) {
             var isPrototype = this._id === undefined;
             if (!arguments.length) {
@@ -202,10 +202,10 @@
                 return this["__meta_" + id].defaultValue !== defaultValue;
             }
             return this["__prop_" + id] !== undefined;
-        }
+        };
         this[id + "_reset"] = function () {
             this["__prop_" + id] = undefined;
-        }
+        };
         this["__prop_" + id] = undefined;
     };
 
@@ -213,7 +213,7 @@
         for (var key in WidgetType.prototype) {
             if (key.indexOf("__meta") === 0) {
                 var publishItem = WidgetType.prototype[key];
-                this.publishProxy(prefix + "__prop_" + publishItem.id, id, publishItem.method || publishItem.id)
+                this.publishProxy(prefix + "__prop_" + publishItem.id, id, publishItem.method || publishItem.id);
             }
         }
     };
@@ -221,7 +221,7 @@
     Widget.prototype.publishProxy = function (id, proxy, method, defaultValue) {
         method = method || id;
         if (this["__meta_" + id] !== undefined) {
-            throw id + " is already published."
+            throw id + " is already published.";
         }
         this["__meta_" + id] = {
             id: id,
@@ -229,11 +229,11 @@
             proxy: proxy,
             method: method,
             defaultValue: defaultValue
-        }
+        };
         this[id] = function (_) {
             var isPrototype = this._id === undefined;
             if (isPrototype) {
-                throw "Setting default value of proxied properties is not supported."
+                throw "Setting default value of proxied properties is not supported.";
             }
             if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
             if (defaultValue && _ === defaultValue) {
@@ -243,20 +243,20 @@
             }
             return this;
         };
-        this[id + "_modified"] = function (_) {
+        this[id + "_modified"] = function () {
             var isPrototype = this._id === undefined;
             if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported."
+                throw "Setting default values of proxied properties is not supported.";
             }
             return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
-        }
+        };
         this[id + "_reset"] = function () {
             var isPrototype = this._id === undefined;
             if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported."
+                throw "Setting default values of proxied properties is not supported.";
             }
             this[proxy][method + "_reset"]();
-        }
+        };
     };
 
     Widget.prototype.watch = function (func) {
@@ -334,13 +334,13 @@
 
     Widget.prototype.x = function (_) {
         if (!arguments.length) return this._pos.x;
-        this.pos({ x: _, y: this._pos.y })
+        this.pos({ x: _, y: this._pos.y });
         return this;
     };
 
     Widget.prototype.y = function (_) {
         if (!arguments.length) return this._pos.y;
-        this.pos({ x: this._pos.x, y: _ })
+        this.pos({ x: this._pos.x, y: _ });
         return this;
     };
 
@@ -358,13 +358,13 @@
 
     Widget.prototype.width = function (_) {
         if (!arguments.length) return this._size.width;
-        this.size({ width: _, height: this._size.height })
+        this.size({ width: _, height: this._size.height });
         return this;
     };
 
     Widget.prototype.height = function (_) {
         if (!arguments.length) return this._size.height;
-        this.size({ width: this._size.width, height: _ })
+        this.size({ width: this._size.width, height: _ });
         return this;
     };
 
@@ -625,13 +625,13 @@
                 if (!execAsap)
                     func.apply(obj, args);
                 obj.timeout = null;
-            };
+            }
             if (obj.timeout)
                 clearTimeout(obj.timeout);
             else if (execAsap)
                 func.apply(obj, args);
             obj.timeout = setTimeout(delayed, threshold || 100);
-        }
+        };
     };
 
     return Widget;

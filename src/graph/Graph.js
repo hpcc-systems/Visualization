@@ -28,7 +28,7 @@
         this._snapToGrid = 0;
         this._allowDragging = true;
         this._selection = new Bag.Selection();
-    };
+    }
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype._class += " graph_Graph";
     Graph.prototype.implements(IGraph.prototype);
@@ -36,7 +36,7 @@
     //  Properties  ---
     Graph.prototype.getOffsetPos = function () {
         return { x: 0, y: 0 };
-    }
+    };
 
     Graph.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -67,16 +67,16 @@
             var context = this;
             data.addedVertices.forEach(function (item) {
                 item.pos({
-                    x:  + Math.random() * 10 / 2 - 5,
-                    y:  + Math.random() * 10 / 2 - 5
+                    x: +Math.random() * 10 / 2 - 5,
+                    y: +Math.random() * 10 / 2 - 5
                 });
-            })
+            });
             data.addedEdges.forEach(function (item) {
                 if (item._sourceMarker)
                     item._sourceMarker = context._id + "_" + item._sourceMarker;
                 if (item._targetMarker)
                     item._targetMarker = context._id + "_" + item._targetMarker;
-            })
+            });
         }
         return retVal;
     };
@@ -152,8 +152,8 @@
             this._fixIEMarkers();
             this.prevScale = this.zoom.scale();
         }
-        this.brush.x(d3.scale.identity().domain([(-this.prevTranslate[0] - this._size.width / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[0] + this._size.width / 2) * 1 / this.zoom.scale()]))
-        this.brush.y(d3.scale.identity().domain([(-this.prevTranslate[1] - this._size.height / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[1] + this._size.height / 2) * 1 / this.zoom.scale()]))
+        this.brush.x(d3.scale.identity().domain([(-this.prevTranslate[0] - this._size.width / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[0] + this._size.width / 2) * 1 / this.zoom.scale()]));
+        this.brush.y(d3.scale.identity().domain([(-this.prevTranslate[1] - this._size.height / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[1] + this._size.height / 2) * 1 / this.zoom.scale()]));
     };
 
     Graph.prototype.enter = function (domNode, element, d) {
@@ -241,13 +241,13 @@
                 switch (context._zoomMode) {
                     case "selection":
                         var zt = context.zoom.translate();
-;                        console.log(zt[0]);
+                        console.log(zt[0]);
                         var extent = d3.event.target.extent();
                         context.svgV.selectAll(".graphVertex").select("*")
                             .classed("selected", function (d) {
                                 return context._selection.isSelected(d) ||
                                     (extent[0][0] <= d.x() && d.x() < extent[1][0] && extent[0][1] <= d.y() && d.y() < extent[1][1]);
-                            });
+                            })
                         ;
                         break;
                     default:
@@ -304,7 +304,7 @@
                         var edge = context.graphData.edge(id);
                         context._popMarkers(edge.element(), edge);
                     });
-                };
+                }
             }
         }
         this.drag = d3.behavior.drag()
@@ -410,7 +410,7 @@
 
     Graph.prototype.centerOn = function (bounds, transitionDuration) {
         var x = (bounds[0][0] + bounds[1][0]) / 2,
-            y = (bounds[0][1] + bounds[1][1]) / 2
+            y = (bounds[0][1] + bounds[1][1]) / 2;
         var translate = [x, y];
         this.setZoom(translate, 1, transitionDuration);
     };
@@ -426,9 +426,8 @@
 
             var context = this;
             var layoutEngine = this.getLayoutEngine();
-            if (this._layout == "ForceDirected2") {
+            if (this._layout === "ForceDirected2") {
                 this.forceLayout = layoutEngine;
-                var context = this;
                 this.forceLayout.force.on("tick", function (d) {
                     layoutEngine.vertices.forEach(function (item) {
                         var vertex = context.graphData.node(item.id);
@@ -614,7 +613,8 @@
             .remove()
         ;
 
-        if (!this._renderCount++) {
+        if (!this._renderCount) {
+            this._renderCount++;
             this.setZoom([0, 0], 1);
             this.layout(this.layout());
         }
@@ -633,14 +633,14 @@
                 return new GraphLayouts.Hierarchy(this.graphData, this._size.width, this._size.height, this._hierarchyOptions);
         }
         return null;//new GraphLayouts.None(this.graphData, this._size.width, this._size.height);
-    }
+    };
 
     Graph.prototype.getNeighborMap = function (vertex) {
         var vertices = {};
         var edges = {};
 
         if (vertex) {
-            var edges = this.graphData.nodeEdges(vertex.id());
+            edges = this.graphData.nodeEdges(vertex.id());
             for (var i = 0; i < edges.length; ++i) {
                 var edge = this.graphData.edge(edges[i]);
                 edges[edge.id()] = edge;
@@ -796,7 +796,7 @@
             .attr("markerUnits", "strokeWidth")
             .attr("orient", "auto")
             .append("polyline")
-                .attr("points", "0,0 10,5 0,10 1,5");
+                .attr("points", "0,0 10,5 0,10 1,5")
         ;
         this.defs.append("marker")
             .attr("class", "marker")

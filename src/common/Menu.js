@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./SVGWidget", "./IMenu", "./Icon", "./List", "css!./Menu"], factory);
+        define(["d3", "./SVGWidget", "./IMenu", "./Icon", "./List", "css!./Menu"], factory);
     } else {
-        root.common_Menu = factory(root.common_SVGWidget, root.common_IMenu, root.common_Icon, root.common_List);
+        root.common_Menu = factory(root.d3, root.common_SVGWidget, root.common_IMenu, root.common_Icon, root.common_List);
     }
-}(this, function (SVGWidget, IMenu, Icon, List) {
+}(this, function (d3, SVGWidget, IMenu, Icon, List) {
     function Menu() {
         SVGWidget.call(this);
         IMenu.call(this);
@@ -23,7 +23,7 @@
             context.click(d);
         };
         this._visible = false;
-    };
+    }
     Menu.prototype = Object.create(SVGWidget.prototype);
     Menu.prototype._class += " common_Menu";
     Menu.prototype.implements(IMenu.prototype);
@@ -59,7 +59,7 @@
         var context = this;
         d3.select("body")
             .on("click." + this._id, function () {
-                console.log("click:  body - " + context._id)
+                console.log("click:  body - " + context._id);
                 if (context._visible) {
                     context.hideMenu();
                 }
@@ -84,7 +84,7 @@
             .data(["Menu A", "And B", "a longer C"])
         ;
         return this;
-    }
+    };
 
     Menu.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

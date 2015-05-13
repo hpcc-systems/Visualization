@@ -26,13 +26,11 @@
             ordinalCache[id] = retVal;
         }
         return retVal;
-    };
+    }
 
     function palette_ordinal(id, colors) {
         if (!id) return ["default"].concat(d3Ordinal.concat(brewerOrdinal).concat(hpccOrdinal));
-        var id = id;
         var scale = null;
-        var colors = colors;
 
         if (colors) {
             scale = d3.scale.ordinal().range(colors);
@@ -40,11 +38,11 @@
             if (d3Ordinal.indexOf(id) >= 0) {
                 scale = new d3.scale[id]();
             } else if (hpccOrdinal.indexOf(id) >= 0) {
-                var newColors = []
+                var newColors = [];
                 switch (id) {
                     case "hpcc10":
-                        var colors = palette_ordinal("default").colors();
-                        newColors = colors.filter(function (item, idx) {
+                        var defColors = palette_ordinal("default").colors();
+                        newColors = defColors.filter(function (item, idx) {
                             if (idx % 2) {
                                 return true;
                             }
@@ -79,17 +77,17 @@
             if (!arguments.length) return id;
             id = _;
             return ordinal;
-        }
+        };
         ordinal.colors = function (_) {
             if (!arguments.length) return colors;
             colors = _;
             return ordinal;
-        }
+        };
         ordinal.clone = function (newID) {
             ordinalCache[newID] = palette_ordinal(newID, this.colors());
             return ordinalCache[newID];
 
-        }
+        };
         ordinal.switch = function (_id, _colors) {
             if (id === _id) {
                 return this;
@@ -98,7 +96,7 @@
         };
 
         return ordinal;
-    };
+    }
 
     var rainbowCache = {};
     function fetchRainbowItem(id, colors, steps) {
@@ -109,7 +107,7 @@
             rainbowCache[id] = retVal;
         }
         return retVal;
-    };
+    }
 
     function palette_rainbow(id, _colors, _steps) {
         if (!arguments.length) {
@@ -120,9 +118,8 @@
                 }
             }
             return retVal;
-        };
+        }
 
-        var id = id;
         var scale = null;
         var colors = _colors;
 
@@ -169,7 +166,7 @@
         }
         function rainbow(x, low, high) {
             return scale.domain([low, high])(x);
-        };
+        }
         rainbow.id = function (_) {
             if (!arguments.length) return id;
             id = _;
@@ -192,7 +189,7 @@
         };
 
         return rainbow;
-    };
+    }
 
     var test = function(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         d3.select(ordinalDivID)

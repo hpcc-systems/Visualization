@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Surface", "css!./ResizeSurface"], factory);
+        define(["d3", "./Surface", "css!./ResizeSurface"], factory);
     } else {
-        root.common_ResizeSurface = factory(root.common_Surface);
+        root.common_ResizeSurface = factory(root.d3, root.common_Surface);
     }
-}(this, function (Surface) {
+}(this, function (d3, Surface) {
     function ResizeSurface() {
         Surface.call(this);
 
@@ -30,7 +30,7 @@
                         y: context._dragStartPos.y,
                         width: context._dragStartSize.width,
                         height: context._dragStartSize.height
-                    }
+                    };
                     context._textPosSize = context._text.getBBox(true);
                     context._iconPosSize = context._icon.getBBox(true);
                     context.showContent(false);
@@ -46,6 +46,7 @@
                         case "NW":
                             delta.x = _dx / 2;
                             delta.w = -_dx;
+                            /* falls through */
                         case "N":
                             delta.y = _dy / 2;
                             delta.h = -_dy;
@@ -53,6 +54,7 @@
                         case "NE":
                             delta.y = _dy / 2;
                             delta.h = -_dy;
+                            /* falls through */
                         case "E":
                             delta.x = _dx / 2;
                             delta.w = _dx;
@@ -60,6 +62,7 @@
                         case "SE":
                             delta.x = _dx / 2;
                             delta.w = _dx;
+                            /* falls through */
                         case "S":
                             delta.y = _dy / 2;
                             delta.h = _dy;
@@ -67,6 +70,7 @@
                         case "SW":
                             delta.y = _dy / 2;
                             delta.h = _dy;
+                            /* falls through */
                         case "W":
                             delta.x = _dx / 2;
                             delta.w = -_dx;
@@ -109,7 +113,7 @@
                 }
             })
         ;
-    };
+    }
     ResizeSurface.prototype = Object.create(Surface.prototype);
 
     ResizeSurface.prototype.allowResize = function (_) {

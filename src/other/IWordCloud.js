@@ -7,7 +7,7 @@
     }
 }(this, function () {
     function IWordCloud() {
-    };
+    }
 
     IWordCloud.prototype.testData = function () {
         this.columns(["Word", "Weight"]);

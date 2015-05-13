@@ -12,7 +12,7 @@
         this._icon = new Icon();
         this._textBox = new TextBox();
         this._annotationWidgets = {};
-    };
+    }
     Vertex.prototype = Object.create(SVGWidget.prototype);
     Vertex.prototype._class += " graph_Vertex";
 
@@ -34,7 +34,7 @@
     Vertex.prototype.testData = function (_) {
         this._icon.testData();
         this._textBox.testData();
-        this.annotation_icons([{ faChar: "\uf188", tooltip: "Test A", shape_color_fill: "white", image_color_fill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_color_fill: "green", shape_color_stroke: "green", image_color_fill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_color_fill: "navy", shape_color_stroke: "navy", image_color_fill: "white" }])
+        this.annotation_icons([{ faChar: "\uf188", tooltip: "Test A", shape_color_fill: "white", image_color_fill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_color_fill: "green", shape_color_stroke: "green", image_color_fill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_color_fill: "navy", shape_color_stroke: "navy", image_color_fill: "white" }]);
         return this;
     };
 
@@ -77,7 +77,6 @@
         annotations
             .each(function (d, idx) {
                 var annotationWidget = context._annotationWidgets[idx];
-                var ddd = context.textbox_shape_color_stroke();
                 annotationWidget
                     .diameter(context.annotation_diameter())
                     .shape_color_fill(context.textbox_shape_color_fill())

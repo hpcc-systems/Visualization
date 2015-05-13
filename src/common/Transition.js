@@ -11,7 +11,7 @@
         this._duration = 250;
         this._delay = 0;
         this._ease = "cubic-in-out";
-    };
+    }
 
     Transition.prototype.duration = function (_) {
         if (!arguments.length) return this._duration;

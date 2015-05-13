@@ -21,7 +21,7 @@
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
         };
-    };
+    }
     Common2D.prototype = Object.create(Common.prototype);
     Common2D.prototype._class += " c3chart_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);

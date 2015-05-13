@@ -12,13 +12,12 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data;
-        this._columns;
-        this._valueField;
-        this._categoryField;
+        this._data = undefined;
+        this._columns = undefined;
+        this._valueField = undefined;
+        this._categoryField = undefined;
         this._colors = [];
-    };
-    
+    }
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
 
@@ -93,7 +92,7 @@
         
         this.pieAlpha().forEach(function(d,i) {
             if (typeof(this._chart.chartData[i])==='undefined') { 
-                this._chart.chartData[i] = {} 
+                this._chart.chartData[i] = {};
             }
             this._chart.chartData[i].alpha = d;
         });
@@ -108,11 +107,11 @@
             var dataObj = {};
             context._columns.forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
-            })
+            });
             dataObjArr.push(dataObj);
-        })
+        });
         return dataObjArr;
-    }
+    };
     
     Pie.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
@@ -139,7 +138,6 @@
     };
 
     Pie.prototype.update = function(domNode, element) {
-        var context = this;   
         this._palette = this._palette.switch(this.paletteID());
 
         domNode.style.width = this.size().width + 'px';

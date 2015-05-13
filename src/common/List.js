@@ -11,7 +11,7 @@
         IList.call(this);
 
         this._listWidgets = {};
-    };
+    }
     List.prototype = Object.create(SVGWidget.prototype);
     List.prototype._class += " common_List";
     List.prototype.implements(IList.prototype);
@@ -48,29 +48,26 @@
         var listWidth = 0;
         var listCount = 0;
         for (var key in this._listWidgets) {
+            if (!this._listWidgets.hasOwnProperty(key)) continue;
             var bbox = this._listWidgets[key].getBBox();
             listHeight += bbox.height;
             if (listWidth < bbox.width)
                 listWidth = bbox.width;
             ++listCount;
         }
-        var lineHeight = listHeight / listCount;
 
-        var xPos = -listWidth / 2;
         var yPos = -listHeight / 2;// + lineHeight / 2;
-        line
-            .each(function (d) {
-                var widget = context._listWidgets[d];
-                var bbox = widget.getBBox();
-                widget
-                    .pos({ x: 0, y: yPos + bbox.height / 2 })
-                    .anchor(context.anchor())
-                    .fixedSize({ width: listWidth, height: bbox.height })
-                    .render()
-                ;
-                yPos += bbox.height;
-            })
-        ;
+        line.each(function (d) {
+            var widget = context._listWidgets[d];
+            var bbox = widget.getBBox();
+            widget
+                .pos({ x: 0, y: yPos + bbox.height / 2 })
+                .anchor(context.anchor())
+                .fixedSize({ width: listWidth, height: bbox.height })
+                .render()
+            ;
+            yPos += bbox.height;
+        });
         line.exit()
             .remove()
             .each(function (d) {

@@ -1,3 +1,4 @@
+/// <binding />
 const fs = require('fs')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
@@ -15,6 +16,8 @@ const bump = require('gulp-bump');
 const argv = require('yargs').argv;
 const filter = require('gulp-filter');
 const tag_version = require('gulp-tag-version');
+const jscs = require('gulp-jscs');
+const jshint = require('gulp-jshint');
 
 // Consts
 const cfg = {
@@ -82,9 +85,26 @@ gulp.task('build-css', css.bind(null, false));
 
 gulp.task('optimize-css', css.bind(null, true));
 
+gulp.task('jscs', function() {
+    gutil.log("JSCS the files...." + '\n');
+    var lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(jscs())
+    ;
+});
+
+gulp.task('lint', function () {
+    var lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(lintFilter)
+        .pipe(jshint('.jshintrc'))
+        .pipe(jshint.reporter('jshint-stylish'))
+    ;
+});
+
 gulp.task('build-nonamd', ['build-css', 'optimize-css'], function (cb) {
     async.each(bundles, buildModule, cb);
-})
+});
 
 //  AMD Tasks  ---
 function getJSFolders(dir) {

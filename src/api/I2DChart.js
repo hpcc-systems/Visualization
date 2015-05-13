@@ -7,7 +7,7 @@
     }
 }(this, function (Palette) {
     function I2DChart() {
-    };
+    }
     I2DChart.prototype._palette = Palette.ordinal("default");
 
     //  Data ---

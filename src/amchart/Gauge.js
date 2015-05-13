@@ -12,10 +12,9 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data;
+        this._data = undefined;
         this._colors = [];
-    };
-    
+    }
     Gauge.prototype = Object.create(HTMLWidget.prototype);
     Gauge.prototype.implements(I1DChart.prototype);
 
@@ -48,8 +47,6 @@
     Gauge.prototype.publish("globalTooltipText","[[category]]([[title]]): [[value]]", "string", "Tooltip Text");
     
     Gauge.prototype.updateChartOptions = function() {
-
-        var context = this;
         this._chart.type = "gauge";
         this._chart.theme = "none";
         this._chart.pathToImages = "//cdn.rawgit.com/cdnjs/cdnjs/master/ajax/libs/amcharts/3.13.0/images/";
@@ -76,37 +73,38 @@
         this._chart.axes[0].startValue = this.low();
 
         // 3 Color Methods
-        if (this.colorType() == 'a') {
-            for (var i = 0, l = this.numBands(); i < l; i++) {
-                var band = {
+        var i, l;
+        if (this.colorType() === 'a') {
+            for (i = 0, l = this.numBands(); i < l; i++) {
+                var a_band = {
                     color: this.bandsColor()[i],
                     startValue: this.bandsStartValue()[i],
                     endValue: this.bandsEndValue()[i],
                     innerRadius: this.bandsInnerRadius()[i],
-                }
-                this._chart.axes[0].bands.push(band);
+                };
+                this._chart.axes[0].bands.push(a_band);
             }
         }
-        if (this.colorType() == 'b') {
-            for (var i = 0, l = this.high(); i < l; i++) {
-                var band = {
+        if (this.colorType() === 'b') {
+            for (i = 0, l = this.high() ; i < l; i++) {
+                var b_band = {
                     color: this._palette(i, this.low(), this.high()),
                     startValue: i,
                     endValue: i+1,
                     //innerRadius: this._bandsInnerRadius[i] || '', // this has a cool effect might be useful?
                     innerRadius: this.bandsInnerRadius()[0]
-                }
-                this._chart.axes[0].bands.push(band);
+                };
+                this._chart.axes[0].bands.push(b_band);
             } 
         }
-        if (this.colorType() == 'c') {
-            var band = {
+        if (this.colorType() === 'c') {
+            var c_band = {
                 color: this._palette(this._data, this.low(), this.high()),
                 startValue: this.low(),
                 endValue: this.high(),
-                innerRadius: this.bandsInnerRadius()[0],
-            }
-            this._chart.axes[0].bands.push(band);
+                innerRadius: this.bandsInnerRadius()[0]
+            };
+            this._chart.axes[0].bands.push(c_band);
         }
         
         this._chart.axes[0].bottomText = this.bottomText().replace("[[data]]",this._data);
@@ -115,7 +113,6 @@
     };
 
     Gauge.prototype.update = function(domNode, element) {
-        var context = this;   
         this._palette = this._palette.switch(this.paletteID()); 
         
         domNode.style.width = this.size().width + 'px';
@@ -137,7 +134,7 @@
             type: "gauge",
             axes: [{}],
             arrows:[{}]
-        }
+        };
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
         
@@ -146,7 +143,7 @@
         this.bandsColor(["#84b761","#fdd400","#cc4748"]);
         this.bandsEndValue([90,130,220]);
         this.bandsStartValue([0,90,130]);
-        this.bandsInnerRadius([null,null,"95%"])
+        this.bandsInnerRadius([null, null, "95%"]);
         this.bottomText("[[data]] km/h");
         this.high(220);
         this.low(0);

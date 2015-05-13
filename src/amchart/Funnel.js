@@ -9,8 +9,7 @@
     function Funnel() {
         CommonFunnel.call(this);
         this._class = "amchart_Funnel";
-    };
-    
+    }
     Funnel.prototype = Object.create(CommonFunnel.prototype);
     Funnel.prototype.implements(I2DChart.prototype);
     
@@ -27,15 +26,13 @@
     
     Funnel.prototype.updateChartOptions = function() {
         CommonFunnel.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
-        
-        this._chart.neckHeight = this.neckHeightPercent()+"%";
-        this._chart.neckWidth = this.neckWidthPercent()+"%";
-    }
+
+        this._chart.neckHeight = this.neckHeightPercent() + "%";
+        this._chart.neckWidth = this.neckWidthPercent() + "%";
+    };
 
     Funnel.prototype.update = function(domNode, element) {
         CommonFunnel.prototype.update.apply(this, arguments);
-        var context = this;   
         
         this.updateChartOptions();
         

@@ -9,7 +9,7 @@
     function Line(target) {
         XYAxis.call(this);
         INDChart.call(this);
-    };
+    }
     Line.prototype = Object.create(XYAxis.prototype);
     Line.prototype._class += " chart_Line";
     Line.prototype.implements(INDChart.prototype);
@@ -18,7 +18,6 @@
 
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);
-        var context = this;
     };
 
     Line.prototype.updateChart = function (domNode, element, margin, width, height) {

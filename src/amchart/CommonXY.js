@@ -11,13 +11,12 @@
         this._tag = "div";
         
         this._chart = {};
-        this._data;
-        this._columns;
-        this._valueField;
-        this._categoryField;
+        this._data = undefined;
+        this._columns = undefined;
+        this._valueField = undefined;
+        this._categoryField = undefined;
         this._colors = [];
-    };
-
+    }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
 
     CommonXY.prototype.publish("yAxisTitle", "Axis title", "string", "Y-Axis Title");
@@ -35,7 +34,7 @@
 
     CommonXY.prototype.publish("globalFillAlpha", 0, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:'range'});
     CommonXY.prototype.publish("globalLineAlpha", 0, "number", "Line Opacity", null, {min:0,max:1,step:0.001,inputType:'range'});
-    CommonXY.prototype.publish("globalLineThickness", 0, "number", "Line Thickness", null, {min:0,max:10,step:0.1,inputType:'range'})
+    CommonXY.prototype.publish("globalLineThickness", 0, "number", "Line Thickness", null, { min: 0, max: 10, step: 0.1, inputType: 'range' });
     CommonXY.prototype.publish("globalBulletSize", 8, "number", "Bullet Size");
     CommonXY.prototype.publish("globalBulletType", "round", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"]);
 
@@ -124,11 +123,11 @@
             var dataObj = {};
             context._columns.forEach(function(colName, cIdx) {
                 dataObj[colName] = dataRow[cIdx];
-            })
+            });
             dataObjArr.push(dataObj);
         });
         return dataObjArr;
-    }
+    };
 
     CommonXY.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
@@ -170,7 +169,6 @@
 
     CommonXY.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        var context = this;
 
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px'; 

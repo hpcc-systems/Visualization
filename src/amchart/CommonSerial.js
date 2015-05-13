@@ -12,12 +12,12 @@
         this._tag = "div";
         
         this._chart = {};
-        this._data;
-        this._columns;
-        this._valueField;
-        this._categoryField;
+        this._data = undefined;
+        this._columns = undefined;
+        this._valueField = undefined;
+        this._categoryField = undefined;
         this._colors = [];
-    };
+    }
     
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
     
@@ -33,7 +33,7 @@
     
     CommonSerial.prototype.publish("orientation", "horizontal", "set", "Orientation",["horizontal","vertical"]);
     
-    CommonSerial.prototype.publish("globalFillAlpha", .7, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:'range'}); 
+    CommonSerial.prototype.publish("globalFillAlpha", 0.7, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:'range'}); 
     CommonSerial.prototype.publish("globalLineAlpha", 1, "number", "Line Opacity", null, {min:0,max:1,step:0.001,inputType:'range'}); 
     CommonSerial.prototype.publish("globalLineThickness", 2, "number", "Line Thickness", null, {min:0,max:10,step:0.1,inputType:'range'}); 
     CommonSerial.prototype.publish("globalBulletSize", 0, "number", "Bullet Size");
@@ -79,8 +79,6 @@
     CommonSerial.prototype.publish("lineColor", null, "html-color", "Color of the data/content lines");
     
     CommonSerial.prototype.updateChartOptions = function() {
-        var context = this;
-
         this._chart.pathToImages = "//cdn.rawgit.com/cdnjs/cdnjs/master/ajax/libs/amcharts/3.13.0/images/";
         this._chart.dataDateFormat = this.dataDateFormat();
         this._chart.type = "serial";
@@ -109,7 +107,7 @@
         // ValueAxis
 
         for (var i = 1, j = this.numValueAxis(); i < j; i++) {
-            this._chart.valueAxes[i].id = this.valueAxesId()[i],
+            this._chart.valueAxes[i].id = this.valueAxesId()[i];
             this._chart.valueAxes[i].title = this.valueAxesTitle()[i];
         }
         this._chart.valueAxes[0].title = this.valueAxesTitle()[0] || this.yAxisTitle();
@@ -201,7 +199,7 @@
         var initObj = {
             type: "serial",
             chartScrollbar: {},
-        }
+        };
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
 

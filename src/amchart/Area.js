@@ -12,8 +12,7 @@
         this._tag = "div";
        
         this._gType = "line";
-    };
-    
+    }
     Area.prototype = Object.create(CommonSerial.prototype);
     Area.prototype.implements(INDChart.prototype);
     
@@ -52,7 +51,6 @@
     };
     
     Area.prototype.buildGraphs = function(gType) {
-        var context = this;
         if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length; 
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
@@ -76,7 +74,7 @@
             // TODO: Line Specific Options
             return gObj;
         }
-    }
+    };
     
     Area.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);

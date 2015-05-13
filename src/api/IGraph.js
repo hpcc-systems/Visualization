@@ -7,7 +7,7 @@
     }
 }(this, function () {
     function IGraph() {
-    };
+    }
 
     //  Events  ---
     IGraph.prototype.vertex_click = function (d) {

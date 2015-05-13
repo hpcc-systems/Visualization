@@ -9,7 +9,7 @@
     function ESPUrl() {
         this._protocol = "http:";
         this._hostname = "localhost";
-    };
+    }
 
     ESPUrl.prototype.url = function (_) {
         if (!arguments.length) return this._url;
@@ -101,7 +101,7 @@
                 this._reverseMappings[resultName][this._mappings[resultName][key]] = key;
             }
         }
-    };
+    }
 
     ESPMappings.prototype.contains = function (resultName, origField) {
         return exists(resultName + "." + origField, this._mappings);
@@ -143,7 +143,7 @@
         ESPUrl.call(this);
         this._proxyMappings = {};
         this._mappings = new ESPMappings({});
-    };
+    }
     Comms.prototype = Object.create(ESPUrl.prototype);
 
     var exists = function (prop, scope) {
@@ -189,7 +189,6 @@
 
         var respondedTimeout = 60000;
         var respondedTick = 5000;
-        var context = this;
         var callbackName = 'jsonp_callback_' + Math.round(Math.random() * 999999);
         window[callbackName] = function (response) {
             respondedTimeout = 0;
@@ -238,7 +237,7 @@
         this._port = "8002";
         this._target = "";
         this._query = "";
-    };
+    }
     WsECL.prototype = Object.create(Comms.prototype);
 
     WsECL.prototype.url = function (_) {
@@ -305,7 +304,7 @@
                 break;
             }
             // Remove "response.result.Row"
-            for (var key in response) {
+            for (key in response) {
                 response[key] = response[key].Row;
             }
             context._mappings.mapResponse(response);
@@ -328,7 +327,7 @@
 
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
-    };
+    }
     WsWorkunits.prototype = Object.create(Comms.prototype);
 
     WsWorkunits.prototype.url = function (_) {
@@ -387,7 +386,7 @@
     WsWorkunits.prototype.appendParam = function (label, value, params) {
         if (value) {
             if (params) {
-                params += "&"
+                params += "&";
             }
             return params + label + "=" + value;
         }
@@ -427,8 +426,8 @@
                 }
                 context._total = response[key].Total;
                 response = response[key].Result;
-                for (var key in response) {
-                    response = response[key].Row;
+                for (var responseKey in response) {
+                    response = response[responseKey].Row;
                     break;
                 }
                 break;
@@ -446,25 +445,24 @@
             this._fetchResult(target, callback, skipMapping);
         } else if (target.jobname) {
             var context = this;
-            this.WUQuery(target, function(response) {
+            this.WUQuery(target, function (response) {
                 target.wuid = response[0].Wuid;
                 context._fetchResult(target, callback, skipMapping);
             });
         }
-    },
+    };
 
-    WsWorkunits.prototype.WUQuery = function (request, callback) {
+    WsWorkunits.prototype.WUQuery = function (_request, callback) {
         var url = this.getUrl({
             pathname: "WsWorkunits/WUQuery.json",
         });
         var request = {
             Jobname: request.jobname,
             Count: 1
-        }
+        };
 
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
-        var context = this;
         this.jsonp(url, request, function (response) {
             if (!exists("WUQueryResponse.Workunits.ECLWorkunit", response)) {
                 throw "No workunit found.";
@@ -494,7 +492,7 @@
             IncludeWorkflows: false,
             IncludeXmlSchemas: false,
             SuppressResultSchemas: true
-        }
+        };
 
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
@@ -516,13 +514,12 @@
             var toFetch = context._resultNameCacheCount;
             if (toFetch > 0) {
                 for (var key in context._resultNameCache) {
-                    var item = context._resultNameCache[key];
                     context.fetchResult({ wuid: context._wuid, resultname: key }, function (response) {
                         if (--toFetch <= 0) {
                             callback(context._resultNameCache);
                         }
                     }, skipMapping);
-                };
+                }
             } else {
                 callback(context._resultNameCache);
             }
@@ -561,7 +558,7 @@
 
         this._port = "8010";
         this._wuid = null;
-    };
+    }
     WsWorkunits_GetStats.prototype = Object.create(Comms.prototype);
 
     WsWorkunits_GetStats.prototype.url = function (_) {
@@ -592,7 +589,6 @@
     };
 
     WsWorkunits_GetStats.prototype.send = function (request, callback) {
-        var context = this;
         var url = this.getUrl({
             pathname: "WsWorkunits/WUGetStats.json?WUID=" + this._wuid
         });
@@ -608,7 +604,7 @@
     //  HIPIERoxie  ---
     function HIPIERoxie() {
         Comms.call(this);
-    };
+    }
     HIPIERoxie.prototype = Object.create(Comms.prototype);
 
     HIPIERoxie.prototype.fetchResults = function (request, callback) {
@@ -623,7 +619,7 @@
                 break;
             }
             // Remove "response.result.Row"
-            for (var key in response) {
+            for (key in response) {
                 context._resultNameCache[key] = response[key].Row;
                 ++context._resultNameCacheCount;
             }
@@ -636,7 +632,6 @@
     };
 
     HIPIERoxie.prototype.call = function (request, callback) {
-        var context = this;
         this.fetchResults(request, callback);
     };
 
@@ -645,7 +640,7 @@
         WsWorkunits.call(this);
 
         this._hipieResults = {};
-    };
+    }
     HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
     HIPIEWorkunit.prototype.hipieResults = function (_) {
@@ -672,7 +667,7 @@
                             callback(context._resultNameCache);
                         }
                     });
-                };
+                }
             } else {
                 callback(context._resultNameCache);
             }
@@ -680,14 +675,12 @@
     };
 
     HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
-        var context = this;
         return WsWorkunits.prototype.fetchResult.call(this, { wuid: this._wuid, resultname: name }, function (response) {
             callback(response);
         });
     };
 
     HIPIEWorkunit.prototype.call = function (request, callback) {
-        var context = this;
         if (request.refresh || !this._resultNameCache || !this._resultNameCacheCount) {
             this.fetchResults(callback);
         } else {
@@ -698,8 +691,8 @@
                 }
             }
             var retVal = {};
-            for (var key in this._hipieResults) {
-                var item = this._hipieResults[key];
+            for (var hipieKey in this._hipieResults) {
+                var item = this._hipieResults[hipieKey];
                 var matchedResult = true;
                 for (var key2 in changedFilter) {
                     if (item.filter.indexOf(key2) < 0) {
@@ -725,7 +718,7 @@
     //  HIPIEDatabomb  ---
     function HIPIEDatabomb() {
         HIPIEWorkunit.call(this);
-    };
+    }
     HIPIEDatabomb.prototype = Object.create(HIPIEWorkunit.prototype);
 
     HIPIEDatabomb.prototype.databomb = function (_) {

@@ -12,8 +12,7 @@
         this._tag = "div";
         
         this._gType = "smoothedLine";
-    };
-    
+    }
     Line.prototype = Object.create(CommonSerial.prototype);
     Line.prototype.implements(INDChart.prototype);
     
@@ -28,7 +27,7 @@
         var initObj = {
             "theme": "none",
             "type": "serial",
-        }
+        };
         this._chart = AmCharts.makeChart(domNode, initObj);
         CommonSerial.prototype.enter.apply(this, arguments);
     };
@@ -47,10 +46,9 @@
         this.buildGraphs(this._gType);
         
         return this._chart;
-    }
+    };
 
     Line.prototype.buildGraphs = function(gType) {
-        var context = this;
         if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length; 
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
@@ -74,11 +72,10 @@
             // TODO: Line Specific Options
             return gObj;
         }
-    }
+    };
     
     Line.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
-        var context = this;   
 
         this.updateChartOptions();
         

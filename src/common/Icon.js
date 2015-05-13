@@ -11,7 +11,7 @@
 
         this._shapeWidget = new Shape();
         this._faChar = new FAChar();
-    };
+    }
     Icon.prototype = Object.create(SVGWidget.prototype);
     Icon.prototype._class += " common_Icon";
 

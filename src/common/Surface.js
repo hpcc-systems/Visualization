@@ -33,16 +33,16 @@
             if (context._content && context._content.hasOverlay()) {
                 context._content.visible(false);
             }
-        }
+        };
         this._menu.postHideMenu = function () {
             if (context._content && context._content.hasOverlay()) {
                 context._content.visible(true);
             }
-        }
+        };
 
         this._showContent = true;
         this._content = null;
-    };
+    }
     Surface.prototype = Object.create(SVGWidget.prototype);
     Surface.prototype._class += " common_Surface";
 
@@ -80,7 +80,7 @@
         this.title("Hello and welcome!");
         this.menu(["aaa", "bbb", "ccc"]);
         return this;
-    }
+    };
 
     Surface.prototype.enter = function (_domNode, _element) {
         SVGWidget.prototype.enter.apply(this, arguments);
@@ -103,7 +103,6 @@
             .target(domNode)
             .render()
         ;
-        var menuViz = false;
         this._menu
             .target(_domNode)
         ;
@@ -241,7 +240,7 @@
             });
         }
         return this;
-    }
+    };
 
     Surface.prototype.intersection = function (pointA, pointB) {
         var hits = [];

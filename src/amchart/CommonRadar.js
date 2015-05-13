@@ -12,13 +12,12 @@
         this._tag = "div";
         
         this._chart = {};
-        this._data;
-        this._columns;
-        this._valueField;
-        this._categoryField;
+        this._data = undefined;
+        this._columns = undefined;
+        this._valueField = undefined;
+        this._categoryField = undefined;
         this._colors = [];
-    };
-    
+    }
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
 
     CommonRadar.prototype.publish("marginLeft", null, "number", "Margin (Left)");
@@ -28,7 +27,7 @@
     
     CommonRadar.prototype.publish("chartScrollbar", false, "boolean", "Chart Scrollbar");
     
-    CommonRadar.prototype.publish("globalFillAlpha", .3, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:'range'});
+    CommonRadar.prototype.publish("globalFillAlpha", 0.3, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:'range'});
     CommonRadar.prototype.publish("globalLineAlpha", 1, "number", "Line Opacity", null, {min:0,max:1,step:0.001,inputType:'range'}); 
     CommonRadar.prototype.publish("globalLineThickness", 2, "number", "Line Thickness", null, {min:0,max:10,step:0.1,inputType:'range'}); 
     CommonRadar.prototype.publish("globalBulletSize", 9, "number", "Bullet Size");
@@ -89,7 +88,7 @@
             
         // ValueAxis
         for (var i = 1, j = this.numValueAxis(); i < j; i++) {
-            this._chart.valueAxes[i].id = this.valueAxesId()[i],
+            this._chart.valueAxes[i].id = this.valueAxesId()[i];
             this._chart.valueAxes[i].title = this.valueAxesTitle()[i];
         }
         
@@ -108,8 +107,8 @@
         this._chart.colors = this._colors;
         if(this.circularGrid()){ // not dynamic
             this._chart.valueAxes.forEach(function(va,i){
-                context._chart.valueAxes[i].gridType = "circles"
-            })
+                context._chart.valueAxes[i].gridType = "circles";
+            });
         }
         
         if (this.chartScrollbar()) {
@@ -153,7 +152,7 @@
             dataObjArr.push(dataObj);
         });
         return dataObjArr;
-    }
+    };
     
     CommonRadar.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
@@ -177,13 +176,12 @@
             theme: "none",
             type: "radar",
             chartScrollbar: {}
-        }
+        };
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
 
     CommonRadar.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        var context = this;
         
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px'; 

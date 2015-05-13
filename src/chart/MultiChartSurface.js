@@ -14,14 +14,14 @@
         this._content = new MultiChart();
         this._content.click = function (row, column) {
             context.click(row, column);
-        }
+        };
 
         var context = this;
         this._menu.click = function (d) {
             context._content.chart_type(d).render();
-        }
+        };
         this.mode("all");
-    };
+    }
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
     MultiChartSurface.prototype._class += " chart_MultiChartSurface";
     MultiChartSurface.prototype.implements(INDChart.prototype);
@@ -53,6 +53,7 @@
                 this.menu(this._content._multiChartTypes.concat(this._content._anyChartTypes).map(function (item) { return item.display; }).sort());
                 break;
             case "all":
+                /* falls through */
             default:
                 this.menu(this._content._allChartTypes.map(function (item) { return item.display; }).sort());
         }

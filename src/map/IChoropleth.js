@@ -7,7 +7,7 @@
     }
 }(this, function (Palette, usStates, usCounties) {
     function IChoropleth() {
-    };
+    }
     IChoropleth.prototype._palette = Palette.rainbow("default");
     
     //  Events  ---

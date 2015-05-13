@@ -18,7 +18,7 @@
             .size([this.width(), this.height()])
             .value(function (d) { return d[1]; })
         ;
-    };
+    }
     Bubble.prototype = Object.create(SVGWidget.prototype);
     Bubble.prototype._class += " chart_Bubble";
     Bubble.prototype.implements(I2DChart.prototype);
@@ -77,7 +77,7 @@
             .attr("opacity", 1)
             .each(function (d) {
                 var element = d3.select(this);
-                var pos = { x: d.x, y: d.y }
+                var pos = { x: d.x, y: d.y };
                 element.select("circle").transition()
                     .attr("transform", function (d) { return "translate(" + pos.x + "," + pos.y + ")"; })
                     .style("fill", function (d) { return context._palette(d[0]); })

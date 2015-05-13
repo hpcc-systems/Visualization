@@ -13,7 +13,7 @@
         
         this._type = "Scatter";
         this._gType = "column";
-    };
+    }
     Scatter.prototype = Object.create(CommonXY.prototype);
     Scatter.prototype.implements(INDChart.prototype);
 
@@ -25,15 +25,13 @@
 
     Scatter.prototype.updateChartOptions = function() {
         CommonXY.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
 
         this.buildGraphs(this._gType);
         
         return this._chart;
-    }
+    };
 
     Scatter.prototype.buildGraphs = function(gType) {
-        var context = this;
         if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length; 
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
@@ -57,11 +55,10 @@
             // TODO: Scatter Specific Options
             return gObj;
         }
-    }
+    };
     
     Scatter.prototype.update = function(domNode, element) {
         CommonXY.prototype.update.apply(this, arguments);
-        var context = this;   
 
         this.updateChartOptions();
 

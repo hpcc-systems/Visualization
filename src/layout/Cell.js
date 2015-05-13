@@ -10,7 +10,7 @@
         Surface.call(this);
         //this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
         this._dragHandles = ["se"];
-    };
+    }
     Cell.prototype = Object.create(Surface.prototype);
     Cell.prototype._class += " layout_Cell";
 
@@ -72,7 +72,6 @@
             })
             .on("dragstart", function (d) {
                 //d3.event.stopPropagation();
-                var element = d3.select(this);
                 context._dragHandle = d;
                 console.log("dragstart:  " + d);
             })

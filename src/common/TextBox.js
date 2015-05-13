@@ -13,7 +13,7 @@
             .shape("rect")
         ;
         this._text = new Text();
-    };
+    }
     TextBox.prototype = Object.create(SVGWidget.prototype);
     TextBox.prototype._class += " common_TextBox";
 
@@ -39,7 +39,7 @@
     TextBox.prototype.testData = function () {
         this._text.testData();
         return this;
-    }
+    };
 
     TextBox.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

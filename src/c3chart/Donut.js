@@ -10,7 +10,7 @@
         Common2D.call(this);
 
         this._type = "donut";
-    };
+    }
     Donut.prototype = Object.create(Common2D.prototype);
     Donut.prototype._class += " c3chart_Donut";
 
@@ -27,7 +27,7 @@
             width: this.arc_width(),
             expand: this.expand(),
             title: this.title()
-        }
+        };
 
         Common2D.prototype.enter.apply(this, arguments);
     };
@@ -43,9 +43,9 @@
         this.c3Chart.internal.config.donut_title = this.title();
     };
 
-    Donut.prototype.getChartOptions = function() {
+    Donut.prototype.getChartOptions = function () {
         var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
-        
+
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);
@@ -53,7 +53,7 @@
         chartOptions.columns = data;
 
         return chartOptions;
-    }
+    };
 
     return Donut;
 }));

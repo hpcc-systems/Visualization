@@ -7,7 +7,7 @@
     }
 }(this, function () {
     function IMenu() {
-    };
+    }
 
     //  Data ---
     IMenu.prototype.testData = function () {

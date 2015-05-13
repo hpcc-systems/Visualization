@@ -1,14 +1,14 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./SVGWidget", "css!./Shape"], factory);
+        define(["d3", "./SVGWidget", "css!./Shape"], factory);
     } else {
-        root.common_Shape = factory(root.common_SVGWidget);
+        root.common_Shape = factory(root.d3, root.common_SVGWidget);
     }
-}(this, function (SVGWidget) {
+}(this, function (d3, SVGWidget) {
     function Shape() {
         SVGWidget.call(this);
-    };
+    }
     Shape.prototype = Object.create(SVGWidget.prototype);
     Shape.prototype._class += " common_Shape";
 
@@ -27,7 +27,7 @@
 
     Shape.prototype.testData = function () {
         return this;
-    }
+    };
 
     Shape.prototype.intersection = function (pointA, pointB) {
         switch (this.shape()) {

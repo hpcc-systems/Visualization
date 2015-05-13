@@ -13,7 +13,7 @@
         this._dataMaxWeight = 0;
         this._dataMinWeight = 0;
         this.projection(this.world_projection());
-    };
+    }
     ChoroplethCountries.prototype = Object.create(Choropleth.prototype);
     ChoroplethCountries.prototype._class += " map_ChoroplethCountries";
 
@@ -69,7 +69,7 @@
 
         this.projection(this.world_projection());
 
-        var context = this
+        var context = this;
         this.lookup = {};
         var countryArray = topojson.feature(countries.topology, countries.topology.objects.countries).features.map(function (item) {
             item.category = "Country";

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget"], factory);
+        define(["d3", "../common/HTMLWidget"], factory);
     } else {
-        root.other_Audio = factory(root.common_HTMLWidget);
+        root.other_Audio = factory(root.d3, root.common_HTMLWidget);
     }
-}(this, function (HTMLWidget) {
+}(this, function (d3, HTMLWidget) {
     function Audio() {
         HTMLWidget.call(this);
 
@@ -13,7 +13,7 @@
 
         this._source = [];
         this._sections = {};
-    };
+    }
     Audio.prototype = Object.create(HTMLWidget.prototype);
     Audio.prototype._class += " other_Audio";
 
@@ -49,17 +49,15 @@
 
     Audio.prototype.enter = function (domNode, element) {
         var context = this;
-        element.on("play", function (d) { context.onPlay(d); })
+        element.on("play", function (d) { context.onPlay(d); });
     };
 
     Audio.prototype.update = function (domNode, element) {
-        var context = this;
-
         var source = element.selectAll("source").data(this._source, function (d) { return d; });
         source.enter().append("source")
             .attr("src", function (d) { return d; })
         ;
-    }
+    };
 
     Audio.prototype.createTimer = function (params, startTime, beat) {
         var context = this;
@@ -86,7 +84,7 @@
         var context = this;
         this._element.on("canplaythrough", function (d) {
             context.node().play();
-        })
+        });
         this.node().load();
     };
 

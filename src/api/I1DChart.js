@@ -7,7 +7,7 @@
     }
 }(this, function (Palette) {
     function I1DChart() {
-    };
+    }
     I1DChart.prototype._palette = Palette.rainbow("default");
 
     //  Data ---

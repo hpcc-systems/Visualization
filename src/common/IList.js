@@ -7,7 +7,7 @@
     }
 }(this, function () {
     function IList() {
-    };
+    }
 
     //  Data ---
     IList.prototype.testData = function () {

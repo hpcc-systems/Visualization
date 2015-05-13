@@ -1,18 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/Widget", "../common/HTMLWidget", "./Persist", "css!./PropertyEditor"], factory);
+        define(["d3", "../common/Widget", "../common/HTMLWidget", "./Persist", "css!./PropertyEditor"], factory);
     } else {
-        root.other_PropertyEditor = factory(root.common_Widget, root.common_HTMLWidget, root.other_Persist);
+        root.other_PropertyEditor = factory(root.d3, root.common_Widget, root.common_HTMLWidget, root.other_Persist);
     }
-}(this, function (Widget, HTMLWidget, Persist) {
+}(this, function (d3, Widget, HTMLWidget, Persist) {
     function PropertyEditor() {
         HTMLWidget.call(this);
 
         this._tag = "div";
-        this._current_grouping;
-        this._showing_columns;
-        this._showing_data;
         this._columns = ["Key", "Value"];
         this._contentEditors = [];
         this._show_settings = true;
@@ -34,7 +31,7 @@
         }
         this._show_settings = _;
         return this;
-    }
+    };
     var formatJSRequire = function (widget, fieldName, properties, renderCallback, postCreate) {
         if (!widget) {
             return "";
@@ -55,7 +52,7 @@
         "        .render(" + renderCallback.split("\n").join("\n        ") + ")\n" +
         "    ;\n" +
         postCreate +
-        "});"
+        "});";
     };
 
     var formatJSCallback = function (innerProp, properties, renderCallback) {
@@ -68,18 +65,18 @@
         propertiesString +
         "        .render(" + renderCallback + ")\n" +
         "    ;\n" +
-        "}"
+        "}";
     };
 
     var formatJSProperties = function (widget, includeColumns, includeData) {
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(context.theme_mode() ? widget.__proto__ : widget).map(function (prop) {
+        var propsStr = Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
             if (!context.widgetPropertyModified(widget, prop.id)) {
                 return "";
             }
-            return "." + prop.id + "(" + JSON.stringify(context.widgetProperty(widget, prop.id)) + ")"
+            return "." + prop.id + "(" + JSON.stringify(context.widgetProperty(widget, prop.id)) + ")";
         }).filter(function (str) {
             return str !== "";
         }).join("\n");
@@ -87,27 +84,27 @@
             var columns = widget.columns();
             if (columns instanceof Array) {
                 if (columns.length) {
-                    propsStr += (propsStr.length ? "\n" : "")
-                    propsStr += ".columns(" + JSON.stringify(columns) + ")"
+                    propsStr += (propsStr.length ? "\n" : "");
+                    propsStr += ".columns(" + JSON.stringify(columns) + ")";
                 }
             } else if (columns) {
-                propsStr += (propsStr.length ? "\n" : "")
-                propsStr += ".columns(" + JSON.stringify(columns) + ")"
+                propsStr += (propsStr.length ? "\n" : "");
+                propsStr += ".columns(" + JSON.stringify(columns) + ")";
             }
         }
         if (includeData) {
             var data = widget.data();
             if (data instanceof Array) {
                 if (data.length) {
-                    propsStr += (propsStr.length ? "\n" : "")
-                    propsStr += ".data(" + JSON.stringify(data) + ")"
+                    propsStr += (propsStr.length ? "\n" : "");
+                    propsStr += ".data(" + JSON.stringify(data) + ")";
                 }
             } else if (data) {
-                propsStr += (propsStr.length ? "\n" : "")
+                propsStr += (propsStr.length ? "\n" : "");
                 try {
-                    propsStr += ".data(" + JSON.stringify(data) + ")"
+                    propsStr += ".data(" + JSON.stringify(data) + ")";
                 } catch (e) {
-                    propsStr += ".data(" + e + ")"
+                    propsStr += ".data(" + e + ")";
                 }
             }
         }
@@ -124,7 +121,7 @@
     };
 
     PropertyEditor.prototype.getPersistString = function (fieldName) {
-        return "var " + fieldName + " = " + JSON.stringify(Persist.serializeToObject(this._data, null, false), null, "  ") + ";"
+        return "var " + fieldName + " = " + JSON.stringify(Persist.serializeToObject(this._data, null, false), null, "  ") + ";";
     };
 
     PropertyEditor.prototype.onChange = function (widget, propID) {
@@ -135,11 +132,11 @@
         this._parentElement.style("overflow", "auto");
     };
     var findSharedProperties = function (data, theme_mode) {
+        var propsByID = {};
         if (typeof (data) !== 'undefined' && data.length > 0) {
             var allProps = [];
-            var propsByID = {};
             data.forEach(function (widget) {
-                var gpResponse = _getParams(theme_mode ? widget.__proto__ : widget, 0);
+                var gpResponse = _getParams(theme_mode ? Object.getPrototypeOf(widget) : widget, 0);
                 allProps = allProps.concat(gpResponse);
             });
             allProps.forEach(function (prop) {
@@ -167,7 +164,7 @@
                     description: param.description,
                     set: param.set,
                     widget: widgetObj
-                })
+                });
                 if (param.type === "widgetArray") {
                     var childWidgetArray = context.widgetProperty(widgetObj, param.id);
                     childWidgetArray.forEach(function (childWidget) {
@@ -180,10 +177,10 @@
                     var temp = _getParams(childWidget, depth + 1);
                     retArr = retArr.concat(temp);
                 }
-            })
+            });
             return retArr;
         }
-    }
+    };
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
         if (typeof (context._current_grouping) === 'undefined') {
@@ -209,13 +206,13 @@
         return needsRedraw;
     };
     PropertyEditor.prototype.widgetPropertyModified = function (widget, propID) {
-        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : widget.__proto__[propID + "_modified"]();
+        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : Object.getPrototypeOf(widget)[propID + "_modified"]();
     };
     PropertyEditor.prototype.widgetProperty = function (widget, propID, _) {
         if (_ === undefined) {
-            return !this.theme_mode() || this === widget ? widget[propID]() : widget.__proto__[propID]();
+            return !this.theme_mode() || this === widget ? widget[propID]() : Object.getPrototypeOf(widget)[propID]();
         }
-        return !this.theme_mode() || this === widget ? widget[propID](_) : widget.__proto__[propID](_);
+        return !this.theme_mode() || this === widget ? widget[propID](_) : Object.getPrototypeOf(widget)[propID](_);
     };
 
     PropertyEditor.prototype.update = function (domNode, element) {
@@ -241,10 +238,9 @@
                     .data([widget])
                     .render()
                 ;
-            })
+            });
         }
         //Update tables based on "group by" setting
-        var tableData = [];
         if (this.param_grouping() === "By Param") {
             var sharedPropsMainSections = [];
             var sPropSections = [];
@@ -283,8 +279,9 @@
             }
         }
         //Creating Table and THEAD
+        var table = null;
         if (true) {
-            var table = element.selectAll("#" + this._id + " > table").data(this._data, function (d) {
+            table = element.selectAll("#" + this._id + " > table").data(this._data, function (d) {
                 return d._id;
             });
             table.enter().append("table")
@@ -319,7 +316,7 @@
                         return text;
                     });
                     thead = thead.append("tr").attr("class", "mm-content");
-                    var tbody = element.append("tbody").attr("class", "mm-content");
+                    element.append("tbody").attr("class", "mm-content");
                     var th = thead.selectAll("th").data(context._columns, function (d) {
                         return d;
                     });
@@ -339,11 +336,14 @@
                 var tbody = d3.select(this);
                 var rows;
                 //  Columns  ---
+                var tr;
+                var td;
+                var input = null;
                 if (context.show_columns()) {
-                    var tr = tbody.append("tr");
-                    var td = tr.append("td").text("Columns")
-                    td = tr.append("td")
-                    var input = td.append("textarea")
+                    tr = tbody.append("tr");
+                    td = tr.append("td").text("Columns");
+                    td = tr.append("td");
+                    input = td.append("textarea")
                         .attr("rows", "4")
                         .attr("cols", "25")
                         .on("change", function () {
@@ -359,11 +359,11 @@
                 }
                 //  Data  ---
                 if (context.show_data()) {
-                    var tr = tbody.append("tr");
-                    var td = tr.append("td")
+                    tr = tbody.append("tr");
+                    td = tr.append("td")
                         .text("Data")
                     ;
-                    td = tr.append("td")
+                    td = tr.append("td");
                     input = td.append("textarea")
                         .attr("rows", "4")
                         .attr("cols", "25")
@@ -422,7 +422,7 @@
                                     if (c !== 'expanded') {
                                         newClassList += c;
                                     }
-                                })
+                                });
                                 this.className = newClassList;
                             }
                             var childCount = sProp.widgetArr.length;
@@ -431,9 +431,9 @@
                                 childNode.hidden = hidden;
                                 childNode = childNode.nextSibling;
                             }
-                        })
+                        });
                         //Setting the td.field content
-                        var td_input = tr.append("td").attr("class", "field").each(function () {
+                        tr.append("td").attr("class", "field").each(function () {
                             var td = d3.select(this);
                             var input = null;
                             switch (d.type) {
@@ -453,7 +453,6 @@
                                     ;
                                     break;
                                 case "number":
-                                    var input;
                                     if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
                                         if (d.ext.inputType === "textarea") {
                                             input = td.append('textarea');
@@ -477,10 +476,9 @@
                                                 context.widgetProperty(w, d.id, that.value);
                                             });
                                             widget.render();
-                                        })
+                                        });
                                     break;
                                 case "string":
-                                    var input;
                                     if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
                                         if (d.ext.inputType === "textarea") {
                                             input = td.append('textarea');
@@ -508,7 +506,7 @@
                                                 context.widgetProperty(w, d.id, that.value).render(function (w) {
                                                     context.onChange(w, d.id);
                                                     context.render();
-                                                })
+                                                });
                                             });
                                         })
                                     ;
@@ -545,7 +543,7 @@
                                         })
                                     ;
                                     d.set.forEach(function (item) {
-                                        var option = input.append("option")
+                                        input.append("option")
                                             .attr("value", item)
                                             .text(item)
                                         ;
@@ -570,8 +568,8 @@
                                 default:
                                     break;
                             }
-                        })
-                    })
+                        });
+                    });
                     //Setting the td.pe-label html content
                     rows.selectAll('td.pe-label').each(function (sProp) {
                         var text = '';
@@ -585,7 +583,7 @@
                                 break;
                         }
                         this.innerHTML = text;
-                    })
+                    });
                     //Setting the state of the inputs
                     rows.select(".input_" + widget._id).each(function (sProp) {
                         var input = d3.select(this);
@@ -594,7 +592,7 @@
                                 switch (sProp.type) {
                                     case "boolean":
                                         input.node().checked = context.widgetProperty(w, sProp.id);
-                                        break
+                                        break;
                                     case "html-color":
                                         input.node().value = context.widgetProperty(w, sProp.id);
                                         break;
@@ -617,6 +615,7 @@
                                     case "number":
                                     case "string":
                                     case "set":
+                                        /* falls through */
                                     default:
                                         input.node().value = context.widgetProperty(w, sProp.id);
                                         break;
@@ -624,7 +623,7 @@
                             });
                         }
                     });
-                    //On Exit               
+                    //On Exit
                     rows.exit().each(function (d) {
                         var element = d3.select(this);
                         console.log("PropertyEditor exit:" + d._class + d._id);
@@ -641,7 +640,7 @@
                     }).remove();
                 } else if (context.param_grouping() === "By Widget") {
                     //Updating TR 'By Widget'
-                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? widget.__proto__ : widget), function (d) {
+                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
                     rows.enter().append("tr").each(function (d) {
@@ -649,14 +648,14 @@
                         tr.attr("class", "tr_" + widget._id);
                         tr.append("td").attr("class", "pe-label").text(function (d) {
                             return d.id;
-                        })
+                        });
                         var inputType = 'input';
-                        if (typeof (d.ext) !== 'undefined'
-                            && typeof (d.ext.inputType) !== 'undefined'
-                            && d.ext.inputType === "textarea") {
+                        if (typeof (d.ext) !== 'undefined' &&
+                            typeof (d.ext.inputType) !== 'undefined' &&
+                            d.ext.inputType === "textarea") {
                             inputType = 'textarea';
                         }
-                        var td_input = tr.append("td")
+                        tr.append("td")
                             .attr("class", "field")
                             .each(function () {
                                 var td = d3.select(this);
@@ -670,16 +669,15 @@
                                                 context.widgetProperty(widget, d.id, this.checked).render(function () {
                                                     context.onChange(widget, d.id);
                                                     context.render();
-                                                })
+                                                });
                                             })
                                         ;
                                         break;
                                     case "number":
                                     case "string":
-                                        var input;
                                         if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
                                             if (d.ext.inputType === "textarea") {
-                                                input = td.append('textarea')
+                                                input = td.append('textarea');
                                             }
                                             else if (d.type === 'number' && d.ext.inputType === 'range') {
                                                 input = td.append('input')
@@ -698,8 +696,9 @@
                                                 context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
-                                                })
+                                                });
                                             })
+                                        ;
                                         break;
                                     case "html-color":
                                         input = td.append("input")
@@ -708,7 +707,7 @@
                                                 context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
-                                                })
+                                                });
                                             })
                                         ;
                                         if (!context.isIE) {
@@ -735,11 +734,11 @@
                                                 context.widgetProperty(widget, d.id, this.value).render(function (widget) {
                                                     context.onChange(widget, d.id);
                                                     context.render();
-                                                })
+                                                });
                                             })
                                         ;
                                         d.set.forEach(function (item) {
-                                            var option = input.append("option")
+                                            input.append("option")
                                                 .attr("value", item)
                                                 .text(item)
                                             ;
@@ -771,7 +770,7 @@
                                             .target(input.node())
                                         ;
                                         widget["_propertyEditor_" + d.id].onChange = function (widget, propID) {
-                                            context.onChange(widget, propID)
+                                            context.onChange(widget, propID);
                                             //  No render needed  ---
                                         };
                                         break;
@@ -780,13 +779,13 @@
                                 }
                             })
                         ;
-                    })
+                    });
                     rows.select(".input_" + widget._id).each(function (d) {
                         var input = d3.select(this);
                         switch (d.type) {
                             case "boolean":
                                 input.node().checked = context.widgetProperty(widget, d.id);
-                                break
+                                break;
                             case "html-color":
                                 input.node().value = context.widgetProperty(widget, d.id);
                                 break;
@@ -803,6 +802,7 @@
                             case "number":
                             case "string":
                             case "set":
+                                /* falls through */
                             default:
                                 input.node().value = context.widgetProperty(widget, d.id);
                                 break;
@@ -821,10 +821,10 @@
                         }
                     }).remove();
                 }
-            })
+            });
         }
         table.exit().remove();
-    }
+    };
 
     PropertyEditor.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);

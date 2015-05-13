@@ -13,7 +13,7 @@
         
         this._type = "Bubble";
         this._gType = "column";
-    };
+    }
     Bubble.prototype = Object.create(CommonXY.prototype);
     Bubble.prototype.implements(INDChart.prototype);
 
@@ -25,10 +25,9 @@
 
     Bubble.prototype.updateChartOptions = function() {
         CommonXY.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
         this.buildGraphs(this._gType);
         return this._chart;
-    }
+    };
 
     Bubble.prototype.buildGraphs = function(gType) {
         var context = this;
@@ -52,7 +51,7 @@
         }
 
         function buildGraphObj(gObj) {
-            if (context._type == "Bubble") {
+            if (context._type === "Bubble") {
                 var fieldArr = ['value'];
                 fieldArr.forEach(function(field){
                     if(typeof(context['_'+field+'Field']) !== 'undefined' && typeof(context['_'+field+'Field'][i]) !== 'undefined'){
@@ -62,11 +61,10 @@
             }
             return gObj;
         }
-    }
+    };
     
     Bubble.prototype.update = function(domNode, element) {
         CommonXY.prototype.update.apply(this, arguments);
-        var context = this;   
 
         this.updateChartOptions();
 

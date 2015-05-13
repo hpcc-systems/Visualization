@@ -13,9 +13,9 @@
         
         this._gType = "column";
         
-        this._openField;
-        this._closeField;
-    };
+        this._openField = undefined;
+        this._closeField = undefined;
+    }
     FloatingColumn.prototype = Object.create(CommonSerial.prototype);
     FloatingColumn.prototype.implements(INDChart.prototype);
 
@@ -61,6 +61,7 @@
             }
         });
         this._columns = colArr;
+        return retVal;
     };
     
     FloatingColumn.prototype.enter = function(domNode, element) {
@@ -73,7 +74,7 @@
         this._chart.depth3D = this._3dDepth;
         this._chart.angle = this._3dAngle;
         this._chart.categoryAxis.startOnAxis = false; //override due to render issue
-    }
+    };
     
     FloatingColumn.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);

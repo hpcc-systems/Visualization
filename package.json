@@ -20,11 +20,17 @@
     "gulp-bump": "^0.3.0",
     "gulp-filter": "^2.0.2",
     "gulp-tag-version": "^1.2.1",
-    "yargs": "^3.8.0"
+    "yargs": "^3.8.0",
+    "jshint-stylish": "~1.0.2",
+    "gulp-jshint": "~1.10.0",
+    "gulp-jscs": "~1.6.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/hpcc-systems/Visualization"
+  },
+  "scripts": {
+    "test": "gulp lint"
   },
   "author": "HPCC Systems",
   "license": "Apache",

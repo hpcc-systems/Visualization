@@ -10,7 +10,7 @@
         Common2D.call(this);
 
         this._type = "pie";
-    };
+    }
     Pie.prototype = Object.create(Common2D.prototype);
     Pie.prototype._class += " c3chart_Pie";
 
@@ -18,9 +18,9 @@
         Common2D.prototype.update.apply(this, arguments);
     };
 
-    Pie.prototype.getChartOptions = function() {
+    Pie.prototype.getChartOptions = function () {
         var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
-        
+
         var data = this._data.map(function (row, idx) {
             return [row[0], row[1]];
         }, this);
@@ -28,7 +28,7 @@
         chartOptions.columns = data;
 
         return chartOptions;
-    }
+    };
 
     return Pie;
 }));

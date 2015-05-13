@@ -17,7 +17,7 @@
         this._textBox = new TextBox()
             .padding(0)
         ;
-    };
+    }
     Edge.prototype = Object.create(SVGWidget.prototype);
     Edge.prototype._class += " graph_Edge";
 
@@ -91,7 +91,7 @@
         if (this._textBox.text()) {
             this._textBox
                 .target(domNode)
-                .render();
+                .render()
             ;
         }
     };

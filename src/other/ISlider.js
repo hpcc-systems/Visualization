@@ -7,7 +7,7 @@
     }
 }(this, function () {
     function ISlider() {
-    };
+    }
 
     //  Properties  ---
     ISlider.prototype._range = { low: 0, high: 100 };

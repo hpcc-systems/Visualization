@@ -10,7 +10,7 @@
         Choropleth.call(this);
 
         this.projection("albersUsaPr");
-    };
+    }
     ChoroplethStates.prototype = Object.create(Choropleth.prototype);
     ChoroplethStates.prototype._class += " map_ChoroplethStates";
 
@@ -37,7 +37,7 @@
         Choropleth.prototype.enter.apply(this, arguments);
         element.classed("map_Choropleth", true);
 
-        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features)
+        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usStates.topology, usStates.topology.objects.states).features);
 
         //  Enter  ---
         var context = this;

@@ -64,7 +64,7 @@
         lines.exit().remove();
 
         //  Nodes  ---
-        var nodes = element.selectAll(".node").data(nodes);
+        var nodes = element.selectAll(".node").data(dataNodes);
         nodes.enter().append("g")
             .attr("class", "node")
             .on("click", function (d) { context.click(d); })

@@ -99,6 +99,7 @@ gulp.task('lint', function () {
         .pipe(lintFilter)
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('fail'))
     ;
 });
 

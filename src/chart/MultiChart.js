@@ -31,7 +31,8 @@
         { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
         { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
         { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
-        { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" }
+        { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
+        //{ id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
     ];
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }

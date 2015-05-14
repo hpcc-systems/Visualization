@@ -18,7 +18,7 @@
 
         var context = this;
         this._menu.click = function (d) {
-            context._content.chart_type(d).render();
+            context._content.chartType(d).render();
         };
         this.mode("all");
     }
@@ -28,7 +28,7 @@
 
     MultiChartSurface.prototype.testData = INDChart.prototype.testData;
 
-    MultiChartSurface.prototype.publishProxy("chart_type", "_content");
+    MultiChartSurface.prototype.publishProxy("chartType", "_content");
 
     MultiChartSurface.prototype.columns = function (_) {
         if (!arguments.length) return this._content.columns();

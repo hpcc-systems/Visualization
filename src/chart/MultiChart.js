@@ -11,21 +11,27 @@
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
-        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
         { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3chart_Donut" },
+        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
+        { id: "AM_FUNNEL", display: "Area (amCharts)", widgetClass: "amchart_Funnel" },
+        { id: "AM_PIE", display: "Pie (amCharts)", widgetClass: "amchart_Pie" },
+        { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
     var _multiChartTypes = [
+        { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
-        { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
-        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
+        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
         { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
         { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
+        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
+        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" },
         { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
-        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
-        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" }
+        { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
+        { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
+        { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" }
     ];
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }

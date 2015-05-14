@@ -3,9 +3,9 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonFunnel", "amcharts.funnel", "../api/I2DChart"], factory);
     } else {
-        root.amchart_Funnel = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I2DChart);
+        root.amchart_Funnel = factory(root.d3, root.amchart_CommonFunnel, root.api_I2DChart);
     }
-}(this, function(d3, CommonFunnel, AmCharts, I2DChart) {
+}(this, function(d3, CommonFunnel, I2DChart) {
     function Funnel() {
         CommonFunnel.call(this);
         this._class = "amchart_Funnel";

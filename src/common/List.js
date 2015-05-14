@@ -28,10 +28,10 @@
             .each(function (d) {
                 var newTextBox = new TextBox()
                     .target(this)
-                    .padding_top(0)
-                    .padding_bottom(0)
-                    .padding_left(8)
-                    .padding_right(8)
+                    .paddingTop(0)
+                    .paddingBottom(0)
+                    .paddingLeft(8)
+                    .paddingRight(8)
                     .text(d)
                     .render()
                 ;

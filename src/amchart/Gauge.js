@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart"], factory);
     } else {
-        root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I1DChart);
+        root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart);
     }
 }(this, function(d3, HTMLWidget, AmCharts, I1DChart) {
     function Gauge() {

@@ -25,7 +25,7 @@
     /**
      * Publish Params Unique To This Widget
      */
-    Bubble.prototype.publish("tooltipTemplate","[[category]]: [[value]]", "string", "Tooltip Text", null, {tags:['Intermediate']});
+    Bubble.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Bubble.prototype.enter = function(domNode, element) {
         CommonXY.prototype.enter.apply(this, arguments);
@@ -60,10 +60,11 @@
         function buildGraphObj(gObj) {
             if (this._type === "Bubble") {
                 var fieldArr = ['value'];
+                var context = this;
                 fieldArr.forEach(function(field){
-                    if(typeof(this['_'+field+'Field']) !== 'undefined' && typeof(this['_'+field+'Field'][i]) !== 'undefined'){
-                        gObj[field+'Field'] = this['_'+field+'Field'][i]; //for bubble
-                    }
+                    //if(typeof(context['_'+field+'Field']) !== 'undefined' && typeof(context['_'+field+'Field'][i]) !== 'undefined'){
+                        gObj[field+'Field'] = context['_'+field+'Field'][i]; //for bubble
+                    //}
                 });
             }
             return gObj;

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.serial"], factory);
     } else {
-        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
     }
 
 }(this, function(d3, HTMLWidget, AmCharts) {
@@ -14,7 +14,7 @@
         this._chart = {};
         this._data = undefined;
         this._columns = undefined;
-        this._valueField = undefined;
+        this._valueField = [];
         this._categoryField = undefined;
         this._colors = [];
         this._numValueAxis = 1;
@@ -43,8 +43,8 @@
     CommonSerial.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal Axis Text Style (Color)",null,{tags:['Basic','Shared']});
     CommonSerial.prototype.publish("yAxisFontColor", null, "html-color", "Vertical Axis Text Style (Color)",null,{tags:['Basic','Shared']});
 
-    CommonSerial.prototype.publish("xAxisTitle", "Axis title", "string", "X-Axis Title",null,{tags:['Basic','Shared']});
-    CommonSerial.prototype.publish("yAxisTitle", "Axis title", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
+    CommonSerial.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:['Basic','Shared']});
+    CommonSerial.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
 
     CommonSerial.prototype.publish("xAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:['Basic','Shared']});
     CommonSerial.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:['Intermediate','Shared']});

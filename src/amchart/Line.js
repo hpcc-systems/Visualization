@@ -3,9 +3,9 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart"], factory);
     } else {
-        root.amchart_Line = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_Line = factory(root.d3, root.amchart_CommonSerial, root.api_INDChart);
     }
-}(this, function(d3, CommonSerial, AmCharts, INDChart) {
+}(this, function(d3, CommonSerial, INDChart) {
     function Line() {
         CommonSerial.call(this);
         this._class = "amchart_Line";
@@ -32,11 +32,6 @@
     Line.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Basic']});
 
     Line.prototype.enter = function(domNode, element) {
-        var initObj = {
-            "theme": "none",
-            "type": "serial",
-        };
-        this._chart = AmCharts.makeChart(domNode, initObj);
         CommonSerial.prototype.enter.apply(this, arguments);
     };
 

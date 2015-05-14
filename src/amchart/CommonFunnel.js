@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.funnel"], factory);
     } else {
-        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
     }
 
 }(this, function(d3, HTMLWidget, AmCharts) {
@@ -14,7 +14,7 @@
         this._chart = {};
         this._data = undefined;
         this._columns = undefined;
-        this._valueField = undefined;
+        this._valueField = [];
         this._colors = [];
     }
 

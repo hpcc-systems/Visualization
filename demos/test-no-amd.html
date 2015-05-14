@@ -17,18 +17,27 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="../bower_components/d3/d3.js"></script>
     <script src="../bower_components/c3/c3.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/amcharts.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/serial.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/funnel.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/gauge.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/pie.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/radar.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/xy.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/gantt.js"></script>
     <script src="../bower_components/dagre/index.js"></script>
     <script src="../bower_components/colorbrewer/colorbrewer.js"></script>
     <script src="../bower_components/topojson/topojson.js"></script>
     <script src="../bower_components/d3-cloud/d3.layout.cloud.js"></script>
 
-    <script src="../dist/hpcc-viz-common.min.js"></script>
+    <script src="../dist/hpcc-viz-common.js"></script>
     <script src="../dist/hpcc-viz-api.min.js"></script>
     <script src="../dist/hpcc-viz-other.min.js"></script>
     <script src="../dist/hpcc-viz-tree.min.js"></script>
     <script src="../dist/hpcc-viz-chart.min.js"></script>
     <script src="../dist/hpcc-viz-graph.min.js"></script>
     <script src="../dist/hpcc-viz-c3chart.min.js"></script>
+    <script src="../dist/hpcc-viz-amchart.min.js"></script>
     <script src="../dist/hpcc-viz-google.min.js"></script>
     <script src="../dist/hpcc-viz-map.min.js"></script>
     <script src="../dist/hpcc-viz-layout.min.js"></script>
@@ -232,6 +241,68 @@
                 ;
                 new google_Line()
                     .target("gline")
+                    .testData()
+                    .render()
+                ;
+
+                //  AmCharts ---
+                new amchart_Area()
+                    .target("amarea")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Bar()
+                    .target("ambar")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Bubble()
+                    .target("ambubble")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Candle()
+                    .target("amcandle")
+                    .testData()
+                    .render()
+                ;
+                new amchart_FloatingColumn()
+                    .target("amfloatingcolumn")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Funnel()
+                    .target("amfunnel")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Gauge()
+                    .target("amgauge")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Line()
+                    .target("amline")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Pie()
+                    .target("ampie")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Pyramid()
+                    .target("ampyramid")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Scatter()
+					.target("amscatter")
+                    .testData()
+                    .render()
+                ;
+                new amchart_Polar()
+                    .target("ampolar")
                     .testData()
                     .render()
                 ;
@@ -469,6 +540,21 @@
             <div id="gbar" class="small thumb"></div>
             <div id="gcolumn" class="small thumb"></div>
             <div id="gline" class="small thumb"></div>
+            <br style="clear:both" />
+            AmCharts
+            <br style="clear:both" />
+            <div id="amarea" class="large thumb"></div>
+            <div id="ambar" class="large thumb"></div>
+            <div id="ambubble" class="large thumb"></div>
+            <div id="amcandle" class="large thumb"></div>
+            <div id="amfloatingcolumn" class="large thumb"></div>
+            <div id="amfunnel" class="large thumb"></div>
+            <div id="amgauge" class="large thumb"></div>
+            <div id="amline" class="large thumb"></div>
+            <div id="ampie" class="large thumb"></div>
+            <div id="ampolar" class="large thumb"></div>
+            <div id="ampyramid" class="large thumb"></div>
+            <div id="amscatter" class="large thumb"></div>
             <br style="clear:both" />
             Maps
             <br style="clear:both" />

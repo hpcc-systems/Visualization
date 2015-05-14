@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.xy"], factory);
     } else {
-        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
     }
 }(this, function(d3, HTMLWidget, AmCharts) {
     function CommonXY() {
@@ -13,8 +13,8 @@
         this._chart = {};
         this._data = undefined;
         this._columns = undefined;
-        this._valueField = undefined;
-        this._categoryField = undefined;
+        this._valueField = [];
+        this._categoryField = [];
         this._colors = [];
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
@@ -33,8 +33,8 @@
 
     CommonXY.prototype.publish("dashedLineStyle", 0, "number", "",null,{tags:['Advanced','Shared']});
 
-    CommonXY.prototype.publish("yAxisTitle", "Axis title", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
-    CommonXY.prototype.publish("xAxisTitle", "Axis title", "string", "X-Axis Title",null,{tags:['Basic','Shared']});
+    CommonXY.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
+    CommonXY.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:['Basic','Shared']});
 
     CommonXY.prototype.publish("xAxisBaselineColor", null, "html-color", "Axis color",null,{tags:['Basic','Shared']});
     CommonXY.prototype.publish("yAxisBaselineColor", null, "html-color", "Axis color",null,{tags:['Basic','Shared']});
@@ -64,7 +64,7 @@
 
     CommonXY.prototype.publish("marginLeft", 50, "number", "Margin (Left)",null,{tags:['Intermediate']});
     CommonXY.prototype.publish("marginRight", 10, "number", "Margin (Right)",null,{tags:['Intermediate']});
-    CommonXY.prototype.publish("marginTop", 10, "number", "Margin (Top)",null,{tags:['Intermediate']});
+    CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)",null,{tags:['Intermediate']});
     CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)",null,{tags:['Intermediate']});
 
     CommonXY.prototype.publish("dataDateFormat", null, "string", "",null,{tags:['Private']});

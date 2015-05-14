@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart"], factory);
     } else {
-        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.amcharts, root.api_I2DChart);
+        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart);
     }
 }(this, function(d3, HTMLWidget, AmCharts, I2DChart) {
     function Pie() {

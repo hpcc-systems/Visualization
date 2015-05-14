@@ -175,10 +175,12 @@
                     function displayCharts() {
                         require(["src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line",
                             "src/google/Pie", "src/google/Bar", "src/google/Column", "src/google/Line",
-                            "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Line", "src/c3chart/Column", "src/c3chart/Bar", "src/c3chart/Step", "src/c3chart/Area", "src/c3chart/Scatter"
+                            "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Line", "src/c3chart/Column", "src/c3chart/Bar", "src/c3chart/Step", "src/c3chart/Area", "src/c3chart/Scatter",
+                            "src/amchart/Area", "src/amchart/Bar", "src/amchart/Bubble", "src/amchart/Candle", "src/amchart/FloatingColumn", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"
                         ], function (Pie, Bubble, Column, Line,
                             GPie, GBar, GColumn, GLine,
-                            C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter) {
+                            C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter,
+                            AmArea, AmBar, AmBubble, AmCandle, AmFloatingColumn, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
                             //  C3 Charts ---
                             new C3Pie()
                                 .target("c3pie")
@@ -262,6 +264,68 @@
                             ;
                             new GLine()
                                 .target("gline")
+                                .testData()
+                                .render()
+                            ;
+
+                            //  AmCharts ---
+                            new AmArea()
+                                .target("amarea")
+                                .testData()
+                                .render()
+                            ;
+                            new AmBar()
+                                .target("ambar")
+                                .testData()
+                                .render()
+                            ;
+                            new AmBubble()
+                                .target("ambubble")
+                                .testData()
+                                .render()
+                            ;
+                            new AmCandle()
+                                .target("amcandle")
+                                .testData()
+                                .render()
+                            ;
+                            new AmFloatingColumn()
+                                .target("amfloatingcolumn")
+                                .testData()
+                                .render()
+                            ;
+                            new AmFunnel()
+                                .target("amfunnel")
+                                .testData()
+                                .render()
+                            ;
+                            new AmGauge()
+                                .target("amgauge")
+                                .testData()
+                                .render()
+                            ;
+                            new AmLine()
+                                .target("amline")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPie()
+                                .target("ampie")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPyramid()
+                                .target("ampyramid")
+                                .testData()
+                                .render()
+                            ;
+                            new AmScatter()
+								.target("amscatter")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPolar()
+                                .target("ampolar")
                                 .testData()
                                 .render()
                             ;
@@ -519,6 +583,21 @@
             <div id="gbar" class="small thumb"></div>
             <div id="gcolumn" class="small thumb"></div>
             <div id="gline" class="small thumb"></div>
+            <br style="clear:both" />
+            AmCharts
+            <br style="clear:both" />
+            <div id="amarea" class="large thumb"></div>
+            <div id="ambar" class="large thumb"></div>
+            <div id="ambubble" class="large thumb"></div>
+            <div id="amcandle" class="large thumb"></div>
+            <div id="amfloatingcolumn" class="large thumb"></div>
+            <div id="amfunnel" class="large thumb"></div>
+            <div id="amgauge" class="large thumb"></div>
+            <div id="amline" class="large thumb"></div>
+            <div id="ampie" class="large thumb"></div>
+            <div id="ampolar" class="large thumb"></div>
+            <div id="ampyramid" class="large thumb"></div>
+            <div id="amscatter" class="large thumb"></div>
             <br style="clear:both" />
             Maps
             <br style="clear:both" />

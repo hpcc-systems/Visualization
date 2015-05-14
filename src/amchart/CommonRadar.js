@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.radar"], factory);
     } else {
-        root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.amcharts);
+        root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
     }
 
 }(this, function(d3, HTMLWidget, AmCharts) {
@@ -14,7 +14,7 @@
         this._chart = {};
         this._data = undefined;
         this._columns = undefined;
-        this._valueField = undefined;
+        this._valueField = [];
         this._categoryField = undefined;
         this._colors = [];
     }
@@ -39,7 +39,7 @@
     CommonRadar.prototype.publish("axisFontSize", null, "number", "Size of value labels text. Will use chart's fontSize if not set.",null,{tags:['Basic','Shared']});
     CommonRadar.prototype.publish("yAxisFontColor", null, "string", "Font Name",null,{tags:['Basic','Shared']});
 
-    CommonRadar.prototype.publish("yAxisTitle", "Axis title", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
+    CommonRadar.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:['Basic','Shared']});
     CommonRadar.prototype.publish("yAxisTitleFontColor", null, "html-color", "Color of axis value labels. Will use chart's color if not set.",null,{tags:['Basic','Shared']});
     CommonRadar.prototype.publish("yAxisTitleFontSize", null, "html-color", "Font Size of axis value labels. Will use chart's color if not set.",null,{tags:['Basic','Shared']});
 

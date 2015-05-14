@@ -34,7 +34,7 @@
         return this;
     };
     
-    Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination");
+    Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 

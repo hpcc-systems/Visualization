@@ -15,7 +15,14 @@
     Common2D.prototype._class += " google_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);
 
-    Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch());
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch(),{tags:['Basic','Shared']});
+
+    /**
+     * Publish Params Unique To This Widget
+     */
 
     Common2D.prototype.getChartOptions = function () {
         var chartOptions = Common.prototype.getChartOptions.call(this);
@@ -28,16 +35,15 @@
     Common2D.prototype.update = function (domNode, element) {
         this._palette = this._palette.switch(this.paletteID());
         Common.prototype.update.apply(this, arguments);
-        this._chart.draw(this._data_google, this.getChartOptions());
     };
-    
+
     function initSeries(num) {
         var series = [];
         for (var i = 0; i < num; i++) {
             series.push({});
         }
         return series;
-    }   
+    }
 
     return Common2D;
 }));

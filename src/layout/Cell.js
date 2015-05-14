@@ -14,11 +14,11 @@
     Cell.prototype = Object.create(Surface.prototype);
     Cell.prototype._class += " layout_Cell";
 
-    Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position");
-    Cell.prototype.publish("gridCol", 0, "number", "Grid Column Position");
-    Cell.prototype.publish("gridRowSpan", 1, "number", "Grid Row Span");
-    Cell.prototype.publish("gridColSpan", 1, "number", "Grid Column Span");
-    Cell.prototype.publish("handleSize", 6, "number", "Grid Row Position");
+    Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position",null,{tags:['Private']});
+    Cell.prototype.publish("gridCol", 0, "number", "Grid Column Position",null,{tags:['Private']});
+    Cell.prototype.publish("gridRowSpan", 1, "number", "Grid Row Span",null,{tags:['Private']});
+    Cell.prototype.publish("gridColSpan", 1, "number", "Grid Column Span",null,{tags:['Private']});
+    Cell.prototype.publish("handleSize", 6, "number", "Grid Row Position",null,{tags:['Private']});
 
     Cell.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);

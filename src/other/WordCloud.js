@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IWordCloud", "css!./WordCloud"], factory);
+        define(["d3", "../common/SVGWidget", "./IWordCloud", "require", "css!./WordCloud"], factory);
     } else {
-        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud);
+        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud, root.require);
     }
-}(this, function (d3, SVGWidget, IWordCloud) {
+}(this, function (d3, SVGWidget, IWordCloud, require) {
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);

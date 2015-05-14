@@ -72,7 +72,8 @@
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
+        var context = this;
+        var propsStr = Persist.discover(this.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
             if (!context.widgetPropertyModified(widget, prop.id)) {
                 return "";
             }
@@ -131,14 +132,14 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
-    var findSharedProperties = function (data, theme_mode) {
+    PropertyEditor.prototype.findSharedProperties = function (data, theme_mode) {
         var propsByID = {};
         if (typeof (data) !== 'undefined' && data.length > 0) {
             var allProps = [];
             data.forEach(function (widget) {
-                var gpResponse = _getParams(theme_mode ? Object.getPrototypeOf(widget) : widget, 0);
+                var gpResponse = this._getParams(theme_mode ? Object.getPrototypeOf(widget) : widget, 0);
                 allProps = allProps.concat(gpResponse);
-            });
+            }, this);
             allProps.forEach(function (prop) {
                 if (['widget', 'widgetArray'].indexOf(prop.type) === -1) {
                     var tempIdx = prop.id + '_' + prop.description;
@@ -154,32 +155,33 @@
             });
         }
         return propsByID;
-        function _getParams(widgetObj, depth) {
-            var retArr = [];
-            var paramArr = Persist.discover(widgetObj);
-            paramArr.forEach(function (param, i1) {
-                retArr.push({
-                    id: param.id,
-                    type: param.type,
-                    description: param.description,
-                    set: param.set,
-                    widget: widgetObj
-                });
-                if (param.type === "widgetArray") {
-                    var childWidgetArray = context.widgetProperty(widgetObj, param.id);
-                    childWidgetArray.forEach(function (childWidget) {
-                        var cwArr = _getParams(childWidget, depth + 1);
-                        retArr = retArr.concat(cwArr);
-                    });
-                }
-                else if (param.type === "widget") {
-                    var childWidget = context.widgetProperty(widgetObj, param.id);
-                    var temp = _getParams(childWidget, depth + 1);
-                    retArr = retArr.concat(temp);
-                }
+    };
+
+    PropertyEditor.prototype._getParams = function(widgetObj, depth) {
+        var retArr = [];
+        var paramArr = Persist.discover(widgetObj);
+        paramArr.forEach(function (param, i1) {
+            retArr.push({
+                id: param.id,
+                type: param.type,
+                description: param.description,
+                set: param.set,
+                widget: widgetObj
             });
-            return retArr;
-        }
+            if (param.type === "widgetArray") {
+                var childWidgetArray = this.widgetProperty(widgetObj, param.id);
+                childWidgetArray.forEach(function (childWidget) {
+                    var cwArr = this._getParams(childWidget, depth + 1);
+                    retArr = retArr.concat(cwArr);
+                }, this);
+            }
+            else if (param.type === "widget") {
+                var childWidget = this.widgetProperty(widgetObj, param.id);
+                var temp = this._getParams(childWidget, depth + 1);
+                retArr = retArr.concat(temp);
+            }
+        }, this);
+        return retArr;
     };
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
@@ -245,7 +247,7 @@
             var sharedPropsMainSections = [];
             var sPropSections = [];
             if (this._data.length > 0) {
-                sharedPropsMainSections.push(findSharedProperties(this._data, this.theme_mode()));
+                sharedPropsMainSections.push(this.findSharedProperties(this._data, this.theme_mode()));
                 for (var k1 in sharedPropsMainSections) {
                     var sectionArr = [];
                     for (var k2 in sharedPropsMainSections[k1]) {

@@ -347,7 +347,7 @@
                 this.loadWidget("src/chart/MultiChart", function (widget) {
                     widget
                         .id(visualization.id)
-                        .chart_type(context.properties.charttype || context.type)
+                        .chartType(context.properties.charttype || context.type)
                     ;
                 });
                 break;
@@ -355,7 +355,7 @@
                 this.loadWidget("src/chart/MultiChart", function (widget) {
                     widget
                         .id(visualization.id)
-                        .chart_type(context.properties.charttype || context.type)
+                        .chartType(context.properties.charttype || context.type)
                     ;
                 });
                 break;

@@ -14,17 +14,24 @@
     Donut.prototype = Object.create(Common2D.prototype);
     Donut.prototype._class += " c3chart_Donut";
 
-    Donut.prototype.publish("label_show", true, "boolean", "Show Label");
-    //Donut.prototype.publish("label_format", null, "function", "???");
-    //Donut.prototype.publish("label_threshold", 0.05, "number", "???");
-    Donut.prototype.publish("arc_width", 45, "number", "Arc Width");
-    Donut.prototype.publish("expand", true, "boolean", "Arc Explode");
-    Donut.prototype.publish("title", "xxx", "string", "Label");
+    /**
+     * Publish Params Common To Other Libraries
+     */
+
+    /**
+     * Publish Params Unique To This Widget
+     */   
+    Donut.prototype.publish("showLabel", true, "boolean", "Show Label",null,{tags:['Basic']});
+    //Donut.prototype.publish("labelFormat", null, "function", "???",null,{tags:['Intermediate']});
+    //Donut.prototype.publish("labelThreshold", 0.05, "number", "???",null,{tags:['Intermediate']});
+    Donut.prototype.publish("arcWidth", 45, "number", "Arc Width",null,{tags:['Basic']});
+    Donut.prototype.publish("expand", true, "boolean", "Arc Explode",null,{tags:['Intermediate']});
+    Donut.prototype.publish("title", "xxx", "string", "Center Label",null,{tags:['Intermediate']});
 
     Donut.prototype.enter = function (domNode, element) {
         this._config.donut = {
-            label_show: this.label_show(),
-            width: this.arc_width(),
+            label_show: this.showLabel(),
+            width: this.arcWidth(),
             expand: this.expand(),
             title: this.title()
         };
@@ -35,10 +42,10 @@
     Donut.prototype.update = function (domNode, element) {
         Common2D.prototype.update.apply(this, arguments);
 
-        this.c3Chart.internal.config.donut_label_show = this.label_show();
+        this.c3Chart.internal.config.donut_label_show = this.showLabel();
 //        this.c3Chart.internal.config.donut_label_format = this.high();
-//        this.c3Chart.internal.config.donut_label_threshold = this.show_value_label() ? this.columns() : "";
-        this.c3Chart.internal.config.donut_width = this.arc_width();
+//        this.c3Chart.internal.config.donut_label_threshold = this.showValueLabel() ? this.columns() : "";
+        this.c3Chart.internal.config.donut_width = this.arcWidth();
         this.c3Chart.internal.config.donut_expand = this.expand();
         this.c3Chart.internal.config.donut_title = this.title();
     };

@@ -14,10 +14,18 @@
     Area.prototype = Object.create(CommonND.prototype);
     Area.prototype._class += " c3chart_Area";
 
-    Area.prototype.publish("isStacked", false, "boolean", "Show SubChart");
-    Area.prototype.publish("lineWidth", 1.0, "number", "LineWidth");
-    Area.prototype.publish("dashedLine", [], "array", "Dashed Lines");
-    Area.prototype.publish("lineOpacity", 1.0, "number", "LineWidth");
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Area.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:['Basic','Shared']});
+    Area.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:['Basic','Shared']});
+    Area.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:['Basic','Shared']});
+    Area.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:['Basic','Shared']});
+    Area.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color",null,{tags:['Basic','Exp','Shared']});
+
+    /**
+     * Publish Params Unique To This Library
+     */
 
     Area.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this, arguments);
@@ -33,11 +41,15 @@
         }
 
         element.selectAll(".c3-line").style({
-            "stroke-width": this.lineWidth() + "px",
+            "stroke-width": this.lineWidth()+"px",
             "stroke-opacity": this.lineOpacity(),
-            "stroke-dasharray": this.dashedLine().toString(),
+            "stroke-dasharray": this.lineDashStyle().toString()
+        });
+
+        element.selectAll(".c3-area").style({
+            "opacity": this.fillOpacity()
         });
     };
-    
+
     return Area;
 }));

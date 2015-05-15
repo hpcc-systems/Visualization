@@ -12,11 +12,11 @@
     Shape.prototype = Object.create(SVGWidget.prototype);
     Shape.prototype._class += " common_Shape";
 
-    Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"]);
-    Shape.prototype.publish("width", 24, "number", "Width");
-    Shape.prototype.publish("height", 24, "number", "Height");
-    Shape.prototype.publish("color_stroke", null, "html-color", "Stroke Color", null);
-    Shape.prototype.publish("color_fill", null, "html-color", "Fill Color", null);
+    Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"],{tags:['Private']});
+    Shape.prototype.publish("width", 24, "number", "Width",null,{tags:['Private']});
+    Shape.prototype.publish("height", 24, "number", "Height",null,{tags:['Private']});
+    Shape.prototype.publish("colorStroke", null, "html-color", "Stroke Color", null, {tags:['Private']});
+    Shape.prototype.publish("colorFill", null, "html-color", "Fill Color", null, {tags:['Private']});
 
     Shape.prototype.radius = function (_) {
         if (!arguments.length) return Math.max(this.width(), this.height()) / 2;
@@ -47,8 +47,8 @@
         shape.each(function (d) {
             var element = d3.select(this);
             element.style({
-                fill: context.color_fill(),
-                stroke: context.color_stroke()
+                fill: context.colorFill(),
+                stroke: context.colorStroke()
             });
             switch (context.shape()) {
                 case "circle":

@@ -29,7 +29,7 @@
     Menu.prototype.implements(IMenu.prototype);
 
     Menu.prototype.publishProxy("faChar", "_icon", null, "\uf0c9");
-    Menu.prototype.publishProxy("padding_percent", "_icon", null, 10);
+    Menu.prototype.publishProxy("paddingPercent", "_icon", null, 10);
 
     Menu.prototype.toggleMenu = function () {
         if (!this._visible) {
@@ -116,7 +116,7 @@
 
         this._icon
             .faChar(this.faChar())
-            .padding_percent(this.padding_percent())
+            .paddingPercent(this.paddingPercent())
             .render()
         ;
     };

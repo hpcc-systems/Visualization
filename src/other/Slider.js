@@ -39,11 +39,15 @@
     Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(ISlider.prototype);
 
-    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");
-    Slider.prototype.publish("low", 0, "number", "Low");
-    Slider.prototype.publish("high", 100, "number", "High");
-    Slider.prototype.publish("step", 10, "number", "Step");
-    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
+    Slider.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic']});
+    Slider.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic']});
+    Slider.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
+
+    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection",null,{tags:['Intermediate']});
+    Slider.prototype.publish("low", 0, "number", "Low",null,{tags:['Intermediate']});
+    Slider.prototype.publish("high", 100, "number", "High",null,{tags:['Intermediate']});
+    Slider.prototype.publish("step", 10, "number", "Step",null,{tags:['Intermediate']});
+    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label",null,{tags:['Intermediate']});
 
     Slider.prototype.testData = function (_) {
         this.columns("Percent");
@@ -71,8 +75,8 @@
     };
 
     Slider.prototype.enter = function (domNode, element) {
-        if ((this.high() - this.allowRange()) / this.step() <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this.allowRange(), this.high(), this.step()), [this.high()]]));
+        if ((this.high() - this.low()) / this.step() <= 10) {
+            this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         }
 
         this.axisElement = element.append("g")
@@ -112,12 +116,17 @@
         var width = this.width() - 50;  //TODO - 50 should be "padding"
 
         this.xScale
-            .domain([this.allowRange(), this.high()])
+            .domain([this.low(), this.high()])
             .range([-width/2, width/2])
         ;
 
         this.axisElement
             .call(this.axis)
+        ;
+        this.axisElement.selectAll('.tick > text')
+                .style('fill',this.fontColor())
+                .style('font-size',this.fontSize())
+                .style('font-family',this.fontFamily())
         ;
 
         var range = this.xScale.range();
@@ -132,7 +141,7 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
-            var selVal = [this.allowRange(), this.allowRange()];
+            var selVal = [this.low(), this.low()];
             if (this.allowRange() && this._data) {
                 selVal = this._data;
             } else if (this._data){
@@ -189,7 +198,7 @@
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this.allowRange() + Math.round((value - this.allowRange()) / this.step()) * this.step();
+        return this.low() + Math.round((value - this.low()) / this.step()) * this.step();
     };
 
     Slider.prototype.handlePath = function (d, i) {

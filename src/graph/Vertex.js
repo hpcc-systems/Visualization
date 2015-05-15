@@ -17,24 +17,24 @@
     Vertex.prototype._class += " graph_Vertex";
 
     Vertex.prototype.publishProxy("faChar", "_icon");
-    Vertex.prototype.publishProxy("icon_shape_color_fill", "_icon", "shape_color_fill");
-    Vertex.prototype.publishProxy("icon_shape_color_stroke", "_icon", "shape_color_stroke");
-    Vertex.prototype.publishProxy("icon_image_color_fill", "_icon", "image_color_fill");
+    Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
+    Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
+    Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
 
     Vertex.prototype.publishProxy("text", "_textBox");
     Vertex.prototype.publishProxy("anchor", "_textBox");
-    Vertex.prototype.publishProxy("textbox_shape_color_stroke", "_textBox", "shape_color_stroke");
-    Vertex.prototype.publishProxy("textbox_shape_color_fill", "_textBox", "shape_color_fill");
-    Vertex.prototype.publishProxy("textbox_text_color_fill", "_textBox", "text_color_fill");
+    Vertex.prototype.publishProxy("textbox_shape_colorStroke", "_textBox", "shape_colorStroke");
+    Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
+    Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
-    Vertex.prototype.publish("annotation_diameter", 14, "number", "Annotation Diameter");
-    Vertex.prototype.publish("annotation_spacing", 3, "number", "Annotation Spacing");
-    Vertex.prototype.publish("annotation_icons", [], "array", "Annotations");
+    Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:['Private']});
+    Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:['Private']});
+    Vertex.prototype.publish("annotationIcons", [], "array", "Annotations",null,{tags:['Private']});
 
     Vertex.prototype.testData = function (_) {
         this._icon.testData();
         this._textBox.testData();
-        this.annotation_icons([{ faChar: "\uf188", tooltip: "Test A", shape_color_fill: "white", image_color_fill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_color_fill: "green", shape_color_stroke: "green", image_color_fill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_color_fill: "navy", shape_color_stroke: "navy", image_color_fill: "white" }]);
+        this.annotationIcons([{ faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }]);
         return this;
     };
 
@@ -62,7 +62,7 @@
         ;
 
         var context = this;
-        var annotations = element.selectAll(".annotation").data(this.annotation_icons());
+        var annotations = element.selectAll(".annotation").data(this.annotationIcons());
         annotations.enter().append("g")
             .attr("class", "annotation")
             .each(function (d, idx) {
@@ -78,9 +78,9 @@
             .each(function (d, idx) {
                 var annotationWidget = context._annotationWidgets[idx];
                 annotationWidget
-                    .diameter(context.annotation_diameter())
-                    .shape_color_fill(context.textbox_shape_color_fill())
-                    .shape_color_stroke(context.textbox_shape_color_stroke())
+                    .diameter(context.annotationDiameter())
+                    .shape_colorFill(context.textbox_shape_colorFill())
+                    .shape_colorStroke(context.textbox_shape_colorStroke())
                 ;
                 for (var key in d) {
                     if (annotationWidget[key]) {
@@ -96,7 +96,7 @@
                         y: yOffset + aBBox.height / 4
                     })
                 ;
-                xOffset -= aBBox.width + context.annotation_spacing();
+                xOffset -= aBBox.width + context.annotationSpacing();
             })
         ;
         annotations.exit()

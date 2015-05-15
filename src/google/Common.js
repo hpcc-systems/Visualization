@@ -13,7 +13,7 @@
         this._tag = "div";
 
         this.columns([]);
-        this.data([]);
+        this.data([],{tags:['Advanced']});
         this._data_google = [];
 
         this._chart = null;
@@ -21,36 +21,47 @@
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " google_Common";
 
-    Common.prototype.publish("chartAreaWidth", "80%", "string", "Chart Area Width"); // num or string
-    Common.prototype.publish("chartAreaHeight", "80%", "string", "Chart Area Height");
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic']});
+    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic']});
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
 
-    Common.prototype.publish("chartAreaTop", null, "string", "Chart Area Distance From Top"); // num or string (google default auto)
-    Common.prototype.publish("chartAreaLeft", null, "string", "Chart Area Distance From Left");
-    
-    Common.prototype.publish("fontSize", null, "number", "Font Size");
-    Common.prototype.publish("fontName", null, "string", "Font Name");
-    Common.prototype.publish("fontColor", null, "html-color", "Font Color");
+    Common.prototype.publish("showLegend", false, "boolean", "Show Legend",null,{tags:['Basic']});
 
-    Common.prototype.publish("legendShow", true, "boolean", "Show Legend");
-    Common.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["", "start", "center", "end"]);
-    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["", "bottom", "labeled", "left", "right", "top"]);
-    Common.prototype.publish("legendFontColor", "#000", "html-color", "Legend Font Color");
-    Common.prototype.publish("legendFontName", null, "string", "Legend Font Name");
-    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size");
-    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold");
-    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic");
+    // below ones are TODO ... BOLD/ITALTIC needs to be 1 param maybe?
+    Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:['Private']});
+    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name",null,{tags:['Private']});
+    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:['Private']});
+    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold",null,{tags:['Private']});
+    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic",null,{tags:['Private']});
 
-    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration");
-    Common.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup");
-    Common.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["linear", "in", "out", "inAndOut"]);
-    
-    Common.prototype.publish("title", "", "string", "Text to display above the chart"); // does not support alignment (TODO make our own title functons)
-    Common.prototype.publish("titlePosition", "out", "set", "Position of title",["in","out","none"]);
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Common.prototype.publish("chartAreaWidth", null, "string", "Chart Area Width",null,{tags:['Advanced']}); // num or string
+    Common.prototype.publish("chartAreaHeight", null, "string", "Chart Area Height",null,{tags:['Advanced']});
+    Common.prototype.publish("chartAreaTop", null, "string", "Chart Area Distance From Top",null,{tags:['Advanced']}); // num or string (google default auto)
+    Common.prototype.publish("chartAreaLeft", null, "string", "Chart Area Distance From Left",null,{tags:['Advanced']});
 
-    Common.prototype.publish("backgroundColorStroke", "#666", "html-color", "Background Border Color");
-    Common.prototype.publish("backgroundColorStrokeWidth", 0, "number", "Background Border Width");
-    Common.prototype.publish("backgroundColorFill", "transparent", "html-color", "Background Color");
-   
+    //TODO: Remove the legend params ... above shared params????
+    Common.prototype.publish("legendAlignment", "center", "set", "Legend Alignment", ["", "start", "center", "end"],{tags:['Private']});
+    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["", "bottom", "labeled", "left", "right", "top"],{tags:['Private']});
+
+    //TODO:Do these apply to animating between data sets?
+    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:['Advanced']});
+    Common.prototype.publish("animationOnStartup", true, "boolean", "Animate On Startup",null,{tags:['Advanced']});
+    Common.prototype.publish("animationEasing", "linear", "set", "Animation Easing", ["linear", "in", "out", "inAndOut"],{tags:['Advanced']});
+
+    Common.prototype.publish("title", "", "string", "Text To Display Above The Chart",null,{tags:['Private']});
+    Common.prototype.publish("titlePosition", "out", "set", "Position of Title",["in","out","none"],{tags:['Private']});
+
+    // need to see if this is going to be shared these 3 below
+    Common.prototype.publish("backgroundColorStroke", null, "html-color", "Background Border Color",null,{tags:['Advanced','Shared']});
+    Common.prototype.publish("backgroundColorStrokeWidth", 0, "number", "Background Border Width",null,{tags:['Advanced','Shared']});
+    Common.prototype.publish("backgroundColorFill", "transparent", "html-color", "Background Color",null,{tags:['Advanced','Shared']});
+
     Common.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -83,11 +94,11 @@
             height: this.height(),
             colors: colors,
             fontSize: this.fontSize(),
-            fontName: this.fontName(),
+            fontName: this.fontFamily(),
             fontColor: this.fontColor(),
             title: this.title(),
             titlePosition: this.titlePosition(),
-            
+
             chartArea: {
                 width: this.chartAreaWidth(),
                 height: this.chartAreaHeight(),
@@ -101,11 +112,11 @@
             },
             legend: {
                 alignment: this.legendAlignment(),
-                position: this.legendShow ()? this.legendPosition (): "none",
+                position: this.showLegend ()? this.legendPosition (): "none",
                 maxLines: 2,
                 textStyle: {
                     color: this.legendFontColor(),
-                    fontName: this.legendFontName(),
+                    fontName: this.legendFontFamily(),
                     fontSize: this.legendFontSize(),
                     bold: this.legendFontBold(),
                     italic: this.legendFontItalic()
@@ -134,7 +145,8 @@
     };
 
     Common.prototype.update = function(domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments); 
+        HTMLWidget.prototype.update.apply(this, arguments);
+        this._chart.draw(this._data_google, this.getChartOptions());
     };
 
     return Common;

@@ -12,7 +12,7 @@
         this._menuPadding = 2;
         this._icon = new Icon()
             .faChar("\uf07b")
-            .padding_percent(50)
+            .paddingPercent(50)
         ;
         this._container = new Shape()
             .class("container")
@@ -26,7 +26,7 @@
             .class("title")
         ;
         this._menu = new Menu()
-            .padding_percent(0)
+            .paddingPercent(0)
         ;
         var context = this;
         this._menu.preShowMenu = function () {
@@ -46,14 +46,14 @@
     Surface.prototype = Object.create(SVGWidget.prototype);
     Surface.prototype._class += " common_Surface";
 
-    Surface.prototype.publish("show_title", true, "boolean", "Show Title");
-    Surface.prototype.publish("title", "", "string", "Title");
-    Surface.prototype.publishProxy("title_font_size", "_text", "font_size");
-    Surface.prototype.publish("show_icon", true, "boolean", "Show Title");
+    Surface.prototype.publish("showTitle", true, "boolean", "Show Title",null,{tags:['Private']});
+    Surface.prototype.publish("title", "", "string", "Title",null,{tags:['Private']});
+    Surface.prototype.publishProxy("titleFontSize", "_text", "fontSize");
+    Surface.prototype.publish("showIcon", true, "boolean", "Show Title",null,{tags:['Private']});
     Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
     //Surface.prototype.publish("menu");
-    Surface.prototype.publish("content", null, "widget", "Content");
+    Surface.prototype.publish("content", null, "widget", "Content",null,{tags:['Private']});
 
     Surface.prototype.menu = function (_) {
         if (!arguments.length) return this._menu.data();
@@ -97,7 +97,7 @@
         this._titleRect
             .target(domNode)
             .render()
-            .display(this.show_title() && this.show_icon())
+            .display(this.showTitle() && this.showIcon())
         ;
         this._icon
             .target(domNode)
@@ -118,7 +118,7 @@
         SVGWidget.prototype.update.apply(this, arguments);
 
         this._icon
-            .display(this.show_title() && this.show_icon())
+            .display(this.showTitle() && this.showIcon())
             .shape(this.icon_shape())
             .render()
         ;
@@ -127,10 +127,10 @@
         ;
         this._text
             .text(this.title())
-            .display(this.show_title())
+            .display(this.showTitle())
             .render()
         ;
-        var iconClientSize = this.show_icon() ? this._icon.getBBox(true) : {width:0, height: 0};
+        var iconClientSize = this.showIcon() ? this._icon.getBBox(true) : {width:0, height: 0};
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height);
@@ -145,7 +145,7 @@
             .pos({ x: leftMargin, y: yTitle })
             .width(this._size.width - leftMargin * 2)
             .height(titleTextHeight)
-            .display(this.show_title())
+            .display(this.showTitle())
             .render()
         ;
         this._icon
@@ -157,7 +157,7 @@
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
-        if (this.show_title()) {
+        if (this.showTitle()) {
             this._container
                 .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
                 .width(this._size.width - leftMargin)

@@ -12,14 +12,19 @@
         this._tag = "div";
         this._gType = "column";
     }
+
     Polar.prototype = Object.create(CommonRadar.prototype);
     Polar.prototype.implements(INDChart.prototype);
-    
-    Polar.prototype.publish("paletteID", "Dark2", "set", "Palette ID", Polar.prototype._palette.switch());
+    /**
+     * Publish Params Common To Other Libraries
+     */
+    Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:['Basic','Shared']});
 
-    Polar.prototype.publish("globalTooltipText","[[category]]([[title]]): [[value]]", "string", "Tooltip Text");
-    Polar.prototype.publish("graphTooltipText",["[[category]]([[title]]): [[value]]"], "array", "Tooltip Text");
-    
+    /**
+     * Publish Params Unique To This Widget
+     */
+    Polar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
+
     Polar.prototype.testData = function() {
         this.columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"]);
         this.data([
@@ -36,34 +41,33 @@
             ["Math II", 76, 30, 34, 6],
             ["Math III", 80, 30, 27, 8],
         ]);
-        this.valueAxesAxisTitleOffset([20]);
-        this.valueAxesMinimum([0]);
-        this.valueAxesAxisAlpha([0.15]);
-        this.valueAxesDashLength([3]);
-        
+        this.yAxisTitleOffset([20]);
+        this.yAxisMinimum([0]);
+        this.axisAlpha([0.15]);
+        this.yAxisDashLength([3]);
         return this;
     };
-    
+
     Polar.prototype.enter = function(domNode, element) {
         CommonRadar.prototype.enter.apply(this, arguments);
     };
-    
+
     Polar.prototype.updateChartOptions = function() {
         CommonRadar.prototype.updateChartOptions.apply(this, arguments);
-        
+
         this.buildGraphs(this._gType);
-        
+
         return this._chart;
     };
-    
+
     Polar.prototype.buildGraphs = function(gType) {
         if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
-        var currentGraphCount = this._chart.graphs.length; 
+        var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
         for(var i = 0; i < buildGraphCount; i++) {
             if ((typeof(this._valueField) !== 'undefined' && typeof(this._valueField[i]) !== 'undefined')) { //mark
                 var gRetVal = CommonRadar.prototype.buildGraphObj.call(this,gType,i);
-                var gObj = buildGraphObj(gRetVal,this._valueField[i]);
+                var gObj = buildGraphObj.call(this,gRetVal,this._valueField[i]);
                 if (typeof(this._chart.graphs[i]) !== 'undefined') {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
@@ -83,7 +87,7 @@
     Polar.prototype.update = function(domNode, element) {
         CommonRadar.prototype.update.apply(this, arguments);
         this.updateChartOptions();
-        
+
         this._chart.validateNow();
         this._chart.validateData();
     };

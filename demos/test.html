@@ -59,6 +59,9 @@
                         case "charts":
                             displayCharts();
                             break;
+                        case "amcharts":
+                            displayAmCharts();
+                            break;
                         case "maps":
                             displayMaps();
                             break;
@@ -82,6 +85,7 @@
                             setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
                             setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
                             setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayAmCharts(); }, timeoutStep * timeoutIdx++);
                             break;
                     }
 
@@ -175,12 +179,10 @@
                     function displayCharts() {
                         require(["src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line",
                             "src/google/Pie", "src/google/Bar", "src/google/Column", "src/google/Line",
-                            "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Line", "src/c3chart/Column", "src/c3chart/Bar", "src/c3chart/Step", "src/c3chart/Area", "src/c3chart/Scatter",
-                            "src/amchart/Area", "src/amchart/Bar", "src/amchart/Bubble", "src/amchart/Candle", "src/amchart/FloatingColumn", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"
+                            "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Line", "src/c3chart/Column", "src/c3chart/Bar", "src/c3chart/Step", "src/c3chart/Area", "src/c3chart/Scatter"
                         ], function (Pie, Bubble, Column, Line,
                             GPie, GBar, GColumn, GLine,
-                            C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter,
-                            AmArea, AmBar, AmBubble, AmCandle, AmFloatingColumn, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
+                            C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter) {
                             //  C3 Charts ---
                             new C3Pie()
                                 .target("c3pie")
@@ -267,8 +269,12 @@
                                 .testData()
                                 .render()
                             ;
+                        });
+                    }
 
-                            //  AmCharts ---
+                    function displayAmCharts() {
+                        require(["src/amchart/Area", "src/amchart/Bar", "src/amchart/Bubble", "src/amchart/Candle", "src/amchart/FloatingColumn", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"],
+                            function (AmArea, AmBar, AmBubble, AmCandle, AmFloatingColumn, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
                             new AmArea()
                                 .target("amarea")
                                 .testData()
@@ -320,7 +326,7 @@
                                 .render()
                             ;
                             new AmScatter()
-								.target("amscatter")
+                                .target("amscatter")
                                 .testData()
                                 .render()
                             ;
@@ -412,14 +418,14 @@
                                 .title("2D Charts")
                                 .icon_faChar("\uf080")
                                 .mode("2d")
-                                .chart_type("COLUMN")
+                                .chartType("COLUMN")
                                 .testData()
                                 .render()
                             ;
                             new MultiChartSurface()
                                 .target("multiSurface")
                                 .testData()
-                                .chart_type("GOOGLE_COLUMN")
+                                .chartType("GOOGLE_COLUMN")
                                 .title("Multi Charts")
                                 .icon_faChar("\uf080")
                                 .mode("multi")

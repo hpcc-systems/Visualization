@@ -71,6 +71,7 @@
             setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+            setTimeout(function () { displayAmCharts(); }, timeoutStep * timeoutIdx++);
 
             function displayComposition() {
                 //  Composition ---
@@ -297,7 +298,7 @@
                     .render()
                 ;
                 new amchart_Scatter()
-					.target("amscatter")
+                    .target("amscatter")
                     .testData()
                     .render()
                 ;
@@ -381,14 +382,14 @@
                     .title("2D Charts")
                     .icon_faChar("\uf080")
                     .mode("2d")
-                    .chart_type("COLUMN")
+                    .chartType("COLUMN")
                     .testData()
                     .render()
                 ;
                 new chart_MultiChartSurface()
                     .target("multiSurface")
                     .testData()
-                    .chart_type("GOOGLE_COLUMN")
+                    .chartType("GOOGLE_COLUMN")
                     .title("Multi Charts")
                     .icon_faChar("\uf080")
                     .mode("multi")

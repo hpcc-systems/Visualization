@@ -12,7 +12,7 @@
         this._menuPadding = 2;
         this._icon = new Icon()
             .faChar("\uf07b")
-            .padding_percent(50)
+            .paddingPercent(50)
         ;
         this._container = new Shape()
             .class("container")
@@ -26,7 +26,7 @@
             .class("title")
         ;
         this._menu = new Menu()
-            .padding_percent(0)
+            .paddingPercent(0)
         ;
         var context = this;
         this._menu.preShowMenu = function () {

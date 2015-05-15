@@ -17,12 +17,12 @@
 
     Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:['Private']});
     Icon.prototype.publishProxy("faChar", "_faChar", "char");
-    Icon.prototype.publishProxy("image_color_fill", "_faChar", "color_fill");
+    Icon.prototype.publishProxy("image_colorFill", "_faChar", "text_colorFill");
     Icon.prototype.publish("tooltip", "", "string", "Tooltip",null,{tags:['Private']});
     Icon.prototype.publish("diameter", 24, "number", "Diameter",null,{tags:['Private']});
-    Icon.prototype.publish("padding_percent", 45, "number", "Padding Percent",null,{tags:['Private']});
-    Icon.prototype.publishProxy("shape_color_fill", "_shapeWidget", "color_fill");
-    Icon.prototype.publishProxy("shape_color_stroke", "_shapeWidget", "color_stroke");
+    Icon.prototype.publish("paddingPercent", 45, "number", "Padding Percent",null,{tags:['Private']});
+    Icon.prototype.publishProxy("shape_colorFill", "_shapeWidget", "colorFill");
+    Icon.prototype.publishProxy("shape_colorStroke", "_shapeWidget", "colorStroke");
 
     Icon.prototype.testData = function () {
         this._faChar.testData();
@@ -49,7 +49,7 @@
     Icon.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._faChar
-            .fontSize(this.diameter() * (100 - this.padding_percent()) / 100)
+            .fontSize(this.diameter() * (100 - this.paddingPercent()) / 100)
             .render()
         ;
         this._shapeWidget

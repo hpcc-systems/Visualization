@@ -75,8 +75,8 @@
     };
 
     Slider.prototype.enter = function (domNode, element) {
-        if ((this.high() - this.allowRange()) / this.step() <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this.allowRange(), this.high(), this.step()), [this.high()]]));
+        if ((this.high() - this.low()) / this.step() <= 10) {
+            this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         }
 
         this.axisElement = element.append("g")
@@ -116,7 +116,7 @@
         var width = this.width() - 50;  //TODO - 50 should be "padding"
 
         this.xScale
-            .domain([this.allowRange(), this.high()])
+            .domain([this.low(), this.high()])
             .range([-width/2, width/2])
         ;
 
@@ -141,7 +141,7 @@
 
         if (this._initHandle === undefined) {
             this._initHandle = true;
-            var selVal = [this.allowRange(), this.allowRange()];
+            var selVal = [this.low(), this.low()];
             if (this.allowRange() && this._data) {
                 selVal = this._data;
             } else if (this._data){
@@ -198,7 +198,7 @@
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this.allowRange() + Math.round((value - this.allowRange()) / this.step()) * this.step();
+        return this.low() + Math.round((value - this.low()) / this.step()) * this.step();
     };
 
     Slider.prototype.handlePath = function (d, i) {

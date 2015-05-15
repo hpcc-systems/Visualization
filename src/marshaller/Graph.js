@@ -88,7 +88,7 @@
                                     newSurface.menu(item.widget._2dChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
-                                            .chart_type(d)
+                                            .chartType(d)
                                             .render()
                                         ;
                                     };
@@ -97,7 +97,7 @@
                                     newSurface.menu(item.widget._multiChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
-                                            .chart_type(d)
+                                            .chartType(d)
                                             .render()
                                         ;
                                     };

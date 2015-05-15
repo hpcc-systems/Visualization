@@ -200,25 +200,25 @@
                                 annotations.push({
                                     "faChar": "\uf018",
                                     "tooltip": "Road Accident",
-                                    "shape_color_fill": "darkgreen",
-                                    "image_color_fill": "white"
+                                    "shape_colorFill": "darkgreen",
+                                    "image_colorFill": "white"
                                 });
                             }
                             if (item.third_vehicle && item.third_vehicle !== "0") {
                                 annotations.push({
                                     "faChar": "\uf1b9",
                                     "tooltip": "Third Vehicle",
-                                    "shape_color_fill": "navy",
-                                    "image_color_fill": "white"
+                                    "shape_colorFill": "navy",
+                                    "image_colorFill": "white"
                                 });
                             }
                             if (item.injury_accident && item.injury_accident !== "0") {
                                 annotations.push({
                                     "faChar": "\uf067",
                                     "tooltip": "Injury Accident",
-                                    "shape_color_fill": "white",
-                                    "shape_color_stroke": "red",
-                                    "image_color_fill": "red"
+                                    "shape_colorFill": "white",
+                                    "shape_colorStroke": "red",
+                                    "image_colorFill": "red"
                                 });
                             }
                             claim.annotation_icons(annotations);

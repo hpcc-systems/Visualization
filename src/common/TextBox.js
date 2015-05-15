@@ -18,9 +18,9 @@
     TextBox.prototype._class += " common_TextBox";
 
     TextBox.prototype.publishProxy("text", "_text");
-    TextBox.prototype.publishProxy("shape_color_stroke", "_shape", "color_stroke");
-    TextBox.prototype.publishProxy("shape_color_fill", "_shape", "color_fill");
-    TextBox.prototype.publishProxy("text_color_fill", "_text", "color_fill");
+    TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
+    TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
+    TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
     TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left",null,{tags:['Private']});
     TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right",null,{tags:['Private']});
     TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top",null,{tags:['Private']});

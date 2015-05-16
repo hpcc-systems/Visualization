@@ -1,0 +1,32 @@
+.other_Slider text {
+    color:#000;;
+    font-family:'Verdana';
+    font-size:12px;
+}
+.other_Slider .axis {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.other_Slider .axis .domain {
+    stroke: lightgray;
+    stroke-width: 10px;
+    stroke-linecap: round;
+}
+.other_Slider .axis .halo {
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 8px;
+    stroke-linecap: round;
+}
+.other_Slider .extent {
+    fill: #fff;
+    opacity: 0.5;
+}
+.other_Slider .handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: .5;
+    stroke-width: 1.00px;
+    pointer-events: none;
+}

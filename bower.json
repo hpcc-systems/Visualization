@@ -1,9 +1,13 @@
 {
-  "name": "viz",
-  "version": "0.0.1",
-  "description": "Common visualization components",
+  "name": "hpcc-viz",
+  "version": "1.0.0",
+  "description": "HPCC Visualization Framework",
   "keywords": [
-    "visualization"
+    "Visualization",
+    "BigData",
+    "HPCC",
+    "Chart",
+    "Graph"
   ],
   "main": [
     "dist/hpcc-viz.min.css",

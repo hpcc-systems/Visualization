@@ -59,6 +59,9 @@
                         case "charts":
                             displayCharts();
                             break;
+                        case "amcharts":
+                            displayAmCharts();
+                            break;
                         case "maps":
                             displayMaps();
                             break;
@@ -82,6 +85,7 @@
                             setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
                             setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
                             setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
+                            setTimeout(function () { displayAmCharts(); }, timeoutStep * timeoutIdx++);
                             break;
                     }
 
@@ -268,6 +272,72 @@
                         });
                     }
 
+                    function displayAmCharts() {
+                        require(["src/amchart/Area", "src/amchart/Bar", "src/amchart/Bubble", "src/amchart/Candle", "src/amchart/FloatingColumn", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"],
+                            function (AmArea, AmBar, AmBubble, AmCandle, AmFloatingColumn, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
+                            new AmArea()
+                                .target("amarea")
+                                .testData()
+                                .render()
+                            ;
+                            new AmBar()
+                                .target("ambar")
+                                .testData()
+                                .render()
+                            ;
+                            new AmBubble()
+                                .target("ambubble")
+                                .testData()
+                                .render()
+                            ;
+                            new AmCandle()
+                                .target("amcandle")
+                                .testData()
+                                .render()
+                            ;
+                            new AmFloatingColumn()
+                                .target("amfloatingcolumn")
+                                .testData()
+                                .render()
+                            ;
+                            new AmFunnel()
+                                .target("amfunnel")
+                                .testData()
+                                .render()
+                            ;
+                            new AmGauge()
+                                .target("amgauge")
+                                .testData()
+                                .render()
+                            ;
+                            new AmLine()
+                                .target("amline")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPie()
+                                .target("ampie")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPyramid()
+                                .target("ampyramid")
+                                .testData()
+                                .render()
+                            ;
+                            new AmScatter()
+                                .target("amscatter")
+                                .testData()
+                                .render()
+                            ;
+                            new AmPolar()
+                                .target("ampolar")
+                                .testData()
+                                .render()
+                            ;
+                        });
+                    }
+
                     function displayMaps() {
                         //  Maps ---
                         require(["src/map/ChoroplethStates"], function (ChoroplethStates) {
@@ -348,14 +418,14 @@
                                 .title("2D Charts")
                                 .icon_faChar("\uf080")
                                 .mode("2d")
-                                .chart_type("COLUMN")
+                                .chartType("COLUMN")
                                 .testData()
                                 .render()
                             ;
                             new MultiChartSurface()
                                 .target("multiSurface")
                                 .testData()
-                                .chart_type("GOOGLE_COLUMN")
+                                .chartType("GOOGLE_COLUMN")
                                 .title("Multi Charts")
                                 .icon_faChar("\uf080")
                                 .mode("multi")
@@ -519,6 +589,21 @@
             <div id="gbar" class="small thumb"></div>
             <div id="gcolumn" class="small thumb"></div>
             <div id="gline" class="small thumb"></div>
+            <br style="clear:both" />
+            AmCharts
+            <br style="clear:both" />
+            <div id="amarea" class="large thumb"></div>
+            <div id="ambar" class="large thumb"></div>
+            <div id="ambubble" class="large thumb"></div>
+            <div id="amcandle" class="large thumb"></div>
+            <div id="amfloatingcolumn" class="large thumb"></div>
+            <div id="amfunnel" class="large thumb"></div>
+            <div id="amgauge" class="large thumb"></div>
+            <div id="amline" class="large thumb"></div>
+            <div id="ampie" class="large thumb"></div>
+            <div id="ampolar" class="large thumb"></div>
+            <div id="ampyramid" class="large thumb"></div>
+            <div id="amscatter" class="large thumb"></div>
             <br style="clear:both" />
             Maps
             <br style="clear:both" />

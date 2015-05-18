@@ -11,6 +11,15 @@
 
         this._type = "step";
     }
+
+    /**
+     * Publish Params Common To Other Libraries
+     */
+
+    /**
+     * Publish Params Unique To This Widget
+     */   
+    
     Step.prototype = Object.create(CommonND.prototype);
     Step.prototype._class += " c3chart_Step";
 

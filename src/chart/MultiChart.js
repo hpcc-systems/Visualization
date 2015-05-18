@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../api/INDChart", "require"], factory);
@@ -11,21 +11,28 @@
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
-        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
         { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3chart_Donut" },
+        { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
+        { id: "AM_FUNNEL", display: "Area (amCharts)", widgetClass: "amchart_Funnel" },
+        { id: "AM_PIE", display: "Pie (amCharts)", widgetClass: "amchart_Pie" },
+        { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
     var _multiChartTypes = [
+        { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
-        { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
-        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
+        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
         { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
         { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
+        { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
+        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" },
         { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
-        { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
-        { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" }
+        { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
+        { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
+        { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
+        //{ id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
     ];
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }
@@ -58,8 +65,8 @@
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 
-    MultiChart.prototype.publish("chart_type", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
-    MultiChart.prototype.publish("chart", null, "widget", "Chart");
+    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
+    MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:['Basic']});
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);
@@ -98,8 +105,8 @@
 
         var context = this;
         var path = "src/" + this._allCharts[chartType].widgetClass.split("_").join("/");
-        require([path], function (widgetClass) {
-            retVal = new widgetClass();
+        require([path], function (WidgetClass) {
+            retVal = new WidgetClass();
             context._allCharts[chartType].widget = retVal;
             callback(retVal);
         });
@@ -108,7 +115,7 @@
     MultiChart.prototype.switchChart = function (callback) {
         var oldContent = this.chart();
         var context = this;
-        this.requireContent(this.chart_type(), function (newContent) {
+        this.requireContent(this.chartType(), function (newContent) {
             if (newContent !== oldContent) {
                 var size = context.size();
                 newContent
@@ -169,7 +176,7 @@
 
 
     MultiChart.prototype.render = function (callback) {
-        if (this.chart_type() && (!this.chart() || (this.chart()._class !== this._allCharts[this.chart_type()].widgetClass))) {
+        if (this.chartType() && (!this.chart() || (this.chart()._class !== this._allCharts[this.chartType()].widgetClass))) {
             var context = this;
             var args = arguments;
             this.switchChart(function () {

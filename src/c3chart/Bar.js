@@ -11,6 +11,15 @@
 
         this._config.axis.rotated = true;
     }
+
+    /**
+     * Publish Params Common To Other Libraries
+     */
+
+    /**
+     * Publish Params Unique To This Widget
+     */   
+    
     Bar.prototype = Object.create(Column.prototype);
     Bar.prototype._class += " c3chart_Bar";
 

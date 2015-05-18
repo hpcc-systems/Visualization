@@ -12,26 +12,31 @@
         this._tag = "div";
     }
     Surface.prototype = Object.create(HTMLWidget.prototype);
-    Surface.prototype._class += " layout_Surface";
+    Surface.prototype._class = "layout_Surface";
 
-    Surface.prototype.publish("title", "", "string", "Title");
-    Surface.prototype.publish("widget", null, "widget", "Widget");
+    Surface.prototype.publish("padding", null, "number", "Surface Padding (px)",null,{tags:['Intermediate']});
+
+    Surface.prototype.publish("titlePadding", null, "number", "Title Padding (px)",null,{tags:['Intermediate']});
+    Surface.prototype.publish("titleFontSize", null, "string", "Title Font Size",null,{tags:['Basic']});
+    Surface.prototype.publish("titleFontColor", null, "html-color", "Title Font Color",null,{tags:['Basic']});
+    Surface.prototype.publish("titleFontFamily", null, "string", "Title Font Family",null,{tags:['Basic']});
+    Surface.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:['Intermediate']});
+    Surface.prototype.publish("titleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:['Basic']});
+
+    Surface.prototype.publish("backgroundColor", null, "html-color", "Surface Background Color",null,{tags:['Basic']});
+
+    Surface.prototype.publish("borderWidth", null, "string", "Surface Border Width",null,{tags:['Basic']});
+    Surface.prototype.publish("borderColor", null, "html-color", "Surface Border Color",null,{tags:['Basic']});
+    Surface.prototype.publish("borderRadius", null, "string", "Surface Border Radius",null,{tags:['Basic']});
+
+    Surface.prototype.publish("title", "", "string", "Title",null,{tags:['Intermediate']});
+    Surface.prototype.publish("titleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:['Intermediate']});
+    Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:['Advanced']});
 
     Surface.prototype.testData = function () {
         this.title("ABC");
         this.widget(new Surface().widget(new MultiChart().testData()));
         return this;
-    };
-
-    Surface.prototype.widgetSize = function (titleDiv, widgetDiv) {
-        var width = this.clientWidth();
-        var height = this.clientHeight();
-        if (this.title()) {
-            height -= this.calcHeight(titleDiv);
-        }
-        height -= this.calcFrameHeight(widgetDiv);
-        width -= this.calcFrameWidth(widgetDiv);
-        return { width: width, height: height };
     };
 
     Surface.prototype.enter = function (domNode, element) {
@@ -40,12 +45,26 @@
 
     Surface.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+
+        element
+            .style("border-width",this.borderWidth())
+            .style("border-color",this.borderColor())
+            .style("border-radius",this.borderRadius())
+            .style("background-color",this.backgroundColor());
+
         var titles = element.selectAll(".surfaceTitle").data(this.title() ? [this.title()] : []);
         titles.enter().insert("h3", "div")
             .attr("class", "surfaceTitle")
         ;
         titles
             .text(function (d) { return d; })
+            .style("text-align",this.titleAlignment())
+            .style("color",this.titleFontColor())
+            .style("font-size",this.titleFontSize())
+            .style("font-family",this.titleFontFamily())
+            .style("font-weight",this.titleFontBold() ? "bold" : "normal")
+            .style("background-color",this.titleBackgroundColor())
+            .style("padding",this.titlePadding()+"px")
         ;
         titles.exit().remove();
 
@@ -62,11 +81,19 @@
         widgets
             .each(function (d) {
                 //console.log("surface update:" + d._class + d._id);
-                var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
+                var width = context.clientWidth();
+                var height = context.clientHeight();
+                if (context.title()) {
+                    height -= context.calcHeight(element.select("h3"));
+                }
+                var widgetDiv = d3.select(this);
+                height -= context.calcFrameHeight(widgetDiv);
+                width -= context.calcFrameWidth(widgetDiv);
                 d
-                    .resize({ width: widgetSize.width, height: widgetSize.height })
+                    .resize({ width: width, height: height })
                 ;
             })
+            .style("padding",this.padding()+"px")
         ;
         widgets.exit().each(function (d) {
             //console.log("surface exit:" + d._class + d._id);

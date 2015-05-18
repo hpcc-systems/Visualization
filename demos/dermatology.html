@@ -87,6 +87,7 @@
                             <option value="src/amchart/Bar">AmChart Bar</option>
                             <option value="src/amchart/Bubble">AmChart Bubble</option>
                             <option value="src/amchart/Candle">AmChart Candle</option>
+                            <option value="src/amchart/FloatingColumn">AmChart Floating Column</option>
                             <option value="src/amchart/Funnel">AmChart Funnel</option>
                             <option value="src/amchart/Gauge">AmChart Gauge</option>
                             <option value="src/amchart/Line">AmChart Line</option>
@@ -130,7 +131,7 @@
         var debouncedResize = null;
 
         require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
-            var propEditor = new PropertyEditor().show_columns(false).show_data(false);
+            var propEditor = new PropertyEditor().showColumns(false).showData(false);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {

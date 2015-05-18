@@ -88,7 +88,7 @@
                                     newSurface.menu(item.widget._2dChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
-                                            .chart_type(d)
+                                            .chartType(d)
                                             .render()
                                         ;
                                     };
@@ -97,7 +97,7 @@
                                     newSurface.menu(item.widget._multiChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
-                                            .chart_type(d)
+                                            .chartType(d)
                                             .render()
                                         ;
                                     };
@@ -194,10 +194,10 @@
     Graph.prototype = Object.create(GraphWidget.prototype);
     Graph.prototype._class += " marshaller_Graph";
 
-    Graph.prototype.publish("ddlUrl", "", "string", "DDL URL");
-    Graph.prototype.publish("databomb", "", "string", "Data Bomb");
-    Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources");
-    Graph.prototype.publish("proxyMappings", [], "array", "Proxy Mappings");
+    Graph.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:['Private']});
+    Graph.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:['Private']});
+    Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources",null,{tags:['Private']});
+    Graph.prototype.publish("proxyMappings", [], "array", "Proxy Mappings",null,{tags:['Private']});
 
     Graph.prototype.testData = function () {
         //this.ddlUrl("http://10.173.147.1:8002/WsEcl/submit/query/roxie/drealeed_testaddressclean.ins002_service/json");

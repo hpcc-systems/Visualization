@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IWordCloud", "css!./WordCloud"], factory);
+        define(["d3", "../common/SVGWidget", "./IWordCloud", "require", "css!./WordCloud"], factory);
     } else {
-        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud);
+        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud, root.require);
     }
-}(this, function (d3, SVGWidget, IWordCloud) {
+}(this, function (d3, SVGWidget, IWordCloud, require) {
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
@@ -14,13 +14,13 @@
     WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
 
-    WordCloud.prototype.publish("padding", 1, "number", "Padding");
-    WordCloud.prototype.publish("font", "Verdana", "string", "Font Name");
-    WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From");
-    WordCloud.prototype.publish("fontSizeTo", 24, "number", "Font Size To");
-    WordCloud.prototype.publish("angleFrom", -60, "number", "Angle From");
-    WordCloud.prototype.publish("angleTo", 60, "number", "Angle To");
-    WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count");
+    WordCloud.prototype.publish("padding", 1, "number", "Padding",null,{tags:['Intermediate']});
+    WordCloud.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:['Basic']});
+    WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From",null,{tags:['Basic']});
+    WordCloud.prototype.publish("fontSizeTo", 24, "number", "Font Size To",null,{tags:['Basic']});
+    WordCloud.prototype.publish("angleFrom", -60, "number", "Angle From",null,{tags:['Basic']});
+    WordCloud.prototype.publish("angleTo", 60, "number", "Angle To",null,{tags:['Basic']});
+    WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count",null,{tags:['Basic']});
 
     WordCloud.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -38,7 +38,7 @@
 
     WordCloud.prototype.enter = function (domNode, element) {
         this.cloud = d3.layout.cloud()
-            .font(this.font())
+            .font(this.fontFamily())
             .padding(this.padding())
         ;
         this.svg = element.append("g");
@@ -85,7 +85,7 @@
                 .style("font-size", function(d) {
                     return scale(d.__viz_1) + "px";
                 })
-                .style("font-family", function (d) { return d.font; })
+                .style("font-family", function (d) { return d.fontFamily; })
                 .style("fill", function (d) { return fill(d.__viz_0 ? d.__viz_0.toLowerCase() : ""); })
                 .text(function (d) { return d.__viz_0; })
                 .on("click", function (d) {

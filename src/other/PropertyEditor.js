@@ -17,13 +17,13 @@
     PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("theme_mode", false, "boolean", "Edit default values");
-    PropertyEditor.prototype.publish("show_columns", true, "boolean", "Show Columns");
-    PropertyEditor.prototype.publish("show_data", true, "boolean", "Show Data");
-    PropertyEditor.prototype.publish("share_count_min", 2, "number", "Share Count Min");
-    PropertyEditor.prototype.publish("param_grouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"]);
-    PropertyEditor.prototype.publish("section_title", "", "string", "Section Title");
-    PropertyEditor.prototype.publish("collapsible_sections", true, "boolean", "Collapsible Sections");
+    PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:['Basic','TODO2']});
+    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:['Intermediate','TODO2']});
+    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:['Intermediate','TODO2']});
+    PropertyEditor.prototype.publish("shareCountMin", 2, "number", "Share Count Min",null,{tags:['Basic','TODO2']});
+    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:['Basic','TODO2']});
+    PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:['Private','TODO2']});
+    PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:['Basic','TODO2']});
 
     PropertyEditor.prototype.show_settings = function (_) {
         if (!arguments.length) {
@@ -72,7 +72,8 @@
         if (!widget) {
             return "";
         }
-        var propsStr = Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
+        var context = this;
+        var propsStr = Persist.discover(this.theme_mode() ? Object.getPrototypeOf(widget) : widget).map(function (prop) {
             if (!context.widgetPropertyModified(widget, prop.id)) {
                 return "";
             }
@@ -131,14 +132,16 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
-    var findSharedProperties = function (data, theme_mode) {
+    
+    PropertyEditor.prototype.findSharedProperties = function (data, themeMode) {
         var propsByID = {};
+
         if (typeof (data) !== 'undefined' && data.length > 0) {
             var allProps = [];
             data.forEach(function (widget) {
-                var gpResponse = _getParams(theme_mode ? Object.getPrototypeOf(widget) : widget, 0);
+                var gpResponse = this._getParams(themeMode ? Object.getPrototypeOf(widget) : widget, 0);
                 allProps = allProps.concat(gpResponse);
-            });
+            }, this);
             allProps.forEach(function (prop) {
                 if (['widget', 'widgetArray'].indexOf(prop.type) === -1) {
                     var tempIdx = prop.id + '_' + prop.description;
@@ -154,32 +157,33 @@
             });
         }
         return propsByID;
-        function _getParams(widgetObj, depth) {
-            var retArr = [];
-            var paramArr = Persist.discover(widgetObj);
-            paramArr.forEach(function (param, i1) {
-                retArr.push({
-                    id: param.id,
-                    type: param.type,
-                    description: param.description,
-                    set: param.set,
-                    widget: widgetObj
-                });
-                if (param.type === "widgetArray") {
-                    var childWidgetArray = context.widgetProperty(widgetObj, param.id);
-                    childWidgetArray.forEach(function (childWidget) {
-                        var cwArr = _getParams(childWidget, depth + 1);
-                        retArr = retArr.concat(cwArr);
-                    });
-                }
-                else if (param.type === "widget") {
-                    var childWidget = context.widgetProperty(widgetObj, param.id);
-                    var temp = _getParams(childWidget, depth + 1);
-                    retArr = retArr.concat(temp);
-                }
+    };
+
+    PropertyEditor.prototype._getParams = function(widgetObj, depth) {
+        var retArr = [];
+        var paramArr = Persist.discover(widgetObj);
+        paramArr.forEach(function (param, i1) {
+            retArr.push({
+                id: param.id,
+                type: param.type,
+                description: param.description,
+                set: param.set,
+                widget: widgetObj
             });
-            return retArr;
-        }
+            if (param.type === "widgetArray") {
+                var childWidgetArray = this.widgetProperty(widgetObj, param.id);
+                childWidgetArray.forEach(function (childWidget) {
+                    var cwArr = this._getParams(childWidget, depth + 1);
+                    retArr = retArr.concat(cwArr);
+                }, this);
+            }
+            else if (param.type === "widget") {
+                var childWidget = this.widgetProperty(widgetObj, param.id);
+                var temp = this._getParams(childWidget, depth + 1);
+                retArr = retArr.concat(temp);
+            }
+        }, this);
+        return retArr;
     };
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
@@ -189,30 +193,30 @@
             needsRedraw = true;
         }
         if (typeof (context._showing_columns) === 'undefined') {
-            context._showing_columns = context.show_columns();
-        } else if (context._showing_columns !== context.show_columns()) {
+            context._showing_columns = context.showColumns();
+        } else if (context._showing_columns !== context.showColumns()) {
             needsRedraw = true;
         }
         if (typeof (context._showing_data) === 'undefined') {
-            context._showing_data = context.show_data();
-        } else if (context._showing_data !== context.show_data()) {
+            context._showing_data = context.showData();
+        } else if (context._showing_data !== context.showData()) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_theme_mode) === 'undefined') {
-            context._showing_theme_mode = context.theme_mode();
-        } else if (context._showing_theme_mode !== context.theme_mode()) {
+        if (typeof (context._showing_themeMode) === 'undefined') {
+            context._showing_themeMode = context.themeMode();
+        } else if (context._showing_themeMode !== context.themeMode()) {
             needsRedraw = true;
         }
         return needsRedraw;
     };
     PropertyEditor.prototype.widgetPropertyModified = function (widget, propID) {
-        return !this.theme_mode() || this === widget ? widget[propID + "_modified"]() : Object.getPrototypeOf(widget)[propID + "_modified"]();
+        return !this.themeMode() || this === widget ? widget[propID + "_modified"]() : Object.getPrototypeOf(widget)[propID + "_modified"]();
     };
     PropertyEditor.prototype.widgetProperty = function (widget, propID, _) {
         if (_ === undefined) {
-            return !this.theme_mode() || this === widget ? widget[propID]() : Object.getPrototypeOf(widget)[propID]();
+            return !this.themeMode() || this === widget ? widget[propID]() : Object.getPrototypeOf(widget)[propID]();
         }
-        return !this.theme_mode() || this === widget ? widget[propID](_) : Object.getPrototypeOf(widget)[propID](_);
+        return !this.themeMode() || this === widget ? widget[propID](_) : Object.getPrototypeOf(widget)[propID](_);
     };
 
     PropertyEditor.prototype.update = function (domNode, element) {
@@ -221,7 +225,7 @@
         if (tableNeedsRedraw(this)) {
             element.selectAll("#" + this._id + " > table").remove();
         }
-        this._current_grouping = this.param_grouping();
+        this._current_grouping = this.paramGrouping();
         if (this._show_settings) {
             //Display table containing PropertyEditor settings
             var editorTable = element.selectAll("#" + this._id + " > div").data([this], function (d) {
@@ -229,11 +233,11 @@
             });
             editorTable.enter().append("div").each(function (widget) {
                 new PropertyEditor()
-                    .show_columns(false)
-                    .show_data(false)
+                    .showColumns(false)
+                    .showData(false)
                     .show_settings(false)
-                    .param_grouping('By Widget')
-                    .section_title('Property Editor Settings')
+                    .paramGrouping('By Widget')
+                    .sectionTitle('Property Editor Settings')
                     .target(d3.select(this).node())
                     .data([widget])
                     .render()
@@ -241,11 +245,11 @@
             });
         }
         //Update tables based on "group by" setting
-        if (this.param_grouping() === "By Param") {
+        if (this.paramGrouping() === "By Param") {
             var sharedPropsMainSections = [];
             var sPropSections = [];
             if (this._data.length > 0) {
-                sharedPropsMainSections.push(findSharedProperties(this._data, this.theme_mode()));
+                sharedPropsMainSections.push(this.findSharedProperties(this._data, this.themeMode()));
                 for (var k1 in sharedPropsMainSections) {
                     var sectionArr = [];
                     for (var k2 in sharedPropsMainSections[k1]) {
@@ -253,7 +257,7 @@
                         sharedPropsMainSections[k1][k2].arr.forEach(function (n) {
                             widgetArr.push(n.widget);
                         });
-                        if (this.share_count_min() <= widgetArr.length || widgetArr[0]._class.indexOf('PropertyEditor') !== -1) {
+                        if (this.shareCountMin() <= widgetArr.length || widgetArr[0]._class.indexOf('PropertyEditor') !== -1) {
                             sectionArr.push({
                                 rowType: 'shared',
                                 widgetArr: widgetArr,
@@ -288,7 +292,7 @@
                 .each(function (widget) {
                     var element = d3.select(this);
                     var thead = element.append("thead");
-                    if (context.collapsible_sections()) {
+                    if (context.collapsibleSections()) {
                         thead.attr("class", "mm-label max").on("click", function () {
                             var elm = d3.select(this);
                             if (elm.classed("min")) {
@@ -303,8 +307,8 @@
 
                     thead.append("tr").append("th").attr("colspan", context._columns.length).attr("class", "th-widget-class").text(function () {
                         var text = '';
-                        if (context.section_title()) {
-                            text = context.section_title();
+                        if (context.sectionTitle()) {
+                            text = context.sectionTitle();
                         } else {
                             var splitClass = widget._class.split('_');
                             if (splitClass.length > 1) {
@@ -339,7 +343,7 @@
                 var tr;
                 var td;
                 var input = null;
-                if (context.show_columns()) {
+                if (context.showColumns()) {
                     tr = tbody.append("tr");
                     td = tr.append("td").text("Columns");
                     td = tr.append("td");
@@ -358,7 +362,8 @@
                     input.node().value = JSON.stringify(widget._columns);
                 }
                 //  Data  ---
-                if (context.show_data()) {
+
+                if (context.showData()) {
                     tr = tbody.append("tr");
                     td = tr.append("td")
                         .text("Data")
@@ -383,7 +388,7 @@
                     }
                 }
                 //Updating TR 'By Param'
-                if (context.param_grouping() === "By Param") {
+                if (context.paramGrouping() === "By Param") {
                     rows = tbody.selectAll(".tr_" + widget._id).data(sPropSections[widgetIdx]);
                     rows.enter().append("tr").each(function (d) {
                         var tr = d3.select(this);
@@ -638,9 +643,9 @@
                                 break;
                         }
                     }).remove();
-                } else if (context.param_grouping() === "By Widget") {
+                } else if (context.paramGrouping() === "By Widget") {
                     //Updating TR 'By Widget'
-                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.theme_mode() ? Object.getPrototypeOf(widget) : widget), function (d) {
+                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.themeMode() ? Object.getPrototypeOf(widget) : widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
                     rows.enter().append("tr").each(function (d) {
@@ -763,9 +768,9 @@
                                             .attr("class", "input_" + widget._id)
                                         ;
                                         widget["_propertyEditor_" + d.id] = new PropertyEditor()
-                                            .param_grouping('By Widget')
-                                            .show_columns(context.show_columns())
-                                            .show_data(context.show_data())
+                                            .paramGrouping('By Widget')
+                                            .showColumns(context.showColumns())
+                                            .showData(context.showData())
                                             .show_settings(false)
                                             .target(input.node())
                                         ;

@@ -18,21 +18,21 @@
     TextBox.prototype._class += " common_TextBox";
 
     TextBox.prototype.publishProxy("text", "_text");
-    TextBox.prototype.publishProxy("shape_color_stroke", "_shape", "color_stroke");
-    TextBox.prototype.publishProxy("shape_color_fill", "_shape", "color_fill");
-    TextBox.prototype.publishProxy("text_color_fill", "_text", "color_fill");
-    TextBox.prototype.publish("padding_left", 4, "number", "Padding:  Left");
-    TextBox.prototype.publish("padding_right", 4, "number", "Padding:  Right");
-    TextBox.prototype.publish("padding_top", 4, "number", "Padding:  Top");
-    TextBox.prototype.publish("padding_bottom", 4, "number", "Padding:  Bottom");
+    TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
+    TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
+    TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
+    TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left",null,{tags:['Private']});
+    TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right",null,{tags:['Private']});
+    TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top",null,{tags:['Private']});
+    TextBox.prototype.publish("paddingBottom", 4, "number", "Padding:  Bottom",null,{tags:['Private']});
     TextBox.prototype.publishProxy("anchor", "_text");
     TextBox.prototype.publish("fixedSize", null);
 
     TextBox.prototype.padding = function (_) {
-        this.padding_left(_);
-        this.padding_right(_);
-        this.padding_top(_);
-        this.padding_bottom(_);
+        this.paddingLeft(_);
+        this.paddingRight(_);
+        this.paddingTop(_);
+        this.paddingBottom(_);
         return this;
     };
 
@@ -61,8 +61,8 @@
         ;
         var textBBox = this._text.getBBox(true);
         var size = {
-            width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.padding_left() + this.padding_right(),
-            height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.padding_top() + this.padding_bottom()
+            width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
+            height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
         };
         this._shape
             .width(size.width)
@@ -73,13 +73,13 @@
             switch (this.anchor()) {
                 case "start":
                     this._text
-                        .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.padding_left() + this.padding_right()) / 2)
+                        .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.paddingLeft() + this.paddingRight()) / 2)
                         .render()
                     ;
                     break;
                 case "end":
                     this._text
-                        .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.padding_left() + this.padding_right()) / 2)
+                        .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.paddingLeft() + this.paddingRight()) / 2)
                         .render()
                     ;
                     break;

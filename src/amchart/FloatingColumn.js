@@ -12,10 +12,6 @@
         this._tag = "div";
 
         this._gType = "column";
-        
-        this._openField = undefined;
-        this._closeField = undefined;
-        this._valueField = [];
     }
 
     FloatingColumn.prototype = Object.create(CommonSerial.prototype);
@@ -31,10 +27,7 @@
     /**
      * Publish Params Unique To This Widget
      */
-    //FloatingColumn.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:['Intermediate']});
-
-    FloatingColumn.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:['Basic']});
-    FloatingColumn.prototype.publish("circleRadius", 1, "number", "Circle Radius",null,{tags:['Basic']});
+    FloatingColumn.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:['Intermediate']});
 
     FloatingColumn.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
 
@@ -61,8 +54,9 @@
         this._categoryField = colArr[0];
         this._openField = [];
         this._closeField = [];
+        this._valueField = [];
         colArr.slice(1,colArr.length).forEach(function(col,colIdx){
-            if(colIdx%2){
+            if(colIdx % 2) {
                 context._closeField.push(col);
                 context._valueField.push(col);
             } else {
@@ -78,10 +72,31 @@
 
     FloatingColumn.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
-
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
         this._chart.categoryAxis.startOnAxis = false; //override due to render issue
+        var context = this;
+
+        // Color Palette
+        switch(this.paletteGrouping()) {
+            case "By Category":
+                this._chart.dataProvider.forEach(function(dataPoint,i){
+                    context._chart.dataProvider[i].color = context._palette(i);
+                    context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(i);
+                });
+                this._chart.colors = [];
+            break;
+            case "By Column":
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
+            break;
+            default:
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
+            break;
+        }
 
         this.buildGraphs(this._gType);
     };
@@ -111,12 +126,11 @@
                 gObj.columnWidth = this.columnWidth();
             }
 
-            if (this.cylinderBars()) {
-                 gObj.topRadius = this.circleRadius();
-            } else {
-                 gObj.topRadius = undefined;
+            if(this.paletteGrouping() === "By Category"){
+                gObj.colorField = "color";
+                gObj.lineColorField = "linecolor";
             }
-            
+
             gObj.fillAlphas = this.fillOpacity();
 
             return gObj;

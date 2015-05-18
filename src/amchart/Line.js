@@ -10,7 +10,7 @@
         CommonSerial.call(this);
         this._class = "amchart_Line";
         this._tag = "div";
-        
+
         this._gType = "line";
     }
 
@@ -26,8 +26,6 @@
     /**
      * Publish Params Unique To This Widget
      */
-    //Line.prototype.publish("gType", "smoothedLine", "set", "Bullet Type", ["line", "column", "step", "smoothedLine"],{tags:['Basic']}); should we expose and is it shared? right now its private and we need to call it via gType() if we do use it
-
     Line.prototype.publish("stepLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:['Basic']});
     Line.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Basic']});
 
@@ -37,14 +35,11 @@
 
     Line.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
 
         // Color Palette
-        this._colors = [];
-        this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-            context._colors.push(context._palette(i));
-        });
-        this._chart.colors = this._colors;
+        this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+            return this._palette(row);
+        }, this);
 
         this.buildGraphs(this._gType);
 
@@ -83,7 +78,7 @@
             return gObj;
         }
     };
-    
+
     Line.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
 

@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["../other/Comms", "../common/Widget", "require"], factory);
@@ -25,7 +25,6 @@
     function SourceMappings(visualization, mappings) {
         this.visualization = visualization;
         this.mappings = mappings;
-
         this.hasMappings = false;
         this.reverseMappings = {};
         this.columns = [];
@@ -53,17 +52,17 @@
 
     SourceMappings.prototype.doMap = function (item) {
         var retVal = [];
-        try {
-            for (var key in this.mappings) {
+        for (var key in this.mappings) {
+            try {
                 var rhsKey = this.mappings[key];
                 var val = item[rhsKey];
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
                 retVal[this.columnsIdx[key]] = val;
+            } catch (e) {
+                console.log("Invalid Mapping:  " + this.visualization.id + " [" + rhsKey + "->" + item + "]");
             }
-        } catch (e) {
-            console.log("Invalid Mappings");
         }
         return retVal;
     };
@@ -130,6 +129,11 @@
 
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
+        this.annotations = [];
+        if (this.mappings.flags && this.mappings.flags instanceof Array) {
+            this.annotations = this.mappings.flags;
+            delete this.mappings.flags;
+        }
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
@@ -141,7 +145,7 @@
         var context = this;
         var vertexMap = {};
         var vertices = [];
-        function getVertex(item) {
+        function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
             if (!retVal) {
@@ -153,12 +157,26 @@
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
             }
+            if (origItem) {
+                var annotations = [];
+                context.annotations.forEach(function (annotation) {
+                    if (origItem[annotation]) {
+                        annotations.push({
+                            "faChar": origItem[annotation],
+                            "tooltip": "",
+                            "shape_color_fill": "navy",
+                            "image_color_fill": "white"
+                        });
+                    }
+                });
+                retVal.annotation_icons(annotations);
+            }
             return retVal;
         }
         var edges = [];
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
-            var vertex = getVertex(mappedItem);
+            var vertex = getVertex(mappedItem, item);
             if (item[context.link.childfile] && item[context.link.childfile].Row) {
                 var childItems = item[context.link.childfile].Row;
                 childItems.forEach(function (childItem, i) {

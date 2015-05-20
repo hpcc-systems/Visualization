@@ -12,10 +12,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._columns = undefined;
-        this._valueField = [];
-        this._colors = [];
     }
 
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
@@ -48,7 +44,6 @@
     CommonFunnel.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
 
     CommonFunnel.prototype.updateChartOptions = function() {
-        var context = this;
 
         this._chart.theme = "none";
         this._chart.type = "funnel";
@@ -86,11 +81,9 @@
         this._chart.dataProvider = this.formatData(this._data);
 
         // Color Palette
-        this._colors = [];
-        this._chart.dataProvider.forEach(function(dataPoint,i){
-            context._colors.push(context._palette(i));
-        });
-        this._chart.colors = this._colors;
+        this._chart.colors = this._data.map(function (row) {
+            return this._palette(row[0]);
+        }, this);
 
         // Scroll Bar
         if (this.showScrollbar()) {

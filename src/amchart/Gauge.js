@@ -12,8 +12,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._colors = [];
     }
 
     Gauge.prototype = Object.create(HTMLWidget.prototype);
@@ -107,7 +105,7 @@
                     innerRadius: this.bandsInnerRadius()[0]
                 };
                 this._chart.axes[0].bands.push(b_band);
-            } 
+            }
         }
         if (this.colorType() === 'c') {
             var c_band = {
@@ -125,7 +123,7 @@
     };
 
     Gauge.prototype.update = function(domNode, element) {
-        this._palette = this._palette.switch(this.paletteID()); 
+        this._palette = this._palette.switch(this.paletteID());
 
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px';

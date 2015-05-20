@@ -12,12 +12,6 @@
         this._tag = "div";
 
         this._gType = "candlestick";
-
-        this._openField = undefined;
-        this._closeField = undefined;
-        this._categoryField = undefined;
-        this._lowField = undefined;
-        this._highField = undefined;
     }
 
     Candle.prototype = Object.create(CommonSerial.prototype);
@@ -35,9 +29,6 @@
     Candle.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:['Basic']});
 
     Candle.prototype.publish("tooltipTemplate",'<div style="text-align:left;"><b>[[category]]</b><br/> Open:<b>[[open]]</b> Close:<b>[[close]]</b><br/>Low:<b>[[low]]</b> High:<b>[[high]]</b></div>', "string", "Tooltip Text",null,{tags:['Intermediate']});
-
-    Candle.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:['Basic']});
-    Candle.prototype.publish("circleRadius", 1, "number", "Circle Radius of Cylinder Bars",null,{tags:['Basic']});
 
     Candle.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
 
@@ -63,7 +54,7 @@
         this._highField = [];
         this._closeField = [];
         colArr.slice(1,colArr.length).forEach(function(col,colIdx){
-            switch(colIdx%4){
+            switch(colIdx % 4) {
                 case 0:
                     context._lowField.push(col);
                     break;
@@ -102,18 +93,14 @@
                 this._chart.colors = [];
             break;
             case "By Column":
-                this._colors = [];
-                this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-                    context._colors.push(context._palette(i));
-                });
-                this._chart.colors = this._colors;
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
             break;
             default:
-                this._colors = [];
-                this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-                    context._colors.push(context._palette(i));
-                });
-                this._chart.colors = this._colors;
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
             break;
         }
 
@@ -145,12 +132,6 @@
         function buildGraphObj(gObj) {
             if (this.columnWidth()) {
                 gObj.columnWidth = this.columnWidth();
-            }
-
-            if (this.cylinderBars()) {
-                 gObj.topRadius = this.circleRadius();
-            } else {
-                 gObj.topRadius = undefined;
             }
 
             if(this.paletteGrouping() === "By Category"){

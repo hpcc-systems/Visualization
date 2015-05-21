@@ -35,7 +35,7 @@
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
                 __version: 3,
-                __class: widget._class,
+                __class: widget._class.split(" ").pop(),
                 __id: widget._id,
                 __properties: {}
             };

@@ -28,8 +28,21 @@
 
 .other_Slider .handle {
     fill: #fff;
-    stroke: #000;
+    stroke: #bbb;
     stroke-opacity: .5;
     stroke-width: 1.00px;
     pointer-events: none;
+}
+
+.other_Slider .common_Icon .common_Widget .common_Shape {
+    fill: #ccc;
+    stroke: #bbb;
+}
+
+.other_Slider .common_Icon:hover {
+    cursor:pointer;
+}
+
+.other_Slider .common_Icon:hover .common_Widget .common_Shape {
+    stroke: #aaa;
 }

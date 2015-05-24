@@ -85,7 +85,7 @@
     Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
     Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
 
-    Slider.prototype.publish("showPlay", true, "boolean", "Show Play Button");
+    Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
     Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
     Slider.prototype.publishProxy("playDiameter", "_playIcon", "diameter", 32);
     Slider.prototype.publish("playGutter", 12, "number", "Play Gutter");

@@ -14,24 +14,24 @@
     Surface.prototype = Object.create(HTMLWidget.prototype);
     Surface.prototype._class = "layout_Surface";
 
-    Surface.prototype.publish("padding", null, "number", "Surface Padding (px)",null,{tags:['Intermediate']});
+    Surface.prototype.publish("padding", null, "number", "Surface Padding (px)",null,{tags:['Private']});
 
-    Surface.prototype.publish("titlePadding", null, "number", "Title Padding (px)",null,{tags:['Intermediate']});
-    Surface.prototype.publish("titleFontSize", null, "string", "Title Font Size",null,{tags:['Basic']});
-    Surface.prototype.publish("titleFontColor", null, "html-color", "Title Font Color",null,{tags:['Basic']});
-    Surface.prototype.publish("titleFontFamily", null, "string", "Title Font Family",null,{tags:['Basic']});
-    Surface.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:['Intermediate']});
-    Surface.prototype.publish("titleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitleFontColor", null, "html-color", "Title Font Color",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitleFontFamily", null, "string", "Title Font Family",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:['Basic']});
 
-    Surface.prototype.publish("backgroundColor", null, "html-color", "Surface Background Color",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color",null,{tags:['Basic']});
 
-    Surface.prototype.publish("borderWidth", null, "string", "Surface Border Width",null,{tags:['Basic']});
-    Surface.prototype.publish("borderColor", null, "html-color", "Surface Border Color",null,{tags:['Basic']});
-    Surface.prototype.publish("borderRadius", null, "string", "Surface Border Radius",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color",null,{tags:['Basic']});
+    Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)",null,{tags:['Basic']});
 
     Surface.prototype.publish("title", "", "string", "Title",null,{tags:['Intermediate']});
-    Surface.prototype.publish("titleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:['Intermediate']});
-    Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:['Advanced']});
+    Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:['Basic']});
+    Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:['Private']});
 
     Surface.prototype.testData = function () {
         this.title("ABC");
@@ -47,10 +47,10 @@
         HTMLWidget.prototype.update.apply(this, arguments);
 
         element
-            .style("border-width",this.borderWidth())
-            .style("border-color",this.borderColor())
-            .style("border-radius",this.borderRadius())
-            .style("background-color",this.backgroundColor());
+            .style("border-width",this.surfaceBorderWidth()+'px')
+            .style("border-color",this.surfaceBorderColor())
+            .style("border-radius",this.surfaceBorderRadius()+'px')
+            .style("background-color",this.surfaceBackgroundColor());
 
         var titles = element.selectAll(".surfaceTitle").data(this.title() ? [this.title()] : []);
         titles.enter().insert("h3", "div")
@@ -58,13 +58,13 @@
         ;
         titles
             .text(function (d) { return d; })
-            .style("text-align",this.titleAlignment())
-            .style("color",this.titleFontColor())
-            .style("font-size",this.titleFontSize())
-            .style("font-family",this.titleFontFamily())
-            .style("font-weight",this.titleFontBold() ? "bold" : "normal")
-            .style("background-color",this.titleBackgroundColor())
-            .style("padding",this.titlePadding()+"px")
+            .style("text-align",this.surfaceTitleAlignment())
+            .style("color",this.surfaceTitleFontColor())
+            .style("font-size",this.surfaceTitleFontSize()+"px")
+            .style("font-family",this.surfaceTitleFontFamily())
+            .style("font-weight",this.surfaceTitleFontBold() ? "bold" : "normal")
+            .style("background-color",this.surfaceTitleBackgroundColor())
+            .style("padding",this.surfaceTitlePadding()+"px")
         ;
         titles.exit().remove();
 

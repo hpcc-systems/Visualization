@@ -14,7 +14,7 @@
     Line.prototype._class += " chart_Line";
     Line.prototype.implements(INDChart.prototype);
 
-    Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch());
+    Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch(),{tags:['Basic','Shared']});
 
     Line.prototype.enter = function (domNode, element) {
         XYAxis.prototype.enter.apply(this, arguments);

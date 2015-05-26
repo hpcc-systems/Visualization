@@ -18,7 +18,7 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Pie.prototype.publish("is3D", false, "boolean", "Enable 3D",null,{tags:['Basic']});
+    Pie.prototype.publish("is3D", false, "boolean", "Enable 3D",null,{tags:['Basic','Shared']});
 
     /**
      * Publish Params Unique To This Widget

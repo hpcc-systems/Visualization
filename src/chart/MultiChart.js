@@ -65,7 +65,7 @@
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 
-    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }));
+    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }),{tags:['Basic']});
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:['Basic']});
 
     MultiChart.prototype.columns = function (_) {

@@ -132,8 +132,8 @@
     };
 
     Bar.prototype.update = function(domNode, element) {
-        this.updateChartOptions();
         CommonSerial.prototype.update.apply(this, arguments);
+        this.updateChartOptions();
 
         this._chart.validateNow();
         this._chart.validateData();

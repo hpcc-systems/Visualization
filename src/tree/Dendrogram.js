@@ -17,7 +17,7 @@
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
     
-    Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch());
+    Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(),{tags:['Basic','Shared']});
     Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle",null,{tags:['Private']});
     Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"],{tags:['Private']}); 
      

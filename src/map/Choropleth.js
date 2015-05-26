@@ -18,7 +18,7 @@
     Choropleth.prototype._class += " map_Choropleth";
     Choropleth.prototype.implements(IChoropleth.prototype);
 
-    Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch());
+    Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(),{tags:['Basic','Shared']});
 
     Choropleth.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);

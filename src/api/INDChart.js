@@ -12,13 +12,28 @@
 
     //  Data ---
     INDChart.prototype.testData = function () {
-        this.columns(["Subject", "Year 1", "Year 2", "Year 3"]);
-        this.data([
-            ["Geography", 75, 68, 65],
-            ["English", 45, 55, 52],
-            ["Math", 98, 92, 90],
-            ["Science", 66, 60, 66]
-        ]);
+        switch (this._chartType) {
+            case 'ScatterChart':
+                this.columns(["ID", "Year 1", "Year 2", "Year 3"]);
+                this.data([
+                    [10, 75, 68, 65],
+                    [20, 45, 55, 52],
+                    [30, 98, 92, 90],
+                    [40, 66, 60, 86]
+                ]);
+                break;
+                
+            default:
+                this.columns(["Subject", "Year 1", "Year 2", "Year 3"]);
+                this.data([
+                    ["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 66]
+                ]);
+                break;
+        }
+       
         return this;
     };
 

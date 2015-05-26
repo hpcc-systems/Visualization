@@ -14,7 +14,7 @@
     Column.prototype._class += " chart_Column";
     Column.prototype.implements(I2DChart.prototype);
 
-    Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch());
+    Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;

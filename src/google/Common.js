@@ -24,11 +24,11 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic']});
-    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic']});
-    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
+    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic','Shared']});
+    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic','Shared']});
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic','Shared']});
 
-    Common.prototype.publish("showLegend", false, "boolean", "Show Legend",null,{tags:['Basic']});
+    Common.prototype.publish("showLegend", false, "boolean", "Show Legend",null,{tags:['Basic','Shared']});
 
     // below ones are TODO ... BOLD/ITALTIC needs to be 1 param maybe?
     Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:['Private']});

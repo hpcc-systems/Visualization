@@ -19,7 +19,7 @@
      * Publish Params Common To Other Libraries
      */
     Line.prototype.publish("lineWidth", 2, "number", "Line Width",null,{tags:['Basic','Shared']});
-    Line.prototype.publish("lineDashStyle", [], "array", "Line Dash Style",null,{tags:['Advanced']});
+    Line.prototype.publish("lineDashStyle", [], "array", "Line Dash Style",null,{tags:['Advanced','Shared']});
 
     Line.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size",null,{tags:['Basic','Shared']});
     Line.prototype.publish("axisFontFamily", null, "string", "X/Y Axis Label Font Name",null,{tags:['Basic','Shared']});
@@ -44,7 +44,7 @@
 
     Line.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:['Intermediate','Shared']});
 
-    Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:['Basic']});
+    Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:['Basic','Shared']});
 
     /**
      * Publish Params Unique To This Widget

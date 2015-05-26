@@ -43,7 +43,7 @@
     Pie.prototype.publish("holePercent", 0, "number", "Hole Size (Percent)",null,{tags:['Basic']});
 
     Pie.prototype.publish("radius", null, "number", "Radius",null,{tags:['Basic']});
-    Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice",null,{tags:['Basic']});
+    Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice",null,{tags:['Private']});
 
     Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:['Intermediate']});
 
@@ -94,7 +94,7 @@
                 this._chart.chartData[i] = {};
             }
             this._chart.chartData[i].alpha = d;
-        });
+        },this);
 
         return this._chart;
     };

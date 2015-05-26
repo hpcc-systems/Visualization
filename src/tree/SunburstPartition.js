@@ -14,7 +14,7 @@
     SunburstPartition.prototype._class += " tree_SunburstPartition";
     SunburstPartition.prototype.implements(ITree.prototype);
 
-    SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch());
+    SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(),{tags:['Basic','Shared']});
 
     SunburstPartition.prototype.root = function (_) {
         if (!arguments.length) return this._root || this._data;

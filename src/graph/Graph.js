@@ -26,12 +26,13 @@
         this._layout = "";
         this._hierarchyOptions = { };
         this._snapToGrid = 0;
-        this._allowDragging = true;
         this._selection = new Bag.Selection();
     }
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype._class += " graph_Graph";
     Graph.prototype.implements(IGraph.prototype);
+
+    Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", { tags: ['Advanced'] });
 
     //  Properties  ---
     Graph.prototype.getOffsetPos = function () {
@@ -114,12 +115,6 @@
     Graph.prototype.snapToGrid = function (_) {
         if (!arguments.length) return this._snapToGrid;
         this._snapToGrid = _;
-        return this;
-    };
-
-    Graph.prototype.allowDragging = function (_) {
-        if (!arguments.length) return this._allowDragging;
-        this._allowDragging = _;
         return this;
     };
 
@@ -258,7 +253,7 @@
 
         //  Drag  ---
         function dragstart(d) {
-            if (context._allowDragging) {
+            if (context.allowDragging()) {
                 d3.event.sourceEvent.stopPropagation();
                 context._dragging = true;
                 if (context.forceLayout) {
@@ -274,7 +269,7 @@
             }
         }
         function drag(d) {
-            if (context._allowDragging) {
+            if (context.allowDragging()) {
                 d3.event.sourceEvent.stopPropagation();
                 d.move({ x: d3.event.x, y: d3.event.y });
                 if (context.forceLayout) {
@@ -287,7 +282,7 @@
             }
         }
         function dragend(d) {
-            if (context._allowDragging) {
+            if (context.allowDragging()) {
                 d3.event.sourceEvent.stopPropagation();
                 context._dragging = false;
                 if (context._snapToGrid) {
@@ -532,8 +527,8 @@
             ;
             if (d.dispatch) {
                 d.dispatch.on("sizestart", function (d, loc) {
-                    d.allowResize(context._allowDragging);
-                    if (context._allowDragging) {
+                    d.allowResize(context.allowDragging());
+                    if (context.allowDragging()) {
                         context._dragging = true;
                     }
                 });

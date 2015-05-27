@@ -476,7 +476,7 @@
                     widget
                         .id(visualization.id)
                         .layout("ForceDirected2")
-                        .shrinkToFitOnLayout(true)
+                        .applyScaleOnLayout(true)
                     ;
                 });
                 break;

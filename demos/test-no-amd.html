@@ -352,7 +352,7 @@
                 ];
                 new graph_Graph()
                     .target("graph")
-                    .hierarchyOptions({ rankSep: 18 })
+                    .hierarchyRankSeparation(18)
                     .data({ vertices: vertices, edges: edges })
                     .layout("Hierarchy")
                     .render()

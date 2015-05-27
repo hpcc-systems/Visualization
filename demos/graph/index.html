@@ -263,12 +263,10 @@
             graph = new Graph()
                 .target("graph")
                 .layout("ForceDirected")
-                .hierarchyOptions({
-                    rankdir: "TB",
-                    nodesep: 20,
-                    ranksep: 10
-                })
-                .shrinkToFitOnLayout(false)
+                .hierarchyRankDirection("TB")
+                .hierarchyNodeSeparation(20)
+                .hierarchyRankSeparation(10)
+                .applyScaleOnLayout(false)
                 .highlightOnMouseOverVertex(true)
             ;
             graph.vertex_dblclick = function (d) {

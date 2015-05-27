@@ -442,7 +442,7 @@
             var dashboards = createGraphData(marshaller, context.databomb(), context.visualizeRoxie());
             context.dashboards(dashboards);
             context
-                .shrinkToFitOnLayout(true)
+                .applyScaleOnLayout(true)
                 .layout("Hierarchy")
                 .renderDashboards(true)
             ;

@@ -13,3 +13,7 @@
     fill: none;
     stroke: darkgray;
 }
+
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
+    stroke:red !important;
+}

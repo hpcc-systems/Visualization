@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/HTMLWidget", "goog!visualization,1,packages:[timeline]"], function (Widget, Palette) {
+                
+                var columns = ["Row Label", "Bar Label", "Start", "End"]; 
+                var testData = [
+                    ["Geography", "", "1789-03-29", "1797-02-03"],
+                    ["English", "", "1797-02-03", "1801-02-03"],
+                    ["Math", "", "1801-02-03", "1809-02-03"]
+                ]; 
+                var obj = new Widget()
+                    .size({width:600,height:300})
+                    .target("widget-wrapper")
+                    .testData()
+                    .paletteID("hpcc20")
+                    .render()
+                ;
+                obj.click(function(d) { 
+                    console.log('Override Click: ' + JSON.stringify(d)); 
+                });
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

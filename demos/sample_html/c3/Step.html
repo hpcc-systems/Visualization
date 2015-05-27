@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/c3/Step", "src/common/Palette"], function (C3Step, Palette) {
+                var testData = [
+                    ["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 66]
+                ];
+                var columns = ["Subject", "Year 1", "Year 2", "Year 3"];
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+                var stepWidget = new C3Step()
+                    .target("widget-wrapper")
+                    .size({width:300,height:200})
+                    .columns(columns)   
+                    .data(testData)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                stepWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

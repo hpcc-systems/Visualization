@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/amchart/charts/Pie"], function (Widget) {
+                new Widget()
+                    .size({width:500,height:500})
+                    .target("widget-wrapper")
+                    .columns(["Subject", "Year 1"])
+                    .data([
+                        ["Geography", 75],
+                        ["English", 45],
+                        ["Math", 98],
+                        ["Science", 66]
+                    ])
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

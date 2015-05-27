@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+        <style>
+            body {
+                background-color: #fafafa;
+            }
+        </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/chart/MultiChart", "src/other/Persist"], function (MultiChart, Persist) {
+                var multichartWidget = new MultiChart()
+                    .size({width:250,height:250})
+                    .target("widget-wrapper")
+                    .testData()
+                    .chart_type("GOOGLE_COLUMN")
+                    .render()  
+                ;
+                //multichartWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

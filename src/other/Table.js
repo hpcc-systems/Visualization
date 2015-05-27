@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget","../other/Paginator","css!./Table"], factory);
+        define(["d3", "../common/HTMLWidget","../other/Paginator", "../other/Bag", "css!./Table"], factory);
     } else {
-        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator);
+        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.other_Bag);
     }
-}(this, function (d3, HTMLWidget, Paginator) {
+}(this, function (d3, HTMLWidget, Paginator, Bag) {
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -13,6 +13,7 @@
         this._currentSort = "";
         this._columns = [];
         this._paginator = new Paginator();
+        this._selection = new Bag.Selection();
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype._class += " other_Table";
@@ -175,7 +176,32 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d));
             })
+            .on("click.selectionBag", function (d) {
+                var domNode = this;
+                var newObj = {
+                  "_id": d,
+                  element: function() {
+                        return d3.select(domNode);
+                    }
+                };
+                context._selection.click(newObj, d3.event);
+            })
         ;
+
+        rows
+            .attr("class", function (d) {
+                var domNode = this;
+                var newObj = {
+                  "_id": d,
+                  element: function() {
+                        return d3.select(domNode);
+                    }
+                };
+                if (context._selection.isSelected(newObj)) {
+                    return "selected";
+                }
+            });
+
 
         rows.exit()
             .remove()
@@ -198,7 +224,6 @@
         cells.exit()
             .remove()
         ;
-
         this._paginator.render();
     };
 
@@ -238,6 +263,28 @@
         }
         this._currentSort = column;
         this.render();
+    };
+
+    Table.prototype.Selection = function (_) {
+        if (!arguments.length) {
+            var tg = [];
+            for (var i = 0; i < this._selection.get().length; i++) {
+                tg[i] = this._selection.get()[i]._id;
+            }
+            return tg;
+        } else {
+            var ts = [];
+            for (var j = 0; j < _.length; j++) {
+                ts[j] = {
+                    "_id": _[j],
+                    element: function() {
+                      return d3.select(null);
+                    }
+                };
+            }
+            return this._selection.set(ts);
+        }
+        return this;
     };
     return Table;
 }));

@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="../bower_components/c3/c3.css" />
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="../dist/hpcc-viz.min.css">
-    
-    <!-- 
-    Most scripts are optional, include only what you need 
+
+    <!--
+    Most scripts are optional, include only what you need
     @TODO: shoud document dependencies in README
     -->
     <script src="https://www.google.com/jsapi"></script>
@@ -45,8 +45,8 @@
 
     <script>
         var graph = null;
-        google.load("visualization", "1", { 
-            callback: doTest, 
+        google.load("visualization", "1", {
+            callback: doTest,
             packages: ["corechart"]
         });
 
@@ -66,12 +66,12 @@
 
             setTimeout(function () { displayComposition(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayCharts(); }, timeoutStep * timeoutIdx++);
+            setTimeout(function () { displayAmCharts(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayMaps(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayGraphHierarchies(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displaySurfaces(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayOther(); }, timeoutStep * timeoutIdx++);
             setTimeout(function () { displayPalettes(); }, timeoutStep * timeoutIdx++);
-            setTimeout(function () { displayAmCharts(); }, timeoutStep * timeoutIdx++);
 
             function displayComposition() {
                 //  Composition ---
@@ -127,7 +127,7 @@
                     .target("surface")
                     .render()
                 ;
-                
+
                 var vertices = [
                     new common_Shape().shape("circle").size({ width: 32, height: 32 }),
                     new common_FAChar().char("\uf080"),
@@ -357,7 +357,7 @@
                     .layout("Hierarchy")
                     .render()
                 ;
-                
+
                 new tree_SunburstPartition()
                     .target("sunburst")
                     .testData()
@@ -394,7 +394,7 @@
                     .icon_faChar("\uf080")
                     .mode("multi")
                     .render()
-                   
+
                 var choroSurface = new common_Surface()
                     .target("choroSurface")
                     .title("States/Palette")
@@ -429,13 +429,13 @@
                     .render();
                 ;
 
-                
+
                 var wordCloud = new other_WordCloud()
                     .target("wordCloud")
                     .testData()
                     .render()
                 ;
-            
+
                 new other_Table()
                     .target("table")
                     .testData()
@@ -471,13 +471,13 @@
                 var customArr = document.getElementById("customColors").value.split("\n");
                 var steps = document.getElementById("steps").value;
                 common_Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);
-            }   
+            }
         }
         doLayout = function (graph, layout) {
             graph.layout(layout);
         }
         function doPalette() {
-            
+
             var customArr = document.getElementById("customColors").value.split("\n");
             var steps = document.getElementById("steps").value;
             common_Palette.test("#ordinal", "#brewer", "#custom", customArr, steps);

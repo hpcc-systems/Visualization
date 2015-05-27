@@ -12,11 +12,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._columns = undefined;
-        this._valueField = undefined;
-        this._categoryField = undefined;
-        this._colors = [];
     }
 
     Pie.prototype = Object.create(HTMLWidget.prototype);
@@ -80,23 +75,22 @@
 
         this._chart.titleField = this._columns[0];
         this._chart.valueField = this._columns[1];
-        var sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
+        var sortingMethod;
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
+        } else {
+        	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
         this._data = this._data.sort(sortingMethod);
 
         this._chart.dataProvider = this.formatData(this._data);
 
-        this._colors = [];
-        this._data.forEach(function(dataPoint,i){
-            context._colors.push(context._palette(i));
-
-        });
-        this._chart.colors = this._colors;
+        this._chart.colors = this._data.map(function (row) {
+            return this._palette(row[0]);
+        }, this);
 
         this.pieAlpha().forEach(function(d,i) {
-            if (typeof(this._chart.chartData[i])==='undefined') { 
+            if (typeof(this._chart.chartData[i])==='undefined') {
                 this._chart.chartData[i] = {};
             }
             this._chart.chartData[i].alpha = d;

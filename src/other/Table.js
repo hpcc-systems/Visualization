@@ -1,15 +1,16 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget","../other/Paginator", "css!./Table"], factory);
+        define(["d3", "../common/HTMLWidget","../other/Paginator","css!./Table"], factory);
     } else {
-        root.other_Table = factory(root.common_HTMLWidget, root.other_Paginator);
+        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator);
     }
-}(this, function (HTMLWidget, Paginator) {
+}(this, function (d3, HTMLWidget, Paginator) {
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
-
+        this._order = -1;
+        this._currentSort = "";
         this._columns = [];
         this._paginator = new Paginator();
     }
@@ -33,7 +34,7 @@
         ;
         return this;
     };
-    
+
     Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
@@ -55,21 +56,91 @@
         th
             .enter()
             .append("th")
-                .text(function (column) {
-                    return column;
+                .each(function(d) {
+                    var element = d3.select(this);
+                    element
+                        .append("span")
+                            .attr("class", "thText")
+                    ;
+                    element
+                        .append("span")
+                            .attr("class", "thIcon")
+                    ;
                 })
+            .on("click", function (column) {
+                if (context._currentSort === column) {
+                    if(context._order !== -1) {
+                        context._order = 1;
+                    }
+                } else {
+                    context._order = -1;
+                }
+                context.headerClick(column);
+            })
+        ;
+        th.select(".thText")
+            .text(function (column) {
+                return column;
+            })
+        ;
+        th.select(".thIcon")
+            .text(function (column) {
+                if (context._order === -1) {
+                    return context._currentSort === column ? "\uf078" : "";
+                } else {
+                    return context._currentSort === column ? "\uf077" : "";
+                }
+            })
         ;
         th.exit()
             .remove()
         ;
 
+        var theadHeight = parseInt(th.style('height'));
+        var theadMarginPadding = parseInt(th.style('padding-top')) + parseInt(th.style('padding-bottom')) + parseInt(th.style('margin-top')) + parseInt(th.style('margin-bottom'));
+
+        // Create temp row and calculate its height
+        var trow = this.tbody.selectAll("tr").data([[0]]);
+        trow
+            .enter()
+            .append("tr")
+        ;
+        var tcell = trow.selectAll("td").data(function (row, i) {
+            return row;
+        });
+        tcell.enter()
+            .append("td")
+        ;
+        tcell
+            .text(function (d) {
+                return d;
+            })
+        ;
+
+        tcell.exit()
+            .remove()
+        ;
+
+        var tcellHeight = parseInt(tcell.style('height'));
+        var tcellMarginPadding = parseInt(tcell.style('padding-top')) + parseInt(tcell.style('padding-bottom')) + parseInt(tcell.style('margin-top')) + parseInt(tcell.style('margin-bottom'));
+
         if (this.pagination()) {
             if (this._paginator.target() === null) {
                 this._paginator.target(domNode);
             }
+            this._paginator.numItems(1);
+            this.itemsPerPage(1);
+            this._paginator.render(); // render temp paginator to grab height
+
+            var pagElement = d3.select(".other_Paginator")
+            var paginatorHeight = parseInt(pagElement.style('height'));
+            var paginatorMarginPadding = parseInt(pagElement.style('padding-top')) + parseInt(pagElement.style('padding-bottom')) + parseInt(pagElement.style('margin-top')) + parseInt(pagElement.style('margin-bottom'));
+            var ipp = Math.floor((this.height() - theadHeight - theadMarginPadding - paginatorHeight - paginatorMarginPadding) / (tcellHeight + tcellMarginPadding)) || 1; // TODO - CHeck and make sure math adds up (the gap it allows seems a bit too large) moving tcellMarginPadding into the numerator cuts it off it seems sometimes
+
+            this.itemsPerPage(ipp);
 
             this._paginator.numItems(this._data.length);
-            this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1; 
+            this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
             if (this.pageNumber() > this._tNumPages ) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
@@ -78,15 +149,14 @@
                 context.render();
                 return;
             };
-            
         } else {
             this._paginator.numItems(0); // remove widget
         }
-        
+
         // pageNumber starts at index 1
         var startIndex = this.pageNumber()-1;
         var itemsOnPage = this.itemsPerPage();
-        
+
         var start = startIndex * itemsOnPage;
         var end = parseInt(startIndex * itemsOnPage) + parseInt(itemsOnPage);
 
@@ -131,15 +201,42 @@
         this._paginator.render();
     };
 
-    
+
     Table.prototype.exit = function (domNode, element) {
         this._paginator.target(null);
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
-    
 
-    Table.prototype.click = function (d) {
+
+    Table.prototype.headerClick = function (column) {
+        var context = this;
+        var idx = this._columns.indexOf(column);
+
+        this._data.sort(function(l, r) {
+            if (typeof(l[idx]) !== "undefined" && typeof(r[idx]) !== "undefined") {
+                if (l[idx] > r[idx]) {
+                    return -1 * (context._order);
+                } else if (l[idx] < r[idx]) {
+                    return 1 * (context._order);
+                } else {
+                    return 0;
+                }
+            } else if (typeof(l[idx]) !== "undefined" && typeof(r[idx]) === "undefined") {
+                return 1 * (context._order);
+            } else if (typeof(l[idx]) === "undefined" && typeof(r[idx]) !== "undefined") {
+                return -1 * (context._order);
+            } else {
+                return 1;
+            }
+        });
+
+        if(this._order === 1) {
+            this._order = -1;
+        } else {
+            this._order = 1;
+        }
+        this._currentSort = column;
+        this.render();
     };
-
     return Table;
 }));

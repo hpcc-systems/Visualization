@@ -65,18 +65,14 @@
                 this._chart.colors = [];
             break;
             case "By Column":
-                this._colors = [];
-                this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-                    context._colors.push(context._palette(i));
-                });
-                this._chart.colors = this._colors;
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
             break;
             default:
-                this._colors = [];
-                this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-                    context._colors.push(context._palette(i));
-                });
-                this._chart.colors = this._colors;
+                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                    return this._palette(row);
+                }, this);
             break;
         }
 
@@ -126,7 +122,7 @@
             }
 
             gObj.fillAlphas = this.fillOpacity();
-            
+
             return gObj;
         }
     };

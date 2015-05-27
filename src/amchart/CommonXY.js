@@ -11,11 +11,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._columns = undefined;
-        this._valueField = [];
-        this._categoryField = [];
-        this._colors = [];
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
 
@@ -218,7 +213,6 @@
         var initObj = {
             theme: "none",
             type: "xy",
-            pathToImages: "//www.amcharts.com/lib/3/images/",
             automargins: false,
             chartScrollbar: {},
             valueAxes: [

@@ -12,11 +12,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._columns = undefined;
-        this._valueField = [];
-        this._categoryField = undefined;
-        this._colors = [];
     }
 
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
@@ -119,11 +114,10 @@
         this._chart.valueAxes[0].gridPosition = this.yAxisGridPosition();
 
         // Color Palette
-        this._colors = [];
-        this._columns.slice(1,this._columns.length).forEach(function(dataPoint,i){
-            context._colors.push(context._palette(i));
-        });
-        this._chart.colors = this._colors;
+        this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+            return this._palette(row);
+        }, this);
+
         if(this.circularGrid()){ // not dynamic
             this._chart.valueAxes.forEach(function(va,i){
                 context._chart.valueAxes[i].gridType = "circles";
@@ -151,13 +145,9 @@
         gObj.bulletSize = context.bulletSize();
         gObj.dashLength = context.dashedLineStyle(); // TODO: convert to css Array Prop
 
-
         gObj.type = gType;
 
         gObj.title = '';
-
-        gObj.colorField = "color";
-        gObj.lineColorField = "linecolor";
 
         return gObj;
     };
@@ -174,7 +164,7 @@
         });
         return dataObjArr;
     };
-    
+
     CommonRadar.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
         var context = this;

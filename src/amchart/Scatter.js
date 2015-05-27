@@ -64,7 +64,7 @@
             return gObj;
         }
     };
-    
+
     Scatter.prototype.update = function(domNode, element) {
         CommonXY.prototype.update.apply(this, arguments);
 

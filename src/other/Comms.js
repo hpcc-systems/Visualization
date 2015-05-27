@@ -186,16 +186,37 @@
                 break;
             }
         }
+
+        var respondedTimeout = 60000;
+        var respondedTick = 5000;
         var callbackName = 'jsonp_callback_' + Math.round(Math.random() * 999999);
         window[callbackName] = function (response) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            callback(response);
+            respondedTimeout = 0;
+            doCallback(response);
         };
-
         var script = document.createElement('script');
         script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'jsonp=' + callbackName + "&" + serialize(request);
         document.body.appendChild(script);
+        var progress = setInterval(function () {
+            if (respondedTimeout <= 0) {
+                clearInterval(progress);
+            } else {
+                respondedTimeout -= respondedTick;
+                if (respondedTimeout <= 0) {
+                    clearInterval(progress);
+                    console.log("Request timeout:  " + script.src);
+                    doCallback();
+                } else {
+                    console.log("Request pending (" + respondedTimeout / 1000 + " sec):  " + script.src);
+                }
+            }
+        }, respondedTick);
+
+        function doCallback(response) {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            callback(response);
+        }
     };
 
     Comms.prototype.mappings = function (_) {

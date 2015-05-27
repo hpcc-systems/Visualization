@@ -12,12 +12,6 @@
         this._tag = "div";
 
         this._chart = {};
-        this._data = undefined;
-        this._columns = undefined;
-        this._valueField = [];
-        this._categoryField = undefined;
-        this._colors = [];
-        this._numValueAxis = 1;
     }
 
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
@@ -190,8 +184,8 @@
             }
         });
 
-        try{
-            if(context.useImgPatterns()){
+        try {
+            if(context.useImgPatterns()) {
                 var patternArr = JSON.parse(context.imgPatternArr());
                 if(typeof (patternArr[i]) !== 'undefined'){
                     gObj.pattern = patternArr[i];
@@ -199,11 +193,11 @@
             } else {
                 gObj.pattern = '';
             }
-        }catch(e){
+        } catch(e) {
             console.log('e:');
             console.log(e);
         }
-        
+
         return gObj;
     };
 

@@ -1,35 +1,41 @@
 .other_Table {
-	color:#333333;
-	border-width: 1px;
-	border-color: #999999;
-	border-collapse: collapse;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
 }
 
 .other_Table th {
     padding:5px 10px;
-	background-color:#1f77b4;
-	border-width: 1px;
-	border-style: solid;
-	border-color: #a9c6c9;
+    background-color:#1f77b4;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a9c6c9;
     color:white;
     white-space: nowrap;
+    cursor : pointer;
+}
+
+.other_Table .thIcon {
+    font-family: FontAwesome;
+    padding-left: 8px;
 }
 
 .other_Table tr {
-	background-color:#dcf1ff;
+    background-color:#dcf1ff;
     color:black;
 }
 
 .other_Table tr:hover {
-	background-color:#ff7f0e;
+    background-color:#ff7f0e;
     color:white;
 }
 
 .other_Table td {
-	border-width: 1px;
+    border-width: 1px;
     padding:2px 5px;
-	border-style: solid;
-	border-color: #a9c6c9;
+    border-style: solid;
+    border-color: #a9c6c9;
     white-space: nowrap;
 }
 

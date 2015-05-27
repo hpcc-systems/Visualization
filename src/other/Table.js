@@ -96,22 +96,59 @@
             .remove()
         ;
 
+        var theadHeight = parseInt(th.style('height'));
+        var theadMarginPadding = parseInt(th.style('padding-top')) + parseInt(th.style('padding-bottom')) + parseInt(th.style('margin-top')) + parseInt(th.style('margin-bottom'));
+
+        // Create temp row and calculate its height
+        var trow = this.tbody.selectAll("tr").data([[0]]);
+        trow
+            .enter()
+            .append("tr")
+        ;
+        var tcell = trow.selectAll("td").data(function (row, i) {
+            return row;
+        });
+        tcell.enter()
+            .append("td")
+        ;
+        tcell
+            .text(function (d) {
+                return d;
+            })
+        ;
+
+        tcell.exit()
+            .remove()
+        ;
+
+        var tcellHeight = parseInt(tcell.style('height'));
+        var tcellMarginPadding = parseInt(tcell.style('padding-top')) + parseInt(tcell.style('padding-bottom')) + parseInt(tcell.style('margin-top')) + parseInt(tcell.style('margin-bottom'));
+
         if (this.pagination()) {
             if (this._paginator.target() === null) {
                 this._paginator.target(domNode);
             }
+            this._paginator.numItems(1);
+            this.itemsPerPage(1);
+            this._paginator.render(); // render temp paginator to grab height
+
+            var pagElement = d3.select(".other_Paginator")
+            var paginatorHeight = parseInt(pagElement.style('height'));
+            var paginatorMarginPadding = parseInt(pagElement.style('padding-top')) + parseInt(pagElement.style('padding-bottom')) + parseInt(pagElement.style('margin-top')) + parseInt(pagElement.style('margin-bottom'));
+            var ipp = Math.floor((this.height() - theadHeight - theadMarginPadding - paginatorHeight - paginatorMarginPadding) / (tcellHeight + tcellMarginPadding)) || 1; // TODO - CHeck and make sure math adds up (the gap it allows seems a bit too large) moving tcellMarginPadding into the numerator cuts it off it seems sometimes
+
+            this.itemsPerPage(ipp);
 
             this._paginator.numItems(this._data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
             if (this.pageNumber() > this._tNumPages ) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
-                console.log('page: '+ p);
+                console.log('page: '+p);
                 context.pageNumber(p);
                 context.render();
                 return;
             };
-
         } else {
             this._paginator.numItems(0); // remove widget
         }

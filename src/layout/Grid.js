@@ -18,7 +18,10 @@
 
     Grid.prototype.publish("designMode", false, "boolean", "Design Mode",null,{tags:['Private']});
     Grid.prototype.publish("gutter", 4, "number", "Gap Between Widgets",null,{tags:['Private']});
-    Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"],{tags:['Private']});
+    Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ['Private'] });
+
+    Grid.prototype.publish("cellPadding", null, "string", "Cell Padding (px)", null, { tags: ['Intermediate'] });
+
     Grid.prototype.publish("content", [], "widgetArray", "widgets",null,{tags:['Private']});
 
     Grid.prototype.testData = function () {
@@ -189,6 +192,7 @@
                 ;
 
                 d
+                    .surfacePadding(context.cellPadding())
                     .scale(context.designMode() ? 0.75 : 0)
                     .resize()
                 ;

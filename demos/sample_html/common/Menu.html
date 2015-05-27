@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/Menu", "src/other/Persist"], function (Menu, Persist) {
+                var menuWidget = new Menu()
+                    .size({ width: 200, height:250 }) 
+                    .faChar("\uf0c9")
+                    .data(["Menu A", "And B", "a longer C"])
+                    .target("widget-wrapper")
+                    .pos({ x: 50, y: 10 })
+                    .render()
+                ;
+                menuWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

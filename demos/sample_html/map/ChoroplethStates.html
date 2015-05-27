@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/map/ChoroplethStates","src/common/Palette"], function (ChoroplethStates,Palette) {
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+                var choroplethStatesWidget = new ChoroplethStates()
+                    .size({width:450,height:400}) // must be set before target if not defined on the DOM element
+                    .target("widget-wrapper")
+                    .testData()
+                    .scale(1)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                choroplethStatesWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/FAChar", "src/other/Persist"], function (FAChar, Persist) {
+                var faCharWidget = new FAChar()
+                    .size({ width: 25, height:25 }) 
+                    .char("\uf080")
+                    .target("widget-wrapper")
+                    .render()
+                ;
+                faCharWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

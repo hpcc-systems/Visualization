@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/tree/SunburstPartition", "src/common/Palette"], function (SunburstPartition, Palette) {
+                var testData = {label: "root", children: [{
+                        label: "A",
+                        children: [{
+                            label: "AA",
+                            children: [{
+                                label: "AAA"
+                            }]
+                        }, {
+                            label: "AB",
+                            children: [{
+                                label: "ABA"
+                            }]
+                        }]
+                    }, {
+                        label: "B",
+                        children: [{
+                            label: "BA",
+                            children: [{
+                                label: "BAA"
+                            }]
+                        }, {
+                            label: "BB"
+                        }]
+                    }]};
+
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+                var sunburstPartitionWidget = new SunburstPartition()
+                    .size({width:300,height:200})
+                    .target("widget-wrapper")
+                    .data(testData)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                sunburstPartitionWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

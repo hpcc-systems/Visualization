@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["d3/d3"], function (d3) {
+                 require(["src/other/WordCloud", "d3/d3", "lib/wordcloud/d3.layout.cloud"], function (WordCloud, d3) {
+                     var wordCloudWidget = new WordCloud()
+                         .size({width:100,height:100})
+                         .target("widget-wrapper")
+                         .testData()
+                         //.paletteID("hpcc20")
+                         .render()  
+                     ;
+                     wordCloudWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+                 });
+             });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

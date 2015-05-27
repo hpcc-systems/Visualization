@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/amchart/charts/FloatCol"], function (Widget) {
+                new Widget()
+                    .size({width:500,height:500})
+                    .target("widget-wrapper")
+                    .columns(["Subject", "open", "close"])
+                    .data([
+                        ["Geography", 15, 35],
+                        ["English", 25, 45],
+                        ["Math", 10, 35],
+                        ["Science", 45, 60]
+                    ])
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

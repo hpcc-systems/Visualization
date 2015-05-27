@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/c3chart/Gauge", "src/common/Palette"], function (C3Gauge, Palette) {
+
+                var testData = 75;
+                var columns = ["Label A"];
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]);
+                // or use rainbow?
+                var gaugeWidget = new C3Gauge()
+                    .size({width:300,height:200})
+                    .target("widget-wrapper")
+                    .columns(columns)   
+                    .data(testData)
+                    //.onEvent('click',function(d) { console.log('Override Click: ' + JSON.stringify(d)); })
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                gaugeWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

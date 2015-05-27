@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+        <style>
+            body {
+                background-color: #fafafa;
+            }
+        </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/chart/MultiChartSurface", "src/other/Persist"], function (MultiChartSurface, Persist) {
+                var multichartSurfaceWidget = new MultiChartSurface()
+                    .size({width:250,height:250})
+                    .target("widget-wrapper")
+                    .testData()
+                    //.chartType("GOOGLE_COLUMN")
+                    .title("Multi Charts")
+                    //.faChar("\uf080")
+                    .mode("multi")
+                    .render()  
+                ;
+                //multichartSurfaceWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

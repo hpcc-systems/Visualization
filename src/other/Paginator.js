@@ -41,47 +41,47 @@
             }
             this._numList.push("next");
         }
-        
+
         var page = this.paginator.selectAll("li").data(this._numList,function(d) { return d; });
-        page 
-            .enter() 
-            .append("li") 
-            .append("a") 
+        page
+            .enter()
+            .append("li")
+            .append("a")
             .attr("href", "#")
             .on('click', function(d, i) {
                 d3.event.preventDefault();
                 if (d==='next') {
                     if ((context.pageNumber()+1) <= context._tNumPages) {
-                        var p = context.pageNumber()+1; 
-                        context.pageNumber(p); 
-                        context._onSelect(p,"next"); 
+                        var p = context.pageNumber()+1;
+                        context.pageNumber(p);
+                        context._onSelect(p,"next");
                     }
                 } else if (d==='previous') {
                     if ((context.pageNumber() - 1) >= 1) {
-                        var p2 = context.pageNumber()-1; 
-                        context.pageNumber(p2); 
-                        context._onSelect(p2, "previous"); 
+                        var p2 = context.pageNumber()-1;
+                        context.pageNumber(p2);
+                        context._onSelect(p2, "previous");
                     }
                 } else {
-                    context.pageNumber(d); 
+                    context.pageNumber(d);
                     context._onSelect(d);
                 }
             })
         ;
-            
+
         page.classed("active", function(e, j) { return j === context.pageNumber(); })
             .select("a")
             .text(function(d) { return d; })
         ;
-        
+
         page.exit().remove();
         page.order();
 
-        if (this.numItems() === 0) { 
+        if (this.numItems() === 0) {
             d3.select(domNode).remove();
-        }        
+        }
     };
-    
+
     Paginator.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };

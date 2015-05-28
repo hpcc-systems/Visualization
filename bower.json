@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "requirejs": "^2.1.17",
-    "requirejs-plugins": "^1.0.3",
+    "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#DOJO_AMD",
     "require-css": "^0.1.8",
     "c3": "^0.4.10",
     "colorbrewer": "^1.0.0",

@@ -12,9 +12,7 @@
         this._tag = "div";
     }
     Surface.prototype = Object.create(HTMLWidget.prototype);
-    Surface.prototype._class = "layout_Surface";
-
-    Surface.prototype.publish("padding", null, "number", "Surface Padding (px)",null,{tags:['Private']});
+    Surface.prototype._class += " layout_Surface";
 
     Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:['Basic']});
     Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)",null,{tags:['Basic']});
@@ -23,8 +21,8 @@
     Surface.prototype.publish("surfaceTitleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:['Basic']});
     Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:['Basic']});
 
+    Surface.prototype.publish("surfacePadding", null, "string", "Surface Padding (px)", null, { tags: ['Intermediate'] });
     Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color",null,{tags:['Basic']});
-
     Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)",null,{tags:['Basic']});
     Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color",null,{tags:['Basic']});
     Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)",null,{tags:['Basic']});
@@ -39,6 +37,17 @@
         return this;
     };
 
+    Surface.prototype.widgetSize = function (titleDiv, widgetDiv) {
+        var width = this.clientWidth();
+        var height = this.clientHeight();
+        if (this.title()) {
+            height -= this.calcHeight(titleDiv);
+        }
+        height -= this.calcFrameHeight(widgetDiv);
+        width -= this.calcFrameWidth(widgetDiv);
+        return { width: width, height: height };
+    };
+
     Surface.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
     };
@@ -50,7 +59,8 @@
             .style("border-width",this.surfaceBorderWidth()+'px')
             .style("border-color",this.surfaceBorderColor())
             .style("border-radius",this.surfaceBorderRadius()+'px')
-            .style("background-color",this.surfaceBackgroundColor());
+            .style("background-color",this.surfaceBackgroundColor())
+        ;
 
         var titles = element.selectAll(".surfaceTitle").data(this.title() ? [this.title()] : []);
         titles.enter().insert("h3", "div")
@@ -74,29 +84,19 @@
         widgets.enter().append("div")
             .attr("class", "surfaceWidget")
             .each(function (d) {
-                //console.log("surface enter:" + d._class + d._id);
                 d.target(this);
             })
         ;
         widgets
+            .style("padding", this.surfacePadding() ? this.surfacePadding() + "px" : null)
             .each(function (d) {
-                //console.log("surface update:" + d._class + d._id);
-                var width = context.clientWidth();
-                var height = context.clientHeight();
-                if (context.title()) {
-                    height -= context.calcHeight(element.select("h3"));
-                }
-                var widgetDiv = d3.select(this);
-                height -= context.calcFrameHeight(widgetDiv);
-                width -= context.calcFrameWidth(widgetDiv);
+                var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
                 d
-                    .resize({ width: width, height: height })
+                    .resize({ width: widgetSize.width, height: widgetSize.height })
                 ;
             })
-            .style("padding",this.padding()+"px")
         ;
         widgets.exit().each(function (d) {
-            //console.log("surface exit:" + d._class + d._id);
             d.target(null);
         }).remove();
     };

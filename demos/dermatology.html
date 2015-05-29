@@ -148,11 +148,13 @@
             ;
             main = new Grid()
                 .setContent(0, 2, propEditor, "", 2, 1)
+                .cellPadding(0)
             ;
 
             frame = new Surface()
                 .widget(main)
                 .target("main")
+                .surfacePadding(0)
             ;
 
             function displayProperties(sourceWidget) {

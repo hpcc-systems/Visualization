@@ -26,8 +26,13 @@
     color:black;
 }
 
+.other_Table tr.selected {
+    background-color:#f48a00;
+    color: white;
+}
+
 .other_Table tr:hover {
-    background-color:#ff7f0e;
+    background-color:#ffa51e;
     color:white;
 }
 

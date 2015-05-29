@@ -48,6 +48,41 @@
         this.tbody = this.table.append("tbody");
     };
 
+    Table.prototype._generateTempCell = function() {
+        var trow = this.tbody.selectAll("tr").data([[0]]);
+        trow
+            .enter()
+            .append("tr")
+        ;
+        var tcell = trow.selectAll("td").data(function (row, i) {
+            return row;
+        });
+        tcell.enter()
+            .append("td")
+            .text(function (d) {
+                return d;
+            })
+        ;
+        tcell.exit()
+            .remove()
+        ;
+        return tcell;
+    };
+
+    Table.prototype._calcRowsPerPage = function(th) {
+        if (this._paginator.numItems() === 0) { // only run on first render
+            this._paginator.numItems(1);
+            this.itemsPerPage(1);
+            this._paginator.render();
+        }
+
+        var thHeight = this.calcHeight(th);
+        var tcellHeight = this.calcHeight(this._generateTempCell());
+        var paginatorHeight = this.calcHeight(this._paginator.element());
+        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
+        return ipp;
+    };
+
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
@@ -101,12 +136,15 @@
                 this._paginator.target(domNode);
             }
 
+            var ipp = this._calcRowsPerPage(th);
+            this.itemsPerPage(ipp);
+
             this._paginator.numItems(this._data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
-            if (this.pageNumber() > this._tNumPages ) { this.pageNumber(1); } // resets if current pagenum selected out of range
+            if (this.pageNumber() > this._tNumPages) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
-                console.log('page: '+ p);
+                console.log('page: ' + p);
                 context.pageNumber(p);
                 context.render();
                 return;

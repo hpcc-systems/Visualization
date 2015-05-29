@@ -21,6 +21,8 @@
     Edge.prototype = Object.create(SVGWidget.prototype);
     Edge.prototype._class += " graph_Edge";
 
+    Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ['Basic'] });
+
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;
         this._sourceVertex = _;
@@ -180,10 +182,8 @@
             var dy = points[0].y - points[1].y;
             var dist = Math.sqrt(dx * dx + dy * dy);
             if (dist) {
-                dx /= dist;
-                dy /= dist;
-                var midX = (points[0].x + points[1].x) / 2 - dist * dy / 8;
-                var midY = (points[0].y + points[1].y) / 2 + dist * dx / 8;
+                var midX = (points[0].x + points[1].x) / 2 - dy * this.arcDepth() / 100;
+                var midY = (points[0].y + points[1].y) / 2 + dx * this.arcDepth() / 100;
                 points = [{ x: points[0].x, y: points[0].y }, { x: midX, y: midY }, { x: points[1].x, y: points[1].y }];
             }
         }

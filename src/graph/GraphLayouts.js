@@ -126,7 +126,7 @@
             var value = graphData.edge(e);
             digraph.setEdge(s, t, {
                 weight: value.weight()
-            });
+            }, value._id);
         });
         graphData.eachNode(function (u) {
             digraph.setParent(u, graphData.parent(u));
@@ -151,8 +151,8 @@
     Hierarchy.prototype.nodePos = function (u) {
         return this.digraph.node(u);
     };
-    Hierarchy.prototype.edgePoints = function (e) {
-        return this.digraph.edge(e).points;
+    Hierarchy.prototype.edgePoints = function (edge) {
+        return this.digraph.edge(edge._sourceVertex.id(), edge._targetVertex.id(), edge._id).points;
     };
 
     var Layouts = {

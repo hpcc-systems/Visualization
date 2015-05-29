@@ -32,7 +32,7 @@
         for (i = 0; i < edges.length; ++i) {
             var edge = edges[i];
             if (!merge || !this.hasEdge(edge._id)) {
-                this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge);
+                this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge, edge._id);
                 retVal.addedEdges.push(edge);
             }
         }

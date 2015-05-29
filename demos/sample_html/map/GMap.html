@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+        require(["src/map/GMap","src/common/Palette"], function (GMap,Palette) {
+            
+            document.getElementById("choropleth").style.width = "500px";
+            document.getElementById("choropleth").style.height = "500px";
+            
+            var mapWidget = new GMap()
+                //.size({width:500,height:500}) // must be first if not defined on the div
+                .target("widget-wrapper")
+                .testData()
+                .render()
+            ;
+            
+            mapWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+
+        });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>
+                

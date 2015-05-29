@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>
+            require(["src/common/Surface","src/graph/Graph","src/graph/Edge","src/common/Palette","src/other/Persist"], function (Surface,Graph,Edge,Palette,Persist) {
+                var vertices = [
+                    new Surface()
+                        .size({width:250,height:250})
+                        .title("Surface")
+                        //.menu(["aaa", "bbb", "ccc"])
+                    
+                ];
+
+                var w = 640;
+                var h = 480;
+
+                var graphWidget = new Graph()
+                    .size({width:w,height:h})
+                    .target("widget-wrapper")
+                    .hierarchyOptions({ rankSep: 18 })
+                    .data({ vertices: vertices, edges: [] })
+                    .layout("Hierarchy")
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

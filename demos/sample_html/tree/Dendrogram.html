@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/tree/Dendrogram", "src/common/Palette"], function (Dendrogram, Palette) {
+                var testData = {label: "root", children: [{
+                        label: "A",
+                        children: [{
+                            label: "AA",
+                            children: [{
+                                label: "AAA"
+                            }]
+                        }, {
+                            label: "AB",
+                            children: [{
+                                label: "ABA"
+                            }]
+                        }]
+                    }, {
+                        label: "B",
+                        children: [{
+                            label: "BA",
+                            children: [{
+                                label: "BAA"
+                            }]
+                        }, {
+                            label: "BB"
+                        }]
+                    }]};
+
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+                var dendrogramWidget = new Dendrogram()
+                    .size({width:400,height:250})
+                    .target("widget-wrapper")
+                    .data(testData)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                dendrogramWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

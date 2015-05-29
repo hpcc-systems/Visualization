@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/Icon", "src/other/Persist"], function (Icon, Persist) {
+                var iconWidget = new Icon()
+                    .size({ width: 25, height:25 }) 
+                    .shape("circle")
+                    .faChar("\uf080")
+                    .target("widget-wrapper")
+                    .render() 
+                ;
+                iconWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

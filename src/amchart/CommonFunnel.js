@@ -33,12 +33,13 @@
     CommonFunnel.prototype.publish("flip", true, "boolean", "Flip Chart",null,{tags:['Intermediate']});
     CommonFunnel.prototype.publish("reverseDataSorting", false, "boolean", "Reverse Data Sorting",null,{tags:['Intermediate']});
 
-    CommonFunnel.prototype.publish("marginLeft", null, "number", "Margin (Left)",null,{tags:['Intermediate']});
-    CommonFunnel.prototype.publish("marginRight", 150, "number", "Margin (Right)",null,{tags:['Intermediate']});
+    CommonFunnel.prototype.publish("marginLeft", 0, "number", "Margin (Left)",null,{tags:['Intermediate']});
+    CommonFunnel.prototype.publish("marginRight", 0, "number", "Margin (Right)",null,{tags:['Intermediate']});
+
     CommonFunnel.prototype.publish("marginTop", null, "number", "Margin (Top)",null,{tags:['Intermediate']});
     CommonFunnel.prototype.publish("marginBottom", null, "number", "Margin (Bottom)",null,{tags:['Intermediate']});
 
-    CommonFunnel.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:['Intermediate']});
+    CommonFunnel.prototype.publish("labelPosition", "center", "set", "Label Position", ["left","right","center"],{tags:['Intermediate']});
 
     CommonFunnel.prototype.publish("showScrollbar", false, "boolean", "Show Chart Scrollbar",null,{tags:['Intermediate']});
 
@@ -50,11 +51,8 @@
     CommonFunnel.prototype.updateChartOptions = function() {
         var context = this;
 
-        this._chart.theme = "none";
-        this._chart.type = "funnel";
         this._chart.startDuration = this.startDuration();
         this._chart.rotate = this.flip();
-
 
         this._chart.color = this.fontColor();
         this._chart.fontSize = this.fontSize();
@@ -136,6 +134,8 @@
         var initObj = {
             theme: "none",
             type: "funnel",
+            autoResize: true,
+            autoMargins: true,
             chartScrollbar: {}
         };
         this._chart = AmCharts.makeChart(domNode, initObj);
@@ -148,6 +148,11 @@
         domNode.style.height = this.size().height + 'px';
 
         this._palette = this._palette.switch(this.paletteID());
+
+        this.updateChartOptions();
+
+        this._chart.validateNow();
+        this._chart.validateData();
     };
 
     return CommonFunnel;

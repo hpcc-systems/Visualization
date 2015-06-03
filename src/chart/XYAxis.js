@@ -15,6 +15,8 @@
     }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
+    XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
+
     XYAxis.prototype.xScale = function (_) {
         if (!arguments.length) return this._xScale;
         this._xScale = _;
@@ -48,10 +50,10 @@
         this.svg = element.append("g");
         this.svgData = this.svg.append("g");
         this.svgXAxis = this.svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
         ;
         this.svgYAxis = this.svg.append("g")
-            .attr("class", "y axis")
+            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
         ;
     };
 
@@ -62,13 +64,13 @@
         var test = element.append("g");
 
         var svgXAxis = test.append("g")
-            .attr("class", "x axis")
+            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(this.xAxis)
+            .call(this.orientation() === "horizontal" ? this.xAxis : this.yAxis)
         ;
         var svgYAxis = test.append("g")
-            .attr("class", "y axis")
-            .call(this.yAxis)
+            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
+            .call(this.orientation() === "horizontal" ? this.yAxis : this.xAxis)
         ;
 
         var x_bbox = svgXAxis.node().getBBox();
@@ -81,6 +83,9 @@
 
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
+
+        this.xAxis.orient(this.orientation() === "horizontal" ? "bottom" : "left");
+        this.yAxis.orient(this.orientation() === "horizontal" ? "left" : "bottom");
 
         //  Update Domain  ---
         switch (this._xScale) {
@@ -122,24 +127,26 @@
             height = this.height() - margin.top - margin.bottom;
 
         if (this.x.rangeRoundBands) {
-            this.x.rangeRoundBands([0, width], 0.1);
+            this.x.rangeRoundBands([0, this.orientation() === "horizontal" ? width : height], 0.1);
         } else if (this.x.rangeRound) {
-            this.x.range([0, width]);
+            this.x.range([0, this.orientation() === "horizontal" ? width : height]);
         }
-        this.y.range([height, 0]);
+        this.y.range([this.orientation() === "horizontal" ? height : 0, this.orientation() === "horizontal" ? 0 : width - margin.left - margin.right]);
 
-        //  Render  ---
         this.svg.transition()
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         ;
 
         this.svgXAxis.transition()
             .attr("transform", "translate(0," + height + ")")
-            .call(this.xAxis)
+            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
+            .call(this.orientation() === "horizontal" ? this.xAxis : this.yAxis)
         ;
 
         this.svgYAxis.transition()
-            .call(this.yAxis)
+            .attr("transform", this.orientation() === "horizontal" ? null : "translate(0, 0)")
+            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
+            .call(this.orientation() === "horizontal" ? this.yAxis : this.xAxis)
         ;
 
         this.updateChart(domNode, element, margin, width, height);

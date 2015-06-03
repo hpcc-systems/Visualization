@@ -33,8 +33,6 @@
             ["Math", 98],
             ["Science", 66]
         ]);
-        this.marginLeft(15);
-        this.marginRight(150);
         return this;
     };
 
@@ -48,10 +46,6 @@
 
     Pyramid.prototype.update = function(domNode, element) {
         CommonFunnel.prototype.update.apply(this, arguments);
-        this.updateChartOptions();
-
-        this._chart.validateNow();
-        this._chart.validateData();
     };
 
     return Pyramid;

@@ -18,3 +18,8 @@
     fill: white;
     stroke: none;
 }
+
+.common_Surface .surface-button tspan { opacity: 0.8; }
+.common_Surface .surface-button tspan:hover { opacity: 1; }
+.common_Surface .surface-button tspan:active { opacity: 0.5; }
+        

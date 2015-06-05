@@ -9,11 +9,12 @@
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
-        this._order = -1;
         this._currentSort = "";
+        this._currentSortOrder = 1;
         this._columns = [];
         this._paginator = new Paginator();
-        this._selection = new Bag.Selection();
+        this._selectionBag = new Bag.Selection();
+        this._selectionPrevClick = null;
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype._class += " other_Table";
@@ -70,6 +71,16 @@
         return tcell;
     };
 
+    Table.prototype._createSelectionObject = function (d) {
+        var context = this;
+        return {
+            _id: d,
+            element: function () {
+                return context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; });
+            }
+        };
+    };
+
     Table.prototype._calcRowsPerPage = function(th) {
         if (this._paginator.numItems() === 0) { // only run on first render
             this._paginator.numItems(1);
@@ -104,13 +115,6 @@
                     ;
                 })
             .on("click", function (column) {
-                if (context._currentSort === column) {
-                    if(context._order !== -1) {
-                        context._order = 1;
-                    }
-                } else {
-                    context._order = -1;
-                }
                 context.headerClick(column);
             })
         ;
@@ -121,7 +125,7 @@
         ;
         th.select(".thIcon")
             .text(function (column) {
-                if (context._order === -1) {
+                if (context._currentSortOrder === -1) {
                     return context._currentSort === column ? "\uf078" : "";
                 } else {
                     return context._currentSort === column ? "\uf077" : "";
@@ -173,35 +177,21 @@
         rows
             .enter()
             .append("tr")
+            .on("click.selectionBag", function (d) {
+                context.selectionBagClick(d);
+            })
             .on("click", function (d) {
                 context.click(context.rowToObj(d));
-            })
-            .on("click.selectionBag", function (d) {
-                var domNode = this;
-                var newObj = {
-                  "_id": d,
-                  element: function() {
-                        return d3.select(domNode);
-                    }
-                };
-                context._selection.click(newObj, d3.event);
             })
         ;
 
         rows
             .attr("class", function (d) {
-                var domNode = this;
-                var newObj = {
-                  "_id": d,
-                  element: function() {
-                        return d3.select(domNode);
-                    }
-                };
-                if (context._selection.isSelected(newObj)) {
+                if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
                     return "selected";
                 }
-            });
-
+            })
+        ;
 
         rows.exit()
             .remove()
@@ -227,64 +217,63 @@
         this._paginator.render();
     };
 
-
     Table.prototype.exit = function (domNode, element) {
         this._paginator.target(null);
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-
     Table.prototype.headerClick = function (column) {
         var context = this;
+        if (this._currentSort !== column) {
+            this._currentSort = column;
+            this._currentSortOrder = 1;
+        } else {
+            this._currentSortOrder *= -1;
+        }
         var idx = this._columns.indexOf(column);
 
-        this._data.sort(function(l, r) {
-            if (typeof(l[idx]) !== "undefined" && typeof(r[idx]) !== "undefined") {
-                if (l[idx] > r[idx]) {
-                    return -1 * (context._order);
-                } else if (l[idx] < r[idx]) {
-                    return 1 * (context._order);
-                } else {
-                    return 0;
-                }
-            } else if (typeof(l[idx]) !== "undefined" && typeof(r[idx]) === "undefined") {
-                return 1 * (context._order);
-            } else if (typeof(l[idx]) === "undefined" && typeof(r[idx]) !== "undefined") {
-                return -1 * (context._order);
-            } else {
-                return 1;
+        this._data.sort(function (l, r) {
+            if (l[idx] === r[idx]) {
+                return 0;
+            } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
+                return context._currentSortOrder;
             }
+            return context._currentSortOrder * -1;
         });
-
-        if(this._order === 1) {
-            this._order = -1;
-        } else {
-            this._order = 1;
-        }
-        this._currentSort = column;
         this.render();
     };
 
-    Table.prototype.Selection = function (_) {
-        if (!arguments.length) {
-            var tg = [];
-            for (var i = 0; i < this._selection.get().length; i++) {
-                tg[i] = this._selection.get()[i]._id;
-            }
-            return tg;
-        } else {
-            var ts = [];
-            for (var j = 0; j < _.length; j++) {
-                ts[j] = {
-                    "_id": _[j],
-                    element: function() {
-                      return d3.select(null);
-                    }
-                };
-            }
-            return this._selection.set(ts);
-        }
+    Table.prototype.selection = function (_) {
+        if (!arguments.length) return this._selectionBag.get().map(function (d) { return d._id; });
+        this._selectionBag.set(_.map(function (row) {
+            return this._createSelectionObject(row);
+        }, this));
         return this;
     };
+
+    Table.prototype.selectionBagClick = function (d) {
+        if (d3.event.shiftKey) {
+            var inRange = false;
+            var selection = this._data.filter(function (row) {
+                var lastInRangeRow = false;
+                if (row === d || row === this._selectionPrevClick) {
+                    if (inRange) {
+                        lastInRangeRow = true;
+                    }
+                    inRange = !inRange;
+                }
+                return inRange || lastInRangeRow;
+            }, this);
+            this.selection(selection);
+        } else {
+            this._selectionBag.click(this._createSelectionObject(d), d3.event);
+            this._selectionPrevClick = d;
+        }
+    };
+
+    Table.prototype.click = function (row, column) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    };
+
     return Table;
 }));

@@ -22,18 +22,32 @@
 
     Line.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
+        var d3Line;
+        var horizontalFunction = function (d) {
+            switch (context._xScale) {
+                case "DATE":
+                    return context.x(context.parseDate(d[0]));
+            }
+            return context.x(d[0]) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
+        };
+
+        var verticalFunction = function (d) {
+            return context.y(d[1]);
+        };
 
         this._palette = this._palette.switch(this.paletteID());
-        var d3Line = d3.svg.line()
-            .x(function (d) {
-                switch (context._xScale) {
-                    case "DATE":
-                        return context.x(context.parseDate(d[0]));
-                }
-                return context.x(d[0]) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
-            })
-            .y(function (d) { return context.y(d[1]); })
-        ;
+
+        if (this.orientation() === "horizontal") {
+            d3Line = d3.svg.line()
+                .x(horizontalFunction)
+                .y(verticalFunction)
+            ;
+        } else {
+            d3Line = d3.svg.line()
+                .y(horizontalFunction)
+                .x(verticalFunction)
+            ;
+        }
 
         var line = this.svgData.selectAll(".dataLine")
             .data(this._columns.filter(function(d, i) {return i > 0;}))

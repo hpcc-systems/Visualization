@@ -32,8 +32,12 @@
 }
 
 .other_Table tr:hover {
-    background-color:#ffa51e;
-    color:white;
+    background-color: #bfd7e7;
+}
+
+.other_Table tr.selected:hover {
+    background-color:#5ea8db;
+    color: white;
 }
 
 .other_Table td {
@@ -43,4 +47,3 @@
     border-color: #a9c6c9;
     white-space: nowrap;
 }
-

@@ -34,14 +34,26 @@
             .append("title")
         ;
 
-        column.transition()
-            .attr("class", "columnRect")
-            .attr("x", function (d) { return context.x(d[0]); })
-            .attr("width", this.x.rangeBand())
-            .attr("y", function (d) { return context.y(d[1]); })
-            .attr("height", function (d) { return height - context.y(d[1]); })
-            .style("fill", function (d) { return context._palette(d[0]); })
-        ;
+        if (this.orientation() === "horizontal") {
+            column.transition()
+                .attr("class", "columnRect")
+                .attr("x", function (d) { return context.x(d[0]); })
+                .attr("width", this.x.rangeBand())
+                .attr("y", function (d) { return context.y(d[1]); })
+                .attr("height", function (d) { return height - context.y(d[1]); })
+                .style("fill", function (d) { return context._palette(d[0]); })
+            ;
+        } else {
+            column.transition()
+                .attr("class", "columnRect")
+                .attr("x", function (d) { return 0; })
+                .attr("height", this.x.rangeBand())
+                .attr("y", function (d) { return context.x(d[0]); })
+                .attr("width", function (d) { return context.y(d[1]); })
+                .style("fill", function (d) { return context._palette(d[0]); })
+            ;
+
+        }
 
         title
             .text(function (d) { return d[0] + " (" + d[1] + ")"; })

@@ -36,8 +36,8 @@
      */
 
     Common1D.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
         this._palette = this._palette.switch(this.paletteID());
+        Common.prototype.update.apply(this, arguments);
     };
 
     return Common1D;

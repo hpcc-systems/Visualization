@@ -163,11 +163,12 @@
     };
 
     Slider.prototype.enter = function (domNode, element) {
-        this.axisElement = element.append("g")
+        this.sliderElement = element.append("g");
+        this.axisElement = this.sliderElement.append("g")
             .attr("class", "x axis")
         ;
 
-        this.brushg = element.append("g")
+        this.brushg = this.sliderElement.append("g")
             .attr("class", "brush")
             .call(this.brush)
         ;
@@ -195,18 +196,39 @@
         ;
 
         this._playIcon
-            .target(domNode)
+            .target(this.sliderElement.node())
             .render()
         ;
 
         this._loopIcon
-            .target(domNode)
+            .target(this.sliderElement.node())
             .render()
         ;
     };
 
+    Slider.prototype.calcDelta = function (domNode, element, leftPos, width) {
+        var axisElement = element.append("g")
+             .attr("class", "x axis")
+             .attr("transform", "translate(0, -64)")
+             .call(this.axis)
+        ;
+        axisElement.selectAll('.tick > text')
+            .style('fill', this.fontColor())
+            .style('font-size', this.fontSize())
+            .style('font-family', this.fontFamily())
+        ;
+        var x_bbox = axisElement.node().getBBox();
+        var retVal = {
+            left: x_bbox.x - leftPos,
+            right: x_bbox.x - leftPos + x_bbox.width - width
+        };
+        axisElement.remove();
+        return retVal;
+    };
+
     Slider.prototype.update = function (domNode, element) {
         var context = this;
+        var leftPos = -this.width() / 2 + this.padding();
         var width = this.width() - this.padding() * 2;
 
         this._playIcon
@@ -223,16 +245,21 @@
             .render()
         ;
 
-        this.xScale
-            .domain([this.low(), this.high()])
-            .range([-width / 2, width / 2 - (this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0)])
-        ;
-
         if ((this.high() - this.low()) / this.step() <= 10) {
             this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         } else {
             this.axis.tickValues(null);
         }
+
+        width -= this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
+        this.xScale
+            .domain([this.low(), this.high()])
+            .range([leftPos, leftPos + width])
+        ;
+        var delta = this.calcDelta(domNode, element, leftPos, width);
+        this.xScale
+            .range([leftPos - delta.left, leftPos + width - delta.right])
+        ;
         this.axisElement
             .call(this.axis)
         ;
@@ -256,6 +283,9 @@
         this.brushg
             .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
         ;
+
+        var bbox = this.sliderElement.node().getBBox();
+        this.sliderElement.attr("transform", "translate(0, " + -(bbox.y + bbox.height / 2) + ")");
     };
 
     Slider.prototype.brushstart = function (d, self) {

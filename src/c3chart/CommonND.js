@@ -21,7 +21,6 @@
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
         };
-        this._prevColumns = [];
     }
     CommonND.prototype = Object.create(Common.prototype);
     CommonND.prototype._class += " c3chart_CommonND";
@@ -64,16 +63,6 @@
 
     CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid",null,{tags:['Intermediate']});
     CommonND.prototype.publish("showYGrid", false, "boolean", "Show Y Grid",null,{tags:['Intermediate']});
-
-    CommonND.prototype.getDiffC3Columns = function () {
-        return this._prevColumns.filter(function (i) { return this._columns.indexOf(i) < 0; }, this);
-    };
-
-    CommonND.prototype.render = function () {
-        var retVal = Common.prototype.render.apply(this, arguments);
-        this._prevColumns = this._columns;
-        return retVal;
-    };
 
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
@@ -163,12 +152,10 @@
             case "category":
                 chartOptions.categories = this.getC3Categories();
                 chartOptions.columns = this.getC3Columns();
-                chartOptions.unload = this.getDiffC3Columns();
                 break;
             case "indexed":
             case "timeseries":
                 chartOptions.columns = this.getC3Columns();
-                chartOptions.unload = this.getDiffC3Columns();
                 break;
         }
 

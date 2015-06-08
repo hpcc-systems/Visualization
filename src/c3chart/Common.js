@@ -23,6 +23,7 @@
                 rows: []
             }
         };
+        this._prevColumnIDs = [];
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype._class += " c3chart_Common";
@@ -122,7 +123,11 @@
             height: this.height()
         });
 
-        this.c3Chart.load(this.getChartOptions());
+        var options = this.getChartOptions();
+        var columnIDs = options.columns.map(function (row) { return row[0]; });
+        options.unload = this._prevColumnIDs.filter(function (i) { return columnIDs.indexOf(i) < 0; });
+        this.c3Chart.load(options);
+        this._prevColumnIDs = columnIDs;
 
         element.selectAll(".c3 text")
                 .style({

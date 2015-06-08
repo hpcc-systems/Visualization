@@ -14,7 +14,6 @@
             .faChar("\uf07b")
             .paddingPercent(50)
         ;
-
         this._container = new Shape()
             .class("container")
             .shape("rect")
@@ -125,6 +124,9 @@
         SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 
+        var width = this.width() - 1;
+        var height = this.height() - 1;
+
         this._icon
             .display(this.showTitle() && this.showIcon())
             .shape(this.icon_shape())
@@ -172,7 +174,7 @@
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
         var titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height, buttonClientHeight);
-        var yTitle = (-this._size.height + titleRegionHeight) / 2;
+        var yTitle = (-height + titleRegionHeight) / 2;
 
         var titleTextHeight = Math.max(textClientSize.height, menuClientSize.height, buttonClientHeight);
 
@@ -181,16 +183,16 @@
 
         this._titleRect
             .pos({ x: leftMargin, y: yTitle })
-            .width(this._size.width - leftMargin * 2)
+            .width(width - leftMargin * 2)
             .height(titleTextHeight)
             .display(this.showTitle())
             .render()
         ;
         this._icon
-            .move({ x: -this._size.width / 2 + iconClientSize.width / 2, y: yTitle })
+            .move({ x: -width / 2 + iconClientSize.width / 2, y: yTitle })
         ;
         this._menu
-            .move({ x: this._size.width / 2 - menuClientSize.width / 2 - this._menuPadding, y: yTitle })
+            .move({ x: width / 2 - menuClientSize.width / 2 - this._menuPadding, y: yTitle })
         ;
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
@@ -202,15 +204,15 @@
         if (this.showTitle()) {
             this._container
                 .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
-                .width(this._size.width - leftMargin)
-                .height(this._size.height - titleRegionHeight + topMargin)
+                .width(width - leftMargin)
+                .height(height - titleRegionHeight + topMargin)
                 .render()
             ;
         } else {
             this._container
                 .pos({ x: 0, y: 0 })
-                .width(this._size.width)
-                .height(this._size.height)
+                .width(width)
+                .height(height)
                 .render()
             ;
         }
@@ -218,13 +220,13 @@
         if (this._showContent) {
             var xOffset = leftMargin;
             var yOffset = titleRegionHeight - topMargin;
+
             var content = element.selectAll(".content").data(this.content() ? [this.content()] : [], function (d) { return d._id; });
             content.enter().append("g")
                 .attr("class", "content")
                 .attr("clip-path", "url(#" + this.id() + "_clip)")
                 .each(function (d) {
                     d.target(this);
-                    // TODO: buttons within container
                 })
             ;
             content
@@ -238,18 +240,18 @@
                     d
                         .pos({ x: xOffset / 2, y: yOffset / 2 })
                         .size({
-                            width: context._size.width - xOffset - (padding.left + padding.right),
-                            height: context._size.height - yOffset - (padding.top + padding.bottom)
+                            width: width - xOffset - (padding.left + padding.right),
+                            height: height - yOffset - (padding.top + padding.bottom)
                         })
                     ;
                 })
             ;
             if (this.content()) {
                 this._clipRect
-                    .attr("x", -this._size.width / 2 + xOffset)
-                    .attr("y", -this._size.height / 2 + yOffset)
-                    .attr("width", this._size.width - xOffset)
-                    .attr("height", this._size.height - yOffset)
+                    .attr("x", -width / 2 + xOffset)
+                    .attr("y", -height / 2 + yOffset)
+                    .attr("width", width - xOffset)
+                    .attr("height", height - yOffset)
                 ;
             }
             content.exit().transition()

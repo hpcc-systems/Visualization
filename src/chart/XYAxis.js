@@ -77,7 +77,7 @@
         var y_bbox = svgYAxis.node().getBBox();
         margin.bottom = x_bbox.height;
         margin.left = y_bbox.width;
-        test.remove();
+        // test.remove();
         return margin;
     };
 

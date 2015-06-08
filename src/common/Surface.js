@@ -127,6 +127,9 @@
         var width = this.width() - 1;
         var height = this.height() - 1;
 
+        var width = this.width() - 1;
+        var height = this.height() - 1;
+
         this._icon
             .display(this.showTitle() && this.showIcon())
             .shape(this.icon_shape())

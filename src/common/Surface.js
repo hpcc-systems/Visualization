@@ -58,7 +58,7 @@
     Surface.prototype.publish("content", null, "widget", "Content",null,{tags:["Private"]});
 
     Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Intermediate"]});
-    Surface.prototype.publish("buttonGutter", 20, "number", "Space Between Menu and Buttons",null,{tags:["Intermediate"]});
+    Surface.prototype.publish("buttonGutter", 30, "number", "Space Between Menu and Buttons",null,{tags:["Intermediate"]});
 
     Surface.prototype.menu = function (_) {
         if (!arguments.length) return this._menu.data();
@@ -84,7 +84,7 @@
     Surface.prototype.testData = function () {
         this.title("Hello and welcome!");
         this.menu(["aaa", "bbb", "ccc"]);
-        this.buttonAnnotations([{id:"button_1",char:"\uf010",shape:"square",diameter:14,padding:10}, {id:"button_2",char:"\uf00e",shape:"square",diameter:14,padding:10}]);
+        this.buttonAnnotations([{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:10}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:10}]);
 
         return this;
     };
@@ -119,6 +119,7 @@
         this._container
             .target(domNode)
         ;
+        this.buttonContainer = d3.select(this._target).append("div").attr("class", "svg-button-container");
     };
 
     Surface.prototype.update = function (domNode, element) {
@@ -139,26 +140,22 @@
             .render()
         ;
 
-        var surfaceButtons = element.selectAll(".surface-button").data(this.buttonAnnotations());
-        surfaceButtons.enter().append("g").classed("surface-button",true)
-            .each(function (button, idx) {
-                context._surfaceButtons[idx] = new Icon()
-                    .faChar(button.char)
-                    .diameter(button.diameter)
-                    .image_colorFill(button.image_colorFill)
-                    .shape_colorFill(button.shape_colorFill)
-                    .shape_colorStroke(button.shape_colorStroke)
-                    .paddingPercent(button.padding)
-                    .shape(button.shape)
-                    .target(this)
-                    .display(context.showTitle())
-                    .render(function(widget) {
-                        widget.element().style("cursor","pointer");
-                        widget.click = function(d) { context.click(d,widget); };
-                    })
-                ;
-            })
-        ;
+        var surfaceButtons = this.buttonContainer.selectAll(".surface-button").data(this.buttonAnnotations());
+        surfaceButtons.enter().append("button").classed("surface-button",true)
+        .each(function (button, idx) {
+            context._surfaceButtons[idx] = d3.select(this)
+                .attr("class", "surface-button " + button.class)
+                .attr("id", button.id)
+                .style('padding', button.padding)
+                .style('width', button.width)
+                .style('height', button.height)
+                .style("cursor","pointer");
+            var el = context._surfaceButtons[idx]
+                .append('i')
+                .attr("class","fa")
+                .text(function(d) { return button.label })
+                .on("click", function(d) { context.click(d); });
+        })
         surfaceButtons.exit()
             .each(function (d, idx) {
                 var element = d3.select(this);
@@ -167,7 +164,8 @@
             })
         ;
 
-        var buttonClientHeight = this.showTitle() ? Math.max.apply(null,this._surfaceButtons.map(function(d) { return d.getBBox(true).height; })) : 0;
+
+        var buttonClientHeight = this.showTitle() ? Math.max.apply(null,this._surfaceButtons.map(function(d) { return d.node().offsetHeight})) : 0;
         var iconClientSize = this.showIcon() ? this._icon.getBBox(true) : {width:0, height: 0};
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
@@ -195,9 +193,19 @@
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
+
         this._surfaceButtons.forEach(function(button, idx) {
-            button.move({ x: (context._size.width / 2 - menuClientSize.width * 2) - context.buttonGutter() - button.getBBox(true).width * idx, y: yTitle });
+            var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - (button.node().offsetHeight * (idx + 1)) + 'px';
+            var yPos = context._titleRect.node().getBoundingClientRect().top + 'px';
+            button.style('top', yPos);
+            button.style('left', xPos);
+            button.style('position','fixed');
         });
+
+
+        function getPosition(element) {
+            return { x: element.getBoundingClientRect().left, y: element.getBoundingClientRect().top };
+        }
 
         if (this.showTitle()) {
             this._container

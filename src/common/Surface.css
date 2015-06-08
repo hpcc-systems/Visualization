@@ -19,6 +19,27 @@
     stroke: none;
 }
 
-.common_Surface .surface-button tspan { opacity: 0.8; }
-.common_Surface .surface-button tspan:hover { opacity: 1; }
-.common_Surface .surface-button tspan:active { opacity: 0.5; }
+.svg-button-container {
+    position: absolute;
+    right: 5px;
+    top:3px;
+}
+
+.svg-button-container .surface-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    opacity: 0.8;
+    color: #fff;
+}?
+
+.svg-button-container .surface-button:hover { opacity: 1; }
+.svg-button-container .surface-button:active { opacity: 0.5; }
+
+/*.common_Surface button {
+    background-color: transparent;
+    border: none;
+}?
+.common_Surface button:hover {
+    background-color: rgba(255,255,255,0.5) !important;
+}*/

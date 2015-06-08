@@ -11,6 +11,30 @@
     font-weight: bold;
     background-color: #e5e5e5;
 }
+.layout_Surface .html-button-container {
+    position: absolute;
+    right: 5px;
+    top:3px;
+}
+
 .layout_Surface > div {
     padding: 8px;
 }
+
+.layout_Surface .html-button-container .surface-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    opacity: 0.8;
+}​
+
+.layout_Surface .html-button-container .surface-button:hover { opacity: 1; }
+.layout_Surface .html-button-container .surface-button:active { opacity: 0.5; }
+
+/*.layout_Surface button {
+    background-color: transparent;
+    border: none;
+}​
+.layout_Surface button:hover {
+    background-color: rgba(255,255,255,0.5) !important;
+}*/

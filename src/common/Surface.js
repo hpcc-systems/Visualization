@@ -58,7 +58,7 @@
     Surface.prototype.publish("content", null, "widget", "Content",null,{tags:["Private"]});
 
     Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Intermediate"]});
-    Surface.prototype.publish("buttonGutter", 20, "number", "Space Between Menu and Buttons",null,{tags:["Intermediate"]});
+    Surface.prototype.publish("buttonGutter", 30, "number", "Space Between Menu and Buttons",null,{tags:["Intermediate"]});
 
     Surface.prototype.menu = function (_) {
         if (!arguments.length) return this._menu.data();
@@ -195,9 +195,8 @@
         ;
 
         this._surfaceButtons.forEach(function(button, idx) {
-            var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - (button.node().offsetWidth * (idx + 1)) + 'px';
+            var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - (button.node().offsetHeight * (idx + 1)) + 'px';
             var yPos = context._titleRect.node().getBoundingClientRect().top + 'px';
-            console.log(xPos);
             button.style('top', yPos);
             button.style('left', xPos);
             button.style('position','fixed');

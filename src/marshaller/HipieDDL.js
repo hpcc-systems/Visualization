@@ -450,7 +450,7 @@
                 });
                 break;
             case "SLIDER":
-                this.loadWidget("src/other/Slider", function (widget) {
+                this.loadWidget("src/form/Slider", function (widget) {
                     widget
                         .id(visualization.id)
                     ;

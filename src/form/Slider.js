@@ -1,14 +1,14 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./ISlider", "../common/Icon", "css!./Slider"], factory);
+        define(["d3", "../common/SVGWidget", "../api/IInput", "../common/Icon", "css!./Slider"], factory);
     } else {
-        root.other_Slider = factory(root.d3, root.common_SVGWidget, root.other_ISlider, root.common_Icon);
+        root.other_Slider = factory(root.d3, root.common_SVGWidget, root.api_IInput, root.common_Icon);
     }
-}(this, function (d3, SVGWidget, ISlider, Icon) {
+}(this, function (d3, SVGWidget, IInput, Icon) {
     function Slider() {
         SVGWidget.call(this);
-        ISlider.call(this);
+        IInput.call(this);
 
         this.selectionLabel("");
         this._playing = false;
@@ -72,7 +72,7 @@
     }
     Slider.prototype = Object.create(SVGWidget.prototype);
     Slider.prototype._class += " other_Slider";
-    Slider.prototype.implements(ISlider.prototype);
+    Slider.prototype.implements(IInput.prototype);
 
     Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
@@ -91,6 +91,14 @@
     Slider.prototype.publish("playGutter", 12, "number", "Play Gutter");
     Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
     Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
+
+    Slider.prototype.name = function (_) {
+        return Slider.prototype.columns.apply(this, arguments);
+    };
+
+    Slider.prototype.value = function (_) {
+        return Slider.prototype.data.apply(this, arguments);
+    };
 
     Slider.prototype.testData = function (_) {
         this.columns("Percent");

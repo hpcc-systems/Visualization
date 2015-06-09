@@ -22,6 +22,7 @@
     right:25px;
     top:2px;
     opacity: 0.8;
+/*    color: #ff00ff;*/
     color: #fff;
 }​
 .surface-button:hover { opacity: 1; }

@@ -119,14 +119,7 @@
         this._container
             .target(domNode)
         ;
-        this.buttonOverlayContainer = d3.select(this._target).append("div")
-            .style({
-                //position: "relative"
-                position: "absolute",
-                top: 0,
-                right: 0
-            })
-        ;
+        this.buttonContainer = d3.select(this._target).append("div").attr("class", "button-container");
     };
 
     Surface.prototype.update = function (domNode, element) {
@@ -147,16 +140,17 @@
             .render()
         ;
 
-        var surfaceButtons = this.buttonOverlayContainer.append("div").attr("class", "button-container").selectAll(".surface-button").data(this.buttonAnnotations());
+        var surfaceButtons = this.buttonContainer.selectAll(".surface-button").data(this.buttonAnnotations());
         surfaceButtons.enter().append("button").classed("surface-button",true)
         .each(function (button, idx) {
-            var el = d3.select(this);
-            el.attr("class", "surface-button " + button.class)
+            context._surfaceButtons[idx] = d3.select(this)
+                .attr("class", "surface-button " + button.class)
                 .attr("id", button.id)
                 .style('padding', button.padding)
                 .style('width', button.width)
                 .style('height', button.height)
-                .style("cursor","pointer")
+                .style("cursor","pointer");
+            var el = context._surfaceButtons[idx]
                 .append('i')
                 .attr("class","fa")
                 .text(function(d) { return button.label })
@@ -171,7 +165,7 @@
         ;
 
 
-        var buttonClientHeight = this.showTitle() ? Math.max.apply(null,this._surfaceButtons.map(function(d) { return d.getBBox(true).height; })) : 0;
+        var buttonClientHeight = this.showTitle() ? Math.max.apply(null,this._surfaceButtons.map(function(d) { return d.node().offsetHeight})) : 0;
         var iconClientSize = this.showIcon() ? this._icon.getBBox(true) : {width:0, height: 0};
         var textClientSize = this._text.getBBox(true);
         var menuClientSize = this._menu.getBBox(true);
@@ -199,9 +193,20 @@
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
+
         this._surfaceButtons.forEach(function(button, idx) {
-            button.move({ x: (context._size.width / 2 - menuClientSize.width * 2) - context.buttonGutter() - button.getBBox(true).width * idx, y: yTitle });
+            var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - (button.node().offsetWidth * (idx + 1)) + 'px';
+            var yPos = context._titleRect.node().getBoundingClientRect().top + 'px';
+            console.log(xPos);
+            button.style('top', yPos);
+            button.style('left', xPos);
+            button.style('position','fixed');
         });
+
+
+        function getPosition(element) {
+            return { x: element.getBoundingClientRect().left, y: element.getBoundingClientRect().top };
+        }
 
         if (this.showTitle()) {
             this._container

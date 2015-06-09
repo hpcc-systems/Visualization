@@ -14,3 +14,16 @@
 .layout_Surface > div {
     padding: 8px;
 }
+
+.surface-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    right:25px;
+    top:2px;
+    opacity: 0.8;
+/*    color: #ff00ff;*/
+    color: #fff;
+}​
+.surface-button:hover { opacity: 1; }
+.surface-button:active { opacity: 0.5; }

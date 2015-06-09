@@ -1,0 +1,28 @@
+.form_Form {
+    color:#404040;
+}
+
+.form_Form tbody td {
+    white-space: nowrap;
+    border:1px solid #E5E5E5;
+}
+
+.form_Form td.prompt {
+    padding:5px;
+    vertical-align:top;
+    background-color:#E5E5E5;
+}
+
+.form_Form td.input {
+    padding:5px;
+    width:100%;
+    vertical-align:middle;
+}
+
+.form_Form tfoot button{
+    margin:5px;
+}
+
+.form_Form tbody tr:hover {
+    background-color:#FAFAFA;
+}

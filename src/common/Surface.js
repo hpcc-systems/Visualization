@@ -84,7 +84,7 @@
     Surface.prototype.testData = function () {
         this.title("Hello and welcome!");
         this.menu(["aaa", "bbb", "ccc"]);
-        this.buttonAnnotations([{id:"button_1",char:"\uf010",shape:"square",diameter:14,padding:10}, {id:"button_2",char:"\uf00e",shape:"square",diameter:14,padding:10}]);
+        this.buttonAnnotations([{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:10}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:10}]);
 
         return this;
     };
@@ -119,6 +119,14 @@
         this._container
             .target(domNode)
         ;
+        this.buttonDiv = d3.select(this._target).append("div")
+            .style({
+                //position: "relative"
+                position: "absolute",
+                top: 0,
+                right: 0
+            })
+        ;
     };
 
     Surface.prototype.update = function (domNode, element) {
@@ -139,26 +147,21 @@
             .render()
         ;
 
-        var surfaceButtons = element.selectAll(".surface-button").data(this.buttonAnnotations());
-        surfaceButtons.enter().append("g").classed("surface-button",true)
-            .each(function (button, idx) {
-                context._surfaceButtons[idx] = new Icon()
-                    .faChar(button.char)
-                    .diameter(button.diameter)
-                    .image_colorFill(button.image_colorFill)
-                    .shape_colorFill(button.shape_colorFill)
-                    .shape_colorStroke(button.shape_colorStroke)
-                    .paddingPercent(button.padding)
-                    .shape(button.shape)
-                    .target(this)
-                    .display(context.showTitle())
-                    .render(function(widget) {
-                        widget.element().style("cursor","pointer");
-                        widget.click = function(d) { context.click(d,widget); };
-                    })
-                ;
-            })
-        ;
+        var surfaceButtons = this.buttonDiv.append("div").attr("class", "button-container").selectAll(".surface-button").data(this.buttonAnnotations());
+        surfaceButtons.enter().append("button").classed("surface-button",true)
+        .each(function (button, idx) {
+            var el = d3.select(this);
+            el.attr("class", "surface-button " + button.class)
+                .attr("id", button.id)
+                .style('padding', button.padding)
+                .style('width', button.width)
+                .style('height', button.height)
+                .style("cursor","pointer")
+                .append('i')
+                .attr("class","fa")
+                .text(function(d) { return button.label })
+                .on("click", function(d) { context.click(d); });
+        })
         surfaceButtons.exit()
             .each(function (d, idx) {
                 var element = d3.select(this);
@@ -166,6 +169,7 @@
                 element.remove();
             })
         ;
+
 
         var buttonClientHeight = this.showTitle() ? Math.max.apply(null,this._surfaceButtons.map(function(d) { return d.getBBox(true).height; })) : 0;
         var iconClientSize = this.showIcon() ? this._icon.getBBox(true) : {width:0, height: 0};

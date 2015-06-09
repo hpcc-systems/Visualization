@@ -119,7 +119,7 @@
         this._container
             .target(domNode)
         ;
-        this.buttonDiv = d3.select(this._target).append("div")
+        this.buttonOverlayContainer = d3.select(this._target).append("div")
             .style({
                 //position: "relative"
                 position: "absolute",
@@ -147,7 +147,7 @@
             .render()
         ;
 
-        var surfaceButtons = this.buttonDiv.append("div").attr("class", "button-container").selectAll(".surface-button").data(this.buttonAnnotations());
+        var surfaceButtons = this.buttonOverlayContainer.append("div").attr("class", "button-container").selectAll(".surface-button").data(this.buttonAnnotations());
         surfaceButtons.enter().append("button").classed("surface-button",true)
         .each(function (button, idx) {
             var el = d3.select(this);

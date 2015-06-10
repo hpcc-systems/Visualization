@@ -84,7 +84,7 @@
     Surface.prototype.testData = function () {
         this.title("Hello and welcome!");
         this.menu(["aaa", "bbb", "ccc"]);
-        this.buttonAnnotations([{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:10}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:10}]);
+        this.buttonAnnotations([{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:100,font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:10,font:"FontAwesome"}]);
 
         return this;
     };
@@ -144,17 +144,23 @@
         surfaceButtons.enter().append("button").classed("surface-button",true)
         .each(function (button, idx) {
             context._surfaceButtons[idx] = d3.select(this)
-                .attr("class", "surface-button " + button.class)
+                .attr("class", "surface-button " + (button.class ? button.class : ''))
                 .attr("id", button.id)
-                .style('padding', button.padding)
-                .style('width', button.width)
-                .style('height', button.height)
+                //.style('padding', button.padding)
+                //.style('width', button.width)
+                //.style('height', button.height)
                 .style("cursor","pointer");
-            var el = context._surfaceButtons[idx]
-                .append('i')
-                .attr("class","fa")
-                .text(function(d) { return button.label })
-                .on("click", function(d) { context.click(d); });
+            if (button.font === "FontAwesome") {
+                var el = context._surfaceButtons[idx]
+                    .append('i')
+                    .attr("class","fa")
+                    .text(function(d) { return button.label })
+                    .on("click", function(d) { context.click(d); });
+            } else {
+                var el = context._surfaceButtons[idx]
+                    .text(function(d) { return button.label })
+                    .on("click", function(d) { context.click(d); });
+            }
         })
         surfaceButtons.exit()
             .each(function (d, idx) {

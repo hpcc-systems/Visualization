@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/Icon"], function (Icon) {
+                var iconWidget = new Icon()
+                    .size({ width: 25, height:25 }) 
+                    .shape("circle")
+                    .faChar("\uf080")
+                    .target("widget-wrapper")
+                    .render() 
+                ;
+                iconWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

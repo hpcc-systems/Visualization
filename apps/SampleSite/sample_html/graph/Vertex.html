@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/graph/Vertex"], function (Vertex) {
+                var faCharWidget = new Vertex()
+                    .size({ width: 100, height:100 }) 
+                    .text("Graph\nVertex")
+                    .faChar("\uf080")
+                    .target("widget-wrapper")
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

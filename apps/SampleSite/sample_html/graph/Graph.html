@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>
+            require(["src/graph/Graph","src/common/Icon","src/graph/Vertex","src/graph/Edge","src/common/TextBox"], function (Graph,Icon,Vertex,Edge,TextBox) {
+                function createEdge(source, target, label) {
+                    return new Edge()
+                        .sourceVertex(source)
+                        .targetVertex(target)
+                        .sourceMarker("circleFoot")
+                        .targetMarker("arrowHead")
+                        .text(label || "")
+                    ;
+                }
+                var vertices = [
+                    new TextBox().text("c3/Pie.js"),
+                    new TextBox().text("c3/Common2D.js"),
+                    new TextBox().text("chart/I2DChart.js"),
+                    new TextBox().text("c3/Common.js"),
+                    new TextBox().text("common/Widget.js"),
+                    new Icon()
+                        .size({ width: 25, height:25 }) 
+                        .shape("circle")
+                        .faChar("\uf080"),
+                    new Vertex()
+                        .size({ width: 100, height:100 }) 
+                        .text("Graph\nVertex")
+                        .faChar("\uf080")
+                ];
+                var edges = [
+                    createEdge(vertices[0], vertices[1]), 
+                    createEdge(vertices[1], vertices[2]),
+                    createEdge(vertices[1], vertices[3]),
+                    createEdge(vertices[3], vertices[4]),
+                    createEdge(vertices[0], vertices[5]),
+                    createEdge(vertices[0], vertices[6])
+                ];
+                new Graph()
+                    .size({width:400,height:400})
+                    .target("widget-wrapper")
+                    .data({ vertices: vertices, edges: edges })
+                    .layout("Hierarchy")
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

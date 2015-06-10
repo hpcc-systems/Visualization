@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/amchart/FloatingColumn"], function (Widget) {
+                debugger
+                new Widget()
+                    .size({width:500,height:500})
+                    .target("widget-wrapper")
+                    .columns(["Subject", "open", "close"])
+                    .data([
+                        ["Geography", 15, 35],
+                        ["English", 25, 45],
+                        ["Math", 10, 35],
+                        ["Science", 45, 60]
+                    ])
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

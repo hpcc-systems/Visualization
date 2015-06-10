@@ -149,6 +149,7 @@
     };
 
     Gauge.prototype.testData = function() {
+        debugger
         this.numBands(3);
         this.bandsColor(["#84b761","#fdd400","#cc4748"]);
         this.bandsEndValue([90,130,220]);

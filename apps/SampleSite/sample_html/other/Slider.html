@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/other/Slider"], function (Slider) {
+                var sliderWidget = new Slider()
+                    .size({ width: 500 , height: 100 })
+                    .target("widget-wrapper")
+                    .range({ low: 2000, high:2020 }) 
+                    .step(2) 
+                    .render()
+                ;
+                sliderWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

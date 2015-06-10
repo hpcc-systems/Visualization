@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/c3chart/Area"], function(C3Area) {
+                var areaWidget = new C3Area()
+                    .size({width:500,height:300})
+                    .target("widget-wrapper")
+                    .columns(["Subject", "Year 1", "Year 2", "Year 3"])   
+                    .testData([
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 66]
+                    ])
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                areaWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };         
+            });   
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

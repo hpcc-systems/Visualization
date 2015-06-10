@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/tree/Dendrogram"], function (Dendrogram) {
+                var dendrogramWidget = new Dendrogram()
+                    .size({width:400,height:250})
+                    .target("widget-wrapper")
+                    .data({label: "root", children: [{
+                        label: "A",
+                        children: [{
+                            label: "AA",
+                            children: [{
+                                label: "AAA"
+                            }]
+                        }, {
+                            label: "AB",
+                            children: [{
+                                label: "ABA"
+                            }]
+                        }]
+                    }, {
+                        label: "B",
+                        children: [{
+                            label: "BA",
+                            children: [{
+                                label: "BAA"
+                            }]
+                        }, {
+                            label: "BB"
+                        }]
+                    }]})
+                    .render()
+                ;
+                dendrogramWidget.click = function(d) { console.log('Override Click: ' +  d.label); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

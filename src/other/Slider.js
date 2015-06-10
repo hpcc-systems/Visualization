@@ -149,7 +149,13 @@
         ;
         clearInterval(this.intervalHandler);
     };
-
+    
+    Slider.prototype.range = function(_) {
+        this.low(_.low);
+        this.high(_.high);
+        
+        return this;
+    };
     Slider.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {

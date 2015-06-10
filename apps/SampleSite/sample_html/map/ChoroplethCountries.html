@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="../../bower_components/requirejs/require.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/map/ChoroplethCountries"], function (ChoroplethCountries,Palette) {
+                var choroplethCountriesWidget = new ChoroplethCountries()
+                    .size({width:500,height:400})
+                    .target("widget-wrapper")
+                    .testData()
+                    .scale(1)
+                    .render()
+                ;
+                choroplethCountriesWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

@@ -94,7 +94,6 @@
 
     Timeline.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        this.testData(this);
         this._chart.draw(this._data_google, this.getChartOptions());
     };
 

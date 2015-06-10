@@ -47,7 +47,7 @@
                 });
             } else {
                 this.discover(widget).forEach(function (item) {
-                    if (widget[item.id + "_modified"]()) {
+                    if (widget[item.id + "_modified"]() || typeof(widget["__meta_"+item.id].trueDefaultValue) !== "undefined") {
                         switch (item.type) {
                             case "widget":
                                 retVal.__properties[item.id] = this.serializeToObject(widget[item.id](), null, includeData);

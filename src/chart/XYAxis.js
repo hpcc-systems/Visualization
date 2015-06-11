@@ -10,22 +10,22 @@
         SVGWidget.call(this);
         this._drawStartPos = "origin";
 
-        this._xScale = "";
+        this._dataScale = "";
         this.parseDate = d3.time.format("%Y-%m-%d").parse;
     }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
 
-    XYAxis.prototype.xScale = function (_) {
-        if (!arguments.length) return this._xScale;
-        this._xScale = _;
+    XYAxis.prototype.dataScale = function (_) {
+        if (!arguments.length) return this._dataScale;
+        this._dataScale = _;
         return this;
     };
 
     XYAxis.prototype.enter = function (domNode, element) {
         this.x = null;
-        switch (this._xScale) {
+        switch (this._dataScale) {
             case "DATE":
                 this.x = d3.time.scale();
                 break;
@@ -35,12 +35,12 @@
         }
         this.y = d3.scale.linear();
 
-        this.xAxis = d3.svg.axis()
+        this.dataAxis = d3.svg.axis()
             .orient("bottom")
             .scale(this.x)
         ;
 
-        this.yAxis = d3.svg.axis()
+        this.columnAxis = d3.svg.axis()
             .orient("left")
             .scale(this.y)
             .tickFormat(d3.format(".2s"))
@@ -50,10 +50,10 @@
         this.svg = element.append("g");
         this.svgData = this.svg.append("g");
         this.svgXAxis = this.svg.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
+            .attr("class", this.orientation() === "horizontal" ? "data axis" : "column axis")
         ;
         this.svgYAxis = this.svg.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
+            .attr("class", this.orientation() === "horizontal" ? "column axis" : "data axis")
         ;
     };
 
@@ -64,31 +64,31 @@
         var test = element.append("g");
 
         var svgXAxis = test.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
+            .attr("class", this.orientation() === "horizontal" ? "data axis" : "column axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(this.orientation() === "horizontal" ? this.xAxis : this.yAxis)
+            .call(this.orientation() === "horizontal" ? this.dataAxis : this.columnAxis)
         ;
         var svgYAxis = test.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
-            .call(this.orientation() === "horizontal" ? this.yAxis : this.xAxis)
+            .attr("class", this.orientation() === "horizontal" ? "column axis" : "data axis")
+            .call(this.orientation() === "horizontal" ? this.columnAxis : this.dataAxis)
         ;
 
         var x_bbox = svgXAxis.node().getBBox();
         var y_bbox = svgYAxis.node().getBBox();
         margin.bottom = x_bbox.height;
         margin.left = y_bbox.width;
-        test.remove();
+        // test.remove();
         return margin;
     };
 
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
 
-        this.xAxis.orient(this.orientation() === "horizontal" ? "bottom" : "left");
-        this.yAxis.orient(this.orientation() === "horizontal" ? "left" : "bottom");
+        this.dataAxis.orient(this.orientation() === "horizontal" ? "bottom" : "left");
+        this.columnAxis.orient(this.orientation() === "horizontal" ? "left" : "bottom");
 
         //  Update Domain  ---
-        switch (this._xScale) {
+        switch (this._dataScale) {
             case "DATE":
                 var dateMin = d3.min(this._data, function (data) {
                     return d3.min(data, function (d) { return context.parseDate(d[0]); });
@@ -139,14 +139,14 @@
 
         this.svgXAxis.transition()
             .attr("transform", "translate(0," + height + ")")
-            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
-            .call(this.orientation() === "horizontal" ? this.xAxis : this.yAxis)
+            .attr("class", this.orientation() === "horizontal" ? "data axis" : "column axis")
+            .call(this.orientation() === "horizontal" ? this.dataAxis : this.columnAxis)
         ;
 
         this.svgYAxis.transition()
             .attr("transform", this.orientation() === "horizontal" ? null : "translate(0, 0)")
-            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
-            .call(this.orientation() === "horizontal" ? this.yAxis : this.xAxis)
+            .attr("class", this.orientation() === "horizontal" ? "column axis" : "data axis")
+            .call(this.orientation() === "horizontal" ? this.columnAxis : this.dataAxis)
         ;
 
         this.updateChart(domNode, element, margin, width, height);

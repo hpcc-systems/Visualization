@@ -74,7 +74,7 @@
     Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(ISlider.prototype);
 
-    Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
+    Slider.prototype.publish("padding", 0, "number", "Outer Padding", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
@@ -191,7 +191,7 @@
 
         this.handle = this.brushg.selectAll(".resize").append("path")
             .attr("class", "handle")
-            .attr("transform", "translate(0,-27)")
+            .attr("transform", "translate(0,-36)")
         ;
 
         this._playIcon
@@ -205,8 +205,23 @@
         ;
     };
 
+    Slider.prototype.calcDelta = function (domNode, element, leftPos, width) {
+        var axisElement = element.append("g")
+             .attr("class", "x axis")
+             .call(this.axis)
+        ;
+        var x_bbox = axisElement.node().getBBox();
+        var retVal = {
+            left: x_bbox.x - leftPos,
+            right: x_bbox.x - leftPos + x_bbox.width - width
+        };
+        axisElement.remove();
+        return retVal;
+    };
+
     Slider.prototype.update = function (domNode, element) {
         var context = this;
+        var leftPos = -this.width() / 2 + this.padding();
         var width = this.width() - this.padding() * 2;
 
         this._playIcon
@@ -223,17 +238,23 @@
             .render()
         ;
 
-        this.xScale
-            .domain([this.low(), this.high()])
-            .range([-width / 2, width / 2 - (this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0)])
-        ;
-
         if ((this.high() - this.low()) / this.step() <= 10) {
             this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         } else {
-            this.axis.tickValues(null);
+            this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), (this.high() - this.low()) / this.step()), [this.high()]]));
         }
+
+        width -= this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
+        this.xScale
+            .domain([this.low(), this.high()])
+            .range([leftPos, leftPos + width])
+        ;
+        var delta = this.calcDelta(domNode, element, leftPos, width);
+        this.xScale
+            .range([leftPos - delta.left, leftPos + width - delta.right])
+        ;
         this.axisElement
+            .attr("transform", "translate(0, -10)")
             .call(this.axis)
         ;
 

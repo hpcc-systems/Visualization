@@ -203,15 +203,16 @@ gulp.task("bump", [], function () {
     ;
 });
 
+const TAG_FILES = ["./package.json", "./bower.json", "./dist", "./dist-amd"];
 gulp.task("git-add-dist", ["build-all"], function (cb) {
-    return gulp.src(["./dist", "./dist-amd"])
+    return gulp.src(TAG_FILES)
         .pipe(git.add({ args: "-f" }))
     ;
 });
 
 gulp.task("tag", ["git-add-dist"], function () {
     var version = require("./package.json").version;
-    return gulp.src(["./package.json", "./bower.json", "./dist", "./dist-amd"])
+    return gulp.src(TAG_FILES)
         .pipe(git.commit("Release " + version + "\n\nTag for release.\nAdd dist files.\n", { args: "-s" }))
         .pipe(filter("package.json"))
         .pipe(tag_version())

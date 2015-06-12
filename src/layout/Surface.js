@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../chart/MultiChart", "css!./Surface"], factory);
+        define(["d3", "../common/HTMLWidget", "../chart/MultiChart", "css!./Surface", "css!font-awesome",], factory);
     } else {
         root.layout_Surface = factory(root.d3, root.common_HTMLWidget, root.chart_MultiChart);
     }
@@ -10,6 +10,8 @@
         HTMLWidget.call(this);
 
         this._tag = "div";
+
+        this._surfaceButtons = [];
     }
     Surface.prototype = Object.create(HTMLWidget.prototype);
     Surface.prototype._class += " layout_Surface";
@@ -31,9 +33,33 @@
     Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:['Basic']});
     Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:['Private']});
 
+    Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:['Private']});
+
     Surface.prototype.testData = function () {
         this.title("ABC");
         this.widget(new Surface().widget(new MultiChart().testData()));
+
+        this.buttonAnnotations([
+            {
+                id:"button_1",
+                label:"\uf00e",
+                width:60,
+                padding:5,
+                class: "",
+                callback: function(domNode) {
+                    console.log("Click Override on button " + domNode);
+                }
+            },{
+                id:"button_2",
+                label:"\uf010",
+                width:30,
+                padding:5,
+                class:"",
+                callback: function(domNode) {
+                    console.log("Click Override on button " + domNode);
+                }
+            }]);
+
         return this;
     };
 
@@ -54,6 +80,7 @@
 
     Surface.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+        var context = this;
 
         element
             .style("border-width",this.surfaceBorderWidth()+'px')
@@ -78,6 +105,32 @@
         ;
         titles.exit().remove();
 
+        var surfaceTitle = element.select(".surfaceTitle");
+
+        var surfaceButtons = surfaceTitle.append("div").attr("class","html-button-container").selectAll(".surface-button").data(this.buttonAnnotations());
+        surfaceButtons.enter().append("button").classed("surface-button",true)
+        .each(function (button, idx) {
+            context._surfaceButtons[idx] = d3.select(this)
+                .attr("class", "surface-button " + button.class)
+                .attr("id", button.id)
+                .style('padding', button.padding)
+                .style('width', button.width)
+                .style('height', button.height)
+                .style("cursor","pointer");
+            // TODO switch for turning on and off font-awesome ?
+            var el = context._surfaceButtons[idx]
+                .append('i')
+                .attr("class","fa")
+                .text(function(d) { return button.label })
+                .on("click", function(d) { context.click(d); });
+        })
+        surfaceButtons.exit()
+            .each(function (d, idx) {
+                var element = d3.select(this);
+                delete context._surfaceButtons[idx];
+                element.remove();
+            })
+        ;
         var widgets = element.selectAll("#" + this._id + " > .surfaceWidget").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
 
         var context = this;
@@ -124,6 +177,10 @@
                 }
             }
         });
+    };
+
+    Surface.prototype.click = function(obj) {
+        console.log('Clicked: ' + obj.id);
     };
 
     return Surface;

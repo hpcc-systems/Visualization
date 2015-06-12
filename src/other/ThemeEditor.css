@@ -171,14 +171,14 @@
 }
 .te-section-table.expanded > thead > tr > th:after {
     font: normal normal normal 14px/1 FontAwesome;
-    content: "";
+    content: "ï…‡";
     float: right;
     margin-right: 6px;
     margin-top: 4px;
 }
 .te-section-table.collapsed > thead > tr > th:after {
     font: normal normal normal 14px/1 FontAwesome;
-    content: "";
+    content: "ï†–";
     float: right;
     margin-right: 6px;
     margin-top: 4px;

@@ -16,20 +16,20 @@
         this._columns = ["Key", "Value"];
         this._contentEditors = [];
         this._showSettings = true;
-        
+
         this._defaultThemes = [];
-        
+
         this._widgetObjsById = {};
     }
-    var getThemes = function(idx){ 
+    var getThemes = function(idx){
         g_defaultThemes(idx);
         return JSON.parse(localStorage.themeEditorThemes);
     };
-    var getSerials = function(idx){ 
+    var getSerials = function(idx){
         g_defaultSerials(idx);
         return JSON.parse(localStorage.themeEditorSerials);
     };
-    var getThemeNames = function(idx){ 
+    var getThemeNames = function(idx){
         var loadedThemes = getThemes();
         var themes = [];
         for(var themeName in loadedThemes){
@@ -40,7 +40,7 @@
         }
         return themes;
     };
-    var getSerialNames = function(idx){ 
+    var getSerialNames = function(idx){
         var loadedSerials = getSerials();
         var serials = [];
         for(var serialName in loadedSerials){
@@ -71,7 +71,7 @@
     ThemeEditor.prototype.getSerials = getSerials;
     ThemeEditor.prototype.getDefaultThemes = getThemeNames;
     ThemeEditor.prototype.getDefaultSerials = getSerialNames;
-    
+
     ThemeEditor.prototype.showSettings = function (_) {
         if (!arguments.length) {
             return this._showSettings;
@@ -86,7 +86,7 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
-    
+
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
         if (typeof (context._current_grouping) === 'undefined') {
@@ -106,23 +106,23 @@
         }
         return needsRedraw;
     };
-    
+
     ThemeEditor.prototype.widgetProperty = function (widget, propID, _) {
         if (_ === undefined) {
             return widget[propID]();
         }
         return widget[propID](_);
     };
-    
+
     ThemeEditor.prototype.load = function(){};
-    
+
     ThemeEditor.prototype.save = function(){};
 
     ThemeEditor.prototype.needsPropTableRedraw = function (domNode, element) {
         var ret = document.getElementById('te-themeEditorOptions') === null;
         return ret;
     };
-    
+
     ThemeEditor.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         if (tableNeedsRedraw(this)) {
@@ -131,7 +131,7 @@
         this._current_grouping = this.paramGrouping();
         this._widgetObjsById[this._id] = this;
         this._sharedProperties = this.findSharedProperties(this._data);
-        
+
         var needsPropertiesTableRedraw = this.needsPropTableRedraw();
         if(needsPropertiesTableRedraw && this.showSettings()){
             var teParams = Persist.discover(this);
@@ -151,19 +151,19 @@
             evt.initEvent("TE Properties Ready", true, true);
             document.dispatchEvent(evt);
         }
-        
+
         this.buildTableObjects(domNode,this._sharedProperties);
-        
+
         this.initFunctionality(domNode);
     };
-    
+
     ThemeEditor.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
     ThemeEditor.prototype.click = function (d) {
     };
-    
+
     ThemeEditor.prototype.propertiesTableHtml = function (editorParams) {
         var tableObj = {
             id:'te-themeEditorOptions',
@@ -207,7 +207,7 @@
                     });
                 }
             }
-            
+
         }
         var html = '';
         if(tableObj.rowArr.length > 0){
@@ -251,17 +251,17 @@
             if(this.themeMode()){
                 if(p.toUpperCase().indexOf('FONT') !== -1 && !(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") !== -1 && p.toUpperCase().indexOf('COLOR') !== -1)){
                     sectionObjs['fontSection'].rowObjArr.push(propObjs[p]);
-                } 
+                }
                 else if(p === "paletteID"){
                     sectionObjs['chartColorSection'].rowObjArr.push(propObjs[p]);
-                } 
+                }
                 else if(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") !== -1){
                     sectionObjs['surfaceSection'].rowObjArr.push(propObjs[p]);
-                } 
+                }
             } else {
                 if(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") === -1){
                     sectionObjs['nonSurfaceSection'].rowObjArr.push(propObjs[p]);
-                } 
+                }
             }
         }
         var html = '';
@@ -270,7 +270,7 @@
         }
         targetElement.innerHTML += html;
     };
-    
+
     ThemeEditor.prototype.initFunctionality = function(elm){
         var context = this;
         _expandCollapse(elm);
@@ -326,7 +326,7 @@
                     inputElm.onchange = function (e){
                         var elm = e.srcElement;
                         context.themeMode(elm.checked);
-                        
+
                         var name = document.getElementById("te-load-theme");
                         var nameToLoad = name !== null ? name.value : "Default";
                         context.load(nameToLoad);
@@ -337,11 +337,11 @@
                         var elm = e.srcElement;
 
                         var id = elm.getAttribute('id');
-                        
+
                         if (elm.className.split(' ').indexOf('te-html-color-button') !== -1){
                             id = elm.previousSibling.getAttribute('id');
                             elm.previousSibling.value = elm.value;
-                        } 
+                        }
                         var elmType = elm.getAttribute('type');
                         var splitId = id.split('-');
                         var genericId = splitId.slice(0,splitId.length-1).join('-') + '-';
@@ -355,7 +355,7 @@
                             if(elmType === "checkbox"){
                                 indElm.checked = elm.checked;
                                 context._widgetObjsById[wid][paramId](elm.checked);
-                            } 
+                            }
                             else if (elm.getAttribute('data-type') === 'array') {
                                 indElm.value = elm.value;
                                 try{
@@ -365,10 +365,10 @@
                             else {
                                 indElm.value = elm.value;
                                 context._widgetObjsById[wid][paramId](elm.value);
-                                
+
                                 if (indElm.className.split(' ').indexOf('te-html-color-input') !== -1){
                                     indElm.nextSibling.value = elm.value;
-                                } 
+                                }
                                 else if (indElm.className.split(' ').indexOf('te-html-color-button') !== -1) {
                                     indElm.previousSibling.value = elm.value;
                                 }
@@ -456,9 +456,9 @@
                 });
             });
         });
-        
+
         return this.tableObjHtml(tableObj);
-        
+
         function _propertyLabel(widgetObj){
             var spaceSplit = widgetObj.widget._class.split(' ');
             var splitClass = spaceSplit[spaceSplit.length-1].split('_');
@@ -468,12 +468,12 @@
         function _sharedPropertyLabel(rowObj){
             return camelizeString(rowObj.id);
         }
-        
+
         function _propertyInput(rowObj,idx){
             var value = _value(rowObj,idx);
             var html = tableInputHtml(rowObj,value,[rowObj.arr[idx]],rowObj.arr[idx].widget._id);
             return html;
-            
+
             function _value(rowObj,idx){
                 var value = rowObj.arr[idx].widget[rowObj.id]();
                 return value !== null ? value : '';
@@ -483,7 +483,7 @@
             var value = _sharedValue(rowObj);
             var html = tableInputHtml(rowObj,value,rowObj.arr,'shared');
             return html;
-            
+
             function _sharedValue(rowObj){
                 var value = rowObj.arr[0].widget[rowObj.id]();
                 rowObj.arr.forEach(function(w,i){
@@ -501,12 +501,12 @@
             }
         }
     };
-    
+
     var camelizeString = function(str){
         var spacedText = str.split(/(?=[0-9A-Z])/).map(function(n){return n.length > 1 ? n+' ' : n;}).join('');
         return spacedText.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
     };
-    
+
     var tableInputHtml = function (rowObj,value,widgetArr,idSuffix){
         var inputHtml = '';
         var id = 'te-input-'+rowObj.id+'-'+idSuffix;
@@ -520,7 +520,7 @@
             id = rowObj.inputID;
         }
 
-        var dataWIDs = 'data-paramid="'+rowObj.id+'" data-wids="'+widgetArr.map(function(w){ 
+        var dataWIDs = 'data-paramid="'+rowObj.id+'" data-wids="'+widgetArr.map(function(w){
             if(typeof(w.widget) === "object"){
                 return w.widget._id;
             } else {
@@ -584,7 +584,7 @@
             return options;
         }
     };
-    
+
     ThemeEditor.prototype.tableObjHtml = function (tableObj) {
         var html = '<table id="'+tableObj.id+'" class="te-section-table expanded">';
             html += '<thead><tr><th colspan="2">'+tableObj.label+'</th></tr></thead>';
@@ -601,7 +601,7 @@
             html += '<td>'+rowObj.td+'</td>';
         return html + '</tr>';
     };
-    
+
     ThemeEditor.prototype.setWidgetObjsById = function (widgetProp) {
         var context = this;
         var val = widgetProp.widget[widgetProp.id]();
@@ -609,7 +609,7 @@
             val.forEach(function(widget){
                 context._widgetObjsById[widget._id] = widget;
             });
-        } 
+        }
         else if(widgetProp.type === "widget" && val !== null) {
             this._widgetObjsById[val._id] = val;
         }
@@ -675,7 +675,7 @@
             });
         }
         return propsByID;
-        
+
         function _getParams(widgetObj, depth) {
             var retArr = [];
             if(widgetObj !== null){

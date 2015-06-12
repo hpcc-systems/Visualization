@@ -67,7 +67,17 @@
         if (arguments.length) {
             var data = null;
             if (this._data.length) {
-                data = [this._columns].concat(this._data);
+                data = [this._columns].concat(this._data.map(function (row, row_idx) {
+                    return row.map(function (cell, idx) {
+                        if (idx > 0) {
+                            if (isNaN(cell)) {
+                                console.log("Invalid Data:  " + cell + " (" + row_idx + ", " + idx + ")");
+                            }
+                            return parseFloat(cell);
+                        }
+                        return cell;
+                    });
+                }));
             } else {
                 data = [
                     ['', { role: 'annotation' }],

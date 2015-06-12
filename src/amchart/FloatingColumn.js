@@ -64,6 +64,8 @@
             }
         });
         this._columns = colArr;
+        
+        return this;
     };
 
     FloatingColumn.prototype.enter = function(domNode, element) {

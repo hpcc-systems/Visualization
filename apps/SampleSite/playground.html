@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Visualization Documentation</title>
+        <meta charset="UTF-8">
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- DO WE NEED THIS? FOR CHEVRONS? --> 
+        <link href="css/playground.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
+
+        <!--<script type="text/javascript" src="templates/compiled_handlebars_templates.js"></script>-->
+        <script type="text/javascript" src="js/handlebars_data.js"></script>
+        <script type="text/javascript" src="js/doc_section.js"></script>
+        <script type="text/javascript" src="js/hierarchy.js"></script>
+        <script type="text/javascript" src="js/playground.js"></script>
+
+        <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/mode-css.js" type="text/javascript" charset="utf-8"></script>
+
+        <style id="live-edit-style"></style>
+            
+        <script type="text/javascript" src="//rawgit.com/therealglazou/jscssp/master/cssParser.js"></script>
+
+        <script>
+
+            var wName = window.location.search.split("?")[1] || "google/Bar";
+            // Ajax Load Handlebar Templates
+
+            var bootstrapDropdown;
+            var bootstrapPanel;
+            var bootstrapTabs;
+
+            // http://stackoverflow.com/questions/26643503/handlebars-loading-external-template-files
+            function loadHandlebarTemplate(path) {
+                return $.get(path);
+//                return $.ajax({
+//                    url: path,
+//                    cache: false,
+//                    dataType: "text"
+//                });
+            }
+
+            $.when(
+                loadHandlebarTemplate('templates/bootstrap-dropdown.handlebars'),
+                loadHandlebarTemplate('templates/bootstrap-tabs.handlebars'),
+                loadHandlebarTemplate('templates/bootstrap-panel.handlebars')
+            ).done(function(ajaxBootstrapDropdown, ajaxBootstrapTabs, ajaxBootstrapPanel) {
+                bootstrapDropdown  = Handlebars.compile(ajaxBootstrapDropdown[0]);
+                bootstrapPanel  = Handlebars.compile(ajaxBootstrapPanel[0]);
+                bootstrapTabs  = Handlebars.compile(ajaxBootstrapTabs[0]);
+                loadPage();
+            });
+
+//            var bootstrapDropdown = Handlebars.templates['bootstrap-dropdown'];
+//            var bootstrapPanel = Handlebars.templates['bootstrap-panel'];
+//            var bootstrapTabs = Handlebars.templates['bootstrap-tabs'];
+//
+//            $(document).ready(function() {
+//                loadPage();
+//            });
+
+            // Init Page
+            function loadPage() {
+
+                // Init Skeleton
+                $('#chart-wrapper').html(bootstrapTabs(chartTabsObj));
+                $('#config-wrapper').html(bootstrapTabs(configTabsObj));
+                $('#documentation-wrapper').html(bootstrapPanel(docMethodsObj));
+                $('#dropdown-wrapper').html(bootstrapDropdown(dropDownObj));
+                // Initialize first chart on page load
+
+                var initEl = $("ul.dropdown-menu").find("a[data-value='" + wName + "']");
+                if (!initEl.length) {
+                    alert("No chart found for '" + wName + "'. Please select a chart from the menu.");
+                } else {
+                    update_chart(initEl);
+                }
+
+                $('.menu_item').click(function() {
+                    $('#chartTab1').prepend('<div class="loading_spinner"><i class="fa fa-spinner fa-spin"></i></div>');
+                    $('.tab-pane, li[role="presentation"]').removeClass("active");
+                    $('#discover-pane, #chartTab1').addClass("active");
+                    $('li[data-for="discover-pane"], li[data-for="chartTab1"]').addClass("active");
+
+                    var context = $(this);
+                    if ($('#widget-wrapper').children().length > 0) {
+                        $('#widget-wrapper').children().fadeOut('fast', function() {
+                            $('#widget-wrapper').empty();
+                            update_chart(context);
+                        });
+                    } else {
+                        update_chart(context);
+                    }
+                });
+
+                $("#showDocButton").click(function() {
+                    //TODO show hide doc toggle text?
+                    $("#documentation-wrapper").toggle();
+                });
+
+                // CSS Editor & Parsing
+                // https://github.com/ajaxorg/ace/wiki/Embedding-API
+                var editor = ace.edit("css-editor");
+                editor.getSession().setMode("ace/mode/css");
+
+                var cssData = "#discover-pane{overflow:auto}\n#discover-pane > div{overflow:visible !important}\n#documentation-wrapper{display:none}\npre.prettyprint{display:block;overflow:auto;width:100%}\n";
+                editor.getSession().setValue(cssData);
+
+                var parser = new CSSParser();
+                    
+                editor.on('change', function() {
+                    var sheet = parser.parse(editor.getSession().getValue(), false, true);
+                    if (sheet.cssRules) {
+                        var newCSSArr = [];
+                        $.each(sheet.cssRules, function(i,v) {
+                            newCSSArr.push("#widget-wrapper " + v.parsedCssText);
+                        });
+                        $("#live-edit-style").html(newCSSArr.join("\n"));
+                    }
+                });
+                
+                $('a[href="#css-pane"]').on("shown.bs.tab",function(e){
+                    $("#css-editor").css("width",$("#css-pane").width());
+                    $("#css-editor").css("height",$("#css-pane").height());
+                    editor.resize();
+                });
+                // editor.setReadOnly(true); 
+                // editor.container.style.opacity=0.9
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and Toggle -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+
+            </div>
+            <!-- Links -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="playground.html">Playground</a></li>
+                    <li><a href="themeeditor.html">Theme Editor</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /.navbar-default -->
+        <div class="row">
+            <div id="dropdown-wrapper" class="dropdown"></div>
+        </div>
+        <div class="row">
+            <div id="chart-wrapper" class="docs-tabs col-xs-12 col-md-6"></div>
+            <div id="config-wrapper" class="docs-tabs col-xs-12 col-md-6"></div>
+        </div>
+        <div class="row">
+            <div id="documentation-wrapper" class="col-xs-12"></div>
+        </div>
+    </body>
+</html>

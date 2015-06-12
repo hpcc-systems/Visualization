@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+        require(["src/map/GMap"], function (GMap,Palette) {
+            var mapWidget = new GMap()
+                .target("widget-wrapper")
+                .testData()
+                .render()
+            ;
+            document.getElementById("widget-wrapper").style.width = "800px";
+            document.getElementById("widget-wrapper").style.height = "500px";
+
+            mapWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+        });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>
+                

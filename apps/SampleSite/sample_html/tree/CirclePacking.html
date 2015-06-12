@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/tree/CirclePacking"], function (CirclePacking) {
+                var circlePackingWidget = new CirclePacking()
+                    .size({width:500,height:500})
+                    .target("widget-wrapper")
+                    .data({label: "root", children: [{
+                        label: "A",
+                        children: [{
+                            label: "AA",
+                            children: [{
+                                label: "AAA"
+                            }]
+                        }, {
+                            label: "AB",
+                            children: [{
+                                label: "ABA"
+                            }]
+                        }]
+                    }, {
+                        label: "B",
+                        children: [{
+                            label: "BA",
+                            children: [{
+                                label: "BAA"
+                            }]
+                        }, {
+                            label: "BB"
+                        }]
+                    }]})
+                    .render()
+                ;
+                circlePackingWidget.click = function(d) { console.log('Override Click: ' + d.label); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

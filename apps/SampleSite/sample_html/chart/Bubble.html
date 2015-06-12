@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/chart/Bubble"], function (Bubble) {
+                var bubbleWidget = new Bubble()
+                    .size({width:500,height:500})
+                    .target("widget-wrapper")
+                    .columns(["Subject", "Year 1"])   
+                    .data([
+                        ["Geography", 75],
+                        ["English", 45],
+                        ["Math", 98],
+                        ["Science", 66]
+                    ])
+                    .render()
+                ;
+                bubbleWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

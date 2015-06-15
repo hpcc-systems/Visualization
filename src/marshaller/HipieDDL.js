@@ -180,7 +180,7 @@
                         });
                     }
                 });
-                retVal.annotation_icons(annotations);
+                retVal.annotationIcons(annotations);
             }
             return retVal;
         }
@@ -214,7 +214,10 @@
         this._id = source.id;
         this._output = source.output;
         this.mappings = null;
-        switch(this.visualization.type) {
+        if (!source.mappings) {
+            console.log("no mappings for:" + visualization.id + "->" + source.id);
+        }
+        switch (this.visualization.type) {
             case "LINE":
                 this.mappings = new LineMappings(this.visualization, source.mappings);
                 break;

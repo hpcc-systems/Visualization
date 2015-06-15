@@ -193,7 +193,6 @@
 
                 d
                     .surfacePadding(context.cellPadding())
-                    .scale(context.designMode() ? 0.75 : 0)
                     .resize()
                 ;
             })

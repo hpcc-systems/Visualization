@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>
+            require(["src/common/Surface","src/graph/Graph"], function (Surface,Graph) {
+                var vertices = [
+                    new Surface()
+                        .size({width:350,height:250})
+                        .title("Surface")
+                        .menu(["aaa", "bbb", "ccc"])
+                    
+                ];
+                var graphWidget = new Graph()
+                    .size({width:640,height:480})
+                    .target("widget-wrapper")
+                    .data({ vertices: vertices, edges: [] })
+                    .layout("Hierarchy")
+                    .render()
+                ;
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

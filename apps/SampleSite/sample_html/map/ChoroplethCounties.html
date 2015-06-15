@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/map/ChoroplethCounties"], function (ChoroplethCounties,Palette) {
+                var choroplethCountiesWidget = new ChoroplethCounties()
+                    .size({width:500,height:400})
+                    .target("widget-wrapper")
+                    .testData()
+                    .scale(1)
+                    .render()
+                ;
+                choroplethCountiesWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

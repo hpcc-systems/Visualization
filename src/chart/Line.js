@@ -26,13 +26,13 @@
         var horizontalFunction = function (d) {
             switch (context._xScale) {
                 case "DATE":
-                    return context.x(context.parseDate(d[0]));
+                    return context.dataScale(context.parseDate(d[0]));
             }
-            return context.x(d[0]) + (context.x.rangeBand ? context.x.rangeBand() / 2 : 0);
+            return context.dataScale(d[0]) + (context.dataScale.rangeBand ? context.dataScale.rangeBand() / 2 : 0);
         };
 
         var verticalFunction = function (d) {
-            return context.y(d[1]);
+            return context.valueScale(d[1]);
         };
 
         this._palette = this._palette.switch(this.paletteID());
@@ -64,7 +64,7 @@
             .text(function(d) { return d; })
         ;
         line
-            .datum(function (d, i) { return context._data.map(function (row, rowIdx) { return [row[0], row[i + 1]];}); })
+            .datum(function (d, i) { return context.data().map(function (row, rowIdx) { return [row[0], row[i + 1]];}); })
             .attr("d", d3Line)
         ;
 

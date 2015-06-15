@@ -608,6 +608,7 @@
                                 }
                             })
                         ;
+                        context.graph_selection(context.selection());
                         break;
                     default:
                         break;
@@ -1150,6 +1151,9 @@
     };
 
     //  Events  ---
+    Graph.prototype.graph_selection = function (selection) {
+    };
+
     Graph.prototype.vertex_click = function (d) {
         d._parentElement.node().parentNode.appendChild(d._parentElement.node());
         IGraph.prototype.vertex_click.apply(this, arguments);

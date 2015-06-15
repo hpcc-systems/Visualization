@@ -59,6 +59,17 @@
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
+                //  Symposium AVE Hack 
+                if (val === undefined && rhsKey.indexOf("_AVE") === rhsKey.length - 4 && item.base_count !== undefined) {
+                    var rhsSum = rhsKey.substring(0, rhsKey.length - 4) + "_SUM";
+                    val = item[rhsSum];
+                    if (val === undefined) {
+                        val = item[rhsSum.toLowerCase()];
+                    }
+                    if (val) {
+                        val /= item.base_count;
+                    }
+                }
                 retVal[this.columnsIdx[key]] = val;
             } catch (e) {
                 console.log("Invalid Mapping:  " + this.visualization.id + " [" + rhsKey + "->" + item + "]");
@@ -450,7 +461,7 @@
                 });
                 break;
             case "SLIDER":
-                this.loadWidget("src/other/Slider", function (widget) {
+                this.loadWidget("src/form/Slider", function (widget) {
                     widget
                         .id(visualization.id)
                     ;

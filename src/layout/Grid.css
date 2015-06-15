@@ -13,10 +13,11 @@
 }
 
 .layout_Grid .dropCell {
+    box-sizing:border-box;
     background-color: lightgrey;
     opacity: 0.33;
     border-radius: 5px;
-    border:1px solid #e5e5e5;
+    border:1px solid #333;
     display: inline-block;
     overflow: hidden;
 }
@@ -42,9 +43,22 @@
     cursor: move;
 }
 
-.layout_Grid div[draggable=true] .dragHandle { 
+.layout_Grid div[draggable=true] .dragHandle {
     opacity: 1.0;
-    background-color: darkgray;
+}
+
+.layout_Grid div[draggable=true] .dragHandle_n,
+.layout_Grid div[draggable=true] .dragHandle_e,
+.layout_Grid div[draggable=true] .dragHandle_s,
+.layout_Grid div[draggable=true] .dragHandle_w{
+    background-color:#AAA;
+}
+
+.layout_Grid div[draggable=true] .dragHandle_nw,
+.layout_Grid div[draggable=true] .dragHandle_ne,
+.layout_Grid div[draggable=true] .dragHandle_se,
+.layout_Grid div[draggable=true] .dragHandle_sw { 
+    background-color:#333;
 }
 
 .layout_Grid div[draggable=true] .dragHandle_nw { 
@@ -77,4 +91,33 @@
 
 .layout_Grid div[draggable=true] .dragHandle_w { 
     cursor:w-resize;
+}
+
+.layout_Grid div[draggable=false] > div > .dragHandle {
+    display:none;
+}
+
+.layout_Grid .grid-drop-target{
+    position:fixed;
+    box-sizing:border-box;
+    border:2px dashed #7f8c8d;
+    border-radius:0px;
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 4px,
+        rgba(100, 100, 100, 0.1) 4px,
+        rgba(100, 100, 100, 0.1) 8px
+    );
+}
+
+.layout_Grid .grid-drop-target.drop-target-over{
+    border:2px dashed #179BD7;
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 6px,
+        rgba(17, 155, 215, 0.1) 6px,
+        rgba(17, 155, 215, 0.1) 12px
+    );
 }

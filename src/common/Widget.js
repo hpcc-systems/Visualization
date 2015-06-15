@@ -281,6 +281,23 @@
         }
     };
 
+    //  Events  ---
+    Widget.prototype.on = function (eventID, func, stopPropagation) {
+        if (this[eventID] === undefined) {
+            throw "Method:  " + eventID + " does not exist.";
+        }
+        var origFunc = this[eventID];
+        this[eventID] = function () {
+            if (stopPropagation) {
+                d3.event.stopPropagation();
+            } else {
+                origFunc.apply(this, arguments);
+            }
+            func.apply(this, arguments);
+        };
+        return this;
+    };
+
     //  Implementation  ---
     Widget.prototype.id = function (_) {
         if (!arguments.length) return this._id;

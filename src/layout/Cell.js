@@ -3,13 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["./Surface"], factory);
     } else {
-        root.layout_Cell = factory(root.layout_Surface, root.chart_Pie, root.c3_Column, root.c3_Line);
+        root.layout_Cell = factory(root.layout_Surface);
     }
-}(this, function (Surface, Pie, Column, Line) {
+}(this, function (Surface) {
     function Cell() {
         Surface.call(this);
-        //this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
-        this._dragHandles = ["se"];
+        this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
     }
     Cell.prototype = Object.create(Surface.prototype);
     Cell.prototype._class += " layout_Cell";
@@ -49,8 +48,9 @@
                         case "w":
                         case "sw":
                             return "0px";
-                        default:
-                            return context._size.width / 2 - context.handleSize() / 2 + "px";
+                        case "n":
+                        case "s":
+                            return context.handleSize() + "px";
                     }
                 },
                 top: function (d) {
@@ -59,26 +59,33 @@
                         case "n":
                         case "ne":
                             return "0px";
+                        case "e":
+                        case "w":
+                            return context.handleSize() + "px";
                         case "sw":
                         case "s":
                         case "se":
                             return context._size.height - context.handleSize() + "px";
-                        default:
-                            return context._size.height / 2 - context.handleSize() / 2 + "px";
                     }
                 },
-                width: context.handleSize() + "px",
-                height: context.handleSize() + "px"
-            })
-            .on("dragstart", function (d) {
-                //d3.event.stopPropagation();
-                context._dragHandle = d;
-                console.log("dragstart:  " + d);
-            })
-            .on("dragend", function (targetElement) {
-                //d3.event.stopPropagation();
-                console.log("dragend:  " + (context._dragHandle ? context._dragHandle : ""));
-                context._dragHandle = null;
+                width: function (d) {
+                    switch (d) {
+                        case "n":
+                        case "s":
+                            return context._size.width - (context.handleSize()*2) + "px";
+                        default:
+                            return context.handleSize() + "px";
+                    }
+                },
+                height: function (d) {
+                    switch (d) {
+                        case "w":
+                        case "e":
+                            return context._size.height - (context.handleSize()*2) + "px";
+                        default:
+                            return context.handleSize() + "px";
+                    }
+                },
             })
         ;
         dragHandles.exit().remove();

@@ -1,0 +1,153 @@
+.chart_Bubble circle,.chart_Column .columnRect,.chart_Pie path{cursor:pointer}
+.chart_Bubble .common_Text,.chart_Pie .common_FAChar,.chart_Pie .common_Text,.common_List .common_TextBox .common_Text,.other_Slider .handle{pointer-events:none}
+.layout_Grid .cell,.layout_Grid .dropCell{border-radius:5px;display:inline-block;overflow:hidden}
+.chart_Bubble .common_FAChar{fill:#fff;pointer-events:none}
+.chart_Column .columnRect{fill:#4682b4}
+.chart_Column .columnRect:hover{fill:#ff7f0e}
+.chart_Column .axis{fill:#000;font:10px sans-serif}
+.chart_Column .axis line,.chart_Column .axis path{fill:none;stroke:#000;shape-rendering:crispEdges}
+.chart_Column .x.axis path{display:none}
+.chart_Line .dataLine{fill:none;stroke:#4682b4;stroke-width:1.5px}
+.chart_Line .axis{fill:#000;font:10px sans-serif}
+.chart_Line .axis line,.chart_Line .axis path{fill:none;stroke:#000;shape-rendering:crispEdges}
+.chart_Pie .innerLabel.common_FAChar{fill:#fff}
+.chart_Pie .outerLabel.common_FAChar{fill:#000}
+.chart_Pie .innerLabel.common_Text{fill:#fff}
+.chart_Pie .outerLabel.common_Text{fill:#000}
+.chart_XYAxis .brush rect.background{z-index:-999}
+.chart_XYAxis .brush .extent{stroke:none;fill:#4682b4;fill-opacity:.125;shape-rendering:crispEdges}
+.chart_XYAxis .brush .resize path{fill:#eee;stroke:#666}
+.common_FAChar .common_Text{font-size:14px}
+.common_Icon .common_FAChar .common_Text{fill:#fff}
+.common_List .common_TextBox .common_Shape{fill:#dcf1ff;stroke:#dcf1ff}
+.common_List .common_TextBox .common_Shape:hover{fill:#fff;stroke:#fff}
+.common_Menu .common_FAChar{fill:#fff;cursor:pointer}
+.common_Menu.disabled .common_FAChar{visibility:hidden;cursor:inherit}
+.common_Menu .common_List .common_TextBox .common_Shape{fill:#1f77b4;stroke:#1f77b4}
+.common_Menu .common_List .common_TextBox .common_Text{fill:#fff}
+.common_Menu .common_List .common_TextBox .common_Shape:hover{fill:#ff7f0e;stroke:#ff7f0e}
+.resizeN{cursor:ns-resize;opacity:0}
+.resizeNE{cursor:ne-resize;opacity:0}
+.resizeE{cursor:ew-resize;opacity:0}
+.resizeSE{cursor:se-resize;opacity:0}
+.resizeS{cursor:ns-resize;opacity:0}
+.resizeSW{cursor:sw-resize;opacity:0}
+.resizeW{cursor:ew-resize;opacity:0}
+.resizeNW{cursor:nw-resize;opacity:0}
+.common_Shape{fill:#1f77b4;stroke:#1f77b4}
+.common_Surface .container .common_Shape{fill:#f9fcff;stroke:#1f77b4;stroke-width:1px}
+.common_Surface .title{cursor:move}
+.form_Input button,.other_Slider .common_Icon:hover{cursor:pointer}
+.common_Surface .title .common_Shape{fill:#1f77b4;stroke:#1f77b4;stroke-width:1px}
+.common_Surface .title text{fill:#fff;stroke:none}
+.common_Surface .surface-button tspan{opacity:.8}
+.common_Surface .surface-button tspan:hover{opacity:1}
+.common_Surface .surface-button tspan:active{opacity:.5}
+.common_Text{fill:#000;font-size:12px}
+.common_TextBox .common_Shape{fill:#dcf1ff;stroke:#1f77b4}
+.form_Form{color:#404040}
+.form_Form tbody td{white-space:nowrap;border:1px solid #E5E5E5}
+.form_Form td.prompt{padding:5px;vertical-align:top;background-color:#E5E5E5}
+.form_Form td.input{padding:5px;width:100%;vertical-align:middle}
+.form_Form tfoot button{margin:5px}
+.form_Form tbody tr:hover{background-color:#FAFAFA}
+.form_Input button,.form_Input input,.form_Input select,.form_Input textarea{padding:2px}
+.form_Input input[type=textbox],.form_Input textarea{width:100%;box-sizing:border-box;display:block}
+.other_Slider text{color:#000}
+.other_Slider .axis{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+.other_Slider .axis .domain{stroke:#d3d3d3;stroke-width:10px;stroke-linecap:round}
+.other_Slider .axis .halo{fill:none;stroke:#ddd;stroke-width:8px;stroke-linecap:round}
+.other_Slider .extent{fill:#fff;opacity:.5}
+.other_Slider .handle{fill:#fff;stroke:#bbb;stroke-opacity:.5;stroke-width:1px}
+.other_Slider .common_Icon .common_Widget .common_Shape{fill:#ccc;stroke:#bbb}
+.other_Slider .common_Icon:hover .common_Widget .common_Shape{stroke:#aaa}
+.graph_Edge{fill:none;stroke:#656565;stroke-width:1px}
+.graph_Edge .common_TextBox .common_Text{fill:#000;stroke:none}
+.graph_Edge .common_TextBox .common_Shape{fill:none;stroke:none}
+.graph_Graph .marker{fill:#656565;stroke:none;stroke-width:1px}
+.graph_Graph .zoom{fill:none;pointer-events:all}
+.graph_Graph .selectionBrush{fill:none;stroke:#a9a9a9}
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape{stroke:red!important}
+.graph_Vertex{cursor:move}
+.layout_Grid .cell{border:1px solid #e5e5e5}
+.layout_Grid .cell h2{margin:0;padding-top:4px;-webkit-margin:0;text-align:center}
+.layout_Grid .dropCell{box-sizing:border-box;background-color:#d3d3d3;opacity:.33;border:1px solid #333}
+.layout_Grid .dropCell.over,.layout_Grid .layout_Cell.over{border:2px dashed #000}
+.layout_Grid .dragItem{z-index:-1;opacity:.33}
+.layout_Grid .notDragItem{z-index:-1;opacity:1}
+.layout_Grid div[draggable=true]{opacity:.75;cursor:move}
+.layout_Grid div[draggable=true] .dragHandle{opacity:1}
+.layout_Grid div[draggable=true] .dragHandle_e,.layout_Grid div[draggable=true] .dragHandle_n,.layout_Grid div[draggable=true] .dragHandle_s,.layout_Grid div[draggable=true] .dragHandle_w{background-color:#AAA}
+.layout_Grid div[draggable=true] .dragHandle_ne,.layout_Grid div[draggable=true] .dragHandle_nw,.layout_Grid div[draggable=true] .dragHandle_se,.layout_Grid div[draggable=true] .dragHandle_sw{background-color:#333}
+.layout_Grid div[draggable=true] .dragHandle_nw{cursor:nw-resize}
+.layout_Grid div[draggable=true] .dragHandle_n{cursor:n-resize}
+.layout_Grid div[draggable=true] .dragHandle_ne{cursor:ne-resize}
+.layout_Grid div[draggable=true] .dragHandle_e{cursor:e-resize}
+.layout_Grid div[draggable=true] .dragHandle_se{cursor:se-resize}
+.layout_Grid div[draggable=true] .dragHandle_s{cursor:s-resize}
+.layout_Grid div[draggable=true] .dragHandle_sw{cursor:sw-resize}
+.layout_Grid div[draggable=true] .dragHandle_w{cursor:w-resize}
+.layout_Grid div[draggable=false]>div>.dragHandle{display:none}
+.layout_Grid .grid-drop-target{position:fixed;box-sizing:border-box;border:2px dashed #7f8c8d;border-radius:0;background:repeating-linear-gradient(-45deg,rgba(0,0,0,0),rgba(0,0,0,0) 4px,rgba(100,100,100,.1) 4px,rgba(100,100,100,.1) 8px)}
+.layout_Grid .grid-drop-target.drop-target-over{border:2px dashed #179BD7;background:repeating-linear-gradient(-45deg,rgba(0,0,0,0),rgba(0,0,0,0) 6px,rgba(17,155,215,.1) 6px,rgba(17,155,215,.1) 12px)}
+.layout_Surface{margin:0;border:1px solid #e5e5e5;border-radius:3px;overflow:hidden}
+.layout_Surface>h3{margin:0;padding:2px;text-align:center;font-weight:700;background-color:#e5e5e5}
+.layout_Surface>div{padding:8px}
+.noFill{fill:#f5f5f5;stroke:none}
+.map_Choropleth .zoom{stroke:none;fill:none;pointer-events:all}
+.map_Choropleth path{cursor:pointer;fill:#f5f5f5;stroke:#6d6e71;stroke-width:.13px;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.map_GMap .marker{fill:#656565;stroke:none;stroke-width:1px}
+.map_GMap .zoom{fill:none;pointer-events:all}
+.gm-style img{max-width:none}
+.gm-style label{width:auto;display:inline}
+.other_MorphText .enter{fill:green}
+.other_MorphText .update{fill:#333}
+.other_MorphText .exit{fill:brown}
+.other_Paginator .pagination{display:inline-block;padding-left:0;margin:20px 0;border-radius:4px}
+.other_Paginator .pagination>li{display:inline}
+.other_Paginator .pagination>li>a,.other_Paginator .pagination>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#337ab7;text-decoration:none;background-color:#fff;border:1px solid #ddd}
+.other_Paginator .pagination>li:first-child>a,.other_Paginator .pagination>li:first-child>span{margin-left:0;border-top-left-radius:4px;border-bottom-left-radius:4px}
+.other_Paginator .pagination>li:last-child>a,.other_Paginator .pagination>li:last-child>span{border-top-right-radius:4px;border-bottom-right-radius:4px}
+.other_Paginator .pagination>li>a:focus,.other_Paginator .pagination>li>a:hover,.other_Paginator .pagination>li>span:focus,.other_Paginator .pagination>li>span:hover{color:#23527c;background-color:#eee;border-color:#ddd}
+.other_Paginator .pagination>.active>a,.other_Paginator .pagination>.active>a:focus,.other_Paginator .pagination>.active>a:hover,.other_Paginator .pagination>.active>span,.other_Paginator .pagination>.active>span:focus,.other_Paginator .pagination>.active>span:hover{z-index:2;color:#fff;cursor:default;background-color:#337ab7;border-color:#337ab7}
+.other_Paginator .pagination>.disabled>a,.other_Paginator .pagination>.disabled>a:focus,.other_Paginator .pagination>.disabled>a:hover,.other_Paginator .pagination>.disabled>span,.other_Paginator .pagination>.disabled>span:focus,.other_Paginator .pagination>.disabled>span:hover{color:#777;cursor:not-allowed;background-color:#fff;border-color:#ddd}
+.mm-label:hover,.other_Table th,.other_Wordcloud text{cursor:pointer}
+.other_Paginator .pagination-lg>li>a,.other_Paginator .pagination-lg>li>span{padding:10px 16px;font-size:18px}
+.other_Paginator .pagination-lg>li:first-child>a,.other_Paginator .pagination-lg>li:first-child>span{border-top-left-radius:6px;border-bottom-left-radius:6px}
+.other_Paginator .pagination-lg>li:last-child>a,.other_Paginator .pagination-lg>li:last-child>span{border-top-right-radius:6px;border-bottom-right-radius:6px}
+.other_Paginator .pagination-sm>li>a,.other_Paginator .pagination-sm>li>span{padding:5px 10px;font-size:12px}
+.other_Paginator .pagination-sm>li:first-child>a,.other_Paginator .pagination-sm>li:first-child>span{border-top-left-radius:3px;border-bottom-left-radius:3px}
+.other_Paginator .pagination-sm>li:last-child>a,.other_Paginator .pagination-sm>li:last-child>span{border-top-right-radius:3px;border-bottom-right-radius:3px}
+.other_PropertyEditor *{box-sizing:border-box}
+.other_PropertyEditor table{width:100%;margin-bottom:4px}
+.other_PropertyEditor thead>tr>th{text-align:left;background-color:#FAFAFA}
+.other_PropertyEditor thead>tr>th>b{font-weight:700}
+.other_PropertyEditor thead>tr:first-child>th{background-color:#E5E5E5}
+.other_PropertyEditor thead>tr.mm-content>th{padding:0 4px;font-size:12px}
+.other_PropertyEditor td,.other_PropertyEditor th{padding:4px;white-space:nowrap}
+.other_PropertyEditor thead.mm-label>tr:first-child>th{position:relative;padding-left:29px}
+.other_PropertyEditor thead.mm-label>tr:first-child>th::before{content:'[+]';position:absolute;left:3px;top:3px;color:#404040;height:15px;width:15px;font-family:monospace}
+.other_PropertyEditor thead.mm-label.max>tr:first-child>th::before{content:'[-]'}
+.other_PropertyEditor tr.sharedPropertyRow>td.label::after{content:'[+]';position:absolute;right:10px;top:3px;color:#404040;height:15px;width:15px;font-family:monospace}
+.other_PropertyEditor tr.sharedPropertyRow>td.label.expanded::after{content:'[-]'}
+.other_PropertyEditor tr.sharedPropertyRow>td.label{position:relative;padding-right:30px;text-decoration:underline}
+.other_PropertyEditor tr.sharedPropertyRow>td.label:hover{text-decoration:none;cursor:pointer}
+.other_PropertyEditor tr.propertyRow{background-color:#fafafa}
+.other_PropertyEditor tr.propertyRow>td.label{padding-left:24px}
+.other_PropertyEditor table,.other_PropertyEditor td,.other_PropertyEditor th{border:1px solid #e5e5e5}
+.other_PropertyEditor .mm-label.min .mm-content,.other_PropertyEditor .mm-label.min+.mm-content{display:none}
+.other_Table{color:#333;border-width:1px;border-color:#999;border-collapse:collapse}
+.other_Table td,.other_Table th{border-width:1px;border-style:solid;border-color:#a9c6c9;white-space:nowrap}
+.other_Table th{padding:5px 10px;background-color:#1f77b4;color:#fff}
+.other_Table .thIcon{font-family:FontAwesome;padding-left:8px}
+.other_Table tr{background-color:#dcf1ff;color:#000}
+.other_Table tr.selected{background-color:#f48a00;color:#fff}
+.other_Table tr:hover{background-color:#bfd7e7}
+.other_Table tr.selected:hover{background-color:#5ea8db;color:#fff}
+.other_Table td{padding:2px 5px}
+.tree_CirclePacking circle{fill:#1f77b4;fill-opacity:.25;stroke:#1f77b4;stroke-width:1px}
+.tree_CirclePacking .leaf circle{fill:#ff7f0e;fill-opacity:1}
+.tree_CirclePacking .label{fill:#fff;text-anchor:middle}
+.tree_Dendrogram .node circle{fill:#dcf1ff;stroke:#1f77b4;stroke-width:1px}
+.tree_Dendrogram .link{fill:none;stroke:#656565;stroke-width:1px}
+.tree_Sunburst path{stroke:#fff;stroke-width:.5px;fill-rule:evenodd}

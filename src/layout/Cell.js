@@ -9,7 +9,6 @@
     function Cell() {
         Surface.call(this);
         this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
-//        this._dragHandles = ["se"];
     }
     Cell.prototype = Object.create(Surface.prototype);
     Cell.prototype._class += " layout_Cell";
@@ -87,16 +86,6 @@
                             return context.handleSize() + "px";
                     }
                 },
-            })
-            .on("dragstart", function (d) {
-                //d3.event.stopPropagation();
-                //console.log("dragstart:  " + d);
-                context._dragHandle = d;
-            })
-            .on("dragend", function (targetElement) {
-                //d3.event.stopPropagation();
-                //console.log("dragend:  " + (context._dragHandle ? context._dragHandle : ""));
-                context._dragHandle = null;
             })
         ;
         dragHandles.exit().remove();

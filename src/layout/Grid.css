@@ -53,6 +53,7 @@
 .layout_Grid div[draggable=true] .dragHandle_w{
     background-color:#AAA;
 }
+
 .layout_Grid div[draggable=true] .dragHandle_nw,
 .layout_Grid div[draggable=true] .dragHandle_ne,
 .layout_Grid div[draggable=true] .dragHandle_se,
@@ -96,7 +97,7 @@
     display:none;
 }
 
-#grid-drop-target{
+.layout_Grid .grid-drop-target{
     position:fixed;
     box-sizing:border-box;
     border:2px dashed #7f8c8d;
@@ -109,7 +110,8 @@
         rgba(100, 100, 100, 0.1) 8px
     );
 }
-#grid-drop-target.drop-target-over{
+
+.layout_Grid .grid-drop-target.drop-target-over{
     border:2px dashed #179BD7;
     background: repeating-linear-gradient(
         -45deg,

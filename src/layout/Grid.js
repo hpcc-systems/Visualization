@@ -16,8 +16,6 @@
         this._colSize = 0;
         this._rowSize = 0;
         
-        this._gridCoordinates = {x:[],y:[]};
-        
         this.content([]);
     }
     Grid.prototype = Object.create(HTMLWidget.prototype);
@@ -126,39 +124,15 @@
         this._scrollBarWidth = this.getScrollbarWidth();
     };
 
-    Grid.prototype.calcGridCoordinates = function () {
-        var xCoords = [];
-        this._offsetX = this._element.node().getBoundingClientRect().left + (this.gutter()/2);
-        for(var i = 0;i<this._colCount;i++){
-            xCoords.push((i * this._colSize) + this._offsetX);
-        }
-        var yCoords = [];
-        this._offsetY = this._element.node().getBoundingClientRect().top + (this.gutter()/2);
-        for(var j = 0;j<this._rowCount;j++){
-            yCoords.push((j * this._rowSize) + this._offsetY);
-        }
-        this._gridCoordinates = {x:xCoords,y:yCoords};
-    };
-    
     Grid.prototype.findCurrentLocation = function (e) {
-        var x_loc,y_loc;
-        for(var x1 = 0;x1<this._gridCoordinates.x.length;x1++){
-            if(parseInt(this._gridCoordinates.x[x1]) <= e.clientX){
-                x_loc = x1;
-            }
-        }
-        for(var y1 = 0;y1<this._gridCoordinates.y.length;y1++){
-            if(parseInt(this._gridCoordinates.y[y1]) <= e.clientY){
-                y_loc = y1;
-            }
-        }
-        if(typeof (x_loc) !== 'undefined' && typeof (y_loc) !== 'undefined'){
-            this._currLoc = [x_loc,y_loc];
-        }
+        this._currLoc = [
+            Math.floor((e.clientX - this._offsetX)/this._colSize),
+            Math.floor((e.clientY - this._offsetY)/this._rowSize)
+        ];
     };
     
     Grid.prototype.overHandle = function (e) {
-        var handle;
+        var handle = '';
         var handleSize = this._dragCell.handleSize();
         
         //Determines which edge cell (if any) this._currLoc is hovering over
@@ -173,63 +147,38 @@
         var width = this._colSize - this.gutter();
         var height = this._rowSize - this.gutter();
         
-        var handlesInRange = [];
-        if(top + height >= e.clientY && top + height - handleSize <= e.clientY && onSouthEdge){
-            handlesInRange.push('s');//within SOUTH handle range
+        if(Math.ceil(top + height) >= e.clientY && Math.floor(top + height - handleSize) <= e.clientY && onSouthEdge){
+            handle = 's';//within SOUTH handle range
         }
-        else if(top <= e.clientY && top + handleSize >= e.clientY && onNorthEdge){
-            handlesInRange.push('n');//within NORTH handle range
+        else if(Math.floor(top) <= e.clientY && Math.ceil(top + handleSize) >= e.clientY && onNorthEdge){
+            handle = 'n';//within NORTH handle range
         }
-        if(left + width >= e.clientX && left + width - handleSize <= e.clientX && onEastEdge){
-            handlesInRange.push('e');//within EAST handle range
+        if(Math.ceil(left + width) >= e.clientX && Math.floor(left + width - handleSize) <= e.clientX && onEastEdge){
+            handle += 'e';//within EAST handle range
         }
-        else if(left <= e.clientX && left + handleSize >= e.clientX && onWestEdge){
-            handlesInRange.push('w');//within WEST handle range
-        }
-        if(handlesInRange.length){
-            handle = handlesInRange.join('');
+        else if(Math.floor(left) <= e.clientX && Math.ceil(left + handleSize) >= e.clientX && onWestEdge){
+            handle += 'w';//within WEST handle range
         }
         return handle;
     };
     
-    
-    
-    var hideDragHandles = function(){
-        var handles = document.getElementsByClassName('dragHandle');
-        for(var i in handles){
-            if(handles[i] !== null && typeof (handles[i]) !== 'undefined'){
-                if(handles[i].style !== null && typeof (handles[i].style) !== 'undefined'){
-                    handles[i].style.visibility = 'hidden';
-                }
-            }
-        }
-    };
-    
-    var showDragHandles = function(){
-        var handles = document.getElementsByClassName('dragHandle');
-        for(var i in handles){
-            if(handles[i] !== null && typeof (handles[i]) !== 'undefined'){
-                if(handles[i].style !== null && typeof (handles[i].style) !== 'undefined'){
-                    handles[i].style.visibility = 'visible';
-                }
-            }
-        }
-    };
-    
     Grid.prototype.createDropTarget = function (loc) {
-        var context = this;
         var col = loc[0] - this._dragCellOffsetX;
         var row = loc[1] - this._dragCellOffsetY;
         var colSpan = this._dragCell.gridColSpan();
         var rowSpan = this._dragCell.gridRowSpan();
         
         var dropTarget = document.createElement('div');
-        dropTarget.id = 'grid-drop-target';
+        dropTarget.id = 'grid-drop-target'+this.id();
+        dropTarget.className = 'grid-drop-target';
         
-        setTimeout(function(){
-            document.getElementsByTagName('body')[0].appendChild(dropTarget);
-            context.updateDropTarget(col,row,colSpan,rowSpan);
-        },0);
+        this._target.appendChild(dropTarget);
+        this.updateDropTarget(col,row,colSpan,rowSpan);
+    };
+    
+    Grid.prototype.setGridOffsets = function () {
+        this._offsetX = this._element.node().getBoundingClientRect().left + (this.gutter()/2);
+        this._offsetY = this._element.node().getBoundingClientRect().top + (this.gutter()/2);
     };
     
     Grid.prototype.updateDropTarget = function (col,row,colSpan,rowSpan) {
@@ -239,13 +188,11 @@
         width = colSpan * this._colSize - this.gutter();
         height = rowSpan * this._rowSize - this.gutter();
         
-        setTimeout(function(){
-            var dropTarget = document.getElementById('grid-drop-target');
-            dropTarget.style.top = top + 'px';
-            dropTarget.style.left = left + 'px';
-            dropTarget.style.width = width + 'px';
-            dropTarget.style.height = height + 'px';
-        },0);
+        var dropTarget = document.getElementById('grid-drop-target'+this.id());
+        dropTarget.style.top = top + 'px';
+        dropTarget.style.left = left + 'px';
+        dropTarget.style.width = width + 'px';
+        dropTarget.style.height = height + 'px';
     };
     
     Grid.prototype.moveDropTarget = function (loc) {
@@ -305,16 +252,16 @@
                     this._sizeY = Math.abs(loc[1] - pivotCell[1]) + 1;
                     break;
             }
-        } else if (document.getElementById('grid-drop-target') !== null) {
+        } else if (document.getElementById('grid-drop-target'+this.id()) !== null) {
             var target = this.getCell(loc[1], loc[0]);
             if(target !== null && this._dragCell._id !== target._id){
-                document.getElementById('grid-drop-target').className = 'drop-target-over';
+                document.getElementById('grid-drop-target'+this.id()).className = 'grid-drop-target drop-target-over';
                 this._locX = target.gridCol();
                 this._locY = target.gridRow();
                 this._sizeX = target.gridColSpan();
                 this._sizeY = target.gridRowSpan();
             } else {
-                document.getElementById('grid-drop-target').className = '';
+                document.getElementById('grid-drop-target'+this.id()).className = 'grid-drop-target';
                 this._locX = loc[0] - this._dragCellOffsetX;
                 this._locY = loc[1] - this._dragCellOffsetY;
                 this._sizeX = this._dragCell.gridColSpan();
@@ -344,11 +291,15 @@
         var drag = d3.behavior.drag()
             .on("dragstart", function (d) {
                 d3.event.sourceEvent.stopPropagation();
-                context.calcGridCoordinates(context.content()[0]._element.node().getBoundingClientRect());
-                context.findCurrentLocation(d3.event.sourceEvent);
+        
                 context._dragCell = d;
                 
-                hideDragHandles();
+                context.setGridOffsets();
+                context.findCurrentLocation(d3.event.sourceEvent);
+                
+                context._element.selectAll(".dragHandle")
+                    .style("visibility", "hidden")
+                ;
                 
                 context._handle = context.overHandle(d3.event.sourceEvent);
                 if(context._dragCell._dragHandles.indexOf(context._handle) === -1){
@@ -369,20 +320,19 @@
                 }, 0);
             })
             .on("drag", function (d) {
-                if(typeof (context._gridCoordinates) !== 'undefined' && context._gridCoordinates.x.length > 0){
-                    context._dragCell = d;
-            
-                    context.findCurrentLocation(d3.event.sourceEvent);
-                    if(typeof (context._currLocation) === 'undefined' || JSON.stringify(context._currLocation) !== JSON.stringify(context._currLoc)){
-                        context._currLocation = context._currLoc;
-                        context.moveDropTarget(context._currLoc);
-                    }
+                context._dragCell = d;
+                context.findCurrentLocation(d3.event.sourceEvent);
+                if(typeof (context._currLocation) === 'undefined' || (context._currLocation[0] !== context._currLoc[0] || context._currLocation[1] !== context._currLoc[1])){
+                    context._currLocation = context._currLoc;
+                    context.moveDropTarget(context._currLoc);
                 }
             })
             .on("dragend", function () {
                 d3.event.sourceEvent.stopPropagation();
         
-                showDragHandles();
+                context._element.selectAll(".dragHandle")
+                    .style("visibility", null)
+                ;
         
                 if (context._handle) {
                     context._dragCell.gridRow(context._locY);
@@ -426,7 +376,7 @@
                         .gridRowSpan(targetRowSpan)
                     ;
                 }
-                var gridDropTarget = document.getElementById('grid-drop-target');
+                var gridDropTarget = document.getElementById('grid-drop-target'+context.id());
                 gridDropTarget.parentNode.removeChild(gridDropTarget);
                 
                 setTimeout(function () {
@@ -458,7 +408,6 @@
 
                 d
                     .surfacePadding(context.cellPadding())
-                    .scale(context.designMode() ? 0.75 : 0)
                     .resize()
                 ;
             });

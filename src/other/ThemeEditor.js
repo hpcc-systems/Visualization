@@ -22,11 +22,11 @@
         this._widgetObjsById = {};
     }
     var getThemes = function(idx){
-        g_defaultThemes(idx);
+        g_defaultThemes(idx); // jshint ignore:line
         return JSON.parse(localStorage.themeEditorThemes);
     };
     var getSerials = function(idx){
-        g_defaultSerials(idx);
+        g_defaultSerials(idx); // jshint ignore:line
         return JSON.parse(localStorage.themeEditorSerials);
     };
     var getThemeNames = function(idx){

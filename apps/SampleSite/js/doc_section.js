@@ -63,6 +63,13 @@ function getWidgetParentClassName(response,src) {
     }
 }
 
+function isException(functionName,widgetName) {
+    if (widgetName !== "common/Widget" && (functionName==="enter" || functionName==="update")) {
+        return false;
+    }
+    return true;
+}
+
 function buildWidgetDocumentation(wNameStr) {
     getExtendedDocs(wNameStr);
     var request = $.ajax({
@@ -82,12 +89,15 @@ function buildWidgetDocumentation(wNameStr) {
         }
 
         // Prototype Functions
-        //var regex = /prototype\.(\w+)(?!.*(.apply|.call))/gm; // TODO: perhaps check to make sure Common.proto where Common is the name of the file were in
-        var regex = /prototype\.(\w+)/gm;
+        //var regex = /\.prototype\.(\w+)(?!.*(.apply|.call|.publish))/gm; // TODO: perhaps check to make sure Common.proto where Common is the name of the file were in
+        //var regex = /prototype\.(\w+)/gm;
+        var regex = /\.prototype\.(\w+)?.*(?!.*(.apply|.call|.publish))/gm;
         widgetNormalFunctions[wNameStr] = [];
         while(matches = regex.exec(data)) {
             matches[1] = matches[1].replace(/"/g, "");
-            widgetNormalFunctions[wNameStr].push(matches[1]);
+            if (isException(matches[1],wNameStr)) {
+                widgetNormalFunctions[wNameStr].push(matches[1]);
+            }
         }
 
         var wParentClassNameStr = getWidgetParentClassName(data,wNameStr); // Get Next Inherited Widget Src Path String
@@ -96,13 +106,14 @@ function buildWidgetDocumentation(wNameStr) {
         if (wInterfaceNameStr) {
             setTimeout(function() { buildWidgetDocumentation("api/"+wInterfaceNameStr); }, 0);
         }
-
-        if (wParentClassNameStr) {
-            //widgetInheritanceSourcePathArr.push(wParentClassName);
-            buildWidgetDocumentation(wParentClassNameStr);
-        } else {
-            var object = $.extend(true, {}, widgetNormalFunctions, widgetPublishParams); //merge two objects into a blank object
-            buildDocSection(object);
+        if (wNameStr.indexOf("api") === -1) {
+            if (wParentClassNameStr) {
+                //widgetInheritanceSourcePathArr.push(wParentClassName);
+                buildWidgetDocumentation(wParentClassNameStr);
+            } else {
+                var object = $.extend(true, {}, widgetNormalFunctions, widgetPublishParams); //merge two objects into a blank object
+                buildDocSection(object);
+            }
         }
     })
     ;

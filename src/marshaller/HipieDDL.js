@@ -211,13 +211,14 @@
     //  Viz Source ---
     function Source(visualization, source) {
         this.visualization = visualization;
-        this._id = source.id;
-        this._output = source.output;
-        this.mappings = null;
-        if (!source.mappings) {
-            console.log("no mappings for:" + visualization.id + "->" + source.id);
-        }
-        switch (this.visualization.type) {
+        if (source) {
+            this._id = source.id;
+            this._output = source.output;
+            this.mappings = null;
+            if (!source.mappings) {
+                console.log("no mappings for:" + visualization.id + "->" + source.id);
+            }
+            switch (this.visualization.type) {
             case "LINE":
                 this.mappings = new LineMappings(this.visualization, source.mappings);
                 break;
@@ -233,10 +234,11 @@
             default:
                 this.mappings = new ChartMappings(this.visualization, source.mappings);
                 break;
+            }
+            this.first = source.first;
+            this.reverse = source.reverse;
+            this.sort = source.sort;
         }
-        this.first = source.first;
-        this.reverse = source.reverse;
-        this.sort = source.sort;
     }
 
     Source.prototype.getQualifiedID = function () {
@@ -422,7 +424,7 @@
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
-        this.properties = visualization.properties || visualization.source.properties || {};
+        this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
 
@@ -491,6 +493,21 @@
                         .id(visualization.id)
                         .layout("ForceDirected2")
                         .applyScaleOnLayout(true)
+                    ;
+                });
+                break;
+            case "FORM":
+                this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
+                    var Input = widgetClasses[1];
+                    widget
+                        .id(visualization.id)
+                        .inputs(visualization.fields.map(function(field) {
+                            return new Input()
+                                .name(field.id)
+                                .label((field.properties ? field.properties.label : null) || field.label)
+                                .type("textbox")
+                            ;
+                        }))
                     ;
                 });
                 break;
@@ -581,7 +598,7 @@
         if (event.exists()) {
             var request = {};
             for (var key in event.mappings) {
-                var origKey = this.source.mappings.hasMappings ? this.source.mappings.getReverseMap(key) : key;
+                var origKey = (this.source.mappings && this.source.mappings.hasMappings) ? this.source.mappings.getReverseMap(key) : key;
                 request[event.mappings[key]] = d[origKey];
             }
             var dataSources = event.getUpdatesDatasources();
@@ -692,7 +709,7 @@
             context.request[item + "_changed"] = false;
         });
         for (var key in request) {
-            this.request[key] = request[key];
+            this.request[key] = request[key] === undefined ? "" : request[key];
             this.request[key + "_changed"] = true;
         }
         this.comms.call(this.request, function (response) {

@@ -16,6 +16,10 @@
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 
+    Input.prototype.testData = function () {
+        return this;
+    };
+
     Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea"]);
     Input.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 
@@ -78,6 +82,28 @@
         });
         this._inputElement.on("blur", function (w) {
             w.blur(w);
+        });
+        var context = this;
+        this._inputElement.on("change", function (w) {
+
+            switch (context.type()) {
+                case "select":
+                    context.value(context._inputElement.attr("value"));
+                    break;
+                case "textarea":
+                    context.value(context._inputElement.html());
+                    break;
+                case "button":
+                    context.value(context._inputElement.html());
+                    break;
+                case "checkbox":
+                    context.value(context._inputElement.property("checked"));
+                    break;
+                default:
+                    context.value(context._inputElement.node().value);
+                    break;
+            }
+            w.change(w);
         });
     };
 

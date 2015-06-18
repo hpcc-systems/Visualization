@@ -16,7 +16,7 @@
 
     Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
     Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets");
-    Form.prototype.publish("controls", [], "widgetArray", "Array of input widgets to control form functionality");
+    Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
 
     Form.prototype.testData = function () {
         this
@@ -66,22 +66,6 @@
                     .value(66)
             ])
         ;
-        var context = this;
-        this
-            .controls([
-                new Input()
-                    .type("button")
-                    .value("Submit")
-                    .on("click", function(){
-                        context.submit();
-                    }, true),
-                new Input()
-                    .type("button")
-                    .value("Clear")
-                    .on("click", function(){
-                        context.clear();
-                    }, true)
-            ]);
         return this;
     };
     
@@ -91,12 +75,12 @@
             isValid = this.checkValidation();
         }
         if(isValid){
-            var dataArr = [];
             var inpArr = this.inputs();
+            var dataArr = {};
             inpArr.forEach(function(inp){
-                dataArr.push({name:inp.name(),value:inp.value()});
+                dataArr[inp.name()] = inp.value();
             });
-            console.log("Clicked Submit: "+JSON.stringify(dataArr));
+            this.click(dataArr);
         }
     };
     Form.prototype.clear = function(){
@@ -138,12 +122,27 @@
             .append("table")
         ;
         this.tbody = table.append("tbody");
-        var btntd = table.append("tfoot").append("tr").append("td")
+        this.btntd = table.append("tfoot").append("tr").append("td")
             .attr("colspan", "2")
         ;
 
-        this.controls().reverse().forEach(function(w){
-            var controlNode = btntd
+        var context = this;
+        var controls = [
+                new Input()
+                    .type("button")
+                    .value("Submit")
+                    .on("click", function () {
+                        context.submit();
+                    }, true),
+                new Input()
+                    .type("button")
+                    .value("Clear")
+                    .on("click", function () {
+                        context.clear();
+                    }, true)
+        ];
+        controls.reverse().forEach(function (w) {
+            var controlNode = context.btntd
                 .append("div")
                 .style("float", "right")
             ;
@@ -173,12 +172,16 @@
             })
         ;
         rows.exit().remove();
+        this.btntd.style("visibility", this.showSubmit() ? null : "hidden");
     };
 
     Form.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    return Form;
+    Form.prototype.click = function (row) {
+        console.log("Clicked Submit: "+JSON.stringify(row));
+    };
 
+    return Form;
 }));

@@ -23,7 +23,7 @@
     };
 
     HTML.prototype.testData2 = function () {
-        this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150429-172632&ResultName=leeddx_vizvalidation_Comp_Ins002_DDL");
+        this.ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_testrelavator3.ins002_service/json");
         //this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150617-115910&ResultName=leeddx_issue_780_formwidget_Comp_Ins002_DDL");
         //this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150617-120745&ResultName=leeddx_issue_780_formtablewidget_Comp_Ins002_DDL");
         //this.ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_testrelavator2.ins002_service/json");

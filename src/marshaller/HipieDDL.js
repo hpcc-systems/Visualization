@@ -140,17 +140,71 @@
 
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
-        this.annotations = [];
-        if (this.mappings.flags && this.mappings.flags instanceof Array) {
-            this.annotations = this.mappings.flags;
-            delete this.mappings.flags;
-        }
+        this.icon = visualization.icon || {};
+        this.fields = visualization.fields || {};
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
+
+    GraphMappings.prototype.calcAnnotation = function (field, origItem, forAnnotation) {
+        var retVal = {};
+        function faCharFix(faChar) {
+            if (faChar) {
+                return String.fromCharCode(parseInt(faChar));
+            }
+            return faChar;
+        }
+        function mapStruct(struct, retVal) {
+            if (struct) {
+                for (var key in struct) {
+                    switch (key) {
+                        case "faChar":
+                            retVal.faChar = faCharFix(struct.faChar);
+                            break;
+                        case "tooltip":
+                            retVal[key] = struct[key];
+                            break;
+                        case "icon_image_colorFill":
+                        case "icon_shape_colorFill":
+                        case "icon_shape_colorStroke":
+                            if (forAnnotation) {
+                                retVal[key.split("icon_")[1]] = struct[key];
+                            } else {
+                                retVal[key] = struct[key];
+                            }
+                            break;
+                        case "textbox_image_colorFill":
+                        case "textbox_shape_colorFill":
+                        case "textbox_shape_colorStroke":
+                            if (!forAnnotation) {
+                                retVal[key] = struct[key];
+                            }
+                            break;
+                        case "id":
+                        case "valuemappings":
+                        case "font":
+                        case "charttype":
+                            break;
+                        default:
+                            console.log("Unknown annotation property:  " + key);
+                    }
+                }
+            }
+        }
+        mapStruct(field, retVal);
+        if (origItem && origItem[field.id] && field.valuemappings) {
+            var annotationInfo = field.valuemappings[origItem[field.id]];
+            mapStruct(annotationInfo, retVal);
+        }
+
+        for (var key in retVal) { // jshint ignore:line
+            return retVal;
+        }
+        return null;
+    };
 
     GraphMappings.prototype.doMapAll = function (data) {
         var context = this;
@@ -169,15 +223,21 @@
                 vertices.push(retVal);
             }
             if (origItem) {
+                // Icon  ---
+                var icon = context.calcAnnotation(context.visualization.icon, origItem);
+                if (icon) {
+                    for (var key in icon) {
+                        if (retVal[key]) {
+                            retVal[key](icon[key]);
+                        }
+                    }
+                }
+                // Annotations  ---
                 var annotations = [];
-                context.annotations.forEach(function (annotation) {
-                    if (origItem[annotation]) {
-                        annotations.push({
-                            "faChar": origItem[annotation],
-                            "tooltip": "",
-                            "shape_color_fill": "navy",
-                            "image_color_fill": "white"
-                        });
+                context.fields.forEach(function (field) {
+                    var annotation = context.calcAnnotation(field, origItem, true);
+                    if (annotation) {
+                        annotations.push(annotation);
                     }
                 });
                 retVal.annotationIcons(annotations);
@@ -424,6 +484,8 @@
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
+        this.icon = visualization.icon || {};
+        this.fields = visualization.fields || {};
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);

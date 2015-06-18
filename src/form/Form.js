@@ -68,7 +68,7 @@
         ;
         return this;
     };
-    
+
     Form.prototype.submit = function(){
         var isValid = true;
         if(this.validate()){
@@ -86,7 +86,9 @@
     Form.prototype.clear = function(){
         var inpArr = this.inputs();
         inpArr.forEach(function(inp){
-            if(inp.type() === "checkbox"){
+            if (inp instanceof Slider) {
+                inp.value(inp.low());
+            } else if(inp.type() === "checkbox"){
                 inp.value(false);
                 inp._inputElement.node().checked = false;
             } else {
@@ -95,7 +97,7 @@
             }
         });
     };
-    
+
     Form.prototype.checkValidation = function(){
         var ret = true;
         var msgArr = [];
@@ -110,7 +112,7 @@
         }
         return ret;
     };
-    
+
     Form.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.on("submit", function () {

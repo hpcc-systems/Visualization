@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="../config.js"></script>
+    </head>
+    <body>
+        <script>  
+            require(["src/google/Scatter"], function (Widget) {
+                var scatterWidget = new Widget()
+                    .size({width:600,height:300})
+                    .target("widget-wrapper")
+                    .columns(["ID", "Year 1", "Year 2", "Year 3"])
+                    .data([
+                        [10, 75, 68, 65],
+                        [20, 45, 55, 52],
+                        [30, 98, 92, 90],
+                        [40, 66, 60, 86]
+                    ])
+                    .render()
+                ;
+                scatterWidget.click(function(d) { console.log('Override Click: ' + JSON.stringify(d)); });
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

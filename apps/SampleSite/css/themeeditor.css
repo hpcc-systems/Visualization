@@ -1,0 +1,103 @@
+main {
+    /*margin: 0px;
+    padding: 0px;*/
+    font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color:white;
+    font-weight: 300;
+    overflow:hidden;
+}
+#main{
+    padding: 0px 15px;
+    margin-top: 15px;
+}
+#main > div > .layout_Surface{
+    background-color:transparent!important;
+    border-width:0!important;
+    border-radius:0!important;
+}
+#main > div > .layout_Surface > div > div > div > div > div > div > div{
+    background-color:#FFFFFF!important;
+    border-width:0!important;
+    border-radius:0!important;
+}
+#dropdown-checkbox-wrapper {
+    -webkit-columns: 100px 3;
+    -moz-columns: 100px 3;
+    columns: 100px 3;
+    padding-left: 0;
+}
+
+#dropdown-checkbox-wrapper  li {
+    text-shadow: none;
+}
+.btn.done {
+    float:right;
+    margin: -15px 20px 10px 0;
+}
+.menu_item label {
+    font-size: 11px;
+    display: block;
+    padding: 1px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap; 
+    margin-bottom: 0;
+}
+.menu_item label span {
+    position: relative;
+    top: -3px;
+}
+.dropdown-header {
+    font-weight: bold;
+    display: block;
+    padding: 3px 10px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #777;
+    white-space: nowrap;
+}
+.dropdown-menu {
+    padding-top: 10px;
+    -webkit-columns: auto;
+    -moz-columns: auto;
+    columns: auto;
+}
+.dropdown-menu li > a:hover {
+    text-decoration: none;    
+}
+.dropdown-menu li > a:hover > label {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+#te-themeEditorOptions {
+    margin-top: 2px;
+}
+.ghostDiv{
+    position:fixed;
+    -webkit-box-shadow: inset 0px 0px 40px 15px rgba(255,255,0,0.9);
+    -moz-box-shadow: inset 0px 0px 40px 15px rgba(255,255,0,0.9);
+    box-shadow: inset 0px 0px 40px 15px rgba(255,255,0,0.9);
+    border:1px solid #000;
+    opacity: 1;
+}
+#themeGroup > button{
+    margin-left:15px;
+}
+#themeGroup > button:first-child{
+    margin-left:0px;
+}
+.modal-content {
+    border:0;
+    border-radius:0;
+}
+#teModal textarea { 
+    resize:vertical;
+}
+.dropdown-menu{
+    left: auto;
+    border-radius: 0;
+    border: 0;
+}

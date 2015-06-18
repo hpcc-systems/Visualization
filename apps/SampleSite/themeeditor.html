@@ -1,0 +1,226 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <title>HPCC Systems - Dermatology Test</title>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+
+    <script type="text/javascript" src="js/themeeditor.js"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+    <link href="css/themeeditor.css" rel="stylesheet" type="text/css">
+
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css"> <!-- look at using requirejs webfont loader -->
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and Toggle -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+        </div>
+        <!-- Links -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="playground.html">Playground</a></li>
+                <li class="active"><a href="themeeditor.html">Theme Editor</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row" style="margin-bottom:0;">
+        <div class="container btn-group" id="themeGroup">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownButton" data-toggle="dropdown" aria-expanded="true">
+                Theme Editor
+                <span class="caret"></span>
+            </button>
+            <div class="dropdown-menu" role="menu" aria-labelledby="dropdownButton">
+                <ul id="dropdown-checkbox-wrapper">
+                </ul>
+                <button type="button" class="done btn btn-success">Done</button>
+            </div>
+            <button class="btn btn-default" type="button" onclick="javascript:teViewSaves('getThemes');">
+                View Themes
+            </button>
+            <button class="btn btn-default" type="button" onclick="javascript:teViewSaves('getSerials');">
+                View Serials
+            </button>
+        </div>
+        <div id="main"></div>
+    </div>
+    <script>
+        var g_themeEditor;
+        var g_args;
+        var g_persist;
+        var g_similarProps;
+        var g_allProps;
+        var g_gridCols;
+        var g_gridFitAll = true;
+        var body = document.getElementById("body");
+        var mainDiv = document.getElementById("main");
+        var frame = null;
+        var main = null;
+        var testWidgetArr = null;
+        var currWidget = null;
+        var debouncedResize = null;
+        var toggleCellTitle = null;
+        var g_gridThis;
+
+        var g_themeObj;
+        var g_serialObj;
+        g_defaultThemes();
+        g_defaultSerials();
+
+        require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/ThemeEditor"],
+            function (Surface, Grid, Persist, ThemeEditor) {
+                g_persist = Persist;
+                var themeEditor = new ThemeEditor().showColumns(false).showData(false).showSettings(true);
+                main = new Grid()
+                    .gutter(0)
+                    .setContent(0, 4, themeEditor, "", 2, 2)
+                ;
+                frame = new Surface()
+                    .surfacePadding(0)
+                    .surfaceBorderWidth(0)
+                    .widget(main)
+                    .target("main")
+                ;
+
+                function displayProperties(sourceWidget) {
+                    //if (document.getElementById("showProperties").checked) {
+                        sourceWidget = sourceWidget || currWidget;
+                        themeEditor
+                            .data([sourceWidget])
+                            .render()
+                        ;
+                    //}
+                }
+
+                toggleCellTitle = function (testWidget,showHide) {
+                    showHide = typeof(showHide) === 'undefined' ? false : showHide;
+                    console.log('testWidget:');console.log(testWidget);
+                    var cellArr = g_themeEditor._data[0].content();
+                    for(var i in cellArr){
+                        cellArr[i].title(showHide ? testWidget[i] : "");
+                    }
+                    g_themeEditor._data[0].render();
+                }
+                testWidgetArr = function (testWidget) {
+
+                    var includePathArr;
+                    g_themeEditor = themeEditor;
+                    themeEditor.__meta_loadedTheme.set = themeEditor.getDefaultThemes();
+                    themeEditor.__meta_loadedSerial.set = themeEditor.getDefaultSerials();
+                    if(typeof(testWidget) === "object"){
+                        includePathArr = ['src/layout/Grid'].concat(testWidget);
+                    } else {
+                        includePathArr = [testWidget];
+                    }
+                    require(includePathArr, function (GridWidget) {
+                        currWidget = new GridWidget();
+                        g_args = arguments;
+                        g_theme = themeEditor.loadedTheme();
+                        g_serial = themeEditor.loadedSerial();
+                        applyTheme(arguments,themeEditor.themeMode());
+
+                        var gridCols = Math.ceil(Math.sqrt(arguments.length - 1));
+                        g_gridCols = typeof(g_gridCols) === 'undefined' ? gridCols : g_gridCols;
+
+                        var gridFit = g_gridFitAll ? "all" : "width";
+
+                        currWidget.fitTo(gridFit);
+                        gridCols = g_gridCols;
+
+                        for( var aIdx = 1; aIdx < arguments.length; aIdx++ ){
+                            var cellTitle = "";
+                            if(g_showTitles){
+                                cellTitle = testWidget[aIdx-1];
+                            }
+                            var widgetObj = new arguments[aIdx]().testData();
+                            var wData = widgetObj.data();
+                            for(var i in wData){
+                                if(/^[a-zA-Z\s]+$/.test(wData[i][0])){
+                                    wData[i][0] = String.fromCharCode(65 + parseInt(i));
+                                }
+                            }
+                            widgetObj.data(wData);
+                            currWidget.setContent(Math.floor((aIdx-1)/gridCols), (aIdx-1)%gridCols, widgetObj, cellTitle);
+                        }
+                        applyTheme([currWidget.content()[0]],themeEditor.themeMode());
+                        main
+                            .setContent(0, 0, currWidget, "", 2, 4)
+                        ;
+                        frame
+                            .render(function (mainWidget) {
+                                displayProperties(currWidget);
+                                afterGridLoads();
+                            })
+                        ;
+                    });
+                }
+                testWidgetArr(widgetArrToTest);
+                resize = function () {
+                    if (mainDiv) {
+                        var widthAdjustment = parseInt($('body').css('padding-left')) + parseInt($('body').css('padding-right'));
+                        var heightAdjustment = parseInt($("#main").css("margin-top")) + $("#main").offset().top;
+                        mainDiv.style.width = window.innerWidth - widthAdjustment + "px";
+                        mainDiv.style.height = window.innerHeight - heightAdjustment + "px";
+                    }
+
+                    frame
+                        .resize()
+                        .render()
+                    ;
+                };
+                debouncedResize = Surface.prototype.debounce(function () {
+                    resize();
+                }, 250);
+                resize();
+            }
+        );
+        function applyTheme(arr,themeMode){
+            for(var i in arr){
+                var widget = arr[i];
+                var proto = typeof(widget.prototype) !== "undefined" ? widget.prototype : Object.getPrototypeOf(widget);
+                var serial = themeMode ? g_themeObj[g_theme] : g_serialObj[g_serial];
+                for(var j in proto){
+                    if(typeof(proto[j]) !== "undefined" && proto[j] !== null && j.slice(0,7) === "__meta_"){
+                        if(typeof(serial[j.slice(7)]) !== "undefined"){
+                            if(typeof(proto[j].trueDefaultValue) === "undefined"){
+                                proto[j].trueDefaultValue = proto[j].defaultValue;
+                            }
+                            proto[j].defaultValue = serial[j.slice(7)];
+                        } else if (typeof(proto[j].trueDefaultValue) !== "undefined") {
+                            proto[j].defaultValue = proto[j].trueDefaultValue;
+                        }
+                    }
+                }
+            }
+        }
+        function doResize() {
+            if (debouncedResize) {
+                debouncedResize();
+            }
+        }
+
+        //over ride the defaullt bootstrap behavior of closing the dropdown
+        $('#themeGroup').on('hide.bs.dropdown', function () {
+            return false;
+        });
+    </script>
+</body>
+</html>

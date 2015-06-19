@@ -1,31 +1,35 @@
+var scripts = document.getElementsByTagName("script");
+var script = scripts[scripts.length - 1];
+var srcUrl = script.getAttribute("hpcc-srcUrl") || "../src";
+var bowerUrl = script.getAttribute("hpcc-bowerUrl") || "../bower_components";
 require.config({
     baseUrl: ".",
     paths: {
-        "requireLib": "../bower_components/requirejs/require",
-        "css": "../bower_components/require-css/css",
-        "css-builder": "../bower_components/require-css/css-builder",
-        "normalize": "../bower_components/require-css/normalize",
-        "async": "../bower_components/requirejs-plugins/src/async",
-        "propertyParser": "../bower_components/requirejs-plugins/src/propertyParser",
-        "goog": "../bower_components/requirejs-plugins/src/goog",
+        "requireLib": bowerUrl + "/requirejs/require",
+        "css": bowerUrl + "/require-css/css",
+        "css-builder": bowerUrl + "/require-css/css-builder",
+        "normalize": bowerUrl + "/require-css/normalize",
+        "async": bowerUrl + "/requirejs-plugins/src/async",
+        "propertyParser": bowerUrl + "/requirejs-plugins/src/propertyParser",
+        "goog": bowerUrl + "/requirejs-plugins/src/goog",
 
-        "d3": "../bower_components/d3/d3",
-        "c3": "../bower_components/c3/c3",
-        "dagre": "../bower_components/dagre/index",
-        "topojson": "../bower_components/topojson/topojson",
-        "colorbrewer": "../bower_components/colorbrewer/colorbrewer",
-        "d3.layout.cloud": "../bower_components/d3-cloud/d3.layout.cloud",
-        "font-awesome": "../bower_components/font-awesome/css/font-awesome",
-        "amcharts": "../bower_components/amcharts/dist/amcharts/amcharts",
-        "amcharts.funnel": "../bower_components/amcharts/dist/amcharts/funnel",
-        "amcharts.gauge": "../bower_components/amcharts/dist/amcharts/gauge",
-        "amcharts.pie": "../bower_components/amcharts/dist/amcharts/pie",
-        "amcharts.radar": "../bower_components/amcharts/dist/amcharts/radar",
-        "amcharts.serial": "../bower_components/amcharts/dist/amcharts/serial",
-        "amcharts.xy": "../bower_components/amcharts/dist/amcharts/xy",
-        "amcharts.plugins.responsive": "../bower_components/amcharts/dist/amcharts/plugins/responsive/responsive",
+        "d3": bowerUrl + "/d3/d3",
+        "c3": bowerUrl + "/c3/c3",
+        "dagre": bowerUrl + "/dagre/index",
+        "topojson": bowerUrl + "/topojson/topojson",
+        "colorbrewer": bowerUrl + "/colorbrewer/colorbrewer",
+        "d3.layout.cloud": bowerUrl + "/d3-cloud/d3.layout.cloud",
+        "font-awesome": bowerUrl + "/font-awesome/css/font-awesome",
+        "amcharts": bowerUrl + "/amcharts/dist/amcharts/amcharts",
+        "amcharts.funnel": bowerUrl + "/amcharts/dist/amcharts/funnel",
+        "amcharts.gauge": bowerUrl + "/amcharts/dist/amcharts/gauge",
+        "amcharts.pie": bowerUrl + "/amcharts/dist/amcharts/pie",
+        "amcharts.radar": bowerUrl + "/amcharts/dist/amcharts/radar",
+        "amcharts.serial": bowerUrl + "/amcharts/dist/amcharts/serial",
+        "amcharts.xy": bowerUrl + "/amcharts/dist/amcharts/xy",
+        "amcharts.plugins.responsive": bowerUrl + "/amcharts/dist/amcharts/plugins/responsive/responsive",
 
-        "src": "../src"
+        "src": srcUrl
     },
     shim: {
         "amcharts.funnel": {
@@ -98,9 +102,7 @@ if (window.location.hostname === "rawgit.com") {
             "amcharts.serial": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/serial",
             "amcharts.xy": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/xy",
             "amcharts.plugins.responsive": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/responsive/responsive",
-            "amcharts.plugins.dataloader": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader",
-
-            "src": "../src"
+            "amcharts.plugins.dataloader": "http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader"
         }
     });
 }

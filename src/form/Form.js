@@ -1,3 +1,8 @@
+/**
+ * @file Form Widget
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,13 +11,28 @@
         root.form_Form = factory(root.d3, root.common_HTMLWidget, root.common_SVGWidget, root.common_WidgetArray, root.form_Input, root.form_Slider);
     }
 }(this, function (d3, HTMLWidget, SVGWidget, WidgetArray, Input, Slider) {
+    /**
+     * @class form_Form
+     * @extends common_HTMLWidget
+     */
     function Form() {
         HTMLWidget.call(this);
-
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {String} _tag
+         * @memberof form_Form
+         * @private
+         */
         this._tag = "form";
     }
     Form.prototype = Object.create(HTMLWidget.prototype);
     Form.prototype.constructor = Form;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof form_Form
+     * @private
+     */
     Form.prototype._class += " form_Form";
 
     Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
@@ -20,6 +40,13 @@
     Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
     Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof form_Form
+     * @instance
+     * @returns {Widget}
+     */
     Form.prototype.testData = function () {
         this
             .inputs([
@@ -118,6 +145,12 @@
         return dataArr;
     };
 
+    /**
+     * Function called when form submitted. Validation occurs and then .click method is called.
+     * @method submit
+     * @memberof form_Form
+     * @instance
+     */
     Form.prototype.submit = function(){
         var isValid = true;
         if (this.validate()) {
@@ -126,7 +159,13 @@
         this.click(isValid ? this.values() : null);
     };
 
-    Form.prototype.clear = function () {
+    /**
+     * Clears form inputs.
+     * @method clear
+     * @memberof form_Form
+     * @instance
+     */
+    Form.prototype.clear = function(){
         this.inputsForEach(function(inp){
             if (inp instanceof Slider) {
                 if (inp.allowRange()) {
@@ -142,6 +181,12 @@
         });
     };
 
+    /**
+     * Checks form inputs to make sure they are valid with isValid() method.
+     * @method checkValidation
+     * @memberof form_Form
+     * @instance
+     */
     Form.prototype.checkValidation = function(){
         var ret = true;
         var msgArr = [];
@@ -157,6 +202,15 @@
         return ret;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof form_Form
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Form.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.on("submit", function () {
@@ -200,6 +254,15 @@
         });
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof form_Form
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Form.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
@@ -240,10 +303,25 @@
         ;
     };
 
+    /**
+     * The function that is executed after render. It is used for doing destroying/cleanup.
+     * @method exit
+     * @memberof form_Form
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Form.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
+    /**
+     * Overridable click callback function.
+     * @method click
+     * @memberof form_Form
+     * @param {type} row
+     */
     Form.prototype.click = function (row) {
         console.log("Clicked Submit: "+JSON.stringify(row));
     };

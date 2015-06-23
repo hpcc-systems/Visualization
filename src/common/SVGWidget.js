@@ -1,3 +1,8 @@
+/**
+ * @file Base SVGWidget Class
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,22 +11,48 @@
         root.common_SVGWidget = factory(root.d3, root.common_Widget, root.common_Transition);
     }
 }(this, function (d3, Widget, Transition) {
+    /**
+     * @class common_SVGWidget
+     * @abstract
+     * @extends common_Widget
+     * @noinit
+     */
     function SVGWidget() {
         Widget.call(this);
 
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof common_SVGWidget
+         * @private
+         */
         this._tag = "g";
 
         this._boundingBox = null;
 
         this.transition = new Transition(this);
-
+        /**
+         * Specifies the draw start position depending on widget type "origin" (x:0, y:0) or "center"
+         * @member {string} _drawStartPos
+         * @memberof common_SVGWidget
+         * @private
+         */
         this._drawStartPos = "center";
     }
     SVGWidget.prototype = Object.create(Widget.prototype);
     SVGWidget.prototype.constructor = SVGWidget;
     SVGWidget.prototype._class += " common_SVGWidget";
 
-    //  Properties  ---
+    /**
+     * Moves widget to specified coodinates relative to parent container.
+     * @method move
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} _ An object with the properties "x" and "y".
+     * @param {Mixed} _.x Horizontal position in pixels.
+     * @param {Mixed} _.y Vertical position in pixels.
+     * @returns {Widget}
+     */
     SVGWidget.prototype.move = function (_, transitionDuration) {
         var retVal = this.pos.apply(this, arguments);
         if (arguments.length) {
@@ -32,6 +63,18 @@
         return retVal;
     };
 
+    /**
+     * Sets initial size of widget.
+     * @method size
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @returns {Widget}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.size({width:"100",height:"100"}).render();
+     */
     SVGWidget.prototype.size = function (_) {
         var retVal = Widget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -40,6 +83,20 @@
         return retVal;
     };
 
+    /**
+     * Resizes widget. If no argument is passed, it will resize to the maximum container width and height.
+     * @method resize
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @returns {Widget}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.resize({width:"100",height:"100"}).render();
+     * @example <caption>Example resize to maximum container dimensions</caption>
+     * widget.resize().render();
+     */
     SVGWidget.prototype.resize = function (size) {
         var retVal = Widget.prototype.resize.apply(this, arguments);
         this._parentRelativeDiv
@@ -71,6 +128,16 @@
         return retVal;
     };
 
+    /**
+     * Sets target container for widget to render in. (Normally a DIV)
+     * @method target
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {String|SVGElement} [size] An object with the properties "width" and "height".
+     * @returns {Widget}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.target("myDIV").render();
+     */
     SVGWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
         if (this._target && _ && (this._target.__data__.id !== _.__data__.id)) {
@@ -117,12 +184,48 @@
         return this;
     };
 
-    SVGWidget.prototype.enter = function (domeNode, element) {
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof common_SVGWidget
+     * @instance
+     * @protected
+     * @param {SVGElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
+    SVGWidget.prototype.enter = function (domeNode, element, d) {
         Widget.prototype.enter.apply(this, arguments);
     };
 
-    SVGWidget.prototype.update = function (domeNode, element) {
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_SVGWidget
+     * @instance
+     * @protected
+     * @param {SVGElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
+    SVGWidget.prototype.update = function (domeNode, element, d) {
         Widget.prototype.update.apply(this, arguments);
+    };
+
+    /**
+     * The function that is executed after render. It is used for doing destroying/cleanup.
+     * @method exit
+     * @memberof common_SVGWidget
+     * @instance
+     * @protected
+     * @param {SVGElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
+    SVGWidget.prototype.exit = function (domeNode, element, d) {
+        if (this._parentRelativeDiv) {
+            this._parentOverlay.remove();
+            this._parentElement.remove();
+            this._parentRelativeDiv.remove();
+        }
+        Widget.prototype.exit.apply(this, arguments);
     };
 
     SVGWidget.prototype.postUpdate = function (domeNode, element) {
@@ -133,16 +236,7 @@
             this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._scale + ")");
         }
     };
-
-    SVGWidget.prototype.exit = function (domeNode, element) {
-        if (this._parentRelativeDiv) {
-            this._parentOverlay.remove();
-            this._parentElement.remove();
-            this._parentRelativeDiv.remove();
-        }
-        Widget.prototype.exit.apply(this, arguments);
-    };
-
+    //TODO: doc
     SVGWidget.prototype.getOffsetPos = function () {
         var retVal = { x: 0, y: 0 };
         if (this._parentWidget) {
@@ -154,6 +248,16 @@
         return retVal;
     };
 
+    /**
+     * TODO
+     * Returns an object with the bounding box of the widget. Upper left corner x and y position and width and height.
+     * @method getBBox
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Boolean} refresh
+     * @param {Boolean} round
+     * @returns {Object}
+     */
     SVGWidget.prototype.getBBox = function (refresh, round) {
         if (refresh || this._boundingBox === null) {
             var svgNode = this._element.node();
@@ -291,6 +395,20 @@
         return result;
     };
 
+    /**
+     * Returns the first insersection point of a circle and a line. Given two line end points and given the widget is a circle, returns an object with [x,y] cordinates as properties.
+     * @method intersectCircle
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} [pointA] An object with the properties "x" and "y".
+     * @param {Mixed} [pointA.x] End point x coordinate of the line.
+     * @param {Mixed} [pointA.y] End point y coordinate of the line.
+     * @param {Object} [pointB] An object with the properties "x" and "y".
+     * @param {Mixed} [pointB.x] End point x coordinate of the line.
+     * @param {Mixed} [pointB.y] End point y coordinate of hte line.
+     * @returns {Object|Null}
+     * @example //TODO
+     */
     SVGWidget.prototype.intersectCircle = function (pointA, pointB) {
         var center = this.getOffsetPos();
         var radius = this.radius();
@@ -301,6 +419,20 @@
         return null;
     };
 
+    /**
+     * Returns distance in pixels between two points.
+     * @method distance
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} [pointA] An object with the properties "x" and "y".
+     * @param {Mixed} [pointA.x] End point x coordinate of the line.
+     * @param {Mixed} [pointA.y] End point y coordinate of the line.
+     * @param {Object} [pointB] An object with the properties "x" and "y".
+     * @param {Mixed} [pointB.x] End point x coordinate of the line.
+     * @param {Mixed} [pointB.y] End point y coordinate of hte line.
+     * @returns {Number}
+     * @example //TODO
+     */
     SVGWidget.prototype.distance = function (pointA, pointB) {
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
     };

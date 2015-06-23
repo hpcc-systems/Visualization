@@ -6,6 +6,10 @@
         root.map_ChoroplethStates = factory(root.d3, root.map_Choropleth, root.topojson, root.map_usStates);
     }
 }(this, function (d3, Choropleth, topojson, usStates) {
+    /**
+     * @class map_ChoroplethStates
+     * @extends map_Choropleth
+     */
     function ChoroplethStates() {
         Choropleth.call(this);
 

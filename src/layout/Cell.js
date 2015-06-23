@@ -6,6 +6,10 @@
         root.layout_Cell = factory(root.layout_Surface);
     }
 }(this, function (Surface) {
+    /**
+     * @class layout_Cell
+     * @extends common_Surface
+     */
     function Cell() {
         Surface.call(this);
         this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];

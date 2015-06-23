@@ -1,3 +1,8 @@
+/**
+ * @file Base HTMLWidget Class
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,12 @@
         root.common_HTMLWidget = factory(root.d3, root.common_Widget, root.common_Transition);
     }
 }(this, function (d3, Widget, Transition) {
+    /**
+     * @class common_HTMLWidget
+     * @extends common_Widget
+     * @abstract
+     * @noinit
+     */
     function HTMLWidget() {
         Widget.call(this);
 
@@ -15,6 +26,14 @@
     HTMLWidget.prototype.constructor = HTMLWidget;
     HTMLWidget.prototype._class += " common_HTMLWidget";
 
+    /**
+     * Returns the border/frame width of an element (d3 selection). width = padding + margin + border.
+     * @method calcFrameWidth
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     HTMLWidget.prototype.calcFrameWidth = function (element) {
         var retVal = parseFloat(element.style("padding-left")) +
             parseFloat(element.style("padding-right")) +
@@ -26,10 +45,26 @@
         return retVal;
     };
 
+    /**
+     * Returns the true width of an element by returning css width - (minus) calcFrameWidth().
+     * @method calcWidth
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     HTMLWidget.prototype.calcWidth = function (element) {
         return parseFloat(element.style("width")) - this.calcFrameWidth(element);
     };
 
+    /**
+     * Returns the border/frame height of an element (d3 selection). height = padding + margin + border.
+     * @method calcFrameHeight
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     HTMLWidget.prototype.calcFrameHeight = function (element) {
         var retVal = parseFloat(element.style("padding-top")) +
             parseFloat(element.style("padding-bottom")) +
@@ -41,14 +76,36 @@
         return retVal;
     };
 
+    /**
+     * Returns the true height of an element by returning css height - (minus) calcFrameHeight().
+     * @method calcHeight
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     HTMLWidget.prototype.calcHeight = function (element) {
         return parseFloat(element.style("height")) + this.calcFrameHeight(element);
     };
 
+    /**
+     * Returns the true width of the current widget by returning this._size.width - (minus) calcFrameWidth().
+     * @method clientWidth
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     */
     HTMLWidget.prototype.clientWidth = function () {
         return this._size.width - this.calcFrameWidth(this._element);
     };
 
+    /**
+     * Returns the true height of the current widget by returning this._size.height - (minus) calcFrameHeight().
+     * @method clientHeight
+     * @memberof common_HTMLWidget
+     * @instance
+     * @public
+     */
     HTMLWidget.prototype.clientHeight = function () {
         return this._size.height - this.calcFrameHeight(this._element);
     };
@@ -82,6 +139,20 @@
         };
     };
 
+    /**
+     * Resizes widget. If no argument is passed, it will resize to the maximum container width and height.
+     * @method resize
+     * @memberof common_HTMLWidget
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @returns {Widget}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.resize({width:"100",height:"100"}).render();
+     * @example <caption>Example resize to maximum container dimensions</caption>
+     * widget.resize().render();
+     */
     HTMLWidget.prototype.resize = function (size) {
         var retVal = Widget.prototype.resize.apply(this, arguments);
         this._parentElement
@@ -91,7 +162,17 @@
         return retVal;
     };
 
-    //  Properties  ---
+    /**
+     * Sets or returns the target container of the widget.
+     * @method target
+     * @memberof common_HTMLWidget
+     * @param [String|HTMLElement|SVGElement] - String ID or Dom Node of container to render widget in.
+     * @instance
+     * @public
+     * @example widget
+     * .target("div-container-id")
+     * .render();
+     */
     HTMLWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
         if (this._target && _) {
@@ -164,6 +245,15 @@
         }
     };
 
+    /**
+     * The function that is executed after render. It is used for doing destroying/cleanup.
+     * @method exit
+     * @memberof common_HTMLWidget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     HTMLWidget.prototype.exit = function (domeNode, element) {
         if (this.observer) {
             this.observer.disconnect();

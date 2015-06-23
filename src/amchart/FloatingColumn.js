@@ -1,3 +1,8 @@
+/**
+ * @file AmChart FloatingColumn
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,14 +11,37 @@
         root.amchart_FloatingColumn = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
+    /**
+     * @class amchart_FloatingColumn
+     * @extends amchart_CommonSerial
+     * @implements api_INDChart
+     */
     function FloatingColumn() {
         CommonSerial.call(this);
-        this._tag = "div";
 
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof amchart_FloatingColumn
+         * @private
+         */
+        this._tag = "div";
+        /**
+         * Specifies the graph type of the AmChart Widget.
+         * @member {string} _gType
+         * @memberof amchart_FloatingColumn
+         * @private
+         */
         this._gType = "column";
     }
     FloatingColumn.prototype = Object.create(CommonSerial.prototype);
     FloatingColumn.prototype.constructor = FloatingColumn;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof amchart_FloatingColumn
+     * @private
+     */
     FloatingColumn.prototype._class += " amchart_FloatingColumn";
     FloatingColumn.prototype.implements(INDChart.prototype);
 
@@ -31,6 +59,14 @@
     FloatingColumn.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
     FloatingColumn.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
+    /**
+     * Populates Data and Columns with testData
+     * @method testData
+     * @memberof amchart_FloatingColumn
+     * @instance
+     * @public
+     * @returns {Widget}
+     */
     FloatingColumn.prototype.testData = function() {
         this.columns(["Subject", "open", "close"]);
         this.data([
@@ -42,6 +78,19 @@
         return this;
     };
 
+    /**
+     * Sets the columns for the data being passed into the widget via .data() method.
+     * @method columns
+     * @memberof amchart_FloatingColumn
+     * @instance
+     * @public
+     * @param {String[]} _ An array of strings representing the column names for data passed to widget.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["ID", "Year 1", "Year 2"])
+     * .data([ [40, 66, 60], [30, 98, 92]  ])
+     * .render();
+     */
     FloatingColumn.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
         var context = this;
@@ -62,10 +111,27 @@
         return this;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @protected
+     * @instance
+     * @memberof amchart_FloatingColumn
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     FloatingColumn.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
 
+    /**
+     * Updates underlying AmChart widget object, with options from publish parameters.
+     * @method updateChartOptions
+     * @memberof amchart_FloatingColumn
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     FloatingColumn.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
         this._chart.depth3D = this.Depth3D();
@@ -97,6 +163,14 @@
         this.buildGraphs(this._gType);
     };
 
+    /**
+     * Builds AmChart graph object that becomes a property of the AmChart widget object.
+     * @method buildGraphs
+     * @private
+     * @memberof amchart_FloatingColumn
+     * @instance
+     * @param {string} gType Value from this._gType.
+     */
     FloatingColumn.prototype.buildGraphs = function(gType) {
         if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
@@ -133,6 +207,15 @@
         }
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof amchart_FloatingColumn
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.}
+     */
     FloatingColumn.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
         this.updateChartOptions();

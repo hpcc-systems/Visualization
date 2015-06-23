@@ -1,3 +1,8 @@
+/**
+ * @file Color Palette Object
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -254,9 +259,38 @@
             .attr("class", "swatch2")
             .style("background-color", function(d) { return d; });
     };
-
+    /**
+     * @class common_Palette
+     */
     return {
+        /**
+         * Returns an ordinal palette object. (Fixed set of colors)
+         * @method ordinal
+         * @memberof common_Palette
+         * @instance
+         * @param {String} id The name to set to the palette being created.
+         * @param {Array<String>} colors An array of colors to use.
+         * @returns {PaletteObject}
+         * @TODO create paletteObject type for this
+         * @example
+         * var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+         * widget.paletteID("MyPalette").render();
+         */
         ordinal: fetchOrdinalItem,
+        /**
+         * Returns a rainbow palette object. (Series of colors calculated based on input range and domain).  Will create color rainbow based off of input colors and how many steps through each set of colors.
+         * @method rainbow
+         * @memberof common_Palette
+         * @instance
+         * @param {String} id The name to set to the palette being created.
+         * @param {Array<String>} colors An array of colors.
+         * @param {Array<String>} steps The amount of colors total in the palette.
+         * @returns {PaletteObject}
+         * @TODO create paletteObject type for this
+         * @example example
+         * var colorPalette = Palette.rainbow("MyPalette", ["red", "green", "blue", 32]); // 32 colors between red, green and blue
+         * widget.paletteID("MyPalette").render();
+         */
         rainbow: fetchRainbowItem,
         test: test
     };

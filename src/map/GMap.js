@@ -6,6 +6,11 @@
         root.map_GMap = factory(root.d3, root.common_SVGWidget, root.graph_Graph, root.graph_Edge, root.common_Shape);
     }
 }(this, function (d3, SVGWidget, Graph, Edge, Shape) {
+    /**
+     * @class map_GMap
+     * @extends map_IGMap
+     * @implements map_IGMap
+     */
     function GMap(target) {
         Graph.call(this);
 

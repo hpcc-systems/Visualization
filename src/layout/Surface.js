@@ -6,6 +6,10 @@
         root.layout_Surface = factory(root.d3, root.common_HTMLWidget, root.chart_MultiChart);
     }
 }(this, function (d3, HTMLWidget, MultiChart) {
+    /**
+     * @class layout_Surface
+     * @extends common_HTMLWidget
+     */
     function Surface() {
         HTMLWidget.call(this);
 

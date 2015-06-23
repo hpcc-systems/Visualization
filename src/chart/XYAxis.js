@@ -1,3 +1,8 @@
+/**
+ * @file HPCC VIZ XYAxis
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,15 +11,39 @@
         root.chart_XYAxis = factory(root.d3, root.common_SVGWidget);
     }
 }(this, function (d3, SVGWidget) {
+    /**
+     * @class chart_Line
+     * @abstract
+     * @noinit
+     * @extends common_SVGWidget
+     */
     function XYAxis(target) {
         SVGWidget.call(this);
         this._drawStartPos = "origin";
 
+        /**
+         * d3 date parser object with format of (Y-m-d).
+         * @member {Object} _dateParserData
+         * @memberof chart_XYAxis
+         * @private
+         */
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
+        /**
+         * d3 date parser object with format of (Y-m-d).
+         * @member {Object} _dateParserValue
+         * @memberof chart_XYAxis
+         * @private
+         */
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
     XYAxis.prototype.constructor = XYAxis;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof chart_Line
+     * @private
+     */
     XYAxis.prototype._class += " chart_XYAxis";
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
@@ -41,6 +70,15 @@
     XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
 
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
+
+    /**
+     * Loads sample data for charts based off of chart_XYAxis. Similiar to testData function. Available options "ordinal", "linear", "time".
+     * @method sampleData
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @param {String} Name of the sample data to load.
+     */
     XYAxis.prototype.sampleData = function (_) {
         var retVal = XYAxis.prototype._sampleData.apply(this, arguments);
         if (arguments.length) {
@@ -70,7 +108,13 @@
         return this;
     };
 
-    //  Data ---
+    /**
+     * Override normal testData function and loads sampleData() with "ordinal" as its argument.
+     * @method testData
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     */
     XYAxis.prototype.testData = function () {
         this.sampleData("ordinal");
         return this;
@@ -167,6 +211,14 @@
         ;
     };
 
+    /**
+     * Sets or returns the date/time formatter string used for formatting dates across and axis.
+     * @method xAxisTypeTimePattern
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     var xAxisTypeTimePattern = XYAxis.prototype.xAxisTypeTimePattern;
     XYAxis.prototype.xAxisTypeTimePattern = function (_) {
         var retVal = xAxisTypeTimePattern.apply(this, arguments);
@@ -176,6 +228,14 @@
         return retVal;
     };
 
+    /**
+     * Sets or returns the date/time formatter string used for formatting dates across and axis.
+     * @method yAxisTypeTimePattern
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     var yAxisTypeTimePattern = XYAxis.prototype.yAxisTypeTimePattern;
     XYAxis.prototype.yAxisTypeTimePattern = function (_) {
         var retVal = yAxisTypeTimePattern.apply(this, arguments);
@@ -185,10 +245,30 @@
         return retVal;
     };
 
+    /**
+     * Sets the columns for the data being passed into the widget via .data() method. Calls SVGWidget columns method.
+     * @method columns
+     * @memberof chart_XYAxis
+     * @instance
+     * @param {String[]} _ An array of strings representing the column names for data passed to widget.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["ID", "Year 1", "Year 2"])
+     * .data([ [40, 66, 60], [30, 98, 92]  ])
+     * .render();
+     */
     XYAxis.prototype.columns = function (_) {
         return SVGWidget.prototype.columns.apply(this, arguments);
     };
 
+    /**
+     * Returns formatted data from the function: "_dateParserData".
+     * @method formatData
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     XYAxis.prototype.formatData = function (d) {
         switch (this.xAxisType()) {
             case "time":
@@ -198,6 +278,14 @@
         }
     };
 
+    /**
+     * TODO
+     * @method formatValue
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     XYAxis.prototype.formatValue = function (d) {
         if (!d) {
             return d;
@@ -206,7 +294,7 @@
             return d.map(function (item) {
                 return this.formatValue(item);
             }, this);
-        } 
+        }
         switch (this.yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
@@ -218,6 +306,14 @@
         }
     };
 
+    /**
+     * TODO
+     * @method formattedData
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     XYAxis.prototype.formattedData = function () {
         return this.data().map(function (row) {
             return row.map(function (cell, idx) {
@@ -231,6 +327,15 @@
         }, this);
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof chart_XYAxis
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     XYAxis.prototype.enter = function (domNode, element) {
         this.dataAxis = d3.svg.axis()
             .orient("bottom")
@@ -274,6 +379,14 @@
         ;
     };
 
+    /**
+     * Used for resizing the selection brush handle on chart width/height change.
+     * @method resizeBrushHandle
+     * @memberof chart_XYAxis
+     * @instance
+     * @returns {Widget}
+     * @example //TODO
+     */
     XYAxis.prototype.resizeBrushHandle = function (d, width, height) {
         var e, x, y;
         if (d === "e" || d === "w") {
@@ -305,6 +418,13 @@
         }
     };
 
+    /**
+     * Function generated with SVGWidget::debounce(). Called when brush is moved. The function fire rate is limited by the debounce() method. Returns Boolean.
+     * @method brushMoved
+     * @memberof chart_XYAxis
+     * @instance
+     * @returns {Boolean}
+     */
     XYAxis.prototype.brushMoved = SVGWidget.prototype.debounce(function brushed() {
         var selected = this.formattedData().filter(function (d) {
             var pos;
@@ -330,6 +450,14 @@
         this.selection(selected);
     }, 250);
 
+    /**
+     * TODO
+     * @method dataPos
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     XYAxis.prototype.dataPos = function (label) {
         var retVal = this.dataScale(this.formatData(label));
         if (this.xAxisType() === "ordinal") {
@@ -338,10 +466,27 @@
         return retVal;
     };
 
+    /**
+     * TODO
+     * @method valuePos
+     * @public
+     * @memberof chart_XYAxis
+     * @instance
+     * @example TODO
+     */
     XYAxis.prototype.valuePos = function (value) {
         return this.valueScale(this.formatValue(value));
     };
 
+    /**
+     * Calculates chart margins. Returns Object with "top","right","bottom","left" margin.
+     * @method calcMargin
+     * @memberof chart_XYAxis
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     * @instance
+     * @returns {Object}
+     */
     XYAxis.prototype.calcMargin = function (domNode, element) {
         var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2 };
         var height = this.height() - margin.top - margin.bottom;
@@ -371,6 +516,15 @@
         return margin;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof chart_XYAxis
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
 
@@ -592,9 +746,23 @@
         this.updateChart(domNode, element, margin, width, height);
     };
 
+    /**
+     * Updates chart with options from publish parameters. (empty function)
+     * @method updateChart
+     * @memberof chart_XYAxis
+     * @instance
+     * @private
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     XYAxis.prototype.updateChart = function (domNode, element, margin, width, height) {
     };
 
+    /**
+     * @method Overridable selection callback called on brush selection.
+     * @memberof chart_XYAxis
+     * @param {Mixed} selected Selection data, string/object.
+     */
     XYAxis.prototype.selection = function (selected) {
         console.log(selected);
     };

@@ -1,3 +1,8 @@
+/**
+* @file Google TreeMap Chart
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,19 +11,54 @@
         root.TreeMap = factory(root.d3, root.common_HTMLWidget);
     }
 }(this, function (d3, HTMLWidget) {
-
+    /**
+     * @class google_TreeMap
+     * @extends common_HTMLWidget
+     */
     function TreeMap() {
         HTMLWidget.call(this);
-
+        /**
+         * Specifies the widget type of the google Widget/HPCC Widget.
+         * @member {string} _chartType
+         * @memberof google_TreeMap
+         * @private
+         */
         this._chartType = "TreeMapChart";
+        /**
+         * Google Chart DataTable Object
+         * @member {string} _data_google
+         * @memberof google_TreeMap
+         * @private
+         */
         this._data_google = [];
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof google_TreeMap
+         * @private
+         */
         this._tag = "div";
 
         this.columns([]);
         this.data([]);
+
+        /**
+         * Google Treemap chart object.
+         * @member {Object} treemapChart
+         * @memberof google_TreeMap
+         * @private
+         */
+        this.treemapChart = null;
+
     }
     TreeMap.prototype = Object.create(HTMLWidget.prototype);
     TreeMap.prototype.constructor = TreeMap;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof google_TreeMap
+     * @private
+     */
     TreeMap.prototype._class += " google_TreeMap";
 
     TreeMap.prototype.publish("headerColor", null, "html-color", "The color of the header section for each node. Specify an HTML color value.",null,{tags:["Basic"]});
@@ -49,6 +89,14 @@
 
     TreeMap.prototype.publish("useWeightedAverageForAggregation", true, "boolean", "Whether to use weighted averages for aggregation.",null,{tags:["Basic"]});
 
+    /**
+     * Builds and returns a google configuration object based on publish param values.
+     * @method getChartOptions
+     * @memberof google_TreeMap
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     TreeMap.prototype.getChartOptions = function () {
         var retVal = [];
 
@@ -82,17 +130,47 @@
         return retVal;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof google_TreeMap
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     TreeMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
         this.treemapChart = new google.visualization.TreeMap(element.node());
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof google_TreeMap
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     TreeMap.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         this.treemapChart.draw(this._data_google, this.getChartOptions());
     };
 
+    /**
+     * Sets data to be render within widget. (Overrides and calls back to HTMLWidget.data()). Also creates and populates this._data_google Google chart data table.
+     * @method data
+     * @memberof google_TreeMap
+     * @instance
+     * @param {Mixed} _ The data being rendered.
+     * @returns {Widget}
+     * @example widget
+     * .columns([["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"]])
+     * .data( ["Global", null, 0, 0], ["America","Global", 0, 0] )
+     * .render();
+     */
     TreeMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -102,6 +180,13 @@
         return retVal;
     };
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof google_TreeMap
+     * @instance
+     * @returns {Widget}
+     */
     TreeMap.prototype.testData = function () {
             this.columns([["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"]]);
             this.data(
@@ -139,18 +224,29 @@
         return this;
     };
 
-        TreeMap.prototype.defaultlTooltip = function(row, size, value) {
-            var data =  this._data_google;
+    //TODO
+    /**
+     * Creates the default tooltip HTML for mouse over.
+     * @method defaultlTooltip
+     * @memberof google_TreeMap
+     * @instance
+     * @param {Number} row
+     * @param {Number} size
+     * @param {Number} value
+     * @returns {Widget}
+     */
+    TreeMap.prototype.defaultlTooltip = function(row, size, value) {
+        var data =  this._data_google;
 
-            return "<div style='background:#ddd; padding:10px; border-style:solid' >" +
-                "Label: " + data.getValue(row, 0) + "<br>" +
-                "Parent: " + data.getValue(row, 1) + "<br>" +
-                "Column 3 Label: " + data.getColumnLabel(2) + ", Value: " + data.getValue(row, 2) + "<br>" +
-                "Column 4 Label: " + data.getColumnLabel(3) + ", Value: " + data.getValue(row, 3) + "<br>" +
-                "Datatable row #: " + row + "<br>" +
-                data.getColumnLabel(2) +" (total value of this cell and its children): " + size + "<br>" +
-                data.getColumnLabel(3) + ": " + value + " </div>";
-        };
+        return "<div style='background:#ddd; padding:10px; border-style:solid' >" +
+            "Label: " + data.getValue(row, 0) + "<br>" +
+            "Parent: " + data.getValue(row, 1) + "<br>" +
+            "Column 3 Label: " + data.getColumnLabel(2) + ", Value: " + data.getValue(row, 2) + "<br>" +
+            "Column 4 Label: " + data.getColumnLabel(3) + ", Value: " + data.getValue(row, 3) + "<br>" +
+            "Datatable row #: " + row + "<br>" +
+            data.getColumnLabel(2) +" (total value of this cell and its children): " + size + "<br>" +
+            data.getColumnLabel(3) + ": " + value + " </div>";
+    };
 
-        return TreeMap;
+    return TreeMap;
 }));

@@ -1,3 +1,8 @@
+/**
+ * @file c3 Chart CommonND
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,13 @@
         root.c3chart_CommonND = factory(root.c3chart_Common, root.api_INDChart);
     }
 }(this, function (Common, INDChart) {
+    /**
+     * @class c3chart_CommonND
+     * @abstract
+     * @extends c3chart_Common
+     * @implements api_INDChart
+     * @noinit
+     */
     function CommonND(target) {
         Common.call(this);
         INDChart.call(this);
@@ -24,6 +36,12 @@
     }
     CommonND.prototype = Object.create(Common.prototype);
     CommonND.prototype.constructor = CommonND;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof c3chart_CommonND
+     * @private
+     */
     CommonND.prototype._class += " c3chart_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 
@@ -61,6 +79,16 @@
 
     CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @private
+     * @memberof c3chart_CommonND
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
             this._config.subchart = {
@@ -114,6 +142,15 @@
         Common.prototype.enter.apply(this, arguments);
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof c3chart_CommonND
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     CommonND.prototype.update = function (domNode, element) {
         Common.prototype.update.apply(this, arguments);
 
@@ -146,6 +183,14 @@
         });
     };
 
+    /**
+     * Builds and returns an c3chart configuration Object based on publish param values.
+     * @method getChartOptions
+     * @memberof c3chart_CommonND
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     CommonND.prototype.getChartOptions = function () {
         var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
 

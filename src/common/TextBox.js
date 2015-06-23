@@ -1,3 +1,8 @@
+/**
+ * @file TextBox Widget
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,16 +11,38 @@
         root.common_TextBox = factory(root.common_SVGWidget, root.common_Shape, root.common_Text);
     }
 }(this, function (SVGWidget, Shape, Text) {
+    /**
+     * @class common_TextBox
+     * @extends common_SVGWidget
+     */
     function TextBox() {
         SVGWidget.call(this);
-
+        /**
+         * Shape widget/object instance.
+         * @member {Object} _shapeWidget
+         * @memberof common_Menu
+         * @default "rect"
+         * @private
+         */
         this._shape = new Shape()
             .shape("rect")
         ;
+        /**
+         * Text widget/object instance.
+         * @member {Object} _shapeWidget
+         * @memberof common_Menu
+         * @private
+         */
         this._text = new Text();
     }
     TextBox.prototype = Object.create(SVGWidget.prototype);
     TextBox.prototype.constructor = TextBox;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof common_TextBox
+     * @private
+     */
     TextBox.prototype._class += " common_TextBox";
 
     TextBox.prototype.publishProxy("text", "_text");
@@ -37,11 +64,27 @@
         return this;
     };
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof common_TextBox
+     * @instance
+     * @returns {Widget}
+     */
     TextBox.prototype.testData = function () {
         this._text.testData();
         return this;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     TextBox.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._shape
@@ -54,6 +97,15 @@
         ;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     TextBox.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
 

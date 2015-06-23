@@ -1,3 +1,8 @@
+/**
+ * @file Text Widget
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,11 +11,22 @@
         root.common_Text = factory(root.common_SVGWidget);
     }
 }(this, function (SVGWidget) {
+    /**
+     * @class common_Text
+     * @extends common_SVGWidget
+     */
     function Text() {
         SVGWidget.call(this);
     }
     Text.prototype = Object.create(SVGWidget.prototype);
     Text.prototype.constructor = Text;
+
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof common_Text
+     * @private
+     */
     Text.prototype._class += " common_Text";
 
     Text.prototype.publish("text", "", "string", "Display Text",null,{tags:["Private"]});
@@ -19,16 +35,41 @@
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"],{tags:["Private"]});
     Text.prototype.publish("colorFill", null, "html-color", "Fill Color",null,{tags:["Private"]});
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof common_Text
+     * @instance
+     * @returns {Widget}
+     */
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");
         return this;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Text.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._textElement = element.append("text");
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_Text
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         this._textElement

@@ -6,6 +6,10 @@
         root.graph_Edge = factory(root.d3, root.common_SVGWidget, root.common_TextBox);
     }
 }(this, function (d3, SVGWidget, TextBox) {
+    /**
+     * @class graph_Edge
+     * @extends common_SVGWidget
+     */
     function Edge() {
         SVGWidget.call(this);
 

@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ Dendrogram Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,15 +11,39 @@
         root.tree_Dendrogram = factory(root.d3, root.common_SVGWidget, root.api_ITree);
     }
 }(this, function (d3, SVGWidget, ITree) {
+    /**
+     * @class tree_Dendrogram
+     * @extends common_SVGWidget
+     * @implements api_ITree
+     */
     function Dendrogram(target) {
         SVGWidget.call(this);
         ITree.call(this);
 
+        /**
+         * Specifies the draw start position depending on widget type "origin" (x:0, y:0) or "center"
+         * @member {string} _drawStartPos
+         * @memberof chart_Bubble
+         * @private
+         */
         this._drawStartPos = "origin";
+        /**
+         * Specifies the max width that text can take up. 0 = unlimited.
+         * @member {string} _drawStartPos
+         * @memberof chart_Bubble
+         * @default 0
+         * @private
+         */
         this._maxTextWidth = 0;
     }
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
     Dendrogram.prototype.constructor = Dendrogram;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof chart_Bubble
+     * @private
+     */
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
 
@@ -23,6 +52,15 @@
     Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"],{tags:["Private"]});
     Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof tree_Dendrogram
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         var context = this;
@@ -33,6 +71,15 @@
         ;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof tree_Dendrogram
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Dendrogram.prototype.update = function (domNode, element, secondPass) {
         var context = this;
         SVGWidget.prototype.update.apply(this, arguments);

@@ -1,3 +1,8 @@
+/**
+ * @file AmChart CommonXY
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,10 +11,27 @@
         root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
 }(this, function(d3, HTMLWidget, AmCharts, require) {
+    /**
+     * @class amchart_CommonXY
+     * @abstract
+     * @extends common_HTMLWidget
+     * @noinit
+     */
     function CommonXY() {
         HTMLWidget.call(this);
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof amchart_CommonXY
+         * @private
+         */
         this._tag = "div";
-
+        /**
+         * AmChart widget/chart object.
+         * @member {Object} _chart
+         * @memberof amchart_CommonXY
+         * @private
+         */
         this._chart = {};
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
@@ -82,6 +104,14 @@
 
     CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    /**
+     * Updates underlying AmChart widget object, with options from publish parameters.
+     * @method updateChartOptions
+     * @memberof amchart_CommonXY
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -150,6 +180,16 @@
         return this._chart;
     };
 
+    /**
+     * Builds AmChart graph object that becomes a property of the AmChart widget object.
+     * @method buildGraphObj
+     * @private
+     * @memberof amchart_CommonXY
+     * @instance
+     * @param {string} gType Value from this._gType.
+     * @param {number} i Graph object index number.
+     * @returns {Widget}
+     */
     CommonXY.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
@@ -176,6 +216,15 @@
         return gObj;
     };
 
+    /**
+     * Formats data passed via data() correctly for AmCharts underlying widget.
+     * @method formatData
+     * @memberof amchart_CommonXY
+     * @instance
+     * @private
+     * @params {Array} dataArr Data array from data() method.
+     * @returns {Array}
+     */
     CommonXY.prototype.formatData = function(dataArr) {
         var context = this;
         var dataObjArr = [];
@@ -189,6 +238,19 @@
         return dataObjArr;
     };
 
+    /**
+     * Sets the columns for the data being passed into the widget via .data() method.
+     * @method columns
+     * @memberof amchart_CommonXY
+     * @instance
+     * @public
+     * @param {String[]} _ An array of strings representing the column names for data passed to widget.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["ID", "Year 1", "Year 2"])
+     * .data([ [40, 66, 60], [30, 98, 92]  ])
+     * .render();
+     */
     CommonXY.prototype.columns = function(colArr) {
         if (!arguments.length) return this._columns;
         var context = this;
@@ -205,6 +267,15 @@
         return retVal;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @protected
+     * @instance
+     * @memberof amchart_CommonXY
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     CommonXY.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
@@ -232,6 +303,15 @@
         });
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof amchart_CommonXY
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     CommonXY.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 

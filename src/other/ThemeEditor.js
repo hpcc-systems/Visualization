@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ ThemeEditor Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,9 +11,18 @@
         root.other_PropertyEditor = factory(root.common_Widget, root.common_HTMLWidget, root.other_Persist, root.other_PropertyEditor);
     }
 }(this, function (Widget, HTMLWidget, Persist, PropertyEditor) {
+    /**
+     * @class other_ThemeEditor
+     * @extends common_HTMLWidget
+     */
     function ThemeEditor() {
         HTMLWidget.call(this);
-
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof other_ThemeEditor
+         * @private
+         */
         this._tag = "div";
         this._current_grouping = undefined;
         this._showing_columns = undefined;
@@ -21,18 +35,44 @@
 
         this._widgetObjsById = {};
     }
+    /**
+     * Returns themes stored in localStorage.
+     * @method getThemes
+     * @memberof other_ThemeEditor
+     * @instance
+     * @public
+     * @returns {Object}
+     */
     var getThemes = function(idx){
         if (typeof(window.g_defaultThemes) === "function") {
             window.g_defaultThemes(idx);
         }
         return JSON.parse(localStorage.themeEditorThemes || "{}");
     };
+    /**
+     * Default serialization of widget.
+     * @method getSerials
+     * @memberof other_ThemeEditor
+     * @instance
+     * @public
+     * @param {String} Index
+     * @returns {Object}
+     */
     var getSerials = function(idx){
         if (typeof(window.g_defaultSerials) === "function") {
             window.g_defaultSerials(idx);
         }
         return JSON.parse(localStorage.themeEditorSerials || "{}");
     };
+    /**
+     * TODO
+     * @method getThemeNames
+     * @memberof other_ThemeEditor
+     * @instance
+     * @public
+     * @param {Number} Index
+     * @returns {Array}
+     */
     var getThemeNames = function(idx){
         var loadedThemes = getThemes();
         var themes = [];
@@ -44,6 +84,15 @@
         }
         return themes;
     };
+    /**
+     * TODO
+     * @method getSerialNames
+     * @memberof other_ThemeEditor
+     * @instance
+     * @public
+     * @param {Number} Index
+     * @returns {Array}
+     */
     var getSerialNames = function(idx){
         var loadedSerials = getSerials();
         var serials = [];
@@ -56,6 +105,12 @@
         return serials;
     };
     ThemeEditor.prototype = Object.create(HTMLWidget.prototype);
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof google_Common
+     * @private
+     */
     ThemeEditor.prototype._class += " other_ThemeEditor";
 
     ThemeEditor.prototype.publish("themeMode", true, "boolean", "Edit default values",null,{tags:["Basic"]});
@@ -76,6 +131,14 @@
     ThemeEditor.prototype.getDefaultThemes = getThemeNames;
     ThemeEditor.prototype.getDefaultSerials = getSerialNames;
 
+    /**
+     * Builds and returns a google configuration object based on publish param values.
+     * @method showSettings
+     * @memberof other_ThemeEditor
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     ThemeEditor.prototype.showSettings = function (_) {
         if (!arguments.length) {
             return this._showSettings;
@@ -86,6 +149,15 @@
 
     ThemeEditor.prototype.onChange = function (widget, propID) {};
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof other_ThemeEditor
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     ThemeEditor.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
@@ -127,6 +199,15 @@
         return ret;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof other_ThemeEditor
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     ThemeEditor.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         if (tableNeedsRedraw(this)) {
@@ -161,6 +242,15 @@
         this.initFunctionality(domNode);
     };
 
+    /**
+     * The function that is executed after render. It is used for doing destroying/cleanup.
+     * @method exit
+     * @memberof other_ThemeEditor
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     ThemeEditor.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };

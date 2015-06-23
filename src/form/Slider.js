@@ -10,13 +10,12 @@
         SVGWidget.call(this);
         IInput.call(this);
 
+        this._dateFormatter = d3.time.format("%Y-%m-%d");
+        this._dateParser = this._dateFormatter.parse;
+
         this.selectionLabel("");
         this._playing = false;
         this._loop = false;
-
-        this.xScale = d3.scale.linear()
-            .clamp(true)
-        ;
 
         var context = this;
         this._playIcon = new Icon()
@@ -51,21 +50,17 @@
         };
 
         this.brush = d3.svg.brush()
-            .x(this.xScale)
-            .extent([0, 0])
-            .on("brushstart", function (d) { context.brushstart(d, this); })
-            .on("brush", function (d) { context.brushmove(d, this); })
-            .on("brushend", function (d) { context.brushend(d, this); })
+            .on("brushstart", function (d) { context.brushstart(this); })
+            .on("brush", function (d) { context.brushmove(this); })
+            .on("brushend", function (d) { context.brushend(this); })
         ;
+
         this.brush.empty = function () {
             return false;
         };
 
         this.axis = d3.svg.axis()
-              .scale(this.xScale)
               .orient("bottom")
-              .tickValues(null)
-              .tickFormat(function (d) { return d; })
               .tickSize(0)
               .tickPadding(12)
         ;
@@ -74,15 +69,19 @@
     Slider.prototype._class += " other_Slider";
     Slider.prototype.implements(IInput.prototype);
 
+    Slider.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "linear", "linear range", "time", "time range"]);
+
     Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags: ["Basic"] });
     Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
 
+    Slider.prototype.publish("axisType", "linear", "set", "Axis Type", ["linear", "time"]);
+    Slider.prototype.publish("timeseriesPattern", "%Y-%m-%d", "string", "Time Series Pattern");
     Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection", null, { tags: ["Intermediate"] });
-    Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate"] });
-    Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
-    Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
+    Slider.prototype.publish("low", 0, "string", "Low", null, { tags: ["Intermediate"] });
+    Slider.prototype.publish("high", 100, "string", "High", null, { tags: ["Intermediate"] });
+    Slider.prototype.publish("step", 10, "string", "Step", null, { tags: ["Intermediate"] });
     Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
 
     Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
@@ -92,25 +91,122 @@
     Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
     Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
 
-    Slider.prototype.name = function (_) {
-        return Slider.prototype.columns.apply(this, arguments);
-    };
-
-    Slider.prototype.value = function (_) {
-        return Slider.prototype.data.apply(this, arguments);
+    Slider.prototype._sampleData = Slider.prototype.sampleData;
+    Slider.prototype.sampleData = function (_) {
+        var retVal = Slider.prototype._sampleData.apply(this, arguments);
+        if (arguments.length) {
+            switch (_) {
+                case "linear":
+                    this.testDataLinear(false);
+                    break;
+                case "linear range":
+                    this.testDataLinear(true);
+                    break;
+                case "time":
+                    this.testDataTime(false);
+                    break;
+                case "time range":
+                    this.testDataTime(true);
+                    break;
+            }
+        }
+        return retVal;
     };
 
     Slider.prototype.testData = function (_) {
-        this.columns("Percent");
-        this.data(20);
+        this.sampleData("linear");
         return this;
     };
 
-    Slider.prototype.testData2 = function (_) {
-        this.allowRange(true);
-        this.columns("Percent");
-        this.data([20, 40]);
+    Slider.prototype.testDataLinear = function (allowRange) {
+        this
+            .allowRange(allowRange)
+            .name("Year")
+            .axisType("linear")
+            .low(100)
+            .high(200)
+            .step(10)
+            .value(allowRange ? [this.low(), this.low()] : this.low())
+        ;
         return this;
+    };
+
+    Slider.prototype.testDataTime = function (allowRange) {
+        this
+            .allowRange(allowRange)
+            .name("Percent")
+            .axisType("time")
+            .low("1999-07-03")
+            .high("1999-07-12")
+            .value(allowRange ? [this.low(), this.low()] : this.low())
+        ;
+        return this;
+    };
+
+    Slider.prototype._origName = Slider.prototype.name;
+    Slider.prototype.name = function (_) {
+        Slider.prototype._origName.apply(this, arguments);
+        if (!arguments.length) {
+            return Slider.prototype.columns.apply(this)[0];
+        }
+        return Slider.prototype.columns.call(this, [_]);
+    };
+
+    Slider.prototype._origValue = Slider.prototype.value;
+    Slider.prototype.value = function (_) {
+        Slider.prototype._origValue.apply(this, arguments);
+        if (!arguments.length) {
+            return Slider.prototype.data.apply(this, arguments)[0][0];
+        }
+        return Slider.prototype.data.call(this, [[_]]);
+    };
+
+    Slider.prototype._origtimeseriesPattern = Slider.prototype.timeseriesPattern;
+    Slider.prototype.timeseriesPattern = function (_) {
+        var retVal = Slider.prototype._origtimeseriesPattern.apply(this, arguments);
+        if (arguments.length) {
+            this._dateFormatter = d3.time.format(_);
+            this._dateParser = this._dateFormatter.parse;
+        }
+        return retVal;
+    };
+
+    Slider.prototype.toInternalValue = function (value) {
+        switch (this.axisType()) {
+            case "time":
+                if (value instanceof Array) {
+                    return value.map(function (item) {
+                        return this._dateParser(item);
+                    }, this);
+                }
+                return this._dateParser(value);
+        }
+        if (value instanceof Array) {
+            return value.map(function (item) {
+                return parseFloat(item);
+            }, this);
+        }
+        return parseFloat(value);
+    };
+
+    Slider.prototype.fromInternalValue = function (internalValue) {
+        switch (this.axisType()) {
+            case "time":
+                return this._dateFormatter(new Date(internalValue));
+        }
+        return internalValue;
+    };
+
+    Slider.prototype.lowInternalValue = function () {
+        return this.toInternalValue(this.low());
+    };
+
+    Slider.prototype.highInternalValue = function () {
+        return this.toInternalValue(this.high());
+    };
+
+    Slider.prototype.internalValue = function () {
+        return this.toInternalValue(this.value());
     };
 
     Slider.prototype.play = function () {
@@ -120,8 +216,8 @@
             .render()
         ;
         var tick = this.data();
-        if (tick < this.low() || tick >= this.high()) {
-            tick = this.low();
+        if (tick < this.lowInternalValue() || tick >= this.highInternalValue()) {
+            tick = this.lowInternalValue();
             this
                 .data(tick)
                 .render()
@@ -130,9 +226,9 @@
         var context = this;
         this.intervalHandler = setInterval(function () {
             tick += context.step();
-            if (tick > context.high()) {
+            if (tick > context.highInternalValue()) {
                 if (context._loop === true) {
-                    tick = context.low();
+                    tick = context.lowInternalValue();
                     context
                         .data(tick)
                         .render()
@@ -156,18 +252,6 @@
             .render()
         ;
         clearInterval(this.intervalHandler);
-    };
-
-    Slider.prototype.data = function (_) {
-        var retVal = SVGWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            if (this.brushg) {
-                this.brushg
-                    .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
-                ;
-            }
-        }
-        return retVal;
     };
 
     Slider.prototype.enter = function (domNode, element) {
@@ -236,6 +320,31 @@
 
     Slider.prototype.update = function (domNode, element) {
         var context = this;
+        if (this._prevAxisType !== this.axisType()) {
+            this._prevAxisType = this.axisType();
+            switch (this.axisType()) {
+                case "linear":
+                    this.dataScale = d3.scale.linear()
+                        .clamp(true)
+                    ;
+                    break;
+                case "time":
+                    this.dataScale = d3.time.scale()
+                        .clamp(true)
+                    ;
+                    //this.dataScale.ticks(d3.time.day);
+                    break;
+            }
+
+            this.axis
+                .scale(this.dataScale)
+            ;
+
+            this.brush
+                .x(this.dataScale)
+            ;
+        }
+
         var leftPos = -this.width() / 2 + this.padding();
         var width = this.width() - this.padding() * 2;
 
@@ -253,19 +362,19 @@
             .render()
         ;
 
-        if ((this.high() - this.low()) / this.step() <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
-        } else {
-            this.axis.tickValues(null);
-        }
+        //if ((this.high() - this.low()) / this.step() <= 10) {
+        //    this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
+        //} else {
+        //    this.axis.tickValues(null);
+        //}
 
         width -= this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
-        this.xScale
-            .domain([this.low(), this.high()])
+        this.dataScale
+            .domain([this.lowInternalValue(), this.highInternalValue()])
             .range([leftPos, leftPos + width])
         ;
         var delta = this.calcDelta(domNode, element, leftPos, width);
-        this.xScale
+        this.dataScale
             .range([leftPos - delta.left, leftPos + width - delta.right])
         ;
         this.axisElement
@@ -278,7 +387,7 @@
             .style('font-family', this.fontFamily())
         ;
 
-        var range = this.xScale.range();
+        var range = this.dataScale.range();
         this.brushg.select(".background")
             .attr("x", range[0])
             .attr("width", range[1] - range[0])
@@ -289,59 +398,72 @@
         ;
 
         this.brushg
-            .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
+            .call(this.brush.extent(this.allowRange() ? this.internalValue() : [this.internalValue(), this.internalValue()]))
         ;
 
         var bbox = this.sliderElement.node().getBBox();
         this.sliderElement.attr("transform", "translate(0, " + -(bbox.y + bbox.height / 2) + ")");
     };
 
-    Slider.prototype.brushstart = function (d, self) {
+    Slider.prototype.mouseInternalValue = function (node) {
+        var mousePos = d3.mouse(node)[0];
+        return this.dataScale.invert(mousePos);
+    };
+
+    Slider.prototype.mouseValue = function (node) {
+        return this.fromInternalValue(this.mouseInternalValue(node));
+    };
+
+    Slider.prototype.brushstart = function (node) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
     };
 
-    Slider.prototype.brushmove = function (d, self) {
+    Slider.prototype.brushmove = function (node) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
         if (!this.allowRange()) {
-            var mouseX = this.xScale.invert(d3.mouse(self)[0]);
-            d3.select(self)
-                .call(this.brush.extent([mouseX, mouseX]))
+            //  Foce low/highThumb to work as one  ---
+            var mouseInternalValue = this.nearestStep(this.mouseInternalValue(node));
+            var formattedValue = this.toInternalValue(this.fromInternalValue(mouseInternalValue));
+            d3.select(node)
+                .call(this.brush.extent([formattedValue, formattedValue]))
             ;
         }
     };
 
-    Slider.prototype.brushend = function (d, self) {
+    Slider.prototype.brushend = function (node) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
         if (!this.allowRange()) {
-            var mouseX = this.nearestStep(this.xScale.invert(d3.mouse(self)[0]));
-            d3.select(self)
-                .call(this.brush.extent([mouseX, mouseX]))
+            var mouseInternalValue = this.nearestStep(this.mouseInternalValue(node));
+            this.value(this.fromInternalValue(mouseInternalValue));
+            d3.select(node)
+                .call(this.brush.extent([this.internalValue(), this.internalValue()]))
             ;
-            this._data = mouseX;
-            if (this.selectionLabel()) {
-                var clickData = {};
-                clickData[this.selectionLabel()] = mouseX;
-                this.click(clickData);
-            } else {
-                this.click(mouseX);
-            }
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);
             extent[1] = this.nearestStep(extent[1]);
-            this._data = extent;
-            d3.select(self)
-                .call(this.brush.extent(extent))
+            this.value([this.fromInternalValue(extent[0]), this.fromInternalValue(extent[1])]);
+            d3.select(node)
+                .call(this.brush.extent(this.internalValue()))
             ;
-            this.newSelection(extent[0], extent[1]);
+        }
+        if (this.selectionLabel()) {
+            var clickData = {};
+            clickData[this.selectionLabel()] = this.value();
+            this.click(clickData);
+        } else {
+            this.click(this.value());
         }
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this.low() + Math.round((value - this.low()) / this.step()) * this.step();
+        if (this.axisType() === "time") {
+            return value.setHours(value.getHours() + 12);  //  Nearest day  ---
+        }
+        return this.lowInternalValue() + Math.round((value - this.lowInternalValue()) / this.step()) * this.step();
     };
 
     Slider.prototype.handlePath = function (d, i) {

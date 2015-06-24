@@ -207,6 +207,8 @@
             .text(function (d) {
                 if (d instanceof String) {
                     return d.trim();
+                } else if (d instanceof Object) {
+                    return "";
                 }
                 return d;
             })

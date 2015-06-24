@@ -29,7 +29,7 @@
         }
 
         var column = this.svgData.selectAll(".data")
-            .data(this._data, function (d) { return d; })
+            .data(this.formattedData(), function (d) { return d; })
         ;
 
         column.enter().append("g")

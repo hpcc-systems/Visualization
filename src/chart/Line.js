@@ -64,7 +64,7 @@
             .text(function(d) { return d; })
         ;
         line
-            .datum(function (d, i) { return context.data().map(function (row, rowIdx) { return [row[0], row[i + 1]];}); })
+            .datum(function (d, i) { return context.formattedData().map(function (row, rowIdx) { return [row[0], row[i + 1]];}); })
             .attr("d", d3Line)
         ;
 

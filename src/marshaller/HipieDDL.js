@@ -140,17 +140,71 @@
 
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
-        this.annotations = [];
-        if (this.mappings.flags && this.mappings.flags instanceof Array) {
-            this.annotations = this.mappings.flags;
-            delete this.mappings.flags;
-        }
+        this.icon = visualization.icon || {};
+        this.fields = visualization.fields || {};
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
+
+    GraphMappings.prototype.calcAnnotation = function (field, origItem, forAnnotation) {
+        var retVal = {};
+        function faCharFix(faChar) {
+            if (faChar) {
+                return String.fromCharCode(parseInt(faChar));
+            }
+            return faChar;
+        }
+        function mapStruct(struct, retVal) {
+            if (struct) {
+                for (var key in struct) {
+                    switch (key) {
+                        case "faChar":
+                            retVal.faChar = faCharFix(struct.faChar);
+                            break;
+                        case "tooltip":
+                            retVal[key] = struct[key];
+                            break;
+                        case "icon_image_colorFill":
+                        case "icon_shape_colorFill":
+                        case "icon_shape_colorStroke":
+                            if (forAnnotation) {
+                                retVal[key.split("icon_")[1]] = struct[key];
+                            } else {
+                                retVal[key] = struct[key];
+                            }
+                            break;
+                        case "textbox_image_colorFill":
+                        case "textbox_shape_colorFill":
+                        case "textbox_shape_colorStroke":
+                            if (!forAnnotation) {
+                                retVal[key] = struct[key];
+                            }
+                            break;
+                        case "id":
+                        case "valuemappings":
+                        case "font":
+                        case "charttype":
+                            break;
+                        default:
+                            console.log("Unknown annotation property:  " + key);
+                    }
+                }
+            }
+        }
+        mapStruct(field, retVal);
+        if (origItem && origItem[field.id] && field.valuemappings) {
+            var annotationInfo = field.valuemappings[origItem[field.id]];
+            mapStruct(annotationInfo, retVal);
+        }
+
+        for (var key in retVal) { // jshint ignore:line
+            return retVal;
+        }
+        return null;
+    };
 
     GraphMappings.prototype.doMapAll = function (data) {
         var context = this;
@@ -169,15 +223,21 @@
                 vertices.push(retVal);
             }
             if (origItem) {
+                // Icon  ---
+                var icon = context.calcAnnotation(context.visualization.icon, origItem);
+                if (icon) {
+                    for (var key in icon) {
+                        if (retVal[key]) {
+                            retVal[key](icon[key]);
+                        }
+                    }
+                }
+                // Annotations  ---
                 var annotations = [];
-                context.annotations.forEach(function (annotation) {
-                    if (origItem[annotation]) {
-                        annotations.push({
-                            "faChar": origItem[annotation],
-                            "tooltip": "",
-                            "shape_color_fill": "navy",
-                            "image_color_fill": "white"
-                        });
+                context.fields.forEach(function (field) {
+                    var annotation = context.calcAnnotation(field, origItem, true);
+                    if (annotation) {
+                        annotations.push(annotation);
                     }
                 });
                 retVal.annotationIcons(annotations);
@@ -211,13 +271,14 @@
     //  Viz Source ---
     function Source(visualization, source) {
         this.visualization = visualization;
-        this._id = source.id;
-        this._output = source.output;
-        this.mappings = null;
-        if (!source.mappings) {
-            console.log("no mappings for:" + visualization.id + "->" + source.id);
-        }
-        switch (this.visualization.type) {
+        if (source) {
+            this._id = source.id;
+            this._output = source.output;
+            this.mappings = null;
+            if (!source.mappings) {
+                console.log("no mappings for:" + visualization.id + "->" + source.id);
+            }
+            switch (this.visualization.type) {
             case "LINE":
                 this.mappings = new LineMappings(this.visualization, source.mappings);
                 break;
@@ -233,10 +294,11 @@
             default:
                 this.mappings = new ChartMappings(this.visualization, source.mappings);
                 break;
+            }
+            this.first = source.first;
+            this.reverse = source.reverse;
+            this.sort = source.sort;
         }
-        this.first = source.first;
-        this.reverse = source.reverse;
-        this.sort = source.sort;
     }
 
     Source.prototype.getQualifiedID = function () {
@@ -422,7 +484,9 @@
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
-        this.properties = visualization.properties || visualization.source.properties || {};
+        this.icon = visualization.icon || {};
+        this.fields = visualization.fields || {};
+        this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
 
@@ -491,6 +555,21 @@
                         .id(visualization.id)
                         .layout("ForceDirected2")
                         .applyScaleOnLayout(true)
+                    ;
+                });
+                break;
+            case "FORM":
+                this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
+                    var Input = widgetClasses[1];
+                    widget
+                        .id(visualization.id)
+                        .inputs(visualization.fields.map(function(field) {
+                            return new Input()
+                                .name(field.id)
+                                .label((field.properties ? field.properties.label : null) || field.label)
+                                .type("textbox")
+                            ;
+                        }))
                     ;
                 });
                 break;
@@ -581,7 +660,7 @@
         if (event.exists()) {
             var request = {};
             for (var key in event.mappings) {
-                var origKey = this.source.mappings.hasMappings ? this.source.mappings.getReverseMap(key) : key;
+                var origKey = (this.source.mappings && this.source.mappings.hasMappings) ? this.source.mappings.getReverseMap(key) : key;
                 request[event.mappings[key]] = d[origKey];
             }
             var dataSources = event.getUpdatesDatasources();
@@ -692,7 +771,7 @@
             context.request[item + "_changed"] = false;
         });
         for (var key in request) {
-            this.request[key] = request[key];
+            this.request[key] = request[key] === undefined ? "" : request[key];
             this.request[key + "_changed"] = true;
         }
         this.comms.call(this.request, function (response) {

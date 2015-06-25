@@ -71,7 +71,7 @@
         ;
     }
     Slider.prototype = Object.create(SVGWidget.prototype);
-    Slider.prototype._class += " other_Slider";
+    Slider.prototype._class += " form_Slider";
     Slider.prototype.implements(IInput.prototype);
 
     Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });

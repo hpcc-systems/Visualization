@@ -1073,21 +1073,7 @@
                 return context.highlight.opacity;
             })
         ;
-        //  Causes issues in IE  ---
-        /*
-        var zoomScale = this.zoom.scale();
-        if (zoomScale > 1)
-            zoomScale = 1;
-        vertexElements.select(".textbox").transition().duration(this.transitionDuration())
-            .attr("transform", function (d) {
-
-                if (vertexMap && vertexMap[d.id()]) {
-                    return "scale(" + context.highlight.zoom / zoomScale + ")";
-                }
-                return "scale(1)";
-            })
-        ;
-        */
+        return this;
     };
 
     Graph.prototype.highlightEdges = function (edgeMap) {
@@ -1107,6 +1093,7 @@
                 return context.highlight.opacity;
             })
         ;
+        return this;
     };
 
     Graph.prototype.highlightVertex = function (element, d) {

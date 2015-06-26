@@ -1,32 +1,32 @@
-.other_Slider text {
+.form_Slider text {
     color:#000;
 }
 
-.other_Slider .axis {
+.form_Slider .axis {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
 }
 
-.other_Slider .axis .domain {
+.form_Slider .axis .domain {
     stroke: lightgray;
     stroke-width: 10px;
     stroke-linecap: round;
 }
 
-.other_Slider .axis .halo {
+.form_Slider .axis .halo {
     fill: none;
     stroke: #ddd;
     stroke-width: 8px;
     stroke-linecap: round;
 }
 
-.other_Slider .extent {
+.form_Slider .extent {
     fill: #fff;
     opacity: 0.5;
 }
 
-.other_Slider .handle {
+.form_Slider .handle {
     fill: #fff;
     stroke: #bbb;
     stroke-opacity: .5;
@@ -34,15 +34,15 @@
     pointer-events: none;
 }
 
-.other_Slider .common_Icon .common_Widget .common_Shape {
+.form_Slider .common_Icon .common_Widget .common_Shape {
     fill: #ccc;
     stroke: #bbb;
 }
 
-.other_Slider .common_Icon:hover {
+.form_Slider .common_Icon:hover {
     cursor:pointer;
 }
 
-.other_Slider .common_Icon:hover .common_Widget .common_Shape {
+.form_Slider .common_Icon:hover .common_Widget .common_Shape {
     stroke: #aaa;
 }

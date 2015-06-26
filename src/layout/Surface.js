@@ -171,7 +171,7 @@
 
     Surface.prototype.render = function (callback) {
         var context = this;
-        HTMLWidget.prototype.render.call(this, function (widget) {
+        return HTMLWidget.prototype.render.call(this, function (widget) {
             if (context.widget()) {
                 context.widget().render(function (widget) {
                     if (callback) {

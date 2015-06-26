@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        root.other_ESPUrl = factory();
+        root.other_Comms = factory();
     }
 }(this, function () {
     function ESPUrl() {

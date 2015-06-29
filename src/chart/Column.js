@@ -1,20 +1,20 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./XYAxis", "../api/I2DChart", "css!./Column"], factory);
+        define(["d3", "./XYAxis", "../api/INDChart", "css!./Column"], factory);
     } else {
-        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.api_I2DChart);
+        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.api_INDChart);
     }
-}(this, function (d3, XYAxis, I2DChart) {
+}(this, function (d3, XYAxis, INDChart) {
     function Column(target) {
         XYAxis.call(this);
-        I2DChart.call(this);
+        INDChart.call(this);
 
         this._linearGap = 25;
     }
     Column.prototype = Object.create(XYAxis.prototype);
     Column.prototype._class += " chart_Column";
-    Column.prototype.implements(I2DChart.prototype);
+    Column.prototype.implements(INDChart.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
 
@@ -23,61 +23,67 @@
 
         this._palette = this._palette.switch(this.paletteID());
 
-        var column = this.svgData.selectAll(".columnRect")
+        var columnScale = d3.scale.ordinal()
+            .domain(context._columns.filter(function (d, idx) { return idx > 0; }))
+            .rangeRoundBands([0, context.dataScale.rangeBand()])
+        ;
+
+        var column = this.svgData.selectAll(".dataRow")
             .data(this.data())
         ;
 
-        var title = column
-          .enter().append("rect")
-            .attr("class", "columnRect")
-            .on("click", function (d) {
-                context.click(context.rowToObj(d), context._columns[1]);
-            })
-            .append("title")
+        column.enter().append("g")
+            .attr("class", "dataRow")
         ;
 
-        column.transition()
-            .style("fill", function (d) { return context._palette(d[0]); })
-            .each(function (d) {
+        column
+            .each(function (dataRow, i) {
                 var element = d3.select(this);
-                var dataPos = context.dataScale(d[0]);
-                var dataLen = 10;
-                switch (context.xAxisType()) {
-                    case "ordinal":
-                        dataLen = context.dataScale.rangeBand();
-                        break;
-                    case "linear":
-                    case "time":
-                        dataLen = Math.max(Math.abs(context.dataScale(2) - context.dataScale(1)) * (100 - context._linearGap) / 100, 1);
-                        dataPos -= dataLen / 2;
-                        break;
-                }
-                var valuePos = context.valueScale(d[1]);
+
+                var columnRect = element.selectAll("rect").data(dataRow.filter(function(d, i) {return i > 0;}));
+
+                var title = columnRect
+                  .enter().append("rect")
+                    .attr("class", "columnRect")
+                    .on("click", function (d, idx) {
+                        context.click(context.rowToObj(dataRow), context._columns[idx + 1]);
+                    })
+                    .append("title")
+                ;
+
                 if (context.orientation() === "horizontal") {
-                    element.transition()
-                        .attr("x", dataPos)
-                        .attr("width", dataLen)
-                        .attr("y", valuePos)
-                        .attr("height", height - valuePos)
+                    columnRect.transition()
+                        .attr("class", "columnRect")
+                        .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]);})
+                        .attr("width", columnScale.rangeBand())
+                        .attr("y", function (d) { return context.valueScale(d); })
+                        .attr("height", function (d) { return height - context.valueScale(d); })
+                        .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 } else {
-                    element.transition()
-                        .attr("x", 0)
-                        .attr("width", valuePos)
-                        .attr("y", dataPos)
-                        .attr("height", dataLen)
+                    columnRect.transition()
+                        .attr("class", "columnRect")
+                        .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]);})
+                        .attr("height", columnScale.rangeBand())
+                        .attr("x", function (d) { return 0; })
+                        .attr("width", function (d) { return context.valueScale(d); })
+                        .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 }
-            })
-        ;
 
-        title
-            .text(function (d) { return d[0] + " (" + d[1] + ")"; })
-        ;
+                title
+                    .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
+                ;
+
+                columnRect.exit().transition()
+                    .remove()
+                ;
+        });
 
         column.exit().transition()
             .remove()
         ;
+
     };
 
     return Column;

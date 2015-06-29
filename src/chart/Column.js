@@ -36,8 +36,21 @@
             .attr("class", "dataRow")
         ;
 
+        var dataLen = 10;
+        switch (this.xAxisType()) {
+            case "ordinal":
+              dataLen = this.dataScale.rangeBand();
+               break;
+            case "linear":
+            case "time":
+               dataLen = Math.max(Math.abs(this.dataScale(2) - this.dataScale(1)) * (100 - this._linearGap) / 100, 1);
+               // dataPos -= dataLen / 2;
+               break;
+        }
+
         column
             .each(function (dataRow, i) {
+                var dataPos = context.dataScale(dataRow[0]);
                 var element = d3.select(this);
 
                 var columnRect = element.selectAll("rect").data(dataRow.filter(function(d, i) {return i > 0;}));

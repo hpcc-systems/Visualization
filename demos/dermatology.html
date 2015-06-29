@@ -180,6 +180,7 @@
                     sourceWidget = sourceWidget || currWidget;
                     Persist.clone(sourceWidget, function (widget) {
                         serializationSurface
+                            .surfacePadding(0)
                             .widget(widget)
                             .render()
                         ;

@@ -110,6 +110,7 @@
                                 break;
                             case "widgetArray":
                                 ++createCount;
+                                var widgetArrayKey = key;
                                 var widgetStateArray = state.__properties[key];
                                 var widgetArray = [];
                                 widgetArray.length = widgetStateArray.length;
@@ -124,7 +125,7 @@
                                         if (arrayCreateCount <= 0) {
                                             clearInterval(arrayIntervalHandler);
                                             arrayCreateCount = undefined;
-                                            widget[key](widgetArray);
+                                            widget[widgetArrayKey](widgetArray);
                                             --createCount;
                                         }
                                     }, 20);

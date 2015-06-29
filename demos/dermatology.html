@@ -94,6 +94,7 @@
                             <option value="src/layout/Cell">Cell Layout</option>
                             <option value="src/layout/Grid">Grid Layout</option>
                             <option value="src/layout/Border">Border Layout</option>
+                            <option value="src/layout/TabbedContent">Tabbed Layout</option>
                             <option value="src/amchart/Area">AmChart Area</option>
                             <option value="src/amchart/Bar">AmChart Bar</option>
                             <option value="src/amchart/Bubble">AmChart Bubble</option>
@@ -127,6 +128,9 @@
     <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
     </div>
     <script>
+        var g_widget;
+        var g_persist;
+        var g_serial;
         var def = window.location.search.split("?")[1];
         if (def) {
             document.getElementById("widgetSelect").value = def;
@@ -142,6 +146,7 @@
         var debouncedResize = null;
 
         require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
+            g_persist = Persist;
             var propEditor = new PropertyEditor().showColumns(false).showData(false);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
@@ -181,6 +186,7 @@
                 if (document.getElementById("showSerialization").checked) {
                     sourceWidget = sourceWidget || currWidget;
                     Persist.clone(sourceWidget, function (widget) {
+                        g_serial = widget;
                         serializationSurface
                             .surfacePadding(0)
                             .widget(widget)
@@ -204,6 +210,7 @@
             testWidget = function (widgetPath) {
                 require([widgetPath], function (Widget) {
                     currWidget = new Widget().testData();
+                    g_widget = currWidget;
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;

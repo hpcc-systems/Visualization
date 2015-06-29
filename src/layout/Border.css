@@ -40,7 +40,7 @@
 }
 .layout_Border div[draggable=true] { 
     opacity: 0.75;
-    cursor: move;
+    cursor: default;
 }
 
 .layout_Border div[draggable=true] .dragHandle {

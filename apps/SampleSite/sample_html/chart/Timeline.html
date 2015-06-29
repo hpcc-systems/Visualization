@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/d3/TimeLine", "src/common/Palette"], function (D3Timeline, Palette) {
+                var timelineWidget = new D3Timeline()
+                    .size({width:300,height:200})
+                    .target("widget-wrapper")
+                    .testData()
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                timelineWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

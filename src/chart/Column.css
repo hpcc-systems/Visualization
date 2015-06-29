@@ -19,6 +19,6 @@
   shape-rendering: crispEdges;
 }
 
-.chart_Column .x.axis path {
+.chart_Column .data.axis path {
   display: none;
 }

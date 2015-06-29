@@ -1,0 +1,9 @@
+.chart_Scatter .axis path,
+.chart_Scatter .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+line.point, line.point1 {
+	stroke-width: 2;
+}

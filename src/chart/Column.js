@@ -24,7 +24,7 @@
         this._palette = this._palette.switch(this.paletteID());
 
         var column = this.svgData.selectAll(".columnRect")
-            .data(this.data())
+            .data(this.formattedData())
         ;
 
         var title = column
@@ -48,7 +48,7 @@
                         break;
                     case "linear":
                     case "time":
-                        dataLen = Math.max(Math.abs(context.dataScale(2) - context.dataScale(1)) * (100 - context._linearGap) / 100, 1);
+                        dataLen = Math.max(Math.abs(context.dataScale(2) - context.dataScale(1)) * (100 - context._linearGap) / 100, 5);
                         dataPos -= dataLen / 2;
                         break;
                 }

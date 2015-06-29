@@ -24,6 +24,8 @@
     XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("timeseriesPattern", "%Y-%m-%d", "string", "Time Series Pattern");
 
+    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear"]);
+
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
     XYAxis.prototype.sampleData = function (_) {
         var retVal = XYAxis.prototype._sampleData.apply(this, arguments);
@@ -111,18 +113,15 @@
         return SVGWidget.prototype.columns.apply(this, arguments);
     };
 
-    XYAxis.prototype.data = function (_) {
-        var retVal = SVGWidget.prototype.data.apply(this, arguments);
-        if (!arguments.length) {
-            switch (this.xAxisType()) {
-                case "time":
-                    retVal = retVal.map(function (row) {
-                        return row.map(function (cell, idx) { return idx === 0 ? this._dateParser(cell) : cell; }, this);
-                    }, this);
-                    break;
-            }
+    XYAxis.prototype.formattedData = function () {
+        switch (this.xAxisType()) {
+            case "time":
+                return this.data().map(function (row) {
+                    return row.map(function (cell, idx) { return idx === 0 ? this._dateParser(cell) : cell; }, this);
+                }, this);
+            default:
+                return this.data();
         }
-        return retVal;
     };
 
     XYAxis.prototype.enter = function (domNode, element) {
@@ -190,7 +189,7 @@
     };
 
     XYAxis.prototype.brushMoved = SVGWidget.prototype.debounce(function brushed() {
-        var selected = this.data().filter(function (d) {
+        var selected = this.formattedData().filter(function (d) {
             var pos;
             switch (this.xAxisType()) {
                 case "ordinal":
@@ -215,7 +214,7 @@
     }, 250);
 
     XYAxis.prototype.calcMargin = function (domNode, element) {
-        var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: 50, left: 50 };
+        var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2 };
         var height = this.height() - margin.top - margin.bottom;
 
         var test = element.append("g");
@@ -225,15 +224,18 @@
             .attr("transform", "translate(0," + height + ")")
             .call(this.currAxis)
         ;
-        var svgYAxis = test.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
-            .call(this.otherAxis)
-        ;
-
         var x_bbox = svgXAxis.node().getBBox();
-        var y_bbox = svgYAxis.node().getBBox();
         margin.bottom = x_bbox.height;
-        margin.left = y_bbox.width;
+
+        if (this.yAxisType() !== "none") {
+            var svgYAxis = test.append("g")
+                .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
+                .call(this.otherAxis)
+            ;
+            var y_bbox = svgYAxis.node().getBBox();
+            margin.left = y_bbox.width;
+        }
+
         test.remove();
         return margin;
     };
@@ -286,19 +288,19 @@
         //  Update Domain  ---
         switch (this.xAxisType()) {
             case "time":
-                var dateMin = d3.min(this.data(), function (data) {
+                var dateMin = d3.min(this.formattedData(), function (data) {
                     return data[0];
                 });
-                var dateMax = d3.max(this.data(), function (data) {
+                var dateMax = d3.max(this.formattedData(), function (data) {
                     return data[0];
                 });
                 this.dataScale.domain([dateMin, dateMax]);
                 break;
             case "linear":
-                var numberMin = d3.min(this.data(), function (data) {
+                var numberMin = d3.min(this.formattedData(), function (data) {
                     return data[0];
                 });
-                var numberMax = d3.max(this.data(), function (data) {
+                var numberMax = d3.max(this.formattedData(), function (data) {
                     return data[0];
                 });
                 this.dataScale.domain([numberMin - 1, numberMax + 1]);
@@ -307,10 +309,10 @@
                 this.dataScale.domain(this.data().map(function (d) { return d[0]; }));
                 break;
         }
-        var min = d3.min(this.data(), function (data) {
+        var min = d3.min(this.formattedData(), function (data) {
             return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return +d; });
         });
-        var max = d3.max(this.data(), function (data) {
+        var max = d3.max(this.formattedData(), function (data) {
             return d3.max(data.filter(function (row, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return +d; });
         });
         var newMin = min - (max - min) * this.valueAxisPadding() / 100;
@@ -354,6 +356,7 @@
         ;
 
         this.svgYAxis.transition()
+            .style("visibility", this.yAxisType() === "none" ? "hidden" : null)
             .attr("class", isHorizontal ? "y axis" : "x axis")
             .call(this.otherAxis)
         ;

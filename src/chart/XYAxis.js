@@ -15,7 +15,7 @@
     XYAxis.prototype = Object.create(SVGWidget.prototype);
     XYAxis.prototype._class += " chart_XYAxis";
 
-    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "linear", "time"]);
+    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time"]);
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
     XYAxis.prototype.publish("valueAxisPadding", 5, "number", "Value Axis Padding Percent");
@@ -33,6 +33,9 @@
             switch (_) {
                 case "ordinal":
                     this.testDataOrdinal();
+                    break;
+                case "ordinalRange":
+                    this.testDataOrdinalRange();
                     break;
                 case "linear":
                     this.testDataLinear();
@@ -64,6 +67,20 @@
         ;
         return this;
     };
+
+    XYAxis.prototype.testDataOrdinalRange = function () {
+            this
+                .xAxisType("ordinal")
+                .columns(["Region", "May", "June", "July"])
+                .data([
+                    ["Munster", [1, 11], [2, 14], [8, 18]],
+                    ["Leinster", [3, 10], [1, 15], [7, 16]],
+                    ["Ulster", [2, 14], [5, 12], [8, 17]],
+                    ["Connacht", [0, 10], [1, 12], [7, 16]]
+                ])
+            ;
+            return this;
+        };
 
     XYAxis.prototype.testDataLinear = function () {
         this
@@ -310,10 +327,10 @@
                 break;
         }
         var min = d3.min(this.formattedData(), function (data) {
-            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return +d; });
+            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return d instanceof Array ? +d[0] : +d; });
         });
         var max = d3.max(this.formattedData(), function (data) {
-            return d3.max(data.filter(function (row, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return +d; });
+            return d3.max(data.filter(function (row, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return d instanceof Array ? +d[1] : +d; });
         });
         var newMin = min - (max - min) * this.valueAxisPadding() / 100;
         if (min >= 0 && newMin < 0 || min === max)

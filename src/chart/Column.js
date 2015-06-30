@@ -54,9 +54,9 @@
             .each(function (dataRow, i) {
                 var element = d3.select(this);
 
-                var columnRect = element.selectAll("rect").data(dataRow.filter(function(d, i) {return i > 0;}));
+                var columnRect = element.selectAll("rect").data(dataRow.filter(function (d, i) {return i > 0;}));
 
-                var title = columnRect
+                columnRect
                   .enter().append("rect")
                     .attr("class", "columnRect")
                     .on("click", function (d, idx) {
@@ -71,8 +71,8 @@
                         .attr("class", "columnRect")
                         .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]) + offset;})
                         .attr("width", columnScale.rangeBand())
-                        .attr("y", function (d) { return context.valueScale(d); })
-                        .attr("height", function (d) { return height - context.valueScale(d); })
+                        .attr("y", function (d) { return d instanceof Array ? context.valueScale(d[1]) : context.valueScale(d) ; })
+                        .attr("height", function (d) {  return  d instanceof Array ? context.valueScale(d[0]) - context.valueScale(d[1]) : height - context.valueScale(d) ; })
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 } else {
@@ -80,13 +80,13 @@
                         .attr("class", "columnRect")
                         .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]) + offset;})
                         .attr("height", columnScale.rangeBand())
-                        .attr("x", function (d) { return 0; })
-                        .attr("width", function (d) { return context.valueScale(d); })
+                        .attr("x", function (d) { return d instanceof Array ? context.valueScale(d[0]) : 0 ; })
+                        .attr("width", function (d) {  return  d instanceof Array ? context.valueScale(d[1]) - context.valueScale(d[0]) : context.valueScale(d) ; })
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 }
 
-                title
+                columnRect.select("title")
                     .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
                 ;
 

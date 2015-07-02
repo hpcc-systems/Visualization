@@ -18,12 +18,17 @@
     Shape.prototype.publish("height", 24, "number", "Height",null,{tags:["Private"]});
     Shape.prototype.publish("colorStroke", null, "html-color", "Stroke Color", null, {tags:["Private"]});
     Shape.prototype.publish("colorFill", null, "html-color", "Fill Color", null, {tags:["Private"]});
+    Shape.prototype.publish("radius", null, "number", "Radius",null,{tags:["Private"]});
 
+    Shape.prototype._radius = Shape.prototype.radius;
     Shape.prototype.radius = function (_) {
-        if (!arguments.length) return Math.max(this.width(), this.height()) / 2;
-        this.width(_);
-        this.height(_);
-        return this;
+        var retVal = Shape.prototype._radius.apply(this, arguments);
+        if (arguments.length) {
+            this.width(_);
+            this.height(_);
+            return retVal;
+        }
+        return Math.max(this.width(), this.height()) / 2;
     };
 
     Shape.prototype.testData = function () {

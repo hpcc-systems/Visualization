@@ -10,10 +10,6 @@
         SVGWidget.call(this);
         I2DChart.call(this);
 
-        this._outerText = false;  //  Put label inside pie or outside (true/false)
-        this._radius = 100;       // px
-        this._innerRadius = 0;    // px
-
         this.labelWidgets = {};
 
         this.d3Pie = d3.layout.pie()
@@ -23,8 +19,8 @@
             .value(function (d) { return d[1]; })
         ;
         this.d3Arc = d3.svg.arc()
-            .outerRadius(this._radius)
-            .innerRadius(this._innerRadius)
+            .outerRadius(this.radius())
+            .innerRadius(this.innerRadius())
         ;
     }
     Pie.prototype = Object.create(SVGWidget.prototype);
@@ -32,6 +28,9 @@
     Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Pie.prototype.publish("outerText", false, "boolean", "Sets label position inside or outside chart",null,{tags:['Basic']});
+    Pie.prototype.publish("radius", 100, "number", "Sets radius in pixels of pie chart",null,{tags:['Basic']});
+    Pie.prototype.publish("innerRadius", 0, "number", "Sets radius in pixels of center hole in pie chart (donut)",null,{tags:['Basic']});
 
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -41,24 +40,22 @@
         return retVal;
     };
 
+    Pie.prototype._radius = Pie.prototype.radius;
     Pie.prototype.radius = function (_) {
-        if (!arguments.length) return this._radius;
-        this.d3Arc.outerRadius(_);
-        this._radius = _;
-        return this;
+        var retVal = Pie.prototype._radius.apply(this, arguments);
+        if (arguments.length) {
+            this.d3Arc.outerRadius(_);
+        }
+        return retVal;
     };
 
+    Pie.prototype._innerRadius = Pie.prototype.innerRadius;
     Pie.prototype.innerRadius = function (_) {
-        if (!arguments.length) return this._innerRadius;
-        this.d3Arc.innerRadius(_);
-        this._innerRadius = _;
-        return this;
-    };
-
-    Pie.prototype.outerText = function (_) {
-        if (!arguments.length) return this._outerText;
-        this._outerText = _;
-        return this;
+        var retVal = Pie.prototype._innerRadius.apply(this, arguments);
+        if (arguments.length) {
+            this.d3Arc.innerRadius(_);
+        }
+        return retVal;
     };
 
     Pie.prototype.intersection = function (pointA, pointB) {

@@ -12,7 +12,7 @@
         this.handleWidth = 8;
         this.handles = [{ loc: "NW" }, { loc: "N" }, { loc: "NE" }, { loc: "E" }, { loc: "SE" }, { loc: "S" }, { loc: "SW" }, { loc: "W" }];
 
-        this._allowResize = true;
+        this.allowResize(true);
 
         var context = this;
         this.dispatch = d3.dispatch("sizestart", "size", "sizeend");
@@ -20,7 +20,7 @@
             .origin(function (d) { return d; })
             .on("dragstart", function (d) {
                 context.dispatch.sizestart(context, d.loc);
-                if (context._allowResize) {
+                if (context.allowResize()) {
                     d3.event.sourceEvent.stopPropagation();
                     context._dragHandlePos = { x: d.x, y: d.y };
                     context._dragStartPos = context.pos();
@@ -37,7 +37,7 @@
                 }
             })
             .on("drag", function (d) {
-                if (context._allowResize) {
+                if (context.allowResize()) {
                     d3.event.sourceEvent.stopPropagation();
                     var _dx = d3.event.x - context._dragHandlePos.x;
                     var _dy = d3.event.y - context._dragHandlePos.y;
@@ -101,7 +101,7 @@
                 }
             })
             .on("dragend", function (d) {
-                if (context._allowResize) {
+                if (context.allowResize()) {
                     d3.event.sourceEvent.stopPropagation();
                     context
                         .showContent(true)
@@ -116,11 +116,7 @@
     }
     ResizeSurface.prototype = Object.create(Surface.prototype);
 
-    ResizeSurface.prototype.allowResize = function (_) {
-        if (!arguments.length) return this._allowResize;
-        this._allowResize = _;
-        return this;
-    };
+    ResizeSurface.prototype.publish("allowResize", true, "boolean", "Sets if surface can be resized",null,{tags:['Private','Shared']});
 
     ResizeSurface.prototype.move = function (_) {
         var retVal = Surface.prototype.move.apply(this, arguments);

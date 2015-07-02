@@ -19,6 +19,7 @@
     Choropleth.prototype.implements(IChoropleth.prototype);
 
     Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Choropleth.prototype.publish("projection", "albersUsaPr", "set", "Projection Type", ["albersUsaPr", "orthographic", "mercator"]);
 
     Choropleth.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -56,26 +57,28 @@
         return retVal;
     };
 
+    Choropleth.prototype._projection = Choropleth.prototype.projection;
     Choropleth.prototype.projection = function (_) {
-        if (!arguments.length) return this._projection;
-        this._projection = _;
-        switch (this._projection) {
-            case "albersUsaPr":
-                this.d3Projection = this.albersUsaPr();
-                break;
-            case "orthographic":
-                this.d3Projection = d3.geo.orthographic()
-                    .clipAngle(90)
-                ;
-                break;
-            case "mercator":
-                this.d3Projection = d3.geo.mercator();
-                break;
+        var retVal = Choropleth.prototype._projection.apply(this, arguments);
+        if (arguments.length) {
+            switch (_) {
+                case "albersUsaPr":
+                    this.d3Projection = this.albersUsaPr();
+                    break;
+                case "orthographic":
+                    this.d3Projection = d3.geo.orthographic()
+                        .clipAngle(90)
+                    ;
+                    break;
+                case "mercator":
+                    this.d3Projection = d3.geo.mercator();
+                    break;
+            }
+            this.d3Path = d3.geo.path()
+                .projection(this.d3Projection)
+            ;
         }
-        this.d3Path = d3.geo.path()
-            .projection(this.d3Projection)
-        ;
-        return this;
+        return retVal;
     };
 
     Choropleth.prototype.render = function () {

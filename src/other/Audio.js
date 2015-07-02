@@ -11,17 +11,12 @@
 
         this._tag = "audio";
 
-        this._source = [];
         this._sections = {};
     }
     Audio.prototype = Object.create(HTMLWidget.prototype);
     Audio.prototype._class += " other_Audio";
 
-    Audio.prototype.source = function (_) {
-        if (!arguments.length) return this._source;
-        this._source = _;
-        return this;
-    };
+    Audio.prototype.publish("source", [], "array", "Audio Source");
 
     Audio.prototype.section = function (label, offset, beatLength, beatCount) {
         if (!arguments.length) return this._sections;
@@ -53,7 +48,7 @@
     };
 
     Audio.prototype.update = function (domNode, element) {
-        var source = element.selectAll("source").data(this._source, function (d) { return d; });
+        var source = element.selectAll("source").data(this.source(), function (d) { return d; });
         source.enter().append("source")
             .attr("src", function (d) { return d; })
         ;

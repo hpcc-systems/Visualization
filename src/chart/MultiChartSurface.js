@@ -45,9 +45,9 @@
         return this;
     };
 
-    MultiChartSurface.prototype._modeOrig = MultiChartSurface.prototype.mode;
+    MultiChartSurface.prototype._origMode = MultiChartSurface.prototype.mode;
     MultiChartSurface.prototype.mode = function (_) {
-        var retVal = MultiChartSurface.prototype._modeOrig.apply(this, arguments);
+        var retVal = MultiChartSurface.prototype._origMode.apply(this, arguments);
         if (arguments.length) {
             this._mode = _;
             switch (this._mode) {

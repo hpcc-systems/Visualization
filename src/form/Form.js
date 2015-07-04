@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "./Input", "./Slider", "css!./Form"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/SVGWidget", "../common/WidgetArray", "./Input", "./Slider", "css!./Form"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.form_Input, root.form_Slider);
+        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.common_SVGWidget, root.common_WidgetArray, root.form_Input, root.form_Slider);
     }
-}(this, function (d3,HTMLWidget,Input,Slider) {
+}(this, function (d3, HTMLWidget, SVGWidget, WidgetArray, Input, Slider) {
     function Form() {
         HTMLWidget.call(this);
 
@@ -17,6 +17,7 @@
     Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
     Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets");
     Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
+    Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
 
     Form.prototype.testData = function () {
         this
@@ -28,11 +29,10 @@
                     .validate("^[A-Za-z0-9]+$")
                     .value("SomeString123"),
                 new Input()
-                    .name("textbox-test")
-                    .label("Only Alpha")
-                    .type("textbox")
-                    .validate("^[A-Za-z]+$")
-                    .value("SomeString"),
+                    .name("button-test")
+                    .label("Button Test")
+                    .type("button")
+                    .value("Button Text"),
                 new Input()
                     .name("number-test")
                     .label("Number Test")
@@ -40,60 +40,108 @@
                     .validate("\\d+")
                     .value(123),
                 new Input()
-                    .name("checkbox-test")
-                    .label("Checkbox Test")
-                    .type("checkbox")
-                    .value(true),
-                new Input()
                     .name("select-test")
                     .label("Select Test")
                     .type("select")
                     .selectOptions(["A","B","C"])
                     .value("B"),
-                new Input()
-                    .name("button-test")
-                    .label("Button Test")
-                    .type("button")
-                    .value("Button Text"),
+                new WidgetArray()
+                    .content([
+                        new Input()
+                            .name("textbox-test")
+                            .label("Only Alpha")
+                            .type("textbox")
+                            .validate("^[A-Za-z]+$")
+                            .value("SomeString"),
+                        new Input()
+                            .name("checkbox-test")
+                            .label("Checkbox Test")
+                            .type("checkbox")
+                            .value(true)
+                    ]),
                 new Input()
                     .name("textarea-test")
                     .label("Textarea Test")
                     .type("textarea")
-                    .value("Textarea Text"),
-                new Slider()
-                    .name("slider-test")
-                    .label("Slider Test")
-                    .value(66)
+                    .value("Textarea Text")
             ])
         ;
         return this;
     };
 
+    Form.prototype.data = function (_) {
+        if (!arguments.length) {
+            var retVal = [];
+            this.inputsForEach(function (input) {
+                retVal.push(input.value());
+            });
+            return retVal;
+        } else {
+            this.inputsForEach(function (input, idx) {
+                if (_.length > idx) {
+                    input.value(_[idx]).render();
+                }
+            });
+        }
+        return this;
+    };
+
+    Form.prototype.inputsForEach = function (callback, scope) {
+        var idx = 0;
+        this.inputs().forEach(function (inp) {
+            var inpArray = inp instanceof WidgetArray ? inp.content() : [inp];
+            inpArray.forEach(function (inp) {
+                if (scope) {
+                    callback.call(scope, inp, idx++);
+                } else {
+                    callback(inp, idx++);
+                }
+            });
+        });
+    };
+
+    Form.prototype.calcMaxColumns = function () {
+        var retVal = 0;
+        this.inputs().forEach(function (inputWidget) {
+            var inputWidgetArray = inputWidget instanceof WidgetArray ? inputWidget.content() : [inputWidget];
+            if (inputWidgetArray.length > retVal) {
+                retVal = inputWidgetArray.length;
+            }
+        });
+        return retVal;
+    };
+
+    Form.prototype.values = function () {
+        var dataArr = {};
+        this.inputsForEach(function (inp) {
+            var value = inp.value();
+            if (value || !this.omitBlank()) {
+                dataArr[inp.name()] = inp.value();
+            }
+        }, this);
+        return dataArr;
+    };
+
     Form.prototype.submit = function(){
         var isValid = true;
-        if(this.validate()){
+        if (this.validate()) {
             isValid = this.checkValidation();
         }
-        if(isValid){
-            var inpArr = this.inputs();
-            var dataArr = {};
-            inpArr.forEach(function(inp){
-                dataArr[inp.name()] = inp.value();
-            });
-            this.click(dataArr);
-        }
+        this.click(isValid ? this.values() : null);
     };
-    Form.prototype.clear = function(){
-        var inpArr = this.inputs();
-        inpArr.forEach(function(inp){
+
+    Form.prototype.clear = function () {
+        this.inputsForEach(function(inp){
             if (inp instanceof Slider) {
-                inp.value(inp.low());
+                if (inp.allowRange()) {
+                    inp.value([inp.low(), inp.low()]).render();
+                } else {
+                    inp.value(inp.low()).render();
+                }
             } else if(inp.type() === "checkbox"){
-                inp.value(false);
-                inp._inputElement.node().checked = false;
+                inp.value(false).render();
             } else {
-                inp.value(" ");
-                inp._inputElement.node().value = " ";
+                inp.value("").render();
             }
         });
     };
@@ -101,9 +149,9 @@
     Form.prototype.checkValidation = function(){
         var ret = true;
         var msgArr = [];
-        this.inputs().forEach(function(inp){
-            if(!inp.isValid()){
-                msgArr.push("'"+inp.label()+"'"+" value is invalid.");
+        this.inputsForEach(function (inp) {
+            if (!inp.isValid()) {
+                msgArr.push("'" + inp.label() + "'" + " value is invalid.");
             }
         });
         if(msgArr.length > 0){
@@ -125,7 +173,7 @@
         ;
         this.tbody = table.append("tbody");
         this.btntd = table.append("tfoot").append("tr").append("td")
-            .attr("colspan", "2")
+            .attr("colspan", 2)
         ;
 
         var context = this;
@@ -154,27 +202,42 @@
 
     Form.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+
+        this._maxCols = this.calcMaxColumns();
+
+        var context = this;
         var rows = this.tbody.selectAll("tr").data(this.inputs());
         rows.enter().append("tr")
             .each(function (inputWidget, i) {
                 var element = d3.select(this);
-                element.append("td")
-                    .attr("class", "prompt")
-                    .text(inputWidget.label() + ":")
-                ;
-                var input = element.append("td")
-                    .attr("class", "input")
-                ;
-                inputWidget.target(input.node()).render();
-                if (inputWidget instanceof Slider) {
-                    var bbox = inputWidget.element().node().getBBox();
-                    input.style("height", bbox.height + "px");
-                    inputWidget.resize().render();
-                }
+
+                var inputWidgetArray = inputWidget instanceof WidgetArray ? inputWidget.content() : [inputWidget];
+                inputWidgetArray.forEach(function (inputWidget, idx) {
+                    element.append("td")
+                        .attr("class", "prompt")
+                        .text(inputWidget.label() + ":")
+                    ;
+                    var input = element.append("td")
+                        .attr("class", "input")
+                    ;
+                    if (idx === inputWidgetArray.length - 1 && inputWidgetArray.length < context._maxCols) {
+                        input.attr("colspan", (context._maxCols - inputWidgetArray.length + 1) * 2);
+                    }
+                    inputWidget.target(input.node()).render();
+                    if (inputWidget instanceof SVGWidget) {
+                        var bbox = inputWidget.element().node().getBBox();
+                        input.style("height", bbox.height + "px");
+                        inputWidget.resize().render();
+                    }
+                });
             })
         ;
         rows.exit().remove();
-        this.btntd.style("visibility", this.showSubmit() ? null : "hidden");
+
+        this.btntd
+            .attr("colspan", this._maxCols * 2)
+            .style("visibility", this.showSubmit() ? null : "hidden")
+        ;
     };
 
     Form.prototype.exit = function (domNode, element) {

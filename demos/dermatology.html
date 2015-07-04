@@ -246,25 +246,19 @@
                     })
                 ;
             }
-            resize = function () {
-                if (mainDiv) {
-                    mainDiv.style.width = window.innerWidth - 16 + "px";
-                    mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
-                }
-
-                frame
+            frame.doResize = Surface.prototype.debounce(function () {
+                mainDiv.style.width = window.innerWidth - 16 + "px";
+                mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
+                this
                     .resize()
                     .render()
                 ;
-            };
-            debouncedResize = Surface.prototype.debounce(function () {
-                resize();
-            }, 250);
-            resize();
+            }, 250)
+            frame.doResize();
         });
         function doResize() {
-            if (debouncedResize) {
-                debouncedResize();
+            if (frame) {
+                frame.doResize();
             }
         }
     </script>

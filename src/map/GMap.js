@@ -9,17 +9,33 @@
     function GMap(target) {
         Graph.call(this);
         IGMap.call(this);
+
+        this.layout("none");
+
+        this._markers = [];
     }
     GMap.prototype = Object.create(Graph.prototype);
     GMap.prototype._class += " map_GMap";
     GMap.prototype.implements(IGMap.prototype);
 
+    GMap.prototype.data = function (_) {
+        if (arguments.length) {
+            this.graphData.nodeValues().forEach(function (item) {
+                if (item._marker) {
+                    item._marker.setMap(null);
+                }
+            });
+        }
+        var retVal = Graph.prototype.data.apply(this, arguments);
+        return retVal;
+    };
+
     GMap.prototype.enter = function (domNode, element, d) {
         Graph.prototype.enter.apply(this, arguments);
 
         this._googleMap = new google.maps.Map(d3.select(this._target).node(), {
-            zoom: 3,
-            center: new google.maps.LatLng(41.850033, -87.6500523),
+            zoom: 4,
+            center: new google.maps.LatLng(42.877742, -97.380979),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
         this._gmOverlay = new google.maps.OverlayView();
@@ -63,6 +79,27 @@
         this._gmOverlay.setMap(this._googleMap);
     };
 
+    GMap.prototype.createMarker = function (lat, lng, icon, title) {
+        return new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lng),
+            animation: google.maps.Animation.DROP,
+            title: title,
+            icon: "http://maps.google.com/mapfiles/ms/icons/" + icon,
+            map: this._googleMap,
+        });
+    };
+
+    GMap.prototype.createCircle = function (marker, radius, color) {
+        var circle = new google.maps.Circle({
+            radius: 16093 * radius / 10,    // 16093 === 10 miles in metres
+            fillColor: color,
+            strokeColor: color,
+            map: this._googleMap
+        });
+        circle.bindTo('center', marker, 'position');
+        return circle;
+    };
+
     GMap.prototype.calcLatLong = function (dx, dy) {
         dx += this.width() / 2;
         dy += this.height() / 2;
@@ -72,12 +109,7 @@
         this.graphData.nodeValues().forEach(function (item) {
             var pos = new google.maps.LatLng(item._data.geo_lat, item._data.geo_long);
             if (item._data.__viz_markerIcon && !item._marker) {
-                item._marker = new google.maps.Marker({
-                    position: pos,
-                    animation: google.maps.Animation.DROP,
-                    icon: "http://maps.google.com/mapfiles/ms/icons/" + item._data.__viz_markerIcon,
-                    map: context._googleMap,
-                });
+                item._marker = context.createMarker(item._data.geo_lat, item._data.geo_long, item._data.__viz_markerIcon, "");
             }
             pos = projection.fromLatLngToDivPixel(pos);
             pos.x -= dx;
@@ -89,15 +121,26 @@
         });
     };
 
-    GMap.prototype.zoomToFit = function () {
+    GMap.prototype.zoomTo = function (selection) {
+        var foundCount = 0;
         var latlngbounds = new google.maps.LatLngBounds();
-        this.graphData.nodeValues().forEach(function (item) {
-            var gLatLong = new google.maps.LatLng(item._data.geo_lat, item._data.geo_long);
+        selection.forEach(function (item) {
+            var gLatLong = new google.maps.LatLng(item.geo_lat, item.geo_long);
             latlngbounds.extend(gLatLong);
+            ++foundCount;
         });
-        this._googleMap.setCenter(latlngbounds.getCenter());
-        this._googleMap.fitBounds(latlngbounds);
+        if (foundCount) {
+            this._googleMap.setCenter(latlngbounds.getCenter());
+            this._googleMap.fitBounds(latlngbounds);
+            if (this._googleMap.getZoom() > 12) {
+                this._googleMap.setZoom(12);
+            }
+        }
         return this;
+    };
+
+    GMap.prototype.zoomToFit = function () {
+        return this.zoomTo(this.graphData.nodeValues().map(function(row) {return row._data;}));
     };
 
     return GMap;

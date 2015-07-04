@@ -357,5 +357,27 @@
         });
     };
 
+    GMap.prototype.zoomTo = function (selection) {
+        var foundCount = 0;
+        var latlngbounds = new google.maps.LatLngBounds();
+        selection.forEach(function (item) {
+            var gLatLong = new google.maps.LatLng(item[0], item[1]);
+            latlngbounds.extend(gLatLong);
+            ++foundCount;
+        });
+        if (foundCount) {
+            this._googleMap.setCenter(latlngbounds.getCenter());
+            this._googleMap.fitBounds(latlngbounds);
+            if (this._googleMap.getZoom() > 12) {
+                this._googleMap.setZoom(12);
+            }
+        }
+        return this;
+    };
+
+    GMap.prototype.zoomToFit = function () {
+        return this.zoomTo(this.data());
+    };
+
     return GMap;
 }));

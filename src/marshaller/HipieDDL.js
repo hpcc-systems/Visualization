@@ -399,15 +399,13 @@
     Event.prototype.getUpdatesDatasources = function () {
         var dedup = {};
         var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var datasource = this.visualization.dashboard.datasources[item.datasource];
-                if (!dedup[datasource.id]) {
-                    dedup[datasource.id] = true;
-                    retVal.push(datasource);
-                }
-            }, this);
-        }
+        this.getUpdatesVisualizations().forEach(function (item, idx) {
+            var datasource = item.source.getDatasource();
+            if (datasource && !dedup[datasource.id]) {
+                dedup[datasource.id] = true;
+                retVal.push(datasource);
+            }
+        }, this);
         return retVal;
     };
 

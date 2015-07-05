@@ -327,6 +327,25 @@
         return this._data.map(function (row) { return row.slice(0); });
     };
 
+    Widget.prototype.flattenData = function () {
+        var retVal = [];
+        this.data().forEach(function (row, rowIdx) {
+            this.columns().filter(function (col, idx) { return idx > 0; }).forEach(function (col, idx) {
+                var val = row[idx + 1];
+                if (val) {
+                    var newItem = {
+                        rowIdx: rowIdx,
+                        colIdx: idx + 1,
+                        label: row[0],
+                        value: val
+                    };
+                    retVal.push(newItem);
+                }
+            }, this);
+        }, this);
+        return retVal;
+    };
+
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
         this._columns.forEach(function(col, idx) {

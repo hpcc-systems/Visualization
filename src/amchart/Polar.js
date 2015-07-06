@@ -8,13 +8,14 @@
 }(this, function(d3, CommonRadar, AmCharts, INDChart) {
     function Polar() {
         CommonRadar.call(this);
-        this._class = "amchart_Polar";
         this._tag = "div";
         this._gType = "column";
     }
 
     Polar.prototype = Object.create(CommonRadar.prototype);
     Polar.prototype.implements(INDChart.prototype);
+    Polar.prototype._class += " amchart_Polar";
+    
     /**
      * Publish Params Common To Other Libraries
      */

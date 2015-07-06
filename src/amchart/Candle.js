@@ -8,14 +8,12 @@
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function Candle() {
         CommonSerial.call(this);
-        this._class = "amchart_Candle";
         this._tag = "div";
-
         this._gType = "candlestick";
     }
-
     Candle.prototype = Object.create(CommonSerial.prototype);
     Candle.prototype.implements(INDChart.prototype);
+    Candle.prototype._class += " amchart_Candle";
 
     /**
      * Publish Params Common To Other Libraries

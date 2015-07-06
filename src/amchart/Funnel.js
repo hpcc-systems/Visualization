@@ -8,11 +8,10 @@
 }(this, function(d3, CommonFunnel, I2DChart) {
     function Funnel() {
         CommonFunnel.call(this);
-        this._class = "amchart_Funnel";
     }
-
     Funnel.prototype = Object.create(CommonFunnel.prototype);
     Funnel.prototype.implements(I2DChart.prototype);
+    Funnel.prototype._class += " amchart_Funnel";
 
     /**
      * Publish Params Common To Other Libraries

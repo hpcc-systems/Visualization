@@ -8,7 +8,6 @@
 }(this, function(d3, CommonXY, AmCharts, INDChart) {
     function Scatter() {
         CommonXY.call(this);
-        this._class = "amchart_Scatter";
         this._tag = "div";
 
         this._type = "Scatter";
@@ -16,6 +15,7 @@
     }
     Scatter.prototype = Object.create(CommonXY.prototype);
     Scatter.prototype.implements(INDChart.prototype);
+    Scatter.prototype._class += " amchart_Scatter";
 
     /**
      * Publish Params Common To Other Libraries

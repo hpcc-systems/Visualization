@@ -8,14 +8,13 @@
 }(this, function(d3, HTMLWidget, AmCharts, I2DChart) {
     function Pie() {
         HTMLWidget.call(this);
-        this._class = "amchart_Pie";
         this._tag = "div";
-
         this._chart = {};
     }
 
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.implements(I2DChart.prototype);
+    Pie.prototype._class += " amchart_Pie";
 
     /**
      * Publish Params Common To Other Libraries

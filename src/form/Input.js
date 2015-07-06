@@ -20,7 +20,7 @@
         return this;
     };
 
-    Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea"]);
+    Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea", "date"]);
     Input.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 
     Input.prototype.testData = function () {
@@ -39,16 +39,16 @@
         switch (this.type()) {
             case "select":
                 this.checkNodeName("SELECT", element);
-                this._inputElement.attr("value", this.value());
+                this._inputElement.property("value", this.value());
                 this.insertSelectOptions(this.selectOptions());
                 break;
             case "textarea":
                 this.checkNodeName("TEXTAREA", element);
-                this._inputElement.html(this.value());
+                this._inputElement.property("value", this.value());
                 break;
             case "button":
                 this.checkNodeName("BUTTON", element);
-                this._inputElement.html(this.value());
+                this._inputElement.text(this.value());
                 break;
             case "checkbox":
                 this.checkNodeName("INPUT", element);
@@ -56,8 +56,8 @@
                 break;
             default:
                 this.checkNodeName("INPUT", element);
-                this._inputElement.attr("value", this.value());
                 this._inputElement.attr("type", this.type());
+                this._inputElement.property("value", this.value());
                 break;
         }
     };
@@ -87,20 +87,11 @@
         this._inputElement.on("change", function (w) {
 
             switch (context.type()) {
-                case "select":
-                    context.value(context._inputElement.attr("value"));
-                    break;
-                case "textarea":
-                    context.value(context._inputElement.html());
-                    break;
-                case "button":
-                    context.value(context._inputElement.html());
-                    break;
                 case "checkbox":
                     context.value(context._inputElement.property("checked"));
                     break;
                 default:
-                    context.value(context._inputElement.node().value);
+                    context.value(context._inputElement.property("value"));
                     break;
             }
             w.change(w);

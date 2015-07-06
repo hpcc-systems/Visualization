@@ -8,14 +8,13 @@
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function Area() {
         CommonSerial.call(this);
-        this._class = "amchart_Area";
         this._tag = "div";
-
         this._gType = "line";
     }
 
     Area.prototype = Object.create(CommonSerial.prototype);
     Area.prototype.implements(INDChart.prototype);
+    Area.prototype._class += " amchart_Area";
 
     /**
      * Publish Params Common To Other Libraries

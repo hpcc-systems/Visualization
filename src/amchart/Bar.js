@@ -8,14 +8,13 @@
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function Bar() {
         CommonSerial.call(this);
-        this._class = "amchart_Bar";
         this._tag = "div";
-
         this._gType = "column";
     }
     Bar.prototype = Object.create(CommonSerial.prototype);
     Bar.prototype.implements(INDChart.prototype);
-
+    Bar.prototype._class += " amchart_Bar";
+    
     /**
      * Publish Params Common To Other Libraries
      */

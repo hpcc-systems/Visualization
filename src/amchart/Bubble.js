@@ -8,7 +8,6 @@
 }(this, function(d3, CommonXY, AmCharts, INDChart) {
     function Bubble() {
         CommonXY.call(this);
-        this._class = "amchart_Bubble";
         this._tag = "div";
 
         this._type = "Bubble";
@@ -16,6 +15,7 @@
     }
     Bubble.prototype = Object.create(CommonXY.prototype);
     Bubble.prototype.implements(INDChart.prototype);
+    Bubble.prototype._class += " amchart_Bubble";
 
     /**
      * Publish Params Common To Other Libraries

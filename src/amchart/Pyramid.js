@@ -8,12 +8,12 @@
 }(this, function(d3, CommonFunnel, AmCharts, I2DChart) {
     function Pyramid() {
         CommonFunnel.call(this);
-        this._class = "amchart_Pyramid";
         this._tag = "div";
     }
 
     Pyramid.prototype = Object.create(CommonFunnel.prototype);
     Pyramid.prototype.implements(I2DChart.prototype);
+    Pyramid.prototype._class += " amchart_Pyramid";
 
     /**
      * Publish Params Common To Other Libraries

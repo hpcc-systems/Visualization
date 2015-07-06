@@ -231,6 +231,48 @@
         return this;
     };
 
+    function Basic() {
+        Comms.call(this);
+    }
+    Basic.prototype = Object.create(Comms.prototype);
+
+    Basic.prototype.cacheCalls = function (_) {
+        if (!arguments.length) return this._cacheCalls;
+        this._cacheCalls = _;
+        return this;
+    };
+
+    Basic.prototype.call = function (request, callback) {
+        var url = this._url + (this._url.indexOf('?') >= 0 ? '&' : '?') + serialize(request);
+        function doCall(request, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onload = function (e) {
+                callback(JSON.parse(xhr.responseText));
+            };
+            xhr.onerror = function (e) {
+                callback({});
+            };
+            xhr.send(null);
+        }
+        if (this._cacheCalls) {
+            var response = localStorage["hpcc.viz." + url];
+            if (response && response !== null) {
+                setTimeout(function () {
+                    callback(JSON.parse(response));
+                }, 0);
+            } else {
+                doCall(request, function (response) {
+                    localStorage["hpcc.viz." + url] = JSON.stringify(response);
+                    callback(response);
+                });
+            }
+        } else {
+            localStorage["hpcc.viz." + url] = null;
+            doCall(request, callback);
+        }
+    };
+
     function WsECL() {
         Comms.call(this);
 
@@ -256,11 +298,23 @@
                 }
             }
 
+            var pathParts, queryParts;
             if (!this._target && !this._query) {
                 // http://192.168.1.201:8002/WsEcl/res/query/hthor/quicktest/res/index.html
-                var pathParts = this._pathname.split("/res/");
+                pathParts = this._pathname.split("/res/");
                 if (pathParts.length >= 2) {
-                    var queryParts = pathParts[1].split("/");
+                    queryParts = pathParts[1].split("/");
+                    if (queryParts.length >= 3) {
+                        this.target(queryParts[1]);
+                        this.query(queryParts[2]);
+                    }
+                }
+            }
+            if (!this._target && !this._query) {
+                //http://10.241.100.157:8002/WsEcl/forms/default/query/roxie/wecare
+                pathParts = this._pathname.split("/forms/default/");
+                if (pathParts.length >= 2) {
+                    queryParts = pathParts[1].split("/");
                     if (queryParts.length >= 3) {
                         this.target(queryParts[1]);
                         this.query(queryParts[2]);
@@ -742,6 +796,7 @@
     };
 
     return {
+        Basic: Basic,
         ESPMappings: ESPMappings,
         ESPUrl: ESPUrl,
         WsECL: WsECL,

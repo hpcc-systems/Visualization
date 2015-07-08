@@ -24,7 +24,9 @@
     XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("timeseriesPattern", "%Y-%m-%d", "string", "Time Series Pattern");
 
-    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear"]);
+    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
+    XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
+    XYAxis.prototype.publish("yAxisTypeLogBase", 10, "number", "Base for log on Value Axis");
 
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
     XYAxis.prototype.sampleData = function (_) {
@@ -260,6 +262,32 @@
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
 
+        switch (this.yAxisType()) {
+            case "pow":
+                this.valueScale = d3.scale.pow()
+                    .exponent(this.yAxisTypePowExponent())
+                ;
+                break;
+            case "log":
+                this.valueScale = d3.scale.log()
+                    .base(this.yAxisTypeLogBase())
+                ;
+                break;
+            case "time":
+                this.valueScale = d3.time.scale();
+                // Will be completed in a different PR
+                break;
+            case "linear":
+                /* falls through */
+            default:
+                this.valueScale = d3.scale.linear();
+                break;
+        }
+
+        this.valueAxis
+            .scale(this.valueScale)
+        ;
+
         if (this._prevXAxisType !== this.xAxisType()) {
             this._prevXAxisType = this.xAxisType();
             this._prevBrush = null;
@@ -276,13 +304,9 @@
                     this.dataScale = d3.scale.ordinal();
                     break;
             }
-            this.valueScale = d3.scale.linear();
 
             this.dataAxis
                 .scale(this.dataScale)
-            ;
-            this.valueAxis
-                .scale(this.valueScale)
             ;
 
             this.xBrush

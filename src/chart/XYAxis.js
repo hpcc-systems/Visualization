@@ -23,8 +23,15 @@
     XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
     XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("timeseriesPattern", "%Y-%m-%d", "string", "Time Series Pattern");
+    XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
+    XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
 
+    XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear"]);
+    XYAxis.prototype.publish("yAxisDomainLow", "", "string", "Y-Axis Low");
+    XYAxis.prototype.publish("yAxisDomainHigh", "", "string", "Y-Axis High");
+
+    XYAxis.prototype.publish("regions", [], "array", "Regions");
 
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
     XYAxis.prototype.sampleData = function (_) {
@@ -57,12 +64,12 @@
     XYAxis.prototype.testDataOrdinal = function () {
         this
             .xAxisType("ordinal")
-            .columns(["Subject", "2nd Year"])
+            .columns(["Subject", "Year 1", "Year 2", "Year 3"])
             .data([
-                ["Geography", 75],
-                ["English", 45],
-                ["Math", 98],
-                ["Science", 66]
+                ["Geography", 75, 68, 65],
+                ["English", 45, 55, 52],
+                ["Math", 98, 92, 90],
+                ["Science", 66, null, 56]
             ])
         ;
         return this;
@@ -110,10 +117,19 @@
             return 0;
         });
         return this
-            .columns(["Date", "Price"])
+            .columns(["Date", "Price1", "Price2", "Price3"])
             .xAxisType("time")
             .timeseriesPattern("%Y-%m-%dT%H:%M:%S")
-            .data(rawData.map(function (row) { return [row.DateTime, row.Price]; }))
+            .data(rawData.map(function (row, idx) {
+                switch (idx % 3) {
+                    case 0:
+                        return [row.DateTime, row.Price, null, null];
+                    case 1:
+                        return [row.DateTime, null, row.Price, null];
+                    case 2:
+                        return [row.DateTime, null, null, row.Price];
+                }
+            }))
         ;
     };
 
@@ -128,6 +144,15 @@
 
     XYAxis.prototype.columns = function (_) {
         return SVGWidget.prototype.columns.apply(this, arguments);
+    };
+
+    XYAxis.prototype.formatData = function (d) {
+        switch (this.xAxisType()) {
+            case "time":
+                return this._dateParser(d);
+            default:
+                return d;
+        }
     };
 
     XYAxis.prototype.formattedData = function () {
@@ -153,9 +178,21 @@
         ;
 
         this.svg = element.append("g");
+        this.svgRegions = element.append("g");
         this.svgData = this.svg.append("g");
         this.svgXAxis = this.svg.append("g");
+        this.svgXAxisText = this.svgXAxis.append("text")
+            .attr("y", -2)
+            .style("text-anchor", "end")
+        ;
         this.svgYAxis = this.svg.append("g");
+        this.svgYAxisText = this.svgYAxis.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("x", -2)
+              .attr("y", 2)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+        ;
 
         //  Brush  ---
         this.svgBrush = element.append("g")
@@ -230,6 +267,18 @@
         this.selection(selected);
     }, 250);
 
+    XYAxis.prototype.dataPos = function (label) {
+        var retVal = this.dataScale(this.formatData(label));
+        if (this.xAxisType() === "ordinal") {
+            retVal += this.dataScale.rangeBand() / 2;
+        }
+        return retVal;
+    };
+
+    XYAxis.prototype.valuePos = function (value) {
+        return this.valueScale(value);
+    };
+
     XYAxis.prototype.calcMargin = function (domNode, element) {
         var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2 };
         var height = this.height() - margin.top - margin.bottom;
@@ -259,6 +308,31 @@
 
     XYAxis.prototype.update = function (domNode, element) {
         var context = this;
+
+        var regions = this.svgRegions.selectAll(".region").data(this.regions());
+        regions.enter().append("rect")
+            .attr("class", "region")
+        ;
+        if (this.orientation() === "horizontal") {
+            regions
+                .attr("x", function (d) { return context.dataPos(d.x0); })
+                .attr("y", 0)
+                .attr("width", function (d) { return context.dataPos(d.x1) - context.dataPos(d.x0); })
+                .attr("height", this.height())
+                .style("stroke", function (d) { return context._palette(d.colorID); })
+                .style("fill", function (d) { return d3.hsl(context._palette(d.colorID)).brighter(); })
+            ;
+        } else {
+            regions
+                .attr("x", 0)
+                .attr("y", function (d) { return context.dataPos(d.x0); })
+                .attr("width", this.width())
+                .attr("height", function (d) { return context.dataPos(d.x0) - context.dataPos(d.x1); })
+                .style("stroke", function (d) { return context._palette(d.colorID); })
+                .style("fill", function (d) { return d3.hsl(context._palette(d.colorID)).brighter(); })
+            ;
+        }
+        regions.exit().remove();
 
         if (this._prevXAxisType !== this.xAxisType()) {
             this._prevXAxisType = this.xAxisType();
@@ -305,19 +379,19 @@
         //  Update Domain  ---
         switch (this.xAxisType()) {
             case "time":
-                var dateMin = d3.min(this.formattedData(), function (data) {
+                var dateMin = this.xAxisDomainLow() ? this.formatData(this.xAxisDomainLow()) : d3.min(this.formattedData(), function (data) {
                     return data[0];
                 });
-                var dateMax = d3.max(this.formattedData(), function (data) {
+                var dateMax = this.xAxisDomainHigh() ? this.formatData(this.xAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
                     return data[0];
                 });
                 this.dataScale.domain([dateMin, dateMax]);
                 break;
             case "linear":
-                var numberMin = d3.min(this.formattedData(), function (data) {
+                var numberMin = this.yAxisDomainLow() ? this.formatData(this.yAxisDomainLow()) : d3.min(this.formattedData(), function (data) {
                     return data[0];
                 });
-                var numberMax = d3.max(this.formattedData(), function (data) {
+                var numberMax = this.yAxisDomainHigh() ? this.formatData(this.yAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
                     return data[0];
                 });
                 this.dataScale.domain([numberMin - 1, numberMax + 1]);
@@ -327,15 +401,16 @@
                 break;
         }
         var min = d3.min(this.formattedData(), function (data) {
-            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return d instanceof Array ? +d[0] : +d; });
+            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[0] : +d; });
         });
         var max = d3.max(this.formattedData(), function (data) {
-            return d3.max(data.filter(function (row, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0; }), function (d) { return d instanceof Array ? +d[1] : +d; });
+            return d3.max(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[1] : +d; });
         });
-        var newMin = min - (max - min) * this.valueAxisPadding() / 100;
+        var valuePadding = (max - min) * this.valueAxisPadding() / 100;
+        var newMin = min - valuePadding;
         if (min >= 0 && newMin < 0 || min === max)
             newMin = 0;
-        var newMax = max + (max - min) * this.valueAxisPadding() / 100;
+        var newMax = max + valuePadding;
         this.valueScale.domain([newMin, newMax]);
 
         //  Calculate Range  ---
@@ -371,12 +446,17 @@
             .attr("transform", "translate(0," + height + ")")
             .call(this.currAxis)
         ;
+        this.svgXAxisText
+            .attr("x", width - 2)
+            .text(isHorizontal ? this.columns()[0] : this.yAxisTitle())
+        ;
 
         this.svgYAxis.transition()
             .style("visibility", this.yAxisType() === "none" ? "hidden" : null)
             .attr("class", isHorizontal ? "y axis" : "x axis")
             .call(this.otherAxis)
         ;
+        this.svgYAxisText.text(!isHorizontal ? this.columns()[0] : this.yAxisTitle());
 
         if (this.selectionMode()) {
             if (!this._prevBrush) {

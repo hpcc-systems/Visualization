@@ -8,7 +8,6 @@
 }(this, function (d3, SVGWidget, INDChart, require) {
     var _2dChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
-        { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
         { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3chart_Donut" },
@@ -19,7 +18,10 @@
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
     var _multiChartTypes = [
+        { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
+        { id: "AREA", display: "Area", widgetClass: "chart_Area" },
+        { id: "STEP", display: "Step", widgetClass: "chart_Step" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },

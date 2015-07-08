@@ -179,6 +179,7 @@
             .append("tr")
             .on("click.selectionBag", function (d) {
                 context.selectionBagClick(d);
+                context.render();
             })
             .on("click", function (d) {
                 context.click(context.rowToObj(d));

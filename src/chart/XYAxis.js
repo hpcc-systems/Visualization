@@ -57,6 +57,11 @@
         return retVal;
     };
 
+    XYAxis.prototype.resetSelection = function () {
+        this._prevBrush = null;
+        return this;
+    };
+
     //  Data ---
     XYAxis.prototype.testData = function () {
         this.sampleData("ordinal");

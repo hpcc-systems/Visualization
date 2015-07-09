@@ -28,6 +28,8 @@
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear"]);
+    XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
+    XYAxis.prototype.publish("yAxisTypeLogBase", 10, "number", "Base for log on Value Axis");
     XYAxis.prototype.publish("yAxisDomainLow", "", "string", "Y-Axis Low");
     XYAxis.prototype.publish("yAxisDomainHigh", "", "string", "Y-Axis High");
 
@@ -350,15 +352,9 @@
                     this.dataScale = d3.scale.ordinal();
                     break;
             }
-            this.valueScale = d3.scale.linear();
-
             this.dataAxis
                 .scale(this.dataScale)
             ;
-            this.valueAxis
-                .scale(this.valueScale)
-            ;
-
             this.xBrush
                 .x(this.dataScale)
             ;
@@ -366,6 +362,27 @@
                 .y(this.dataScale)
             ;
         }
+
+        switch (this.yAxisType()) {
+            case "pow":
+                this.valueScale = d3.scale.pow()
+                    .exponent(this.yAxisTypePowExponent())
+                ;
+                break;
+            case "log":
+                this.valueScale = d3.scale.log()
+                    .base(this.yAxisTypeLogBase())
+                ;
+                break;
+            case "linear":
+                /* falls through */
+            default:
+                this.valueScale = d3.scale.linear();
+                break;
+        }
+        this.valueAxis
+            .scale(this.valueScale)
+        ;
 
         var isHorizontal = this.orientation() === "horizontal";
         this.dataAxis.orient(isHorizontal ? "bottom" : "left");

@@ -763,6 +763,18 @@
     };
 
     DataSource.prototype.fetchData = function (request, refresh, updates) {
+        if (!updates) {
+            updates = [];
+            for (var oKey in this.outputs) {
+                var output = this.outputs[oKey];
+                if (!output.filter || !output.filter.length) {
+                    output.notify.forEach(function (item) {
+                        updates.push(item);
+                    });
+                }
+            }
+        }
+
         var context = this;
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {

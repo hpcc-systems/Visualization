@@ -27,6 +27,7 @@
     Cell.prototype.update = function (domNode, element) {
         Surface.prototype.update.apply(this, arguments);
         var context = this;
+        var offsetMultiple;
 
         var dragHandles = element.selectAll(".dragHandle").data(this._dragHandles, function (d) { return d; });
         dragHandles.enter().append("div")
@@ -49,8 +50,17 @@
                         case "sw":
                             return "0px";
                         case "n":
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('nw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context.handleSize()*offsetMultiple + "px";
                         case "s":
-                            return context.handleSize() + "px";
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('sw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context.handleSize()*offsetMultiple + "px";
                     }
                 },
                 top: function (d) {
@@ -60,8 +70,17 @@
                         case "ne":
                             return "0px";
                         case "e":
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('ne') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context.handleSize()*offsetMultiple + "px";
                         case "w":
-                            return context.handleSize() + "px";
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('nw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context.handleSize()*offsetMultiple + "px";
                         case "sw":
                         case "s":
                         case "se":
@@ -71,8 +90,23 @@
                 width: function (d) {
                     switch (d) {
                         case "n":
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('ne') !== -1){
+                                offsetMultiple++;
+                            }
+                            if(context._dragHandles.indexOf('nw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context._size.width - (context.handleSize()*offsetMultiple) + "px";
                         case "s":
-                            return context._size.width - (context.handleSize()*2) + "px";
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('se') !== -1){
+                                offsetMultiple++;
+                            }
+                            if(context._dragHandles.indexOf('sw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context._size.width - (context.handleSize()*offsetMultiple) + "px";
                         default:
                             return context.handleSize() + "px";
                     }
@@ -80,8 +114,23 @@
                 height: function (d) {
                     switch (d) {
                         case "w":
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('nw') !== -1){
+                                offsetMultiple++;
+                            }
+                            if(context._dragHandles.indexOf('sw') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context._size.height - (context.handleSize()*offsetMultiple) + "px";
                         case "e":
-                            return context._size.height - (context.handleSize()*2) + "px";
+                            offsetMultiple = 0;
+                            if(context._dragHandles.indexOf('ne') !== -1){
+                                offsetMultiple++;
+                            }
+                            if(context._dragHandles.indexOf('se') !== -1){
+                                offsetMultiple++;
+                            }
+                            return context._size.height - (context.handleSize()*offsetMultiple) + "px";
                         default:
                             return context.handleSize() + "px";
                     }

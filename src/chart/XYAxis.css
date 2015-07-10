@@ -5,6 +5,10 @@
   shape-rendering: crispEdges;
 }
 
+.chart_XYAxis .region {
+  opacity: 0.33;
+}
+
 .chart_XYAxis .brush rect.background {
     z-index: -999;
 }

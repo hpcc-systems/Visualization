@@ -37,6 +37,7 @@
         return this;
     };
 
+    Table.prototype.publish("renderHtmlDataCells", true, "boolean", "enable or disable HTML within cells",null,{tags:['Private']});
     Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
@@ -203,16 +204,29 @@
         cells.enter()
             .append("td")
         ;
-        cells
-            .text(function (d) {
-                if (d instanceof String) {
-                    return d.trim();
-                } else if (d instanceof Object) {
-                    return "";
-                }
-                return d;
-            })
-        ;
+        if(this.renderHtmlDataCells()){
+            cells
+                .html(function (d) {
+                    if (d instanceof String) {
+                        return d.trim();
+                    } else if (d instanceof Object) {
+                        return "";
+                    }
+                    return d;
+                })
+            ;
+        } else {
+            cells
+                .text(function (d) {
+                    if (d instanceof String) {
+                        return d.trim();
+                    } else if (d instanceof Object) {
+                        return "";
+                    }
+                    return d;
+                })
+            ;
+        }
         cells.exit()
             .remove()
         ;

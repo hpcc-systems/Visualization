@@ -1,0 +1,8 @@
+.other_Legend .colorBlock{
+    width:10px;
+    height:10px;
+}
+.other_Legend > table, .other_Legend > table td,.other_Legend > table th {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}

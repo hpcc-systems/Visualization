@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HPCC Systems - Dermatology Test</title>
+    <link rel="stylesheet" href="graph/css/style.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color:white;
+            font-weight: 300;
+            overflow:hidden;
+        }
+        fieldset{
+            margin:15px;
+        }
+        legend{
+            font-weight:bold;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.js"></script>
+    <script src="config.js"></script>
+</head>
+<body>
+    <div id="main" style="width:600px; height:300px;padding:8px;overflow:hidden;"></div>
+    <div id="logs"></div>
+    <script>
+        var g_test;
+        var g_widgetPath = 'src/chart/MultiChart';
+        
+        var g_widget;
+        var g_legend;
+        var def = window.location.search.split("?")[1];
+        if (def) {
+            g_widgetPath = def;
+        }
+        
+        var mainDiv = document.getElementById("main");
+        var frame = null;
+        var main = null;
+        var testWidget = null;
+        var currWidget = null;
+        var showProperties = null;
+        var debouncedResize = null;
+        
+        renderTestWidgets();
+        
+        function renderTestWidgets(){
+            require(["src/layout/Surface", "src/layout/Grid","src/other/Legend",g_widgetPath],function(Surface,Grid,Legend,Widget){
+                var widget = new Widget().testData();
+                var legend = new Legend().targetWidget(widget);
+                g_widget = widget;
+                g_legend = legend;
+                main = new Grid()
+                    .setContent(0, 0, widget)
+                    .setContent(0, 1, legend)
+                    .cellPadding(0)
+                ;
+
+                frame = new Surface()
+                    .widget(main)
+                    .target("main")
+                    .surfacePadding(0)
+                ;
+                frame.render(function(){
+                    legend.targetWidget(widget).render();
+                });
+                setTimeout(function(){
+                    write_to_test_log();
+                },100)
+            });
+        }
+        function write_to_test_log(){
+            var palType = g_widget._palette.toString().split('function ')[1].split('(')[0];
+            _logSection('log-widget','Widget',_widgetPathSelect());
+            _logSection('log-palette','Palette Type',palType);
+            _logSection('log-cols','Columns',JSON.stringify(g_widget.columns()));
+            _logSection('log-data','Data',JSON.stringify(g_widget.data()));
+            
+            function _logSection(id,title,content){
+                if(!$('#'+id).length){
+                    $('#logs').append('<fieldset><legend>'+title+'</legend><div id="'+id+'">'+content+'</div></fieldset>');
+                } else {
+                    $('#'+id).html(content);
+                }
+            }
+            function _widgetPathSelect(){
+                var pathArr = ["src/amchart/Bar", "src/amchart/FloatingColumn", "src/amchart/Line", "src/amchart/Area", "src/amchart/Bubble", "src/amchart/Pie", "src/amchart/Pyramid", "src/amchart/Polar", "src/amchart/Scatter", "src/amchart/Candle", "src/amchart/Gauge", "src/amchart/Funnel", "src/google/Bar", "src/google/Column", "src/google/Line", "src/google/Area", "src/google/Pie", "src/google/Timeline", "src/google/TreeMap", "src/google/Scatter", "src/chart/Column", "src/chart/Line", "src/chart/Pie", "src/chart/Bubble", "src/c3chart/Bar", "src/c3chart/Column", "src/c3chart/Line", "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Gauge", "src/c3chart/Area", "src/c3chart/Scatter", "src/c3chart/Step", "src/map/ChoroplethCounties", "src/map/ChoroplethStates", "src/map/ChoroplethCountries", "src/other/Slider", "src/other/Table", "src/tree/SunburstPartition", "src/tree/CirclePacking", "src/tree/Dendrogram", "src/other/WordCloud", "src/common/Shape", "src/common/Text", "src/common/TextBox", "src/graph/Vertex", "src/common/List", "src/common/Icon", "src/common/Menu", "src/common/FAChar", "src/chart/MultiChartSurface", "src/chart/MultiChart", "src/common/ResizeSurface", "src/common/Surface", "src/graph/Graph", "src/marshaller/Graph"];
+                var html = '<select id="pathSelect" onChange="javascript:pathSelect(this);">';
+                for(var i in pathArr){
+                    var c = pathArr[i] === g_widgetPath ? ' selected' : '';
+                    html += '<option value="'+pathArr[i]+'"'+c+'>'+pathArr[i]+'</option>'
+                }
+                return html+'</select>';
+            }
+        }
+        function pathSelect(elm){
+            document.getElementById("main").innerHTML = '';
+            g_widgetPath = elm.value;
+            renderTestWidgets();
+        }
+        
+    </script>
+</body>
+</html>

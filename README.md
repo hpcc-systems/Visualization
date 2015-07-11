@@ -7,11 +7,7 @@
 * _[Dermatology Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html)_
 * _[Wiki] (https://github.com/hpcc-systems/Visualization/wiki)_
 
-The goal of the visualization framework is to simplify the construction of visualizations and dashboards for Big Data on the HPCC Platform.  This project consists of the following key parts:
-
-1. Provides a consistent interface to "off the shelf" and hand crafted visualizations.
-2. Simplifies visualization instantiation and composition within HTML DOM and SVG DOM nodes (One visualization can be a combination of several others).
-3. Provide connectors (marshallers) to the HPCC Platform.
+The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations (watch this space). It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.
 
 ### The obligatory Hello World [example](http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld.html)
 ```html
@@ -19,11 +15,14 @@ The goal of the visualization framework is to simplify the construction of visua
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="../widgets/lib/requirejs/require.js"></script>
-    <script src="../widgets/config.js"></script>
+    <script src="http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-viz.js"></script>
+    <script src="http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-bundles.js"></script>
     <script>
-        requirejs.config({
-            baseUrl: "../widgets"
+        require.config({
+            paths: {
+                "src": "http://viz.hpccsystems.com/v1.2.2/dist-amd",
+                "font-awesome": "http://viz.hpccsystems.com/v1.2.2/dist-amd/font-awesome/css/font-awesome.min"
+            }
         });
     </script>
 </head>
@@ -52,6 +51,7 @@ None of this would would be possible without the great work of others.  The widg
 * [Font-Awesome](http://fortawesome.github.io/Font-Awesome/) 
 * [ColorBrewer](http://colorbrewer2.org/)
 * [C3](http://c3js.org/)
+* [AM Charts](http://www.amcharts.com/)
 * [d3-cloud](https://github.com/jasondavies/d3-cloud)
 
 While widgets/src also includes wrappers for CDN hosted visualizations:

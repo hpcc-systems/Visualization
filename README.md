@@ -9,7 +9,7 @@
 
 The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations (watch this space). It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.
 
-### The obligatory Hello World [example](http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld.html)
+### The obligatory Hello World [example](http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld/index.html)
 ```html
 ﻿<!doctype html>
 <html>

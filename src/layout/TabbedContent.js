@@ -11,6 +11,7 @@
 
         this._tag = "div";
         this._tabButtons = [];
+        this._tabAnnotations = [];
     }
     TabbedContent.prototype = Object.create(HTMLWidget.prototype);
     TabbedContent.prototype._class += " layout_TabbedContent";
@@ -21,7 +22,6 @@
 
     TabbedContent.prototype.testData = function () {
         this.groupClass("tabTest");
-
         this
             .addTab(new Surface().widget(new MultiChart().testData()), "tab_1", "MultiChart", "active" )
             .addTab(new Surface().widget(new Pie().testData()), "tab_2", "Pie Chart", "")

@@ -17,6 +17,7 @@
     Column.prototype.implements(INDChart.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
@@ -65,12 +66,11 @@
                     .append("title")
                 ;
 
-
                 if (context.orientation() === "horizontal") {
                     columnRect.transition()
                         .attr("class", "columnRect")
-                        .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]) + offset;})
-                        .attr("width", columnScale.rangeBand())
+                        .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(context._columns[idx + 1])) + offset;})
+                        .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d instanceof Array ? context.valueScale(d[1]) : context.valueScale(d) ; })
                         .attr("height", function (d) {  return  d instanceof Array ? context.valueScale(d[0]) - context.valueScale(d[1]) : height - context.valueScale(d) ; })
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
@@ -78,8 +78,8 @@
                 } else {
                     columnRect.transition()
                         .attr("class", "columnRect")
-                        .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + columnScale(context._columns[idx + 1]) + offset;})
-                        .attr("height", columnScale.rangeBand())
+                        .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(context._columns[idx + 1])) + offset;})
+                        .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d instanceof Array ? context.valueScale(d[0]) : 0 ; })
                         .attr("width", function (d) {  return  d instanceof Array ? context.valueScale(d[1]) - context.valueScale(d[0]) : context.valueScale(d) ; })
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
@@ -89,6 +89,12 @@
                 columnRect.select("title")
                     .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
                 ;
+
+                if (context.stacked()) {
+                    columnRect.sort(function (l, r) {
+                        return r - l;
+                    });
+                }
 
                 columnRect.exit().transition()
                     .remove()

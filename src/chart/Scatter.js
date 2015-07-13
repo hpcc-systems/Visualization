@@ -16,7 +16,7 @@
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(),{tags:['Basic','Shared']});
     Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
-    Scatter.prototype.publish("pointSize", 8, "number", "Point Size");
+    Scatter.prototype.publish("pointSize", 6, "number", "Point Size");
     Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "monotone"]);
     Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
     Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity");
@@ -115,11 +115,24 @@
             .attr("class", "area")
         ;
         var area = d3.svg.area()
-            .x(function (d) { return context.xPos(d); })
-            .y0(function (d) { return height; })
-            .y1(function (d) { return context.yPos(d); })
             .interpolate(this.interpolate())
         ;
+        switch (this.orientation()) {
+            case "horizontal":
+                area
+                    .x(function (d) { return context.xPos(d); })
+                    .y0(function (d) { return height; })
+                    .y1(function (d) { return context.yPos(d); })
+                ;
+                break;
+            default:
+                area
+                    .y(function (d) { return context.yPos(d); })
+                    .x0(function (d) { return 0; })
+                    .x1(function (d) { return context.xPos(d); })
+                ;
+                break;
+        }
         areas.each(function (d, idx) {
             var element = d3.select(this);
             element

@@ -1,0 +1,85 @@
+.other_PropertyEditor *{
+    box-sizing:border-box;
+}
+.other_PropertyEditor table{
+    width:100%;
+    margin-bottom:4px;
+}
+.other_PropertyEditor thead > tr > th{
+    text-align:left;
+}
+.other_PropertyEditor thead > tr > th > b{
+    font-weight:bold;
+}
+.other_PropertyEditor thead > tr > th{
+    background-color:#FAFAFA;
+}
+.other_PropertyEditor thead > tr:first-child > th{
+    background-color:#E5E5E5;
+}
+.other_PropertyEditor thead > tr.mm-content > th {
+  padding: 0 4px;
+  font-size: 12px;
+}
+.other_PropertyEditor th,
+.other_PropertyEditor td{
+    padding:4px;
+    white-space: nowrap;
+}
+.other_PropertyEditor thead.mm-label > tr:first-child > th{
+    position:relative;
+    padding-left: 29px;
+}
+.other_PropertyEditor thead.mm-label > tr:first-child > th::before{
+    content:'[+]';
+    position:absolute;
+    left: 3px;
+    top: 3px;
+    color: #404040;
+    height:15px;
+    width:15px;
+    font-family:monospace;
+}
+.other_PropertyEditor thead.mm-label.max > tr:first-child > th::before{
+    content:'[-]';
+}
+.other_PropertyEditor tr.sharedPropertyRow > td.label::after{
+    content:'[+]';
+    position:absolute;
+    right: 10px;
+    top: 3px;
+    color: #404040;
+    height:15px;
+    width:15px;
+    font-family:monospace;
+}
+.other_PropertyEditor tr.sharedPropertyRow > td.label.expanded::after{
+    content:'[-]';
+}
+.other_PropertyEditor tr.sharedPropertyRow > td.label{
+    position:relative;
+    padding-right:30px;
+    text-decoration:underline;
+}
+.other_PropertyEditor tr.sharedPropertyRow > td.label:hover{
+    text-decoration:none;
+    cursor:pointer;
+}
+.other_PropertyEditor tr.propertyRow{
+    background-color:#fafafa;
+}
+.other_PropertyEditor tr.propertyRow > td.label{
+    padding-left: 24px;
+}
+.other_PropertyEditor table,
+.other_PropertyEditor th,
+.other_PropertyEditor td{
+    border:1px solid #e5e5e5;
+}
+.other_PropertyEditor .mm-label.min .mm-content,
+.other_PropertyEditor .mm-label.min + .mm-content {
+    display:none;
+}
+.mm-label:hover {
+    cursor:pointer;
+}

@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["./Widget"],t):e.common_WidgetArray=t(e.common_Widget)})(this,function(e){function t(){e.call(this)}return t.prototype=Object.create(e.prototype),t.prototype._class+=" common_WidgetArray",t.prototype.publish("content",[],"widgetArray","Widget Array"),t});

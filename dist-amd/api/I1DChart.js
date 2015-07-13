@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["../common/Palette"],t):e.api_I1DChart=t(e.common_Palette)})(this,function(e){function t(){}return t.prototype._palette=e.rainbow("default"),t.prototype.testData=function(){return this.columns("Result"),this.data(66),this},t.prototype.click=function(e,t){console.log("Click:  "+JSON.stringify(e)+", "+t)},t});

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../form/Input", "./Cell", "../common/Text", "../common/Icon", "../chart/Pie", "./Surface", "css!./Toolbar"], factory);
+        define(["d3", "../common/HTMLWidget", "../form/Input", "./Cell", "../common/Text", "../common/Icon", "../chart/Pie", "./Surface", "../form/Slider", "css!./Toolbar"], factory);
     } else {
         root.common_Toolbar = factory(root.d3, root.common_HTMLWidget, root.form_Input, root.layout_Cell, root.common_Text, root.common_Icon);
     }
-}(this, function (d3, HTMLWidget, formInput, Cell, Text, Icon, Pie, Surface) {
+}(this, function (d3, HTMLWidget, formInput, Cell, Text, Icon, Pie, Surface, Slider) {
     function Toolbar() {
         HTMLWidget.call(this);
 
@@ -36,7 +36,20 @@
                 width:55,
                 height: 25,
                 type: "button",
-                widget: new formInput().type("button").value("button 1").label("button 1").name("button1")
+                //widget: new formInput().type("button").value("button 1").label("button 1").name("button1")
+                widget: new formInput().name("textbox-test").label("Only Alpha").type("textbox").value("SomeString")
+            },
+            {
+                width:55,
+                height: 25,
+                type: "button",
+                widget: new formInput().name("checkbox-test").label("Checkbox Test").type("checkbox").value(true)
+            },
+            {
+                width:455,
+                height: 25,
+                type: "icon",
+                widget: new Slider().name("slider-test").label("Slider Test").value(66)
             },
             {
                 width:55,

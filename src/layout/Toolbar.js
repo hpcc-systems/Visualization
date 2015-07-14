@@ -129,6 +129,7 @@
 
         widgets
             .each(function (obj, idx) {
+                context.maxWidgetHeight = 38;
                 d3.select(this)
                     .style("padding",context.gutter()/2+"px");
 
@@ -149,8 +150,8 @@
                     rightConsumption = rightConsumption + twBox.width + context.gutter();
                 }
                 d3.select(this)
-                    //.style("top",twTop+"px")
-                    //.style("left",twLeft+"px");
+                    .style("top",twTop+"px")
+                    .style("left",twLeft+"px");
                 context.widgetArr()[idx].render();
             })
         ;

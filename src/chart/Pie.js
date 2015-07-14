@@ -1,14 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "css!./Pie"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "../api/ITooltip", "css!./Pie"], factory);
     } else {
-        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.other_Bag);
+        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.other_Bag, root.api_ITooltip);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag, ITooltip) {
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
+        ITooltip.call(this);
 
         this._outerText = false;  //  Put label inside pie or outside (true/false)
         this._radius = 100;       // px
@@ -32,6 +33,7 @@
     Pie.prototype.constructor = Pie;
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
+    Pie.prototype.implements(ITooltip.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
@@ -95,9 +97,17 @@
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
+                    .on("mouseover.tooltip", function (d) {
+                        context.tooltipShow(d.data, context._columns, 1);
+                    })
+                    .on("mouseout.tooltip", function (d) {
+                        context.tooltipShow();
+                    })
+                    .on("mousemove.tooltip", function (d) {
+                        context.tooltipShow(d.data, context._columns, 1);
+                    })
                     .on("mouseover", arcTween(0, 0))
                     .on("mouseout", arcTween(-5, 150))
-                    .append("title")
                 ;
                 if (d.data.__viz_faChar) {
                     context.labelWidgets[d.data[0]] = new FAChar()
@@ -138,8 +148,6 @@
                 element.select("path").transition()
                     .attr("d", context.d3Arc)
                     .style("fill", function (d) { return context._palette(d.data[0]); })
-                    .select("title")
-                        .text(function (d) { return d.data[0] + " (" + d.data[1] + ")"; })
                 ;
                 context.labelWidgets[d.data[0]]
                     .pos(pos)
@@ -152,8 +160,7 @@
         ;
 
         //  Exit  ---
-        arc.exit()
-            .transition()
+        arc.exit().transition()
             .style("opacity", 0)
             .remove()
         ;

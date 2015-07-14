@@ -232,6 +232,7 @@
     };
 
     XYAxis.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
         this.dataAxis = d3.svg.axis()
             .orient("bottom")
         ;

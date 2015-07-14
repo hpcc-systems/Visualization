@@ -97,12 +97,22 @@
                 context.zoomToFit(context.active === this ? null : this, 750);
                 context.active = this;
             })
+            .on("mouseover.tooltip", function (d) {
+                if (context._dataMap[d.id]) {
+                    context.tooltipShow([d.name, context._dataMap[d.id]], context._columns, 1);
+                }
+            })
+            .on("mouseout.tooltip", function (d) {
+                context.tooltipShow();
+            })
+            .on("mousemove.tooltip", function (d) {
+                if (context._dataMap[d.id]) {
+                    context.tooltipShow([d.name, context._dataMap[d.id]], context._columns, 1);
+                }
+            })
             .attr("id", function (d) {
                 return d.id;
             })
-        ;
-        this.choroPaths
-            .append("title")
         ;
     };
 
@@ -121,16 +131,6 @@
                     return "url(#hash)";
                 }
                 return context._palette(weight, context._dataMinWeight, context._dataMaxWeight);
-            })
-        ;
-
-        this.choroPaths.select("title")
-            .text(function (d) {
-                var code = countries.countryNames[d.id];
-                if (countries.countryNames[d.id]) {
-                    return countries.countryNames[d.id].name + " (" + context._dataMap[code] + ")";
-                }
-                return "";
             })
         ;
     };

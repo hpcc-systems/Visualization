@@ -48,9 +48,19 @@
                 context.zoomToFit(context.active === this ? null : this, 750);
                 context.active = this;
             })
-        ;
-        this.choroPaths
-            .append("title")
+            .on("mouseover.tooltip", function (d) {
+                if (context._dataMap[d.id]) {
+                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context._columns, 1);
+                }
+            })
+            .on("mouseout.tooltip", function (d) {
+                context.tooltipShow();
+            })
+            .on("mousemove.tooltip", function (d) {
+                if (context._dataMap[d.id]) {
+                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context._columns, 1);
+                }
+            })
         ;
     };
 
@@ -66,8 +76,6 @@
                 var weight = context._dataMap[d.id] ? context._dataMap[d.id][1] : undefined;
                 d3.select(this)
                     .style("fill", weight === undefined ? "url(#hash)" : context._palette(weight, context._dataMinWeight, context._dataMaxWeight))
-                    .select("title")
-                    .text(usCounties.countyNames[d.id] + (weight === undefined ? "" : " (" + weight + ")"))
                 ;
             })
         ;

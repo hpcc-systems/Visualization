@@ -1,19 +1,21 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./XYAxis", "../api/INDChart", "css!./Scatter"], factory);
+        define(["d3", "../common/SVGWidget", "./XYAxis", "../api/INDChart", "../api/ITooltip", "css!./Scatter"], factory);
     } else {
-        root.chart_Scatter = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart);
+        root.chart_Scatter = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function (d3, SVGWidget, XYAxis, INDChart) {
+}(this, function (d3, SVGWidget, XYAxis, INDChart, ITooltip) {
     function Scatter(target) {
         XYAxis.call(this);
         INDChart.call(this);
+        ITooltip.call(this);
     }
     Scatter.prototype = Object.create(XYAxis.prototype);
     Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " chart_Scatter";
     Scatter.prototype.implements(INDChart.prototype);
+    Scatter.prototype.implements(ITooltip.prototype);
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
@@ -68,8 +70,19 @@
                 element
                     .append("circle")
                     .attr("class", "pointSelection")
+                    .on("mouseover.tooltip", function (d) {
+                        context.tooltipShow(context.data()[d.rowIdx], context._columns, d.colIdx);
+                    })
+                    .on("mouseout.tooltip", function (d) {
+                        context.tooltipShow();
+                    })
+                    .on("mousemove.tooltip", function (d) {
+                        context.tooltipShow(context.data()[d.rowIdx], context._columns, d.colIdx);
+                    })
                     .call(context._selection.enter.bind(context._selection))
-                    .append("title")
+                    .on("click", function (d, idx) {
+                        context.click(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx], context._selection.selected(this));
+                    })
                 ;
                 element
                     .append(d.shape)
@@ -84,12 +97,6 @@
                     .attr("cx", function (d) { return context.xPos(d); })
                     .attr("cy", function (d) { return context.yPos(d); })
                     .attr("r", context.pointSize())
-                    .on("click", function (d, idx) {
-                        context.click(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx], context._selection.selected(this));
-                    })
-                ;
-                elementSelection.select("title")
-                    .text(function (d, idx) { return context.data()[d.rowIdx][0] + " (" + context.columns()[d.colIdx] + ")" + ": " + d.value; })
                 ;
 
                 var element = d3.select(this).select(".pointShape");

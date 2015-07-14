@@ -109,8 +109,8 @@
                                 });
                                 break;
                             case "widgetArray":
-                                ++createCount;
                                 var widgetArrayKey = key;
+                                ++createCount;
                                 var widgetStateArray = state.__properties[key];
                                 var widgetArray = [];
                                 widgetArray.length = widgetStateArray.length;

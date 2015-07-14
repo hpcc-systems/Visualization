@@ -68,13 +68,11 @@
                             <option value="src/google/Scatter">Google Scatter</option>
                             <option value="src/google/Timeline">Google Timeline</option>
                             <option value="src/google/TreeMap">Google TreeMap</option>
-                            <option value="src/chart/Pie">Pie</option>
-                            <option value="src/chart/Bubble">Bubble</option>
                             <option value="src/chart/Column">Column</option>
-                            <option value="src/chart/Scatter">Scatter</option>
+                            <option value="src/chart/Bubble">Bubble</option>
                             <option value="src/chart/Line">Line</option>
-                            <option value="src/chart/Area">Area</option>
-                            <option value="src/chart/Step">Step</option>
+                            <option value="src/chart/Scatter">Scatter</option>
+                            <option value="src/chart/Pie">Pie</option>
                             <option value="src/chart/MultiChart">Multi Chart</option>
                             <option value="src/chart/MultiChartSurface">Multi Chart Surface</option>
                             <option value="src/form/Form">Form</option>
@@ -94,6 +92,7 @@
                             <option value="src/layout/Cell">Cell Layout</option>
                             <option value="src/layout/Grid">Grid Layout</option>
                             <option value="src/layout/Border">Border Layout</option>
+                            <option value="src/layout/TabbedContent">Tabbed Layout</option>
                             <option value="src/amchart/Area">AmChart Area</option>
                             <option value="src/amchart/Bar">AmChart Bar</option>
                             <option value="src/amchart/Bubble">AmChart Bubble</option>
@@ -127,6 +126,9 @@
     <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
     </div>
     <script>
+        var g_widget;
+        var g_persist;
+        var g_serial;
         var def = window.location.search.split("?")[1];
         if (def) {
             document.getElementById("widgetSelect").value = def;
@@ -142,6 +144,7 @@
         var debouncedResize = null;
 
         require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
+            g_persist = Persist;
             var propEditor = new PropertyEditor().showColumns(false).showData(false);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
@@ -181,8 +184,8 @@
                 if (document.getElementById("showSerialization").checked) {
                     sourceWidget = sourceWidget || currWidget;
                     Persist.clone(sourceWidget, function (widget) {
+                        g_serial = widget;
                         serializationSurface
-                            .surfacePadding(0)
                             .widget(widget)
                             .render()
                         ;
@@ -204,6 +207,7 @@
             testWidget = function (widgetPath) {
                 require([widgetPath], function (Widget) {
                     currWidget = new Widget().testData();
+                    g_widget = currWidget;
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
@@ -248,19 +252,25 @@
                     })
                 ;
             }
-            frame.doResize = Surface.prototype.debounce(function () {
-                mainDiv.style.width = window.innerWidth - 16 + "px";
-                mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
-                this
+            resize = function () {
+                if (mainDiv) {
+                    mainDiv.style.width = window.innerWidth - 16 + "px";
+                    mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
+                }
+
+                frame
                     .resize()
                     .render()
                 ;
-            }, 250)
-            frame.doResize();
+            };
+            debouncedResize = Surface.prototype.debounce(function () {
+                resize();
+            }, 250);
+            resize();
         });
         function doResize() {
-            if (frame) {
-                frame.doResize();
+            if (debouncedResize) {
+                debouncedResize();
             }
         }
     </script>

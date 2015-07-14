@@ -149,9 +149,8 @@
                     rightConsumption = rightConsumption + twBox.width + context.gutter();
                 }
                 d3.select(this)
-                    .style("top",twTop+"px")
-                    .style("left",twLeft+"px");
-                    console.log("twtop:"+twTop);
+                    //.style("top",twTop+"px")
+                    //.style("left",twLeft+"px");
                 context.widgetArr()[idx].render();
             })
         ;

@@ -151,6 +151,7 @@
                 d3.select(this)
                     .style("top",twTop+"px")
                     .style("left",twLeft+"px");
+                    console.log("twtop:"+twTop);
                 context.widgetArr()[idx].render();
             })
         ;

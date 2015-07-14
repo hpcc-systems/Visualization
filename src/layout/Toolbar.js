@@ -147,7 +147,7 @@
                     twLeft = conBox.width - rightConsumption - twBox.width;
                     rightConsumption = rightConsumption + twBox.width + context.gutter();
                 }
-
+                console.log(twtop);
                 d3.select(this)
                     .style("top",twTop+"px")
                     .style("left",twLeft+"px");

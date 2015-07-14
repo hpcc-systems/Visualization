@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<!doctype html>
 <html>
 <head>
@@ -94,6 +95,7 @@
                             <option value="src/layout/Cell">Cell Layout</option>
                             <option value="src/layout/Grid">Grid Layout</option>
                             <option value="src/layout/Border">Border Layout</option>
+                            <option value="src/layout/TabbedContent">Tabbed Layout</option>
                             <option value="src/amchart/Area">AmChart Area</option>
                             <option value="src/amchart/Bar">AmChart Bar</option>
                             <option value="src/amchart/Bubble">AmChart Bubble</option>
@@ -127,6 +129,9 @@
     <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
     </div>
     <script>
+        var g_widget;
+        var g_persist;
+        var g_serial;
         var def = window.location.search.split("?")[1];
         if (def) {
             document.getElementById("widgetSelect").value = def;
@@ -142,6 +147,7 @@
         var debouncedResize = null;
 
         require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
+            g_persist = Persist;
             var propEditor = new PropertyEditor().showColumns(false).showData(false);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
@@ -181,6 +187,7 @@
                 if (document.getElementById("showSerialization").checked) {
                     sourceWidget = sourceWidget || currWidget;
                     Persist.clone(sourceWidget, function (widget) {
+                        g_serial = widget;
                         serializationSurface
                             .surfacePadding(0)
                             .widget(widget)
@@ -204,6 +211,7 @@
             testWidget = function (widgetPath) {
                 require([widgetPath], function (Widget) {
                     currWidget = new Widget().testData();
+                    g_widget = currWidget;
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
@@ -266,3 +274,283 @@
     </script>
 </body>
 </html>
+=======
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HPCC Systems - Dermatology Test</title>
+    <link rel="stylesheet" href="graph/css/style.css">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color:white;
+            font-weight: 300;
+            overflow:hidden;
+        }
+    </style>
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="../src/config.js"></script>
+    <!--  Uncomment to develop
+    <script src="../bower_components/requirejs/require.js"></script>
+    <script src="../src/config.js"></script>
+    -->
+    <!--  Uncomment to test build
+    <script src="../dist-amd/hpcc-viz.js"></script>
+    <script src="../dist-amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "src": "../dist-amd",
+                "font-awesome": "../dist-amd/font-awesome/css/font-awesome.min"
+            }
+        });
+    </script>
+    -->
+</head>
+<body onresize="doResize();">
+    <header>
+        <div class="container">
+            <h1><a>Dermatology</a></h1>
+            <nav>
+                <ul>
+                    <li>
+                        <prompt>Widget:</prompt>
+                        <select id="widgetSelect" onchange="testWidget(this.value);">
+                            <option value="src/common/Shape">Shape</option>
+                            <option value="src/common/Text">Text</option>
+                            <option value="src/common/TextBox">TextBox</option>
+                            <option value="src/common/FAChar">FAChar</option>
+                            <option value="src/common/Icon">Icon</option>
+                            <option value="src/common/List">List</option>
+                            <option value="src/common/Menu">Menu</option>
+                            <option value="src/common/Surface">Surface</option>
+                            <option value="src/common/ResizeSurface">ResizeSurface</option>
+                            <option value="src/c3chart/Area">C3 Area</option>
+                            <option value="src/c3chart/Bar">C3 Bar</option>
+                            <option value="src/c3chart/Column">C3 Column</option>
+                            <option value="src/c3chart/Line">C3 Line</option>
+                            <option value="src/c3chart/Scatter">C3 Scatter</option>
+                            <option value="src/c3chart/Step">C3 Step</option>
+                            <option value="src/c3chart/Pie">C3 Pie</option>
+                            <option value="src/c3chart/Donut">C3 Donut</option>
+                            <option value="src/c3chart/Gauge">C3 Gauge</option>
+                            <option value="src/google/Pie">Google Pie</option>
+                            <option value="src/google/Bar">Google Bar</option>
+                            <option value="src/google/Column">Google Column</option>
+                            <option value="src/google/Line">Google Line</option>
+                            <option value="src/google/Area">Google Area</option>
+                            <option value="src/google/Scatter">Google Scatter</option>
+                            <option value="src/google/Timeline">Google Timeline</option>
+                            <option value="src/google/TreeMap">Google TreeMap</option>
+                            <option value="src/chart/Column">Column</option>
+                            <option value="src/chart/Bubble">Bubble</option>
+                            <option value="src/chart/Line">Line</option>
+                            <option value="src/chart/Scatter">Scatter</option>
+                            <option value="src/chart/Pie">Pie</option>
+                            <option value="src/chart/MultiChart">Multi Chart</option>
+                            <option value="src/chart/MultiChartSurface">Multi Chart Surface</option>
+                            <option value="src/form/Form">Form</option>
+                            <option value="src/map/ChoroplethStates">Choropleth States</option>
+                            <option value="src/map/ChoroplethCounties">Choropleth Counties</option>
+                            <option value="src/map/ChoroplethCountries">Choropleth Countries</option>
+                            <option value="src/tree/Dendrogram">Tree Dendrogram</option>
+                            <option value="src/tree/CirclePacking">Tree CirclePacking</option>
+                            <option value="src/tree/SunburstPartition">Tree SunburstPartition</option>
+                            <option value="src/graph/Graph">Graph</option>
+                            <option value="src/graph/Vertex">Graph Vertex</option>
+                            <option value="src/other/Table">Table</option>
+                            <option value="src/form/Slider">Slider</option>
+                            <option value="src/marshaller/HTML">HTML Marshaller</option>
+                            <option value="src/marshaller/Graph">Graph Marshaller</option>
+                            <option value="src/layout/Surface">Surface Layout</option>
+                            <option value="src/layout/Cell">Cell Layout</option>
+                            <option value="src/layout/Grid">Grid Layout</option>
+                            <option value="src/layout/Border">Border Layout</option>
+                            <option value="src/layout/TabbedContent">Tabbed Layout</option>
+                            <option value="src/amchart/Area">AmChart Area</option>
+                            <option value="src/amchart/Bar">AmChart Bar</option>
+                            <option value="src/amchart/Bubble">AmChart Bubble</option>
+                            <option value="src/amchart/Candle">AmChart Candle</option>
+                            <option value="src/amchart/FloatingColumn">AmChart Floating Column</option>
+                            <option value="src/amchart/Funnel">AmChart Funnel</option>
+                            <option value="src/amchart/Gauge">AmChart Gauge</option>
+                            <option value="src/amchart/Line">AmChart Line</option>
+                            <option value="src/amchart/Pie">AmChart Pie</option>
+                            <option value="src/amchart/Polar">AmChart Polar</option>
+                            <option value="src/amchart/Pyramid">AmChart Pyramid</option>
+                            <option value="src/amchart/Scatter">AmChart Scatter</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="showProperties">&nbsp;&nbsp;Properties:</label>
+                        <input id="showProperties" type="checkbox" checked onchange="showProperties(this.checked);" />
+                    </li>
+                    <li>
+                        <label for="showSerialization">&nbsp;&nbsp;S. Test:</label>
+                        <input id="showSerialization" type="checkbox" onchange="showSerialization(this.checked);" />
+                    </li>
+                    <li>
+                        <label for="showSerialization">&nbsp;&nbsp;S. Text:</label>
+                        <input id="showSerializationText" type="checkbox" onchange="showSerializationText(this.checked);" />
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
+    </div>
+    <script>
+        var g_widget;
+        var g_persist;
+        var g_serial;
+        var def = window.location.search.split("?")[1];
+        if (def) {
+            document.getElementById("widgetSelect").value = def;
+        }
+
+        var body = document.getElementById("body");
+        var mainDiv = document.getElementById("main");
+        var frame = null;
+        var main = null;
+        var testWidget = null;
+        var currWidget = null;
+        var showProperties = null;
+        var debouncedResize = null;
+
+        require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
+            g_persist = Persist;
+            var propEditor = new PropertyEditor().showColumns(false).showData(false);
+            propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
+                if (propID === "columns") {
+                } else if (propID === "data") {
+                } else {
+                    displaySerialization();
+                    displaySerializationText();
+                }
+            }, 500);
+            var serializationSurface = new Surface()
+            ;
+            var serializationTextSurface = new Surface()
+                .id("testJSON")
+            ;
+            main = new Grid()
+                .setContent(0, 2, propEditor, "", 2, 1)
+                .cellPadding(0)
+            ;
+
+            frame = new Surface()
+                .widget(main)
+                .target("main")
+                .surfacePadding(0)
+            ;
+
+            function displayProperties(sourceWidget) {
+                if (document.getElementById("showProperties").checked) {
+                    sourceWidget = sourceWidget || currWidget;
+                    propEditor
+                        .data([sourceWidget])
+                        .render()
+                    ;
+                }
+            }
+
+            function displaySerialization(sourceWidget) {
+                if (document.getElementById("showSerialization").checked) {
+                    sourceWidget = sourceWidget || currWidget;
+                    Persist.clone(sourceWidget, function (widget) {
+                        g_serial = widget;
+                        serializationSurface
+                            .widget(widget)
+                            .render()
+                        ;
+                    });
+                }
+            }
+
+            function displaySerializationText(sourceWidget) {
+                if (document.getElementById("showSerializationText").checked) {
+                    sourceWidget = sourceWidget || currWidget;
+                    var text = JSON.stringify(Persist.serializeToObject(sourceWidget, null, false), null, "  ");
+                    d3.select("#testJSON")
+                        .attr("class", "prettyprint")
+                        .text(text)
+                    ;
+                }
+            }
+
+            testWidget = function (widgetPath) {
+                require([widgetPath], function (Widget) {
+                    currWidget = new Widget().testData();
+                    g_widget = currWidget;
+                    main
+                        .setContent(0, 0, currWidget, "", 2, 2)
+                    ;
+                    frame
+                        .title(widgetPath)
+                        .render(function (mainWidget) {
+                            displayProperties(currWidget);
+                            displaySerialization(currWidget);
+                            displaySerializationText(currWidget);
+                        })
+                    ;
+                });
+            }
+            testWidget(document.getElementById("widgetSelect").value);
+            showProperties = function (show) {
+                main
+                    .setContent(0, 2, show ? propEditor : null, "", 2, 1)
+                    .render(function (widget) {
+                        if (show) {
+                            displayProperties();
+                        }
+                    })
+                ;
+            }
+            showSerialization = function (show) {
+                main
+                    .setContent(2, 0, show ? serializationSurface : null, "", 1, 3)
+                    .render(function (widget) {
+                        if (show) {
+                            displaySerialization();
+                        }
+                    })
+                ;
+            }
+            showSerializationText = function (show) {
+                main
+                    .setContent(0, 3, show ? serializationTextSurface : null, "", 3, 1)
+                    .render(function (widget) {
+                        if (show) {
+                            displaySerializationText();
+                        }
+                    })
+                ;
+            }
+            resize = function () {
+                if (mainDiv) {
+                    mainDiv.style.width = window.innerWidth - 16 + "px";
+                    mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
+                }
+
+                frame
+                    .resize()
+                    .render()
+                ;
+            };
+            debouncedResize = Surface.prototype.debounce(function () {
+                resize();
+            }, 250);
+            resize();
+        });
+        function doResize() {
+            if (debouncedResize) {
+                debouncedResize();
+            }
+        }
+    </script>
+</body>
+</html>
+>>>>>>> c198d1a7374736b391f1cd3d4ccc6505e84d6f46

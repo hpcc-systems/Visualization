@@ -135,6 +135,7 @@
                 var twNode = d3.select(this).node();
                 var twBox = twNode.getBoundingClientRect();
                 var twTop = (context.maxWidgetHeight/2 - twBox.height/2);
+                console.log(context.maxWidgetHeight);
 
                 var twLeft;
                 if (typeof(obj.alignment) === "undefined") {
@@ -147,7 +148,6 @@
                     twLeft = conBox.width - rightConsumption - twBox.width;
                     rightConsumption = rightConsumption + twBox.width + context.gutter();
                 }
-                console.log(twTop);
                 d3.select(this)
                     .style("top",twTop+"px")
                     .style("left",twLeft+"px");

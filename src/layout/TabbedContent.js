@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../chart/Pie", "../chart/MultiChart", "../google/Line", "css!./TabbedContent"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../chart/Pie", "../chart/MultiChart", "../google/Line", "../common/Text", "css!./TabbedContent"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.chart_Pie, root.chart_MultiChart, root.chart_Line);
+        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.chart_Pie, root.chart_MultiChart, root.chart_Line, root.common_Text);
     }
-}(this, function (d3, HTMLWidget, Surface, Pie, MultiChart, Line) {
+}(this, function (d3, HTMLWidget, Surface, Pie, MultiChart, Line, Text) {
     function TabbedContent() {
         HTMLWidget.call(this);
 
@@ -16,35 +16,43 @@
     TabbedContent.prototype = Object.create(HTMLWidget.prototype);
     TabbedContent.prototype._class += " layout_TabbedContent";
 
+    TabbedContent.prototype.publish("activeTabIdx", 0, "number", "Index of active tab",null,{});
+    
     TabbedContent.prototype.publish("groupClass", "", "string", "Class to identify all elements in this tab grouping",null,{});
-//    TabbedContent.prototype.publish("tabAnnotations", null, "array", "Tab Array",null,{});
+    
     TabbedContent.prototype.publish("widgets", [], "widgetArray", "widgets",null,{tags:['Private']});
+    TabbedContent.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'",null,{tags:['Private']});
+
 
     TabbedContent.prototype.testData = function () {
-        this.groupClass("tabTest");
         this
-            .addTab(new Surface().widget(new MultiChart().testData()), "tab_1", "MultiChart", "active" )
-            .addTab(new Surface().widget(new Pie().testData()), "tab_2", "Pie Chart", "")
-            .addTab(new Surface().widget(new Line().testData()), "tab_3", "Line Chart", "")
+            .addTab(new MultiChart().testData(), "MultiChart", true)
+            .addTab(new Pie().testData(), "Pie Chart")
+            .addTab(new Line().testData(), "Line Chart")
+            .addTab(undefined
+//                    new TabbedContent()
+//                        .addTab(new Pie().testData(), "Another Pie Chart")
+//                        .addTab(new Line().testData(), "Another Line Chart")
+                , "Nested Example")
         ;
-
         return this;
     };
     
-    TabbedContent.prototype.addTab = function(widget, id, label, clss) {
-        if (id === "" || id === undefined) {
-            throw "Tab must have a valid id";
-        }
-        if (!widget) {
-            throw "No widget defined for tab";
-        }
-        clss = clss || "";
-        if (!this._tabAnnotations) {
-            this._tabAnnotations = [];
+    TabbedContent.prototype.addTab = function(widget, label, isActive) {
+        var widgetArr = this.widgets();
+        var labelsArr = this.labels();
+        
+        widget = new Surface().widget(widget ? widget : new Text().text("No widget defined for tab") );
+        
+        if(isActive){
+            this.activeTabIdx(widgetArr.length);
         }
         
-        this._tabAnnotations.push({"id":id, "label":label, "clss":clss, "widget":widget});
-        this.widgets().push(widget);
+        labelsArr.push(label);
+        widgetArr.push(widget);
+        
+        this.labels(labelsArr);
+        this.widgets(widgetArr);
         
         return this;
     };
@@ -55,56 +63,46 @@
 
         return { width: width, height: height };
     };
-    
-    TabbedContent.prototype.createContainers = function (element) {
-        element.classed(this.groupClass(), true);
 
-        if (!this._tabContainer) {
-            this._tabContainer = element.append("div").attr("class", "tabContainer").selectAll(".tab-button").data(this._tabAnnotations);
-        }
+    TabbedContent.prototype.createContainers = function (element) {
         var context = this;
-        this._tabContainer.enter().append("span").classed("tab-button",true)
+        var groupClass = "tab-group-"+context.id();
+
+        var tabs = this._tabContainer.selectAll(".tab-button").data(this.widgets());
+
+        tabs.enter().append("span").classed("tab-button",true)
             .each(function (tab, idx) {
-                if (document.getElementById(tab.id)) {
-                    d3.select(this).remove();
-                    return false;
-                }
+                var tabBtnClass = "tab-button tab-group-"+context.id();
+                tabBtnClass += idx === context.activeTabIdx() ? " active" : "";
                 var el = context._tabButtons[idx] = d3.select(this)
-                    .attr("class", "tab-button " + tab.clss)
-                    .attr("for", tab.id)
+                    .attr("class", tabBtnClass)
                     .style("cursor","pointer")
-                    .html(function() { return tab.label; })
-                    .on("click", function() { 
-                        var cls = context.groupClass() === "" ? "" : "." + context.groupClass() + " ";
-                        d3.selectAll(cls + ".tab-button")
+                    .html(function() { return context.labels()[idx]; })
+                    .on("click", function() {
+                        element.selectAll("."+groupClass+".tab-button")
                             .classed("active", false);
                         el.classed("active", true);
-                        d3.selectAll(cls + ".tab-content")
+                        element.selectAll("."+groupClass+".tab-content")
                             .style("display", "none")
                             .classed("active", false);
-                        d3.select("#" + tab.id)
+                        element.select(".tab-content-"+idx)
                             .style("display", "block")
                             .classed("active", true);
+                        context.activeTabIdx(idx);
                     })
                 ;
             }
         );
 
-        if (!this._contentContainer) {
-            this._contentContainer = element.append("div").attr("class", "contentContainer").selectAll(".tab-content").data(this._tabAnnotations);
-        }
-        this._contentContainer.enter().append("div").classed("tab-content",true)
+        var content = this._contentContainer.selectAll(".tab-content").data(this.widgets());
+        
+        content.enter().append("div")
             .each(function (tab, idx) {
-                if (document.getElementById(tab.id)) {
-                    d3.select(this).remove();
-                    return false;
-                }
                 var el = context._tabButtons[idx] = d3.select(this)
-                    .attr("class", "tab-content")
-                    .attr("id", tab.id)
+                    .attr("class", "tab-content tab-content-"+idx+" "+groupClass)
                     .style("display", "none")
                 ;
-                if (tab.clss.indexOf("active") > -1) {
+                if (idx === context.activeTabIdx()) {
                     el.style("display", "block");
                     el.classed("active", true);
                 }
@@ -112,13 +110,20 @@
                     .style('width', context.widgetSize(el).width + "px")
                     .style('height', context.widgetSize(el).height + "px")
                 ;
-                tab.widget.target(tab.id).render();
+                
+                if (!context.widgets()[idx].target()) {
+                    context.widgets()[idx].target(this);
+                }
+                //console.group('R-'+idx);
+                context.widgets()[idx].render();
             }
         );
     };
 
-    TabbedContent.prototype.enter = function () {
+    TabbedContent.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        this._tabContainer = element.append("div").attr("class", "tabContainer");
+        this._contentContainer = element.append("div").attr("class", "contentContainer")
     };
 
     TabbedContent.prototype.update = function (domNode, element) {

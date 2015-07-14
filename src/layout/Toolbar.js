@@ -135,8 +135,8 @@
                 var twNode = d3.select(this).node();
                 var twBox = twNode.getBoundingClientRect();
                 var twTop = (context.maxWidgetHeight/2 - twBox.height/2);
-                console.log(context.maxWidgetHeight);
-
+                //console.log(context.maxWidgetHeight);
+                console.log(twBox.height);
                 var twLeft;
                 if (typeof(obj.alignment) === "undefined") {
                     obj.alignment = "left";

@@ -30,7 +30,7 @@
             .addTab(new TabbedContent()
                         .labels([]).widgets([])//TODO:Figure out why this is necessary
                         .addTab(new Pie().testData(), "Another Pie Chart")
-                        .addTab(new Line().testData(), "Another Line Chart")
+                        .addTab(new Line().testData(), "Another Line Chart",true)
                 ,"Nested Example")
         ;
         return this;
@@ -69,7 +69,7 @@
         var context = this;
         var groupClass = "tab-group-"+context.id();
 
-        var tabs = this._tabContainer.selectAll(".tab-button").data(this.widgets());
+        var tabs = this._tabContainer.selectAll(".tab-button.tab-group-"+this.id()).data(this.widgets());
 
         tabs.enter().append("span").classed("tab-button",true)
             .each(function (tab, idx) {
@@ -86,7 +86,7 @@
                         element.selectAll("."+groupClass+".tab-content")
                             .style("display", "none")
                             .classed("active", false);
-                        element.select(".tab-content-"+idx)
+                        element.select(".tab-content-"+idx+".tab-group-"+context.id())
                             .style("display", "block")
                             .classed("active", true);
                         context.activeTabIdx(idx);
@@ -96,7 +96,7 @@
             }
         );
 
-        var content = this._contentContainer.selectAll(".tab-content").data(this.widgets());
+        var content = this._contentContainer.selectAll(".tab-content.tab-group-"+this.id()).data(this.widgets());
         
         content.enter().append("div")
             .each(function (tab, idx) {
@@ -119,9 +119,9 @@
     
     TabbedContent.prototype.updateTabContent = function () {
         var context = this;
-        var content = this._contentContainer.selectAll(".tab-content").data(this.widgets());
+        var content = this._contentContainer.selectAll(".tab-content.tab-group-"+this.id()).data(this.widgets());
         
-        content.selectAll('div')
+        content
             .each(function (tab, idx) {
                 var el = d3.select(this);
                 if (idx === context.activeTabIdx()) {
@@ -133,7 +133,9 @@
                     .style('width', wSize.width + "px")
                     .style('height', wSize.height + "px")
                 ;
-                context.widgets()[idx].resize(wSize).render();
+                if(typeof(context.widgets()[idx]) !== 'undefined'){
+                    context.widgets()[idx].resize(wSize).render();
+                }
             }
         );
     };
@@ -141,7 +143,7 @@
     TabbedContent.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._tabContainer = element.append("div").attr("class", "tabContainer");
-        this._contentContainer = element.append("div").attr("class", "contentContainer")
+        this._contentContainer = element.append("div").attr("class", "contentContainer");
     };
 
     TabbedContent.prototype.update = function (domNode, element) {

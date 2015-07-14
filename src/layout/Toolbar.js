@@ -129,30 +129,31 @@
 
         widgets
             .each(function (obj, idx) {
-                context.maxWidgetHeight = 38;
-                d3.select(this)
-                    .style("padding",context.gutter()/2+"px");
+                var that = this;
+                context.widgetArr()[idx].render(function(widget) { // render again before render below to get proper height
+                    d3.select(that)
+                        .style("padding",context.gutter()/2+"px");
 
-                var twNode = d3.select(this).node();
-                var twBox = twNode.getBoundingClientRect();
-                console.log(twBox);
-                var twTop = (context.maxWidgetHeight/2 - twBox.height/2);
-                //console.log(context.maxWidgetHeight);
-                var twLeft;
-                if (typeof(obj.alignment) === "undefined") {
-                    obj.alignment = "left";
-                }
-                if (obj.alignment === "left") {
-                    twLeft = leftConsumption;
-                    leftConsumption = twLeft + twBox.width + context.gutter();
-                } else if (obj.alignment === "right") {
-                    twLeft = conBox.width - rightConsumption - twBox.width;
-                    rightConsumption = rightConsumption + twBox.width + context.gutter();
-                }
-                d3.select(this)
-                    .style("top",twTop+"px")
-                    .style("left",twLeft+"px");
-                context.widgetArr()[idx].render();
+                    var twNode = d3.select(that).node();
+                    var twBox = twNode.getBoundingClientRect();
+                    var twTop = (context.maxWidgetHeight/2 - twBox.height/2);
+
+                    var twLeft;
+                    if (typeof(obj.alignment) === "undefined") {
+                        obj.alignment = "left";
+                    }
+                    if (obj.alignment === "left") {
+                        twLeft = leftConsumption;
+                        leftConsumption = twLeft + twBox.width + context.gutter();
+                    } else if (obj.alignment === "right") {
+                        twLeft = conBox.width - rightConsumption - twBox.width;
+                        rightConsumption = rightConsumption + twBox.width + context.gutter();
+                    }
+                    d3.select(that)
+                        .style("top",twTop+"px")
+                        .style("left",twLeft+"px");
+                    context.widgetArr()[idx].render();
+                });
             })
         ;
 

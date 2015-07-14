@@ -16,19 +16,19 @@
     AbsoluteSurface.prototype._class += " layout_AbsoluteSurface";
 
     AbsoluteSurface.prototype.publish("units", "percent", "set", "Units", ["pixels", "percent"]);
-    AbsoluteSurface.prototype.publish("x", 0, "number", "Widget XPos");
-    AbsoluteSurface.prototype.publish("y", 0, "number", "Widget YPos");
-    AbsoluteSurface.prototype.publish("width", "100", "string", "Widget Width, omit for full");
-    AbsoluteSurface.prototype.publish("height", "100", "string", "Widget Height, omit for full");
-    AbsoluteSurface.prototype.publish("opacity", 1, "number", "Opacity");
+    AbsoluteSurface.prototype.publish("widgetX", 0, "number", "Widget XPos");
+    AbsoluteSurface.prototype.publish("widgetY", 0, "number", "Widget YPos");
+    AbsoluteSurface.prototype.publish("widgetWidth", "100", "string", "Widget Width, omit for full");
+    AbsoluteSurface.prototype.publish("widgetHeight", "100", "string", "Widget Height, omit for full");
     AbsoluteSurface.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Private"] });
+    AbsoluteSurface.prototype.publish("opacity", 1, "number", "Opacity");
 
     AbsoluteSurface.prototype.testData = function () {
         this
-            .x(25)
-            .y(25)
-            .width(50)
-            .height(50)
+            .widgetX(25)
+            .widgetY(25)
+            .widgetWidth(50)
+            .widgetHeight(50)
             .widget(new MultiChart().testData().chartType("COLUMN"))
         ;
         return this;
@@ -44,31 +44,34 @@
         var xPos = 0, yPos = 0, width = this.clientWidth(), height = this.clientHeight();
         switch (this.units()) {
             case "pixels":
-                xPos = this.x();
-                yPos = this.y();
-                width = this.width() === "" ? width - xPos : Number(this.width());
-                height = this.height() === "" ? height - yPos : Number(this.height());
+                xPos = this.widgetX();
+                yPos = this.widgetY();
+                width = this.widgetWidth() === "" ? width - xPos : Number(this.widgetWidth());
+                height = this.widgetHeight() === "" ? height - yPos : Number(this.widgetHeight());
                 break;
             case "percent":
-                xPos = this.x() * width / 100;
-                yPos = this.y() * height / 100;
-                width = this.width() === "" ? width - xPos : Number(this.width() * width / 100);
-                height = this.height() === "" ? height - yPos : Number(this.height() * height / 100);
+                xPos = this.widgetX() * width / 100;
+                yPos = this.widgetY() * height / 100;
+                width = this.widgetWidth() === "" ? width - xPos : Number(this.widgetWidth() * width / 100);
+                height = this.widgetHeight() === "" ? height - yPos : Number(this.widgetHeight() * height / 100);
                 break;
         }
-        this
-            .pos({ x: xPos, y: yPos })
-        ;
         element.style("opacity", this.opacity());
 
-        var widgets = element.selectAll("#" + this._id + " > .AbsoluteSurfaceWidget").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
+        var widgets = element.selectAll("#" + this._id + " > .placeholder").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
         widgets.enter().append("div")
-            .attr("class", "AbsoluteSurfaceWidget")
+            .attr("class", "placeholder")
             .each(function (d) {
                 d.target(this);
             })
         ;
         widgets
+            .style({
+                left: xPos + "px",
+                top: yPos + "px",
+                width: width + "px",
+                bottom: height + "px"
+            })
             .each(function (d) {
                 d
                     .resize({ width: width, height: height })

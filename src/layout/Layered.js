@@ -21,9 +21,9 @@
 
     Layered.prototype.testData = function () {
         this
-            .addLayer(new AbsoluteSurface().x(0).y(0).width(100).height(100).widget(new Line().testData()))
-            .addLayer(new AbsoluteSurface().x(40).y(40).width(50).height(50).opacity(0.66).widget(new Pie().testData()))
-            .addLayer(new AbsoluteSurface().x(10).y(0).width(40).height(50).widget(new ChoroplethStates().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(new Line().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(40).widgetY(40).widgetWidth(50).widgetHeight(50).opacity(0.66).widget(new Pie().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(30).widget(new ChoroplethStates().testData()))
         ;
         var context = this;
         setInterval(function () {

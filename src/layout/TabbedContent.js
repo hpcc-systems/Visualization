@@ -18,8 +18,6 @@
 
     TabbedContent.prototype.publish("activeTabIdx", 0, "number", "Index of active tab",null,{});
     
-    TabbedContent.prototype.publish("groupClass", "", "string", "Class to identify all elements in this tab grouping",null,{});
-    
     TabbedContent.prototype.publish("widgets", [], "widgetArray", "widgets",null,{tags:['Private']});
     TabbedContent.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'",null,{tags:['Private']});
 
@@ -29,11 +27,11 @@
             .addTab(new MultiChart().testData(), "MultiChart", true)
             .addTab(new Pie().testData(), "Pie Chart")
             .addTab(new Line().testData(), "Line Chart")
-            .addTab(undefined
-//                    new TabbedContent()
-//                        .addTab(new Pie().testData(), "Another Pie Chart")
-//                        .addTab(new Line().testData(), "Another Line Chart")
-                , "Nested Example")
+            .addTab(new TabbedContent()
+                        .labels([]).widgets([])//TODO:Figure out why this is necessary
+                        .addTab(new Pie().testData(), "Another Pie Chart")
+                        .addTab(new Line().testData(), "Another Line Chart",true)
+                ,"Nested Example")
         ;
         return this;
     };
@@ -53,14 +51,17 @@
         
         this.labels(labelsArr);
         this.widgets(widgetArr);
-        
         return this;
     };
 
     TabbedContent.prototype.widgetSize = function (widgetDiv) {
         var width = this.clientWidth() - this.calcFrameWidth(widgetDiv);
         var height = this.clientHeight() - this.calcFrameHeight(widgetDiv);
-
+        
+        var tcBox = this._tabContainer.node().getBoundingClientRect();
+        if(typeof (tcBox.height) !== 'undefined'){
+            height -= tcBox.height;
+        }
         return { width: width, height: height };
     };
 
@@ -68,7 +69,7 @@
         var context = this;
         var groupClass = "tab-group-"+context.id();
 
-        var tabs = this._tabContainer.selectAll(".tab-button").data(this.widgets());
+        var tabs = this._tabContainer.selectAll(".tab-button.tab-group-"+this.id()).data(this.widgets());
 
         tabs.enter().append("span").classed("tab-button",true)
             .each(function (tab, idx) {
@@ -85,16 +86,17 @@
                         element.selectAll("."+groupClass+".tab-content")
                             .style("display", "none")
                             .classed("active", false);
-                        element.select(".tab-content-"+idx)
+                        element.select(".tab-content-"+idx+".tab-group-"+context.id())
                             .style("display", "block")
                             .classed("active", true);
                         context.activeTabIdx(idx);
+                        context.updateTabContent();
                     })
                 ;
             }
         );
 
-        var content = this._contentContainer.selectAll(".tab-content").data(this.widgets());
+        var content = this._contentContainer.selectAll(".tab-content.tab-group-"+this.id()).data(this.widgets());
         
         content.enter().append("div")
             .each(function (tab, idx) {
@@ -106,16 +108,34 @@
                     el.style("display", "block");
                     el.classed("active", true);
                 }
-                el
-                    .style('width', context.widgetSize(el).width + "px")
-                    .style('height', context.widgetSize(el).height + "px")
-                ;
-                
                 if (!context.widgets()[idx].target()) {
                     context.widgets()[idx].target(this);
                 }
-                //console.group('R-'+idx);
-                context.widgets()[idx].render();
+            }
+        );
+
+        this.updateTabContent();
+    };
+    
+    TabbedContent.prototype.updateTabContent = function () {
+        var context = this;
+        var content = this._contentContainer.selectAll(".tab-content.tab-group-"+this.id()).data(this.widgets());
+        
+        content
+            .each(function (tab, idx) {
+                var el = d3.select(this);
+                if (idx === context.activeTabIdx()) {
+                    el.style("display", "block");
+                    el.classed("active", true);
+                }
+                var wSize = context.widgetSize(el);
+                el
+                    .style('width', wSize.width + "px")
+                    .style('height', wSize.height + "px")
+                ;
+                if(typeof(context.widgets()[idx]) !== 'undefined'){
+                    context.widgets()[idx].resize(wSize).render();
+                }
             }
         );
     };

@@ -18,8 +18,6 @@
 
     TabbedContent.prototype.publish("activeTabIdx", 0, "number", "Index of active tab",null,{});
     
-    TabbedContent.prototype.publish("groupClass", "", "string", "Class to identify all elements in this tab grouping",null,{});
-    
     TabbedContent.prototype.publish("widgets", [], "widgetArray", "widgets",null,{tags:['Private']});
     TabbedContent.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'",null,{tags:['Private']});
 
@@ -29,11 +27,11 @@
             .addTab(new MultiChart().testData(), "MultiChart", true)
             .addTab(new Pie().testData(), "Pie Chart")
             .addTab(new Line().testData(), "Line Chart")
-            .addTab(undefined
-//                    new TabbedContent()
-//                        .addTab(new Pie().testData(), "Another Pie Chart")
-//                        .addTab(new Line().testData(), "Another Line Chart")
-                , "Nested Example")
+            .addTab(new TabbedContent()
+                        .labels([]).widgets([])//TODO:Figure out why this is necessary
+                        .addTab(new Pie().testData(), "Another Pie Chart")
+                        .addTab(new Line().testData(), "Another Line Chart")
+                ,"Nested Example")
         ;
         return this;
     };
@@ -53,14 +51,17 @@
         
         this.labels(labelsArr);
         this.widgets(widgetArr);
-        
         return this;
     };
 
     TabbedContent.prototype.widgetSize = function (widgetDiv) {
         var width = this.clientWidth() - this.calcFrameWidth(widgetDiv);
         var height = this.clientHeight() - this.calcFrameHeight(widgetDiv);
-
+        
+        var tcBox = this._tabContainer.node().getBoundingClientRect();
+        if(typeof (tcBox.height) !== 'undefined'){
+            height -= tcBox.height;
+        }
         return { width: width, height: height };
     };
 
@@ -89,6 +90,7 @@
                             .style("display", "block")
                             .classed("active", true);
                         context.activeTabIdx(idx);
+                        context.updateTabContent();
                     })
                 ;
             }
@@ -106,16 +108,32 @@
                     el.style("display", "block");
                     el.classed("active", true);
                 }
-                el
-                    .style('width', context.widgetSize(el).width + "px")
-                    .style('height', context.widgetSize(el).height + "px")
-                ;
-                
                 if (!context.widgets()[idx].target()) {
                     context.widgets()[idx].target(this);
                 }
-                //console.group('R-'+idx);
-                context.widgets()[idx].render();
+            }
+        );
+
+        this.updateTabContent();
+    };
+    
+    TabbedContent.prototype.updateTabContent = function () {
+        var context = this;
+        var content = this._contentContainer.selectAll(".tab-content").data(this.widgets());
+        
+        content.selectAll('div')
+            .each(function (tab, idx) {
+                var el = d3.select(this);
+                if (idx === context.activeTabIdx()) {
+                    el.style("display", "block");
+                    el.classed("active", true);
+                }
+                var wSize = context.widgetSize(el);
+                el
+                    .style('width', wSize.width + "px")
+                    .style('height', wSize.height + "px")
+                ;
+                context.widgets()[idx].resize(wSize).render();
             }
         );
     };

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../layout/Tooltip", "css!./Bubble"], factory);
     } else {
-        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar);
+        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.layout_Tooltip);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Tooltip) {
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -24,6 +24,7 @@
     Bubble.prototype.implements(I2DChart.prototype);
 
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Bubble.prototype.publish("useTooltip", true, "boolean", "Use the Tooltip Widget for the chart", null,{tags:[]});
 
     Bubble.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -34,10 +35,24 @@
         }
         return retVal;
     };
-
+    
     Bubble.prototype.update = function (domNode, element) {
-        var context = this;
+        if (this.useTooltip()) {
+            if (!this._parentOverlay && this._parentWidget._parentOverlay) {
+                this._parentOverlay = this.locateOverlayNode();  
+            }
+            this._parentOverlay.selectAll(".layout_Tooltip").each(function(d) {
+                d.node().parentNode.remove();
+            });
+            
+            this._tooltip = new Tooltip()
+                .registerWidget(this)
+                .target(this._parentOverlay.node())
+                .render()
+            ;
+        }
 
+        var context = this;
         this._palette = this._palette.switch(this.paletteID());
         var node = element.selectAll(".node")
             .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })
@@ -48,13 +63,21 @@
             .attr("class", "node")
             .attr("opacity", 0)
             .on("click", function (d) {
-                context.click(context.rowToObj(d), context._columns[1]);
+                context.click(context._data, context._columns[1]);
+            })
+            .on("mouseover", function(d) {
+                context.mouseover(context.rowToObj(d), context._columns[1]);
+            })
+            .on("mouseout", function(d) {
+                context.mouseout(context.rowToObj(d), context._columns[1]);
+            })
+            .on("mousemove", function(d) {
+                context.mousemove(context.rowToObj(d), context._columns[1]);
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .append("title")
                 ;
                 if (d.__viz_faChar) {
                     context.labelWidgets[d[0]] = new FAChar()
@@ -82,8 +105,6 @@
                     .attr("transform", function (d) { return "translate(" + pos.x + "," + pos.y + ")"; })
                     .style("fill", function (d) { return context._palette(d[0]); })
                     .attr("r", function (d) { return d.r; })
-                    .select("title")
-                        .text(function (d) { return d[0] + " (" + d[1] + ")"; })
                 ;
                 if (d.__viz_faChar) {
                     context.labelWidgets[d[0]]

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./XYAxis", "../api/INDChart", "css!./Scatter"], factory);
+        define(["d3", "../common/SVGWidget", "./XYAxis", "../api/INDChart", "../layout/Tooltip", "css!./Scatter"], factory);
     } else {
-        root.chart_Column = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart);
+        root.chart_Column = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart, root.layout_Tooltip);
     }
-}(this, function (d3, SVGWidget, XYAxis, INDChart) {
+}(this, function (d3, SVGWidget, XYAxis, INDChart, Tooltip) {
     function Scatter(target) {
         XYAxis.call(this);
         INDChart.call(this);
@@ -15,11 +15,12 @@
     Scatter.prototype.implements(INDChart.prototype);
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(),{tags:['Basic','Shared']});
-    Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
+    Scatter.prototype.publish("pointShape", "circle", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
     Scatter.prototype.publish("pointSize", 6, "number", "Point Size");
     Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "monotone"]);
     Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
     Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity");
+    Scatter.prototype.publish("useTooltip", true, "boolean", "Use the Tooltip Widget for the chart", null,{tags:[]});
 
     Scatter.prototype.xPos = function (d) {
         return this.orientation() === "horizontal" ? this.dataPos(d.label) : this.valuePos(d.value);
@@ -29,9 +30,27 @@
         return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
     };
 
-    Scatter.prototype.updateChart = function (domNode, element, margin, width, height) {
-        var context = this;
+    Scatter.prototype.enter = function (domNode, element) {
+        XYAxis.prototype.enter.apply(this, arguments);
+    };
 
+    Scatter.prototype.updateChart = function (domNode, element, margin, width, height) {
+        if (this.useTooltip()) {
+            if (!this._parentOverlay && this._parentWidget._parentOverlay) {
+                this._parentOverlay = this.locateOverlayNode();  
+            }
+            this._parentOverlay.selectAll(".layout_Tooltip").each(function(d) {
+                d.node().parentNode.remove();
+            });
+
+            this._tooltip = new Tooltip()
+                .registerWidget(this)
+                .target(this._parentOverlay.node())
+                .render()
+            ;
+        }
+
+        var context = this;
         this._palette = this._palette.switch(this.paletteID());
 
         if (this._prevPointShape !== this.pointShape()) {
@@ -61,11 +80,19 @@
             .on("click", function (d, idx) {
                 context.click(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx]);
             })
+            .on("mouseover", function(d) {
+                 context.mouseover(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx]);
+            })
+            .on("mouseout", function(d) {
+                 context.mouseout(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx]);
+            })
+            .on("mousemove", function(d) {
+                 context.mousemove(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx]);
+            })
             .each(function (d) {
                 var element = d3.select(this);
                 element
                     .append(d.shape)
-                    .append("title")
                 ;
             })
         ;
@@ -92,7 +119,7 @@
                         break;
                     case "path":
                         element
-                            .attr("d", function (d) {
+                                .attr("d", function (d) {
                                 return "M" + (context.xPos(d) - context.pointSize() / 2) + " " + (context.yPos(d) - context.pointSize() / 2) + " " +
                                     "L" + (context.xPos(d) + context.pointSize() / 2) + " " + (context.yPos(d) + context.pointSize() / 2) + " " +
                                     "M" + (context.xPos(d) - context.pointSize() / 2) + " " + (context.yPos(d) + context.pointSize() / 2) + " " +
@@ -102,10 +129,6 @@
                         ;
                         break;
                 }
-                element.select("title")
-                    .text(function (d, idx) { return context.data()[d.rowIdx][0] + " (" + context.columns()[d.colIdx] + ")" + ": " + d.value; })
-                ;
-
             })
         ;
         points.exit().remove();
@@ -113,6 +136,7 @@
         var areas = this.svgData.selectAll(".area").data(this.columns().filter(function (d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         areas.enter().append("path")
             .attr("class", "area")
+            .style("pointer-events", "none")
         ;
         var area = d3.svg.area()
             .interpolate(this.interpolate())
@@ -147,6 +171,7 @@
         var lines = this.svgData.selectAll(".line").data(this.columns().filter(function (d, idx) { return context.interpolate() && idx > 0; }));
         lines.enter().append("path")
             .attr("class", "line")
+            .style("pointer-events", "none")
         ;
         var line = d3.svg.line()
             .x(function (d) { return context.xPos(d); })

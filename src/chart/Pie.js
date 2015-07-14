@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../layout/Tooltip", "css!./Pie"], factory);
     } else {
-        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar);
+        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.layout_Tooltip);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Tooltip) {
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -32,7 +32,8 @@
     Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:['Basic','Shared']});
-
+    Pie.prototype.publish("useTooltip", true, "boolean", "Use the Tooltip Widget for the chart", null,{tags:[]});
+    
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -66,8 +67,22 @@
     };
 
     Pie.prototype.update = function (domNode, element) {
+        if (this.useTooltip()) {
+            if (!this._parentOverlay && this._parentWidget._parentOverlay) {
+                this._parentOverlay = this.locateOverlayNode();  
+            }
+            this._parentOverlay.selectAll(".layout_Tooltip").each(function(d) {
+                d.node().parentNode.remove();
+            });
+            
+            this._tooltip = new Tooltip()
+                .registerWidget(this)
+                .target(this._parentOverlay.node())
+                .render()
+            ;
+        }
+        
         var context = this;
-
         this._palette = this._palette.switch(this.paletteID());
         var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 
@@ -75,14 +90,24 @@
         arc.enter().append("g")
             .attr("class", "arc")
             .attr("opacity", 0)
+            //Events
             .on("click", function (d) {
-                context.click(context.rowToObj(d.data), context._columns[1]);
+                context.click(context.rowToObj(context._data), context._columns[1]);
             })
+            .on("mouseover", function(d) {
+                context.mouseover(context.rowToObj(d.data), context._columns[1]);
+            })
+            .on("mouseout", function(d) {
+                context.mouseout(context.rowToObj(d.data), context._columns[1]);
+            })
+            .on("mousemove", function(d) {
+                context.mousemove(context.rowToObj(d.data), context._columns[1]);
+            })
+
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
                     .attr("d", context.d3Arc)
-                    .append("title")
                 ;
                 if (d.data.__viz_faChar) {
                     context.labelWidgets[d.data[0]] = new FAChar()
@@ -122,8 +147,6 @@
                 element.select("path").transition()
                     .attr("d", context.d3Arc)
                     .style("fill", function (d) { return context._palette(d.data[0]); })
-                    .select("title")
-                        .text(function (d) { return d.data[0] + " (" + d.data[1] + ")"; })
                 ;
                 context.labelWidgets[d.data[0]]
                     .pos(pos)

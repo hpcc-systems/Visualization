@@ -124,6 +124,7 @@
 
     CommonFunnel.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         var initObj = {
             theme: "none",
             type: "funnel",
@@ -132,6 +133,9 @@
             chartScrollbar: {}
         };
         this._chart = AmCharts.makeChart(domNode, initObj);
+        this._chart.addListener("clickSlice", function(e) {
+            context.click(context.rowToObj(context._data[e.dataItem.index]));
+        });
     };
 
     CommonFunnel.prototype.update = function(domNode, element) {

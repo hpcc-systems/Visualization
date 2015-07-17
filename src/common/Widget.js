@@ -174,7 +174,7 @@
                     }
                     break;
                 case "boolean":
-                    _ = Boolean(_);
+                    _ = typeof(_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
                     break;
                 case "number":
                     _ = Number(_);

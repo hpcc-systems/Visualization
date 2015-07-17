@@ -128,8 +128,18 @@
     </div>
     <script>
         var def = window.location.search.split("?")[1];
+        var widgetPath = "";
+        var params = {};
         if (def) {
-            document.getElementById("widgetSelect").value = def;
+            def.split("&").forEach(function (param, idx) {
+                var paramParts = param.split("=");
+                if (widgetPath === "" && paramParts.length === 1) {
+                    widgetPath = decodeURIComponent(paramParts[0]);
+                } else {
+                    params[decodeURIComponent(paramParts[0])] = decodeURIComponent(paramParts[1]);
+                }
+            });
+            document.getElementById("widgetSelect").value = widgetPath;
         }
 
         var body = document.getElementById("body");
@@ -201,9 +211,14 @@
                 }
             }
 
-            testWidget = function (widgetPath) {
+            testWidget = function (widgetPath, params) {
                 require([widgetPath], function (Widget) {
                     currWidget = new Widget().testData();
+                    if (params) {
+                        for (var key in params) {
+                            currWidget[key](params[key]);
+                        }
+                    }
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
@@ -217,7 +232,7 @@
                     ;
                 });
             }
-            testWidget(document.getElementById("widgetSelect").value);
+            testWidget(document.getElementById("widgetSelect").value, params);
             showProperties = function (show) {
                 main
                     .setContent(0, 2, show ? propEditor : null, "", 2, 1)

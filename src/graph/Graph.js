@@ -532,7 +532,7 @@
         this.brush.y(d3.scale.identity().domain([(-this.prevTranslate[1] - this._size.height / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[1] + this._size.height / 2) * 1 / this.zoom.scale()]));
     };
 
-    Graph.prototype.enter = function (domNode, element, d) {
+    Graph.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         var context = this;
 
@@ -879,7 +879,7 @@
     };
 
     //  Render  ---
-    Graph.prototype.update = function (domNode, element, d) {
+    Graph.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 

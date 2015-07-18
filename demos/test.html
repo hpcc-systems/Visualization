@@ -177,12 +177,51 @@
                     }
 
                     function displayCharts() {
-                        require(["src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line",
+                        require(["src/chart/Summary", "src/chart/Pie", "src/chart/Bubble", "src/chart/Column", "src/chart/Line", "src/chart/Area", "src/chart/Step",
                             "src/google/Pie", "src/google/Bar", "src/google/Column", "src/google/Line",
                             "src/c3chart/Pie", "src/c3chart/Donut", "src/c3chart/Line", "src/c3chart/Column", "src/c3chart/Bar", "src/c3chart/Step", "src/c3chart/Area", "src/c3chart/Scatter"
-                        ], function (Pie, Bubble, Column, Line,
+                        ], function (Summary, Pie, Bubble, Column, Line, Area, Step,
                             GPie, GBar, GColumn, GLine,
                             C3Pie, C3Donut, C3Line, C3Column, C3Bar, C3Step, C3Area, C3Scatter) {
+                            //  HPCC Charts  ---
+                            new Summary()
+                                .testData()
+                                .target("summary")
+                                .minWidth(200)
+                                .minHeight(150)
+                                .render()
+                            ;
+                            new Pie()
+                                .testData()
+                                .target("pie")
+                                .render()
+                            ;
+                            new Bubble()
+                                .testData()
+                                .target("bubble")
+                                .render()
+                            ;
+                            new Column()
+                                .target("column")
+                                .testData()
+                                .render()
+                            ;
+                            new Line()
+                                .target("line")
+                                .testData()
+                                .render()
+                            ;
+                            new Area()
+                                .target("area")
+                                .testData()
+                                .render()
+                            ;
+                            new Step()
+                                .target("step")
+                                .testData()
+                                .render()
+                            ;
+
                             //  C3 Charts ---
                             new C3Pie()
                                 .target("c3pie")
@@ -222,28 +261,6 @@
                             ;
                             new C3Scatter()
                                 .target("c3scatter")
-                                .testData()
-                                .render()
-                            ;
-
-                            //  D3 Charts  ---
-                            new Pie()
-                                .testData()
-                                .target("pie")
-                                .render()
-                            ;
-                            new Bubble()
-                                .testData()
-                                .target("bubble")
-                                .render()
-                            ;
-                            new Column()
-                                .target("column")
-                                .testData()
-                                .render()
-                            ;
-                            new Line()
-                                .target("line")
                                 .testData()
                                 .render()
                             ;
@@ -565,6 +582,16 @@
                 </div>
             </div>
             <br style="clear:both" />
+            HPCC Charts
+            <br style="clear:both" />
+            <div id="summary" class="large thumb"></div>
+            <div id="pie" class="large thumb"></div>
+            <div id="bubble" class="large thumb"></div>
+            <div id="column" class="large thumb"></div>
+            <div id="line" class="large thumb"></div>
+            <div id="area" class="large thumb"></div>
+            <div id="step" class="large thumb"></div>
+            <br style="clear:both" />
             C3 Charts
             <br style="clear:both" />
             <div id="c3pie" class="large thumb"></div>
@@ -575,13 +602,6 @@
             <div id="c3step" class="large thumb"></div>
             <div id="c3area" class="large thumb"></div>
             <div id="c3scatter" class="large thumb"></div>
-            <br style="clear:both" />
-            D3 Charts
-            <br style="clear:both" />
-            <div id="pie" class="small thumb"></div>
-            <div id="bubble" class="small thumb"></div>
-            <div id="column" class="small thumb"></div>
-            <div id="line" class="small thumb"></div>
             <br style="clear:both" />
             Google Charts
             <br style="clear:both" />

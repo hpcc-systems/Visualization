@@ -29,6 +29,7 @@
 
     MultiChartSurface.prototype.testData = INDChart.prototype.testData;
 
+    MultiChartSurface.prototype.publish("mode", "2D", "set", "Chart Type", ["1D", "2D", "ND", "all"]);
     MultiChartSurface.prototype.publishProxy("chartType", "_content");
 
     MultiChartSurface.prototype.columns = function (_) {
@@ -43,22 +44,32 @@
         return this;
     };
 
+    MultiChartSurface.prototype._modeOrig = MultiChartSurface.prototype.mode;
     MultiChartSurface.prototype.mode = function (_) {
-        if (!arguments.length) return this._mode;
-        this._mode = _;
-        switch (this._mode) {
-            case "2d":
-                this.menu(this.content()._2dChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
-                break;
-            case "multi":
-                this.menu(this.content()._multiChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
-                break;
-            case "all":
-                /* falls through */
-            default:
-                this.menu(this.content()._allChartTypes.map(function (item) { return item.display; }).sort());
+        var retVal = MultiChartSurface.prototype._modeOrig.apply(this, arguments);
+        if (arguments.length) {
+            this._mode = _;
+            switch (this._mode) {
+                case "1d":
+                case "1D":
+                    this.menu(this.content()._1DChartTypes.map(function (item) { return item.display; }).sort());
+                    break;
+                case "2d":
+                case "2D":
+                    this.menu(this.content()._2DChartTypes.concat(this.content()._NDChartTypes.concat(this.content()._anyChartTypes)).map(function (item) { return item.display; }).sort());
+                    break;
+                case "multi":
+                    /* falls through */
+                case "ND":
+                    this.menu(this.content()._NDChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
+                    break;
+                case "all":
+                    /* falls through */
+                default:
+                    this.menu(this.content()._allChartTypes.map(function (item) { return item.display; }).sort());
+            }
         }
-        return this;
+        return retVal;
     };
 
     return MultiChartSurface;

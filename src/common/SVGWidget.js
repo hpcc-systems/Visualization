@@ -115,15 +115,24 @@
         return this;
     };
 
-    SVGWidget.prototype.enter = function (domeNode, element, d) {
+    SVGWidget.prototype.enter = function (domeNode, element) {
         Widget.prototype.enter.apply(this, arguments);
     };
 
-    SVGWidget.prototype.update = function (domeNode, element, d) {
+    SVGWidget.prototype.update = function (domeNode, element) {
         Widget.prototype.update.apply(this, arguments);
     };
 
-    SVGWidget.prototype.exit = function (domeNode, element, d) {
+    SVGWidget.prototype.postUpdate = function (domeNode, element) {
+        Widget.prototype.postUpdate.apply(this, arguments);
+        if (this._drawStartPos === "origin" && this._target instanceof SVGElement) {
+            this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._scale + ")");
+        } else {
+            this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._scale + ")");
+        }
+    };
+
+    SVGWidget.prototype.exit = function (domeNode, element) {
         if (this._parentRelativeDiv) {
             this._parentOverlay.remove();
             this._parentElement.remove();

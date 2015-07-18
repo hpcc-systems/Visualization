@@ -630,12 +630,9 @@
         ;
         elements
             .each(function (context) {
+                context.preUpdate(this, context._element);
                 context.update(this, context._element);
-                if (context._drawStartPos === "origin" && context._target instanceof SVGElement) {
-                    context._element.attr("transform", function (d) { return "translate(" + (context._pos.x - context._size.width / 2) + "," + (context._pos.y - context._size.height / 2) + ")scale(" + context._scale + ")"; });
-                } else {
-                    context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
-                }
+                context.postUpdate(this, context._element);
             })
         ;
         elements.exit()
@@ -653,9 +650,11 @@
         return this;
     };
 
-    Widget.prototype.enter = function (domeNode, element, d) { };
-    Widget.prototype.update = function (domeNode, element, d) { };
-    Widget.prototype.exit = function (domeNode, element, d) { };
+    Widget.prototype.enter = function (domeNode, element) { };
+    Widget.prototype.preUpdate = function (domeNode, element) { };
+    Widget.prototype.update = function (domeNode, element) { };
+    Widget.prototype.postUpdate = function (domeNode, element) { };
+    Widget.prototype.exit = function (domeNode, element) { };
 
     //  Util  ---
     Widget.prototype.debounce = function (func, threshold, execAsap) {

@@ -8,6 +8,8 @@
 }(this, function (d3, Widget, Transition) {
     function HTMLWidget() {
         Widget.call(this);
+
+        this._drawStartPos = "origin";
     }
     HTMLWidget.prototype = Object.create(Widget.prototype);
 
@@ -47,6 +49,35 @@
 
     HTMLWidget.prototype.clientHeight = function () {
         return this._size.height - this.calcFrameHeight(this._element);
+    };
+
+    HTMLWidget.prototype.getBBox = function (refresh, round) {
+        if (refresh || this._boundingBox === null) {
+            var domNode = this._element.node();
+            if (domNode instanceof Element) {
+                var rect = domNode.getBoundingClientRect();
+                this._boundingBox = {
+                    x: rect.left,
+                    y: rect.top,
+                    width: rect.width,
+                    height: rect.height
+                };
+            }
+        }
+        if (this._boundingBox === null) {
+            return {
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0
+            };
+        }
+        return {
+            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._scale,
+            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._scale,
+            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._scale,
+            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._scale
+        };
     };
 
     HTMLWidget.prototype.resize = function (size) {
@@ -112,7 +143,26 @@
         return this;
     };
 
-    HTMLWidget.prototype.exit = function (domeNode, element, d) {
+    HTMLWidget.prototype.postUpdate = function (domeNode, element) {
+        Widget.prototype.postUpdate.apply(this, arguments);
+        if (this._drawStartPos === "origin") {
+            this._element.style({
+                position: "relative",
+                left: this._pos.x + "px",
+                top: this._pos.y + "px"
+            });
+        } else {
+            var bbox = this.getBBox(true);
+            this._element.style({
+                position: "relative",
+                float: "left",
+                left: this._pos.x + (this._size.width - bbox.width) / 2 + "px",
+                top: this._pos.y + (this._size.height - bbox.height) / 2 + "px"
+            });
+        }
+    };
+
+    HTMLWidget.prototype.exit = function (domeNode, element) {
         if (this.observer) {
             this.observer.disconnect();
         }

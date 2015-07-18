@@ -6,7 +6,11 @@
         root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.api_INDChart, root.require);
     }
 }(this, function (d3, SVGWidget, INDChart, require) {
-    var _2dChartTypes = [
+    var _1DChartTypes = [
+        { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
+        { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
+    ];
+    var _2DChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
@@ -17,7 +21,7 @@
         { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
-    var _multiChartTypes = [
+    var _NDChartTypes = [
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
@@ -39,7 +43,7 @@
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }
     ];
-    var _allChartTypes = _2dChartTypes.concat(_multiChartTypes.concat(_anyChartTypes));
+    var _allChartTypes = _1DChartTypes.concat(_2DChartTypes.concat(_NDChartTypes.concat(_anyChartTypes)));
 
     function MultiChart() {
         SVGWidget.call(this);
@@ -47,8 +51,9 @@
 
         this.chart(null);
 
-        this._2dChartTypes = _2dChartTypes;
-        this._multiChartTypes = _multiChartTypes;
+        this._1DChartTypes = _1DChartTypes;
+        this._2DChartTypes = _2DChartTypes;
+        this._NDChartTypes = _NDChartTypes;
         this._anyChartTypes = _anyChartTypes;
         this._allChartTypes = _allChartTypes;
 

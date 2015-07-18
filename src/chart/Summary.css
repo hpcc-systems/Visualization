@@ -1,0 +1,56 @@
+/* imports */
+@import url(http://fonts.googleapis.com/css?family=Lato:400);
+
+.chart_Summary {
+    width: 225px;
+    height: 150px;
+}
+
+.chart_Summary .content h2 {
+    font-weight: bold;
+    font-size: 3em;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.chart_Summary .bgIcon:before {
+    position: absolute;
+    font-family: FontAwesome;
+    font-size: 5.5em;
+    opacity: 0.4;
+    right: 15px;
+}
+
+.chart_Summary .bgIcon {
+    position: relative;
+}
+    
+.chart_Summary .content {
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.chart_Summary .content div {
+    margin-top: -1.1em;
+    font-size: 1.1em;
+    opacity: 0.8;
+}
+
+.chart_Summary .content .text {
+   padding-left: 10px;
+}
+
+.chart_Summary .content .more {
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+    height: 3em;
+    line-height: 3em;
+}
+
+.chart_Summary .content .more i {
+   padding-left: 10px;
+   padding-right: 0.5em;
+}

@@ -43,6 +43,8 @@
         this._watchArr = [];
 
         this._renderCount = 0;
+
+        this._renderCallback = null;
     }
     Widget.prototype._class = " common_Widget";
 
@@ -606,6 +608,13 @@
         return this._element.node();
     };
 
+
+    Widget.prototype.renderCallback = function(callback) {
+        if (!arguments.length) { return this._renderCallback; }
+        this._renderCallback = callback;
+        return this;
+    };
+
     //  Render  ---
     Widget.prototype.render = function (callback) {
         if (!this._parentElement)
@@ -641,6 +650,10 @@
             .remove()
         ;
         this._renderCount++;
+
+        if (this._renderCallback) {
+            this._renderCallback(this);
+        }
 
         if (callback) {
             callback(this);

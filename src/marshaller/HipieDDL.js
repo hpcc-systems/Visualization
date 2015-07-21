@@ -571,6 +571,11 @@
                             ;
                         }))
                     ;
+                    widget.renderCallback(function(widget) {
+                        setTimeout(function() {
+                            widget.submit();
+                        }, 250);
+                    });
                 });
                 break;
             default:

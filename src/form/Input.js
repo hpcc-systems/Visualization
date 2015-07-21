@@ -84,8 +84,7 @@
             w.blur(w);
         });
         var context = this;
-        this._inputElement.on("change", function (w) {
-
+        this._inputElement.on("keyup", function (w) {
             switch (context.type()) {
                 case "checkbox":
                     context.value(context._inputElement.property("checked"));

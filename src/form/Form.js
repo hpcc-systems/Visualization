@@ -163,6 +163,17 @@
 
     Form.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
+
+        element.on("keypress", function (f) {
+            var evt = window.event;
+            var charCode = (evt.charCode) ? evt.charCode : evt.keyCode;
+            if (charCode === 13) {
+                f.submit();
+                d3.event.preventDefault();
+            }
+        });
+
         element.on("submit", function () {
             d3.event.preventDefault();
         });
@@ -176,20 +187,19 @@
             .attr("colspan", 2)
         ;
 
-        var context = this;
         var controls = [
-                new Input()
-                    .type("button")
-                    .value("Submit")
-                    .on("click", function () {
-                        context.submit();
-                    }, true),
-                new Input()
-                    .type("button")
-                    .value("Clear")
-                    .on("click", function () {
-                        context.clear();
-                    }, true)
+            new Input()
+                .type("button")
+                .value("Submit")
+                .on("click", function () {
+                    context.submit();
+                }, true),
+            new Input()
+                .type("button")
+                .value("Clear")
+                .on("click", function () {
+                    context.clear();
+                }, true)
         ];
         controls.reverse().forEach(function (w) {
             var controlNode = context.btntd

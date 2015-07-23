@@ -1,0 +1,30 @@
+.common_Gantt .chart {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+
+.axis path,.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.common_Gantt .bar {
+	fill: #33b5e5;
+}
+
+.common_Gantt .bar-failed {
+	fill: #CC0000;
+}
+
+.common_Gantt .bar-running {
+	fill: #669900;
+}
+
+.common_Gantt .bar-succeeded {
+	fill: #33b5e5;
+}
+
+.common_Gantt .bar-killed {
+	fill: #ffbb33;
+}

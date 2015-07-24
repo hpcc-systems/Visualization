@@ -43,6 +43,9 @@
         this._watchArr = [];
 
         this._renderCount = 0;
+
+        this._renderCallback = null;
+        this._renderCallbackOverride = false;
     }
     Widget.prototype._class = " common_Widget";
 
@@ -606,6 +609,13 @@
         return this._element.node();
     };
 
+    Widget.prototype.renderCallback = function(callback, override) {
+        if (!arguments.length) { return this._renderCallback; }
+        this._renderCallback = callback;
+        this._renderCallbackOverride = override ? true : false;
+        return this;
+    };
+
     //  Render  ---
     Widget.prototype.render = function (callback) {
         if (!this._parentElement)
@@ -642,7 +652,10 @@
         ;
         this._renderCount++;
 
-        if (callback) {
+        if (this._renderCallback) {
+            this._renderCallback(this);
+        }
+        if (this._renderCallbackOverride === false && callback) {
             callback(this);
         }
 

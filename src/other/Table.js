@@ -234,19 +234,52 @@
             this._currentSortOrder *= -1;
         }
         var idx = this._columns.indexOf(column);
-        this._data.sort(function (l, r) {
-            if (/^\d+$/.test(l[idx])) {
-                l[idx]=parseFloat(l[idx]);
+
+        // http://www.davekoelle.com/files/alphanum.js
+        // http://stackoverflow.com/questions/2802341/javascript-natural-sort-of-alphanumerical-strings
+
+        var caseSensitive = true;
+        this._data.sort(function alphanum(a, b) {
+            function chunkify(t) {
+                var tz = [];
+                var x = 0, y = -1, n = 0, i, j;
+                while (i = (j = t.charAt(x++)).charCodeAt(0)) { // jslint: suggestions?
+                    var m = (i === 46 || (i >= 48 && i <= 57));
+                    if (m !== n) {
+                        tz[++y] = "";
+                        n = m;
+                    }
+                    tz[y] += j;
+                }
+                return tz;
             }
-            if (/^\d+$/.test(r[idx])) {
-                r[idx]=parseFloat(r[idx]);
+
+            var aa = chunkify(caseSensitive ? a[idx] : a[idx].toLowerCase());
+            var bb = chunkify(caseSensitive ? b[idx] : b[idx].toLowerCase());
+
+            for (var x = 0; aa[x] && bb[x]; x++) {
+                if (aa[x] !== bb[x]) {
+                    var c = Number(aa[x]), d = Number(bb[x]);
+                    if (c == aa[x] && d == bb[x]) { // jslint: (has to be == or it doesnt work correctly) suggestions?
+                        if (context._currentSortOrder === 1) {
+                            return c - d;
+                        } else {
+                            return d - c;
+                        }
+                    } else {
+                        if (context._currentSortOrder === 1) {
+                            return (aa[x] > bb[x]) ? 1 : -1;
+                        } else {
+                            return (aa[x] < bb[x]) ? 1 : -1;
+                        }
+                    }
+                }
             }
             if (context._currentSortOrder === 1) {
-                return d3.ascending(l[idx], r[idx]);
+                return aa.length - bb.length;
             } else {
-                return d3.descending(l[idx], r[idx]);
+                return bb.length - aa.length;
             }
-            return 0;
         });
         this.render();
     };

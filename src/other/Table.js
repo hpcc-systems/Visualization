@@ -234,14 +234,19 @@
             this._currentSortOrder *= -1;
         }
         var idx = this._columns.indexOf(column);
-
         this._data.sort(function (l, r) {
-            if (l[idx] === r[idx]) {
-                return 0;
-            } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
-                return context._currentSortOrder;
+            if (/^\d+$/.test(l[idx])) {
+                l[idx]=parseFloat(l[idx]);
             }
-            return context._currentSortOrder * -1;
+            if (/^\d+$/.test(r[idx])) {
+                r[idx]=parseFloat(r[idx]);
+            }
+            if (context._currentSortOrder === 1) {
+                return d3.ascending(l[idx], r[idx]);
+            } else {
+                return d3.descending(l[idx], r[idx]);
+            }
+            return 0;
         });
         this.render();
     };

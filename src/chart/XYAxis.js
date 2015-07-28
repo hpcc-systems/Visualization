@@ -10,6 +10,11 @@
         SVGWidget.call(this);
         this._drawStartPos = "origin";
 
+        // if (this.sampleData() === "gantt") {
+        //     this._dateParserData = d3.time.format("%a %b %d %Y %H:%M:%S %Z").parse;
+        // } else {
+            // this._dateParserData = d3.time.format("%a %b %d %Y %H:%M:%S %Z").parse;
+        // }
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
@@ -73,7 +78,7 @@
 
     //  Data ---
     XYAxis.prototype.testData = function () {
-        this.sampleData("time-y");
+        this.sampleData("gantt");
         return this;
     };
 
@@ -171,42 +176,44 @@
 
     XYAxis.prototype.testDataGantt = function () {
         var task = [
-            {"startDate":new Date("Sun Dec 09 01:36:45 EST 2012"),"endDate":new Date("Sun Dec 09 02:36:45 EST 2012"),"taskName":"E Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 04:56:32 EST 2012"),"endDate":new Date("Sun Dec 09 06:35:47 EST 2012"),"taskName":"A Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 06:29:53 EST 2012"),"endDate":new Date("Sun Dec 09 06:34:04 EST 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 05:35:21 EST 2012"),"endDate":new Date("Sun Dec 09 06:21:22 EST 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 05:00:06 EST 2012"),"endDate":new Date("Sun Dec 09 05:05:07 EST 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 03:46:59 EST 2012"),"endDate":new Date("Sun Dec 09 04:54:19 EST 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 04:02:45 EST 2012"),"endDate":new Date("Sun Dec 09 04:48:56 EST 2012"),"taskName":"N Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 03:27:35 EST 2012"),"endDate":new Date("Sun Dec 09 03:58:43 EST 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:40:11 EST 2012"),"endDate":new Date("Sun Dec 09 03:26:35 EST 2012"),"taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 03:00:03 EST 2012"),"endDate":new Date("Sun Dec 09 03:09:51 EST 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:21:00 EST 2012"),"endDate":new Date("Sun Dec 09 02:51:42 EST 2012"),"taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:08:42 EST 2012"),"endDate":new Date("Sun Dec 09 01:33:42 EST 2012"),"taskName":"N Job","status":"FAILED"},
-            {"startDate":new Date("Sun Dec 09 00:27:15 EST 2012"),"endDate":new Date("Sun Dec 09 00:54:56 EST 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 00:29:48 EST 2012"),"endDate":new Date("Sun Dec 09 00:44:50 EST 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 07:39:21 EST 2012"),"endDate":new Date("Sun Dec 09 07:43:22 EST 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 07:00:06 EST 2012"),"endDate":new Date("Sun Dec 09 07:05:07 EST 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 08:46:59 EST 2012"),"endDate":new Date("Sun Dec 09 09:54:19 EST 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 09:02:45 EST 2012"),"endDate":new Date("Sun Dec 09 09:48:56 EST 2012"),"taskName":"N Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 08:27:35 EST 2012"),"endDate":new Date("Sun Dec 09 08:58:43 EST 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 08:40:11 EST 2012"),"endDate":new Date("Sun Dec 09 08:46:35 EST 2012"),"taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 08:00:03 EST 2012"),"endDate":new Date("Sun Dec 09 08:09:51 EST 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 10:21:00 EST 2012"),"endDate":new Date("Sun Dec 09 10:51:42 EST 2012"),"taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 11:08:42 EST 2012"),"endDate":new Date("Sun Dec 09 11:33:42 EST 2012"),"taskName":"N Job","status":"FAILED"},
-            {"startDate":new Date("Sun Dec 09 12:27:15 EST 2012"),"endDate":new Date("Sun Dec 09 12:54:56 EST 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sat Dec 08 23:12:24 EST 2012"),"endDate":new Date("Sun Dec 09 00:26:13 EST 2012"),"taskName":"A Job","status":"KILLED"}
+            {"startDate":new Date("Sun Dec 09 01:36:45 2012"),"endDate":new Date("Sun Dec 09 02:36:45 2012"),"taskName":"E Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 04:56:32 2012"),"endDate":new Date("Sun Dec 09 06:35:47 2012"),"taskName":"A Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 06:29:53 2012"),"endDate":new Date("Sun Dec 09 06:34:04 2012"),"taskName":"D Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 05:35:21 2012"),"endDate":new Date("Sun Dec 09 06:21:22 2012"),"taskName":"P Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 05:00:06 2012"),"endDate":new Date("Sun Dec 09 05:05:07 2012"),"taskName":"D Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 03:46:59 2012"),"endDate":new Date("Sun Dec 09 04:54:19 2012"),"taskName":"P Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 04:02:45 2012"),"endDate":new Date("Sun Dec 09 04:48:56 2012"),"taskName":"N Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 03:27:35 2012"),"endDate":new Date("Sun Dec 09 03:58:43 2012"),"taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 01:40:11 2012"),"endDate":new Date("Sun Dec 09 03:26:35 2012"),"taskName":"A Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 03:00:03 2012"),"endDate":new Date("Sun Dec 09 03:09:51 2012"),"taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 01:21:00 2012"),"endDate":new Date("Sun Dec 09 02:51:42 2012"),"taskName":"P Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 01:08:42 2012"),"endDate":new Date("Sun Dec 09 01:33:42 2012"),"taskName":"N Job","status":"FAILED"},
+            {"startDate":new Date("Sun Dec 09 00:27:15 2012"),"endDate":new Date("Sun Dec 09 00:54:56 2012"),"taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 00:29:48 2012"),"endDate":new Date("Sun Dec 09 00:44:50 2012"),"taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 07:39:21 2012"),"endDate":new Date("Sun Dec 09 07:43:22 2012"),"taskName":"P Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 07:00:06 2012"),"endDate":new Date("Sun Dec 09 07:05:07 2012"),"taskName":"D Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 08:46:59 2012"),"endDate":new Date("Sun Dec 09 09:54:19 2012"),"taskName":"P Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 09:02:45 2012"),"endDate":new Date("Sun Dec 09 09:48:56 2012"),"taskName":"N Job","status":"RUNNING"},
+            {"startDate":new Date("Sun Dec 09 08:27:35 2012"),"endDate":new Date("Sun Dec 09 08:58:43 2012"),"taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 08:40:11 2012"),"endDate":new Date("Sun Dec 09 08:46:35 2012"),"taskName":"A Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 08:00:03 2012"),"endDate":new Date("Sun Dec 09 08:09:51 2012"),"taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 10:21:00 2012"),"endDate":new Date("Sun Dec 09 10:51:42 2012"),"taskName":"P Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sun Dec 09 11:08:42 2012"),"endDate":new Date("Sun Dec 09 11:33:42 2012"),"taskName":"N Job","status":"FAILED"},
+            {"startDate":new Date("Sun Dec 09 12:27:15 2012"),"endDate":new Date("Sun Dec 09 12:54:56 2012"),"taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":new Date("Sat Dec 08 23:12:24 2012"),"endDate":new Date("Sun Dec 09 00:26:13 2012"),"taskName":"A Job","status":"KILLED"}
         ];
-        task.sort(function (a, b) {
-            return a.endDate - b.endDate;
+        task.sort(function (l, r) {
+            return l.endDate - r.endDate;
         });
 
         return this
             .xAxisType("time")
             .xAxisTypeTimePattern("%H:%M")
             .yAxisType("linear")
-            .columns(["D Job", "P Job", "E Job", "A Job", "N Job"])
+            // .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
+            .columns(["Type of Job", "D Job", "P Job", "E Job"])
             .data(task.map(function (row, idx) {
+                // alert(row.startDate + "|" + row.endDate + "|" + row.taskName + "|" + row.status);
                 return [row.startDate, row.endDate, row.taskName, row.status];
                 }
             ))
@@ -238,7 +245,8 @@
     XYAxis.prototype.formatData = function (d) {
         switch (this.xAxisType()) {
             case "time":
-                return this._dateParserData(d);
+                console.log(d + " " + this._dateParserData(d.toString()));
+                return this._dateParserData(d.toString());
             default:
                 return d;
         }
@@ -266,13 +274,15 @@
 
     XYAxis.prototype.formattedData = function () {
         return this.data().map(function (row) {
+            // alert(row);
             return row.map(function (cell, idx) {
-                if (idx === 0) {
-                    return this.formatData(cell);
-                } if (idx >= this._columns.length) {
-                    return cell;
-                }
-                return this.formatValue(cell);
+                // if (idx === 0) {
+                //     return this.formatData(cell);
+                // } if (idx >= this._columns.length) {
+                //     return cell;
+                // }
+                // return this.formatValue(cell);
+                return cell;
             }, this);
         }, this);
     };
@@ -516,8 +526,11 @@
                     return data[0];
                 });
                 var domainMax = this.xAxisDomainHigh() ? this.formatData(this.xAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
+                    // alert(data);
                     return data[0];
                 });
+                // var domainMin = task[0].startDate;
+                // var domainMax = task[task.length - 1].endDate;
                 this.dataScale.domain([domainMin, domainMax]);
                 break;
         }

@@ -10,11 +10,6 @@
         SVGWidget.call(this);
         this._drawStartPos = "origin";
 
-        // if (this.sampleData() === "gantt") {
-        //     this._dateParserData = d3.time.format("%a %b %d %Y %H:%M:%S %Z").parse;
-        // } else {
-            // this._dateParserData = d3.time.format("%a %b %d %Y %H:%M:%S %Z").parse;
-        // }
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
@@ -24,7 +19,7 @@
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
 
     XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
-    XYAxis.prototype.publish("xAxisType", "time", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
+    XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
@@ -32,7 +27,7 @@
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", 10, "number", "Y-Axis Tick Count");
     XYAxis.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
-    XYAxis.prototype.publish("yAxisType", "time", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
+    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
     XYAxis.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
     XYAxis.prototype.publish("yAxisTypeLogBase", 10, "number", "Base for log on Value Axis");
@@ -42,7 +37,7 @@
 
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
-    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y", "gantt"]);
+    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
 
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
     XYAxis.prototype.sampleData = function (_) {
@@ -66,6 +61,7 @@
                     break;
                 case "gantt" :
                     this.testDataGantt();
+                    break;
             }
         }
         return retVal;
@@ -160,9 +156,8 @@
 
     XYAxis.prototype.testDataTimeY = function () {
         return this
-            .xAxisType("time")
+            .xAxisType("ordinal")
             .yAxisType("time")
-            .yAxisTypeTimePattern("%Y-%m-%d")
             .yAxisTypeTimePattern("%Y-%m-%d")
             .columns(["Subject", "Year 1"])
             .data([
@@ -180,39 +175,40 @@
             {"taskName":"A Job", "dateRange" : ["2014-06-09T04:56:32","2014-06-09T06:35:47"]},
             {"taskName":"D Job", "dateRange" : ["2014-06-09T06:29:53","2014-06-09T06:34:04"]},
             {"taskName":"P Job", "dateRange" : ["2014-06-09T05:35:21","2014-06-09T06:21:22"]},
-            {"taskName":"D Job", "dateRange" : ["2014-06-09T05:00:06","2014-06-09T05:05:07"]},
-            {"taskName":"P Job", "dateRange" : ["2014-06-09T03:46:59","2014-06-09T04:54:19"]},
-            {"taskName":"N Job", "dateRange" : ["2014-06-09T04:02:45","2014-06-09T04:48:56"]},
-            {"taskName":"E Job", "dateRange" : ["2014-06-09T03:27:35","2014-06-09T03:58:43"]},
-            {"taskName":"A Job", "dateRange" : ["2014-06-09T01:40:11","2014-06-09T03:26:35"]},
-            {"taskName":"D Job", "dateRange" : ["2014-06-09T03:00:03","2014-06-09T03:09:51"]},
-            {"taskName":"P Job", "dateRange" : ["2014-06-09T01:21:00","2014-06-09T02:51:42"]},
-            {"taskName":"N Job", "dateRange" : ["2014-06-09T01:08:42","2014-06-09T01:33:42"]},
-            {"taskName":"E Job", "dateRange" : ["2014-06-09T00:27:15","2014-06-09T00:54:56"]},
-            {"taskName":"D Job", "dateRange" : ["2014-06-09T00:29:48","2014-06-09T00:44:50"]},
-            {"taskName":"P Job", "dateRange" : ["2014-06-09T07:39:21","2014-06-09T07:43:22"]},
-            {"taskName":"D Job", "dateRange" : ["2014-06-09T07:00:06","2014-06-09T07:05:07"]},
-            {"taskName":"P Job", "dateRange" : ["2014-06-09T08:46:59","2014-06-09T09:54:19"]},
-            {"taskName":"N Job", "dateRange" : ["2014-06-09T09:02:45","2014-06-09T09:48:56"]},
-            {"taskName":"E Job", "dateRange" : ["2014-06-09T08:27:35","2014-06-09T08:58:43"]},
-            {"taskName":"A Job", "dateRange" : ["2014-06-09T08:40:11","2014-06-09T08:46:35"]},
-            {"taskName":"D Job", "dateRange" : ["2014-06-09T08:00:03","2014-06-09T08:09:51"]},
-            {"taskName":"P Job", "dateRange" : ["2014-06-09T10:21:00","2014-06-09T10:51:42"]},
-            {"taskName":"N Job", "dateRange" : ["2014-06-09T11:08:42","2014-06-09T11:33:42"]},
-            {"taskName":"E Job", "dateRange" : ["2014-06-09T12:27:15","2014-06-09T12:54:56"]},
-            {"taskName":"A Job", "dateRange" : ["2014-06-08T23:12:24","2014-06-09T00:26:13"]}
-        ];
+            {"taskName":"N Job", "dateRange" : ["2014-06-09T04:02:45","2014-06-09T04:48:56"]}
+            ];
+            // {"taskName":"D Job", "dateRange" : ["2014-06-09T05:00:06","2014-06-09T05:05:07"]},
+            // {"taskName":"P Job", "dateRange" : ["2014-06-09T03:46:59","2014-06-09T04:54:19"]},
+            // {"taskName":"E Job", "dateRange" : ["2014-06-09T03:27:35","2014-06-09T03:58:43"]},
+            // {"taskName":"A Job", "dateRange" : ["2014-06-09T01:40:11","2014-06-09T03:26:35"]},
+            // {"taskName":"D Job", "dateRange" : ["2014-06-09T03:00:03","2014-06-09T03:09:51"]},
+            // {"taskName":"P Job", "dateRange" : ["2014-06-09T01:21:00","2014-06-09T02:51:42"]},
+            // {"taskName":"N Job", "dateRange" : ["2014-06-09T01:08:42","2014-06-09T01:33:42"]},
+            // {"taskName":"E Job", "dateRange" : ["2014-06-09T00:27:15","2014-06-09T00:54:56"]},
+            // {"taskName":"D Job", "dateRange" : ["2014-06-09T00:29:48","2014-06-09T00:44:50"]},
+            // {"taskName":"P Job", "dateRange" : ["2014-06-09T07:39:21","2014-06-09T07:43:22"]},
+            // {"taskName":"D Job", "dateRange" : ["2014-06-09T07:00:06","2014-06-09T07:05:07"]},
+            // {"taskName":"P Job", "dateRange" : ["2014-06-09T08:46:59","2014-06-09T09:54:19"]},
+            // {"taskName":"N Job", "dateRange" : ["2014-06-09T09:02:45","2014-06-09T09:48:56"]},
+            // {"taskName":"E Job", "dateRange" : ["2014-06-09T08:27:35","2014-06-09T08:58:43"]},
+            // {"taskName":"A Job", "dateRange" : ["2014-06-09T08:40:11","2014-06-09T08:46:35"]},
+            // {"taskName":"D Job", "dateRange" : ["2014-06-09T08:00:03","2014-06-09T08:09:51"]},
+            // {"taskName":"P Job", "dateRange" : ["2014-06-09T10:21:00","2014-06-09T10:51:42"]},
+            // {"taskName":"N Job", "dateRange" : ["2014-06-09T11:08:42","2014-06-09T11:33:42"]},
+            // {"taskName":"E Job", "dateRange" : ["2014-06-09T12:27:15","2014-06-09T12:54:56"]},
+            // {"taskName":"A Job", "dateRange" : ["2014-06-08T23:12:24","2014-06-09T00:26:13"]},
+        // ];
         task.sort(function (l, r) {
             return l.endDate - r.endDate;
         });
 
         return this
-            .xAxisType("time")
-            .xAxisTypeTimePattern("%H:%M")
-            .yAxisType("linear")
+            .xAxisType("ordinal")
+            .yAxisType("time")
+            .yAxisTypeTimePattern("%H:%M")
             .columns(["Task", "Date Range"])
             .data(task.map(function (row, idx) {
-                return [row.startDate, row.endDate, row.taskName, row.status];
+                return [row.taskName, row.dateRange];
                 }
             ))
         ;
@@ -243,8 +239,7 @@
     XYAxis.prototype.formatData = function (d) {
         switch (this.xAxisType()) {
             case "time":
-                console.log(d + " " + this._dateParserData(d.toString()));
-                return this._dateParserData(d.toString());
+                return this._dateParserData(d);
             default:
                 return d;
         }
@@ -272,15 +267,13 @@
 
     XYAxis.prototype.formattedData = function () {
         return this.data().map(function (row) {
-            // alert(row);
             return row.map(function (cell, idx) {
-                // if (idx === 0) {
-                //     return this.formatData(cell);
-                // } if (idx >= this._columns.length) {
-                //     return cell;
-                // }
-                // return this.formatValue(cell);
-                return cell;
+                if (idx === 0) {
+                    return this.formatData(cell);
+                } if (idx >= this._columns.length) {
+                    return cell;
+                }
+                return this.formatValue(cell);
             }, this);
         }, this);
     };
@@ -479,6 +472,7 @@
                 .y(this.dataScale)
             ;
         }
+
         switch (this.yAxisType()) {
             case "pow":
                 this.valueScale = d3.scale.pow()
@@ -493,9 +487,6 @@
             case "time":
                 this.valueScale = d3.time.scale();
                 break;
-            // case "ordinal":
-            //     this.valueScale = d3.scale.ordinal();
-            //     break;
             case "linear":
                 /* falls through */
             default:
@@ -526,7 +517,6 @@
                     return data[0];
                 });
                 var domainMax = this.xAxisDomainHigh() ? this.formatData(this.xAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
-                    // alert(data);
                     return data[0];
                 });
                 this.dataScale.domain([domainMin, domainMax]);

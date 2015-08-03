@@ -252,12 +252,12 @@ var dropDownObj = {
             'width':'500',
             'height':'500',
             'sample_url': baseHref + 'basic_choropleth_country.php'},
-//        {
-//            'name':'Choropleth (Google)',
-//            'path':'map/GMap',
-//            'width':'500',
-//            'height':'500',
-//            'sample_url': baseHref + 'basic_choropleth_google.php'},
+        {
+            'name':'Choropleth (Google)',
+            'path':'map/GMap',
+            'width':'500',
+            'height':'500',
+            'sample_url': baseHref + 'basic_choropleth_google.php'},
         {
             'title': 'Other'},
         {
@@ -296,6 +296,10 @@ var dropDownObj = {
             'sample_url': baseHref + 'basic_wordcloud.php'},
         {
             'title': 'UI'},
+        // {
+        //     'name':'Button',
+        //     'path':'common/Button',
+        //     'sample_url': baseHref + 'basic_button.php'},
         {
             'name':'Shape',
             'path':'common/Shape',
@@ -368,15 +372,51 @@ var dropDownObj = {
             'width':'400',
             'height':'300',
             'sample_url': baseHref + 'basic_surface.php'},
-        {
-            'name':'Graph',
-            'path':'graph/Graph',
-            'width':'500',
-            'height':'500',
-            'sample_url': baseHref + 'graph_example.php'},
+//        {
+//            'name':'Graph',
+//            'path':'graph/Graph',
+//            'width':'500',
+//            'height':'500',
+//            'sample_url': baseHref + 'graph_example.php'},
         {
             'name':'Graph Marshaller',
             'path':'marshaller/Graph',
             'sample_url': baseHref + 'graph_example.php'
-        }
-    ]};
+        },
+        {
+            'title': 'Form'},
+        {
+            'name':'Form',
+            'path':'form/Form',
+            'width':'250',
+            'height': '250',
+            'sample_url': ''},
+        {
+            'name':'Input',
+            'path':'form/Input',
+            'width':'250',
+            'height': '250',
+            'sample_url': ''},
+        {
+            'name':'Slider',
+            'path':'form/Slider',
+            'width':'250',
+            'height': '250',
+            'sample_url': ''},
+
+
+
+        {
+            'title': 'HPCC Charts'},
+        {
+            'name':'C3 Bar Chart',
+            'path':'c3chart/Bar',
+            'sample_url': baseHref + 'basic_c3_bar.php'},
+        {
+            'name':'C3 Column Chart',
+            'path':'c3chart/Column',
+            'sample_url': baseHref + 'basic_c3_column.php'},
+
+
+        ]
+    };

@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: "../../",
+    baseUrl: "../../../",
     paths: {
         "requireLib": "bower_components/requirejs/require",
         "css": "bower_components/require-css/css",

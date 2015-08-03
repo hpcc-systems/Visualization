@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <!--The following src path should point to your local RequireJS config.js file-->
+        <script type="text/javascript" src="config.js"></script>
+        <script>
+            require(["src/layout/Popup", "src/amchart/FloatingColumn", "src/layout/Surface"], function (Popup, Floating, Surface) {
+                var dialog = new Popup()
+                    .size({width:400,height:500})
+                    .target("main")
+                    .position("fixed")
+                    .widget(new Surface()
+                        .title("Modeless Dialog Example")
+                        .widget(new Floating().testData())
+                        .surfaceBackgroundColor("rgb(234, 249, 255)")
+                        .buttonAnnotations([
+                            {
+                                id:"",
+                                label:"\uf00d",
+                                width:20,
+                                padding:"0px 5px",
+                                class: "close",
+                                font: "FontAwesome"
+                            }
+                        ])
+                        .on("click", function(obj) {
+                            if (obj.class !== "close") {return;}
+                            dialog.updateState(false);
+                        })
+                    )
+                    .render(function(d) {
+                        d3.select("#dialog button")
+                        .on("click", function() {
+                            dialog.updateState(!(dialog.popupState()));
+                        });
+                    })
+                ;
+                dialog.left(document.documentElement.clientWidth / 2 - dialog._size.width / 2);
+                dialog.top(document.documentElement.clientHeight / 2 - dialog._size.height / 2);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="dialog" class="button_container">
+                <button type="button">Open Dialog</button>
+                <a href="#" class="button" onClick='window.location="view-source:" + window.location.href'>View Source</a>
+            </div>
+        
+        </div>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <!--The following src path should point to your local RequireJS config.js file-->
+        <script type="text/javascript" src="config.js"></script>
+        <script>
+            require(["src/layout/Popup", "src/chart/Column", "src/layout/Surface"], function (Popup, Column, Surface) {
+                var dropleft = new Popup()
+                    .size({width:400, height:400})
+                    .target("dropleft")
+                    .position("absolute")
+                    .left(-400)
+                    .widget(new Surface().title("Dropleft Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .render(function(d) {
+                        d3.select("#dropleft button.btn-left")
+                        .on("click", function() {
+                            dropleft.updateState(!(dropleft.popupState()));
+                        });
+                    })
+                ;
+
+                var offset = d3.select(".btn-right").style("width");
+ 
+                var dropright = new Popup()
+                    .size({width:400, height:400})
+                    .target("dropright")
+                    .position("absolute")
+                    .left(parseInt(offset))
+                    .top(0)
+                    .widget(new Surface().title("Dropright Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .render(function(d) {
+                        d3.select("#dropright button.btn-right")
+                        .on("click", function() {
+                            dropright.updateState(!(dropright.popupState()));
+                        });
+                    })
+                ;
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <div id="dropright" class="button_container" style="display:inline-block; position: relative">    
+                <button type="button" class="btn btn-info btn-lg btn-right">Open Right</button>
+                <a href="#" class="button" onClick='window.location="view-source:" + window.location.href'>View Source</a>
+            </div>
+            <div id="dropleft" class="button_container" style="display:inline-block; position: absolute; right:20px"> 
+                <button type="button" class="btn btn-info btn-lg btn-left" style="float: right">Open Left</button>
+            </div>
+        </div>
+    </body>
+</html>

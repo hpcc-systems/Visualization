@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <!--The following src path should point to your local RequireJS config.js file-->
+        <script type="text/javascript" src="config.js"></script>
+        <script>
+            require(["src/layout/Popup", "src/chart/Pie", "src/layout/Surface"], function (Popup, Pie, Surface) {
+                var dropup = new Popup()
+                    .size({width:400, height:400})
+                    .target("dropup")
+                    .position("absolute")
+                    .top(-400)
+                    .widget(new Surface().title("Dropup Example").widget(new Pie().testData()))
+                    .render(function(d) {
+                        d3.select("#dropup button")
+                        .on("click", function() {
+                            dropup.updateState(!(dropup.popupState()));
+                        });
+                    })
+                ;
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <div id="dropup" class="button_container" style="position: fixed; bottom:100px" >
+                <button type="button" class="btn btn-info btn-lg">Open Dropup</button>
+                <a href="#" class="button" onClick='window.location="view-source:" + window.location.href'>View Source</a>
+            </div>
+        </div>
+    </body>
+</html>

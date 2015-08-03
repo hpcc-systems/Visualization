@@ -222,11 +222,11 @@
             //     }
             // ))
             .data([
-                ["Per 1", ["2008-01-01", "2009-01-01"], [null, null], [null, null], [null, null], [null, null]]
-                ["Per 2", [null, null], ["2008-01-01", "2009-01-01"], [null, null], [null, null], [null, null]]
-                ["Per 3", [null, null], [null, null], ["2008-01-01", "2009-01-01"], [null, null], [null, null]]
-                ["Per 4", [null, null], [null, null], [null, null], ["2008-01-01", "2009-01-01"], [null, null]]
-                ["Per 5", [null, null], [null, null], [null, null], [null, null], ["2008-01-01", "2009-01-01"]]
+                ["Per 1", ["2008-01-01", "2009-01-01"], null, null, null, null]
+                ["Per 2", null, ["2008-01-01", "2009-01-01"], null, null, null]
+                ["Per 3", null, null, ["2008-01-01", "2009-01-01"], null, null]
+                ["Per 4", null, null, null, ["2008-01-01", "2009-01-01"], null]
+                ["Per 5", null, null, null, null, ["2008-01-01", "2009-01-01"]]
             ])
         ;
     };

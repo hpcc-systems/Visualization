@@ -13,7 +13,7 @@
         this._tag = "div";
 
         this.columns([]);
-        this.data([],{tags:['Advanced']});
+        this.data([]);
         this._data_google = [];
 
         this._chart = null;
@@ -135,7 +135,7 @@
         };
         return chartOptions;
     };
-    
+
     Common.prototype.getNumSeries = function () {
         return this._columns.slice(1).length;
     };

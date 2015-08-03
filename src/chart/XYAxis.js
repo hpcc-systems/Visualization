@@ -211,7 +211,7 @@
             .xAxisTypeTimePattern("%H:%M")
             .yAxisType("linear")
             // .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
-            .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
+            .columns(["Task", "Date Range"])
             .data(task.map(function (row, idx) {
                 // alert(row.startDate + "|" + row.endDate + "|" + row.taskName + "|" + row.status);
                 return [row.startDate, row.endDate, row.taskName, row.status];

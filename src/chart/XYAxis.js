@@ -176,31 +176,31 @@
 
     XYAxis.prototype.testDataGantt = function () {
         var task = [
-            {"startDate":"2014-06-09T01:36:45","endDate":"2014-06-09T02:36:45","taskName":"E Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T04:56:32","endDate":"2014-06-09T06:35:47","taskName":"A Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T06:29:53","endDate":"2014-06-09T06:34:04","taskName":"D Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T05:35:21","endDate":"2014-06-09T06:21:22","taskName":"P Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T05:00:06","endDate":"2014-06-09T05:05:07","taskName":"D Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T03:46:59","endDate":"2014-06-09T04:54:19","taskName":"P Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T04:02:45","endDate":"2014-06-09T04:48:56","taskName":"N Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T03:27:35","endDate":"2014-06-09T03:58:43","taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T01:40:11","endDate":"2014-06-09T03:26:35","taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T03:00:03","endDate":"2014-06-09T03:09:51","taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T01:21:00","endDate":"2014-06-09T02:51:42","taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T01:08:42","endDate":"2014-06-09T01:33:42","taskName":"N Job","status":"FAILED"},
-            {"startDate":"2014-06-09T00:27:15","endDate":"2014-06-09T00:54:56","taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T00:29:48","endDate":"2014-06-09T00:44:50","taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T07:39:21","endDate":"2014-06-09T07:43:22","taskName":"P Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T07:00:06","endDate":"2014-06-09T07:05:07","taskName":"D Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T08:46:59","endDate":"2014-06-09T09:54:19","taskName":"P Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T09:02:45","endDate":"2014-06-09T09:48:56","taskName":"N Job","status":"RUNNING"},
-            {"startDate":"2014-06-09T08:27:35","endDate":"2014-06-09T08:58:43","taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T08:40:11","endDate":"2014-06-09T08:46:35","taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T08:00:03","endDate":"2014-06-09T08:09:51","taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T10:21:00","endDate":"2014-06-09T10:51:42","taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-09T11:08:42","endDate":"2014-06-09T11:33:42","taskName":"N Job","status":"FAILED"},
-            {"startDate":"2014-06-09T12:27:15","endDate":"2014-06-09T12:54:56","taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":"2014-06-08T23:12:24","endDate":"2014-06-09T00:26:13","taskName":"A Job","status":"KILLED"}
+            {"taskName":"E Job", "dateRange" : ["2014-06-09T01:36:45","2014-06-09T02:36:45"]},
+            {"taskName":"A Job", "dateRange" : ["2014-06-09T04:56:32","2014-06-09T06:35:47"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T06:29:53","2014-06-09T06:34:04"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T05:35:21","2014-06-09T06:21:22"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T05:00:06","2014-06-09T05:05:07"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T03:46:59","2014-06-09T04:54:19"]},
+            {"taskName":"N Job", "dateRange" : ["2014-06-09T04:02:45","2014-06-09T04:48:56"]},
+            {"taskName":"E Job", "dateRange" : ["2014-06-09T03:27:35","2014-06-09T03:58:43"]},
+            {"taskName":"A Job", "dateRange" : ["2014-06-09T01:40:11","2014-06-09T03:26:35"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T03:00:03","2014-06-09T03:09:51"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T01:21:00","2014-06-09T02:51:42"]},
+            {"taskName":"N Job", "dateRange" : ["2014-06-09T01:08:42","2014-06-09T01:33:42"]},
+            {"taskName":"E Job", "dateRange" : ["2014-06-09T00:27:15","2014-06-09T00:54:56"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T00:29:48","2014-06-09T00:44:50"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T07:39:21","2014-06-09T07:43:22"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T07:00:06","2014-06-09T07:05:07"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T08:46:59","2014-06-09T09:54:19"]},
+            {"taskName":"N Job", "dateRange" : ["2014-06-09T09:02:45","2014-06-09T09:48:56"]},
+            {"taskName":"E Job", "dateRange" : ["2014-06-09T08:27:35","2014-06-09T08:58:43"]},
+            {"taskName":"A Job", "dateRange" : ["2014-06-09T08:40:11","2014-06-09T08:46:35"]},
+            {"taskName":"D Job", "dateRange" : ["2014-06-09T08:00:03","2014-06-09T08:09:51"]},
+            {"taskName":"P Job", "dateRange" : ["2014-06-09T10:21:00","2014-06-09T10:51:42"]},
+            {"taskName":"N Job", "dateRange" : ["2014-06-09T11:08:42","2014-06-09T11:33:42"]},
+            {"taskName":"E Job", "dateRange" : ["2014-06-09T12:27:15","2014-06-09T12:54:56"]},
+            {"taskName":"A Job", "dateRange" : ["2014-06-08T23:12:24","2014-06-09T00:26:13"]}
         ];
         task.sort(function (l, r) {
             return l.endDate - r.endDate;
@@ -210,10 +210,8 @@
             .xAxisType("time")
             .xAxisTypeTimePattern("%H:%M")
             .yAxisType("linear")
-            // .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
             .columns(["Task", "Date Range"])
             .data(task.map(function (row, idx) {
-                // alert(row.startDate + "|" + row.endDate + "|" + row.taskName + "|" + row.status);
                 return [row.startDate, row.endDate, row.taskName, row.status];
                 }
             ))

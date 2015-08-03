@@ -42,11 +42,19 @@
                 break;
         }
 
-        // alert(this.yAxisType());
-        var columnScale = d3.scale.ordinal()
+        // alert(context._columns.filter(function (d, idx) { return idx > 0; }));
+        this.valueScale = d3.scale.ordinal()
             .domain(context._columns.filter(function (d, idx) { return idx > 0; }))
-            .rangeRoundBands([0, dataLen]);
+            // .rangeBand([0, context.height()])
+            .range([0, context.height()])
         ;
+
+        this.valueAxis = d3.svg.axis()
+            .scale(this.valueScale)
+            // .tickValues()
+            // .tickValues(context._columns.filter(function (d, idx) { return idx > 0; }))
+            // .ticks(this.yAxisTickCount(), this.yAxisTickFormat())
+            .orient("left");
 
         // var column = this.svgData.selectAll(".dataRow")
         //     .data(this.formattedData())

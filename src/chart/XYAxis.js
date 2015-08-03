@@ -176,31 +176,31 @@
 
     XYAxis.prototype.testDataGantt = function () {
         var task = [
-            {"startDate":new Date("Sun Dec 09 01:36:45 2012"),"endDate":new Date("Sun Dec 09 02:36:45 2012"),"taskName":"E Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 04:56:32 2012"),"endDate":new Date("Sun Dec 09 06:35:47 2012"),"taskName":"A Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 06:29:53 2012"),"endDate":new Date("Sun Dec 09 06:34:04 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 05:35:21 2012"),"endDate":new Date("Sun Dec 09 06:21:22 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 05:00:06 2012"),"endDate":new Date("Sun Dec 09 05:05:07 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 03:46:59 2012"),"endDate":new Date("Sun Dec 09 04:54:19 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 04:02:45 2012"),"endDate":new Date("Sun Dec 09 04:48:56 2012"),"taskName":"N Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 03:27:35 2012"),"endDate":new Date("Sun Dec 09 03:58:43 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:40:11 2012"),"endDate":new Date("Sun Dec 09 03:26:35 2012"),"taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 03:00:03 2012"),"endDate":new Date("Sun Dec 09 03:09:51 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:21:00 2012"),"endDate":new Date("Sun Dec 09 02:51:42 2012"),"taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 01:08:42 2012"),"endDate":new Date("Sun Dec 09 01:33:42 2012"),"taskName":"N Job","status":"FAILED"},
-            {"startDate":new Date("Sun Dec 09 00:27:15 2012"),"endDate":new Date("Sun Dec 09 00:54:56 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 00:29:48 2012"),"endDate":new Date("Sun Dec 09 00:44:50 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 07:39:21 2012"),"endDate":new Date("Sun Dec 09 07:43:22 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 07:00:06 2012"),"endDate":new Date("Sun Dec 09 07:05:07 2012"),"taskName":"D Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 08:46:59 2012"),"endDate":new Date("Sun Dec 09 09:54:19 2012"),"taskName":"P Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 09:02:45 2012"),"endDate":new Date("Sun Dec 09 09:48:56 2012"),"taskName":"N Job","status":"RUNNING"},
-            {"startDate":new Date("Sun Dec 09 08:27:35 2012"),"endDate":new Date("Sun Dec 09 08:58:43 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 08:40:11 2012"),"endDate":new Date("Sun Dec 09 08:46:35 2012"),"taskName":"A Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 08:00:03 2012"),"endDate":new Date("Sun Dec 09 08:09:51 2012"),"taskName":"D Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 10:21:00 2012"),"endDate":new Date("Sun Dec 09 10:51:42 2012"),"taskName":"P Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sun Dec 09 11:08:42 2012"),"endDate":new Date("Sun Dec 09 11:33:42 2012"),"taskName":"N Job","status":"FAILED"},
-            {"startDate":new Date("Sun Dec 09 12:27:15 2012"),"endDate":new Date("Sun Dec 09 12:54:56 2012"),"taskName":"E Job","status":"SUCCEEDED"},
-            {"startDate":new Date("Sat Dec 08 23:12:24 2012"),"endDate":new Date("Sun Dec 09 00:26:13 2012"),"taskName":"A Job","status":"KILLED"}
+            {"startDate":"2014-06-09T01:36:45","endDate":"2014-06-09T02:36:45","taskName":"E Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T04:56:32","endDate":"2014-06-09T06:35:47","taskName":"A Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T06:29:53","endDate":"2014-06-09T06:34:04","taskName":"D Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T05:35:21","endDate":"2014-06-09T06:21:22","taskName":"P Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T05:00:06","endDate":"2014-06-09T05:05:07","taskName":"D Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T03:46:59","endDate":"2014-06-09T04:54:19","taskName":"P Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T04:02:45","endDate":"2014-06-09T04:48:56","taskName":"N Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T03:27:35","endDate":"2014-06-09T03:58:43","taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T01:40:11","endDate":"2014-06-09T03:26:35","taskName":"A Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T03:00:03","endDate":"2014-06-09T03:09:51","taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T01:21:00","endDate":"2014-06-09T02:51:42","taskName":"P Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T01:08:42","endDate":"2014-06-09T01:33:42","taskName":"N Job","status":"FAILED"},
+            {"startDate":"2014-06-09T00:27:15","endDate":"2014-06-09T00:54:56","taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T00:29:48","endDate":"2014-06-09T00:44:50","taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T07:39:21","endDate":"2014-06-09T07:43:22","taskName":"P Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T07:00:06","endDate":"2014-06-09T07:05:07","taskName":"D Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T08:46:59","endDate":"2014-06-09T09:54:19","taskName":"P Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T09:02:45","endDate":"2014-06-09T09:48:56","taskName":"N Job","status":"RUNNING"},
+            {"startDate":"2014-06-09T08:27:35","endDate":"2014-06-09T08:58:43","taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T08:40:11","endDate":"2014-06-09T08:46:35","taskName":"A Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T08:00:03","endDate":"2014-06-09T08:09:51","taskName":"D Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T10:21:00","endDate":"2014-06-09T10:51:42","taskName":"P Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-09T11:08:42","endDate":"2014-06-09T11:33:42","taskName":"N Job","status":"FAILED"},
+            {"startDate":"2014-06-09T12:27:15","endDate":"2014-06-09T12:54:56","taskName":"E Job","status":"SUCCEEDED"},
+            {"startDate":"2014-06-08T23:12:24","endDate":"2014-06-09T00:26:13","taskName":"A Job","status":"KILLED"}
         ];
         task.sort(function (l, r) {
             return l.endDate - r.endDate;
@@ -211,7 +211,7 @@
             .xAxisTypeTimePattern("%H:%M")
             .yAxisType("linear")
             // .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
-            .columns(["Type of Job", "D Job", "P Job", "E Job"])
+            .columns(["Type of Job", "D Job", "P Job", "E Job", "A Job", "N Job"])
             .data(task.map(function (row, idx) {
                 // alert(row.startDate + "|" + row.endDate + "|" + row.taskName + "|" + row.status);
                 return [row.startDate, row.endDate, row.taskName, row.status];
@@ -481,7 +481,6 @@
                 .y(this.dataScale)
             ;
         }
-
         switch (this.yAxisType()) {
             case "pow":
                 this.valueScale = d3.scale.pow()
@@ -496,6 +495,9 @@
             case "time":
                 this.valueScale = d3.time.scale();
                 break;
+            // case "ordinal":
+            //     this.valueScale = d3.scale.ordinal();
+            //     break;
             case "linear":
                 /* falls through */
             default:
@@ -529,8 +531,6 @@
                     // alert(data);
                     return data[0];
                 });
-                // var domainMin = task[0].startDate;
-                // var domainMax = task[task.length - 1].endDate;
                 this.dataScale.domain([domainMin, domainMax]);
                 break;
         }

@@ -59,7 +59,7 @@
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
-                //  Symposium AVE Hack 
+                //  Symposium AVE Hack
                 if (val === undefined && rhsKey.indexOf("_AVE") === rhsKey.length - 4 && item.base_count !== undefined) {
                     var rhsSum = rhsKey.substring(0, rhsKey.length - 4) + "_SUM";
                     val = item[rhsSum];
@@ -480,6 +480,7 @@
         this.dashboard = dashboard;
         this.id = visualization.id;
         this.label = visualization.label;
+        this.default = visualization.default;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
         this.icon = visualization.icon || {};
@@ -566,9 +567,15 @@
                                 .name(field.id)
                                 .label((field.properties ? field.properties.label : null) || field.label)
                                 .type("textbox")
+                                .value(field.properties.default ? field.properties.default : "")
                             ;
                         }))
                     ;
+                    widget.renderCallback(function(widget) {
+                        setTimeout(function() {
+                            widget.submit();
+                        }, 250);
+                    });
                 });
                 break;
             default:

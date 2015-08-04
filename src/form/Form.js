@@ -114,7 +114,7 @@
     Form.prototype.values = function () {
         var dataArr = {};
         this.inputsForEach(function (inp) {
-            var value = inp.value();
+            var value = inp.getValue();
             if (value || !this.omitBlank()) {
                 dataArr[inp.name()] = inp.value();
             }

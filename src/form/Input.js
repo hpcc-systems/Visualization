@@ -98,6 +98,20 @@
         });
     };
 
+
+    Input.prototype.getValue = function() {
+        switch (this.type()) {
+            case "checkbox":
+                this.value(this._inputElement.property("checked"));
+                break;
+            default:
+                this.value(this._inputElement.property("value"));
+                break;
+        }
+        this.change(this);
+        return this.value();
+    };
+
     Input.prototype.insertSelectOptions = function (optionsArr) {
         var optionHTML = "";
         if (optionsArr.length > 0) {

@@ -5,7 +5,7 @@
     border-collapse: collapse;
 }
 
-.other_Table th {
+.other_Table th, .labels-wrapper th {
     padding:5px 10px;
     background-color:#1f77b4;
     border-width: 1px;
@@ -16,7 +16,7 @@
     cursor : pointer;
 }
 
-.other_Table .thIcon {
+.other_Table .thIcon, .labels-wrapper .thIcon {
     font-family: FontAwesome;
     padding-left: 8px;
 }
@@ -25,8 +25,12 @@
     background-color:#dcf1ff;
     color:black;
 }
+.rows-wrapper tr {
+    background-color:#BCE1FB;
+    color:black;
+}
 
-.other_Table tr.selected {
+.other_Table tr.selected, .rows-wrapper tr.selected {
     background-color:#f48a00;
     color: white;
 }
@@ -40,10 +44,42 @@
     color: white;
 }
 
-.other_Table td {
+.other_Table td, .rows-wrapper td{
     border-width: 1px;
     padding:2px 5px;
     border-style: solid;
     border-color: #a9c6c9;
     white-space: nowrap;
+    box-sizing:border-box;
+}
+
+
+.other_Table .outer-table-wrapper{
+    position:relative;
+}
+
+#outer-table-wrapper .table-wrapper,
+#outer-table-wrapper .rows-wrapper,
+#outer-table-wrapper .other_table {
+    position:absolute;
+}
+#outer-table-wrapper .rows-wrapper,
+#outer-table-wrapper .cols-wrapper{
+    overflow: hidden;
+}
+.other_Table .cols-wrapper > .labels-wrapper{
+    position:relative;
+}
+.other_Table .col-label{
+    text-align: center;
+}
+.other_Table #outer-table-wrapper {
+    width:700px;
+    height:700px;
+    overflow:hidden;
+}
+.other_Table #outer-table-wrapper .other_Table{
+    width:700px;
+    height:700px;
+    overflow:scroll;
 }

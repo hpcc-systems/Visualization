@@ -34,8 +34,7 @@
         <!-- custom js -->
         <script src="js/svg_to_png.js"></script>
         <script src="js/demo_data.js"></script>
-        <script type="text/javascript" src="js/themeeditor.js"></script>
-        <script src="js/demo_theme_saveLoad.js"></script>
+        <script type="text/javascript" src="js/widget_index.js"></script>
         <script src="js/theme_defaults.js"></script>
         <script src="js/init_bootstrap_demo_page.js"></script>
 
@@ -64,55 +63,14 @@
         <div id="main">
             <div>
                 <ul id="tabs-ul" class="nav nav-tabs" role="tablist">
-                    <li role="presentation" data-for="widgets-pane" class="active"><a href="#widgets-pane" aria-controls="widgets-pane" role="tab" data-toggle="tab">Widgets</a></li>
-                    <li role="presentation" data-for="colors-pane"><a href="#colors-pane" aria-controls="colors-pane" role="tab" data-toggle="tab">Colors</a></li>
-                    <li role="presentation" data-for="fonts-pane"><a href="#fonts-pane" aria-controls="fonts-pane" role="tab" data-toggle="tab">Fonts</a></li>
-                    <li role="presentation" data-for="layout-pane"><a href="#layout-pane" aria-controls="layout-pane" role="tab" data-toggle="tab">Layout</a></li>
-                    <li style="float:right;" role="presentation" data-for="layout-pane">
-                        <div id="saveLoadWrapper" class="btn-group pull-right default-mode-btn" style="margin-left:6px;">
-                            <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-save"></i>
-                                Save/Load Styles
-                            </button>
-                            <ul class="dropdown-menu save-dropdown" role="menu" style="padding:0;margin-top:0;border-radius:4px">
-                                <li style="padding:8px;">
-                                    <fieldset>
-                                        <legend>Save Current Theme</legend>
-                                        <input id="save-name" type="text" placeholder="Theme Name" style="margin-bottom:6px;">
-                                        <br>
-                                        <button class="btn btn-default" onclick="javascript:_save_theme();">
-                                            <i class="fa fa-save"></i>
-                                            Save Theme
-                                        </button>
-                                    </fieldset>
-                                </li>
-                                <li style="padding:0px 8px;">
-                                    <fieldset style="white-space:nowrap;">
-                                        <legend>Load Saved Theme</legend>
-                                        <select id="load-theme" style="width:100%;height:26px;margin-bottom:6px;">
-                                            <option value="Default Theme">Default Theme</option>
-                                        </select>
-                                        <br>
-                                        <button class="btn btn-default" onclick="javascript:_load_theme($('#load-theme').val());">
-                                            <i class="fa fa-download"></i>
-                                            Load Theme
-                                        </button>
-                                        <button class="btn btn-default" onclick="javascript:_delete_theme($('#load-theme').val());">
-                                            <i class="fa fa-trash"></i>
-                                            Delete Theme
-                                        </button>
-                                    </fieldset>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                    <li role="presentation" data-for="widgets-pane" class="active"><a href="#widgets-pane" aria-controls="widgets-pane" role="tab" data-toggle="tab">Widget Index</a></li>
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="widgets-pane">
                         <div class="graph-options">
                             <div class="btn-group" id="themeGroup">
                                 <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownButton" data-toggle="dropdown" aria-expanded="true">
-                                    Theme Editor
+                                    Widgets to Display
                                     <span class="caret"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu" aria-labelledby="dropdownButton">
@@ -122,16 +80,6 @@
                                         <button type="button" class="cancel btn btn-default">Cancel</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-info" type="button" onclick="javascript:teViewSaves('getThemes');">
-                                    View Themes
-                                </button>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-info" type="button" onclick="javascript:teViewSaves('getSerials');">
-                                    View Serials
-                                </button>
                             </div>
                         </div>
                     </div>

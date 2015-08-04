@@ -460,8 +460,7 @@
         return this.tableObjHtml(tableObj);
 
         function _propertyLabel(widgetObj){
-            var spaceSplit = widgetObj.widget._class.split(' ');
-            var splitClass = spaceSplit[spaceSplit.length-1].split('_');
+            var splitClass = widgetObj.widget.classID().split('_');
             var displayClass = splitClass.join('/');
             return displayClass + ' <i>[' + widgetObj.widget._id + ']</i>';
         }

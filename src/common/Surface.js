@@ -74,12 +74,6 @@
         return this;
     };
 
-    Surface.prototype.content = function (_) {
-        if (!arguments.length) return this._content;
-        this._content = _;
-        return this;
-    };
-
     Surface.prototype.testData = function () {
         this.title("Hello and welcome!");
         this.menu(["aaa", "bbb", "ccc"]);

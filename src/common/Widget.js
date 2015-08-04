@@ -311,6 +311,10 @@
         return this;
     };
 
+    Widget.prototype.classID = function () {
+        return this._class.split(" ").pop();
+    };
+
     Widget.prototype.columns = function (_) {
         if (!arguments.length) return this._columns;
         this._columns = _;

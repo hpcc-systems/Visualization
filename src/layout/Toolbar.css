@@ -1,0 +1,9 @@
+.layout_Toolbar .toolbar-container {
+    display:block;
+    position:relative;
+}
+
+.layout_Toolbar .toolbar-widget {
+    display: inline-block;
+    vertical-align:middle;
+}

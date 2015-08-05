@@ -210,6 +210,7 @@
 
     CommonXY.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         var initObj = {
             theme: "none",
             type: "xy",
@@ -227,6 +228,9 @@
         };
 
         this._chart = AmCharts.makeChart(domNode, initObj);
+        this._chart.addListener("clickGraphItem", function(e) {
+            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);
+        });
     };
 
     CommonXY.prototype.update = function(domNode, element) {

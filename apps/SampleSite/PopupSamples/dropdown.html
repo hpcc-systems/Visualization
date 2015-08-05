@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <!--The following src path should point to your local RequireJS config.js file-->
+        <script type="text/javascript" src="config.js"></script>
+        <script>
+            require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/layout/Surface"], function (Popup, Pie, Surface) {
+                var dropdown = new Popup()
+                    .size({width:400, height:400})
+                    .target("dropdown")
+                    .position("absolute")
+                    .widget(new Surface().title("Dropdown Example").widget(new Pie().testData()))
+                    .render(function() {
+                        d3.select("#dropdown button")
+                        .on("click", function() {
+                            dropdown.updateState(!(dropdown.popupState()));
+                        });
+                    })
+                ;
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <div id="dropdown" class="button_container">
+                <button type="button" class="btn btn-info btn-lg">Open Dropdown</button>
+                <a href="#" class="button" onClick='window.location="view-source:" + window.location.href'>View Source</a>
+            </div>
+
+        </div>
+    </body>
+</html>

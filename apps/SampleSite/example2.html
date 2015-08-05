@@ -1,0 +1,150 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>HPCC Systems - Dynamic Grid Demo</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
+        <link href="css/prettify.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="css/dynamic_grid.css" rel="stylesheet" type="text/css">
+
+        <!-- JS -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- SVG to PNG lib -->
+        <script type="text/javascript" src="js/rasterizeHTML.allinone.js"></script>
+
+        <!-- requirejs -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <!-- custom js -->
+        <script type="text/javascript" src="js/dynamic_grid.js"></script>
+        <script type="text/javascript" src="js/theme_defaults.js"></script>
+        <script type="text/javascript" src="js/demo_data.js"></script>
+        <script type="text/javascript" src="js/svg_to_png.js"></script>
+        <script type="text/javascript" src="js/init_bootstrap_demo_page.js"></script>
+
+        <script>
+            var g_targetId = "graph-container";
+
+            var g_test2;
+            initialGridObj = [
+                {
+                    "title": "3D Amchart Bar Examples",
+                    "src": [
+                        "src/amchart/Bar",
+                        "src/amchart/Bar",
+                        "src/amchart/Bar",
+                        "src/amchart/FloatingColumn",
+                    ],
+                    "columns":[
+                        ["Subject", "Year 1"],
+                        ["Subject", "Year 1"],
+                        ["Subject", "Year 1"],
+                        ["Subject", "open", "close"],
+                    ],
+                    "data":[
+                        [["A",34],["B",54],["C",91],["D",75]],
+                        [["A",34],["B",54],["C",91],["D",75]],
+                        [["A",34],["B",54],["C",91],["D",75]],
+                        [
+                            ["Geography", 15, 35],
+                            ["English", 25, 45],
+                            ["Math", 10, 35],
+                            ["Science", 45, 60]
+                        ]
+                    ],
+                    "params":[
+                        {"Depth3D":10,"Angle3D":45,"paletteGrouping":"By Category","fillOpacity":1},
+                        {"Depth3D":10,"Angle3D":45,"paletteGrouping":"By Category","cylinderBars":true,"fillOpacity":1},
+                        {"Depth3D":10,"Angle3D":45,"paletteGrouping":"By Category","cylinderBars":true,"fillOpacity":1,"circleRadius":0.1},
+                        {"Depth3D":5,"Angle3D":45,"paletteGrouping":"By Category","fillOpacity":1},
+                    ],
+                    "buttons": []
+                },
+                {
+                    "title": "3D Amchart Bar Stacked",
+                    "src": [
+                        "src/amchart/Bar",
+                        "src/amchart/Bar",
+                    ],
+                    "params":[
+                        {"Depth3D":10,"Angle3D":45,"fillOpacity":1,"isStacked":true},
+                        {"Depth3D":10,"Angle3D":45,"fillOpacity":1,"isStacked":true,"cylinderBars":true},
+                    ],
+                    "buttons": []
+                },
+                {
+                    "title": "3D Amchart Pie",
+                    "src": [
+                        "src/amchart/Pie",
+                    ],
+                    "params":[
+                        {"Depth3D":10,"Angle3D":45,"paletteGrouping":"By Category","fillOpacity":1},
+                        {"Depth3D":10,"Angle3D":45,"fillOpacity":1},
+                    ],
+                    "buttons": []
+                },
+                {
+                    "title": "3D Amchart Pie (Donut)",
+                    "src": [
+                        "src/amchart/Pie",
+                    ],
+                    "params":[
+                        {"Depth3D":10,"Angle3D":35,"holePercent":30},
+                    ],
+                    "buttons": []
+                },
+            ];
+            $(function(){
+                $('#graph-container').css({
+                    'height':$(window).height() - $('#graph-container').offset().top - 10
+                });
+            });
+        </script>
+    </head>
+    <body onresize="doResize();">
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and Toggle -->
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+            </div>
+            <!-- Links -->
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+        </nav>
+        <!-- /.navbar-default -->
+        <div id="main">
+            <div>
+                <ul id="tabs-ul" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" data-for="colors-pane" class="active"><a href="#colors-pane" aria-controls="colors-pane" role="tab" data-toggle="tab">Colors</a></li>
+                    <li role="presentation" data-for="fonts-pane"><a href="#fonts-pane" aria-controls="fonts-pane" role="tab" data-toggle="tab">Fonts</a></li>
+                    <li role="presentation" data-for="layout-pane"><a href="#layout-pane" aria-controls="layout-pane" role="tab" data-toggle="tab">Layout</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="colors-pane">
+                        <div class="graph-options"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="fonts-pane">
+                        <div class="graph-options"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="layout-pane">
+                        <div class="graph-options"></div>
+                    </div>
+                </div>
+                <div id="graph-container"></div>
+            </div>
+        </div>
+    </body>
+</html>

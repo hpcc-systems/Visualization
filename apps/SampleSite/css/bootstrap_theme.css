@@ -1,8 +1,16 @@
 body{
     padding:65px 15px 15px;
-    font-family: 'PT Sans','Arial';
+    font-family: 'Arial';
     background-color: #ACACAC;
     background-image: url(img/texture1.png);
+}
+#main {
+    position: absolute;
+    top: 65px;
+    bottom: 10px;
+    left: 15px;
+    right: 15px;
+    overflow: hidden;
 }
 #logo{ padding:5px 15px; }
 .row { margin-bottom:15px; }
@@ -88,6 +96,28 @@ nav.navbar > .navbar-collapse {
 }
 .btn-default {
     color: #737373;
-    background-color: #F5F5F5;
+    background-color: #FFF;
     border:0;
+}
+.btn {
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+.btn-default {
+    -webkit-box-shadow: inset 0px 0px 0px 1px #ADADAD,inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0px 0px 0px 1px rgba(173,173,173,1);
+    box-shadow: inset 0px 0px 0px 1px #ADADAD,inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+}
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.3;
+}
+.btn-sm:active{
+    padding: 6px 10px 4px 10px;
+}
+.btn-info {
+    color: #FFF;
+    background-color: #179BD7;
+    border-color: #46B8DA;
 }

@@ -20,6 +20,7 @@
         this._menu.click = function (d) {
             context._content.chartType(d).render();
         };
+        this.content(this._content);
         this.mode("all");
     }
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
@@ -31,14 +32,14 @@
     MultiChartSurface.prototype.publishProxy("chartType", "_content");
 
     MultiChartSurface.prototype.columns = function (_) {
-        if (!arguments.length) return this._content.columns();
-        this._content.columns(_);
+        if (!arguments.length) return this.content().columns();
+        this.content().columns(_);
         return this;
     };
 
     MultiChartSurface.prototype.data = function (_) {
-        if (!arguments.length) return this._content.data();
-        this._content.data(_);
+        if (!arguments.length) return this.content().data();
+        this.content().data(_);
         return this;
     };
 
@@ -47,15 +48,15 @@
         this._mode = _;
         switch (this._mode) {
             case "2d":
-                this.menu(this._content._2dChartTypes.concat(this._content._anyChartTypes).map(function (item) { return item.display; }).sort());
+                this.menu(this.content()._2dChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
                 break;
             case "multi":
-                this.menu(this._content._multiChartTypes.concat(this._content._anyChartTypes).map(function (item) { return item.display; }).sort());
+                this.menu(this.content()._multiChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
                 break;
             case "all":
                 /* falls through */
             default:
-                this.menu(this._content._allChartTypes.map(function (item) { return item.display; }).sort());
+                this.menu(this.content()._allChartTypes.map(function (item) { return item.display; }).sort());
         }
         return this;
     };

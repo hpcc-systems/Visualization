@@ -36,7 +36,7 @@
         if (!widget) {
             return "";
         }
-        var classParts = widget._class.split("_");
+        var classParts = widget.classID().split("_");
         var path = "src/" + classParts.join("/");
         var label = classParts[classParts.length - 1];
         var propertiesString = properties.split("\n").map(function (item) {
@@ -310,7 +310,7 @@
                         if (context.sectionTitle()) {
                             text = context.sectionTitle();
                         } else {
-                            var splitClass = widget._class.split('_');
+                            var splitClass = widget.classID().split('_');
                             if (splitClass.length > 1) {
                                 text = "Widget: " + splitClass[splitClass.length - 1];
                             } else {
@@ -407,7 +407,7 @@
                                     text = sProp.id;
                                     break;
                                 case 'individual':
-                                    var splitClass = sProp.widgetArr[0]._class.split('_');
+                                    var splitClass = sProp.widgetArr[0].classID().split('_');
                                     var displayClass = splitClass[splitClass.length - 1];
                                     text = displayClass + ' [' + sProp.widgetArr[0]._id + ']';
                                     break;
@@ -583,7 +583,7 @@
                                 text = sProp.id;
                                 break;
                             case 'individual':
-                                var displayClass = sProp.widgetArr[0]._class.split('_')[1];
+                                var displayClass = sProp.widgetArr[0].classID().split('_')[1];
                                 text = displayClass + ' [' + sProp.widgetArr[0]._id + ']';
                                 break;
                         }

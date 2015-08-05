@@ -59,7 +59,7 @@
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
-                //  Symposium AVE Hack 
+                //  Symposium AVE Hack
                 if (val === undefined && rhsKey.indexOf("_AVE") === rhsKey.length - 4 && item.base_count !== undefined) {
                     var rhsSum = rhsKey.substring(0, rhsKey.length - 4) + "_SUM";
                     val = item[rhsSum];
@@ -333,25 +333,61 @@
         var context = this;
         var data = this.getOutput().data;
         if (this.sort) {
-            data.sort(function (l, r) {
-                for (var i = 0; i < context.sort.length; ++i) {
-                    var sortField = context.sort[i];
+
+            // http://www.davekoelle.com/files/alphanum.js
+            // http://stackoverflow.com/questions/2802341/javascript-natural-sort-of-alphanumerical-strings
+            // https://github.com/tablesort/javascript-natural-sort/blob/master/naturalSort.js
+            // http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm/
+
+            var caseSensitive = true;
+            data.sort(function (a, b) {
+                var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
+                    sre = /(^[ ]*|[ ]*$)/g,
+                    dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
+                    hre = /^0x[0-9a-f]+$/i,
+                    ore = /^0/,
+                    i = function(s) { return !caseSensitive && ('' + s).toLowerCase() || '' + s; };
+
+                for (var idx = 0; idx < context.sort.length; ++idx) {
+                    var sortField = context.sort[idx];
                     var reverse = false;
                     if (sortField.indexOf("-") === 0) {
                         sortField = sortField.substring(1);
                         reverse = true;
                     }
-                    var lVal = l[sortField];
-                    if (lVal === undefined) {
-                        lVal = l[sortField.toLowerCase()];
-                    }
-                    var rVal = r[sortField];
-                    if (rVal === undefined) {
-                        rVal = r[sortField.toLowerCase()];
-                    }
+                    // convert all to strings strip whitespace
+                    var x = i(a[sortField]).replace(sre, '') || '',
+                        y = i(b[sortField]).replace(sre, '') || '',
+                        // chunk/tokenize
+                        xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+                        yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+                        // numeric, hex or date detection
+                        xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
+                        yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+                        oFxNcL, oFyNcL;
+                        console.log(x);
 
-                    if (lVal !== rVal) {
-                        return reverse ? rVal - lVal : lVal - rVal;
+                    // first try and sort Hex codes or Dates
+                    if (yD) {
+                        if ( xD < yD ) { return reverse?-1:1; }
+                        else if ( xD > yD ) { return reverse?1:-1; }
+                    }
+                    // natural sorting through split numeric strings and default strings
+                    for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+                        // find floats not starting with '0', string or 0 if not defined (Clint Priest)
+                        oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+                        oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+                        // handle numeric vs string comparison - number < string - (Kyle Adams)
+                        if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
+                            return (isNaN(oFxNcL)) ? 1 : -1;
+                        }
+                        // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
+                        else if (typeof oFxNcL !== typeof oFyNcL) {
+                            oFxNcL += '';
+                            oFyNcL += '';
+                        }
+                        if (oFxNcL < oFyNcL) { return reverse?-1:1; }
+                        if (oFxNcL > oFyNcL) { return reverse?1:-1; }
                     }
                 }
                 return 0;

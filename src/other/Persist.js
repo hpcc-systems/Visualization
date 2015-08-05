@@ -103,8 +103,9 @@
                         switch (widget["__meta_" + key].type) {
                             case "widget":
                                 ++createCount;
+                                var widgetKey = key;
                                 context.deserialize(state.__properties[key], function (widgetItem) {
-                                    widget[key](widgetItem);
+                                    widget[widgetKey](widgetItem);
                                     --createCount;
                                 });
                                 break;

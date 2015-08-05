@@ -29,6 +29,7 @@
 
             var context = this;
             this._data.forEach(function (item) {
+                item = item.map(function(s) { return typeof(s) === "string" ? s.trim() : s; });
                 context._dataMap[item[0]] = item;
                 if (!context._dataMinWeight || item[1] < context._dataMinWeight) {
                     context._dataMinWeight = item[1];

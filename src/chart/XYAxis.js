@@ -160,7 +160,7 @@
             .data([
                 ["Geography", "2010-07-09"],
                 ["English", "2010-07-12"],
-                ["Math", "2010-07-15"],
+                ["Math", null],
                 ["Science", "2010-07-21"]
             ])
         ;
@@ -198,6 +198,9 @@
     };
 
     XYAxis.prototype.formatValue = function (d) {
+        if (!d) {
+            return d;
+        }
         if (d instanceof Array) {
             return d.map(function (item) {
                 return this.formatValue(item);

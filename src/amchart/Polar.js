@@ -15,7 +15,7 @@
     Polar.prototype = Object.create(CommonRadar.prototype);
     Polar.prototype.implements(INDChart.prototype);
     Polar.prototype._class += " amchart_Polar";
-    
+
     /**
      * Publish Params Common To Other Libraries
      */

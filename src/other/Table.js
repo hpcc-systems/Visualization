@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget","../other/Paginator", "../other/Bag", "css!./Table"], factory);
+        define(["d3", "../common/HTMLWidget","../other/Paginator", "../other/Bag", "../other/Utility", "css!./Table"], factory);
     } else {
         root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.other_Bag);
     }
-}(this, function (d3, HTMLWidget, Paginator, Bag) {
+}(this, function (d3, HTMLWidget, Paginator, Bag, Utility) {
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -40,6 +40,7 @@
     Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
+    Table.prototype.publish("sortType", "simple", "set", "Sets sort type", ["simple", "natural"]);
 
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -235,14 +236,17 @@
         }
         var idx = this._columns.indexOf(column);
 
-        this._data.sort(function (l, r) {
-            if (l[idx] === r[idx]) {
-                return 0;
-            } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
-                return context._currentSortOrder;
-            }
-            return context._currentSortOrder * -1;
-        });
+        switch (this.sortType()) {
+            case "simple":
+                this._data.sort(function (a, b) {
+                    return context._currentSortOrder === 1 ? d3.ascending(a[idx], b[idx]) : d3.descending(a[idx], b[idx]);
+                });
+            break;
+            case "natural":
+                this._data = Utility.sort(this._data, "naturalsort", context._currentSortOrder === 1 ? "ascending" : "descending", idx, true);
+            break;
+        }
+
         this.render();
     };
 

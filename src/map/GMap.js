@@ -30,7 +30,7 @@
         return retVal;
     };
 
-    GMap.prototype.enter = function (domNode, element, d) {
+    GMap.prototype.enter = function (domNode, element) {
         Graph.prototype.enter.apply(this, arguments);
 
         this._googleMap = new google.maps.Map(d3.select(this._target).node(), {

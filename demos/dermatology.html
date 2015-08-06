@@ -16,6 +16,10 @@
     </style>
     <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
     <script src="../src/config.js"></script>
+    <!--  Uncomment for github
+    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
+    <script src="../src/config.js"></script>
+    -->
     <!--  Uncomment to develop
     <script src="../bower_components/requirejs/require.js"></script>
     <script src="../src/config.js"></script>
@@ -68,6 +72,7 @@
                             <option value="src/google/Scatter">Google Scatter</option>
                             <option value="src/google/Timeline">Google Timeline</option>
                             <option value="src/google/TreeMap">Google TreeMap</option>
+                            <option value="src/chart/Summary">Summary</option>
                             <option value="src/chart/Pie">Pie</option>
                             <option value="src/chart/Bubble">Bubble</option>
                             <option value="src/chart/Column">Column</option>
@@ -233,7 +238,6 @@
                     ;
                 });
             }
-            testWidget(document.getElementById("widgetSelect").value, params);
             showProperties = function (show) {
                 main
                     .setContent(0, 2, show ? propEditor : null, "", 2, 1)
@@ -264,6 +268,7 @@
                     })
                 ;
             }
+            var first = true;
             frame.doResize = Surface.prototype.debounce(function () {
                 mainDiv.style.width = window.innerWidth - 16 + "px";
                 mainDiv.style.height = window.innerHeight - 16 - 40 + "px";
@@ -271,6 +276,10 @@
                     .resize()
                     .render()
                 ;
+                if (first) {
+                    first = false;
+                    testWidget(document.getElementById("widgetSelect").value, params);
+                }
             }, 250)
             frame.doResize();
         });

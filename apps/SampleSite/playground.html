@@ -7,35 +7,53 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
+
+        <link href="css/playground.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+
+        <!-- JS -->
+
         <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+
+        <!-- ace editor -->
+        <script type="text/javascript" src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" charset="utf-8"></script>
+        <script type="text/javascript" src="//ajaxorg.github.io/ace-builds/src-min-noconflict/mode-css.js" charset="utf-8"></script>
+        <script type="text/javascript" src="//rawgit.com/therealglazou/jscssp/master/cssParser.js"></script>
+
+        <!-- SVG to PNG lib -->
+        <script type="text/javascript" src="js/rasterizeHTML.allinone.js"></script>
+
+        <!-- requirejs -->
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
         <script type="text/javascript" src="config.js"></script>
 
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- DO WE NEED THIS? FOR CHEVRONS? --> 
-        <link href="css/playground.css" rel="stylesheet" type="text/css">
-        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
-        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
-
+        <!-- handlebars template and custom js -->
         <!--<script type="text/javascript" src="templates/compiled_handlebars_templates.js"></script>-->
+        <script src="js/init_bootstrap_demo_page.js"></script>
         <script type="text/javascript" src="js/handlebars_data.js"></script>
-        <script type="text/javascript" src="js/doc_section.js"></script>
         <script type="text/javascript" src="js/hierarchy.js"></script>
         <script type="text/javascript" src="js/playground.js"></script>
+        <script src="js/svg_to_png.js"></script>
 
-        <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-        <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/mode-css.js" type="text/javascript" charset="utf-8"></script>
-
+        <!-- live edit css container -->
         <style id="live-edit-style"></style>
-            
-        <script type="text/javascript" src="//rawgit.com/therealglazou/jscssp/master/cssParser.js"></script>
 
         <script>
 
             var wName = window.location.search.split("?")[1] || "google/Bar";
+            if(wName === 'png'){
+                g_replaceBodyWithPNG = true;
+                wName = "google/Bar";
+            }
             // Ajax Load Handlebar Templates
 
             var bootstrapDropdown;
@@ -106,20 +124,21 @@
                 });
 
                 $("#showDocButton").click(function() {
+                    window.open("http://rawgit.com/mlzummo/Visualization/JSDOC_2/docs/"+doc_page.replace("/","_")+".html");
+
                     //TODO show hide doc toggle text?
-                    $("#documentation-wrapper").toggle();
+                    //$("#documentation-wrapper").toggle();
                 });
+
 
                 // CSS Editor & Parsing
                 // https://github.com/ajaxorg/ace/wiki/Embedding-API
                 var editor = ace.edit("css-editor");
                 editor.getSession().setMode("ace/mode/css");
-
                 var cssData = "#discover-pane{overflow:auto}\n#discover-pane > div{overflow:visible !important}\n#documentation-wrapper{display:none}\npre.prettyprint{display:block;overflow:auto;width:100%}\n";
                 editor.getSession().setValue(cssData);
-
                 var parser = new CSSParser();
-                    
+
                 editor.on('change', function() {
                     var sheet = parser.parse(editor.getSession().getValue(), false, true);
                     if (sheet.cssRules) {
@@ -130,13 +149,13 @@
                         $("#live-edit-style").html(newCSSArr.join("\n"));
                     }
                 });
-                
+
                 $('a[href="#css-pane"]').on("shown.bs.tab",function(e){
                     $("#css-editor").css("width",$("#css-pane").width());
                     $("#css-editor").css("height",$("#css-pane").height());
                     editor.resize();
                 });
-                // editor.setReadOnly(true); 
+                // editor.setReadOnly(true);
                 // editor.container.style.opacity=0.9
             }
         </script>
@@ -155,12 +174,7 @@
 
             </div>
             <!-- Links -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="playground.html">Playground</a></li>
-                    <li><a href="themeeditor.html">Theme Editor</a></li>
-                </ul>
-            </div>
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
         </nav>
         <!-- /.navbar-default -->
         <div class="row">
@@ -171,7 +185,7 @@
             <div id="config-wrapper" class="docs-tabs col-xs-12 col-md-6"></div>
         </div>
         <div class="row">
-            <div id="documentation-wrapper" class="col-xs-12"></div>
+            <div id="documentation-wrapper" class="col-xs-12"></div> <!-- might reuse in the future -->
         </div>
     </body>
 </html>

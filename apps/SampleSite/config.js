@@ -102,7 +102,7 @@ case "cdn.rawgit.com":
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader",
 
-            "src": "../src"
+            "src": "./src"
         }
     });
 }

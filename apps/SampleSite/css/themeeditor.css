@@ -6,10 +6,6 @@ main {
     font-weight: 300;
     overflow:hidden;
 }
-#main{
-    padding: 0px 15px;
-    margin-top: 15px;
-}
 #main > div > .layout_Surface{
     background-color:transparent!important;
     border-width:0!important;
@@ -27,10 +23,13 @@ main {
     padding-left: 0;
 }
 
+#themeGroup > .dropdown-menu {
+    width: 500px;
+}
 #dropdown-checkbox-wrapper  li {
     text-shadow: none;
 }
-.btn.done {
+#dropdown-checkbox-buttons {
     float:right;
     margin: -15px 20px 10px 0;
 }
@@ -100,4 +99,12 @@ main {
     left: auto;
     border-radius: 0;
     border: 0;
+}
+.headerCheck{
+    margin-right: 4px;
+    position: relative;
+    top: 2px;
+}
+#graph-container .cell__w1 > div > .layout_Cell{
+    border:0;
 }

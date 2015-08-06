@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <!--The following src path should point to your local RequireJS config.js file-->
+        <script type="text/javascript" src="config.js"></script>
+        <script>
+            require(["apps/SampleSite/tempsrc/Popup", "src/amchart/Polar", "src/layout/Surface"], function (Popup, Polar, Surface) {
+                var modal = new Popup()
+                    .size({width:500,height:500})
+                    .target("main")
+                    .position("fixed")
+                    .widget(new Surface().title("Modal Dialog Example").widget(new Polar().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .render(function(d) {
+                        d3.select("#modal button")
+                        .on("click", function() {
+                            modal.updateState(!(modal.popupState()));
+                            d3.select("#mask")
+                                .style("display", "block")
+                                .on("click", function(d){
+                                    modal.updateState(!(modal.popupState()));
+                                    d3.select(this).style("display", "none");
+                                });
+
+                        });
+                    })
+                ;
+
+                modal.left(document.documentElement.clientWidth / 2 - modal._size.width / 2);
+                modal.top(document.documentElement.clientHeight / 2 - modal._size.height / 2);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="mask" style="background: black; opacity:.5; position:fixed; top:0; bottom:0; left:0; right:0; display:none;"></div>
+            <div id="modal" class="button_container">
+                <button type="button">Open Modal</button>
+                <a href="#" class="button" onClick='window.location="view-source:" + window.location.href'>View Source</a>
+            </div>
+
+        </div>
+    </body>
+</html>

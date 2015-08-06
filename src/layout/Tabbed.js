@@ -17,8 +17,8 @@
     Tabbed.prototype.publish("padding", 4, "number", "Padding");
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
-    Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'", null, { tags: ['Private'] });
-    Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ['Private'] });
+    Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'", null, { tags: ["Private"] });
+    Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.testData = function () {
         this
@@ -33,12 +33,16 @@
         return this;
     };
     
-    Tabbed.prototype.addTab = function(widget, label, isActive) {
-        if(isActive){
+    Tabbed.prototype.addTab = function (widget, label, isActive) {
+        var labels = this.labels();
+        var widgets = this.widgets();
+        if (isActive) {
             this.activeTabIdx(this.widgets().length);
         }
-        this.labels().push(label);
-        this.widgets().push(new Surface().widget(widget ? widget : new Text().text("No widget defined for tab")));
+        labels.push(label);
+        widgets.push(new Surface().widget(widget ? widget : new Text().text("No widget defined for tab")));
+        this.labels(labels);
+        this.widgets(widgets);
         return this;
     };
 
@@ -47,7 +51,7 @@
         var height = this.clientHeight();
 
         var tcBox = this._tabContainer.node().getBoundingClientRect();
-        if(typeof (tcBox.height) !== 'undefined'){
+        if(typeof (tcBox.height) !== "undefined"){
             height -= tcBox.height;
         }
         return { width: width, height: height };

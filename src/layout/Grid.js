@@ -172,7 +172,7 @@
         dropTarget.id = 'grid-drop-target'+this.id();
         dropTarget.className = 'grid-drop-target';
         
-        this._target.appendChild(dropTarget);
+        this._element.node().appendChild(dropTarget);
         this.updateDropTarget(col,row,colSpan,rowSpan);
     };
     

@@ -232,16 +232,19 @@
 
     CommonSerial.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         var initObj = {
             type: "serial",
             chartScrollbar: {},
         };
         this._chart = AmCharts.makeChart(domNode, initObj);
+        this._chart.addListener("clickGraphItem", function(e) {
+            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);
+        });
     };
 
     CommonSerial.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px';
         this._palette = this._palette.switch(this.paletteID());

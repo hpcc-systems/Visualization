@@ -35,7 +35,7 @@
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
                 __version: 3,
-                __class: widget._class.split(" ").pop(),
+                __class: widget.classID(),
                 __id: widget._id,
                 __properties: {}
             };
@@ -66,7 +66,7 @@
                     }
                 }, this);
             }
-            if (widget._class === "marshaller_Graph") {
+            if (widget.classID() === "marshaller_Graph") {
                 var vertices = widget.data().vertices;
                 if (vertices) {
                     this.__vertices = vertices.map(function (item) {
@@ -103,8 +103,9 @@
                         switch (widget["__meta_" + key].type) {
                             case "widget":
                                 ++createCount;
+                                var widgetKey = key;
                                 context.deserialize(state.__properties[key], function (widgetItem) {
-                                    widget[key](widgetItem);
+                                    widget[widgetKey](widgetItem);
                                     --createCount;
                                 });
                                 break;

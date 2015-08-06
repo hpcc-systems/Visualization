@@ -1,0 +1,17 @@
+.layout_Layered .container {
+    position: relative;
+    pointer-events: none;
+}
+
+.layout_Layered .content {
+    position: absolute;
+}
+
+.layout_Layered .common_Widget {
+    pointer-events: all;
+}
+
+.layout_Layered .common_Widget.layout_AbsoluteSurface {
+    pointer-events: none;
+}
+

@@ -21,31 +21,67 @@
 
     Table.prototype.testData = function () {
         this
-            .columns(["Lat", "Long", "Pin"])
+            .columns(["Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"])
             .data([
-                [37.665074, -122.384375, "green-dot.png"],
-                [32.690680, -117.178540],
-                [39.709455, -104.969859],
-                [41.244123, -95.961610],
-                [32.688980, -117.192040],
-                [45.786490, -108.526600],
-                [45.796180, -108.535652],
-                [45.774320, -108.494370],
-                [45.777062, -108.549835, "red-dot.png"]
+                [37.665074, -122.384375, "green-dot.png", 4525, 4243545, 24354, 54, 2552345, 2455, 245435],
+                [32.690680, -117.178540, "", 4525, 423545, 24354, 354, 2552345, 2455, 245435],
+                [39.709455, -104.969859, "", 4525, 423545, 24354, 524, 2552345, 2455, 245435],
+                [41.244123, -95.961610, "", 4525, 423545, 24354, 564, 2552345, 2455, 245435],
+                [32.688980, -117.192040, "", 4525, 423545, 24354, 454, 2552345, 2455, 245435],
+                [45.786490, -108.526600, "", 4525, 423545, 24354, 534, 2552345, 2455, 245435],
+                [45.796180, -108.535652, "", 4525, 423545, 24354, 254, 2552345, 2455, 245435],
+                [45.774320, -108.494370, "", 4525, 423545, 24354, 51, 2552345, 2455, 245435],
+                [37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 504, 2552345, 2455, 245435],
+                [32.690680, -117.178540, "", 4525, 423545, 24304, 54, 2552345, 2455, 245435],
+                [39.709455, -104.969859, "", 4525, 423545, 249354, 54, 2552345, 2455, 245435],
+                [41.244123, -95.961610, "", 4525, 423545, 247354, 54, 2552345, 2455, 245435],
+                [32.688980, -117.192040, "", 4525, 423545, 243654, 54, 2552345, 2455, 245435],
+                [45.786490, -108.526600, "", 4525, 423545, 245354, 54, 2552345, 2455, 245435],
+                [45.796180, -108.535652, "", 4525, 423545, 243354, 54, 2552345, 2455, 245435],
+                [45.774320, -108.494370, "", 4525, 423545, 243454, 54, 2552345, 2455, 245435],
+                [37.665074, -122.384375, "green-dot.png", 4525, 423545, 243254, 54, 2552345, 2455, 245435],
+                [32.690680, -117.178540, "", 4525, 4243545, 24354, 54, 2552345, 2455, 245435],
+                [39.709455, -104.969859, "", 4525, 4233545, 24354, 54, 2552345, 2455, 245435],
+                [41.244123, -95.961610, "", 4525, 4235145, 24354, 54, 2552345, 2455, 245435],
+                [32.688980, -117.192040, "", 4525, 4523545, 24354, 54, 2552345, 2455, 245435],
+                [45.786490, -108.526600, "", 4525, 4263545, 24354, 54, 2552345, 2455, 245435],
+                [45.796180, -108.535652, "", 4525, 4235745, 24354, 54, 2552345, 2455, 245435],
+                [45.774320, -108.494370, "", 4525, 4235845, 24354, 54, 2552345, 2455, 245435],
+                [37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 54, 2552345, 2455, 245435],
+                [32.690680, -117.178540, "", 4525, 423545, 24354, 54, 2552345, 20455, 245435],
+                [39.709455, -104.969859, "", 4525, 423545, 24354, 54, 2552345, 24955, 245435],
+                [41.244123, -95.961610, "", 4525, 423545, 24354, 54, 2552345, 24855, 245435],
+                [32.688980, -117.192040, "", 4525, 423545, 24354, 54, 2552345, 27455, 245435],
+                [45.786490, -108.526600, "", 4525, 423545, 24354, 54, 2552345, 24655, 245435],
+                [45.796180, -108.535652, "", 4525, 423545, 24354, 54, 2552345, 24555, 245435],
+                [45.774320, -108.494370, "", 4525, 423545, 24354, 54, 2552345, 24455, 245435],
+                [37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 54, 23552345, 2455, 245435],
+                [32.690680, -117.178540, "", 4525, 423545, 24354, 54, 2552345, 2455, 2405435],
+                [39.709455, -104.969859, "", 4525, 423545, 24354, 54, 2552345, 2455, 2495435],
+                [41.244123, -95.961610, "", 4525, 423545, 24354, 54, 2552345, 2455, 2454835],
+                [32.688980, -117.192040, "", 4525, 423545, 24354, 54, 2552345, 2455, 2475435],
+                [45.786490, -108.526600, "", 4525, 423545, 24354, 54, 2552345, 2455, 2456435],
+                [45.796180, -108.535652, "", 4525, 423545, 24354, 54, 2552345, 2455, 2455435],
+                [45.774320, -108.494370, "", 4525, 423545, 24354, 54, 2552345, 2455, 2445435],
+                [45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
             ])
+            .fixedHeader(true)
         ;
         return this;
     };
 
     Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
+    Table.prototype.publish("fixedHeader", false, "boolean", "enable or disable fixed table header",null,{tags:['Private']});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-        this._parentElement.style("overflow", "auto");
-
-        this.table = element.append("table");
+        this._parentElement
+            .style("overflow", "hidden")
+            .style("position", "relative")
+        ;
+        this.table = element.append("table").attr("id", "table" + this._id);
         this.thead = this.table.append("thead").append("tr");
         this.tbody = this.table.append("tbody");
     };
@@ -76,7 +112,9 @@
         return {
             _id: d,
             element: function () {
-                return context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; });
+                return context.tbody.selectAll("tr").filter(function (d2) { 
+                    return d2 === d; 
+                });
             }
         };
     };
@@ -98,7 +136,12 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-
+        element
+            .style("height", this.target().style.height)
+            .style("overflow", "auto")
+        ;
+        this._parentElement.style("height", this.target().style.height);
+        
         var th = this.thead.selectAll("th").data(this._columns, function (d) { return d;});
         th
             .enter()
@@ -114,8 +157,8 @@
                             .attr("class", "thIcon")
                     ;
                 })
-            .on("click", function (column) {
-                context.headerClick(column);
+            .on("click", function (column, idx) {
+                context.headerClick(column, idx);
             })
         ;
         th.select(".thText")
@@ -124,11 +167,11 @@
             })
         ;
         th.select(".thIcon")
-            .text(function (column) {
+            .text(function (column, d) {
                 if (context._currentSortOrder === -1) {
-                    return context._currentSort === column ? "\uf078" : "";
+                    return context._currentSort === d ? "\uf078" : "";
                 } else {
-                    return context._currentSort === column ? "\uf077" : "";
+                    return context._currentSort === d ? "\uf077" : "";
                 }
             })
         ;
@@ -149,7 +192,6 @@
             if (this.pageNumber() > this._tNumPages) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
-                console.log('page: ' + p);
                 context.pageNumber(p);
                 context.render();
                 return;
@@ -181,14 +223,19 @@
                 context.selectionBagClick(d);
                 context.render();
             })
-            .on("click", function (d) {
+            .on("click", function (d, i) {
                 context.click(context.rowToObj(d));
             })
         ;
 
         rows
-            .attr("class", function (d) {
-                if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
+            .attr("class", function (d, i, j) {
+                if (context._selectionBag.isSelected(context._createSelectionObject(d, i))) {
+                    var xx = context._parentElement.selectAll(".rows-wrapper tbody tr")[0][i];
+                    if (xx !== undefined) {
+                        xx.classList.add("class", "selected");
+                        console.log((xx));
+                    }
                     return "selected";
                 }
             })
@@ -218,6 +265,121 @@
             .remove()
         ;
         this._paginator.render();
+        
+        function fixedLabels(context){
+            var divcol = context._parentElement.selectAll(".cols-wrapper").data([0]);
+            divcol.enter().append("div").attr("class","cols-wrapper");
+            divcol.selectAll(".labels-wrapper").data([0]).enter().append("table").classed("labels-wrapper", true);
+            divcol.exit().remove();
+
+            var divrow = context._parentElement.selectAll(".rows-wrapper").data([0]);
+            divrow.enter().append("div").attr("class","rows-wrapper");
+            divrow.selectAll(".labels-wrapper").data([0]).enter().append("table").classed("labels-wrapper", true);
+            divrow.exit().remove();
+
+            var outerTableWrapper = context._parentElement[0][0];
+            var rowsWrapper = context._parentElement.select(".rows-wrapper");
+            var colsWrapper = context._parentElement.select(".cols-wrapper");
+            var colLabelsWrapper = colsWrapper.select('.labels-wrapper');
+            var rowLabelsWrapper = rowsWrapper.select('.labels-wrapper');
+            var rowSelection = context.table.selectAll('tbody > tr > td:first-child');
+            var rowWrapperWidth = rowSelection.style("width");
+            var theadSelection = context.table.select('thead');
+            var colWrapperHeight = theadSelection.style("height");
+
+            _copyLabelContents(context._id);
+            _setOnScrollEvents(domNode);
+
+            function _setOnScrollEvents(domNode){
+                domNode.onscroll = function(e){
+                    var leftDelta = e.target.scrollLeft;
+                    var topDelta = e.target.scrollTop;
+                    var height = parseInt(colWrapperHeight);
+                    colLabelsWrapper.style("margin-left", -leftDelta + "px");
+                    rowLabelsWrapper.style("margin-top", -topDelta + height + "px");
+                    rowLabelsWrapper.select("thead").style("margin-top", topDelta - height + "px");
+                };
+            }
+            function _copyLabelContents(){
+                var theadSelection = context.table.select('thead');
+                var colWrapperHeight = theadSelection.style("height");
+
+                colLabelsWrapper.html(theadSelection.html());
+                colLabelsWrapper.style("width", context.table.style("width"));
+                
+                var origThead = element.selectAll("th");
+                var newThead = context._parentElement.selectAll(".cols-wrapper th");
+                origThead[0].forEach(function(el, i){
+                    newThead[0][i].style.width = getComputedStyle(el).getPropertyValue("width");
+                });                
+                
+                newThead.on("click", function(d, idx){
+                    context.headerClick(d, idx);
+                });
+                
+                var borderWidth = parseInt(context.table.select("td").style("border-width"));
+                
+                var rowContents = "<thead><tr><th style='width: " + parseInt(rowWrapperWidth) + borderWidth + "px'>" +  origThead[0][0].innerHTML + "</th></tr></thead>";
+                
+                rowSelection[0].forEach(function(row){
+                    rowContents += '<tr><td class="row-label">'+ row.innerHTML +'</td></tr>';
+                });
+                rowLabelsWrapper.html(rowContents).style("width", rowWrapperWidth);
+                rowLabelsWrapper.select("thead")
+                    .style("margin-top", "-" + colWrapperHeight)
+                    .style("position", "absolute")
+                ;
+                rowLabelsWrapper.style("margin-top", colWrapperHeight);
+
+                var newTableHeight = outerTableWrapper.offsetHeight - parseInt(colWrapperHeight);
+                var newTableWidth = outerTableWrapper.offsetWidth - parseInt(rowWrapperWidth);
+                
+                element
+                    .style("width", newTableWidth + "px")
+                    .style("height", newTableHeight + "px")
+                    .style("position", "absolute")
+                    .style("top", colWrapperHeight)
+                    .style("left", rowWrapperWidth)
+                ;
+                context.table
+                    .style("margin-top", "-" + colWrapperHeight)
+                    .style("margin-left", "-" + rowWrapperWidth)
+                ;
+                colsWrapper
+                    .style("position", "absolute")
+                ;
+
+                rowsWrapper
+                    .style("width", rowWrapperWidth)
+                    .style("height", newTableHeight + "px")
+                    .style("position", "absolute")
+                ;
+            }
+        }
+        if (this.fixedHeader()) {
+            fixedLabels(this);
+        } else {
+            this._parentElement.select(".rows-wrapper").remove();
+            this._parentElement.select(".cols-wrapper").remove();
+            this._parentElement
+                .style("overflow", "auto")
+                .style("poisition", "relative")
+                .style("overflow", "hidden")
+            ;
+            element
+                .style("margin-top", "0")
+                .style("margin-left", "0")
+                .style("top", "0")
+                .style("left", "0")
+                .style("width", "100%")
+            ;
+            this.table
+                .style("top", "0")
+                .style("left", "0")
+                .style("margin-top", "0")
+                .style("margin-left", "0")
+            ;
+        }
     };
 
     Table.prototype.exit = function (domNode, element) {
@@ -225,16 +387,14 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Table.prototype.headerClick = function (column) {
+    Table.prototype.headerClick = function (column, idx) {
         var context = this;
-        if (this._currentSort !== column) {
-            this._currentSort = column;
+        if (this._currentSort !== idx) {
+            this._currentSort = idx;
             this._currentSortOrder = 1;
         } else {
             this._currentSortOrder *= -1;
         }
-        var idx = this._columns.indexOf(column);
-
         this._data.sort(function (l, r) {
             if (l[idx] === r[idx]) {
                 return 0;
@@ -254,10 +414,10 @@
         return this;
     };
 
-    Table.prototype.selectionBagClick = function (d) {
+    Table.prototype.selectionBagClick = function (d, i, j) {
         if (d3.event.shiftKey) {
             var inRange = false;
-            var selection = this._data.filter(function (row) {
+            var selection = this._data.filter(function (row, i) {
                 var lastInRangeRow = false;
                 if (row === d || row === this._selectionPrevClick) {
                     if (inRange) {

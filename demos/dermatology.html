@@ -134,13 +134,17 @@
         if (def) {
             def.split("&").forEach(function (param, idx) {
                 var paramParts = param.split("=");
-                if (widgetPath === "" && paramParts.length === 1) {
+                if (paramParts[0] === "hpcc_debug") {
+                    window.__hpcc_debug = paramParts[1];
+                } else if (widgetPath === "" && paramParts.length === 1) {
                     widgetPath = decodeURIComponent(paramParts[0]);
                 } else {
                     params[decodeURIComponent(paramParts[0])] = decodeURIComponent(paramParts[1]);
                 }
             });
-            document.getElementById("widgetSelect").value = widgetPath;
+            if (widgetPath) {
+                document.getElementById("widgetSelect").value = widgetPath;
+            }
         }
 
         var body = document.getElementById("body");

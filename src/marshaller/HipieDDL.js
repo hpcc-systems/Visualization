@@ -59,7 +59,7 @@
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
                 }
-                //  Symposium AVE Hack 
+                //  Symposium AVE Hack
                 if (val === undefined && rhsKey.indexOf("_AVE") === rhsKey.length - 4 && item.base_count !== undefined) {
                     var rhsSum = rhsKey.substring(0, rhsKey.length - 4) + "_SUM";
                     val = item[rhsSum];
@@ -566,6 +566,7 @@
                                 .name(field.id)
                                 .label((field.properties ? field.properties.label : null) || field.label)
                                 .type("textbox")
+                                .value(field.properties.default ? field.properties.default : "")
                             ;
                         }))
                     ;

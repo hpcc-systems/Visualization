@@ -35,12 +35,15 @@
 }
 
 .layout_Grid .notDragItem { 
-    z-index: -1;
+    /*z-index: -1;*/
     opacity: 1;
 }
 .layout_Grid div[draggable=true] { 
     opacity: 0.75;
     cursor: move;
+}
+.layout_Grid div[draggable=true] > .layout_Surface{ 
+    overflow:visible;
 }
 
 .layout_Grid div[draggable=true] .dragHandle {
@@ -97,6 +100,16 @@
     display:none;
 }
 
+.layout_Grid .selected-cell div.dragHandle{
+    background-color: #F48A00;
+}
+
+.layout_Grid .selected-cell div.dragHandle_nw, 
+.layout_Grid .selected-cell div.dragHandle_ne, 
+.layout_Grid .selected-cell div.dragHandle_se, 
+.layout_Grid .selected-cell div.dragHandle_sw{
+    background-color: #EE1;
+}
 .layout_Grid .grid-drop-target{
     position:fixed;
     box-sizing:border-box;

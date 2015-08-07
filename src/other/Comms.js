@@ -6,6 +6,24 @@
         root.other_Comms = factory();
     }
 }(this, function () {
+    function espValFix(val) {
+        if (!val.trim) {
+            return val;
+        }
+        var retVal = val.trim();
+        if (retVal !== "" && !isNaN(retVal)) {
+            return Number(retVal);
+        }
+        return retVal;
+    }
+
+    function espRowFix(row) {
+        for (var key in row) {
+            row[key] = espValFix(row[key]);
+        }
+        return row;
+    }
+
     function ESPUrl() {
         this._protocol = "http:";
         this._hostname = "localhost";
@@ -359,7 +377,8 @@
             }
             // Remove "response.result.Row"
             for (key in response) {
-                response[key] = response[key].Row;
+                response[key] = response[key].Row.map(espRowFix);
+
             }
             context._mappings.mapResponse(response);
             callback(response);
@@ -481,7 +500,7 @@
                 context._total = response[key].Total;
                 response = response[key].Result;
                 for (var responseKey in response) {
-                    response = response[responseKey].Row;
+                    response = response[responseKey].Row.map(espRowFix);
                     break;
                 }
                 break;
@@ -674,7 +693,7 @@
             }
             // Remove "response.result.Row"
             for (key in response) {
-                context._resultNameCache[key] = response[key].Row;
+                context._resultNameCache[key] = response[key].Row.map(espRowFix);
                 ++context._resultNameCacheCount;
             }
             callback(context._resultNameCache);
@@ -777,7 +796,7 @@
 
     HIPIEDatabomb.prototype.databomb = function (_) {
         if (!arguments.length) return this._databomb;
-        this._databomb = _;
+        this._databomb = _.map(espRowFix);
         return this;
     };
 

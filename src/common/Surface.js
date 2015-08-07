@@ -151,10 +151,10 @@
                     el
                       .append('i')
                       .attr("class","fa")
-                      .text(function(d) { return button.label; })
+                      .text(function(d) { return button.label; });
                 } else {
                     el
-                      .text(function(d) { return button.label; })
+                      .text(function(d) { return button.label; });
                 }
             })
         ;

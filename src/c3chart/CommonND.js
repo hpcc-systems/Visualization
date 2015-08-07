@@ -64,6 +64,8 @@
     CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid",null,{tags:['Intermediate']});
     CommonND.prototype.publish("showYGrid", false, "boolean", "Show Y Grid",null,{tags:['Intermediate']});
 
+    CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
             this._config.subchart = {
@@ -121,6 +123,10 @@
         Common.prototype.update.apply(this, arguments);
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
         element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
         element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
 

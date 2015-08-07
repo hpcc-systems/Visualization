@@ -19,6 +19,7 @@
     Choropleth.prototype.implements(IChoropleth.prototype);
 
     Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Choropleth.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
     Choropleth.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -129,6 +130,9 @@
 
     Choropleth.prototype.update = function (domNode, element) {
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
     };
 
     // A modified d3.geo.albersUsa to include Puerto Rico.

@@ -18,11 +18,15 @@
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
     Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
+    Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
 
         var dataLen = 10;
         var offset = 0;

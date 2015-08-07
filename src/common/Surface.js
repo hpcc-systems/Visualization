@@ -145,17 +145,16 @@
                     .style('padding', button.padding)
                     .style('width', button.width)
                     .style('height', button.height)
-                    .style("cursor","pointer");
+                    .style("cursor","pointer")
+                    .on("click", function(d) { context.click(d); });
                 if (button.font === "FontAwesome") {
                     el
                       .append('i')
                       .attr("class","fa")
                       .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
                 } else {
                     el
                       .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
                 }
             })
         ;

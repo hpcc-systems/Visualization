@@ -195,10 +195,14 @@
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
         ;
 
-        var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - this.buttonContainer.node().offsetWidth + 'px';
-        var yPos = context._titleRect.node().getBoundingClientRect().top + ((titleTextHeight - this.buttonContainer.node().offsetHeight) / 2) + 'px';
-        this.buttonContainer.style('top', yPos);
-        this.buttonContainer.style('left', xPos);
+        var xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - this.buttonContainer.node().offsetWidth;
+        var yPos = context._titleRect.node().getBoundingClientRect().top + ((titleTextHeight - this.buttonContainer.node().offsetHeight) / 2);
+        if (!isNaN(xPos)) {
+            this.buttonContainer.style("left", xPos + "px");
+        }
+        if (!isNaN(yPos)) {
+            this.buttonContainer.style("top", yPos + "px");
+        }
 
         if (this.showTitle()) {
             this._container

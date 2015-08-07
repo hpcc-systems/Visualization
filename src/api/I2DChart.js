@@ -26,6 +26,15 @@
     I2DChart.prototype.click = function (row, column) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column);
     };
+    I2DChart.prototype.mouseover = function (row, column) {
+//        console.log("Mouseover:  " + JSON.stringify(row) + ", " + column);
+    };
+    I2DChart.prototype.mouseout = function (row, column) {
+//        console.log("Mouseover:  " + JSON.stringify(row) + ", " + column);
+    };
+    I2DChart.prototype.mousemove = function (row, column) {
+//        console.log("Mouseover:  " + JSON.stringify(row) + ", " + column);
+    };
 
     return I2DChart;
 }));

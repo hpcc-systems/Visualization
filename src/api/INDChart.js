@@ -41,6 +41,15 @@
     INDChart.prototype.click = function (row, column) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column);
     };
+    INDChart.prototype.mouseover = function (row, column) {
+//        console.log("Mouseover:  " + JSON.stringify(row) + ", " + column);
+    };
+    INDChart.prototype.mouseout = function (row, column) {
+//        console.log("Mouseout:  " + JSON.stringify(row) + ", " + column);
+    };
+    INDChart.prototype.mousemove = function (row, column) {
+//        console.log("Mousemove:  " + JSON.stringify(row) + ", " + column);
+    };
 
     return INDChart;
 }));

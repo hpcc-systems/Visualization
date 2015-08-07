@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./XYAxis", "../api/INDChart", "css!./Column"], factory);
+        define(["d3", "./XYAxis", "../api/INDChart", "../layout/Tooltip", "css!./Column"], factory);
     } else {
-        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.api_INDChart);
+        root.chart_Column = factory(root.d3, root.chart_XYAxis, root.api_INDChart, root.layout_Tooltip);
     }
-}(this, function (d3, XYAxis, INDChart) {
+}(this, function (d3, XYAxis, INDChart, Tooltip) {
     function Column(target) {
         XYAxis.call(this);
         INDChart.call(this);
@@ -18,10 +18,29 @@
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
     Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
+    Column.prototype.publish("useTooltip", true, "boolean", "Use the Tooltip Widget for the chart", null,{tags:[]});
+
+    Column.prototype.enter = function (domNode, element) {
+        XYAxis.prototype.enter.apply(this, arguments);
+    };
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
-        var context = this;
+        if (this.useTooltip()) {
+            if (!this._parentOverlay && this._parentWidget._parentOverlay) {
+                this._parentOverlay = this.locateOverlayNode();  
+            }
+            this._parentOverlay.selectAll(".layout_Tooltip").each(function(d) {
+                d.node().parentNode.remove();
+            });
+            
+            this._tooltip = new Tooltip()
+                .registerWidget(this)
+                .target(this._parentOverlay.node())
+                .render()
+            ;
+        }
 
+        var context = this;
         this._palette = this._palette.switch(this.paletteID());
 
         var dataLen = 10;
@@ -63,7 +82,15 @@
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(dataRow), context._columns[idx + 1]);
                     })
-                    .append("title")
+                    .on("mouseover", function(d, idx) {
+                        context.mouseover(context.rowToObj(dataRow), context._columns[idx + 1]);
+                    })
+                    .on("mouseout", function(d, idx) {
+                        context.mouseout(context.rowToObj(dataRow), context._columns[idx + 1]);
+                    })
+                    .on("mousemove", function(d, idx) {
+                        context.mousemove(context.rowToObj(dataRow), context._columns[idx + 1]);
+                    })
                 ;
 
                 if (context.orientation() === "horizontal") {
@@ -86,10 +113,6 @@
                     ;
                 }
 
-                columnRect.select("title")
-                    .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
-                ;
-
                 if (context.stacked()) {
                     columnRect.sort(function (l, r) {
                         return r - l;
@@ -106,6 +129,6 @@
         ;
 
     };
-
+    
     return Column;
 }));

@@ -43,6 +43,13 @@
         this._watchArr = [];
 
         this._renderCount = 0;
+
+        if (window.__hpcc_debug) { // jshint ignore:line
+            if (window.g_all === undefined) {
+                window.g_all = {};
+            }
+            window.g_all[this._id] = this;
+        }
     }
     Widget.prototype._class = " common_Widget";
 

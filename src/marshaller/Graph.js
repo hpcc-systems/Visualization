@@ -85,7 +85,7 @@
                                 case "BUBBLE":
                                 case "BAR":
                                 case "WORD_CLOUD":
-                                    newSurface.menu(item.widget._2dChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
+                                    newSurface.menu(item.widget._2DChartTypes.concat(item.widget._NDChartTypes.concat(item.widget._anyChartTypes)).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
                                             .chartType(d)
@@ -94,7 +94,7 @@
                                     };
                                     break;
                                 case "LINE":
-                                    newSurface.menu(item.widget._multiChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
+                                    newSurface.menu(item.widget._NDChartTypes.concat(item.widget._anyChartTypes).map(function (item) { return item.display; }).sort());
                                     newSurface._menu.click = function (d) {
                                         item.widget
                                             .chartType(d)

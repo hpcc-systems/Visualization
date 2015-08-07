@@ -29,8 +29,8 @@
      */
     Pie.prototype.publish("tooltipTemplate","[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>", "string", "Tooltip Text",null,{tags:['Intermediate']});
 
-    Pie.prototype.publish("Depth3D", 10, "number", "3D Depth (px)",null,{tags:['Basic']});
-    Pie.prototype.publish("Angle3D", 15, "number", "3D Angle (Deg)",null,{tags:['Basic']});
+    Pie.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:['Basic']});
+    Pie.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
 
     Pie.prototype.publish("marginLeft", 0, "number", "Margin (Left)",null,{tags:['Intermediate']});
     Pie.prototype.publish("marginRight", 0, "number", "Margin (Right)",null,{tags:['Intermediate']});

@@ -26,6 +26,7 @@
 
         var dataLen = 10;
         var offset = 0;
+
         switch (this.xAxisType()) {
             case "ordinal":
                 dataLen = this.dataScale.rangeBand();
@@ -70,18 +71,20 @@
                     columnRect.transition()
                         .attr("class", "columnRect")
                         .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(context._columns[idx + 1])) + offset;})
-                        .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
+                        .attr("width", context.stacked() ? dataLen: columnScale.rangeBand())
                         .attr("y", function (d) { return d instanceof Array ? context.valueScale(d[1]) : context.valueScale(d) ; })
                         .attr("height", function (d) {  return  d instanceof Array ? context.valueScale(d[0]) - context.valueScale(d[1]) : height - context.valueScale(d) ; })
+                        .style("opacity", context.stacked() ? 0.7 : 1)
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 } else {
                     columnRect.transition()
                         .attr("class", "columnRect")
                         .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(context._columns[idx + 1])) + offset;})
-                        .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
+                        .attr("height", context.stacked() ? dataLen - widthReducer : columnScale.rangeBand() - widthReducer)
                         .attr("x", function (d) { return d instanceof Array ? context.valueScale(d[0]) : 0 ; })
                         .attr("width", function (d) {  return  d instanceof Array ? context.valueScale(d[1]) - context.valueScale(d[0]) : context.valueScale(d) ; })
+                        .style("opacity", context.stacked() ? 0.7 : 1)
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 }

@@ -19,7 +19,7 @@ define(["require"], function (require) {
                     });
                 });
 
-                it ("Adding widget to the page", function (done) {
+                it ("Adding widget without loadData method", function (done) {
                     var individualDiv = document.createElement("div");
                     individualDiv.setAttribute('id', path);
                     individualDiv.setAttribute('class', 'widgetElement anmol');
@@ -31,7 +31,6 @@ define(["require"], function (require) {
                     require([path], function (Widget) {
                         var vizWidget = new Widget()
                             .target(path)
-                            .testData()
                             .render()
                         ;
                         done();

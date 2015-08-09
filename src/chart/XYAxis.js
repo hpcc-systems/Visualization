@@ -210,8 +210,8 @@
         return this
             .xAxisType("ordinal")
             .yAxisType("time")
-            .yAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-            // .yAxisTypeTimePattern("%Y-%m-%d")
+            // .yAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+            .yAxisTypeTimePattern("%Y-%m-%d")
             // .columns(["Task", "Date Range"])
             .columns(["Person", "Address 1", "Address 2", "Address 3", "Address 4", "Address 5"])
             .orientation("vertical")
@@ -222,10 +222,10 @@
             // ))
             .data([
                 ["Per 1", ["2008-01-01", "2009-01-01"], null, null, null, null],
-                ["Per 2", null, ["2008-01-01", "2009-01-01"], null, null, null],
-                ["Per 3", null, null, ["2008-01-01", "2009-01-01"], null, null],
-                ["Per 4", null, null, null, ["2008-01-01", "2009-01-01"], null],
-                ["Per 5", null, null, null, null, ["2008-01-01", "2009-01-01"]]
+                ["Per 2", ["2008-01-01", "2009-01-01"], ["2009-01-01", "2010-01-01"], null, null, null],
+                ["Per 3", null, null, ["2008-01-01", "2009-06-01"], null, null],
+                ["Per 4", null, null, null, ["2009-01-01", "2009-06-01"], null],
+                ["Per 5", null, null, null, null, ["2010-01-01", "2010-09-01"]]
             ])
         ;
     };

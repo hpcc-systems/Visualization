@@ -14,6 +14,7 @@ define(["require"], function (require) {
                     require([path], function (Widget) {
                         assert.isFunction(Widget);
                         assert.isFunction(Widget.prototype.constructor, "constructor");
+                        assert.isFunction(Widget.prototype.testData, "has testData");
                         done();
                     });
                 });

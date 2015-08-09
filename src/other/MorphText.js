@@ -16,6 +16,10 @@
     MorphText.prototype = Object.create(SVGWidget.prototype);
     MorphText.prototype._class += " other_MorphText";
 
+    MorphText.prototype.testData = function () {
+        return this;
+    };
+
     MorphText.prototype.text = function (_) {
         if (!arguments.length) return this._text;
         this._text = _;

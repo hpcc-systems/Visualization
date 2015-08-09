@@ -1,0 +1,22 @@
+.chart_XYAxis .axis path,
+.chart_XYAxis .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.chart_XYAxis .region {
+  opacity: 0.33;
+}
+.chart_XYAxis .brush rect.background {
+    z-index: -999;
+}
+.chart_XYAxis .brush .extent {
+  stroke:none;
+  fill: steelblue;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+.chart_XYAxis .brush .resize path {
+    fill: #eee;
+    stroke: #666;
+}

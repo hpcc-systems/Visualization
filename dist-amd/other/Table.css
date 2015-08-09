@@ -1,0 +1,42 @@
+.other_Table {
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+.other_Table th {
+    padding:5px 10px;
+    background-color:#1f77b4;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a9c6c9;
+    color:white;
+    white-space: nowrap;
+    cursor : pointer;
+}
+.other_Table .thIcon {
+    font-family: FontAwesome;
+    padding-left: 8px;
+}
+.other_Table tr {
+    background-color:#dcf1ff;
+    color:black;
+}
+.other_Table tr.selected {
+    background-color:#f48a00;
+    color: white;
+}
+.other_Table tr:hover {
+    background-color: #bfd7e7;
+}
+.other_Table tr.selected:hover {
+    background-color:#5ea8db;
+    color: white;
+}
+.other_Table td {
+    border-width: 1px;
+    padding:2px 5px;
+    border-style: solid;
+    border-color: #a9c6c9;
+    white-space: nowrap;
+}

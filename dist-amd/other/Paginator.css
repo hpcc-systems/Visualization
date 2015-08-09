@@ -1,0 +1,93 @@
+.other_Paginator .pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.other_Paginator .pagination > li {
+  display: inline;
+}
+.other_Paginator .pagination > li > a,
+.other_Paginator .pagination > li > span {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: #337ab7;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.other_Paginator .pagination > li:first-child > a,
+.other_Paginator .pagination > li:first-child > span {
+  margin-left: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.other_Paginator .pagination > li:last-child > a,
+.other_Paginator .pagination > li:last-child > span {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.other_Paginator .pagination > li > a:hover,
+.other_Paginator .pagination > li > span:hover,
+.other_Paginator .pagination > li > a:focus,
+.other_Paginator .pagination > li > span:focus {
+  color: #23527c;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.other_Paginator .pagination > .active > a,
+.other_Paginator .pagination > .active > span,
+.other_Paginator .pagination > .active > a:hover,
+.other_Paginator .pagination > .active > span:hover,
+.other_Paginator .pagination > .active > a:focus,
+.other_Paginator .pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff;
+  cursor: default;
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+.other_Paginator .pagination > .disabled > span,
+.other_Paginator .pagination > .disabled > span:hover,
+.other_Paginator .pagination > .disabled > span:focus,
+.other_Paginator .pagination > .disabled > a,
+.other_Paginator .pagination > .disabled > a:hover,
+.other_Paginator .pagination > .disabled > a:focus {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #ddd;
+}
+.other_Paginator .pagination-lg > li > a,
+.other_Paginator .pagination-lg > li > span {
+  padding: 10px 16px;
+  font-size: 18px;
+}
+.other_Paginator .pagination-lg > li:first-child > a,
+.other_Paginator .pagination-lg > li:first-child > span {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.other_Paginator .pagination-lg > li:last-child > a,
+.other_Paginator .pagination-lg > li:last-child > span {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.other_Paginator .pagination-sm > li > a,
+.other_Paginator .pagination-sm > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.other_Paginator .pagination-sm > li:first-child > a,
+.other_Paginator .pagination-sm > li:first-child > span {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.other_Paginator .pagination-sm > li:last-child > a,
+.other_Paginator .pagination-sm > li:last-child > span {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}

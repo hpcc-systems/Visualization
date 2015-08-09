@@ -12,6 +12,7 @@
         this._tag = "div";
     }
     AbsoluteSurface.prototype = Object.create(HTMLWidget.prototype);
+    AbsoluteSurface.prototype.constructor = AbsoluteSurface;
     AbsoluteSurface.prototype._class += " layout_AbsoluteSurface";
 
     AbsoluteSurface.prototype.publish("units", "percent", "set", "Units", ["pixels", "percent"]);

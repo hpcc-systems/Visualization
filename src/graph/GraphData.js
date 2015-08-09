@@ -13,6 +13,7 @@
         this.setDefaultEdgeLabel(function () { return {}; });
     }
     GraphData.prototype = Object.create(dagre.graphlib.Graph.prototype);
+    GraphData.prototype.constructor = GraphData;
 
     GraphData.prototype.setData = function (vertices, edges, hierarchy, merge) {
         var context = this;

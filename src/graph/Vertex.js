@@ -14,6 +14,7 @@
         this._annotationWidgets = {};
     }
     Vertex.prototype = Object.create(SVGWidget.prototype);
+    Vertex.prototype.constructor = Vertex;
     Vertex.prototype._class += " graph_Vertex";
 
     Vertex.prototype.publishProxy("faChar", "_icon");

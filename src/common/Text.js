@@ -10,6 +10,7 @@
         SVGWidget.call(this);
     }
     Text.prototype = Object.create(SVGWidget.prototype);
+    Text.prototype.constructor = Text;
     Text.prototype._class += " common_Text";
 
     Text.prototype.publish("text", "", "string", "Display Text",null,{tags:['Private']});

@@ -19,6 +19,7 @@
         this._selection = new Bag.Selection();
     }
     Graph.prototype = Object.create(SVGWidget.prototype);
+    Graph.prototype.constructor = Graph;
     Graph.prototype._class += " graph_Graph";
     Graph.prototype.implements(IGraph.prototype);
 

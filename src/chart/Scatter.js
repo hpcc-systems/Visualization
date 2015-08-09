@@ -11,6 +11,7 @@
         INDChart.call(this);
     }
     Scatter.prototype = Object.create(XYAxis.prototype);
+    Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " chart_Scatter";
     Scatter.prototype.implements(INDChart.prototype);
 

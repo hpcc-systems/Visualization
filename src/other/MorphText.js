@@ -14,6 +14,7 @@
         this._reverse = false;
     }
     MorphText.prototype = Object.create(SVGWidget.prototype);
+    MorphText.prototype.constructor = MorphText;
     MorphText.prototype._class += " other_MorphText";
 
     MorphText.prototype.testData = function () {

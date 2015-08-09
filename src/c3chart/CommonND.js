@@ -23,6 +23,7 @@
         };
     }
     CommonND.prototype = Object.create(Common.prototype);
+    CommonND.prototype.constructor = CommonND;
     CommonND.prototype._class += " c3chart_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 

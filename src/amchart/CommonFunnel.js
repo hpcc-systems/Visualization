@@ -13,8 +13,9 @@
 
         this._chart = {};
     }
-
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
+    CommonFunnel.prototype.constructor = CommonFunnel;
+    CommonFunnel.prototype._class += " amchart_CommonFunnel";
 
     /**
      * Publish Params Common To Other Libraries

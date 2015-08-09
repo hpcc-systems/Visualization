@@ -19,6 +19,7 @@
         this.content([]);
     }
     Grid.prototype = Object.create(HTMLWidget.prototype);
+    Grid.prototype.constructor = Grid;
     Grid.prototype._class += " layout_Grid";
 
     Grid.prototype.publish("designMode", false, "boolean", "Design Mode",null,{tags:['Private']});

@@ -13,8 +13,9 @@
 
         this._chart = {};
     }
-
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
+    CommonRadar.prototype.constructor = CommonRadar;
+    CommonRadar.prototype._class += " amchart_CommonRadar";
 
     // NO X-Axis  !!!
 

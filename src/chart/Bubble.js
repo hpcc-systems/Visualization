@@ -20,6 +20,7 @@
         ;
     }
     Bubble.prototype = Object.create(SVGWidget.prototype);
+    Bubble.prototype.constructor = Bubble;
     Bubble.prototype._class += " chart_Bubble";
     Bubble.prototype.implements(I2DChart.prototype);
 

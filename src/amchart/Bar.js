@@ -12,9 +12,10 @@
         this._gType = "column";
     }
     Bar.prototype = Object.create(CommonSerial.prototype);
-    Bar.prototype.implements(INDChart.prototype);
+    Bar.prototype.constructor = Bar;
     Bar.prototype._class += " amchart_Bar";
-
+    Bar.prototype.implements(INDChart.prototype);
+    
     /**
      * Publish Params Common To Other Libraries
      */

@@ -12,6 +12,8 @@
         this._drawStartPos = "origin";
     }
     HTMLWidget.prototype = Object.create(Widget.prototype);
+    HTMLWidget.prototype.constructor = HTMLWidget;
+    HTMLWidget.prototype._class += " common_HTMLWidget";
 
     HTMLWidget.prototype.calcFrameWidth = function (element) {
         var retVal = parseFloat(element.style("padding-left")) +

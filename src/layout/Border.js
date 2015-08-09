@@ -19,6 +19,7 @@
         this.content([]);
     }
     Border.prototype = Object.create(HTMLWidget.prototype);
+    Border.prototype.constructor = Border;
     Border.prototype._class += " layout_Border";
 
     Border.prototype.publish("gutter", 4, "number", "Gap Between Widgets",null,{tags:['Private']});

@@ -13,6 +13,7 @@
         this._chartType = "ColumnChart";
     }
     Column.prototype = Object.create(CommonND.prototype);
+    Column.prototype.constructor = Column;
     Column.prototype._class += " google_Column";
 
     /**

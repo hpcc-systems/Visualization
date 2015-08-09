@@ -12,6 +12,7 @@
         this._type = "bar";
     }
     Column.prototype = Object.create(CommonND.prototype);
+    Column.prototype.constructor = Column;
     Column.prototype._class += " c3chart_Column";
 
     /**

@@ -15,6 +15,7 @@
         this._show_settings = true;
     }
     PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
+    PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
     PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:['Basic','TODO2']});

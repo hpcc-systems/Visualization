@@ -13,6 +13,7 @@
         this._chartType = "LineChart";
     }
     Line.prototype = Object.create(CommonND.prototype);
+    Line.prototype.constructor = Line;
     Line.prototype._class += " google_Line";
 
     /**

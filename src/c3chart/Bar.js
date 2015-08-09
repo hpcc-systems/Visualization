@@ -11,6 +11,9 @@
 
         this._config.axis.rotated = true;
     }
+    Bar.prototype = Object.create(Column.prototype);
+    Bar.prototype.constructor = Bar;
+    Bar.prototype._class += " c3chart_Bar";
 
     /**
      * Publish Params Common To Other Libraries
@@ -20,8 +23,5 @@
      * Publish Params Unique To This Widget
      */   
     
-    Bar.prototype = Object.create(Column.prototype);
-    Bar.prototype._class += " c3chart_Bar";
-
     return Bar;
 }));

@@ -22,6 +22,7 @@
         };
     }
     Gauge.prototype = Object.create(Common1D.prototype);
+    Gauge.prototype.constructor = Gauge;
     Gauge.prototype._class += " c3chart_Gauge";
 
     /**

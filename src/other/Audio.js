@@ -15,6 +15,7 @@
         this._sections = {};
     }
     Audio.prototype = Object.create(HTMLWidget.prototype);
+    Audio.prototype.constructor = Audio;
     Audio.prototype._class += " other_Audio";
 
     Audio.prototype.source = function (_) {

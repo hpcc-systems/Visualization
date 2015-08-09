@@ -69,6 +69,7 @@
         this._allCharts["BAR"] = this._allCharts["COLUMN"];
     }
     MultiChart.prototype = Object.create(SVGWidget.prototype);
+    MultiChart.prototype.constructor = MultiChart;
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 

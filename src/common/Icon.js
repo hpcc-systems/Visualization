@@ -13,6 +13,7 @@
         this._faChar = new FAChar();
     }
     Icon.prototype = Object.create(SVGWidget.prototype);
+    Icon.prototype.constructor = Icon;
     Icon.prototype._class += " common_Icon";
 
     Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:['Private']});

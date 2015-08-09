@@ -71,6 +71,7 @@
         ;
     }
     Slider.prototype = Object.create(SVGWidget.prototype);
+    Slider.prototype.constructor = Slider;
     Slider.prototype._class += " form_Slider";
     Slider.prototype.implements(IInput.prototype);
 

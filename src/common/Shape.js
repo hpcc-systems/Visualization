@@ -10,6 +10,7 @@
         SVGWidget.call(this);
     }
     Shape.prototype = Object.create(SVGWidget.prototype);
+    Shape.prototype.constructor = Shape;
     Shape.prototype._class += " common_Shape";
 
     Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"],{tags:['Private']});

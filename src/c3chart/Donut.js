@@ -12,6 +12,7 @@
         this._type = "donut";
     }
     Donut.prototype = Object.create(Common2D.prototype);
+    Donut.prototype.constructor = Donut;
     Donut.prototype._class += " c3chart_Donut";
 
     /**

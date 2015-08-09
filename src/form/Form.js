@@ -12,6 +12,7 @@
         this._tag = "form";
     }
     Form.prototype = Object.create(HTMLWidget.prototype);
+    Form.prototype.constructor = Form;
     Form.prototype._class += " form_Form";
 
     Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");

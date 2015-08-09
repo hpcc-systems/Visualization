@@ -10,8 +10,9 @@
         CommonFunnel.call(this);
     }
     Funnel.prototype = Object.create(CommonFunnel.prototype);
-    Funnel.prototype.implements(I2DChart.prototype);
+    Funnel.prototype.constructor = Funnel;
     Funnel.prototype._class += " amchart_Funnel";
+    Funnel.prototype.implements(I2DChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

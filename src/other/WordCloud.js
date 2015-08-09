@@ -11,6 +11,7 @@
         IWordCloud.call(this);
     }
     WordCloud.prototype = Object.create(SVGWidget.prototype);
+    WordCloud.prototype.constructor = WordCloud;
     WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
 

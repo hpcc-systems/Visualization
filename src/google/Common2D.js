@@ -12,6 +12,7 @@
         I2DChart.call(this);
     }
     Common2D.prototype = Object.create(Common.prototype);
+    Common2D.prototype.constructor = Common2D;
     Common2D.prototype._class += " google_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);
 

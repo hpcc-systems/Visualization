@@ -14,6 +14,7 @@
         this._surfaceButtons = [];
     }
     Surface.prototype = Object.create(HTMLWidget.prototype);
+    Surface.prototype.constructor = Surface;
     Surface.prototype._class += " layout_Surface";
 
     Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:['Basic']});

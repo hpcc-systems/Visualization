@@ -10,6 +10,7 @@
         Grid.call(this);
     }
     HTML.prototype = Object.create(Grid.prototype);
+    HTML.prototype.constructor = HTML;
     HTML.prototype._class += " marshaller_HTML";
 
     HTML.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:['Private']});

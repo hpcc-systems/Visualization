@@ -11,6 +11,7 @@
         this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
     }
     Cell.prototype = Object.create(Surface.prototype);
+    Cell.prototype.constructor = Cell;
     Cell.prototype._class += " layout_Cell";
 
     Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position",null,{tags:['Private']});

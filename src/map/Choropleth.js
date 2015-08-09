@@ -15,6 +15,7 @@
         this._dataMaxWeight = 0;
     }
     Choropleth.prototype = Object.create(SVGWidget.prototype);
+    Choropleth.prototype.constructor = Choropleth;
     Choropleth.prototype._class += " map_Choropleth";
     Choropleth.prototype.implements(IChoropleth.prototype);
 

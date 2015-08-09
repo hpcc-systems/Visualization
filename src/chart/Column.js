@@ -13,6 +13,7 @@
         this._linearGap = 25;
     }
     Column.prototype = Object.create(XYAxis.prototype);
+    Column.prototype.constructor = Column;
     Column.prototype._class += " chart_Column";
     Column.prototype.implements(INDChart.prototype);
 

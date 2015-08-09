@@ -12,6 +12,7 @@
         this._tag = "div";
     }
     Layered.prototype = Object.create(HTMLWidget.prototype);
+    Layered.prototype.constructor = Layered;
     Layered.prototype._class += " layout_Layered";
 
     Layered.prototype.publish("padding", 0, "number", "Padding");

@@ -12,6 +12,7 @@
         INDChart.call(this);
     }
     CommonND.prototype = Object.create(Common.prototype);
+    CommonND.prototype.constructor = CommonND;
     CommonND.prototype._class += " google_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 

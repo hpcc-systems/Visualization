@@ -13,6 +13,7 @@
         this._chartType = "BarChart";
     }
     Bar.prototype = Object.create(CommonND.prototype);
+    Bar.prototype.constructor = Bar;
     Bar.prototype._class += " google_Bar";
 
     /**

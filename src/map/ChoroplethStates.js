@@ -12,6 +12,7 @@
         this.projection("albersUsaPr");
     }
     ChoroplethStates.prototype = Object.create(Choropleth.prototype);
+    ChoroplethStates.prototype.constructor = ChoroplethStates;
     ChoroplethStates.prototype._class += " map_ChoroplethStates";
 
     ChoroplethStates.prototype.testData = function () {

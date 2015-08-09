@@ -12,8 +12,9 @@
         this._gType = "candlestick";
     }
     Candle.prototype = Object.create(CommonSerial.prototype);
-    Candle.prototype.implements(INDChart.prototype);
+    Candle.prototype.constructor = Candle;
     Candle.prototype._class += " amchart_Candle";
+    Candle.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

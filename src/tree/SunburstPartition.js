@@ -11,6 +11,7 @@
         ITree.call(this);
     }
     SunburstPartition.prototype = Object.create(SVGWidget.prototype);
+    SunburstPartition.prototype.constructor = SunburstPartition;
     SunburstPartition.prototype._class += " tree_SunburstPartition";
     SunburstPartition.prototype.implements(ITree.prototype);
 

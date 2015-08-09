@@ -168,6 +168,9 @@
     };
 
     Edge.prototype._calculateEdgePoints = function (source, target, _points) {
+        if (!source || !target) {
+            return [[0, 0], [0, 0]];
+        }
         var points = _points ? _points.slice() : [];
         var p0 = points.length === 0 ? target.pos() : points[0];
         var p1 = points.length === 0 ? source.pos() : points[points.length - 1];

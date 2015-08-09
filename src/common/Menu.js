@@ -11,7 +11,7 @@
         IMenu.call(this);
 
         this._icon = new Icon()
-            .shape("rect")
+            .shape("square")
             .diameter(14)
         ;
         this._list = new List();

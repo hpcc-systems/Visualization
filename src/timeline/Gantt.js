@@ -39,11 +39,6 @@
                 break;
         }
 
-        var columnScale = d3.scale.ordinal()
-            .domain(context._columns.filter(function (d, idx) { return idx > 0; }))
-            .rangeRoundBands([0, dataLen])
-        ;
-
         var gantt = this.svgData.selectAll(".dataRow")
             .data(this.formattedData())
         ;
@@ -56,11 +51,11 @@
             .each(function (dataRow, i) {
                 var element = d3.select(this);
 
-                var columnRect = element.selectAll("rect").data(dataRow.filter(function (d, i) {return i > 0;}));
+                var ganttRect = element.selectAll("rect").data(dataRow.filter(function (d, i) {return i > 0;}));
 
-                columnRect
+                ganttRect
                   .enter().append("rect")
-                    .attr("class", "columnRect")
+                    .attr("class", "ganttRect")
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(dataRow), context._columns[idx + 1]);
                     })
@@ -68,8 +63,8 @@
                 ;
 
                 if (context.orientation() === "horizontal") {
-                    columnRect.transition()
-                        .attr("class", "columnRect")
+                    ganttRect.transition()
+                        .attr("class", "ganttRect")
                         .attr("x", function (d, idx) { return context.dataScale(dataRow[0]) + offset;})
                         .attr("width", dataLen)
                         .attr("y", function (d) { return d instanceof Array ? context.valueScale(d[1]) : context.valueScale(d) ; })
@@ -77,8 +72,8 @@
                         .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 } else {
-                    columnRect.transition()
-                        .attr("class", "columnRect")
+                    ganttRect.transition()
+                        .attr("class", "ganttRect")
                         .attr("y", function (d, idx) { return context.dataScale(dataRow[0]) + offset;})
                         .attr("height", dataLen)
                         .attr("x", function (d) { return d instanceof Array ? context.valueScale(d[0]) : 0 ; })
@@ -87,16 +82,16 @@
                     ;
                 }
 
-                columnRect.select("title")
+                ganttRect.select("title")
                     .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
                 ;
 
 
-                columnRect.sort(function (l, r) {
+                ganttRect.sort(function (l, r) {
                     return r - l;
                 });
 
-                columnRect.exit().transition()
+                ganttRect.exit().transition()
                     .remove()
                 ;
         });

@@ -18,6 +18,23 @@ define(["require"], function (require) {
                         done();
                     });
                 });
+
+                it ("Adding widget to the page", function (done) {
+                    var individualDiv = document.createElement("div");
+                    individualDiv.setAttribute('id', path);
+                    individualDiv.setAttribute('class', 'widgetElement anmol');
+                    var element = document.getElementById("testWidget");
+                    element.appendChild(individualDiv);
+                    element.appendChild(document.createElement("br"));
+                    require([path], function (Widget) {
+                        var vizWidget = new Widget()
+                            .target(path)
+                            .testData()
+                            .render()
+                        ;
+                        done();
+                    });
+                });
             });
         });
     });

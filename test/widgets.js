@@ -18,8 +18,6 @@ define(["require"], function (require) {
                         done();
                     });
                 });
-<<<<<<< HEAD
-=======
 
                 it ("Adding widget with loadData method", function (done) {
                     var individualDiv = document.createElement("div");
@@ -45,7 +43,6 @@ define(["require"], function (require) {
                     assert.isNull(f, 'element removed and there are no errors');
                     done();
                 });
->>>>>>> dcc34a6... Adds Null Value test
             });
         });
     });

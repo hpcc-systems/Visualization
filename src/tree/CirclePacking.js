@@ -16,6 +16,7 @@
     CirclePacking.prototype.implements(ITree.prototype);
 
     CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(),{tags:['Basic','Shared']});
+    CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
     CirclePacking.prototype.enter = function (domNode, element) {
         this.diameter = Math.min(this.width(), this.height());
@@ -37,6 +38,10 @@
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
         this.svg.selectAll("circle").remove();
         this.svg.selectAll("text").remove();
 

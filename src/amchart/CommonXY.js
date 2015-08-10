@@ -87,6 +87,8 @@
     //CommonXY.prototype.publish("yAxisMinimum", null, "number", "",null,{tags:['Intermediate']});
     CommonXY.prototype.publish("yAxisTitleOffset", null, "number", "",null,{tags:['Intermediate']});
 
+    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -242,6 +244,9 @@
         domNode.style.height = this.size().height + 'px';
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
     };
 
     return CommonXY;

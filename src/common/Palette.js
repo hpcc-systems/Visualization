@@ -88,6 +88,12 @@
             return ordinalCache[newID];
 
         };
+        ordinal.cloneNotExists = function (newID) {
+            if (ordinalCache[newID]) {
+                return ordinalCache[newID];
+            }
+            return this.clone(newID);
+        };
         ordinal.switch = function (_id, _colors) {
             if (id === _id) {
                 return this;
@@ -180,6 +186,12 @@
         rainbow.clone = function (newID) {
             rainbowCache[newID] = palette_rainbow(newID, this.color());
             return rainbowCache[newID];
+        };
+        rainbow.cloneNotExists = function (newID) {
+            if (rainbowCache[newID]) {
+                return rainbowCache[newID];
+            }
+            return this.clone(newID);
         };
         rainbow.switch = function (_id, _colors) {
             if (id === _id) {

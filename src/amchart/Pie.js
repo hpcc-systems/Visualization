@@ -46,6 +46,8 @@
 
     Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:['Intermediate']});
 
+    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+
     Pie.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -141,6 +143,9 @@
 
     Pie.prototype.update = function(domNode, element) {
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
 
         domNode.style.width = this.size().width + 'px';
         domNode.style.height = this.size().height + 'px';

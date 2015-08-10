@@ -16,6 +16,7 @@
     SunburstPartition.prototype.implements(ITree.prototype);
 
     SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(),{tags:['Basic','Shared']});
+    SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
     SunburstPartition.prototype.root = function (_) {
         if (!arguments.length) return this._root || this._data;
@@ -71,6 +72,10 @@
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
         this.radius = Math.min(this.width(), this.height()) / 2;
         this._xScale.range([0, 2 * Math.PI]);
         this._yScale.range([0, this.radius]);

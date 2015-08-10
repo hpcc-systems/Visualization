@@ -33,6 +33,7 @@
     Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
@@ -70,6 +71,10 @@
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
         var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
 
         //  Enter  ---

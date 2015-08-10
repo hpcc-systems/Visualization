@@ -17,11 +17,12 @@
     Dendrogram.prototype.constructor = Dendrogram;
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
-    
+
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(),{tags:['Basic','Shared']});
     Dendrogram.prototype.publish("textOffset", 8, "number", "Text offset from circle",null,{tags:['Private']});
-    Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"],{tags:['Private']}); 
-     
+    Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal","vertical"],{tags:['Private']});
+    Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         var context = this;
@@ -35,8 +36,11 @@
     Dendrogram.prototype.update = function (domNode, element, secondPass) {
         var context = this;
         SVGWidget.prototype.update.apply(this, arguments);
-        
+
         this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
 
         //  Pad to allow text to display  ---
         this.x(this._maxTextWidth);
@@ -48,7 +52,7 @@
         } else {
             this.layout
                 .size([width, this.height()])
-            ;            
+            ;
         }
 
         var dataNodes = this.layout.nodes(this.data());

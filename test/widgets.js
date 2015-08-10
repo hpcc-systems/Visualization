@@ -41,6 +41,15 @@ define(["require"], function (require) {
                         done();
                     });
                 });
+
+                it("Clone Palette", function (done) {
+                    require([path], function (Widget) {
+                        if (typeof(Widget.prototype.paletteID) === "function") {
+                            assert.isFunction(Widget.prototype.useClonedPalette, 'has useClonedPalette');
+                        }
+                        done();
+                    });
+                });
             });
         });
     });

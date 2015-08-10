@@ -14,6 +14,7 @@
         this._markers = [];
     }
     GMap.prototype = Object.create(Graph.prototype);
+    GMap.prototype.constructor = GMap;
     GMap.prototype._class += " map_GMap";
 
     GMap.prototype.testData = function () {

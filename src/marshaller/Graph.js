@@ -192,6 +192,7 @@
         this.widgetAttributes = ["layout", "chartType", "palette", "title", "columns", "data"];
     }
     Graph.prototype = Object.create(GraphWidget.prototype);
+    Graph.prototype.constructor = Graph;
     Graph.prototype._class += " marshaller_Graph";
 
     Graph.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:['Private']});

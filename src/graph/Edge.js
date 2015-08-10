@@ -19,6 +19,7 @@
         ;
     }
     Edge.prototype = Object.create(SVGWidget.prototype);
+    Edge.prototype.constructor = Edge;
     Edge.prototype._class += " graph_Edge";
 
     Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ['Basic'] });

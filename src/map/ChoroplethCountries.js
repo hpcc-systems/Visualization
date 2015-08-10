@@ -15,6 +15,7 @@
         this.projection(this.worldProjection());
     }
     ChoroplethCountries.prototype = Object.create(Choropleth.prototype);
+    ChoroplethCountries.prototype.constructor = ChoroplethCountries;
     ChoroplethCountries.prototype._class += " map_ChoroplethCountries";
 
     ChoroplethCountries.prototype.publish("worldProjection", "mercator", "set", "Map Projection", ["mercator", "orthographic"],{tags:['Private']});

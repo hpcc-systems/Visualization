@@ -45,6 +45,7 @@
         this._surfaceButtons = [];
     }
     Surface.prototype = Object.create(SVGWidget.prototype);
+    Surface.prototype.constructor = Surface;
     Surface.prototype._class += " common_Surface";
 
     Surface.prototype.publish("showTitle", true, "boolean", "Show Title",null,{tags:["Basic"]});

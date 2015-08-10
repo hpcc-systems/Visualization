@@ -14,8 +14,9 @@
         this._gType = "column";
     }
     Scatter.prototype = Object.create(CommonXY.prototype);
-    Scatter.prototype.implements(INDChart.prototype);
+    Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " amchart_Scatter";
+    Scatter.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

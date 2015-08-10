@@ -15,6 +15,7 @@
         this._data_google = [];
     }
     Timeline.prototype = Object.create(HTMLWidget.prototype);
+    Timeline.prototype.constructor = Timeline;
     Timeline.prototype._class += " google_Timeline";
     /**
      * Publish Params Common To Other Libraries

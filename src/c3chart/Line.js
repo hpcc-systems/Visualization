@@ -12,6 +12,7 @@
         this._type = "line";
     }
     Line.prototype = Object.create(CommonND.prototype);
+    Line.prototype.constructor = Line;
     Line.prototype._class += " c3chart_Line";
 
     /**

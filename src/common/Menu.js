@@ -25,6 +25,7 @@
         this._visible = false;
     }
     Menu.prototype = Object.create(SVGWidget.prototype);
+    Menu.prototype.constructor = Menu;
     Menu.prototype._class += " common_Menu";
     Menu.prototype.implements(IMenu.prototype);
 

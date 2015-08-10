@@ -14,8 +14,9 @@
         this._gType = "column";
     }
     Bubble.prototype = Object.create(CommonXY.prototype);
-    Bubble.prototype.implements(INDChart.prototype);
+    Bubble.prototype.constructor = Bubble;
     Bubble.prototype._class += " amchart_Bubble";
+    Bubble.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

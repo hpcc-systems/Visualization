@@ -12,6 +12,7 @@
         this._chartType = "ScatterChart";
     }
     Scatter.prototype = Object.create(CommonND.prototype);
+    Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " google_Scatter";
 
     /**

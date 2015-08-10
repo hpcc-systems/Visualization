@@ -12,6 +12,7 @@
         this.projection("albersUsaPr");
     }
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
+    ChoroplethCounties.prototype.constructor = ChoroplethCounties;
     ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
 
     ChoroplethCounties.prototype.testData = function () {

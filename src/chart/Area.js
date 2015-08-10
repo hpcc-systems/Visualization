@@ -13,6 +13,7 @@
         this.interpolateFill(true);
     }
     Area.prototype = Object.create(Scatter.prototype);
+    Area.prototype.constructor = Area;
     Area.prototype._class += " chart_Area";
 
     return Area;

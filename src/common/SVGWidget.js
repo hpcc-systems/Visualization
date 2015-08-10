@@ -18,6 +18,8 @@
         this._drawStartPos = "center"; 
     }
     SVGWidget.prototype = Object.create(Widget.prototype);
+    SVGWidget.prototype.constructor = SVGWidget;
+    SVGWidget.prototype._class += " common_SVGWidget";
 
     //  Properties  ---
     SVGWidget.prototype.move = function (_, transitionDuration) {

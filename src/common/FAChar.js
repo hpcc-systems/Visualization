@@ -14,6 +14,7 @@
         ;
     }
     FAChar.prototype = Object.create(SVGWidget.prototype);
+    FAChar.prototype.constructor = FAChar;
     FAChar.prototype._class += " common_FAChar";
 
     FAChar.prototype.publish("char", "", "string", "Font Awesome Item",null,{tags:['Private']});

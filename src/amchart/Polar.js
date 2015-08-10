@@ -11,10 +11,10 @@
         this._tag = "div";
         this._gType = "column";
     }
-
     Polar.prototype = Object.create(CommonRadar.prototype);
-    Polar.prototype.implements(INDChart.prototype);
+    Polar.prototype.constructor = Polar;
     Polar.prototype._class += " amchart_Polar";
+    Polar.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

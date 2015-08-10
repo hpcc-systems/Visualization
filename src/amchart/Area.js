@@ -11,10 +11,10 @@
         this._tag = "div";
         this._gType = "line";
     }
-
     Area.prototype = Object.create(CommonSerial.prototype);
-    Area.prototype.implements(INDChart.prototype);
+    Area.prototype.constructor = Area;
     Area.prototype._class += " amchart_Area";
+    Area.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

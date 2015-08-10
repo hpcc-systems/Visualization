@@ -12,10 +12,10 @@
 
         this._gType = "column";
     }
-
     FloatingColumn.prototype = Object.create(CommonSerial.prototype);
-    FloatingColumn.prototype.implements(INDChart.prototype);
+    FloatingColumn.prototype.constructor = FloatingColumn;
     FloatingColumn.prototype._class += " amchart_FloatingColumn";
+    FloatingColumn.prototype.implements(INDChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

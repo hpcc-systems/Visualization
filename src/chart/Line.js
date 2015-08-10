@@ -12,6 +12,7 @@
         this.interpolate("linear");
     }
     Line.prototype = Object.create(Scatter.prototype);
+    Line.prototype.constructor = Line;
     Line.prototype._class += " chart_Line";
 
     return Line;

@@ -18,6 +18,7 @@
         this.data([]);
     }
     TreeMap.prototype = Object.create(HTMLWidget.prototype);
+    TreeMap.prototype.constructor = TreeMap;
     TreeMap.prototype._class += " google_TreeMap";
 
     TreeMap.prototype.publish("headerColor", null, "html-color", "The color of the header section for each node. Specify an HTML color value.",null,{tags:['Basic']});

@@ -16,6 +16,7 @@
         this._numList = []; //pn
     }
     Paginator.prototype = Object.create(HTMLWidget.prototype);
+    Paginator.prototype.constructor = Paginator;
     Paginator.prototype._class += " other_Paginator";
 
     Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page",null,{tags:['Private']});

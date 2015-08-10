@@ -24,6 +24,7 @@
         this.mode("all");
     }
     MultiChartSurface.prototype = Object.create(ResizeSurface.prototype);
+    MultiChartSurface.prototype.constructor = MultiChartSurface;
     MultiChartSurface.prototype._class += " chart_MultiChartSurface";
     MultiChartSurface.prototype.implements(INDChart.prototype);
 

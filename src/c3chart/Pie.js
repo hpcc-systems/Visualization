@@ -12,6 +12,7 @@
         this._type = "pie";
     }
     Pie.prototype = Object.create(Common2D.prototype);
+    Pie.prototype.constructor = Pie;
     Pie.prototype._class += " c3chart_Pie";
 
     /**

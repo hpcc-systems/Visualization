@@ -19,6 +19,7 @@
         this._chart = null;
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
+    Common.prototype.constructor = Common;
     Common.prototype._class += " google_Common";
 
     /**

@@ -12,10 +12,10 @@
 
         this._chart = {};
     }
-
     Gauge.prototype = Object.create(HTMLWidget.prototype);
-    Gauge.prototype.implements(I1DChart.prototype);
+    Gauge.prototype.constructor = Gauge;
     Gauge.prototype._class += " amchart_Gauge";
+    Gauge.prototype.implements(I1DChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

@@ -13,6 +13,7 @@
         this._chartType = "AreaChart";
     }
     Area.prototype = Object.create(CommonND.prototype);
+    Area.prototype.constructor = Area;
     Area.prototype._class += " google_Area";
 
     /**

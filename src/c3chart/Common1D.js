@@ -23,6 +23,7 @@
         };
     }
     Common1D.prototype = Object.create(Common.prototype);
+    Common1D.prototype.constructor = Common1D;
     Common1D.prototype._class += " c3chart_Common1D";
     Common1D.prototype.implements(I1DChart.prototype);
 

@@ -13,6 +13,7 @@
         this._chartType = "PieChart";
     }
     Pie.prototype = Object.create(Common2D.prototype);
+    Pie.prototype.constructor = Pie;
     Pie.prototype._class += " google_Pie";
 
     /**

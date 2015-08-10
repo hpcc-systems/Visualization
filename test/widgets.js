@@ -4,6 +4,10 @@ define(["require"], function (require) {
         allWidgets.forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {
+                var pathParts = path.split("/");
+                var pathFileName = pathParts[2];
+                var pathClassID = pathParts[1] + "_" + pathParts[2];
+
                 it("require load", function (done) {
                     require([path], function (Widget) {
                         done();
@@ -21,7 +25,33 @@ define(["require"], function (require) {
                         done();
                     });
                 });
+
+                it("Class Hierarchy", function (done) {
+                    require(["src/common/Widget", path], function (Widget, TestWidget) {
+                        var proto = TestWidget.prototype;
+                        while (proto) {
+                            var className = getClassName(proto);
+                            var constructorName = getContructorName(proto);
+                            assert.equal(className, constructorName);
+                            if (className === "Widget") {
+                                break;
+                            }
+                            proto = proto.__proto__;
+                        }
+                        done();
+                    });
+                });
             });
         });
     });
+
+    function getContructorName(__prototype) {
+        var funcNameRegex = /function (.{1,})\(/;
+        var results = (funcNameRegex).exec(__prototype.constructor.toString());
+        return (results && results.length > 1) ? results[1] : "";
+    };
+    function getClassName(__prototype) {
+        var classParts = __prototype.classID().split("_");
+        return classParts[classParts.length - 1];
+    };
 });

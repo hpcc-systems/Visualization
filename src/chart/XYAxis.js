@@ -14,6 +14,7 @@
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
+    XYAxis.prototype.constructor = XYAxis;
     XYAxis.prototype._class += " chart_XYAxis";
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);

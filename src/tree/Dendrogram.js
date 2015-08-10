@@ -14,6 +14,7 @@
         this._maxTextWidth = 0;
     }
     Dendrogram.prototype = Object.create(SVGWidget.prototype);
+    Dendrogram.prototype.constructor = Dendrogram;
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
     

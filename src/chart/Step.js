@@ -12,6 +12,7 @@
         this.interpolate("step");
     }
     Step.prototype = Object.create(Scatter.prototype);
+    Step.prototype.constructor = Step;
     Step.prototype._class += " chart_Step";
 
     return Step;

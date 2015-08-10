@@ -12,8 +12,9 @@
     }
 
     Pyramid.prototype = Object.create(CommonFunnel.prototype);
-    Pyramid.prototype.implements(I2DChart.prototype);
+    Pyramid.prototype.constructor = Pyramid;
     Pyramid.prototype._class += " amchart_Pyramid";
+    Pyramid.prototype.implements(I2DChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

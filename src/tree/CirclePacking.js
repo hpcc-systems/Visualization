@@ -11,6 +11,7 @@
         ITree.call(this);
     }
     CirclePacking.prototype = Object.create(SVGWidget.prototype);
+    CirclePacking.prototype.constructor = CirclePacking;
     CirclePacking.prototype._class += " tree_CirclePacking";
     CirclePacking.prototype.implements(ITree.prototype);
 

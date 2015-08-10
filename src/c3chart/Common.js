@@ -26,6 +26,7 @@
         this._prevColumnIDs = [];
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
+    Common.prototype.constructor = Common;
     Common.prototype._class += " c3chart_Common";
 
     /**

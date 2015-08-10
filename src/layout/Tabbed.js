@@ -12,6 +12,7 @@
         this._tag = "div";
     }
     Tabbed.prototype = Object.create(HTMLWidget.prototype);
+    Tabbed.prototype.constructor = Tabbed;
     Tabbed.prototype._class += " layout_Tabbed";
 
     Tabbed.prototype.publish("padding", 4, "number", "Padding");

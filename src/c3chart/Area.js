@@ -12,6 +12,7 @@
         this._type = "area";
     }
     Area.prototype = Object.create(CommonND.prototype);
+    Area.prototype.constructor = Area;
     Area.prototype._class += " c3chart_Area";
 
     /**

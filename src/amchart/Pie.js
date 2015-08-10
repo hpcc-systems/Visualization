@@ -11,10 +11,10 @@
         this._tag = "div";
         this._chart = {};
     }
-
     Pie.prototype = Object.create(HTMLWidget.prototype);
-    Pie.prototype.implements(I2DChart.prototype);
+    Pie.prototype.constructor = Pie;
     Pie.prototype._class += " amchart_Pie";
+    Pie.prototype.implements(I2DChart.prototype);
 
     /**
      * Publish Params Common To Other Libraries

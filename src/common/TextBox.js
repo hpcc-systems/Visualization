@@ -15,6 +15,7 @@
         this._text = new Text();
     }
     TextBox.prototype = Object.create(SVGWidget.prototype);
+    TextBox.prototype.constructor = TextBox;
     TextBox.prototype._class += " common_TextBox";
 
     TextBox.prototype.publishProxy("text", "_text");

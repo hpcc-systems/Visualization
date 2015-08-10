@@ -28,6 +28,7 @@
         ;
     }
     Pie.prototype = Object.create(SVGWidget.prototype);
+    Pie.prototype.constructor = Pie;
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
 

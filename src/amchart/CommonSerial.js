@@ -13,8 +13,9 @@
 
         this._chart = {};
     }
-
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
+    CommonSerial.prototype.constructor = CommonSerial;
+    CommonSerial.prototype._class += " amchart_CommonSerial";
 
     /**
      * Publish Params Common To Other Libraries

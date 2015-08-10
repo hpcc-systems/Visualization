@@ -13,6 +13,7 @@
         this._listWidgets = {};
     }
     List.prototype = Object.create(SVGWidget.prototype);
+    List.prototype.constructor = List;
     List.prototype._class += " common_List";
     List.prototype.implements(IList.prototype);
 

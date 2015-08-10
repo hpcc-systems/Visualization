@@ -17,6 +17,7 @@
         this._selectionPrevClick = null;
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
+    Table.prototype.constructor = Table;
     Table.prototype._class += " other_Table";
 
     Table.prototype.testData = function () {

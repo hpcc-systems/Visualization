@@ -14,6 +14,7 @@
 
     }
     Summary.prototype = Object.create(HTMLWidget.prototype);
+    Summary.prototype.constructor = Summary;
     Summary.prototype.implements(I1DChart.prototype);
     Summary.prototype._class += " chart_Summary";
 

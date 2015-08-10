@@ -115,6 +115,7 @@
         ;
     }
     ResizeSurface.prototype = Object.create(Surface.prototype);
+    ResizeSurface.prototype.constructor = ResizeSurface;
     ResizeSurface.prototype._class += " common_ResizeSurface";
 
     ResizeSurface.prototype.allowResize = function (_) {

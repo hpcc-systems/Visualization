@@ -13,6 +13,8 @@
         this._chart = {};
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
+    CommonXY.prototype.constructor = CommonXY;
+    CommonXY.prototype._class += " amchart_CommonXY";
 
     /**
      * Publish Params Common To Other Libraries

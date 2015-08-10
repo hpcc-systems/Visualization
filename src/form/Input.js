@@ -13,6 +13,7 @@
         this._tag = "div";
     }
     Input.prototype = Object.create(HTMLWidget.prototype);
+    Input.prototype.constructor = Input;
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 

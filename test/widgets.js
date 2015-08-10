@@ -4,6 +4,7 @@ define(["require"], function (require) {
         allWidgets.forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {
+
                 it("require load", function (done) {
                     require([path], function (Widget) {
                         done();
@@ -19,11 +20,14 @@ define(["require"], function (require) {
                     });
                 });
 
-                it ("Adding widget with loadData method", function (done) {
+
+                it ("Adding widget to the page", function (done) {
                     var individualDiv = document.createElement("div");
                     individualDiv.setAttribute('id', path);
                     individualDiv.setAttribute('class', 'widgetElement');
                     var element = document.getElementById("testWidget");
+                    var content = document.createTextNode(path);
+                    individualDiv.appendChild(content);
                     element.appendChild(individualDiv);
                     element.appendChild(document.createElement("br"));
                     require([path], function (Widget) {

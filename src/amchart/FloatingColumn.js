@@ -32,7 +32,7 @@
     FloatingColumn.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
 
     FloatingColumn.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:['Basic']});
-    FloatingColumn.prototype.publish("Angle3D", 45, "number", "3D Angle (Deg)",null,{tags:['Basic']});
+    FloatingColumn.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
 
     FloatingColumn.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:['Basic']});
     FloatingColumn.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
@@ -64,7 +64,7 @@
             }
         });
         this._columns = colArr;
-        
+
         return this;
     };
 

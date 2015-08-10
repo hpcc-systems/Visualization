@@ -14,7 +14,7 @@
     Bar.prototype = Object.create(CommonSerial.prototype);
     Bar.prototype.implements(INDChart.prototype);
     Bar.prototype._class += " amchart_Bar";
-    
+
     /**
      * Publish Params Common To Other Libraries
      */
@@ -32,8 +32,8 @@
 
     Bar.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
 
-    Bar.prototype.publish("Depth3D", 20, "number", "3D Depth (px)",null,{tags:['Basic']});
-    Bar.prototype.publish("Angle3D", 45, "number", "3D Angle (Deg)",null,{tags:['Basic']});
+    Bar.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:['Basic']});
+    Bar.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
 
     Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:['Basic']});
 

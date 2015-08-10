@@ -30,7 +30,7 @@ const cfg = {
 };
 
 const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3.layout.cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive"];
-const bundles = ["common", "api", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller", "amchart"];  //  Order is important ---
+const bundles = ["common", "api", "chart", "c3chart", "google", "amchart", "tree", "form", "other", "graph", "map", "layout", "marshaller"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
 
 function buildModule(module, cb) {
@@ -88,14 +88,6 @@ gulp.task('build-css', css.bind(null, false));
 
 gulp.task('optimize-css', css.bind(null, true));
 
-gulp.task('jscs', function() {
-    gutil.log("JSCS the files...." + '\n');
-    return gulp.src(cfg.src + '/**/*.js')
-        .pipe(lintFilter)
-        .pipe(jscs())
-    ;
-});
-
 gulp.task('lint', function () {
     return gulp.src(cfg.src + '/**/*.js')
         .pipe(lintFilter)
@@ -105,14 +97,25 @@ gulp.task('lint', function () {
     ;
 });
 
-gulp.task('unitTest', function () {
-    return gulp
-        .src(cfg.test + '/runner.html')  //  This will fail if any HTML file has a BOM.
-        .pipe(mochaPhantomJS({ reporter: 'dot' }))
+gulp.task('jscs', function () {
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(lintFilter)
+        .pipe(jscs())
     ;
 });
 
-gulp.task("test", ["jscs", "unitTest", "lint"]);
+gulp.task('unitTest', function () {
+    return gulp.src(cfg.test + '/runner.html')
+        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
+    ;
+});
+
+gulp.task("unitTestBuild", function () {
+    return gulp
+        .src(cfg.test + '/runner_build.html')
+        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
+    ;
+});
 
 gulp.task('build-nonamd', ['build-css', 'optimize-css'], function (cb) {
     async.each(bundles, buildModule, cb);

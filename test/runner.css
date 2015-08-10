@@ -1,0 +1,24 @@
+#testWidget {
+    font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.widgetTest {
+    float: left;
+    padding: 2px;
+    margin: 2px;
+}
+
+.widget {
+    background: #f8f8f8;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    width: 320px;
+    height: 240px;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 10px;
+    font-weight: normal;
+    font-style: italic;
+}

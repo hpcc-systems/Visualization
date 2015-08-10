@@ -22,6 +22,7 @@
     "yargs": "^3.8.0",
     "jshint-stylish": "^2.0.1",
     "gulp-jshint": "^1.11.2",
+    "phantomjs": "1.9.8",
     "gulp-mocha-phantomjs": "^0.8.1",
     "mocha": "^2.2.5",
     "chai": "^3.2.0"

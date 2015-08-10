@@ -171,13 +171,15 @@
                     }
                     break;
                 case "html-color":
-                    var litmus = 'red';
-                    var d = document.createElement('div');
-                    d.style.color=litmus;
-                    d.style.color=_;
-                    //Element's style.color will be reverted to litmus or set to '' if an invalid color is given
-                    if( _ !== litmus && (d.style.color === litmus || d.style.color === '')){
-                        console.log("Invalid value for '" + id + "':  " + _);
+                    if (window.__hpcc_debug && _ && _ !== "red") {
+                        var litmus = 'red';
+                        var d = document.createElement('div');
+                        d.style.color = litmus;
+                        d.style.color = _;
+                        //Element's style.color will be reverted to litmus or set to '' if an invalid color is given
+                        if (d.style.color === litmus || d.style.color === '') {
+                            console.log("Invalid value for '" + id + "':  " + _);
+                        }
                     }
                     break;
                 case "boolean":

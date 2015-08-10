@@ -9,7 +9,7 @@
     function GMap(target) {
         Graph.call(this);
 
-        this.layout("none");
+        this.layout("None");
 
         this._markers = [];
     }

@@ -35,7 +35,7 @@
     Vertex.prototype.testData = function (_) {
         this._icon.testData();
         this._textBox.testData();
-        this.annotationIcons([{ faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "Red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }]);
+        this.annotationIcons([{ faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }]);
         return this;
     };
 

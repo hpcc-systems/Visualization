@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -498,30 +498,12 @@
                             .testData()
                             .render()
                         ;
-                        var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
                         var morphText = new MorphText()
                             .target("morphText")
-                            .text(alphabet.join(""))
+                            .testData()
                             .render()
                         ;
-                        function shuffle(array) {
-                            var m = array.length, t, i;
-                            while (m) {
-                                i = Math.floor(Math.random() * m--);
-                                t = array[m], array[m] = array[i], array[i] = t;
-                            }
-                            return array;
-                        }
-                        setInterval(function () {
-                            var randomAlphabet = shuffle(alphabet)
-                                .slice(0, Math.floor(Math.random() * 26))
-                                .sort()
-                            ;
-                            morphText
-                                .text(randomAlphabet.join(""))
-                                .render()
-                            ;
-                        }, 1500);
                     }
 
                     function displayPalettes() {

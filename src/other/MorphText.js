@@ -18,6 +18,29 @@
     MorphText.prototype._class += " other_MorphText";
 
     MorphText.prototype.testData = function () {
+        var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+        this.text(alphabet.join(""));
+        function shuffle(array) {
+            var m = array.length, t, i;
+            while (m) {
+                i = Math.floor(Math.random() * m--);
+                t = array[m];
+                array[m] = array[i];
+                array[i] = t;
+            }
+            return array;
+        }
+        var context = this;
+        setInterval(function () {
+            var randomAlphabet = shuffle(alphabet)
+                .slice(0, Math.floor(Math.random() * 26))
+                .sort()
+            ;
+            context
+                .text(randomAlphabet.join(""))
+                .render()
+            ;
+        }, 1500);
         return this;
     };
 

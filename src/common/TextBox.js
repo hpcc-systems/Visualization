@@ -22,10 +22,10 @@
     TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
     TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
     TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
-    TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left",null,{tags:['Private']});
-    TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right",null,{tags:['Private']});
-    TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top",null,{tags:['Private']});
-    TextBox.prototype.publish("paddingBottom", 4, "number", "Padding:  Bottom",null,{tags:['Private']});
+    TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left",null,{tags:["Private"]});
+    TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right",null,{tags:["Private"]});
+    TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top",null,{tags:["Private"]});
+    TextBox.prototype.publish("paddingBottom", 4, "number", "Padding:  Bottom",null,{tags:["Private"]});
     TextBox.prototype.publishProxy("anchor", "_text");
     TextBox.prototype.publish("fixedSize", null);
 

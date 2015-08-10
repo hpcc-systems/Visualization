@@ -17,24 +17,25 @@
     Surface.prototype.constructor = Surface;
     Surface.prototype._class += " layout_Surface";
 
-    Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceTitleFontColor", null, "html-color", "Title Font Color",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceTitleFontFamily", null, "string", "Title Font Family",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceTitleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:['Basic']});
+   Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceTitleFontColor", null, "html-color", "Title Font Color",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceTitleFontFamily", null, "string", "Title Font Family",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceTitleFontBold", true, "boolean", "Enable Bold Title Font",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color",null,{tags:["Basic"]});
 
-    Surface.prototype.publish("surfacePadding", null, "string", "Surface Padding (px)", null, { tags: ['Intermediate'] });
-    Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color",null,{tags:['Basic']});
-    Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)",null,{tags:['Basic']});
+   Surface.prototype.publish("surfacePadding", null, "string", "Surface Padding (px)", null, { tags: ["Intermediate"] });
+   Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color",null,{tags:["Basic"]});
+   Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)",null,{tags:["Basic"]});
 
-    Surface.prototype.publish("title", "", "string", "Title",null,{tags:['Intermediate']});
-    Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:['Basic']});
-    Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:['Private']});
+   Surface.prototype.publish("title", "", "string", "Title",null,{tags:["Intermediate"]});
+   Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:["Basic"]});
+   Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Private"]});
 
-    Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:['Private']});
+   Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Private"]});
+
 
     Surface.prototype.testData = function () {
         this.title("ABC");
@@ -86,9 +87,9 @@
         var context = this;
 
         element
-            .style("border-width",this.surfaceBorderWidth()+'px')
+            .style("border-width",this.surfaceBorderWidth()+"px")
             .style("border-color",this.surfaceBorderColor())
-            .style("border-radius",this.surfaceBorderRadius()+'px')
+            .style("border-radius",this.surfaceBorderRadius()+"px")
             .style("background-color",this.surfaceBackgroundColor())
         ;
 
@@ -116,13 +117,13 @@
                 var el = context._surfaceButtons[idx] = d3.select(this)
                     .attr("class", "surface-button " + button.class)
                     .attr("id", button.id)
-                    .style('padding', button.padding)
-                    .style('width', button.width)
-                    .style('height', button.height)
+                    .style("padding", button.padding)
+                    .style("width", button.width)
+                    .style("height", button.height)
                     .style("cursor","pointer");
                 if (button.font === "FontAwesome") {
                     el
-                      .append('i')
+                      .append("i")
                       .attr("class","fa")
                       .text(function(d) { return button.label; })
                       .on("click", function(d) { context.click(d); });
@@ -188,7 +189,7 @@
     };
 
     Surface.prototype.click = function(obj) {
-        console.log('Clicked: ' + obj.id);
+        console.log("Clicked: " + obj.id);
     };
 
     return Surface;

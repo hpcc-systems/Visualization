@@ -13,11 +13,11 @@
     Text.prototype.constructor = Text;
     Text.prototype._class += " common_Text";
 
-    Text.prototype.publish("text", "", "string", "Display Text",null,{tags:['Private']});
-    Text.prototype.publish("fontFamily", "", "string", "Font Family",null,{tags:['Private']});
-    Text.prototype.publish("fontSize", null, "number", "Font Size (px)",null,{tags:['Private']});
-    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"],{tags:['Private']});
-    Text.prototype.publish("colorFill", null, "html-color", "Fill Color",null,{tags:['Private']});
+    Text.prototype.publish("text", "", "string", "Display Text",null,{tags:["Private"]});
+    Text.prototype.publish("fontFamily", "", "string", "Font Family",null,{tags:["Private"]});
+    Text.prototype.publish("fontSize", null, "number", "Font Size (px)",null,{tags:["Private"]});
+    Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"],{tags:["Private"]});
+    Text.prototype.publish("colorFill", null, "html-color", "Fill Color",null,{tags:["Private"]});
 
     Text.prototype.testData = function () {
         this.text("Hello\nand\nWelcome!");

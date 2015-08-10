@@ -13,7 +13,7 @@
     //  Data ---
     INDChart.prototype.testData = function () {
         switch (this._chartType) {
-            case 'ScatterChart':
+            case "ScatterChart":
                 this.columns(["ID", "Year 1", "Year 2", "Year 3"]);
                 this.data([
                     [10, 75, 68, 65],

@@ -15,7 +15,7 @@
 
         this.transition = new Transition(this);
 
-        this._drawStartPos = "center"; 
+        this._drawStartPos = "center";
     }
     SVGWidget.prototype = Object.create(Widget.prototype);
     SVGWidget.prototype.constructor = SVGWidget;
@@ -79,7 +79,7 @@
         this._target = _;
 
         //  Target is a DOM Node ID ---
-        if (typeof (this._target) === 'string' || this._target instanceof String) {
+        if (typeof (this._target) === "string" || this._target instanceof String) {
             this._target = document.getElementById(this._target);
         }
 
@@ -305,7 +305,7 @@
         return Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
     };
 
-    //  IE Fixers  ---    
+    //  IE Fixers  ---
     SVGWidget.prototype._pushMarkers = function (element, d) {
         if (this.svgMarkerGlitch) {
             element = element || this._element;

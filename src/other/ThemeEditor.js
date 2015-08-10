@@ -54,18 +54,18 @@
     ThemeEditor.prototype = Object.create(HTMLWidget.prototype);
     ThemeEditor.prototype._class += " other_ThemeEditor";
 
-    ThemeEditor.prototype.publish("themeMode", true, "boolean", "Edit default values",null,{tags:['Basic']});
-    ThemeEditor.prototype.publish("saveTheme", "", "string", "Save Theme",null,{tags:['Basic','Theme'],saveButton:'Save',saveButtonID:'te-save-button'});
-    ThemeEditor.prototype.publish("loadedTheme", getThemeNames(1), "set", "Loaded Theme",getThemeNames(),{tags:['Basic','Theme']});
-    ThemeEditor.prototype.publish("saveSerial", "", "string", "Save Serial",null,{tags:['Basic','Serial'],saveButton:'Save',saveButtonID:'te-save-button'});
-    ThemeEditor.prototype.publish("loadedSerial", getSerialNames(0), "set", "Loaded Serial",getSerialNames(),{tags:['Basic','Serial']});
-    ThemeEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:['Intermediate']});
-    ThemeEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:['Intermediate']});
-    ThemeEditor.prototype.publish("shareCountMin", 1, "number", "Share Count Min",null,{tags:['Private']});
-    ThemeEditor.prototype.publish("paramGrouping", "By Param", "set", "Param Grouping", ["By Param", "By Widget"],{tags:['Private']});
-    ThemeEditor.prototype.publish("editorComplexity", "Basic", "set", "Choose what publish properties to display within the editor.", ["Basic", "Intermediate", "Advanced", "Private"],{tags:['Private']});
-    ThemeEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:['Private']});
-    ThemeEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:['Intermediate']});
+    ThemeEditor.prototype.publish("themeMode", true, "boolean", "Edit default values",null,{tags:["Basic"]});
+    ThemeEditor.prototype.publish("saveTheme", "", "string", "Save Theme",null,{tags:["Basic","Theme"],saveButton:"Save",saveButtonID:"te-save-button"});
+    ThemeEditor.prototype.publish("loadedTheme", getThemeNames(1), "set", "Loaded Theme",getThemeNames(),{tags:["Basic","Theme"]});
+    ThemeEditor.prototype.publish("saveSerial", "", "string", "Save Serial",null,{tags:["Basic","Serial"],saveButton:"Save",saveButtonID:"te-save-button"});
+    ThemeEditor.prototype.publish("loadedSerial", getSerialNames(0), "set", "Loaded Serial",getSerialNames(),{tags:["Basic","Serial"]});
+    ThemeEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate"]});
+    ThemeEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate"]});
+    ThemeEditor.prototype.publish("shareCountMin", 1, "number", "Share Count Min",null,{tags:["Private"]});
+    ThemeEditor.prototype.publish("paramGrouping", "By Param", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Private"]});
+    ThemeEditor.prototype.publish("editorComplexity", "Basic", "set", "Choose what publish properties to display within the editor.", ["Basic", "Intermediate", "Advanced", "Private"],{tags:["Private"]});
+    ThemeEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:["Private"]});
+    ThemeEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:["Intermediate"]});
 
     ThemeEditor.prototype.getThemes = getThemes;
     ThemeEditor.prototype.getSerials = getSerials;
@@ -89,17 +89,17 @@
 
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
-        if (typeof (context._current_grouping) === 'undefined') {
+        if (typeof (context._current_grouping) === "undefined") {
             context._current_grouping = context._group_params_by;
         } else if (context._current_grouping !== context._group_params_by) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_columns) === 'undefined') {
+        if (typeof (context._showing_columns) === "undefined") {
             context._showing_columns = context.showColumns();
         } else if (context._showing_columns !== context.showColumns()) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_data) === 'undefined') {
+        if (typeof (context._showing_data) === "undefined") {
             context._showing_data = context.showData();
         } else if (context._showing_data !== context.showData()) {
             needsRedraw = true;
@@ -119,7 +119,7 @@
     ThemeEditor.prototype.save = function(){};
 
     ThemeEditor.prototype.needsPropTableRedraw = function (domNode, element) {
-        var ret = document.getElementById('te-themeEditorOptions') === null;
+        var ret = document.getElementById("te-themeEditorOptions") === null;
         return ret;
     };
 
@@ -139,7 +139,7 @@
                 if(teParams[i].ext.tags.indexOf(this.editorComplexity()) !== -1){
                     var teParamVal = this[teParams[i].id]();
                     if(teParams[i].id === "loadedTheme" || teParams[i].id === "loadedSerial"){
-                        teParams[i].inputID = 'te-load-theme';
+                        teParams[i].inputID = "te-load-theme";
                     }
                     teParams[i].input = tableInputHtml(teParams[i],teParamVal,[this._id],this._id);
                 } else {
@@ -166,50 +166,50 @@
 
     ThemeEditor.prototype.propertiesTableHtml = function (editorParams) {
         var tableObj = {
-            id:'te-themeEditorOptions',
-            label:'Editor Options',
+            id:"te-themeEditorOptions",
+            label:"Editor Options",
             rowArr: []
         };
         var modeTableObj = {
-            id:'te-tableModeOptions',
-            label:this.themeMode() ? 'Save/Load Theme' : 'Save/Load Serial',
+            id:"te-tableModeOptions",
+            label:this.themeMode() ? "Save/Load Theme" : "Save/Load Serial",
             rowArr: []
         };
         for(var i in editorParams){
             if(this.themeMode()){
-                if(editorParams[i].ext.tags.indexOf('Theme') === -1 && editorParams[i].ext.tags.indexOf('Serial') === -1){
+                if(editorParams[i].ext.tags.indexOf("Theme") === -1 && editorParams[i].ext.tags.indexOf("Serial") === -1){
                     tableObj.rowArr.push({
                         th:camelizeString(editorParams[i].id),
                         td:editorParams[i].input,
-                        trClass:'propertyRow',
+                        trClass:"propertyRow",
                     });
                 }
-                else if(editorParams[i].ext.tags.indexOf('Theme') !== -1){
+                else if(editorParams[i].ext.tags.indexOf("Theme") !== -1){
                     modeTableObj.rowArr.push({
                         th:camelizeString(editorParams[i].id),
                         td:editorParams[i].input,
-                        trClass:'propertyRow',
+                        trClass:"propertyRow",
                     });
                 }
             } else {
-                if (editorParams[i].ext.tags.indexOf('Serial') === -1 && editorParams[i].ext.tags.indexOf('Theme') === -1){
+                if (editorParams[i].ext.tags.indexOf("Serial") === -1 && editorParams[i].ext.tags.indexOf("Theme") === -1){
                     tableObj.rowArr.push({
                         th:camelizeString(editorParams[i].id),
                         td:editorParams[i].input,
-                        trClass:'propertyRow',
+                        trClass:"propertyRow",
                     });
                 }
-                else if (editorParams[i].ext.tags.indexOf('Serial') !== -1){
+                else if (editorParams[i].ext.tags.indexOf("Serial") !== -1){
                     modeTableObj.rowArr.push({
                         th:camelizeString(editorParams[i].id),
                         td:editorParams[i].input,
-                        trClass:'propertyRow',
+                        trClass:"propertyRow",
                     });
                 }
             }
 
         }
-        var html = '';
+        var html = "";
         if(tableObj.rowArr.length > 0){
             html += this.tableObjHtml(tableObj);
         }
@@ -222,49 +222,49 @@
         var sectionObjs = {};
         if(this.themeMode()){
             sectionObjs = {
-                'chartColorSection':{
-                    id:'te-colorOptions',
-                    label:'Chart Colors',
+                "chartColorSection":{
+                    id:"te-colorOptions",
+                    label:"Chart Colors",
                     rowObjArr: []
                 },
-                'surfaceSection':{
-                    id:'te-containerOptions',
-                    label:'Container Styles/Colors',
+                "surfaceSection":{
+                    id:"te-containerOptions",
+                    label:"Container Styles/Colors",
                     rowObjArr: []
                 },
-                'fontSection':{
-                    id:'te-fontOptions',
-                    label:'Font Styles/Colors',
+                "fontSection":{
+                    id:"te-fontOptions",
+                    label:"Font Styles/Colors",
                     rowObjArr: []
                 }
             };
         } else {
             sectionObjs = {
-                'nonSurfaceSection':{
-                    id:'te-chartOptions',
-                    label:'Chart Properties',
+                "nonSurfaceSection":{
+                    id:"te-chartOptions",
+                    label:"Chart Properties",
                     rowObjArr: []
                 }
             };
         }
         for(var p in propObjs){
             if(this.themeMode()){
-                if(p.toUpperCase().indexOf('FONT') !== -1 && !(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") !== -1 && p.toUpperCase().indexOf('COLOR') !== -1)){
-                    sectionObjs['fontSection'].rowObjArr.push(propObjs[p]);
+                if(p.toUpperCase().indexOf("FONT") !== -1 && !(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") !== -1 && p.toUpperCase().indexOf("COLOR") !== -1)){
+                    sectionObjs["fontSection"].rowObjArr.push(propObjs[p]);
                 }
                 else if(p === "paletteID"){
-                    sectionObjs['chartColorSection'].rowObjArr.push(propObjs[p]);
+                    sectionObjs["chartColorSection"].rowObjArr.push(propObjs[p]);
                 }
                 else if(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") !== -1){
-                    sectionObjs['surfaceSection'].rowObjArr.push(propObjs[p]);
+                    sectionObjs["surfaceSection"].rowObjArr.push(propObjs[p]);
                 }
             } else {
                 if(propObjs[p].arr[0].widget._class.indexOf("layout_Surface") === -1){
-                    sectionObjs['nonSurfaceSection'].rowObjArr.push(propObjs[p]);
+                    sectionObjs["nonSurfaceSection"].rowObjArr.push(propObjs[p]);
                 }
             }
         }
-        var html = '';
+        var html = "";
         for(var i in sectionObjs){
             html += this.sharedPropertyTableHtml(sectionObjs[i]);
         }
@@ -278,13 +278,13 @@
         _inputOnClick(elm);
         function _inputOnClick(elm){
             if(context.showSettings()){
-                var saveBtn = document.getElementById('te-save-button');
+                var saveBtn = document.getElementById("te-save-button");
                 saveBtn.onclick = function(e){
                     var clickedElm = e.srcElement;
                     var themeName = clickedElm.previousSibling.value;
                     if(themeName.length > 1){
-                        var loadSelect = document.getElementById('te-load-theme');
-                        var loadOptions = loadSelect.getElementsByTagName('option');
+                        var loadSelect = document.getElementById("te-load-theme");
+                        var loadOptions = loadSelect.getElementsByTagName("option");
                         var saveExists = false;
                         var saveStr;
                         for(var i in loadOptions){
@@ -295,27 +295,27 @@
                         }
                         if(!saveExists){
                             saveStr = context.save(themeName);
-                            loadSelect.innerHTML += '<option value="'+themeName+'">'+themeName+'</option>';
+                            loadSelect.innerHTML += "<option value='" + themeName + "'>" + themeName + "</option>";
                         } else {
-                            var overwrite = confirm("'"+themeName+"' already exists. Do you want to overwrite the existing save?");
+                            var overwrite = confirm("'" + themeName + "' already exists. Do you want to overwrite the existing save? ");
                             if (overwrite) {
                                 saveStr = context.save(themeName);
                             }
                         }
-                        clickedElm.previousSibling.value = '';
+                        clickedElm.previousSibling.value = "";
                         loadSelect.value = themeName;
                     } else {
-                        alert('Save Name cannot be empty.');
+                        alert("Save Name cannot be empty.");
                     }
                 };
             }
         }
         function _inputOnChange(elm){
-            var teInputs = elm.getElementsByClassName('te-input');
+            var teInputs = elm.getElementsByClassName("te-input");
             for(var i in teInputs){
                 if(isNaN(parseInt(i)))break;
                 var inputElm = teInputs[i];
-                var inputID = inputElm.getAttribute('id');
+                var inputID = inputElm.getAttribute("id");
                 if(inputID === "te-load-theme"){
                     inputElm.onchange = function (e){
                         var elm = e.srcElement;
@@ -332,23 +332,23 @@
                         context.load(nameToLoad);
                     };
                 }
-                else if(inputElm.tagName === 'INPUT' || inputElm.tagName === 'SELECT' || inputElm.tagName === 'TEXTAREA'){
+                else if(inputElm.tagName === "INPUT" || inputElm.tagName === "SELECT" || inputElm.tagName === "TEXTAREA"){
                     inputElm.onchange = function(e){
                         var elm = e.srcElement;
 
-                        var id = elm.getAttribute('id');
+                        var id = elm.getAttribute("id");
 
-                        if (elm.className.split(' ').indexOf('te-html-color-button') !== -1){
-                            id = elm.previousSibling.getAttribute('id');
+                        if (elm.className.split(" ").indexOf("te-html-color-button") !== -1){
+                            id = elm.previousSibling.getAttribute("id");
                             elm.previousSibling.value = elm.value;
                         }
-                        var elmType = elm.getAttribute('type');
-                        var splitId = id.split('-');
-                        var genericId = splitId.slice(0,splitId.length-1).join('-') + '-';
+                        var elmType = elm.getAttribute("type");
+                        var splitId = id.split("-");
+                        var genericId = splitId.slice(0,splitId.length-1).join("-") + "-";
 
-                        var widsStr = elm.getAttribute('data-wids');
-                        var paramId = elm.getAttribute('data-paramid');
-                        var widArr = widsStr.split(',');
+                        var widsStr = elm.getAttribute("data-wids");
+                        var paramId = elm.getAttribute("data-paramid");
+                        var widArr = widsStr.split(",");
                         widArr.forEach(function(wid){
                             var individualId = genericId + wid;
                             var indElm = document.getElementById(individualId);
@@ -356,7 +356,7 @@
                                 indElm.checked = elm.checked;
                                 context._widgetObjsById[wid][paramId](elm.checked);
                             }
-                            else if (elm.getAttribute('data-type') === 'array') {
+                            else if (elm.getAttribute("data-type") === "array") {
                                 indElm.value = elm.value;
                                 try{
                                     context._widgetObjsById[wid][paramId](JSON.parse(elm.value));
@@ -366,10 +366,10 @@
                                 indElm.value = elm.value;
                                 context._widgetObjsById[wid][paramId](elm.value);
 
-                                if (indElm.className.split(' ').indexOf('te-html-color-input') !== -1){
+                                if (indElm.className.split(" ").indexOf("te-html-color-input") !== -1){
                                     indElm.nextSibling.value = elm.value;
                                 }
-                                else if (indElm.className.split(' ').indexOf('te-html-color-button') !== -1) {
+                                else if (indElm.className.split(" ").indexOf("te-html-color-button") !== -1) {
                                     indElm.previousSibling.value = elm.value;
                                 }
                             }
@@ -382,48 +382,48 @@
             }
         }
         function _expandCollapse(elm){
-            var tableArr = elm.getElementsByClassName('te-section-table');
+            var tableArr = elm.getElementsByClassName("te-section-table");
             for(var i in tableArr){
-                if(typeof(tableArr[i].getElementsByTagName) === 'function'){
-                    var thead = tableArr[i].getElementsByTagName('thead');
+                if(typeof(tableArr[i].getElementsByTagName) === "function"){
+                    var thead = tableArr[i].getElementsByTagName("thead");
                     thead[0].onclick = function(e){
                         var elm = e.toElement;
-                        if(elm.tagName === 'TH'){
+                        if(elm.tagName === "TH"){
                             elm = elm.parentElement.parentElement;
                         }
                         var parent = elm.parentElement;
-                        var tbodyClass = '';
-                        if(parent.className.split(' ').indexOf('expanded') === -1){
-                            parent.className = 'te-section-table expanded';
-                            tbodyClass = 'shown';
+                        var tbodyClass = "";
+                        if(parent.className.split(" ").indexOf("expanded") === -1){
+                            parent.className = "te-section-table expanded";
+                            tbodyClass = "shown";
                         } else {
-                            parent.className = 'te-section-table collapsed';
-                            tbodyClass = 'hidden';
+                            parent.className = "te-section-table collapsed";
+                            tbodyClass = "hidden";
                         }
-                        var tbody = parent.getElementsByTagName('tbody');
+                        var tbody = parent.getElementsByTagName("tbody");
                         tbody[0].className = tbodyClass;
                     };
                 }
             }
-            var sharedRowArr = elm.getElementsByClassName('sharedPropertyRow');
+            var sharedRowArr = elm.getElementsByClassName("sharedPropertyRow");
             for(var n in sharedRowArr){
-                if(typeof(sharedRowArr[n].getElementsByClassName) === 'function'){
-                    var label = sharedRowArr[n].getElementsByClassName('te-label');
+                if(typeof(sharedRowArr[n].getElementsByClassName) === "function"){
+                    var label = sharedRowArr[n].getElementsByClassName("te-label");
                     label[0].onclick = function(e){
                         var elm = e.toElement;
                         var parent = elm.parentElement;
-                        var subRowClass = '';
-                        if(parent.className.split(' ').indexOf('expanded') === -1){
-                            parent.className = 'sharedPropertyRow expanded';
-                            subRowClass = 'shown';
+                        var subRowClass = "";
+                        if(parent.className.split(" ").indexOf("expanded") === -1){
+                            parent.className = "sharedPropertyRow expanded";
+                            subRowClass = "shown";
                         } else {
-                            parent.className = 'sharedPropertyRow collapsed';
-                            subRowClass = 'hidden';
+                            parent.className = "sharedPropertyRow collapsed";
+                            subRowClass = "hidden";
                         }
                         var nextSib = parent.nextSibling;
                         while(nextSib !== null){
-                            if(nextSib.className.split(' ').indexOf('sharedPropertyRow') === -1){
-                                nextSib.className = 'propertyRow '+subRowClass;
+                            if(nextSib.className.split(" ").indexOf("sharedPropertyRow") === -1){
+                                nextSib.className = "propertyRow "+subRowClass;
                                 nextSib = nextSib.nextSibling;
                             } else {
                                 nextSib = null;
@@ -446,13 +446,13 @@
                     tableObj.rowArr.push({
                         th:_sharedPropertyLabel(rowObj),
                         td:_sharedPropertyInput(rowObj),
-                        trClass:'sharedPropertyRow collapsed'
+                        trClass:"sharedPropertyRow collapsed"
                     });
                 }
                 tableObj.rowArr.push({
                     th:_propertyLabel(widgetObj),
                     td:_propertyInput(rowObj,widgetIdx),
-                    trClass:'propertyRow hidden'
+                    trClass:"propertyRow hidden"
                 });
             });
         });
@@ -460,9 +460,9 @@
         return this.tableObjHtml(tableObj);
 
         function _propertyLabel(widgetObj){
-            var splitClass = widgetObj.widget.classID().split('_');
-            var displayClass = splitClass.join('/');
-            return displayClass + ' <i>[' + widgetObj.widget._id + ']</i>';
+            var splitClass = widgetObj.widget.classID().split("_");
+            var displayClass = splitClass.join("/");
+            return displayClass + " <i>[" + widgetObj.widget._id + "]</i>";
         }
         function _sharedPropertyLabel(rowObj){
             return camelizeString(rowObj.id);
@@ -475,43 +475,43 @@
 
             function _value(rowObj,idx){
                 var value = rowObj.arr[idx].widget[rowObj.id]();
-                return value !== null ? value : '';
+                return value !== null ? value : "";
             }
         }
         function _sharedPropertyInput(rowObj){
             var value = _sharedValue(rowObj);
-            var html = tableInputHtml(rowObj,value,rowObj.arr,'shared');
+            var html = tableInputHtml(rowObj,value,rowObj.arr,"shared");
             return html;
 
             function _sharedValue(rowObj){
                 var value = rowObj.arr[0].widget[rowObj.id]();
                 rowObj.arr.forEach(function(w,i){
                     if(value !== w.widget[w.id]()){
-                        return '';
+                        return "";
                     }
                 });
                 if(value !== null){
-                    if(rowObj.type === 'array'){
+                    if(rowObj.type === "array"){
                         return JSON.stringify(value);
                     }
                     return value;
                 }
-                return '';
+                return "";
             }
         }
     };
 
     var camelizeString = function(str){
-        var spacedText = str.split(/(?=[0-9A-Z])/).map(function(n){return n.length > 1 ? n+' ' : n;}).join('');
+        var spacedText = str.split(/(?=[0-9A-Z])/).map(function(n){return n.length > 1 ? n+" " : n;}).join("");
         return spacedText.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
     };
 
     var tableInputHtml = function (rowObj,value,widgetArr,idSuffix){
-        var inputHtml = '';
-        var id = 'te-input-'+rowObj.id+'-'+idSuffix;
+        var inputHtml = "";
+        var id = "te-input-"+rowObj.id+"-"+idSuffix;
 
         var inputType;
-        if (typeof (rowObj.ext) !== 'undefined' && typeof (rowObj.ext.inputType) !== 'undefined') {
+        if (typeof (rowObj.ext) !== "undefined" && typeof (rowObj.ext.inputType) !== "undefined") {
             inputType = rowObj.ext.inputType;
         }
 
@@ -519,86 +519,85 @@
             id = rowObj.inputID;
         }
 
-        var dataWIDs = 'data-paramid="'+rowObj.id+'" data-wids="'+widgetArr.map(function(w){
-            if(typeof(w.widget) === "object"){
+        var dataWIDs = "data-paramid='" + rowObj.id + "' data-wids='" + widgetArr.map(function (w) {
+            if(typeof(w.widget) === "object") {
                 return w.widget._id;
             } else {
                 return w;
             }
-        }).join(',')+'"';
-        switch(rowObj.type){
+        }).join(",") + "'";
+        switch(rowObj.type) {
             case "boolean":
-                var checked = value ? ' checked' : '';
-                inputHtml = '<input id="'+id+'" '+dataWIDs+' type="checkbox" class="te-checkbox te-input"'+checked+'>';
-                break;
+                var checked = value ? " checked" : "";
+                inputHtml = "<input id='" + id + "' " + dataWIDs + " type='checkbox' class='te-checkbox te-input'" + checked + ">" ;                break;
             case "number":
-                if (typeof (inputType) !== 'undefined') {
+                if (typeof (inputType) !== "undefined") {
                     if (inputType === "textarea") {
-                        inputHtml = '<textarea id="'+id+'" class="te-textarea te-input" '+dataWIDs+'>'+value+'</textarea>';
+                        inputHtml = "<textarea id='" + id +"' class='te-textarea te-input' " + dataWIDs + ">" + value + "</textarea>";
                     }
-                    else if (inputType === 'range') {
-                        inputHtml = '<input id="'+id+'" class="te-input" type="range" '+dataWIDs+' value="'+value+'" min="'+rowObj.ext.min+'" max="'+rowObj.ext.max+'" step="'+rowObj.ext.step+'">';
+                    else if (inputType === "range") {
+                        inputHtml = "<input id='" + id +"' class='te-input' type='range' " + dataWIDs + " value='" + value + "'  min='"+ rowObj.ext.min + "' max='" + rowObj.ext.max + "' step='" + rowObj.ext.step + "'>";
                     }
                 }
                 else {
-                    inputHtml = '<input id="'+id+'" type="text" class="te-text te-input" '+dataWIDs+' value="'+value+'">';
+                    inputHtml = "<input id='" + id +"' type='text' class='te-text te-input' " + dataWIDs + " value='" + value + "'>";
                 }
                 break;
             case "string":
-                if (typeof (inputType) !== 'undefined') {
+                if (typeof (inputType) !== "undefined") {
                     if (inputType === "textarea") {
-                        inputHtml = '<textarea id="'+id+'" class="te-textarea te-input" '+dataWIDs+'>'+value+'</textarea>';
+                        inputHtml = "<textarea id='" + id + "' class='te-textarea te-input' "+ dataWIDs + ">" + value + "</textarea>";
                     }
                 }
                 else {
-                    inputHtml = '<input id="'+id+'" type="text" class="te-text te-input" value="'+value+'" '+dataWIDs+'>';
+                    inputHtml = "<input id='" + id + "' type='text' class='te-text te-input' value='" + value + "' " + dataWIDs + ">";
                 }
                 break;
             case "html-color":
-                var valueAttr = value === '' ? '' : ' value="'+value+'"';
-                inputHtml = '<input id="'+id+'" type="text" class="te-html-color-input te-input" '+dataWIDs+' '+valueAttr+'>';
-                inputHtml += '<input type="color" class="te-html-color-button te-input" '+dataWIDs+' '+valueAttr+'>';
+                var valueAttr = value === "" ? "" : " value='" + value + "'";
+                inputHtml = "<input id='" + id +"' type='text' class='te-html-color-input te-input' " + dataWIDs + " " + valueAttr + ">";
+                inputHtml += "<input type='color' class='te-html-color-button te-input' " + dataWIDs + " " + valueAttr + ">";
                 break;
             case "set":
                 var options = _options(rowObj,value);
-                inputHtml = '<select id="'+id+'" class="te-select te-input" '+dataWIDs+'>'+options+'</select>';
+                inputHtml = "<select id='" + id + "' class='te-select te-input'" + dataWIDs + ">" + options + "</select>";
                 break;
             case "array":
-                inputHtml = '<textarea id="'+id+'" class="te-textarea te-input" data-type="array" '+dataWIDs+'>'+value+'</textarea>';
+                inputHtml = "<textarea id='" + id + "' class='te-textarea te-input' data-type='array' " + dataWIDs + ">" + value + "</textarea>";
                 break;
             default:
                 break;
         }
         if(typeof(rowObj.ext.saveButton) !== "undefined"){
-            inputHtml += '<button id="'+rowObj.ext.saveButtonID+'">'+rowObj.ext.saveButton+'</button>';
+            inputHtml += "<button id='" + rowObj.ext.saveButtonID +"'>" + rowObj.ext.saveButton +"</button>";
         }
         return inputHtml;
 
-        function _options(obj,val){
-            var options = '';
+        function _options(obj,val) {
+            var options = "";
             obj.set.forEach(function(s){
-                var selected = s === val ? ' selected' : '';
-                options += '<option value="'+s+'"'+selected+'>'+s+'</option>';
+                var selected = s === val ? " selected" : "";
+                options += "<option value='" + s + "'" + selected + ">" + s + "</option>";
             });
             return options;
         }
     };
 
     ThemeEditor.prototype.tableObjHtml = function (tableObj) {
-        var html = '<table id="'+tableObj.id+'" class="te-section-table expanded">';
-            html += '<thead><tr><th colspan="2">'+tableObj.label+'</th></tr></thead>';
-            html += '<tbody>';
+        var html = "<table id='" + tableObj.id + "' class='te-section-table expanded'>";
+            html += "<thead><tr><th colspan='2'>" + tableObj.label + "</th></tr></thead>";
+            html += "<tbody>";
                 tableObj.rowArr.forEach(function(rowObj){
                     html += this.tableRowObjHtml(rowObj);
                 },this);
-            html += '</tbody>';
-        return html + '</table>';
+            html += "</tbody>";
+        return html + "</table>";
     };
     ThemeEditor.prototype.tableRowObjHtml = function (rowObj) {
-        var html = typeof (rowObj.trClass) !== 'undefined' ? '<tr class="'+rowObj.trClass+'">' : '<tr>';
-            html += '<th class="te-label">'+rowObj.th+'</th>';
-            html += '<td>'+rowObj.td+'</td>';
-        return html + '</tr>';
+        var html = typeof (rowObj.trClass) !== "undefined" ? "<tr class='" + rowObj.trClass +"'>" : "<tr>";
+            html += "<th class='te-label'>" + rowObj.th + "</th>";
+            html += "<td>" + rowObj.td + "</td>";
+        return html + "</tr>";
     };
 
     ThemeEditor.prototype.setWidgetObjsById = function (widgetProp) {
@@ -626,7 +625,7 @@
     ThemeEditor.prototype.findSharedProperties = function (data) {
         var context = this;
         var propsByID;
-        if (typeof (data) !== 'undefined' && data.length > 0) {
+        if (typeof (data) !== "undefined" && data.length > 0) {
             var allProps = [];
             propsByID = {};
             var surfacePropsByID = {};
@@ -636,12 +635,12 @@
                 allProps = allProps.concat(gpResponse);
             });
             allProps.forEach(function (prop) {
-                if (['widget', 'widgetArray'].indexOf(prop.type) !== -1) {
+                if (["widget", "widgetArray"].indexOf(prop.type) !== -1) {
                     context.setWidgetObjsById(prop);
                 } else if (context.checkTagFilter(prop.ext.tags)) {
                     var tempIdx = prop.id;
-                    if(prop.widget._class.indexOf('Surface') !== -1){
-                        if (typeof (surfacePropsByID[tempIdx]) === 'undefined') {
+                    if(prop.widget._class.indexOf("Surface") !== -1){
+                        if (typeof (surfacePropsByID[tempIdx]) === "undefined") {
                             surfacePropsByID[tempIdx] = { arr: [] };
                         }
                         surfacePropsByID[tempIdx].id = prop.id;
@@ -651,7 +650,7 @@
                         surfacePropsByID[tempIdx].ext = prop.ext;
                         surfacePropsByID[tempIdx].arr.push(prop);
                     } else {
-                        if (typeof (nonSurfacePropsByID[tempIdx]) === 'undefined') {
+                        if (typeof (nonSurfacePropsByID[tempIdx]) === "undefined") {
                             nonSurfacePropsByID[tempIdx] = { arr: [] };
                         }
                         nonSurfacePropsByID[tempIdx].id = prop.id;
@@ -661,7 +660,7 @@
                         nonSurfacePropsByID[tempIdx].ext = prop.ext;
                         nonSurfacePropsByID[tempIdx].arr.push(prop);
                     }
-                    if (typeof (propsByID[tempIdx]) === 'undefined') {
+                    if (typeof (propsByID[tempIdx]) === "undefined") {
                         propsByID[tempIdx] = { arr: [] };
                     }
                     propsByID[tempIdx].id = prop.id;
@@ -680,7 +679,7 @@
             if(widgetObj !== null){
                 var paramArr = Persist.discover(widgetObj);
                 paramArr.forEach(function (param, i1) {
-                    if(typeof(param.ext.tags) !== 'undefined'){
+                    if(typeof(param.ext.tags) !== "undefined"){
                         retArr.push({
                             id: param.id,
                             type: param.type,

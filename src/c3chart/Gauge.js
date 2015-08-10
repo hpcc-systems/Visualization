@@ -28,16 +28,16 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Gauge.prototype.publish("low", 0, "number", "Gauge Lower Bound",null,{tags:['Intermediate','Shared']});
-    Gauge.prototype.publish("high", 100, "number", "Gauge Higher Bound",null,{tags:['Intermediate','Shared']});
+    Gauge.prototype.publish("low", 0, "number", "Gauge Lower Bound",null,{tags:["Intermediate","Shared"]});
+    Gauge.prototype.publish("high", 100, "number", "Gauge Higher Bound",null,{tags:["Intermediate","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    Gauge.prototype.publish("valueFormat", "Percent", "set", "Value Display Format", ["Percent", "Value"],{tags:['Basic']});
-    Gauge.prototype.publish("arcWidth", 10, "number", "Gauge Width of Arc",null,{tags:['Basic']});
-    Gauge.prototype.publish("showLabels", true, "boolean", "Show Labels",null,{tags:['Basic']});
-    Gauge.prototype.publish("showValueLabel", true, "boolean", "Show Value Label",null,{tags:['Basic']});
+    Gauge.prototype.publish("valueFormat", "Percent", "set", "Value Display Format", ["Percent", "Value"],{tags:["Basic"]});
+    Gauge.prototype.publish("arcWidth", 10, "number", "Gauge Width of Arc",null,{tags:["Basic"]});
+    Gauge.prototype.publish("showLabels", true, "boolean", "Show Labels",null,{tags:["Basic"]});
+    Gauge.prototype.publish("showValueLabel", true, "boolean", "Show Value Label",null,{tags:["Basic"]});
 
     Gauge.prototype.update = function (domNode, element) {
         this.c3Chart.internal.config.gauge_min = this.low();

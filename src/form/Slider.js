@@ -221,10 +221,10 @@
              .attr("transform", "translate(0, -64)")
              .call(this.axis)
         ;
-        axisElement.selectAll('.tick > text')
-            .style('fill', this.fontColor())
-            .style('font-size', this.fontSize())
-            .style('font-family', this.fontFamily())
+        axisElement.selectAll(".tick > text")
+            .style("fill", this.fontColor())
+            .style("font-size", this.fontSize())
+            .style("font-family", this.fontFamily())
         ;
         var x_bbox = axisElement.node().getBBox();
         var retVal = {
@@ -273,10 +273,10 @@
             .call(this.axis)
         ;
 
-        this.axisElement.selectAll('.tick > text')
-            .style('fill', this.fontColor())
-            .style('font-size', this.fontSize())
-            .style('font-family', this.fontFamily())
+        this.axisElement.selectAll(".tick > text")
+            .style("fill", this.fontColor())
+            .style("font-size", this.fontSize())
+            .style("font-family", this.fontFamily())
         ;
 
         var range = this.xScale.range();

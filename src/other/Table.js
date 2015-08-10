@@ -38,7 +38,7 @@
         return this;
     };
 
-    Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
+    Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -150,7 +150,7 @@
             if (this.pageNumber() > this._tNumPages) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function(p, d) {
-                console.log('page: ' + p);
+                console.log("page: " + p);
                 context.pageNumber(p);
                 context.render();
                 return;

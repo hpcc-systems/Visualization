@@ -21,7 +21,7 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), {tags:['Basic','Shared']});
+    Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
@@ -39,16 +39,16 @@
     };
 
     Bubble.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
+        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== 'undefined' && typeof(this._valueField[i]) !== 'undefined')) { //mark
+            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
                 var gRetVal = CommonXY.prototype.buildGraphObj.call(this,gType,i);
                 var gObj = buildGraphObj.call(this,gRetVal);
 
-                if (typeof(this._chart.graphs[i]) !== 'undefined') {
+                if (typeof(this._chart.graphs[i]) !== "undefined") {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
                     this._chart.addGraph(gObj);
@@ -60,18 +60,18 @@
 
         function buildGraphObj(gObj) {
             if (this._type === "Bubble") {
-                var fieldArr = ['value'];
+                var fieldArr = ["value"];
                 var context = this;
                 fieldArr.forEach(function(field){
-                    //if(typeof(context['_'+field+'Field']) !== 'undefined' && typeof(context['_'+field+'Field'][i]) !== 'undefined'){
-                        gObj[field+'Field'] = context['_'+field+'Field'][i]; //for bubble
+                    //if(typeof(context["_"+field+"Field"]) !== "undefined" && typeof(context["_"+field+"Field"][i]) !== "undefined"){
+                        gObj[field+"Field"] = context["_"+field+"Field"][i]; //for bubble
                     //}
                 });
             }
             return gObj;
         }
     };
-    
+
     Bubble.prototype.update = function(domNode, element) {
         CommonXY.prototype.update.apply(this, arguments);
 

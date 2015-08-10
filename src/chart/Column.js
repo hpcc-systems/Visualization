@@ -17,7 +17,7 @@
     Column.prototype._class += " chart_Column";
     Column.prototype.implements(INDChart.prototype);
 
-    Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:['Basic','Shared']});
+    Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
     Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 

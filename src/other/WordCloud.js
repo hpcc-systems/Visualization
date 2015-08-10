@@ -15,13 +15,13 @@
     WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
 
-    WordCloud.prototype.publish("padding", 1, "number", "Padding",null,{tags:['Intermediate']});
-    WordCloud.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:['Basic']});
-    WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From",null,{tags:['Basic']});
-    WordCloud.prototype.publish("fontSizeTo", 24, "number", "Font Size To",null,{tags:['Basic']});
-    WordCloud.prototype.publish("angleFrom", -60, "number", "Angle From",null,{tags:['Basic']});
-    WordCloud.prototype.publish("angleTo", 60, "number", "Angle To",null,{tags:['Basic']});
-    WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count",null,{tags:['Basic']});
+    WordCloud.prototype.publish("padding", 1, "number", "Padding",null,{tags:["Intermediate"]});
+    WordCloud.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic"]});
+    WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From",null,{tags:["Basic"]});
+    WordCloud.prototype.publish("fontSizeTo", 24, "number", "Font Size To",null,{tags:["Basic"]});
+    WordCloud.prototype.publish("angleFrom", -60, "number", "Angle From",null,{tags:["Basic"]});
+    WordCloud.prototype.publish("angleTo", 60, "number", "Angle To",null,{tags:["Basic"]});
+    WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count",null,{tags:["Basic"]});
 
     WordCloud.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);

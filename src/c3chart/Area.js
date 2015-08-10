@@ -18,11 +18,11 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Area.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:['Basic','Shared']});
-    Area.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:['Basic','Shared']});
-    Area.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:['Basic','Shared']});
-    Area.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:['Basic','Shared']});
-    Area.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color",null,{tags:['Basic','Exp','Shared']});
+    Area.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color",null,{tags:["Basic","Exp","Shared"]});
 
     /**
      * Publish Params Unique To This Library
@@ -31,7 +31,7 @@
     Area.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this, arguments);
     };
-    
+
     Area.prototype.update = function (domNode, element) {
         CommonND.prototype.update.apply(this, arguments);
 

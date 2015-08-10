@@ -20,22 +20,22 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    FloatingColumn.prototype.publish("paletteID", "Dark2", "set", "Palette ID", FloatingColumn.prototype._palette.switch(), {tags:['Basic','Shared']});
-    FloatingColumn.prototype.publish("isStacked", true, "boolean", "Stacked", null, {tags:['Basic','Shared']});
-    FloatingColumn.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:'range',tags:['Intermediate','Shared']});
+    FloatingColumn.prototype.publish("paletteID", "Dark2", "set", "Palette ID", FloatingColumn.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    FloatingColumn.prototype.publish("isStacked", true, "boolean", "Stacked", null, {tags:["Basic","Shared"]});
+    FloatingColumn.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    FloatingColumn.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:['Intermediate']});
+    FloatingColumn.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Intermediate"]});
 
-    FloatingColumn.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
+    FloatingColumn.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:["Basic"]});
 
-    FloatingColumn.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:['Basic']});
-    FloatingColumn.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
+    FloatingColumn.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:["Basic"]});
+    FloatingColumn.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
-    FloatingColumn.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:['Basic']});
-    FloatingColumn.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
+    FloatingColumn.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
+    FloatingColumn.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     FloatingColumn.prototype.testData = function() {
         this.columns(["Subject", "open", "close"]);
@@ -104,16 +104,16 @@
     };
 
     FloatingColumn.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
+        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._openField.length);
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._openField) !== 'undefined' && typeof(this._openField[i]) !== 'undefined')) { //mark
+            if ((typeof(this._openField) !== "undefined" && typeof(this._openField[i]) !== "undefined")) { //mark
                 var gRetVal = CommonSerial.prototype.buildGraphObj.call(this,gType,i);
                 var gObj = buildGraphObj.call(this,gRetVal);
 
-                if (typeof(this._chart.graphs[i]) !== 'undefined') {
+                if (typeof(this._chart.graphs[i]) !== "undefined") {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
                     this._chart.addGraph(gObj);

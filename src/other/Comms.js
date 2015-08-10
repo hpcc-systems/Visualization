@@ -32,7 +32,7 @@
     ESPUrl.prototype.url = function (_) {
         if (!arguments.length) return this._url;
         this._url = _;
-        var parser = document.createElement('a');
+        var parser = document.createElement("a");
         parser.href = this._url;
 
         var params = {};
@@ -207,13 +207,13 @@
 
         var respondedTimeout = 60000;
         var respondedTick = 5000;
-        var callbackName = 'jsonp_callback_' + Math.round(Math.random() * 999999);
+        var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
         window[callbackName] = function (response) {
             respondedTimeout = 0;
             doCallback(response);
         };
-        var script = document.createElement('script');
-        script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'jsonp=' + callbackName + "&" + serialize(request);
+        var script = document.createElement("script");
+        script.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "jsonp=" + callbackName + "&" + serialize(request);
         document.body.appendChild(script);
         var progress = setInterval(function () {
             if (respondedTimeout <= 0) {
@@ -261,7 +261,7 @@
     };
 
     Basic.prototype.call = function (request, callback) {
-        var url = this._url + (this._url.indexOf('?') >= 0 ? '&' : '?') + serialize(request);
+        var url = this._url + (this._url.indexOf("?") >= 0 ? "&" : "?") + serialize(request);
         function doCall(request, callback) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);

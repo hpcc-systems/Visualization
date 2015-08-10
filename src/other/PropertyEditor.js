@@ -18,13 +18,13 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:['Basic','TODO2']});
-    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:['Intermediate','TODO2']});
-    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:['Intermediate','TODO2']});
-    PropertyEditor.prototype.publish("shareCountMin", 2, "number", "Share Count Min",null,{tags:['Basic','TODO2']});
-    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:['Basic','TODO2']});
-    PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:['Private','TODO2']});
-    PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:['Basic','TODO2']});
+    PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:["Basic","TODO2"]});
+    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate","TODO2"]});
+    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate","TODO2"]});
+    PropertyEditor.prototype.publish("shareCountMin", 2, "number", "Share Count Min",null,{tags:["Basic","TODO2"]});
+    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic","TODO2"]});
+    PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:["Private","TODO2"]});
+    PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:["Basic","TODO2"]});
 
     PropertyEditor.prototype.show_settings = function (_) {
         if (!arguments.length) {
@@ -133,20 +133,20 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "auto");
     };
-    
+
     PropertyEditor.prototype.findSharedProperties = function (data, themeMode) {
         var propsByID = {};
 
-        if (typeof (data) !== 'undefined' && data.length > 0) {
+        if (typeof (data) !== "undefined" && data.length > 0) {
             var allProps = [];
             data.forEach(function (widget) {
                 var gpResponse = this._getParams(themeMode ? Object.getPrototypeOf(widget) : widget, 0);
                 allProps = allProps.concat(gpResponse);
             }, this);
             allProps.forEach(function (prop) {
-                if (['widget', 'widgetArray'].indexOf(prop.type) === -1) {
-                    var tempIdx = prop.id + '_' + prop.description;
-                    if (typeof (propsByID[tempIdx]) === 'undefined') {
+                if (["widget", "widgetArray"].indexOf(prop.type) === -1) {
+                    var tempIdx = prop.id + "_" + prop.description;
+                    if (typeof (propsByID[tempIdx]) === "undefined") {
                         propsByID[tempIdx] = { arr: [] };
                     }
                     propsByID[tempIdx].id = prop.id;
@@ -188,22 +188,22 @@
     };
     var tableNeedsRedraw = function (context) {
         var needsRedraw = false;
-        if (typeof (context._current_grouping) === 'undefined') {
+        if (typeof (context._current_grouping) === "undefined") {
             context._current_grouping = context._group_params_by;
         } else if (context._current_grouping !== context._group_params_by) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_columns) === 'undefined') {
+        if (typeof (context._showing_columns) === "undefined") {
             context._showing_columns = context.showColumns();
         } else if (context._showing_columns !== context.showColumns()) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_data) === 'undefined') {
+        if (typeof (context._showing_data) === "undefined") {
             context._showing_data = context.showData();
         } else if (context._showing_data !== context.showData()) {
             needsRedraw = true;
         }
-        if (typeof (context._showing_themeMode) === 'undefined') {
+        if (typeof (context._showing_themeMode) === "undefined") {
             context._showing_themeMode = context.themeMode();
         } else if (context._showing_themeMode !== context.themeMode()) {
             needsRedraw = true;
@@ -237,8 +237,8 @@
                     .showColumns(false)
                     .showData(false)
                     .show_settings(false)
-                    .paramGrouping('By Widget')
-                    .sectionTitle('Property Editor Settings')
+                    .paramGrouping("By Widget")
+                    .sectionTitle("Property Editor Settings")
                     .target(d3.select(this).node())
                     .data([widget])
                     .render()
@@ -258,9 +258,9 @@
                         sharedPropsMainSections[k1][k2].arr.forEach(function (n) {
                             widgetArr.push(n.widget);
                         });
-                        if (this.shareCountMin() <= widgetArr.length || widgetArr[0]._class.indexOf('PropertyEditor') !== -1) {
+                        if (this.shareCountMin() <= widgetArr.length || widgetArr[0]._class.indexOf("PropertyEditor") !== -1) {
                             sectionArr.push({
-                                rowType: 'shared',
+                                rowType: "shared",
                                 widgetArr: widgetArr,
                                 id: sharedPropsMainSections[k1][k2].id,
                                 description: sharedPropsMainSections[k1][k2].description,
@@ -269,7 +269,7 @@
                             });
                             sharedPropsMainSections[k1][k2].arr.forEach(function (widgetNode) {
                                 sectionArr.push({
-                                    rowType: 'individual',
+                                    rowType: "individual",
                                     widgetArr: [widgetNode.widget],
                                     id: sharedPropsMainSections[k1][k2].id,
                                     description: sharedPropsMainSections[k1][k2].description,
@@ -307,11 +307,11 @@
                     }
 
                     thead.append("tr").append("th").attr("colspan", context._columns.length).attr("class", "th-widget-class").text(function () {
-                        var text = '';
+                        var text = "";
                         if (context.sectionTitle()) {
                             text = context.sectionTitle();
                         } else {
-                            var splitClass = widget.classID().split('_');
+                            var splitClass = widget.classID().split("_");
                             if (splitClass.length > 1) {
                                 text = "Widget: " + splitClass[splitClass.length - 1];
                             } else {
@@ -388,44 +388,44 @@
                         input.node().value = e;
                     }
                 }
-                //Updating TR 'By Param'
+                //Updating TR "By Param"
                 if (context.paramGrouping() === "By Param") {
                     rows = tbody.selectAll(".tr_" + widget._id).data(sPropSections[widgetIdx]);
                     rows.enter().append("tr").each(function (d) {
                         var tr = d3.select(this);
                         var rowClass = "propertyRow";
-                        if (d.rowType === 'shared') {
+                        if (d.rowType === "shared") {
                             rowClass = "sharedPropertyRow";
                         }
-                        else if (d.rowType === 'individual') {
+                        else if (d.rowType === "individual") {
                             this.hidden = true;
                         }
                         tr.attr("class", "tr_" + widget._id + " " + rowClass);
                         tr.append("td").attr("class", "pe-label").html(function (sProp) {
-                            var text = '';
+                            var text = "";
                             switch (sProp.rowType) {
-                                case 'shared':
+                                case "shared":
                                     text = sProp.id;
                                     break;
-                                case 'individual':
-                                    var splitClass = sProp.widgetArr[0].classID().split('_');
+                                case "individual":
+                                    var splitClass = sProp.widgetArr[0].classID().split("_");
                                     var displayClass = splitClass[splitClass.length - 1];
-                                    text = displayClass + ' [' + sProp.widgetArr[0]._id + ']';
+                                    text = displayClass + " [" + sProp.widgetArr[0]._id + "]";
                                     break;
                             }
                             return text;
                         })
                         .on("click", function (sProp) {
-                            var hidden, classList = this.className.split(' ');
-                            if (classList.indexOf('expanded') === -1) {
+                            var hidden, classList = this.className.split(" ");
+                            if (classList.indexOf("expanded") === -1) {
                                 hidden = false;
-                                classList.push('expanded');
-                                this.className = classList.join(' ');
+                                classList.push("expanded");
+                                this.className = classList.join(" ");
                             } else {
                                 hidden = true;
-                                var newClassList = '';
+                                var newClassList = "";
                                 classList.forEach(function (c) {
-                                    if (c !== 'expanded') {
+                                    if (c !== "expanded") {
                                         newClassList += c;
                                     }
                                 });
@@ -459,21 +459,21 @@
                                     ;
                                     break;
                                 case "number":
-                                    if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
+                                    if (typeof (d.ext) !== "undefined" && typeof (d.ext.inputType) !== "undefined") {
                                         if (d.ext.inputType === "textarea") {
-                                            input = td.append('textarea');
+                                            input = td.append("textarea");
                                         }
-                                        else if (d.ext.inputType === 'range') {
-                                            input = td.append('input')
-                                                .attr('type', 'range')
-                                                .attr('min', d.ext.min)
-                                                .attr('max', d.ext.max)
-                                                .attr('step', d.ext.step)
+                                        else if (d.ext.inputType === "range") {
+                                            input = td.append("input")
+                                                .attr("type", "range")
+                                                .attr("min", d.ext.min)
+                                                .attr("max", d.ext.max)
+                                                .attr("step", d.ext.step)
                                             ;
                                         }
                                     }
-                                    if (typeof (input) === 'undefined' || input === null) {
-                                        input = td.append('input');
+                                    if (typeof (input) === "undefined" || input === null) {
+                                        input = td.append("input");
                                     }
                                     input.attr("class", "input_" + widget._id)
                                         .on("change", function () {
@@ -485,13 +485,13 @@
                                         });
                                     break;
                                 case "string":
-                                    if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
+                                    if (typeof (d.ext) !== "undefined" && typeof (d.ext.inputType) !== "undefined") {
                                         if (d.ext.inputType === "textarea") {
-                                            input = td.append('textarea');
+                                            input = td.append("textarea");
                                         }
                                     }
-                                    if (typeof (input) === 'undefined' || input === null) {
-                                        input = td.append('input');
+                                    if (typeof (input) === "undefined" || input === null) {
+                                        input = td.append("input");
                                     }
                                     input.attr("class", "input_" + widget._id)
                                         .on("change", function () {
@@ -577,15 +577,15 @@
                         });
                     });
                     //Setting the td.pe-label html content
-                    rows.selectAll('td.pe-label').each(function (sProp) {
-                        var text = '';
+                    rows.selectAll("td.pe-label").each(function (sProp) {
+                        var text = "";
                         switch (sProp.rowType) {
-                            case 'shared':
+                            case "shared":
                                 text = sProp.id;
                                 break;
-                            case 'individual':
-                                var displayClass = sProp.widgetArr[0].classID().split('_')[1];
-                                text = displayClass + ' [' + sProp.widgetArr[0]._id + ']';
+                            case "individual":
+                                var displayClass = sProp.widgetArr[0].classID().split("_")[1];
+                                text = displayClass + " [" + sProp.widgetArr[0]._id + "]";
                                 break;
                         }
                         this.innerHTML = text;
@@ -593,7 +593,7 @@
                     //Setting the state of the inputs
                     rows.select(".input_" + widget._id).each(function (sProp) {
                         var input = d3.select(this);
-                        if (sProp.rowType === 'individual') {
+                        if (sProp.rowType === "individual") {
                             sProp.widgetArr.forEach(function (w) {
                                 switch (sProp.type) {
                                     case "boolean":
@@ -645,7 +645,7 @@
                         }
                     }).remove();
                 } else if (context.paramGrouping() === "By Widget") {
-                    //Updating TR 'By Widget'
+                    //Updating TR "By Widget"
                     rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.themeMode() ? Object.getPrototypeOf(widget) : widget), function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
@@ -655,11 +655,11 @@
                         tr.append("td").attr("class", "pe-label").text(function (d) {
                             return d.id;
                         });
-                        var inputType = 'input';
-                        if (typeof (d.ext) !== 'undefined' &&
-                            typeof (d.ext.inputType) !== 'undefined' &&
+                        var inputType = "input";
+                        if (typeof (d.ext) !== "undefined" &&
+                            typeof (d.ext.inputType) !== "undefined" &&
                             d.ext.inputType === "textarea") {
-                            inputType = 'textarea';
+                            inputType = "textarea";
                         }
                         tr.append("td")
                             .attr("class", "field")
@@ -681,21 +681,21 @@
                                         break;
                                     case "number":
                                     case "string":
-                                        if (typeof (d.ext) !== 'undefined' && typeof (d.ext.inputType) !== 'undefined') {
+                                        if (typeof (d.ext) !== "undefined" && typeof (d.ext.inputType) !== "undefined") {
                                             if (d.ext.inputType === "textarea") {
-                                                input = td.append('textarea');
+                                                input = td.append("textarea");
                                             }
-                                            else if (d.type === 'number' && d.ext.inputType === 'range') {
-                                                input = td.append('input')
-                                                    .attr('type', 'range')
-                                                    .attr('min', d.ext.min)
-                                                    .attr('max', d.ext.max)
-                                                    .attr('step', d.ext.step)
+                                            else if (d.type === "number" && d.ext.inputType === "range") {
+                                                input = td.append("input")
+                                                    .attr("type", "range")
+                                                    .attr("min", d.ext.min)
+                                                    .attr("max", d.ext.max)
+                                                    .attr("step", d.ext.step)
                                                 ;
                                             }
                                         }
                                         if (input === null) {
-                                            input = td.append('input');
+                                            input = td.append("input");
                                         }
                                         input.attr("class", "input_" + widget._id)
                                             .on("change", function () {
@@ -769,7 +769,7 @@
                                             .attr("class", "input_" + widget._id)
                                         ;
                                         widget["_propertyEditor_" + d.id] = new PropertyEditor()
-                                            .paramGrouping('By Widget')
+                                            .paramGrouping("By Widget")
                                             .showColumns(context.showColumns())
                                             .showData(context.showData())
                                             .show_settings(false)

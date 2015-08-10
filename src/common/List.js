@@ -17,7 +17,7 @@
     List.prototype._class += " common_List";
     List.prototype.implements(IList.prototype);
 
-    List.prototype.publish("anchor", "start", "set", "Anchor Position", ["", "start", "middle", "end"],{tags:['Private']});
+    List.prototype.publish("anchor", "start", "set", "Anchor Position", ["", "start", "middle", "end"],{tags:["Private"]});
 
     List.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);

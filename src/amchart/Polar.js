@@ -19,12 +19,12 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:['Basic','Shared']});
+    Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    Polar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
+    Polar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     Polar.prototype.testData = function() {
         this.columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"]);
@@ -62,14 +62,14 @@
     };
 
     Polar.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
+        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== 'undefined' && typeof(this._valueField[i]) !== 'undefined')) { //mark
+            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
                 var gRetVal = CommonRadar.prototype.buildGraphObj.call(this,gType,i);
                 var gObj = buildGraphObj.call(this,gRetVal,this._valueField[i]);
-                if (typeof(this._chart.graphs[i]) !== 'undefined') {
+                if (typeof(this._chart.graphs[i]) !== "undefined") {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
                     this._chart.addGraph(gObj);

@@ -19,14 +19,14 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch(), {tags:['Basic','Shared']});
-    Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:['Basic','Shared']});
+    Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    Line.prototype.publish("stepLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:['Basic']});
-    Line.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Basic']});
+    Line.prototype.publish("stepLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic"]});
+    Line.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Basic"]});
 
     Line.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
@@ -46,16 +46,16 @@
     };
 
     Line.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
+        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== 'undefined' && typeof(this._valueField[i]) !== 'undefined')) { //mark
+            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
                 var gRetVal = CommonSerial.prototype.buildGraphObj.call(this,gType,i);
                 var gObj = buildGraphObj.call(this,gRetVal);
 
-                if (typeof(this._chart.graphs[i]) !== 'undefined') {
+                if (typeof(this._chart.graphs[i]) !== "undefined") {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
                     this._chart.addGraph(gObj);
@@ -67,11 +67,11 @@
 
         function buildGraphObj(gObj) {
             if (this.stepLines()) {
-                gObj.type = 'step';
+                gObj.type = "step";
             } else if (this.smoothLines()) {
-                gObj.type = 'smoothedLine';
+                gObj.type = "smoothedLine";
             } else {
-                gObj.type = 'line';
+                gObj.type = "line";
             }
 
             return gObj;

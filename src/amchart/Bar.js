@@ -19,26 +19,26 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Bar.prototype.publish("paletteID", "default", "set", "Palette ID", Bar.prototype._palette.switch(),{tags:['Basic','Shared']});
-    Bar.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:['Basic','Shared']});
-    Bar.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:'range',tags:['Intermediate','Shared']});
+    Bar.prototype.publish("paletteID", "default", "set", "Palette ID", Bar.prototype._palette.switch(),{tags:["Basic","Shared"]});
+    Bar.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+    Bar.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    Bar.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:['Basic']});
+    Bar.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
-    Bar.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:['Basic']});
-    Bar.prototype.publish("circleRadius", 1, "number", "Circle Radius of Cylinder Bars",null,{tags:['Basic']});
+    Bar.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:["Basic"]});
+    Bar.prototype.publish("circleRadius", 1, "number", "Circle Radius of Cylinder Bars",null,{tags:["Basic"]});
 
-    Bar.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:['Basic']});
+    Bar.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:["Basic"]});
 
-    Bar.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:['Basic']});
-    Bar.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:['Basic']});
+    Bar.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:["Basic"]});
+    Bar.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
-    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:['Basic']});
+    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
 
-    Bar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:['Intermediate']});
+    Bar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     Bar.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
@@ -86,16 +86,16 @@
     };
 
     Bar.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === 'undefined') { this._chart.graphs = []; }
+        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
         var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== 'undefined' && typeof(this._valueField[i]) !== 'undefined')) { //mark
+            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
                 var gRetVal = CommonSerial.prototype.buildGraphObj.call(this,gType,i);
                 var gObj = buildGraphObj.call(this,gRetVal);
 
-                if (typeof(this._chart.graphs[i]) !== 'undefined') {
+                if (typeof(this._chart.graphs[i]) !== "undefined") {
                     for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
                 } else {
                     this._chart.addGraph(gObj);

@@ -20,6 +20,11 @@
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
+    Scatter.prototype.publish("chartMode", "scatter", "set", "Bullet Type", ["scatter", "bubble"],{tags:["Basic"]});
+    Scatter.prototype.publish("sampleData", "ordinal", "set", "Display Sample Data", ["ordinal","linear"]);
+
+    Scatter.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
+
     Scatter.prototype.enter = function(domNode, element) {
         CommonXY.prototype.enter.apply(this, arguments);
     };
@@ -44,7 +49,11 @@
         }
 
         function buildGraphObj(gObj) {
-            // TODO: Scatter Specific Options
+            if (this.chartMode() === "bubble") {
+                gObj["valueField"] = this.columns()[2];
+            } else {
+                delete gObj["valueField"];
+            }
             return gObj;
         }
     };
@@ -56,6 +65,54 @@
 
         this._chart.validateNow();
         this._chart.validateData();
+
+    };
+
+    Scatter.prototype.testData = function(_) {
+        this.sampleData("ordinal");
+        return this;
+    };
+
+    Scatter.prototype.testDataLinear = function(_) {
+        if (this.chartMode() === "scatter") {
+            this.xAxisType("linear");
+            this.columns(["Data X", "Data Y"]);
+            this.data([
+                [10, 75],
+                [20, 45],
+                [30, 98],
+                [40, 66]
+            ]);
+        } else if (this.chartMode() === "bubble") {
+            this.xAxisType("linear");
+            this.columns(["Data X", "Data Y", "Size"]);
+            this.data([
+                [10, 75, 10],
+                [20, 45, 12],
+                [30, 98, 14],
+                [40, 66, 16]
+            ]);
+        }
+        return this;
+    };
+
+    Scatter.prototype._sampleData = Scatter.prototype.sampleData;
+    Scatter.prototype.sampleData = function (_) {
+        var retVal = Scatter.prototype._sampleData.apply(this, arguments);
+        if (arguments.length) {
+            switch (_) {
+                case "ordinal":
+                    //TODO need a new shape for INDchart Bubble stuff or something????? need to ask how ordinal would work with that
+                    //this.testDataOrdinal();
+                    this.xAxisType("ordinal");
+                    INDChart.prototype.testData.apply(this, arguments);
+                    break;
+                case "linear":
+                    this.testDataLinear();
+                    break;
+            }
+        }
+        return retVal;
     };
 
     return Scatter;

@@ -16,6 +16,8 @@
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
 
+    CommonXY.prototype.publish("xAxisType", "ordinal", "set", "X Axis Type", ["linear", "ordinal"],{tags:["Intermediate"]});
+
     CommonXY.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
@@ -81,6 +83,7 @@
     CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CommonXY.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+    CommonXY.prototype.publish("xAxisTickFormat", null, "string", "X-Axis Tick Format", null, { optional: true });
 
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
@@ -113,7 +116,19 @@
         this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
 
-        //TODO ADD valuesAxes[0] tick format
+        if (this.xAxisType() === "ordinal") {
+            this._chart.valueAxes[0].integersOnly = true;
+            this._chart.valueAxes[0].labelFunction = function(val) {
+                if (val > 0) {
+                    return typeof(context.data()[val]) !== "undefined" ? context.data()[val][0] : ""; // shift chart right by 1 so it does not start on axis
+                }
+                return "";
+            };
+        } else {
+            this._chart.valueAxes[0].labelFunction = function(d) {
+                return d3.format(context.xAxisTickFormat())(d);
+            };
+        }
 
         this._chart.valueAxes[1].position = "left";
         this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
@@ -135,16 +150,15 @@
             return d3.format(context.yAxisTickFormat())(d);
         };
 
-        // DataProvider
-        this._chart.dataProvider = this.formatData(this._data);
+        this._chart.dataProvider = this.formatData(this._data); // DataProvider
 
         this._chart.dataProvider.forEach(function(dataPoint,i){
             context._chart.dataProvider[i].color = context._palette(dataPoint[context._columns[2]]); // By Y value
             context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(dataPoint[context._columns[2]]);
         });
+
         this._chart.colors = [];
 
-        // Scroll Bar
         if (this.showScrollbar()) {
             this._chart.chartScrollbar.enabled = true;
         } else {
@@ -159,7 +173,7 @@
         var gObj = {};
 
         gObj.balloonFunction = function(d) {
-            var balloonText = context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            var balloonText = context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
             return balloonText;
         };
         gObj.lineAlpha = context.lineOpacity();
@@ -177,39 +191,29 @@
         gObj.lineColorField = "linecolor";
 
         // XY Values
-        gObj.xField = context._columns[1];
-        gObj.yField = context._columns[2];
-
+        if (this.xAxisType() === "ordinal") {
+            gObj.xField = "idx";
+            gObj.yField = context._columns[i];
+        }
+        if (this.xAxisType() === "linear") {
+            gObj.xField = context._columns[0];
+            gObj.yField = context._columns[1];
+        }
         return gObj;
     };
 
     CommonXY.prototype.formatData = function(dataArr) {
         var context = this;
         var dataObjArr = [];
-        dataArr.forEach(function(dataRow) {
+        dataArr.forEach(function(dataRow, i) {
             var dataObj = {};
             context._columns.forEach(function(colName, cIdx) {
                 dataObj[colName] = dataRow[cIdx];
+                dataObj["idx"] = i + 1;
             });
             dataObjArr.push(dataObj);
         });
         return dataObjArr;
-    };
-
-    CommonXY.prototype.columns = function(colArr) {
-        if (!arguments.length) return this._columns;
-        var context = this;
-        var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length) {
-            this._categoryField = colArr[0];
-            this._valueField = [];
-            colArr.slice(1, colArr.length).forEach(function(col) {
-                context._valueField.push(col);
-            });
-            this._columns = colArr;
-            return this;
-        }
-        return retVal;
     };
 
     CommonXY.prototype.enter = function(domNode, element) {
@@ -235,7 +239,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
-            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);
+            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.index], context._data[e.index][e.target.index]);
         });
     };
 

@@ -26,9 +26,11 @@
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
         { id: "STEP", display: "Step", widgetClass: "chart_Step" },
+        { id: "SCATTER", display: "Scatter", widgetClass: "chart_Scatter" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
+        { id: "GOOGLE_SCATTER", display: "Scatter (Google)", widgetClass: "google_Scatter" },
         { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
         { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
         { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
@@ -38,7 +40,7 @@
         { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
         { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
         { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
-        //{ id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
+        { id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
     ];
     var _anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }

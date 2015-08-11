@@ -65,8 +65,9 @@
                 columnRect
                   .enter().append("rect")
                     .attr("class", "columnRect")
+                    .call(context._selection.enter.bind(context._selection))
                     .on("click", function (d, idx) {
-                        context.click(context.rowToObj(dataRow), context._columns[idx + 1]);
+                        context.click(context.rowToObj(dataRow), context._columns[idx + 1], context._selection.selected(this));
                     })
                     .append("title")
                 ;
@@ -78,7 +79,6 @@
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d instanceof Array ? context.valueScale(d[1]) : context.valueScale(d) ; })
                         .attr("height", function (d) {  return  d instanceof Array ? context.valueScale(d[0]) - context.valueScale(d[1]) : height - context.valueScale(d) ; })
-                        .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 } else {
                     columnRect.transition()
@@ -87,11 +87,12 @@
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d instanceof Array ? context.valueScale(d[0]) : 0 ; })
                         .attr("width", function (d) {  return  d instanceof Array ? context.valueScale(d[1]) - context.valueScale(d[0]) : context.valueScale(d) ; })
-                        .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
                     ;
                 }
 
-                columnRect.select("title")
+                columnRect
+                    .style("fill", function (d, idx) { return context._palette(context._columns[idx + 1]); })
+                    .select("title")
                     .text(function (d, idx) { return dataRow[0] + " (" + d + "," + " " + context._columns[idx + 1] + ")"; })
                 ;
 

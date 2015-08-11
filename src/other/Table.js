@@ -183,7 +183,7 @@
                 context.render();
             })
             .on("click", function (d) {
-                context.click(context.rowToObj(d));
+                context.click(context.rowToObj(d), null, context._selectionBag.isSelected(context._createSelectionObject(d)));
             })
         ;
 

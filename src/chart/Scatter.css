@@ -1,9 +1,29 @@
 .chart_Scatter .axis path,
 .chart_Scatter .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
-line.point, line.point1 {
-	stroke-width: 2;
+
+.chart_Scatter .pointShape,
+.chart_Scatter .line,
+.chart_Scatter .area {
+    pointer-events: none;
+}
+
+.chart_Scatter .point .pointSelection {
+    fill: none;
+    stroke: none;
+    pointer-events: all;
+}
+
+.chart_Scatter .point .pointSelection.over {
+    fill: red;
+    stroke: none;
+    opacity: 0.25;
+}
+
+.chart_Scatter .point .pointSelection.selected {
+    fill: none;
+    stroke: red;
 }

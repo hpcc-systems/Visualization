@@ -37,9 +37,10 @@
         //  Enter  ---
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 if (context._dataMap[d.id]) {
-                    context.click(context.rowToObj(context._dataMap[d.id]));
+                    context.click(context.rowToObj(context._dataMap[d.id]), "weight", context._selection.selected(this));
                 }
             })
             .on("dblclick", function (d) {

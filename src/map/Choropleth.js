@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IChoropleth", "css!./Choropleth"], factory);
+        define(["d3", "../common/SVGWidget", "./IChoropleth", "../other/Bag", "css!./Choropleth"], factory);
     } else {
-        root.map_Choropleth = factory(root.d3, root.common_SVGWidget, root.map_IChoropleth);
+        root.map_Choropleth = factory(root.d3, root.common_SVGWidget, root.map_IChoropleth, root.other_Bag);
     }
-}(this, function (d3, SVGWidget, IChoropleth) {
+}(this, function (d3, SVGWidget, IChoropleth, Bag) {
     function Choropleth() {
         SVGWidget.call(this);
         IChoropleth.call(this);
@@ -127,6 +127,7 @@
         ;
 
         this._svg = element.append("g");
+        this._selection = new Bag.SimpleSelection(this._svg);
     };
 
     Choropleth.prototype.update = function (domNode, element) {
@@ -134,6 +135,11 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+    };
+
+    Choropleth.prototype.exit = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
+        delete this._selection;
     };
 
     // A modified d3.geo.albersUsa to include Puerto Rico.

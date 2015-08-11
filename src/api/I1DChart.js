@@ -18,8 +18,8 @@
     };
 
     //  Events  ---
-    I1DChart.prototype.click = function (row, column) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    I1DChart.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return I1DChart;

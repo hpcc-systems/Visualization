@@ -43,10 +43,11 @@
         //  Enter  ---
         var context = this;
         this.choroPaths = choroPaths.enter().append("path")
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 var code = usStates.stateNames[d.id].code;
                 if (context._dataMap[code]) {
-                    context.click(context.rowToObj(context._dataMap[code]), "weight");
+                    context.click(context.rowToObj(context._dataMap[code]), "weight", context._selection.selected(this));
                 }
             })
             .on("dblclick", function (d) {

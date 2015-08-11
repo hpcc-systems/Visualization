@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "css!./XYAxis"], factory);
+        define(["d3", "../common/SVGWidget", "../other/Bag", "css!./XYAxis"], factory);
     } else {
-        root.chart_XYAxis = factory(root.d3, root.common_SVGWidget);
+        root.chart_XYAxis = factory(root.d3, root.common_SVGWidget, root.other_Bag);
     }
-}(this, function (d3, SVGWidget) {
+}(this, function (d3, SVGWidget, Bag) {
     function XYAxis(target) {
         SVGWidget.call(this);
         this._drawStartPos = "origin";
@@ -272,6 +272,7 @@
                 return context.brushMoved.apply(context, arguments);
             })
         ;
+        this._selection = new Bag.SimpleSelection(this.svgData);
     };
 
     XYAxis.prototype.resizeBrushHandle = function (d, width, height) {
@@ -593,6 +594,11 @@
     };
 
     XYAxis.prototype.updateChart = function (domNode, element, margin, width, height) {
+    };
+
+    XYAxis.prototype.exit = function (domNode, element) {
+        SVGWidget.prototype.exit.apply(this, arguments);
+        delete this._selection;
     };
 
     XYAxis.prototype.selection = function (selected) {

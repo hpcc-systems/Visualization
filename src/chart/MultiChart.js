@@ -132,8 +132,8 @@
                     .size(size)
                 ;
                 context.chart(newContent);
-                newContent.click = function (row, column) {
-                    context.click(row, column);
+                newContent.click = function (row, column, selected) {
+                    context.click(row, column, selected);
                 };
                 if (oldContent) {
                     oldContent

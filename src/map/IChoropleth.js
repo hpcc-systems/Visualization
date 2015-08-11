@@ -11,8 +11,8 @@
     IChoropleth.prototype._palette = Palette.rainbow("default");
     
     //  Events  ---
-    IChoropleth.prototype.click = function (row, column) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    IChoropleth.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
 

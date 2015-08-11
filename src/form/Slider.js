@@ -289,6 +289,14 @@
             .attr("d", function (d) { return context.handlePath(d); })
         ;
 
+        if (this._data.length === 0) {
+            if( this.allowRange()) {
+                  this._data = [this.low(),this.low()];
+             } else {
+                 this._data = this.low();
+            }
+        }
+
         this.brushg
             .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
         ;
@@ -368,6 +376,10 @@
             ;
         }
         return retVal;
+    };
+
+    Slider.prototype.newSelection = function (value, value2) {
+        console.log("newSelection:  " + value + ", " + value2);
     };
 
     return Slider;

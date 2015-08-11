@@ -170,8 +170,8 @@
         var rowSpan = this._dragCell.gridRowSpan();
 
         var dropTarget = document.createElement("div");
-        dropTarget.id = 'grid-drop-target'+this.id();
-        dropTarget.className = 'grid-drop-target';
+        dropTarget.id = "grid-drop-target" + this.id();
+        dropTarget.className = "grid-drop-target";
 
         this._element.node().appendChild(dropTarget);
         this.updateDropTarget(col,row,colSpan,rowSpan);
@@ -189,7 +189,7 @@
         width = colSpan * this._colSize - this.gutter();
         height = rowSpan * this._rowSize - this.gutter();
 
-        var dropTarget = document.getElementById('grid-drop-target'+this.id());
+        var dropTarget = document.getElementById("grid-drop-target" + this.id());
         dropTarget.style.top = top + "px";
         dropTarget.style.left = left + "px";
         dropTarget.style.width = width + "px";
@@ -253,16 +253,16 @@
                     this._sizeY = Math.abs(loc[1] - pivotCell[1]) + 1;
                     break;
             }
-        } else if (document.getElementById('grid-drop-target'+this.id()) !== null) {
+        } else if (document.getElementById("grid-drop-target"+this.id()) !== null) {
             var target = this.getCell(loc[1], loc[0]);
             if(target !== null && this._dragCell._id !== target._id){
-                document.getElementById('grid-drop-target'+this.id()).className = 'grid-drop-target drop-target-over';
+                document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target drop-target-over";
                 this._locX = target.gridCol();
                 this._locY = target.gridRow();
                 this._sizeX = target.gridColSpan();
                 this._sizeY = target.gridRowSpan();
             } else {
-                document.getElementById('grid-drop-target'+this.id()).className = 'grid-drop-target';
+                document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target";
                 this._locX = loc[0] - this._dragCellOffsetX;
                 this._locY = loc[1] - this._dragCellOffsetY;
                 this._sizeX = this._dragCell.gridColSpan();
@@ -377,7 +377,7 @@
                         .gridRowSpan(targetRowSpan)
                     ;
                 }
-                var gridDropTarget = document.getElementById('grid-drop-target'+context.id());
+                var gridDropTarget = document.getElementById("grid-drop-target"+context.id());
                 gridDropTarget.parentNode.removeChild(gridDropTarget);
 
                 setTimeout(function () {

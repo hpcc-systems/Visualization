@@ -24,6 +24,7 @@ require.config({
         "amcharts.serial": "bower_components/amcharts/dist/amcharts/serial",
         "amcharts.xy": "bower_components/amcharts/dist/amcharts/xy",
         "amcharts.plugins.responsive": "bower_components/amcharts/dist/amcharts/plugins/responsive/responsive",
+        "amchartsImg": "../bower_components/amcharts/dist/amcharts/images/",
 
         "src": "./src"
     },
@@ -101,6 +102,7 @@ case "cdn.rawgit.com":
             "amcharts.xy": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/xy",
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader",
+            "amchartsImg": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/amcharts/images/",
 
             "src": "./src"
         }

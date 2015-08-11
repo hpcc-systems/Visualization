@@ -99,7 +99,7 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        var th = this.thead.selectAll("th").data(this._columns, function (d) { return d;});
+        var th = this.thead.selectAll("th").data(this._columns);
         th
             .enter()
             .append("th")

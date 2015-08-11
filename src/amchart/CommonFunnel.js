@@ -1,12 +1,12 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.funnel"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.funnel", "require"], factory);
     } else {
-        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
+        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts) {
+}(this, function(d3, HTMLWidget, AmCharts, require) {
     function CommonFunnel() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -130,7 +130,8 @@
             type: "funnel",
             autoResize: true,
             autoMargins: true,
-            chartScrollbar: {}
+            chartScrollbar: {},
+            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
         };
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {

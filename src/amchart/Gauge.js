@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart", "require"], factory);
     } else {
-        root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart);
+        root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart, root.require);
     }
-}(this, function(d3, HTMLWidget, AmCharts, I1DChart) {
+}(this, function(d3, HTMLWidget, AmCharts, I1DChart, require) {
     function Gauge() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -143,7 +143,8 @@
             theme: "none",
             type: "gauge",
             axes: [{}],
-            arrows:[{}]
+            arrows:[{}],
+            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
         };
         this._chart = AmCharts.makeChart(domNode, initObj);
     };

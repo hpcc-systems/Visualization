@@ -17,6 +17,7 @@ const argv = require('yargs').argv;
 const filter = require('gulp-filter');
 const tag_version = require('gulp-tag-version');
 const jshint = require('gulp-jshint');
+const jscs = require('gulp-jscs');
 const mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 // Consts
@@ -30,6 +31,7 @@ const cfg = {
 
 const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3.layout.cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive"];
 const bundles = ["common", "api", "chart", "c3chart", "google", "tree", "other", "layout", "graph", "map", "marshaller", "amchart"];  //  Order is important ---
+const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
 
 function buildModule(module, cb) {
   gutil.log('Building ' + module + '...')
@@ -86,8 +88,15 @@ gulp.task('build-css', css.bind(null, false));
 
 gulp.task('optimize-css', css.bind(null, true));
 
+gulp.task('jscs', function() {
+    gutil.log("JSCS the files...." + '\n');
+    return gulp.src(cfg.src + '/**/*.js')
+        .pipe(lintFilter)
+        .pipe(jscs())
+    ;
+});
+
 gulp.task('lint', function () {
-    var lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
     return gulp.src(cfg.src + '/**/*.js')
         .pipe(lintFilter)
         .pipe(jshint('.jshintrc'))
@@ -103,7 +112,7 @@ gulp.task('unitTest', function () {
     ;
 });
 
-gulp.task("test", ["lint", "unitTest"]);
+gulp.task("test", ["jscs", "unitTest", "lint"]);
 
 gulp.task('build-nonamd', ['build-css', 'optimize-css'], function (cb) {
     async.each(bundles, buildModule, cb);

@@ -25,7 +25,8 @@
     "phantomjs": "1.9.8",
     "gulp-mocha-phantomjs": "^0.8.1",
     "mocha": "^2.2.5",
-    "chai": "^3.2.0"
+    "chai": "^3.2.0",
+    "gulp-jscs": "~2.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IWordCloud", "require", "css!./WordCloud"], factory);
+        define(["d3", "../common/SVGWidget", "./IWordCloud", "d3-cloud", "css!./WordCloud"], factory);
     } else {
-        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud, root.require);
+        root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud);
     }
-}(this, function (d3, SVGWidget, IWordCloud, require) {
+}(this, function (d3, SVGWidget, IWordCloud) {
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
@@ -114,14 +114,6 @@
                 ;
             }
         }
-    };
-
-    WordCloud.prototype.render = function (callback) {
-        var context = this;
-        require(["d3.layout.cloud"], function (d3LayoutClout) {
-            SVGWidget.prototype.render.call(context, callback);
-        });
-        return this;
     };
 
     return WordCloud;

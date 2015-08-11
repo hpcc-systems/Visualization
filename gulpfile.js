@@ -29,7 +29,7 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3.layout.cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive"];
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive"];
 const bundles = ["common", "api", "chart", "c3chart", "google", "amchart", "tree", "form", "other", "graph", "map", "layout", "marshaller"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
 
@@ -76,7 +76,7 @@ function css(minify) {
 }
 
 function optimize(opts, cb) {
-  //opts.optimize = "none";
+  opts.optimize = "none";
   rjs.optimize(opts,
     function (text) { cb(null, text) },
     cb
@@ -146,7 +146,7 @@ const amd_modules = bundles.map(function (bundle, idx) {
     var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
     switch (bundle) {
         case "common":
-            include = ["d3", "d3.layout.cloud"].concat(include);
+            include = ["d3"].concat(include);
             break;
     }
     amd_bundles["src/" + name] = include;

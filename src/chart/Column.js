@@ -19,7 +19,7 @@
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
-    Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
         var context = this;

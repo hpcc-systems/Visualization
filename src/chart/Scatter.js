@@ -21,7 +21,7 @@
     Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "monotone"]);
     Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
     Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity");
-    Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Scatter.prototype.xPos = function (d) {
         return this.orientation() === "horizontal" ? this.dataPos(d.label) : this.valuePos(d.value);

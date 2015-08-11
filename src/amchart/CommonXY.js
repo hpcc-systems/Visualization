@@ -87,7 +87,7 @@
     //CommonXY.prototype.publish("yAxisMinimum", null, "number", "",null,{tags:["Intermediate"]});
     CommonXY.prototype.publish("yAxisTitleOffset", null, "number", "",null,{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;

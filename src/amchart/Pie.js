@@ -46,7 +46,7 @@
 
     Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:["Intermediate"]});
 
-    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Pie.prototype.updateChartOptions = function() {
         var context = this;

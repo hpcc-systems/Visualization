@@ -18,7 +18,7 @@
     Tabbed.prototype.publish("padding", 4, "number", "Padding");
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
-    Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with 'widgets'", null, { tags: ["Private"] });
+    Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.testData = function () {
@@ -33,7 +33,7 @@
         ;
         return this;
     };
-    
+
     Tabbed.prototype.addTab = function (widget, label, isActive) {
         var labels = this.labels();
         var widgets = this.widgets();

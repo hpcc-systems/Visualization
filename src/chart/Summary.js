@@ -21,7 +21,7 @@
     Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null);
     Summary.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null);
     Summary.prototype.publish("valueIcon", "fa-briefcase", "string", "FA Char icon class");
-    Summary.prototype.publish("moreText", "More Info", "string", "'More' text");
+    Summary.prototype.publish("moreText", "More Info", "string", "More text");
     Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class");
     Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
     Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");

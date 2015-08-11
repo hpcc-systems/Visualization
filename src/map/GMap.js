@@ -130,7 +130,7 @@
             strokeColor: color,
             map: this._googleMap
         });
-        circle.bindTo('center', marker, 'position');
+        circle.bindTo("center", marker, "position");
         return circle;
     };
 

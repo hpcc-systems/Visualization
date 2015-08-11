@@ -20,39 +20,39 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Gauge.prototype.publish("paletteID", "default", "set", "Palette ID", Gauge.prototype._palette.switch(), {tags:['Basic','Shared']});
-    Gauge.prototype.publish("low", 0, "number", "Gauge lower bound", null, {tags:['Intermediate','Shared']});
-    Gauge.prototype.publish("high", 100, "number", "Gauge higher bound", null, {tags:['Intermediate','Shared']});
+    Gauge.prototype.publish("paletteID", "default", "set", "Palette ID", Gauge.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    Gauge.prototype.publish("low", 0, "number", "Gauge lower bound", null, {tags:["Intermediate","Shared"]});
+    Gauge.prototype.publish("high", 100, "number", "Gauge higher bound", null, {tags:["Intermediate","Shared"]});
 
-    Gauge.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic','Shared']});
-    Gauge.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic','Shared','Shared']});
-    Gauge.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic','Shared']});
+    Gauge.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
+    Gauge.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
+    Gauge.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
 
     /**
      * Publish Params Unique To This Widget
      */
-    Gauge.prototype.publish("axisLineWidth", 1, "number", "Thickness of axis",null,{tags:['Intermediate']});
+    Gauge.prototype.publish("axisLineWidth", 1, "number", "Thickness of axis",null,{tags:["Intermediate"]});
 
-    Gauge.prototype.publish("colorType", "a", "set", "", ["a","b","c"],{tags:['Basic']});
+    Gauge.prototype.publish("colorType", "a", "set", "", ["a","b","c"],{tags:["Basic"]});
 
-    Gauge.prototype.publish("marginLeft", null, "number", "Margin (Left)",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("marginRight", null, "number", "Margin (Right)",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("marginTop", null, "number", "Margin (Top)",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("marginBottom", null, "number", "Margin (Bottom)",null,{tags:['Intermediate']});
+    Gauge.prototype.publish("marginLeft", null, "number", "Margin (Left)",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("marginRight", null, "number", "Margin (Right)",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("marginTop", null, "number", "Margin (Top)",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("marginBottom", null, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
 
-    Gauge.prototype.publish("numBands", null, "number", "",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("bandsColor", [], "array", "Bands Color",null,{tags:['Basic']});
-    Gauge.prototype.publish("bandsStartValue", [], "array", "Bands Start Value",null,{tags:['Advanced']});
-    Gauge.prototype.publish("bandsEndValue", [], "array", "Bands End Value",null,{tags:['Advanced']});
-    Gauge.prototype.publish("bandsInnerRadius", [], "array", "Bands Inner Radius",null,{tags:['Advanced']});
+    Gauge.prototype.publish("numBands", null, "number", "",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("bandsColor", [], "array", "Bands Color",null,{tags:["Basic"]});
+    Gauge.prototype.publish("bandsStartValue", [], "array", "Bands Start Value",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("bandsEndValue", [], "array", "Bands End Value",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("bandsInnerRadius", [], "array", "Bands Inner Radius",null,{tags:["Advanced"]});
 
-    Gauge.prototype.publish("axisAlpha", 0.2, "number", "Axis Alpha",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("tickAlpha", 0.2, "number", "Tick Alpha",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("valueInterval", 20, "number", "Value Interval",null,{tags:['Advanced']});
-    Gauge.prototype.publish("bottomText", "", "string", "Text Along Bottom",null,{tags:['Intermediate']});
-    Gauge.prototype.publish("bottomTextYOffset", -20, "number", "Bottom Text Vertical Offset",null,{tags:['Intermediate']});
+    Gauge.prototype.publish("axisAlpha", 0.2, "number", "Axis Alpha",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("tickAlpha", 0.2, "number", "Tick Alpha",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("valueInterval", 20, "number", "Value Interval",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("bottomText", "", "string", "Text Along Bottom",null,{tags:["Intermediate"]});
+    Gauge.prototype.publish("bottomTextYOffset", -20, "number", "Bottom Text Vertical Offset",null,{tags:["Intermediate"]});
 
-    Gauge.prototype.publish("animatationDuration", 2, "number", "Animation Duration (sec)",null,{tags:['Intermediate']});
+    Gauge.prototype.publish("animatationDuration", 2, "number", "Animation Duration (sec)",null,{tags:["Intermediate"]});
 
     Gauge.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
 
@@ -86,7 +86,7 @@
 
         // 3 Color Methods
         var i, l;
-        if (this.colorType() === 'a') {
+        if (this.colorType() === "a") {
             for (i = 0, l = this.numBands(); i < l; i++) {
                 var a_band = {
                     color: this.bandsColor()[i],
@@ -97,19 +97,19 @@
                 this._chart.axes[0].bands.push(a_band);
             }
         }
-        if (this.colorType() === 'b') {
+        if (this.colorType() === "b") {
             for (i = 0, l = this.high() ; i < l; i++) {
                 var b_band = {
                     color: this._palette(i, this.low(), this.high()),
                     startValue: i,
                     endValue: i+1,
-                    //innerRadius: this._bandsInnerRadius[i] || '', // this has a cool effect might be useful?
+                    //innerRadius: this._bandsInnerRadius[i] || "", // this has a cool effect might be useful?
                     innerRadius: this.bandsInnerRadius()[0]
                 };
                 this._chart.axes[0].bands.push(b_band);
             }
         }
-        if (this.colorType() === 'c') {
+        if (this.colorType() === "c") {
             var c_band = {
                 color: this._palette(this._data, this.low(), this.high()),
                 startValue: this.low(),
@@ -130,8 +130,8 @@
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
 
-        domNode.style.width = this.size().width + 'px';
-        domNode.style.height = this.size().height + 'px';
+        domNode.style.width = this.size().width + "px";
+        domNode.style.height = this.size().height + "px";
 
         this.updateChartOptions();
         this._chart.arrows[0].setValue(this._data);
@@ -141,8 +141,8 @@
     };
 
     Gauge.prototype.enter = function(domNode, element) {
-        domNode.style.width = this.size().width + 'px';
-        domNode.style.height = this.size().height + 'px';
+        domNode.style.width = this.size().width + "px";
+        domNode.style.height = this.size().height + "px";
 
         var initObj = {
             theme: "none",

@@ -100,7 +100,7 @@
         this._target = _;
 
         //  Target is a DOM Node ID ---
-        if (typeof (this._target) === 'string' || this._target instanceof String) {
+        if (typeof (this._target) === "string" || this._target instanceof String) {
             this._target = document.getElementById(this._target);
         }
 

@@ -15,7 +15,7 @@
             axis: {
             },
             legend: {
-                position: 'bottom',
+                position: "bottom",
                 show: true
             },
             data: {
@@ -32,21 +32,21 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Common.prototype.publish("showLegend", false, "boolean", "Show/Hide Legend",null,{tags:['Basic','Shared']});
-    Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:['Intermediate','Shared']});
-    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:['Intermediate','Shared']});
-    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name",null,{tags:['Private','Shared']});
-    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold",null,{tags:['Private','Shared']});
-    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic",null,{tags:['Private','Shared']});
+    Common.prototype.publish("showLegend", false, "boolean", "Show/Hide Legend",null,{tags:["Basic","Shared"]});
+    Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:["Intermediate","Shared"]});
+    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:["Intermediate","Shared"]});
+    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name",null,{tags:["Private","Shared"]});
+    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold",null,{tags:["Private","Shared"]});
+    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic",null,{tags:["Private","Shared"]});
 
-    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:['Basic','Shared']});
-    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic','Shared','Shared']});
-    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic','Shared']});
+    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
+    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
     /**
      * Publish Params Unique To This Widget
      */
-    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:['Intermediate']});
-    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:['Advanced']});
+    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:["Intermediate"]});
+    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:["Advanced"]});
 
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;
@@ -149,7 +149,7 @@
                 })
                 .attr("font-family",this.legendFontFamily());
     };
-    
+
     Common.prototype.getChartOptions = function () {
         return {};
     };

@@ -28,9 +28,9 @@
     Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
     Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
-    Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:['Private']});
-    Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:['Private']});
-    Vertex.prototype.publish("annotationIcons", [], "array", "Annotations",null,{tags:['Private']});
+    Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:["Private"]});
+    Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:["Private"]});
+    Vertex.prototype.publish("annotationIcons", [], "array", "Annotations",null,{tags:["Private"]});
 
     Vertex.prototype.testData = function (_) {
         this._icon.testData();

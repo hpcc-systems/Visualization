@@ -30,8 +30,8 @@
     /**
      * Publish Params Common To Other Libraries
      */
-    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), {tags:['Basic','Shared']});
-    Common1D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    Common1D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
     /**
      * Publish Params Unique To This Widget
      */

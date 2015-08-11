@@ -195,10 +195,10 @@
     Graph.prototype.constructor = Graph;
     Graph.prototype._class += " marshaller_Graph";
 
-    Graph.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:['Private']});
-    Graph.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:['Private']});
-    Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources",null,{tags:['Private']});
-    Graph.prototype.publish("proxyMappings", [], "array", "Proxy Mappings",null,{tags:['Private']});
+    Graph.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:["Private"]});
+    Graph.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
+    Graph.prototype.publish("visualizeRoxie", false, "boolean", "Show Roxie Data Sources",null,{tags:["Private"]});
+    Graph.prototype.publish("proxyMappings", [], "array", "Proxy Mappings",null,{tags:["Private"]});
 
     Graph.prototype.testData = function () {
         //this.ddlUrl("http://10.173.147.1:8002/WsEcl/submit/query/roxie/drealeed_testaddressclean.ins002_service/json");

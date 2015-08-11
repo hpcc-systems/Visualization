@@ -16,12 +16,12 @@
     Icon.prototype.constructor = Icon;
     Icon.prototype._class += " common_Icon";
 
-    Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:['Private']});
+    Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:["Private"]});
     Icon.prototype.publishProxy("faChar", "_faChar", "char");
     Icon.prototype.publishProxy("image_colorFill", "_faChar", "text_colorFill");
-    Icon.prototype.publish("tooltip", "", "string", "Tooltip",null,{tags:['Private']});
-    Icon.prototype.publish("diameter", 24, "number", "Diameter",null,{tags:['Private']});
-    Icon.prototype.publish("paddingPercent", 45, "number", "Padding Percent",null,{tags:['Private']});
+    Icon.prototype.publish("tooltip", "", "string", "Tooltip",null,{tags:["Private"]});
+    Icon.prototype.publish("diameter", 24, "number", "Diameter",null,{tags:["Private"]});
+    Icon.prototype.publish("paddingPercent", 45, "number", "Padding Percent",null,{tags:["Private"]});
     Icon.prototype.publishProxy("shape_colorFill", "_shapeWidget", "colorFill");
     Icon.prototype.publishProxy("shape_colorStroke", "_shapeWidget", "colorStroke");
 

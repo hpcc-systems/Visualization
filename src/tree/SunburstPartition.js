@@ -15,8 +15,8 @@
     SunburstPartition.prototype._class += " tree_SunburstPartition";
     SunburstPartition.prototype.implements(ITree.prototype);
 
-    SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(),{tags:['Basic','Shared']});
-    SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(),{tags:["Basic","Shared"]});
+    SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     SunburstPartition.prototype.root = function (_) {
         if (!arguments.length) return this._root || this._data;

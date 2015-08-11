@@ -17,7 +17,7 @@
 
     Layered.prototype.publish("padding", 0, "number", "Padding");
 
-    Layered.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ['Private'] });
+    Layered.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Layered.prototype.testData = function () {
         this
@@ -37,7 +37,7 @@
         }, 3000);
         return this;
     };
-    
+
     Layered.prototype.addLayer = function(widget) {
         var widgets = this.widgets();
         widgets.push(widget ? widget : new Text().text("No widget defined for layer."));

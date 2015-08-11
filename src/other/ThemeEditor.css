@@ -39,7 +39,7 @@
     padding-left: 29px;
 }
 .other_ThemeEditor thead.mm-label > tr:first-child > th::before{
-    content:'[+]';
+    content:"[+]";
     position:absolute;
     left: 3px;
     top: 3px;
@@ -49,10 +49,10 @@
     font-family:monospace;
 }
 .other_ThemeEditor thead.mm-label.max > tr:first-child > th::before{
-    content:'[-]';
+    content:"[-]";
 }
 .other_ThemeEditor tr.sharedPropertyRow > td.label::after{
-    content:'[+]';
+    content:"[+]";
     position:absolute;
     right: 10px;
     top: 3px;
@@ -62,7 +62,7 @@
     font-family:monospace;
 }
 .other_ThemeEditor tr.sharedPropertyRow > td.label.expanded::after{
-    content:'[-]';
+    content:"[-]";
 }
 .other_ThemeEditor tr.sharedPropertyRow > td.label{
     position:relative;

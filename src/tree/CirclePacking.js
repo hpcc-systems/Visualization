@@ -15,8 +15,8 @@
     CirclePacking.prototype._class += " tree_CirclePacking";
     CirclePacking.prototype.implements(ITree.prototype);
 
-    CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(),{tags:['Basic','Shared']});
-    CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:['Intermediate','Shared']});
+    CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(),{tags:["Basic","Shared"]});
+    CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CirclePacking.prototype.enter = function (domNode, element) {
         this.diameter = Math.min(this.width(), this.height());

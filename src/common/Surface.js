@@ -141,16 +141,16 @@
         surfaceButtons.enter().append("button").attr("class","surface-button")
             .each(function (button, idx) {
                 var el = context._surfaceButtons[idx] = d3.select(this)
-                    .attr("class", "surface-button " + (button.class ? button.class : ''))
+                    .attr("class", "surface-button " + (button.class ? button.class : ""))
                     .attr("id", button.id)
-                    .style('padding', button.padding)
-                    .style('width', button.width)
-                    .style('height', button.height)
+                    .style("padding", button.padding)
+                    .style("width", button.width)
+                    .style("height", button.height)
                     .style("cursor","pointer")
                     .on("click", function(d) { context.click(d); });
                 if (button.font === "FontAwesome") {
                     el
-                      .append('i')
+                      .append("i")
                       .attr("class","fa")
                       .text(function(d) { return button.label; });
                 } else {

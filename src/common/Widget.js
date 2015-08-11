@@ -4,7 +4,7 @@
         define(["d3"], factory);
     } else {
         root.require = root.require || function (paths, cb) {
-            if (typeof paths === 'function') {
+            if (typeof paths === "function") {
                 cb = paths;
                 paths = [];
             }
@@ -99,20 +99,20 @@
             if (config.attributes) {
                 listener = new MutationListener(this.callback, domNode, "attributes");
                 this.listeners.push(listener);
-                domNode.addEventListener('DOMAttrModified', listener, true);
+                domNode.addEventListener("DOMAttrModified", listener, true);
             }
 
             if (config.characterData) {
                 listener = new MutationListener(this.callback, domNode, "characterData");
                 this.listeners.push(listener);
-                domNode.addEventListener('DOMCharacterDataModified', listener, true);
+                domNode.addEventListener("DOMCharacterDataModified", listener, true);
             }
 
             if (config.childList) {
                 listener = new MutationListener(this.callback, domNode, "childList");
                 this.listeners.push(listener);
-                domNode.addEventListener('DOMNodeInserted', listener, true);
-                domNode.addEventListener('DOMNodeRemoved', listener, true);
+                domNode.addEventListener("DOMNodeInserted", listener, true);
+                domNode.addEventListener("DOMNodeRemoved", listener, true);
             }
         };
 
@@ -120,14 +120,14 @@
             this.listeners.forEach(function (item) {
                 switch (item.type) {
                     case "attributes":
-                        item.domNode.removeEventListener('DOMAttrModified', item, true);
+                        item.domNode.removeEventListener("DOMAttrModified", item, true);
                         break;
                     case "characterData":
-                        item.domNode.removeEventListener('DOMCharacterDataModified', item, true);
+                        item.domNode.removeEventListener("DOMCharacterDataModified", item, true);
                         break;
                     case "childList":
-                        item.domNode.removeEventListener('DOMNodeRemoved', item, true);
-                        item.domNode.removeEventListener('DOMNodeInserted', item, true);
+                        item.domNode.removeEventListener("DOMNodeRemoved", item, true);
+                        item.domNode.removeEventListener("DOMNodeInserted", item, true);
                         break;
                 }
             });
@@ -172,12 +172,12 @@
                     break;
                 case "html-color":
                     if (window.__hpcc_debug && _ && _ !== "red") {
-                        var litmus = 'red';
-                        var d = document.createElement('div');
+                        var litmus = "red";
+                        var d = document.createElement("div");
                         d.style.color = litmus;
                         d.style.color = _;
-                        //Element's style.color will be reverted to litmus or set to '' if an invalid color is given
-                        if (d.style.color === litmus || d.style.color === '') {
+                        //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
+                        if (d.style.color === litmus || d.style.color === "") {
                             console.log("Invalid value for '" + id + "':  " + _);
                         }
                     }

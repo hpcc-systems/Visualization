@@ -36,7 +36,7 @@
     padding-left: 29px;
 }
 .other_PropertyEditor thead.mm-label > tr:first-child > th::before{
-    content:'[+]';
+    content:"[+]";
     position:absolute;
     left: 3px;
     top: 3px;
@@ -46,10 +46,10 @@
     font-family:monospace;
 }
 .other_PropertyEditor thead.mm-label.max > tr:first-child > th::before{
-    content:'[-]';
+    content:"[-]";
 }
 .other_PropertyEditor tr.sharedPropertyRow > td.label::after{
-    content:'[+]';
+    content:"[+]";
     position:absolute;
     right: 10px;
     top: 3px;
@@ -59,7 +59,7 @@
     font-family:monospace;
 }
 .other_PropertyEditor tr.sharedPropertyRow > td.label.expanded::after{
-    content:'[-]';
+    content:"[-]";
 }
 .other_PropertyEditor tr.sharedPropertyRow > td.label{
     position:relative;

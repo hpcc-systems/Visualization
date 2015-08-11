@@ -41,7 +41,7 @@
 
         this._renderCount = 0;
 
-        if (window.__hpcc_debug) { // jshint ignore:line
+        if (window.__hpcc_debug) {
             if (window.g_all === undefined) {
                 window.g_all = {};
             }

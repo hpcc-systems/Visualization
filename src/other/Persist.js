@@ -31,7 +31,146 @@
             }
             return retVal;
         },
-
+        serializeTheme: function(widget,filter){
+            return JSON.stringify(this.serializeThemeToObject(widget,filter));
+        },
+        serializeThemeToObject: function (widget,filter){
+            var context = this;
+            
+            var propObj = {};
+            _paramCrawler(widget,filter);
+            return propObj;
+            
+            function _paramCrawler(widget,filter){
+                var retArr = [];
+                filter = typeof(filter) === "undefined" ? ["surface","Color","Font","palette"] : filter;
+                context.discover(widget).forEach(function (item) {
+                    if (widget[item.id + "_modified"]() || typeof(widget["__meta_"+item.id].trueDefaultValue) !== "undefined") {
+                        switch (item.type) {
+                            case "widget":
+                                var tempArr = _paramCrawler(widget[item.id](),filter);
+                                retArr = retArr.concat(tempArr);
+                                break;
+                            case "widgetArray":
+                                var widgetArray = widget[item.id]();
+                                widgetArray.forEach(function (widget) {
+                                    var tempArr = _paramCrawler(widget,filter);
+                                    retArr = retArr.concat(tempArr);
+                                }, this);
+                                break;
+                            default:
+                                if(_isFilterMatch(item.id,filter)){
+                                    var paramIsIncluded = false;
+                                    var classParts = widget._class.trim().split(" ");
+                                    for(var i in classParts) { 
+                                        if(!paramIsIncluded){
+                                            if(propObj[classParts[i]] === undefined){
+                                                propObj[classParts[i]] = {};
+                                            } 
+                                            if (propObj[classParts[i]][item.id] === undefined) { 
+                                                propObj[classParts[i]][item.id] = widget[item.id](); 
+                                                paramIsIncluded = true;
+                                                break;
+                                            } 
+                                            else if (propObj[classParts[i]][item.id] === widget[item.id]()) {
+                                                paramIsIncluded = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                });
+                function _isFilterMatch(str,arr){
+                    var ret = false;
+                    for(var i in arr){
+                        if(str.indexOf(arr[i]) !== -1){
+                            ret = true;
+                            break;
+                        }
+                    }
+                    return ret;
+                }
+            }
+        },
+        removeTheme: function (widget,callback) {
+            var context = this;
+            
+            _paramCrawler(widget,"restore defaults");
+            
+            _paramCrawler(widget,"delete trueDefaultValue");
+            
+            if(typeof (callback) === "function"){
+                callback.call(this);
+            }
+            
+            function _paramCrawler(widget,mode){
+                context.discover(widget).forEach(function (item) {
+                    switch (item.type) {
+                        case "widget":
+                            _paramCrawler(widget[item.id](),mode);
+                            break;
+                        case "widgetArray":
+                            var widgetArray = widget[item.id]();
+                            widgetArray.forEach(function (widget) {
+                                _paramCrawler(widget,mode);
+                            }, this);
+                            break;
+                        default:
+                            var proto = Object.getPrototypeOf(widget);
+                            if (typeof(widget["__meta_"+item.id].trueDefaultValue) !== "undefined") {
+                                switch(mode){
+                                    case "restore defaults":
+                                        var trueDefault = proto["__meta_"+item.id].trueDefaultValue;
+                                        proto["__meta_"+item.id].defaultValue = trueDefault;
+                                        widget[item.id+"_reset"]();
+                                        break;
+                                    case "delete trueDefaultValue":
+                                        delete proto["__meta_"+item.id].trueDefaultValue;
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                });
+            }
+        },
+        applyTheme: function (widget,themeObj,callback) {
+            var context = this;
+            this.discover(widget).forEach(function (item) {
+                    switch (item.type) {
+                        case "widget":
+                            context.applyTheme(widget[item.id](),themeObj);
+                            break;
+                        case "widgetArray":
+                            var widgetArray = widget[item.id]();
+                            widgetArray.forEach(function (widget) {
+                                context.applyTheme(widget,themeObj);
+                            }, this);
+                            break;
+                        default:
+                            var clsArr = widget._class.trim().split(" ").reverse();
+                            for(var i in clsArr){
+                                if(typeof (themeObj[clsArr[i]]) !== "undefined"){
+                                    if(typeof (themeObj[clsArr[i]][item.id]) !== "undefined"){
+                                        var proto = Object.getPrototypeOf(widget);
+                                        if(typeof (proto["__meta_"+item.id].trueDefaultValue) === "undefined"){
+                                            proto["__meta_"+item.id].trueDefaultValue = widget[item.id]();
+                                        }
+                                        proto["__meta_"+item.id].defaultValue = themeObj[clsArr[i]][item.id];
+                                    }
+                                }
+                            }
+                            break;
+                    }
+            });
+            if(typeof (callback) === "function"){
+                callback.call(this);
+            }
+        },
+        
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
                 __version: 3,

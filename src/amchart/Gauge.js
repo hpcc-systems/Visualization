@@ -149,8 +149,10 @@
             type: "gauge",
             axes: [{}],
             arrows:[{}],
-            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
         };
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
 

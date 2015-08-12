@@ -576,17 +576,17 @@
                                     var selectOptions = [];
                                     var options = field.properties.enumvals;
                                     for (var val in options) {
-                                         selectOptions.push([val,options[val]])
+                                         selectOptions.push([val,options[val]]);
                                     }
                                     break;
                                 case "CHECKBOX":
-                                    inputtype = "checkbox";
+                                    inputType = "checkbox";
                                     break;
                                 case "HIDDEN":
-                                    inputtype = "hidden";
+                                    inputType = "hidden";
                                     break;
                                 default:
-                                    inputtype = "textbox";
+                                    inputType = "textbox";
                                     break;
                             }
 
@@ -596,8 +596,8 @@
                                 .type(inputType)
                                 .value(field.properties.default ? field.properties.default : "")
                             ;
-                            if (inputSelection.length) {
-                                inp.selectOptions(selectOptions)
+                            if (selectOptions.length) {
+                                inp.selectOptions(selectOptions);
                             }
                             return inp;
                         }))

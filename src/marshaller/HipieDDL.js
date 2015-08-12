@@ -562,12 +562,44 @@
                     widget
                         .id(visualization.id)
                         .inputs(visualization.fields.map(function(field) {
-                            return new Input()
+
+                            var inputType = null;
+                            switch(field.properties.charttype) {
+                                case "TEXT":
+                                    inputType = "textbox";
+                                    break;
+                                case "TEXTAREA":
+                                    inputType = "textarea";
+                                    break;
+                                case "SELECT":
+                                    inputType = "select";
+                                    var selectOptions = [];
+                                    var options = field.properties.enumvals;
+                                    for (var val in options) {
+                                         selectOptions.push([val,options[val]])
+                                    }
+                                    break;
+                                case "CHECKBOX":
+                                    inputtype = "checkbox";
+                                    break;
+                                case "HIDDEN":
+                                    inputtype = "hidden";
+                                    break;
+                                default:
+                                    inputtype = "textbox";
+                                    break;
+                            }
+
+                            var inp = new Input()
                                 .name(field.id)
                                 .label((field.properties ? field.properties.label : null) || field.label)
-                                .type("textbox")
+                                .type(inputType)
                                 .value(field.properties.default ? field.properties.default : "")
                             ;
+                            if (inputSelection.length) {
+                                inp.selectOptions(selectOptions)
+                            }
+                            return inp;
                         }))
                     ;
                 });

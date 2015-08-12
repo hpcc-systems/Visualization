@@ -388,6 +388,6 @@
     Slider.prototype.newSelection = function (value, value2) {
         console.log("newSelection:  " + value + ", " + value2);
     };
-    
+
     return Slider;
 }));

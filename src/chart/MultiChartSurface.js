@@ -57,7 +57,7 @@
                     break;
                 case "2d":
                 case "2D":
-                    this.menu(this.content()._2DChartTypes.concat(this.content()._NDChartTypes.concat(this.content()._anyChartTypes)).map(function (item) { return item.display; }).sort());
+                    this.menu(this.content()._2DChartTypes.concat(this.content()._anyChartTypes).map(function (item) { return item.display; }).sort());
                     break;
                 case "multi":
                     /* falls through */

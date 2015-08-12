@@ -22,11 +22,15 @@
         this._widgetObjsById = {};
     }
     var getThemes = function(idx){
-        g_defaultThemes(idx); // jshint ignore:line
+        if (typeof(window.g_defaultThemes) === "function") {
+            window.g_defaultThemes(idx);
+        }
         return JSON.parse(localStorage.themeEditorThemes);
     };
     var getSerials = function(idx){
-        g_defaultSerials(idx); // jshint ignore:line
+        if (typeof(window.g_defaultSerials) === "function") {
+            window.g_defaultSerials(idx);
+        }
         return JSON.parse(localStorage.themeEditorSerials);
     };
     var getThemeNames = function(idx){

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "./XYAxis", "../api/INDChart", "css!./Scatter"], factory);
     } else {
-        root.chart_Column = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart);
+        root.chart_Scatter = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart);
     }
 }(this, function (d3, SVGWidget, XYAxis, INDChart) {
     function Scatter(target) {

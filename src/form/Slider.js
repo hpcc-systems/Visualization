@@ -332,13 +332,7 @@
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
             this._data = mouseX;
-            if (this.selectionLabel()) {
-                var clickData = {};
-                clickData[this.selectionLabel()] = mouseX;
-                this.click(clickData);
-            } else {
-                this.click(mouseX);
-            }
+            this._click();
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);

@@ -133,9 +133,11 @@
             type: "funnel",
             autoResize: true,
             autoMargins: true,
-            chartScrollbar: {},
-            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
+            chartScrollbar: {}
         };
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
             context.click(context.rowToObj(context._data[e.dataItem.index]));

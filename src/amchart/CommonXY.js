@@ -228,10 +228,11 @@
             dataProvider: [{}],
             responsive: {
                 enabled: true
-            },
-            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
+            }
         };
-
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);

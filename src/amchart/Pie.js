@@ -133,9 +133,11 @@
         var context = this;
         var initObj = {
             type: "pie",
-            theme: "none",
-            pathToImages: (typeof define === "function" && define.amd) ? require.toUrl("amchartsImg") : ""
+            theme: "none"
         };
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
             context.click(context.rowToObj(context._data[e.dataItem.index]));

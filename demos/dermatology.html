@@ -103,6 +103,7 @@
                             <option value="src/layout/Border">Border Layout</option>
                             <option value="src/layout/Layered">Layered Layout</option>
                             <option value="src/layout/Tabbed">Tabbed Layout</option>
+                            <option value="src/layout/Popup">Popup Layout</option>
                             <option value="src/amchart/Area">AmChart Area</option>
                             <option value="src/amchart/Bar">AmChart Bar</option>
                             <option value="src/amchart/Bubble">AmChart Bubble</option>
@@ -154,7 +155,8 @@
                 document.getElementById("widgetSelect").value = widgetPath;
             }
         }
-
+        
+        var popupProperties;
         var body = document.getElementById("body");
         var mainDiv = document.getElementById("main");
         var frame = null;
@@ -227,6 +229,9 @@
             testWidget = function (widgetPath, params) {
                 require([widgetPath], function (Widget) {
                     currWidget = new Widget().testData();
+                    if(currWidget.classID() === 'layout_Grid'){
+                        _propertiesPopupExample();
+                    }
                     if (params) {
                         for (var key in params) {
                             currWidget[key](params[key]);
@@ -289,6 +294,44 @@
                 }
             }, 250)
             frame.doResize();
+            
+            function _propertiesPopupExample(){
+                var def = window.location.search.split("?")[1].split('&');
+                def.forEach(function(n){
+                    var paramName = n.split('=')[0];
+                    if(paramName === 'propertyMode'){
+                        showProperties(false);
+                        document.getElementById('showProperties').checked = false;
+                    }
+                })
+                currWidget.propertyModeClick = function(d){
+                    if(popupProperties){
+                        popupProperties.target(null).render();
+                    }
+                    require(['src/layout/Popup','src/layout/AbsoluteSurface','src/layout/Surface'],function(Popup,Absolute,Surface){
+                        popupProperties = new Popup();
+                        popupProperties._preventPostUpdate = true;
+                        popupProperties.popupState(true).enableDragging(true)
+                            .position("fixed").top(0).bottom(0).left(0).right(0)
+                            .widget(
+                                new Absolute().x(25).y(25).height(50).width(50)
+                                    .widget(
+                                        new Surface().title("Edit Publish Parameters").surfaceBackgroundColor("#FFF").surfaceTitleAlignment("left")
+                                            .widget(
+                                                new PropertyEditor().show_settings(false).showColumns(false).showData(false).data([d])
+                                            )
+                                            .buttonAnnotations([{id:"button_1",label:"\uf00d",width:"28px",padding:"0px",class: "",font: "FontAwesome",
+                                                callback: function() {
+                                                    popupProperties.popupState(false).render();
+                                                }
+                                            }])
+                                    )
+                            )
+                            .target('main')
+                            .render();
+                    });
+                }
+            }
         });
         function doResize() {
             if (frame) {

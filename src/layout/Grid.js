@@ -23,6 +23,7 @@
     Grid.prototype._class += " layout_Grid";
 
     Grid.prototype.publish("designMode", false, "boolean", "Design Mode",null,{tags:["Private"]});
+    Grid.prototype.publish("propertyMode", false, "boolean", "Property Mode",null,{tags:["Private"]});
     Grid.prototype.publish("gutter", 4, "number", "Gap Between Widgets",null,{tags:["Private"]});
     Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Private"] });
 
@@ -116,6 +117,8 @@
     Grid.prototype.childMoved = Grid.prototype.debounce(function (domNode, element) {
         this.render();
     }, 250);
+
+    Grid.prototype.propertyModeClick = function(){};
 
     Grid.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -394,6 +397,11 @@
             this.contentDiv.selectAll(".cell_" + this._id).call(drag);
         } else {
             this.contentDiv.selectAll(".cell_" + this._id).on(".drag", null);
+        }
+        if(this.propertyMode()){
+            this.contentDiv.selectAll(".cell_" + this._id).on("click", function(d){
+                context.propertyModeClick(d);
+            });
         }
 
         rows.style("left", function (d) { return d.gridCol() * cellWidth + context.gutter() / 2 + "px"; })

@@ -4,8 +4,14 @@
     border-color: #999999;
     border-collapse: collapse;
 }
+/*Please take note of text selection on the table, especially in regards to the fixed first column, as well as shift-clicking.  The following code would disable text selection completely.  Which would be the lesser evil? (uncomment in browser to see the difference)*/
+.other_Table, .labels-wrapper {
+/*    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;*/
+}
 
-.other_Table th {
+.other_Table th, .labels-wrapper th {
     padding:5px 10px;
     background-color:#1f77b4;
     border-width: 1px;
@@ -16,7 +22,7 @@
     cursor : pointer;
 }
 
-.other_Table .thIcon {
+.other_Table .thIcon, .labels-wrapper .thIcon {
     font-family: FontAwesome;
     padding-left: 8px;
 }
@@ -26,24 +32,38 @@
     color:black;
 }
 
-.other_Table tr.selected {
+.rows-wrapper tr {
+    background-color:#BCE1FB;
+    color:black;
+}
+
+.rows-wrapper .labels-wrapper {
+    width: 100%;
+}
+.other_Table tr.selected, .rows-wrapper tr.selected {
     background-color:#f48a00;
     color: white;
 }
 
-.other_Table tr:hover {
+.other_Table tr:hover, .other_Table tr.hover, .rows-wrapper tbody tr.hover {
     background-color: #bfd7e7;
 }
 
-.other_Table tr.selected:hover {
+.rows-wrapper tbody tr.hover.selected {
     background-color:#5ea8db;
     color: white;
 }
 
-.other_Table td {
+.other_Table tr.selected:hover, .other_Table tr.selected.hover {
+    background-color:#5ea8db;
+    color: white;
+}
+
+.other_Table td, .rows-wrapper td{
     border-width: 1px;
     padding:2px 5px;
     border-style: solid;
     border-color: #a9c6c9;
     white-space: nowrap;
+    box-sizing:border-box;
 }

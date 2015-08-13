@@ -85,12 +85,12 @@
         if (this._paginator.numItems() === 0) { // only run on first render
             this._paginator.numItems(1);
             this.itemsPerPage(1);
-            this._paginator.render();
         }
-
+        this._paginator.render();
         var thHeight = this.calcHeight(th);
         var tcellHeight = this.calcHeight(this._generateTempCell());
         var paginatorHeight = this.calcHeight(this._paginator.element());
+
         var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
         return ipp;
     };

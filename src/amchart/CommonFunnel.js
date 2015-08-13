@@ -17,16 +17,10 @@
     CommonFunnel.prototype.constructor = CommonFunnel;
     CommonFunnel.prototype._class += " amchart_CommonFunnel";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     CommonFunnel.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonFunnel.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared"]});
     CommonFunnel.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     CommonFunnel.prototype.publish("flip", true, "boolean", "Flip Chart",null,{tags:["Intermediate"]});
     CommonFunnel.prototype.publish("reverseDataSorting", false, "boolean", "Reverse Data Sorting",null,{tags:["Intermediate"]});
 

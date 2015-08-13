@@ -16,9 +16,6 @@
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " google_Bar";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Bar.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series",null,{tags:["Basic","Shared"]});
     //opacity?
     Bar.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size",null,{tags:["Basic","Shared"]});
@@ -44,9 +41,6 @@
 
     Bar.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     Bar.prototype.publish("groupWidth", "", "string", "The width of a group of bars, Percent or Pixels",null,{tags:["Advanced"]});
     Bar.prototype.publish("dataOpacity", 1.0, "number", "Transparency of Data Points",null,{tags:["Intermediate"]});
 

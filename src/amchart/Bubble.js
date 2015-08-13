@@ -18,14 +18,7 @@
     Bubble.prototype._class += " amchart_Bubble";
     Bubble.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), {tags:["Basic","Shared"]});
-
-    /**
-     * Publish Params Unique To This Widget
-     */
     Bubble.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Bubble.prototype.enter = function(domNode, element) {

@@ -15,13 +15,6 @@
     Donut.prototype.constructor = Donut;
     Donut.prototype._class += " c3chart_Donut";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
-
-    /**
-     * Publish Params Unique To This Widget
-     */
     Donut.prototype.publish("showLabel", true, "boolean", "Show Label",null,{tags:["Basic"]});
     //Donut.prototype.publish("labelFormat", null, "function", "???",null,{tags:["Intermediate"]});
     //Donut.prototype.publish("labelThreshold", 0.05, "number", "???",null,{tags:["Intermediate"]});

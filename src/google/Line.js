@@ -16,9 +16,6 @@
     Line.prototype.constructor = Line;
     Line.prototype._class += " google_Line";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Line.prototype.publish("lineWidth", 2, "number", "Line Width",null,{tags:["Basic","Shared"]});
     Line.prototype.publish("lineDashStyle", [], "array", "Line Dash Style",null,{tags:["Advanced","Shared"]});
 
@@ -47,9 +44,6 @@
 
     Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     Line.prototype.publish("orientation", "horizontal", "set", "Line Dash Style", ["horizontal","vertical"],{tags:["Advanced"]});
 
     Line.prototype.publish("pointSize", [], "array", "Diameter of displayed points in pixels",null,{tags:["Private"]});

@@ -16,9 +16,6 @@
     Area.prototype.constructor = Area;
     Area.prototype._class += " google_Area";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Area.prototype.publish("isStacked", false, "boolean", "Stacks The Elements In A Series",null,{tags:["Advanced","Shared"]});
     Area.prototype.publish("fillOpacity", null, "number", "Opacity of The Fill Color",null,{tags:["Intermediate","Shared"]});
 
@@ -45,9 +42,6 @@
 
     Area.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     Area.prototype.publish("smoothLines", true, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic"]});
 
     Area.prototype.publish("dataOpacity", 1.0, "number", "Transparency of Data Points",null,{tags:["Advanced"]});

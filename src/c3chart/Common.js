@@ -29,9 +29,6 @@
     Common.prototype.constructor = Common;
     Common.prototype._class += " c3chart_Common";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Common.prototype.publish("showLegend", false, "boolean", "Show/Hide Legend",null,{tags:["Basic","Shared"]});
     Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:["Intermediate","Shared"]});
     Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:["Intermediate","Shared"]});
@@ -42,9 +39,7 @@
     Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
     Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
-    /**
-     * Publish Params Unique To This Widget
-     */
+
     Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:["Intermediate"]});
     Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:["Advanced"]});
 

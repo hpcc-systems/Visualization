@@ -27,14 +27,8 @@
     Common2D.prototype._class += " c3chart_Common2D";
     Common2D.prototype.implements(I2DChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch(), {tags:["Basic","Shared"]});
     Common2D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
-    /**
-     * Publish Params Unique To This Widget
-     */
 
     Common2D.prototype.update = function (domNode, element) {
         this._palette = this._palette.switch(this.paletteID());

@@ -16,10 +16,6 @@
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
-
     CommonXY.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
@@ -49,9 +45,6 @@
 
     CommonXY.prototype.publish("axisLineWidth", 1, "number", "Thickness of axis",null,{tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     CommonXY.prototype.publish("axisAlpha", 1, "number", "Axis opacity",null,{tags:["Intermediate"]});
 
     CommonXY.prototype.publish("showScrollbar", false, "boolean", "Chart Scrollbar",null,{tags:["Intermediate"]});

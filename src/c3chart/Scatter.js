@@ -15,13 +15,5 @@
     Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " c3chart_Scatter";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
-
-    /**
-     * Publish Params Unique To This Widget
-     */   
-
     return Scatter;
 }));

@@ -15,17 +15,11 @@
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " amchart_Bar";
     Bar.prototype.implements(INDChart.prototype);
-    
-    /**
-     * Publish Params Common To Other Libraries
-     */
+
     Bar.prototype.publish("paletteID", "default", "set", "Palette ID", Bar.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Bar.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
     Bar.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     Bar.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     Bar.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:["Basic"]});

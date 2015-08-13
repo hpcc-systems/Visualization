@@ -27,9 +27,6 @@
     CommonND.prototype._class += " c3chart_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
     CommonND.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
@@ -56,9 +53,6 @@
     CommonND.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Advanced","Shared"]});
     CommonND.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
 
-    /**
-     * Publish Params Unique To This Library
-     */
     CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"],{tags:["Intermediate"]});
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart",null,{tags:["Private"]});
 

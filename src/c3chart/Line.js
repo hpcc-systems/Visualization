@@ -15,16 +15,9 @@
     Line.prototype.constructor = Line;
     Line.prototype._class += " c3chart_Line";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Line.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
     Line.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
     Line.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
-
-    /**
-     * Publish Params Unique To This Widget
-     */
 
     Line.prototype.enter = function (domNode, element) {
         CommonND.prototype.enter.apply(this, arguments);

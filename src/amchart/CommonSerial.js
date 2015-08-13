@@ -17,9 +17,6 @@
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     CommonSerial.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonSerial.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
     CommonSerial.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
@@ -51,9 +48,6 @@
 
     CommonSerial.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     CommonSerial.prototype.publish("axisAlpha", 1, "number", "Axis Alpha",null,{tags:["Intermediate"]}); // share?
 
     CommonSerial.prototype.publish("marginLeft", null, "number", "Margin (Left)",null,{tags:["Intermediate"]});

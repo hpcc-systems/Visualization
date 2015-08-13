@@ -18,14 +18,7 @@
     Scatter.prototype._class += " amchart_Scatter";
     Scatter.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
-
-    /**
-     * Publish Params Unique To This Widget
-     */
     Scatter.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Scatter.prototype.enter = function(domNode, element) {

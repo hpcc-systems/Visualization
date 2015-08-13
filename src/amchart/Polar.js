@@ -16,14 +16,7 @@
     Polar.prototype._class += " amchart_Polar";
     Polar.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:["Basic","Shared"]});
-
-    /**
-     * Publish Params Unique To This Widget
-     */
     Polar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     Polar.prototype.testData = function() {

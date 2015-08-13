@@ -16,14 +16,8 @@
     CommonND.prototype._class += " google_CommonND";
     CommonND.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch(),{tags:["Basic","Shared"]});
     CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
-    /**
-     * Publish Params Unique To This Widget
-     */
 
     CommonND.prototype.getChartOptions = function () {
         var chartOptions = Common.prototype.getChartOptions.call(this);

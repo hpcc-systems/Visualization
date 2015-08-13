@@ -15,13 +15,5 @@
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " c3chart_Bar";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
-
-    /**
-     * Publish Params Unique To This Widget
-     */   
-    
     return Bar;
 }));

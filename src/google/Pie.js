@@ -16,14 +16,8 @@
     Pie.prototype.constructor = Pie;
     Pie.prototype._class += " google_Pie";
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Pie.prototype.publish("is3D", false, "boolean", "Enable 3D",null,{tags:["Basic","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     Pie.prototype.publish("pieHole", 0, "number", "Pie Hole Size",null,{min:0,max:0.9,step:0.1,tags:["Intermediate"]});
     Pie.prototype.publish("pieStartAngle", 0, "number", "Pie Start Angle",null,{tags:["Advanced"]});
 

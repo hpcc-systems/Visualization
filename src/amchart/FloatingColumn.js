@@ -17,16 +17,10 @@
     FloatingColumn.prototype._class += " amchart_FloatingColumn";
     FloatingColumn.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     FloatingColumn.prototype.publish("paletteID", "Dark2", "set", "Palette ID", FloatingColumn.prototype._palette.switch(), {tags:["Basic","Shared"]});
     FloatingColumn.prototype.publish("isStacked", true, "boolean", "Stacked", null, {tags:["Basic","Shared"]});
     FloatingColumn.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
-    /**
-     * Publish Params Unique To This Widget
-     */
     FloatingColumn.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Intermediate"]});
 
     FloatingColumn.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:["Basic"]});

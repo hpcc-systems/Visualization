@@ -16,15 +16,10 @@
     Candle.prototype._class += " amchart_Candle";
     Candle.prototype.implements(INDChart.prototype);
 
-    /**
-     * Publish Params Common To Other Libraries
-     */
     Candle.prototype.publish("paletteID", "default", "set", "Palette ID", Candle.prototype._palette.switch(), {tags:["Basic","Shared"]});
     Candle.prototype.publish("isStacked", true, "boolean", "Stack CHart", null, {tags:["Basic","Shared"]});
     Candle.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
-    /**
-     * Publish Params Unique To This Widget
-     */
+
     Candle.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     Candle.prototype.publish("tooltipTemplate",'<div style="text-align:left;"><b>[[category]]</b><br/> Open:<b>[[open]]</b> Close:<b>[[close]]</b><br/>Low:<b>[[low]]</b> High:<b>[[high]]</b></div>', "string", "Tooltip Text",null,{tags:["Intermediate"]});

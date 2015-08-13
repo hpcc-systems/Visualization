@@ -138,6 +138,7 @@
                         .data(tick)
                         .render()
                     ;
+                    context._click();
                 } else {
                     context.pause();
                 }
@@ -146,6 +147,7 @@
                     .data(tick)
                     .render()
                 ;
+                context._click();
             }
         }, context.playInterval());
     };

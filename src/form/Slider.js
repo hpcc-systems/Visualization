@@ -384,5 +384,15 @@
         console.log("newSelection:  " + value + ", " + value2);
     };
 
+    Slider.prototype._click = function() {
+        if (this.selectionLabel()) {
+            var clickData = {};
+            clickData[this.selectionLabel()] = this._data;
+            this.click(clickData);
+        } else {
+            this.click(this._data);
+        }
+    };
+
     return Slider;
 }));

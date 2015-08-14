@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../chart/MultiChart", "css!./AbsoluteSurface", "css!font-awesome",], factory);
+        define(["d3", "../common/HTMLWidget", "../common/TextBox", "css!./AbsoluteSurface",], factory);
     } else {
-        root.layout_AbsoluteSurface = factory(root.d3, root.common_HTMLWidget, root.chart_MultiChart);
+        root.layout_AbsoluteSurface = factory(root.d3, root.common_HTMLWidget, root.common_TextBox);
     }
-}(this, function (d3, HTMLWidget, MultiChart) {
+}(this, function (d3, HTMLWidget, TextBox) {
     function AbsoluteSurface() {
         HTMLWidget.call(this);
 
@@ -29,7 +29,7 @@
             .widgetY(25)
             .widgetWidth(50)
             .widgetHeight(50)
-            .widget(new MultiChart().testData().chartType("COLUMN"))
+            .widget(new TextBox().testData())
         ;
         return this;
     };

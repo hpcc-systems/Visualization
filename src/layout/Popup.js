@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../form/Input", "../c3chart/Column", "css!./Popup", "css!font-awesome",], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../common/Icon", "css!./Popup"], factory);
     } else {
-        root.layout_Popup = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.form_Input, root.c3chart_Column);
+        root.layout_Popup = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.common_Icon);
     }
-}(this, function (d3, HTMLWidget, Surface, Input, Column) {
+}(this, function (d3, HTMLWidget, Surface, Icon) {
     function Popup() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -13,6 +13,7 @@
     }
     
     Popup.prototype = Object.create(HTMLWidget.prototype);
+    Popup.prototype.constructor = Popup;
     Popup.prototype._class += " layout_Popup";
     
     Popup.prototype.publish("popupState", false, "boolean", "State of the popup, visible (true) or hidden (false)",null,{});
@@ -32,15 +33,13 @@
         this.top(30);
         
         var context = this;
-        this._testButton = new Input()
-            .type("button")
-            .value("Open Popup")
+        this._testButton = new Icon()
             .on("click", function () {
                 context.updateState(!(context.popupState()));
             }, true)
         ; 
 
-        this.widget(new Surface().widget(new Column().testData()));
+        this.widget(new Surface().widget(new Icon().testData()));
 
         return this;
     };

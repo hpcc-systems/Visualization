@@ -15,6 +15,7 @@
     "dist/hpcc-viz-api.min.js",
     "dist/hpcc-viz-layout.min.js",
     "dist/hpcc-viz-other.min.js",
+    "dist/hpcc-viz-form.min.js",
     "dist/hpcc-viz-graph.min.js",
     "dist/hpcc-viz-tree.min.js",
     "dist/hpcc-viz-chart.min.js",

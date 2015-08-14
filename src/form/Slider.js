@@ -127,6 +127,7 @@
                 .data(tick)
                 .render()
             ;
+            this._click();
         }
         var context = this;
         this.intervalHandler = setInterval(function () {
@@ -138,6 +139,7 @@
                         .data(tick)
                         .render()
                     ;
+                    context._click();
                 } else {
                     context.pause();
                 }
@@ -146,6 +148,7 @@
                     .data(tick)
                     .render()
                 ;
+                context._click();
             }
         }, context.playInterval());
     };
@@ -330,13 +333,7 @@
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
             this._data = mouseX;
-            if (this.selectionLabel()) {
-                var clickData = {};
-                clickData[this.selectionLabel()] = mouseX;
-                this.click(clickData);
-            } else {
-                this.click(mouseX);
-            }
+            this._click();
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);
@@ -378,9 +375,19 @@
         return retVal;
     };
 
+    Slider.prototype._click = function() {
+        if (this.selectionLabel()) {
+            var clickData = {};
+            clickData[this.selectionLabel()] = this._data;
+            this.click(clickData);
+        } else {
+            this.click(this._data);
+        }
+    };
+
     Slider.prototype.newSelection = function (value, value2) {
         console.log("newSelection:  " + value + ", " + value2);
     };
-
+    
     return Slider;
 }));

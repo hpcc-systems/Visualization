@@ -1,0 +1,16 @@
+.graph_Edge {
+    fill: none;
+    stroke: #656565;
+    stroke-width: 1.0px;
+}
+
+.graph_Edge .common_TextBox .common_Text {
+    fill: black;
+    stroke: none;
+}
+
+.graph_Edge .common_TextBox .common_Shape {
+    fill: none;
+    stroke: none;
+}
+

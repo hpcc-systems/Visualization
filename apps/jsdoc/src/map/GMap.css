@@ -1,0 +1,13 @@
+.map_GMap .marker {
+    fill: #656565;
+    stroke: none;
+    stroke-width: 1.0px;
+}
+
+.map_GMap .zoom {
+    fill: none;
+    pointer-events: all;
+}
+
+.gm-style img { max-width: none; }
+.gm-style label { width: auto; display: inline; }

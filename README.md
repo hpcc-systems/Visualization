@@ -1,6 +1,6 @@
 # Visualization Framework 
 
-[![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=TRAVIS-CI)](https://travis-ci.org/hpcc-systems/Visualization)
+[![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master)](https://travis-ci.org/hpcc-systems/Visualization)
 [![Join the chat at https://gitter.im/hpcc-systems/Visualization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hpcc-systems/Visualization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Dependency Status](https://gemnasium.com/hpcc-systems/Visualization.svg)](https://gemnasium.com/hpcc-systems/Visualization)
 * _[Demo/Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html)_

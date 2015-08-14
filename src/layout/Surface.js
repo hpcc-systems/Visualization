@@ -112,7 +112,8 @@
         var surfaceTitle = element.select(".surfaceTitle");
 
         var surfaceButtons = surfaceTitle.append("div").attr("class","html-button-container").selectAll(".surface-button").data(this.buttonAnnotations());
-        surfaceButtons.enter().append("button").classed("surface-button",true)
+        surfaceButtons.enter().append("button").classed("surface-button",true);
+        surfaceButtons
             .each(function (button, idx) {
                 var el = context._surfaceButtons[idx] = d3.select(this)
                     .attr("class", "surface-button " + button.class)
@@ -125,12 +126,13 @@
                     el
                       .append("i")
                       .attr("class","fa")
-                      .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
+                      .text(function() { return button.label; });
                 } else {
-                    el
-                      .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
+                    el.text(function() { return button.label; });
+                }
+                
+                if(typeof (button.callback) === 'function'){
+                    el.on("click",button.callback);
                 }
             })
         ;

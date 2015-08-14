@@ -1,13 +1,13 @@
 require.config({
     baseUrl: ".",
     paths: {
-        "requireLib": "../bower_components/requirejs/require",
-        "css": "../bower_components/require-css/css",
-        "css-builder": "../bower_components/require-css/css-builder",
-        "normalize": "../bower_components/require-css/normalize",
-        "async": "../bower_components/requirejs-plugins/src/async",
-        "propertyParser": "../bower_components/requirejs-plugins/src/propertyParser",
-        "goog": "../bower_components/requirejs-plugins/src/goog",
+        "requireLib": "../node_modules/requirejs/require",
+        "css": "../node_modules/require-css/css",
+        "css-builder": "../node_modules/require-css/css-builder",
+        "normalize": "../node_modules/require-css/normalize",
+        "async": "../node_modules/requirejs-plugins/src/async",
+        "propertyParser": "../node_modules/requirejs-plugins/src/propertyParser",
+        "goog": "../node_modules/requirejs-plugins/src/goog",
 
         "d3": "../bower_components/d3/d3",
         "c3": "../bower_components/c3/c3",

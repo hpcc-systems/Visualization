@@ -1,11 +1,18 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "require"], factory);
+        define(["d3", "src/common/Utility", "require"], factory);
     } else {
-        root.widgets = factory(root.d3, root.require);
+        root.widgets = factory(root.d3, root.common_Utility, root.require);
     }
-}(this, function (d3, require) {
+}(this, function (d3, Utility, require) {
+    var params = Utility.urlParams();
+    var someWidgets = [];
+    for (var key in params) {
+        if (params[key] === undefined) {
+            someWidgets.push({ path: key });
+        }
+    }
     describe("widgets", function () {
         this.timeout(10000);
         var allWidgets = [
@@ -52,6 +59,7 @@
             { path: "src/layout/Border" },
             { path: "src/layout/Cell" },
             { path: "src/layout/Grid" },
+            { path: "src/layout/Layered" },
             { path: "src/layout/Popup" },
             { path: "src/layout/Surface" },
             { path: "src/layout/Tabbed" },
@@ -87,7 +95,7 @@
             { path: "src/amchart/Pyramid" },
             { path: "src/amchart/Scatter" }
         ];
-        allWidgets.forEach(function (widget) {
+        (someWidgets.length ? someWidgets : allWidgets).forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {
                 var pathParts = path.split("/");
@@ -139,6 +147,7 @@
                     });
                 });
 
+                var noSurfaceHTML = null;
                 it("Adding widget to the page", function (done) {
                     require([path], function (Widget) {
                         var element = d3.select("#testWidget");
@@ -155,12 +164,47 @@
                         var vizWidget = new Widget()
                             .target(widgetDiv.node())
                             .testData()
-                            .render(function () {
+                            .render(function (w) {
+                                noSurfaceHTML = w.element().selectAll("*");
+                                assert.isAbove(noSurfaceHTML.length, 0);
                                 done();
                             })
                         ;
                     });
                 });
+
+                var surfaceHTML = null;
+                switch (path) {
+                    case "src/other/HeatMap":
+                    case "src/map/ChoroplethStatesHeat":
+                        it("Adding widget to a Surface");
+                        break;
+                    default:
+                        it("Adding widget to a Surface", function (done) {
+                            require(["src/common/ResizeSurface", path], function (ResizeSurface, Widget) {
+                                var element = d3.select("#testWidget");
+                                var testDiv = element.append("div")
+                                    .attr("class", "widgetTest")
+                                ;
+                                var widgetDiv = testDiv.append("div")
+                                    .attr("class", "widget")
+                                ;
+                                testDiv.append("center")
+                                    .attr("class", "title")
+                                    .text(path)
+                                ;
+                                var vizWidget = new ResizeSurface()
+                                    .target(widgetDiv.node())
+                                    .content(new Widget().testData())
+                                    .render(function (w) {
+                                        surfaceHTML = w.element().selectAll("*");
+                                        assert.equal(noSurfaceHTML.length, surfaceHTML.length);
+                                        done();
+                                    })
+                                ;
+                            });
+                        });
+                }
             });
         });
     });

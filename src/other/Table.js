@@ -73,7 +73,7 @@
     };
 
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
-    Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
+    Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 

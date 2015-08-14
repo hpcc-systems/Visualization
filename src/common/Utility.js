@@ -52,6 +52,27 @@
             return data.slice(0).sort(function(a,b) {
                 return _naturalSort(a,b,order,idx,sortCaseSensitive);
             });
+        },
+
+        urlParams: function () {
+            var def = window.location.search.split("?")[1];
+            var retVal = {};
+            if (def) {
+                def.split("&").forEach(function (param, idx) {
+                    var paramParts = param.split("=");
+                    switch (paramParts.length) {
+                        case 1:
+                            retVal[decodeURIComponent(paramParts[0])] = undefined;
+                            break;
+                        case 2:
+                            retVal[decodeURIComponent(paramParts[0])] = decodeURIComponent(paramParts[1]);
+                            break;
+                        default:
+                            throw "Invalid URL Param:  " + param;
+                    }
+                });
+            }
+            return retVal;
         }
     };
 

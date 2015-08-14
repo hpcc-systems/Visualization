@@ -227,6 +227,20 @@
             return this["__prop_" + id] !== undefined;
         };
         this[id + "_reset"] = function () {
+            switch (type) {
+                case "widget":
+                    if (this["__prop_" + id]) {
+                        this["__prop_" + id].target(null);
+                    }
+                    break;
+                case "widgetArray":
+                    if (this["__prop_" + id]) {
+                        this["__prop_" + id].forEach(function (widget) {
+                            widget.target(null);
+                        });
+                    }
+                    break;
+            }
             this["__prop_" + id] = undefined;
         };
         this["__prop_" + id] = undefined;

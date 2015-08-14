@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ Property Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,9 +11,18 @@
         root.other_PropertyEditor = factory(root.d3, root.common_Widget, root.common_HTMLWidget, root.other_Persist);
     }
 }(this, function (d3, Widget, HTMLWidget, Persist) {
+    /**
+     * @class other_PropertyEditor
+     * @extends common_HTMLWidget
+     */
     function PropertyEditor() {
         HTMLWidget.call(this);
-
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof other_PropertyEditor
+         * @private
+         */
         this._tag = "div";
         this._columns = ["Key", "Value"];
         this._contentEditors = [];
@@ -16,6 +30,12 @@
     }
     PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
     PropertyEditor.prototype.constructor = PropertyEditor;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof other_PropertyEditor
+     * @private
+     */
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
     PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:["Basic","TODO2"]});

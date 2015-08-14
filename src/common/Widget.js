@@ -1,3 +1,8 @@
+/**
+* @file Base Widget Class
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -21,6 +26,37 @@
     }
 }(this, function (d3) {
     var widgetID = 0;
+
+    /**
+     * @class common_Widget
+     * @abstract
+     * @noinit
+     */
+
+    /**
+     * D3 Selection Object returned by d3.select() .
+     * @typedef D3Selection
+     * @type {Object}
+    */
+
+    /**
+     * HPCC Visualization Widget Object
+     * @typedef Widget
+     * @type {Object}
+    */
+
+    /**
+     * HTML/Javascript DOM Node Object
+     * @typedef HTMLElement
+     * @type {Object}
+    */
+
+    /**
+     * SVG DOM Node Object
+     * @typedef SVGEelement
+     * @type {Object}
+    */
+
     function Widget() {
         this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
@@ -29,16 +65,35 @@
         this._data = [];
         this._pos = { x: 0, y: 0 };
         this._size = { width: 0, height: 0 };
+
         this._scale = 1;
 
         this._target = null;
+        /**
+         * Reference to parent element of the current widget.
+         * @member {HTMLElement|SVGElement} _parentElement
+         * @memberof common_Widget
+         * @private
+         */
         this._parentElement = null;
+        /**
+         * (SVG Widgets Only) - contains reference to parent widget.
+         * @member {HTMLElement|SVGElement} _parentElement
+         * @memberof common_Widget
+         * @private
+         */
         this._parentWidget = null;
 
         this._element = d3.select();
 
         this._watchArr = [];
 
+        /**
+         * Variable containing how many times the widget has been rendered.
+         * @member {Number} _renderCount
+         * @memberof common_Widget
+         * @private
+         */
         this._renderCount = 0;
 
         if (window.__hpcc_debug) {
@@ -135,6 +190,14 @@
         window.MutationObserver = Widget.prototype.MutationObserver;
     }
 
+    /**
+     * Method used to implement a given interface file.
+     * @method implements
+     * @memberof common_Widget
+     * @instance
+     * @param {Object} source A given interface's object prototype.
+     * @example Area.prototype.implements(INDChart.prototype);
+     */
     Widget.prototype.implements = function (source) {
         for (var prop in source) {
             if (this[prop] === undefined && source.hasOwnProperty(prop)) {
@@ -143,7 +206,24 @@
         }
     };
 
-    // Serialization  ---
+    /**
+     * Method used for defining a publish parameter for a widget. Creates a getter/setter function for the widget public "parameter".
+     * @method publish
+     * @memberof common_Widget
+     * @instance
+     * @param {String} id Name of the publish parameter.
+     * @param {Mixed} defaultValue Default value for parameter.
+     * @param {String} type Type of publish parameter. Available options include: [set, html-color, boolean, number, string, array].
+     * @param {String} description Short description string of the parameter.
+     * @param {Array|null} set The available "set" type values that the parameter can accept. Null if not set type parameter.
+     * @param {Object} ext An object containing miscellaneous parameter settings.
+     * @example Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:['Private']});
+     * @example Icon.prototype.publish("diameter", 24, "number", "Diameter",null,{tags:['Private']});
+     * @example Column.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:['Basic','Shared']});
+     * @example Pie.prototype.publish("pieSliceBorderColor", null, "html-color", "The Color of The Slice Borders",null,{tags:['Intermediate']});
+     * @example Pie.prototype.publish("slicesOffset", [], "array", "Per Slice Offset",null,{tags:['Advanced']});
+     * @example Pie.prototype.publish("pieResidueSliceLabel", "Other", "string", "A Label For The combination Slice That Holds All Slices Below SliceVisibilityThreshold",null,{tags:['Advanced']});
+     */
     Widget.prototype.publish = function (id, defaultValue, type, description, set, ext) {
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published.";
@@ -215,6 +295,16 @@
         this["__prop_" + id] = undefined;
     };
 
+    /**
+     * TODO
+     * @method publishWidget
+     * @memberof common_Widget
+     * @instance
+     * @param {String} prefix Name of the publish parameter.
+     * @param {Object} WidgetType Default value for parameter.
+     * @param {String} id Type of publish parameter. Available options include: [set, html-color, boolean, number, string, array].
+     * @example TODO
+     */
     Widget.prototype.publishWidget = function (prefix, WidgetType, id) {
         for (var key in WidgetType.prototype) {
             if (key.indexOf("__meta") === 0) {
@@ -224,6 +314,18 @@
         }
     };
 
+    /**
+     * TODO
+     * Method used for allowing pass through of consumed widgets publish parameters in another widget.
+     * @method publishProxy
+     * @memberof common_Widget
+     * @instance
+     * @param {String} id Name of the pass through parameter.
+     * @param {Object} proxy the widget object variable name used in the widget.
+     * @param {String} method TODO
+     * @param {Mixed} defaultValue Default value for new proxied parameter.
+     * @example Menu.prototype.publishProxy("faChar", "_icon", null, "\uf0c9");
+     */
     Widget.prototype.publishProxy = function (id, proxy, method, defaultValue) {
         method = method || id;
         if (this["__meta_" + id] !== undefined) {
@@ -287,7 +389,27 @@
         }
     };
 
-    //  Events  ---
+    /**
+     * A mandatory callback function as parameter. The current widget object being operated on is passed to the function. The function will execute ater the widget has completed rendering.
+     * @name Widget~EventCb
+     * @function
+     * @param {Mixed} data - The serialized data about what was clicked
+     * @return undefined
+     */
+
+    /**
+     * Sets event (click) callback function.
+     * @method on
+     * @memberof common_Widget
+     * @instance
+     * @param {String} eventID The name of the event. Ex: "click".
+     * @param {Widget~EventCb} callback - The callback that is called when event is fired.
+     * @param {Boolean} [stopPropagation=False] Sets whether the event is propogated.
+     * @returns {Widget}
+     * @example <caption>Example click callback.</caption>
+     * var cb = function(data) { console.log(data); };
+     * widget.on("click",cb,true).render();
+     */
     Widget.prototype.on = function (eventID, func, stopPropagation) {
         if (this[eventID] === undefined) {
             throw "Method:  " + eventID + " does not exist.";
@@ -304,13 +426,28 @@
         return this;
     };
 
-    //  Implementation  ---
+    /**
+     * Sets or returns the widget ID. Normally "w_[x]" where x is the number id of the widget.
+     * @method id
+     * @memberof common_Widget
+     * @instance
+     * @param [String] _ String ID of widget.
+     * @returns {Widget|String}
+     */
     Widget.prototype.id = function (_) {
         if (!arguments.length) return this._id;
         this._id = _;
         return this;
     };
 
+    /**
+     * Sets or returns the class(es) set on the widgets container
+     * @method class
+     * @memberof common_Widget
+     * @instance
+     * @param [String] _ String class of widget.
+     * @returns {Widget|String}
+     */
     Widget.prototype.class = function (_) {
         if (!arguments.length) return this._class;
         this._class = _;
@@ -321,12 +458,36 @@
         return this._class.split(" ").pop();
     };
 
+    /**
+     * Sets the columns for the data being passed into the widget via .data() method.
+     * @method columns
+     * @memberof common_Widget
+     * @instance
+     * @param [String[]] _ An array of strings representing the column names for data passed to widget.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["ID", "Year 1", "Year 2"])
+     * .data([ [40, 66, 60], [30, 98, 92]  ])
+     * .render();
+     */
     Widget.prototype.columns = function (_) {
         if (!arguments.length) return this._columns;
         this._columns = _;
         return this;
     };
 
+    /**
+     * Sets data to be render within widget.
+     * @method data
+     * @memberof common_Widget
+     * @instance
+     * @param {Mixed} _ The data being rendered.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["ID", "Year 1", "Year 2"])
+     * .data([ [40, 66, 60], [30, 98, 92]  ])
+     * .render();
+     */
     Widget.prototype.data = function (_) {
         if (!arguments.length) return this._data;
         this._data = _;
@@ -356,6 +517,15 @@
         return retVal;
     };
 
+    /**
+     * Returns an object representation of row data of a widget. This function is normally used to return an object containing the data about what was clicked on a chart/widget.
+     * @method rowToObj
+     * @memberof common_Widget
+     * @instance
+     * @param {Mixed[]} row A row of data from .data() of a widget
+     * @returns {Object}
+     * @example TODO
+     */
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
         this._columns.forEach(function(col, idx) {
@@ -367,6 +537,7 @@
         return retVal;
     };
 
+    //TODO: doc
     Widget.prototype.pos = function (_) {
         if (!arguments.length) return this._pos;
         this._pos = _;
@@ -390,6 +561,20 @@
         return this;
     };
 
+    /**
+     * Sets/Gets size of widget.
+     * @method size
+     * @memberof common_Widget
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @returns {Widget|Object}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.size({width:"100",height:"100"}).render();
+     * @example <caption>Example getting size.</caption>
+     * var size = widget.size();
+     */
     Widget.prototype.size = function (_) {
         if (!arguments.length) return this._size;
         this._size = _;
@@ -402,18 +587,51 @@
         return this;
     };
 
+    /**
+     * Gets/Sets width of widget.
+     * @method width
+     * @memberof common_Widget
+     * @instance
+     * @param {Number} [_] Width in pixels.
+     * @returns {Widget|Number}
+     */
     Widget.prototype.width = function (_) {
         if (!arguments.length) return this._size.width;
         this.size({ width: _, height: this._size.height });
         return this;
     };
 
+    /**
+     * Gets/Sets height of widget.
+     * @method height
+     * @memberof common_Widget
+     * @instance
+     * @param {Number} [_] Height in pixels.
+     * @returns {Widget|Number}
+     */
     Widget.prototype.height = function (_) {
         if (!arguments.length) return this._size.height;
         this.size({ width: this._size.width, height: _ });
         return this;
     };
 
+    /**
+     * Resizes widget. If no argument is passed, it will resize to the maximum container width and height.
+     * @method resize
+     * @memberof common_Widget
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Object} [delta] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @param {Mixed} [delta.width] Width in pixels.
+     * @param {Mixed} [delta.height] Height in pixels.
+     * @returns {Widget}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.resize({width:"100",height:"100"}).render();
+     * @example <caption>Example resize to maximum container dimensions</caption>
+     * widget.resize().render();
+     */
     Widget.prototype.resize = function (size, delta) {
         delta = delta || { width: 0, height: 0 };
         var width, height;
@@ -432,6 +650,13 @@
         return this;
     };
 
+    /**
+     * Returns scrollbar width.
+     * @method getScrollbarWidth
+     * @memberof common_Widget
+     * @instance
+     * @returns {Number}
+     */
     Widget.prototype._scrollBarWidth = null;
     Widget.prototype.getScrollbarWidth = function () {
         if (Widget.prototype._scrollBarWidth === null) {
@@ -458,6 +683,17 @@
         return Widget.prototype._scrollBarWidth;
     };
 
+    /**
+     * Gets/Sets scale/zoom of widget. Translation via css transform translate.
+     * @method scale
+     * @memberof common_Widget
+     * @instance
+     * @param {Object} [_] An object with "x" and "y" properties
+     * @param {Number} [_.x] Horizontal translation in pixels.
+     * @param {Number} [_.y] Vertical translation in pixels.
+     * @returns {Widget|Number}
+     * @TODO RETURN TYPE ISNT CORRECT NEEDS FIXING
+     */
     Widget.prototype.scale = function (_) {
         if (!arguments.length) return this._scale;
         this._scale = _;
@@ -469,6 +705,14 @@
         return this;
     };
 
+    /**
+     * Gets/Sets visibility of widget via css attribute "visibility".
+     * @method visible
+     * @memberof common_Widget
+     * @instance
+     * @param {Boolean} _ True/False
+     * @returns {Widget|Boolean}
+     */
     Widget.prototype.visible = function (_) {
         if (!arguments.length) return this._visible;
         this._visible = _;
@@ -478,6 +722,14 @@
         return this;
     };
 
+    /**
+     * Gets/Sets visibility of widget via css attribute "display".
+     * @method display
+     * @memberof common_Widget
+     * @instance
+     * @param {Boolean} _ True/False
+     * @returns {Widget}
+     */
     Widget.prototype.display = function (_) {
         if (!arguments.length) return this._display;
         this._display = _;
@@ -487,6 +739,16 @@
         return this;
     };
 
+    /**
+     * TODO
+     * Returns an object with the position for which the widget should snap to.
+     * @method calcSnap
+     * @memberof common_Widget
+     * @instance
+     * @param {Object} snapSize
+     * @returns {Object}
+     *
+     */
     Widget.prototype.calcSnap = function (snapSize) {
         function snap(x, gridSize) {
             function snapDelta(x, gridSize) {
@@ -554,6 +816,18 @@
         return null;
     };
 
+    /**
+     * TODO
+     * Returns the absolute position of a widget. { x:[x], y:[y] }
+     * @method getAbsolutePos
+     * @memberof common_Widget
+     * @instance
+     * @param {HTMLElement} domNode
+     * @param {Number} w Width.
+     * @param {Number} h Height.
+     * @returns {Object}
+     *
+     */
     Widget.prototype.getAbsolutePos = function (domNode, w, h) {
         var root = this.locateSVGNode(domNode);
         if (!root) {
@@ -577,6 +851,13 @@
         return retVal;
     };
 
+    /**
+     * Returns widget._overlayElement (used for testing if a widget has an overlay).
+     * @method hasOverlay
+     * @memberof common_Widget
+     * @instance
+     * @returns {HTMLElement}
+     */
     Widget.prototype.hasOverlay = function () {
         return this._overlayElement;
     };
@@ -608,15 +889,46 @@
         }
     };
 
+    /**
+     * Returns D3 Selection Object of widget.
+     * @method element
+     * @memberof common_Widget
+     * @instance
+     * @returns {HTMLElement}
+     */
     Widget.prototype.element = function () {
         return this._element;
     };
 
+    /**
+     * Returns HTML DOM Node.
+     * @method node
+     * @memberof common_Widget
+     * @instance
+     * @returns {HTMLElement}
+     */
     Widget.prototype.node = function () {
         return this._element.node();
     };
 
-    //  Render  ---
+    /**
+     * An optional callback function as parameter. The current widget object being operated on is passed to the function. The function will execute ater the widget has completed rendering.
+     * @name Widget~RenderCb
+     * @function
+     * @param {Widget} widget - The rendered widget.
+     * @return undefined
+     */
+
+    /**
+     * Renders widget in target container immediately.
+     * @method render
+     * @memberof common_Widget
+     * @instance
+     * @param {Widget~RenderCb} [callback] - The callback function that is executed after widget render.
+     * @returns {Widget}
+     * @example <caption>Example usage of render.</caption>
+     * var w = new Widget.target("divID").render(function(widget) { console.log(widget); });
+     */
     Widget.prototype.render = function (callback) {
         if (!this._parentElement)
             return this;
@@ -656,13 +968,69 @@
         return this;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Widget.prototype.enter = function (domeNode, element) { };
+
     Widget.prototype.preUpdate = function (domeNode, element) { };
+
+    /**
+     * The function that is called when this widget "enters" the web page. After enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Widget.prototype.update = function (domeNode, element) { };
+
     Widget.prototype.postUpdate = function (domeNode, element) { };
+
+    /**
+     * The function that is executed after render. It is used for doing destroying/cleanup.
+     * @method exit
+     * @memberof common_Widget
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Widget.prototype.exit = function (domeNode, element) { };
 
-    //  Util  ---
+    /**
+     * An optional callback function as parameter. The current widget object being operated on is passed to the function. The function will execute ater the widget has completed rendering.
+     * @name Widget~DebounceCb
+     * @function
+     */
+
+    /**
+     * Limits rate at which a function can be fired. (Normally used for "resize / positioning" events)
+     * @method debounce
+     * @memberof common_Widget
+     * @instance
+     * @param {Widget~DebounceCb} [callback] Function that needs it's fire rate limited.
+     * @param {Number} [threshold=100] Fire rate threshold in milliseconds.
+     * @param {Boolean} [execAsap=False] Sets whether the function should be executed immediately or wait for threshold amount of time.
+     * @returns {Function}
+     * @example <caption>Example usage of debounce from dermatology.html .</caption>
+     * propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
+     *     if (propID === "columns") {
+     *     } else if (propID === "data") {
+     *     } else {
+     *         displaySerialization();
+     *         displaySerializationText();
+     *     }
+     * }, 500);
+     * @see https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html (propEditor.onChange)
+     */
     Widget.prototype.debounce = function (func, threshold, execAsap) {
         return function debounced() {
             var obj = this || {}, args = arguments;

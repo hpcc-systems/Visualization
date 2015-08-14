@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ Persist Object
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,7 +11,19 @@
         root.other_Persist = factory(root.require);
     }
 }(this, function (require) {
+    /**
+     * @class other_Persist
+     * @noinit
+     */
     return {
+
+        /**
+         * Returns an array of "publish" parameters utilized by the widget.
+         * @method discover
+         * @memberof other_Persist
+         * @param {Widget} widget The widget object whose publish parameters are to be discovered.
+         * @returns {Array}
+         */
         discover: function (widget) {
             var retVal = [];
             var isPrototype = widget._id === undefined;
@@ -32,6 +49,17 @@
             return retVal;
         },
 
+        /**
+         * Returns a serializable object of the widget passed.
+         * @method serializeToObject
+         * @memberof other_Persist
+         * @param {Widget} widget The widget object to be serialized
+         * @param {Object} [properties] An array of properties to be include in serialization. Default is all properties.
+         * @param {Boolean} [includeData] If True, will serialize the data and columns of the widget.
+         * @returns {Object}
+         * @example example
+         * //TODO
+         */
         serializeToObject: function (widget, properties, includeData) {
             var retVal = {
                 __version: 3,
@@ -82,6 +110,17 @@
             return retVal;
         },
 
+        /**
+         * Returns a serialized string of the object created by serializeToObject. The equivalent of calling: JSON.stringify(this.serializeToObject(widget, properties, includeData));
+         * @method serialize
+         * @memberof other_Persist
+         * @param {Widget} widget The widget object to be serialized
+         * @param {Object} [properties] An array of properties to be include in serialization. Default is all properties.
+         * @param {Boolean} [includeData] If True, will serialize the data and columns of the widget.
+         * @returns {String}
+         * @example example
+         * //TODO
+         */
         serialize: function (widget, properties, includeData) {
             return JSON.stringify(this.serializeToObject(widget, properties, includeData));
         },
@@ -153,6 +192,22 @@
             });
         },
 
+        /**
+         * A callback function as parameter. The function will execute after create has executed. If you want to render the widget you must do that here.
+         * @name Persist~CreateCb
+         * @function
+         * @return undefined
+         */
+
+        /**
+         * Converts a serialized string back to widget.
+         * @method create
+         * @memberof other_Persist
+         * @param {Object} state The serialized widget string to convert back into a widget.
+         * @param {Persist~CreateCb} [callback] The callback function to execute after create executes.
+         * @example example
+         * //TODO
+         */
         create: function (state, callback) {
             if (typeof state === "string") {
                 state = JSON.parse(state);
@@ -160,6 +215,23 @@
             this.deserialize(state, callback);
         },
 
+        /**
+         * A callback function as parameter. The function will execute after create has executed. If you want to render the widget you must do that here.
+         * @name Persist~CloneCb
+         * @function
+         * @return undefined
+         */
+
+        /**
+         * Clones a widget via: this.create(this.serializeToObject(widget, [], true), callback);
+         * @method create
+         * @memberof other_Persist
+         * @param {Widget} widget The widget object to be cloned.
+         * @param {Persist~CreateCb} [callback] The callback function to execute after clone executes.
+         * @example example
+         * //TODO
+         * @see http://github.com
+         */
         clone: function (widget, callback) {
             this.create(this.serializeToObject(widget, [], true), callback);
         }

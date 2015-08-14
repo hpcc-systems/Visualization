@@ -1,3 +1,8 @@
+/**
+ * @file Shape Widget
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,10 @@
         root.common_Shape = factory(root.d3, root.common_SVGWidget);
     }
 }(this, function (d3, SVGWidget) {
+    /**
+     * @class common_Shape
+     * @extends common_SVGWidget
+     */
     function Shape() {
         SVGWidget.call(this);
     }
@@ -30,6 +39,20 @@
         return this;
     };
 
+    /**
+     * Returns the first insersection point of the widget and a line. Given two line end points and given the widget is a circle, returns an object with [x,y] cordinates as properties.
+     * @method intersection
+     * @memberof common_Shape
+     * @instance
+     * @param {Object} [pointA] An object with the properties "x" and "y".
+     * @param {Mixed} [pointA.x] End point x coordinate of the line.
+     * @param {Mixed} [pointA.y] End point y coordinate of the line.
+     * @param {Object} [pointB] An object with the properties "x" and "y".
+     * @param {Mixed} [pointB.x] End point x coordinate of the line.
+     * @param {Mixed} [pointB.y] End point y coordinate of hte line.
+     * @returns {Object|Null}
+     * @example //TODO
+     */
     Shape.prototype.intersection = function (pointA, pointB) {
         switch (this.shape()) {
             case "circle":
@@ -38,6 +61,15 @@
         return SVGWidget.prototype.intersection.apply(this, arguments);
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_Shape
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Shape.prototype.update = function (domNode, element) {
         var shape = element.selectAll("rect,circle,ellipse").data([this.shape()], function (d) { return d; });
 

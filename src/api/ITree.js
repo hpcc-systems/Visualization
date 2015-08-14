@@ -1,3 +1,8 @@
+/**
+ * @file Tree/Hierarchy Interface
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,11 +11,27 @@
         root.api_ITree = factory(root.common_Palette);
     }
 }(this, function (Palette) {
+    /**
+     * @interface api_ITree
+     * @class api_ITree
+     */
     function ITree() {
     }
+    /**
+     * Instance of a HPCC VIZ Palette object.
+     * @member {Object} _palette
+     * @memberof api_ITree
+     * @private
+     */
     ITree.prototype._palette = Palette.ordinal("default");
 
-    //  Data ---
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof api_ITree
+     * @instance
+     * @returns {Widget}
+     */
     ITree.prototype.testData = function () {
         var data = {label: "root", children: [{
             label: "A",
@@ -40,7 +61,13 @@
         return this;
     };
 
-    //  Events  ---
+    /**
+     * (event) Overridable click callback function.
+     * @method click
+     * @memberof api_ITree
+     * @param {type} row
+     * @param {type} column
+     */
     ITree.prototype.click = function (d) {
         console.log("Click:  " + d.label);
     };

@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ Bag Selection Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,9 @@
         root.other_Bag = factory();
     }
 }(this, function () {
+    /**
+     * @class other_SelectionBag
+     */
     function SelectionBag() {
         this.items = {};
     }

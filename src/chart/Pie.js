@@ -1,3 +1,8 @@
+/**
+ * @file HPCC VIZ Pie
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,12 +11,25 @@
         root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar);
     }
 }(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
+     /**
+     * @class chart_Pie
+     * @extends common_SVGWidget
+     * @implements api_I2DChart
+     */
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
 
+        /**
+         * Put label inside pie or outside (true/false) respectively.
+         * @member {boolean} _outerText
+         * @memberof chart_Pie
+         * @default false
+         * @private
+         */
         this._outerText = false;  //  Put label inside pie or outside (true/false)
-        this._radius = 100;       // px
+
+        this._radius = 100;       // px NEED TO MAKE PUBLISH PARAM???
         this._innerRadius = 0;    // px
 
         this.labelWidgets = {};
@@ -29,12 +47,32 @@
     }
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.constructor = Pie;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof chart_MultiChartSurface
+     * @private
+     */
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    /**
+     * Sets/Gets size of widget. Calls underlying size() method.
+     * @method size
+     * @memberof chart_Pie
+     * @instance
+     * @param {Object} [size] An object with the properties "width" and "height".
+     * @param {Mixed} [size.width] Width in pixels.
+     * @param {Mixed} [size.height] Height in pixels.
+     * @returns {Widget|Object}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.size({width:"100",height:"100"}).render();
+     * @example <caption>Example getting size.</caption>
+     * var size = widget.size();
+     */
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -43,6 +81,18 @@
         return retVal;
     };
 
+    /**
+     * Sets the radius of the Pie widget directly as opposed to size() method.
+     * @method radius
+     * @memberof chart_Pie
+     * @instance
+     * @param {Number} [_] Radius in pixels.
+     * @returns {Widget|Number}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.size({width:"100",height:"100"}).render();
+     * @example <caption>Example getting size.</caption>
+     * var size = widget.size();
+     */
     Pie.prototype.radius = function (_) {
         if (!arguments.length) return this._radius;
         this.d3Arc.outerRadius(_);
@@ -50,6 +100,18 @@
         return this;
     };
 
+    /**
+     * Sets the radius of the inner whole, if a Donut chart is going to be rendered.
+     * @method innerRadius
+     * @memberof chart_Pie
+     * @instance
+     * @param {Number} [_] Inner radius in pixels.
+     * @returns {Widget|Number}
+     * @example <caption>Example with specific height and width in pixels.</caption>
+     * widget.size({width:"100",height:"100"}).render();
+     * @example <caption>Example getting size.</caption>
+     * var size = widget.size();
+     */
     Pie.prototype.innerRadius = function (_) {
         if (!arguments.length) return this._innerRadius;
         this.d3Arc.innerRadius(_);
@@ -57,16 +119,48 @@
         return this;
     };
 
+    /**
+     * Sets/Gets whether chart labels are inside or ourside the chart.
+     * @method outerText
+     * @memberof chart_Pie
+     * @instance
+     * @param {Boolean} [_] True/False
+     * @returns {Widget|Boolean}
+     * @example //TODO
+     */
     Pie.prototype.outerText = function (_) {
         if (!arguments.length) return this._outerText;
         this._outerText = _;
         return this;
     };
 
+    /**
+     * Returns the first insersection point of the widget and a line. Given two line end points and given the widget is a circle, returns an object with [x,y] cordinates as properties.
+     * @method intersection
+     * @memberof common_SVGWidget
+     * @instance
+     * @param {Object} [pointA] An object with the properties "x" and "y".
+     * @param {Mixed} [pointA.x] End point x coordinate of the line.
+     * @param {Mixed} [pointA.y] End point y coordinate of the line.
+     * @param {Object} [pointB] An object with the properties "x" and "y".
+     * @param {Mixed} [pointB.x] End point x coordinate of the line.
+     * @param {Mixed} [pointB.y] End point y coordinate of hte line.
+     * @returns {Object|Null}
+     * @example //TODO
+     */
     Pie.prototype.intersection = function (pointA, pointB) {
         return this.intersectCircle(pointA, pointB);
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof chart_Pie
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Pie.prototype.update = function (domNode, element) {
         var context = this;
 

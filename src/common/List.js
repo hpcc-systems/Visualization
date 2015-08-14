@@ -1,3 +1,8 @@
+/**
+ * @file List Widget
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,10 @@
         root.common_List = factory(root.d3, root.common_SVGWidget, root.common_IList, root.common_TextBox);
     }
 }(this, function (d3, SVGWidget, IList, TextBox) {
+    /**
+     * @class common_List
+     * @extends common_SVGWidget
+     */
     function List(target) {
         SVGWidget.call(this);
         IList.call(this);
@@ -14,11 +23,26 @@
     }
     List.prototype = Object.create(SVGWidget.prototype);
     List.prototype.constructor = List;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof common_List
+     * @private
+     */
     List.prototype._class += " common_List";
     List.prototype.implements(IList.prototype);
 
     List.prototype.publish("anchor", "start", "set", "Anchor Position", ["", "start", "middle", "end"],{tags:["Private"]});
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof common_List
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     List.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         var context = this;

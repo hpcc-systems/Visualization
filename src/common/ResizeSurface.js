@@ -1,3 +1,8 @@
+/**
+ * @file Resizable Surface
+ * @author HPCC Systems
+ */
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,10 @@
         root.common_ResizeSurface = factory(root.d3, root.common_Surface);
     }
 }(this, function (d3, Surface) {
+    /**
+     * @class common_ResizeSurface
+     * @extends common_Surface
+     */
     function ResizeSurface() {
         Surface.call(this);
 

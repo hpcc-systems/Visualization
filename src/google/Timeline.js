@@ -1,3 +1,8 @@
+/**
+* @file Google Timeline Chart
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,16 +11,42 @@
         root.Timeline = factory(root.d3, root.common_HTMLWidget);
     }
 }(this, function (d3, HTMLWidget) {
-
+    /**
+     * @class google_Bar
+     * @extends common_HTMLWidget
+     */
     function Timeline() {
         HTMLWidget.call(this);
-
+        /**
+         * Specifies the widget type of the google Widget/HPCC Widget.
+         * @member {string} _chartType
+         * @memberof google_Timeline
+         * @private
+         */
         this._chartType = "Timeline";
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof google_Timeline
+         * @private
+         */
         this._tag = "div";
+        /**
+         * Google Chart DataTable Object
+         * @member {string} _data_google
+         * @memberof google_Timeline
+         * @private
+         */
         this._data_google = [];
     }
     Timeline.prototype = Object.create(HTMLWidget.prototype);
     Timeline.prototype.constructor = Timeline;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof google_Timeline
+     * @private
+     */
     Timeline.prototype._class += " google_Timeline";
 
     Timeline.prototype.publish("tooltipIsHtml", true, "boolean", "Set to false to use SVG-rendered (rather than HTML-rendered) tooltips. See Customizing Tooltip Content for more details.",null,{tags:["Advanced"]});
@@ -29,6 +60,14 @@
     Timeline.prototype.publish("timelineShowRowLabels", true, "boolean", "If set to false, omits row labels. The default is to show them.",null,{tags:["Basic"]});
     Timeline.prototype.publish("timelineSingleColor", null, "string", "Colors all bars the same. Specified as a hex value (e.g., '#8d8').",null,{tags:["Basic"]});
 
+    /**
+     * Builds and returns a google configuration object based on publish param values.
+     * @method getChartOptions
+     * @memberof google_Timeline
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     Timeline.prototype.getChartOptions = function () {
         var retVal = [];
 
@@ -47,6 +86,18 @@
         return retVal;
     };
 
+    /**
+     * Sets data to be render within widget. (Overrides and calls back to HTMLWidget.data()). Also creates and populates this._data_google Google chart data table.
+     * @method data
+     * @memberof google_Treeline
+     * @instance
+     * @param {Mixed} _ The data being rendered.
+     * @returns {Widget}
+     * @example widget
+     * .columns(["Row Label", "Bar Label", "Start", "End"])
+     * .data([ ["Geography", "", "1789-03-29", "1797-02-03"], ["English", "", "1797-02-03", "1801-02-03"]  ])
+     * .render();
+     */
     Timeline.prototype.data = function (_) {
         var context = this;
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
@@ -72,6 +123,13 @@
         return retVal;
     };
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof google_Timeline
+     * @instance
+     * @returns {Widget}
+     */
     Timeline.prototype.testData = function () {
         this.columns(["Row Label", "Bar Label", "Start", "End"]);
         this.data([
@@ -82,12 +140,30 @@
         return this;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof google_Timeline
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Timeline.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
         this._chart = new google.visualization[this._chartType](domNode);
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof google_Timeline
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Timeline.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         this._chart.draw(this._data_google, this.getChartOptions());

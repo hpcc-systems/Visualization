@@ -1,3 +1,8 @@
+/**
+ * @file AmChart Area
+ * @author HPCC Systems
+ */
+//
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,13 +11,37 @@
         root.amchart_Area = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
     }
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
+    /**
+     * @class amchart_Area
+     * @extends amchart_CommonSerial
+     * @implements api_INDChart
+     */
     function Area() {
         CommonSerial.call(this);
+        this._class = "amchart_Area";
+        /**
+         * Specifies the HTML tag type of the container.
+         * @member {string} _tag
+         * @memberof amchart_Area
+         * @private
+         */
         this._tag = "div";
+        /**
+         * Specifies the graph type of the AmChart Widget.
+         * @member {string} _gType
+         * @memberof amchart_Area
+         * @private
+         */
         this._gType = "line";
     }
     Area.prototype = Object.create(CommonSerial.prototype);
     Area.prototype.constructor = Area;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof amchart_Area
+     * @private
+     */
     Area.prototype._class += " amchart_Area";
     Area.prototype.implements(INDChart.prototype);
 
@@ -23,10 +52,27 @@
     Area.prototype.publish("tooltipTemplate","[[category]]: [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
     Area.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof amchart_Area
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Area.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
 
+    /**
+     * Updates underlying AmChart widget object, with options from publish parameters.
+     * @method updateChartOptions
+     * @memberof amchart_Area
+     * @instance
+     * @private
+     * @returns {Object}
+     */
     Area.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
 
@@ -46,6 +92,14 @@
         return this._chart;
     };
 
+    /**
+     * Builds AmChart graph object that becomes a property of the AmChart widget object.
+     * @method buildGraphs
+     * @memberof amchart_Area
+     * @instance
+     * @private
+     * @param {string} gType Value from this._gType.
+     */
     Area.prototype.buildGraphs = function(gType) {
         if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
         var currentGraphCount = this._chart.graphs.length;
@@ -73,6 +127,15 @@
         }
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof amchart_Area
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Area.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
 

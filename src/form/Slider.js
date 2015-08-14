@@ -1,3 +1,8 @@
+/**
+* @file Form Slider Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,6 +11,11 @@
         root.form_Slider = factory(root.d3, root.common_SVGWidget, root.api_IInput, root.common_Icon);
     }
 }(this, function (d3, SVGWidget, IInput, Icon) {
+    /**
+     * @class form_Slider
+     * @extends common_SVGWidget
+     * @implements api_IInput
+     */
     function Slider() {
         SVGWidget.call(this);
         IInput.call(this);
@@ -19,9 +29,22 @@
         ;
 
         var context = this;
+        /**
+         * Play button Icon widget/object instance.
+         * @member {Object} _shapeWidget
+         * @memberof form_Slider
+         * @private
+         */
         this._playIcon = new Icon()
             .faChar("\uf04b")
         ;
+        /**
+         * (event) Overridable click callback function.
+         * @method click
+         * @memberof form_Slider
+         * @param {type} row
+         * @param {type} column
+         */
         this._playIcon.click = function (d) {
             d3.event.stopPropagation();
             if (context._playing) {
@@ -30,7 +53,12 @@
                 context.play();
             }
         };
-
+        /**
+         * Icon widget/object instance, with the following default publish param values:
+         * @member {Object} _shapeWidget
+         * @memberof form_Slider
+         * @private
+         */
         this._loopIcon = new Icon()
             .faChar("\uf01e")
             .image_colorFill(this._loop ? null : "#bbb")
@@ -93,20 +121,47 @@
     Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
     Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
 
+    /**
+     * An alias for the columns() method.
+     * @method name
+     * @memberof form_Slider
+     * @instance
+     * @returns {Widget}
+     */
     Slider.prototype.name = function (_) {
         return Slider.prototype.columns.apply(this, arguments);
     };
 
+    /**
+     * An alias for the data() method.
+     * @method name
+     * @memberof form_Slider
+     * @instance
+     * @returns {Widget}
+     */
     Slider.prototype.value = function (_) {
         return Slider.prototype.data.apply(this, arguments);
     };
 
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData
+     * @memberof form_Slider
+     * @instance
+     * @returns {Widget}
+     */
     Slider.prototype.testData = function (_) {
         this.columns("Percent");
         this.data(20);
         return this;
     };
-
+    /**
+     * Populates Data and Columns with test data.
+     * @method testData2
+     * @memberof form_Slider
+     * @instance
+     * @returns {Widget}
+     */
     Slider.prototype.testData2 = function (_) {
         this.allowRange(true);
         this.columns("Percent");
@@ -114,6 +169,13 @@
         return this;
     };
 
+    /**
+     * Function starts playing of slider.
+     * @method play
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     */
     Slider.prototype.play = function () {
         this._playing = true;
         this._playIcon
@@ -153,6 +215,13 @@
         }, context.playInterval());
     };
 
+    /**
+     * Function pauses playing of slider.
+     * @method play
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     */
     Slider.prototype.pause = function () {
         this._playing = false;
         this._playIcon
@@ -162,6 +231,13 @@
         clearInterval(this.intervalHandler);
     };
 
+    /**
+     * Overrides but calls back to base data() method.
+     * @method play
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     */
     Slider.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -174,6 +250,15 @@
         return retVal;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Slider.prototype.enter = function (domNode, element) {
         this.sliderElement = element.append("g");
         this.axisElement = this.sliderElement.append("g")
@@ -218,6 +303,17 @@
         ;
     };
 
+    /**
+     * TODO
+     * @method calcDelta
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     * @param {Number} leftPos
+     * @param {Number} width
+     */
     Slider.prototype.calcDelta = function (domNode, element, leftPos, width) {
         var axisElement = element.append("g")
              .attr("class", "x axis")
@@ -238,6 +334,15 @@
         return retVal;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     Slider.prototype.update = function (domNode, element) {
         var context = this;
         var leftPos = -this.width() / 2 + this.padding();
@@ -308,11 +413,29 @@
         this.sliderElement.attr("transform", "translate(0, " + -(bbox.y + bbox.height / 2) + ")");
     };
 
+    /**
+     * TODO
+     * @method brushstart
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {type} d
+     * @param {type} self
+     */
     Slider.prototype.brushstart = function (d, self) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
     };
 
+    /**
+     * TODO
+     * @method brushmove
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {type} d
+     * @param {type} self
+     */
     Slider.prototype.brushmove = function (d, self) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
@@ -324,6 +447,15 @@
         }
     };
 
+    /**
+     * TODO
+     * @method brushend
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {type} d
+     * @param {type} self
+     */
     Slider.prototype.brushend = function (d, self) {
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
@@ -346,10 +478,27 @@
         }
     };
 
+    /**
+     * Returns the next value that can be selected with the slider (step) given an input value.
+     * @method nearestStep
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {Number} value
+     */
     Slider.prototype.nearestStep = function (value) {
         return this.low() + Math.round((value - this.low()) / this.step()) * this.step();
     };
 
+    /**
+     * TODO
+     * @method handlePath
+     * @memberof form_Slider
+     * @instance
+     * @protected
+     * @param {type} d
+     * @param {type} i
+     */
     Slider.prototype.handlePath = function (d, i) {
         var e = +(d === "e");
         var x = e ? 1 : -1;

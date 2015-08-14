@@ -1,3 +1,8 @@
+/**
+* @file HPCC VIZ WordCloud Widget
+* @author HPCC Systems
+*/
+
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -6,12 +11,23 @@
         root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud);
     }
 }(this, function (d3, SVGWidget, IWordCloud) {
+    /**
+     * @class other_WordCloud
+     * @extends common_SVGWidget
+     * @implements other_IWordCloud
+     */
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
     }
     WordCloud.prototype = Object.create(SVGWidget.prototype);
     WordCloud.prototype.constructor = WordCloud;
+    /**
+     * Specifies the class name of the container.
+     * @member {string} _class
+     * @memberof other_WordCloud
+     * @private
+     */
     WordCloud.prototype._class += " other_WordCloud";
     WordCloud.prototype.implements(IWordCloud.prototype);
 
@@ -23,6 +39,15 @@
     WordCloud.prototype.publish("angleTo", 60, "number", "Angle To",null,{tags:["Basic"]});
     WordCloud.prototype.publish("angleCount", 5, "number", "Angle Count",null,{tags:["Basic"]});
 
+    /**
+     * Sets data to be render within widget.
+     * @method data
+     * @memberof other_WordCloud
+     * @instance
+     * @param {Mixed} _ The data being rendered.
+     * @returns {Widget}
+     * @example TODO
+     */
     WordCloud.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -37,6 +62,15 @@
         return retVal;
     };
 
+    /**
+     * The function that is called when this widget "enters" the web page.
+     * @method enter
+     * @memberof other_WordCloud
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     WordCloud.prototype.enter = function (domNode, element) {
         this.cloud = d3.layout.cloud()
             .font(this.fontFamily())
@@ -45,6 +79,16 @@
         this.svg = element.append("g");
     };
 
+
+    /**
+     * The function that is called when this widget "enters" the web page. after enter() and everytime the widget is updated with subsequent render calls.
+     * @method update
+     * @memberof other_WordCloud
+     * @instance
+     * @protected
+     * @param {HTMLElement} domeNode HTML/SVG DOMNode of widget container.
+     * @param {D3Selection} element d3 selection object of widget.
+     */
     WordCloud.prototype.update = function (domNode, element) {
         var context = this;
         var extent = d3.extent(this._vizData, function (d) {

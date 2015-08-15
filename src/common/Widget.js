@@ -47,6 +47,20 @@
             }
             window.g_all[this._id] = this;
         }
+        if(window.__hpcc_theme){
+            var clsArr = this._class.trim().split(" ").reverse();
+            for(var i in clsArr){
+                if(typeof (window.__hpcc_theme[clsArr[i]]) !== "undefined"){
+                    for(var paramName in window.__hpcc_theme[clsArr[i]]){
+                        if(typeof (this[paramName]) === "function"){
+                            var proto = Object.getPrototypeOf(this);
+                            proto["__meta_"+paramName].trueDefaultValue = this[paramName]();
+                            proto["__meta_"+paramName].defaultValue = window.__hpcc_theme[clsArr[i]][paramName];
+                        }
+                    }
+                }
+            }
+        }
     }
     Widget.prototype._class = " common_Widget";
 
@@ -210,6 +224,20 @@
             return this["__prop_" + id] !== undefined;
         };
         this[id + "_reset"] = function () {
+            switch (type) {
+                case "widget":
+                    if (this["__prop_" + id]) {
+                        this["__prop_" + id].target(null);
+                    }
+                    break;
+                case "widgetArray":
+                    if (this["__prop_" + id]) {
+                        this["__prop_" + id].forEach(function (widget) {
+                            widget.target(null);
+                        });
+                    }
+                    break;
+            }
             this["__prop_" + id] = undefined;
         };
         this["__prop_" + id] = undefined;

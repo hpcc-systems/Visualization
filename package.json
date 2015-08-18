@@ -26,7 +26,9 @@
     "gulp-mocha-phantomjs": "^0.8.1",
     "mocha": "^2.2.5",
     "chai": "^3.2.0",
-    "gulp-jscs": "~2.0.0"
+    "gulp-jscs": "~2.0.0",
+    "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
+    "require-css": "^0.1.8"
   },
   "repository": {
     "type": "git",

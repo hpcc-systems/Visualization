@@ -99,18 +99,9 @@
     };
 
     MultiChart.prototype.requireContent = function (chartType, callback) {
-        var retVal = this._allCharts[chartType].widget;
-        if (retVal) {
-            callback(retVal);
-            return;
-        }
-
-        var context = this;
         var path = "src/" + this._allCharts[chartType].widgetClass.split("_").join("/");
         require([path], function (WidgetClass) {
-            retVal = new WidgetClass();
-            context._allCharts[chartType].widget = retVal;
-            callback(retVal);
+            callback(new WidgetClass());
         });
     };
 

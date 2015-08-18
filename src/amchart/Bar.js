@@ -78,26 +78,21 @@
     };
 
     Bar.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
-        var currentGraphCount = this._chart.graphs.length;
-        var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
+        this._chart.graphs = [];
+        var buildGraphCount = this._columns.length - 1;
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
-                var gRetVal = CommonSerial.prototype.buildGraphObj.call(this,gType,i);
-                var gObj = buildGraphObj.call(this,gRetVal);
+            var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
+            var gObj = buildGraphObj.call(this, gRetVal, i);
 
-                if (typeof(this._chart.graphs[i]) !== "undefined") {
-                    for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
-                } else {
-                    this._chart.addGraph(gObj);
-                }
+            if (typeof(this._chart.graphs[i]) !== "undefined") {
+                for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
             } else {
-                this._chart.removeGraph(this._chart.graphs[i]);
+                this._chart.addGraph(gObj);
             }
         }
 
-        function buildGraphObj(gObj) {
+        function buildGraphObj(gObj, i) {
             if (this.columnWidth()) {
                 gObj.columnWidth = this.columnWidth();
             }
@@ -108,11 +103,13 @@
                  gObj.topRadius = undefined;
             }
 
-            if(this.paletteGrouping() === "By Category"){
-                gObj.colorField = "color";
-                gObj.lineColorField = "linecolor";
-            }
+            gObj.colorField = "color";
+            gObj.lineColorField = "linecolor";
 
+            if (this._isRangeGraph) {
+                gObj.openField = "openField" + i;
+                gObj.valueField = "valueField" + i;
+            }
             gObj.fillAlphas = this.fillOpacity();
 
             return gObj;

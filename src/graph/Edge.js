@@ -170,7 +170,7 @@
 
     Edge.prototype._calculateEdgePoints = function (source, target, _points) {
         if (!source || !target) {
-            return [[0, 0], [0, 0]];
+            return [{ x: 0, y: 0 }, { x: 0, y: 0 }];
         }
         var points = _points ? _points.slice() : [];
         var p0 = points.length === 0 ? target.pos() : points[0];

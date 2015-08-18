@@ -10,6 +10,7 @@
         Widget.call(this);
 
         this._drawStartPos = "origin";
+        this._boundingBox = null;
     }
     HTMLWidget.prototype = Object.create(Widget.prototype);
     HTMLWidget.prototype.constructor = HTMLWidget;
@@ -55,7 +56,7 @@
 
     HTMLWidget.prototype.getBBox = function (refresh, round) {
         if (refresh || this._boundingBox === null) {
-            var domNode = this._element.node();
+            var domNode = this._element.node().firstElementChild;   //  Needs to be first child, as element has its width/height forced onto it.
             if (domNode instanceof Element) {
                 var rect = domNode.getBoundingClientRect();
                 this._boundingBox = {

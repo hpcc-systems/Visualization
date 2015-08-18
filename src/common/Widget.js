@@ -543,7 +543,7 @@
         var element = d3.select(domNode);
         if (element) {
             var widget = element.datum();
-            if (widget) {
+            if (widget && widget instanceof Widget) {
                 return widget;
             }
         }

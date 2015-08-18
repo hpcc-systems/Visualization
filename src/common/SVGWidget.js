@@ -89,6 +89,7 @@
             if (!this._parentWidget || this._parentWidget._id === this._id) {
                 this._parentWidget = this.locateParentWidget(this._target.parentNode);
             }
+            this._parentOverlay = this.locateOverlayNode();
         } else if (this._target) {
             //  Target is a DOM Node, so create a SVG Element  ---
             this._parentRelativeDiv = d3.select(this._target).append("div")

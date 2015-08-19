@@ -144,7 +144,7 @@
                             .target("surface")
                             .render()
                         ;
-                        require(["src/graph/Graph"], function (Graph) {
+                        require(["src/graph/Graph", "src/chart/Pie"], function (Graph, Pie) {
                             var vertices = [
                                 new Shape().shape("circle").size({ width: 32, height: 32 }),
                                 new FAChar().char("\uf080"),
@@ -156,8 +156,9 @@
                                 new Shape().shape("rect").size({ width: 48, height: 22 }),
                                 new List().testData(),
                                 new Menu().faChar("\uf0c9").data(["Menu A", "And B", "a longer C"]),
-                                new ResizeSurface().size({ width: 200, height: 100 }).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(new Dendrogram().testData())
-                            ];
+                                new ResizeSurface().size({ width: 200, height: 100 }).showTitle(true).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(new Table().testData()),
+                                new ResizeSurface().size({ width: 200, height: 100 }).showTitle(true).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(new Pie().testData())
+                        ];
                             var edges = [
                                 createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),
                                 createEdge(vertices[3], vertices[5]), createEdge(vertices[4], vertices[5]),

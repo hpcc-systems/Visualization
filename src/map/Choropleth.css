@@ -18,3 +18,13 @@
     stroke-linecap: round;
     vector-effect: non-scaling-stroke;
 }
+
+.map_Choropleth path.selected {
+    stroke: red;
+    stroke-width: 1.5px;
+}
+
+.map_Choropleth path.over {
+    stroke: orange;
+    stroke-width: 1.5px;
+}

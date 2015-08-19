@@ -23,8 +23,8 @@
     };
 
     //  Events  ---
-    I2DChart.prototype.click = function (row, column) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    I2DChart.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return I2DChart;

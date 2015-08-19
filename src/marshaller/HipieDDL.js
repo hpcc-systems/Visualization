@@ -436,12 +436,12 @@
         var context = this;
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
-                widget["vertex_" + key] = function (d) {
-                    context.visualization.onEvent(key, context.events[key], d);
+                widget["vertex_" + key] = function (row) {
+                    context.visualization.onEvent(key, context.events[key], row);
                 };
             } else if (widget[key]) {
-                widget[key] = function (d) {
-                    context.visualization.onEvent(key, context.events[key], d);
+                widget[key] = function (row, col, selected) {
+                    context.visualization.onEvent(key, context.events[key], row, col, selected);
                 };
             }
         }
@@ -655,20 +655,65 @@
         }
     };
 
-    Visualization.prototype.onEvent = function (eventID, event, d) {
-        if (event.exists()) {
-            var request = {};
-            for (var key in event.mappings) {
-                var origKey = (this.source.mappings && this.source.mappings.hasMappings) ? this.source.mappings.getReverseMap(key) : key;
-                request[event.mappings[key]] = d[origKey];
+    Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
+        var context = this;
+        setTimeout(function () {
+            selected = selected === undefined ? true : selected;
+            if (event.exists()) {
+                var request = {};
+                if (selected) {
+                    for (var key in event.mappings) {
+                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
+                        request[event.mappings[key]] = row[origKey];
+                    }
+                }
+
+                //  New request calculation:
+                context._eventValues = request;
+                var datasourceRequests = {};
+                var updatedVizs = event.getUpdatesVisualizations();
+                updatedVizs.forEach(function (updatedViz) {
+                    var dataSource = updatedViz.source.getDatasource();
+                    if (!datasourceRequests[dataSource.id]) {
+                        datasourceRequests[dataSource.id] = {
+                            datasource: dataSource,
+                            request: {
+                            },
+                            updates: []
+                        };
+                    }
+                    datasourceRequests[dataSource.id].updates.push(updatedViz.id);
+                    updatedViz.getInputVisualizations().forEach(function (inViz, idx) {
+                        if (inViz._eventValues) {
+                            for (var key in inViz._eventValues) {
+                                if (datasourceRequests[dataSource.id].request[key] && datasourceRequests[dataSource.id].request[key] !== inViz._eventValues[key]) {
+                                    console.log("Duplicate Filter, with mismatched value:  " + key + "=" + inViz._eventValues[key]);
+                                }
+                                datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
+                            }
+                        }
+                    });
+                    if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
+                        dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
+                    }
+                });
+                for (var drKey in datasourceRequests) {
+                    if (!datasourceRequests[drKey].datasource.WUID && !datasourceRequests[drKey].datasource.databomb) {  // TODO If we have filters for each output this would not be needed  ---
+                        datasourceRequests[drKey].datasource.fetchData(datasourceRequests[drKey].request, false, datasourceRequests[drKey].updates);
+                    }
+                }
             }
-            var dataSources = event.getUpdatesDatasources();
-            dataSources.forEach(function (item) {
-                item.fetchData(request, false, event._updates.map(function (item) {
-                    return item.visualization;
-                }));
-            });
-        }
+        }, 0);
+    };
+
+    Visualization.prototype.getInputVisualizations = function () {
+        return this.dashboard.visualizationsArray.filter(function (viz) {
+            var updates = viz.events.getUpdatesVisualizations();
+            if (updates.indexOf(this) >= 0) {
+                return true;
+            }
+            return false;
+        }, this);
     };
 
     //  Output  ---
@@ -780,10 +825,14 @@
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
             context.request[item + "_changed"] = false;
-        });
-        for (var key in request) {
-            this.request[key] = request[key] === undefined ? "" : request[key];
-            this.request[key + "_changed"] = true;
+            var value = request[item] === undefined ? "" : request[item];
+            if (this.request[item] !== value) {
+                this.request[item] = value;
+                this.request[item + "_changed"] = true;
+            }
+        }, this);
+        if (window.__hpcc_debug) {
+            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
         this.comms.call(this.request, function (response) {
             context.processResponse(response, request, updates);
@@ -801,11 +850,15 @@
                 //  Temp workaround for older services  ---
                 from = this.outputs[key].id.toLowerCase();
             }
-            if (exists(from, response) && (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"]))) {
-                this.outputs[key].setData(response[from], request, updates);
-            } else if (exists(from, lowerResponse)) {// && exists(from + "_changed", lowerResponse) && lowerResponse[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"]) {
+            if (exists(from, response)) {
+                if (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"])) {
+                    this.outputs[key].setData(response[from], request, updates);
+                }
+            } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                this.outputs[key].setData(lowerResponse[from], request, updates);
+                if (!exists(from + "_changed", lowerResponse) || (exists(from + "_changed", lowerResponse) && response[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"])) {
+                    this.outputs[key].setData(lowerResponse[from], request, updates);
+                }
             } else {
                 var responseItems = [];
                 for (var responseKey2 in response) {
@@ -838,22 +891,6 @@
             context.visualizationsArray.push(newItem);
         });
         this.visualizationTotal = this.visualizationsArray.length;
-        var vizIncluded = {};
-        this.visualizationsTree = [];
-        var walkSelect = function (viz, result) {
-            if (viz && !vizIncluded[viz.id]) {
-                vizIncluded[viz.id] = true;
-                var treeItem = { visualization: viz, children: [] };
-                result.push(treeItem);
-                var visualizations = viz.events.getUpdatesVisualizations();
-                visualizations.forEach(function (item) {
-                    walkSelect(item, treeItem.children);
-                });
-            }
-        };
-        this.visualizationsArray.forEach(function (item) {
-            walkSelect(item, this.visualizationsTree);
-        }, this);
     }
 
     Dashboard.prototype.getQualifiedID = function () {

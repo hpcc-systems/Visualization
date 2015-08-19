@@ -38,8 +38,8 @@
     };
 
     //  Events  ---
-    INDChart.prototype.click = function (row, column) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    INDChart.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return INDChart;

@@ -759,7 +759,7 @@
         } else {
             var changedFilter = {};
             for (var key in request) {
-                if (request[key] && request[key + "_changed"]) {
+                if (request[key] && request[key + "_changed"] !== undefined) {
                     changedFilter[key] = request[key];
                 }
             }

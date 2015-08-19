@@ -63,20 +63,36 @@
         var points = this.svgData.selectAll(".point").data(data, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
             .attr("class", "point")
-            .on("click", function (d, idx) {
-                context.click(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx]);
-            })
             .each(function (d) {
                 var element = d3.select(this);
                 element
-                    .append(d.shape)
+                    .append("circle")
+                    .attr("class", "pointSelection")
+                    .call(context._selection.enter.bind(context._selection))
                     .append("title")
+                ;
+                element
+                    .append(d.shape)
+                    .attr("class", "pointShape")
                 ;
             })
         ;
         points
             .each(function (d) {
-                var element = d3.select(this).select(d.shape);
+                var elementSelection = d3.select(this).select(".pointSelection");
+                elementSelection
+                    .attr("cx", function (d) { return context.xPos(d); })
+                    .attr("cy", function (d) { return context.yPos(d); })
+                    .attr("r", context.pointSize())
+                    .on("click", function (d, idx) {
+                        context.click(context.rowToObj(context.data()[d.rowIdx]), context._columns[d.colIdx], context._selection.selected(this));
+                    })
+                ;
+                elementSelection.select("title")
+                    .text(function (d, idx) { return context.data()[d.rowIdx][0] + " (" + context.columns()[d.colIdx] + ")" + ": " + d.value; })
+                ;
+
+                var element = d3.select(this).select(".pointShape");
                 switch (d.shape) {
                     case "rect":
                         element
@@ -107,13 +123,11 @@
                         ;
                         break;
                 }
-                element.select("title")
-                    .text(function (d, idx) { return context.data()[d.rowIdx][0] + " (" + context.columns()[d.colIdx] + ")" + ": " + d.value; })
-                ;
-
             })
         ;
-        points.exit().remove();
+        points.exit()
+            .remove()
+        ;
 
         var areas = this.svgData.selectAll(".area").data(this.columns().filter(function (d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         areas.enter().append("path")

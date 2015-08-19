@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "css!./Bubble"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "css!./Bubble"], factory);
     } else {
-        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar);
+        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.other_Bag, root.common_FAChar);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag) {
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -37,6 +37,11 @@
         return retVal;
     };
 
+    Bubble.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
+        this._selection = new Bag.SimpleSelection(element);
+    };
+
     Bubble.prototype.update = function (domNode, element) {
         var context = this;
 
@@ -53,8 +58,9 @@
         node.enter().append("g")
             .attr("class", "node")
             .attr("opacity", 0)
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d), context._columns[1]);
+                context.click(context.rowToObj(d), context._columns[1], context._selection.selected(this));
             })
             .each(function (d) {
                 var element = d3.select(this);
@@ -118,6 +124,11 @@
             .style("opacity", 0)
             .remove()
         ;
+    };
+
+    Bubble.prototype.exit = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
+        delete this._selection;
     };
 
     return Bubble;

@@ -1,29 +1,30 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "css!./Pie"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "css!./Pie"], factory);
     } else {
-        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar);
+        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.other_Bag);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag) {
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
 
         this._outerText = false;  //  Put label inside pie or outside (true/false)
         this._radius = 100;       // px
-        this._innerRadius = 0;    // px
+        this._innerRadius = 1;    // px
 
         this.labelWidgets = {};
 
         this.d3Pie = d3.layout.pie()
+            .padAngle(0.0025)
             .sort(function (a, b) {
                 return a < b ? -1 : a > b ? 1 : 0;
             })
             .value(function (d) { return d[1]; })
         ;
         this.d3Arc = d3.svg.arc()
-            .outerRadius(this._radius)
+            .padRadius(this._radius)
             .innerRadius(this._innerRadius)
         ;
     }
@@ -38,14 +39,14 @@
     Pie.prototype.size = function (_) {
         var retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
-            this.radius(Math.min(this._size.width, this._size.height) / 2);
+            this.radius(Math.min(this._size.width, this._size.height) / 2 - 2);
         }
         return retVal;
     };
 
     Pie.prototype.radius = function (_) {
         if (!arguments.length) return this._radius;
-        this.d3Arc.outerRadius(_);
+        this.d3Arc.padRadius(_);
         this._radius = _;
         return this;
     };
@@ -67,7 +68,13 @@
         return this.intersectCircle(pointA, pointB);
     };
 
+    Pie.prototype.enter = function (domNode, element) {
+        SVGWidget.prototype.enter.apply(this, arguments);
+        this._selection = new Bag.SimpleSelection(element);
+    };
+
     Pie.prototype.update = function (domNode, element) {
+        SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -81,13 +88,15 @@
         arc.enter().append("g")
             .attr("class", "arc")
             .attr("opacity", 0)
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d.data), context._columns[1]);
+                context.click(context.rowToObj(d.data), context._columns[1], context._selection.selected(this));
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .attr("d", context.d3Arc)
+                    .on("mouseover", arcTween(0, 0))
+                    .on("mouseout", arcTween(-5, 150))
                     .append("title")
                 ;
                 if (d.data.__viz_faChar) {
@@ -110,6 +119,7 @@
         arc.transition()
             .attr("opacity", 1)
             .each(function (d) {
+                d.outerRadius = context.radius() - 5;
                 var pos = { x: 0, y: 1 };
                 if (context._outerText) {
                     var xFactor = Math.cos((d.startAngle + d.endAngle - Math.PI) / 2);
@@ -142,7 +152,8 @@
         ;
 
         //  Exit  ---
-        arc.exit().transition()
+        arc.exit()
+            .transition()
             .style("opacity", 0)
             .remove()
         ;
@@ -165,6 +176,20 @@
               });
             lines.exit().remove();
         }
+
+        function arcTween(outerRadiusDelta, delay) {
+            return function() {
+                d3.select(this).transition().delay(delay).attrTween("d", function (d) {
+                    var i = d3.interpolate(d.outerRadius, context.radius() + outerRadiusDelta);
+                    return function (t) { d.outerRadius = i(t); return context.d3Arc(d); };
+                });
+            };
+        }
+    };
+
+    Pie.prototype.exit = function (domNode, element) {
+        SVGWidget.prototype.exit.apply(this, arguments);
+        delete this._selectionBag;
     };
 
     return Pie;

@@ -10,6 +10,16 @@
     pointer-events: none;
 }
 
+.chart_Pie .arc path{
+    stroke: transparent;
+    border-width: 1px;
+}
+
+.chart_Pie .arc.selected path{
+    stroke: red;
+    stroke-width: 1.5px;
+}
+
 .chart_Pie .innerLabel.common_FAChar {
     fill: white;
 }

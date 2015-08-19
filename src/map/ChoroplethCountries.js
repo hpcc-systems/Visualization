@@ -85,10 +85,11 @@
         //  Enter  ---
         this.choroPaths = choroPaths.enter().append("path")
             .attr("d", this.d3Path)
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 if (context._dataMap[d.id]) {
                     var obj = [d.id, context._dataMap[d.id], d.name];
-                    context.click(context.rowToObj(obj), "weight");
+                    context.click(context.rowToObj(obj), "weight", context._selection.selected(this));
                 }
             })
             .on("dblclick", function (d) {

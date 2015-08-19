@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.xy"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.xy", "require"], factory);
     } else {
-        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts);
+        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
-}(this, function(d3, HTMLWidget, AmCharts) {
+}(this, function(d3, HTMLWidget, AmCharts, require) {
     function CommonXY() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -226,7 +226,9 @@
                 enabled: true
             }
         };
-
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);

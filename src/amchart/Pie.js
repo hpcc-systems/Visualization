@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart", "require"], factory);
     } else {
-        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart);
+        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.require);
     }
-}(this, function(d3, HTMLWidget, AmCharts, I2DChart) {
+}(this, function(d3, HTMLWidget, AmCharts, I2DChart, require) {
     function Pie() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -133,6 +133,9 @@
             type: "pie",
             theme: "none"
         };
+        if (typeof define === "function" && define.amd) {
+            initObj.pathToImages = require.toUrl("amchartsImg");
+        }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
             context.click(context.rowToObj(context._data[e.dataItem.index]));

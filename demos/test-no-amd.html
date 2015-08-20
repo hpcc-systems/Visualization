@@ -29,6 +29,7 @@
     <script src="../bower_components/colorbrewer/colorbrewer.js"></script>
     <script src="../bower_components/topojson/topojson.js"></script>
     <script src="../bower_components/d3-cloud/d3.layout.cloud.js"></script>
+    <script src="../bower_components/simpleheat/simpleheat.js"></script>
 
     <script src="../dist/hpcc-viz-common.min.js"></script>
     <script src="../dist/hpcc-viz-layout.min.js"></script>
@@ -468,6 +469,11 @@
                         .render()
                     ;
                 }, 1500);
+                var heat = new other_HeatMap()
+                    .target("heat")
+                    .testData()
+                    .render()
+                ;
             }
 
             function displayPalettes() {
@@ -587,6 +593,8 @@
             <div id="wordCloud" class="large wide thumb"></div>
             <div id="table" class="large wide thumb" style="overflow:auto;"></div>
             <div id="morphText" class="wide thumb" style="font-size:14px;"></div>
+            <br style="clear:both" />
+            <div id="heat" style="width: 500px" class="large thumb"></div>
             <br style="clear:both" />
             Palette - Ordinal
             <br style="clear:both" />

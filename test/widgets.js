@@ -41,6 +41,7 @@
             { path: "src/graph/Edge" },
             { path: "src/graph/Graph" },
             { path: "src/graph/Vertex" },
+            { path: "src/other/HeatMap" },
             { path: "src/other/MorphText" },
             { path: "src/other/Table" },
             { path: "src/other/WordCloud" },

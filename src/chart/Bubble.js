@@ -1,14 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "css!./Bubble"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "../api/ITooltip", "css!./Bubble"], factory);
     } else {
-        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.other_Bag, root.common_FAChar);
+        root.chart_Bubble = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.other_Bag, root.api_ITooltip);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag, ITooltip) {
     function Bubble(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
+        ITooltip.call(this);
         this._drawStartPos = "origin";
 
         this.labelWidgets = {};
@@ -23,6 +24,7 @@
     Bubble.prototype.constructor = Bubble;
     Bubble.prototype._class += " chart_Bubble";
     Bubble.prototype.implements(I2DChart.prototype);
+    Bubble.prototype.implements(ITooltip.prototype);
 
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Bubble.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
@@ -66,7 +68,15 @@
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .append("title")
+                    .on("mouseover.tooltip", function (d) {
+                        context.tooltipShow(d, context._columns, 1);
+                    })
+                    .on("mouseout.tooltip", function (d) {
+                        context.tooltipShow();
+                    })
+                    .on("mousemove.tooltip", function (d) {
+                        context.tooltipShow(d, context._columns, 1);
+                    })
                 ;
                 if (d.__viz_faChar) {
                     context.labelWidgets[d[0]] = new FAChar()

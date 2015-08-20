@@ -29,7 +29,7 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive"];
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.plugins.responsive", "simpleheat"];
 const bundles = ["common", "api", "chart", "c3chart", "google", "amchart", "tree", "form", "other", "graph", "map", "layout", "marshaller"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
 

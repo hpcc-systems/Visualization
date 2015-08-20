@@ -175,44 +175,50 @@
             if (!arguments.length) {
                 return !isPrototype && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
             }
-            switch (type) {
-                case "set":
-                    if (!set || set.indexOf(_) < 0) {
-                        console.log("Invalid value for '" + id + "':  " + _);
-                    }
-                    break;
-                case "html-color":
-                    if (window.__hpcc_debug && _ && _ !== "red") {
-                        var litmus = "red";
-                        var d = document.createElement("div");
-                        d.style.color = litmus;
-                        d.style.color = _;
-                        //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
-                        if (d.style.color === litmus || d.style.color === "") {
+            if (_ !== null) {
+                switch (type) {
+                    case "set":
+                        if (!set || set.indexOf(_) < 0) {
                             console.log("Invalid value for '" + id + "':  " + _);
                         }
-                    }
-                    break;
-                case "boolean":
-                    _ = typeof(_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
-                    break;
-                case "number":
-                    _ = Number(_);
-                    break;
-                case "string":
-                    _ = String(_);
-                    break;
-                case "array":
-                    if (!(_ instanceof Array)) {
-                        console.log("Invalid value for '" + id);
-                    }
-                    break;
+                        break;
+                    case "html-color":
+                        if (window.__hpcc_debug && _ && _ !== "red") {
+                            var litmus = "red";
+                            var d = document.createElement("div");
+                            d.style.color = litmus;
+                            d.style.color = _;
+                            //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
+                            if (d.style.color === litmus || d.style.color === "") {
+                                console.log("Invalid value for '" + id + "':  " + _);
+                            }
+                        }
+                        break;
+                    case "boolean":
+                        _ = typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+                        break;
+                    case "number":
+                        _ = Number(_);
+                        break;
+                    case "string":
+                        _ = String(_);
+                        break;
+                    case "array":
+                        if (!(_ instanceof Array)) {
+                            console.log("Invalid value for '" + id);
+                        }
+                        break;
+                }
             }
             if (isPrototype) {
                 this["__meta_" + id].defaultValue = _;
             } else {
                 this.broadcast(id, _, this["__prop_" + id]);
-                this["__prop_" + id] = _;
+                if (_ === null) {
+                    delete this["__prop_" + id];
+                } else {
+                    this["__prop_" + id] = _;
+                }
             }
             return this;
         };

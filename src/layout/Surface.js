@@ -87,9 +87,9 @@
         var context = this;
 
         element
-            .style("border-width",this.surfaceBorderWidth()+"px")
+            .style("border-width",this.surfaceBorderWidth_modified() ? this.surfaceBorderWidth() + "px" : null)
             .style("border-color",this.surfaceBorderColor())
-            .style("border-radius",this.surfaceBorderRadius()+"px")
+            .style("border-radius",this.surfaceBorderRadius_modified() ? this.surfaceBorderRadius() + "px" : null)
             .style("background-color",this.surfaceBackgroundColor())
         ;
 

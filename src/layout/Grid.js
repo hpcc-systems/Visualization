@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "./Cell", "../common/Text", "../chart/Pie", "../chart/MultiChart", "../c3chart/Line", "css!./Grid"], factory);
+        define(["d3", "../common/HTMLWidget", "./Cell", "../common/TextBox", "css!./Grid"], factory);
     } else {
-        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3chart_Line);
+        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_TextBox);
     }
-}(this, function (d3, HTMLWidget, Cell, Text, Pie, MultiChart, Line) {
+}(this, function (d3, HTMLWidget, Cell, TextBox, Pie, MultiChart, Line) {
     function Grid() {
         HTMLWidget.call(this);
 
@@ -31,12 +31,12 @@
 
     Grid.prototype.testData = function () {
         this
-            .setContent(0, 0, new Pie().testData())
-            .setContent(0, 1, new Pie().testData())
-            .setContent(1, 0, new Pie().testData())
-            .setContent(1, 1, new Pie().testData())
-            .setContent(0, 2, new MultiChart().testData(), "Title AAA", 2, 2)
-            .setContent(2, 0, new Line().testData(), "Title BBB", 2, 4)
+            .setContent(0, 0, new TextBox().testData())
+            .setContent(0, 1, new TextBox().testData())
+            .setContent(1, 0, new TextBox().testData())
+            .setContent(1, 1, new TextBox().testData())
+            .setContent(0, 2, new TextBox().testData(), "Title AAA", 2, 2)
+            .setContent(2, 0, new TextBox().testData(), "Title BBB", 2, 4)
         ;
         return this;
     };

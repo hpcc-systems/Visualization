@@ -1,5 +1,5 @@
 "use strict";
-define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/other/Paginator"], function (d3, Slider, Icon, Table, Paginator) {
+define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/other/Paginator", "src/chart/Column"], function (d3, Slider, Icon, Table, Paginator, Column) {
     describe("functionality tests for individual widgets", function () {
         this.timeout(10000);
 
@@ -23,6 +23,7 @@ define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/othe
                     .target(widgetDiv.node())
                     .testData()
                     .showPlay(true)
+                    .playInterval(10)
                     .render()
                 ;
                 assert.instanceOf(vizWidget._playIcon, Icon, "playIcon is an instanceOf Icon");
@@ -38,14 +39,14 @@ define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/othe
                     vizWidget.pause();
                     vizWidget.data(90);
                     vizWidget.play();
-                }, 2000);
+                }, 50);
 
                 setTimeout(function() {
                     assert.equal(vizWidget.value(), vizWidget.high(), "Finally it stops at max on the slider");
                     vizWidget.play();
                     assert.isBelow(vizWidget.value(), initialValue, "The Slider value should restart from 0");
                     done();
-                }, 4500);
+                }, 100);
             });
 
 
@@ -120,6 +121,47 @@ define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/othe
                     callback();
                 };
 
+            });
+
+            it("Removing the table widget from the page", function (done) {
+                assert.notEqual(widgetDiv.html(), "");
+                vizWidget.target(null);
+                assert.equal(widgetDiv.html(), "");
+                done();
+            });
+        });
+
+        describe("Chart Tests", function () {
+            var widget = { path: "src/chart/Column" };
+            var element = d3.select("#testWidget");
+            var vizWidget, widgetDiv, testDiv;
+
+            it("Adding widget and making sure if all the components are loaded properly", function (done) {
+                this.timeout(5000);
+                testDiv = element.append("div")
+                    .attr("class", "widgetTest")
+                ;
+                widgetDiv = testDiv.append("div")
+                    .attr("class", "widget " + widget.path)
+                ;
+                testDiv.append("center")
+                    .attr("class", "title")
+                    .text(widget.path)
+                ;
+                vizWidget = new Column()
+                    .target(widgetDiv.node())
+                    .testData()
+                    .render()
+                ;
+                assert.property(vizWidget, "orientation");
+                done();
+            });
+
+            it("Checks for orientation flipping", function (done) {
+                assert.equal(vizWidget.orientation(), "horizontal", "verifies if orientation is horizontal");
+                vizWidget.orientation("vertical").render();
+                assert.notEqual(vizWidget.orientation(), "horizontal", "verifies if orientation is vertical");
+                done();
             });
 
             it("Removing the table widget from the page", function (done) {

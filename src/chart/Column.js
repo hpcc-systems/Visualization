@@ -109,10 +109,6 @@
                     ;
                 }
 
-                columnRect
-
-                ;
-
                 if (context.stacked()) {
                     columnRect.sort(function (l, r) {
                         return r - l;
@@ -127,7 +123,6 @@
         column.exit().transition()
             .remove()
         ;
-
     };
 
     return Column;

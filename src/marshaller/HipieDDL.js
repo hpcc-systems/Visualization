@@ -721,6 +721,7 @@
         this.URL = dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
+        this.isLoaded = false;
 
         var context = this;
         this.outputs = {};
@@ -764,6 +765,7 @@
     };
 
     DataSource.prototype.fetchData = function (request, refresh, updates) {
+        this.isLoaded = false;
         if (!updates) {
             updates = [];
             for (var oKey in this.outputs) {
@@ -787,6 +789,7 @@
         }
         this.comms.call(this.request, function (response) {
             context.processResponse(response, request, updates);
+            this.isLoaded = true;
         });
     };
 
@@ -879,6 +882,20 @@
     function Marshaller() {
         this._proxyMappings = {};
     }
+
+    Marshaller.prototype.commsDataLoaded = function () {
+        var dashboardLoadedArr = [];
+        var i = 0;
+        this.dashboardArray.forEach(function(dashboard) {
+            for (var ds in dashboard.datasources) {
+                dashboardLoadedArr[i] = dashboard.datasources[ds].isLoaded;
+                i++;
+            }
+        });
+        return dashboardLoadedArr.every(function(element) {
+            return element === true;
+        });
+    };
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);

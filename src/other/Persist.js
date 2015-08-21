@@ -162,6 +162,47 @@
 
         clone: function (widget, callback) {
             this.create(this.serializeToObject(widget, [], true), callback);
+        },
+
+        widgetWalker: function(widget, visitor) {
+            var context = this;
+            if (!widget) return;
+            visitor(widget);
+            var publishedProps = this.discover(widget);
+            for (var i = 0; i < publishedProps.length; ++i) {
+                var publishItem = publishedProps[i];
+                switch (publishItem.type) {
+                    case "widget":
+                        this.widgetWalker(widget[publishItem.id](), visitor);
+                        break;
+                    case "widgetArray":
+                        var widgetArray = widget[publishItem.id]();
+                        widgetArray.forEach(function (widget) {
+                            context.widgetWalker(widget, visitor);
+                        });
+                        break;
+                }
+            }
+        },
+
+        widgetPropertyWalker: function(widget, filter, visitor) {
+          this.widgetWalker(widget, function(widget) {
+            var publishedProps = this.discover(widget);
+            for (var i = 0; i < publishedProps.length; ++i) {
+                var publishItem = publishedProps[i];
+                switch (publishItem.type) {
+                    case "widget":
+                    case "widgetArray":
+                        break;
+                    default:
+                        if (!(filter instanceof Array) || filter.length === 0 || filter.indexOf(publishItem.id) >= 0) {
+                            if (visitor(widget, publishItem)) {
+                                continue;
+                            }
+                        }
+                }
+            }
+          });
         }
     };
 }));

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "../api/IInput", "css!./Input"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.api_IInput);
+        root.form_Input = factory(root.d3, root.common_HTMLWidget, root.api_IInput);
     }
 }(this, function (d3, HTMLWidget, IInput) {
     function Input() {

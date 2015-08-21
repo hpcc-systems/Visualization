@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../chart/MultiChart", "css!./Surface", "css!font-awesome",], factory);
+        define(["d3", "../common/HTMLWidget", "../common/TextBox", "css!./Surface", "css!font-awesome",], factory);
     } else {
-        root.layout_Surface = factory(root.d3, root.common_HTMLWidget, root.chart_MultiChart);
+        root.layout_Surface = factory(root.d3, root.common_HTMLWidget, root.common_TextBox);
     }
-}(this, function (d3, HTMLWidget, MultiChart) {
+}(this, function (d3, HTMLWidget, TextBox) {
     function Surface() {
         HTMLWidget.call(this);
 
@@ -39,7 +39,7 @@
 
     Surface.prototype.testData = function () {
         this.title("ABC");
-        this.widget(new Surface().widget(new MultiChart().testData()));
+        this.widget(new Surface().widget(new TextBox().testData()));
 
         this.buttonAnnotations([
             {
@@ -153,6 +153,8 @@
             .style("padding", this.surfacePadding() ? this.surfacePadding() + "px" : null)
             .each(function (d) {
                 var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
+                if (widgetSize.width < 0) widgetSize.width = 0;
+                if (widgetSize.height < 0) widgetSize.height = 0;
                 d
                     .resize({ width: widgetSize.width, height: widgetSize.height })
                 ;

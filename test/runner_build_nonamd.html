@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HPCC Visualization Unit Tests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://rawgit.com/mochajs/mocha/2.2.5/mocha.css" />
+    <link rel="stylesheet" href="runner.css" />
+
+    <link rel="stylesheet" href="../bower_components/c3/c3.css" />
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../dist/hpcc-viz.min.css">
+
+    <script src="http://rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script src="http://rawgit.com/chaijs/chai/3.2.0/chai.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="../bower_components/d3/d3.js"></script>
+    <script src="../bower_components/c3/c3.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/amcharts.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/serial.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/funnel.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/gauge.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/pie.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/radar.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/xy.js"></script>
+    <script src="../bower_components/amcharts/dist/amcharts/gantt.js"></script>
+    <script src="../bower_components/dagre/index.js"></script>
+    <script src="../bower_components/colorbrewer/colorbrewer.js"></script>
+    <script src="../bower_components/topojson/topojson.js"></script>
+    <script src="../bower_components/d3-cloud/d3.layout.cloud.js"></script>
+</head>
+<body>
+    <div id="mocha"></div>
+    <div id="testWidget"></div>
+    <script src="../dist/hpcc-viz-common.min.js"></script>
+    <script src="../dist/hpcc-viz-layout.min.js"></script>
+    <script src="../dist/hpcc-viz-api.min.js"></script>
+    <script src="../dist/hpcc-viz-other.min.js"></script>
+    <script src="../dist/hpcc-viz-chart.min.js"></script>
+    <script src="../dist/hpcc-viz-c3chart.min.js"></script>
+    <script src="../dist/hpcc-viz-google.min.js"></script>
+    <script src="../dist/hpcc-viz-amchart.min.js"></script>
+    <script src="../dist/hpcc-viz-tree.min.js"></script>
+    <script src="../dist/hpcc-viz-form.min.js"></script>
+    <script src="../dist/hpcc-viz-graph.min.js"></script>
+    <script src="../dist/hpcc-viz-map.min.js"></script>
+    <script src="../dist/hpcc-viz-marshaller.min.js"></script>
+    <script>
+        mocha.setup('bdd');
+        var assert = chai.assert;
+        var skipHierarchTest = true;
+    </script>
+    <script src="./widgets.js"></script>
+    <script>
+        google.load("visualization", "1", {
+            callback: function () { mocha.run(); },
+            packages: ["corechart", "timeline", "treemap"]
+        });
+    </script>
+</body>
+</html>

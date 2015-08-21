@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "./CommonND", "../common/HTMLWidget"], factory);
     } else {
-        root.Scatter = factory(root.d3, root.google_CommonND, root.common_HTMLWidget);
+        root.google_Scatter = factory(root.d3, root.google_CommonND, root.common_HTMLWidget);
     }
 }(this, function (d3, CommonND, HTMLWidget) {
 

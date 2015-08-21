@@ -1,18 +1,21 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Widget", "../layout/AbsoluteSurface", "../other/Table"], factory);
+        define(["d3", "../common/Widget", "../layout/AbsoluteSurface", "../common/TextBox"], factory);
     } else {
-        root.api_ITooltip = factory(root.d3, root.common_Widget, root.layout_AbsoluteSurface, root.chart_Table);
+        root.api_ITooltip = factory(root.d3, root.common_Widget, root.layout_AbsoluteSurface, root.common_TextBox);
     }
-}(this, function (d3, Widget, AbsoluteSurface, Table) {
+}(this, function (d3, Widget, AbsoluteSurface, TextBox) {
     function ITooltip() {
         Widget.call(this);
 
-        this._table = new Table();
+        this._textBox = new TextBox()
+            .shape_colorFill("#FFFFFA")
+            .shape_colorStroke("#E6E6E1")
+        ;
         this._tooltip = new AbsoluteSurface()
             .units("pixels")
-            .widget(this._table)
+            .widget(this._textBox)
             .visible(false)
         ;
     }
@@ -24,24 +27,25 @@
     ITooltip.prototype.tooltipShow = function (row, _columns, idx) {
         var context = this;
         if (row !== undefined) {
-            this._table
+            this._textBox
                 .columns(idx === undefined ? _columns : [_columns[0], _columns[idx]])
                 .data([idx === undefined ? row : [row[0], row[idx]]])
+                .text(row[0] + ", " + _columns[idx] + ":  " + row[idx])
             ;
             if (this._tooltip._renderCount === 0) {
                 this._tooltip
                     .target(this._parentOverlay.node())
                     .render(function (w) {
-                        context._table._parentElement.style("overflow", "hidden");
+                        context._textBox._parentElement.style("overflow", "hidden");
                     })
                 ;
             } else {
-                this._table.render();
+                this._textBox.render();
             }
 
             var point = d3.mouse(this._parentOverlay.node());
 
-            var bbox = this._table.getBBox(true);
+            var bbox = this._textBox.getBBox(true);
             var x = point[0] - bbox.width / 2;
             if (x < 0) {
                 x = 0;

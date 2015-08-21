@@ -85,7 +85,7 @@
                         context.tooltipShow(dataRow, context._columns, d.idx);
                     })
                     .on("click", function (d, idx) {
-                        context.click(context.rowToObj(dataRow), context.column, context._selection.selected(this));
+                        context.click(context.rowToObj(dataRow), d.column, context._selection.selected(this));
                     })
                 ;
 
@@ -108,10 +108,6 @@
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 }
-
-                columnRect
-
-                ;
 
                 if (context.stacked()) {
                     columnRect.sort(function (l, r) {

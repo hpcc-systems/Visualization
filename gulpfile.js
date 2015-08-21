@@ -76,7 +76,7 @@ function css(minify) {
 }
 
 function optimize(opts, cb) {
-  opts.optimize = "none";
+  //opts.optimize = "none";
   rjs.optimize(opts,
     function (text) { cb(null, text) },
     cb
@@ -113,6 +113,13 @@ gulp.task('unitTest', function () {
 gulp.task("unitTestBuild", function () {
     return gulp
         .src(cfg.test + '/runner_build.html')
+        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
+    ;
+});
+
+gulp.task("unitTestBuildNonAMD", function () {
+    return gulp
+        .src(cfg.test + '/runner_build_nonamd.html')
         .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
     ;
 });

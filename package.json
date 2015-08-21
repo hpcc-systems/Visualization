@@ -35,7 +35,7 @@
     "url": "https://github.com/hpcc-systems/Visualization"
   },
   "scripts": {
-    "test": "gulp lint && gulp jscs && gulp unitTest && gulp build-all && gulp unitTestBuild"
+    "test": "gulp lint && gulp jscs && gulp unitTest && gulp build-all && gulp unitTestBuild && gulp unitTestBuildNonAMD"
   },
   "author": "HPCC Systems",
   "license": "Apache",

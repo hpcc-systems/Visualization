@@ -1,5 +1,11 @@
 "use strict";
-define(["d3", "require"], function (d3, require) {
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["d3", "require"], factory);
+    } else {
+        root.widgets = factory(root.d3, root.require);
+    }
+}(this, function (d3, require) {
     describe("widgets", function () {
         this.timeout(5000);
         var allWidgets = [
@@ -163,4 +169,4 @@ define(["d3", "require"], function (d3, require) {
         var classParts = __prototype.classID().split("_");
         return classParts[classParts.length - 1];
     };
-});
+}));

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "goog!visualization,1,packages:[treemap]"], factory);
     } else {
-        root.TreeMap = factory(root.d3, root.common_HTMLWidget);
+        root.google_TreeMap = factory(root.d3, root.common_HTMLWidget);
     }
 }(this, function (d3, HTMLWidget) {
 

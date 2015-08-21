@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "./Cell", "../common/Text", "css!./Border"], factory);
     } else {
-        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_Text, root.chart_Pie, root.chart_MultiChart, root.c3chart_Line);
+        root.layout_Border = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_Text);
     }
 }(this, function (d3, HTMLWidget, Cell, Text) {
     function Border() {
@@ -45,7 +45,9 @@
 
     Border.prototype.testData = function () {
         this
-            .setContent("topSection",new Text().testData())
+            .leftCellSize(64)
+            .rightCellSize(64)
+            .setContent("topSection", new Text().testData())
             .setContent("rightSection",new Text().testData())
             .setContent("bottomSection",new Text().testData())
             .setContent("leftSection",new Text().testData())

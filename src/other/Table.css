@@ -9,13 +9,6 @@
     position: absolute;
 }
 
-/*Please take note of text selection on the table, especially in regards to the fixed first column, as well as shift-clicking.  The following code would disable text selection completely.  Which would be the lesser evil? (uncomment in browser to see the difference)*/
-.other_Table, .labels-wrapper {
-/*    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;*/
-}
-
 .other_Table th, .labels-wrapper th {
     padding:5px 10px;
     background-color:#1f77b4;

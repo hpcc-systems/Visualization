@@ -68,13 +68,14 @@
             .columns(["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"])
             .data(data.concat(data).concat(data).concat(data).concat(data).concat(data).concat(data).concat(data).concat(data).concat(data).concat(data))
             .fixedHeader(true)
+            .fixedColumn(true)
         ;
         return this;
     };
 
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
-//    should the following default to true?
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
+    Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -337,7 +338,7 @@
         ;
         var colLabelsWrapper = colsWrapper.select(".labels-wrapper");
 
-        var rowsWrapper = this.headerDiv.selectAll(".rows-wrapper").data(this.fixedHeader() ? [0] : []);
+        var rowsWrapper = this.headerDiv.selectAll(".rows-wrapper").data(this.fixedColumn() ? [0] : []);
         rowsWrapper.enter()
             .append("div")
             .attr("class", "rows-wrapper")
@@ -355,94 +356,111 @@
         var rowLabelsWrapper = rowsWrapper.select(".labels-wrapper");
 
         var theadSelection = this.table.select("thead");
-        var colWrapperHeight = theadSelection.node().getBoundingClientRect().height;
+        var colWrapperHeight = this.fixedHeader() ? theadSelection.node().offsetHeight : 0;
 
         var context = this;
         _copyLabelContents(this._id);
         _setOnScrollEvents(this.tableDiv.node());
 
-        rowLabelsWrapper
-            .style("margin-top", -domNode.scrollTop + parseInt(colWrapperHeight) + "px")
-        ;
-        rowLabelsWrapper.select("thead")
-            .style("margin-top", domNode.scrollTop - parseInt(colWrapperHeight) + "px")
-            .on("click", function (d, idx) {
-                context.headerClick(d, idx);
-            })
-        ;
-        if (!this.fixedHeader() && this._prevFixedHeader !== this.fixedHeader()) {
-            this.tableDiv
-                .style("top", "0")
-                .style("left", "0")
-                .style("width", this.width() + "px")
-                .style("height", this.height() + "px")
-            ;
-        }
-        this._prevFixedHeader = this.fixedHeader();
-
         function _copyLabelContents() {
-            colLabelsWrapper.html(theadSelection.html());
-            colLabelsWrapper
-                .style("width", context.table.style("width"))
-            ;
-
             var origThead = element.selectAll("th");
-            var newThead = context.headerDiv.selectAll(".cols-wrapper th");
-            origThead.each(function (d, i) {
-                var el = newThead.filter(function (d, idx) { return idx === i; });
-                var elWidth = d3.select(this).style("width");
-                el.style("width", elWidth);
-            });
-            newThead.on("click", function (d, idx) {
-                context.headerClick(d, idx);
-            });
-
-            var borderWidth = parseInt(context.table.select("td").style("border-width"));
-            var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
-            var rowWrapperWidth = rowSelection.node().getBoundingClientRect().width;
-            var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
-            var rowContents = "<thead><tr>";
-            rowContents += "<th style='width:" + theadWidth + "px'>";
-            rowContents += origThead.filter(function (d, idx) { return idx === 0; }).html();
-            rowContents += "</th></tr></thead>";
-
-            rowSelection.each(function () {
-                rowContents += "<tr><td class='row-label'>" + (this.innerHTML ? this.innerHTML : "&nbsp;") + "</td></tr>";
-            });
-            rowLabelsWrapper.html(rowContents)
-                .style("width", rowWrapperWidth)
-            ;
-            rowLabelsWrapper.select("thead")
-                .style("margin-top", "-" + colWrapperHeight)
-                .style("position", "absolute")
-                .style("width", theadWidth + "px")
-            ;
-            rowLabelsWrapper.style("margin-top", colWrapperHeight);
-
-            var fixedRows = rowLabelsWrapper.selectAll("tr");
-            fixedRows
-                .on("click", function (d, i) {
-                    d3.select(rows[0][i]).on("click.selectionBag")(rows.data()[i - 1], i - 1)
+            if (context.fixedHeader()) {
+                colLabelsWrapper.html(theadSelection.html());
+                colLabelsWrapper
+                    .style("width", context.table.style("width"))
+                ;
+                var newThead = context._parentElement.selectAll(".cols-wrapper th");
+                origThead.each(function(d, i){
+                    var el = newThead.filter(function (d, idx) { return idx === i;});
+                    var elWidth = d3.select(this).style("width");
+                    el
+                        .style("width", elWidth)
                     ;
-                })
-                .on("mouseover", function (d, i) {
-                    d3.select(rows[0][i]).on("mouseover")(rows.data()[i - 1], i - 1)
-                    ;
-                })
-                .on("mouseout", function (d, i) {
-                    d3.select(rows[0][i]).on("mouseout")(rows.data()[i - 1], i - 1)
-                    ;
-                })
-                .attr("class", function (d, i) {
-                    if (rows[0][i - 1] && (d3.select(rows[0][i - 1]).classed("selected")) === true) {
-                        return rows[0][i - 1].parentElement.querySelector(":hover") === rows[0][i - 1] ? "selected hover" : "selected";
-                    }
-                })
-            ;
+                });                
+                newThead.on("click", function(d, idx){
+                    context.headerClick(d, idx);
+                });
+                if (!context.fixedColumn()) {
+                    rowLabelsWrapper.html("");
+                }
+            }
+            
+            var rowWrapperWidth;
+            var newTableHeight;
+            if (context.fixedColumn()) {
+                var borderWidth = parseInt(context.table.select("td").style("border-width"));
+                var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
+                rowWrapperWidth = context.fixedColumn() ? rowSelection.node().offsetWidth : 0;
+                var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
+                var rowContents = "<thead><tr>";
+                rowContents += "<th style='width:" + theadWidth + "px'>";
+                rowContents += origThead.filter(function (d, idx) { return idx === 0; }).html();
+                rowContents += "</th></tr></thead>";
 
-            var newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
+                rowSelection.each(function () {
+                    rowContents += "<tr><td class='row-label'>" + (this.innerHTML ? this.innerHTML : "&nbsp;") + "</td></tr>";
+                });
+                rowLabelsWrapper.html(rowContents)
+                    .style("width", rowWrapperWidth)
+                ;
+                
+                if (context.fixedHeader()){
+                    rowLabelsWrapper.select("thead")
+//                        .style("margin-top", "-" + colWrapperHeight)
+                        .style("position", "absolute")
+                        .style("width", theadWidth + "px")
+                    ;
+                    rowLabelsWrapper
+                        .style("margin-top", -domNode.scrollTop + colWrapperHeight + "px")
+                    ;
+                    context.table
+                        .style("margin-top", "-" + colWrapperHeight + "px")
+                    ;
+                    element
+                        .style("top", colWrapperHeight + "px")
+                    ;
+                } else {
+                    rowLabelsWrapper.select("thead")
+                        .style("margin-top", "0px")
+                        .style("position", "relative")
+                    ;
+                    rowLabelsWrapper
+                        .style("margin-top", -domNode.scrollTop + "px")
+                    ;
+                    context.table
+                        .style("margin-top", "0px")
+                    ;
+                    element
+                        .style("top", "0px")
+                    ;
+                }
+
+                var fixedRows = rowLabelsWrapper.selectAll("tr");
+                fixedRows
+                    .on("click", function (d, i) {
+                        d3.select(rows[0][i]).on("click.selectionBag")(rows.data()[i - 1], i - 1)
+                        ;
+                    })
+                    .on("mouseover", function (d, i) {
+                        d3.select(rows[0][i]).on("mouseover")(rows.data()[i - 1], i - 1)
+                        ;
+                    })
+                    .on("mouseout", function (d, i) {
+                        d3.select(rows[0][i]).on("mouseout")(rows.data()[i - 1], i - 1)
+                        ;
+                    })
+                    .attr("class", function (d, i) {
+                        if (rows[0][i - 1] && (d3.select(rows[0][i - 1]).classed("selected")) === true) {
+                            return rows[0][i - 1].parentElement.querySelector(":hover") === rows[0][i - 1] ? "selected hover" : "selected";
+                        }
+                    })
+                ;
+            } else {
+                rowWrapperWidth = 0;
+            }
+            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
             var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
-            var maxWidth = context.table.node().getBoundingClientRect().width - rowWrapperWidth + context.getScrollbarWidth();
+            var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
             var finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
             context.tableDiv
                 .style("width", finalWidth + "px")
@@ -453,7 +471,6 @@
                 .style("overflow", "auto")
             ;
             context.table
-                .style("margin-top", "-" + colWrapperHeight + "px")
                 .style("margin-left", "-" + rowWrapperWidth + "px")
             ;
             colsWrapper
@@ -463,6 +480,15 @@
                 .style("width", rowWrapperWidth + "px")
                 .style("height", newTableHeight + "px")
                 .style("position", "absolute")
+            ;
+            rowLabelsWrapper
+                .style("margin-top", -context.tableDiv.node().scrollTop + colWrapperHeight + "px")
+            ;
+            rowLabelsWrapper.select("thead")
+                .style("margin-top", context.tableDiv.node().scrollTop - colWrapperHeight + "px")
+                .on("click", function (d, idx) {
+                    context.headerClick(d, idx);
+                })
             ;
         }
         function _setOnScrollEvents(domNode) {

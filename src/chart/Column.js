@@ -123,7 +123,6 @@
         column.exit().transition()
             .remove()
         ;
-
     };
 
     return Column;

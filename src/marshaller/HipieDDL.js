@@ -766,6 +766,7 @@
         this.URL = dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
+        this._loadedCount = 0;
 
         var context = this;
         this.outputs = {};
@@ -836,6 +837,7 @@
         }
         this.comms.call(this.request, function (response) {
             context.processResponse(response, request, updates);
+            ++context._loadedCount;
         });
     };
 
@@ -916,6 +918,17 @@
     function Marshaller() {
         this._proxyMappings = {};
     }
+
+    Marshaller.prototype.commsDataLoaded = function () {
+        for (var i = 0; i < this.dashboardArray.length; i++) {
+            for (var ds in this.dashboardArray[i].datasources) {
+                if (this.dashboardArray[i].datasources[ds]._loadedCount === 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);

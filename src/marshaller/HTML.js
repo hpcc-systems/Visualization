@@ -83,19 +83,19 @@
         this._prev_ddlUrl = this.ddlUrl();
         this._prev_databomb = this.databomb();
 
-        var marshaller = new HipieDDL.Marshaller().proxyMappings(this.proxyMappings());
+        this.marshaller = new HipieDDL.Marshaller().proxyMappings(this.proxyMappings());
         var context = this;
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
-            marshaller.parse(this.ddlUrl(), function () {
+            this.marshaller.parse(this.ddlUrl(), function () {
                 postParse();
             });
         } else {
-            marshaller.url(this.ddlUrl(), function () {
+            this.marshaller.url(this.ddlUrl(), function () {
                 postParse();
             });
         }
         function postParse() {
-            var dashboards = createGraphData(marshaller, context.databomb());
+            var dashboards = createGraphData(context.marshaller, context.databomb());
             for (var key in dashboards) {
                 var cellRow = 0;
                 var cellCol = 0;

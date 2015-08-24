@@ -271,7 +271,7 @@
             var context = this;
             require([path], function (Widget) {
                 var widget = new Widget();
-                if (state.__id && widget.__id.indexOf("_w") !== 0) {
+                if (state.__id && state.__id.indexOf("_w") !== 0) {
                     widget._id = state.__id;
                 }
                 context.deserializeFromObject(widget, state, callback);

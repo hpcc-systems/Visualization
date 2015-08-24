@@ -32,12 +32,12 @@
                     "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Edge", "src/graph/Vertex",
                     "src/tree/SunburstPartition", "src/tree/CirclePacking", "src/tree/Dendrogram",
-                    "src/other/MorphText", "src/form/Slider", "src/other/Table"
+                    "src/other/MorphText", "src/form/Slider", "src/other/Table", "src/other/HeatMap"
                 ], function (
                     Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
                     Edge, Vertex,
                     SunburstPartition, CirclePacking, Dendrogram,
-                    MorphText, Slider, Table
+                    MorphText, Slider, Table, HeatMap
                     ) {
                     function createEdge(source, target, label) {
                         return new Edge()
@@ -506,6 +506,12 @@
                             .testData()
                             .render()
                         ;
+
+                        var heat = new HeatMap()
+                            .target("heat")
+                            .testData()
+                            .render()
+                        ;
                     }
 
                     function displayPalettes() {
@@ -636,6 +642,8 @@
             <div id="wordCloud" class="large wide thumb"></div>
             <div id="table" class="large wide thumb" style="overflow:auto;"></div>
             <div id="morphText" class="wide thumb" style="font-size:14px;"></div>
+            <br style="clear:both" />
+            <div id="heat" style="width: 500px" class="large thumb"></div>
             <br style="clear:both" />
             Palette - Ordinal
             <br style="clear:both" />

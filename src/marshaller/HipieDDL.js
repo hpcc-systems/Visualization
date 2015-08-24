@@ -114,6 +114,14 @@
     }
     ChoroMappings.prototype = Object.create(SourceMappings.prototype);
 
+    function HeatMapMappings(visualization, mappings) {
+        SourceMappings.call(this, visualization, mappings);
+        this.columns = ["x", "y", "weight"];
+        this.columnsIdx = { x: 0, y:1, weight: 2 };
+        this.init();
+    }
+    HeatMapMappings.prototype = Object.create(SourceMappings.prototype);
+
     function LineMappings(visualization, mappings) {
         var newMappings = {
             label: mappings.x[0]
@@ -290,6 +298,9 @@
                 break;
             case "CHORO":
                 this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                break;
+            case "HEAT_MAP":
+                this.mappings = new HeatMapMappings(this.visualization, source.mappings, source.link);
                 break;
             default:
                 this.mappings = new ChartMappings(this.visualization, source.mappings);
@@ -569,6 +580,14 @@
                                 .value(field.properties.default ? field.properties.default : "")
                             ;
                         }))
+                    ;
+                });
+                break;
+            case "HEAT_MAP":
+                this.loadWidgets(["src/other/HeatMap",], function (widget, widgetClasses) {
+                    widget
+                        .id(visualization.id)
+                        .image(context.properties.imageUrl)                        
                     ;
                 });
                 break;

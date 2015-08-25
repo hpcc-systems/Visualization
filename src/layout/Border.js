@@ -17,38 +17,38 @@
         this._rowSize = 0;
 
         this.content([]);
+        this.sectionTypes([]);
     }
     Border.prototype = Object.create(HTMLWidget.prototype);
     Border.prototype.constructor = Border;
     Border.prototype._class += " layout_Border";
 
-    Border.prototype.publish("gutter", 4, "number", "Gap Between Widgets",null,{tags:["Private"]});
-
-    Border.prototype.publish("designMode", false, "boolean", "Design Mode",null,{tags:["Private"]});
+    Border.prototype.publish("designMode", false, "boolean", "Design Mode",null,{tags:["Basic"]});
+    
+    Border.prototype.publish("content", [], "widgetArray", "widgets", null, { tags: ["Intermediate"] });
+    
+    Border.prototype.publish("gutter", 2, "number", "Gap Between Widgets",null,{tags:["Basic"]});
 
     Border.prototype.publish("layoutType", "Default", "set", "This determines the placement/size of the Cells relative to the Border._target element", ["Default"], { tags: ["Private"] });
 
-    Border.prototype.publish("topCellSize", 100, "number", "Height of the 'Top' Cell (px)",null,{tags:["Private"]});
-    Border.prototype.publish("leftCellSize", 150, "number", "Width of the 'Left' Cell (px)",null,{tags:["Private"]});
-    Border.prototype.publish("rightCellSize", 250, "number", "Width of the 'Right' Cell (px)",null,{tags:["Private"]});
-    Border.prototype.publish("bottomCellSize", 80, "number", "Height of the 'Bottom' Cell (px)",null,{tags:["Private"]});
+    Border.prototype.publish("topCellSize", 0, "number", "Height of the 'Top' Cell (px)",null,{tags:["Private"]});
+    Border.prototype.publish("leftCellSize", 0, "number", "Width of the 'Left' Cell (px)",null,{tags:["Private"]});
+    Border.prototype.publish("rightCellSize", 0, "number", "Width of the 'Right' Cell (px)",null,{tags:["Private"]});
+    Border.prototype.publish("bottomCellSize", 0, "number", "Height of the 'Bottom' Cell (px)",null,{tags:["Private"]});
 
-    Border.prototype.publish("topCellPercentage", 0, "number", "Percentage (of parent) Height of the 'Top' Cell",null,{tags:["Private"]});
-    Border.prototype.publish("leftCellPercentage", 0, "number", "Percentage (of parent) Width of the 'Left' Cell",null,{tags:["Private"]});
-    Border.prototype.publish("rightCellPercentage", 0, "number", "Percentage (of parent) Width of the 'Right' Cell",null,{tags:["Private"]});
-    Border.prototype.publish("bottomCellPercentage", 0, "number", "Percentage (of parent) Height of the 'Bottom' Cell",null,{tags:["Private"]});
+    Border.prototype.publish("topCellPercentage", 20, "number", "Percentage (of parent) Height of the 'Top' Cell",null,{tags:["Private"]});
+    Border.prototype.publish("leftCellPercentage", 20, "number", "Percentage (of parent) Width of the 'Left' Cell",null,{tags:["Private"]});
+    Border.prototype.publish("rightCellPercentage", 20, "number", "Percentage (of parent) Width of the 'Right' Cell",null,{tags:["Private"]});
+    Border.prototype.publish("bottomCellPercentage", 20, "number", "Percentage (of parent) Height of the 'Bottom' Cell",null,{tags:["Private"]});
 
-    Border.prototype.publish("cellPadding", "0px", "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
+    Border.prototype.publish("cellPadding", 0, "number", "Cell Padding (px)", null, { tags: ["Intermediate"] });
 
-    Border.prototype.publish("content", [], "widgetArray", "widgets",null,{tags:["Private"]});
 
-    Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.",null,{tags:["Private"]});
+    Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.", null, { tags: ["Private"] });
 
     Border.prototype.testData = function () {
         this
-            .leftCellSize(64)
-            .rightCellSize(64)
-            .setContent("topSection", new Text().testData())
+            .setContent("topSection",new Text().testData())
             .setContent("rightSection",new Text().testData())
             .setContent("bottomSection",new Text().testData())
             .setContent("leftSection",new Text().testData())
@@ -60,13 +60,13 @@
 
     Border.prototype.applyLayoutType = function (layoutType) {
         var layoutObj = this.borderLayoutObject(layoutType);
-        for(var i in this.content()){
-            this.content()[i]._fixedLeft = layoutObj[this.sectionTypes()[i]].left;
-            this.content()[i]._fixedTop = layoutObj[this.sectionTypes()[i]].top;
-            this.content()[i]._fixedWidth = layoutObj[this.sectionTypes()[i]].width;
-            this.content()[i]._fixedHeight = layoutObj[this.sectionTypes()[i]].height;
-            this.content()[i]._dragHandles = this.cellSpecificDragHandles(this.sectionTypes()[i]);
-        }
+        this.content().forEach(function (cell, i) {
+            cell._fixedLeft = layoutObj[this.sectionTypes()[i]].left;
+            cell._fixedTop = layoutObj[this.sectionTypes()[i]].top;
+            cell._fixedWidth = layoutObj[this.sectionTypes()[i]].width;
+            cell._fixedHeight = layoutObj[this.sectionTypes()[i]].height;
+            cell._dragHandles = this.cellSpecificDragHandles(this.sectionTypes()[i]);
+        }, this);
     };
     Border.prototype.cellSpecificDragHandles = function (sectionType) {
         switch(this.layoutType()){
@@ -84,7 +84,19 @@
         var t,b,r,l,c,retObj = {},context=this;
         var topSize,topPerc,bottomSize,bottomPerc,leftSize,leftPerc,rightSize,rightPerc;
 
-        var gridRect = this.target().getBoundingClientRect();
+        var bcRect = this.target().getBoundingClientRect();
+        var gridRect = {};
+        gridRect.top = bcRect.top;
+        gridRect.left = bcRect.left;
+        gridRect.bottom = bcRect.bottom;
+        gridRect.right = bcRect.right;
+        if(this.target() instanceof SVGElement){
+            gridRect.width = parseFloat(this.target().getAttribute("width"));
+            gridRect.height = parseFloat(this.target().getAttribute("height"));
+        } else {
+            gridRect.width = bcRect.width;
+            gridRect.height = bcRect.height;
+        }
         switch(layoutType){
             default:
                 if(this.sectionTypes().indexOf("topSection") !== -1){
@@ -159,39 +171,47 @@
         }
     };
 
-    Border.prototype.clearContent = function () {
-        this.content(this.content().filter(function (contentWidget) {
-            contentWidget.target(null);
-            return false;
-        }));
-        this.sectionTypes([]);
+    Border.prototype.clearContent = function (sectionType) {
+        if (!sectionType) {
+            this.content().forEach(function (contentWidget) {
+                contentWidget.target(null);
+                return false;
+            });
+            this.content([]);
+            this.sectionTypes([]);
+        } else {
+            var idx = this.sectionTypes().indexOf(sectionType);
+            if (idx >= 0) {
+                this.content().splice(idx, 1);
+                this.sectionTypes().splice(idx, 1);
+            }
+        }
+    };
+
+    Border.prototype.hasContent = function (sectionType, widget, title) {
+        return this.sectionTypes().indexOf(sectionType) >= 0;
     };
 
     Border.prototype.setContent = function (sectionType, widget, title) {
+        this.clearContent(sectionType);
         title = typeof (title) !== "undefined" ? title : "";
-        var arr = this.sectionTypes();
         if (widget) {
             var cell = new Cell()
                 .widget(widget)
                 .title(title)
             ;
             this.content().push(cell);
-            arr.push(sectionType);
+            this.sectionTypes().push(sectionType);
         }
-        this.sectionTypes(arr);
         return this;
     };
 
     Border.prototype.getContent = function (id) {
-        var retVal = null;
-        this.content().some(function (cell) {
-            if (cell.widget()._id === id) {
-                retVal = cell.widget();
-                return true;
-            }
-            return false;
-        });
-        return retVal;
+        var idx = this.sectionTypes().indexOf(id);
+        if (idx >= 0) {
+            return this.content()[idx].widget();
+        }
+        return null;
     };
 
     Border.prototype.getCellSize = function(i){
@@ -304,10 +324,20 @@
         this.render();
     };
 
+    Border.prototype.size = function (_) {
+        var retVal = HTMLWidget.prototype.size.apply(this, arguments);
+        if (arguments.length && this.contentDiv) {
+            this.contentDiv
+                .style("width", this._size.width + "px")
+                .style("height", this._size.height + "px")
+            ;
+        }
+        return retVal;
+    };
+
     Border.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("position", "relative");
-        this.dropDiv = element.append("div");
         this.contentDiv = element.append("div");
         this._scrollBarWidth = this.getScrollbarWidth();
     };

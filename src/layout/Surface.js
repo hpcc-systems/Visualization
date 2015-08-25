@@ -17,6 +17,9 @@
     Surface.prototype.constructor = Surface;
     Surface.prototype._class += " layout_Surface";
 
+   Surface.prototype.publish("title", "", "string", "Title",null,{tags:["Intermediate"]});
+   Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"]});
+   
    Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)",null,{tags:["Basic"]});
    Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)",null,{tags:["Basic"]});
    Surface.prototype.publish("surfaceTitleFontColor", null, "html-color", "Title Font Color",null,{tags:["Basic"]});
@@ -30,9 +33,7 @@
    Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color",null,{tags:["Basic"]});
    Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)",null,{tags:["Basic"]});
 
-   Surface.prototype.publish("title", "", "string", "Title",null,{tags:["Intermediate"]});
    Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left","right","center"],{tags:["Basic"]});
-   Surface.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Private"]});
 
    Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Private"]});
 

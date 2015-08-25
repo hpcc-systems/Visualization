@@ -283,6 +283,11 @@
                             displayThemeText(currWidget);
                         })
                     ;
+                    if(widgetPath === "src/layout/Grid"){
+                        currWidget.postSelectionChange = function(){
+                            propEditor.data(this._selected ? [this._selected] : [currWidget]).render();
+                        };
+                    }
                 });
             };
             testTheme = function (themeKey) {

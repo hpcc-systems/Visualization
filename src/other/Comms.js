@@ -274,19 +274,19 @@
             xhr.send(null);
         }
         if (this._cacheCalls) {
-            var response = localStorage["hpcc.viz." + url];
+            var response = localStorage.getItem("hpcc.viz." + url);
             if (response && response !== null) {
                 setTimeout(function () {
                     callback(JSON.parse(response));
                 }, 0);
             } else {
                 doCall(request, function (response) {
-                    localStorage["hpcc.viz." + url] = JSON.stringify(response);
+                    localStorage.setItem("hpcc.viz." + url,JSON.stringify(response));
                     callback(response);
                 });
             }
         } else {
-            localStorage["hpcc.viz." + url] = null;
+            localStorage.removeItem("hpcc.viz." + url);
             doCall(request, callback);
         }
     };

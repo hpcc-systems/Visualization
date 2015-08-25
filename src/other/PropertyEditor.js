@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Widget", "../common/HTMLWidget", "./Persist", "css!./PropertyEditor"], factory);
+        define(["d3", "../common/Widget", "../common/HTMLWidget", "./Persist", "../layout/Grid", "css!./PropertyEditor"], factory);
     } else {
-        root.other_PropertyEditor = factory(root.d3, root.common_Widget, root.common_HTMLWidget, root.other_Persist);
+        root.other_PropertyEditor = factory(root.d3, root.common_Widget, root.common_HTMLWidget, root.other_Persist, root.layout_Grid);
     }
-}(this, function (d3, Widget, HTMLWidget, Persist) {
+}(this, function (d3, Widget, HTMLWidget, Persist, Grid) {
     function PropertyEditor() {
         HTMLWidget.call(this);
 
@@ -18,13 +18,36 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:["Basic","TODO2"]});
-    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate","TODO2"]});
-    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate","TODO2"]});
-    PropertyEditor.prototype.publish("shareCountMin", 2, "number", "Share Count Min",null,{tags:["Basic","TODO2"]});
-    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic","TODO2"]});
-    PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:["Private","TODO2"]});
-    PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:["Basic","TODO2"]});
+    PropertyEditor.prototype.publish("themeMode", false, "boolean", "Edit default values",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("shareCountMin", 2, "number", "Share Count Min",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic"]});
+    PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("defaultCollapsed", false, "boolean", "Default Collapsed Sections",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("excludeTags", ["Advanced","Private"], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Basic"]});
+
+    PropertyEditor.prototype.data = function (_) {
+        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            var context = this;
+            if (_[0] instanceof Grid) {
+                _[0].postSelectionChange = function () {
+                    context.render();
+                };
+            }
+        }
+        return retVal;
+    };
+
+    PropertyEditor.prototype.getData = function () {
+        var retVal = this.data();
+        if (retVal[0] instanceof Grid && retVal[0]._selected) {
+            return [retVal[0]._selected];
+        }
+        return retVal;
+    };
 
     PropertyEditor.prototype.show_settings = function (_) {
         if (!arguments.length) {
@@ -116,14 +139,14 @@
     PropertyEditor.prototype.getJavaScript = function (fieldName, includeColumns, includeData, postCreate) {
         postCreate = postCreate || "";
         var callbackJS = "";
-        if (this._data._content) {
-            callbackJS = formatJSCallback("_content", formatJSProperties(this._data._content, includeColumns, includeData), "");
+        if (this.getData()._content) {
+            callbackJS = formatJSCallback("_content", formatJSProperties(this.getData()._content, includeColumns, includeData), "");
         }
-        return formatJSRequire(this._data, fieldName, formatJSProperties(this._data, includeColumns, includeData), callbackJS, postCreate);
+        return formatJSRequire(this.getData(), fieldName, formatJSProperties(this.getData(), includeColumns, includeData), callbackJS, postCreate);
     };
 
     PropertyEditor.prototype.getPersistString = function (fieldName) {
-        return "var " + fieldName + " = " + JSON.stringify(Persist.serializeToObject(this._data, null, false), null, "  ") + ";";
+        return "var " + fieldName + " = " + JSON.stringify(Persist.serializeToObject(this.getData(), null, false), null, "  ") + ";";
     };
 
     PropertyEditor.prototype.onChange = function (widget, propID) {
@@ -161,8 +184,24 @@
     };
 
     PropertyEditor.prototype._getParams = function(widgetObj, depth) {
+        var context = this;
         var retArr = [];
-        var paramArr = Persist.discover(widgetObj);
+        var discoverResponse = Persist.discover(widgetObj);
+        var paramArr = [];
+        discoverResponse.forEach(function(paramObj){
+            if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
+                var exclude = false;
+                for(var t in paramObj.ext.tags){
+                    if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
+                        exclude = true;
+                        break;
+                    }
+                }
+                if(!exclude){
+                    paramArr.push(paramObj);
+                }
+            }
+        });
         paramArr.forEach(function (param, i1) {
             retArr.push({
                 id: param.id,
@@ -237,6 +276,8 @@
                     .showColumns(false)
                     .showData(false)
                     .show_settings(false)
+                    .defaultCollapsed(true)
+                    .excludeTags(context.excludeTags())
                     .paramGrouping("By Widget")
                     .sectionTitle("Property Editor Settings")
                     .target(d3.select(this).node())
@@ -246,11 +287,11 @@
             });
         }
         //Update tables based on "group by" setting
+        var sPropSections = [];
         if (this.paramGrouping() === "By Param") {
             var sharedPropsMainSections = [];
-            var sPropSections = [];
-            if (this._data.length > 0) {
-                sharedPropsMainSections.push(this.findSharedProperties(this._data, this.themeMode()));
+            if (this.getData().length > 0) {
+                sharedPropsMainSections.push(this.findSharedProperties(this.getData(), this.themeMode()));
                 for (var k1 in sharedPropsMainSections) {
                     var sectionArr = [];
                     for (var k2 in sharedPropsMainSections[k1]) {
@@ -286,7 +327,7 @@
         //Creating Table and THEAD
         var table = null;
         if (true) {
-            table = element.selectAll("#" + this._id + " > table").data(this._data, function (d) {
+            table = element.selectAll("#" + this._id + " > table").data(context.paramGrouping() === "By Param" ? sPropSections : this.getData(), function (d) {
                 return d._id;
             });
             table.enter().append("table")
@@ -294,7 +335,7 @@
                     var element = d3.select(this);
                     var thead = element.append("thead");
                     if (context.collapsibleSections()) {
-                        thead.attr("class", "mm-label max").on("click", function () {
+                        thead.attr("class", context.defaultCollapsed() ? "mm-label min" : "mm-label max").on("click", function () {
                             var elm = d3.select(this);
                             if (elm.classed("min")) {
                                 elm.classed("max", true);
@@ -310,6 +351,8 @@
                         var text = "";
                         if (context.sectionTitle()) {
                             text = context.sectionTitle();
+                        } else if (context.paramGrouping() === "By Param"){
+                            text = "Grouped By Param";
                         } else {
                             var splitClass = widget.classID().split("_");
                             if (splitClass.length > 1) {
@@ -646,7 +689,23 @@
                     }).remove();
                 } else if (context.paramGrouping() === "By Widget") {
                     //Updating TR "By Widget"
-                    rows = tbody.selectAll(".tr_" + widget._id).data(Persist.discover(context.themeMode() ? Object.getPrototypeOf(widget) : widget), function (d) {
+                    var discoverResponse = Persist.discover(context.themeMode() ? Object.getPrototypeOf(widget) : widget);
+                    var tbodyArr = [];
+                    discoverResponse.forEach(function(paramObj){
+                        if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
+                            var exclude = false;
+                            for(var t in paramObj.ext.tags){
+                                if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
+                                    exclude = true;
+                                    break;
+                                }
+                            }
+                            if(!exclude){
+                                tbodyArr.push(paramObj);
+                            }
+                        }
+                    });
+                    rows = tbody.selectAll(".tr_" + widget._id).data(tbodyArr, function (d) {
                         return widget._id + "_" + d.id + "_" + d.type;
                     });
                     rows.enter().append("tr").each(function (d) {

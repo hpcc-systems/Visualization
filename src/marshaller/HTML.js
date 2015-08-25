@@ -1,15 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../layout/Grid", "./HipieDDL", "../layout/Surface", "../layout/Cell"], factory);
+        define(["d3", "../layout/Tabbed", "../layout/Grid", "./HipieDDL", "../layout/Surface", "../layout/Cell"], factory);
     } else {
-        root.marshaller_HTML = factory(root.d3, root.layout_Grid, root.marshaller_HipieDDL, root.layout_Surface, root.layout_Cell);
+        root.marshaller_HTML = factory(root.d3, root.layout_Tabbed, root.layout_Grid, root.marshaller_HipieDDL, root.layout_Surface, root.layout_Cell);
     }
-}(this, function (d3, Grid, HipieDDL, Surface, Cell) {
+}(this, function (d3, Tabbed, Grid, HipieDDL, Surface, Cell) {
     function HTML() {
-        Grid.call(this);
+        Tabbed.call(this);
     }
-    HTML.prototype = Object.create(Grid.prototype);
+    HTML.prototype = Object.create(Tabbed.prototype);
     HTML.prototype.constructor = HTML;
     HTML.prototype._class += " marshaller_HTML";
 
@@ -29,18 +29,6 @@
         //this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150617-120745&ResultName=leeddx_issue_780_formtablewidget_Comp_Ins002_DDL");
         //this.ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_testrelavator2.ins002_service/json");
         return this;
-    };
-
-    HTML.prototype.content = function () {
-        return Grid.prototype.content.apply(this, arguments);
-    };
-
-    HTML.prototype.setContent = function (row, col, widget, title, rowSpan, colSpan) {
-        return Grid.prototype.setContent.apply(this, arguments);
-    };
-
-    HTML.prototype.enter = function (domNode, element) {
-        Grid.prototype.enter.apply(this, arguments);
     };
 
     function createGraphData(marshaller, databomb) {
@@ -78,7 +66,7 @@
 
     HTML.prototype.render = function (callback) {
         if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb)) {
-            return Grid.prototype.render.apply(this, arguments);
+            return Tabbed.prototype.render.apply(this, arguments);
         }
         this._prev_ddlUrl = this.ddlUrl();
         this._prev_databomb = this.databomb();
@@ -96,7 +84,12 @@
         }
         function postParse() {
             var dashboards = createGraphData(context.marshaller, context.databomb());
+            if (context.marshaller.dashboardTotal <= 1) {
+                context.showTabs(false);
+            }
             for (var key in dashboards) {
+                var grid = new Grid();
+                context.addTab(grid, dashboards[key].dashboard.title);
                 var cellRow = 0;
                 var cellCol = 0;
                 var maxCol = Math.floor(Math.sqrt(dashboards[key].visualizations.length));
@@ -106,11 +99,11 @@
                         cellCol = 0;
                     }
                     viz.widget.size({ width: 0, height: 0 });
-                    var existingWidget = context.getContent(viz.widget._id);
+                    var existingWidget = grid.getContent(viz.widget._id);
                     if (existingWidget) {
                         viz.setWidget(existingWidget, true);
                     } else {
-                        context.setContent(cellRow, cellCol, viz.widget, viz.title);
+                        grid.setContent(cellRow, cellCol, viz.widget, viz.title);
                     }
                     cellCol++;
                 });
@@ -118,7 +111,7 @@
                     dashboards[key].dashboard.datasources[key2].fetchData({}, true);
                 }
             }
-            Grid.prototype.render.call(context, function (widget) {
+            Tabbed.prototype.render.call(context, function (widget) {
                 if (callback) {
                     callback(widget);
                 }

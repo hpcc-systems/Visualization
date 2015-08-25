@@ -13,14 +13,16 @@
         }
         var curr = null;
         var dashboards = {};
+        var vertexMap = {};
+        var edges = [];
         marshaller.accept({
             _visualizeRoxie: visualizeRoxie,
             visit: function (item) {
                 if (item instanceof HipieDDL.Dashboard) {
                     curr = {
                         dashboard: item,
-                        vertexMap: {},
-                        edges: []
+                        vertexMap: vertexMap,
+                        edges: edges
                     };
                     dashboards[item.getQualifiedID()] = curr;
                 } else if (item instanceof HipieDDL.DataSource) {

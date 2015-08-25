@@ -71,7 +71,8 @@
         ;
         return this;
     };
-
+    
+    Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells",null,{tags:["Private"]});
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
@@ -298,16 +299,11 @@
         cells.enter()
             .append("td")
         ;
-        cells
-            .text(function (d) {
-                if (d instanceof String) {
-                    return d.trim();
-                } else if (d instanceof Object) {
-                    return "";
-                }
-                return d;
-            })
-        ;
+        if(this.renderHtmlDataCells()){
+            cells.html(function (d) { return typeof(d) === "string" ? d.trim() : ""; });
+        } else {
+            cells.text(function (d) { return typeof(d) === "string" ? d.trim() : ""; });
+        }
         cells.exit()
             .remove()
         ;

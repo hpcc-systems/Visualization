@@ -31,38 +31,47 @@
         return retVal;
     }
 
-    function widgetPropertyWalker(widget, filter, visitor) {
-        if (!widget) return;
+    function widgetWalker(widget, visitor) {
+        if (!widget)
+            return;
+        visitor(widget);
         var publishedProps = discover(widget);
         for (var i = 0; i < publishedProps.length; ++i) {
             var publishItem = publishedProps[i];
-            if (!(filter instanceof Array) || filter.length === 0 || filter.indexOf(publishItem.id) >= 0) {
-                if (visitor(widget, publishItem)) {
-                    continue;
-                }
-            }
             switch (publishItem.type) {
                 case "widget":
-                    widgetPropertyWalker(widget[publishItem.id](), filter, visitor);
+                    widgetWalker(widget[publishItem.id](), visitor);
                     break;
                 case "widgetArray":
                     var widgetArray = widget[publishItem.id]();
-                    widgetArray.forEach(function (widget) {
-                        widgetPropertyWalker(widget, filter, visitor);
+                    widgetArray.forEach(function(widget) {
+                        widgetWalker(widget, visitor);
                     });
                     break;
             }
         }
     }
 
+    function widgetPropertyWalker(widget, filter, visitor) {
+        widgetWalker(widget, function(widget) {
+            var publishedProps = discover(widget);
+            for (var i = 0; i < publishedProps.length; ++i) {
+                var publishItem = publishedProps[i];
+                visitor(widget, publishItem);
+            }
+        });
+    }
+
     return {
         discover: discover,
+        widgetWalker: widgetWalker,
+        widgetPropertyWalker: widgetPropertyWalker,
         serializeTheme: function(widget,filter){
             return JSON.stringify(this.serializeThemeToObject(widget,filter));
         },
         serializeThemeToObject: function (widget, filter){
             filter = filter || ["surface", "Color", "Font", "palette"];
-            
+
             var propObj = {};
             widgetPropertyWalker(widget, null, function (widget, item) {
                 if (widget[item.id + "_modified"]() || typeof (widget["__meta_" + item.id].trueDefaultValue) !== "undefined") {
@@ -143,7 +152,7 @@
                 callback.call(this);
             }
         },
-        
+
         serializeToObject: function (widget, filter, includeData) {
             var retVal = {
                 __version: 3,

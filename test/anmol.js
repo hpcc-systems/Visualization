@@ -79,6 +79,7 @@ define(["d3", "src/form/Slider", "src/common/Icon", "src/other/Table", "src/othe
                     .target(widgetDiv.node())
                     .columns(["Alphabets"])
                     .data(["d", "c", "e", "a", "f", "g", "z", "x", "y"])
+                    .fixedHeader(false)
                     .render()
                 ;
                 assert.instanceOf(vizWidget._paginator, Paginator, "paginator exists and is an instance of Paginator");

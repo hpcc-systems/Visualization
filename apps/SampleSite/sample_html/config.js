@@ -25,6 +25,7 @@ require.config({
         "amcharts.xy": "bower_components/amcharts/dist/amcharts/xy",
         "amcharts.plugins.responsive": "bower_components/amcharts/dist/amcharts/plugins/responsive/responsive",
         "amchartsImg": "../bower_components/amcharts/dist/amcharts/images/",
+        "simpleheat": "bower_components/simpleheat/simpleheat",
 
         "src": "./src"
     },
@@ -70,6 +71,12 @@ require.config({
             init: function() {
                 AmCharts.isReady = true;
             }
+        },
+        "simpleheat": {
+            exports: "simpleheat",
+            init: function() {
+                simpleheat.isReady = true;
+            }
         }
     }
 });
@@ -103,6 +110,7 @@ case "cdn.rawgit.com":
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/plugins/dataloader",
             "amchartsImg": "//" + window.location.hostname + "/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/images/",
+            "simpleheat": "//" + window.location.hostname + "/mourner/simpleheat/gh-pages/simpleheat",
 
             "src": "../src"
         }

@@ -73,7 +73,6 @@
     };
 
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
-//    should the following default to true?
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
@@ -355,27 +354,20 @@
         var rowLabelsWrapper = rowsWrapper.select(".labels-wrapper");
 
         var theadSelection = this.table.select("thead");
-        var colWrapperHeight = theadSelection.node().getBoundingClientRect().height;
+        var colWrapperHeight = this.fixedHeader() ? theadSelection.node().offsetHeight : 0;
 
         var context = this;
         _copyLabelContents(this._id);
         _setOnScrollEvents(this.tableDiv.node());
 
-        rowLabelsWrapper
-            .style("margin-top", -domNode.scrollTop + parseInt(colWrapperHeight) + "px")
-        ;
-        rowLabelsWrapper.select("thead")
-            .style("margin-top", domNode.scrollTop - parseInt(colWrapperHeight) + "px")
-            .on("click", function (d, idx) {
-                context.headerClick(d, idx);
-            })
-        ;
         if (!this.fixedHeader() && this._prevFixedHeader !== this.fixedHeader()) {
             this.tableDiv
                 .style("top", "0")
                 .style("left", "0")
-                .style("width", this.width() + "px")
-                .style("height", this.height() + "px")
+            ;
+            context.table
+                .style("margin-top", "0px")
+                .style("margin-left", "0px")
             ;
         }
         this._prevFixedHeader = this.fixedHeader();
@@ -399,7 +391,7 @@
 
             var borderWidth = parseInt(context.table.select("td").style("border-width"));
             var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
-            var rowWrapperWidth = rowSelection.node().getBoundingClientRect().width;
+            var rowWrapperWidth = context.fixedHeader() ? rowSelection.node().offsetWidth : 0;
             var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
             var rowContents = "<thead><tr>";
             rowContents += "<th style='width:" + theadWidth + "px'>";
@@ -412,12 +404,6 @@
             rowLabelsWrapper.html(rowContents)
                 .style("width", rowWrapperWidth)
             ;
-            rowLabelsWrapper.select("thead")
-                .style("margin-top", "-" + colWrapperHeight)
-                .style("position", "absolute")
-                .style("width", theadWidth + "px")
-            ;
-            rowLabelsWrapper.style("margin-top", colWrapperHeight);
 
             var fixedRows = rowLabelsWrapper.selectAll("tr");
             fixedRows
@@ -439,10 +425,9 @@
                     }
                 })
             ;
-
             var newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
             var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
-            var maxWidth = context.table.node().getBoundingClientRect().width - rowWrapperWidth + context.getScrollbarWidth();
+            var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
             var finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
             context.tableDiv
                 .style("width", finalWidth + "px")
@@ -463,6 +448,17 @@
                 .style("width", rowWrapperWidth + "px")
                 .style("height", newTableHeight + "px")
                 .style("position", "absolute")
+            ;
+            rowLabelsWrapper
+                .style("margin-top", -context.tableDiv.node().scrollTop + colWrapperHeight + "px")
+            ;
+            rowLabelsWrapper.select("thead")
+                .style("margin-top", context.tableDiv.node().scrollTop - colWrapperHeight + "px")
+                .style("position", "absolute")
+                .style("width", theadWidth + "px")
+                .on("click", function (d, idx) {
+                    context.headerClick(d, idx);
+                })
             ;
         }
         function _setOnScrollEvents(domNode) {

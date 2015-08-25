@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "../chart/Pie", "../map/ChoroplethStates", "../chart/Column", "../common/Text", "css!./Layered"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "../common/TextBox", "../common/Text", "css!./Layered"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface, root.chart_Pie, root.map_ChoroplethStates, root.chart_Line, root.common_Text);
+        root.layout_Layered = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface, root.common_TextBox, root.common_Text);
     }
-}(this, function (d3, HTMLWidget, AbsoluteSurface, Pie, ChoroplethStates, Line, Text) {
+}(this, function (d3, HTMLWidget, AbsoluteSurface, TextBox, Text) {
     function Layered() {
         HTMLWidget.call(this);
 
@@ -21,9 +21,9 @@
 
     Layered.prototype.testData = function () {
         this
-            .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(new Line().testData()))
-            .addLayer(new AbsoluteSurface().widgetX(40).widgetY(40).widgetWidth(50).widgetHeight(50).opacity(0.66).widget(new Pie().testData()))
-            .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(30).widget(new ChoroplethStates().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(new TextBox().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(40).widgetY(40).widgetWidth(50).widgetHeight(50).opacity(0.66).widget(new TextBox().testData()))
+            .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(30).widget(new TextBox().testData()))
         ;
         var context = this;
         setInterval(function () {
@@ -67,7 +67,10 @@
         ;
         content
             .each(function (widget, idx) {
-                widget.resize({ width: context.clientWidth(), height: context.clientHeight() }).render();
+                widget
+                    .resize({ width: context.clientWidth(), height: context.clientHeight() })
+                    .render()
+                ;
             })
         ;
         content.exit()

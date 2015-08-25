@@ -7,7 +7,7 @@
     }
 }(this, function (d3, require) {
     describe("widgets", function () {
-        this.timeout(5000);
+        this.timeout(10000);
         var allWidgets = [
             { path: "src/common/FAChar" },
             { path: "src/common/Icon" },
@@ -34,7 +34,10 @@
             { path: "src/map/ChoroplethCounties" },
             { path: "src/map/ChoroplethCountries" },
             { path: "src/map/ChoroplethStates" },
+            { path: "src/map/ChoroplethStatesHeat" },
             { path: "src/map/GMap" },
+            { path: "src/map/GMapHeat" },
+            { path: "src/map/GMapGraph" },
             { path: "src/tree/CirclePacking" },
             { path: "src/tree/Dendrogram" },
             { path: "src/tree/SunburstPartition" },
@@ -45,12 +48,15 @@
             { path: "src/other/MorphText" },
             { path: "src/other/Table" },
             { path: "src/other/WordCloud" },
-            { path: "src/marshaller/HTML" },
-            { path: "src/marshaller/Graph" },
-            { path: "src/layout/Surface" },
+            { path: "src/layout/AbsoluteSurface" },
+            { path: "src/layout/Border" },
             { path: "src/layout/Cell" },
             { path: "src/layout/Grid" },
-            { path: "src/layout/Border" },
+            { path: "src/layout/Popup" },
+            { path: "src/layout/Surface" },
+            { path: "src/layout/Tabbed" },
+            { path: "src/marshaller/HTML" },
+            { path: "src/marshaller/Graph" },
             { path: "src/c3chart/Area" },
             { path: "src/c3chart/Bar" },
             { path: "src/c3chart/Column" },
@@ -134,8 +140,7 @@
                 });
 
                 it("Adding widget to the page", function (done) {
-                    this.timeout(5000);
-                    setTimeout(function () {
+                    require([path], function (Widget) {
                         var element = d3.select("#testWidget");
                         var testDiv = element.append("div")
                             .attr("class", "widgetTest")
@@ -147,15 +152,14 @@
                             .attr("class", "title")
                             .text(path)
                         ;
-                        require([path], function (Widget) {
-                            var vizWidget = new Widget()
-                                .target(widgetDiv.node())
-                                .testData()
-                                .render()
-                            ;
-                            done();
-                        });
-                    }, 0);
+                        var vizWidget = new Widget()
+                            .target(widgetDiv.node())
+                            .testData()
+                            .render(function () {
+                                done();
+                            })
+                        ;
+                    });
                 });
             });
         });

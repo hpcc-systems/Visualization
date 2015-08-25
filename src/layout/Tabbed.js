@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../chart/Pie", "../chart/MultiChart", "../google/Line", "../common/Text", "css!./Tabbed"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../common/TextBox", "../common/Text", "css!./Tabbed"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.chart_Pie, root.chart_MultiChart, root.chart_Line, root.common_Text);
+        root.layout_Tabbed = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.common_TextBox, root.common_Text);
     }
-}(this, function (d3, HTMLWidget, Surface, Pie, MultiChart, Line, Text) {
+}(this, function (d3, HTMLWidget, Surface, TextBox, Text) {
     function Tabbed() {
         HTMLWidget.call(this);
 
@@ -24,13 +24,13 @@
 
     Tabbed.prototype.testData = function () {
         this
-            .addTab(new MultiChart().testData(), "MultiChart", true)
-            .addTab(new Pie().testData(), "Pie Chart")
-            .addTab(new Line().testData(), "Line Chart")
+            .addTab(new TextBox().testData(), "MultiChart", true)
+            .addTab(new TextBox().testData(), "Pie Chart")
+            .addTab(new TextBox().testData(), "Line Chart")
             .addTab(new Tabbed()
                         .labels([]).widgets([])//TODO:Figure out why this is necessary
-                        .addTab(new Pie().testData(), "Another Pie Chart")
-                        .addTab(new Line().testData(), "Another Line Chart",true),"Nested Example")
+                        .addTab(new TextBox().testData(), "Another Pie Chart")
+                        .addTab(new TextBox().testData(), "Another Line Chart", true), "Nested Example")
         ;
         return this;
     };

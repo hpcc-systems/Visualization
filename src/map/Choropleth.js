@@ -14,6 +14,9 @@
         this._dataMap = {};
         this._dataMinWeight = 0;
         this._dataMaxWeight = 0;
+
+        this._prevTranslate = [0, 0];
+        this._prevScale = 1.0;
     }
     Choropleth.prototype = Object.create(SVGWidget.prototype);
     Choropleth.prototype.constructor = Choropleth;
@@ -292,6 +295,19 @@
         return albersUsa.scale(1070);
     };
 
+    Choropleth.prototype.project = function (lat, long) {
+        var pos = this.d3Projection([long, lat]);
+
+        var offsetX = this.x() + this._prevTranslate[0];
+        var offsetY = this.y() + this._prevTranslate[1];
+
+        pos[0] *= this._prevScale;
+        pos[1] *= this._prevScale;
+        pos[0] += offsetX;
+        pos[1] += offsetY;
+        return pos;
+    };
+
     Choropleth.prototype.zoomToFit = function (node, transitionDuration, scaleFactor) {
         scaleFactor = scaleFactor || 0.9;
 
@@ -301,6 +317,8 @@
         var scale = scaleFactor / Math.max(bbox.width / this.width(), bbox.height / this.height());
         var translate = [-scale * x, -scale * y];
 
+        this._prevTranslate = translate;
+        this._prevScale = scale;
         (transitionDuration ? this._svg.transition().duration(transitionDuration) : this._svg)
             .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
         ;

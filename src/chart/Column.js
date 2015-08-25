@@ -20,7 +20,8 @@
     Column.prototype.implements(ITooltip.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:["Basic","Shared"]});
-    Column.prototype.publish("stacked", false, "boolean", "Stacked Bars");
+    Column.prototype.publish("stacked", false, "boolean", "Stacked Bars", null, { tags: ["Basic"] });
+    Column.prototype.publish("stackedOpacity", 0.66, "number", "Fill Stacked Opacity", null, { tags: ["Basic"] });
     Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height) {
@@ -96,6 +97,7 @@
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) : context.valueScale(d.value); })
                         .attr("height", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) - context.valueScale(d.value[1]) : height - context.valueScale(d.value); })
+                        .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 } else {
@@ -105,6 +107,7 @@
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) : 0; })
                         .attr("width", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) - context.valueScale(d.value[0]) : context.valueScale(d.value); })
+                        .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 }

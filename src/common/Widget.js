@@ -41,6 +41,17 @@
 
         this._renderCount = 0;
 
+        for (var key in this) {
+            if (key.indexOf("__meta_") >= 0) {
+                switch (this[key].type) {
+                    case "array":
+                    case "widgetArray":
+                        this["__prop_" + this[key].id] = [];
+                        break;
+                }
+            }
+        }
+
         if (window.__hpcc_debug) {
             if (window.g_all === undefined) {
                 window.g_all = {};

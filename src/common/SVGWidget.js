@@ -42,32 +42,34 @@
 
     SVGWidget.prototype.resize = function (size) {
         var retVal = Widget.prototype.resize.apply(this, arguments);
-        this._parentRelativeDiv
-            .style({
-                width: this._size.width + "px",
-                height: this._size.height + "px"
-            })
-        ;
+        if (this._parentRelativeDiv) {
+            this._parentRelativeDiv
+                .style({
+                    width: this._size.width + "px",
+                    height: this._size.height + "px"
+                })
+            ;
+            switch (this._drawStartPos) {
+                case "origin":
+                    this.pos({
+                        x: 0,
+                        y: 0
+                    });
+                    break;
+                case "center":
+                    /* falls through */
+                default:
+                    this.pos({
+                        x: this._size.width / 2,
+                        y: this._size.height / 2
+                    });
+                    break;
+            }
+        }
         this._parentElement
             .attr("width", this._size.width)
             .attr("height", this._size.height)
         ;
-        switch (this._drawStartPos) {
-            case "origin":
-                this.pos({
-                    x: 0,
-                    y: 0
-                });
-                break;
-            case "center":
-            /* falls through */
-            default:
-                this.pos({
-                    x: this._size.width / 2,
-                    y: this._size.height / 2
-                });
-                break;
-        }
         return retVal;
     };
 

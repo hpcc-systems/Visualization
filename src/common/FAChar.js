@@ -21,11 +21,6 @@
     FAChar.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Private"]});
     FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");
 
-    FAChar.prototype.testData = function () {
-        this.char("\uf007");
-        return this;
-    };
-
     FAChar.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._text

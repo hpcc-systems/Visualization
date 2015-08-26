@@ -135,7 +135,7 @@
                         default:
                             return context.handleSize() + "px";
                     }
-                },
+                }
             })
         ;
         dragHandles.exit().remove();

@@ -7,18 +7,6 @@
   fill: #ff7f0e;
 }
 
-.chart_Column .axis {
-  fill: black;
-  font: 10px sans-serif;
-}
-
-.chart_Column .axis path,
-.chart_Column .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
 .chart_Column .data.axis path {
   display: none;
 }

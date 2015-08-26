@@ -19,11 +19,6 @@
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
     Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
 
-    Text.prototype.testData = function () {
-        this.text("Hello\nand\nWelcome!");
-        return this;
-    };
-
     Text.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._textElement = element.append("text");

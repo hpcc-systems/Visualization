@@ -149,25 +149,6 @@
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
 
-    GMap.prototype.testData = function () {
-        this
-            .columns(["latitude", "longtitude", "pin", "circle"])
-            .data([
-                [37.665074, -122.384375, { fillColor: "green" }, { radius: 50, fillColor: "red" }],
-                [32.690680, -117.178540],
-                [39.709455, -104.969859],
-                [41.244123, -95.961610],
-                [32.688980, -117.192040, null, { radius: 100, fillColor: "green", strokeColor: "green" }],
-                [45.786490, -108.526600],
-                [45.796180, -108.535652],
-                [45.774320, -108.494370],
-                [45.777062, -108.549835, { fillColor: "red" }]
-            ])
-        ;
-        this._worldSurface.testData();
-        return this;
-    };
-
     GMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         return retVal;

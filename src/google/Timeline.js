@@ -70,16 +70,6 @@
         return retVal;
     };
 
-    Timeline.prototype.testData = function () {
-        this.columns(["Row Label", "Bar Label", "Start", "End"]);
-        this.data([
-            ["Geography", "", "1789-03-29", "1797-02-03"],
-            ["English", "", "1797-02-03", "1801-02-03"],
-            ["Math", "", "1801-02-03", "1809-02-03"]
-        ]);
-        return this;
-    };
-
     Timeline.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");

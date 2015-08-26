@@ -65,11 +65,6 @@
 
     };
 
-    Scatter.prototype.testData = function(_) {
-        this.sampleData("ordinal");
-        return this;
-    };
-
     Scatter.prototype.testDataLinear = function(_) {
         if (this.scatterType() === "scatter") {
             this.xAxisType("linear");
@@ -91,26 +86,6 @@
             ]);
         }
         return this;
-    };
-
-    Scatter.prototype._sampleData = Scatter.prototype.sampleData;
-    Scatter.prototype.sampleData = function (_) {
-        var retVal = Scatter.prototype._sampleData.apply(this, arguments);
-        if (arguments.length) {
-            switch (_) {
-                case "ordinal":
-                    // TODO need a new shape for INDchart Bubble stuff or something????? need to ask how ordinal would work with that
-                    // this will get refactored in testData PR anyways
-                    //this.testDataOrdinal();
-                    this.xAxisType("ordinal");
-                    INDChart.prototype.testData.apply(this, arguments);
-                    break;
-                case "linear":
-                    this.testDataLinear();
-                    break;
-            }
-        }
-        return retVal;
     };
 
     return Scatter;

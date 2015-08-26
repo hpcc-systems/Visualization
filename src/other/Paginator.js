@@ -28,10 +28,6 @@
 
     Paginator.prototype.postUpdate = function (domeNode, element) { };
 
-    Paginator.prototype.testData = function() {
-        return this;
-    };
-
     Paginator.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;

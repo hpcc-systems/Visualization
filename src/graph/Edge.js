@@ -24,10 +24,6 @@
 
     Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
 
-    Edge.prototype.testData = function () {
-        return this;
-    };
-
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;
         this._sourceVertex = _;

@@ -1,3 +1,8 @@
+.chart_XYAxis .axis {
+  fill: black;
+  font: 10px sans-serif;
+}
+
 .chart_XYAxis .axis path,
 .chart_XYAxis .axis line {
   fill: none;

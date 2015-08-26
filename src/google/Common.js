@@ -14,7 +14,7 @@
 
         this.columns([]);
         this.data([]);
-        this._data_google = [];
+        this._data_google = google.visualization.arrayToDataTable([["", { role: "annotation" }],["",""]]);
 
         this._chart = null;
     }

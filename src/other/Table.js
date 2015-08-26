@@ -15,6 +15,7 @@
         this._paginator = new Paginator();
         this._selectionBag = new Bag.Selection();
         this._selectionPrevClick = null;
+        this._paginatorPadding = 20; //px
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype.constructor = Table;
@@ -74,6 +75,7 @@
 
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
+    Table.prototype.publish("autoCalcIPP", false, "boolean", "Enable or disable auto calculation of items per page",null,{tags:["Basic"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -112,27 +114,6 @@
         ;
     };
 
-    Table.prototype._generateTempCell = function() {
-        var trow = this.tbody.selectAll("tr").data([[0]]);
-        trow
-            .enter()
-            .append("tr")
-        ;
-        var tcell = trow.selectAll("td").data(function (row, i) {
-            return row;
-        });
-        tcell.enter()
-            .append("td")
-            .text(function (d) {
-                return d;
-            })
-        ;
-        tcell.exit()
-            .remove()
-        ;
-        return tcell;
-    };
-
     Table.prototype._createSelectionObject = function (d) {
         var context = this;
         return {
@@ -150,10 +131,12 @@
         }
         this._paginator.render();
 
-        var thHeight = this.calcHeight(th);
-        var tcellHeight = this.calcHeight(this._generateTempCell());
+        var thHeight = this.thead.selectAll("th")[0][0].clientHeight;
+        var tcellHeight = this.tbody.selectAll("tr")[0][0].clientHeight;
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
+
+        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight - this._paginatorPadding) / tcellHeight) || 1;
+
         return ipp;
     };
 
@@ -200,11 +183,13 @@
 
         if (this.pagination()) {
             if (this._paginator.target() === null) {
-                this._paginator.target(this.tableDiv.node());
+                this._paginator.target(element.node());
             }
 
-            var ipp = this._calcRowsPerPage(th);
-            this.itemsPerPage(ipp);
+            if (this.autoCalcIPP()) {
+                var ipp = this._calcRowsPerPage(th);
+                this.itemsPerPage(ipp);
+            }
 
             this._paginator.numItems(this._data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
@@ -311,7 +296,12 @@
         cells.exit()
             .remove()
         ;
-        this._paginator.render();
+
+        this._paginator.render(function(w) {
+            var tableHeight = context.calcHeight(context.tableDiv.select("table"));
+            w.element().style("top",tableHeight + context._paginatorPadding + "px");
+        });
+
         if (this.data().length) {
             this.fixedLabelsUpdate(domNode, element);
         }

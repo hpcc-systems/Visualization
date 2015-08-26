@@ -23,9 +23,39 @@
     Paginator.prototype.publish("numItems", 10, "number", "Pagination total number of items",null,{tags:["Private"]});
     Paginator.prototype.publish("pageNumber", 1, "number", "Pagination set or get the page number",null,{tags:["Private"]});
 
+    Paginator.prototype.postUpdate = function (domeNode, element) { };
+
+    Paginator.prototype.testData = function() {
+        return this;
+    };
+
     Paginator.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
+
         this.paginator = element.append("ul").attr("class","paginator pagination pagination-sm");
+        this.side = element.append("div").attr("class","paginator pagination side");
+
+        this.side.append("span")
+            .classed("side", true)
+            .text("Page ")
+        ;
+
+        this.side.append("input")
+            .attr("type","number")
+            .attr("class","currentPageNumber")
+            .property("value",1)
+            .attr("min",1)
+            .on("change", function() {
+                context.pageNumber(this.value);
+                context._onSelect(this.value);
+            })
+        ;
+
+        this.side.append("span")
+            .classed("side total", true)
+            .text(" of 1")
+        ;
     };
 
     Paginator.prototype.update = function (domNode, element) {
@@ -36,41 +66,67 @@
 
         this._numList = [];
         if (this.numItems()) {
-            this._numList.push("previous");
-            for (var i=0; i < this._tNumPages; i++) {
-                this._numList.push(i+1);
+            this._numList.push("first");
+            for (var x = -2; x <= 2; x++) {
+                if (this.pageNumber() + x > 0 && this.pageNumber() + x <= this._tNumPages) {
+                    this._numList.push(this.pageNumber() + x);
+                }
             }
-            this._numList.push("next");
+            this._numList.push("last");
         }
+
+        this.side.select(".total").text(" of "+this._tNumPages);
+        this.side.select(".currentPageNumber").property("value",this.pageNumber());
+        this.side.select(".currentPageNumber").attr("max",this._tNumPages);
 
         var page = this.paginator.selectAll("li").data(this._numList,function(d) { return d; });
         page
             .enter()
-            .append("li")
-            .append("a")
-            .attr("href", "#")
+            .append(function(d) {
+                var li = document.createElement("li");
+
+                if (d !== context.pageNumber()) {
+                    var a = document.createElement("a");
+                    var linkText = document.createTextNode(d);
+
+                    a.appendChild(linkText);
+                    a.href = "#";
+                    li.appendChild(a);
+
+                    return li;
+                } else {
+                    var span = document.createElement("span");
+                        span.innerHTML = d;
+
+                        li.appendChild(span);
+
+                    return li;
+                }
+            })
             .on("click", function(d, i) {
                 d3.event.preventDefault();
-                if (d==="next") {
-                    if ((context.pageNumber()+1) <= context._tNumPages) {
-                        var p = context.pageNumber()+1;
-                        context.pageNumber(p);
-                        context._onSelect(p,"next");
-                    }
-                } else if (d==="previous") {
-                    if ((context.pageNumber() - 1) >= 1) {
-                        var p2 = context.pageNumber()-1;
-                        context.pageNumber(p2);
-                        context._onSelect(p2, "previous");
-                    }
-                } else {
-                    context.pageNumber(d);
-                    context._onSelect(d);
+                context.side.select(".currentPageNumber").property("value",context.pageNumber());
+                switch(d) {
+                    case "first":
+                        if (context.pageNumber() !== 1) {
+                            context.pageNumber(1);
+                            context._onSelect(1, "previous");
+                        }
+                        break;
+                    case "last":
+                        if (context.pageNumber() !== context._tNumPages) {
+                            context.pageNumber(context._tNumPages);
+                            context._onSelect(context._tNumPages, "previous");
+                        }
+                        break;
+                    default:
+                        context.pageNumber(d);
+                        context._onSelect(d);
                 }
             })
         ;
 
-        page.classed("active", function(e, j) { return j === context.pageNumber(); })
+        page.classed("active", function(e, j) { return e === context.pageNumber(); })
             .select("a")
             .text(function(d) { return d; })
         ;

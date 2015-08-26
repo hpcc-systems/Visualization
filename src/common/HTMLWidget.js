@@ -46,6 +46,16 @@
         return parseFloat(element.style("height")) + this.calcFrameHeight(element);
     };
 
+    HTMLWidget.prototype.hasHScroll = function (element) {
+        element = element || this._element;
+        return element.property("scrollWidth") > element.property("clientWidth");
+    };
+
+    HTMLWidget.prototype.hasVScroll = function (element) {
+        element = element || this._element;
+        return element.property("scrollHeight") > element.property("clientHeight");
+    };
+
     HTMLWidget.prototype.clientWidth = function () {
         return this._size.width - this.calcFrameWidth(this._element);
     };

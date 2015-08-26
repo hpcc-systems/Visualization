@@ -25,13 +25,13 @@
         if (typeof(window.g_defaultThemes) === "function") {
             window.g_defaultThemes(idx);
         }
-        return JSON.parse(localStorage.themeEditorThemes || "{}");
+        return JSON.parse(localStorage.getItem("themeEditorThemes") || "{}");
     };
     var getSerials = function(idx){
         if (typeof(window.g_defaultSerials) === "function") {
             window.g_defaultSerials(idx);
         }
-        return JSON.parse(localStorage.themeEditorSerials || "{}");
+        return JSON.parse(localStorage.getItem("themeEditorSerials") || "{}");
     };
     var getThemeNames = function(idx){
         var loadedThemes = getThemes();

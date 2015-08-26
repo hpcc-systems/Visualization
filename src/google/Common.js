@@ -14,7 +14,7 @@
 
         this.columns([]);
         this.data([]);
-        this._data_google = [];
+        this._data_google = google.visualization.arrayToDataTable([["", { role: "annotation" }],["",""]]);
 
         this._chart = null;
     }
@@ -73,13 +73,8 @@
                         return cell;
                     });
                 }));
-            } else {
-                data = [
-                    ["", { role: "annotation" }],
-                    ["", ""]
-                ];
+                this._data_google = google.visualization.arrayToDataTable(data);
             }
-            this._data_google = google.visualization.arrayToDataTable(data);
         }
         return retVal;
     };

@@ -402,15 +402,11 @@
                 
                 if (context.fixedHeader()){
                     rowLabelsWrapper.select("thead")
-//                        .style("margin-top", "-" + colWrapperHeight)
                         .style("position", "absolute")
                         .style("width", theadWidth + "px")
                     ;
                     rowLabelsWrapper
                         .style("margin-top", -domNode.scrollTop + colWrapperHeight + "px")
-                    ;
-                    context.table
-                        .style("margin-top", "-" + colWrapperHeight + "px")
                     ;
                     element
                         .style("top", colWrapperHeight + "px")
@@ -422,9 +418,6 @@
                     ;
                     rowLabelsWrapper
                         .style("margin-top", -domNode.scrollTop + "px")
-                    ;
-                    context.table
-                        .style("margin-top", "0px")
                     ;
                     element
                         .style("top", "0px")
@@ -452,7 +445,7 @@
                     })
                 ;
             } else {
-                rowWrapperWidth = 0;
+                rowWrapperWidth = 0; 
             }
             newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
             var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
@@ -468,6 +461,7 @@
             ;
             context.table
                 .style("margin-left", "-" + rowWrapperWidth + "px")
+                .style("margin-top", "-" + colWrapperHeight + "px")
             ;
             colsWrapper
                 .style("position", "absolute")

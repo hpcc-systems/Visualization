@@ -2,9 +2,12 @@
     color:#333333;
     border-width: 1px;
     border-color: #999999;
-    border-collapse: collapse;
 }
 
+.other_Table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 .other_Table .tableDiv {
     position: absolute;
 }

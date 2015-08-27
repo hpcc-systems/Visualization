@@ -14,4 +14,5 @@
 
 .layout_Tabbed .tab-button.active {
     background-color: white;
+    z-index:999;
 }

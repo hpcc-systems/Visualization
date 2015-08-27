@@ -34,6 +34,17 @@
         this._size = { width: 0, height: 0 };
         this._scale = 1;
 
+        for (var key in this) {
+            if (key.indexOf("__meta_") === 0) {
+                switch (this[key].type) {
+                    case "array":
+                    case "widgetArray":
+                        this["__prop_" + this[key].id] = [];
+                        break;
+                }
+            }
+        }
+
         this._target = null;
         this._parentElement = null;
         this._parentWidget = null;

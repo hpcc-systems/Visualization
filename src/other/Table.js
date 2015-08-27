@@ -301,11 +301,14 @@
         cells.enter()
             .append("td")
         ;
-        if(this.renderHtmlDataCells()){
-            cells.html(function (d) { return typeof(d) === "string" ? d.trim() : ""; });
-        } else {
-            cells.text(function (d) { return typeof(d) === "string" ? d.trim() : ""; });
-        }
+        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d) { 
+            if(typeof(d) === "string"){
+                return d.trim();
+            } else if (typeof(d) === "number") {
+                return d;
+            }
+            return ""; 
+        });
         cells.exit()
             .remove()
         ;

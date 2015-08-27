@@ -1,11 +1,11 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../other/Comms", "../common/Widget", "require"], factory);
+        define(["d3", "../other/Comms", "../common/Widget", "require"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.other_Comms, root.common_Widget, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.other_Comms, root.common_Widget, root.require);
     }
-}(this, function (Comms, Widget, require) {
+}(this, function (d3, Comms, Widget, require) {
     var Vertex = null;
     var Edge = null;
     var exists = function (prop, scope) {

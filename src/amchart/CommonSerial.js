@@ -163,7 +163,13 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        //gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            console.log(d);
+            console.log(d.category);
+
+            return "bob";
+        }
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
         gObj.lineThickness = context.lineWidth();

@@ -247,6 +247,12 @@
         } else if (context._showing_themeMode !== context.themeMode()) {
             needsRedraw = true;
         }
+        if (typeof (context._prevExcludeTags) === "undefined") {
+            context._prevExcludeTags = JSON.stringify(context.excludeTags());
+        } else if (context._prevExcludeTags !== JSON.stringify(context.excludeTags())) {
+            context._prevExcludeTags = JSON.stringify(context.excludeTags());
+            needsRedraw = true;
+        }
         return needsRedraw;
     };
     PropertyEditor.prototype.widgetPropertyModified = function (widget, propID) {
@@ -831,6 +837,7 @@
                                             .paramGrouping("By Widget")
                                             .showColumns(context.showColumns())
                                             .showData(context.showData())
+                                            .excludeTags(context.excludeTags())
                                             .show_settings(false)
                                             .target(input.node())
                                         ;

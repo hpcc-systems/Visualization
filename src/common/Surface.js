@@ -51,7 +51,7 @@
     Surface.prototype.publish("showTitle", true, "boolean", "Show Title",null,{tags:["Basic"]});
     Surface.prototype.publish("title", "", "string", "Title",null,{tags:["Basic"]});
     Surface.prototype.publishProxy("titleFontSize", "_text", "fontSize");
-    Surface.prototype.publish("showIcon", true, "boolean", "Show Title",null,{tags:["Advance"]});
+    Surface.prototype.publish("showIcon", true, "boolean", "Show Title",null,{tags:["Advanced"]});
     Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
     //Surface.prototype.publish("menu");

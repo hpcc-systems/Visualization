@@ -147,6 +147,29 @@
                     });
                 });
 
+                it("Property Tags", function (done) {
+                    require([path, "src/other/Persist"], function (Widget, Persist) {
+                        var widget = new Widget();
+                        Persist.discover(widget).forEach(function (prop) {
+                            if (prop.ext && prop.ext.tags) {
+                                prop.ext.tags.forEach(function (tag) {
+                                    switch (tag) {
+                                        case "Basic":
+                                        case "Intermediate":
+                                        case "Advanced":
+                                        case "Private":
+                                        case "Shared":
+                                            break;
+                                        default:
+                                            assert.isTrue(false, "Invalid property tag:  '" + tag + "'");
+                                    }
+                                });
+                            }
+                        });
+                        done();
+                    });
+                });
+
                 var noSurfaceHTML = null;
                 it("Adding widget to the page", function (done) {
                     require([path], function (Widget) {

@@ -396,7 +396,7 @@
         if (exists("_updates", this) && this._updates instanceof Array) {
             this._updates.forEach(function (item, idx) {
                 var datasource = this.visualization.dashboard.datasources[item.datasource];
-                var visualization = this.visualization.dashboard.visualizations[item.visualization];
+                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
                 retVal.push({
                     eventID: this.eventID,
                     datasource: datasource,
@@ -425,7 +425,7 @@
         var retVal = [];
         if (exists("_updates", this) && this._updates instanceof Array) {
             this._updates.forEach(function (item, idx) {
-                var visualization = this.visualization.dashboard.visualizations[item.visualization];
+                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
                 if (!dedup[visualization.id]) {
                     dedup[visualization.id] = true;
                     retVal.push(visualization);
@@ -603,7 +603,7 @@
     }
 
     Visualization.prototype.getQualifiedID = function () {
-        return this.dashboard.getQualifiedID() + "." + this.id;
+        return this.id;
     };
 
     Visualization.prototype.isLoading = function (widgetPath, callback) {
@@ -726,7 +726,7 @@
     };
 
     Visualization.prototype.getInputVisualizations = function () {
-        return this.dashboard.visualizationsArray.filter(function (viz) {
+        return this.dashboard.marshaller.getVisualizationArray().filter(function (viz) {
             var updates = viz.events.getUpdatesVisualizations();
             if (updates.indexOf(this) >= 0) {
                 return true;
@@ -770,7 +770,7 @@
         this.data = data;
         this.notify.forEach(function (item) {
             if (!updates || updates.indexOf(item) >= 0) {
-                var viz = context.dataSource.dashboard.visualizations[item];
+                var viz = context.dataSource.dashboard.getVisualization(item);
                 viz.notify();
             }
         });
@@ -904,18 +904,36 @@
             ++context.datasourceTotal;
         });
 
-        this.visualizations = {};
-        this.visualizationsArray = [];
+        this._visualizations = {};
+        this._visualizationArray = [];
         dashboard.visualizations.forEach(function (item) {
-            var newItem = new Visualization(context, item);
-            context.visualizations[item.id] = newItem;
-            context.visualizationsArray.push(newItem);
-        });
-        this.visualizationTotal = this.visualizationsArray.length;
+            var newItem = new Visualization(this, item);
+            this._visualizations[item.id] = newItem;
+            this._visualizationArray.push(newItem);
+            this.marshaller._visualizations[item.id] = newItem;
+            this.marshaller._visualizationArray.push(newItem);
+        }, this);
+        this._visualizationTotal = this._visualizationArray.length;
     }
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
+    };
+
+    Dashboard.prototype.getVisualization = function (id) {
+        return this._visualizations[id] || this.marshaller.getVisualization(id);
+    };
+
+    Dashboard.prototype.getVisualizations = function () {
+        return this._visualizations;
+    };
+
+    Dashboard.prototype.getVisualizationArray = function () {
+        return this._visualizationArray;
+    };
+
+    Dashboard.prototype.getVisualizationTotal = function () {
+        return this._visualizationTotal;
     };
 
     Dashboard.prototype.accept = function (visitor) {
@@ -923,13 +941,13 @@
         for (var key in this.datasources) {
             this.datasources[key].accept(visitor);
         }
-        this.visualizationsArray.forEach(function (item) {
+        this._visualizationArray.forEach(function (item) {
             item.accept(visitor);
         }, this);
     };
 
     Dashboard.prototype.allVisualizationsLoaded = function () {
-        var notLoaded = this.visualizationsArray.filter(function (item) { return !item.isLoaded(); });
+        var notLoaded = this._visualizationArray.filter(function (item) { return !item.isLoaded(); });
         return notLoaded.length === 0;
     };
 
@@ -948,6 +966,11 @@
         }
         return true;
     };
+    
+    Marshaller.prototype.getVisualization = function (id) {
+        return this._visualizations[id];
+    };
+   
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
@@ -1015,13 +1038,24 @@
         this._jsonParsed = JSON.parse(this._json);
         this.dashboards = {};
         this.dashboardArray = [];
+        this._visualizations = {};
+        this._visualizationArray = [];
         this._jsonParsed.forEach(function (item) {
             var newDashboard = new Dashboard(context, item, context._proxyMappings);
             context.dashboards[item.id] = newDashboard;
             context.dashboardArray.push(newDashboard);
         });
+        this.dashboardTotal = this.dashboardArray.length;
         this.ready(callback);
         return this;
+    };
+
+    Marshaller.prototype.getVisualizations = function () {
+        return this._visualizations;
+    };
+
+    Marshaller.prototype.getVisualizationArray = function () {
+        return this._visualizationArray;
     };
 
     Marshaller.prototype.allDashboardsLoaded = function () {

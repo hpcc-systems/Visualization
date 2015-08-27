@@ -15,6 +15,7 @@
         this._paginator = new Paginator();
         this._selectionBag = new Bag.Selection();
         this._selectionPrevClick = null;
+        this._paginatorPadding = 30; //px
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype._class += " other_Table";
@@ -38,6 +39,7 @@
     };
 
     Table.prototype.publish("pagination", false, "boolean", "enable or disable pagination",null,{tags:['Private']});
+    Table.prototype.publish("autoCalcIPP", false, "boolean", "Enable or disable auto calculation of items per page",null,{tags:["Basic"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -87,11 +89,13 @@
             this.itemsPerPage(1);
         }
         this._paginator.render();
-        var thHeight = this.calcHeight(th);
-        var tcellHeight = this.calcHeight(this._generateTempCell());
+
+        var thHeight = this.thead.selectAll("th")[0][0].clientHeight;
+        var tcellHeight = this.tbody.selectAll("tr")[0][0].clientHeight;
         var paginatorHeight = this.calcHeight(this._paginator.element());
 
-        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
+        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight - this._paginatorPadding) / tcellHeight) || 1;
+
         return ipp;
     };
 
@@ -141,8 +145,10 @@
                 this._paginator.target(domNode);
             }
 
-            var ipp = this._calcRowsPerPage(th);
-            this.itemsPerPage(ipp);
+            if (this.autoCalcIPP()) {
+                var ipp = this._calcRowsPerPage(th);
+                this.itemsPerPage(ipp);
+            }
 
             this._paginator.numItems(this._data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
@@ -217,7 +223,11 @@
         cells.exit()
             .remove()
         ;
-        this._paginator.render();
+
+        this._paginator.render(function(w) {
+            var tableHeight = context.calcHeight(context.tableDiv);
+            w.element().style("top",tableHeight - context._paginatorPadding + "px");
+        });
     };
 
     Table.prototype.exit = function (domNode, element) {

@@ -351,7 +351,7 @@
                     }
 
                     if (lVal !== rVal) {
-                        return reverse ? rVal - lVal : lVal - rVal;
+                        return reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal,  rVal);
                     }
                 }
                 return 0;

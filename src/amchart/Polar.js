@@ -17,7 +17,6 @@
     Polar.prototype.implements(INDChart.prototype);
 
     Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:["Basic","Shared"]});
-    Polar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     Polar.prototype.testData = function() {
         this.columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"]);

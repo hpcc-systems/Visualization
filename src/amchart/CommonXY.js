@@ -154,7 +154,10 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            var balloonText = context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            return balloonText;
+        }
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineThickness = context.lineWidth();
         gObj.bullet = context.bulletType();

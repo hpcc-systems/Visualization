@@ -99,14 +99,14 @@
     display:none;
 }
 
-.layout_Grid .selected-cell div.dragHandle{
+.layout_Grid .selected div.dragHandle{
     background-color: #F48A00;
 }
 
-.layout_Grid .selected-cell div.dragHandle_nw, 
-.layout_Grid .selected-cell div.dragHandle_ne, 
-.layout_Grid .selected-cell div.dragHandle_se, 
-.layout_Grid .selected-cell div.dragHandle_sw{
+.layout_Grid .selected div.dragHandle_nw, 
+.layout_Grid .selected div.dragHandle_ne, 
+.layout_Grid .selected div.dragHandle_se, 
+.layout_Grid .selected div.dragHandle_sw{
     background-color: #EE1;
 }
 .layout_Grid .grid-drop-target{

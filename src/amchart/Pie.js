@@ -48,7 +48,7 @@
 
         this._chart.balloonFunction = function(d) {
             var balloonText = d.title + ", " + d.value;
-            return baloonText;
+            return balloonText;
         }
         this._chart.labelPosition = this.labelPosition();
 

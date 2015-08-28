@@ -15,6 +15,8 @@
         this._paginator = new Paginator();
         this._selectionBag = new Bag.Selection();
         this._selectionPrevClick = null;
+        this._paginatorTableSpacing = 20; //px
+        this._paginatorBottomSpacing = 20; //px
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype.constructor = Table;
@@ -72,11 +74,12 @@
         ;
         return this;
     };
-    
+
     Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells",null,{tags:["Private"]});
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
+    Table.prototype.publish("autoCalcIPP", false, "boolean", "Enable or disable auto calculation of items per page",null,{tags:["Basic"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
 
@@ -146,6 +149,27 @@
         };
     };
 
+    Table.prototype._generateTempCell = function() {
+        var trow = this.tbody.selectAll("tr").data([[0]]);
+        trow
+            .enter()
+            .append("tr")
+        ;
+        var tcell = trow.selectAll("td").data(function (row, i) {
+            return row;
+        });
+        tcell.enter()
+            .append("td")
+            .text(function (d) {
+                return d;
+            })
+        ;
+        tcell.exit()
+            .remove()
+        ;
+        return tcell;
+    };
+
     Table.prototype._calcRowsPerPage = function(th) {
         if (this._paginator.numItems() === 0) { // only run on first render
             this._paginator.numItems(1);
@@ -153,10 +177,13 @@
         }
         this._paginator.render();
 
-        var thHeight = this.calcHeight(th);
-        var tcellHeight = this.calcHeight(this._generateTempCell());
+        var thHeight = this.thead.selectAll("th").node().clientHeight;
+        this._generateTempCell();
+        var tcellHeight = this.tbody.selectAll("tr").node().clientHeight;
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
+
+        var ipp = Math.floor((this.height() - thHeight - paginatorHeight - this.getScrollbarWidth() - this._paginatorTableSpacing - this._paginatorBottomSpacing) / tcellHeight) || 1;
+
         return ipp;
     };
 
@@ -203,11 +230,13 @@
 
         if (this.pagination()) {
             if (this._paginator.target() === null) {
-                this._paginator.target(this.tableDiv.node());
+                this._paginator.target(element.node());
             }
 
-            var ipp = this._calcRowsPerPage(th);
-            this.itemsPerPage(ipp);
+            if (this.autoCalcIPP()) {
+                var ipp = this._calcRowsPerPage(th);
+                this.itemsPerPage(ipp);
+            }
 
             this._paginator.numItems(this._data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
@@ -301,21 +330,27 @@
         cells.enter()
             .append("td")
         ;
-        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d) { 
+        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d) {
             if(typeof(d) === "string"){
                 return d.trim();
             } else if (typeof(d) === "number") {
                 return d;
             }
-            return ""; 
+            return "";
         });
         cells.exit()
             .remove()
         ;
-        this._paginator.render();
+
         if (this.data().length) {
             this.fixedLabelsUpdate(domNode, element);
         }
+
+        this._paginator.render(function(p) {
+            var paginatorHeight = context.calcHeight(context._paginator.element());
+            var offset = context.height() - paginatorHeight - context.getScrollbarWidth() - context._paginatorBottomSpacing;
+            p.element().style("top",offset + "px");
+        });
     };
 
     Table.prototype.fixedLabelsUpdate = function (domNode, element) {
@@ -375,7 +410,7 @@
                     el
                         .style("width", elWidth)
                     ;
-                });                
+                });
                 newThead.on("click", function(d, idx){
                     context.headerClick(d, idx);
                 });
@@ -383,7 +418,7 @@
                     rowLabelsWrapper.html("");
                 }
             }
-            
+
             var rowWrapperWidth;
             var newTableHeight;
             if (context.fixedColumn()) {
@@ -402,7 +437,7 @@
                 rowLabelsWrapper.html(rowContents)
                     .style("width", rowWrapperWidth)
                 ;
-                
+
                 if (context.fixedHeader()){
                     rowLabelsWrapper.select("thead")
                         .style("position", "absolute")
@@ -448,7 +483,7 @@
                     })
                 ;
             } else {
-                rowWrapperWidth = 0; 
+                rowWrapperWidth = 0;
             }
             newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
             var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);

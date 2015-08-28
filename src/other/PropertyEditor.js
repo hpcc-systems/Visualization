@@ -34,7 +34,11 @@
             var context = this;
             if (_[0] instanceof Grid) {
                 _[0].postSelectionChange = function () {
-                    context.render();
+                    var selectedItems = _[0]._selectionBag.get().map(function(item){ return item.widget; });
+                    context
+                        .data(selectedItems.length > 0 ? selectedItems : [_[0]])
+                        .paramGrouping( selectedItems.length > 1 ? "By Param" : "By Widget")
+                        .render();
                 };
             }
         }

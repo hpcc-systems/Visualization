@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "./Cell", "../common/TextBox", "css!./Grid"], factory);
+        define(["d3", "../common/HTMLWidget", "./Cell", "../common/TextBox", "../other/Bag", "css!./Grid"], factory);
     } else {
-        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_TextBox);
+        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_TextBox, root.common_Bag);
     }
-}(this, function (d3, HTMLWidget, Cell, TextBox, Pie, MultiChart, Line) {
+}(this, function (d3, HTMLWidget, Cell, TextBox, Bag) {
     function Grid() {
         HTMLWidget.call(this);
 
@@ -15,6 +15,7 @@
         this._rowCount = 0;
         this._colSize = 0;
         this._rowSize = 0;
+        this._selectionBag = new Bag.Selection();
         
         this.content([]);
     }
@@ -365,7 +366,7 @@
                 d3.event.sourceEvent.stopPropagation();
         
                 if(context._initSelection || context._startLoc[0] === context._currLoc[0] || context._startLoc[1] === context._currLoc[1]){
-                    context.toggleCellSelection(context._currLoc);
+                    context.selectionBagClick(context.getCell(context._currLoc[1],context._currLoc[0]));
                 }
         
                 context._element.selectAll(".dragHandle")
@@ -429,10 +430,13 @@
             
         if(this.designMode()){ 
             this.contentDiv.selectAll(".cell_" + this._id).call(drag);
-            context.applyCurrentCellSelection(context._currLoc);
+            d3.select(context._target).on("click",function(){
+                context._selectionBag.clear();
+                context.postSelectionChange();
+            });
         } else {
             this.contentDiv.selectAll(".cell_" + this._id).on(".drag", null);
-            this.removeCellSelections();
+            this._selectionBag.clear();
         }
         
         rows.style("left", function (d) { return d.gridCol() * cellWidth + context.gutter() / 2 + "px"; })
@@ -461,32 +465,6 @@
         }).remove();
     };
 
-    Grid.prototype.toggleCellSelection = function(loc){
-        var cellObj = this.getCell(loc[1],loc[0]);
-        if(cellObj !== null){
-            if(cellObj._element.classed("selected-cell") === false){
-                this.removeCellSelections();
-                cellObj._element.classed("selected-cell",true);
-                this._selected = cellObj;
-                this.postSelectionChange();
-            } 
-            else {
-                this.removeCellSelections();
-                this.postSelectionChange();
-            }
-        }
-    };
-    Grid.prototype.applyCurrentCellSelection = function(){
-        if(typeof (this._selected) !== "undefined"){
-            this._selected._element.classed("selected-cell",true);
-        }
-    };
-    Grid.prototype.removeCellSelections = function(){
-        this.content().forEach(function(cell){
-            cell._element.classed("selected-cell",false);
-        });
-        delete this._selected;
-    };
     Grid.prototype.postSelectionChange = function(){};
 
     Grid.prototype.updateDropCells = function (dimensions, cellWidth, cellHeight) {
@@ -600,6 +578,42 @@
 
     Grid.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
+    };
+    
+    Grid.prototype._createSelectionObject = function (d) {
+        return {
+            _id: d._id,
+            element: function () {
+                return d._element;
+            },
+            widget:d
+        };
+    };
+    
+    Grid.prototype.selection = function (_) {
+        if (!arguments.length) return this._selectionBag.get().map(function (d) { return d._id; });
+        this._selectionBag.set(_.map(function (row) {
+            return this._createSelectionObject(row);
+        }, this));
+        return this;
+    };
+
+    Grid.prototype.selectionBagClick = function (d) {
+        if(d !== null){
+            var selectionObj = this._createSelectionObject(d);
+            if(d3.event.sourceEvent.ctrlKey){
+                if(this._selectionBag.isSelected(selectionObj)){
+                    this._selectionBag.remove(selectionObj);
+                    this.postSelectionChange();
+                } else {
+                    this._selectionBag.append(selectionObj);
+                    this.postSelectionChange();
+                }
+            } else {
+                this._selectionBag.set([selectionObj]);
+                this.postSelectionChange();
+            }
+        }
     };
 
     Grid.prototype.render = function (callback) {

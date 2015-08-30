@@ -176,7 +176,7 @@
             }
         }
         var themeSelectObj = {
-            'Default':{},
+            'Default': null,
             'LN Red/Grey':{"common_Widget":{"surfaceTitleFontSize":16,"surfaceTitleFontColor":"#FAFAFA","surfaceTitleFontFamily":"PT Sans","surfaceTitleFontBold":false,"surfaceTitleBackgroundColor":"#ED1C24","surfacePadding":"null","surfaceBackgroundColor":"#FAFAFA","surfaceBorderWidth":1,"surfaceBorderColor":"#6D6E71","surfaceBorderRadius":4,"surfaceTitleAlignment":"center","paletteID":"Set1"}},
             'Blue-Bordered':{"common_Widget":{"surfaceTitlePadding":0,"surfaceTitleFontSize":16,"surfaceTitleFontColor":"#5a6b92","surfaceTitleFontFamily":"'Courier New'","surfaceTitleFontBold":false,"surfaceTitleBackgroundColor":"transparent","surfacePadding":"null","surfaceBackgroundColor":"transparent","surfaceBorderWidth":2,"surfaceBorderColor":"#5a6b92","surfaceBorderRadius":0,"surfaceTitleAlignment":"left","paletteID":"Dark2","axisFontSize":14,"axisFontFamily":"Tahoma","xAxisTitleFontFamily":"'Courier New'","yAxisTitleFontFamily":"'Courier New'","legendFontSize":14,"legendFontFamily":"Tahoma"}},
             'Red-Bordered':{"common_Widget":{"surfaceTitleFontSize":19,"surfaceTitleFontColor":"rgb(237, 28, 36)","surfaceTitleFontFamily":"'Arial Black'","surfaceTitleBackgroundColor":"rgb(250, 250, 250)","surfacePadding":"null","surfaceBackgroundColor":"rgb(250, 250, 250)","surfaceBorderColor":"rgb(237, 28, 36)","paletteID":"BrBG","axisFontFamily":"'Arial Black'","xAxisTitleFontFamily":"'Arial Black'","xAxisTitleFontSize":19,"yAxisTitleFontFamily":"'Arial Black'","yAxisTitleFontSize":19,"legendFontFamily":"'Arial Black'"}},
@@ -293,9 +293,9 @@
             };
             testTheme = function (themeKey) {
                 window.__hpcc_theme = themeSelectObj[themeKey];
-                Persist.removeTheme(currWidget,function(){
-                    Persist.applyTheme(currWidget,themeSelectObj[themeKey],function(){
-                        currWidget.render();
+                Persist.removeTheme(frame, function () {
+                    Persist.applyTheme(frame, themeSelectObj[themeKey], function () {
+                        frame.render();
                         displayProperties(currWidget);
                         displaySerialization(currWidget);
                         displaySerializationText(currWidget);

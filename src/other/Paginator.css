@@ -1,13 +1,43 @@
+.other_Paginator {
+  display: block;
+  position:absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
 .other_Paginator .pagination {
   display: inline-block;
   padding-left: 0;
-  margin: 20px 0;
+  margin: 0 0;
   border-radius: 4px;
+  float: left;
 }
+
 .other_Paginator .pagination > li {
   display: inline;
 }
+
+.other_Paginator input[type="number"].currentPageNumber {
+  border: 1px solid #ddd;
+  outline: 0 none;
+  position: relative;
+  top: 4px;
+  width: 37px;
+  text-align: center;
+}
+
+.other_Paginator div.side {
+  padding-left: 20px;
+}
+
+.other_Paginator span.side {
+  position: relative;
+  top: 6px;
+  color: #337ab7;
+}
+
 .other_Paginator .pagination > li > a,
+.other_Paginator .pagination > div,
 .other_Paginator .pagination > li > span {
   position: relative;
   float: left;

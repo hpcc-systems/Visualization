@@ -966,11 +966,11 @@
         }
         return true;
     };
-    
+
     Marshaller.prototype.getVisualization = function (id) {
         return this._visualizations[id];
     };
-   
+
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);

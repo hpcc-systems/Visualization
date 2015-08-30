@@ -74,7 +74,7 @@
 
             var propObj = {};
             widgetPropertyWalker(widget, null, function (widget, item) {
-                if (widget[item.id + "_modified"]() || typeof (widget["__meta_" + item.id].trueDefaultValue) !== "undefined") {
+                if (widget[item.id + "_modified"]()) {
                     if (_isFilterMatch(item.id, filter)) {
                         var classParts = widget._class.trim().split(" ");
                         for (var i in classParts) {
@@ -106,13 +106,7 @@
         },
         removeTheme: function (widget,callback) {
             widgetPropertyWalker(widget, null, function (widget, item) {
-                var proto = Object.getPrototypeOf(widget);
-                if (typeof (widget["__meta_" + item.id].trueDefaultValue) !== "undefined") {
-                    var trueDefault = proto["__meta_" + item.id].trueDefaultValue;
-                    proto["__meta_" + item.id].defaultValue = trueDefault;
-                    widget[item.id + "_reset"]();
-                    delete proto["__meta_" + item.id].trueDefaultValue;
-                }
+                widget["__meta_" + item.id].defaultValue = widget["__meta_" + item.id].origDefaultValue;
             });
 
             if (typeof (callback) === "function") {
@@ -133,18 +127,7 @@
                         }, this);
                         return true;
                     default:
-                        var clsArr = widget._class.trim().split(" ").reverse();
-                        for (var i in clsArr) {
-                            if (typeof (themeObj[clsArr[i]]) !== "undefined") {
-                                if (typeof (themeObj[clsArr[i]][item.id]) !== "undefined") {
-                                    var proto = Object.getPrototypeOf(widget);
-                                    if (typeof (proto["__meta_" + item.id].trueDefaultValue) === "undefined") {
-                                        proto["__meta_" + item.id].trueDefaultValue = widget[item.id]();
-                                    }
-                                    proto["__meta_" + item.id].defaultValue = themeObj[clsArr[i]][item.id];
-                                }
-                            }
-                        }
+                        widget.applyTheme(themeObj);
                         break;
                 }
             });
@@ -165,7 +148,7 @@
 
             var context = this;
             widgetPropertyWalker(widget, filter, function (widget, item) {
-                if (widget[item.id + "_modified"]() || typeof (widget["__meta_" + item.id].trueDefaultValue) !== "undefined") {
+                if (widget[item.id + "_modified"]()) {
                     switch (item.type) {
                         case "widget":
                             retVal.__properties[item.id] = context.serializeToObject(widget[item.id](), null, includeData);

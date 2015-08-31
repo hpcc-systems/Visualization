@@ -20,14 +20,16 @@
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
 
     XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
+    XYAxis.prototype.publish("xAxisTickCount", null, "number", "X-Axis Tick Count", null, { optional: true });
+    XYAxis.prototype.publish("xAxisTickFormat", null, "string", "X-Axis Tick Format", null, { optional: true });
     XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
-    XYAxis.prototype.publish("yAxisTickCount", 10, "number", "Y-Axis Tick Count");
-    XYAxis.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
+    XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
+    XYAxis.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
     XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
     XYAxis.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
@@ -401,25 +403,31 @@
         }
         regions.exit().remove();
 
+        switch (this.xAxisType()) {
+            case "linear":
+                this.dataScale = d3.scale.linear();
+                this.dataFormatter = d3.format(this.xAxisTickFormat());
+                break;
+            case "time":
+                this.dataScale = d3.time.scale();
+                this.dataFormatter = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : null;
+                break;
+            case "ordinal":
+                /* falls through */
+            default:
+                this.dataScale = d3.scale.ordinal();
+                this.dataFormatter = null;
+                break;
+        }
+        this.dataAxis
+            .scale(this.dataScale)
+            .ticks(this.xAxisTickCount())
+            .tickFormat(this.dataFormatter)
+        ;
+
         if (this._prevXAxisType !== this.xAxisType()) {
             this._prevXAxisType = this.xAxisType();
             this._prevBrush = null;
-            switch (this.xAxisType()) {
-                case "linear":
-                    this.dataScale = d3.scale.linear();
-                    break;
-                case "time":
-                    this.dataScale = d3.time.scale();
-                    break;
-                case "ordinal":
-                    /* falls through */
-                default:
-                    this.dataScale = d3.scale.ordinal();
-                    break;
-            }
-            this.dataAxis
-                .scale(this.dataScale)
-            ;
             this.xBrush
                 .x(this.dataScale)
             ;
@@ -433,24 +441,29 @@
                 this.valueScale = d3.scale.pow()
                     .exponent(this.yAxisTypePowExponent())
                 ;
+                this.valueFormatter = d3.format(this.yAxisTickFormat());
                 break;
             case "log":
                 this.valueScale = d3.scale.log()
                     .base(this.yAxisTypeLogBase())
                 ;
+                this.valueFormatter = d3.format(this.yAxisTickFormat());
                 break;
             case "time":
                 this.valueScale = d3.time.scale();
+                this.valueFormatter = this.yAxisTickFormat() ? d3.time.format(this.yAxisTickFormat()) : null;
                 break;
             case "linear":
                 /* falls through */
             default:
                 this.valueScale = d3.scale.linear();
+                this.valueFormatter = d3.format(this.yAxisTickFormat());
                 break;
         }
         this.valueAxis
             .scale(this.valueScale)
-            .ticks(this.yAxisTickCount(), this.yAxisTickFormat())
+            .ticks(this.yAxisTickCount())
+            .tickFormat(this.valueFormatter)
         ;
 
         var isHorizontal = this.orientation() === "horizontal";

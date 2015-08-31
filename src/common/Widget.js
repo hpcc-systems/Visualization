@@ -186,7 +186,9 @@
             if (!arguments.length) {
                 return !isPrototype && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
             }
-            if (_ !== null) {
+            if (_ === "" && this["__meta_" + id].ext.optional) {
+                _ = null;
+            } else if (_ !== null) {
                 switch (type) {
                     case "set":
                         if (!set || set.indexOf(_) < 0) {

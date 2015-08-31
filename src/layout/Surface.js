@@ -151,7 +151,7 @@
             })
         ;
         widgets
-            .style("padding", this.surfacePadding() ? this.surfacePadding() + "px" : null)
+            .style("padding", this.surfacePadding_modified() ? this.surfacePadding() + "px" : null)
             .each(function (d) {
                 var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
                 if (widgetSize.width < 0) widgetSize.width = 0;

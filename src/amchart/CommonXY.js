@@ -82,6 +82,9 @@
 
     CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    CommonXY.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
+    //CommonXY.prototype.publish("xAxisTickFormat", "s", "string", "X-Axis Tick Format");
+
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -115,6 +118,10 @@
         this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
 
+        // this._chart.valueAxes[0].labelFunction = function(d) {
+        //     return d3.format(context.xAxisTickFormat())(d);
+        // }
+
         this._chart.valueAxes[1].position = "left";
         this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
         this._chart.valueAxes[1].title = this.yAxisTitle();
@@ -130,6 +137,10 @@
         this._chart.valueAxes[1].gridAlpha = this.yAxisGridAlpha();
         this._chart.valueAxes[1].dashLength = this.yAxisDashLength();
         this._chart.valueAxes[1].axisTitleOffset = this.yAxisTitleOffset();
+
+        this._chart.valueAxes[1].labelFunction = function(d) {
+            return d3.format(context.yAxisTickFormat())(d);
+        };
 
         // DataProvider
         this._chart.dataProvider = this.formatData(this._data);

@@ -93,8 +93,10 @@
 
     CommonSerial.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    CommonSerial.prototype.updateChartOptions = function() {
+    CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
 
+    CommonSerial.prototype.updateChartOptions = function() {
+        var context = this;
         this._chart.dataDateFormat = this.dataDateFormat();
         this._chart.type = "serial";
         this._chart.startDuration = this.startDuration();
@@ -149,6 +151,10 @@
         this._chart.valueAxes[0].dashLength = this.yAxisDashLength();
         this._chart.valueAxes[0].boldPeriodBeginning = this.yAxisBoldPeriodBeginning();
         this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset();
+
+        this._chart.valueAxes[0].labelFunction = function(d) {
+            return d3.format(context.yAxisTickFormat())(d);
+        };
 
         if (this.showScrollbar()) {
             this._chart.chartScrollbar.enabled = true;

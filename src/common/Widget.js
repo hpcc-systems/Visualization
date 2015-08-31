@@ -36,7 +36,7 @@
                 switch (this[key].type) {
                     case "array":
                     case "widgetArray":
-                        this["__prop_" + this[key].id] = [];
+                        this["__prop_" + this[key].id] = d3.functor([]);
                         break;
                 }
             }
@@ -58,22 +58,28 @@
             }
             window.g_all[this._id] = this;
         }
-        if(window.__hpcc_theme){
-            var clsArr = this._class.trim().split(" ").reverse();
-            for(var i in clsArr){
-                if(typeof (window.__hpcc_theme[clsArr[i]]) !== "undefined"){
-                    for(var paramName in window.__hpcc_theme[clsArr[i]]){
-                        if(typeof (this[paramName]) === "function"){
-                            var proto = Object.getPrototypeOf(this);
-                            proto["__meta_"+paramName].trueDefaultValue = this[paramName]();
-                            proto["__meta_"+paramName].defaultValue = window.__hpcc_theme[clsArr[i]][paramName];
-                        }
+
+        if (window.__hpcc_theme) {
+            this.applyTheme(window.__hpcc_theme);
+        }
+    }
+    Widget.prototype._class = "common_Widget";
+
+    Widget.prototype.applyTheme = function (theme) {
+        if (!theme) {
+            return;
+        }
+        var clsArr = this._class.split(" ");
+        for (var i in clsArr) {
+            if (theme[clsArr[i]]) {
+                for (var paramName in theme[clsArr[i]]) {
+                    if (this["__meta_" + paramName]) {
+                        this["__meta_" + paramName].defaultValue = d3.functor(theme[clsArr[i]][paramName]);
                     }
                 }
             }
         }
-    }
-    Widget.prototype._class = " common_Widget";
+    };
 
     Widget.prototype.ieVersion = (function () {
         var ua = navigator.userAgent, tem,
@@ -169,53 +175,56 @@
     };
 
     // Serialization  ---
-    Widget.prototype.publish = function (id, defaultValue, type, description, set, ext) {
+    Widget.prototype.publish = function (id, _defaultValue, type, description, set, ext) {
         if (this["__meta_" + id] !== undefined) {
             throw id + " is already published.";
         }
+        var defaultValue = d3.functor(_defaultValue);
         this["__meta_" + id] = {
             id: id,
             type: type,
+            origDefaultValue: defaultValue,
             defaultValue: defaultValue,
             description: description,
             set: set,
             ext: ext || {}
         };
-        this[id] = function (_) {
+        this[id] = function (__) {
             var isPrototype = this._id === undefined;
             if (!arguments.length) {
-                return !isPrototype && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
+                return !isPrototype && this["__prop_" + id] ? this["__prop_" + id]() : this["__meta_" + id].defaultValue.call(this);
             }
-            if (_ !== null) {
+            var _ = d3.functor(__);
+            if (__ !== null) {
                 switch (type) {
                     case "set":
-                        if (!set || set.indexOf(_) < 0) {
-                            console.log("Invalid value for '" + id + "':  " + _);
+                        if (!set || set.indexOf(_()) < 0) {
+                            console.log("Invalid value for '" + id + "':  " + _());
                         }
                         break;
                     case "html-color":
-                        if (window.__hpcc_debug && _ && _ !== "red") {
+                        if (window.__hpcc_debug && _() && _() !== "red") {
                             var litmus = "red";
                             var d = document.createElement("div");
                             d.style.color = litmus;
-                            d.style.color = _;
+                            d.style.color = _();
                             //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
                             if (d.style.color === litmus || d.style.color === "") {
-                                console.log("Invalid value for '" + id + "':  " + _);
+                                console.log("Invalid value for '" + id + "':  " + _());
                             }
                         }
                         break;
                     case "boolean":
-                        _ = typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+                        _(typeof (_()) === "string" && ["false", "off", "0"].indexOf(_().toLowerCase()) >= 0 ? false : Boolean(_()));
                         break;
                     case "number":
-                        _ = Number(_);
+                        _(Number(_()));
                         break;
                     case "string":
-                        _ = String(_);
+                        _(String(_()));
                         break;
                     case "array":
-                        if (!(_ instanceof Array)) {
+                        if (!(_() instanceof Array)) {
                             console.log("Invalid value for '" + id);
                         }
                         break;
@@ -225,7 +234,7 @@
                 this["__meta_" + id].defaultValue = _;
             } else {
                 this.broadcast(id, _, this["__prop_" + id]);
-                if (_ === null) {
+                if (__ === null) {
                     delete this["__prop_" + id];
                 } else {
                     this["__prop_" + id] = _;
@@ -236,28 +245,27 @@
         this[id + "_modified"] = function () {
             var isPrototype = this._id === undefined;
             if (isPrototype) {
-                return this["__meta_" + id].defaultValue !== defaultValue;
+                return this["__meta_" + id].defaultValue() !== defaultValue();
             }
-            return this["__prop_" + id] !== undefined;
+            return !!this["__prop_" + id];
         };
         this[id + "_reset"] = function () {
             switch (type) {
                 case "widget":
                     if (this["__prop_" + id]) {
-                        this["__prop_" + id].target(null);
+                        this["__prop_" + id]().target(null);
                     }
                     break;
                 case "widgetArray":
                     if (this["__prop_" + id]) {
-                        this["__prop_" + id].forEach(function (widget) {
+                        this["__prop_" + id]().forEach(function (widget) {
                             widget.target(null);
                         });
                     }
                     break;
             }
-            this["__prop_" + id] = undefined;
+            delete this["__prop_" + id];
         };
-        this["__prop_" + id] = undefined;
     };
 
     Widget.prototype.publishWidget = function (prefix, WidgetType, id) {
@@ -325,7 +333,7 @@
             this._watchArr.forEach(function (func) {
                 if (func) {
                     setTimeout(function () {
-                        func(key, newVal, oldVal);
+                        func(key, newVal ? newVal() : null, oldVal ? oldVal() : null);
                     }, 0);
                 }
             });

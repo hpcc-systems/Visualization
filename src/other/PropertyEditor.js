@@ -26,7 +26,8 @@
     PropertyEditor.prototype.publish("sectionTitle", "", "string", "Section Title",null,{tags:["Private"]});
     PropertyEditor.prototype.publish("defaultCollapsed", false, "boolean", "Default Collapsed Sections",null,{tags:["Private"]});
     PropertyEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections",null,{tags:["Private"]});
-    PropertyEditor.prototype.publish("excludeTags", ["Advanced","Private"], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("excludeTags", [], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("showProperties", [], "array", "Array of publish parameter IDs to include in PropertEditor (all others will be excluded)",null,{tags:["Private"]});
 
     PropertyEditor.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
@@ -193,17 +194,23 @@
         var discoverResponse = Persist.discover(widgetObj);
         var paramArr = [];
         discoverResponse.forEach(function(paramObj){
-            var exclude = false;
-            if (typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined") {
+            if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
+                var exclude = false;
                 for(var t in paramObj.ext.tags){
-                    if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
-                        exclude = true;
+                    var showArr = context.showProperties();
+                    if(showArr instanceof Array && showArr.length > 0){
+                        exclude = showArr.indexOf(paramObj.id) === -1;
                         break;
+                    } else {
+                        if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
+                            exclude = true;
+                            break;
+                        }
                     }
                 }
-            }
-            if (!exclude) {
-                paramArr.push(paramObj);
+                if(!exclude){
+                    paramArr.push(paramObj);
+                }
             }
         });
         paramArr.forEach(function (param, i1) {
@@ -703,15 +710,20 @@
                     var tbodyArr = [];
                     discoverResponse.forEach(function(paramObj){
                         var exclude = false;
-                        if (typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined") {
-                            for(var t in paramObj.ext.tags){
-                                if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
-                                    exclude = true;
-                                    break;
+                        var showArr = context.showProperties();
+                        if(showArr instanceof Array && showArr.length > 0){
+                            exclude = showArr.indexOf(paramObj.id) === -1;
+                        } else {
+                            if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
+                                for(var t in paramObj.ext.tags){
+                                    if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
+                                        exclude = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        if (!exclude) {
+                        if(!exclude){
                             tbodyArr.push(paramObj);
                         }
                     });
@@ -842,6 +854,7 @@
                                             .showColumns(context.showColumns())
                                             .showData(context.showData())
                                             .excludeTags(context.excludeTags())
+                                            .showProperties(context.showProperties())
                                             .show_settings(false)
                                             .target(input.node())
                                         ;

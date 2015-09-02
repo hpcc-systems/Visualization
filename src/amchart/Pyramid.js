@@ -17,7 +17,6 @@
     Pyramid.prototype.implements(I2DChart.prototype);
 
     Pyramid.prototype.publish("paletteID", "default", "set", "Palette ID", Pyramid.prototype._palette.switch(), {tags:["Basic","Shared"]});
-    Pyramid.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     Pyramid.prototype.testData = function() {
         this.columns(["Subject", "Year 1"]);

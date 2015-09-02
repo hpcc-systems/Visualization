@@ -19,6 +19,10 @@
     Scatter.prototype.implements(INDChart.prototype);
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
+
+    Scatter.prototype.publish("chartMode", "scatter", "set", "Bullet Type", ["scatter", "bubble"],{tags:["Basic"]});
+    Scatter.prototype.publish("sampleData", "ordinal", "set", "Display Sample Data", ["ordinal","linear"]);
+
     Scatter.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Scatter.prototype.enter = function(domNode, element) {
@@ -34,27 +38,21 @@
     };
 
     Scatter.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
-        var currentGraphCount = this._chart.graphs.length;
-        var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
+        this._chart.graphs = [];
+        var buildGraphCount = this._columns.length - 1;
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
-                var gRetVal = CommonXY.prototype.buildGraphObj.call(this,gType,i);
-                var gObj = buildGraphObj.call(this,gRetVal);
-
-                if (typeof(this._chart.graphs[i]) !== "undefined") {
-                    for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
-                } else {
-                    this._chart.addGraph(gObj);
-                }
-            } else {
-                this._chart.removeGraph(this._chart.graphs[i]);
-            }
+            var gRetVal = CommonXY.prototype.buildGraphObj.call(this,gType,i);
+            var gObj = buildGraphObj.call(this,gRetVal);
+            this._chart.addGraph(gObj);
         }
 
         function buildGraphObj(gObj) {
-            // TODO: Scatter Specific Options
+            if (this.chartMode() === "bubble") {
+                gObj["valueField"] = this.columns()[2];
+            } else {
+                delete gObj["valueField"];
+            }
             return gObj;
         }
     };
@@ -66,6 +64,54 @@
 
         this._chart.validateNow();
         this._chart.validateData();
+
+    };
+
+    Scatter.prototype.testData = function(_) {
+        this.sampleData("ordinal");
+        return this;
+    };
+
+    Scatter.prototype.testDataLinear = function(_) {
+        if (this.chartMode() === "scatter") {
+            this.xAxisType("linear");
+            this.columns(["Data X", "Data Y"]);
+            this.data([
+                [10, 75],
+                [20, 45],
+                [30, 98],
+                [40, 66]
+            ]);
+        } else if (this.chartMode() === "bubble") {
+            this.xAxisType("linear");
+            this.columns(["Data X", "Data Y", "Size"]);
+            this.data([
+                [10, 75, 10],
+                [20, 45, 12],
+                [30, 98, 14],
+                [40, 66, 16]
+            ]);
+        }
+        return this;
+    };
+
+    Scatter.prototype._sampleData = Scatter.prototype.sampleData;
+    Scatter.prototype.sampleData = function (_) {
+        var retVal = Scatter.prototype._sampleData.apply(this, arguments);
+        if (arguments.length) {
+            switch (_) {
+                case "ordinal":
+                    //TODO need a new shape for INDchart Bubble stuff or something????? need to ask how ordinal would work with that
+                    //this.testDataOrdinal();
+                    this.xAxisType("ordinal");
+                    INDChart.prototype.testData.apply(this, arguments);
+                    break;
+                case "linear":
+                    this.testDataLinear();
+                    break;
+            }
+        }
+        return retVal;
     };
 
     return Scatter;

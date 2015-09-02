@@ -16,6 +16,8 @@
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
 
+    CommonXY.prototype.publish("xAxisType", "ordinal", "set", "X Axis Type", ["linear", "ordinal"],{tags:["Intermediate"]});
+
     CommonXY.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
@@ -57,7 +59,7 @@
     CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)",null,{tags:["Intermediate"]});
     CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("dataDateFormat", null, "string", "",null,{tags:["Private"]});
+    //CommonXY.prototype.publish("dataDateFormat", null, "string", "",null,{tags:["Private"]});
 
     CommonXY.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
     CommonXY.prototype.publish("yAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
@@ -82,6 +84,8 @@
 
     CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    CommonXY.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -97,7 +101,7 @@
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
-        this._chart.dataDateFormat = this.dataDateFormat();
+        //this._chart.dataDateFormat = this.dataDateFormat();
 
         this._chart.valueAxes[0].position = "bottom";
         this._chart.valueAxes[0].axisAlpha = this.axisAlpha();
@@ -114,6 +118,20 @@
         this._chart.valueAxes[0].fillColor = this.xAxisFillColor();
         this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
+        this._chart.valueAxes[0].integersOnly = true;
+        //this._chart.valueAxes[0].minimum = 0;
+        if (this.xAxisType() === "ordinal") {
+            this._chart.valueAxes[0].labelFunction = function(val) {
+                // shift chart right by 1 so it doesnt start on axis
+                if (val === 0) { return ""; }
+                --val;
+                return typeof(context.data()[val]) !== "undefined" ? context.data()[val][0] : "";
+            };
+        } else {
+            delete this._chart.valueAxes[0].labelFunction;
+        }
+
+        //TODO ADD valuesAxes[0] tick format
 
         this._chart.valueAxes[1].position = "left";
         this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
@@ -131,13 +149,24 @@
         this._chart.valueAxes[1].dashLength = this.yAxisDashLength();
         this._chart.valueAxes[1].axisTitleOffset = this.yAxisTitleOffset();
 
-        // DataProvider
-        this._chart.dataProvider = this.formatData(this._data);
+        /*
+        if (this.yAxisType() === "ordinal") {
+            this._chart.valueAxes[1].integersOnly = true;
+            this._chart.valueAxes[1].labelFunction = function(val) {
+                return context.data()[val][1];
+            }
+        }
+        */
+        // this._chart.valueAxes[1].labelFunction = function(d) {
+        //     return d3.format(context.yAxisTickFormat())(d);
+        // };
+        this._chart.dataProvider = this.formatData(this._data); // DataProvider
 
         this._chart.dataProvider.forEach(function(dataPoint,i){
             context._chart.dataProvider[i].color = context._palette(dataPoint[context._columns[2]]); // By Y value
             context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(dataPoint[context._columns[2]]);
         });
+
         this._chart.colors = [];
 
         // Scroll Bar
@@ -154,7 +183,10 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            var balloonText = context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            return balloonText;
+        };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineThickness = context.lineWidth();
         gObj.bullet = context.bulletType();
@@ -170,39 +202,29 @@
         gObj.lineColorField = "linecolor";
 
         // XY Values
-        gObj.xField = context._columns[1];
-        gObj.yField = context._columns[2];
-
+        if (this.xAxisType() === "ordinal") {
+            gObj.xField = "idx";
+            gObj.yField = context._columns[i];
+        }
+        if (this.xAxisType() === "linear") {
+            gObj.xField = context._columns[0];
+            gObj.yField = context._columns[1];
+        }
         return gObj;
     };
 
     CommonXY.prototype.formatData = function(dataArr) {
         var context = this;
         var dataObjArr = [];
-        dataArr.forEach(function(dataRow) {
+        dataArr.forEach(function(dataRow, i) {
             var dataObj = {};
             context._columns.forEach(function(colName, cIdx) {
                 dataObj[colName] = dataRow[cIdx];
+                dataObj["idx"] = i + 1;
             });
             dataObjArr.push(dataObj);
         });
         return dataObjArr;
-    };
-
-    CommonXY.prototype.columns = function(colArr) {
-        if (!arguments.length) return this._columns;
-        var context = this;
-        var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length) {
-            this._categoryField = colArr[0];
-            this._valueField = [];
-            colArr.slice(1, colArr.length).forEach(function(col) {
-                context._valueField.push(col);
-            });
-            this._columns = colArr;
-            return this;
-        }
-        return retVal;
     };
 
     CommonXY.prototype.enter = function(domNode, element) {

@@ -47,7 +47,7 @@
 
     CommonRadar.prototype.publish("startDuration", 0.3, "number", "Start Duration (sec)",null,{tags:["Private"]});
 
-    CommonRadar.prototype.publish("dataDateFormat", null, "string", "Date Format String",null,{tags:["Private"]});
+    //CommonRadar.prototype.publish("dataDateFormat", null, "string", "Date Format String",null,{tags:["Private"]});
 
     CommonRadar.prototype.publish("yAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
     CommonRadar.prototype.publish("yAxisGridPosition", "start", "set", "Specifies if a grid line is placed on the center of a cell or on the beginning of a cell", ["start","middle"],{tags:["Advanced"]});
@@ -70,10 +70,12 @@
     CommonRadar.prototype.publish("fillOpacity", 0.3, "number", "Shape Opacity", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate"]});
     CommonRadar.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    CommonRadar.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+
     CommonRadar.prototype.updateChartOptions = function() {
         var context = this;
 
-        if (this.dataDateFormat()) { this._chart.dataDateFormat = this.dataDateFormat(); }
+        //if (this.dataDateFormat()) { this._chart.dataDateFormat = this.dataDateFormat(); }
         this._chart.theme = "none";
         this._chart.type = "radar";
         this._chart.startDuration = this.startDuration();
@@ -109,6 +111,10 @@
         this._chart.valueAxes[0].autoGridCount = this.yAxisAutoGridCount();
         this._chart.valueAxes[0].gridPosition = this.yAxisGridPosition();
 
+        this._chart.valueAxes[0].labelFunction = function(d) {
+            return d3.format(context.yAxisTickFormat())(d);
+        };
+
         // Color Palette
         this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
             return this._palette(row);
@@ -133,7 +139,10 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            var balloonText = d.category + ", " + context.columns()[d.graph.index+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            return balloonText;
+        };
         gObj.fillAlphas = context.fillOpacity();
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineThickness = context.lineWidth();

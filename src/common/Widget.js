@@ -677,41 +677,78 @@
 
     //  Render  ---
     Widget.prototype.render = function (callback) {
-        if (!this._parentElement)
-            return this;
+        callback = callback || function () { };
+        if (this._parentElement) {
+            if (!this._tag)
+                throw "No DOM tag specified";
 
-        if (!this._tag)
-            throw "No DOM tag specified";
-
-        var elements = this._parentElement.selectAll("#" + this._id).data([this], function (d) { return d._id; });
-        elements.enter().append(this._tag)
-            .classed(this._class, true)
-            .attr("id", this._id)
-            //.attr("opacity", 0.50)  //  Uncomment to debug position offsets  ---
-            .each(function (context) {
-                context._element = d3.select(this);
-                context.enter(this, context._element);
-            })
-        ;
-        elements
-            .each(function (context) {
-                context.preUpdate(this, context._element);
-                context.update(this, context._element);
-                context.postUpdate(this, context._element);
-            })
-        ;
-        elements.exit()
-            .each(function exit(context) {
-                context.exit(this, context._element);
-            })
-            .remove()
-        ;
-        this._renderCount++;
-
-        if (callback) {
-            callback(this);
+            var elements = this._parentElement.selectAll("#" + this._id).data([this], function (d) { return d._id; });
+            elements.enter().append(this._tag)
+                .classed(this._class, true)
+                .attr("id", this._id)
+                //.attr("opacity", 0.50)  //  Uncomment to debug position offsets  ---
+                .each(function (context) {
+                    context._element = d3.select(this);
+                    context.enter(this, context._element);
+                })
+            ;
+            elements
+                .each(function (context) {
+                    context.preUpdate(this, context._element);
+                    context.update(this, context._element);
+                    context.postUpdate(this, context._element);
+                })
+            ;
+            elements.exit()
+                .each(function exit(context) {
+                    context.exit(this, context._element);
+                })
+                .remove()
+            ;
+            this._renderCount++;
         }
 
+        //  ASync Render Contained Widgets  ---
+        var widgets = [];
+        for (var key in this) {
+            if (key.indexOf("__meta_") === 0) {
+                var meta = this[key];
+                switch (meta.type) {
+                    case "widget":
+                        var widget = this[meta.id]();
+                        if (widget) {
+                            widgets.push(this[meta.id]());
+                        }
+                        break;
+                    case "widgetArray":
+                        widgets = widgets.concat(this[meta.id]());
+                        break;
+                }
+            }
+        }
+        var context = this;
+        switch (widgets.length) {
+            case 0:
+                callback(this);
+                break;
+            case 1:
+                widgets[0].render(function () {
+                    callback(context);
+                });
+                break;
+            default:
+                var renderCount = widgets.length;
+                widgets.forEach(function (widget, idx) {
+                    setTimeout(function () {
+                        widget.render(function () {
+                            if (--renderCount === 0) {
+                                callback(context);
+                            }
+                        });
+                    }, 0);
+                });
+                break;
+        }
         return this;
     };
 

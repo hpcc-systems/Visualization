@@ -274,22 +274,6 @@
         SVGWidget.prototype.exit.apply(this, arguments);
     };
 
-    Surface.prototype.render = function (callback) {
-        if (!this.content()) {
-            SVGWidget.prototype.render.apply(this, arguments);
-        }
-        SVGWidget.prototype.render.call(this);
-        var context = this;
-        if (this.content()) {
-            this.content().render(function (contentWidget) {
-                if (callback) {
-                    callback(context);
-                }
-            });
-        }
-        return this;
-    };
-
     Surface.prototype.intersection = function (pointA, pointB) {
         var hits = [];
         var i1 = this._icon.intersection(pointA, pointB, this._pos);

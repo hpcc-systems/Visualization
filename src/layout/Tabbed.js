@@ -104,7 +104,6 @@
                     .surfaceBorderWidth(context.showTabs() ? null : 0)
                     .surfacePadding(context.showTabs() ? null : 0)
                     .resize(wSize)
-                    .render()
                 ;
             })
         ;

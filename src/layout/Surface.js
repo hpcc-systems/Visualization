@@ -38,6 +38,14 @@
    Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Private"]});
 
 
+    Surface.prototype.testData2 = function () { 
+        this.title("ABC2");
+        this.widget(new Surface().widget(new TextBox().testData()));return this;
+    };
+    Surface.prototype.testData3 = function () { 
+        this.title("ABC3");
+        this.widget(new Surface().widget(new TextBox().testData()));return this;
+    };
     Surface.prototype.testData = function () {
         this.title("ABC");
         this.widget(new Surface().widget(new TextBox().testData()));

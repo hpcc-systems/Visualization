@@ -52,19 +52,24 @@
         }
     }
 
+    function propertyWalker(widget, filter, visitor) {
+        var publishedProps = discover(widget);
+        for (var i = 0; i < publishedProps.length; ++i) {
+            var publishItem = publishedProps[i];
+            visitor(widget, publishItem);
+        }
+    }
+
     function widgetPropertyWalker(widget, filter, visitor) {
-        widgetWalker(widget, function(widget) {
-            var publishedProps = discover(widget);
-            for (var i = 0; i < publishedProps.length; ++i) {
-                var publishItem = publishedProps[i];
-                visitor(widget, publishItem);
-            }
+        widgetWalker(widget, function (widget) {
+            propertyWalker(widget, filter, visitor);
         });
     }
 
     return {
         discover: discover,
         widgetWalker: widgetWalker,
+        propertyWalker: propertyWalker,
         widgetPropertyWalker: widgetPropertyWalker,
         serializeTheme: function(widget,filter){
             return JSON.stringify(this.serializeThemeToObject(widget,filter));
@@ -164,7 +169,7 @@
             }
 
             var context = this;
-            widgetPropertyWalker(widget, filter, function (widget, item) {
+            propertyWalker(widget, filter, function (widget, item) {
                 if (widget[item.id + "_modified"]() || typeof (widget["__meta_" + item.id].trueDefaultValue) !== "undefined") {
                     switch (item.type) {
                         case "widget":

@@ -193,17 +193,17 @@
         var discoverResponse = Persist.discover(widgetObj);
         var paramArr = [];
         discoverResponse.forEach(function(paramObj){
-            if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
-                var exclude = false;
+            var exclude = false;
+            if (typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined") {
                 for(var t in paramObj.ext.tags){
                     if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
                         exclude = true;
                         break;
                     }
                 }
-                if(!exclude){
-                    paramArr.push(paramObj);
-                }
+            }
+            if (!exclude) {
+                paramArr.push(paramObj);
             }
         });
         paramArr.forEach(function (param, i1) {
@@ -702,17 +702,17 @@
                     var discoverResponse = Persist.discover(context.themeMode() ? Object.getPrototypeOf(widget) : widget);
                     var tbodyArr = [];
                     discoverResponse.forEach(function(paramObj){
-                        if(typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined"){
-                            var exclude = false;
+                        var exclude = false;
+                        if (typeof (paramObj.ext) !== "undefined" && typeof (paramObj.ext.tags) !== "undefined") {
                             for(var t in paramObj.ext.tags){
                                 if(context.excludeTags().indexOf(paramObj.ext.tags[t]) !== -1){
                                     exclude = true;
                                     break;
                                 }
                             }
-                            if(!exclude){
-                                tbodyArr.push(paramObj);
-                            }
+                        }
+                        if (!exclude) {
+                            tbodyArr.push(paramObj);
                         }
                     });
                     rows = tbody.selectAll(".tr_" + widget._id).data(tbodyArr, function (d) {

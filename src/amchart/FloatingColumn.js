@@ -29,7 +29,6 @@
     FloatingColumn.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
     FloatingColumn.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
-    FloatingColumn.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
 
     FloatingColumn.prototype.testData = function() {
         this.columns(["Subject", "open", "close"]);

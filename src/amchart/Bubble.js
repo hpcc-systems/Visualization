@@ -19,7 +19,6 @@
     Bubble.prototype.implements(INDChart.prototype);
 
     Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), {tags:["Basic","Shared"]});
-    Bubble.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Bubble.prototype.enter = function(domNode, element) {
         CommonXY.prototype.enter.apply(this, arguments);

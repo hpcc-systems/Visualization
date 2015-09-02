@@ -14,6 +14,7 @@
         this._chart = {};
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
+
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
@@ -163,7 +164,10 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            return balloonText;
+        };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
         gObj.lineThickness = context.lineWidth();
@@ -240,6 +244,9 @@
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);
+        });
+        this._chart.addListener("rollOverGraphItem", function(e) {
+            context.tooltipShow(context.rowToObj(context._data[e.index]), context._columns, e.target.columnIndex+1);
         });
     };
 

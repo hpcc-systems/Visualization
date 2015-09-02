@@ -22,8 +22,6 @@
 
     Candle.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
-    Candle.prototype.publish("tooltipTemplate",'<div style="text-align:left;"><b>[[category]]</b><br/> Open:<b>[[open]]</b> Close:<b>[[close]]</b><br/>Low:<b>[[low]]</b> High:<b>[[high]]</b></div>', "string", "Tooltip Text",null,{tags:["Intermediate"]});
-
     Candle.prototype.publish("columnWidth", 0.62, "number", "Bar Width",null,{tags:["Basic"]});
 
     Candle.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});

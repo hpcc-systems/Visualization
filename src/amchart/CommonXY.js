@@ -83,6 +83,7 @@
     CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CommonXY.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+    CommonXY.prototype.publish("xAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
 
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
@@ -114,20 +115,21 @@
         this._chart.valueAxes[0].fillColor = this.xAxisFillColor();
         this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
-        this._chart.valueAxes[0].integersOnly = true;
+
         //this._chart.valueAxes[0].minimum = 0;
         if (this.xAxisType() === "ordinal") {
+            this._chart.valueAxes[0].integersOnly = true;
             this._chart.valueAxes[0].labelFunction = function(val) {
-                // shift chart right by 1 so it doesnt start on axis
-                if (val === 0) { return ""; }
-                --val;
-                return typeof(context.data()[val]) !== "undefined" ? context.data()[val][0] : "";
+                if (val > 0) {
+                    return context.data()[val-1][0]; // shift chart right by 1 so it doesnt start on axis
+                }
+                return "";
             };
         } else {
-            delete this._chart.valueAxes[0].labelFunction;
+            this._chart.valueAxes[0].labelFunction = function(d) {
+                return d3.format(context.xAxisTickFormat())(d);
+            };
         }
-
-        //TODO ADD valuesAxes[0] tick format
 
         this._chart.valueAxes[1].position = "left";
         this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
@@ -145,17 +147,10 @@
         this._chart.valueAxes[1].dashLength = this.yAxisDashLength();
         this._chart.valueAxes[1].axisTitleOffset = this.yAxisTitleOffset();
 
-        /*
-        if (this.yAxisType() === "ordinal") {
-            this._chart.valueAxes[1].integersOnly = true;
-            this._chart.valueAxes[1].labelFunction = function(val) {
-                return context.data()[val][1];
-            }
-        }
-        */
-        // this._chart.valueAxes[1].labelFunction = function(d) {
-        //     return d3.format(context.yAxisTickFormat())(d);
-        // };
+        this._chart.valueAxes[1].labelFunction = function(d) {
+            return d3.format(context.yAxisTickFormat())(d);
+        };
+
         this._chart.dataProvider = this.formatData(this._data); // DataProvider
 
         this._chart.dataProvider.forEach(function(dataPoint,i){

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common", "../api/INDChart"], factory);
+        define(["d3", "./Common", "../api/INDChart"], factory);
     } else {
-        root.c3chart_CommonND = factory(root.c3chart_Common, root.api_INDChart);
+        root.c3chart_CommonND = factory(root.d3, root.c3chart_Common, root.api_INDChart);
     }
-}(this, function (Common, INDChart) {
+}(this, function (d3, Common, INDChart) {
     function CommonND(target) {
         Common.call(this);
         INDChart.call(this);
@@ -53,6 +53,8 @@
     CommonND.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Advanced","Shared"]});
     CommonND.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
 
+    CommonND.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional:true });
+    
     CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"],{tags:["Intermediate"]});
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart",null,{tags:["Private"]});
 
@@ -121,6 +123,8 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+
+        this.c3Chart.internal.config.axis_y_tick_format = d3.format(this.yAxisTickFormat());
 
         element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
         element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });

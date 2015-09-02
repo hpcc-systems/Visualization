@@ -10,6 +10,8 @@
 <body>
     <div id="mocha"></div>
     <div id="testWidget"></div>
+    <div id="persistSource" class="widget"></div>
+    <div id="persistTarget" class="widget"></div>
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
 
@@ -18,7 +20,7 @@
     <script>
         mocha.setup('bdd');
         var assert = chai.assert;
-        require(["./widgets", "./anmol"], function () {
+        require(["./widgets", "./persist"], function () {
             mocha.run();
         });
     </script>

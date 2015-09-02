@@ -32,8 +32,6 @@
 
     Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
 
-    Bar.prototype.publish("tooltipTemplate","[[category]]([[title]]): [[value]]", "string", "Tooltip Text",null,{tags:["Intermediate"]});
-
     Bar.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };

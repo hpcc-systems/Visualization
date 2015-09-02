@@ -21,8 +21,6 @@
     Pie.prototype.publish("fontSize", 11, "number", "Label Font Size",null,{tags:["Basic","Shared"]});
     Pie.prototype.publish("fontColor", null, "html-color", "Label Font Color",null,{tags:["Basic","Shared"]});
 
-    Pie.prototype.publish("tooltipTemplate","[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>", "string", "Tooltip Text",null,{tags:["Intermediate"]});
-
     Pie.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:["Basic"]});
     Pie.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
@@ -43,13 +41,13 @@
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Pie.prototype.updateChartOptions = function() {
-        var context = this;
-
         this._chart.type = "pie";
         this._chart.radius = this.radius();
 
-        this._chart.balloonText = context.tooltipTemplate();
-
+        this._chart.balloonFunction = function(d) {
+            var balloonText = d.title + ", " + d.value;
+            return balloonText;
+        };
         this._chart.labelPosition = this.labelPosition();
 
         if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
@@ -64,9 +62,6 @@
         this._chart.fontSize = this.fontSize();
         this._chart.fontSize = this.fontSize();
         this._chart.color = this.fontColor();
-
-        this._chart.allLabels = [];
-        this._chart.pieAlpha =  this.pieAlpha();
 
         this._chart.titleField = this._columns[0];
         this._chart.valueField = this._columns[1];

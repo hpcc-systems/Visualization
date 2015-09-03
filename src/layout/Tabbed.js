@@ -35,6 +35,11 @@
         return this;
     };
 
+    Tabbed.prototype.clearTabs = function () {
+        this.widgets([]);
+        return this;
+    };
+
     Tabbed.prototype.addTab = function (widget, label, isActive) {
         var labels = this.labels();
         var widgets = this.widgets();
@@ -104,7 +109,6 @@
                     .surfaceBorderWidth(context.showTabs() ? null : 0)
                     .surfacePadding(context.showTabs() ? null : 0)
                     .resize(wSize)
-                    .render()
                 ;
             })
         ;

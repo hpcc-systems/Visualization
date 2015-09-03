@@ -174,23 +174,6 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Surface.prototype.render = function (callback) {
-        var context = this;
-        return HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context.widget()) {
-                context.widget().render(function (widget) {
-                    if (callback) {
-                        callback(widget);
-                    }
-                });
-            } else {
-                if (callback) {
-                    callback(widget);
-                }
-            }
-        });
-    };
-
     Surface.prototype.click = function(obj) {
         console.log("Clicked: " + obj.id);
     };

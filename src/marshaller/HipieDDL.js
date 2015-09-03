@@ -53,8 +53,8 @@
     SourceMappings.prototype.doMap = function (item) {
         var retVal = [];
         for (var key in this.mappings) {
+            var rhsKey = this.mappings[key];
             try {
-                var rhsKey = this.mappings[key];
                 var val = item[rhsKey];
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
@@ -499,106 +499,110 @@
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
 
-        var context = this;
-        switch (this.type) {
-            case "CHORO":
-                this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates", function (widget) {
-                    widget
-                        .id(visualization.id)
-                    ;
-                });
-                break;
-            case "2DCHART":
-            case "PIE":
-            case "BUBBLE":
-            case "BAR":
-            case "WORD_CLOUD":
-                this.loadWidget("src/chart/MultiChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .chartType(context.properties.charttype || context.type)
-                    ;
-                });
-                break;
-            case "LINE":
-                this.loadWidget("src/chart/MultiChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .chartType(context.properties.charttype || context.type)
-                    ;
-                });
-                break;
-            case "TABLE":
-                this.loadWidget("src/other/Table", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .columns(context.label)
-                    ;
-                });
-                break;
-            case "SLIDER":
-                this.loadWidget("src/form/Slider", function (widget) {
-                    widget
-                        .id(visualization.id)
-                    ;
-                    if (visualization.range) {
-                        var selectionLabel = "";
-                        for (var key in visualization.events.events.mappings) {
-                            selectionLabel = key;
-                            break;
-                        }
+        if (this.dashboard.marshaller._widgetMappings.has(visualization.id)) {
+            this.setWidget(this.dashboard.marshaller._widgetMappings.get(visualization.id), true);
+        } else {
+            var context = this;
+            switch (this.type) {
+                case "CHORO":
+                    this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates", function (widget) {
                         widget
-                            .low(+visualization.range[0])
-                            .high(+visualization.range[1])
-                            .step(+visualization.range[2])
-                            .selectionLabel(selectionLabel)
+                            .id(visualization.id)
                         ;
-                    }
-                });
-                break;
-            case "GRAPH":
-                this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
-                    Vertex = widgetClasses[1];
-                    Edge = widgetClasses[2];
-                    widget
-                        .id(visualization.id)
-                        .layout("ForceDirected2")
-                        .applyScaleOnLayout(true)
-                    ;
-                });
-                break;
-            case "FORM":
-                this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
-                    var Input = widgetClasses[1];
-                    widget
-                        .id(visualization.id)
-                        .inputs(visualization.fields.map(function(field) {
-                            return new Input()
-                                .name(field.id)
-                                .label((field.properties ? field.properties.label : null) || field.label)
-                                .type("textbox")
-                                .value(field.properties.default ? field.properties.default : "")
+                    });
+                    break;
+                case "2DCHART":
+                case "PIE":
+                case "BUBBLE":
+                case "BAR":
+                case "WORD_CLOUD":
+                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .chartType(context.properties.charttype || context.type)
+                        ;
+                    });
+                    break;
+                case "LINE":
+                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .chartType(context.properties.charttype || context.type)
+                        ;
+                    });
+                    break;
+                case "TABLE":
+                    this.loadWidget("src/other/Table", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .columns(context.label)
+                        ;
+                    });
+                    break;
+                case "SLIDER":
+                    this.loadWidget("src/form/Slider", function (widget) {
+                        widget
+                            .id(visualization.id)
+                        ;
+                        if (visualization.range) {
+                            var selectionLabel = "";
+                            for (var key in visualization.events.events.mappings) {
+                                selectionLabel = key;
+                                break;
+                            }
+                            widget
+                                .low(+visualization.range[0])
+                                .high(+visualization.range[1])
+                                .step(+visualization.range[2])
+                                .selectionLabel(selectionLabel)
                             ;
-                        }))
-                    ;
-                });
-                break;
-            case "HEAT_MAP":
-                this.loadWidgets(["src/other/HeatMap",], function (widget, widgetClasses) {
-                    widget
-                        .id(visualization.id)
-                        .image(context.properties.imageUrl)
-                    ;
-                });
-                break;
-            default:
-                this.loadWidget("src/common/TextBox", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .text(context.id + "\n" + "TODO:  " + context.type)
-                    ;
-                });
-                break;
+                        }
+                    });
+                    break;
+                case "GRAPH":
+                    this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
+                        Vertex = widgetClasses[1];
+                        Edge = widgetClasses[2];
+                        widget
+                            .id(visualization.id)
+                            .layout("ForceDirected2")
+                            .applyScaleOnLayout(true)
+                        ;
+                    });
+                    break;
+                case "FORM":
+                    this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
+                        var Input = widgetClasses[1];
+                        widget
+                            .id(visualization.id)
+                            .inputs(visualization.fields.map(function (field) {
+                                return new Input()
+                                    .name(field.id)
+                                    .label((field.properties ? field.properties.label : null) || field.label)
+                                    .type("textbox")
+                                    .value(field.properties.default ? field.properties.default : "")
+                                ;
+                            }))
+                        ;
+                    });
+                    break;
+                case "HEAT_MAP":
+                    this.loadWidgets(["src/other/HeatMap", ], function (widget, widgetClasses) {
+                        widget
+                            .id(visualization.id)
+                            .image(context.properties.imageUrl)
+                        ;
+                    });
+                    break;
+                default:
+                    this.loadWidget("src/common/TextBox", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .text(context.id + "\n" + "TODO:  " + context.type)
+                        ;
+                    });
+                    break;
+            }
         }
     }
 
@@ -954,6 +958,7 @@
     //  Marshaller  ---
     function Marshaller() {
         this._proxyMappings = {};
+        this._widgetMappings = d3.map();
     }
 
     Marshaller.prototype.commsDataLoaded = function () {
@@ -1029,6 +1034,12 @@
     Marshaller.prototype.proxyMappings = function (_) {
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.widgetMappings = function (_) {
+        if (!arguments.length) return this._widgetMappings;
+        this._widgetMappings = _;
         return this;
     };
 

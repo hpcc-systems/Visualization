@@ -164,7 +164,7 @@
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
 
-    var exists = function (prop, scope) {
+    function exists(prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
         for (var i = 0; i < propParts.length; ++i) {
@@ -175,7 +175,7 @@
             testScope = testScope[item];
         }
         return true;
-    };
+    }
 
     var serialize = function (obj) {
         var str = [];

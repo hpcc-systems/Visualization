@@ -577,9 +577,10 @@
                                         })
                                     ;
                                     if (!context.isIE) {
+                                        var colorInput = input;
+                                        var inputColor = td.append("input");
                                         try {
-                                            var colorInput = input;
-                                            var inputColor = td.append("input")
+                                            inputColor
                                                 .attr("type", "color")
                                                 .on("change", function () {
                                                     var node = colorInput.node();
@@ -798,9 +799,10 @@
                                             })
                                         ;
                                         if (!context.isIE) {
+                                            var colorInput = input;
+                                            var inputColor = td.append("input");
                                             try {
-                                                var colorInput = input;
-                                                var inputColor = td.append("input")
+                                                inputColor
                                                     .attr("type", "color")
                                                     .on("change", function () {
                                                         var node = colorInput.node();

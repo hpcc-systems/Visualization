@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.6.1",
+  "version": "1.6.3",
   "description": "HPCC Visualization Framework",
   "devDependencies": {
     "async": "^0.9.0",

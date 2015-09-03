@@ -399,30 +399,5 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Border.prototype.render = function (callback) {
-        var context = this;
-        HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context.content().length) {
-                var renderCount = context.content().length;
-                context.content().forEach(function (contentWidget, idx) {
-                    setTimeout(function () {
-                        contentWidget.render(function () {
-                            if (--renderCount === 0) {
-                                if (callback) {
-                                    callback(widget);
-                                }
-                            }
-                        });
-                    }, 0);
-                });
-            } else {
-                if (callback) {
-                    callback(widget);
-                }
-            }
-        });
-        return this;
-    };
-
     return Border;
 }));

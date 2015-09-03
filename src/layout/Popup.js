@@ -108,25 +108,6 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Popup.prototype.render = function (callback) {
-        var context = this;
-        HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context.widget()) {
-                context.widget().render(function (widget) {
-                    if (callback) {
-                        callback(widget);
-                    }
-                });
-            } else {
-                if (callback) {
-                    callback(widget);
-                }
-            }
-        });
-        
-        return this;
-    };
-
     Popup.prototype.click = function(obj) {
         console.log("Clicked: " + obj.id);
     };

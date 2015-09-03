@@ -91,22 +91,5 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    AbsoluteSurface.prototype.render = function (callback) {
-        var context = this;
-        return HTMLWidget.prototype.render.call(this, function (widget) {
-            if (context.widget()) {
-                context.widget().render(function (widget) {
-                    if (callback) {
-                        callback(widget);
-                    }
-                });
-            } else {
-                if (callback) {
-                    callback(widget);
-                }
-            }
-        });
-    };
-
     return AbsoluteSurface;
 }));

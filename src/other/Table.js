@@ -110,6 +110,8 @@
         this.headerDiv = element;
         this.tableDiv
             .style("overflow", "auto")
+            .style("width", this.width() + "px")
+            .style("height", this.height() + "px")
         ;
         this.headerDiv
             .style("width", this.width() + "px")

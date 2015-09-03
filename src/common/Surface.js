@@ -30,18 +30,17 @@
         ;
         var context = this;
         this._menu.preShowMenu = function () {
-            if (context._content && context._content.hasOverlay()) {
-                context._content.visible(false);
+            if (context.content() && context.content().hasOverlay()) {
+                context.content().visible(false);
             }
         };
         this._menu.postHideMenu = function () {
-            if (context._content && context._content.hasOverlay()) {
-                context._content.visible(true);
+            if (context.content() && context.content().hasOverlay()) {
+                context.content().visible(true);
             }
         };
 
         this._showContent = true;
-        this._content = null;
         this._surfaceButtons = [];
     }
     Surface.prototype = Object.create(SVGWidget.prototype);
@@ -69,8 +68,8 @@
     Surface.prototype.showContent = function (_) {
         if (!arguments.length) return this._showContent;
         this._showContent = _;
-        if (this._content) {
-            this._content.visible(this._showContent);
+        if (this.content()) {
+            this.content().visible(this._showContent);
         }
         return this;
     };

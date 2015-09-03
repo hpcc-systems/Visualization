@@ -19,7 +19,6 @@
     Scatter.prototype.implements(INDChart.prototype);
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
-    Scatter.prototype.publish("tooltipTemplate","x:[[x]] y:[[y]]", "string", "Tooltip Text");
 
     Scatter.prototype.enter = function(domNode, element) {
         CommonXY.prototype.enter.apply(this, arguments);

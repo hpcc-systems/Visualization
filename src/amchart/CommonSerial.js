@@ -14,6 +14,7 @@
         this._chart = {};
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
+
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
@@ -93,8 +94,10 @@
 
     CommonSerial.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    CommonSerial.prototype.updateChartOptions = function() {
+    CommonSerial.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
 
+    CommonSerial.prototype.updateChartOptions = function() {
+        var context = this;
         this._chart.dataDateFormat = this.dataDateFormat();
         this._chart.type = "serial";
         this._chart.startDuration = this.startDuration();
@@ -150,6 +153,10 @@
         this._chart.valueAxes[0].boldPeriodBeginning = this.yAxisBoldPeriodBeginning();
         this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset();
 
+        this._chart.valueAxes[0].labelFunction = function(d) {
+            return d3.format(context.yAxisTickFormat())(d);
+        };
+
         if (this.showScrollbar()) {
             this._chart.chartScrollbar.enabled = true;
         } else {
@@ -163,7 +170,10 @@
         var context = this;
         var gObj = {};
 
-        gObj.balloonText = context.tooltipTemplate();
+        gObj.balloonFunction = function(d) {
+            var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            return balloonText;
+        };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
         gObj.lineThickness = context.lineWidth();
@@ -240,6 +250,9 @@
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.columnIndex+1]);
+        });
+        this._chart.addListener("rollOverGraphItem", function(e) {
+            context.tooltipShow(context.rowToObj(context._data[e.index]), context._columns, e.target.columnIndex+1);
         });
     };
 

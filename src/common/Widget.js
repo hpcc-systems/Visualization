@@ -58,22 +58,28 @@
             }
             window.g_all[this._id] = this;
         }
-        if(window.__hpcc_theme){
-            var clsArr = this._class.trim().split(" ").reverse();
-            for(var i in clsArr){
-                if(typeof (window.__hpcc_theme[clsArr[i]]) !== "undefined"){
-                    for(var paramName in window.__hpcc_theme[clsArr[i]]){
-                        if(typeof (this[paramName]) === "function"){
-                            var proto = Object.getPrototypeOf(this);
-                            proto["__meta_"+paramName].trueDefaultValue = this[paramName]();
-                            proto["__meta_"+paramName].defaultValue = window.__hpcc_theme[clsArr[i]][paramName];
-                        }
+
+        if (window.__hpcc_theme) {
+            this.applyTheme(window.__hpcc_theme);
+        }
+    }
+    Widget.prototype._class = "common_Widget";
+
+    Widget.prototype.applyTheme = function (theme) {
+        if (!theme) {
+            return;
+        }
+        var clsArr = this._class.split(" ");
+        for (var i in clsArr) {
+            if (theme[clsArr[i]]) {
+                for (var paramName in theme[clsArr[i]]) {
+                    if (this["__meta_" + paramName]) {
+                        this["__meta_" + paramName].defaultValue = theme[clsArr[i]][paramName];
                     }
                 }
             }
         }
-    }
-    Widget.prototype._class = " common_Widget";
+    };
 
     Widget.prototype.ieVersion = (function () {
         var ua = navigator.userAgent, tem,
@@ -176,6 +182,7 @@
         this["__meta_" + id] = {
             id: id,
             type: type,
+            origDefaultValue: defaultValue,
             defaultValue: defaultValue,
             description: description,
             set: set,
@@ -241,6 +248,13 @@
                 return this["__meta_" + id].defaultValue !== defaultValue;
             }
             return this["__prop_" + id] !== undefined;
+        };
+        this[id + "_exists"] = function () {
+            var isPrototype = this._id === undefined;
+            if (isPrototype) {
+                return this["__meta_" + id].defaultValue !== undefined;
+            }
+            return this["__prop_" + id] !== undefined || this["__meta_" + id].defaultValue !== undefined;
         };
         this[id + "_reset"] = function () {
             switch (type) {

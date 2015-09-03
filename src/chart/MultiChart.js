@@ -49,8 +49,6 @@
         SVGWidget.call(this);
         INDChart.call(this);
 
-        this.chart(null);
-
         this._1DChartTypes = _1DChartTypes;
         this._2DChartTypes = _2DChartTypes;
         this._NDChartTypes = _NDChartTypes;
@@ -92,6 +90,18 @@
         return retVal;
     };
 
+    MultiChart.prototype._origChart = MultiChart.prototype.chart;
+    MultiChart.prototype.chart = function (_) {
+        var retVal = MultiChart.prototype._origChart.apply(this, arguments);
+        if (arguments.length) {
+            var context = this;
+            _.click = function (row, column, selected) {
+                context.click(row, column, selected);
+            };
+        }
+        return retVal;
+    };
+
     MultiChart.prototype.hasOverlay = function () {
         return this.chart() && this.chart().hasOverlay();
     };
@@ -123,9 +133,6 @@
                     .size(size)
                 ;
                 context.chart(newContent);
-                newContent.click = function (row, column, selected) {
-                    context.click(row, column, selected);
-                };
                 if (oldContent) {
                     oldContent
                         .data([])

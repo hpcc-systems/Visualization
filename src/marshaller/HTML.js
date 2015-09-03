@@ -44,7 +44,7 @@
         return retVal;
     };
 
-    function createGraphData(marshaller, databomb) {
+    function walkDashboards(marshaller, databomb) {
         if (databomb instanceof Object) {
         } else if (databomb){
             databomb = JSON.parse(databomb);
@@ -80,48 +80,67 @@
     HTML.prototype.render = function (callback) {
         if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb)) {
             return Tabbed.prototype.render.apply(this, arguments);
+        } else if (this._prev_ddlUrl && this._prev_ddlUrl !== this.ddlUrl()) {
+            //  DDL has actually changed (not just a deserialization)
+            this
+                .clearTabs()
+            ;
         }
         this._prev_ddlUrl = this.ddlUrl();
         this._prev_databomb = this.databomb();
 
-        this.marshaller = new HipieDDL.Marshaller().proxyMappings(this.proxyMappings());
+        //  Gather existing widgets for reuse  ---
+        var tabContent = [];
+        this.widgets().forEach(function (d) {
+            tabContent = tabContent.concat(d.widget().content());
+        });
+        this.marshaller = new HipieDDL.Marshaller()
+            .proxyMappings(this.proxyMappings())
+            .widgetMappings(d3.map(tabContent.map(function (d) {
+                return d.widget();
+            }), function (d) {
+                return d.id();
+            }))
+        ;
+
+        //  Parse DDL  ---
         var context = this;
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
             this.marshaller.parse(this.ddlUrl(), function () {
-                postParse();
+                populateContent();
             });
         } else {
             this.marshaller.url(this.ddlUrl(), function () {
-                postParse();
+                populateContent();
             });
         }
-        function postParse() {
-            var dashboards = createGraphData(context.marshaller, context.databomb());
-            if (context.marshaller.dashboardTotal <= 1) {
-                context.showTabs(false);
-            }
-            for (var key in dashboards) {
-                var grid = new Grid();
-                context.addTab(grid, dashboards[key].dashboard.title);
-                var cellRow = 0;
-                var cellCol = 0;
-                var maxCol = Math.floor(Math.sqrt(dashboards[key].visualizations.length));
-                dashboards[key].visualizations.forEach(function (viz, idx) {
-                    if (idx && (idx % maxCol === 0)) {
-                        cellRow++;
-                        cellCol = 0;
-                    }
-                    viz.widget.size({ width: 0, height: 0 });
-                    var existingWidget = grid.getContent(viz.widget._id);
-                    if (existingWidget) {
-                        viz.setWidget(existingWidget, true);
-                    } else {
+
+        function populateContent() {
+            var dashboards = walkDashboards(context.marshaller, context.databomb());
+            if (!tabContent.length) {
+                if (context.marshaller.dashboardTotal <= 1) {
+                    context.showTabs(false);
+                }
+                for (var key in dashboards) {
+                    var grid = new Grid();
+                    context.addTab(grid, dashboards[key].dashboard.title);
+                    var cellRow = 0;
+                    var cellCol = 0;
+                    var maxCol = Math.floor(Math.sqrt(dashboards[key].visualizations.length));
+                    dashboards[key].visualizations.forEach(function (viz, idx) {
+                        if (idx && (idx % maxCol === 0)) {
+                            cellRow++;
+                            cellCol = 0;
+                        }
+                        viz.widget.size({ width: 0, height: 0 });
                         grid.setContent(cellRow, cellCol, viz.widget, viz.title);
-                    }
-                    cellCol++;
-                });
-                for (var key2 in dashboards[key].dashboard.datasources) {
-                    dashboards[key].dashboard.datasources[key2].fetchData({}, true);
+                        cellCol++;
+                    });
+                }
+            }
+            for (var dashKey in dashboards) {
+                for (var dsKey in dashboards[dashKey].dashboard.datasources) {
+                    dashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
                 }
             }
             Tabbed.prototype.render.call(context, function (widget) {

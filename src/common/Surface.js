@@ -9,7 +9,6 @@
     function Surface() {
         SVGWidget.call(this);
 
-        this._menuPadding = 2;
         this._icon = new Icon()
             .faChar("\uf07b")
             .paddingPercent(50)
@@ -40,7 +39,6 @@
             }
         };
 
-        this._showContent = true;
         this._surfaceButtons = [];
     }
     Surface.prototype = Object.create(SVGWidget.prototype);
@@ -53,25 +51,36 @@
     Surface.prototype.publish("showIcon", true, "boolean", "Show Title",null,{tags:["Advanced"]});
     Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
     Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
-    //Surface.prototype.publish("menu");
+
     Surface.prototype.publish("content", null, "widget", "Content",null,{tags:["Private"]});
 
     Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Intermediate"]});
     Surface.prototype.publish("buttonGutter", 25, "number", "Space Between Menu and Buttons",null,{tags:["Intermediate"]});
 
+    Surface.prototype.publish("showContent", true, "boolean", "Show Content",null,{tags:["Intermediate"]});
+    Surface.prototype.publish("menu", [], "array", "Menu List Data",null,{tags:["Intermediate"]});
+    Surface.prototype.publish("menuPadding", 2, "number", "Menu Padding",null,{tags:["Advance"]});
+
+    Surface.prototype._menuParam = Surface.prototype.menu;
     Surface.prototype.menu = function (_) {
-        if (!arguments.length) return this._menu.data();
-        this._menu.data(_);
-        return this;
+        Surface.prototype._menuParam.apply(this, arguments);
+        if (arguments.length) {
+            this._menu.data(_);
+            return this;
+        }
+        return this._menu.data();
     };
 
+    Surface.prototype._showContent = Surface.prototype.showContent;
     Surface.prototype.showContent = function (_) {
-        if (!arguments.length) return this._showContent;
-        this._showContent = _;
-        if (this.content()) {
-            this.content().visible(this._showContent);
+        var retVal = Surface.prototype._showContent.apply(this, arguments);
+        if (arguments.length) {
+            if (this.content()) {
+                this.content().visible(this.showContent());
+                return this;
+            }
         }
-        return this;
+        return retVal;
     };
 
     Surface.prototype.testData = function () {
@@ -190,7 +199,7 @@
             .move({ x: -width / 2 + iconClientSize.width / 2, y: yTitle })
         ;
         this._menu
-            .move({ x: width / 2 - menuClientSize.width / 2 - this._menuPadding, y: yTitle })
+            .move({ x: width / 2 - menuClientSize.width / 2 - this.menuPadding(), y: yTitle })
         ;
         this._text
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
@@ -221,7 +230,7 @@
             ;
         }
 
-        if (this._showContent) {
+        if (this.showContent()) {
             var xOffset = leftMargin;
             var yOffset = titleRegionHeight - topMargin;
 

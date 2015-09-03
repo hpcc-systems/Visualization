@@ -103,7 +103,9 @@
         var optionHTML = "";
         if (optionsArr.length > 0) {
             optionsArr.forEach(function (opt) {
-                optionHTML += "<option value='" + opt + "'>" + opt + "</option>";
+                var val = (typeof(opt) === "object" && opt.constructor === Array ? opt[0] : opt);
+                var text = (typeof(opt) === "object" && opt.constructor === Array ? (opt[1] ? opt[1] : opt[0]) : opt);
+                optionHTML += "<option value='" + val + "'>" + text + "</option>";
             });
         } else {
             optionHTML += "<option>selectOptions not set</option>";

@@ -39,7 +39,7 @@
                     .name("select-test")
                     .label("Select Test")
                     .type("select")
-                    .selectOptions(["A","B","C"])
+                    .selectOptions([["AAA"],["BBB"],["CCC"]])
                     .value("B"),
                 new WidgetArray()
                     .content([

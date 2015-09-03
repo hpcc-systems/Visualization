@@ -193,9 +193,13 @@
         var currWidget = null;
         var showProperties = null;
         var debouncedResize = null;
+        var propEditor = null;
 
         require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
-            var propEditor = new PropertyEditor().showColumns(false).showData(false);
+            propEditor = new PropertyEditor()
+                    .showColumns(false)
+                    .showData(false)
+            ;
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {

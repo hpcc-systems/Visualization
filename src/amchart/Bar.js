@@ -30,7 +30,8 @@
     Bar.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:["Basic"]});
     Bar.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
-    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
+    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%","3d"],{tags:["Basic"]});
+    Bar.prototype.publish("useOhlcLines", false, "boolean", "Use OHLC Lines",null,{tags:["Intermediate"]});
 
     Bar.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
@@ -72,32 +73,29 @@
         this._chart.angle = this.Angle3D();
         this._chart.categoryAxis.startOnAxis = false; //override due to render issue
 
+        if (this._rangeType === "candle-ohlc") {
+            this._gType = this.useOhlcLines() ? "ohlc" : "candlestick";
+        } else {
+            this._gType = "column";
+        }
+
         this.buildGraphs(this._gType);
 
         return this._chart;
     };
 
     Bar.prototype.buildGraphs = function(gType) {
-        if (typeof(this._chart.graphs) === "undefined") { this._chart.graphs = []; }
-        var currentGraphCount = this._chart.graphs.length;
-        var buildGraphCount = Math.max(currentGraphCount, this._valueField.length);
+        this._chart.graphs = [];
+        var buildGraphCount = this._columns.length - 1;
 
         for(var i = 0; i < buildGraphCount; i++) {
-            if ((typeof(this._valueField) !== "undefined" && typeof(this._valueField[i]) !== "undefined")) { //mark
-                var gRetVal = CommonSerial.prototype.buildGraphObj.call(this,gType,i);
-                var gObj = buildGraphObj.call(this,gRetVal);
+            var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
+            var gObj = buildGraphObj.call(this, gRetVal, i);
 
-                if (typeof(this._chart.graphs[i]) !== "undefined") {
-                    for (var key in gObj) { this._chart.graphs[i][key] = gObj[key]; }
-                } else {
-                    this._chart.addGraph(gObj);
-                }
-            } else {
-                this._chart.removeGraph(this._chart.graphs[i]);
-            }
+            this._chart.addGraph(gObj);
         }
 
-        function buildGraphObj(gObj) {
+        function buildGraphObj(gObj, i) {
             if (this.columnWidth()) {
                 gObj.columnWidth = this.columnWidth();
             }
@@ -108,9 +106,18 @@
                  gObj.topRadius = undefined;
             }
 
-            if(this.paletteGrouping() === "By Category"){
-                gObj.colorField = "color";
-                gObj.lineColorField = "linecolor";
+            gObj.colorField = "color" + i;
+            gObj.lineColorField = "linecolor" + i;
+
+            if (this._rangeType === "normal") {
+                gObj.openField = "openField" + i;
+                gObj.valueField = "valueField" + i;
+            }
+            if (this._rangeType === "candle-ohlc") {
+                gObj.lowField = "lowField" + i;
+                gObj.openField = "openField" + i;
+                gObj.closeField = "closeField" + i;
+                gObj.highField = "highField" + i;
             }
 
             gObj.fillAlphas = this.fillOpacity();

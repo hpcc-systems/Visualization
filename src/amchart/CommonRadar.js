@@ -47,8 +47,6 @@
 
     CommonRadar.prototype.publish("startDuration", 0.3, "number", "Start Duration (sec)",null,{tags:["Private"]});
 
-    CommonRadar.prototype.publish("dataDateFormat", null, "string", "Date Format String",null,{tags:["Private"]});
-
     CommonRadar.prototype.publish("yAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
     CommonRadar.prototype.publish("yAxisGridPosition", "start", "set", "Specifies if a grid line is placed on the center of a cell or on the beginning of a cell", ["start","middle"],{tags:["Advanced"]});
 
@@ -75,7 +73,6 @@
     CommonRadar.prototype.updateChartOptions = function() {
         var context = this;
 
-        if (this.dataDateFormat()) { this._chart.dataDateFormat = this.dataDateFormat(); }
         this._chart.theme = "none";
         this._chart.type = "radar";
         this._chart.startDuration = this.startDuration();

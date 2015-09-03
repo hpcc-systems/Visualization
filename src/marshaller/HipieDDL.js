@@ -53,8 +53,8 @@
     SourceMappings.prototype.doMap = function (item) {
         var retVal = [];
         for (var key in this.mappings) {
+            var rhsKey = this.mappings[key];
             try {
-                var rhsKey = this.mappings[key];
                 var val = item[rhsKey];
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];

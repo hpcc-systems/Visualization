@@ -532,7 +532,10 @@
         if (!arguments.length) return this._visible;
         this._visible = _;
         if (this._parentElement) {
-            this._parentElement.style("visibility", this._visible ? null : "hidden");
+            this._parentElement.style({
+                visibility: this._visible ? null : "hidden",
+                opacity: this._visible ? null : 0
+            });
         }
         return this;
     };

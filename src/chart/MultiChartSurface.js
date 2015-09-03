@@ -11,12 +11,12 @@
         INDChart.call(this);
 
         this._title = "MultiChartSurface";
+
         this._content = new MultiChart();
+        var context = this;
         this._content.click = function (row, column) {
             context.click(row, column);
         };
-
-        var context = this;
         this._menu.click = function (d) {
             context._content.chartType(d).render();
         };

@@ -505,12 +505,12 @@
         }
     };
 
-    var camelizeString = function(str){
+    function camelizeString(str) {
         var spacedText = str.split(/(?=[0-9A-Z])/).map(function(n){return n.length > 1 ? n+" " : n;}).join("");
         return spacedText.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-    };
+    }
 
-    var tableInputHtml = function (rowObj,value,widgetArr,idSuffix){
+    function tableInputHtml(rowObj,value,widgetArr,idSuffix){
         var inputHtml = "";
         var id = "te-input-"+rowObj.id+"-"+idSuffix;
 
@@ -585,7 +585,7 @@
             });
             return options;
         }
-    };
+    }
 
     ThemeEditor.prototype.tableObjHtml = function (tableObj) {
         var html = "<table id='" + tableObj.id + "' class='te-section-table expanded'>";

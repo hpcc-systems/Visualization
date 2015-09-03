@@ -88,9 +88,9 @@
         var context = this;
 
         element
-            .style("border-width",this.surfaceBorderWidth_modified() ? this.surfaceBorderWidth() + "px" : null)
+            .style("border-width",this.surfaceBorderWidth_exists() ? this.surfaceBorderWidth() + "px" : null)
             .style("border-color",this.surfaceBorderColor())
-            .style("border-radius",this.surfaceBorderRadius_modified() ? this.surfaceBorderRadius() + "px" : null)
+            .style("border-radius",this.surfaceBorderRadius_exists() ? this.surfaceBorderRadius() + "px" : null)
             .style("background-color",this.surfaceBackgroundColor())
         ;
 
@@ -151,7 +151,7 @@
             })
         ;
         widgets
-            .style("padding", this.surfacePadding_modified() ? this.surfacePadding() + "px" : null)
+            .style("padding", this.surfacePadding_exists() ? this.surfacePadding() + "px" : null)
             .each(function (d) {
                 var widgetSize = context.widgetSize(element.select("h3"), d3.select(this));
                 if (widgetSize.width < 0) widgetSize.width = 0;

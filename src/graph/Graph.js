@@ -1037,9 +1037,9 @@
         var edges = {};
 
         if (vertex) {
-            edges = this.graphData.nodeEdges(vertex.id());
-            for (var i = 0; i < edges.length; ++i) {
-                var edge = this.graphData.edge(edges[i]);
+            var nedges = this.graphData.nodeEdges(vertex.id());
+            for (var i = 0; i < nedges.length; ++i) {
+                var edge = this.graphData.edge(nedges[i]);
                 edges[edge.id()] = edge;
                 if (edge._sourceVertex.id() !== vertex.id()) {
                     vertices[edge._sourceVertex.id()] = edge._sourceVertex;

@@ -23,7 +23,7 @@
         SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        var line = element.selectAll(".line").data(this._data, function (d) { return d; });
+        var line = element.selectAll(".line").data(this.data(), function (d) { return d; });
         line.enter().append("g")
             .attr("class", "line")
             .each(function (d) {

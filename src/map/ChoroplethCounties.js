@@ -50,7 +50,7 @@
             })
             .on("mouseover.tooltip", function (d) {
                 if (context._dataMap[d.id]) {
-                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context._columns, 1);
+                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context.columns(), 1);
                 }
             })
             .on("mouseout.tooltip", function (d) {
@@ -58,7 +58,7 @@
             })
             .on("mousemove.tooltip", function (d) {
                 if (context._dataMap[d.id]) {
-                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context._columns, 1);
+                    context.tooltipShow([context._dataMap[d.id][2], context._dataMap[d.id][1]], context.columns(), 1);
                 }
             })
         ;

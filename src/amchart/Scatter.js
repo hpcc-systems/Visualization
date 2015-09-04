@@ -38,7 +38,7 @@
     Scatter.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
 
-        for(var i = 0; i < this._columns.length; i++) {
+        for (var i = 0; i < this.columns().length; i++) {
             var gRetVal = CommonXY.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, i);
 

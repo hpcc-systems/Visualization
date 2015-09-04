@@ -47,7 +47,7 @@
         }
 
         var columnScale = d3.scale.ordinal()
-            .domain(context._columns.filter(function (d, idx) { return idx > 0; }))
+            .domain(context.columns().filter(function (d, idx) { return idx > 0; }))
             .rangeRoundBands([0, dataLen])
         ;
 
@@ -65,7 +65,7 @@
 
                 var columnRect = element.selectAll("rect").data(dataRow.map(function (d, i) {
                     return {
-                        column: context._columns[i],
+                        column: context.columns()[i],
                         row: dataRow,
                         value: d,
                         idx: i
@@ -77,13 +77,13 @@
                     .attr("class", "columnRect")
                     .call(context._selection.enter.bind(context._selection))
                     .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(dataRow, context._columns, d.idx);
+                        context.tooltipShow(dataRow, context.columns(), d.idx);
                     })
                     .on("mouseout.tooltip", function (d) {
                         context.tooltipShow();
                     })
                     .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(dataRow, context._columns, d.idx);
+                        context.tooltipShow(dataRow, context.columns(), d.idx);
                     })
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(dataRow), d.column, context._selection.selected(this));

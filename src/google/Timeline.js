@@ -48,10 +48,8 @@
     };
 
     Timeline.prototype.data = function (_) {
-        var context = this;
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
-            this._data = _;
             this._data_google = new google.visualization.DataTable();
 
             this._data_google.addColumn({ type: "string", id: "Label A" });
@@ -66,8 +64,8 @@
             _.forEach(function(d) {
                 start = parseDate(d[2]);
                 end = parseDate(d[3]);
-                context._data_google.addRows([ [ d[0], d[1], start, end ] ]);
-            });
+                this._data_google.addRows([ [ d[0], d[1], start, end ] ]);
+            }, this);
         }
         return retVal;
     };

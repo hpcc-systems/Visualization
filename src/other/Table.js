@@ -11,7 +11,7 @@
         this._tag = "div";
         this._currentSort = "";
         this._currentSortOrder = 1;
-        this._columns = [];
+        this.columns([]);
         this._paginator = new Paginator();
         this._selectionBag = new Bag.Selection();
         this._selectionPrevClick = null;
@@ -194,7 +194,7 @@
             this.fixedHeader(false);
         } 
 
-        var th = this.thead.selectAll("th").data(this._columns, function (d) { return d; });
+        var th = this.thead.selectAll("th").data(this.columns(), function (d) { return d; });
         th
             .enter()
             .append("th")
@@ -246,7 +246,7 @@
             var ipp = this._calcRowsPerPage(th);
             this.itemsPerPage(ipp);
 
-            this._paginator.numItems(this._data.length);
+            this._paginator.numItems(this.data().length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
             if (this.pageNumber() > this._tNumPages) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
@@ -270,9 +270,9 @@
 
         var tData = null;
         if (this.pagination()) {
-            tData = this._data.slice(start, end);
+            tData = this.data().slice(start, end);
         } else {
-            tData = this._data;
+            tData = this.data();
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);
@@ -624,7 +624,7 @@
             this._currentSortOrder *= -1;
         }
         var context = this;
-        this._data.sort(function (l, r) {
+        this.data().sort(function (l, r) {
             if (l[idx] === r[idx]) {
                 return 0;
             } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
@@ -647,7 +647,7 @@
         if (d3.event.shiftKey) {
             var inRange = false;
             var rows = [];
-            var selection = this._data.filter(function (row, i) {
+            var selection = this.data().filter(function (row, i) {
                 var lastInRangeRow = false;
                 if (row === d || row === this._selectionPrevClick) {
                     if (inRange) {

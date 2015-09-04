@@ -53,7 +53,7 @@
         }
 
         var node = element.selectAll(".node")
-            .data(this._data.length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })
+            .data(this.data().length ? this.d3Pack.nodes({ children: this.cloneData() }).filter(function (d) { return !d.children; }) : [], function (d) { return d[0]; })
         ;
 
         //  Enter  ---
@@ -62,20 +62,20 @@
             .attr("opacity", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d), context._columns[1], context._selection.selected(this));
+                context.click(context.rowToObj(d), context.columns()[1], context._selection.selected(this));
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
                     .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d, context._columns, 1);
+                        context.tooltipShow(d, context.columns(), 1);
                     })
                     .on("mouseout.tooltip", function (d) {
                         context.tooltipShow();
                     })
                     .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d, context._columns, 1);
+                        context.tooltipShow(d, context.columns(), 1);
                     })
                 ;
                 if (d.__viz_faChar) {

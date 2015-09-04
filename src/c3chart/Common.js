@@ -50,11 +50,11 @@
     };
 
     Common.prototype.getC3Series = function() {
-        return this._columns.filter(function (d, i) { return i > 0;});
+        return this.columns().filter(function (d, i) { return i > 0;});
     };
 
     Common.prototype.getC3Rows = function () {
-        var retVal = [this._columns.filter(function (item, idx) { return idx > 0; })].concat(this._data.map(function (row) {
+        var retVal = [this.columns().filter(function (item, idx) { return idx > 0; })].concat(this.data().map(function (row) {
             return row.filter(function (cell, idx) {
                 return idx > 0;
             });
@@ -63,20 +63,20 @@
     };
 
     Common.prototype.getC3Categories = function () {
-        var retVal = this._data.map(function (row, idx) { return row[0]; });
+        var retVal = this.data().map(function (row, idx) { return row[0]; });
         return retVal;
     };
 
     Common.prototype.getC3Column = function (colNum) {
-        var retVal = [this._columns[colNum]].concat(this._data.map(function (row, idx) { return row[colNum]; }));
+        var retVal = [this.columns()[colNum]].concat(this.data().map(function (row, idx) { return row[colNum]; }));
         return retVal;
     };
 
     Common.prototype.getC3Columns = function (total) {
-        if (!this._data.length) {
+        if (!this.data().length) {
             return [];
         }
-        total = total || this._columns.length;
+        total = total || this.columns().length;
         var retVal = [];
         for (var i = 1; i < total; ++i) {
             retVal.push(this.getC3Column(i));

@@ -13,7 +13,7 @@
         this._current_grouping = undefined;
         this._showing_columns = undefined;
         this._showing_data = undefined;
-        this._columns = ["Key", "Value"];
+        this.columns(["Key", "Value"]);
         this._contentEditors = [];
         this._showSettings = true;
 
@@ -134,7 +134,7 @@
         }
         this._current_grouping = this.paramGrouping();
         this._widgetObjsById[this._id] = this;
-        this._sharedProperties = this.findSharedProperties(this._data);
+        this._sharedProperties = this.findSharedProperties(this.data());
 
         var needsPropertiesTableRedraw = this.needsPropTableRedraw();
         if(needsPropertiesTableRedraw && this.showSettings()){
@@ -378,7 +378,7 @@
                                 }
                             }
                         });
-                        context._data.forEach(function(d){
+                        context.data().forEach(function(d){
                             d.render();
                         });
                     };

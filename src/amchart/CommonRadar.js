@@ -90,7 +90,7 @@
         this.titles = [];
 
         // DataProvider
-        this._chart.dataProvider = this.formatData(this._data);
+        this._chart.dataProvider = this.formatData(this.data());
 
         // ValueAxis
         this._chart.valueAxes[0].title = this.yAxisTitle();
@@ -113,7 +113,7 @@
         };
 
         // Color Palette
-        this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+        this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
             return this._palette(row);
         }, this);
 
@@ -159,7 +159,7 @@
         var context = this;
         dataArr.forEach(function(dataRow){
             var dataObj = {};
-            context._columns.forEach(function(colName,cIdx){
+            context.columns().forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
             });
             dataObjArr.push(dataObj);
@@ -167,18 +167,11 @@
         return dataObjArr;
     };
 
-    CommonRadar.prototype.columns = function(colArr) {
-        if (!arguments.length) return this._columns;
-        var context = this;
+    CommonRadar.prototype.columns = function (_) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
         if (arguments.length) {
-            this._categoryField = colArr[0];
-            this._valueField = [];
-            colArr.slice(1,colArr.length).forEach(function(col){
-                context._valueField.push(col);
-            });
-            this._columns = colArr;
-            return this;
+            this._categoryField = _[0];
+            this._valueField = _.filter(function (d, i) { return i > 0; });
         }
         return retVal;
     };
@@ -196,7 +189,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
-            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.index+1]);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index+1]);
         });
     };
 

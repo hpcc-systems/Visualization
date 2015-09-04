@@ -167,7 +167,7 @@
         if (arguments.length) {
             if (this.brushg) {
                 this.brushg
-                    .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
+                    .call(this.brush.extent(this.allowRange() ? this.data() : [this.data(), this.data()]))
                 ;
             }
         }
@@ -292,16 +292,16 @@
             .attr("d", function (d) { return context.handlePath(d); })
         ;
 
-        if (this._data.length === 0) {
+        if (this.data().length === 0) {
             if( this.allowRange()) {
-                  this._data = [this.low(),this.low()];
+                  this.data([this.low(),this.low()]);
              } else {
-                 this._data = this.low();
+                 this.data(this.low());
             }
         }
 
         this.brushg
-            .call(this.brush.extent(this.allowRange() ? this._data : [this._data, this._data]))
+            .call(this.brush.extent(this.allowRange() ? this.data() : [this.data(), this.data()]))
         ;
 
         var bbox = this.sliderElement.node().getBBox();
@@ -332,13 +332,13 @@
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
-            this._data = mouseX;
+            this.data(mouseX);
             this._click();
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);
             extent[1] = this.nearestStep(extent[1]);
-            this._data = extent;
+            this.data(extent);
             d3.select(self)
                 .call(this.brush.extent(extent))
             ;
@@ -378,10 +378,10 @@
     Slider.prototype._click = function() {
         if (this.selectionLabel()) {
             var clickData = {};
-            clickData[this.selectionLabel()] = this._data;
+            clickData[this.selectionLabel()] = this.data();
             this.click(clickData);
         } else {
-            this.click(this._data);
+            this.click(this.data());
         }
     };
 

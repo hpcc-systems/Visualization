@@ -130,8 +130,8 @@
             if (newContent !== oldContent) {
                 var size = context.size();
                 newContent
-                    .columns(context._columns)
-                    .data(context._data)
+                    .columns(context.columns())
+                    .data(context.data())
                     .size(size)
                 ;
                 context.chart(newContent);

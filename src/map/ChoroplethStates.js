@@ -58,7 +58,7 @@
             .on("mouseover.tooltip", function (d) {
                 var code = usStates.stateNames[d.id].code;
                 if (context._dataMap[code]) {
-                    context.tooltipShow([usStates.stateNames[d.id].name, context._dataMap[code][1]], context._columns, 1);
+                    context.tooltipShow([usStates.stateNames[d.id].name, context._dataMap[code][1]], context.columns(), 1);
                 }
             })
             .on("mouseout.tooltip", function (d) {
@@ -67,7 +67,7 @@
             .on("mousemove.tooltip", function (d) {
                 var code = usStates.stateNames[d.id].code;
                 if (context._dataMap[code]) {
-                    context.tooltipShow([usStates.stateNames[d.id].name, context._dataMap[code][1]], context._columns, 1);
+                    context.tooltipShow([usStates.stateNames[d.id].name, context._dataMap[code][1]], context.columns(), 1);
                 }
             })
         ;

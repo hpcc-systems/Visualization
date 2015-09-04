@@ -18,7 +18,7 @@
             context.click(clickEvent, d.id);
         };
         this._config.data.color = function (color, d) {
-            return context._palette(context._data, context.low(), context.high());
+            return context._palette(context.data(), context.low(), context.high());
         };
     }
     Gauge.prototype = Object.create(Common1D.prototype);
@@ -46,7 +46,7 @@
     Gauge.prototype.getChartOptions = function () {
         var chartOptions = Common1D.prototype.getChartOptions.apply(this, arguments);
 
-        chartOptions.columns = [[this._columns, this._data]];
+        chartOptions.columns = [[this.columns(), this.data()]];
 
         return chartOptions;
     };

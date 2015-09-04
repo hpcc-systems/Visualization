@@ -77,7 +77,8 @@
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
-    Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header and first column",null,{tags:["Private"]});
+    Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
+    Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
@@ -188,6 +189,10 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
+       
+        if (!this.showHeader()) {
+            this.fixedHeader(false);
+        } 
 
         var th = this.thead.selectAll("th").data(this._columns, function (d) { return d; });
         th
@@ -232,7 +237,7 @@
         th.exit()
             .remove()
         ;
-
+  
         if (this.pagination()) {
             if (this._paginator.target() === null) {
                 this._paginator.target(this.tableDiv.node());
@@ -386,7 +391,7 @@
         ;
         var colsWrapper = this.headerDiv.selectAll(".cols-wrapper").data(this.fixedHeader() ? [0] : []);
         colsWrapper.enter()
-            .append("div")
+            .insert("div", ".rows-wrapper")
             .attr("class", "cols-wrapper")
             .each(function (d) {
                 var element = d3.select(this);
@@ -422,8 +427,8 @@
         var rowLabelsWrapper = rowsWrapper.select(".labels-wrapper");
 
         var theadSelection = this.table.select("thead");
-        var colWrapperHeight = this.fixedHeader() ? theadSelection.node().offsetHeight : 0;
-
+        var colWrapperHeight = this.fixedHeader() || !this.showHeader() ? theadSelection.node().offsetHeight : 0;
+        var tableMarginHeight = colWrapperHeight;
         _copyLabelContents(this._id);
         _setOnScrollEvents(this.tableDiv.node());
         
@@ -471,20 +476,25 @@
                 rowWrapperWidth = context.fixedColumn() ? rowSelection.node().offsetWidth : 0;
                 var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
                 var rowContents = "<thead>";
-                
-                var theadTr = document.createElement("tr");
-                theadTr.style.backgroundColor = context.theadRowBackgroundColor();
-                var th = document.createElement("th");
-                th.style.width = theadWidth + "px";
-                th.style.color = context.theadFontColor();
-                th.style.fontSize = context.theadFontSize();
-                th.style.fontFamily = context.theadFontFamily();
-                th.style.borderColor = context.theadCellBorderColor();
-                th.innerHTML = origThead.filter(function (d, idx) { return idx === 0; }).html();
-                theadTr.appendChild(th);
                 var tempTrWrapper = document.createElement("div");
-                tempTrWrapper.appendChild(theadTr);
-                rowContents += tempTrWrapper.innerHTML;
+                
+                if (context.showHeader()) {
+                    var theadTr = document.createElement("tr");
+                    theadTr.style.backgroundColor = context.theadRowBackgroundColor();
+                    var th = document.createElement("th");
+                    th.style.width = theadWidth + "px";
+                    th.style.color = context.theadFontColor();
+                    th.style.fontSize = context.theadFontSize();
+                    th.style.fontFamily = context.theadFontFamily();
+                    th.style.borderColor = context.theadCellBorderColor();
+                    th.innerHTML = origThead.filter(function (d, idx) { return idx === 0; }).html();
+                    theadTr.appendChild(th);
+                    tempTrWrapper.appendChild(theadTr);
+                    rowContents += tempTrWrapper.innerHTML;
+                    
+                } else {
+                    tableMarginHeight = 0;
+                }
                 rowContents += "</thead>";
                 rowSelection.each(function () {
                     var td = document.createElement("td");
@@ -501,7 +511,7 @@
                 rowLabelsWrapper.html(rowContents)
                     .style("width", rowWrapperWidth)
                 ;
-                
+
                 if (context.fixedHeader()){
                     rowLabelsWrapper.select("thead")
                         .style("position", "absolute")
@@ -548,8 +558,10 @@
                 ;
             } else {
                 rowWrapperWidth = 0; 
+                tableMarginHeight = 0;
             }
-            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
+
+            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(tableMarginHeight);
             var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
             var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
             var finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
@@ -557,7 +569,7 @@
                 .style("width", finalWidth + "px")
                 .style("height", newTableHeight + "px")
                 .style("position", "absolute")
-                .style("top", colWrapperHeight + "px")
+                .style("top", tableMarginHeight + "px")
                 .style("left", rowWrapperWidth + "px")
                 .style("overflow", "auto")
             ;
@@ -570,14 +582,13 @@
             ;
             rowsWrapper
                 .style("width", rowWrapperWidth + "px")
-                .style("height", newTableHeight + "px")
                 .style("position", "absolute")
             ;
             rowLabelsWrapper
-                .style("margin-top", -context.tableDiv.node().scrollTop + colWrapperHeight + "px")
+                .style("margin-top", -context.tableDiv.node().scrollTop + tableMarginHeight + "px")
             ;
             rowLabelsWrapper.select("thead")
-                .style("margin-top", context.tableDiv.node().scrollTop - colWrapperHeight + "px")
+                .style("margin-top", context.tableDiv.node().scrollTop - tableMarginHeight + "px")
                 .on("click", function (d, idx) {
                     context.headerClick(d, idx);
                 })
@@ -591,10 +602,10 @@
                     .style("margin-left", -leftDelta + "px")
                 ;
                 rowLabelsWrapper
-                    .style("margin-top", -topDelta + colWrapperHeight + "px")
+                    .style("margin-top", -topDelta + tableMarginHeight + "px")
                 ;
                 rowLabelsWrapper.select("thead")
-                    .style("margin-top", topDelta - colWrapperHeight + "px")
+                    .style("margin-top", topDelta - tableMarginHeight + "px")
                 ;
             };
         }

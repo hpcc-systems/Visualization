@@ -148,6 +148,20 @@
             });
         },
 
+        multiSort: function (data, sortBy) {
+            data.sort(function (l, r) {
+                for (var i = 0; i < sortBy.length; ++i) {
+                    var lVal = l[sortBy[i].idx];
+                    var rVal = r[sortBy[i].idx];
+                    if (lVal !== rVal) {
+                        return sortBy[i].reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal, rVal);
+                    }
+                }
+                return 0;
+            });
+            return data;
+        },
+
         Selection: SelectionBag,
         SimpleSelection: SimpleSelection,
 
@@ -170,6 +184,15 @@
                 });
             }
             return retVal;
+        },
+
+        endsWith: function(subjectString, searchString, position) {
+            if (position === undefined || position > subjectString.length) {
+                position = subjectString.length;
+            }
+            position -= searchString.length;
+            var lastIndex = subjectString.indexOf(searchString, position);
+            return lastIndex !== -1 && lastIndex === position;
         }
     };
 }));

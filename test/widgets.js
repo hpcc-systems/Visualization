@@ -181,6 +181,7 @@
                         var noSurfaceHTML = null;
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
+                            case "src/marshaller/HTML-wu":
                             case "src/marshaller/Graph-roxie":
                                 it("Roxie Call");
                                 break;
@@ -212,6 +213,7 @@
                         var surfaceHTML = null;
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
+                            case "src/marshaller/HTML-wu":
                             case "src/marshaller/Graph-roxie":
                                 it("Roxie Call");
                                 break;

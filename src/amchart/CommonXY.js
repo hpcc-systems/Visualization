@@ -57,8 +57,6 @@
     CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)",null,{tags:["Intermediate"]});
     CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("dataDateFormat", null, "string", "",null,{tags:["Private"]});
-
     CommonXY.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
     CommonXY.prototype.publish("yAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
 
@@ -98,8 +96,6 @@
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
-
-        this._chart.dataDateFormat = this.dataDateFormat();
 
         this._chart.valueAxes[0].position = "bottom";
         this._chart.valueAxes[0].axisAlpha = this.axisAlpha();

@@ -168,7 +168,8 @@
             .append("table")
         ;
         this.tbody = table.append("tbody");
-        this.btntd = table.append("tfoot").append("tr").append("td")
+        this.tfoot = table.append("tfoot");
+        this.btntd = this.tfoot.append("tr").append("td")
             .attr("colspan", 2)
         ;
 
@@ -234,9 +235,11 @@
         ;
         rows.exit().remove();
 
+        this.tfoot
+            .style("display",this.showSubmit() ? "table-footer-group" : "none")
+        ;
         this.btntd
             .attr("colspan", this._maxCols * 2)
-            .style("visibility", this.showSubmit() ? null : "hidden")
         ;
     };
 

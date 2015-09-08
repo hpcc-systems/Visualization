@@ -4,6 +4,7 @@
 .chart_Summary {
     width: 225px;
     height: 150px;
+    font-size: 14px;
 }
 
 .chart_Summary .content h2 {

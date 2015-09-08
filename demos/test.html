@@ -292,8 +292,8 @@
                     }
 
                     function displayAmCharts() {
-                        require(["src/amchart/Area", "src/amchart/Bar", "src/amchart/Bubble", "src/amchart/Candle", "src/amchart/FloatingColumn", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"],
-                            function (AmArea, AmBar, AmBubble, AmCandle, AmFloatingColumn, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
+                        require(["src/amchart/Area", "src/amchart/Bar", "src/amchart/Funnel", "src/amchart/Gauge", "src/amchart/Line", "src/amchart/Pie", "src/amchart/Polar", "src/amchart/Pyramid", "src/amchart/Scatter"],
+                            function (AmArea, AmBar, AmFunnel, AmGauge, AmLine, AmPie, AmPolar, AmPyramid, AmScatter) {
                             new AmArea()
                                 .target("amarea")
                                 .testData()
@@ -301,11 +301,6 @@
                             ;
                             new AmBar()
                                 .target("ambar")
-                                .testData()
-                                .render()
-                            ;
-                            new AmBubble()
-                                .target("ambubble")
                                 .testData()
                                 .render()
                             ;
@@ -476,6 +471,7 @@
                             .low(2000)
                             .high(2010)
                             .step(2)
+                            .showPlay(true)
                             .render();
                         ;
                         var slider = new Slider()

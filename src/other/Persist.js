@@ -61,7 +61,7 @@
             }
         }
     }
-
+    
     function widgetPropertyWalker(widget, filter, visitor) {
         widgetWalker(widget, function (widget) {
             propertyWalker(widget, filter, visitor);

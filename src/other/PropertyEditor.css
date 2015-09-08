@@ -1,9 +1,14 @@
+.other_PropertyEditor{
+    overflow:auto;
+}
+.other_PropertyEditor .other_PropertyEditor{
+    overflow:hidden;
+}
 .other_PropertyEditor *{
     box-sizing:border-box;
 }
 .other_PropertyEditor table{
     width:100%;
-    margin-bottom:4px;
 }
 /*
 .other_PropertyEditor table:last-child{

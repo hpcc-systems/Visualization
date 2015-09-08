@@ -39,13 +39,17 @@
     Grid.prototype.publish("content", [], "widgetArray", "widgets",null,{tags:["Basic"]});
 
     Grid.prototype.testData = function () {
+        var innerGrid = new Grid()
+            .setContent(1, 0, new TextBox().testData())
+            .setContent(1, 1, new TextBox().testData())
+        ;
         this
             .setContent(0, 0, new TextBox().testData())
             .setContent(0, 1, new TextBox().testData())
             .setContent(1, 0, new TextBox().testData())
             .setContent(1, 1, new TextBox().testData())
             .setContent(0, 2, new TextBox().testData(), "Title AAA", 2, 2)
-            .setContent(2, 0, new TextBox().testData(), "Title BBB", 2, 4)
+            .setContent(2, 0, innerGrid, "Title BBB", 2, 4)
         ;
         return this;
     };
@@ -304,9 +308,9 @@
         
         this.updateCellMultiples();
         
-        var rows = this.contentDiv.selectAll(".cell_" + this._id).data(this.content(), function (d) { return d._id; });
+        var rows = this.contentDiv.selectAll(".cell_." + this._id).data(this.content(), function (d) { return d._id; });
         rows.enter().append("div")
-            .attr("class", "cell_" + this._id)
+            .attr("class", "cell_ " + this._id)
             .style("position", "absolute")
             .each(function (d) {
                 d
@@ -342,7 +346,7 @@
                 context._dragCellOffsetY = context._currLoc[1] - d.gridRow();
                 context.createDropTarget(context._currLoc);
                 setTimeout(function () {
-                    context.contentDiv.selectAll(".cell_" + context._id)
+                    context.contentDiv.selectAll(".cell_." + context._id)
                         .classed("dragItem", function (d2) {
                             return d._id === d2._id;
                         }).classed("notDragItem", function (d2) {
@@ -419,7 +423,7 @@
                 gridDropTarget.parentNode.removeChild(gridDropTarget);
                 
                 setTimeout(function () {
-                    context.contentDiv.selectAll(".cell_" + context._id)
+                    context.contentDiv.selectAll(".cell_." + context._id)
                         .classed("dragItem", false)
                         .classed("notDragItem", false)
                     ;
@@ -429,13 +433,13 @@
             });
             
         if(this.designMode()){ 
-            this.contentDiv.selectAll(".cell_" + this._id).call(drag);
+            this.contentDiv.selectAll(".cell_." + this._id).call(drag);
             d3.select(context._target).on("click",function(){
                 context._selectionBag.clear();
                 context.postSelectionChange();
             });
         } else {
-            this.contentDiv.selectAll(".cell_" + this._id).on(".drag", null);
+            this.contentDiv.selectAll(".cell_." + this._id).on(".drag", null);
             this._selectionBag.clear();
         }
         

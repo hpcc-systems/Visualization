@@ -228,6 +228,11 @@
                             console.log("Invalid value for '" + id);
                         }
                         break;
+                    case "object":
+                        if (!(_ instanceof Object)) {
+                            console.log("Invalid value for '" + id);
+                        }
+                        break;
                 }
             }
             if (isPrototype) {

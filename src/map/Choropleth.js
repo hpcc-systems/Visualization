@@ -36,7 +36,7 @@
             this._dataMaxWeight = null;
 
             var context = this;
-            this._data.forEach(function (item) {
+            this.data().forEach(function (item) {
                 context._dataMap[item[0]] = item;
                 if (!context._dataMinWeight || item[1] < context._dataMinWeight) {
                     context._dataMinWeight = item[1];

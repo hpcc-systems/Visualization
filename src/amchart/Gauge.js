@@ -105,7 +105,7 @@
         }
         if (this.colorType() === "c") {
             var c_band = {
-                color: this._palette(this._data, this.low(), this.high()),
+                color: this._palette(this.data(), this.low(), this.high()),
                 startValue: this.low(),
                 endValue: this.high(),
                 innerRadius: this.bandsInnerRadius()[0]
@@ -113,7 +113,7 @@
             this._chart.axes[0].bands.push(c_band);
         }
 
-        this._chart.axes[0].bottomText = this.bottomText().replace("[[data]]",this._data);
+        this._chart.axes[0].bottomText = this.bottomText().replace("[[data]]",this.data());
 
         return this._chart;
     };
@@ -128,7 +128,7 @@
         domNode.style.height = this.size().height + "px";
 
         this.updateChartOptions();
-        this._chart.arrows[0].setValue(this._data);
+        this._chart.arrows[0].setValue(this.data());
 
         this._chart.validateNow();
         this._chart.validateData();

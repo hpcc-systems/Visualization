@@ -60,8 +60,8 @@
         this.titles = [];
         this.baloon = {};
 
-        this._chart.titleField = this._columns[0];
-        this._chart.valueField = this._columns[1];
+        this._chart.titleField = this.columns()[0];
+        this._chart.valueField = this.columns()[1];
 
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
@@ -70,13 +70,13 @@
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         }
-        this._data = this._data.sort(sortingMethod);
+        this.data(this.data().sort(sortingMethod));
 
         // DataProvider
-        this._chart.dataProvider = this.formatData(this._data);
+        this._chart.dataProvider = this.formatData(this.data());
 
         // Color Palette
-        this._chart.colors = this._data.map(function (row) {
+        this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);
         }, this);
 
@@ -95,7 +95,7 @@
         var context = this;
         dataArr.forEach(function(dataRow){
             var dataObj = {};
-            context._columns.forEach(function(colName,cIdx){
+            context.columns().forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
             });
             dataObjArr.push(dataObj);
@@ -103,18 +103,11 @@
         return dataObjArr;
     };
 
-    CommonFunnel.prototype.columns = function(colArr) {
-        if (!arguments.length) return this._columns;
+    CommonFunnel.prototype.columns = function(_) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        var context = this;
         if (arguments.length) {
-            this._categoryField = colArr[0];
-            this._valueField = [];
-            colArr.slice(1,colArr.length).forEach(function(col){
-                context._valueField.push(col);
-            });
-            this._columns = colArr;
-            return this;
+            this._categoryField = _[0];
+            this._valueField = _.filter(function (d, i) { return i > 0; });
         }
         return retVal;
     };
@@ -134,7 +127,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
-            context.click(context.rowToObj(context._data[e.dataItem.index]));
+            context.click(context.rowToObj(context.data()[e.dataItem.index]));
         });
     };
 

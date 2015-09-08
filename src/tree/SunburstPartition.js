@@ -19,7 +19,7 @@
     SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     SunburstPartition.prototype.root = function (_) {
-        if (!arguments.length) return this._root || this._data;
+        if (!arguments.length) return this._root || this.data();
         this._root = _;
 
         if (this.svg) {
@@ -80,7 +80,7 @@
         this._xScale.range([0, 2 * Math.PI]);
         this._yScale.range([0, this.radius]);
 
-        this._dataNodes = this.partition.nodes(this._data);
+        this._dataNodes = this.partition.nodes(this.data());
         var paths = this.svg.selectAll("path").data(this._dataNodes, function (d, i) { return d.id !== undefined ? d.id : i; });
         paths.enter().append("path")
             .on("click", function (d) { context.click(d); })

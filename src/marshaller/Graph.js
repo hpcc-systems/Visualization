@@ -222,8 +222,8 @@
             .snapToGrid(this._designMode ? 12 : 0)
             .allowDragging(this._designMode)
         ;
-        if (this._data.vertices) {
-            this._data.vertices.forEach(function (row) {
+        if (this.data().vertices) {
+            this.data().vertices.forEach(function (row) {
                 row.show_title(this._design_mode)
                     .render()
                 ;

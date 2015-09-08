@@ -150,11 +150,11 @@
             return d3.format(context.yAxisTickFormat())(d);
         };
 
-        this._chart.dataProvider = this.formatData(this._data); // DataProvider
+        this._chart.dataProvider = this.formatData(this.data());
 
         this._chart.dataProvider.forEach(function(dataPoint,i){
-            context._chart.dataProvider[i].color = context._palette(dataPoint[context._columns[2]]); // By Y value
-            context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(dataPoint[context._columns[2]]);
+            context._chart.dataProvider[i].color = context._palette(dataPoint[context.columns()[2]]); // By Y value
+            context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(dataPoint[context.columns()[2]]);
         });
 
         this._chart.colors = [];
@@ -193,11 +193,11 @@
         // XY Values
         if (this.xAxisType() === "ordinal") {
             gObj.xField = "idx";
-            gObj.yField = context._columns[i];
+            gObj.yField = context.columns()[i];
         }
         if (this.xAxisType() === "linear") {
-            gObj.xField = context._columns[0];
-            gObj.yField = context._columns[1];
+            gObj.xField = context.columns()[0];
+            gObj.yField = context.columns()[1];
         }
         return gObj;
     };
@@ -207,7 +207,7 @@
         var dataObjArr = [];
         dataArr.forEach(function(dataRow, i) {
             var dataObj = {};
-            context._columns.forEach(function(colName, cIdx) {
+            context.columns().forEach(function(colName, cIdx) {
                 dataObj[colName] = dataRow[cIdx];
                 dataObj["idx"] = i + 1;
             });
@@ -239,7 +239,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
-            context.click(context.rowToObj(context._data[e.index]), context._columns[e.target.index], context._data[e.index][e.target.index]);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index], context.data()[e.index][e.target.index]);
         });
     };
 

@@ -25,8 +25,8 @@
         this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
 
-        this._columns = [];
-        this._data = [];
+        this._private_columns = [];
+        this._private_data = [];
         this._pos = { x: 0, y: 0 };
         this._size = { width: 0, height: 0 };
         this._scale = 1;
@@ -388,19 +388,19 @@
     };
 
     Widget.prototype.columns = function (_) {
-        if (!arguments.length) return this._columns;
-        this._columns = _;
+        if (!arguments.length) return this._private_columns;
+        this._private_columns = _;
         return this;
     };
 
     Widget.prototype.data = function (_) {
-        if (!arguments.length) return this._data;
-        this._data = _;
+        if (!arguments.length) return this._private_data;
+        this._private_data = _;
         return this;
     };
 
     Widget.prototype.cloneData = function () {
-        return this._data.map(function (row) { return row.slice(0); });
+        return this.data().map(function (row) { return row.slice(0); });
     };
 
     Widget.prototype.flattenData = function () {
@@ -424,11 +424,11 @@
 
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
-        this._columns.forEach(function(col, idx) {
+        this.columns().forEach(function(col, idx) {
             retVal[col] = row[idx];
         });
-        if (row.length === this._columns.length + 1) {
-            retVal.__lparam = row[this._columns.length];
+        if (row.length === this.columns().length + 1) {
+            retVal.__lparam = row[this.columns().length];
         }
         return retVal;
     };

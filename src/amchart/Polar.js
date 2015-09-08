@@ -56,7 +56,7 @@
     Polar.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
 
-        for(var i = 0; i < this._columns.length - 1; i++) {
+        for (var i = 0; i < this.columns().length - 1; i++) {
             var gRetVal = CommonRadar.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, this._valueField[i], i);
 

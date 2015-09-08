@@ -96,7 +96,7 @@
     TreeMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
-            var arr = this._columns.concat(this._data);
+            var arr = this.columns().concat(this.data());
             this._data_google = new google.visualization.arrayToDataTable(arr);
         }
         return retVal;

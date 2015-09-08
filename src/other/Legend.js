@@ -9,9 +9,9 @@
     function Legend() {
         Table.call(this);
         this._tag = "div";
-        this._columns = [];
     }
     Legend.prototype = Object.create(Table.prototype);
+    Legend.prototype.constructor = Legend;
     Legend.prototype._class += " other_Legend";
 
     //We may need a new publish param "type" to store references to widgets
@@ -108,9 +108,9 @@
 
         var tData = null;
         if (this.pagination()) {
-            tData = this._data.slice(start,end);
+            tData = this.data().slice(start,end);
         } else {
-            tData = this._data;
+            tData = this.data();
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);

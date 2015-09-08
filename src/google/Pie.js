@@ -39,7 +39,7 @@
     Pie.prototype.getChartOptions = function () {
         var retVal = Common2D.prototype.getChartOptions.apply(this, arguments);
 
-        retVal.colors = this._data.map(function (row) {
+        retVal.colors = this.data().map(function (row) {
             return this._palette(row[0]);
         }, this);
 

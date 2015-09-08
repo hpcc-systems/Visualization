@@ -58,12 +58,12 @@
                 this._chart.colors = [];
             break;
             case "By Column":
-                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
                     return this._palette(row);
                 }, this);
             break;
             default:
-                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
                     return this._palette(row);
                 }, this);
             break;
@@ -87,7 +87,7 @@
     Bar.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
 
-        for(var i = 0; i < this._columns.length - 1; i++) {
+        for (var i = 0; i < this.columns().length - 1; i++) {
             var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, i);
 

@@ -3,13 +3,12 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/SVGWidget", "css!./MorphText"], factory);
     } else {
-        root.other_MorphText = factory(root.common_SVGWidget, root.api_I1DChart);
+        root.other_MorphText = factory(root.common_SVGWidget);
     }
 }(this, function (SVGWidget) {
     function MorphText() {
         SVGWidget.call(this);
     }
-
     MorphText.prototype = Object.create(SVGWidget.prototype);
     MorphText.prototype.constructor = MorphText;
     MorphText.prototype._class += " other_MorphText";
@@ -94,7 +93,7 @@
           .attr("class", "update")
         ;
         this.transition.apply(text)
-            .attr("x", function (d, i) { return (-context._data.length / 2 + i) * context._fontWidth + context._fontWidth / 2; })
+            .attr("x", function (d, i) { return (-context.data().length / 2 + i) * context._fontWidth + context._fontWidth / 2; })
         ;
 
         var newText = text.enter().append("text")
@@ -102,7 +101,7 @@
             .attr("font-size", this.fontSize())
             .attr("dy", ".35em")
             .attr("y", (this.reverse() ? +1 : -1) * this._fontWidth * 2)
-            .attr("x", function (d, i) { return (-context._data.length / 2 + i) * context._fontWidth + context._fontWidth / 2; })
+            .attr("x", function (d, i) { return (-context.data().length / 2 + i) * context._fontWidth + context._fontWidth / 2; })
             .style("fill-opacity", 1e-6)
             .style("text-anchor", this.anchor())
             .text(function (d) { return d.text; })

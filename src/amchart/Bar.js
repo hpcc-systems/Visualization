@@ -105,9 +105,10 @@
                  gObj.topRadius = undefined;
             }
 
-            gObj.colorField = "color" + i;
+            //gObj.colorField = "color" + i;
             gObj.lineColorField = "linecolor" + i;
-
+            gObj.fillColorsField = "color" + i;
+            
             if (this._rangeType === "normal") {
                 gObj.openField = "openField" + i;
                 gObj.valueField = "valueField" + i;

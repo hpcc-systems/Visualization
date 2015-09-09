@@ -40,18 +40,21 @@
 
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    Pie.prototype.calcRadius = function (_) {
+        return Math.min(this._size.width, this._size.height) / 2 - 2;
+    };
+
     Pie.prototype.updateChartOptions = function() {
         this._chart.type = "pie";
-        this._chart.radius = this.radius();
-
-        this._chart.balloonFunction = function(d) {
-            var balloonText = d.title + ", " + d.value;
-            return balloonText;
-        };
-        this._chart.labelPosition = this.labelPosition();
-
-        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
+        this._chart.pullOutOnlyOne = true;
+        this._chart.radius = this.calcRadius();
+        this._chart.labelsEnabled = true;
+        this._chart.labelRadius = -40;
+        this._chart.labelFunction = function(d) {
+            return d.title;
+        }
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
+        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 

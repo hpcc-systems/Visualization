@@ -512,6 +512,14 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            //var columnBorderSelection = d3.select(e.item.columnGraphics.node).select("path");
+            //var borderWidth = parseInt(columnBorderSelection.attr("stroke-width"));
+            //columnBorderSelection.attr("stroke-width",borderWidth+2);
+            
+            //e.item.dataContext[e.graph.lineColorField] = "#0079DC";
+            e.item.dataContext[e.graph.fillColorsField] = "#0079DC";
+            e.chart.validateData();
+
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex+1]);
         });
     };

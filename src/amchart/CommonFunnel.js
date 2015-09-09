@@ -46,6 +46,8 @@
         this._chart.startDuration = this.startDuration();
         this._chart.rotate = this.flip();
 
+        this._chart.pullOutOnlyOne = true;
+        
         this._chart.color = this.fontColor();
         this._chart.fontSize = this.fontSize();
         this._chart.fontFamily = this.fontFamily();

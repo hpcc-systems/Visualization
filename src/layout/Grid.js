@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "./Cell", "../common/TextBox", "../other/Bag", "css!./Grid"], factory);
+        define(["d3", "../common/HTMLWidget", "./Cell", "../common/TextBox", "../common/Utility", "css!./Grid"], factory);
     } else {
-        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_TextBox, root.other_Bag);
+        root.layout_Grid = factory(root.d3, root.common_HTMLWidget, root.layout_Cell, root.common_TextBox, root.common_Utility);
     }
-}(this, function (d3, HTMLWidget, Cell, TextBox, Bag) {
+}(this, function (d3, HTMLWidget, Cell, TextBox, Utility) {
     function Grid() {
         HTMLWidget.call(this);
 
@@ -15,7 +15,7 @@
         this._rowCount = 0;
         this._colSize = 0;
         this._rowSize = 0;
-        this._selectionBag = new Bag.Selection();
+        this._selectionBag = new Utility.Selection();
         
         this.content([]);
     }

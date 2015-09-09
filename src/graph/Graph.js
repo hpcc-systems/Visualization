@@ -1,11 +1,11 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../common/Palette", "../api/IGraph", "./Vertex", "./Edge", "./GraphData", "./GraphLayouts", "../other/Bag", "css!./Graph"], factory);
+        define(["d3", "../common/SVGWidget", "../common/Palette", "../api/IGraph", "./Vertex", "./Edge", "./GraphData", "./GraphLayouts", "../common/Utility", "css!./Graph"], factory);
     } else {
-        root.graph_Graph = factory(root.d3, root.common_SVGWidget, root.common_Palette, root.api_IGraph, root.graph_Vertex, root.graph_Edge, root.graph_GraphData, root.graph_GraphLayouts, root.other_Bag);
+        root.graph_Graph = factory(root.d3, root.common_SVGWidget, root.common_Palette, root.api_IGraph, root.graph_Vertex, root.graph_Edge, root.graph_GraphData, root.graph_GraphLayouts, root.common_Utility);
     }
-}(this, function (d3, SVGWidget, Palette, IGraph, Vertex, Edge, GraphData, GraphLayouts, Bag) {
+}(this, function (d3, SVGWidget, Palette, IGraph, Vertex, Edge, GraphData, GraphLayouts, Utility) {
     function Graph() {
         SVGWidget.call(this);
         IGraph.call(this);
@@ -16,7 +16,7 @@
             opacity: 0.33,
             edge: "1.25px"
         };
-        this._selection = new Bag.Selection();
+        this._selection = new Utility.Selection();
     }
     Graph.prototype = Object.create(SVGWidget.prototype);
     Graph.prototype.constructor = Graph;

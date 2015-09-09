@@ -45,7 +45,7 @@
         this.svg.selectAll("circle").remove();
         this.svg.selectAll("text").remove();
 
-        var root = this._data;
+        var root = this.data();
         var focus = root;
         var nodes = this.pack.nodes(root);
 

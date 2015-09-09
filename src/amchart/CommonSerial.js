@@ -392,7 +392,7 @@
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
-        this._chart.dataProvider = this.amFormatData(this._data);
+        this._chart.dataProvider = this.amFormatData(this.data());
         this.amFormatColumns();
 
         this._chart.valueAxes[0].title = this.yAxisTitle();
@@ -489,12 +489,12 @@
 
     CommonSerial.prototype.amFormatColumns = function(ColArr) {
         var context = this;
-        this._categoryField = this._columns[0];
-        this._chart.categoryField = this._columns[0];
+        this._categoryField = this.columns()[0];
+        this._chart.categoryField = this.columns()[0];
         this._valueField = [];
         this._openField = [];
         this._closeField = [];
-        this._columns.slice(1, this._columns.length).forEach(function(col, idx) {
+        this.columns().slice(1, this.columns().length).forEach(function(col, idx) {
             context._valueField.push(col);
         });
         return this;
@@ -512,7 +512,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
-            context.click(context.rowToObj(context._data[e.index]), context.columns()[e.target.columnIndex+1]);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex+1]);
         });
     };
 

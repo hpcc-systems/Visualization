@@ -50,7 +50,7 @@
             this._dataMaxWeight = null;
 
             var context = this;
-            this._data.forEach(function (item) {
+            this.data().forEach(function (item) {
                 context._dataMap[item.country] = item.weight;
                 if (!context._dataMinWeight || item.weight < context._dataMinWeight) {
                     context._dataMinWeight = item.weight;
@@ -99,7 +99,7 @@
             })
             .on("mouseover.tooltip", function (d) {
                 if (context._dataMap[d.id]) {
-                    context.tooltipShow([d.name, context._dataMap[d.id]], context._columns, 1);
+                    context.tooltipShow([d.name, context._dataMap[d.id]], context.columns(), 1);
                 }
             })
             .on("mouseout.tooltip", function (d) {
@@ -107,7 +107,7 @@
             })
             .on("mousemove.tooltip", function (d) {
                 if (context._dataMap[d.id]) {
-                    context.tooltipShow([d.name, context._dataMap[d.id]], context._columns, 1);
+                    context.tooltipShow([d.name, context._dataMap[d.id]], context.columns(), 1);
                 }
             })
             .attr("id", function (d) {

@@ -464,11 +464,11 @@
     Graph.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
-            if (!this._data.merge) {
+            if (!this.data().merge) {
                 this.graphData = new GraphData();
                 this._renderCount = 0;
             }
-            var data = this.graphData.setData(this._data.vertices, this._data.edges, this._data.hierarchy, this._data.merge);
+            var data = this.graphData.setData(this.data().vertices, this.data().edges, this.data().hierarchy, this.data().merge);
 
             var context = this;
             data.addedVertices.forEach(function (item) {

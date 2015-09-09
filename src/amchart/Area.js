@@ -28,7 +28,7 @@
     Area.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
 
-        this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+        this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
             return this._palette(row);
         }, this);
 
@@ -46,9 +46,8 @@
 
     Area.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
-        var buildGraphCount = this._columns.length - 1;
 
-        for(var i = 0; i < buildGraphCount; i++) {
+        for(var i = 0; i < this.columns().length - 1; i++) {
             var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, i);
 

@@ -22,7 +22,7 @@
     Pie.prototype.getChartOptions = function () {
         var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
 
-        var data = this._data.map(function (row, idx) {
+        var data = this.data().map(function (row, idx) {
             return [row[0], row[1]];
         }, this);
 

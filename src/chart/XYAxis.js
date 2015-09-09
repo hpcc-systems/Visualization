@@ -225,7 +225,7 @@
             return row.map(function (cell, idx) {
                 if (idx === 0) {
                     return this.formatData(cell);
-                } if (idx >= this._columns.length) {
+                } if (idx >= this.columns().length) {
                     return cell;
                 }
                 return this.formatValue(cell);
@@ -492,10 +492,10 @@
         }
 
         var min = this.yAxisDomainLow() ? this.formatValue(this.yAxisDomainLow()) : d3.min(this.formattedData(), function (data) {
-            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[0] : d; });
+            return d3.min(data.filter(function (cell, i) { return i > 0 && context.columns()[i] && context.columns()[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[0] : d; });
         });
         var max = this.yAxisDomainHigh() ? this.formatValue(this.yAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
-            return d3.max(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[1] : d; });
+            return d3.max(data.filter(function (cell, i) { return i > 0 && context.columns()[i] && context.columns()[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[1] : d; });
         });
         switch (this.yAxisType()) {
             case "time":

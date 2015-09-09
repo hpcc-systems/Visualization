@@ -30,7 +30,7 @@
     Bar.prototype.publish("Depth3D", 0, "number", "3D Depth (px)",null,{tags:["Basic"]});
     Bar.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
-    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
+    Bar.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%","3d"],{tags:["Basic"]});
     Bar.prototype.publish("useOhlcLines", false, "boolean", "Use OHLC Lines",null,{tags:["Intermediate"]});
 
     Bar.prototype.enter = function(domNode, element) {
@@ -58,12 +58,12 @@
                 this._chart.colors = [];
             break;
             case "By Column":
-                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
                     return this._palette(row);
                 }, this);
             break;
             default:
-                this._chart.colors = this._columns.filter(function (d, i) { return i > 0; }).map(function (row) {
+                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
                     return this._palette(row);
                 }, this);
             break;
@@ -86,9 +86,8 @@
 
     Bar.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
-        var buildGraphCount = this._columns.length - 1;
 
-        for(var i = 0; i < buildGraphCount; i++) {
+        for (var i = 0; i < this.columns().length - 1; i++) {
             var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, i);
 

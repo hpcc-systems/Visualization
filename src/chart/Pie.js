@@ -57,10 +57,8 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
-
         this.d3Arc.innerRadius(this.innerRadius_exists() ? this.calcRadius() * this.innerRadius() / 100 : 0);
-
-        var arc = element.selectAll(".arc").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
+        var arc = element.selectAll(".arc").data(this.d3Pie(this.data()), function (d) { return d.data[0]; });
 
         //  Enter  ---
         arc.enter().append("g")
@@ -68,19 +66,19 @@
             .attr("opacity", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d.data), context._columns[1], context._selection.selected(this));
+                context.click(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
                     .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d.data, context._columns, 1);
+                        context.tooltipShow(d.data, context.columns(), 1);
                     })
                     .on("mouseout.tooltip", function (d) {
                         context.tooltipShow();
                     })
                     .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d.data, context._columns, 1);
+                        context.tooltipShow(d.data, context.columns(), 1);
                     })
                     .on("mouseover", arcTween(0, 0))
                     .on("mouseout", arcTween(-5, 150))
@@ -143,7 +141,7 @@
 
         //  Label Lines  ---
         if (context.outerText()) {
-            var lines = element.selectAll("line").data(this.d3Pie(this._data), function (d) { return d.data[0]; });
+            var lines = element.selectAll("line").data(this.d3Pie(this.data()), function (d) { return d.data[0]; });
             lines.enter().append("line")
               .attr("x1", 0)
               .attr("x2", 0)

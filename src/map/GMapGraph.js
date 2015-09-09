@@ -61,7 +61,7 @@
             this.data({ vertices: vertices, edges: edges });
             origRender.apply(this, arguments);
             this.graphData.nodeValues().forEach(function (vertex) {
-                var pos = context._viewportSurface.project(vertex._data[0], vertex._data[1]);
+                var pos = context._viewportSurface.project(vertex.data()[0], vertex.data()[1]);
                 pos.x -= context.width() / 2;
                 pos.y -= context.height() / 2;
                 vertex.move(pos);

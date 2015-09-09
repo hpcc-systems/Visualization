@@ -63,19 +63,19 @@
         this._chart.fontSize = this.fontSize();
         this._chart.color = this.fontColor();
 
-        this._chart.titleField = this._columns[0];
-        this._chart.valueField = this._columns[1];
+        this._chart.titleField = this.columns()[0];
+        this._chart.valueField = this.columns()[1];
         var sortingMethod;
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         } else {
         	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
-        this._data = this._data.sort(sortingMethod);
+        this.data(this.data().sort(sortingMethod));
 
-        this._chart.dataProvider = this.formatData(this._data);
+        this._chart.dataProvider = this.formatData(this.data());
 
-        this._chart.colors = this._data.map(function (row) {
+        this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);
         }, this);
 
@@ -94,7 +94,7 @@
         var context = this;
         dataArr.forEach(function(dataRow){
             var dataObj = {};
-            context._columns.forEach(function(colName,cIdx){
+            context.columns().forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
             });
             dataObjArr.push(dataObj);
@@ -102,22 +102,16 @@
         return dataObjArr;
     };
 
-    Pie.prototype.columns = function(colArr) {
-        if (!arguments.length) return this._columns;
+    Pie.prototype.columns = function (_) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        var context = this;
         if (arguments.length) {
-            this._valueField = [];
-            colArr.slice(1,colArr.length).forEach(function(col){
-                context._valueField.push(col);
-            });
-            this._columns = colArr;
-            return this;
+            this._categoryField = _[0];
+            this._valueField = _.filter(function (d, i) { return i > 0; });
         }
         return retVal;
     };
 
-    Pie.prototype.enter = function(domNode, element) {
+    Pie.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
         var initObj = {
@@ -129,7 +123,7 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
-            context.click(context.rowToObj(context._data[e.dataItem.index]));
+            context.click(context.rowToObj(context.data()[e.dataItem.index]));
         });
     };
 

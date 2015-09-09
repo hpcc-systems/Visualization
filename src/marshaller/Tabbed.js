@@ -15,7 +15,7 @@
 
     Tabbed.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:["Private"]});
     Tabbed.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
-    Tabbed.prototype.publish("proxyMappings", [], "array", "Proxy Mappings",null,{tags:["Private"]});
+    Tabbed.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
 
     Tabbed.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
 

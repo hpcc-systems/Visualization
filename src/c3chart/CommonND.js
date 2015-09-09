@@ -16,7 +16,7 @@
         };
 
         this._config.data.onclick = function (d, element) {
-            context.click(context.rowToObj(context._data[d.index]), d.id);
+            context.click(context.rowToObj(context.data()[d.index]), d.id);
         };
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
@@ -106,7 +106,7 @@
             };
             break;
         case "timeseries":
-            this._config.data.x = this._columns[0];
+            this._config.data.x = this.columns()[0];
             this._config.axis.tick = {
                 format: "%d %b %Y"
             };

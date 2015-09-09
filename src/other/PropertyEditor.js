@@ -10,7 +10,7 @@
         HTMLWidget.call(this);
 
         this._tag = "div";
-        this._columns = ["Key", "Value"];
+        this.columns(["Key", "Value"]);
         this._contentEditors = [];
         this._show_settings = true;
     }
@@ -364,7 +364,7 @@
                         });
                     }
 
-                    thead.append("tr").append("th").attr("colspan", context._columns.length).attr("class", "th-widget-class").text(function () {
+                    thead.append("tr").append("th").attr("colspan", context.columns().length).attr("class", "th-widget-class").text(function () {
                         var text = "";
                         if (context.sectionTitle()) {
                             text = context.sectionTitle();
@@ -382,7 +382,7 @@
                     });
                     thead = thead.append("tr").attr("class", "mm-content");
                     element.append("tbody").attr("class", "mm-content");
-                    var th = thead.selectAll("th").data(context._columns, function (d) {
+                    var th = thead.selectAll("th").data(context.columns(), function (d) {
                         return d;
                     });
                     th.enter()
@@ -420,7 +420,7 @@
                             ;
                         })
                     ;
-                    input.node().value = JSON.stringify(widget._columns);
+                    input.node().value = JSON.stringify(widget.columns());
                 }
                 //  Data  ---
 
@@ -443,7 +443,7 @@
                         })
                     ;
                     try {
-                        input.node().value = JSON.stringify(widget._data);
+                        input.node().value = JSON.stringify(widget.data());
                     } catch (e) {
                         input.node().value = e;
                     }

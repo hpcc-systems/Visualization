@@ -29,7 +29,7 @@
         CommonND.prototype.update.apply(this, arguments);
 
         if (this.isStacked()) {
-            this.c3Chart.groups([this._columns.slice(1, this._columns.length)]);
+            this.c3Chart.groups([this.columns().slice(1, this.columns().length)]);
         } else {
             this.c3Chart.groups([]);
         }

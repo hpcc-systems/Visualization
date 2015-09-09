@@ -77,16 +77,16 @@
                     .attr("class", "columnRect")
                     .call(context._selection.enter.bind(context._selection))
                     .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(dataRow, context.columns(), d.idx);
+                        context.tooltipShow(d.row, context.columns(), d.idx);
                     })
                     .on("mouseout.tooltip", function (d) {
                         context.tooltipShow();
                     })
                     .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(dataRow, context.columns(), d.idx);
+                        context.tooltipShow(d.row, context.columns(), d.idx);
                     })
                     .on("click", function (d, idx) {
-                        context.click(context.rowToObj(dataRow), d.column, context._selection.selected(this));
+                        context.click(context.rowToObj(d.row), d.column, context._selection.selected(this));
                     })
                 ;
 

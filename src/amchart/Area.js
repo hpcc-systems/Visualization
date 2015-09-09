@@ -21,6 +21,9 @@
     Area.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
     Area.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
 
+    Area.prototype.publish("bulletSize", 0, "number", "Bullet Size",null,{tags:["Intermediate"]});
+    Area.prototype.publish("bulletType", "round", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"],{tags:["Basic"]});
+
     Area.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
@@ -57,6 +60,9 @@
         function buildGraphObj(gObj) {
             // Area Specific Options
             gObj.fillAlphas = this.fillOpacity();
+            gObj.bullet = this.bulletType();
+            gObj.bulletSize = this.bulletSize();
+            
             return gObj;
         }
     };

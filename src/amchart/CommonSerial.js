@@ -13,6 +13,8 @@
 
         this._chart = {};
 
+        this._selected = null;
+
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
@@ -63,9 +65,6 @@
 
     CommonSerial.prototype.publish("orientation", "horizontal", "set", "Orientation",["horizontal","vertical"],{tags:["Intermediate"]});
 
-    CommonSerial.prototype.publish("bulletSize", 0, "number", "Bullet Size",null,{tags:["Intermediate"]});
-    CommonSerial.prototype.publish("bulletType", "none", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"],{tags:["Basic"]});
-
     CommonSerial.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies Whether Number of GridCount Is Specified Automatically, According To The Axis Size",null,{tags:["Advanced"]});
     CommonSerial.prototype.publish("xAxisGridPosition", "middle", "set", "Specifies If A Grid Line Is Placed On The Center of A Cell or On The Beginning of A Cell", ["start","middle"],{tags:["Advanced"]});
 
@@ -104,6 +103,9 @@
     CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
+
+    CommonSerial.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+    CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
@@ -318,8 +320,6 @@
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
         gObj.lineThickness = context.lineWidth();
-        gObj.bullet = context.bulletType();
-        gObj.bulletSize = context.bulletSize();
         gObj.dashLength = context.dashedLineStyle(); // TODO: convert to css Array Prop
 
         gObj.type = gType;
@@ -370,6 +370,33 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            var graph = e.graph;
+            var data  = e.item.dataContext;
+            var field;
+
+            if (context._gType === "column") {
+                field = graph.fillColorsField;
+            } else if (context._gType === "line") {
+                field = graph.colorField;
+            }
+            if (field) {
+                if (context._selected !== null && context.selectionMode() === "simple") {
+                    delete context._selected.data[context._selected.field];
+                }
+                if (context._selected !== null && context._selected.graph === graph && context._selected.data === data) {
+                    context._selected = null;
+                } else {
+                    data[field] = context.selectionColor();
+                    context._selected = {
+                        graph: graph,
+                        field: field,
+                        data: data
+                    };
+                }
+
+                e.chart.validateData();
+            }
+
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex+1]);
         });
     };

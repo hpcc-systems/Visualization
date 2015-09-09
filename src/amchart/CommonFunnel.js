@@ -12,6 +12,8 @@
         this._tag = "div";
 
         this._chart = {};
+
+        this._selected = null;
     }
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
     CommonFunnel.prototype.constructor = CommonFunnel;
@@ -40,13 +42,18 @@
     CommonFunnel.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)",null,{tags:["Basic"]});
 
     CommonFunnel.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+    CommonFunnel.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+    CommonFunnel.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
 
     CommonFunnel.prototype.updateChartOptions = function() {
 
         this._chart.startDuration = this.startDuration();
         this._chart.rotate = this.flip();
 
+        this._chart.pullOutOnlyOne = this.selectionMode() === "simple";
+        
         this._chart.color = this.fontColor();
+        this._chart.colorField = "sliceColor";
         this._chart.fontSize = this.fontSize();
         this._chart.fontFamily = this.fontFamily();
 
@@ -117,7 +124,22 @@
             initObj.pathToImages = require.toUrl("amchartsImg");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
-        this._chart.addListener("clickSlice", function(e) {
+        this._chart.addListener("clickSlice", function(e) {   
+            var field = e.chart.colorField;
+            var data = e.dataItem.dataContext;
+
+            if (context._selected !== null && context.selectionMode() === "simple") {
+                delete context._selected[field];
+            }
+            if (context._selected !== null && context._selected === data) {
+                context._selected = null;
+            } else {
+                data[field] = context.selectionColor();
+                context._selected = data;
+            }
+
+            e.chart.validateData();
+
             context.click(context.rowToObj(context.data()[e.dataItem.index]));
         });
     };

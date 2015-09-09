@@ -10,6 +10,8 @@
         HTMLWidget.call(this);
         this._tag = "div";
         this._chart = {};
+
+        this._selected = null;
     }
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.constructor = Pie;
@@ -36,24 +38,36 @@
     Pie.prototype.publish("radius", null, "number", "Radius",null,{tags:["Basic"]});
     Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice",null,{tags:["Private"]});
 
-    Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:["Intermediate"]});
+    Pie.prototype.publish("labelPosition", "outside", "set", "Label Position", ["inside","outside"],{tags:["Intermediate"]});
 
+    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
     Pie.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+    Pie.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
 
-    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
+    Pie.prototype.calcRadius = function (_) {
+        return Math.min(this._size.width, this._size.height) / 2 - 2;
+    };
 
     Pie.prototype.updateChartOptions = function() {
         this._chart.type = "pie";
-        this._chart.radius = this.radius();
+        
+        this._chart.labelsEnabled = true;
 
-        this._chart.balloonFunction = function(d) {
-            var balloonText = d.title + ", " + d.value;
-            return balloonText;
+        if (this.labelPosition()==="inside") {
+            this._chart.radius = "50%";
+            this._chart.labelRadius = -40;
+            this._chart.pullOutRadius = "20%";
+        } else {
+            this._chart.radius = "45%";
+            this._chart.labelRadius = 20;
+            this._chart.pullOutRadius = "20%";
+        }
+
+        this._chart.labelFunction = function(d) {
+            return d.title;
         };
-        this._chart.labelPosition = this.labelPosition();
-
-        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
+        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
@@ -74,6 +88,8 @@
         	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
         this.data(this.data().sort(sortingMethod));
+
+        this._chart.colorField = "sliceColor";
 
         this._chart.dataProvider = this.formatData(this.data());
 
@@ -117,6 +133,21 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
+            var field = e.chart.colorField;
+            var data = e.dataItem.dataContext;
+
+            if (context._selected !== null && context.selectionMode() === "simple") {
+                delete context._selected[field];
+            }
+            if (context._selected !== null && context._selected === data) {
+                context._selected = null;
+            } else {
+                data[field] = context.selectionColor();
+                context._selected = data;
+            }
+
+            e.chart.validateData();
+
             context.click(context.rowToObj(context.data()[e.dataItem.index]));
         });
     };

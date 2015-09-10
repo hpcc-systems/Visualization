@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Table", "../chart/MultiChart", "../layout/Grid", "css!./Legend"], factory);
+        define(["d3", "./Table", "css!./Legend"], factory);
     } else {
-        root.other_Legend = factory(root.d3, root.other_Table, root.chart_MultiChart, root.layout_Grid);
+        root.other_Legend = factory(root.d3, root.other_Table);
     }
-}(this, function (d3, Table, MultiChart, Grid) {
+}(this, function (d3, Table) {
     function Legend() {
         Table.call(this);
         this._tag = "div";
@@ -17,13 +17,8 @@
     //We may need a new publish param "type" to store references to widgets
     //Legend.prototype.publish("targetWidget", null, "widget", "Target widget for Legend",null,{tags:["Private"]});
     
-    Legend.prototype.testData = function(){
-        var multiChart = new MultiChart().testData().chartType("AM_BAR");
-        return new Grid()
-            .setContent(0, 0, multiChart)
-            .setContent(0, 1, this.targetWidget(multiChart))
-            .cellPadding(0)
-        ;
+    Legend.prototype.testData = function () {
+        return this;
     };
     
     Legend.prototype.targetWidget = function (widget) {

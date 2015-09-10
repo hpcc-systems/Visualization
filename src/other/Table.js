@@ -321,11 +321,17 @@
         cells.exit()
             .remove()
         ;
-
-        if (this.data().length) {
-            this.fixedLabelsUpdate(domNode, element);
+        if (!this.data().length) {
+            d3.select(".cols-wrapper").remove();        
+        }
+        if (!this.columns().length) {
+            d3.select(".rows-wrapper").remove();
         }
 
+        if (this.data().length || this.columns().length) {
+            this.fixedLabelsUpdate(domNode, element);
+        }
+        
         this._paginator
             .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
             .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
@@ -401,21 +407,43 @@
 
             var rowWrapperWidth;
             var newTableHeight;
+            var borderWidth = context.data().length ? parseInt(context.table.select("td").style("border-width")) : 0;
             if (context.fixedColumn()) {
-                var borderWidth = parseInt(context.table.select("td").style("border-width"));
                 var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
-                rowWrapperWidth = context.fixedColumn() ? rowSelection.node().offsetWidth : 0;
+                rowWrapperWidth = rowSelection.node() ? rowSelection.node().offsetWidth : 0;
                 var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
-                var rowContents = "<thead><tr>";
-                rowContents += "<th style='width:" + theadWidth + "px'>";
-                rowContents += origThead.filter(function (d, idx) { return idx === 0; }).html();
-                rowContents += "</th></tr></thead>";
+                
+                if (context.columns().length) {
+                    var rHead = rowLabelsWrapper.selectAll("thead").data([[0]]);
+                    rHead.enter()
+                        .append("thead")
+                        .append("tr")
+                        .append("th")
+                    ;
 
-                rowSelection.each(function () {
-                    rowContents += "<tr><td class='row-label'>" + (this.innerHTML ? this.innerHTML : "&nbsp;") + "</td></tr>";
+                    rHead.select("th").html(origThead.filter(function (d, idx) { return idx === 0; }).html());
+                    rHead.exit()
+                        .remove()
+                    ;
+                }
+                
+                var rBody = rowLabelsWrapper.selectAll("tbody").data([[0]]);
+                rBody.enter()
+                    .append("tbody")
+                ;       
+                rBody.exit()
+                    .remove()
+                ;
+                
+                var rRows = rBody.selectAll("tr").data(rowSelection[0]); 
+                rRows.enter()
+                    .append("tr")
+                ;
+                rRows.html(function (d) {
+                    return d.outerHTML;
                 });
-                rowLabelsWrapper.html(rowContents)
-                    .style("width", rowWrapperWidth)
+                rRows.exit()
+                    .remove()
                 ;
 
                 if (context.fixedHeader()){
@@ -465,9 +493,10 @@
             } else {
                 rowWrapperWidth = 0;
             }
-            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight);
-            var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
-            var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
+
+            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(colWrapperHeight) + borderWidth;
+            var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth) + borderWidth;
+            var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth() + borderWidth;
             var finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
             context.tableDiv
                 .style("width", finalWidth + "px")

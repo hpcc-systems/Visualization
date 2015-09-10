@@ -15,6 +15,7 @@
         this._paginator = new Paginator();
         this._selectionBag = new Bag.Selection();
         this._selectionPrevClick = null;
+        this._paginatorTableSpacing = 4;
     }
     Table.prototype = Object.create(HTMLWidget.prototype);
     Table.prototype.constructor = Table;
@@ -77,6 +78,7 @@
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
+    Table.prototype.publishProxy("adjacentPages", "_paginator");
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
@@ -103,6 +105,14 @@
     Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     
+    Table.prototype.data = function (_) {
+        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._currentSort = "";
+            this._currentSortOrder = 1;
+        }
+        return retVal;
+    };
 
     Table.prototype.size = function (_) {
         var retVal = HTMLWidget.prototype.size.apply(this, arguments);
@@ -141,25 +151,10 @@
         ;
     };
 
-    Table.prototype._generateTempCell = function() {
-        var trow = this.tbody.selectAll("tr").data([[0]]);
-        trow
-            .enter()
-            .append("tr")
-        ;
-        var tcell = trow.selectAll("td").data(function (row, i) {
-            return row;
-        });
-        tcell.enter()
-            .append("td")
-            .text(function (d) {
-                return d;
-            })
-        ;
-        tcell.exit()
-            .remove()
-        ;
-        return tcell;
+    Table.prototype._generateTempRow = function() {
+        var trow = this.tbody.append("tr");
+        trow.append("td").text("QQQ");
+        return trow;
     };
 
     Table.prototype._createSelectionObject = function (d) {
@@ -179,10 +174,12 @@
         }
         this._paginator.render();
 
-        var thHeight = this.calcHeight(th);
-        var tcellHeight = this.calcHeight(this._generateTempCell());
+        var thHeight = this.thead.selectAll("th").node().clientHeight;
+        var tmpRow = this._generateTempRow();
+        var tcellHeight = tmpRow.node().clientHeight;
+        tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.ceil((this.height() - thHeight - paginatorHeight) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
         return ipp;
     };
 
@@ -237,10 +234,10 @@
         th.exit()
             .remove()
         ;
-  
+
         if (this.pagination()) {
             if (this._paginator.target() === null) {
-                this._paginator.target(this.tableDiv.node());
+                this._paginator.target(element.node());
             }
 
             var ipp = this._calcRowsPerPage(th);
@@ -378,6 +375,11 @@
         }
         
         context.applyStyleToRows(this.tbody.selectAll("tr"));
+        this._paginator
+            .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
+            .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
+            .render()
+        ;
     };
 
     Table.prototype.fixedLabelsUpdate = function (domNode, element) {
@@ -616,7 +618,7 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Table.prototype.headerClick = function (column, idx) {
+    Table.prototype.sort = function (idx) {
         if (this._currentSort !== idx) {
             this._currentSort = idx;
             this._currentSortOrder = 1;
@@ -632,7 +634,14 @@
             }
             return context._currentSortOrder * -1;
         });
-        this.render();
+        return this;
+    };
+
+    Table.prototype.headerClick = function (column, idx) {
+        this
+            .sort(idx)
+            .render()
+        ;
     };
 
     Table.prototype.selection = function (_) {

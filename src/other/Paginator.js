@@ -22,6 +22,7 @@
     Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page",null,{tags:["Private"]});
     Paginator.prototype.publish("numItems", 10, "number", "Pagination total number of items",null,{tags:["Private"]});
     Paginator.prototype.publish("pageNumber", 1, "number", "Pagination set or get the page number",null,{tags:["Private"]});
+    Paginator.prototype.publish("adjacentPages", 2, "number", "Number of page indexes either side of current one", null, { tags: ["Private"] });
     Paginator.prototype.publish("bottom", 20, "number", "Pagination bottom offset", null, { tags: ["Private"] });
     Paginator.prototype.publish("right", 20, "number", "Pagination right offset", null, { tags: ["Private"] });
 
@@ -74,7 +75,7 @@
         this._numList = [];
         if (this.numItems()) {
             this._numList.push("first");
-            for (var x = -2; x <= 2; x++) {
+            for (var x = -this.adjacentPages() ; x <= this.adjacentPages() ; x++) {
                 if (this.pageNumber() + x > 0 && this.pageNumber() + x <= this._tNumPages) {
                     this._numList.push(this.pageNumber() + x);
                 }

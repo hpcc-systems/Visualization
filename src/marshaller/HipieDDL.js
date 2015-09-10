@@ -684,11 +684,9 @@
             selected = selected === undefined ? true : selected;
             if (event.exists()) {
                 var request = {};
-                if (selected) {
-                    for (var key in event.mappings) {
-                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                        request[event.mappings[key]] = row[origKey];
-                    }
+                for (var key in event.mappings) {
+                    var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
+                    request[event.mappings[key]] = selected ? row[origKey] : "";
                 }
 
                 //  New request calculation:
@@ -713,6 +711,7 @@
                                     console.log("Duplicate Filter, with mismatched value:  " + key + "=" + inViz._eventValues[key]);
                                 }
                                 datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
+                                datasourceRequests[dataSource.id].request[key + "_changed"] = inViz === context;
                             }
                         }
                     });
@@ -848,11 +847,10 @@
         var context = this;
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
-            context.request[item + "_changed"] = false;
+            this.request[item + "_changed"] = request[item + "_changed"] || false;
             var value = request[item] === undefined ? "" : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
-                this.request[item + "_changed"] = true;
             }
         }, this);
         if (window.__hpcc_debug) {

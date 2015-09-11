@@ -1,0 +1,97 @@
+.layout_CollapsibleList > ul{
+    position:relative;
+}
+.layout_CollapsibleList.closed > span {
+    font-weight:bold;
+}
+.layout_CollapsibleList.open > span {
+    font-style:italic;
+}
+.layout_CollapsibleList.closed > ul {
+    height: 0px;
+    overflow: hidden;
+}
+.layout_CollapsibleList.open > ul{
+    display:block;
+}
+.layout_CollapsibleList > .collapsible-icon,
+.layout_CollapsibleList > .collapsible-title{
+    cursor:pointer;
+    box-sizing: border-box;
+}
+.layout_CollapsibleList > .collapsible-title{
+    display:block;
+    width:100%;
+}
+.layout_CollapsibleList > .collapsible-title{
+    font-size: 13px;
+    color:#FFF;
+    padding:4px 8px;
+    height:26px;
+    -webkit-box-shadow: inset 0px -1px 1px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 0px -1px 1px 0px rgba(0,0,0,0.2);
+    box-shadow: inset 0px -1px 1px 0px rgba(0,0,0,0.2);
+}
+.layout_CollapsibleList > .collapsible-title{ 
+    background-color:#333; 
+}
+.layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#444; 
+    padding-left: 25px;
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#555; 
+    padding-left: 34px;
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#666; 
+    padding-left: 43px;
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#777; 
+    padding-left: 52px;
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#888; 
+    padding-left: 61px;
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title{ 
+    background-color:#999; 
+    padding-left: 70px;
+}
+
+.layout_CollapsibleList > .collapsible-title:before{
+    padding: 4px 8px 4px 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.layout_CollapsibleList > .collapsible-title:before{ 
+    content: '';
+}
+.layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└';
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└─';
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└──';
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└───';
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└────';
+}
+.layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList .layout_CollapsibleList > .collapsible-title:before{ 
+    content: '└─────';
+}
+.layout_CollapsibleList > .collapsible-icon{
+    position:absolute;
+    top:0px;
+    right:0px;
+    width:24px;
+    height:24px;
+    color:#FFF;
+}

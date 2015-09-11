@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../other/Bag", "css!./XYAxis"], factory);
+        define(["d3", "../common/SVGWidget", "../common/Utility", "css!./XYAxis"], factory);
     } else {
-        root.chart_XYAxis = factory(root.d3, root.common_SVGWidget, root.other_Bag);
+        root.chart_XYAxis = factory(root.d3, root.common_SVGWidget, root.common_Utility);
     }
-}(this, function (d3, SVGWidget, Bag) {
+}(this, function (d3, SVGWidget, Utility) {
     function XYAxis(target) {
         SVGWidget.call(this);
         this._drawStartPos = "origin";
@@ -275,7 +275,7 @@
                 return context.brushMoved.apply(context, arguments);
             })
         ;
-        this._selection = new Bag.SimpleSelection(this.svgData);
+        this._selection = new Utility.SimpleSelection(this.svgData);
     };
 
     XYAxis.prototype.resizeBrushHandle = function (d, width, height) {

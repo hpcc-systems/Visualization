@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../other/Bag", "../api/ITooltip", "css!./Pie"], factory);
+        define(["d3", "../common/SVGWidget", "../api/I2DChart", "../common/Text", "../common/FAChar", "../common/Utility", "../api/ITooltip", "css!./Pie"], factory);
     } else {
-        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.other_Bag, root.api_ITooltip);
+        root.chart_Pie = factory(root.d3, root.common_SVGWidget, root.api_I2DChart, root.common_Text, root.common_FAChar, root.common_Utility, root.api_ITooltip);
     }
-}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Bag, ITooltip) {
+}(this, function (d3, SVGWidget, I2DChart, Text, FAChar, Utility, ITooltip) {
     function Pie(target) {
         SVGWidget.call(this);
         I2DChart.call(this);
@@ -46,7 +46,7 @@
 
     Pie.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-        this._selection = new Bag.SimpleSelection(element);
+        this._selection = new Utility.SimpleSelection(element);
     };
 
     Pie.prototype.update = function (domNode, element) {

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IChoropleth", "../other/Bag", "../api/ITooltip", "css!./Choropleth"], factory);
+        define(["d3", "../common/SVGWidget", "./IChoropleth", "../common/Utility", "../api/ITooltip", "css!./Choropleth"], factory);
     } else {
-        root.map_Choropleth = factory(root.d3, root.common_SVGWidget, root.map_IChoropleth, root.other_Bag, root.api_ITooltip);
+        root.map_Choropleth = factory(root.d3, root.common_SVGWidget, root.map_IChoropleth, root.common_Utility, root.api_ITooltip);
     }
-}(this, function (d3, SVGWidget, IChoropleth, Bag, ITooltip) {
+}(this, function (d3, SVGWidget, IChoropleth, Utility, ITooltip) {
     function Choropleth() {
         SVGWidget.call(this);
         IChoropleth.call(this);
@@ -135,7 +135,7 @@
         ;
 
         this._svg = element.append("g");
-        this._selection = new Bag.SimpleSelection(this._svg);
+        this._selection = new Utility.SimpleSelection(this._svg);
     };
 
     Choropleth.prototype.update = function (domNode, element) {

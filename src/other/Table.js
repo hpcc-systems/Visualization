@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget","./Paginator", "./Bag", "css!./Table"], factory);
+        define(["d3", "../common/HTMLWidget", "./Paginator", "../common/Utility", "css!./Table"], factory);
     } else {
-        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.other_Bag);
+        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.common_Utility);
     }
-}(this, function (d3, HTMLWidget, Paginator, Bag) {
+}(this, function (d3, HTMLWidget, Paginator, Utility) {
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -13,7 +13,7 @@
         this._currentSortOrder = 1;
         this.columns([]);
         this._paginator = new Paginator();
-        this._selectionBag = new Bag.Selection();
+        this._selectionBag = new Utility.Selection();
         this._selectionPrevClick = null;
         this._paginatorTableSpacing = 4;
     }

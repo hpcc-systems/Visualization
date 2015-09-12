@@ -1,0 +1,17 @@
+site_name: Visualization
+theme: readthedocs
+pages: 
+- "Anatomy of a Widget" : "Anatomy-of-a-Widget.md"
+- "Bower Releases" : "Bower-Releases.md"
+- "Building from Sources" : "Building-from-sources.md"
+- "Chart Color (Palette) Usage": "Chart-Color-(Palette)-Usage.md"
+- "Examples" : "Examples.md"
+- "FAQ" : "FAQ.md"
+- "Getting Started" : "Getting-Started.md"
+- "GitHub Releases" : "GitHub-Releases.md"
+- "GitHub Sources" : "GitHub-Sources.md"
+- "Marshaller" : "Marshaller.md"
+- "Methods of hosting your own site with visualisations" : "Methods-of-hosting-your-own-site-with-visualisations.md"
+- "Playground" : "The-Playground.md"
+- "Theme-Editor" : "Theme-Editor.md"
+- "Widget Serialization" : "Widget-Serialization.md"

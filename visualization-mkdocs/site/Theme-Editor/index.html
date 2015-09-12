@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Theme-Editor - Visualization</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Theme-Editor";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../Anatomy-of-a-Widget/" class="icon icon-home"> Visualization</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Anatomy-of-a-Widget/">Anatomy of a Widget</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Bower-Releases/">Bower Releases</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Building-from-sources/">Building from Sources</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Examples/">Examples</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../FAQ/">FAQ</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Getting-Started/">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../GitHub-Releases/">GitHub Releases</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../GitHub-Sources/">GitHub Sources</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Marshaller/">Marshaller</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Methods-of-hosting-your-own-site-with-visualisations/">Methods of hosting your own site with visualisations</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../The-Playground/">Playground</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Theme-Editor</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#structure-of-the-theme-editor">Structure of the Theme Editor</a></li>
+                
+                    <li><a class="toctree-l4" href="#main-section">Main Section</a></li>
+                
+                    <li><a class="toctree-l4" href="#widgets">Widgets</a></li>
+                
+                    <li><a class="toctree-l4" href="#fonts">Fonts</a></li>
+                
+                    <li><a class="toctree-l4" href="#layout">Layout</a></li>
+                
+                    <li><a class="toctree-l4" href="#right-side-table-menu">Right-Side Table Menu</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#thememode">ThemeMode</a></li>
+                
+                    <li><a class="toctree-l4" href="#saveload-theme">Save/Load Theme</a></li>
+                
+                    <li><a class="toctree-l4" href="#grid-options">Grid Options</a></li>
+                
+                    <li><a class="toctree-l4" href="#chart-colors">Chart Colors</a></li>
+                
+                    <li><a class="toctree-l4" href="#container-stylescolors">Container Styles/Colors</a></li>
+                
+                    <li><a class="toctree-l4" href="#font-stylescolors">Font Styles/Colors</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#non-thememode">Non-ThemeMode</a></li>
+                
+                    <li><a class="toctree-l4" href="#saveload-serial">Save/Load Serial</a></li>
+                
+                    <li><a class="toctree-l4" href="#chart-properties">Chart Properties</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Widget-Serialization/">Widget Serialization</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../Anatomy-of-a-Widget/">Visualization</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../Anatomy-of-a-Widget/">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Theme-Editor</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>The <a href="https://cdn.rawgit.com/mlzummo/Visualization/DEMO_CODE_4/apps/SampleSite/themeeditor.html">Theme Editor</a> is an online, dynamical toolkit that enables users to visually alter widgets by changing their publish parameters in the browser, and to integrate the selected widgets into dynamic dashboards that can be used in projects and also downloaded into static image files. </p>
+<h2 id="structure-of-the-theme-editor">Structure of the Theme Editor</h2>
+<p>The editor is broken into two sections. The main section (to the left of the page) is where the widgets are visualised and in the right-side table menu are some editor options, which relate to being in ThemeMode or not and the publish parameters. Contained in the main section is also a menu-bar that enables us to manipulate the widgets in different ways. The menu-bar consists of the following options <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#widgets">Widgets</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#colors">Colors</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#fonts">Fonts</a> and <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#layouts">Layouts</a>, and each option will be explained. </p>
+<h3 id="main-section">Main Section</h3>
+<h3 id="widgets">Widgets</h3>
+<p>By selecting the widgets option initialises the new sub-menu-bar that reads <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#theme-editor">Theme Editor</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#view-themes">View Themes</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#view-serials">View Serials</a> which have the following purposes</p>
+<h5 id="theme-editor">Theme Editor</h5>
+<p>This opens a box from where we can decide what widgets we want to include in the dashboard. By selecting a widget it simply will add that widget to the dashboard. </p>
+<h5 id="view-themes">View Themes</h5>
+<p>This opens a new window with a selection of saved themes in JSON format. </p>
+<h5 id="view-serials">View Serials</h5>
+<p>This opens a new window with serialised themes in JSON format.</p>
+<h5 id="colors">Colors</h5>
+<p>By selecting the Colors option initialises the new sub-menu-bar that reads <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#container-colors">Container Colors</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#ordinal-palette">Ordinal Palette</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#rainbow-palette">Rainbow Palette</a> which have the following purposes</p>
+<h5 id="container-colors">Container Colors</h5>
+<p>In choosing this option, the user can customise the colors of the container within which the widget is contained, whether by using built-in themes or building them from scratch.</p>
+<h5 id="ordinal-palette">Ordinal Palette</h5>
+<p>This will change the colors of, say, the columns in a bar chart but in this case we can choose discrete, unrelated colours from the palette. There are number of options that if chosen will change the components of each individual widget.</p>
+<h5 id="rainbow-palette">Rainbow Palette</h5>
+<p>This has the same function as the Ordinal Palette but instead of unrelated colours the palette follows a continuous color change, making visualisations sometimes easier to interpret.</p>
+<h3 id="fonts">Fonts</h3>
+<p>By selecting the Fonts option initialises the new sub-menu-bar that reads <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#title-font-family">Title Font Family</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#title-font-size">Title Font Size</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#font-family">Font Family</a> and [Font Size]((https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#font-size) which have the following purposes</p>
+<h5 id="title-font-family">Title Font Family</h5>
+<p>Changes the font of the title of each widget - available are most standardly used fonts.</p>
+<h5 id="title-font-size">Title Font Size</h5>
+<p>Changes the font size of the title of each widget.</p>
+<h5 id="font-family">Font Family</h5>
+<p>Changes the font type of text within each widget.</p>
+<h5 id="font-size">Font Size</h5>
+<p>Changes the font size of the text within each widget.</p>
+<h3 id="layout">Layout</h3>
+<p>By selecting the Layout option initialises the new sub-menu-bar that reads <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#cell-density">Cell Density</a>. Also, inside the layout page, there is a "drag" and "drop" option where the position of the chosen widgets in the dashboard can be interchanged, extended and moved into entirely new positions. Just drag and drop! </p>
+<h5 id="cell-density">Cell Density</h5>
+<p>The cell density is simply a tool to control the number of widgets that are allowed in the dashboard. By increasing the density, it increases the density of each widget, and so decreases the number of allowed widgets within the dashboard. By decreasing the density, more widgets are allowed in the dashboard, though readability issues may occur if the density is too small.</p>
+<h3 id="right-side-table-menu">Right-Side Table Menu</h3>
+<p>Here I will explain the structure of the right-side table menu. The first drop-down menu here is "Editor Options" and depending on whether ThemeMode is selected or not the rest of right-side table menu is different. Effectively, the Theme Editor has two main modes</p>
+<ol>
+<li><a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#thememode">ThemeMode</a></li>
+<li><a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#non-thememode">Non-ThemeMode</a></li>
+</ol>
+<p>and depending on the selection of either, the structure of the page is different, and such what follows is a discussion of the structure of the right-side table menu in both different modes. </p>
+<h2 id="thememode">ThemeMode</h2>
+<p>By selecting this option the editor enters a mode where all the widgets are interacted with at once and properties such as container styles and font styles across the dashboard can be changed all at once. The following drop-down menus appear when this option is chosen <a href="https://github.com/hpcc-systems/Visualization/wiki/Them-editor#saveload-theme">Save/Load Theme</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#grid-options">Grid Options</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#chart-colors">Chart Colors</a>, <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#container-stylescolors">Container Styles/Colors</a> and <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#font-stylescolors">Font Styles/Colors</a></p>
+<h4 id="saveload-theme">Save/Load Theme</h4>
+<p>Here the user can either load a previously saved theme or save their own one which they have just constructed.</p>
+<h4 id="grid-options">Grid Options</h4>
+<p>Here the user can change certain style aspects with respect to grids such as the colors of the XAxis and YAxis Gridline colors.</p>
+<h4 id="chart-colors">Chart Colors</h4>
+<p>Here the chart palettes can be changed in much the same way as <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#colors">Colors</a>.</p>
+<h4 id="container-stylescolors">Container Styles/Colors</h4>
+<p>The user can change style aspects in relation to the Container in this section.</p>
+<h4 id="font-stylescolors">Font Styles/Colors</h4>
+<p>The user can change the font in a similar way to <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#fonts">Fonts</a> but with a number of added options.</p>
+<h2 id="non-thememode">Non-ThemeMode</h2>
+<p>By unselecting ThemeMode the user enters into Non-ThemeMode. Non-ThemeMode is characterised by the following drop- down menus <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#saveload-serial">Save/Load Serial</a> and <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#chart-properties">Chart Properties</a>. Conceptually, the main difference in this mode is that the user can make changes that can individually effect each of the widgets and so properties like the column width in a specific bar chart can be changed. </p>
+<h4 id="saveload-serial">Save/Load Serial</h4>
+<p>This operates much in the same way as <a href="https://github.com/hpcc-systems/Visualization/wiki/Theme-Editor#saveload-theme">Save/Load Theme</a> but what can be saved in this case are not themes but the serial code that is related to the specific changes that the user will make in this editing mode. Users can also load up previously saved serials.</p>
+<h4 id="chart-properties">Chart Properties</h4>
+<p>In this drop-down menu the user can change very specific attributes to each widget as mentioned above. There are some technical aspects to being in ThemeMode and Non-ThemeMode from a developers point of view but for now, this is as far as the documentation takes us. </p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Widget-Serialization/" class="btn btn-neutral float-right" title="Widget Serialization"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../The-Playground/" class="btn btn-neutral" title="Playground"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../The-Playground/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Widget-Serialization/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

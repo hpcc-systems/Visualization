@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples - Visualization</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Examples";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../Anatomy-of-a-Widget/" class="icon icon-home"> Visualization</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Anatomy-of-a-Widget/">Anatomy of a Widget</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Bower-Releases/">Bower Releases</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Building-from-sources/">Building from Sources</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Examples</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#hello-world">Hello World</a></li>
+                
+                    <li><a class="toctree-l4" href="#amd-version">AMD version</a></li>
+                
+                    <li><a class="toctree-l4" href="#non-amd-version">Non-AMD version</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#am-bar-chart">AM Bar Chart</a></li>
+                
+                    <li><a class="toctree-l4" href="#amd-version_1">AMD Version</a></li>
+                
+                    <li><a class="toctree-l4" href="#non-amd-version_1">Non-AMD Version</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#pie-chart">Pie Chart</a></li>
+                
+                    <li><a class="toctree-l4" href="#amd-version_2">AMD Version</a></li>
+                
+                    <li><a class="toctree-l4" href="#non-amd-version-httprawgitcomevan1415hpcc_vizmasterhello_world_examplespie_namdhtml">[Non-AMD Version] (http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/pie_namd.html)</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#marshaller">Marshaller</a></li>
+                
+                    <li><a class="toctree-l4" href="#amd-version_3">AMD Version</a></li>
+                
+                    <li><a class="toctree-l4" href="#non-amd-version_2">Non-AMD Version</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../FAQ/">FAQ</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Getting-Started/">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../GitHub-Releases/">GitHub Releases</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../GitHub-Sources/">GitHub Sources</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Marshaller/">Marshaller</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Methods-of-hosting-your-own-site-with-visualisations/">Methods of hosting your own site with visualisations</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../The-Playground/">Playground</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Theme-Editor/">Theme-Editor</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../Widget-Serialization/">Widget Serialization</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../Anatomy-of-a-Widget/">Visualization</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../Anatomy-of-a-Widget/">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Examples</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>The below examples illustrate how to build, from scratch, a widget in both its AMD and non AMD form. By AMD form, we simply mean that the mechanism from which the javascript files are initialised and loaded is [RequireJS]  (http://requirejs.org/) encapsulation. By non-AMD form we mean that the library files are built to load without the use of RequireJS or any Module Dependency Manager via the <a href="http://gulpjs.com/">Gulp</a> build system. (Gulp builds both NON-AMD and AMD versions of the library).  Comments are used when appropriate.</p>
+<h2 id="hello-world">Hello World</h2>
+<h3 id="amd-version"><a href="http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/hello_hard.html">AMD version</a></h3>
+<pre><code class="html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;!-- CSS Styling --&gt;
+    &lt;style&gt;
+        .common_TextBox .common_Shape {
+            fill: #dcf1ff;
+            stroke: #1f77b4;
+        }
+
+        .common_Text {
+            fill: #000;
+            font-size: 12px;
+        }
+
+        .common_Shape {
+            fill: #1f77b4;
+            stroke: #1f77b4;
+        }
+
+
+    &lt;/style&gt;
+    &lt;!-- RequireJS Library --&gt;
+    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- Configuration Scripts --&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; require.config({
+        paths: {
+            &quot;font-awesome&quot;: &quot;../dist-amd/font-awesome/css/font-awesome.min&quot;,
+            &quot;src&quot;: &quot;../dist-amd&quot;
+        }
+    });
+    &lt;/script&gt;
+    &lt;!-- TextBox Widget Script --&gt;
+    &lt;script&gt;
+        require([&quot;../src/common/TextBox&quot;], function (TextBox) {
+            new TextBox()
+                    .target(&quot;helloWorld&quot;)
+                    .text(&quot;Hello\nWorld!&quot;)
+                    .render()
+            ;
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;helloWorld&quot; style=&quot;width:400px; height:400px&quot;&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<h3 id="non-amd-version"><a href="https://rawgit.com/Evan1415/hpcc_gulp/master/demos/hello_hard_namd.html">Non-AMD version</a></h3>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;chrome=1&quot;&gt;
+    &lt;!-- CSS Styling --&gt;
+    &lt;style&gt;
+        .common_TextBox .common_Shape {
+            fill: #dcf1ff;
+            stroke: #1f77b4;
+        }
+
+        .common_Text {
+            fill: #000;
+            font-size: 12px;
+        }
+
+        .common_Shape {
+            fill: #1f77b4;
+            stroke: #1f77b4;
+        }
+
+        .thumb {
+            font-size: 12px;
+            padding: 2px 2px 2px 2px;
+            background: #f8f8f8;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .small.thumb {
+            width: 100px;
+            height: 100px;
+        }
+    &lt;/style&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/hpcc-viz.min.css&quot;&gt;
+    &lt;!-- google api --&gt;
+    &lt;script src=&quot;https://www.google.com/jsapi&quot;&gt;&lt;/script&gt;
+    &lt;!-- d3 --&gt;
+    &lt;script src=&quot;../bower_components/d3/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- for gulp.js --&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        var graph = null;
+        google.load(&quot;visualization&quot;, &quot;1&quot;, {
+            callback: doTest,
+            packages: [&quot;corechart&quot;]
+        });
+
+        function doTest() {
+            new common_TextBox()
+                    .text(&quot;Text\nBox&quot;)
+                    .target(&quot;textBox&quot;)
+                    .render()
+            ;
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=&quot;doTest&quot;&gt;
+&lt;div id=&quot;textBox&quot; class=&quot;small thumb&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2 id="am-bar-chart">AM Bar Chart</h2>
+<h3 id="amd-version_1"><a href="http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/bar_hard.html">AMD Version</a></h3>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;!-- Require Script --&gt; 
+    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- Configuration Script --&gt;
+    &lt;script&gt;
+        require.config({
+            paths: {
+                &quot;css&quot;: &quot;http://rawgit.com/guybedford/require-css/0.1.8/css.min&quot;,
+                &quot;css-builder&quot;: &quot;http://rawgit.com/guybedford/require-css/0.1.8/css-builder.min&quot;,
+                &quot;d3&quot;: &quot;http://rawgit.com/mbostock/d3/v3.5.5/d3.min&quot;,
+                &quot;colorbrewer&quot;: &quot;http://rawgit.com/jeanlauliac/colorbrewer/v1.0.0/colorbrewer&quot;,
+                &quot;amcharts&quot;: &quot;http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/amcharts&quot;,
+                &quot;amcharts.serial&quot;: &quot;http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/serial&quot;,
+                &quot;amcharts.xy&quot;: &quot;http://rawgit.com/arturgspb/bower-amcharts/v3.13.3/dist/amcharts/xy&quot;
+            } ,
+
+            shim: {
+                &quot;amcharts.serial&quot;: {
+                    deps: [&quot;amcharts&quot;],
+                    exports: &quot;AmCharts&quot;,
+                    init: function() {
+                        AmCharts.isReady = true;
+                    }
+                },
+                &quot;amcharts.xy&quot;: {
+                    deps: [&quot;amcharts&quot;],
+                    exports: &quot;AmCharts&quot;,
+                    init: function() {
+                        AmCharts.isReady = true;
+                    }
+                }
+            }
+        });
+    &lt;/script&gt;
+    &lt;!-- Widget Script --&gt;
+    &lt;script&gt;
+        require([&quot;../src/amchart/Bar&quot;], function (AmBar) {
+            new AmBar()
+                    .target(&quot;ambar&quot;)
+                    .columns([&quot;Letter&quot;, &quot;Frequency&quot;])
+                    .data([
+                        ['A', .08167],
+                        ['B', .01492],
+                        ['C', .02782],
+                        ['D', .04253],
+                        ['E', .12702],
+                        ['F', .02288],
+                        ['G', .02015],
+                        ['H', .06094],
+                        ['I', .06966],
+                        ['J', .00153],
+                        ['K', .00772],
+                        ['L', .04025],
+                        ['M', .02406],
+                        ['N', .06749],
+                        ['O', .07507],
+                        ['P', .01929],
+                        ['Q', .00095],
+                        ['R', .05987],
+                        ['S', .06327],
+                        ['T', .09056],
+                        ['U', .02758],
+                        ['V', .00978],
+                        ['W', .02360],
+                        ['X', .00150],
+                        ['Y', .01974],
+                        ['Z', .00074],
+                    ])
+                    .render()
+            ;
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Frequency of Letters in a sentence &lt;/h1&gt;
+&lt;div id=&quot;ambar&quot; class=&quot;xlarge thumb&quot;&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3 id="non-amd-version_1"><a href="https://rawgit.com/Evan1415/hpcc_gulp/master/demos/bar_hard_namd.html">Non-AMD Version</a></h3>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;chrome=1&quot;&gt;
+    &lt;title&gt;Non-AMD Am Bar Chart&lt;/title&gt;
+    &lt;style&gt;
+        .thumb {
+            font-size: 12px;
+            padding: 2px 2px 2px 2px;
+            background: #f8f8f8;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .small.thumb {
+            width: 100px;
+            height: 100px;
+        }
+        .large.thumb {
+            width: 500px;
+            height: 500px;
+        }
+    &lt;/style&gt;
+
+
+    &lt;script src=&quot;https://www.google.com/jsapi&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/amcharts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/serial.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/colorbrewer/colorbrewer.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;../dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-api.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-amchart.min.js&quot;&gt;&lt;/script&gt;
+
+
+    &lt;script&gt;
+        var graph = null;
+        google.load(&quot;visualization&quot;, &quot;1&quot;, {
+            callback: doTest,
+            packages: [&quot;corechart&quot;]
+        });
+        function doTest() {
+            var timeoutStep = 500;
+            var timeoutIdx = 0;
+            setTimeout(function () {
+                displayCharts();
+            }, timeoutStep * timeoutIdx++);
+            function displayCharts() {
+                new amchart_Bar()
+                        .target(&quot;ambar&quot;)
+                        .columns([&quot;Letter&quot;, &quot;Frequency&quot;])
+                        .data([
+                            ['A', .08167],
+                            ['B', .01492],
+                            ['C', .02782],
+                            ['D', .04253],
+                            ['E', .12702],
+                            ['F', .02288],
+                            ['G', .02015],
+                            ['H', .06094],
+                            ['I', .06966],
+                            ['J', .00153],
+                            ['K', .00772],
+                            ['L', .04025],
+                            ['M', .02406],
+                            ['N', .06749],
+                            ['O', .07507],
+                            ['P', .01929],
+                            ['Q', .00095],
+                            ['R', .05987],
+                            ['S', .06327],
+                            ['T', .09056],
+                            ['U', .02758],
+                            ['V', .00978],
+                            ['W', .02360],
+                            ['X', .00150],
+                            ['Y', .01974],
+                            ['Z', .00074],
+                        ])
+                        .render()
+                ;
+            }
+        }
+    &lt;/script&gt;
+
+
+&lt;/head&gt;
+
+
+&lt;body&gt;
+
+
+&lt;div id=&quot;ambar&quot; class=&quot;large thumb&quot;&gt;&lt;/div&gt;
+
+
+&lt;/body&gt;
+&lt;/html&gt; 
+</code></pre>
+
+<h2 id="pie-chart">Pie Chart</h2>
+<h3 id="amd-version_2"><a href="http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Pie.html">AMD Version</a></h3>
+<pre><code class="html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;test.css&quot;&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; require.config({
+        paths: {
+            &quot;font-awesome&quot;: &quot;../dist-amd/font-awesome/css/font-awesome.min&quot;,
+            &quot;src&quot;: &quot;../dist-amd&quot;
+        }
+    });
+    &lt;/script&gt;cd 
+    &lt;script&gt;
+        require([&quot;../src/google/Pie&quot;], function (GPie) {
+            new GPie()
+                    .target(&quot;gpie&quot;)
+                    .columns([&quot;Operating System&quot;, &quot;Market Share&quot;])
+                    .data([
+                        [&quot;Windows 8&quot;, 23.5],
+                        [&quot;Windows 7&quot;, 51.1],
+                        [&quot;Windows Vista&quot;, 0.7],
+                        [&quot;Other Windows&quot;, 0.5],
+                        [&quot;Windows XP&quot;,3.3],
+                        [&quot;Linux&quot;,5.5],
+                        [&quot;Mac&quot;,10.2],
+                        [&quot;Mobile&quot;,5.4]
+                    ])
+                    .render()
+            ;
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Popularity of Operating Systems &lt;/h1&gt;
+&lt;div id=&quot;gpie&quot; class=&quot;xlarge thumb&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<h3 id="non-amd-version-httprawgitcomevan1415hpcc_vizmasterhello_world_examplespie_namdhtml">[Non-AMD Version] (http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/pie_namd.html)</h3>
+<pre><code class="html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;chrome=1&quot;&gt;
+    &lt;title&gt;HPCC Systems - Visualization Framework&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;test.css&quot;&gt;
+    &lt;!--
+    Most scripts are optional, include only what you need
+    @TODO: shoud document dependencies in README
+    --&gt;
+    &lt;script src=&quot;https://www.google.com/jsapi&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maps.googleapis.com/maps/api/js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/c3/c3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/amcharts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/serial.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/funnel.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gauge.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/pie.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/radar.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/xy.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gantt.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/dagre/index.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/colorbrewer/colorbrewer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/topojson/topojson.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3-cloud/d3.layout.cloud.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;../dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-api.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-other.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-tree.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-graph.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-c3chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-amchart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-google.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-map.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-layout.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-marshaller.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        var graph = null;
+        google.load(&quot;visualization&quot;, &quot;1&quot;, {
+            callback: doTest,
+            packages: [&quot;corechart&quot;]
+        });
+
+        function doTest() {
+            new google_Pie()
+                    .target(&quot;gpie&quot;)
+                    .columns([&quot;Operating System&quot;, &quot;Market Share&quot;])
+                    .data([
+                        [&quot;Windows 8&quot;, 23.5],
+                        [&quot;Windows 7&quot;, 51.1],
+                        [&quot;Windows Vista&quot;, 0.7],
+                        [&quot;Other Windows&quot;, 0.5],
+                        [&quot;Windows XP&quot;, 3.3],
+                        [&quot;Linux&quot;, 5.5],
+                        [&quot;Mac&quot;, 10.2],
+                        [&quot;Mobile&quot;, 5.4]
+                    ])
+                    .render()
+
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=&quot;doTest&quot;&gt;
+&lt;div id=&quot;gpie&quot; class=&quot;xlarge thumb&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2 id="marshaller">Marshaller</h2>
+<h3 id="amd-version_3"><a href="http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/marsh.html">AMD Version</a></h3>
+<p>In this version of the Marshaller, we present an interactive, dynamic widget that visualises electoral data from the United States. </p>
+<pre><code class="html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; require.config({
+        paths: {
+            &quot;font-awesome&quot;: &quot;../dist-amd/font-awesome/css/font-awesome.min&quot;,
+            &quot;src&quot;: &quot;../dist-amd&quot;
+        }
+    });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+    require([&quot;src/marshaller/Graph&quot;], function (Graph) {
+        new Graph()
+                .size({width:800,height:500})
+                .target(&quot;widget-wrapper&quot;)
+                .testData()
+                .render()
+        ;
+    });
+&lt;/script&gt;
+&lt;div id=&quot;widget-wrapper&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3 id="non-amd-version_2"><a href="https://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/marsh_namd.html">Non-AMD Version</a></h3>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;chrome=1&quot;&gt;
+    &lt;title&gt;HPCC Systems - Visualization Framework&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;test.css&quot;&gt;
+
+    &lt;script src=&quot;https://www.google.com/jsapi&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maps.googleapis.com/maps/api/js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/c3/c3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/amcharts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/serial.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/funnel.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gauge.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/pie.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/radar.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/xy.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gantt.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/dagre/index.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/colorbrewer/colorbrewer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/topojson/topojson.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3-cloud/d3.layout.cloud.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;../dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-api.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-other.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-tree.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-graph.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-c3chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-amchart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-google.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-map.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-layout.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-marshaller.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        var graph = null;
+        google.load(&quot;visualization&quot;, &quot;1&quot;, {
+            callback: doTest,
+            packages: [&quot;corechart&quot;]
+        });
+
+        function doTest() {
+            new marshaller_HTML()
+                    .size({width:800,height:500})
+                    .target(&quot;widget-wrapper&quot;)
+                    .testData()
+                    .render()
+            ;
+        }
+    &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body onload=&quot;doTest&quot;&gt;
+&lt;div id=&quot;widget-wrapper&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../FAQ/" class="btn btn-neutral float-right" title="FAQ"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Chart-Color-(Palette)-Usage/" class="btn btn-neutral" title="Chart Color (Palette) Usage"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Chart-Color-(Palette)-Usage/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../FAQ/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

@@ -73,7 +73,7 @@
         ;
         return this;
     };
-    
+
     Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells",null,{tags:["Private"]});
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
@@ -82,29 +82,31 @@
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
-    
+
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadFontColor", null, "html-color", "Table head font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontColor", null, "html-color", "Table body font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadFontFamily", null, "string", "Table head font family", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontFamily", null, "string", "Table body font family", null, { tags: ["Basic"], optional: true });
-    
+
     Table.prototype.publish("theadCellBorderColor", null, "html-color", "Table head cell border color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadRowBackgroundColor", null, "html-color", "Table head row color", null, { tags: ["Basic"], optional: true });
-    
+
     Table.prototype.publish("tbodyCellBorderColor", null, "html-color", "Table body cell border color", null, { tags: ["Basic"], optional: true });
-    
+
     Table.prototype.publish("tbodyRowBackgroundColor", null, "html-color", "Table body row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFirstColFontColor", null, "html-color", "Table body first column font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFirstColBackgroundColor", null, "html-color", "Table body first column background color", null, { tags: ["Basic"], optional: true });
-    
+
     Table.prototype.publish("tbodyHoverRowFontColor", null, "html-color", "Table body hover row font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyHoverRowBackgroundColor", null, "html-color", "Table body hover row background color", null, { tags: ["Basic"], optional: true });
-    
+
     Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
-    
+    Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
+
+
     Table.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -186,10 +188,10 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-       
+
         if (!this.showHeader()) {
             this.fixedHeader(false);
-        } 
+        }
 
         var th = this.thead.selectAll("th").data(this.columns(), function (d) { return d; });
         th
@@ -335,36 +337,23 @@
             })
         ;
 
-        rows
-            .attr("class", function (d) {
-                if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
-                    return "selected";
-                }
-            })
-        ;
-
         rows.exit()
             .remove()
         ;
-        
-        rows.each(function(){
-            var d = d3.select(this);
-            context.applyStyleToRows(d);
-        });
-        
+
         var cells = rows.selectAll("td").data(function (row, i) {
             return row;
         });
         cells.enter()
             .append("td")
         ;
-        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d) { 
+        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d) {
             if(typeof(d) === "string"){
                 return d.trim();
             } else if (typeof(d) === "number") {
                 return d;
             }
-            return ""; 
+            return "";
         });
         cells.exit()
             .remove()
@@ -373,13 +362,32 @@
         if (this.data().length) {
             this.fixedLabelsUpdate(domNode, element);
         }
-        
-        context.applyStyleToRows(this.tbody.selectAll("tr"));
+
         this._paginator
             .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
             .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
             .render()
         ;
+
+        rows.each(function(row, idx){
+            var d = d3.select(this);
+
+            if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
+                d3.select(this).classed("selected", true);
+            }
+
+            if (idx % 2 === 0) {
+                d3.select(this)
+                    .classed("tr-even", true)
+                ;
+            } else {
+                d3.select(this)
+                    .classed("tr-odd", true)
+                ;
+            }
+
+            context.applyStyleToRows(d);
+        });
     };
 
     Table.prototype.fixedLabelsUpdate = function (domNode, element) {
@@ -409,7 +417,7 @@
         ;
         var colLabelsWrapper = colsWrapper.select(".labels-wrapper");
         var colLabelsWrapperThead = colsWrapper.select(".labels-wrapper > thead");
-        
+
 
         var rowsWrapper = this.headerDiv.selectAll(".rows-wrapper").data(this.fixedColumn() ? [0] : []);
         rowsWrapper.enter()
@@ -433,16 +441,11 @@
         var tableMarginHeight = colWrapperHeight;
         _copyLabelContents(this._id);
         _setOnScrollEvents(this.tableDiv.node());
-        
+
         var colTr = colsWrapper.selectAll(".labels-wrapper tr");
-        var rowTr = rowsWrapper.selectAll(".labels-wrapper tbody > tr");
         var rowTheadTr = rowsWrapper.selectAll(".labels-wrapper thead > tr");
         colTr.style("background-color",this.theadRowBackgroundColor());
         rowTheadTr.style("background-color",this.theadRowBackgroundColor());
-        context.applyFirstColRowStyles(rowTr);
-        setTimeout(function(){
-            context.applyStyleToRows(context.tbody.selectAll("tr"));
-        },0);
 
         function _copyLabelContents() {
             var origThead = element.selectAll("th");
@@ -461,7 +464,7 @@
                     el
                         .style("width", elWidth)
                     ;
-                });                
+                });
                 newThead.on("click", function(d, idx){
                     context.headerClick(d, idx);
                 });
@@ -469,7 +472,7 @@
                     rowLabelsWrapper.html("");
                 }
             }
-            
+
             var rowWrapperWidth;
             var newTableHeight;
             if (context.fixedColumn()) {
@@ -479,7 +482,7 @@
                 var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
                 var rowContents = "<thead>";
                 var tempTrWrapper = document.createElement("div");
-                
+
                 if (context.showHeader()) {
                     var theadTr = document.createElement("tr");
                     theadTr.style.backgroundColor = context.theadRowBackgroundColor();
@@ -493,7 +496,7 @@
                     theadTr.appendChild(th);
                     tempTrWrapper.appendChild(theadTr);
                     rowContents += tempTrWrapper.innerHTML;
-                    
+
                 } else {
                     tableMarginHeight = 0;
                 }
@@ -559,7 +562,7 @@
                     })
                 ;
             } else {
-                rowWrapperWidth = 0; 
+                rowWrapperWidth = 0;
                 tableMarginHeight = 0;
             }
 
@@ -679,21 +682,22 @@
         var context = this;
         row
             .style("color",context.tbodyHoverRowFontColor())
-            .style("background-color",context.tbodyHoverRowBackgroundColor())
+            .style("background-color", context.tbodyHoverRowBackgroundColor())
         ;
     };
     Table.prototype.applySelectedRowStyles = function(row){
         var context = this;
         row
-            .style("color",context.tbodySelectedRowFontColor())
-            .style("background-color",context.tbodySelectedRowBackgroundColor())
+            .style("color", context.tbodySelectedRowFontColor())
+            .style("background-color", context.tbodySelectedRowBackgroundColor())
         ;
     };
     Table.prototype.applyRowStyles = function(row,isFirstCol){
         var context = this;
+        var color = isFirstCol ? context.tbodyFirstColBackgroundColor() : context.tableZebraColor() && row.classed("tr-odd") ? context.tableZebraColor() : context.tbodyRowBackgroundColor();
         row
             .style("color",isFirstCol ? context.tbodyFirstColFontColor() : context.tbodyFontColor())
-            .style("background-color",isFirstCol ? context.tbodyFirstColBackgroundColor() : context.tbodyRowBackgroundColor())
+            .style("background-color", color)
         ;
     };
     Table.prototype.applyFirstColRowStyles = function(rows){

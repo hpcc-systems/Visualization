@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../img/favicon.ico">
 
-	<title>Playground - Visualization</title>
+	<title>Home - Visualization</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../Index/">Visualization</a>
+            <a class="navbar-brand" href="./">Visualization</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -53,8 +53,8 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li >
-                        <a href="../Index/">Home</a>
+                    <li class="active">
+                        <a href="./">Home</a>
                     </li>
                 
                 
@@ -116,8 +116,8 @@
                 
                 
                 
-                    <li class="active">
-                        <a href="./">Playground</a>
+                    <li >
+                        <a href="../The-Playground/">Playground</a>
                     </li>
                 
                 
@@ -143,13 +143,13 @@
                     </a>
                 </li>
                 
-                    <li >
-                        <a rel="next" href="../FAQ/">
+                    <li class="disabled">
+                        <a rel="next" >
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../Theme-Editor/">
+                        <a rel="prev" href="../user_guide/Getting-Started/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -165,42 +165,70 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#structure-of-the-widget-page">Structure of the Widget Page</a></li>
+        <li class="main active"><a href="#visualization-framework">Visualization Framework</a></li>
         
-            <li><a href="#widget-view">Widget View</a></li>
+            <li><a href="#the-obligatory-hello-world-example">The obligatory Hello World example</a></li>
         
-            <li><a href="#editing-view">Editing View</a></li>
+            <li><a href="#standing-on-the-back-of-giants">Standing on the back of giants</a></li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>The <a href="https://cdn.rawgit.com/mlzummo/Visualization/DEMO_CODE_4/apps/SampleSite/playground.html">Playground</a> is an online, dynamic and user-friendly tool that allows users to alter widgets, primarily with a view to being able to manipulate the data-input into those widgets in an easy manner without having to edit the source code. </p>
-<h1 id="structure-of-the-widget-page">Structure of the Widget Page</h1>
-<p>The page is divided into two views, on the left being the widget currently being examined and on the right an editing interface where publish parameters can be manipulated with other features that will now be explained. </p>
-<h2 id="widget-view">Widget View</h2>
-<p>This is located to the left hand side of the page and it is where the widget is primarily displayed with the following options. </p>
-<h4 id="select-a-chart">Select a Chart</h4>
-<p>Opens a drop-down menu from where the user can choose what widget to interact with.</p>
-<h4 id="show-documentation">Show Documentation</h4>
-<p>This will redirect the user to a completely new page with a comprehensive set of documentation on each widget and their members and methods so that the user can easily add or change functionality to the widget that they would like.</p>
-<h4 id="selected-widget">Selected Widget</h4>
-<p>A view of the chosen widget.</p>
-<h4 id="serialization-test">Serialization Test</h4>
-<p>By selecting this tab, the user refreshes the widget if they have made any changes to it in the editing section. </p>
-<h4 id="seriaizsation-json">Seriaizsation JSON</h4>
-<p>Displays a JSON file with a list of publish parameters that control how the widget should look. This JSON file is dynamic and is changed every time an edit to one of the publish parameters is made. Effectively, when we switch to the <a href="">Serialization Tab</a> tab, it is this JSON file that is refreshed and the view of the new widget can be then seen.</p>
-<h2 id="editing-view">Editing View</h2>
-<p>This is located to the right hand side of the page and comprises of the following tabs that are related to editing the widget that is currently in the view.</p>
-<h4 id="discover-params">Discover Params</h4>
-<p>A long list of publish parameters that are specific to each widget that can be manipulated and upon manipulation will change the Serialization JSON so that the changes can be viewed when the Serialization tab is refreshed. Of particular interest here may be to change the input data into a specific widget, which can be proved to be quite useful and easier than editing the source code. </p>
-<h4 id="example-code">Example Code</h4>
-<p>Here the user is presented with the HTML source code that generates the widget so that they can copy and paste it into their own project if they would like or view it in browser by selecting the "Demo Example Code (Plain)" option at the bottom of the page. </p>
-<h4 id="object-hierarchy">Object Hierarchy</h4>
-<p>This tab presents the user with a visualisation that details the dependencies of the currently displayed widget in a linking format. </p>
-<h4 id="live-edit-css">Live Edit CSS</h4>
-<p>This is a Live Edit CSS interactive view.</p></div>
+<h1 id="visualization-framework">Visualization Framework</h1>
+<p><a href="https://travis-ci.org/hpcc-systems/Visualization"><img alt="Build Status" src="https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master" /></a>
+<a href="https://gitter.im/hpcc-systems/Visualization?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Join the chat at https://gitter.im/hpcc-systems/Visualization" src="https://badges.gitter.im/Join%20Chat.svg" /></a>
+<a href="https://gemnasium.com/hpcc-systems/Visualization"><img alt="Dependency Status" src="https://gemnasium.com/hpcc-systems/Visualization.svg" /></a>
+<em> <em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html">Demo/Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html">source</a></em></em> <em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html">Dermatology Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html">source</a></em>
+* <em>[Wiki] (https://github.com/hpcc-systems/Visualization/wiki)</em></p>
+<p>The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations (watch this space). It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.</p>
+<h3 id="the-obligatory-hello-world-example">The obligatory Hello World <a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld/index.html">example</a></h3>
+<pre><code class="html">﻿&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;script src=&quot;http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        require.config({
+            paths: {
+                &quot;src&quot;: &quot;http://viz.hpccsystems.com/v1.2.2/dist-amd&quot;,
+                &quot;font-awesome&quot;: &quot;http://viz.hpccsystems.com/v1.2.2/dist-amd/font-awesome/css/font-awesome.min&quot;
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;helloWorld&quot; style=&quot;width:100%; height:100vh&quot;&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        require([&quot;src/common/TextBox&quot;], function (TextBox) {
+            var helloWorld = new TextBox()
+                .target(&quot;helloWorld&quot;)
+                .text(&quot;Hello\nWorld!&quot;)
+                .render()
+            ;
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3 id="standing-on-the-back-of-giants">Standing on the back of giants</h3>
+<p>None of this would would be possible without the great work of others.  The widgets/lib folder includes the work from:
+<em> <a href="http://requirejs.org/">requirejs</a>
+</em> <a href="http://d3js.org/">D3</a>
+<em> <a href="https://github.com/mbostock/topojson">Topojson</a>
+</em> <a href="https://github.com/cpettitt/dagre">dagre</a>
+<em> <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> 
+</em> <a href="http://colorbrewer2.org/">ColorBrewer</a>
+<em> <a href="http://c3js.org/">C3</a>
+</em> <a href="http://www.amcharts.com/">AM Charts</a>
+* <a href="https://github.com/jasondavies/d3-cloud">d3-cloud</a></p>
+<p>While widgets/src also includes wrappers for CDN hosted visualizations:
+<em> <a href="https://developers.google.com/maps/">Google Maps</a>
+</em> <a href="https://developers.google.com/chart/">Google Charts</a></p></div>
             
         </div>
 

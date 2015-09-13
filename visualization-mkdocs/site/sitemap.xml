@@ -3,87 +3,61 @@
 
     
     <url>
-     <loc>None/Anatomy-of-a-Widget/</loc>
+     <loc>None/Index/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
+        
     <url>
-     <loc>None/Bower-Releases/</loc>
+     <loc>None/user_guide/Getting-Started/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
+        
     <url>
-     <loc>None/Building-from-sources/</loc>
+     <loc>None/user_guide/Building-from-sources/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
+        
     <url>
-     <loc>None/Chart-Color-(Palette)-Usage/</loc>
+     <loc>None/user_guide/Bower-Releases/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
+        
     <url>
-     <loc>None/Examples/</loc>
+     <loc>None/user_guide/Anatomy-of-a-Widget/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>None/user_guide/Widget-Serialization/</loc>
+     <lastmod>2015-09-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/user_guide/Chart-Color-(Palette)-Usage/</loc>
+     <lastmod>2015-09-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/user_guide/Marshaller/</loc>
+     <lastmod>2015-09-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
     <url>
      <loc>None/FAQ/</loc>
-     <lastmod>2015-09-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/Getting-Started/</loc>
-     <lastmod>2015-09-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/GitHub-Releases/</loc>
-     <lastmod>2015-09-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/GitHub-Sources/</loc>
-     <lastmod>2015-09-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/Marshaller/</loc>
-     <lastmod>2015-09-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/Methods-of-hosting-your-own-site-with-visualisations/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -107,7 +81,7 @@
 
     
     <url>
-     <loc>None/Widget-Serialization/</loc>
+     <loc>None/Examples/</loc>
      <lastmod>2015-09-12</lastmod>
      <changefreq>daily</changefreq>
     </url>

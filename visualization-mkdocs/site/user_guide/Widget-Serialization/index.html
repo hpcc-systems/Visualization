@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="../img/favicon.ico">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>FAQ - Visualization</title>
+	<title>Widget Serialization - Visualization</title>
 
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../Index/">Visualization</a>
+            <a class="navbar-brand" href="../../Index/">Visualization</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -54,54 +54,54 @@
                 
                 
                     <li >
-                        <a href="../Index/">Home</a>
+                        <a href="../../Index/">Home</a>
                     </li>
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../user_guide/Getting-Started/">Getting Started</a>
+    <a href="../Getting-Started/">Getting Started</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Building-from-sources/">Building from Sources</a>
+    <a href="../Building-from-sources/">Building from Sources</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Bower-Releases/">Bower Releases</a>
+    <a href="../Bower-Releases/">Bower Releases</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Anatomy-of-a-Widget/">Anatomy of a Widget</a>
+    <a href="../Anatomy-of-a-Widget/">Anatomy of a Widget</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Widget Serialization</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Widget-Serialization/">Widget Serialization</a>
+    <a href="../Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../user_guide/Marshaller/">Marshaller</a>
+    <a href="../Marshaller/">Marshaller</a>
 </li>
 
                         
@@ -110,26 +110,26 @@
                 
                 
                 
-                    <li class="active">
-                        <a href="./">FAQ</a>
+                    <li >
+                        <a href="../../FAQ/">FAQ</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../The-Playground/">Playground</a>
+                        <a href="../../The-Playground/">Playground</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../Theme-Editor/">Theme-Editor</a>
+                        <a href="../../Theme-Editor/">Theme-Editor</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../Examples/">Examples</a>
+                        <a href="../../Examples/">Examples</a>
                     </li>
                 
                 
@@ -144,12 +144,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../user_guide/Marshaller/">
+                        <a rel="next" href="../Anatomy-of-a-Widget/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../The-Playground/">
+                        <a rel="prev" href="../Chart-Color-(Palette)-Usage/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -165,94 +165,11 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#reusing-the-marshaller">Reusing the Marshaller</a></li>
-        
-    
-        <li class="main "><a href="#faqs">FAQs</a></li>
-        
-    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h2 id="reusing-the-marshaller">Reusing the Marshaller</h2>
-<p><em>Or how do I take control of the Visualization Placement in MY web page</em></p>
-<ul>
-<li>Create a new instance of the HipieDDL Marshaller:</li>
-</ul>
-<pre><code>this.marshaller = new HipieDDL.Marshaller();
-</code></pre>
-
-<ul>
-<li>Initialize it with the URL to your DDL:</li>
-</ul>
-<pre><code>this.marshaller.url(this._url, function (response) {
-    //  My DIV Creation will go here   ---
-}
-````
-* Create your own DIV elements and place the HipieDDL created widgets within them:
-</code></pre>
-
-<p>for (var key in context.marshaller.dashboards) {
-    var dashboard = context.marshaller.dashboards[key];
-    for (var key2 in dashboard.visualizations) {
-        var visualization = dashboard.visualizations[key2];
-        if (visualization.widget) {
-            var width = 640, height = 480;
-            var myDiv = document.createElement("DIV");
-            myDiv.setAttribute("style", "width: " + width + "px;height: " + height + "px;");
-            myDiv.setAttribute("display", "inline-block");
-            document.getElementById("htmlMarshaller").appendChild(myDiv);
-            visualization.widget
-                .pos({ x: width / 2, y: width / 2 })
-                .size({ width: width, height: height })
-                .target(myDiv)
-                .render()
-            ;
-        }
-    }
-}</p>
-<pre><code>* Kick start the whole DDL process, by fetching the default data:
-</code></pre>
-
-<p>for (var key in dashboard.datasources) {
-    dashboard.datasources[key].fetchData({}, true);
-}</p>
-<pre><code>
-* Putting it all together:
-</code></pre>
-
-<p>this.marshaller = new HipieDDL.Marshaller();
-this.marshaller.url(this._url, function (response) {
-    for (var key in context.marshaller.dashboards) {
-        var dashboard = context.marshaller.dashboards[key];
-        for (var key2 in dashboard.visualizations) {
-            var visualization = dashboard.visualizations[key2];
-            if (visualization.widget) {
-                var width = 640, height = 480;
-                var myDiv = document.createElement("DIV");
-                myDiv.setAttribute("style", "width: " + width + "px;height: " + height + "px;");
-                myDiv.setAttribute("display", "inline-block");
-                document.getElementById("htmlMarshaller").appendChild(myDiv);
-                visualization.widget
-                    .pos({ x: width / 2, y: width / 2 })
-                    .size({ width: width, height: height })
-                    .target(myDiv)
-                    .render()
-                ;
-            }
-        }
-    }
-    for (var key in dashboard.datasources) {
-        dashboard.datasources[key].fetchData({}, true);
-    }
-    return;
-});
-```</p>
-<h2 id="faqs">FAQs</h2>
-<p><em>1. I'm hosting on RawGit but my webpage isn't updating.</em></p>
-<p>It takes a few minutes, depending on your usage of the service, traffic on the server etc. so it should be up soon! </p>
-<p><em>2.</em></p></div>
+<p>TODO</p></div>
             
         </div>
 
@@ -262,12 +179,12 @@ this.marshaller.url(this._url, function (response) {
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script>
-        <script>var base_url = '..';</script>
-        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
-        <script src="../js/base.js"></script>
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

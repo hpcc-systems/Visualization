@@ -36,7 +36,10 @@ RequireJS is called with the inclusion of
 and it allows the opening of all our js files without their inclusion in the header.
 
 
-### 2. A simple [Bar Chart] (http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Bar.html)
+## 2. A simple Bar Chart
+
+[Demo](http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Bar.html)
+
 In this example we will just include a simple bar chart, embedding the source data in the actual html file. Loading files will come up later. 
 The data used illustrates the average frequency of letters that occur in a given sentence. 
 
@@ -92,9 +95,9 @@ The data used illustrates the average frequency of letters that occur in a given
 </body>
 </html>
 
-```
+## 3. A simple Pie Chart
 
-### 3. A simple [Pie Chart] (http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Pie.html)
+[Demo](http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Pie.html)
 In this example we display the most popular operating systems in a pie chart. 
 ``` html
 <!doctype html>

@@ -1,17 +1,16 @@
 site_name: Visualization
-theme: readthedocs
+theme: mkdocs
 pages: 
-- "Anatomy of a Widget" : "Anatomy-of-a-Widget.md"
-- "Bower Releases" : "Bower-Releases.md"
-- "Building from Sources" : "Building-from-sources.md"
-- "Chart Color (Palette) Usage": "Chart-Color-(Palette)-Usage.md"
-- "Examples" : "Examples.md"
-- "FAQ" : "FAQ.md"
-- "Getting Started" : "Getting-Started.md"
-- "GitHub Releases" : "GitHub-Releases.md"
-- "GitHub Sources" : "GitHub-Sources.md"
-- "Marshaller" : "Marshaller.md"
-- "Methods of hosting your own site with visualisations" : "Methods-of-hosting-your-own-site-with-visualisations.md"
-- "Playground" : "The-Playground.md"
-- "Theme-Editor" : "Theme-Editor.md"
-- "Widget Serialization" : "Widget-Serialization.md"
+- Home: 'Index.md'
+- User Guide:
+    - 'Getting Started' : 'user_guide/Getting-Started.md'
+    - 'Building from Sources' : 'user_guide/Building-from-sources.md'
+    - 'Bower Releases' : 'user_guide/Bower-Releases.md'
+    - 'Anatomy of a Widget' : 'user_guide/Anatomy-of-a-Widget.md'
+    - 'Widget Serialization' : 'user_guide/Widget-Serialization.md'
+    - 'Chart Color (Palette) Usage': 'user_guide/Chart-Color-(Palette)-Usage.md'
+    - 'Marshaller' : 'user_guide/Marshaller.md'
+- FAQ: 'FAQ.md'
+- Playground: 'The-Playground.md'
+- Theme-Editor: 'Theme-Editor.md'
+- Examples: 'Examples.md'

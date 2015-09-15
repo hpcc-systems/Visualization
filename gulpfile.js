@@ -247,6 +247,6 @@ gulp.task("tag-release", ["tag"], function (cb) {
 });
 
 gulp.task("copy-amchart-images", function() {
-   gulp.src("./bower_components/amcharts/dist/amcharts/images/**/*.*")
+   gulp.src("./bower_components/amcharts3/amcharts/images/**/*.*")
    .pipe(gulp.dest(cfg.distamd + "/" + "img/amcharts"));
 });

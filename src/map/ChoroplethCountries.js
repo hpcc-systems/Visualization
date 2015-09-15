@@ -20,28 +20,6 @@
 
     ChoroplethCountries.prototype.publish("worldProjection", "mercator", "set", "Map Projection", ["mercator", "orthographic"],{tags:["Private"]});
 
-    ChoroplethCountries.prototype.testData = function () {
-
-        var nameCodeMap = {};
-        for (var key in countries.countryNames) {
-            var item = countries.countryNames[key];
-            nameCodeMap[item.name] = key;
-        }
-
-        var rawData = [
-            { "name": "United States", "weight": 29.946185501741 }, { "name": "China", "weight": 229.946185501741 }
-        ];
-
-        var countryData = rawData.map(function (item) {
-            return { "country": nameCodeMap[item.name], "weight": item.weight, "label":item.name };
-        });
-
-        this.columns(["Country", "Weight", "Label"]);
-        this.data(countryData);
-
-        return this;
-    };
-
     ChoroplethCountries.prototype.data = function (_) {
         var retVal = Choropleth.prototype.data.apply(this, arguments);
         if (arguments.length) {

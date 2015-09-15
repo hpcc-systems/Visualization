@@ -23,17 +23,6 @@
     AbsoluteSurface.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Private"] });
     AbsoluteSurface.prototype.publish("opacity", 1, "number", "Opacity");
 
-    AbsoluteSurface.prototype.testData = function () {
-        this
-            .widgetX(25)
-            .widgetY(25)
-            .widgetWidth(50)
-            .widgetHeight(50)
-            .widget(new TextBox().testData())
-        ;
-        return this;
-    };
-
     AbsoluteSurface.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
     };

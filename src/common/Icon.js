@@ -25,11 +25,6 @@
     Icon.prototype.publishProxy("shape_colorFill", "_shapeWidget", "colorFill");
     Icon.prototype.publishProxy("shape_colorStroke", "_shapeWidget", "colorStroke");
 
-    Icon.prototype.testData = function () {
-        this._faChar.testData();
-        return this;
-    };
-
     Icon.prototype.intersection = function (pointA, pointB) {
         return this._shapeWidget.intersection(pointA, pointB);
     };

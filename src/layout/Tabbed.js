@@ -22,19 +22,6 @@
     Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
-    Tabbed.prototype.testData = function () {
-        this
-            .addTab(new TextBox().testData(), "MultiChart", true)
-            .addTab(new TextBox().testData(), "Pie Chart")
-            .addTab(new TextBox().testData(), "Line Chart")
-            .addTab(new Tabbed()
-                        .labels([]).widgets([])//TODO:Figure out why this is necessary
-                        .addTab(new TextBox().testData(), "Another Pie Chart")
-                        .addTab(new TextBox().testData(), "Another Line Chart", true), "Nested Example")
-        ;
-        return this;
-    };
-
     Tabbed.prototype.clearTabs = function () {
         this.widgets([]);
         return this;

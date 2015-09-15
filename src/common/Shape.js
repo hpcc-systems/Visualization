@@ -31,10 +31,6 @@
         return Math.max(this.width(), this.height()) / 2;
     };
 
-    Shape.prototype.testData = function () {
-        return this;
-    };
-
     Shape.prototype.intersection = function (pointA, pointB) {
         switch (this.shape()) {
             case "circle":
@@ -50,12 +46,11 @@
             .attr("class", "common_Shape")
         ;
         var context = this;
-        shape.each(function (d) {
+        shape
+            .attr("fill", context.colorFill())
+            .attr("stroke", context.colorStroke())
+            .each(function (d) {
             var element = d3.select(this);
-            element.style({
-                fill: context.colorFill(),
-                stroke: context.colorStroke()
-            });
             switch (context.shape()) {
                 case "circle":
                     var radius = context.radius();

@@ -10,7 +10,8 @@
             }
 
             var objs = paths.map(function (path) {
-                var prop = path.substring("src/".length).split("/").join("_");
+                var pathIdx = path.indexOf("src/") === 0 ? "src/".length : 0;
+                var prop = path.substring(pathIdx).split("/").join("_");
                 return root[prop];
             });
 

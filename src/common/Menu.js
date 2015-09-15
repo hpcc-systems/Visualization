@@ -80,13 +80,6 @@
         this.postHideMenu();
     };
 
-    Menu.prototype.testData = function () {
-        this
-            .data(["Menu A", "And B", "a longer C"])
-        ;
-        return this;
-    };
-
     Menu.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
 

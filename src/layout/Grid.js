@@ -38,22 +38,6 @@
 
     Grid.prototype.publish("content", [], "widgetArray", "widgets",null,{tags:["Basic"]});
 
-    Grid.prototype.testData = function () {
-        var innerGrid = new Grid()
-            .setContent(1, 0, new TextBox().testData())
-            .setContent(1, 1, new TextBox().testData())
-        ;
-        this
-            .setContent(0, 0, new TextBox().testData())
-            .setContent(0, 1, new TextBox().testData())
-            .setContent(1, 0, new TextBox().testData())
-            .setContent(1, 1, new TextBox().testData())
-            .setContent(0, 2, new TextBox().testData(), "Title AAA", 2, 2)
-            .setContent(2, 0, innerGrid, "Title BBB", 2, 4)
-        ;
-        return this;
-    };
-
     Grid.prototype.getDimensions = function () {
         var size = { width: 0, height: 0 };
         this.content().forEach(function (cell) {

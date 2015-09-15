@@ -4,7 +4,7 @@ body {
   padding:50px;
   font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#777;
-  font-weight:300;
+  //font-weight:300;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -256,7 +256,7 @@ footer {
 }
 
 .thumb {
-    font-size:12px;
+    //font-size:12px;
     padding:2px 2px 2px 2px;
     background: #f8f8f8;
     border-radius: 5px;
@@ -287,6 +287,16 @@ footer {
 .large.wide.thumb {
     width:300px;
     height:200px;
+}
+
+.xlarge.xwide.thumb {
+    width:640px;
+    height:480px;
+}
+
+.large.wide.tall.thumb {
+    width:300px;
+    height:300px;
 }
 
 .Shape2  {
@@ -375,3 +385,13 @@ li.L3,
 li.L5,
 li.L7,
 li.L9 { background: #eee }
+
+.widgetTest {
+    float: left;
+    padding: 2px;
+    margin: 2px;
+}
+
+.title {
+    font-size: 11px;
+}

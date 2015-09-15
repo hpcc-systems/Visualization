@@ -28,8 +28,6 @@
     MultiChartSurface.prototype._class += " chart_MultiChartSurface";
     MultiChartSurface.prototype.implements(INDChart.prototype);
 
-    MultiChartSurface.prototype.testData = INDChart.prototype.testData;
-
     MultiChartSurface.prototype.publish("mode", "2D", "set", "Chart Type", ["1D", "2D", "ND", "all"]);
     MultiChartSurface.prototype.publishProxy("chartType", "_content");
 

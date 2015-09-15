@@ -101,19 +101,6 @@
         return Slider.prototype.data.apply(this, arguments);
     };
 
-    Slider.prototype.testData = function (_) {
-        this.columns("Percent");
-        this.data(20);
-        return this;
-    };
-
-    Slider.prototype.testData2 = function (_) {
-        this.allowRange(true);
-        this.columns("Percent");
-        this.data([20, 40]);
-        return this;
-    };
-
     Slider.prototype.play = function () {
         this._playing = true;
         this._playIcon

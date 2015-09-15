@@ -13,21 +13,6 @@
     GMapGraph.prototype.constructor = GMapGraph;
     GMapGraph.prototype._class += " map_GMapGraph";
 
-    GMapGraph.prototype.testData = function () {
-        this.data([
-            [37.665074, -122.384375, { fillColor: "green" }, null, 0.234],
-            [32.690680, -117.178540, null, null, 0.234],
-            [39.709455, -104.969859, null, null, 0.234],
-            [41.244123, -95.961610, null, null, 0.234],
-            [32.688980, -117.192040, null, null, 0.234],
-            [45.786490, -108.526600, null, null, 0.234],
-            [45.796180, -108.535652, null, null, 0.234],
-            [45.774320, -108.494370, null, null, 0.234],
-            [45.777062, -108.549835, { fillColor: "red" }, null, 0.234]
-        ]);
-        return this;
-    };
-
     GMapGraph.prototype.enter = function () {
         GMap.prototype.enter.apply(this, arguments);
         var graph = new Graph()

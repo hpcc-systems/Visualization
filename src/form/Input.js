@@ -17,16 +17,8 @@
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 
-    Input.prototype.testData = function () {
-        return this;
-    };
-
     Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea", "date"]);
     Input.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
-
-    Input.prototype.testData = function () {
-        return this;
-    };
 
     Input.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);

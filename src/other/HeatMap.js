@@ -17,14 +17,6 @@
     HeatMap.prototype.publish("blur", 15, "number", "Set point blur", null, { tags: ["Basic"] });
     HeatMap.prototype.publish("max", 1, "number", "Set max data value", null, { tags: ["Basic"] });
     HeatMap.prototype.publish("gradient", [], "array", "Set gradient colors", null, { tags: ["Basic"] });
- 
-    HeatMap.prototype.testData = function () {
-        this
-            .columns(["x", "y","Weight"])
-            .data([[340, 280, 0.22532552290509789], [279, 78, 0.17218748760882907], [328, 336, 0.09651770381968094], [44, 263, 0.3316061590758984], [214, 477, 0.34511952287135683], [195, 485, 0.47588339388219036], [374, 396, 0.271679226500542], [360, 148, 0.18736486936235697], [80, 333, 0.8888903185554132], [202, 439, 0.8072545133759657], [347, 326, 0.7121907931949589], [214, 93, 0.8450257030767434], [427, 54, 0.9070942314279923], [338, 375, 0.7678188486462785], [135, 350, 0.748831574602582], [414, 146, 0.17446160174067626], [134, 454, 0.3971279668693425], [76, 166, 0.24240573560820156], [103, 1, 0.9879741685278576], [271, 438, 0.05501944785473689]])
-        ;
-        return this;
-    };
 
     HeatMap.prototype.enter = function (domNode, element) {
         CanvasWidget.prototype.enter.apply(this, arguments);

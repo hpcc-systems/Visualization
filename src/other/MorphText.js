@@ -18,33 +18,6 @@
     MorphText.prototype.publish("reverse",false, "boolean", "Reverse Animation",null,{tags:["Basic"]});
     MorphText.prototype.publish("text","", "string", "Sets text/data of widget",null,{tags:["Basic"]});
 
-    MorphText.prototype.testData = function () {
-        var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-        this.text(alphabet.join(""));
-        function shuffle(array) {
-            var m = array.length, t, i;
-            while (m) {
-                i = Math.floor(Math.random() * m--);
-                t = array[m];
-                array[m] = array[i];
-                array[i] = t;
-            }
-            return array;
-        }
-        var context = this;
-        setInterval(function () {
-            var randomAlphabet = shuffle(alphabet)
-                .slice(0, Math.floor(Math.random() * 26))
-                .sort()
-            ;
-            context
-                .text(randomAlphabet.join(""))
-                .render()
-            ;
-        }, 1500);
-        return this;
-    };
-
     MorphText.prototype._origText = MorphText.prototype.text;
     MorphText.prototype.text = function (_) {
         var retVal = MorphText.prototype._origText.apply(this, arguments);

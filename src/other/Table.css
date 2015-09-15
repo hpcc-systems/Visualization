@@ -70,3 +70,14 @@
     white-space: nowrap;
     box-sizing:border-box;
 }
+
+.other_Table tbody > tr:nth-child(even) {
+    /*background-color: ; disabled*/
+}
+.other_Table tbody > tr:nth-child(odd) {
+    background-color: #ccc;
+}
+
+.other_Table tbody > tr:nth-child(even) > td {
+/*    box-shadow: inset 0px 200px 300px 300px rgba(0,0,0,0.05); disabled zebra second example*/
+}

@@ -375,7 +375,7 @@
             if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
                 d3.select(this).classed("selected", true);
             }
-
+            
             if (idx % 2 === 0) {
                 d3.select(this)
                     .classed("tr-even", true)
@@ -385,7 +385,7 @@
                     .classed("tr-odd", true)
                 ;
             }
-
+            
             context.applyStyleToRows(d);
         });
     };
@@ -482,7 +482,7 @@
                 var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
                 var rowContents = "<thead>";
                 var tempTrWrapper = document.createElement("div");
-
+                //
                 if (context.showHeader()) {
                     var theadTr = document.createElement("tr");
                     theadTr.style.backgroundColor = context.theadRowBackgroundColor();

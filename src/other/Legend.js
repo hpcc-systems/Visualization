@@ -17,10 +17,6 @@
     //We may need a new publish param "type" to store references to widgets
     //Legend.prototype.publish("targetWidget", null, "widget", "Target widget for Legend",null,{tags:["Private"]});
     
-    Legend.prototype.testData = function () {
-        return this;
-    };
-    
     Legend.prototype.targetWidget = function (widget) {
         var context = this;
             var colArr = ["Key", "Label"];

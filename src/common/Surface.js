@@ -82,14 +82,6 @@
         return retVal;
     };
 
-    Surface.prototype.testData = function () {
-        this.title("Hello and welcome!");
-        this.menu(["aaa", "bbb", "ccc"]);
-        this.buttonAnnotations([{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}]);
-
-        return this;
-    };
-
     Surface.prototype.enter = function (_domNode, _element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         var element = _element.append("g").attr("class", "frame");

@@ -72,12 +72,6 @@
         return this;
     };
 
-    //  Data ---
-    XYAxis.prototype.testData = function () {
-        this.sampleData("ordinal");
-        return this;
-    };
-
     XYAxis.prototype.testDataOrdinal = function () {
         this
             .xAxisType("ordinal")

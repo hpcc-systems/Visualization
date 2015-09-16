@@ -108,12 +108,6 @@
     CommonSerial.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y", "candle-ohlc"]);
 
     //  Data ---
-    CommonSerial.prototype.testData = function () {
-        //this.sampleData("candle-ohlc");
-        this.sampleData("ordinal");
-        return this;
-    };
-
     CommonSerial.prototype._sampleData = CommonSerial.prototype.sampleData;
     CommonSerial.prototype.sampleData = function (_) {
         var retVal = CommonSerial.prototype._sampleData.apply(this, arguments);

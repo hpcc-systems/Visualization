@@ -13,6 +13,55 @@
             font-weight: 300;
             overflow:hidden;
         }
+        #widgetSelect, .widgetMenu, .sampleMenu {
+            position: absolute;
+            border: 1px solid #A5A5A5;
+            box-shadow: 2px 3px 10px 0px rgba(0,0,0,.5);
+        }
+        #widgetSelect.hide {
+            display: none;
+        }
+        #widgetSelect{
+            top:32px;
+            margin-left: 20px;
+        }
+        .widgetMenu, .sampleMenu {
+            left:100%;
+            margin-top: -25px;
+            white-space: nowrap;
+            display: none;
+        }
+        #widgetSelect li {
+            float: none;
+            background: snow;
+            color: #000;
+            text-shadow: none;
+            padding: 0 10px;
+            line-height: 25px;
+        }
+        #widgetSelect li:hover {
+            cursor: pointer;
+            background-color: #E5E5E5;
+        }
+        #widgetSelect li:hover > ul {
+            display:  block;
+        }
+        #selectButton {
+            display: inline-block;
+            padding: 0 10px;
+            margin: 0 20px;
+            border: 1px solid #fff;
+            border-radius: 3px;
+            background-color: snow;
+            color:#111;
+            line-height: 25px;
+            height: 25px;
+            text-shadow: none;
+            cursor: pointer;
+        }
+        #selectButton i {
+            padding-left: 5px
+        }
     </style>
     <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
     <script src="../src/config.js"></script>
@@ -36,6 +85,14 @@
         });
     </script>
     -->
+
+    <script>
+        require.config({
+            paths: {
+                "test": "../test"
+            }
+        });
+    </script>
 </head>
 <body onresize="doResize();">
     <header>
@@ -44,95 +101,10 @@
             <nav>
                 <ul>
                     <li>
-                        <prompt>Widget:</prompt>
-                        <select id="widgetSelect" onchange="testWidget(this.value);">
-                            <option value="src/common/Shape">Shape</option>
-                            <option value="src/common/Text">Text</option>
-                            <option value="src/common/TextBox">TextBox</option>
-                            <option value="src/common/FAChar">FAChar</option>
-                            <option value="src/common/Icon">Icon</option>
-                            <option value="src/common/List">List</option>
-                            <option value="src/common/Menu">Menu</option>
-                            <option value="src/common/Surface">Surface</option>
-                            <option value="src/common/ResizeSurface">ResizeSurface</option>
-                            <option value="src/c3chart/Area">C3 Area</option>
-                            <option value="src/c3chart/Bar">C3 Bar</option>
-                            <option value="src/c3chart/Column">C3 Column</option>
-                            <option value="src/c3chart/Line">C3 Line</option>
-                            <option value="src/c3chart/Scatter">C3 Scatter</option>
-                            <option value="src/c3chart/Step">C3 Step</option>
-                            <option value="src/c3chart/Pie">C3 Pie</option>
-                            <option value="src/c3chart/Donut">C3 Donut</option>
-                            <option value="src/c3chart/Gauge">C3 Gauge</option>
-                            <option value="src/google/Pie">Google Pie</option>
-                            <option value="src/google/Bar">Google Bar</option>
-                            <option value="src/google/Column">Google Column</option>
-                            <option value="src/google/Line">Google Line</option>
-                            <option value="src/google/Area">Google Area</option>
-                            <option value="src/google/Scatter">Google Scatter</option>
-                            <option value="src/google/Timeline">Google Timeline</option>
-                            <option value="src/google/TreeMap">Google TreeMap</option>
-                            <option value="src/chart/Summary">Summary</option>
-                            <option value="src/chart/Pie">Pie</option>
-                            <option value="src/chart/Bubble">Bubble</option>
-                            <option value="src/chart/Column">Column</option>
-                            <option value="src/chart/Scatter">Scatter</option>
-                            <option value="src/chart/Line">Line</option>
-                            <option value="src/chart/Area">Area</option>
-                            <option value="src/chart/Step">Step</option>
-                            <option value="src/chart/MultiChart">Multi Chart</option>
-                            <option value="src/chart/MultiChartSurface">Multi Chart Surface</option>
-                            <option value="src/form/Form">Form</option>
-                            <option value="src/map/GMap">Google Map</option>
-                            <option value="src/map/GMapHeat">Google Map - Heat</option>
-                            <option value="src/map/GMapGraph">Google Map - Graph</option>
-                            <option value="src/map/ChoroplethStates">Choropleth States</option>
-                            <option value="src/map/ChoroplethStatesHeat">Choropleth States - Heat</option>
-                            <option value="src/map/ChoroplethCounties">Choropleth Counties</option>
-                            <option value="src/map/ChoroplethCountries">Choropleth Countries</option>
-                            <option value="src/tree/Dendrogram">Tree Dendrogram</option>
-                            <option value="src/tree/CirclePacking">Tree CirclePacking</option>
-                            <option value="src/tree/SunburstPartition">Tree SunburstPartition</option>
-                            <option value="src/graph/Graph">Graph</option>
-                            <option value="src/graph/Vertex">Graph Vertex</option>
-                            <option value="src/other/Table">Table</option>
-                            <option value="src/other/WordCloud">Word Cloud</option>
-                            <option value="src/other/HeatMap">Heat Map</option>
-                            <option value="src/other/Legend">Legend</option>
-                            <option value="src/form/Slider">Slider</option>
-                            <option value="src/marshaller/HTML">HTML Marshaller</option>
-                            <option value="src/marshaller/Graph">Graph Marshaller</option>
-                            <option value="src/layout/AbsoluteSurface">AbsoluteSurface Layout</option>
-                            <option value="src/layout/Surface">Surface Layout</option>
-                            <option value="src/layout/Cell">Cell Layout</option>
-                            <option value="src/layout/Grid">Grid Layout</option>
-                            <option value="src/layout/Border">Border Layout</option>
-                            <option value="src/layout/Layered">Layered Layout</option>
-                            <option value="src/layout/Tabbed">Tabbed Layout</option>
-                            <option value="src/layout/Popup">Popup Layout</option>
-                            <option value="src/amchart/Area">AmChart Area</option>
-                            <option value="src/amchart/Bar">AmChart Bar</option>
-                            <option value="src/amchart/Bubble">AmChart Bubble</option>
-                            <option value="src/amchart/Candle">AmChart Candle</option>
-                            <option value="src/amchart/FloatingColumn">AmChart Floating Column</option>
-                            <option value="src/amchart/Funnel">AmChart Funnel</option>
-                            <option value="src/amchart/Gauge">AmChart Gauge</option>
-                            <option value="src/amchart/Line">AmChart Line</option>
-                            <option value="src/amchart/Pie">AmChart Pie</option>
-                            <option value="src/amchart/Polar">AmChart Polar</option>
-                            <option value="src/amchart/Pyramid">AmChart Pyramid</option>
-                            <option value="src/amchart/Scatter">AmChart Scatter</option>
-                        </select>
-                    </li>
-                    <li>
-                        <prompt style="margin-left:8px;">Theme:</prompt>
-                        <select id="themeSelect" onchange="testTheme(this.value);">
-                            <option value="Default">Default</option>
-                            <option value="LN Red/Grey">LN Red/Grey</option>
-                            <option value="Green/Light-Grey">Green/Light-Grey</option>
-                            <option value="Blue-Bordered">Blue-Bordered</option>
-                            <option value="Red-Bordered">Red-Bordered</option>
-                        </select>
+                        <div id="selectButton" onclick="toggleMenu()">
+                            Select A Widget <i class="fa fa-caret-down"></i>
+                        </div>
+                        <ul id="widgetSelect" class="hide"></ul>
                     </li>
                     <li>
                         <label for="showProperties">&nbsp;&nbsp;Properties:</label>
@@ -149,6 +121,15 @@
                     <li>
                         <label for="showThemeText">&nbsp;&nbsp;Theme Text:</label>
                         <input id="showThemeText" type="checkbox" onchange="showThemeText(this.checked);" />
+                    </li>
+                    <li>
+                        <select id="themeSelect" onchange="testTheme(this.value);">
+                            <option value="Default">Default</option>
+                            <option value="LN Red/Grey">LN Red/Grey</option>
+                            <option value="Green/Light-Grey">Green/Light-Grey</option>
+                            <option value="Blue-Bordered">Blue-Bordered</option>
+                            <option value="Red-Bordered">Red-Bordered</option>
+                        </select>
                     </li>
                 </ul>
             </nav>
@@ -171,10 +152,9 @@
                     params[decodeURIComponent(paramParts[0])] = decodeURIComponent(paramParts[1]);
                 }
             });
-            if (widgetPath) {
-                document.getElementById("widgetSelect").value = widgetPath;
-            }
         }
+        widgetPath = widgetPath  || "src/chart/Column";
+
         var themeSelectObj = {
             "Default":null,
             "LN Red/Grey":{"common_Widget":{"surfaceTitleFontSize":16,"surfaceTitleFontColor":"#FAFAFA","surfaceTitleFontFamily":"PT Sans","surfaceTitleFontBold":false,"surfaceTitleBackgroundColor":"#ED1C24","surfacePadding":"null","surfaceBackgroundColor":"#FAFAFA","surfaceBorderWidth":1,"surfaceBorderColor":"#6D6E71","surfaceBorderRadius":4,"surfaceTitleAlignment":"center","paletteID":"Set1"},"other_Table":{"theadRowBackgroundColor":"#ED1C24","theadFontColor":"#FAFAFA","tbodyFirstColFontColor":"#333333","theadCellBorderColor":"#333333","tbodyCellBorderColor":"#333333","tbodyFirstColBackgroundColor":"#CCCCCC","tbodyHoverRowBackgroundColor":"#777777","tbodySelectedRowFontColor":"#333333","tbodySelectedRowBackgroundColor":"#FDFFB3"}},
@@ -194,7 +174,49 @@
         var showProperties = null;
         var debouncedResize = null;
 
-        require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor"], function (Surface, Grid, Persist, PropertyEditor) {
+        require(["d3", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "test/Factory"], function (d3, Surface, Grid, Persist, PropertyEditor, testFactory) {
+            var sampleSelect = d3.select("#widgetSelect");
+            var categoryOptions = sampleSelect.selectAll("li").data(d3.map(testFactory.categories).entries());
+            categoryOptions.enter()
+                .append("li")
+                .attr("value", function (d, idx) { return idx; })
+                .text(function (d) { return d.key; })
+                .append("ul")
+            ;
+            var thisFactory = "",
+                thisWidget = "";
+                
+            categoryOptions.each(function (d, idx) {
+                var categorySelect = d3.select(this).select("ul").classed("widgetMenu", true);
+                var widgetOptions = categorySelect.selectAll("li").data(d3.map(d.value).entries());
+                widgetOptions.enter()
+                    .append("li")
+                    .attr("value", function (d, idx) { return idx; })
+                    .text(function (d) { return d.key; })
+                    .each(function (d) {
+                        var element = d3.select(this);
+                        if (d3.keys(d.value).length === 1) {
+                            element
+                                .on("click", function (d) {
+                                    testWidget(d3.map(d.value).values()[0].factory);
+                                    d3.select("#widgetSelect").classed("hide", true);
+                                })
+                            ;
+                        } else {
+                            var sampleOptions = element.append("ul").classed("widgetMenu", true).selectAll("li").data(d3.map(d.value).entries());
+                            sampleOptions.enter()
+                                .append("li")
+                                .text(function (d) { return d.key; })
+                                .on("click", function (d) {
+                                    testWidget(d.value.factory);
+                                    d3.select("#widgetSelect").classed("hide", true);
+                                })
+                            ;
+                        }
+                    })
+                ;
+            });
+            
             var propEditor = new PropertyEditor().showColumns(false).showData(false);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
@@ -269,9 +291,9 @@
                 }
             }
 
-            testWidget = function (widgetPath, params) {
-                require([widgetPath], function (Widget) {
-                    currWidget = new Widget().testData();
+            testWidget = function (func, params) {
+                func(function (widget) {
+                    currWidget = widget;
                     if (params) {
                         for (var key in params) {
                             currWidget[key](params[key]);
@@ -301,8 +323,8 @@
                         displaySerializationText(currWidget);
                         displayThemeText(currWidget);
                     });
-                })
-            }
+                });
+            };
             showProperties = function (show) {
                 main
                     .setContent(0, 2, show ? propEditor : null, "", 2, 1)
@@ -312,7 +334,7 @@
                         }
                     })
                 ;
-            }
+            };
             showSerialization = function (show) {
                 main
                     .setContent(2, 0, show ? serializationSurface : null, "", 1, 3)
@@ -322,7 +344,7 @@
                         }
                     })
                 ;
-            }
+            };
             showSerializationText = function (show) {
                 main
                     .setContent(0, 3, show ? serializationTextSurface : null, "", 2, 1)
@@ -332,7 +354,7 @@
                         }
                     })
                 ;
-            }
+            };
             showThemeText = function (show) {
                 main
                     .setContent(2, 3, show ? themeTextSurface : null, "", 1, 1)
@@ -353,15 +375,27 @@
                 ;
                 if (first) {
                     first = false;
-                    testWidget(document.getElementById("widgetSelect").value, params);
+                    testWidget(d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params);
+                    /*
+                    var factory = testFactory.categories[0].factory;
+                    var widget = testFactory.categories[0].widgets[0].id;
+                    var sample = testFactory.categories[0].widgets[0].samples[0].id;
+
+                    console.log(widget, sample);
+                    testWidget(factory, widget, sample, params);
+                    */
                 }
-            }, 250)
+            }, 250);
             frame.doResize();
         });
         function doResize() {
             if (frame) {
                 frame.doResize();
             }
+        }
+        function toggleMenu() {
+            var menu = d3.select("#widgetSelect");
+            menu.classed("hide", !menu.classed("hide"));
         }
     </script>
 </body>

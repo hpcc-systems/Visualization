@@ -150,23 +150,5 @@
         this._chart = AmCharts.makeChart(domNode, initObj);
     };
 
-    Gauge.prototype.testData = function() {
-        this.numBands(3);
-        this.bandsColor(["#84b761","#fdd400","#cc4748"]);
-        this.bandsEndValue([90,130,220]);
-        this.bandsStartValue([0,90,130]);
-        this.bandsInnerRadius([null, null, "95%"]);
-        this.bottomText("[[data]] km/h");
-        this.high(220);
-        this.low(0);
-        this.data(100);
-        this.axisLineWidth(1);
-        this.axisAlpha(0.2);
-        this.tickAlpha(0.2);
-        this.valueInterval(20);
-
-        return this;
-    };
-
     return Gauge;
 }));

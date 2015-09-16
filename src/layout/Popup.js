@@ -27,23 +27,6 @@
     Popup.prototype.publish("buttonLabel", "", "string", "Button label text",null,{});
     Popup.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Private"]});
 
-    Popup.prototype.testData = function () {
-        this.showTestButton(true);
-        this.position("absolute");
-        this.top(30);
-        
-        var context = this;
-        this._testButton = new Icon()
-            .on("click", function () {
-                context.updateState(!(context.popupState()));
-            }, true)
-        ; 
-
-        this.widget(new Surface().widget(new Icon().testData()));
-
-        return this;
-    };
-
     Popup.prototype.widgetSize = function (widgetDiv) {
         var width = this.clientWidth() - this.calcFrameWidth(widgetDiv);
         var height = this.clientHeight() - this.calcFrameHeight(widgetDiv);

@@ -18,6 +18,15 @@
     <script src="../node_modules/requirejs/require.js"></script>
     <script src="../src/config.js"></script>
     <script>
+        require.config({
+            baseUrl: ".",
+            paths: {
+                "src": "../src",
+                "test": "../test"
+            }
+        });
+    </script>
+    <script>
         mocha.setup('bdd');
         var assert = chai.assert;
         require(["./widgets", "./persist"], function () {

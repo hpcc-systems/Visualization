@@ -37,11 +37,6 @@
         return this;
     };
 
-    TextBox.prototype.testData = function () {
-        this._text.testData();
-        return this;
-    };
-
     TextBox.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._shape

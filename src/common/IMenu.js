@@ -9,13 +9,6 @@
     function IMenu() {
     }
 
-    //  Data ---
-    IMenu.prototype.testData = function () {
-        var data = ["This", "is a", "list", "of some text."];
-        this.data(data);
-        return this;
-    };
-
     //  Properties  ---
 
     //  Events  ---

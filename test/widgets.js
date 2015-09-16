@@ -1,19 +1,19 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "src/common/Utility", "require"], factory);
+        define(["d3", "./Factory", "src/common/Utility", "require"], factory);
     } else {
-        root.widgets = factory(root.d3, root.common_Utility, root.require);
+        root.widgets = factory(root.d3, root.test_Factory, root.common_Utility, root.require);
     }
-}(this, function (d3, Utility, require) {
+}(this, function (d3, testFactory, Utility, require) {
     var params = Utility.urlParams();
     var someWidgets = [];
     for (var key in params) {
         if (params[key] === undefined) {
-            someWidgets.push({ path: key });
+            someWidgets.push(key);
         }
     }
-    describe("widgets", function () {
+    describe("Widget Declarations", function () {
         this.timeout(10000);
         var allWidgets = [
             { path: "src/common/FAChar" },
@@ -92,7 +92,7 @@
             { path: "src/amchart/Pyramid" },
             { path: "src/amchart/Scatter" }
         ];
-        (someWidgets.length ? someWidgets : allWidgets).forEach(function (widget) {
+        allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {
                 var pathParts = path.split("/");
@@ -111,7 +111,7 @@
                     require([path], function (Widget) {
                         assert.isFunction(Widget);
                         assert.isFunction(Widget.prototype.constructor, "constructor");
-                        assert.isFunction(Widget.prototype.testData, "has testData");
+                        assert.isNotFunction(Widget.prototype.testData, "has testData");
                         assert.include(Widget.prototype._class, className, "Correct Class Name");
                         done();
                     });
@@ -137,7 +137,7 @@
 
                 it("Clone Palette", function (done) {
                     require([path], function (Widget) {
-                        if (typeof(Widget.prototype.paletteID) === "function") {
+                        if (typeof (Widget.prototype.paletteID) === "function") {
                             assert.isFunction(Widget.prototype.useClonedPalette, 'has useClonedPalette');
                         }
                         done();
@@ -166,66 +166,90 @@
                         done();
                     });
                 });
+            });
+        });
+    });
 
-                var noSurfaceHTML = null;
-                it("Adding widget to the page", function (done) {
-                    require([path], function (Widget) {
-                        var element = d3.select("#testWidget");
-                        var testDiv = element.append("div")
-                            .attr("class", "widgetTest")
-                        ;
-                        var widgetDiv = testDiv.append("div")
-                            .attr("class", "widget")
-                        ;
-                        testDiv.append("center")
-                            .attr("class", "title")
-                            .text(path)
-                        ;
-                        var vizWidget = new Widget()
-                            .target(widgetDiv.node())
-                            .testData()
-                            .render(function (w) {
-                                noSurfaceHTML = w.element().selectAll("*");
-                                assert.isAbove(noSurfaceHTML.length, 0);
-                                done();
-                            })
-                        ;
+    describe("Sample Renders", function () {
+        this.timeout(10000);
+        d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
+            var widgetPath = widget.key;
+            if (!someWidgets.length || someWidgets.indexOf(widgetPath) >= 0) {
+                describe(widgetPath, function () {
+                    d3.map(widget.value).entries().forEach(function (sample) {
+                        var noSurfaceHTML = null;
+                        switch (widgetPath + "-" + sample.key) {
+                            case "src/marshaller/HTML-roxie":
+                            case "src/marshaller/Graph-roxie":
+                                it("Roxie Call");
+                                break;
+                            default:
+                                it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
+                                    sample.value.factory(function (testWidget) {
+                                        var element = d3.select("#testWidget");
+                                        var testDiv = element.append("div")
+                                            .attr("class", "widgetTest")
+                                        ;
+                                        var widgetDiv = testDiv.append("div")
+                                            .attr("class", "widget")
+                                        ;
+                                        testDiv.append("center")
+                                            .attr("class", "title")
+                                            .text(widgetPath + "-" + sample.key)
+                                        ;
+                                        testWidget
+                                            .target(widgetDiv.node())
+                                            .render(function (w) {
+                                                noSurfaceHTML = w.element().selectAll("*");
+                                                assert.isAbove(noSurfaceHTML.length, 0);
+                                                done();
+                                            })
+                                        ;
+                                    });
+                                });
+                        }
+                        var surfaceHTML = null;
+                        switch (widgetPath + "-" + sample.key) {
+                            case "src/marshaller/HTML-roxie":
+                            case "src/marshaller/Graph-roxie":
+                                it("Roxie Call");
+                                break;
+                            case "src/other/HeatMap-simple":
+                            case "src/map/GMap-heat":
+                            case "src/map/ChoroplethStates-heat":
+                                it("Adding widget to a Surface");
+                                break;
+                            default:
+                                it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {
+                                    require(["src/common/ResizeSurface"], function (ResizeSurface) {
+                                        sample.value.factory(function (testWidget) {
+                                            var element = d3.select("#testWidget");
+                                            var testDiv = element.append("div")
+                                                .attr("class", "widgetTest")
+                                            ;
+                                            var widgetDiv = testDiv.append("div")
+                                                .attr("class", "widget")
+                                            ;
+                                            testDiv.append("center")
+                                                .attr("class", "title")
+                                                .text(widgetPath + "-" + sample.key)
+                                            ;
+                                            var vizWidget = new ResizeSurface()
+                                                .target(widgetDiv.node())
+                                                .content(testWidget)
+                                                .render(function (w) {
+                                                    surfaceHTML = w.element().selectAll("*");
+                                                    assert.equal(noSurfaceHTML.length, surfaceHTML.length);
+                                                    done();
+                                                })
+                                            ;
+                                        });
+                                    });
+                                });
+                        }
                     });
                 });
-
-                var surfaceHTML = null;
-                switch (path) {
-                    case "src/other/HeatMap":
-                    case "src/map/ChoroplethStatesHeat":
-                        it("Adding widget to a Surface");
-                        break;
-                    default:
-                        it("Adding widget to a Surface", function (done) {
-                            require(["src/common/ResizeSurface", path], function (ResizeSurface, Widget) {
-                                var element = d3.select("#testWidget");
-                                var testDiv = element.append("div")
-                                    .attr("class", "widgetTest")
-                                ;
-                                var widgetDiv = testDiv.append("div")
-                                    .attr("class", "widget")
-                                ;
-                                testDiv.append("center")
-                                    .attr("class", "title")
-                                    .text(path)
-                                ;
-                                var vizWidget = new ResizeSurface()
-                                    .target(widgetDiv.node())
-                                    .content(new Widget().testData())
-                                    .render(function (w) {
-                                        surfaceHTML = w.element().selectAll("*");
-                                        assert.equal(noSurfaceHTML.length, surfaceHTML.length);
-                                        done();
-                                    })
-                                ;
-                            });
-                        });
-                }
-            });
+            }
         });
     });
 

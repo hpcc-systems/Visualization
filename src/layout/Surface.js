@@ -37,37 +37,6 @@
 
    Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Private"]});
 
-
-    Surface.prototype.testData = function () {
-        this.title("ABC");
-        this.widget(new Surface().widget(new TextBox().testData()));
-
-        this.buttonAnnotations([
-            {
-                id:"button_1",
-                label:"\uf00e",
-                width:60,
-                padding:"5px",
-                class: "",
-                font: "FontAwesome",
-                callback: function(domNode) {
-                    console.log("Click Override on button " + domNode);
-                }
-            },{
-                id:"button_2",
-                label:"\uf010",
-                width:30,
-                padding:"5px",
-                class:"",
-                font: "FontAwesome",
-                callback: function(domNode) {
-                    console.log("Click Override on button " + domNode);
-                }
-            }]);
-
-        return this;
-    };
-
     Surface.prototype.widgetSize = function (titleDiv, widgetDiv) {
         var width = this.clientWidth();
         var height = this.clientHeight();

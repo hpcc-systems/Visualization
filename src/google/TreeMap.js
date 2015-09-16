@@ -102,55 +102,18 @@
         return retVal;
     };
 
-    TreeMap.prototype.testData = function () {
-            this.columns([["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"]]);
-            this.data(
-            [
-              ["Global",    null,                 0,                               0],
-              ["America",   "Global",             0,                               0],
-              ["Europe",    "Global",             0,                               0],
-              ["Asia",      "Global",             0,                               0],
-              ["Australia", "Global",             0,                               0],
-              ["Africa",    "Global",             0,                               0],
-              ["Brazil",    "America",            11,                              10],
-              ["USA",       "America",            52,                              31],
-              ["Mexico",    "America",            24,                              12],
-              ["Canada",    "America",            16,                              -23],
-              ["France",    "Europe",             42,                              -11],
-              ["Germany",   "Europe",             31,                              -2],
-              ["Sweden",    "Europe",             22,                              -13],
-              ["Italy",     "Europe",             17,                              4],
-              ["UK",        "Europe",             21,                              -5],
-              ["China",     "Asia",               36,                              4],
-              ["Japan",     "Asia",               20,                              -12],
-              ["India",     "Asia",               40,                              63],
-              ["Laos",      "Asia",               4,                               34],
-              ["Mongolia",  "Asia",               1,                               -5],
-              ["Israel",    "Asia",               12,                              24],
-              ["Iran",      "Asia",               18,                              13],
-              ["Pakistan",  "Asia",               11,                              -52],
-              ["Egypt",     "Africa",             21,                              0],
-              ["S. Africa", "Africa",             30,                              43],
-              ["Sudan",     "Africa",             12,                              2],
-              ["Congo",     "Africa",             10,                              12],
-              ["Zaire",     "Africa",             8,                               10]
-            ]);
+    TreeMap.prototype.defaultlTooltip = function(row, size, value) {
+        var data =  this._data_google;
 
-        return this;
+        return "<div style='background:#ddd; padding:10px; border-style:solid' >" +
+            "Label: " + data.getValue(row, 0) + "<br>" +
+            "Parent: " + data.getValue(row, 1) + "<br>" +
+            "Column 3 Label: " + data.getColumnLabel(2) + ", Value: " + data.getValue(row, 2) + "<br>" +
+            "Column 4 Label: " + data.getColumnLabel(3) + ", Value: " + data.getValue(row, 3) + "<br>" +
+            "Datatable row #: " + row + "<br>" +
+            data.getColumnLabel(2) +" (total value of this cell and its children): " + size + "<br>" +
+            data.getColumnLabel(3) + ": " + value + " </div>";
     };
 
-        TreeMap.prototype.defaultlTooltip = function(row, size, value) {
-            var data =  this._data_google;
-
-            return "<div style='background:#ddd; padding:10px; border-style:solid' >" +
-                "Label: " + data.getValue(row, 0) + "<br>" +
-                "Parent: " + data.getValue(row, 1) + "<br>" +
-                "Column 3 Label: " + data.getColumnLabel(2) + ", Value: " + data.getValue(row, 2) + "<br>" +
-                "Column 4 Label: " + data.getColumnLabel(3) + ", Value: " + data.getValue(row, 3) + "<br>" +
-                "Datatable row #: " + row + "<br>" +
-                data.getColumnLabel(2) +" (total value of this cell and its children): " + size + "<br>" +
-                data.getColumnLabel(3) + ": " + value + " </div>";
-        };
-
-        return TreeMap;
+    return TreeMap;
 }));

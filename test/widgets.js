@@ -56,6 +56,7 @@
             { path: "src/other/Table" },
             { path: "src/other/WordCloud" },
             { path: "src/layout/AbsoluteSurface" },
+            { path: "src/layout/Accordion" },
             { path: "src/layout/Border" },
             { path: "src/layout/Cell" },
             { path: "src/layout/Grid" },

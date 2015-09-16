@@ -18,14 +18,15 @@
     XYAxis.prototype._class += " chart_XYAxis";
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
-
     XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
+
     XYAxis.prototype.publish("xAxisTickCount", null, "number", "X-Axis Tick Count", null, { optional: true });
     XYAxis.prototype.publish("xAxisTickFormat", null, "string", "X-Axis Tick Format", null, { optional: true });
     XYAxis.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
+    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide"]);
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
@@ -340,43 +341,101 @@
         return this.valueScale(this.formatValue(value));
     };
 
-    XYAxis.prototype.calcMargin = function (domNode, element) {
-        var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2 };
+    XYAxis.prototype.setScaleRange = function (width, height) {
+        if (this.currScale.rangeRoundBands) {
+            this.currScale.rangeRoundBands([0, width], 0.1);
+        } else if (this.currScale.rangeRound) {
+            this.currScale.range([0, width]);
+        }
+        if (this.otherScale.rangeRoundBands) {
+            this.otherScale.rangeRoundBands([height, 0], 0.1);
+        } else if (this.otherScale.rangeRound) {
+            this.otherScale.range([height, 0]);
+        }
+    };
+
+    XYAxis.prototype.adjustXAxisText = function (xAxis, margin) {
+        switch (this.xAxisOverlapMode()) {
+            case "stagger":
+                xAxis.selectAll(".tick > text")
+                    .attr("dy", function (d, i) { return 0.71 + (i % margin.overlapModulus) + "em"; })
+                    .attr("visibility", null)
+                ;
+                break;
+            case "hide":
+                xAxis.selectAll(".tick > text")
+                    .attr("dy", "0.71em")
+                    .attr("visibility", function (d, i) { return i % margin.overlapModulus ? "hidden" : null; })
+                ;
+                break;
+            default:
+                xAxis.selectAll(".tick > text")
+                    .attr("dy", "0.71em")
+                    .attr("visibility", null)
+                ;
+        }
+    };
+
+    XYAxis.prototype.calcMargin = function (domNode, element, isHorizontal) {
+        var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2, overlapModulus: 1 };
         var height = this.height() - margin.top - margin.bottom;
 
         var test = element.append("g");
 
-        var svgXAxis = test.append("g")
-            .attr("class", this.orientation() === "horizontal" ? "x axis" : "y axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(this.currAxis)
-        ;
-        var x_bbox = svgXAxis.node().getBBox();
-        margin.right -= (this.width() - x_bbox.width - x_bbox.x);
-        margin.bottom = x_bbox.height;
-
+        this.setScaleRange(this.width(), this.height());
         if (this.yAxisType() !== "none") {
             var svgYAxis = test.append("g")
-                .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
+                .attr("class", isHorizontal ? "y axis" : "x axis")
                 .call(this.otherAxis)
             ;
             var y_bbox = svgYAxis.node().getBBox();
             margin.left = y_bbox.width;
             margin.top -= y_bbox.y;
         }
+        var width = this.width() - margin.left - margin.right;
+        this.setScaleRange(width, this.height());
+
+        var svgXAxis = test.append("g")
+            .attr("class", isHorizontal ? "x axis" : "y axis")
+            .attr("transform", "translate(" + margin.left + "," + height / 2 + ")")
+            .call(this.currAxis)
+        ;
+        switch (this.xAxisOverlapMode()) {
+            case "stagger":
+            case "hide":
+                var bboxArr = [];
+                svgXAxis.selectAll(".tick > text").each(function (d) {
+                    var bbox = this.getBoundingClientRect();
+                    for (var i = bboxArr.length - 1; i >= 0; --i) {
+                        if (bboxArr[i].right < bbox.left) {
+                            break;
+                        }
+                        if (bboxArr.length + 1 - i > margin.overlapModulus) {
+                            margin.overlapModulus = bboxArr.length + 1 - i;
+                        }
+                    }
+                    bboxArr.push(bbox);
+                });
+                break;
+        }
+        this.adjustXAxisText(svgXAxis, margin);
+        var x_bbox = svgXAxis.node().getBBox();
+        margin.right -= width - (x_bbox.x + x_bbox.width);
+        margin.bottom = x_bbox.height;
+        this.setScaleRange(this.width() - margin.left - margin.right, this.height() - margin.top - margin.bottom);
 
         test.remove();
         return margin;
     };
 
-    XYAxis.prototype.update = function (domNode, element) {
+    XYAxis.prototype.updateRegions = function (domNode, element, isHorizontal) {
         var context = this;
 
         var regions = this.svgRegions.selectAll(".region").data(this.regions());
         regions.enter().append("rect")
             .attr("class", "region")
         ;
-        if (this.orientation() === "horizontal") {
+        if (isHorizontal) {
             regions
                 .attr("x", function (d) { return context.dataPos(d.x0); })
                 .attr("y", 0)
@@ -396,6 +455,13 @@
             ;
         }
         regions.exit().remove();
+    };
+
+    XYAxis.prototype.update = function (domNode, element) {
+        var context = this;
+
+        var isHorizontal = this.orientation() === "horizontal";
+        this.updateRegions(domNode, element, isHorizontal);
 
         switch (this.xAxisType()) {
             case "linear":
@@ -418,17 +484,6 @@
             .ticks(this.xAxisTickCount())
             .tickFormat(this.dataFormatter)
         ;
-
-        if (this._prevXAxisType !== this.xAxisType()) {
-            this._prevXAxisType = this.xAxisType();
-            this._prevBrush = null;
-            this.xBrush
-                .x(this.dataScale)
-            ;
-            this.yBrush
-                .y(this.dataScale)
-            ;
-        }
 
         switch (this.yAxisType()) {
             case "pow":
@@ -460,11 +515,12 @@
             .tickFormat(this.valueFormatter)
         ;
 
-        var isHorizontal = this.orientation() === "horizontal";
         this.dataAxis.orient(isHorizontal ? "bottom" : "left");
         this.valueAxis.orient(isHorizontal ? "left" : "bottom");
         this.currAxis = isHorizontal ? this.dataAxis : this.valueAxis;
         this.otherAxis = isHorizontal ? this.valueAxis : this.dataAxis;
+        this.currScale = isHorizontal ? this.dataScale : this.valueScale;
+        this.otherScale = isHorizontal ? this.valueScale : this.dataScale;
         var currBrush = isHorizontal ? this.xBrush : this.yBrush;
         var otherBrush = isHorizontal ? this.yBrush : this.xBrush;
         var otherBrushExtent = otherBrush.extent();
@@ -507,32 +563,18 @@
         }
         this.valueScale.domain([min, max]);
 
-        //  Calculate Range  ---
-        if (this.dataScale.rangeRoundBands) {
-            this.dataScale.rangeRoundBands([isHorizontal ? 0 : this.height(), isHorizontal ? this.width() : 0], 0.1);
-        } else if (this.dataScale.rangeRound) {
-            this.dataScale.range([isHorizontal ? 0 : this.height(), isHorizontal ? this.width() : 0]);
-        }
-        this.valueScale.range([isHorizontal ? this.height() : 0, isHorizontal ? 0 : this.width()]);
-        var margin = this.calcMargin(domNode, element);
-        this.margin = margin;
+        //  Calculate Margins  ---
+        this.margin = this.calcMargin(domNode, element, isHorizontal);
 
         //  Update Range  ---
-        var width = this.width() - margin.left - margin.right,
-            height = this.height() - margin.top - margin.bottom,
-            maxExtent = isHorizontal ? width : height,
+        var width = this.width() - this.margin.left - this.margin.right,
+            height = this.height() - this.margin.top - this.margin.bottom,
+            maxCurrExtent = isHorizontal ? width : height,
             maxOtherExtent = isHorizontal ? height : width;
-
-        if (this.dataScale.rangeRoundBands) {
-            this.dataScale.rangeRoundBands([isHorizontal ? 0 : maxExtent, isHorizontal ? maxExtent : 0], 0.1);
-        } else if (this.dataScale.rangeRound) {
-            this.dataScale.range([isHorizontal ? 0 : maxExtent, isHorizontal ? maxExtent : 0]);
-        }
-        this.valueScale.range([isHorizontal ? maxOtherExtent : 0, isHorizontal ? 0 : maxOtherExtent]);
 
         //  Render  ---
         this.svg.transition()
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
         ;
 
         this.svgXAxis.transition()
@@ -540,6 +582,7 @@
             .attr("transform", "translate(0," + height + ")")
             .call(this.currAxis)
         ;
+
         this.svgXAxisText
             .attr("x", width - 2)
             .text(isHorizontal ? this.columns()[0] : this.yAxisTitle())
@@ -549,14 +592,28 @@
             .style("visibility", this.yAxisType() === "none" ? "hidden" : null)
             .attr("class", isHorizontal ? "y axis" : "x axis")
             .call(this.otherAxis)
+            .each(function () {
+                context.adjustXAxisText(context.svgXAxis, context.margin);
+            })
         ;
         this.svgYAxisText.text(!isHorizontal ? this.columns()[0] : this.yAxisTitle());
 
+        this.xBrush
+            .x(this.dataScale)
+        ;
+        this.yBrush
+            .y(this.dataScale)
+        ;
+
         if (this.selectionMode()) {
+            if (this._prevXAxisType !== this.xAxisType()) {
+                this._prevXAxisType = this.xAxisType();
+                this._prevBrush = null;
+            }
             if (!this._prevBrush) {
                 switch (this.xAxisType()) {
                     case "ordinal":
-                        currBrush.extent([0, maxExtent]);
+                        currBrush.extent([0, maxCurrExtent]);
                         break;
                     default:
                         currBrush.extent(this.dataScale.domain());
@@ -565,7 +622,7 @@
             } else if (this._prevBrush && this._prevBrush.orientation !== this.orientation()) {
                 switch (this.xAxisType()) {
                     case "ordinal":
-                        currBrush.extent([maxExtent - otherBrushExtent[0] * maxExtent / this._prevBrush.maxExtent, maxExtent - otherBrushExtent[1] * maxExtent / this._prevBrush.maxExtent]);
+                        currBrush.extent([maxCurrExtent - otherBrushExtent[0] * maxCurrExtent / this._prevBrush.maxCurrExtent, maxCurrExtent - otherBrushExtent[1] * maxCurrExtent / this._prevBrush.maxCurrExtent]);
                         break;
                     default:
                         currBrush.extent(otherBrushExtent);
@@ -574,12 +631,12 @@
             }
             this._prevBrush = {
                 orientation: this.orientation(),
-                maxExtent: maxExtent
+                maxCurrExtent: maxCurrExtent
             };
         }
 
         this.svgBrush
-            .attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
+            .attr("transform", "translate(" + this.margin.left + ", " + this.margin.top + ")")
             .style("display", this.selectionMode() ? null : "none")
             .call(currBrush)
             .selectAll(".background").transition()
@@ -598,10 +655,10 @@
             .attr("d", function (d) { return context.resizeBrushHandle(d, width, height); })
         ;
 
-        this.updateChart(domNode, element, margin, width, height);
+        this.updateChart(domNode, element, this.margin, width, height, isHorizontal);
     };
 
-    XYAxis.prototype.updateChart = function (domNode, element, margin, width, height) {
+    XYAxis.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
     };
 
     XYAxis.prototype.exit = function (domNode, element) {

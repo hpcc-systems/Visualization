@@ -181,6 +181,7 @@
         th.exit()
             .remove()
         ;
+        th.order();
 
         if (this.pagination()) {
             if (this._paginator.target() === null) {
@@ -412,57 +413,85 @@
                 newThead.on("click", function(d, idx){
                     context.headerClick(d, idx);
                 });
-                if (!context.fixedColumn()) {
-                    rowLabelsWrapper.html("");
-                }
+                rowLabelsWrapper.html("");
             }
             
             var rowWrapperWidth;
             var newTableHeight;
             if (context.fixedColumn()) {
+                rowLabelsWrapper.html("");
+
                 var borderWidth = parseInt(context.table.select("td").style("border-width"));
                 var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
                 rowWrapperWidth = context.fixedColumn() ? rowSelection.node().offsetWidth : 0;
                 var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
-                var rowContents = "<thead>";
-                var tempTrWrapper = document.createElement("div");
-                
+
+                var tHead = rowLabelsWrapper.selectAll("thead").data([0]);
                 if (context.showHeader()) {
-                    var theadTr = document.createElement("tr");
-                    theadTr.style.backgroundColor = context.theadRowBackgroundColor();
-                    var th = document.createElement("th");
-                    th.style.width = theadWidth + "px";
-                    th.style.color = context.theadFontColor();
-                    th.style.fontSize = context.theadFontSize();
-                    th.style.fontFamily = context.theadFontFamily();
-                    th.style.borderColor = context.theadCellBorderColor();
-                    th.innerHTML = origThead.filter(function (d, idx) { return idx === 0; }).html();
-                    theadTr.appendChild(th);
-                    tempTrWrapper.appendChild(theadTr);
-                    rowContents += tempTrWrapper.innerHTML;
-                    
-                } else {
-                    tableMarginHeight = 0;
-                }
-                rowContents += "</thead>";
-                rowSelection.each(function () {
-                    var td = document.createElement("td");
-                    td.className = "row-label";
-                    td.style.color = context.tbodyFontColor();
-                    td.style.fontSize = context.tbodyFontSize();
-                    td.style.fontFamily = context.tbodyFontFamily();
-                    td.style.borderColor = context.tbodyCellBorderColor();
-                    td.innerHTML = this.innerHTML ? this.innerHTML : "&nbsp;";
-                    var tempDiv = document.createElement("div");
-                    tempDiv.appendChild(td);
-                    rowContents += "<tr>" + tempDiv.innerHTML + "</tr>";
-                });
-                rowLabelsWrapper.html(rowContents)
+                    var tHead_tr = tHead.enter()
+                        .insert("thead", "tbody")
+                        .append("tr")
+                        .style("background-color", context.theadRowBackgroundColor())
+                    ;
+                    tHead.exit()
+                        .remove()
+                    ;
+
+                    var ths =  tHead_tr.selectAll("th").data(origThead.filter(function (d, idx) { return idx === 0; }));
+                    ths.attr("class", "update");
+                    ths.enter()
+                        .append("th")
+                        .html(function(d, i) {
+                            return d[i].innerHTML;
+                        })
+                    ;
+                    ths
+                        .style("width", theadWidth + "px")
+                        .style("color", context.theadFontColor())
+                        .style("font-size", context.theadFontSize())
+                        .style("font-family", context.theadFontFamily())
+                        .style("border-color", context.theadCellBorderColor())
+                    ;
+                    ths.exit()
+                        .remove()
+                    ;
+                } 
+
+                var tBody = rowLabelsWrapper.selectAll("tbody").data([0]);
+                tBody.enter()
+                    .append("tbody")
+                ;
+                tBody.exit()
+                    .remove()
+                ;
+
+                var tds = tBody.selectAll("tr").data(rowSelection[0]);
+                tds
+                    .enter() 
+                    .append("tr")
+                    .each(function() {
+                        var element = d3.select(this);
+                        element
+                            .append("td")
+                            .html(function(d) {
+                                return d.innerHTML || "&nbsp;";
+                            })
+                        ;
+                    })
+                ;  
+                tds
+                    .style("color", context.tbodyFontColor())
+                    .style("font-size", context.tbodyFontSize())
+                    .style("font-family", context.tbodyFontFamily())
+                    .style("border-color", context.tbodyCellBorderColor()) 
+                ;
+
+                rowLabelsWrapper
                     .style("width", rowWrapperWidth)
                 ;
 
                 if (context.fixedHeader()){
-                    rowLabelsWrapper.select("thead")
+                    tHead
                         .style("position", "absolute")
                         .style("width", theadWidth + "px")
                     ;
@@ -473,16 +502,20 @@
                         .style("top", colWrapperHeight + "px")
                     ;
                 } else {
-                    rowLabelsWrapper.select("thead")
-                        .style("margin-top", "0px")
-                        .style("position", "relative")
-                    ;
-                    rowLabelsWrapper
-                        .style("margin-top", -domNode.scrollTop + "px")
-                    ;
-                    element
-                        .style("top", "0px")
-                    ;
+                    if (context.showHeader()) {
+                        tHead
+                            .style("margin-top", "0px")
+                            .style("position", "relative")
+                        ;
+                        rowLabelsWrapper
+                            .style("margin-top", -domNode.scrollTop + "px")
+                        ;
+                        element
+                            .style("top", "0px")
+                        ;
+                    } else {
+                        tHead.remove();
+                    }
                 }
 
                 var fixedRows = rowLabelsWrapper.selectAll("tr");
@@ -500,13 +533,17 @@
                         ;
                     })
                     .attr("class", function (d, i) {
-                        if (rows[0][i - 1] && (d3.select(rows[0][i - 1]).classed("selected")) === true) {
-                            return rows[0][i - 1].parentElement.querySelector(":hover") === rows[0][i - 1] ? "selected hover" : "selected";
+                        var offSet = context.showHeader() ? 1 : 0;
+                        if (rows[0][i - offSet] && (d3.select(rows[0][i - offSet]).classed("selected")) === true) {
+                            return rows[0][i - offSet].parentElement.querySelector(":hover") === rows[0][i - offSet] ? "selected hover" : "selected";
                         }
                     })
                 ;
             } else {
                 rowWrapperWidth = 0; 
+            }
+
+            if (!context.showHeader()) {
                 tableMarginHeight = 0;
             }
 
@@ -543,6 +580,7 @@
                 })
             ;
         }
+
         function _setOnScrollEvents(domNode) {
             domNode.onscroll = function (e) {
                 var leftDelta = e.target.scrollLeft;

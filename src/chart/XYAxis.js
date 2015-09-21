@@ -26,6 +26,7 @@
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
+    XYAxis.prototype.publish("xAxisLabelRotation", 0, "number", "X-Axis Label Rotation");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
@@ -37,6 +38,7 @@
     XYAxis.prototype.publish("yAxisDomainLow", "", "string", "Y-Axis Low");
     XYAxis.prototype.publish("yAxisDomainHigh", "", "string", "Y-Axis High");
     XYAxis.prototype.publish("yAxisDomainPadding", 5, "number", "Y-Axis Low/High Padding (if no low/high specified");
+    XYAxis.prototype.publish("yAxisLabelRotation", null, "number", "Y-Axis Label Rotation");
 
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
@@ -202,7 +204,7 @@
             return d.map(function (item) {
                 return this.formatValue(item);
             }, this);
-        } 
+        }
         switch (this.yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
@@ -343,6 +345,7 @@
     XYAxis.prototype.calcMargin = function (domNode, element) {
         var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2 };
         var height = this.height() - margin.top - margin.bottom;
+        var isHorizontal = this.orientation() === "horizontal";
 
         var test = element.append("g");
 
@@ -351,14 +354,25 @@
             .attr("transform", "translate(0," + height + ")")
             .call(this.currAxis)
         ;
+
+        var xRotation = isHorizontal ? this.xAxisLabelRotation() : this.yAxisLabelRotation();
+        svgXAxis.selectAll("text")
+            .attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")")
+            .style("text-anchor", xRotation > 0 ? "start": "middle")
+        ;
+
         var x_bbox = svgXAxis.node().getBBox();
         margin.right -= (this.width() - x_bbox.width - x_bbox.x);
         margin.bottom = x_bbox.height;
-
         if (this.yAxisType() !== "none") {
             var svgYAxis = test.append("g")
                 .attr("class", this.orientation() === "horizontal" ? "y axis" : "x axis")
                 .call(this.otherAxis)
+            ;
+
+            var yRotation = isHorizontal ? this.yAxisLabelRotation() : this.xAxisLabelRotation();
+            svgXAxis.selectAll("text")
+                .attr("transform", "rotate(" + (yRotation ? yRotation : 0) + ")")
             ;
             var y_bbox = svgYAxis.node().getBBox();
             margin.left = y_bbox.width;
@@ -540,6 +554,14 @@
             .attr("transform", "translate(0," + height + ")")
             .call(this.currAxis)
         ;
+
+        var xRotation = isHorizontal ? this.xAxisLabelRotation() : this.yAxisLabelRotation();
+        this.svgXAxis.selectAll("g.tick > text")
+            .attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")")
+            .style("text-anchor", xRotation > 0 ? "start": "middle")
+
+        ;
+
         this.svgXAxisText
             .attr("x", width - 2)
             .text(isHorizontal ? this.columns()[0] : this.yAxisTitle())
@@ -549,7 +571,14 @@
             .style("visibility", this.yAxisType() === "none" ? "hidden" : null)
             .attr("class", isHorizontal ? "y axis" : "x axis")
             .call(this.otherAxis)
+
         ;
+
+        var yRotation = isHorizontal ? this.yAxisLabelRotation() : this.xAxisLabelRotation();
+        this.svgYAxis.selectAll("g.tick > text")
+            .attr("transform", "rotate(" + (yRotation ? yRotation : 0) + ")")
+        ;
+
         this.svgYAxisText.text(!isHorizontal ? this.columns()[0] : this.yAxisTitle());
 
         if (this.selectionMode()) {

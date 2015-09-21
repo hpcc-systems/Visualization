@@ -217,7 +217,7 @@
                 ;
             });
             
-            var propEditor = new PropertyEditor().showColumns(false).showData(false);
+            var propEditor = new PropertyEditor().showColumns(false).showData(false).ignoredClasses(["layout_Cell"]);
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {

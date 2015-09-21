@@ -38,7 +38,9 @@
 
     Pie.prototype.publish("labelPosition", "right", "set", "Label Position", ["left","right"],{tags:["Intermediate"]});
 
-    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+    Pie.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+
+    Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
     Pie.prototype.updateChartOptions = function() {
         this._chart.type = "pie";
@@ -78,6 +80,7 @@
         this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);
         }, this);
+        this._chart.pullOutOnlyOne = this.selectionMode() === "simple";
 
         this.pieAlpha().forEach(function(d,i) {
             if (typeof(this._chart.chartData[i])==="undefined") {

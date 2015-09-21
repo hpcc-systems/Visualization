@@ -40,18 +40,25 @@
 
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    Pie.prototype.calcRadius = function (_) {
+        return Math.min(this._size.width, this._size.height) / 2 - 2;
+    };
+
     Pie.prototype.updateChartOptions = function() {
         this._chart.type = "pie";
-        this._chart.radius = this.radius();
+        
+        this._chart.radius = this.calcRadius();
 
-        this._chart.balloonFunction = function(d) {
-            var balloonText = d.title + ", " + d.value;
-            return balloonText;
-        };
-        this._chart.labelPosition = this.labelPosition();
+        this._chart.pullOutOnlyOne = true;
+        this._chart.labelsEnabled = true;
+        this._chart.labelRadius = -40;
+        this._chart.pullOutRadius = 0;
 
-        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
+        this._chart.labelFunction = function(d) {
+            return d.title;
+        }
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
+        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
@@ -73,11 +80,13 @@
         }
         this.data(this.data().sort(sortingMethod));
 
+        this._chart.colorField = "sliceColor";
+
         this._chart.dataProvider = this.formatData(this.data());
 
-        this._chart.colors = this.data().map(function (row) {
-            return this._palette(row[0]);
-        }, this);
+        // this._chart.colors = this.data().map(function (row) {
+        //     return this._palette(row[0]);
+        // }, this);
 
         this.pieAlpha().forEach(function(d,i) {
             if (typeof(this._chart.chartData[i])==="undefined") {
@@ -96,6 +105,7 @@
             var dataObj = {};
             context.columns().forEach(function(colName,cIdx){
                 dataObj[colName] = dataRow[cIdx];
+                dataObj['sliceColor'] = context._palette(dataRow[0]);
             });
             dataObjArr.push(dataObj);
         });
@@ -123,6 +133,10 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {
+            console.log(e);
+            e.dataItem.dataContext[e.chart.colorField] = "#0079DC";
+            e.chart.validateData();
+
             context.click(context.rowToObj(context.data()[e.dataItem.index]));
         });
     };

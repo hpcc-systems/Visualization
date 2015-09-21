@@ -129,6 +129,35 @@
                         )
                     );
                 });
+            },
+            hoverIndicator: function (callback) {
+                require(["test/DataFactory", "src/layout/Grid", "src/chart/Pie", "src/chart/Step"], function (DataFactory, Grid, Pie, Step) {
+                    var pie1 = new Pie()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    ;
+                    var pie2 = new Pie()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    ;
+                    var step1 = new Step()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    ;
+                    var step2 = new Step()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    ;
+                    var grid = new Grid()
+                        .setContent(0, 0, pie1,"Updates Step1")
+                        .setContent(0, 1, pie2,"Updates Step1 & Step2")
+                        .setContent(1, 0, step1,"Step1")
+                        .setContent(1, 1, step2,"Step2")
+                    ;
+                    grid.content()[0].indicateTheseIds([grid.content()[2].id()]);
+                    grid.content()[1].indicateTheseIds([grid.content()[2].id(),grid.content()[3].id()]);
+                    callback(grid);
+                });
             }
         },
         Layered: {

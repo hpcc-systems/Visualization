@@ -33,7 +33,7 @@
         return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
     };
 
-    Scatter.prototype.updateChart = function (domNode, element, margin, width, height) {
+    Scatter.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -143,21 +143,18 @@
         var area = d3.svg.area()
             .interpolate(this.interpolate())
         ;
-        switch (this.orientation()) {
-            case "horizontal":
-                area
-                    .x(function (d) { return context.xPos(d); })
-                    .y0(function (d) { return height; })
-                    .y1(function (d) { return context.yPos(d); })
-                ;
-                break;
-            default:
-                area
-                    .y(function (d) { return context.yPos(d); })
-                    .x0(function (d) { return 0; })
-                    .x1(function (d) { return context.xPos(d); })
-                ;
-                break;
+        if (isHorizontal) {
+            area
+                .x(function (d) { return context.xPos(d); })
+                .y0(function (d) { return height; })
+                .y1(function (d) { return context.yPos(d); })
+            ;
+        } else {
+            area
+                .y(function (d) { return context.yPos(d); })
+                .x0(function (d) { return 0; })
+                .x1(function (d) { return context.xPos(d); })
+            ;
         }
         areas.each(function (d, idx) {
             var element = d3.select(this);

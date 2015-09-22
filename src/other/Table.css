@@ -30,9 +30,24 @@
     padding-left: 8px;
 }
 
-.other_Table .tableDiv > tbody > tr {
-    background-color:#dcf1ff;
+.other_Table .tableDiv tbody > tr:nth-child(odd) {
+    background-color: #f3faff;
     color:black;
+}
+
+.other_Table .tableDiv tbody > tr:nth-child(even)  {
+    background-color: white;
+    color:black;
+}
+
+.other_Table .tableDiv tbody > tr:hover  {
+    background-color:#bfd7e7;
+    color: white;
+}
+
+.other_Table .tableDiv tbody > tr.selected  {
+    background-color:#f48a00;
+    color: white;
 }
 
 .other_Table .rows-wrapper tbody > tr {

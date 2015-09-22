@@ -23,6 +23,39 @@
                 });
             }
         },
+        Accordion: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/layout/Accordion", "src/form/Form", "src/other/Table", "src/layout/Surface", "src/chart/MultiChart"], function (DataFactory, Accordion, Form, Table, Surface, MultiChart) {
+                    callback(
+                        new Accordion()
+                            .pushListItem(new Accordion().pushListItem(new Form().inputs(DataFactory.Form.simple.inputs()).showSubmit(false)))
+                            .pushListItem(new Accordion().pushListItem(
+                                    new Table()
+                                        .size({height:200,width:600})
+                                        .columns(DataFactory.Table.large.columns)
+                                        .data(DataFactory.Table.large.data)
+                                )
+                            )
+                            .pushListItem(new Accordion()
+                                .pushListItem(
+                                    new MultiChart()
+                                        .size({height:200,width:200})
+                                        .columns(DataFactory.ND.subjects.columns)
+                                        .data(DataFactory.ND.subjects.data)
+                                )
+                                .pushListItem(
+                                    new Surface()
+                                        .size({height:200,width:200})
+                                        .title(DataFactory.Surface.simple.title)
+                                        .widget(DataFactory.Surface.simple.widget()
+                                        .columns(DataFactory.ND.subjects.columns)
+                                        .data(DataFactory.ND.subjects.data))
+                                )
+                            )
+                    );
+                });
+            }
+        },
         Border: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/layout/Border", "src/chart/Pie", "src/chart/MultiChartSurface", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Border, Pie, MultiChartSurface, Line, Column, Step) {

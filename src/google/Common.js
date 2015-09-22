@@ -137,8 +137,8 @@
 
     Common.prototype.enter = function (domNode, element) {
         element.style("overflow", "hidden");
-
-        this._chart = new google.visualization[this._chartType](domNode);
+        
+        this._chart = this._chart ? this._chart : new google.visualization[this._chartType](domNode);
 
         var context = this;
         google.visualization.events.addListener(this._chart, "select", function () {

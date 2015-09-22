@@ -32,8 +32,8 @@
         switch (this.type()) {
             case "select":
                 this.checkNodeName("SELECT", element);
-                this._inputElement.property("value", this.value());
                 this.insertSelectOptions(this.selectOptions());
+                this._inputElement.property("value", this.value());
                 break;
             case "textarea":
                 this.checkNodeName("TEXTAREA", element);
@@ -45,7 +45,7 @@
                 break;
             case "checkbox":
                 this.checkNodeName("INPUT", element);
-                this._inputElement.property("checked", this.value());
+                this._inputElement.property("checked", this.value() === "true");
                 break;
             default:
                 this.checkNodeName("INPUT", element);

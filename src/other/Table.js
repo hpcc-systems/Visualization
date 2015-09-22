@@ -51,7 +51,8 @@
     
     Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
-    
+    Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
+
     Table.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
@@ -674,11 +675,10 @@
             .style("background-color",context.tbodySelectedRowBackgroundColor())
         ;
     };
-    Table.prototype.applyRowStyles = function(row,isFirstCol){
-        var context = this;
+    Table.prototype.applyRowStyles = function(row, isFirstCol){
         row
-            .style("color",isFirstCol ? context.tbodyFirstColFontColor() : context.tbodyFontColor())
-            .style("background-color",isFirstCol ? context.tbodyFirstColBackgroundColor() : context.tbodyRowBackgroundColor())
+            .style("color", isFirstCol ? this.tbodyFirstColFontColor() : this.tbodyFontColor())
+            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.data().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
         ;
     };
     Table.prototype.applyFirstColRowStyles = function(rows){

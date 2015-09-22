@@ -102,12 +102,12 @@
                     });
                 }
             }
-            for (var dashKey in dashboards) {
-                for (var dsKey in dashboards[dashKey].dashboard.datasources) {
-                    dashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
-                }
-            }
             Grid.prototype.render.call(context, function (widget) {
+                for (var dashKey in dashboards) {
+                    for (var dsKey in dashboards[dashKey].dashboard.datasources) {
+                        dashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
+                    }
+                }
                 if (callback) {
                     callback(widget);
                 }

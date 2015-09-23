@@ -139,7 +139,7 @@
             this.fixedHeader(false);
         } 
 
-        var th = this.thead.selectAll("th").data(this.columns(), function (d) { return d; });
+        var th = this.thead.selectAll("th").data(this.showHeader() ? this.columns() : [], function (d) { return d; });
         th
             .enter()
             .append("th")

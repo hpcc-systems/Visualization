@@ -15,13 +15,13 @@ The goal of the HPCC Visualisation Framework is to provide a comprehensive set o
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-viz.js"></script>
-    <script src="http://viz.hpccsystems.com/v1.2.2/dist-amd/hpcc-bundles.js"></script>
+    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js"></script>
+    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js"></script>
     <script>
         require.config({
             paths: {
-                "src": "http://viz.hpccsystems.com/v1.2.2/dist-amd",
-                "font-awesome": "http://viz.hpccsystems.com/v1.2.2/dist-amd/font-awesome/css/font-awesome.min"
+                "src": "http://viz.hpccsystems.com/v1.6.6/dist-amd",
+                "font-awesome": "http://viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min"
             }
         });
     </script>

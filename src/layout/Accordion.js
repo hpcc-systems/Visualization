@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "../form/Form", "../form/Input", "../common/FAChar", "css!./Accordion"], factory);
+        define(["../common/HTMLWidget", "../common/FAChar", "css!./Accordion"], factory);
     } else {
-        root.layout_Accordion = factory(root.common_HTMLWidget, root.form_Form, root.form_Input, root.common_FAChar);
+        root.layout_Accordion = factory(root.common_HTMLWidget, root.common_FAChar);
     }
-}(this, function (HTMLWidget, Form, Input, FAChar) {
+}(this, function (HTMLWidget, FAChar) {
     function Accordion() {
         HTMLWidget.call(this);
 

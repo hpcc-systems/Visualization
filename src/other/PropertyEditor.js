@@ -21,8 +21,8 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate"]});
-    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("showColumns", false, "boolean", "Show Columns",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("showData", false, "boolean", "Show Data",null,{tags:["Intermediate"]});
     PropertyEditor.prototype.publish("paramsBeforeWidgets", true, "boolean", "The non-widget parameter collapsible is placed before widget section(s)",null,{tags:["Private"]});
     PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic"]});
     PropertyEditor.prototype.publish("excludeTags", [], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Private"]});
@@ -160,6 +160,8 @@
                                     var wClass = widget[param.id]()._class.split("_").pop();
                                     context.pushListItem(
                                         new PropertyEditor()
+                                        .showData(context.showData())
+                                        .showColumns(context.showColumns())
                                         .show_settings(false)
                                         .title(wClass)
                                         .data([widget[param.id]()])

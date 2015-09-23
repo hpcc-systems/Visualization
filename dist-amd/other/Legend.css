@@ -1,0 +1,39 @@
+.other_Legend .colorBlock{
+    width:10px;
+    height:10px;
+}
+.other_Legend > table, .other_Legend > table td,.other_Legend > table th {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.other_Table.other_Legend  table {
+    border-spacing: 0;
+}
+.other_Table.other_Legend th, .labels-wrapper th {
+    padding: 2px 5px;
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    color: #333;
+    white-space: nowrap;
+    cursor: default;
+    font-weight:normal;
+    text-align:left;
+}
+.other_Table.other_Legend  tr {
+    background-color: transparent;
+    color: #333;
+}
+.other_Table.other_Legend thead > tr:hover {
+    background-color: transparent;
+}
+.other_Table.other_Legend tbody > tr:hover, .other_Table.other_Legend tbody > tr.hover, .rows-wrapper tbody tr.hover {
+    background-color: #EEE;
+}
+.other_Table.other_Legend td, .rows-wrapper td {
+    border-width: 0px;
+    padding: 2px 5px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}

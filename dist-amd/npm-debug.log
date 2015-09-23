@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'shrinkwrap' ]
+2 info using npm@2.11.2
+3 info using node@v0.12.6
+4 verbose stack Error: Problems were encountered
+4 verbose stack Please correct and try again.
+4 verbose stack extraneous: clean-css@3.4.1 c:\Users\Gordon\git\Visualization2\node_modules\clean-css
+4 verbose stack     at shrinkwrap_ (c:\Program Files\nodejs\node_modules\npm\lib\shrinkwrap.js:37:15)
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\lib\shrinkwrap.js:31:5
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\lib\ls.js:47:30
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:138:5
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+4 verbose stack     at cb (c:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+4 verbose stack     at cb (c:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+4 verbose stack     at cb (c:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+5 verbose cwd c:\Users\Gordon\git\Visualization2\src
+6 error Windows_NT 6.3.9600
+7 error argv "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "shrinkwrap"
+8 error node v0.12.6
+9 error npm  v2.11.2
+10 error Problems were encountered
+10 error Please correct and try again.
+10 error extraneous: clean-css@3.4.1 c:\Users\Gordon\git\Visualization2\node_modules\clean-css
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

@@ -41,6 +41,8 @@
         <script src="js/init_bootstrap_demo_page.js"></script>
         <script type="text/javascript" src="js/handlebars_data.js"></script>
         <script type="text/javascript" src="js/hierarchy.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/example_code.js"></script>
         <script type="text/javascript" src="js/playground.js"></script>
         <script src="js/svg_to_png.js"></script>
 
@@ -71,23 +73,14 @@
             }
 
             $.when(
-                loadHandlebarTemplate('templates/bootstrap-dropdown.handlebars'),
                 loadHandlebarTemplate('templates/bootstrap-tabs.handlebars'),
                 loadHandlebarTemplate('templates/bootstrap-panel.handlebars')
-            ).done(function(ajaxBootstrapDropdown, ajaxBootstrapTabs, ajaxBootstrapPanel) {
-                bootstrapDropdown  = Handlebars.compile(ajaxBootstrapDropdown[0]);
+            ).done(function(ajaxBootstrapTabs, ajaxBootstrapPanel) {
                 bootstrapPanel  = Handlebars.compile(ajaxBootstrapPanel[0]);
                 bootstrapTabs  = Handlebars.compile(ajaxBootstrapTabs[0]);
                 loadPage();
             });
 
-//            var bootstrapDropdown = Handlebars.templates['bootstrap-dropdown'];
-//            var bootstrapPanel = Handlebars.templates['bootstrap-panel'];
-//            var bootstrapTabs = Handlebars.templates['bootstrap-tabs'];
-//
-//            $(document).ready(function() {
-//                loadPage();
-//            });
 
             // Init Page
             function loadPage() {
@@ -96,32 +89,8 @@
                 $('#chart-wrapper').html(bootstrapTabs(chartTabsObj));
                 $('#config-wrapper').html(bootstrapTabs(configTabsObj));
                 $('#documentation-wrapper').html(bootstrapPanel(docMethodsObj));
-                $('#dropdown-wrapper').html(bootstrapDropdown(dropDownObj));
-                // Initialize first chart on page load
 
-                var initEl = $("ul.dropdown-menu").find("a[data-value='" + wName + "']");
-                if (!initEl.length) {
-                    alert("No chart found for '" + wName + "'. Please select a chart from the menu.");
-                } else {
-                    update_chart(initEl);
-                }
-
-                $('.menu_item').click(function() {
-                    $('#chartTab1').prepend('<div class="loading_spinner"><i class="fa fa-spinner fa-spin"></i></div>');
-                    $('.tab-pane, li[role="presentation"]').removeClass("active");
-                    $('#discover-pane, #chartTab1').addClass("active");
-                    $('li[data-for="discover-pane"], li[data-for="chartTab1"]').addClass("active");
-
-                    var context = $(this);
-                    if ($('#widget-wrapper').children().length > 0) {
-                        $('#widget-wrapper').children().fadeOut('fast', function() {
-                            $('#widget-wrapper').empty();
-                            update_chart(context);
-                        });
-                    } else {
-                        update_chart(context);
-                    }
-                });
+                buildMenu();
 
                 $("#showDocButton").click(function() {
                     window.open("http://rawgit.com/mlzummo/Visualization/JSDOC_2/docs/"+doc_page.replace("/","_")+".html");
@@ -178,7 +147,17 @@
         </nav>
         <!-- /.navbar-default -->
         <div class="row">
-            <div id="dropdown-wrapper" class="dropdown"></div>
+            <div id="dropdown-wrapper" class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    Select A Chart
+                    <span class="caret"></span>
+                </button>
+                <button class="btn btn-default" type="button" id="showDocButton"  aria-expanded="true">
+                    Show Documentation
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                </ul>
+            </div>
         </div>
         <div class="row">
             <div id="chart-wrapper" class="docs-tabs col-xs-12 col-md-6"></div>

@@ -9,31 +9,36 @@
     return {
         AbsoluteSurface: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/layout/AbsoluteSurface"], function (DataFactory, AbsoluteSurface) {
+                require(["test/DataFactory", "src/layout/AbsoluteSurface", "src/chart/Column"], function (DataFactory, AbsoluteSurface, Column) {
                     callback(new AbsoluteSurface()
-                        .widgetX(DataFactory.AbsoluteSurface.simple.widgetX)
-                        .widgetY(DataFactory.AbsoluteSurface.simple.widgetY)
-                        .widgetWidth(DataFactory.AbsoluteSurface.simple.widgetWidth)
-                        .widgetHeight(DataFactory.AbsoluteSurface.simple.widgetHeight)
-                        .widget(DataFactory.AbsoluteSurface.simple.widget()
+                        .widget(new Column()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
                         )
-                    );
+                        .widgetY(DataFactory.AbsoluteSurface.simple.widgetY)
+                        .widgetWidth(DataFactory.AbsoluteSurface.simple.widgetWidth)
+                        .widgetHeight(DataFactory.AbsoluteSurface.simple.widgetHeight)
+                        .widgetX(DataFactory.AbsoluteSurface.simple.widgetX)
+                        );
                 });
             }
         },
         Accordion: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/layout/Accordion", "src/form/Form", "src/other/Table", "src/layout/Surface", "src/chart/MultiChart"], function (DataFactory, Accordion, Form, Table, Surface, MultiChart) {
+                require(["test/DataFactory", "src/layout/Accordion", "src/other/Table", "src/layout/Surface", "src/chart/MultiChart", "src/chart/Line",  "src/chart/Column"], function (DataFactory, Accordion,Table, Surface, MultiChart, Line, Column) {
                     callback(
                         new Accordion()
-                            .pushListItem(new Accordion().pushListItem(new Form().inputs(DataFactory.Form.simple.inputs()).showSubmit(false)))
                             .pushListItem(new Accordion().pushListItem(
-                                    new Table()
-                                        .size({height:200,width:600})
-                                        .columns(DataFactory.Table.large.columns)
-                                        .data(DataFactory.Table.large.data)
+                                new Line()
+                                    .columns(DataFactory.ND.subjects.columns)
+                                    .data(DataFactory.ND.subjects.data)
+                                )
+                            )
+                            .pushListItem(new Accordion().pushListItem(
+                                new Table()
+                                    .size({height:200,width:600})
+                                    .columns(DataFactory.Table.large.columns)
+                                    .data(DataFactory.Table.large.data)
                                 )
                             )
                             .pushListItem(new Accordion()
@@ -47,13 +52,15 @@
                                     new Surface()
                                         .size({height:200,width:200})
                                         .title(DataFactory.Surface.simple.title)
-                                        .widget(DataFactory.Surface.simple.widget()
-                                        .columns(DataFactory.ND.subjects.columns)
-                                        .data(DataFactory.ND.subjects.data))
-                                )
+                                        .widget(new Line()
+                                            .columns(DataFactory.ND.subjects.columns)
+                                            .data(DataFactory.ND.subjects.data)
+                                        )
+                                )       
                             )
-                    );
-                });
+                        );
+                    }
+                );
             }
         },
         Border: {
@@ -86,12 +93,13 @@
         },
         Cell: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/layout/Cell"], function (DataFactory, Cell) {
+                require(["test/DataFactory", "src/layout/Cell","src/chart/Line"], function (DataFactory, Cell, Line) {
                     callback(new Cell()
                         .title(DataFactory.Surface.simple.title)
-                        .widget(DataFactory.Surface.simple.widget()
+                        .widget(new Line()
                             .columns(DataFactory.ND.subjects.columns)
-                            .data(DataFactory.ND.subjects.data))
+                            .data(DataFactory.ND.subjects.data)
+                        )
                         .buttonAnnotations(DataFactory.Surface.simple.buttonAnnotations)
                     );
                 });
@@ -191,7 +199,6 @@
                 require(["test/DataFactory", "src/layout/Surface", "src/chart/Line"], function (DataFactory, Surface, Line) {
                     callback(new Surface()
                         .title(DataFactory.Surface.simple.title)
-                        .widget(DataFactory.Surface.simple.widget)
                         .buttonAnnotations(DataFactory.Surface.simple.buttonAnnotations)
                         .widget(new Line()
                             .columns(DataFactory.ND.subjects.columns)

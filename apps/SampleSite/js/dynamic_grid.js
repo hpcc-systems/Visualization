@@ -18,8 +18,8 @@ function maximizeMe() {
     alert("You Clicked Maximize");
 };
 
-require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/common/Palette" ],
-    function (Surface, Grid, Persist, Palette) {
+require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/common/Palette", "./test/Factory", "./test/DataFactory"],
+    function (Surface, Grid, Persist, Palette, Factory, DataFactory) {
         var main = new Grid();
         g_grid = main;
         g_persist = Persist;
@@ -86,7 +86,8 @@ require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/comm
                                     console.log(e);
                                 }
                             } else {
-                                thisWidget.testData();
+                               console.log("No Data Found for: ")
+                               console.log(gridObj[index]); 
                             }
                             if(typeof (gridObj[index]['params']) !== 'undefined'){
                                 for(var paramId in gridObj[index]['params'][i]){

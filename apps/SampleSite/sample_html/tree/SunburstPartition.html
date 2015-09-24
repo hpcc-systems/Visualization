@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
-        <script type="text/javascript" src="../config.js"></script>
+        <meta charset="utf-8">
+        <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js"></script>
+        <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+        <script>
+            require.config({
+                paths: {
+                    "src": "http://viz.hpccsystems.com/v1.6.6/dist-amd"
+                }
+            });
+        </script>
     </head>
     <body>
         <script>  
             require(["src/tree/SunburstPartition"], function (SunburstPartition) {
-                var sunburstPartitionWidget = new SunburstPartition()
-                    .size({width:500,height:500})
-                    .target("widget-wrapper")
+                new SunburstPartition()
+                    .target("target")
                     .data({label: "root", children: [{
                         label: "A",
                         children: [{
@@ -36,9 +44,8 @@
                     }]})
                     .render()
                 ;
-                sunburstPartitionWidget.click = function(d) { console.log('Override Click: ' +  d.label); };
             });
         </script>
-        <div id="widget-wrapper"></div>
+        <div id="target" style="width:100%; height:100vh"></div>
     </body>
 </html>

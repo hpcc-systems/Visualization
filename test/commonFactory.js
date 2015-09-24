@@ -19,7 +19,8 @@
         Shape: {
             simple: function (callback) {
                 require(["src/common/Shape"], function (Shape) {
-                    callback(new Shape());
+                    callback(new Shape()
+                    );
                 });
             }
         },

@@ -82,6 +82,37 @@
                     ["Math II", 26, 30, 64, 76],
                     ["Math III", 0, 30, 77, 88]
                 ]
+            },
+            random: {
+                columns: function(colCount){
+                    var ret = [];
+                    for(var i = 0;i<colCount;i++){
+                        ret.push(i===0? "Label" : "Column-"+i);
+                    }
+                    return ret;
+                },
+                data: function(categoryCount,dataCount,min,max){
+                    min = typeof (min) === "undefined" ? 70 : min;
+                    max = typeof (max) === "undefined" ? 100 : max;
+                    var count = 0;
+                    var arr = [];
+                    var rowArr = [];
+                    for(var j = 0;j<categoryCount;j++){
+                        for(var k = 0;k<dataCount;k++){
+                            arr.push(Math.floor(Math.random() * max) + min);
+                        }
+                    }
+                    arr = arr.sort(function(a,b){return a > b ? 1 : -1});
+                    for(var j2 = 0;j2<categoryCount;j2++){
+                        var row = [];
+                        for(var k2 = 0;k2<dataCount;k2++){
+                            row.push( k2 === 0 ? "category-"+j2 : arr[count]);
+                            count++;
+                        }
+                        rowArr.push(row);
+                    }
+                    return rowArr;
+                }
             }
         },
         Tree: {

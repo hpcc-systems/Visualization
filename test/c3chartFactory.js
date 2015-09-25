@@ -7,12 +7,42 @@
     }
 }(this, function () {
     return {
+        Bar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Bar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+        },
+        Combo: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                        .types(["bar","line","area"])
+                    );
+                });
+            },
+            complex: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.random.columns(4))
+                        .data(DataFactory.ND.random.data(18,4))
+                        .types(["bar","spline","area"])
                     );
                 });
             },

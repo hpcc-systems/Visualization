@@ -48,6 +48,20 @@
                     );
                 });
             }
+        },
+        Legend: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/layout/Border", "src/chart/Line", "src/other/Legend"], function (DataFactory, Border, Line, Legend) {
+                    var line = new Line()
+                        .columns(DataFactory.ND.ampolar.columns)
+                        .data(DataFactory.ND.ampolar.data)
+                    var legend = new Legend().targetWidget(line);
+                    callback(new Border()
+                        .setContent("center", line)
+                        .setContent("right", legend)
+                    );
+                });
+            }
         }
     };
 }));

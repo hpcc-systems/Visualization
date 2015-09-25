@@ -1,0 +1,185 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>HPCC Systems - Dynamic Grid Demo</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/prettify.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="css/dynamic_grid.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/finance_styles.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <!-- JS -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- requirejs -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <!-- custom js -->
+        <script type="text/javascript" src="js/init_bootstrap_demo_page.js"></script>
+        
+        <script type="text/javascript" src="js/finance_data.js"></script>
+        <script type="text/javascript" src="js/finance_page_logic.js"></script>
+        <script type="text/javascript" src="js/init_finance_page.js"></script>
+
+        <script>
+            var _d = jsonData['Summary YTD YTG'];
+            var g_tabbedObjArr = [];
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'Labour Expenses',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","FY"],
+                            'grid':{'x':0,'y':0,'title':'Labour Expenses','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[0].section,[0,3]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                            }
+                        },
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","FY"],
+                            'grid':{'x':1,'y':0,'title':'Total Expenses','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[1].section,[0,3]),
+                            'params':{
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                            }
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","YTD","YTG"],
+                            'grid':{'x':0,'y':1,'title':'','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[0].section,[0,1,2]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                                'xAxisLabelRotation':45,
+                                'Angle3D':45,
+                                'xAxisGridPosition':'start',
+                                'isStacked':true
+                            }
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","YTD","YTG"],
+                            'grid':{'x':1,'y':1,'title':'','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[1].section,[0,1,2]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                                'xAxisLabelRotation':45,
+                                'Angle3D':45,
+                                'xAxisGridPosition':'start',
+                                'isStacked':true
+                            }
+                        },
+                    ]
+                },
+                {
+                    'tabLabel':'FY CAPX / CAPZ',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","FY"],
+                            'grid':{'x':0,'y':0,'title':'','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[3].section,[0,3]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                            }
+                        }
+                    ]
+                },
+                {
+                    'tabLabel':'VP Section',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","FY"],
+                            'grid':{'x':0,'y':0,'title':'Total Expenses','xSpan':1,'ySpan':10},
+                            'data':_parseRawJson(_d[4].section,[0,3]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                            }
+                        },
+//                        {
+//                            'src':'src/amchart/Pie',
+//                            'columns':["Label","FY"],
+//                            'grid':{'x':1,'y':0,'title':'Total Expenses','xSpan':1,'ySpan':1},
+//                            'data':_parseRawJson(_d[4].section,[0,3]),
+//                            'params':{
+//                                'paletteID':'category20c',
+//                                'Depth3D':5,
+//                            }
+//                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","YTD","YTG"],
+                            'grid':{'x':1,'y':0,'title':'','xSpan':1,'ySpan':10},
+                            'data':_parseRawJson(_d[4].section,[0,1,2]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category20c',
+                                'Depth3D':5,
+                                'xAxisLabelRotation':45,
+                                'Angle3D':45,
+                                'xAxisGridPosition':'start',
+                                'isStacked':true
+                            }
+                        },
+                        {
+                            'src':'src/common/Text',
+                            'columns':[],
+                            'grid':{'x':0,'y':10,'title':'','xSpan':2,'ySpan':1},
+                            'data':[],
+                            'params':{'useClonedPalette':true,
+                                'text':'*Includes Raghavan, Bayliss, Chapman, and Luber organizations'
+                            }
+                        },
+//                        {
+//                            'src':'src/amchart/Bar',
+//                            'columns':["Label","YTD","YTG"],
+//                            'grid':{'x':0,'y':1,'title':'','xSpan':1,'ySpan':1},
+//                            'data':_parseRawJson(_d[4].section,[0,1,2]),
+//                            'params':{
+//                                'paletteID':'category20c',
+//                                'Depth3D':5,
+//                                'xAxisLabelRotation':45,
+//                                'Angle3D':45,
+//                                'xAxisGridPosition':'start',
+//                                'isStacked':true
+//                            }
+//                        }
+                    ]
+                }
+            );
+        </script>
+    </head>
+    <body onresize="doResize();">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+            </div>
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+        </nav>
+        <div id="main"></div>
+    </body>
+</html>

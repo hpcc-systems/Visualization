@@ -1,0 +1,347 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <title>HPCC Systems - Dermatology Test</title>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+    
+    <script type="text/javascript" src="js/bair_widget_content.js"></script>
+    
+    <script src="js/metisMenu.min.js"></script>
+
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+
+    <!-- App styles -->
+    
+    <link rel="stylesheet" href="css/bair.css">
+    <link rel="stylesheet" href="css/bair-widget.css">
+    <link rel="stylesheet" href="css/bair-bootstrap.css">
+    <link rel="stylesheet" href="css/metisMenu.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css"> <!-- look at using requirejs webfont loader -->
+    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&client=gme-lexisnexisrisksolutions&sensor=false"></script>
+</head>
+<body>
+    <nav id="header" class="navbar" role="navigation">
+        <div class="navbar-header">
+            <a id="logo" class="navbar-brand" href="#"><img alt="Brand" src="img/bair-logo.png"></a>
+        </div>
+        <div class="navbar-controls-left">
+            <button class="btn btn-primary">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
+            <button class="btn btn-darker">
+                <i class="glyphicon glyphicon-search"></i>
+                New Search
+                <i class="glyphicon glyphicon-chevron-down"></i>
+            </button>
+            <button class="btn btn-darker">
+                <i class="glyphicon glyphicon-th"></i>
+                Widgets
+                <i class="glyphicon glyphicon-chevron-down"></i>
+            </button>
+            <button class="btn btn-darker">
+                <i class="glyphicon glyphicon-eye-open"></i>
+                Layers
+                <i class="glyphicon glyphicon-chevron-down"></i>
+            </button>
+            <button class="btn btn-darker">
+                <i class="glyphicon glyphicon-floppy-disk"></i>
+                Save
+                <i class="glyphicon glyphicon-chevron-down"></i>
+            </button>
+        </div>
+        <div class="navbar-controls-right">
+            <button class="btn btn-darker" data-designmode="off" onclick="javascript:toggleLayoutMode(this)">
+                Layout Mode&nbsp;&nbsp;&nbsp;<span class="label label-default">OFF</span>
+            </button>
+        </div>
+    </nav>
+
+    <aside id="menu">
+        <div id="navigation">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-qrcode leftnav-icon"></span>
+                        <span class="nav-label">Analytics</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Search Results</span>
+                        <span class="glyphicon glyphicon-chevron-down leftnav-chevron"></span>
+                    </a>
+                    <ul class="nav nav-second-level ui-sortable collapse in" aria-expanded="true">
+                        <li><a href="javascript:void(0);"><label><input type="checkbox"><span>123 Main St, Anytown, OH</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><input type="checkbox"><span>Georgetown, DC</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><input type="checkbox"><span>123-45-6789</span></label></a></li>
+                        <li class="options-li">
+                            <button class="btn btn-defualt pull-right">Options</button>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Alerts</span>
+                        <span class="glyphicon glyphicon-chevron-down leftnav-chevron"></span>
+                    </a>
+                    <ul class="nav nav-second-level ui-sortable collapse" aria-expanded="false" style="height: 0px;">
+                        <li><a href="javascript:void(0);"><label><span>Some Alert Text</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><span>Some Alert Text</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><span>Some Alert Text</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><span>Some Alert Text</span></label></a></li>
+                        <li><a href="javascript:void(0);"><label><span>Some Alert Text</span></label></a></li>
+                        <li class="options-li">
+                            <button class="btn btn-defualt pull-right">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                                Alert Settings
+                            </button>
+                            <button class="btn btn-defualt pull-right">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                                Alert History
+                            </button>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Saved Workspaces</span>
+                        <span class="glyphicon glyphicon-chevron-down leftnav-chevron"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Cases</span>
+                        <span class="glyphicon glyphicon-chevron-down leftnav-chevron"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Report Manager</span>
+                        <span class="glyphicon glyphicon-chevron-down leftnav-chevron"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-align-left leftnav-icon"></span>
+                        <span class="nav-label">Accurint LE</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    
+    <div id="wrapper"></div>
+    
+    <script>
+        var g_grid;
+        var gridWidget;
+        var htmlWidget;
+        var borderWidget;
+        require(["src/layout/Grid","src/layout/Border","src/common/Html"],
+            function (Grid,Border,Html){
+                gridWidget = Grid;
+                borderWidget = Border;
+                htmlWidget = Html;
+                g_grid = new Grid()
+                        .gutter(30)
+                        .cellPadding(0)
+                        .target('wrapper');
+                updateWorkspace(g_workspaceObj['canvas1']);
+            }
+        );
+    </script>
+    <script>
+        $(function(){
+            $('#side-menu').metisMenu();
+            $('#wrapper').height($(window).innerHeight() - $('#header').outerHeight());
+        });
+        var g_workspaceObj = {'canvas1':[
+                {
+                    row:0,
+                    col:0,
+                    rowSpan:1,
+                    colSpan:1,
+                    id:'map1',
+                    title:'MAP',
+                    type:'html',
+                    body:'',
+                    controls:[
+                        {
+                            id:uuid(),
+                            tooltip:'minimize',
+                            icon:'glyphicon glyphicon-chevron-down',
+                            callback:function(){
+                                alert('clicked minimize');
+                            }
+                        },
+                        {
+                            id:uuid(),
+                            tooltip:'maximize',
+                            icon:'glyphicon glyphicon-resize-full',
+                            callback:function(){
+                                alert('clicked maximize');
+                            }
+                        },
+                        {
+                            id:uuid(),
+                            tooltip:'close',
+                            icon:'glyphicon glyphicon-remove',
+                            callback:function(){
+                                alert('clicked close');
+                            }
+                        }
+                    ],
+                    headingContent:[
+                        {
+                            contentType:'divider',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<span>Enter Location:</span>',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<div class="btn btn-warning icon-btn"><i class="glyphicon glyphicon-send"></i></div>',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<input type="text" class="input-dark-rounded" value="Dupont Circle, DC" />',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<button class="btn btn-dark">Go</button>',
+                        },
+                        {
+                            contentType:'divider',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<button class="btn btn-dark"><i class="glyphicon glyphicon-edit"></i>Drawing Tools</button>',
+                        },
+                    ]
+                },
+                {
+                    row:1,
+                    col:0,
+                    rowSpan:1,
+                    colSpan:1,
+                    id:'results1',
+                    title:'Results Data',
+                    type:'grid',
+                    body:'',
+                    controls:[
+                        {
+                            id:uuid(),
+                            tooltip:'minimize',
+                            icon:'glyphicon glyphicon-chevron-down',
+                            callback:function(){
+                                alert('clicked minimize');
+                            }
+                        },
+                        {
+                            id:uuid(),
+                            tooltip:'maximize',
+                            icon:'glyphicon glyphicon-resize-full',
+                            callback:function(){
+                                alert('clicked maximize');
+                            }
+                        },
+                        {
+                            id:uuid(),
+                            tooltip:'close',
+                            icon:'glyphicon glyphicon-remove',
+                            callback:function(){
+                                alert('clicked close');
+                            }
+                        }
+                    ],
+                    headingContent:[
+                        {
+                            contentType:'html',
+                            html:'<div class="btn btn-primary icon-btn"><i class="glyphicon glyphicon-align-justify"></i></div>',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<button class="btn btn-dark"><i class="glyphicon glyphicon-calendar"></i>Date Range</button>',
+                        },
+                        {
+                            contentType:'html',
+                            html:'<button class="btn btn-dark"><i class="glyphicon glyphicon-search"></i>Search Within Results</button>',
+                        },
+                    ]
+                },
+            ]};
+        function updateWorkspace(objArr){
+            console.log('updateWorkspace');
+            g_grid.clearContent();
+            for(var i in objArr){
+                var widget = objArr[i].type === 'html' ? widget_googleMap(objArr[i]) : widget_resultsData(objArr[i]);
+                
+                g_grid.setContent(objArr[i].row,objArr[i].col,widget,"",objArr[i].rowSpan,objArr[i].colSpan);
+            }
+            g_grid.dragEndCallback = function(){
+                console.log('dragEndCallback');
+                setTimeout(function(){
+                    console.log('dragEndCallback -> setTimeout');
+                    postGridRender();
+                },300);
+            };
+            g_grid.render(postGridRender);
+        }
+        function postGridRender(){
+            console.log('postGridRender');
+            $('.surfaceWidget').each(function(){
+                var $hpanel = $(this).find('.hpanel').first();
+
+                var surface_h = $(this).innerHeight();
+                var header_h = $hpanel.children('.panel-heading').first().outerHeight();
+                $hpanel.children('.panel-body').first().css({
+                    'height':surface_h - header_h - 3
+                });
+            });
+            
+            //Init Map
+            var mapOptions = {
+                center: { lat: 38.9103326, lng: -77.0431388},
+                zoom: 16,
+                disableDefaultUI: true
+            };
+            new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+        }
+        function uuid(){
+            var r = Math.random();
+            r = (""+r).replace('.','');
+            return 'id-'+r;
+        }
+        function toggleLayoutMode(elm){
+            var designMode = $(elm).attr('data-designmode');
+            if(designMode === "off"){
+                $(elm).attr('data-designmode','on');
+                g_grid.designMode(true).render(postGridRender);
+                $(elm).html('Layout Mode&nbsp;&nbsp;&nbsp;<span class="label label-success">ON</span>');
+            } else {
+                $(elm).attr('data-designmode','off');
+                g_grid.designMode(false).render(postGridRender);
+                $(elm).html('Layout Mode&nbsp;&nbsp;&nbsp;<span class="label label-default">OFF</span>');
+            }
+        }
+    </script>
+</body>
+</html>

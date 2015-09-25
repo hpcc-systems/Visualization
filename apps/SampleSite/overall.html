@@ -1,0 +1,245 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>HPCC Systems - Dynamic Grid Demo</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/prettify.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="css/dynamic_grid.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/finance_styles.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <!-- JS -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- requirejs -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <!-- custom js -->
+        <script type="text/javascript" src="js/init_bootstrap_demo_page.js"></script>
+        
+        <script type="text/javascript" src="js/finance_data.js"></script>
+        <script type="text/javascript" src="js/finance_page_logic.js"></script>
+        <script type="text/javascript" src="js/init_finance_page.js"></script>
+
+        <script>
+            var g_tabbedObjArr = [];
+            var g_graphPlacement = [
+                {x:0,y:0,w:100,h:62},
+                {x:100,y:0,w:62,h:62},
+                {x:0,y:62,w:162,h:62},
+            ];
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'3d Stacked 2014/2015',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","2014 Actual","2015 RF1"],
+                            'grid':{'x':0,'y':0,'title':'<b>2014 Actual</b> vs <b>2015 RF1</b>','xSpan':1,'ySpan':1},
+                            'data':[
+                                ['Labor',116631000,120723000],
+                                ['Non-Labor',46557000,52897000],
+                                ['Total OPEX',163187000,173620000],
+                                ['YE Direct FTE\'s',944000,999000],
+                                ['Capital Eqpmnt (CAPX)', 23219000,27356000],
+                                ['Capital Dvlpmnt (CAPZ)', 15559000,24606000],
+                                ['Total Capital',38778000,51963000],
+                            ],
+                            'params':{
+                                'useClonedPalette':true,
+                                'marginRight':60,
+                                'marginBottom':190,
+                                'isStacked':true,
+                                'stackType':'3d',
+                                'xAxisLabelRotation':30,
+                                'Depth3D':60,
+                                'Angle3D':45,
+                                'tooltipTemplate':'[[category]]: [[value]]'
+                            }
+                        },
+                    ]
+                }
+            );
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'OPEX & Capital',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","Value"],
+                            'grid':{'x':0,'y':0,'title':'Total <b>OPEX</b>','xSpan':1,'ySpan':1},
+                            'data':[
+                                ['Jun YTD',81701000],
+                                ['RF2 YTG',91507000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'lineWidth':5,'xAxisLabelRotation':45},
+                            'click':function(rowObj){
+                                bsModal(rowObj['Label'],'<div id="modal-widget"></div>');
+                                require(['src/amchart/Pie'],function(Pie){
+                                    $('#modal').modal();
+                                    $('#modal > .modal-dialog').css({'width':'600px'});
+                                    $('#modal-widget').css({'height':500,'width':500});
+                                    var pieData = [];
+                                    switch(rowObj['Label']){
+                                        case 'RF2 YTG':
+                                            pieData = [
+                                                ['Labor',62487000],
+                                                ['Non-Labor',29020000],
+                                            ];
+                                            break;
+                                        case 'Jun YTD':
+                                            pieData = [
+                                                ['Labor',58524000],
+                                                ['Non-Labor',23177000],
+                                            ];
+                                            break;
+                                    }
+                                    new Pie()
+                                        .columns(["Label", "Value"])
+                                        .data(pieData).target('modal-widget').render();
+                                });
+                            }
+                        },
+                        {
+                            'src':'src/amchart/Pie',
+                            'columns':["Label","Value"],
+                            'grid':{'x':0,'y':1,'title':'Total <b>Capital</b>','xSpan':1,'ySpan':1},
+                            'data':[
+                                ['Jun YTD',16007000],
+                                ['RF2 YTG',36984000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'lineWidth':5,'xAxisLabelRotation':45},
+                            'click':function(rowObj){
+                                bsModal(rowObj['Label'],'<div id="modal-widget"></div>');
+                                require(['src/amchart/Pie'],function(Pie){
+                                    $('#modal').modal();
+                                    $('#modal > .modal-dialog').css({'width':'600px'});
+                                    $('#modal-widget').css({'height':500,'width':500});
+                                    var pieData = [];
+                                    switch(rowObj['Label']){
+                                        case 'RF2 YTG':
+                                            pieData = [
+                                                ['Labor',62487000],
+                                                ['Non-Labor',29020000],
+                                            ];
+                                            break;
+                                        case 'Jun YTD':
+                                            pieData = [
+                                                ['Labor',58524000],
+                                                ['Non-Labor',23177000],
+                                            ];
+                                            break;
+                                    }
+                                    new Pie()
+                                        .columns(["Label", "Value"])
+                                        .data(pieData).target('modal-widget').render();
+                                });
+                            }
+                        },
+                    ]
+                }
+            );
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'2015 RF2 B/(W) 2014 Act',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","Category"],
+                            'grid':{'x':0,'y':0,'title':'Total <b>OPEX</b>','xSpan':15,'ySpan':20},
+                            'data':[
+                                ['YTD',-2993000],
+                                ['YTG',-7028000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':0},
+                            'click':function(){}
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","YTD"],
+                            'grid':{'x':15,'y':0,'title':'<b>YTD</b>','xSpan':15,'ySpan':10},
+                            'data':[
+                                ['Labor',-1888000],
+                                ['Non-Labor',-1105000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':30,'Depth3D':0},
+                            'click':function(){}
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","YTG"],
+                            'grid':{'x':15,'y':10,'title':'<b>YTG</b>','xSpan':15,'ySpan':10},
+                            'data':[
+                                ['Labor',-2492000],
+                                ['Non-Labor',-4536000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':30,'Depth3D':0},
+                            'click':function(){}
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","Category"],
+                            'grid':{'x':30,'y':0,'title':'Total <b>Capital</b>','xSpan':20,'ySpan':20},
+                            'data':[
+                                ['YTD',-721000],
+                                ['YTG',-13492000],
+                                //['FY',-14213000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':0},
+                            'click':function(){}
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","Jun YTD"],
+                            'grid':{'x':50,'y':0,'title':'<b>YTD</b>','xSpan':15,'ySpan':10},
+                            'data':[
+                                ['Cap Eqpmnt (CAPX)',746000],
+                                ['Cap Dvlpmnt (CAPZ)',-1468000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':30,'Depth3D':0},
+                            'click':function(){}
+                        },
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","RF2 YTG"],
+                            'grid':{'x':50,'y':10,'title':'<b>YTG</b>','xSpan':15,'ySpan':10},
+                            'data':[
+                                ['Cap Eqpmnt (CAPX)',-3798000],
+                                ['Cap Dvlpmnt (CAPZ)',-9694000],
+                            ],
+                            'params':{'useClonedPalette':true,'marginRight':60,'xAxisLabelRotation':30,'Depth3D':0},
+                            'click':function(){}
+                        },
+                    ]
+                }
+            );
+        </script>
+    </head>
+    <body onresize="doResize();">
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and Toggle -->
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+            </div>
+            <!-- Links -->
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+        </nav>
+        <!-- /.navbar-default -->
+        <div id="main"></div>
+    </body>
+</html>

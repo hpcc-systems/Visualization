@@ -1,0 +1,29 @@
+.btn:focus {outline:0;}
+.btn.icon-btn{
+    margin-right:0;
+}
+.btn-dark {
+    color: #FFF;
+    background-color: #6d6e71;
+    border-color: #6d6e71;
+}
+.btn-dark:hover,.btn-dark:focus {
+    background-color: #464646;
+    border-color: #333;
+    color: #FFF;
+}
+.btn-darker {
+    color: #FFF;
+    background-color: #4c4a49;
+    border-color: #4c4a49;
+}
+.btn-darker:hover,.btn-darker:focus {
+    background-color: #4c4a49;
+    border-color: #4c4a49;
+    color: #FFF;
+}
+.btn-primary {
+    color: #FFF;
+    background-color: #3498DB;
+    border-color: #3498DB;
+}

@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>HPCC Systems - Dynamic Grid Demo</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/prettify.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="css/dynamic_grid.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/finance_styles.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <style>
+            #XL,#json{height:300px;width:800px;}
+            #main {
+                padding: 15px;
+                margin: 15px;
+                background-color: #FAFAFA;
+            }
+        </style>
+        
+        <!-- JS -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- requirejs -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <!-- custom js -->
+        <script type="text/javascript" src="js/init_bootstrap_demo_page.js"></script>
+        
+        <script type="text/javascript" src="js/finance_data.js"></script>
+        <script type="text/javascript" src="js/finance_page_logic.js"></script>
+        <script type="text/javascript" src="js/init_finance_page.js"></script>
+
+        <script>
+            $(function(){
+                _convert();
+            });
+            function _convert(){
+                var idx = 0;
+                var startCount = 0;
+                var endCount = 0;
+                var strArr = [''];
+                $('#XL').val().split('\n').forEach(function(n){
+                    var arr = n.split('\t').map(function(m){return _customFormat($.trim(m))});
+                    if(!_isEmpty(arr)){
+                        console.log('idx:');console.log(idx);
+                        if(strArr[idx].length === 0){
+                            strArr[idx] += _strStartSection();
+                        }
+                        strArr[idx] += '        '+JSON.stringify(arr) + ',\n';
+                    } else {
+                        if(strArr[idx].length > 0){
+                            strArr[idx] += _strEndSection();
+                            idx++;
+                            strArr[idx] = '';
+                        }
+                    }
+                });
+                if(startCount === endCount + 1){
+                    strArr[idx] += _strEndSection();
+                }
+                $('#json').val(strArr.join(',\n'));
+                
+                function _isEmpty(a){
+                    var ret = true;
+                    a.forEach(function(node){
+                        if(node!==""){
+                            ret = false;
+                        }
+                    });
+                    return ret;
+                }
+                function _customFormat(str){
+                    if(str.match(/[a-zA-Z]/) !== null){
+                        return str.replace(/(\$|,)/g,'');
+                    }
+                    else if (str.match(/[0-9]/) !== null){
+                        return parseFloat(str.replace('(','-').replace(/(\$|,)/g,'').replace(')',''));
+                    }
+                    return str;
+                }
+                function _strStartSection(){
+                    startCount++;
+                    return '{\n    section:[\n';
+                }
+                function _strEndSection(){
+                    endCount++;
+                    return '    ]\n}';
+                }
+            }
+        </script>
+    </head>
+    <body onresize="doResize();">
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and Toggle -->
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+            </div>
+            <!-- Links -->
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+        </nav>
+        <!-- /.navbar-default -->
+        <div id="main">
+            <span>Paste Excel Block Here:</span><br/>
+            <textarea id="XL">
+     Expense Detail 	 YTD 	 YTG 	 FY 		 Avg YTD 	 Avg YTG 	 B/(W) 
+
+     Cost of Sales 	$56 	$109 	$165 		$9 	$18 	($9)
+
+     Salary / Benefits 	 58,863 	 64,376 	 123,239 		 9,811 	 10,729 	 (919)
+     Contractors 	 8,768 	 14,975 	 23,744 		 1,461 	 2,496 	 (1,034)
+     CAPZ 	 (9,543)	 (17,178)	 (26,721)		 (1,590)	 (2,863)	 1,273 
+     Other labor related 	 435 	 314 	 748 		 72 	 52 	 20 
+     Labor Expense 	 58,524 	 62,487 	 121,010 		 9,754 	 10,414 	 (661)
+
+            </textarea><br/>
+            <button class="btn btn-primary" onClick="javascript:_convert();">Convert</button></br>
+            <br/>
+            <span>JSON Output:</span>
+            <br/>
+            <textarea id="json"></textarea>
+        </div>
+    </body>
+</html>

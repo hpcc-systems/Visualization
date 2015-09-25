@@ -296,7 +296,9 @@
                     currWidget = widget;
                     if (params) {
                         for (var key in params) {
-                            currWidget[key](params[key]);
+                            if(typeof(currWidget[key]) === "function"){
+                                currWidget[key](params[key]);
+                            }
                         }
                     }
                     main
@@ -375,7 +377,16 @@
                 ;
                 if (first) {
                     first = false;
-                    testWidget(d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params);
+                    
+                    var factoryObj;
+                    if(typeof(params['sampleName']) === "undefined"){
+                        factoryObj = d3.map(testFactory.widgets[widgetPath]).values()[0].factory;
+                    } else {
+                        factoryObj = _sampleNameException(params);
+                    }
+                    
+                    
+                    testWidget(factoryObj, params);
                     /*
                     var factory = testFactory.categories[0].factory;
                     var widget = testFactory.categories[0].widgets[0].id;
@@ -387,6 +398,20 @@
                 }
             }, 250);
             frame.doResize();
+            
+            function _sampleNameException(paramsObj){
+                var testFact = testFactory.widgets[widgetPath];
+                var factObj = d3.map(testFact).values();
+                
+                if(typeof(testFact[paramsObj['sampleName']]) !== "undefined"){
+                    for(var i in factObj){
+                        if(factObj[i].sample === paramsObj['sampleName']){
+                            return factObj[i].factory;
+                        }
+                    }
+                }
+                return factObj[0].factory;
+            }
         });
         function doResize() {
             if (frame) {

@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>HPCC Systems - Dynamic Grid Demo</title>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- CSS -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/prettify.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+        <link href="css/dynamic_grid.css" rel="stylesheet" type="text/css">
+        
+        <link href="css/finance_styles.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <!-- JS -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- requirejs -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+
+        <!-- custom js -->
+        <script type="text/javascript" src="js/init_bootstrap_demo_page.js"></script>
+        
+        <script type="text/javascript" src="js/finance_data.js"></script>
+        <script type="text/javascript" src="js/finance_page_logic.js"></script>
+        <script type="text/javascript" src="js/init_finance_page.js"></script>
+
+        <script>
+            var _d = jsonData['Monthly Financial Summary'];
+            var g_tabbedObjArr = [];
+            var g_graphPlacement = [
+                {x:0,y:0,w:10,h:10},
+                {x:10,y:0,w:10,h:10},
+            ];
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'Actual / RF2 (Jun)',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","Actual Jun","RF2 Jun"],
+                            'grid':{'x':0,'y':0,'title':'','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[0].section,[0,2,3]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category10',
+                                'Depth3D':30,
+                                'isStacked':true,
+                                'cylinderBars':true,
+                                'xAxisLabelRotation':45,
+                                'columnWidth':0.8,
+                                'Angle3D':45,
+                                'yAxisTitle':'$000\'s',
+                                'xAxisGridPosition':'start',
+                            }
+                        },
+                    ]
+                }
+            );
+            g_tabbedObjArr.push(
+                {
+                    'tabLabel':'Actual / RF2 (Jun YTD)',
+                    'widgets':[
+                        {
+                            'src':'src/amchart/Bar',
+                            'columns':["Label","Actual Jun YTD","RF2 Jun YTD"],
+                            'grid':{'x':0,'y':0,'title':'','xSpan':1,'ySpan':1},
+                            'data':_parseRawJson(_d[0].section,[0,8,9]),
+                            'params':{'useClonedPalette':true,
+                                'paletteID':'category10',
+                                'Depth3D':30,
+                                'isStacked':true,
+                                'cylinderBars':true,
+                                'xAxisLabelRotation':45,
+                                'columnWidth':0.8,
+                                'Angle3D':45,
+                                'yAxisTitle':'$000\'s',
+                                'xAxisGridPosition':'start',
+                            }
+                        },
+                    ]
+                }
+            );
+        </script>
+    </head>
+    <body onresize="doResize();">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+            </div>
+            <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+        </nav>
+        <div id="main"></div>
+    </body>
+</html>

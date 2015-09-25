@@ -26,7 +26,8 @@
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
-    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide"]);
+    XYAxis.prototype.publish("xAxisOverlapMode", "rotate", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide", "rotate"]);
+    XYAxis.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
@@ -203,7 +204,7 @@
             return d.map(function (item) {
                 return this.formatValue(item);
             }, this);
-        } 
+        }
         switch (this.yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
@@ -368,6 +369,27 @@
                     .attr("visibility", function (d, i) { return i % margin.overlapModulus ? "hidden" : null; })
                 ;
                 break;
+            case "rotate" :
+                var xRotation = this.xAxisLabelRotation();
+                xAxis.selectAll(".tick > text")
+                    .each(function() {
+                        var elm = d3.select(this);
+                        var e_bbox = elm.node().getBoundingClientRect();
+                        if (xRotation > 0 && xRotation <= 90) {
+                            elm.style("text-anchor", "start");
+                            elm.attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")");
+                            elm.attr("dy", "-.5em");
+                            elm.attr("dx", "8px");
+                        } 
+                        else if (xRotation > 90 && xRotation < 180) {
+                            elm.style("text-anchor", "start");
+                            elm.attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")scale(-1,-1)translate(" + (-e_bbox.width) + "," + (-e_bbox.height) + ")");
+                            elm.attr("dy", ".5em");
+                            elm.attr("dx", "-8px");
+                        }
+                    })
+                ;
+                break;
             default:
                 xAxis.selectAll(".tick > text")
                     .attr("dy", "0.71em")
@@ -388,6 +410,7 @@
                 .attr("class", isHorizontal ? "y axis" : "x axis")
                 .call(this.otherAxis)
             ;
+
             var y_bbox = svgYAxis.node().getBBox();
             margin.left = y_bbox.width;
             margin.top -= y_bbox.y;
@@ -400,6 +423,7 @@
             .attr("transform", "translate(" + margin.left + "," + height / 2 + ")")
             .call(this.currAxis)
         ;
+
         switch (this.xAxisOverlapMode()) {
             case "stagger":
             case "hide":
@@ -604,7 +628,6 @@
         this.yBrush
             .y(this.dataScale)
         ;
-
         if (this.selectionMode()) {
             if (this._prevXAxisType !== this.xAxisType()) {
                 this._prevXAxisType = this.xAxisType();

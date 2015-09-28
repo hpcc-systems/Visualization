@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -7,6 +7,16 @@
     }
 }(this, function () {
     return {
+        Bar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Bar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Column) {
@@ -14,6 +24,40 @@
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );
+                });
+            },
+        },
+        Combo: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                        .types(["bar","line","area"])
+                    );
+                });
+            },
+            complex: function (callback) {
+                require(["test/DataFactory", "src/layout/Grid", "src/c3chart/Combo"], function (DataFactory, Grid, Combo) {
+                    var grid = new Grid()
+                            .setContent(0,0,new Combo()
+                                .columns(DataFactory.ND.random.columns(4))
+                                .data(DataFactory.ND.random.data(6,4))
+                                .types(["bar","line","spline"]))
+                            .setContent(1,0,new Combo()
+                                .columns(DataFactory.ND.random.columns(4))
+                                .data(DataFactory.ND.random.data(6,4))
+                                .types(["bar","area","area-spline"]))
+                            .setContent(2,0,new Combo()
+                                .columns(DataFactory.ND.random.columns(4))
+                                .data(DataFactory.ND.random.data(6,4))
+                                .types(["bar","step","area-step"]))
+                            .setContent(3,0,new Combo()
+                                .columns(DataFactory.ND.random.columns(6))
+                                .data(DataFactory.ND.random.data(6,6))
+                                .types(["spline","scatter","scatter","scatter","scatter"]))
+                    
+                    callback(grid);
                 });
             },
         },
@@ -59,7 +103,7 @@
         },
         Pie: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Pie) {
+                require(["test/DataFactory", "src/c3chart/Pie"], function (DataFactory, Pie) {
                     callback(new Pie()
                     .columns(DataFactory.TwoD.subjects.columns)
                     .data(DataFactory.TwoD.subjects.data)
@@ -69,7 +113,7 @@
         },
         Step: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Step) {
+                require(["test/DataFactory", "src/c3chart/Step"], function (DataFactory, Step) {
                     callback(new Step()
                     .columns(DataFactory.ND.subjects.columns)
                     .data(DataFactory.ND.subjects.data)

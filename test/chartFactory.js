@@ -21,7 +21,53 @@
                     widget.orientation("vertical");
                     callback(widget);
                 });
-            }
+            },
+            ordinalRange: function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.ordinalRange.default.columns)
+                        .data(DataFactory.ordinalRange.default.data)
+                        
+                        .yAxisType("linear")
+                        .xAxisType("ordinal")
+                    );
+                });
+            },
+            linear: function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.linear.default.columns)
+                        .data(DataFactory.linear.default.data)
+                        
+                        .xAxisType("linear")
+                        .yAxisType("linear")
+                    );
+                });
+            },
+            timeX: function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.timeX.default.columns)
+                        .data(DataFactory.timeX.default.data)
+                        
+                        .xAxisType("time")
+                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                        .yAxisType("linear")
+                    );
+                });
+            },
+            timeY: function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.timeY.default.columns)
+                        .data(DataFactory.timeY.default.data)
+                        
+                        .xAxisType("ordinal")
+                        .yAxisType("time")
+                        .yAxisTypeTimePattern("%Y-%m-%d")
+                    );
+                });
+            },
         },
         Bubble: {
             simple: function (callback) {

@@ -108,6 +108,10 @@
     CommonSerial.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
+    CommonSerial.prototype.publish("yAxis2Columns", [2,4,6], "array", "Columns to associate with second Y-Axis");
+    CommonSerial.prototype.publish("yAxis2Columns2", "s", "string", "Y-Axis Tick Format");
+
+
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
         var retVal = xAxisTypeTimePattern.apply(this, arguments);
@@ -260,6 +264,7 @@
         this._chart.dataProvider = this.amFormatData(this.data());
         this.amFormatColumns();
 
+        this._chart.valueAxes[0].id = "v1";
         this._chart.valueAxes[0].title = this.yAxisTitle();
         this._chart.valueAxes[0].titleColor = this.yAxisTitleFontColor();
         this._chart.valueAxes[0].titleFontSize = this.yAxisTitleFontSize();
@@ -301,6 +306,34 @@
                 break;
         }
 
+        var valueAxis2 = new AmCharts.ValueAxis();
+
+        valueAxis2.id = "v2";
+        valueAxis2.title = this.yAxisTitle();
+        valueAxis2.titleColor = this.yAxisTitleFontColor();
+        valueAxis2.titleFontSize = this.yAxisTitleFontSize();
+        valueAxis2.axisThickness = this.axisLineWidth();
+        valueAxis2.color = this.yAxisFontColor();
+        valueAxis2.fontSize = this.axisFontSize();
+        valueAxis2.axisColor = this.yAxisBaselineColor();
+        valueAxis2.axisAlpha = this.axisAlpha();
+        valueAxis2.fillColor = this.yAxisFillColor();
+        valueAxis2.fillAlpha = this.yAxisFillAlpha();
+
+        valueAxis2.gridAlpha = this.yAxisGridAlpha();
+        valueAxis2.dashLength = this.yAxisDashLength();
+        valueAxis2.boldPeriodBeginning = this.yAxisBoldPeriodBeginning();
+        valueAxis2.axisTitleOffset = this.yAxisTitleOffset();
+
+        valueAxis2.parseDates = false;
+        valueAxis2.type = "mumeric";
+        valueAxis2.logarithmic = false;
+        valueAxis2.position = "right";
+
+        this._chart.addValueAxis(valueAxis2);
+
+        console.log(this._chart.valueAxes);
+
         if (this.showScrollbar()) {
             this._chart.chartScrollbar.enabled = true;
         } else {
@@ -313,6 +346,14 @@
     CommonSerial.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
+
+        if (this.yAxis2Columns().indexOf(i) !== -1) {
+            gObj.valueAxis = "v2";
+        } else {
+            gObj.valueAxis = "v1";
+        }
+
+        
 
         gObj.balloonFunction = function(d) {
             var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
@@ -360,6 +401,7 @@
     };
 
     CommonSerial.prototype.enter = function(domNode, element) {
+        this.yAxis2Columns([2,4])
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
         var initObj = {

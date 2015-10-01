@@ -188,7 +188,15 @@
     
         <li class="main active"><a href="#chart-color-palette">Chart Color (Palette)</a></li>
         
-            <li><a href="#ordinal">Ordinal</a></li>
+            <li><a href="#types-of-palettes">Types of Palettes</a></li>
+        
+            <li><a href="#ordinal-palette">Ordinal Palette</a></li>
+        
+            <li><a href="#custom-ordinal-palette">Custom Ordinal Palette</a></li>
+        
+            <li><a href="#rainbow-palette">Rainbow Palette</a></li>
+        
+            <li><a href="#custom-rainbow-palette">Custom Rainbow Palette</a></li>
         
     
     </ul>
@@ -203,18 +211,37 @@ All charts that support colorization expose two methods (Publish Parameters):</p
 <li>useClonedPalette (boolean)</li>
 </ul>
 <p>These Publish Parameters control an instance or singleton (depending on if useClonedPalette is set) of the Palette object that is attached to the widget and can be accessed via widget.<em>_palette</em></p>
+<h4>PaletteID</h4>
+
+<p>Sets the Palette to use.</p>
+<h4>useClonedPalette</h4>
+
+<p>Creates a cloned instance of a Palette for a widget. This has the effect that each color (extraction/iteration) will be isolated to each widget instance instead of sharing a pool among all the widgets on a page.</p>
+<h5 id="types-of-palettes">Types of Palettes</h5>
 <p>There are two types of Palettes:</p>
 <ul>
 <li>Ordinal</li>
 <li>Rainbow</li>
 </ul>
-<h4 id="ordinal">Ordinal</h4>
-<p>An ordinal Palette is a predefined pool of colors, that are returned in the order they are defined. Colors are extracted from the palette by iterating the data/column set; passing in each value to the _palette object.</p>
+<h4 id="ordinal-palette">Ordinal Palette</h4>
+<p>An ordinal Palette is a predefined pool of colors, that are returned in the order they are defined (FIFO). Colors are extracted from the palette by iterating the data/column set; passing in each value to the _palette object.</p>
 <p>Ex:</p>
-<pre><code class="js">this._chart.colors = this.columns().filter(function (d, i) { return i &gt; 0; }).map(function (row) {
+<pre><code class="javascript">this._chart.colors = this.columns().filter(function (d, i) { return i &gt; 0; }).map(function (row) {
     return this._palette(row);
 }, this);
-</code></pre></div>
+</code></pre>
+
+<h4 id="custom-ordinal-palette">Custom Ordinal Palette</h4>
+<p>Custom color schemes can be created using the following code:</p>
+<p><code>Palette.ordinal("MyPalette", [blue, red, green]); // MyPalette is registered globally</code></p>
+<p>and utilized with the following:</p>
+<p><code>widget.paletteID("MyPalette")</code></p>
+<h4 id="rainbow-palette">Rainbow Palette</h4>
+<p>TODO</p>
+<h4 id="custom-rainbow-palette">Custom Rainbow Palette</h4>
+<p><code>var newPalette = Palette.rainbow("MyPalette", [blue, red], 100); // Generates 100 colors from blue to red</code></p>
+<p>and utilized with the following:</p>
+<p><code>widget.paletteID("MyPalette")</code></p></div>
             
         </div>
 

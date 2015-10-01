@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="./img/favicon.ico">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>Visualization</title>
+	<title>AMD Examples - Visualization</title>
 
-        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="./css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="Index/">Visualization</a>
+            <a class="navbar-brand" href="../../Index/">Visualization</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -54,7 +54,7 @@
                 
                 
                     <li >
-                        <a href="Index/">Home</a>
+                        <a href="../../Index/">Home</a>
                     </li>
                 
                 
@@ -65,43 +65,43 @@
                         
                             
 <li >
-    <a href="user_guide/Getting-Started/">Getting Started</a>
+    <a href="../../user_guide/Getting-Started/">Getting Started</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Chart-Options/">Chart Options</a>
+    <a href="../../user_guide/Chart-Options/">Chart Options</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+    <a href="../../user_guide/Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Look-and-Feel/">Customizing Look & Feel</a>
+    <a href="../../user_guide/Look-and-Feel/">Customizing Look & Feel</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Widget-Serialization/">Widget Serialization</a>
+    <a href="../../user_guide/Widget-Serialization/">Widget Serialization</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Marshaller/">Marshaller</a>
+    <a href="../../user_guide/Marshaller/">Marshaller</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Developing-Widgets/">Developing Widgets</a>
+    <a href="../../user_guide/Developing-Widgets/">Developing Widgets</a>
 </li>
 
                         
@@ -111,42 +111,42 @@
                 
                 
                     <li >
-                        <a href="FAQ/">FAQ</a>
+                        <a href="../../FAQ/">FAQ</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="The-Playground/">Playground</a>
+                        <a href="../../The-Playground/">Playground</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="Theme-Editor/">Theme-Editor</a>
+                        <a href="../../Theme-Editor/">Theme-Editor</a>
                     </li>
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="examples/AMD-Examples/">AMD Examples</a>
+<li class="active">
+    <a href="./">AMD Examples</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/Non-AMD-Examples/">Non-AMD Examples</a>
+    <a href="../Non-AMD-Examples/">Non-AMD Examples</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/Marshaller-Examples/">Marshaller Examples</a>
+    <a href="../Marshaller-Examples/">Marshaller Examples</a>
 </li>
 
                         
@@ -164,13 +164,13 @@
                     </a>
                 </li>
                 
-                    <li class="disabled">
-                        <a rel="next" >
+                    <li >
+                        <a rel="next" href="../../Theme-Editor/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
+                    <li >
+                        <a rel="prev" href="../Non-AMD-Examples/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -183,15 +183,68 @@
 
         <div class="container">
             
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#amd-examples">AMD Examples</a></li>
+        
+            <li><a href="#hpcc-column-chart-cdn">HPCC Column Chart (CDN)</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
-    </div>
+<h2 id="amd-examples">AMD Examples</h2>
+<p>The below examples illustrate how to display a widget from scratch, using AMD (RequireJS):</p>
+<h4 id="hpcc-column-chart-cdn">HPCC Column Chart (CDN)</h4>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;!-- Configuration Scripts --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt; &lt;!-- RequireJS Library Auto Loads --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; 
+        require.config({
+            paths: {
+                &quot;src&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd&quot;,
+                &quot;font-awesome&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min&quot;,
+                &quot;amchartsImg&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/img/amcharts/&quot; /* Only needed if using AmCharts */
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- HPCC Column Chart Widget --&gt;
+        &lt;div id=&quot;widget-wrapper&quot;&gt;&lt;/div&gt;
+        &lt;script&gt;
+            require([&quot;src/chart/Column&quot;], function (Column) {
+                var columnWidget = new Column()
+                    .size({width:500,height:300})
+                    .target(&quot;widget-wrapper&quot;)
+                    .columns([&quot;Subject&quot;, &quot;Year 1&quot;])   
+                    .data([
+                        [&quot;Geography&quot;, 75],
+                        [&quot;English&quot;, 45],
+                        [&quot;Math&quot;, 98],
+                        [&quot;Science&quot;, 66]
+                    ])
+                    .on(&quot;click&quot;,  function(d) { console.log('Override Click: ' + JSON.stringify(d)); })
+                    .render()
+                ;
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
+<h4>Output:</h4>
 
+<p align="center">
+  <img src="../../images/hpcc-column-chart.jpg" alt="HPCC Column Chart"/>
+</p></div>
+            
         </div>
 
         <footer class="col-md-12">
@@ -200,12 +253,12 @@
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
-        <script>var base_url = '.';</script>
-        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

@@ -1,8 +1,8 @@
 require.config({
     baseUrl: ".",
     paths: {
-        "requireLib": "../bower_components/requirejs/require",
-        "css": "../bower_components/require-css/css",
+        "requireLib": "../node_modules/requirejs/require",
+        "css": "../node_modules/require-css/css",
         "css-builder": "../bower_components/require-css/css-builder",
         "normalize": "../bower_components/require-css/normalize",
         "async": "../bower_components/requirejs-plugins/src/async",

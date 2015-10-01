@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>Marshaller Examples - Visualization</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../Index/">Visualization</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../../Index/">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../user_guide/Getting-Started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Chart-Options/">Chart Options</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Look-and-Feel/">Customizing Look & Feel</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Widget-Serialization/">Widget Serialization</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Marshaller/">Marshaller</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Developing-Widgets/">Developing Widgets</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../FAQ/">FAQ</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../The-Playground/">Playground</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../Theme-Editor/">Theme-Editor</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../AMD-Examples/">AMD Examples</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../Non-AMD-Examples/">Non-AMD Examples</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Marshaller Examples</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../Non-AMD-Examples/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#marshaller-examples">Marshaller Examples</a></li>
+        
+            <li><a href="#dashboard-generated-via-databomb">DashBoard Generated via DataBomb</a></li>
+        
+            <li><a href="#hpcc-column-chart-generated-via-roxie-wu">HPCC Column Chart Generated via ROXIE WU</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h2 id="marshaller-examples">Marshaller Examples</h2>
+<p>The below examples illustrate how to use create a HTML DashBoard via DDL and DataBomb:</p>
+<p>There is also an example(s) available in the demo folder of the github repository: <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/dashboard/databomb.html">databomb example</a></p>
+<h4 id="dashboard-generated-via-databomb">DashBoard Generated via DataBomb</h4>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;!-- Configuration Scripts --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt; &lt;!-- RequireJS Library Auto Loads --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; 
+        require.config({
+            paths: {
+                &quot;src&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd&quot;,
+                &quot;font-awesome&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min&quot;,
+                &quot;amchartsImg&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/img/amcharts/&quot; /* Only needed if using AmCharts */
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;html&quot; style=&quot;width:100%; height:100vh; float:right&quot;&gt;&lt;/div&gt;
+    &lt;script&gt;
+        require([&quot;src/marshaller/HTML&quot;], function (HTML) {
+            new HTML()
+                .target(&quot;html&quot;)
+                .ddlUrl(ddlString) /* Defined Below */
+                .databomb(databombString) /* Defined Below */
+                .render();
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="javascript">/* Can be a string or a URL */
+
+var ddlString = '[ { &quot;visualizations&quot;: [ { &quot;color&quot;: &quot;Red_Yellow_Blue&quot;, &quot;id&quot;: &quot;statesummary&quot;, &quot;source&quot;: { &quot;output&quot;: &quot;View_statesummary&quot;, &quot;mappings&quot;: { &quot;weight&quot;: &quot;Cnt&quot;, &quot;state&quot;: &quot;clean_st&quot; }, &quot;id&quot;: &quot;statesum&quot; }, &quot;type&quot;: &quot;CHORO&quot;, &quot;title&quot;: &quot;Count by State&quot;, &quot;events&quot;: { &quot;click&quot;: { &quot;mappings&quot;: { &quot;clean_st&quot;: &quot;clean_st&quot; }, &quot;updates&quot;: [ { &quot;visualization&quot;: &quot;statedetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false }, { &quot;visualization&quot;: &quot;alldetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false } ] } }, &quot;onSelect&quot;: { &quot;mappings&quot;: { &quot;clean_st&quot;: &quot;clean_st&quot; }, &quot;updates&quot;: [ { &quot;visualization&quot;: &quot;statedetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false }, { &quot;visualization&quot;: &quot;alldetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false } ] } }, { &quot;id&quot;: &quot;statedetails&quot;, &quot;label&quot;: [ &quot;State&quot;, &quot;Error&quot;, &quot;Count&quot; ], &quot;source&quot;: { &quot;output&quot;: &quot;View_statedetails&quot;, &quot;mappings&quot;: { &quot;value&quot;: [ &quot;clean_st&quot;, &quot;clean_error&quot;, &quot;Cnt&quot; ] }, &quot;id&quot;: &quot;details&quot; }, &quot;type&quot;: &quot;TABLE&quot;, &quot;title&quot;: &quot;State Error Details&quot; }, { &quot;color&quot;: &quot;Red_Yellow_Blue&quot;, &quot;id&quot;: &quot;errorsummary&quot;, &quot;source&quot;: { &quot;output&quot;: &quot;View_errorsummary&quot;, &quot;mappings&quot;: { &quot;weight&quot;: &quot;Cnt&quot;, &quot;label&quot;: &quot;clean_error&quot; }, &quot;id&quot;: &quot;errorsum&quot; }, &quot;type&quot;: &quot;PIE&quot;, &quot;title&quot;: &quot;Count by error--aggregated client side&quot;, &quot;events&quot;: { &quot;click&quot;: { &quot;mappings&quot;: { &quot;clean_error&quot;: &quot;clean_error&quot; }, &quot;updates&quot;: [ { &quot;visualization&quot;: &quot;errordetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false }, { &quot;visualization&quot;: &quot;alldetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false } ] } }, &quot;onSelect&quot;: { &quot;mappings&quot;: { &quot;clean_error&quot;: &quot;clean_error&quot; }, &quot;updates&quot;: [ { &quot;visualization&quot;: &quot;errordetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false }, { &quot;visualization&quot;: &quot;alldetails&quot;, &quot;instance&quot;: &quot;Ins001&quot;, &quot;datasource&quot;: &quot;details&quot;, &quot;merge&quot;: false } ] } }, { &quot;id&quot;: &quot;errordetails&quot;, &quot;label&quot;: [ &quot;State&quot;, &quot;Error&quot;, &quot;Count&quot; ], &quot;source&quot;: { &quot;output&quot;: &quot;View_errordetails&quot;, &quot;mappings&quot;: { &quot;value&quot;: [ &quot;clean_st&quot;, &quot;clean_error&quot;, &quot;Cnt&quot; ] }, &quot;id&quot;: &quot;details&quot; }, &quot;type&quot;: &quot;TABLE&quot;, &quot;title&quot;: &quot;Error Code Details&quot; }, { &quot;id&quot;: &quot;alldetails&quot;, &quot;label&quot;: [ &quot;State&quot;, &quot;Error&quot;, &quot;Count&quot; ], &quot;source&quot;: { &quot;output&quot;: &quot;View_alldetails&quot;, &quot;mappings&quot;: { &quot;value&quot;: [ &quot;clean_st&quot;, &quot;clean_error&quot;, &quot;Cnt&quot; ] }, &quot;id&quot;: &quot;details&quot; }, &quot;type&quot;: &quot;TABLE&quot;, &quot;title&quot;: &quot;Details updated from both count by state and count by error&quot; } ], &quot;datasources&quot;: [ { &quot;outputs&quot;: [ { &quot;from&quot;: &quot;View_statesummary&quot;, &quot;id&quot;: &quot;View_statesummary&quot;, &quot;notify&quot;: [ &quot;statesummary&quot; ] } ], &quot;databomb&quot;: true, &quot;id&quot;: &quot;statesum&quot; }, { &quot;outputs&quot;: [ { &quot;from&quot;: &quot;View_errorsummary&quot;, &quot;id&quot;: &quot;View_errorsummary&quot;, &quot;notify&quot;: [ &quot;errorsummary&quot; ] } ], &quot;databomb&quot;: true, &quot;id&quot;: &quot;errorsum&quot; }, { &quot;filter&quot;: [ &quot;clean_st&quot;, &quot;clean_error&quot; ], &quot;outputs&quot;: [ { &quot;from&quot;: &quot;View_statedetails&quot;, &quot;id&quot;: &quot;View_statedetails&quot;, &quot;notify&quot;: [ &quot;statedetails&quot; ] }, { &quot;from&quot;: &quot;View_errordetails&quot;, &quot;id&quot;: &quot;View_errordetails&quot;, &quot;notify&quot;: [ &quot;errordetails&quot; ] }, { &quot;from&quot;: &quot;View_alldetails&quot;, &quot;id&quot;: &quot;View_alldetails&quot;, &quot;notify&quot;: [ &quot;alldetails&quot; ] } ], &quot;databomb&quot;: true, &quot;id&quot;: &quot;details&quot; } ], &quot;enable&quot;: &quot;true&quot;, &quot;id&quot;: &quot;Ins001_DatabombDashboard&quot;, &quot;label&quot;: &quot;DatabombDashboard&quot;, &quot;title&quot;: &quot;Databomb Dashboard&quot;, &quot;primary&quot;: false } ]';
+</code></pre>
+
+<pre><code class="javascript">var databombString = '{&quot;errorsum&quot;:[{&quot;clean_error&quot;:&quot;E212&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_error&quot;:&quot;E214&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_error&quot;:&quot;E216&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;204&quot;},{&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;174&quot;},{&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;43&quot;},{&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;24&quot;},{&quot;clean_error&quot;:&quot;E430&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_error&quot;:&quot;E505&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_error&quot;:&quot;S400&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;19370&quot;},{&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;10&quot;},{&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;49&quot;},{&quot;clean_error&quot;:&quot;S840&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_error&quot;:&quot;S860&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;26&quot;},{&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;9&quot;},{&quot;clean_error&quot;:&quot;S891&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_error&quot;:&quot;S8A0&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_error&quot;:&quot;S8B0&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_error&quot;:&quot;S8C0&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;22&quot;},{&quot;clean_error&quot;:&quot;S910&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_error&quot;:&quot;S920&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_error&quot;:&quot;S980&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;21&quot;},{&quot;clean_error&quot;:&quot;SB00&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_error&quot;:&quot;SC10&quot;,&quot;Cnt&quot;:&quot;1&quot;}],&quot;statesum&quot;:[{&quot;clean_st&quot;:&quot;AK&quot;,&quot;Cnt&quot;:&quot;57&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;Cnt&quot;:&quot;225&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;Cnt&quot;:&quot;140&quot;},{&quot;clean_st&quot;:&quot;AZ&quot;,&quot;Cnt&quot;:&quot;342&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;Cnt&quot;:&quot;2695&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;Cnt&quot;:&quot;459&quot;},{&quot;clean_st&quot;:&quot;CT&quot;,&quot;Cnt&quot;:&quot;246&quot;},{&quot;clean_st&quot;:&quot;DC&quot;,&quot;Cnt&quot;:&quot;91&quot;},{&quot;clean_st&quot;:&quot;DE&quot;,&quot;Cnt&quot;:&quot;33&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;Cnt&quot;:&quot;1924&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;Cnt&quot;:&quot;683&quot;},{&quot;clean_st&quot;:&quot;GU&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;HI&quot;,&quot;Cnt&quot;:&quot;54&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;Cnt&quot;:&quot;163&quot;},{&quot;clean_st&quot;:&quot;ID&quot;,&quot;Cnt&quot;:&quot;139&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;Cnt&quot;:&quot;718&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;Cnt&quot;:&quot;318&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;Cnt&quot;:&quot;155&quot;},{&quot;clean_st&quot;:&quot;KY&quot;,&quot;Cnt&quot;:&quot;211&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;Cnt&quot;:&quot;279&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;Cnt&quot;:&quot;450&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;Cnt&quot;:&quot;459&quot;},{&quot;clean_st&quot;:&quot;ME&quot;,&quot;Cnt&quot;:&quot;57&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;Cnt&quot;:&quot;554&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;Cnt&quot;:&quot;419&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;Cnt&quot;:&quot;297&quot;},{&quot;clean_st&quot;:&quot;MS&quot;,&quot;Cnt&quot;:&quot;201&quot;},{&quot;clean_st&quot;:&quot;MT&quot;,&quot;Cnt&quot;:&quot;73&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;Cnt&quot;:&quot;433&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;Cnt&quot;:&quot;35&quot;},{&quot;clean_st&quot;:&quot;NE&quot;,&quot;Cnt&quot;:&quot;108&quot;},{&quot;clean_st&quot;:&quot;NH&quot;,&quot;Cnt&quot;:&quot;97&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;Cnt&quot;:&quot;505&quot;},{&quot;clean_st&quot;:&quot;NM&quot;,&quot;Cnt&quot;:&quot;92&quot;},{&quot;clean_st&quot;:&quot;NV&quot;,&quot;Cnt&quot;:&quot;142&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;Cnt&quot;:&quot;1237&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;Cnt&quot;:&quot;652&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;Cnt&quot;:&quot;190&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;Cnt&quot;:&quot;316&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;Cnt&quot;:&quot;678&quot;},{&quot;clean_st&quot;:&quot;PR&quot;,&quot;Cnt&quot;:&quot;9&quot;},{&quot;clean_st&quot;:&quot;RI&quot;,&quot;Cnt&quot;:&quot;77&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;Cnt&quot;:&quot;209&quot;},{&quot;clean_st&quot;:&quot;SD&quot;,&quot;Cnt&quot;:&quot;46&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;Cnt&quot;:&quot;378&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;Cnt&quot;:&quot;1794&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;Cnt&quot;:&quot;189&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;Cnt&quot;:&quot;473&quot;},{&quot;clean_st&quot;:&quot;VI&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;VT&quot;,&quot;Cnt&quot;:&quot;43&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;Cnt&quot;:&quot;456&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;Cnt&quot;:&quot;302&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;Cnt&quot;:&quot;61&quot;},{&quot;clean_st&quot;:&quot;WY&quot;,&quot;Cnt&quot;:&quot;29&quot;}],&quot;details&quot;:[{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;203&quot;},{&quot;clean_st&quot;:&quot;NM&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;WY&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;SC10&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;PR&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;8&quot;},{&quot;clean_st&quot;:&quot;NE&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NH&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;93&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;clean_error&quot;:&quot;S840&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;13&quot;},{&quot;clean_st&quot;:&quot;NH&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;AZ&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;SD&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;SB00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;S920&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;270&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;8&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;20&quot;},{&quot;clean_st&quot;:&quot;KY&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;285&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;262&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;&quot;,&quot;clean_error&quot;:&quot;E214&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;RI&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;77&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;S840&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;E505&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;29&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;29&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;NE&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;105&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;S8A0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;12&quot;},{&quot;clean_st&quot;:&quot;AK&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;&quot;,&quot;clean_error&quot;:&quot;E212&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;1885&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;NV&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;138&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S910&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;14&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;219&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;422&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;DE&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;32&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ID&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_st&quot;:&quot;AK&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;55&quot;},{&quot;clean_st&quot;:&quot;NM&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MS&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;192&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AZ&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;329&quot;},{&quot;clean_st&quot;:&quot;ID&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;WY&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;PR&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;SB00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;541&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AZ&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NE&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;E505&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;S910&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;SB00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;HI&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;DE&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ME&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;54&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;10&quot;},{&quot;clean_st&quot;:&quot;KY&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;209&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;180&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AZ&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CT&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;445&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MT&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;GU&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;CT&quot;,&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AK&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NM&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;84&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;S8B0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S910&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WY&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;54&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NV&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;13&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;S8A0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S8C0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_st&quot;:&quot;DC&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;660&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;151&quot;},{&quot;clean_st&quot;:&quot;WY&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;23&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;445&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S8B0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;1751&quot;},{&quot;clean_st&quot;:&quot;CT&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;clean_error&quot;:&quot;S910&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;8&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;9&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;443&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;401&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E214&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;7&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;2645&quot;},{&quot;clean_st&quot;:&quot;OR&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;311&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;E216&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VT&quot;,&quot;clean_error&quot;:&quot;E430&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;1206&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;696&quot;},{&quot;clean_st&quot;:&quot;MS&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;NV&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;441&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;S891&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;S8C0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;WI&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VT&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;37&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ME&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;CT&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;238&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;ND&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TN&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;369&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MT&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VI&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;ID&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;126&quot;},{&quot;clean_st&quot;:&quot;MA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_st&quot;:&quot;MS&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;461&quot;},{&quot;clean_st&quot;:&quot;LA&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;SD&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;43&quot;},{&quot;clean_st&quot;:&quot;VT&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;S980&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;E600&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;HI&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;53&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;S920&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;VI&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;5&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;11&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;FL&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MS&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;NH&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;AL&quot;,&quot;clean_error&quot;:&quot;E427&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;VA&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;SD&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;clean_error&quot;:&quot;S900&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MI&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;KY&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MO&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;MT&quot;,&quot;clean_error&quot;:&quot;S860&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;E423&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;CA&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;16&quot;},{&quot;clean_st&quot;:&quot;MD&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;6&quot;},{&quot;clean_st&quot;:&quot;NJ&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;495&quot;},{&quot;clean_st&quot;:&quot;NC&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;S860&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;11&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;NY&quot;,&quot;clean_error&quot;:&quot;SA00&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;S8A0&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;WV&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IL&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;MT&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;69&quot;},{&quot;clean_st&quot;:&quot;VT&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;clean_error&quot;:&quot;E412&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;IN&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;311&quot;},{&quot;clean_st&quot;:&quot;UT&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;165&quot;},{&quot;clean_st&quot;:&quot;GA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;8&quot;},{&quot;clean_st&quot;:&quot;CO&quot;,&quot;clean_error&quot;:&quot;S890&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OK&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;ID&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;KS&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;150&quot;},{&quot;clean_st&quot;:&quot;SC&quot;,&quot;clean_error&quot;:&quot;S820&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;TX&quot;,&quot;clean_error&quot;:&quot;S880&quot;,&quot;Cnt&quot;:&quot;3&quot;},{&quot;clean_st&quot;:&quot;MN&quot;,&quot;clean_error&quot;:&quot;S810&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;OH&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;637&quot;},{&quot;clean_st&quot;:&quot;AR&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;134&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;647&quot;},{&quot;clean_st&quot;:&quot;IA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;1&quot;},{&quot;clean_st&quot;:&quot;PA&quot;,&quot;clean_error&quot;:&quot;E422&quot;,&quot;Cnt&quot;:&quot;2&quot;},{&quot;clean_st&quot;:&quot;WA&quot;,&quot;clean_error&quot;:&quot;E421&quot;,&quot;Cnt&quot;:&quot;4&quot;},{&quot;clean_st&quot;:&quot;DC&quot;,&quot;clean_error&quot;:&quot;S800&quot;,&quot;Cnt&quot;:&quot;90&quot;}]}';
+</code></pre>
+
+<h4 id="hpcc-column-chart-generated-via-roxie-wu">HPCC Column Chart Generated via ROXIE WU</h4>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;!-- Configuration Scripts --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt; &lt;!-- RequireJS Library Auto Loads --&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt; 
+        require.config({
+            paths: {
+                &quot;src&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd&quot;,
+                &quot;font-awesome&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min&quot;,
+                &quot;amchartsImg&quot;: &quot;//viz.hpccsystems.com/v1.6.6/dist-amd/img/amcharts/&quot; /* Only needed if using AmCharts */
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- HPCC Column Chart Widget --&gt;
+        &lt;div id=&quot;widget-wrapper&quot;&gt;&lt;/div&gt;
+        &lt;script&gt;
+            require([&quot;src/chart/Column&quot;], function (Column) {
+                var columnWidget = new Column()
+                    .size({width:500,height:300})
+                    .target(&quot;widget-wrapper&quot;)
+                    .columns([&quot;Subject&quot;, &quot;Year 1&quot;])   
+                    .data([
+                        [&quot;Geography&quot;, 75],
+                        [&quot;English&quot;, 45],
+                        [&quot;Math&quot;, 98],
+                        [&quot;Science&quot;, 66]
+                    ])
+                    .on(&quot;click&quot;,  function(d) { console.log('Override Click: ' + JSON.stringify(d)); })
+                    .render()
+                ;
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

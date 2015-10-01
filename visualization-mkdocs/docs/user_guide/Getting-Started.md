@@ -126,7 +126,7 @@ Install bower using npm
 
 Clone repository
 
-	git clone https://github.com/hpcc-systems/Visualization.git 
+	$ git clone https://github.com/hpcc-systems/Visualization.git 
 
 Install Node module dependencies
 	

@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>Anatomy of a Widget - Visualization</title>
+	<title>Non-AMD Examples - Visualization</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -59,37 +59,49 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../Getting-Started/">Getting Started</a>
-</li>
-
-                        
-                            
-<li class="active">
-    <a href="./">Anatomy of a Widget</a>
+    <a href="../../user_guide/Getting-Started/">Getting Started</a>
 </li>
 
                         
                             
 <li >
-    <a href="../Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
+    <a href="../../user_guide/Chart-Options/">Chart Options</a>
 </li>
 
                         
                             
 <li >
-    <a href="../Widget-Serialization/">Widget Serialization</a>
+    <a href="../../user_guide/Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="../Marshaller/">Marshaller</a>
+    <a href="../../user_guide/Look-and-Feel/">Customizing Look & Feel</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Widget-Serialization/">Widget Serialization</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Marshaller/">Marshaller</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../user_guide/Developing-Widgets/">Developing Widgets</a>
 </li>
 
                         
@@ -116,25 +128,25 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../../examples/AMD-Examples/">AMD Examples</a>
+    <a href="../AMD-Examples/">AMD Examples</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Non-AMD Examples</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../examples/Non-AMD-Examples/">Non-AMD Examples</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../../examples/Non-AMD-Examples/">Marshaller Examples</a>
+    <a href="../Marshaller-Examples/">Marshaller Examples</a>
 </li>
 
                         
@@ -153,12 +165,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../Getting-Started/">
+                        <a rel="next" href="../AMD-Examples/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../Chart-Color-%28Palette%29-Usage/">
+                        <a rel="prev" href="../Marshaller-Examples/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -174,15 +186,59 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#non-amd-examples">Non-AMD Examples</a></li>
+        
+            <li><a href="#hpcc-column-chart-cdn">HPCC Column Chart (CDN)</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>Every widget follows the following basic pattern:
-<em> It is an object derived from either HTMLWidget or SVGWidget
-</em> Implements an interface defined in the API folder (widgets typically fall into one of five categories based on the data they are displaying).
-<em> Publish properties:  There is a special prototype.publish call which exposed properties to the consumer.  Once a property is published the object will auto-magically get a "setter/getter" method and it will be discoverable and serializable.
-</em> Overrides the enter/update/exit methods:  This is where you write your rendering logic, enter is when the widget enters the page, update is when the widget needs to re-render itself and exit is when the widget is being removed from the web page.</p></div>
+<h2 id="non-amd-examples">Non-AMD Examples</h2>
+<p>The below examples illustrate how to display a widget from scratch, using the Non-AMD Release:</p>
+<h4 id="hpcc-column-chart-cdn">HPCC Column Chart (CDN)</h4>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz.min.css&quot;&gt;
+    &lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//cdn.rawgit.com/jeanlauliac/colorbrewer/v1.0.0/colorbrewer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz-layout.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz-api.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz-other.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;//viz.hpccsystems.com/v1.6.6/dist/hpcc-viz-chart.min.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- HPCC Column Chart Widget --&gt;
+        &lt;div id=&quot;widget-wrapper&quot;&gt;&lt;/div&gt;
+        &lt;script&gt;
+            var columnWidget = new chart_Column()
+                .size({width:500,height:300})
+                .target(&quot;widget-wrapper&quot;)
+                .columns([&quot;Subject&quot;, &quot;Year 1&quot;])
+                .data([
+                    [&quot;Geography&quot;, 75],
+                    [&quot;English&quot;, 45],
+                    [&quot;Math&quot;, 98],
+                    [&quot;Science&quot;, 66]
+                ])
+                .on(&quot;click&quot;,  function(d) { console.log('Override Click: ' + JSON.stringify(d)); })
+                .render()
+            ;
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h4>Output:</h4>
+
+<p align="center">
+  <img src="../../images/hpcc-column-chart.jpg" alt="HPCC Column Chart"/>
+</p></div>
             
         </div>
 

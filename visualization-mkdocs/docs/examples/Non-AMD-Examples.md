@@ -38,3 +38,9 @@ The below examples illustrate how to display a widget from scratch, using the No
     </body>
 </html>
 ```
+<h4>Output:</h4>
+<p align="center">
+  <img src="../../images/hpcc-column-chart.jpg" alt="HPCC Column Chart"/>
+</p>
+
+

@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="./img/favicon.ico">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>Visualization</title>
+	<title>Chart Options - Visualization</title>
 
-        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="./css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="Index/">Visualization</a>
+            <a class="navbar-brand" href="../../Index/">Visualization</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -54,54 +54,54 @@
                 
                 
                     <li >
-                        <a href="Index/">Home</a>
+                        <a href="../../Index/">Home</a>
                     </li>
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="user_guide/Getting-Started/">Getting Started</a>
+    <a href="../Getting-Started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Chart Options</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Chart-Options/">Chart Options</a>
+    <a href="../Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+    <a href="../Look-and-Feel/">Customizing Look & Feel</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Look-and-Feel/">Customizing Look & Feel</a>
+    <a href="../Widget-Serialization/">Widget Serialization</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Widget-Serialization/">Widget Serialization</a>
+    <a href="../Marshaller/">Marshaller</a>
 </li>
 
                         
                             
 <li >
-    <a href="user_guide/Marshaller/">Marshaller</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="user_guide/Developing-Widgets/">Developing Widgets</a>
+    <a href="../Developing-Widgets/">Developing Widgets</a>
 </li>
 
                         
@@ -111,19 +111,19 @@
                 
                 
                     <li >
-                        <a href="FAQ/">FAQ</a>
+                        <a href="../../FAQ/">FAQ</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="The-Playground/">Playground</a>
+                        <a href="../../The-Playground/">Playground</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="Theme-Editor/">Theme-Editor</a>
+                        <a href="../../Theme-Editor/">Theme-Editor</a>
                     </li>
                 
                 
@@ -134,19 +134,19 @@
                         
                             
 <li >
-    <a href="examples/AMD-Examples/">AMD Examples</a>
+    <a href="../../examples/AMD-Examples/">AMD Examples</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/Non-AMD-Examples/">Non-AMD Examples</a>
+    <a href="../../examples/Non-AMD-Examples/">Non-AMD Examples</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/Marshaller-Examples/">Marshaller Examples</a>
+    <a href="../../examples/Marshaller-Examples/">Marshaller Examples</a>
 </li>
 
                         
@@ -164,13 +164,13 @@
                     </a>
                 </li>
                 
-                    <li class="disabled">
-                        <a rel="next" >
+                    <li >
+                        <a rel="next" href="../Getting-Started/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
+                    <li >
+                        <a rel="prev" href="../Chart-Color-%28Palette%29-Usage/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -183,15 +183,64 @@
 
         <div class="container">
             
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#chart-options">Chart Options</a></li>
+        
+            <li><a href="#publish-parameters">Publish Parameters</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
-    </div>
+<h2 id="chart-options">Chart Options</h2>
+<h3 id="publish-parameters">Publish Parameters</h3>
+<p>Chart options can be set with functions called <em>"Publish Parmeters"</em>.</p>
+<p>Publish Parameters are desgined to be self documenting, with the name describing their function. They can be discovered and possible values explored via the <a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html">Dermatology</a> and <a href="http://rawgit.com/hpcc-systems/Visualization/master/apps/SampleSite/playground.html">Playground</a> pages.</p>
+<h4 id="example-usage">Example Usage</h4>
+<pre><code class="javascript">var columnWidget = new chart_Column()
+    .size({width:500,height:300})
+    .target(&quot;widget-wrapper&quot;)
+    .columns([&quot;Subject&quot;, &quot;Year 1&quot;])
+    .data([
+        [&quot;Geography&quot;, 75],
+        [&quot;English&quot;, 45],
+        [&quot;Math&quot;, 98],
+        [&quot;Science&quot;, 66]
+    ])
+    .on(&quot;click&quot;,  function(d) { console.log('Override Click: ' + JSON.stringify(d)); })
+    .stacked(true) // &lt;----- Publish Parameter (sets Column Chart to display stacked columns)
+    .render()
+</code></pre>
 
-
+<hr />
+<p>There are currently 7 kinds of Publish Parameters:</p>
+<ul>
+<li><a href="#set">set</a><br></li>
+<li><a href="#html-color">html-color</a><br></li>
+<li><a href="#boolean">boolean</a><br></li>
+<li><a href="#number">number</a><br></li>
+<li><a href="#string">string</a><br></li>
+<li><a href="#array">array</a><br></li>
+<li><a href="#object">object</a><br></li>
+</ul>
+<h4 id="set">set</h4>
+<p>Set Publish Parameters are parameters with a fixed set of possible values that are predefined per widget.</p>
+<h4 id="html-color">html-color</h4>
+<p>A html-color Publish Parameter allows you to specify a HEX color value in the format: <code>(#FFFFFF)</code></p>
+<h4 id="boolean">boolean</h4>
+<p>A boolean Publish Parameter accepts one of two values: <code>true</code> or <code>false</code></p>
+<h4 id="number">number</h4>
+<p>A number Publish Parameter can accept any javascript number as a value. Ex: <code>1000</code>, <code>0.5</code>, <code>1-e-6</code></p>
+<h4 id="string">string</h4>
+<p>A string Publish Parameter accepts a string input and is normally used for displaying the specified value based on what the Publish Parameter does.</p>
+<h4 id="array">array</h4>
+<p>An array Publish Parameter accepts an array or array of arrays (dependent on the invidual parameter). Ex: ["value1","value2"]</p>
+<h4 id="object">object</h4>
+<p>A object Publish Parameter accepts an object for input and its many values utilized for the parameters purpose. Ex: {}</p></div>
+            
         </div>
 
         <footer class="col-md-12">
@@ -200,12 +249,12 @@
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
-        <script>var base_url = '.';</script>
-        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

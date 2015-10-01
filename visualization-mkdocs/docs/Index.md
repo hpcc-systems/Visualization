@@ -6,7 +6,7 @@
 
 * _[Demo/Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html)_
 * _[Dermatology Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html)_
-* _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_
+* _[Getting Started](user_guide/Getting-Started.md)_
 
 The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. 
 It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations. 
@@ -44,6 +44,10 @@ It also adds a set of connectors and marshallers to make connecting visualizatio
 </body>
 </html>
 ```
+<h4>Output:</h4>
+<p align="center">
+  <img src="../images/hello-world.jpg" alt="HPCC Column Chart"/>
+</p>
 
 ### Standing on the back of giants 
 None of this would would be possible without the great work of others.  The widgets/lib folder includes the work from:

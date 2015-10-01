@@ -4,15 +4,17 @@ pages:
 - Home: 'Index.md'
 - User Guide:
     - 'Getting Started' : 'user_guide/Getting-Started.md'
-    - 'Anatomy of a Widget' : 'user_guide/Anatomy-of-a-Widget.md'
-    - 'Chart Color (Palette) Usage': 'user_guide/Chart-Color-(Palette)-Usage.md'
+    - 'Chart Options' : 'user_guide/Chart-Options.md'
+    - 'Chart Color (Palette) Usage': 'user_guide/Chart-Color-(Palette)-Usage.md' #maybe under chart options
+    - 'Customizing Look & Feel' : 'user_guide/Look-and-Feel.md'
     - 'Widget Serialization' : 'user_guide/Widget-Serialization.md'
     - 'Marshaller' : 'user_guide/Marshaller.md'
-    #- 'Developing Widgets' : 'user_guide/Developing-Widgets.md'
+    - 'Developing Widgets' : 'user_guide/Developing-Widgets.md'
 - FAQ: 'FAQ.md'
-- Playground: 'The-Playground.md'
-- Theme-Editor: 'Theme-Editor.md'
+- Playground: 'The-Playground.md' #link to playground?
+- Theme-Editor: 'Theme-Editor.md' #link to theme editor?
 - Examples:
     - 'AMD Examples' : 'examples/AMD-Examples.md'
     - 'Non-AMD Examples' : 'examples/Non-AMD-Examples.md'
-    - 'Marshaller Examples' : 'examples/Non-AMD-Examples.md'
+    - 'Marshaller Examples' : 'examples/Marshaller-Examples.md'
+#https://github.com/mkdocs/mkdocs/issues/282 line numbers

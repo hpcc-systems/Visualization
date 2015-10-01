@@ -71,13 +71,19 @@
                         
                             
 <li >
-    <a href="../Anatomy-of-a-Widget/">Anatomy of a Widget</a>
+    <a href="../Chart-Options/">Chart Options</a>
 </li>
 
                         
                             
 <li class="active">
     <a href="./">Chart Color (Palette) Usage</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../Look-and-Feel/">Customizing Look & Feel</a>
 </li>
 
                         
@@ -90,6 +96,12 @@
                             
 <li >
     <a href="../Marshaller/">Marshaller</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../Developing-Widgets/">Developing Widgets</a>
 </li>
 
                         
@@ -134,7 +146,7 @@
                         
                             
 <li >
-    <a href="../../examples/Non-AMD-Examples/">Marshaller Examples</a>
+    <a href="../../examples/Marshaller-Examples/">Marshaller Examples</a>
 </li>
 
                         
@@ -153,12 +165,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../Anatomy-of-a-Widget/">
+                        <a rel="next" href="../Chart-Options/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../Widget-Serialization/">
+                        <a rel="prev" href="../Look-and-Feel/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -174,11 +186,35 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#chart-color-palette">Chart Color (Palette)</a></li>
+        
+            <li><a href="#ordinal">Ordinal</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>TODO</p></div>
+<h2 id="chart-color-palette">Chart Color (Palette)</h2>
+<p>The HPCC Visualization Library provides a universal mechanism to control the color of data/columns within charts.
+All charts that support colorization expose two methods (Publish Parameters):</p>
+<ul>
+<li>paletteID (set)</li>
+<li>useClonedPalette (boolean)</li>
+</ul>
+<p>These Publish Parameters control an instance or singleton (depending on if useClonedPalette is set) of the Palette object that is attached to the widget and can be accessed via widget.<em>_palette</em></p>
+<p>There are two types of Palettes:</p>
+<ul>
+<li>Ordinal</li>
+<li>Rainbow</li>
+</ul>
+<h4 id="ordinal">Ordinal</h4>
+<p>An ordinal Palette is a predefined pool of colors, that are returned in the order they are defined. Colors are extracted from the palette by iterating the data/column set; passing in each value to the _palette object.</p>
+<p>Ex:</p>
+<pre><code class="js">this._chart.colors = this.columns().filter(function (d, i) { return i &gt; 0; }).map(function (row) {
+    return this._palette(row);
+}, this);
+</code></pre></div>
             
         </div>
 

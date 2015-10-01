@@ -71,31 +71,19 @@
                         
                             
 <li >
-    <a href="../Building-from-sources/">Building from Sources</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../Bower-Releases/">Bower Releases</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../Anatomy-of-a-Widget/">Anatomy of a Widget</a>
 </li>
 
                         
                             
 <li >
-    <a href="../Widget-Serialization/">Widget Serialization</a>
+    <a href="../Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="../Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+    <a href="../Widget-Serialization/">Widget Serialization</a>
 </li>
 
                         
@@ -128,8 +116,29 @@
                 
                 
                 
-                    <li >
-                        <a href="../../Examples/">Examples</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../examples/AMD-Examples/">AMD Examples</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/Non-AMD-Examples/">Non-AMD Examples</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/Non-AMD-Examples/">Marshaller Examples</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -149,7 +158,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../Building-from-sources/">
+                        <a rel="prev" href="../Anatomy-of-a-Widget/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -167,134 +176,168 @@
     
         <li class="main active"><a href="#getting-started">Getting Started</a></li>
         
-            <li><a href="#2-a-simple-bar-chart">2. A simple Bar Chart</a></li>
+            <li><a href="#developers">Developers</a></li>
         
-            <li><a href="#3-a-simple-pie-chart">3. A simple Pie Chart</a></li>
+            <li><a href="#other">Other</a></li>
+        
+    
+        <li class="main "><a href="#installing-using-releases">Installing &amp; Using Releases</a></li>
+        
+            <li><a href="#locally">Locally</a></li>
+        
+            <li><a href="#via-cdn">Via CDN</a></li>
+        
+            <li><a href="#via-bower">Via Bower</a></li>
+        
+            <li><a href="#amd-usage">AMD Usage</a></li>
+        
+            <li><a href="#non-amd-usage">Non-AMD Usage</a></li>
+        
+    
+        <li class="main "><a href="#development">Development</a></li>
+        
+    
+        <li class="main "><a href="#building-releases-from-source-amd-non-amd">Building Releases from Source (AMD &amp; Non-AMD)</a></li>
+        
+    
+        <li class="main "><a href="#running-unit-tests">Running Unit Tests</a></li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="getting-started">Getting Started</h1>
-<p>Installation details for both  <a href="https://github.com/hpcc-systems/Visualization/wiki#end-users">users</a> and  <a href="https://github.com/hpcc-systems/Visualization/wiki#developers">developers</a> are found below. </p>
-<p>What follow are a number of examples that illustrate how to use the HPCC platform, and we begin with the obligatory hello world example!</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>The framework is available in a variety of packages and sources, it also supports both Non-AMD and AMD paradigms for those who love/hate RequireJS and its kin.  </p>
+<p>Installation details for both <a href="#installing-using-releases">consumers</a> and <a href="#development">visualization developers</a> are found below. </p>
+<p>The pre-built packages can be accessed from here:</p>
+<ul>
+<li>CDN Server (AMD) - http://viz.hpccsystems.com/v1.2.4/dist-amd/<br></li>
+<li>CDN Server (Non AMD) - http://viz.hpccsystems.com/v1.2.4/dist/<br></li>
+<li>Bower - <code>bower install hpcc-viz --save</code><br></li>
+<li>GitHub - https://github.com/hpcc-systems/Visualization/releases<br></li>
+</ul>
+<p>And the sources can be found here:</p>
+<ul>
+<li>GitHub - https://github.com/hpcc-systems/Visualization/</li>
+</ul>
+<h4 id="developers">Developers</h4>
+<p>The following details how developers should develop widgets:<br></p>
+<ul>
+<li><a href="../Developing-Widgets">Developing Widgets</a></li>
+</ul>
+<h4 id="other">Other</h4>
+<ul>
+<li><a href="../../FAQ/">FAQ</a></li>
+</ul>
+<hr />
+<h2 id="installing-using-releases">Installing &amp; Using Releases</h2>
+<h3 id="locally">Locally</h3>
+<h3 id="via-cdn">Via CDN</h3>
+<h3 id="via-bower">Via Bower</h3>
+<p>Install node
+* <em><a href="https://nodejs.org/">Node</a></em></p>
+<p>Install bower using npm</p>
+<pre><code>$ npm install -g bower
+$ cd Your-Project-Dir
+$ bower install hpcc-viz
+</code></pre>
+<h3 id="amd-usage">AMD Usage</h3>
 <pre><code class="html">&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;   
-    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../src/common/TextBox.css&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../src/common/Text.css&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../src/common/Shape.css&quot;&gt;
-    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;../src/config.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/hpcc-viz/dist-amd/hpcc-viz.js&quot;&gt;&lt;/script&gt; &lt;!-- Auto Loads RequireJS --&gt;
+    &lt;script src=&quot;bower_components/hpcc-viz/dist-amd/hpcc-bundles.js&quot;&gt;&lt;/script&gt;
     &lt;script&gt;
-        require([&quot;../src/common/TextBox&quot;], function (TextBox) {
-            new TextBox()
-                    .target(&quot;helloWorld&quot;)
-                    .text(&quot;Hello\nWorld!&quot;)
-                    .render()
-            ;
+        require.config({
+            paths: {
+                &quot;src&quot;: &quot;bower_components/hpcc-viz/dist-amd&quot;,
+                &quot;font-awesome&quot;: &quot;/bower_components/hpcc-viz/dist-amd/font-awesome/css/font-awesome.min&quot;,
+                &quot;amchartsImg&quot;: &quot;/bower_components/hpcc-viz/dist-amd/img/amcharts/&quot; /* Only needed if using AmCharts */
+            }
         });
     &lt;/script&gt;
 &lt;/head&gt;
-&lt;body&gt;
-&lt;div id=&quot;helloWorld&quot; style=&quot;width:100%; height:100vh&quot;&gt;
-&lt;/div&gt;
-&lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
 
-<p>RequireJS is called with the inclusion of</p>
-<pre><code>&lt;script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"&gt;&lt;/script&gt;
-</code></pre>
-<p>and it allows the opening of all our js files without their inclusion in the header.</p>
-<h3 id="2-a-simple-bar-chart">2. A simple Bar Chart</h3>
-<p><a href="http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Bar.html">Demo</a></p>
-<p>In this example we will just include a simple bar chart, embedding the source data in the actual html file. Loading files will come up later. 
-The data used illustrates the average frequency of letters that occur in a given sentence. </p>
+<p>See <a href="../../examples/AMD-Examples">Examples</a> for how to create widgets.</p>
+<h3 id="non-amd-usage">Non-AMD Usage</h3>
 <pre><code class="html">&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../src/amchart/Bar.css&quot;&gt;
-    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;../src/config.js&quot;&gt;&lt;/script&gt;
-    &lt;script&gt;
-        require([&quot;../src/amchart/Bar&quot;], function (AmBar) {
-            new AmBar()
-                    .target(&quot;ambar&quot;)
-                    .columns([&quot;Letter&quot;, &quot;Frequency&quot;])
-                    .data([
-                        ['A', .08167],
-                        ['B', .01492],
-                        ['C', .02782],
-                        ['D', .04253],
-                        ['E', .12702],
-                        ['F', .02288],
-                        ['G', .02015],
-                        ['H', .06094],
-                        ['I', .06966],
-                        ['J', .00153],
-                        ['K', .00772],
-                        ['L', .04025],
-                        ['M', .02406],
-                        ['N', .06749],
-                        ['O', .07507],
-                        ['P', .01929],
-                        ['Q', .00095],
-                        ['R', .05987],
-                        ['S', .06327],
-                        ['T', .09056],
-                        ['U', .02758],
-                        ['V', .00978],
-                        ['W', .02360],
-                        ['X', .00150],
-                        ['Y', .01974],
-                        ['Z', .00074],
-                    ])
-                    .render()
-            ;
-        });
-    &lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../bower_components/c3/c3.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../bower_components/font-awesome/css/font-awesome.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/hpcc-viz.min.css&quot;&gt;
+
+    &lt;!--
+    Most scripts are optional, include only what you need
+    @TODO: shoud document dependencies in README
+    --&gt;
+    &lt;script src=&quot;https://www.google.com/jsapi&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maps.googleapis.com/maps/api/js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/c3/c3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/amcharts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/serial.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/funnel.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gauge.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/pie.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/radar.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/xy.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/amcharts/dist/amcharts/gantt.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/dagre/index.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/colorbrewer/colorbrewer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/topojson/topojson.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../bower_components/d3-cloud/d3.layout.cloud.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;../dist/hpcc-viz-common.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-api.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-other.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-tree.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-form.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-graph.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-c3chart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-amchart.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-google.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-map.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-layout.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/hpcc-viz-marshaller.min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
-&lt;body&gt;
-&lt;div id=&quot;ambar&quot; style=&quot;width:100%; height:100vh&quot;&gt;
-&lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-
-</code></pre>
-
-<h3 id="3-a-simple-pie-chart">3. A simple Pie Chart</h3>
-<p>[Demo] (http://rawgit.com/Evan1415/hpcc_viz/master/HELLO_WORLD_EXAMPLES/Pie.html)
-In this example we display the most popular operating systems in a pie chart. </p>
-<pre><code class="html">&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../src/google/Pie.css&quot;&gt;
-    &lt;script src=&quot;http://rawgit.com/jrburke/requirejs/2.1.17/require.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;../src/config.js&quot;&gt;&lt;/script&gt;
-    &lt;script&gt;
-        require([&quot;../src/google/Pie&quot;], function (GPie) {
-            new GPie()
-                    .target(&quot;gpie&quot;)
-                    .testData()
-                    .render()
-            ;
-        });
-    &lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;div id=&quot;gpie&quot; style=&quot;width:100%; height:100vh&quot;&gt;
-&lt;/div&gt;
-
-&lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
 
-<p>Instead of inserting data manually the .testData() method calls the data in this case, which is contained in INDChart.js</p></div>
+<p>See <a href="../../examples/Non-AMD-Examples">Examples</a> for how to create widgets.</p>
+<hr />
+<h2 id="development">Development</h2>
+<p>Install node
+* <em><a href="https://nodejs.org/">Node</a></em></p>
+<p>Install bower using npm</p>
+<pre><code>$ npm install -g bower
+</code></pre>
+<p>Clone repository</p>
+<pre><code>git clone https://github.com/hpcc-systems/Visualization.git
+</code></pre>
+<p>Install Node module dependencies</p>
+<pre><code>$ cd Visualization
+$ npm install
+</code></pre>
+<p>Install Bower dependencies</p>
+<pre><code>$ bower install
+</code></pre>
+<p>Two new folders will be created in the root of the Visualization folder: <em><strong>"node_modules" &amp; "bower_components"</strong></em></p>
+<hr />
+<h2 id="building-releases-from-source-amd-non-amd">Building Releases from Source (AMD &amp; Non-AMD)</h2>
+<p>After following the above steps, run the following commands:</p>
+<p>Install Gulp</p>
+<pre><code>$ npm install -g gulp
+$ gulp
+</code></pre>
+<p>Two new folders will be created in the root of the Visualization folder once again: <em><strong>"dist" &amp; "dist-amd"</strong></em></p>
+<h2 id="running-unit-tests">Running Unit Tests</h2>
+<pre><code>$ npm test
+</code></pre></div>
             
         </div>
 

@@ -71,31 +71,19 @@
                         
                             
 <li >
-    <a href="../user_guide/Building-from-sources/">Building from Sources</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../user_guide/Bower-Releases/">Bower Releases</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../user_guide/Anatomy-of-a-Widget/">Anatomy of a Widget</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Widget-Serialization/">Widget Serialization</a>
+    <a href="../user_guide/Chart-Color-%28Palette%29-Usage/">Chart Color (Palette) Usage</a>
 </li>
 
                         
                             
 <li >
-    <a href="../user_guide/Chart-Color-(Palette)-Usage/">Chart Color (Palette) Usage</a>
+    <a href="../user_guide/Widget-Serialization/">Widget Serialization</a>
 </li>
 
                         
@@ -128,8 +116,29 @@
                 
                 
                 
-                    <li >
-                        <a href="../Examples/">Examples</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../examples/AMD-Examples/">AMD Examples</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../examples/Non-AMD-Examples/">Non-AMD Examples</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../examples/Non-AMD-Examples/">Marshaller Examples</a>
+</li>
+
+                        
+                        </ul>
                     </li>
                 
                 
@@ -179,10 +188,15 @@
 <h1 id="visualization-framework">Visualization Framework</h1>
 <p><a href="https://travis-ci.org/hpcc-systems/Visualization"><img alt="Build Status" src="https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master" /></a>
 <a href="https://gitter.im/hpcc-systems/Visualization?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Join the chat at https://gitter.im/hpcc-systems/Visualization" src="https://badges.gitter.im/Join%20Chat.svg" /></a>
-<a href="https://gemnasium.com/hpcc-systems/Visualization"><img alt="Dependency Status" src="https://gemnasium.com/hpcc-systems/Visualization.svg" /></a>
-<em> <em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html">Demo/Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html">source</a></em></em> <em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html">Dermatology Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html">source</a></em>
-* <em>[Wiki] (https://github.com/hpcc-systems/Visualization/wiki)</em></p>
-<p>The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations (watch this space). It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.</p>
+<a href="https://gemnasium.com/hpcc-systems/Visualization"><img alt="Dependency Status" src="https://gemnasium.com/hpcc-systems/Visualization.svg" /></a></p>
+<ul>
+<li><em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html">Demo/Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html">source</a></em></li>
+<li><em><a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html">Dermatology Test Page</a> and its <a href="https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html">source</a></em></li>
+<li><em><a href="https://github.com/hpcc-systems/Visualization/wiki">Wiki</a></em></li>
+</ul>
+<p>The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. 
+It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations. 
+It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.</p>
 <h3 id="the-obligatory-hello-world-example">The obligatory Hello World <a href="http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld/index.html">example</a></h3>
 <pre><code class="html">﻿&lt;!doctype html&gt;
 &lt;html&gt;
@@ -216,19 +230,23 @@
 </code></pre>
 
 <h3 id="standing-on-the-back-of-giants">Standing on the back of giants</h3>
-<p>None of this would would be possible without the great work of others.  The widgets/lib folder includes the work from:
-<em> <a href="http://requirejs.org/">requirejs</a>
-</em> <a href="http://d3js.org/">D3</a>
-<em> <a href="https://github.com/mbostock/topojson">Topojson</a>
-</em> <a href="https://github.com/cpettitt/dagre">dagre</a>
-<em> <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> 
-</em> <a href="http://colorbrewer2.org/">ColorBrewer</a>
-<em> <a href="http://c3js.org/">C3</a>
-</em> <a href="http://www.amcharts.com/">AM Charts</a>
-* <a href="https://github.com/jasondavies/d3-cloud">d3-cloud</a></p>
-<p>While widgets/src also includes wrappers for CDN hosted visualizations:
-<em> <a href="https://developers.google.com/maps/">Google Maps</a>
-</em> <a href="https://developers.google.com/chart/">Google Charts</a></p></div>
+<p>None of this would would be possible without the great work of others.  The widgets/lib folder includes the work from:</p>
+<ul>
+<li><a href="http://requirejs.org/">requirejs</a><br></li>
+<li><a href="http://d3js.org/">D3</a><br></li>
+<li><a href="https://github.com/mbostock/topojson">Topojson</a><br></li>
+<li><a href="https://github.com/cpettitt/dagre">dagre</a><br></li>
+<li><a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a><br> </li>
+<li><a href="http://colorbrewer2.org/">ColorBrewer</a><br></li>
+<li><a href="http://c3js.org/">C3</a><br></li>
+<li><a href="http://www.amcharts.com/">AM Charts</a><br></li>
+<li><a href="https://github.com/jasondavies/d3-cloud">d3-cloud</a><br></li>
+</ul>
+<p>While widgets/src also includes wrappers for CDN hosted visualizations:</p>
+<ul>
+<li><a href="https://developers.google.com/maps/">Google Maps</a><br></li>
+<li><a href="https://developers.google.com/chart/">Google Charts</a><br></li>
+</ul></div>
             
         </div>
 

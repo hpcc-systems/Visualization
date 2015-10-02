@@ -5,7 +5,7 @@
     } else {
         root.other_WordCloud = factory(root.d3, root.common_SVGWidget, root.other_IWordCloud);
     }
-}(this, function (d3, SVGWidget, IWordCloud) {
+}(this, function (d3, SVGWidget, IWordCloud, d3Cloud) {
     function WordCloud() {
         SVGWidget.call(this);
         IWordCloud.call(this);
@@ -38,7 +38,12 @@
     };
 
     WordCloud.prototype.enter = function (domNode, element) {
-        this.cloud = d3.layout.cloud()
+        if (typeof define === "function" && define.amd) {
+            this.cloud = d3Cloud();
+        } else {
+            this.cloud = d3.layout.cloud();
+        }
+        this.cloud
             .font(this.fontFamily())
             .padding(this.padding())
         ;

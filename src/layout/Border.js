@@ -48,7 +48,7 @@
     Border.prototype.publish("rightPercentage", 20, "number", "Percentage (of parent) Width of the 'Right' Cell",null,{tags:["Private"]});
     Border.prototype.publish("bottomPercentage", 20, "number", "Percentage (of parent) Height of the 'Bottom' Cell",null,{tags:["Private"]});
 
-    Border.prototype.publish("cellPadding", 0, "number", "Cell Padding (px)", null, { tags: ["Intermediate"] });
+    Border.prototype.publish("surfacePadding", 0, "number", "Cell Padding (px)", null, { tags: ["Intermediate"] });
 
 
     Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.", null, { tags: ["Private"] });
@@ -403,7 +403,7 @@
                         .attr("draggable", context.designMode())
                 ;
                 d
-                    .surfacePadding(context.cellPadding())
+                    .surfacePadding(context.surfacePadding())
                     .resize()
                 ;
             });

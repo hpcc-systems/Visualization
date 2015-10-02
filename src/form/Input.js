@@ -17,7 +17,7 @@
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 
-    Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea", "date"]);
+    Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea", "date", "html-color"]);
     Input.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 
     Input.prototype.enter = function (domNode, element) {
@@ -47,6 +47,13 @@
                 this.checkNodeName("INPUT", element);
                 this._inputElement.property("checked", this.value() === "true");
                 break;
+            case "html-color":
+                this.checkNodeName("INPUT", element);
+                this._inputElement.attr("type", "text");
+                this._inputElement2.attr("type", "color");
+                this._inputElement.property("value", this.value());
+                this._inputElement2.property("value", this.value());
+                break;
             default:
                 this.checkNodeName("INPUT", element);
                 this._inputElement.attr("type", this.type());
@@ -65,6 +72,11 @@
                 break;
             case "button":
                 this._inputElement = element.append("button");
+                break;
+            case "html-color":
+                this._inputElement = element.append("input").attr("type", "text");
+                this._inputElement.classed("color-text",true);
+                this._inputElement2 = element.append("input").attr("type", "color");
                 break;
             default:
                 this._inputElement = element.append("input").attr("type", this.type());
@@ -88,7 +100,23 @@
                     break;
             }
             w.change(w);
+            if(context._inputElement2 !== undefined){
+                context._inputElement2.property("value",context._inputElement.property("value"));
+            }
         });
+        if(context._inputElement2 !== undefined){
+            context._inputElement2.on("change",function(w){
+                context.value(context._inputElement2.property("value"));
+                context._inputElement.property("value",context._inputElement2.property("value"));
+                w.change(w);
+            });
+            this._inputElement2.on("click", function (w) {
+                w.click(w);
+            });
+            this._inputElement2.on("blur", function (w) {
+                w.blur(w);
+            });
+        }
     };
 
     Input.prototype.insertSelectOptions = function (optionsArr) {

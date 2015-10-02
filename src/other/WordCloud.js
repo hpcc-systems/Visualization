@@ -38,11 +38,8 @@
     };
 
     WordCloud.prototype.enter = function (domNode, element) {
-        if (typeof define === "function" && define.amd) {
-            this.cloud = d3Cloud();
-        } else {
             this.cloud = d3.layout.cloud();
-        }
+    
         this.cloud
             .font(this.fontFamily())
             .padding(this.padding())

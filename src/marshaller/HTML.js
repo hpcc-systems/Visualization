@@ -16,6 +16,12 @@
     HTML.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:["Private"]});
     HTML.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
     HTML.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
+    HTML.prototype.publish("timeout", 5, "number", "Timeout (Seconds)",null,{tags:["Private"]});
+
+    HTML.prototype.timeoutCallback = function (callback) {
+        this._timeoutCallback = callback;
+        return this;
+    };
 
     function walkDashboards(marshaller, databomb) {
         if (databomb instanceof Object) {
@@ -72,14 +78,37 @@
             }))
         ;
 
-        //  Parse DDL  ---
+        // Handle Timeout ---
         var context = this;
+        var timeout = true;
+        var timeoutCounter = 0; 
+        var mTimeoutHander = setInterval(function() {
+            console.log('running...')
+            if (timeoutCounter >= context.timeout()) {
+                clearInterval(mTimeoutHander);
+                if (timeout) {
+                    console.log('timeout occurred');
+                    if (context._timeoutCallback) {
+                        var error = {}.desc = "timeout";
+                        context._timeoutCallback.call(context, error);
+                    } else if (callback) {
+                        var error = {}.desc = "timeout";
+                        callback(null, error);
+                    }
+                }
+            }
+            timeoutCounter++;
+        }, 1000);
+
+        //  Parse DDL  ---
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
             this.marshaller.parse(this.ddlUrl(), function () {
+                timeout = false;
                 populateContent();
             });
         } else {
             this.marshaller.url(this.ddlUrl(), function () {
+                timeout = false;
                 populateContent();
             });
         }

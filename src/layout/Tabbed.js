@@ -16,7 +16,7 @@
     Tabbed.prototype._class += " layout_Tabbed";
 
     Tabbed.prototype.publish("showTabs", true, "boolean", "Show Tabs", null, {});
-    Tabbed.prototype.publish("padding", 4, "number", "Padding");
+    Tabbed.prototype.publish("surfacePadding", 4, "number", "Padding");
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
     Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
@@ -61,7 +61,7 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        element.style("padding", this.padding() + "px");
+        element.style("padding", this.surfacePadding() + "px");
 
         var tabs = this._tabContainer.selectAll(".tab-button.id" + this.id()).data(this.showTabs() ? this.labels() : [], function (d) { return d; });
         tabs.enter().append("span")

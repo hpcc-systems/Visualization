@@ -92,7 +92,7 @@
     PropertyEditor.prototype.enter = function (domNode, element) {
         Accordion.prototype.enter.apply(this, arguments);
         
-        if(!this._parentElement.node().matches(".other_PropertyEditor div")){
+        if(this._parentElement.filter(".other_PropertyEditor div").empty()){
             this._parentElement.style("overflow", "auto");
         }
         

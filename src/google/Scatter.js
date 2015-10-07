@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonND", "../common/HTMLWidget",  "goog!visualization,1.1,packages:[scatter]"], factory);
+        define(["d3", "./CommonND", "../common/HTMLWidget", "goog!visualization,1.1,packages:[scatter]"], factory);
     } else {
         root.google_Scatter = factory(root.d3, root.google_CommonND, root.common_HTMLWidget);
     }

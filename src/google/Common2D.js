@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../google/Common", "../api/I2DChart", "goog!visualization,1,packages:[corechart]"], factory);
+        define(["d3", "../google/Common", "../api/I2DChart"], factory);
     } else {
         root.google_Common2D = factory(root.d3, root.google_Common, root.api_I2DChart);
     }

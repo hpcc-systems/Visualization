@@ -21,8 +21,8 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("showColumns", true, "boolean", "Show Columns",null,{tags:["Intermediate"]});
-    PropertyEditor.prototype.publish("showData", true, "boolean", "Show Data",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("showColumns", false, "boolean", "Show Columns",null,{tags:["Intermediate"]});
+    PropertyEditor.prototype.publish("showData", false, "boolean", "Show Data",null,{tags:["Intermediate"]});
     PropertyEditor.prototype.publish("paramsBeforeWidgets", true, "boolean", "The non-widget parameter collapsible is placed before widget section(s)",null,{tags:["Private"]});
     PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic"]});
     PropertyEditor.prototype.publish("excludeTags", [], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Private"]});
@@ -122,92 +122,102 @@
             case "By Param":
                 var paramObjs = this.getAllParams();
                 
-                    this.clearListItems();
-                    
-                    var categorizedParams = this.categorizeParams(paramObjs);
-                    
-                    for(var categoryName in categorizedParams){
-                        var paramArr1 = [];
-                        for(var paramNode in categorizedParams[categoryName]){
-                            var pNode = categorizedParams[categoryName][paramNode];
-                            paramArr1.push(this.getSharedParamInputObj(pNode[0].param.id,pNode[0].param.type,pNode));
-                        }
-                        this.pushListItem(
-                            new Accordion()
-                                .title(categoryName+":")
-                                .pushListItem(new Form().showSubmit(false).inputs(paramArr1))
-                        );
+                this.clearListItems();
+                
+                this.removeWatches();
+                for(var j in this.data()) {
+                    this.createWatch(this.data()[j]);
+                }
+
+                var categorizedParams = this.categorizeParams(paramObjs);
+
+                for(var categoryName in categorizedParams){
+                    var paramArr1 = [];
+                    for(var paramNode in categorizedParams[categoryName]){
+                        var pNode = categorizedParams[categoryName][paramNode];
+                        paramArr1.push(this.getSharedParamInputObj(pNode));
                     }
+                    this.pushListItem(
+                        new Accordion()
+                            .title(categoryName+":")
+                            .pushListItem(new Form().showSubmit(false).inputs(paramArr1))
+                    );
+                }
                 break;
             case "By Widget":
-                    this.clearListItems();
-                    
-                    for(var i in this.data()) {
-                        var paramArr2 = [];
-                        var parentWidgetClass = this.data()[i]._class.split("_").pop();
-                        Persist.propertyWalker(this.data()[i],context.paramFilter(),function(widget, param){
-                            switch(param.type){
-                                case "widget":
-                                    if(!context.excludeWidgets()){
-                                        var wClass = widget[param.id]()._class.split("_").pop();
-                                        context.pushListItem(
-                                            new PropertyEditor()
-                                            .show_settings(false)
-                                            .title(wClass)
-                                            .data([widget[param.id]()])
-                                            .ignoredClasses(context.ignoredClasses())
-                                        );
-                                    }
-                                    break;
-                                case "widgetArray":
-                                    if(!context.excludeWidgets()){
-                                        var w = widget[param.id]();
-                                        var wClassArr = [];
-                                        for(var widx in w){
-                                            wClassArr.push(w[widx]._class.split("_").pop());
-                                        }
-                                        context.pushListItem(
-                                            new PropertyEditor()
-                                                .show_settings(false)
-                                                .title(parentWidgetClass+"."+param.id+": ["+wClassArr.join(", ")+"]")
-                                                .data(w)
-                                                .ignoredClasses(context.ignoredClasses())
-                                        );
-                                    }
-                                    break;
-                                default:
-                                    paramArr2.push(context.getParamInputObj(widget,param));
-                                    break;
-                            }
-                        });
-                        
-                        if(this.showData()){
-                            paramArr2.push(this.getDataInputObj(this.data()[i]));
-                        }
-                        if(this.showColumns()){
-                            paramArr2.push(this.getColumnsInputObj(this.data()[i]));
-                        }
-                        
-                        if(paramArr2.length > 0 && this.classIsNotHidden(this.data()[i]._class)){
-                            var paramListItem;
-                            if(this.excludeWidgets()){
-                                this.clearListItems();
-                                paramListItem = new Form().showSubmit(false).inputs(paramArr2);
-                            } else {
-                                if(this.content().length > 0){
-                                    paramListItem = new Accordion()
-                                        .title(parentWidgetClass+" Params:")
-                                        .pushListItem(
-                                            new Form().showSubmit(false).inputs(paramArr2)
-                                        )
-                                    ;
-                                } else {
-                                    paramListItem = new Form().showSubmit(false).inputs(paramArr2);
+                this.clearListItems();
+
+                this.removeWatches();
+
+                for(var i=0;i<this.data().length;i++) {
+                    this.createWatch(this.data()[i]);
+                    var paramArr2 = [];
+                    var parentWidgetClass = this.data()[i]._class.split("_").pop();
+                    Persist.propertyWalker(this.data()[i],context.paramFilter(),function(widget, param){
+                        switch(param.type){
+                            case "widget":
+                                if(!context.excludeWidgets()){
+                                    var wClass = widget[param.id]()._class.split("_").pop();
+                                    context.pushListItem(
+                                        new PropertyEditor()
+                                        .showData(context.showData())
+                                        .showColumns(context.showColumns())
+                                        .show_settings(false)
+                                        .title(wClass)
+                                        .data([widget[param.id]()])
+                                        .ignoredClasses(context.ignoredClasses())
+                                    );
                                 }
-                            }
-                            this.pushListItem(paramListItem,this.paramsBeforeWidgets());
+                                break;
+                            case "widgetArray":
+                                if(!context.excludeWidgets()){
+                                    var w = widget[param.id]();
+                                    var wClassArr = [];
+                                    for(var widx=0;widx<w.length;widx++){
+                                        wClassArr.push(w[widx]._class.split("_").pop());
+                                    }
+                                    context.pushListItem(
+                                        new PropertyEditor()
+                                            .show_settings(false)
+                                            .title(parentWidgetClass+"."+param.id+": ["+wClassArr.join(", ")+"]")
+                                            .data(w)
+                                            .ignoredClasses(context.ignoredClasses())
+                                    );
+                                }
+                                break;
+                            default:
+                                paramArr2.push(context.getParamInputObj(widget,param));
+                                break;
                         }
+                    });
+
+                    if(this.showData()){
+                        paramArr2.push(this.getDataInputObj(this.data()[i]));
                     }
+                    if(this.showColumns()){
+                        paramArr2.push(this.getColumnsInputObj(this.data()[i]));
+                    }
+
+                    if(paramArr2.length > 0 && this.classIsNotHidden(this.data()[i]._class)){
+                        var paramListItem;
+                        if(this.excludeWidgets()){
+                            this.clearListItems();
+                            paramListItem = new Form().showSubmit(false).inputs(paramArr2);
+                        } else {
+                            if(this.content().length > 0){
+                                paramListItem = new Accordion()
+                                    .title(parentWidgetClass+" Params:")
+                                    .pushListItem(
+                                        new Form().showSubmit(false).inputs(paramArr2)
+                                    )
+                                ;
+                            } else {
+                                paramListItem = new Form().showSubmit(false).inputs(paramArr2);
+                            }
+                        }
+                        this.pushListItem(paramListItem,this.paramsBeforeWidgets());
+                    }
+                }
                 break;
         }
         Accordion.prototype.update.apply(this, arguments);
@@ -215,6 +225,24 @@
     
     PropertyEditor.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
+    };
+    
+    PropertyEditor.prototype.removeWatches = function(){
+        for(var n in this.__propertyEditor_watch){
+            if(typeof (this.__propertyEditor_watch[n].remove) === "function"){
+                this.__propertyEditor_watch[n].remove();
+            }
+        }
+        this.__propertyEditor_watch = [];
+    };
+    
+    PropertyEditor.prototype.createWatch = function(obj){
+        var context = this;
+        this.__propertyEditor_watch.push(obj.watch(function(key, newVal){
+            if(typeof (newVal) === "object"){
+                context.render();
+            }
+        }));
     };
     
     PropertyEditor.prototype.categorizeParams = function (arr) {
@@ -299,24 +327,26 @@
         
     };
     
-    PropertyEditor.prototype.getSharedParamInputObj = function (paramId,type,obj) {
+    PropertyEditor.prototype.getSharedParamInputObj = function (sharedParamObj) {
+        var paramId = sharedParamObj[0].param.id;
+        var type = sharedParamObj[0].param.type;
         var inp = new Input()
             .name(paramId)
             .label(paramId)
             .type(this.inputTypeMapping(type))
         ;
         if(type === "set"){
-            inp.selectOptions(obj.set);
+            inp.selectOptions(sharedParamObj[0].param.set);
         }
         inp.change = function(w){
-            for(var i in obj){
+            for(var i in sharedParamObj){
                 if(type === "boolean"){
-                    obj[i].widget[paramId](w._element.select("input").property("checked")).render();
+                    sharedParamObj[i].widget[paramId](w._element.select("input").property("checked")).render();
                 } else if(type === "array") {
                     var newArrayVal = w.value().split(",").filter(function(a){return a.length;});
-                    obj[i].widget[paramId](newArrayVal).render();
+                    sharedParamObj[i].widget[paramId](newArrayVal).render();
                 } else {
-                    obj[i].widget[paramId](w.value()).render();
+                    sharedParamObj[i].widget[paramId](w.value()).render();
                 }
             }
         };

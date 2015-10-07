@@ -9,6 +9,8 @@
     function Legend() {
         Table.call(this);
         this._tag = "div";
+        
+        this.showHeader(false);
     }
     Legend.prototype = Object.create(Table.prototype);
     Legend.prototype.constructor = Legend;
@@ -90,6 +92,16 @@
         if(typeof (this._targetWidget) !== "undefined"){
             this.targetWidget(this._targetWidget);
         }
+        
+        var table = element.select(".tableDiv > table");
+        var tableRect = table.node().getBoundingClientRect();
+        var elementRect = element.node().getBoundingClientRect();
+        
+        element.select(".tableDiv").style({overflow:"visible"});
+        
+        var top = elementRect.height/2 - tableRect.height/2;
+        var left = elementRect.width/2 - tableRect.width/2;
+        table.style({position:"absolute",top:top+"px",left:left+"px"});
         
         var startIndex = this.pageNumber()-1;
         var itemsOnPage = this.itemsPerPage();

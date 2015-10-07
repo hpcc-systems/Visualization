@@ -35,18 +35,18 @@
     "package.json"
   ],
   "dependencies": {
-    "c3": "^0.4.10",
-    "colorbrewer": "^1.0.0",
-    "d3": "^3.5.5",
-    "font-awesome": "^4.3.0",
-    "topojson": "^1.6.19",
+    "c3": "~0.4.10",
+    "colorbrewer": "~1.0.0",
+    "d3": "~3.5.5",
+    "font-awesome": "~4.3.0",
+    "topojson": "~1.6.19",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.1/dist/dagre.js",
-    "d3-cloud": "^1.1.2",
-    "amcharts": "^3.14.1",
+    "d3-cloud": "~1.1.2",
+    "amcharts": "~3.14.1",
     "simpleheat": "git://github.com/mourner/simpleheat.git#gh-pages"
   },
   "resolutions": {
-    "d3": "^3.5.5"
+    "d3": "~3.5.5"
   },
   "license": "Apache",
   "authors": [

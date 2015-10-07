@@ -776,7 +776,7 @@
                 if (matchedResult) {
                     retVal[item.from] = this._resultNameCache[item.from].filter(function (row) {
                         for (var key2 in changedFilter) {
-                            if (row[key2] !== changedFilter[key2]) {
+                            if (row[key2] !== changedFilter[key2] && row[key2.toLowerCase()] !== changedFilter[key2]) {
                                 return false;
                             }
                         }

@@ -21,7 +21,6 @@
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
     Scatter.prototype.publish("scatterType", "scatter", "set", "Bullet Type", ["scatter", "bubble"],{tags:["Basic"]});
-    Scatter.prototype.publish("sampleData", "ordinal", "set", "Display Sample Data", ["ordinal","linear"]);
 
     Scatter.prototype.enter = function(domNode, element) {
         CommonXY.prototype.enter.apply(this, arguments);
@@ -63,29 +62,6 @@
         this._chart.validateNow();
         this._chart.validateData();
 
-    };
-
-    Scatter.prototype.testDataLinear = function(_) {
-        if (this.scatterType() === "scatter") {
-            this.xAxisType("linear");
-            this.columns(["Data X", "Data Y"]);
-            this.data([
-                [10, 75],
-                [20, 45],
-                [30, 98],
-                [40, 66]
-            ]);
-        } else if (this.scatterType() === "bubble") {
-            this.xAxisType("linear");
-            this.columns(["Data X", "Data Y", "Size"]);
-            this.data([
-                [10, 75, 10],
-                [20, 45, 12],
-                [30, 98, 14],
-                [40, 66, 16]
-            ]);
-        }
-        return this;
     };
 
     return Scatter;

@@ -30,7 +30,7 @@
     Grid.prototype.publish("designGridColor", "#ddd", "html-color", "Color of grid lines in Design Mode",null,{tags:["Private"]});
     Grid.prototype.publish("designGridColorExtra", "#333333", "html-color", "Color of excess grid lines in Design Mode",null,{tags:["Private"]});
 
-    Grid.prototype.publish("cellPadding", null, "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
+    Grid.prototype.publish("surfacePadding", null, "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
     
     Grid.prototype.publish("extraDesignModeWidth", 2, "number", "Number of additional columns added when in Design Mode.",null,{tags:["Private"]});
     Grid.prototype.publish("extraDesignModeHeight", 2, "number", "Number of additional rows added when in Design Mode.",null,{tags:["Private"]});
@@ -439,7 +439,7 @@
                 ;
 
                 d
-                    .surfacePadding(context.cellPadding())
+                    .surfacePadding(context.surfacePadding())
                     .resize()
                 ;
             });

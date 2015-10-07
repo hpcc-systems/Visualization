@@ -15,7 +15,7 @@
     Layered.prototype.constructor = Layered;
     Layered.prototype._class += " layout_Layered";
 
-    Layered.prototype.publish("padding", 0, "number", "Padding");
+    Layered.prototype.publish("surfacePadding", 0, "number", "Padding");
 
     Layered.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
@@ -37,7 +37,7 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        element.style("padding", this.padding() + "px");
+        element.style("padding", this.surfacePadding() + "px");
 
         var content = this._contentContainer.selectAll(".content.id" + this.id()).data(this.widgets(), function (d) { return d.id(); });
         content.enter().append("div")

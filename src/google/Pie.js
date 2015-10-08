@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Common2D"], factory);
+        define(["d3", "./Common2D", "goog!visualization,1,packages:[corechart]"], factory);
     } else {
         root.google_Pie = factory(root.d3, root.google_Common2D);
     }

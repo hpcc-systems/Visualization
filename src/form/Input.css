@@ -9,6 +9,14 @@
     cursor:pointer;
 }
 
+.form_Input input.color-text{
+    width:120px;
+}
+.form_Input input.color-text+input{
+    width:57px;
+    position:absolute;
+}
+
 .form_Input textarea{
     width:100%;
     box-sizing: border-box;

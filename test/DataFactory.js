@@ -47,6 +47,12 @@
                     ["English", 45, 55, 52],
                     ["Math", 98, 92, 90],
                     ["Science", 66, 60, 72]
+                ],
+                "data-long-label": [
+                    ["Geography-Geography-Geography-Geography-Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 72]
                 ]
             },
             ampolar: {

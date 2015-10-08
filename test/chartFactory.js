@@ -16,6 +16,17 @@
                     );
                 });
             },
+            "long-label": function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects["data-long-label"])
+
+                        .xAxisOverlapMode("rotate")
+                        .xAxisLabelRotation(45)
+                    );
+                });
+            },
             bar: function (callback) {
                 chartFactory.Column.simple(function (widget) {
                     widget.orientation("vertical");

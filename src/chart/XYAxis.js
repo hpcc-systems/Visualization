@@ -26,7 +26,8 @@
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
-    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide"]);
+    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide", "rotate"]);
+    XYAxis.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
@@ -203,7 +204,7 @@
             return d.map(function (item) {
                 return this.formatValue(item);
             }, this);
-        } 
+        }
         switch (this.yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
@@ -359,19 +360,58 @@
             case "stagger":
                 xAxis.selectAll(".tick > text")
                     .attr("dy", function (d, i) { return 0.71 + (i % margin.overlapModulus) + "em"; })
+                    .attr("dx", 0)
                     .attr("visibility", null)
+                    .attr("transform", "rotate(0)")
                 ;
                 break;
             case "hide":
                 xAxis.selectAll(".tick > text")
                     .attr("dy", "0.71em")
+                    .attr("dx", 0)
                     .attr("visibility", function (d, i) { return i % margin.overlapModulus ? "hidden" : null; })
+                    .attr("transform", "rotate(0)")
                 ;
+                break;
+            case "rotate" :
+                xAxis.selectAll(".tick > text")
+                    .attr("dy", "0.71em")
+                    .attr("dx", 0)
+                    .attr("visibility", null)
+                    .attr("transform", "rotate(0)")
+                ;
+                if (margin.overlapModulus > 1) {
+                    var xRotation = -(this.xAxisLabelRotation()) || 0;
+                    xAxis.selectAll(".tick > text")
+                        .each(function() {
+                            var elm = d3.select(this);
+                            if (xRotation > 0 && xRotation <= 90) {
+                                 elm
+                                     .style("text-anchor", "start")
+                                     .attr("dy", "-0.5em")
+                                     .attr("dx", "8px")
+                                     .attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")")
+                            }
+                            else if (xRotation < 0 && xRotation >= -90) {
+                                 elm.style("text-anchor", "end")
+                                     .attr("dy", "-.71em")
+                                     .attr("dx", "-8px")
+                                     .attr("transform", "rotate(" + (xRotation ? xRotation : 0) + ")")
+                                 ;
+                            } 
+                            else if (xRotation === 0) {
+                                elm.style("text-anchor", "middle");
+                            }
+                        })
+                    ;
+                }
                 break;
             default:
                 xAxis.selectAll(".tick > text")
                     .attr("dy", "0.71em")
+                    .attr("dx", 0)
                     .attr("visibility", null)
+                    .attr("transform", "rotate(0)")
                 ;
         }
     };
@@ -388,6 +428,7 @@
                 .attr("class", isHorizontal ? "y axis" : "x axis")
                 .call(this.otherAxis)
             ;
+
             var y_bbox = svgYAxis.node().getBBox();
             margin.left = y_bbox.width;
             margin.top -= y_bbox.y;
@@ -400,7 +441,9 @@
             .attr("transform", "translate(" + margin.left + "," + height / 2 + ")")
             .call(this.currAxis)
         ;
+
         switch (this.xAxisOverlapMode()) {
+            case "rotate":
             case "stagger":
             case "hide":
                 var bboxArr = [];
@@ -604,7 +647,6 @@
         this.yBrush
             .y(this.dataScale)
         ;
-
         if (this.selectionMode()) {
             if (this._prevXAxisType !== this.xAxisType()) {
                 this._prevXAxisType = this.xAxisType();

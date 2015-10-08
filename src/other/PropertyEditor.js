@@ -149,7 +149,7 @@
 
                 this.removeWatches();
 
-                for(var i in this.data()) {
+                for(var i=0;i<this.data().length;i++) {
                     this.createWatch(this.data()[i]);
                     var paramArr2 = [];
                     var parentWidgetClass = this.data()[i]._class.split("_").pop();
@@ -173,7 +173,7 @@
                                 if(!context.excludeWidgets()){
                                     var w = widget[param.id]();
                                     var wClassArr = [];
-                                    for(var widx in w){
+                                    for(var widx=0;widx<w.length;widx++){
                                         wClassArr.push(w[widx]._class.split("_").pop());
                                     }
                                     context.pushListItem(

@@ -11,6 +11,8 @@
         this._tag = "div";
 
         this._chart = {};
+
+        this._selected = null;
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
@@ -84,6 +86,9 @@
 
     CommonXY.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
     CommonXY.prototype.publish("xAxisTickFormat", null, "string", "X-Axis Tick Format", null, { optional: true });
+
+    CommonXY.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+    CommonXY.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
@@ -187,7 +192,7 @@
 
         gObj.type = gType;
 
-        gObj.colorField = "color";
+        gObj.colorField = "selected" + i;
         gObj.lineColorField = "linecolor";
 
         // XY Values
@@ -239,6 +244,33 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            var graph = e.graph;
+            var data  = e.item.dataContext;
+            var field = graph.colorField;
+
+            if (data[field] !== null && data[field] !== undefined) {
+                delete data[field];
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = null;
+                }
+            } else {
+                data[field] = context.selectionColor();
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = {
+                        field: field,
+                        data: data
+                    };
+                }
+            }
+
+            e.chart.validateData();
+
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index], context.data()[e.index][e.target.index]);
         });
     };

@@ -58,10 +58,7 @@
                 this._chart.colors = [];
             break;
             case "By Column":
-                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
-                    return this._palette(row);
-                }, this);
-            break;
+                /* falls through */
             default:
                 this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
                     return this._palette(row);
@@ -105,9 +102,9 @@
                  gObj.topRadius = undefined;
             }
 
-            gObj.colorField = "color" + i;
             gObj.lineColorField = "linecolor" + i;
-
+            gObj.fillColorsField = "color" + i;
+            
             if (this._rangeType === "normal") {
                 gObj.openField = "openField" + i;
                 gObj.valueField = "valueField" + i;

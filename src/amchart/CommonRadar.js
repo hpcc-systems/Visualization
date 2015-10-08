@@ -12,6 +12,8 @@
         this._tag = "div";
 
         this._chart = {};
+
+        this._selected = null;
     }
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
     CommonRadar.prototype.constructor = CommonRadar;
@@ -69,6 +71,9 @@
     CommonRadar.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CommonRadar.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+    
+    CommonRadar.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+    CommonRadar.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     CommonRadar.prototype.updateChartOptions = function() {
         var context = this;
@@ -76,7 +81,8 @@
         this._chart.theme = "none";
         this._chart.type = "radar";
         this._chart.startDuration = this.startDuration();
-        this._chart.categoryField = this._categoryField;
+        this._chart.categoryField = this.columns()[0];
+        this._valueField = this.columns().slice(1);
 
         this._chart.color = this.fontColor();
         this._chart.fontSize = this.fontSize();
@@ -151,6 +157,8 @@
 
         gObj.title = "";
 
+        gObj.colorField = "selected" + i;
+
         return gObj;
     };
 
@@ -167,15 +175,6 @@
         return dataObjArr;
     };
 
-    CommonRadar.prototype.columns = function (_) {
-        var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length) {
-            this._categoryField = _[0];
-            this._valueField = _.filter(function (d, i) { return i > 0; });
-        }
-        return retVal;
-    };
-
     CommonRadar.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
@@ -189,6 +188,33 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            var graph = e.graph;
+            var data  = e.item.dataContext;
+            var field = graph.colorField;
+
+            if (data[field] !== null && data[field] !== undefined) {
+                delete data[field];
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = null;
+                }
+            } else {
+                data[field] = context.selectionColor();
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = {
+                        field: field,
+                        data: data
+                    };
+                }
+            }
+
+            e.chart.validateData();
+            
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index+1]);
         });
     };

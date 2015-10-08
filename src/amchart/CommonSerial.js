@@ -350,15 +350,11 @@
     };
 
     CommonSerial.prototype.amFormatColumns = function(ColArr) {
-        var context = this;
         this._categoryField = this.columns()[0];
         this._chart.categoryField = this.columns()[0];
-        this._valueField = [];
         this._openField = [];
         this._closeField = [];
-        this.columns().slice(1, this.columns().length).forEach(function(col, idx) {
-            context._valueField.push(col);
-        });
+        this._valueField = this.columns().slice(1);
         return this;
     };
 

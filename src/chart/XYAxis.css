@@ -3,6 +3,10 @@
   font: 10px sans-serif;
 }
 
+.chart_XYAxis .tick > text {
+  font: 10px sans-serif;
+}
+
 .chart_XYAxis .axis path,
 .chart_XYAxis .axis line {
   fill: none;

@@ -7,6 +7,17 @@
     }
 }(this, function (callback) {
     var amchartFactory = {
+        Gantt: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/amchart/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .columns(DataFactory.ganttDateRanges.default.columns)
+                        .data(DataFactory.ganttDateRanges.default.data)
+
+                    );
+                });
+            },
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {

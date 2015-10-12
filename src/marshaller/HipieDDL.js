@@ -574,15 +574,57 @@
                 case "FORM":
                     this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
                         var Input = widgetClasses[1];
+
                         widget
                             .id(visualization.id)
-                            .inputs(visualization.fields.map(function (field) {
-                                return new Input()
+                            .inputs(visualization.fields.map(function(field) {
+
+                                var inputType = null;
+                                var selectOptions = [];
+                                var options = [];
+                                switch(field.properties.charttype) {
+                                    case "TEXT":
+                                        inputType = "textbox";
+                                        break;
+                                    case "TEXTAREA":
+                                        inputType = "textarea";
+                                        break;
+                                    case "CHECKBOX":
+                                        inputType = "checkbox";
+                                        break;
+                                    case "RADIO":
+                                        inputType = "radio";
+                                        break;
+                                    case "HIDDEN":
+                                        inputType = "hidden";
+                                        break;
+                                    default:
+                                        if (field.properties.enumvals) {
+                                            inputType = "select";
+                                            options = field.properties.enumvals;
+                                            for (var val in options) {
+                                                 selectOptions.push([val,options[val]]);
+                                            }
+                                        } else {
+                                            inputType = "textbox";
+                                        }
+                                        break;
+                                }
+
+                                var inp = new Input()
                                     .name(field.id)
                                     .label((field.properties ? field.properties.label : null) || field.label)
-                                    .type("textbox")
-                                    .value(field.properties.default ? field.properties.default : "")
+                                    .type(inputType)
+                                    .value(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
                                 ;
+                                if (inputType === "checkbox" || inputType === "radio") {
+                                    var vals = Object.keys(field.properties.enumvals);
+                                    inp.selectOptions(vals);
+                                } else if (selectOptions.length) {
+                                    inp.selectOptions(selectOptions);
+                                }
+
+                                return inp;
                             }))
                         ;
                     });

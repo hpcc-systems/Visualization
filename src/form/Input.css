@@ -28,3 +28,15 @@
     box-sizing: border-box;
     display:block;
 }
+
+.form_Input ul {
+    list-style-type: none;
+    float: left;
+    padding: 0px;
+    margin: 0px;
+}
+
+.form_Input li {
+    float: left;
+    list-style-position: inside
+}

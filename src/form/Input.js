@@ -54,7 +54,7 @@
                 this.checkNodeName("INPUT", element);
                 this._inputElement.forEach(function(e, idx) {
                     e.property("value", context.selectOptions()[idx]);
-                    if (context.value().indexOf(context.selectOptions()[idx]) !== -1) {
+                    if (context.value().indexOf(context.selectOptions()[idx]) !== -1 && context.value() !== "false") {
                         e.property("checked", true);
                     } else {
                         e.property("checked", false);

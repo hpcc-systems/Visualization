@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../common/Utility", "css!./XYAxis"], factory);
@@ -375,14 +375,14 @@
                     .attr("transform", "rotate(0)")
                 ;
                 break;
-            case "rotate" :
+            case "rotate":
                 var deg = -(this.xAxisLabelRotation()) || 0;
-                if (deg !== 0 && margin.overlapModulus > 1) {    
+                if (deg !== 0 && margin.overlapModulus > 1) {
                     xAxis.selectAll(".tick > text")
-                        .each(function() {
+                        .each(function () {
                             var elm = d3.select(this);
                             var bbox = elm.node().getBBox();
-                            var dyOff = Math.sin(Math.PI * (-Math.abs(deg) / 180));
+                            var dyOff = Math.sin(Math.PI * (-Math.abs(deg) / 180));
                             elm
                                 .style("text-anchor", deg > 0 ? "start" : "end")
                                 .attr("dy", (bbox.height / 2 * dyOff) + "px")
@@ -394,6 +394,7 @@
                     ;
                     break;
                 }
+                /* falls through */
             default:
                 xAxis.selectAll(".tick > text")
                     .style("text-anchor", "middle")

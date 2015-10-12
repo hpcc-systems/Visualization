@@ -16,6 +16,22 @@
                     );
                 });
             },
+            "long-label": function (callback) {
+                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()                        
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data([
+                            ["Geography-Geography-Geography-Geography-Geography", 75, 68, 65],
+                            ["English", 45, 55, 52],
+                            ["Math", 98, 92, 90],
+                            ["Science", 66, 60, 72]
+                        ])
+
+                        .xAxisOverlapMode("rotate")
+                        .xAxisLabelRotation(45)
+                    );
+                });
+            },
             bar: function (callback) {
                 chartFactory.Column.simple(function (widget) {
                     widget.orientation("vertical");

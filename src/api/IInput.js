@@ -13,7 +13,7 @@
 
     IInput.prototype.publish("name", "", "string", "HTML name for the input");
     IInput.prototype.publish("label", "", "string", "Descriptive label");
-    IInput.prototype.publish("value", "", "string", "Input type");
+    IInput.prototype.publish("value", "", "string", "Input Current Value");
     IInput.prototype.publish("validate", null, "string", "Input Validation");
 
     //  Implementation  ---

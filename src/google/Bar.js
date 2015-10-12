@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonND", "goog!visualization,1.1,packages:[bar]"], factory);
+        define(["d3", "./CommonND"], factory);
     } else {
         root.google_Bar = factory(root.d3, root.google_CommonND);
     }
@@ -17,7 +17,6 @@
     Bar.prototype._class += " google_Bar";
 
     Bar.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series",null,{tags:["Basic","Shared"]});
-    Bar.prototype.publish("orientation", "horizontal", "set", "Horizontal (Bar Chart) or Vertical (Column Chart) orientation",["horizontal", "vertical"],{tags:["Basic","Shared"]});
     //opacity?
     Bar.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size",null,{tags:["Basic","Shared"]});
     Bar.prototype.publish("axisFontFamily", null, "string", "X/Y Axis Label Font Name",null,{tags:["Basic","Shared"]});
@@ -39,9 +38,7 @@
 
     Bar.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
     Bar.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
-    Bar.prototype.publish("yAxisPrimaryLabel", null, "string", "Top or Left Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
-    Bar.prototype.publish("yAxisSecondaryLabel", null, "string", "Bottom or Right Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
-    
+
     Bar.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
 
     Bar.prototype.publish("groupWidth", "", "string", "The width of a group of bars, Percent or Pixels",null,{tags:["Advanced"]});
@@ -97,29 +94,9 @@
 
         retVal.dataOpacity = this.dataOpacity();
         retVal.isStacked = this.isStacked();
-        retVal.bars = this.orientation();
         retVal.bar = {
             groupWidth: this.groupWidth()
         };
-
-        if (this.yAxisSecondaryLabel()) {
-            retVal.series =  {
-                0: { axis: "primary" },
-                1: { axis: "secondary" }
-            };
-            var side, ax;
-            if (this.orientation() === "horizontal") {
-                side = "top";
-                ax = "x";
-            } else {
-                side = "right";
-                ax = "y";
-            }
-            retVal.axes[ax] = {
-                  primary: {label: this.yAxisPrimaryLabel()},
-                  secondary: {side: side, label: this.yAxisSecondaryLabel()}
-            };
-        }
 
         retVal.hAxis = {};
         retVal.vAxis = {};
@@ -202,12 +179,10 @@
             min: this.yAxisViewWindowMin(),
             max: this.yAxisViewWindowMax()
         };
-        retVal = google.charts.Bar.convertOptions(retVal);
         return retVal;
     };
 
     Bar.prototype.enter = function (domNode, element) {
-        this._chart = new google.charts.Bar(domNode);
         CommonND.prototype.enter.apply(this, arguments);
     };
 

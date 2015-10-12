@@ -103,15 +103,6 @@
         return dataObjArr;
     };
 
-    CommonFunnel.prototype.columns = function(_) {
-        var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length) {
-            this._categoryField = _[0];
-            this._valueField = _.filter(function (d, i) { return i > 0; });
-        }
-        return retVal;
-    };
-
     CommonFunnel.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;

@@ -22,7 +22,7 @@
             context.hideMenu();
             context.click(d);
         };
-        this._visible = false;
+        this._open = false;
     }
     Menu.prototype = Object.create(SVGWidget.prototype);
     Menu.prototype.constructor = Menu;
@@ -33,7 +33,7 @@
     Menu.prototype.publishProxy("paddingPercent", "_icon", null, 10);
 
     Menu.prototype.toggleMenu = function () {
-        if (!this._visible) {
+        if (!this._open) {
             this.showMenu();
         } else {
             this.hideMenu();
@@ -42,7 +42,7 @@
 
     Menu.prototype.showMenu = function () {
         this.preShowMenu();
-        this._visible = true;
+        this._open = true;
         this._list
             .data(this.data())
             .render()
@@ -61,7 +61,7 @@
         d3.select("body")
             .on("click." + this._id, function () {
                 console.log("click:  body - " + context._id);
-                if (context._visible) {
+                if (context._open) {
                     context.hideMenu();
                 }
             })
@@ -72,7 +72,7 @@
         d3.select("body")
             .on("click." + this._id, null)
         ;
-        this._visible = false;
+        this._open = false;
         this._list
             .data([])
             .render()

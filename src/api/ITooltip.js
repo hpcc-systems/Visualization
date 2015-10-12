@@ -32,11 +32,13 @@
                 .data([idx === undefined ? row : [row[0], row[idx]]])
                 .text(row[0] + ", " + _columns[idx] + ":  " + row[idx])
             ;
-            if (this._tooltip._renderCount === 0) {
+            if (!this._tooltip._target) {
                 this._tooltip
                     .target(this._parentOverlay.node())
                     .render(function (w) {
-                        context._textBox._parentElement.style("overflow", "hidden");
+                        if (context._textBox._parentElement) {
+                            context._textBox._parentElement.style("overflow", "hidden");
+                        }
                     })
                 ;
             } else {

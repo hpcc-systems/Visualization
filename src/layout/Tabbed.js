@@ -27,7 +27,7 @@
         return this;
     };
 
-    Tabbed.prototype.addTab = function (widget, label, isActive) {
+    Tabbed.prototype.addTab = function (widget, label, isActive, callback) {
         var widgetSize = widget.size();
         if(widgetSize.width === 0 && widgetSize.height === 0){
             widget.size({width:"100%",height:"100%"});
@@ -38,9 +38,13 @@
             this.activeTabIdx(this.widgets().length);
         }
         labels.push(label);
-        widgets.push(new Surface().widget(widget ? widget : new Text().text("No widget defined for tab")));
+        var surface = new Surface().widget(widget ? widget : new Text().text("No widget defined for tab"));
+        widgets.push(surface);
         this.labels(labels);
         this.widgets(widgets);
+        if (callback) {
+            callback(surface);
+        }
         return this;
     };
 
@@ -72,6 +76,7 @@
             .attr("class", "tab-button id" + this.id())
             .style("cursor", "pointer")
             .on("click", function (d, idx) {
+                context.click(context.widgets()[idx].widget(), d, idx);
                 context
                     .activeTabIdx(idx)
                     .render()
@@ -95,12 +100,15 @@
             .classed("active", function (d, idx) { return context.activeTabIdx() === idx; })
             .style("display", function (d, idx) { return context.activeTabIdx() === idx ? "block" : "none"; })
             .each(function (surface, idx) {
-                var wSize = context.widgetSize(d3.select(this));
-                surface
-                    .surfaceBorderWidth(context.showTabs() ? null : 0)
-                    .surfacePadding(context.showTabs() ? null : 0)
-                    .resize(wSize)
-                ;
+                surface.visible(context.activeTabIdx() === idx);
+                if (context.activeTabIdx() === idx) {
+                    var wSize = context.widgetSize(d3.select(this));
+                    surface
+                        .surfaceBorderWidth(context.showTabs() ? null : 0)
+                        .surfacePadding(context.showTabs() ? null : 0)
+                        .resize(wSize)
+                    ;
+                }
             })
         ;
         content.exit()
@@ -110,6 +118,9 @@
                 ;
             })
             .remove();
+    };
+
+    Tabbed.prototype.click = function (widget, column, idx) {
     };
 
     return Tabbed;

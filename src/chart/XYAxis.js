@@ -26,7 +26,8 @@
     XYAxis.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("xAxisDomainLow", "", "string", "X-Axis Low");
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
-    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide"]);
+    XYAxis.prototype.publish("xAxisOverlapMode", "stagger", "set", "X-Axis Label Overlap Mode", ["none", "stagger", "hide", "rotate"]);
+    XYAxis.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
     XYAxis.prototype.publish("yAxisTickCount", null, "number", "Y-Axis Tick Count", null, { optional: true });
@@ -203,7 +204,7 @@
             return d.map(function (item) {
                 return this.formatValue(item);
             }, this);
-        } 
+        }
         switch (this.yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
@@ -358,20 +359,48 @@
         switch (this.xAxisOverlapMode()) {
             case "stagger":
                 xAxis.selectAll(".tick > text")
+                    .style("text-anchor", "middle")
                     .attr("dy", function (d, i) { return 0.71 + (i % margin.overlapModulus) + "em"; })
+                    .attr("dx", 0)
                     .attr("visibility", null)
+                    .attr("transform", "rotate(0)")
                 ;
                 break;
             case "hide":
                 xAxis.selectAll(".tick > text")
+                    .style("text-anchor", "middle")
                     .attr("dy", "0.71em")
+                    .attr("dx", 0)
                     .attr("visibility", function (d, i) { return i % margin.overlapModulus ? "hidden" : null; })
+                    .attr("transform", "rotate(0)")
                 ;
                 break;
+            case "rotate" :
+                var deg = -(this.xAxisLabelRotation()) || 0;
+                if (deg !== 0 && margin.overlapModulus > 1) {    
+                    xAxis.selectAll(".tick > text")
+                        .each(function() {
+                            var elm = d3.select(this);
+                            var bbox = elm.node().getBBox();
+                            var dyOff = Math.sin(Math.PI * (-Math.abs(deg) / 180));
+                            elm
+                                .style("text-anchor", deg > 0 ? "start" : "end")
+                                .attr("dy", (bbox.height / 2 * dyOff) + "px")
+                                .attr("dx", deg > 0 ? "0.71em" : "-0.71em") // .attr("dx", deg > 0 ? Math.abs(dyOff) + "em" : dyOff + "em")
+                                .attr("transform", "rotate(" + deg + ")")
+                                .attr("visibility", null)
+                            ;
+                        })
+                    ;
+                    break;
+                }
             default:
                 xAxis.selectAll(".tick > text")
+                    .style("text-anchor", "middle")
                     .attr("dy", "0.71em")
+                    .attr("dx", 0)
                     .attr("visibility", null)
+                    .attr("transform", "rotate(0)")
                 ;
         }
     };
@@ -388,6 +417,7 @@
                 .attr("class", isHorizontal ? "y axis" : "x axis")
                 .call(this.otherAxis)
             ;
+
             var y_bbox = svgYAxis.node().getBBox();
             margin.left = y_bbox.width;
             margin.top -= y_bbox.y;
@@ -400,7 +430,9 @@
             .attr("transform", "translate(" + margin.left + "," + height / 2 + ")")
             .call(this.currAxis)
         ;
+
         switch (this.xAxisOverlapMode()) {
+            case "rotate":
             case "stagger":
             case "hide":
                 var bboxArr = [];
@@ -604,7 +636,6 @@
         this.yBrush
             .y(this.dataScale)
         ;
-
         if (this.selectionMode()) {
             if (this._prevXAxisType !== this.xAxisType()) {
                 this._prevXAxisType = this.xAxisType();

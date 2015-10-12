@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonND", "goog!visualization,1.1,packages:[line]"], factory);
+        define(["d3", "./CommonND"], factory);
     } else {
         root.google_Line = factory(root.d3, root.google_CommonND);
     }
@@ -39,8 +39,6 @@
 
     Line.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
     Line.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
-    Line.prototype.publish("yAxisPrimaryLabel", null, "string", "Top or Left Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
-    Line.prototype.publish("yAxisSecondaryLabel", null, "string", "Bottom or Right Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
 
     Line.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
 
@@ -108,28 +106,6 @@
         retVal.orientation = this.orientation();
         retVal.pointShape = this.pointShape();
         retVal.pointSize = this.pointSize();
-        
-        if (this.yAxisSecondaryLabel()) {
-            retVal.series =  {
-                0: { 
-                    axis: "primary" 
-                },
-                1: { 
-                    axis: "secondary" 
-                }
-            };
-            retVal.axes = {
-                y: {
-                    primary: {
-                        label: this.yAxisPrimaryLabel()
-                },
-                    secondary: {
-                        side: "right", 
-                        label: this.yAxisSecondaryLabel()
-                    }
-                }
-            };
-        }
 
         retVal.hAxis = {};
         retVal.vAxis = {};
@@ -241,13 +217,11 @@
         if (this.smoothLines()) {
             retVal.curveType = "function";
         }
-        
-        retVal = google.charts.Line.convertOptions(retVal);
+
         return retVal;
     };
 
     Line.prototype.enter = function (domNode, element) {
-        this._chart = new google.charts.Line(domNode);
         CommonND.prototype.enter.apply(this, arguments);
     };
 

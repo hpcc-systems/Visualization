@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonND", "../common/HTMLWidget",  "goog!visualization,1.1,packages:[scatter]"], factory);
+        define(["d3", "./CommonND", "../common/HTMLWidget"], factory);
     } else {
         root.google_Scatter = factory(root.d3, root.google_CommonND, root.common_HTMLWidget);
     }
@@ -54,9 +54,6 @@
 
     Scatter.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
     Scatter.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Intermediate","Shared"]});
-    Scatter.prototype.publish("yAxisPrimaryLabel", null, "string", "Top or Left Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
-    Scatter.prototype.publish("yAxisSecondaryLabel", null, "string", "Bottom or Right Y axis label for dual y-axes series data","",{tags:["Basic","Shared"]});
-
 
     Scatter.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
 
@@ -122,28 +119,6 @@
             opacity: this.crosshairOpacity(),
             trigger: this.crosshairTrigger()
         };
-        
-         if (this.yAxisSecondaryLabel()) {
-            retVal.series =  {
-                0: { 
-                    axis: "primary" 
-                },
-                1: { 
-                    axis: "secondary" 
-                }
-            };
-            retVal.axes = {
-                y: {
-                    primary: {
-                        label: this.yAxisPrimaryLabel()
-                },
-                    secondary: {
-                        side: "right", 
-                        label: this.yAxisSecondaryLabel()
-                    }
-                }
-            };
-        }
 
         retVal.hAxis = {};
         retVal.vAxis = {};
@@ -218,13 +193,11 @@
             min: this.yAxisViewWindowMin(),
             max: this.yAxisViewWindowMax()
         };
-        
-        retVal = google.charts.Scatter.convertOptions(retVal);
+
         return retVal;
     };
 
     Scatter.prototype.enter = function (domNode, element) {
-        this._chart = new google.charts.Scatter(domNode);
         CommonND.prototype.enter.apply(this, arguments);
     };
 

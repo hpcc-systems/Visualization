@@ -169,16 +169,6 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/layout/Popup", "src/layout/Surface", "src/common/Icon"], function (DataFactory, Popup, Surface, Icon) {
                     var retVal =  new Popup();
-                    retVal.showTestButton(true);
-                    retVal.position("absolute");
-                    retVal.top(30);
-
-                    var context = retVal;
-                    retVal._testButton = new Icon()
-                        .on("click", function () {
-                            context.updateState(!(context.popupState()));
-                        }, true)
-                    ; 
 
                     retVal.widget(new Surface().widget(new Icon().faChar(DataFactory.FAChar.simple.char)));
 

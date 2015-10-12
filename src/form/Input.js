@@ -40,8 +40,8 @@
         switch (this.type()) {
             case "select":
                 this.checkNodeName("SELECT", element);
-                this._inputElement.property("value", this.value());
                 this.insertSelectOptions(this.selectOptions());
+                this._inputElement.property("value", this.value());
                 break;
             case "textarea":
                 this.checkNodeName("TEXTAREA", element);

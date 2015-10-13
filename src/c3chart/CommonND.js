@@ -117,12 +117,12 @@
     };
 
     CommonND.prototype.update = function (domNode, element) {
-        Common.prototype.update.apply(this, arguments);
-
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+        
+        Common.prototype.update.apply(this, arguments);
 
         this.c3Chart.internal.config.axis_y_tick_format = d3.format(this.yAxisTickFormat());
 

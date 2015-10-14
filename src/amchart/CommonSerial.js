@@ -24,9 +24,9 @@
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
-    CommonSerial.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
-    CommonSerial.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
-    CommonSerial.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
+    CommonSerial.prototype.publish("fontColor", "#000000", "html-color", "Font Color",null,{tags:["Basic","Shared"]});
 
     CommonSerial.prototype.publish("lineWidth", 1, "number", "Line Thickness", null, {min:0,max:10,step:1,inputType:"range",tags:["Basic","Shared"]});
     CommonSerial.prototype.publish("lineColor", null, "html-color", "Color of the data/content lines",null,{tags:["Basic","Shared"]});

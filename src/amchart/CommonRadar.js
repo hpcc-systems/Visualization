@@ -12,6 +12,8 @@
         this._tag = "div";
 
         this._chart = {};
+
+        this._selected = null;
     }
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
     CommonRadar.prototype.constructor = CommonRadar;
@@ -69,6 +71,9 @@
     CommonRadar.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     CommonRadar.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+    
+    CommonRadar.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+    CommonRadar.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     CommonRadar.prototype.updateChartOptions = function() {
         var context = this;
@@ -152,6 +157,8 @@
 
         gObj.title = "";
 
+        gObj.colorField = "selected" + i;
+
         return gObj;
     };
 
@@ -181,6 +188,33 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            var graph = e.graph;
+            var data  = e.item.dataContext;
+            var field = graph.colorField;
+
+            if (data[field] !== null && data[field] !== undefined) {
+                delete data[field];
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = null;
+                }
+            } else {
+                data[field] = context.selectionColor();
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
+                    }
+                    context._selected = {
+                        field: field,
+                        data: data
+                    };
+                }
+            }
+
+            e.chart.validateData();
+            
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index+1]);
         });
     };

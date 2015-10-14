@@ -26,7 +26,6 @@ require.config({
         "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
         "simpleheat": "../bower_components/simpleheat/simpleheat",
-
         "src": "../src"
     },
     shim: {
@@ -111,7 +110,7 @@ case "cdn.rawgit.com":
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.0/amcharts/plugins/dataloader",
             "amchartsImg": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.0/amcharts/images/",
             "simpleheat": "//" + window.location.hostname + "/mourner/simpleheat/gh-pages/simpleheat",
-
+            "gmapLib":"async!//maps.google.com/maps/api/js?sensor=false",
             "src": "../src"
         }
     });

@@ -78,6 +78,8 @@
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
                     );
+                }, function(e){
+                    callback(null); // pass null on error
                 });
             },
             graph: function (callback) {

@@ -171,8 +171,9 @@
     });
 
     describe("Sample Renders", function () {
-        this.timeout(10000);
+        var context = this;
         d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
+
             var widgetPath = widget.key;
             if (!someWidgets.length || someWidgets.indexOf(widgetPath) >= 0) {
                 describe(widgetPath, function () {
@@ -185,6 +186,11 @@
                                 break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
+                                    if (widgetPath.indexOf("GMap")!==-1) {
+                                        console.error("GMAP!!!!");
+                                        this.timeout(10000)
+                                    }
+
                                     sample.value.factory(function (testWidget) {
                                         var element = d3.select("#testWidget");
                                         var testDiv = element.append("div")

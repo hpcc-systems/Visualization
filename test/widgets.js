@@ -187,6 +187,7 @@
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     if (widgetPath.indexOf("GMap")!==-1) {
+                                        console.error("GMAP!!!!");
                                         this.timeout(10000)
                                     }
 

@@ -171,8 +171,9 @@
     });
 
     describe("Sample Renders", function () {
-        this.timeout(10000);
+        
         d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
+            this.timeout(3000);
             var widgetPath = widget.key;
             if (!someWidgets.length || someWidgets.indexOf(widgetPath) >= 0) {
                 describe(widgetPath, function () {

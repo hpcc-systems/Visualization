@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "gmapLib", "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!http://maps.google.com/maps/api/js?sensor=false", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -44,16 +44,10 @@
     };
 
     Overlay.prototype.draw = function () {
-        // console.error("here2");
-        // console.error(this);
-        // console.error("here3");
-        // console.error(google);
-        // console.error("here4");
-        // console.error(google.maps);
-        console.error("here5");
-        console.log(new google.maps.OverlayView());
-        console.error("here6");
-        console.log(new google.maps.OverlayView().getProjection());
+        console.error("here2");
+        console.error(this);
+        console.error(google);
+        console.error(google.maps);
 
         var projection = this.getProjection();
 

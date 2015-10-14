@@ -26,7 +26,6 @@ require.config({
         "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
         "simpleheat": "../bower_components/simpleheat/simpleheat",
-        "gmapLib":"async!http://maps.google.com/maps/api/js?sensor=false",
         "src": "../src"
     },
     shim: {

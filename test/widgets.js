@@ -42,6 +42,9 @@
             { path: "src/map/ChoroplethCountries" },
             { path: "src/map/ChoroplethStates" },
             { path: "src/map/ChoroplethStatesHeat" },
+            { path: "src/map/GMap" },
+            { path: "src/map/GMapHeat" },
+            { path: "src/map/GMapGraph" },
             { path: "src/tree/CirclePacking" },
             { path: "src/tree/Dendrogram" },
             { path: "src/tree/SunburstPartition" },
@@ -71,6 +74,14 @@
             { path: "src/c3chart/Pie" },
             { path: "src/c3chart/Scatter" },
             { path: "src/c3chart/Step" },
+            { path: "src/google/Area" },
+            { path: "src/google/Bar" },
+            { path: "src/google/Column" },
+            { path: "src/google/Line" },
+            { path: "src/google/Pie" },
+            { path: "src/google/Scatter" },
+            { path: "src/google/Timeline" },
+            { path: "src/google/TreeMap" },
             { path: "src/amchart/Area" },
             { path: "src/amchart/Bar" },
             { path: "src/amchart/Funnel" },
@@ -79,18 +90,7 @@
             { path: "src/amchart/Pie" },
             { path: "src/amchart/Polar" },
             { path: "src/amchart/Pyramid" },
-            { path: "src/amchart/Scatter" },
-            { path: "src/map/GMap" },
-            { path: "src/map/GMapHeat" },
-            { path: "src/map/GMapGraph" },
-            { path: "src/google/Area" },
-            { path: "src/google/Bar" },
-            { path: "src/google/Column" },
-            { path: "src/google/Line" },
-            { path: "src/google/Pie" },
-            { path: "src/google/Scatter" },
-            { path: "src/google/Timeline" },
-            { path: "src/google/TreeMap" }
+            { path: "src/amchart/Scatter" }
         ];
         allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
             var path = widget.path;
@@ -171,9 +171,9 @@
     });
 
     describe("Sample Renders", function () {
-        
+        var context = this;
         d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
-            this.timeout(3000);
+
             var widgetPath = widget.key;
             if (!someWidgets.length || someWidgets.indexOf(widgetPath) >= 0) {
                 describe(widgetPath, function () {
@@ -186,6 +186,10 @@
                                 break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
+                                    if (widgetPath.indexOf("GMap")!==-1) {
+                                        this.timeout(10000)
+                                    }
+
                                     sample.value.factory(function (testWidget) {
                                         var element = d3.select("#testWidget");
                                         var testDiv = element.append("div")
@@ -223,14 +227,7 @@
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     require(["src/common/ResizeSurface"], function (ResizeSurface) {
-
                                         sample.value.factory(function (testWidget) {
-
-                                            if (testWidget === null) {
-                                                console.log("Failed to Load Module - Skipping Test");
-                                                console.log(e);
-                                                done();
-                                            }
                                             var element = d3.select("#testWidget");
                                             var testDiv = element.append("div")
                                                 .attr("class", "widgetTest")
@@ -252,10 +249,6 @@
                                                 })
                                             ;
                                         });
-                                    }, function(e) {
-                                        console.log("Failed to Load Module - Skipping Test");
-                                        console.log(e);
-                                        done();
                                     });
                                 });
                         }

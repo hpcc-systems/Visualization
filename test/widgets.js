@@ -42,9 +42,6 @@
             { path: "src/map/ChoroplethCountries" },
             { path: "src/map/ChoroplethStates" },
             { path: "src/map/ChoroplethStatesHeat" },
-            { path: "src/map/GMap" },
-            { path: "src/map/GMapHeat" },
-            { path: "src/map/GMapGraph" },
             { path: "src/tree/CirclePacking" },
             { path: "src/tree/Dendrogram" },
             { path: "src/tree/SunburstPartition" },
@@ -74,14 +71,6 @@
             { path: "src/c3chart/Pie" },
             { path: "src/c3chart/Scatter" },
             { path: "src/c3chart/Step" },
-            { path: "src/google/Area" },
-            { path: "src/google/Bar" },
-            { path: "src/google/Column" },
-            { path: "src/google/Line" },
-            { path: "src/google/Pie" },
-            { path: "src/google/Scatter" },
-            { path: "src/google/Timeline" },
-            { path: "src/google/TreeMap" },
             { path: "src/amchart/Area" },
             { path: "src/amchart/Bar" },
             { path: "src/amchart/Funnel" },
@@ -90,7 +79,18 @@
             { path: "src/amchart/Pie" },
             { path: "src/amchart/Polar" },
             { path: "src/amchart/Pyramid" },
-            { path: "src/amchart/Scatter" }
+            { path: "src/amchart/Scatter" },
+            { path: "src/map/GMap" },
+            { path: "src/map/GMapHeat" },
+            { path: "src/map/GMapGraph" },
+            { path: "src/google/Area" },
+            { path: "src/google/Bar" },
+            { path: "src/google/Column" },
+            { path: "src/google/Line" },
+            { path: "src/google/Pie" },
+            { path: "src/google/Scatter" },
+            { path: "src/google/Timeline" },
+            { path: "src/google/TreeMap" }
         ];
         allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
             var path = widget.path;
@@ -222,6 +222,7 @@
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     require(["src/common/ResizeSurface"], function (ResizeSurface) {
+
                                         sample.value.factory(function (testWidget) {
                                             var element = d3.select("#testWidget");
                                             var testDiv = element.append("div")
@@ -244,6 +245,10 @@
                                                 })
                                             ;
                                         });
+                                    }, function(e) {
+                                        console.log("Failed to Load Module - Skipping Test");
+                                        console.log(e);
+                                        done();
                                     });
                                 });
                         }

@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", ["gmapLib"], "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "gmapLib", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -54,7 +54,7 @@
         console.log(new google.maps.OverlayView());
         console.error("here6");
         console.log(new google.maps.OverlayView().getProjection());
-        
+
         var projection = this.getProjection();
 
         var bounds = this._map.getBounds();

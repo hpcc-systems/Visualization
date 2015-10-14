@@ -44,6 +44,11 @@
     };
 
     Overlay.prototype.draw = function () {
+        console.error('here2');
+        console.error(this);
+        console.error(google);
+        console.error(google.maps);
+
         var projection = this.getProjection();
 
         var bounds = this._map.getBounds();

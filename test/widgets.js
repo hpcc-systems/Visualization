@@ -224,6 +224,12 @@
                                     require(["src/common/ResizeSurface"], function (ResizeSurface) {
 
                                         sample.value.factory(function (testWidget) {
+
+                                            if (testWidget === null) {
+                                                console.log("Failed to Load Module - Skipping Test");
+                                                console.log(e);
+                                                done();
+                                            }
                                             var element = d3.select("#testWidget");
                                             var testDiv = element.append("div")
                                                 .attr("class", "widgetTest")

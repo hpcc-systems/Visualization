@@ -66,7 +66,7 @@
                 this._inputElement[0].attr("type", "text");
                 this._inputElement[1].attr("type", "color");
                 this._inputElement[0].property("value", this.value());
-                this._inputElement[1].property("value", this.value());
+                this._inputElement[1].property("value", d3.rgb(this.value()).toString());
                 break;
             default:
                 this.checkNodeName("INPUT", element);
@@ -135,11 +135,11 @@
                         break;
                     case "html-color":
                         if (idx === 0) {
-                            context._inputElement[1].property("value",context._inputElement[0].property("value"));
+                            context._inputElement[1].property("value",d3.rgb(context._inputElement[0].property("value")).toString());
                             context.value(context._inputElement[0].property("value"));
                         } else {       
                             context._inputElement[0].property("value",context._inputElement[1].property("value"));
-                            context.value(context._inputElement[1].property("value"));
+                            context.value(d3.rgb(context._inputElement[1].property("value")).toString());
                         } 
                         break;         
                     default:

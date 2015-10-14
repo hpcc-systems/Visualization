@@ -1,4 +1,5 @@
 require.config({
+    waitSeconds : 30,
     baseUrl: ".",
     paths: {
         "requireLib": "../node_modules/requirejs/require",

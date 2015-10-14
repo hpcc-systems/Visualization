@@ -30,7 +30,7 @@
         },
         TwoD: {
             subjects: {
-                columns: ["Subject"],
+                columns: ["Subject", "Year 1"],
                 data: [
                     ["Geography", 75],
                     ["English", 45],
@@ -128,7 +128,7 @@
         },
         TreeMap: {
             default: {
-                columns: [["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"]],
+                columns: ["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"],
                 data: [
                   ["Global",    "",                 0,                               0],
                   ["America",   "Global",             0,                               0],

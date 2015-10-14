@@ -13,6 +13,7 @@
         this._chartType = "Timeline";
         this._tag = "div";
         this._data_google = [];
+        this._selection = {};
     }
     Timeline.prototype = Object.create(HTMLWidget.prototype);
     Timeline.prototype.constructor = Timeline;
@@ -70,10 +71,25 @@
         return retVal;
     };
 
+    Timeline.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
     Timeline.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
         this._chart = new google.visualization[this._chartType](domNode);
+
+        var context = this;
+        google.visualization.events.addListener(this._chart, "select", function () {
+            var selectedItem = context._chart.getSelection()[0];
+            context._selection = {
+                data: context.rowToObj(context.data()[selectedItem.row] || {}),
+                column: context.columns()[selectedItem.column] || null
+            };
+            
+            context.click(context._selection.data, context._selection.column, Object.keys(context._selection).length !== 0);
+        });
     };
 
     Timeline.prototype.update = function (domNode, element) {

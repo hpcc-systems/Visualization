@@ -16,6 +16,7 @@
 
         this.columns([]);
         this.data([]);
+        this._selection = {};
     }
     TreeMap.prototype = Object.create(HTMLWidget.prototype);
     TreeMap.prototype.constructor = TreeMap;
@@ -85,18 +86,29 @@
     TreeMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
-        this.treemapChart = new google.visualization.TreeMap(element.node());
+        this._chart = new google.visualization.TreeMap(element.node());
+
+        var context = this;
+        google.visualization.events.addListener(this._chart, "select", function () {
+            var selectedItem = context._chart.getSelection()[0];
+            context._selection = {
+                data: context.rowToObj(context.data()[selectedItem.row]),
+                column: context.columns()[selectedItem.column] || null
+            };
+
+            context.click(context._selection.data, context._selection.column, Object.keys(context._selection).length !== 0);
+        });
     };
 
     TreeMap.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        this.treemapChart.draw(this._data_google, this.getChartOptions());
+        this._chart.draw(this._data_google, this.getChartOptions());
     };
 
     TreeMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
-            var arr = this.columns().concat(this.data());
+            var arr = [this.columns()].concat(this.data());
             this._data_google = new google.visualization.arrayToDataTable(arr);
         }
         return retVal;
@@ -113,6 +125,10 @@
             "Datatable row #: " + row + "<br>" +
             data.getColumnLabel(2) +" (total value of this cell and its children): " + size + "<br>" +
             data.getColumnLabel(3) + ": " + value + " </div>";
+    };
+
+    TreeMap.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return TreeMap;

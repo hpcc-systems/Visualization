@@ -17,6 +17,7 @@
         this._data_google = google.visualization.arrayToDataTable([["", { role: "annotation" }],["",""]]);
 
         this._chart = null;
+        this._selection = {};
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype.constructor = Common;
@@ -144,8 +145,14 @@
         google.visualization.events.addListener(this._chart, "select", function () {
             var selectedItem = context._chart.getSelection()[0];
             if (selectedItem) {
-                context.click(context.rowToObj(context.data()[selectedItem.row]), context.columns()[selectedItem.column]);
+                context._selection = {
+                    data: context.rowToObj(context.data()[selectedItem.row]),
+                    column: context.columns()[selectedItem.column] || null
+                };
+            } else {
+                context._selection = {data: {}, column: null};
             }
+            context.click(context._selection.data, context._selection.column, Object.keys(context._selection.data).length !== 0);
         });
     };
 

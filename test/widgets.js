@@ -185,26 +185,36 @@
                                 break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
+                                    var context = this;
                                     sample.value.factory(function (testWidget) {
-                                        var element = d3.select("#testWidget");
-                                        var testDiv = element.append("div")
-                                            .attr("class", "widgetTest")
-                                        ;
-                                        var widgetDiv = testDiv.append("div")
-                                            .attr("class", "widget")
-                                        ;
-                                        testDiv.append("center")
-                                            .attr("class", "title")
-                                            .text(widgetPath + "-" + sample.key)
-                                        ;
-                                        testWidget
-                                            .target(widgetDiv.node())
-                                            .render(function (w) {
-                                                noSurfaceHTML = w.element().selectAll("*");
-                                                assert.isAbove(noSurfaceHTML.length, 0);
-                                                done();
-                                            })
-                                        ;
+                                        var timeout = 0;
+                                        if (widgetPath.indexOf("GMap")!==-1) {
+                                            console.error("!! -- GMAP -- !!");
+                                            context.timeout(10000);
+                                            timeout = 5000;
+                                        }
+                                        setTimeout(function() {
+                                            var element = d3.select("#testWidget");
+                                            var testDiv = element.append("div")
+                                                .attr("class", "widgetTest")
+                                            ;
+                                            var widgetDiv = testDiv.append("div")
+                                                .attr("class", "widget")
+                                            ;
+                                            testDiv.append("center")
+                                                .attr("class", "title")
+                                                .text(widgetPath + "-" + sample.key)
+                                            ;
+                                            testWidget
+                                                .target(widgetDiv.node())
+                                                .render(function (w) {
+                                                    noSurfaceHTML = w.element().selectAll("*");
+                                                    assert.isAbove(noSurfaceHTML.length, 0);
+                                                    done();
+                                                })
+                                            ;
+                                        }, timeout)
+                                       
                                     });
                                 });
                         }

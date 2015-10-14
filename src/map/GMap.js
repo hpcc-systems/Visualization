@@ -44,7 +44,7 @@
     };
 
     Overlay.prototype.draw = function () {
-        console.error('here2');
+        console.error("here2");
         console.error(this);
         console.error(google);
         console.error(google.maps);

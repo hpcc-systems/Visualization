@@ -22,9 +22,6 @@
     Popup.prototype.publish("left", null, "number", "Left position property of popup",null,{});
     Popup.prototype.publish("right", null, "number", "Right position property of popup",null,{});
     Popup.prototype.publish("position", "relative", "set", "Value of the 'position' property",["absolute", "relative", "fixed", "static", "initial", "inherit" ],{tags:["Private"]});
-    Popup.prototype.publish("showTestButton", false, "boolean", "Test Button in target",null,{});
-    Popup.prototype.publish("buttonName", null, "string", "Button name property",null,{});
-    Popup.prototype.publish("buttonLabel", "", "string", "Button label text",null,{});
     Popup.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Private"]});
 
     Popup.prototype.widgetSize = function (widgetDiv) {
@@ -37,24 +34,12 @@
     Popup.prototype.updateState = function (visible) {
             this.popupState(visible).render();
     };
-    
-    Popup.prototype.enter = function (domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
-
-        if (this._testButton) {
-            this._testButton.target(domNode.parentNode).render();
-        }
-    };
 
     Popup.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;        
 
-        if (this.popupState()) {
-            element.style("display", "block");
-        } else {
-            element.style("display", "none");
-        }
+        this.visible(this.popupState());
         
         var widgets = element.selectAll("#" + this._id + " > .popupWidget").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
         widgets.enter().append("div")

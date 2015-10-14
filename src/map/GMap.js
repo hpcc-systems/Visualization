@@ -46,7 +46,9 @@
     Overlay.prototype.draw = function () {
         console.error("here2");
         console.error(this);
+        console.error("here3");
         console.error(google);
+        console.error("here4");
         console.error(google.maps);
 
         var projection = this.getProjection();

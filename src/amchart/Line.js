@@ -21,6 +21,9 @@
 
     Line.prototype.publish("stepLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic"]});
 
+    Line.prototype.publish("bulletSize", 6, "number", "Bullet Size",null,{tags:["Intermediate"]});
+    Line.prototype.publish("bulletType", "round", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"],{tags:["Basic"]});
+
     Line.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
@@ -48,7 +51,7 @@
             this._chart.addGraph(gObj);
         }
 
-        function buildGraphObj(gObj) {
+        function buildGraphObj(gObj, i) {
             if (this.stepLines()) {
                 gObj.type = "step";
             } else if (this.smoothLines()) {
@@ -56,6 +59,11 @@
             } else {
                 gObj.type = "line";
             }
+
+            gObj.colorField = "selected" + i;
+
+            gObj.bullet = this.bulletType();
+            gObj.bulletSize = this.bulletSize();
 
             return gObj;
         }

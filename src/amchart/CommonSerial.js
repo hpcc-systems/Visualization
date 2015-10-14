@@ -13,6 +13,9 @@
 
         this._chart = {};
 
+        this._selected = null;
+        this._selection = [];
+
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
     }
@@ -33,8 +36,8 @@
 
     CommonSerial.prototype.publish("axisFontSize", null, "number", "X/Y Axis Text Font Size",null,{tags:["Basic","Shared"]});
 
-    CommonSerial.prototype.publish("xAxisBaselineColor", null, "html-color", "X Axis Baseline Color",null,{tags:["Basic","Shared"]});
-    CommonSerial.prototype.publish("yAxisBaselineColor", null, "html-color", "Y Axis baseline Color",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("xAxisBaselineColor", "#000000", "html-color", "X Axis Baseline Color",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisBaselineColor", "#000000", "html-color", "Y Axis baseline Color",null,{tags:["Basic","Shared"]});
 
     CommonSerial.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal Axis Text Style (Color)",null,{tags:["Basic","Shared"]});
     CommonSerial.prototype.publish("yAxisFontColor", null, "html-color", "Vertical Axis Text Style (Color)",null,{tags:["Basic","Shared"]});
@@ -63,11 +66,8 @@
 
     CommonSerial.prototype.publish("orientation", "horizontal", "set", "Orientation",["horizontal","vertical"],{tags:["Intermediate"]});
 
-    CommonSerial.prototype.publish("bulletSize", 0, "number", "Bullet Size",null,{tags:["Intermediate"]});
-    CommonSerial.prototype.publish("bulletType", "none", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"],{tags:["Basic"]});
-
     CommonSerial.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies Whether Number of GridCount Is Specified Automatically, According To The Axis Size",null,{tags:["Advanced"]});
-    CommonSerial.prototype.publish("xAxisGridPosition", "middle", "set", "Specifies If A Grid Line Is Placed On The Center of A Cell or On The Beginning of A Cell", ["start","middle"],{tags:["Advanced"]});
+    CommonSerial.prototype.publish("xAxisGridPosition", "start", "set", "Specifies If A Grid Line Is Placed On The Center of A Cell or On The Beginning of A Cell", ["start","middle"],{tags:["Advanced"]});
 
     CommonSerial.prototype.publish("xAxisBoldPeriodBeginning", true, "boolean", "When parse dates is on for the category axis, the chart will try to highlight the beginning of the periods, like month, in bold.",null,{tags:["Intermediate"]});
     CommonSerial.prototype.publish("yAxisBoldPeriodBeginning", true, "boolean", "When parse dates is on for the category axis, the chart will try to highlight the beginning of the periods, like month, in bold.",null,{tags:["Intermediate"]});
@@ -81,8 +81,8 @@
     CommonSerial.prototype.publish("xAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
     CommonSerial.prototype.publish("yAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
 
-    CommonSerial.prototype.publish("xAxisGridAlpha", 0.2, "number", "Grid alpha.",null,{tags:["Intermediate"]});
-    CommonSerial.prototype.publish("yAxisGridAlpha", 0.2, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("xAxisGridAlpha", 0.0, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("yAxisGridAlpha", 0.0, "number", "Grid alpha.",null,{tags:["Intermediate"]});
 
     //CommonSerial.prototype.publish("yAxisMinimum", null, "number", "",null,{tags:["Intermediate"]});
     CommonSerial.prototype.publish("yAxisTitleOffset", null, "number", "",null,{tags:["Intermediate"]});
@@ -104,6 +104,9 @@
     CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
+
+    CommonSerial.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+    CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
@@ -318,8 +321,6 @@
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
         gObj.lineThickness = context.lineWidth();
-        gObj.bullet = context.bulletType();
-        gObj.bulletSize = context.bulletSize();
         gObj.dashLength = context.dashedLineStyle(); // TODO: convert to css Array Prop
 
         gObj.type = gType;
@@ -370,6 +371,41 @@
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
+            var graph = e.graph;
+            var data  = e.item.dataContext;
+            var field;
+
+            if (context._gType === "column") {
+                field = graph.fillColorsField;
+            } else if (context._gType === "line") {
+                field = graph.colorField;
+            } else if (context._gType === "area") {
+                field = graph.colorField;
+            }
+            if (field) {
+                if (data[field] !== null && data[field] !== undefined) {
+                    delete data[field];
+                    if (context.selectionMode() === "simple") {
+                        if (context._selected !== null) {
+                            delete context._selected.data[context._selected.field];
+                        }
+                        context._selected = null;
+                    }
+                } else {
+                    data[field] = context.selectionColor();
+                    if (context.selectionMode() === "simple") {
+                        if (context._selected !== null) {
+                            delete context._selected.data[context._selected.field];
+                        }
+                        context._selected = {
+                            field: field,
+                            data: data
+                        };
+                    }
+                }
+                e.chart.validateData();
+            }
+
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex+1]);
         });
     };

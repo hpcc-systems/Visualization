@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>HPCC Systems - Popup Widget Examples</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap_theme.css" rel="stylesheet" type="text/css">
+    <link href="css/prettify.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+
+    <script src="js/init_bootstrap_demo_page.js"></script>
+
+    <script src="js/rasterizeHTML.allinone.js"></script>
+    <script src="js/svg_to_png.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+
+
+    <script>
+       
+
+    </script>
+    <style>
+       #target {
+            width:500px;
+            height:500px;
+            margin: 0 auto;
+
+       }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and Toggle -->
+        <div class="navbar-header">
+            <a id="logo" class="navbar-brand" href="#"><img alt="Brand" width="120" height="40" src="hpcc-logo.png"></a>
+        </div>
+        <!-- Links -->
+        <div id="links-navbar" class="collapse navbar-collapse navbar-ex1-collapse"></div>
+    </nav>
+    <!-- /.navbar-default -->
+    <div id="main">
+        <div>
+            <div>
+                <ul id="tabs-ul" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" data-for="colors-pane" class="active"><a href="#grid-pane" aria-controls="grid-pane" role="tab" data-toggle="tab">Busy Indicator</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="grid-pane">
+                        <div class="graph-options">
+                        </div>
+                    </div>
+                </div>
+            <div id="target"></div>
+               
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require(["src/common/Busy", "src/chart/Column"], function (Busy, Column) {
+            
+            var widget = new Column()
+                .target("target")
+                .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+                .data([
+                    ["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 72]
+                ])                    
+            ;
+            var busyIndicator = new Busy(widget)
+                .target("target")
+                .render()
+            ;
+            busyIndicator._parentElement.style("margin-top", "-500px");
+
+            widget.pushBusy();
+
+            setTimeout(function() {
+                widget.render(function() {
+                    for (var i = 0; i <10000; i++) {
+                        console.log(i);
+                    }
+                });
+            }, 1099);
+
+            setTimeout(function() {
+                widget.popBusy();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

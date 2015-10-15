@@ -63,6 +63,7 @@
         if (window.__hpcc_theme) {
             this.applyTheme(window.__hpcc_theme);
         }
+        this._busyCounter = 0;
     }
     Widget.prototype._class = "common_Widget";
 
@@ -578,6 +579,25 @@
     };
 
     //  DOM/SVG Node Helpers  ---
+    
+    Widget.prototype.showBusy = function () {
+        this._busyIndicator.showHide(this._busyCounter);
+    };
+
+    Widget.prototype.pushBusy = function () {
+        this._busyCounter++;
+        if (this._busyCounter > 0) {
+            this.showBusy();
+        }
+    };
+
+    Widget.prototype.popBusy = function () {
+        this._busyCounter--;
+        if (this._busyCounter <= 0) {
+            this.showBusy();
+        }
+    };
+
     Widget.prototype.toWidget = function (domNode) {
         if (!domNode) {
             return null;

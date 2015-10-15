@@ -97,6 +97,14 @@
                 });
             }
         },
+        Busy: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/common/Busy"], function (DataFactory, Busy) {
+                    callback(new Busy()
+                    );
+                });
+            }
+        },
         Composition: {
             simple: function (callback) {
                 require(["test/DataFactory",

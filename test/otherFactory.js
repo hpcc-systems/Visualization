@@ -73,6 +73,15 @@
                     );
                 });
             },
+            formatted: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    callback(new Table()
+                        .columns(DataFactory.Table.formatted.columns)
+                        .data(DataFactory.Table.formatted.data)
+                        .columnPatterns([".4%", "", ".6r", "", "%d-%m-%y"])
+                    );
+                });
+            },
             large: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()

@@ -24,6 +24,10 @@
 .other_Table thead > tr, .cols-wrapper tr {
     background-color:#1f77b4;
 }
+.other_Table .rows-wrapper,
+.other_Table .cols-wrapper{
+    position:absolute;
+}
 
 .other_Table .thIcon, .labels-wrapper .thIcon {
     font-family: FontAwesome;

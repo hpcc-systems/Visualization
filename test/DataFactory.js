@@ -303,6 +303,7 @@
                 title: ["Hello and welcome!"],
                 menu: ["aaa", "bbb", "ccc"],
                 buttonAnnotations: [{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}],
+                widget: function () { return new Surface().widget(new MultiChartSurface()); }
             }
         },
         AbsoluteSurface: {
@@ -367,6 +368,10 @@
             simple: {
                 data: [[37.665074,-122.384375,"green-dot.png"],[32.69068,-117.17854],[39.709455,-104.969859],[41.244123,-95.96161],[32.68898,-117.19204],[45.78649,-108.5266],[45.79618,-108.535652],[45.77432,-108.49437],[45.777062,-108.549835,"red-dot.png"]],
                 columns: ["Lat","Long","Pin"]
+            },
+            formatted: {
+                data: [[37.665074,-122.384375,"green-dot.png"],[32.69068,-117.17854, "2000-12-2"],[39.709455,-104.969859,"yellow-dot.png"],[41.244123,-95.96161, "1995-12-17T03:24:00"],[32.68898,-117.19204,"blue-dot.png"],[45.78649,-108.5266, "3-15-1971"],[45.79618,-108.535652,"orange-dot.png"],[45.77432,-108.49437, "2-2-2"],[45.777062,-108.549835,"red-dot.png"]],
+                columns: ["Latitude (number formatted)","Longitude (Number formatted)","String (Date formatted)"]
             },
             large: {
                 data: [

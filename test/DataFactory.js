@@ -159,7 +159,7 @@
         },
         TreeMap: {
             default: {
-                columns: [["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"]],
+                columns: ["Location", "Parent", "Market trade volume (size)", "Market increase/decrease (color)"],
                 data: [
                   ["Global",    "",                 0,                               0],
                   ["America",   "Global",             0,                               0],

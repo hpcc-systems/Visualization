@@ -46,13 +46,10 @@
     Overlay.prototype.draw = function () {
         var context = this;
 
-        setTimeout(function() {
             var projection = context.getProjection();
-
-            if (projection === undefined) {
-                console.error('GMap Loading Error');
-                return;
-            }
+            console.error("projection");
+            console.error(context.getProjection);
+            console.error(projection);
 
             var bounds = context._map.getBounds();
             var center = projection.fromLatLngToDivPixel(bounds.getCenter());
@@ -112,7 +109,6 @@
                 context._prevWorldMin = worldMax;
                 context._prevWorldMax = worldMax;
             }
-        }, 0);
     };
 
     Overlay.prototype.onRemove = function () {

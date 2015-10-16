@@ -18,6 +18,8 @@
     Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
     Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
+    
+    Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });
 
     Text.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
@@ -26,6 +28,7 @@
 
     Text.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
+        var context = this;
         this._textElement
             .attr("font-family", this.fontFamily())
             .attr("font-size", this.fontSize())
@@ -51,6 +54,7 @@
         } catch (e) {
         }
         var xOffset = 0;
+        var yOffset = 0;
         switch(this.anchor()) {
             case "start":
                 xOffset = -bbox.width / 2;
@@ -59,11 +63,18 @@
                 xOffset = bbox.width / 2;
                 break;
         }
-        var yOffset = -(bbox.y + bbox.height / 2);
-
+        var yShift = -(bbox.y + bbox.height / 2);
+        var xShift = xOffset;
+        
+        var r = xShift + yShift;
+        var theta = -this.rotation() * Math.PI/180;
+        
+        xOffset = Math.round(r * Math.sin(theta));
+        yOffset = Math.round(r * Math.cos(theta));
+        
         this._textElement
             .style("text-anchor", this.anchor())
-            .attr("transform", function (d) { return "translate(" + xOffset + "," + yOffset + ")"; })
+            .attr("transform", function (d) { return "translate(" + xOffset + "," + yOffset + ")rotate(" + context.rotation() + ")"; })
         ;
     };
 

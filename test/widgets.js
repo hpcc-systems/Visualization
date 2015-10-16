@@ -35,6 +35,7 @@
             { path: "src/chart/Scatter" },
             { path: "src/chart/Step" },
             { path: "src/chart/Summary" },
+            { path: "src/composite/MegaChart" },
             { path: "src/form/Form" },
             { path: "src/form/Input" },
             { path: "src/form/Slider" },

@@ -95,7 +95,7 @@
         
         var table = element.select(".tableDiv > table");
         var tableRect = table.node().getBoundingClientRect();
-        var elementRect = element.node().getBoundingClientRect();
+        var elementRect = this._parentElement.node().getBoundingClientRect();
         
         element.select(".tableDiv").style({overflow:"visible"});
         

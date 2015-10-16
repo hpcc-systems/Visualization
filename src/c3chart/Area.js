@@ -15,7 +15,7 @@
     Area.prototype.constructor = Area;
     Area.prototype._class += " c3chart_Area";
 
-    Area.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
     Area.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
     Area.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
     Area.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
@@ -28,7 +28,7 @@
     Area.prototype.update = function (domNode, element) {
         CommonND.prototype.update.apply(this, arguments);
 
-        if (this.isStacked()) {
+        if (this.stacked()) {
             this.c3Chart.groups([this.columns().slice(1, this.columns().length)]);
         } else {
             this.c3Chart.groups([]);

@@ -16,7 +16,7 @@
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " google_Bar";
 
-    Bar.prototype.publish("isStacked", false, "boolean", "Stacks the elements in a series",null,{tags:["Basic","Shared"]});
+    Bar.prototype.publish("stacked", false, "boolean", "Stacks the elements in a series",null,{tags:["Basic","Shared"]});
     //opacity?
     Bar.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size",null,{tags:["Basic","Shared"]});
     Bar.prototype.publish("axisFontFamily", null, "string", "X/Y Axis Label Font Name",null,{tags:["Basic","Shared"]});
@@ -93,7 +93,7 @@
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
 
         retVal.dataOpacity = this.dataOpacity();
-        retVal.isStacked = this.isStacked();
+        retVal.stacked = this.stacked();
         retVal.bar = {
             groupWidth: this.groupWidth()
         };

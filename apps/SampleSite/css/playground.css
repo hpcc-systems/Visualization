@@ -178,9 +178,22 @@ table.table {
     -webkit-columns: 100px 3;
     -moz-columns: 100px 3;
     columns: 100px 3;
+    padding: 5px 10px;
 }
-.dropdown-menu > li > a {
+.dropdown-menu .widgetMenu {
+    padding-left: 20px;
+}
+.dropdown-menu > li {
+    font-size: 12px;
+    font-weight: bold;
+}
+.dropdown-menu .widgetMenu > li {
     font-size: 11px;
+    list-style: none;
+    cursor:pointer;
+}
+.dropdown-menu .widgetMenu > li:hover {
+    text-decoration: underline;
 }
 .loading_spinner {
     width:50px;
@@ -289,13 +302,10 @@ table.table {
 .prettyprint > .com {
     color:#333;
 }
-
-/* twbs nav */
-/*
-.navbar-brand, .navbar-nav li a {
-    line-height: 50px;
-    height: 50px;
+.layout_Surface > h3 {
+    font-size: 14px;
 }
-.navbar-nav li a {
-    padding-top: 0;
-}*/
+#get_example_code input[type='submit'] {
+    background: none;
+    border: none;
+}

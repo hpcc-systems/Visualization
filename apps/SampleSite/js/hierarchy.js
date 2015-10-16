@@ -13,7 +13,6 @@ function jump_to_function(target) {
 }
 
 var callbackFunc = function(widget) {
-
     $("#hierarchy-wrapper .tree_Dendrogram .node > circle").mouseover(function() {
         var index = 'src/'+$(this).text();
         var content = '<ul style="list-style-type: none;padding-left:0;padding-top:10px;">';
@@ -54,6 +53,7 @@ var callbackFunc = function(widget) {
 }
 
 function createTreeObj(str,obj) {
+    str = str.replace("src/", "");
     if (typeof str === "undefined" || str === null || typeof obj[str] === "undefined" || obj[str] === null) { return; }
     var arr = [];
 

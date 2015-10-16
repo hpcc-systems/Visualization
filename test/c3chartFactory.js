@@ -59,7 +59,7 @@
         },
         Pie: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Pie) {
+                require(["test/DataFactory", "src/c3chart/Pie"], function (DataFactory, Pie) {
                     callback(new Pie()
                     .columns(DataFactory.TwoD.subjects.columns)
                     .data(DataFactory.TwoD.subjects.data)
@@ -69,7 +69,7 @@
         },
         Step: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Step) {
+                require(["test/DataFactory", "src/c3chart/Step"], function (DataFactory, Step) {
                     callback(new Step()
                     .columns(DataFactory.ND.subjects.columns)
                     .data(DataFactory.ND.subjects.data)

@@ -5,12 +5,32 @@
         <!--The following src path should point to your local RequireJS config.js file-->
         <script type="text/javascript" src="config.js"></script>
         <script>
-            require(["apps/SampleSite/tempsrc/Popup", "src/amchart/Polar", "src/layout/Surface"], function (Popup, Polar, Surface) {
+            require(["src/layout/Popup", "src/amchart/Polar", "src/layout/Surface"], function (Popup, Polar, Surface) {
                 var modal = new Popup()
                     .size({width:500,height:500})
                     .target("main")
                     .position("fixed")
-                    .widget(new Surface().title("Modal Dialog Example").widget(new Polar().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .widget(new Surface()
+                        .title("Modal Dialog Example")
+                        .surfaceBackgroundColor("rgb(234, 249, 255)")
+                        .widget(new Polar()
+                            .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
+                            .data([
+                                ["English", 5, 43, 41, 92],
+                                ["English II", 17, 43, 83, 93],
+                                ["English III", 6, 43, 64, 93],
+                                ["Geography", 7, 45, 52, 83],
+                                ["Geography II", 16, 73, 52, 83],
+                                ["Geography III", 26, 83, 11, 72],
+                                ["Science", 66, 60, 85, 6],
+                                ["Science II", 46, 20, 53, 7],
+                                ["Science III", 46, 20, 38, 7],
+                                ["Math", 98, 30, 23, 13],
+                                ["Math II", 76, 30, 34, 6],
+                                ["Math III", 80, 30, 27, 8]
+                            ])
+                        )
+                    )
                     .render(function(d) {
                         d3.select("#modal button")
                         .on("click", function() {

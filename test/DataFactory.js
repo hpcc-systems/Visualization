@@ -22,15 +22,15 @@
                 high: [220],
                 low: [0],
                 data: [100],
-                axisLineWidth: [1],
                 axisAlpha: [0.2],
+                axisLineWidth: [1],
                 tickAlpha: [0.2],
                 valueInterval: [20]
             }
         },
         TwoD: {
             subjects: {
-                columns: ["Subject"],
+                columns: ["Subject", "Year 1"],
                 data: [
                     ["Geography", 75],
                     ["English", 45],
@@ -163,47 +163,7 @@
         },
         Form: {
             simple: {
-                inputs: function () {
-                    return [
-                        new Input()
-                            .name("textbox-test")
-                            .label("Alphanumeric")
-                            .type("textbox")
-                            .validate("^[A-Za-z0-9]+$")
-                            .value("SomeString123"),
-                        new Input()
-                            .name("number-test")
-                            .label("Number Test")
-                            .type("number")
-                            .validate("\\d+")
-                            .value(123),
-                        new Input()
-                            .name("select-test")
-                            .label("Select Test")
-                            .type("select")
-                            .selectOptions(["A", "B", "C"])
-                            .value("B"),
-                        new WidgetArray()
-                            .content([
-                                new Input()
-                                    .name("textbox-test")
-                                    .label("Only Alpha")
-                                    .type("textbox")
-                                    .validate("^[A-Za-z]+$")
-                                    .value("SomeString"),
-                                new Input()
-                                    .name("checkbox-test")
-                                    .label("Checkbox Test")
-                                    .type("checkbox")
-                                    .value(true)
-                            ]),
-                        new Input()
-                            .name("textarea-test")
-                            .label("Textarea Test")
-                            .type("textarea")
-                            .value("Textarea Text")
-                    ];
-                }
+                 
             }
         },
         Slider: {
@@ -237,21 +197,24 @@
                 title: ["Hello and welcome!"],
                 menu: ["aaa", "bbb", "ccc"],
                 buttonAnnotations: [{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}],
-                widget: function () { return new Surface().widget(new MultiChartSurface()) }
             }
         },
         AbsoluteSurface: {
             simple: {
                 widgetX: [25],
                 widgetY: [25],
-                widgetWidth: [50],
                 widgetHeight: [50],
-                widget: function () { return new Column(); }
+                widgetWidth: [50],
             }
         },
         Layered: {
             simple: {
                 
+            }
+        },
+        Popup: {
+            simple: {
+
             }
         },
         HeatMap: {

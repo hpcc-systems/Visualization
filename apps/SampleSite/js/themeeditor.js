@@ -4,71 +4,54 @@ var g_serial;
 var g_palette;
 var g_showTitles = true;
 var g_showHover = true;
+var widgetArrToTest = []
+var g_themeEditor;
+var g_args;
+var g_persist;
+var g_similarProps;
+var g_allProps;
+var g_gridCols;
+var g_gridFitAll = true;
+var g_mainGrid;
+var body = document.getElementById("body");
+var mainDiv = document.getElementById("graph-container");
+var frame = null;
+var main = null;
+var testWidgetArr = null;
+var currWidget = null;
+var debouncedResize = null;
+var toggleCellTitle = null;
+var g_gridThis;
+var g_themeObj;
+var g_serialObj;
+
 $(function() {
     g_checkedFilter = window.location.search.split("?")[1];
     g_checkedFilter = g_checkedFilter === 'png' ? undefined : g_checkedFilter;
-    buildCheckboxList();
-    initWidgetTestArr();
+    // buildCheckboxList();
+    // initWidgetTestArr();
     window.addEventListener("TE Properties Ready",insertJQueryThemeEditorOptions,false);
 });
-var widgetArrToTest = [
-    {"header": "Shape"},
-    {"Shape": "src/common/Shape"},
-    {"Text": "src/common/Text"},
-    {"Text Box": "src/common/TextBox"},
-    {"FA Char": "src/common/FAChar"},
-    {"Icon": "src/common/Icon"},
-    {"List": "src/common/List"},
-    {"Menu": "src/common/Menu"},
-    {"Surface": "src/common/Surface"},
-    {"header": "C3 Charts"},
-    {"Area Chart": "src/c3chart/Area"},
-    {"Bar Chart": "src/c3chart/Bar"},
-    {"Column Chart": "src/c3chart/Column"},
-    {"Line Chart": "src/c3chart/Line"},
-    {"Scatter Chart": "src/c3chart/Scatter"},
-    {"Step Chart": "src/c3chart/Step"},
-    {"Pie Chart": "src/c3chart/Pie"},
-    {"Donut Chart": "src/c3chart/Donut"},
-    {"Gauge Chart": "src/c3chart/Gauge"},
-    {"header": "Google Charts"},
-    {"Pie Chart": "src/google/Pie"},
-    {"Bar Chart": "src/google/Bar"},
-    {"Column Chart": "src/google/Column"},
-    {"Line Chart": "src/google/Line"},
-    {"Area Chart": "src/google/Area"},
-    {"header": "D3 Charts"},
-    {"Column Chart": "src/chart/Column"},
-    {"Bubble Chart": "src/chart/Bubble"},
-    {"Line Chart": "src/chart/Line"},
-    {"Pie Chart": "src/chart/Pie"},
-    {"MultiChart": "src/chart/MultiChart"},
-    {"MultiChart Surface": "src/chart/MultiChartSurface"},
-    {"header": "Choropleth"},
-    {"Choropleth (States)": "src/map/ChoroplethStates"},
-    {"Choropleth (Counties)": "src/map/ChoroplethCounties"},
-    {"Choropleth (Countries)": "src/map/ChoroplethCountries"},
-    {"header": "Other"},
-    {"Dendrogram": "src/tree/Dendrogram"},
-    {"Circle Packing": "src/tree/CirclePacking"},
-    {"Sunburst Partition": "src/tree/SunburstPartition"},
-    {"Vertext": "src/graph/Vertex"},
-    {"Table": "src/other/Table"},
-    {"Marshaller": "src/marshaller/HTML"},
-    {"header": "AmCharts"},
-    {"Area Chart": "src/amchart/Area"},
-    {"Bar Chart": "src/amchart/Bar"},
-    {"Bubble Chart": "src/amchart/Bubble"},
-    {"Candle Chart": "src/amchart/Candle"},
-    {"Floating Column Chart": "src/amchart/FloatingColumn"},
-    {"Funnel Chart": "src/amchart/Funnel"},
-    {"Gauge Chart": "src/amchart/Gauge"},
-    {"Line Chart": "src/amchart/Line"},
-    {"Pie Chart": "src/amchart/Pie"},
-    {"Polar Chart": "src/amchart/Polar"},
-    {"Pyramid Chart": "src/amchart/Pyramid"},
-    {"Scatter Chart": "src/amchart/Scatter"},
-];
+
+require(["./test/Factory"],
+    function (testFactory){
+
+    var categoryOptions = d3.map(testFactory.categories).entries();
+    categoryOptions.forEach(function(d,i) {
+        widgetArrToTest.push({"header":getProperName(d.key)})
+
+        var widgetOptions = d3.map(d.value).entries();
+        widgetOptions.forEach(function(d2) {
+            var key = d2.key;
+            var obj = {};
+            obj[key] = d3.map(d2.value).entries()[0].value.widgetPath;
+            widgetArrToTest.push(obj);
+        })
+    });
+    buildCheckboxList();
+    initWidgetTestArr();
+});
+
 function findExceptionPartials(arr){
     var ret_arr = [];
     arr.forEach(function(b){
@@ -107,33 +90,14 @@ function teViewSaves(method){
     $('#modal .modal-dialog').css({"width":'90%',"height":'90%'});
     $('#modal textarea').height(100);
 }
-var g_themeEditor;
-var g_args;
-var g_persist;
-var g_similarProps;
-var g_allProps;
-var g_gridCols;
-var g_gridFitAll = true;
-var g_mainGrid;
-var body = document.getElementById("body");
-var mainDiv = document.getElementById("graph-container");
-var frame = null;
-var main = null;
-var testWidgetArr = null;
-var currWidget = null;
-var debouncedResize = null;
-var toggleCellTitle = null;
-var g_gridThis;
-
-var g_themeObj;
-var g_serialObj;
 g_defaultThemes();
 g_defaultSerials();
 
-require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/ThemeEditor", "src/common/Palette"],
-    function (Surface, Grid, Persist, ThemeEditor, Palette) {
+require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/ThemeEditor", "src/common/Palette", "./test/Factory"],
+    function (Surface, Grid, Persist, ThemeEditor, Palette, testFactory){
         g_persist = Persist;
         g_palette = Palette;
+
         fillWidgetColorsDropdown();
         var themeEditor = new ThemeEditor().showColumns(false).showData(false).showSettings(true);
         main = new Grid()
@@ -166,7 +130,6 @@ require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/othe
             g_themeEditor._data[0].render();
         }
         testWidgetArr = function (testWidget) {
-
             var includePathArr;
             g_themeEditor = themeEditor;
             themeEditor.__meta_loadedTheme.set = themeEditor.getDefaultThemes();
@@ -197,15 +160,22 @@ require(["src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/othe
                     if(g_showTitles){
                         cellTitle = testWidget[aIdx-1];
                     }
-                    var widgetObj = new arguments[aIdx]().testData();
-                    var wData = widgetObj.data();
-                    for(var i in wData){
-                        if(/^[a-zA-Z\s]+$/.test(wData[i][0])){
-                            wData[i][0] = String.fromCharCode(65 + parseInt(i));
-                        }
+                    testWidg = function(func, idx, title){
+                        func(function(widg){
+                            var widgetObj =widg;
+                            var wData = widgetObj.data();
+                            for(var i in wData){
+                                if(/^[a-zA-Z\s]+$/.test(wData[i][0])){
+                                    wData[i][0] = String.fromCharCode(65 + parseInt(i));
+                                }
+                            }
+                            widgetObj.data(wData);
+                            currWidget.setContent(Math.floor((idx-1)/gridCols), (idx-1)%gridCols, widgetObj, title);
+                            currWidget.render();  
+                        });
                     }
-                    widgetObj.data(wData);
-                    currWidget.setContent(Math.floor((aIdx-1)/gridCols), (aIdx-1)%gridCols, widgetObj, cellTitle);
+                    testWidg(d3.map(testFactory.widgets[includePathArr[aIdx]]).values()[0].factory, aIdx, cellTitle)
+                   
                 }
                 if(typeof(currWidget.content()[0]) !== 'undefined'){
                     applyTheme([currWidget.content()[0]],themeEditor.themeMode());
@@ -309,7 +279,7 @@ function buildCheckboxList() {
         function _defaultRandomCharts(n){
             var retArr = [];
             var allSrc = [];
-            var excludeList = ["src/common/Text", "src/chart/MultiChart"];
+            var excludeList = ["src/common/Text", "src/chart/MultiChart", "src/common/Composition"];
             for(var i in widgetArrToTest){
                 if(typeof (widgetArrToTest[i]['header']) === 'undefined'){
                     for(var j in widgetArrToTest[i]){
@@ -339,7 +309,7 @@ function initWidgetTestArr() {
     var checkboxArr = $("#dropdown-checkbox-wrapper input");
     widgetArrToTest = [];
     checkboxArr.each(function(i, checkbox) {
-        if ($(checkbox).is(':checked')) {
+        if ($(checkbox).not(".headerCheck").is(':checked')) {
             widgetArrToTest.push($(checkbox).val());
         }
     });

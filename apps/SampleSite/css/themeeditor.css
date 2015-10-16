@@ -28,15 +28,16 @@ main {
 }
 #dropdown-checkbox-wrapper  li {
     text-shadow: none;
+    line-height: 1.3;
 }
 #dropdown-checkbox-buttons {
     float:right;
-    margin: -15px 20px 10px 0;
+    margin: 5px 10px;
 }
 .menu_item label {
     font-size: 11px;
     display: block;
-    padding: 1px 20px;
+    padding: 0px 20px;
     clear: both;
     font-weight: normal;
     line-height: 1.42857143;
@@ -103,8 +104,11 @@ main {
 .headerCheck{
     margin-right: 4px;
     position: relative;
-    top: 2px;
 }
 #graph-container .cell__w1 > div > .layout_Cell{
     border:0;
+}
+#dropdown-checkbox-wrapper input[type='checkbox'] {
+    float: left;
+    margin: 0px 3px;
 }

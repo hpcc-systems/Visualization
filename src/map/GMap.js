@@ -51,6 +51,7 @@
             console.error(context.getProjection);
             console.error(projection);
 
+            //
             var bounds = context._map.getBounds();
             var center = projection.fromLatLngToDivPixel(bounds.getCenter());
             var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());

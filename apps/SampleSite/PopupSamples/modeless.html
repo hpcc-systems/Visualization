@@ -5,14 +5,13 @@
         <!--The following src path should point to your local RequireJS config.js file-->
         <script type="text/javascript" src="config.js"></script>
         <script>
-            require(["apps/SampleSite/tempsrc/Popup", "src/amchart/FloatingColumn", "src/layout/Surface"], function (Popup, Floating, Surface) {
+            require(["src/layout/Popup", "src/chart/Column", "src/layout/Surface"], function (Popup, Column, Surface) {
                 var dialog = new Popup()
                     .size({width:400,height:500})
                     .target("main")
                     .position("fixed")
                     .widget(new Surface()
                         .title("Modeless Dialog Example")
-                        .widget(new Floating().testData())
                         .surfaceBackgroundColor("rgb(234, 249, 255)")
                         .buttonAnnotations([
                             {
@@ -24,6 +23,16 @@
                                 font: "FontAwesome"
                             }
                         ])
+                        .widget(new Column()
+                            .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+                            .data( [
+                                ["Geography", 75, 68, 65],
+                                ["English", 45, 55, 52],
+                                ["Math", 98, 92, 90],
+                                ["Science", 66, 60, 72]
+                            ])
+                            .orientation("vertical")
+                        )
                         .on("click", function(obj) {
                             if (obj.class !== "close") {return;}
                             dialog.updateState(false);

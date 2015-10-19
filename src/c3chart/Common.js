@@ -18,10 +18,7 @@
                 position: "bottom",
                 show: true
             },
-            data: {
-                columns: [],
-                rows: []
-            }
+            data: {}
         };
         this._prevColumnIDs = [];
     }
@@ -102,6 +99,8 @@
             };
         }
         this._config.bindto = element.append("div").datum(null);
+
+        this._config.data.columns = this.getC3Columns();
         this.c3Chart = c3.generate(this._config);
     };
 

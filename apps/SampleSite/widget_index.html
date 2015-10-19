@@ -34,6 +34,7 @@
         <!-- custom js -->
         <script src="js/svg_to_png.js"></script>
         <script src="js/demo_data.js"></script>
+        <script src="js/common.js"></script>
         <script type="text/javascript" src="js/widget_index.js"></script>
         <script src="js/theme_defaults.js"></script>
         <script src="js/init_bootstrap_demo_page.js"></script>
@@ -48,6 +49,24 @@
                 });
             });
         </script>
+        <style type="text/css">
+            #dropdown-checkbox-wrapper input[type='checkbox'] {
+                float:left;
+                margin: 1px 3px;    
+            }
+            #dropdown-checkbox-wrapper ul {
+                list-style: none;
+            }
+            ul.widgetMenu {
+                padding-left: 0px;
+            }
+            .menu_item label span {
+                top: 0px; 
+            }
+            #themeGroup .dropdown-menu {
+                width: 570px;
+            }
+        </style>
 
     </head>
     <body onresize="doResize();">

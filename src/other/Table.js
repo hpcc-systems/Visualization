@@ -30,6 +30,8 @@
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     
+    Table.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
+    
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadFontColor", null, "html-color", "Table head font color", null, { tags: ["Basic"], optional: true });
@@ -134,7 +136,13 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-       
+        if(this.fixedSize()){
+            var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
+            element.style({width: box.width + "px",height: box.height + "px"});
+        } else {
+            element.style({width: "100%",height: "100%"});
+        }
+        
         if (!this.showHeader()) {
             this.fixedHeader(false);
         } 

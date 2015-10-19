@@ -47,13 +47,13 @@
                         "src/amchart/Bar",
                         "src/amchart/Bar",
                         "src/amchart/Bar",
-                        "src/amchart/FloatingColumn",
+                        "src/amchart/Bar",
                     ],
                     "columns":[
                         ["Subject", "Year 1"],
                         ["Subject", "Year 1"],
                         ["Subject", "Year 1"],
-                        ["Subject", "open", "close"],
+                        ["Subject", "Year 1", "Year 2"],
                     ],
                     "data":[
                         [["A",34],["B",54],["C",91],["D",75]],
@@ -84,7 +84,25 @@
                         {"Depth3D":10,"Angle3D":45,"fillOpacity":1,"isStacked":true},
                         {"Depth3D":10,"Angle3D":45,"fillOpacity":1,"isStacked":true,"cylinderBars":true},
                     ],
-                    "buttons": []
+                    "buttons": [],
+                    "columns":[
+                        ["Subject", "Year 1", "Year 2"],
+                        ["Subject", "Year 1", "Year 2"]
+                    ],
+                    "data":[
+                        [
+                            ["Geography", 15, 35],
+                            ["English", 25, 45],
+                            ["Math", 10, 35],
+                            ["Science", 45, 60]
+                        ],
+                        [
+                            ["Geography", 15, 35],
+                            ["English", 25, 45],
+                            ["Math", 10, 35],
+                            ["Science", 45, 60]
+                        ]
+                    ]
                 },
                 {
                     "title": "3D Amchart Pie",
@@ -95,7 +113,13 @@
                         {"Depth3D":10,"Angle3D":45,"paletteGrouping":"By Category","fillOpacity":1},
                         {"Depth3D":10,"Angle3D":45,"fillOpacity":1},
                     ],
-                    "buttons": []
+                    "buttons": [],
+                    "columns":[
+                        ["Subject", "Year 1"]
+                    ],
+                    "data":[
+                        [["A",34],["B",54],["C",91],["D",75]]
+                    ]
                 },
                 {
                     "title": "3D Amchart Pie (Donut)",
@@ -105,7 +129,13 @@
                     "params":[
                         {"Depth3D":10,"Angle3D":35,"holePercent":30},
                     ],
-                    "buttons": []
+                    "buttons": [],
+                    "columns":[
+                        ["Subject", "Year 1"]
+                    ],
+                    "data":[
+                        [["A",34],["B",54],["C",91],["D",75]]
+                    ]
                 },
             ];
             $(function(){

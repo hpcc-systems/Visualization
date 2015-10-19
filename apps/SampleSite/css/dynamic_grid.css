@@ -37,7 +37,7 @@
 }
 #grid-json-object > li {
     padding:8px;
-    width:800px;
+    width:500px;
 }
 #object_editor {
     font-size: 10px;
@@ -51,7 +51,7 @@
     border-radius: 4px;
     overflow: auto;
     width: 100%;
-    height:500px;
+    height:400px;
 }
 .view_source { 
     position: absolute; 

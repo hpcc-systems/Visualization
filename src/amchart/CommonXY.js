@@ -20,9 +20,9 @@
 
     CommonXY.prototype.publish("xAxisType", "ordinal", "set", "X Axis Type", ["linear", "ordinal"],{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
-    CommonXY.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared"]});
-    CommonXY.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
+    CommonXY.prototype.publish("fontColor", "#000000", "html-color", "Font Color",null,{tags:["Basic","Shared"]});
 
     CommonXY.prototype.publish("lineWidth", 0, "number", "Line Thickness", null, {min:0,max:10,step:1,inputType:"range",tags:["Basic","Shared"]});
     CommonXY.prototype.publish("lineColor", null, "html-color", "Color of the data/content lines",null,{tags:["Basic","Shared"]});

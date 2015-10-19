@@ -61,8 +61,8 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/google/Pie"], function (DataFactory, Pie) {
                     callback(new Pie()
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(DataFactory.ND.subjects.data)
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
                     );
                 });
             }

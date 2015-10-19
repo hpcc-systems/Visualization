@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Surface"], factory);
+        define(["d3", "./Surface"], factory);
     } else {
-        root.layout_Cell = factory(root.layout_Surface);
+        root.layout_Cell = factory(root.d3, root.layout_Surface);
     }
-}(this, function (Surface) {
+}(this, function (d3, Surface) {
     function Cell() {
         Surface.call(this);
         this._dragHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
@@ -19,6 +19,12 @@
     Cell.prototype.publish("gridRowSpan", 1, "number", "Grid Row Span",null,{tags:["Private"]});
     Cell.prototype.publish("gridColSpan", 1, "number", "Grid Column Span",null,{tags:["Private"]});
     Cell.prototype.publish("handleSize", 6, "number", "Grid Row Position",null,{tags:["Private"]});
+    
+    Cell.prototype.publish("indicateTheseIds", [], "array", "Array of DOM Ids to display update-indicators over.",null,{tags:["Private"]});
+    
+    Cell.prototype.publish("indicatorGlowColor", "#EEEE11", "html-color", "Glow color of update-indicator",null,{tags:["Basic"]});
+    Cell.prototype.publish("indicatorBorderColor", "#F48A00", "html-color", "Border color of update-indicator",null,{tags:["Basic"]});
+    Cell.prototype.publish("indicatorOpacity", 0.8, "number", "Opacity of update-indicator",null,{tags:["Basic"]});
 
     Cell.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);
@@ -29,6 +35,10 @@
         Surface.prototype.update.apply(this, arguments);
         var context = this;
         var offsetMultiple;
+        
+        element
+            .on("mouseenter",this.onMouseEnter())
+            .on("mouseleave",this.onMouseLeave());
 
         var dragHandles = element.selectAll(".dragHandle").data(this._dragHandles, function (d) { return d; });
         dragHandles.enter().append("div")
@@ -139,6 +149,42 @@
             })
         ;
         dragHandles.exit().remove();
+    };
+
+    Cell.prototype.onMouseEnter = function (widgetArr){
+        var arr = this.indicateTheseIds();
+        var opacity = this.indicatorOpacity();
+        var indicatorBorderColor = this.indicatorBorderColor();
+        var indicatorGlowColor = this.indicatorGlowColor();
+        return function(){
+            for(var i in arr){
+                var node = document.getElementById(arr[i]);
+                var rect = node.getBoundingClientRect();
+                d3.select(this).append("div").classed("update-indicator",true)
+                    .style({
+                        "box-sizing":"border-box",
+                        position: "fixed",
+                        top: rect.top + "px",
+                        left: rect.left + "px",
+                        width: rect.width + "px",
+                        height: rect.height + "px",
+                        opacity: opacity,
+                        padding: "0px",
+                        "z-index": 1000,
+                        "border": "4px solid "+indicatorBorderColor,
+                        "-webkit-box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
+                        "-moz-box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
+                        "box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
+                    })
+                ;
+            }
+        };
+    };
+    Cell.prototype.onMouseLeave = function (){
+        var element = this.element();
+        return function (){
+            element.selectAll(".update-indicator").remove();
+        };
     };
 
     return Cell;

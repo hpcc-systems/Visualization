@@ -42,7 +42,13 @@
             .font(this.fontFamily())
             .padding(this.padding())
         ;
-        this.svg = element.append("g");
+        this.zoomListener = d3.behavior.zoom()
+            .scaleExtent([1, 10])
+            .on("zoom", function () {
+                element.attr("transform", "translate(" + d3.event.translate[0] + "," + d3.event.translate[1] + ")" + "scale(" + d3.event.scale + ")");
+            })
+        ;
+        this._parentElement.call(this.zoomListener);
     };
 
     WordCloud.prototype.update = function (domNode, element) {
@@ -69,7 +75,7 @@
 
         function draw(data, bounds) {
             var fill = d3.scale.category20();
-            var text = context.svg.selectAll("text")
+            var text = element.selectAll("text")
                 .data(data, function (d) { return d.__viz_0 ? d.__viz_0.toLowerCase() : ""; })
             ;
             text.transition()
@@ -109,9 +115,11 @@
                 var dx = bounds[1].x - bounds[0].x,
                     dy = bounds[1].y - bounds[0].y,
                     borderScale = 0.9 / Math.max(dx / w, dy / h);
-                context.svg.transition().delay(1000).duration(750)
-                    .attr("transform", "scale(" + borderScale + ")")
+                
+                element.transition().delay(1000).duration(750)
+                    .attr("transform", "translate("+context._pos.x+","+context._pos.y+")scale(" + borderScale + ")")
                 ;
+                context.zoomListener.scale(borderScale).translate([context._pos.x,context._pos.y]);         
             }
         }
     };

@@ -9,9 +9,48 @@
     return {
         Form: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/form/Form"], function (DataFactory, Form) {
+                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/common/WidgetArray"], function (DataFactory, Form, Input, WidgetArray) {
                     callback(new Form()
-                        .inputs(DataFactory.Form.simple.inputs())
+                        .inputs([
+                            new Input()
+                                .name("textbox-test")
+                                .label("Alphanumeric")
+                                .type("textbox")
+                                .validate("^[A-Za-z0-9]+$")
+                                .value("SomeString123"),
+                            new Input()
+                                .name("number-test")
+                                .label("Number Test")
+                                .type("number")
+                                .validate("\\d+")
+                                .value(123),
+                            new Input()
+                                .name("select-test")
+                                .label("Select Test")
+                                .type("select")
+                                .selectOptions(["A", "B", "C"])
+                                .value("B"),
+                            new WidgetArray()
+                                .content([
+                                    new Input()
+                                        .name("textbox-test")
+                                        .label("Only Alpha")
+                                        .type("textbox")
+                                        .validate("^[A-Za-z]+$")
+                                        .value("SomeString"),
+                                    new Input()
+                                        .name("checkbox-test")
+                                        .label("Checkbox Test")
+                                        .type("checkbox")
+                                        .value(true)
+                                ]),
+                            new Input()
+                                .name("textarea-test")
+                                .label("Textarea Test")
+                                .type("textarea")
+                                .value("Textarea Text")
+                            ]
+                        )
                     );
                 });
             }

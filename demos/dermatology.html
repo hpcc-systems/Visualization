@@ -300,7 +300,13 @@
                     currWidget = widget;
                     if (params) {
                         for (var key in params) {
-                            currWidget[key](params[key]);
+                            if(currWidget["__meta_"+key] !== undefined){
+                                if(currWidget["__meta_"+key].type === "array"){
+                                    currWidget[key](params[key].split(","));
+                                } else {
+                                    currWidget[key](params[key]);
+                                }
+                            }
                         }
                     }
                     main

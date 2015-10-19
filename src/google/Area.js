@@ -16,7 +16,7 @@
     Area.prototype.constructor = Area;
     Area.prototype._class += " google_Area";
 
-    Area.prototype.publish("isStacked", false, "boolean", "Stacks The Elements In A Series",null,{tags:["Advanced","Shared"]});
+    Area.prototype.publish("stacked", false, "boolean", "Stacks The Elements In A Series",null,{tags:["Advanced","Shared"]});
     Area.prototype.publish("fillOpacity", null, "number", "Opacity of The Fill Color",null,{tags:["Intermediate","Shared"]});
 
     Area.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size",null,{tags:["Basic","Shared"]});
@@ -105,7 +105,7 @@
         retVal.selectionMode = this.selectionMode();
         retVal.dataOpacity = this.dataOpacity();
 
-        retVal.isStacked = this.isStacked();
+        retVal.stacked = this.stacked();
         retVal.areaOpacity = this.fillOpacity();
 
         retVal.hAxis = {};

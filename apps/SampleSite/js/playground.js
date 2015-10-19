@@ -3,31 +3,120 @@
 var g_widget;
 var s_widget;
 var doc_page;
-function quickChartInit(path, width, height){
-    var path = "src/" + path;
 
-    require([path,"src/common/Palette"], function(WidgetObj, Palette) {
+function buildMenu() {
+    require(["d3", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "test/Factory"], function (d3, Surface, Grid, Persist, PropertyEditor, testFactory) {
+        var widgetPath = "src/chart/Column";
+        var params = {};
+        var sampleSelect = d3.select(".dropdown-menu");
+        var categoryOptions = sampleSelect.selectAll("li").data(d3.map(testFactory.categories).entries());
 
-    function clonePaletteID(sourceID, targetID) {Palette.ordinal(sourceID).clone(targetID); return targetID;}
-
-        var i = 0;
-        g_widget = new WidgetObj()
-            .target('widget-wrapper')
-            //.paletteID(clonePaletteID("default","uid_" + i++))
-            .testData()
-            .render(function (widget) {
-                discover_this(widget);
-                updateSerialization(widget);
-                $("#exportPNGButton").click(function() {
-                    //var url = ""
-                   //document.getElementById('myiframe').src = url;
-                });
-            })
+        categoryOptions.enter()
+            .append("li")
+            .attr("value", function (d, idx) { return idx; })
+            .text(function (d) { return getProperName(d.key); })
+            .append("ul")
         ;
-        $('.loading_spinner').remove();
-    });
+        var thisFactory = "",
+            thisWidget = "";
 
+        categoryOptions.each(function (d1, idx) {
+            var categorySelect = d3.select(this).select("ul").classed("widgetMenu", true);
+            var widgetOptions = categorySelect.selectAll("li").data(d3.map(d1.value).entries());
+            widgetOptions.enter()
+                .append("li")
+                .attr("value", function (d, idx) { return idx; })
+                .text(function (d) { return d.key; })
+                .on("click", function (d) {
+                    widgetPath = d3.map(d.value).values()[0].widgetPath;
+                    getExampleCode(d1.key, d.key);
+                    testWidget(d3.map(d.value).values()[0].factory);
+                    $('a[href="#chartTab1"]').html(getProperName(d1.key) + ": " + d.key);
+                })
+            ;
+        });
+        categoryOptions.exit()
+            .remove()
+        ;
+    
+        var serializationSurface = new Surface()
+            .target("serialization-test-wrapper")
+            .surfacePadding(10)
+        ;
+
+        frame = new Surface()
+            .target("widget-wrapper")
+            .surfacePadding(0)
+            .surfaceBorderWidth(0)
+        ;
+    
+        function displaySerialization(sourceWidget) {
+            sourceWidget = sourceWidget;
+            Persist.clone(sourceWidget, function (widget) {
+                serializationSurface
+                    .widget(widget)
+                    .render()
+                ;
+            });
+        }
+
+        function displaySerializationText(sourceWidget) {
+            sourceWidget = sourceWidget;
+            var text = JSON.stringify(Persist.serializeToObject(sourceWidget, null, false), null, "  ");
+            d3.select("#serialization-json-wrapper")
+                .attr("class", "prettyprint")
+                .text(text)
+            ;
+        }
+
+        testWidget = function (func, params) {
+            func(function (widget) {
+                currWidget = widget;
+                if (params) {
+                    for (var key in params) {
+                        currWidget[key](params[key]);
+                    }
+                }
+                frame
+                    .widget(currWidget)
+                    .render(function (mainWidget) {
+                        displaySerialization(currWidget);
+                        displaySerializationText(currWidget);
+                        discover_this(currWidget);
+                        updateSerialization(currWidget);
+                        $('#hierarchy-wrapper').empty();
+                        getHierarchyDynamically('../../' + widgetPath, widgetPath);
+                        var splitPath = widgetPath.replace("src/", "").split("/");
+                        getExampleCode(splitPath[0], splitPath[1]);
+                        $('a[href="#chartTab1"]').unbind().on("shown.bs.tab",function(){
+                            frame
+                                .resize()
+                                .render()
+                            ;
+                        });
+                        doc_page = widgetPath.replace("src/", ""); 
+                    })
+                ;
+            });
+        };
+
+        var first = true;
+        frame.doResize = Surface.prototype.debounce(function () {
+            this
+                .resize()
+                .render()
+            ;
+            if (first) {
+                first = false;
+
+                testWidget(d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params);
+                $('a[href="#chartTab1"]').html(getProperName(d3.map(testFactory.widgets[widgetPath]).values()[0].folder) + ": " + d3.map(testFactory.widgets[widgetPath]).values()[0].file);
+            }
+        }, 250);
+        frame.doResize();
+    });
 }
+
 function discover_this(widget_obj) { // from dermatology_modal.js
     $('#discover-pane').empty();
     require(["src/other/PropertyEditor"], function(PropertyEditor) {
@@ -35,7 +124,7 @@ function discover_this(widget_obj) { // from dermatology_modal.js
             .data([widget_obj])
             .target("discover-pane")
             .paramGrouping("By Widget")
-            .collapsibleSections(false)
+            // .collapsibleSections(false)
             .show_settings(false)
             .render()
         ;
@@ -48,6 +137,7 @@ function discover_this(widget_obj) { // from dermatology_modal.js
         };
     });
 }
+
 function updateSerialization(widget) {
     require(["src/other/Persist"], function (Persist) {
         function displaySerialization(sourceWidget) {
@@ -76,37 +166,21 @@ function updateSerialization(widget) {
         displaySerializationText(widget);
     });
 }
-function update_chart(el) {
-    // Note: Data Attr(s) in Handlebar Template
-    var chartObjPath = $(el).data("value"),
-        chartObjWidth = parseInt($(el).data("width")),
-        chartObjHeight = parseInt($(el).data("height")),
-        //chartObjExample = $(el).data("example-url");
-        chartObjExample = $(el).data("value");
 
-    quickChartInit(chartObjPath, chartObjWidth, chartObjHeight);
-    getExampleCode("sample_html/" + chartObjPath + ".html");
-    $('#hierarchy-wrapper').empty();
-    getHierarchyDynamically('../../src/' + chartObjPath, chartObjPath);
-    $('a[href="#chartTab1"]').html(el.html()); // Update Tab Title
-
-    doc_page = chartObjPath; //for show doc button
-
-    /* Doc Section */
-    //resetDocVars();  // Reset Vars
-    //buildWidgetDocumentation(chartObjPath); // Build Doc and Update
-}
-function getExampleCode(exUrl){
+function getExampleCode(cat, widg){
     $.ajax({
-        url: exUrl,
+        url: "sample_html/" + cat + "/" + widg + ".html",
         success: function(html) {
             $('#example-code-pre').text(html);
             $('#example-code-pre').removeClass('prettyprinted');
             prettyPrint();
         },
         error: function() {
-            $('#example-code-pre').text('Example Code File Not Found: ' + exUrl );
+            createExampleCode(cat, widg, "", function(code) {
+                $('#example-code-pre').text(code);
+                $('#example-code-pre').removeClass('prettyprinted');
+                prettyPrint();
+            });
         }
     });
-    $('#get_example_code').attr('href', exUrl);
 }

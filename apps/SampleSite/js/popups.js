@@ -1,11 +1,19 @@
-require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", "src/amchart/Line", "src/layout/Surface", "src/amchart/Gauge", "src/amchart/Polar", "src/amchart/FloatingColumn"],
-    function (Popup, Pie, Column, Line, Surface, Gauge, Polar, Floating) {
-        
+require(["src/layout/Popup", "src/layout/Surface", "./test/Factory"],
+    function (Popup, Surface, testFactory) {
+
         var dropdown = new Popup()
             .size({width:400, height:400})
             .target("dropdown")
             .position("absolute")
-            .widget(new Surface().title("Dropdown Example").widget(new Pie().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+            .widget(new Surface()
+                .title("Dropdown Example")
+                .surfaceBackgroundColor("rgb(234, 249, 255)")
+                .render(function(d){
+                    d.widget(testFactory.categories.chart.Pie.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
+            )
             .render(function(d) {
                 d3.select("#dropdown button")
                 .on("click", function() {
@@ -19,7 +27,15 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
             .target("dropup")
             .position("absolute")
             .top(-390)
-            .widget(new Surface().title("Dropup Example").widget(new Line().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+            .widget(new Surface()
+                .title("Dropup Example")
+                .surfaceBackgroundColor("rgb(234, 249, 255)")
+                .render(function(d){
+                    d.widget(testFactory.categories.amchart.Line.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
+            )
             .render(function(d) {
                 d3.select("#dropup button")
                 .on("click", function() {
@@ -34,7 +50,15 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
             .position("absolute")
             .top(10)
             .left(120)
-            .widget(new Surface().title("Dropleft Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+            .widget(new Surface()
+                .title("Dropleft Example")
+                .surfaceBackgroundColor("rgb(234, 249, 255)")
+                .render(function(d){
+                    d.widget(testFactory.categories.google.Column.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
+            )
             .render(function(d) {
                 d3.select("#dropleftright button.btn-left")
                 .on("click", function() {
@@ -49,7 +73,15 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
             .position("absolute")
             .top(10)
             .right(134)
-            .widget(new Surface().title("Dropright Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+            .widget(new Surface()
+                .title("Dropright Example")
+                .surfaceBackgroundColor("rgb(234, 249, 255)")
+                .render(function(d){
+                    d.widget(testFactory.categories.google.Column.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
+            )
             .render(function() {
                 d3.select("#dropleftright button.btn-right")
                 .on("click", function() {
@@ -64,7 +96,6 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
             .position("fixed")
             .widget(new Surface()
                 .title("Modal Dialog With Close Button")
-                .widget(new Gauge().testData())
                 .surfaceBackgroundColor("rgb(234, 249, 255)")
                 .buttonAnnotations([
                     {
@@ -84,25 +115,31 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
                     modalx.updateState(false);
                     d3.select("#mask2").style("display", "none");
                 })
+                .render(function(d){
+                    d.widget(testFactory.categories.amchart.Gauge.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
             )
             .render(function(d) {
                 d3.select("#modal_x button")
                     .on("click", function() {
+                        console.log(this);
                         modalx.updateState(true);
                         d3.select("#mask2").style("display", "block");
-                    });
+                    })
+                ;
             })
         ;         
         modalx.left(document.documentElement.clientWidth / 2 - modalx._size.width / 2);
         modalx.top(document.documentElement.clientHeight / 2 - modalx._size.height / 2);
-        
+
         var dialog = new Popup()
             .size({width:400,height:500})
             .target("main")
             .position("fixed")
             .widget(new Surface()
                 .title("Modeless Dialog Example")
-                .widget(new Floating().testData())
                 .surfaceBackgroundColor("rgb(234, 249, 255)")
                 .buttonAnnotations([
                     {
@@ -117,6 +154,11 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
                 .on("click", function(obj) {
                     if (obj.class !== "close") {return;}
                     dialog.updateState(false);
+                })
+                .render(function(d){
+                    d.widget(testFactory.categories.chart.Column.bar.factory(function(widg) {
+                        d.widget(widg);
+                    }));
                 })
             )
             .render(function(d) {
@@ -133,7 +175,15 @@ require(["apps/SampleSite/tempsrc/Popup", "src/chart/Pie", "src/google/Column", 
             .size({width:500,height:500})
             .target("main")
             .position("fixed")
-            .widget(new Surface().title("Modal Dialog Example").widget(new Polar().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+            .widget(new Surface()
+                .title("Modal Dialog Example")
+                .surfaceBackgroundColor("rgb(234, 249, 255)")
+                .render(function(d){
+                    d.widget(testFactory.categories.amchart.Polar.simple.factory(function(widg) {
+                        d.widget(widg);
+                    }));
+                })
+            )
             .render(function(d) {
                 d3.select("#modal button")
                 .on("click", function() {

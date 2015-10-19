@@ -5,13 +5,25 @@
         <!--The following src path should point to your local RequireJS config.js file-->
         <script type="text/javascript" src="config.js"></script>
         <script>
-            require(["apps/SampleSite/tempsrc/Popup", "src/chart/Column", "src/layout/Surface"], function (Popup, Column, Surface) {
+            require(["src/layout/Popup", "src/chart/Column", "src/layout/Surface"], function (Popup, Column, Surface) {
                 var dropleft = new Popup()
                     .size({width:400, height:400})
                     .target("dropleft")
                     .position("absolute")
                     .left(-400)
-                    .widget(new Surface().title("Dropleft Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .widget(new Surface()
+                        .title("Dropleft Example")
+                        .surfaceBackgroundColor("rgb(234, 249, 255)")
+                        .widget(new Column()
+                            .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+                            .data( [
+                                ["Geography", 75, 68, 65],
+                                ["English", 45, 55, 52],
+                                ["Math", 98, 92, 90],
+                                ["Science", 66, 60, 72]
+                            ])
+                        )
+                    )
                     .render(function(d) {
                         d3.select("#dropleft button.btn-left")
                         .on("click", function() {
@@ -28,7 +40,18 @@
                     .position("absolute")
                     .left(parseInt(offset))
                     .top(0)
-                    .widget(new Surface().title("Dropright Example").widget(new Column().testData()).surfaceBackgroundColor("rgb(234, 249, 255)"))
+                    .widget(new Surface().title("Dropright Example")
+                        .widget(new Column()
+                            .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+                            .data( [
+                                ["Geography", 75, 68, 65],
+                                ["English", 45, 55, 52],
+                                ["Math", 98, 92, 90],
+                                ["Science", 66, 60, 72]
+                            ])
+                        )
+                        .surfaceBackgroundColor("rgb(234, 249, 255)")
+                    )
                     .render(function(d) {
                         d3.select("#dropright button.btn-right")
                         .on("click", function() {

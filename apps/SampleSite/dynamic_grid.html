@@ -27,7 +27,7 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.18/require.min.js"></script>
     <script type="text/javascript" src="config.js"></script>
 
-    <!-- custom js -->
+    <script type="text/javascript" src="bower_components/bootstrap/js/modal.js"></script><!-- custom js -->
     <script type="text/javascript" src="js/dynamic_grid.js"></script>
     <script type="text/javascript" src="js/svg_to_png.js"></script>
     <script type="text/javascript" src="js/demo_theme_saveLoad.js"></script>
@@ -35,14 +35,24 @@
 
     <script>
         initialGridObj = [{
-                "title":"AMChart Bar",
+                "title":"HPCC Column",
                 "src":[
-                    "src/amchart/Bar"
+                    "src/chart/Column"
                 ],
                 "buttons":[
                     {"type":"button", "name":"button1", "label":"button1", "value": "Button 1", "class":"standard_button", "title": "This is a standard button element"},
                     {"type":"button", "name":"button2", "label":"button2", "value": "Button 2", "class":"standard_button", "title": "This is also a standard button element"}
+                ],
+                "data":[[
+                    ["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 72]
+                ]],
+                "columns":[
+                    ["Subject", "Year 1", "Year 2", "Year 3"]
                 ]
+
             },
             {
                 "title":"Another Dataset",
@@ -59,40 +69,101 @@
                 "buttons":[
                     {"type":"button", "name":"button3", "label":"button3", "value": "Button 3", "class":"btn btn-info btn-xs", "title":"This is a Bootstrap button with the info class"},
                     {"type":"button", "name":"button4", "label":"button4", "value": "Button 4", "class":"btn btn-danger btn-xs", "title":"This is a Bootstrap button with the danger class"}
+                ],
+                "data":[
+                    [
+                        ["Geography", 25],
+                        ["English", 45],
+                        ["Math", 38],
+                        ["Science", 46]
+                    ],
+                    [
+                        ["Spanish", 75],
+                        ["Literature", 45],
+                        ["Geometry", 98],
+                        ["History", 66]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ]
+                ],
+                "columns":[
+                    ["Subject", "Year 1"],
+                    ["Subject", "Year 1"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"]
                 ]
             },
             {
                 "title":"Charts w/ Table",
                 "src":[
                     "src/other/Table",
-                    "src/tree/CirclePacking",
-                    "src/c3chart/Gauge",
-                    "src/amchart/FloatingColumn",
+                    "src/chart/Pie",
+                    "src/c3chart/Area",
+                    "src/chart/Column",
                     "src/amchart/Line"
                 ],
                 "childPlacement":[
-                    {col:15,row:0,colSpan:18,rowSpan:15},
-                    {col:0,row:15,colSpan:11,rowSpan:5},
-                    {col:11,row:15,colSpan:11,rowSpan:5},
-                    {col:22,row:15,colSpan:11,rowSpan:5},
-                    {col:0,row:0,colSpan:15,rowSpan:15},
+                    {col:20,row:0,colSpan:18,rowSpan:10},
+                    {col:0,row:10,colSpan:10,rowSpan:10},
+                    {col:8,row:10,colSpan:15,rowSpan:10},
+                    {col:22,row:10,colSpan:15,rowSpan:10},
+                    {col:0,row:0,colSpan:20,rowSpan:10},
                 ],
                 "buttons":[
                     {"type":"button", "name":"button5", "label":"button5", "value": "", "class":"icon print", "title":"Print (Font Awesome)"},
                     {"type":"button", "name":"button6", "label":"button6", "value": "", "class":"icon save", "title":"Save (Font Awesome)"}
+                ],
+                "data":[
+                    [
+                        [37.665074,-122.384375,"green-dot.png"],[32.69068,-117.17854],[39.709455,-104.969859],[41.244123,-95.96161],[32.68898,-117.19204],[45.78649,-108.5266],[45.79618,-108.535652],[45.77432,-108.49437],[45.777062,-108.549835,"red-dot.png"]
+                    ],
+                    [
+                        ["Spanish", 75],
+                        ["Literature", 45],
+                        ["Geometry", 98],
+                        ["History", 66]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ]
+                ],
+                "columns":[
+                    ["Lat","Long","Pin"],
+                    ["Subject", "Year 1"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"]
                 ]
             },
             {
                 "title":"",
                 "src":[
-                    "src/map/ChoroplethStates",
                     "src/other/Table",
-                    "src/tree/Dendrogram"
+                    "src/amchart/Funnel",
+                    "src/chart/Scatter"
                 ],
                 "childPlacement":[
-                    {col:0,row:0,colSpan:15,rowSpan:15},
-                    {col:15,row:0,colSpan:15,rowSpan:15},
-                    {col:0,row:15,colSpan:30,rowSpan:5},
+                    {col:0,row:0,colSpan:10,rowSpan:20},
+                    {col:10,row:0,colSpan:10,rowSpan:10},
+                    {col:10,row:10,colSpan:10,rowSpan:10},
                 ],
                 "buttons":[
                     {"type":"button", "name":"button5", "label":"button5", "value": "", "class":"icon print", "title":"Print (Font Awesome)"},
@@ -101,6 +172,28 @@
                     {"type":"button", "name":"button8", "label":"button8", "value": "", "class":"icon remove", "title":"Remove (Font Awesome)"},
                     {"type":"button", "name":"button9", "label":"button9", "value": "", "class":"icon question", "title":"Help (Font Awesome)"},
                     {"type":"button", "name":"button10", "label":"button10", "value": "", "class":"icon share", "title":"Share (Font Awesome)"}
+                ],
+                "data":[
+                    [
+                        [37.665074,-122.384375,"green-dot.png"],[32.69068,-117.17854],[39.709455,-104.969859],[41.244123,-95.96161],[32.68898,-117.19204],[45.78649,-108.5266],[45.79618,-108.535652],[45.77432,-108.49437],[45.777062,-108.549835,"red-dot.png"]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ],
+                    [
+                        ["Geography", 75, 68, 65],
+                        ["English", 45, 55, 52],
+                        ["Math", 98, 92, 90],
+                        ["Science", 66, 60, 72]
+                    ]
+                ],
+                "columns":[
+                    ["Lat","Long","Pin"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"],
+                    ["Subject", "Year 1", "Year 2", "Year 3"]
                 ]
             }
         ];

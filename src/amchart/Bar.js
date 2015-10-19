@@ -17,7 +17,7 @@
     Bar.prototype.implements(INDChart.prototype);
 
     Bar.prototype.publish("paletteID", "default", "set", "Palette ID", Bar.prototype._palette.switch(),{tags:["Basic","Shared"]});
-    Bar.prototype.publish("isStacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+    Bar.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
     Bar.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
     Bar.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
@@ -42,7 +42,7 @@
         var context = this;
 
         // Stacked
-        if(this.isStacked()){
+        if(this.stacked()){
             this._chart.valueAxes[0].stackType = this.stackType();
         } else {
             this._chart.valueAxes[0].stackType = "none";

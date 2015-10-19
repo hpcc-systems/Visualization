@@ -7,7 +7,7 @@
     }
 }(this, function (callback) {
     var amchartFactory = {
-        Bar: {
+        Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
                     callback(new Bar()
@@ -20,7 +20,7 @@
                 });
             },
             bar: function (callback) {
-                amchartFactory.Bar.simple(function (widget) {
+                amchartFactory.Column.simple(function (widget) {
                     widget.orientation("vertical");
                     callback(widget);
                 });
@@ -157,9 +157,9 @@
                         .low(DataFactory.OneD.amgauge.low)
                         .data(DataFactory.OneD.amgauge.data)
                         .axisLineWidth(DataFactory.OneD.amgauge.axisLineWidth)
-                        .axisAlpha(DataFactory.OneD.amgauge.axisAlpha)
                         .tickAlpha(DataFactory.OneD.amgauge.tickAlpha)
                         .valueInterval(DataFactory.OneD.amgauge.valueInterval)
+                        .axisAlpha(DataFactory.OneD.amgauge.axisAlpha)
                     );
                 });
             }

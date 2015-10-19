@@ -28,6 +28,10 @@
     };
 
     Tabbed.prototype.addTab = function (widget, label, isActive) {
+        var widgetSize = widget.size();
+        if(widgetSize.width === 0 && widgetSize.height === 0){
+            widget.size({width:"100%",height:"100%"});
+        }
         var labels = this.labels();
         var widgets = this.widgets();
         if (isActive) {

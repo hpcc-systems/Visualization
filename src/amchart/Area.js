@@ -10,6 +10,7 @@
         CommonSerial.call(this);
         this._tag = "div";
         this._gType = "line";
+        // SO WE DO DO A PR
     }
     Area.prototype = Object.create(CommonSerial.prototype);
     Area.prototype.constructor = Area;

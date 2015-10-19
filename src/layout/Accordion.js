@@ -72,7 +72,9 @@
         this.iconDiv = element.append("div").classed("collapsible-icon",true);
         this.ul = element.append("ul");
         
-        this.icon = new FAChar().target(this.iconDiv.node());
+        this.icon = new FAChar()
+                        .size({height:24,width:24})
+                        .target(this.iconDiv.node());
         
         this.iconDiv.on("click",function(){
             context.collapseClick(element);
@@ -96,6 +98,14 @@
             .append(function(widget) {
                 var li = document.createElement("li");
                 if(widget._target === null){
+                    var wSize = widget.size();
+                    if(wSize.width === 0 || wSize.height === 0){
+                        var cSize = context.size();
+                        widget.size({
+                            width:cSize.width,
+                            height:cSize.width
+                        });
+                    }
                     widget.target(li);
                 } else {
                     return widget._target;

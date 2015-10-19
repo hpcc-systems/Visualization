@@ -38,6 +38,12 @@
     
     MegaChart.prototype.publish("chartType", "LINE", "set", "Chart Type", _chartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
     
+    MegaChart.prototype.click = function(obj) {
+        if(obj.id === this.id()+"_toggle_legend"){
+            this.showLegend(!this.showLegend()).render();
+        }
+    };
+    
     MegaChart.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);
         
@@ -48,10 +54,28 @@
         this._layout.setContent("bottom", this._valueTitle.rotation(-90));
         this._layout.setContent("left", this._domainTitle);
         
+        this.buttonAnnotations([{
+                id:this.id()+"_toggle_legend",
+                label: this.showLegend() ? "\uf0da" : "\uf0d9",
+                shape:"square",
+                diameter:14,
+                padding:"0px 5px",
+                font:"FontAwesome"
+            }]);
+        
         this.widget(this._layout);
     };
     MegaChart.prototype.update = function (domNode, element) {
         Surface.prototype.update.apply(this, arguments);
+        
+        this.buttonAnnotations([{
+                id:this.id()+"_toggle_legend",
+                label: this.showLegend() ? "\uf0d9" : "\uf0da",
+                shape:"square",
+                diameter:14,
+                padding:"0px 5px",
+                font:"FontAwesome"
+            }]);
         
         if(this._layout !== null){
             this._layout
@@ -86,7 +110,7 @@
         } else {
             this._layout.clearContent("bottom");
         }
-        
+        this._layout.render();
     };
     MegaChart.prototype.exit = function (domNode, element) {
         Surface.prototype.exit.apply(this, arguments);

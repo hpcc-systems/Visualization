@@ -44,63 +44,72 @@
     };
 
     Overlay.prototype.draw = function () {
-        var projection = this.getProjection();
+        var context = this;
 
-        var bounds = this._map.getBounds();
-        var center = projection.fromLatLngToDivPixel(bounds.getCenter());
-        var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());
-        var ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
+            var projection = context.getProjection();
+            console.error("projection");
+            console.error(context.getProjection);
+            console.error(projection);
+            //
+            //
+            var bounds = context._map.getBounds();
+            var center = projection.fromLatLngToDivPixel(bounds.getCenter());
+            var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());
+            var ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
 
-        var min = {
-            x: sw.x,
-            y: ne.y
-        };
-        var max = {
-            x: ne.x,
-            y: sw.y
-        };
+            var min = {
+                x: sw.x,
+                y: ne.y
+            };
+            var max = {
+                x: ne.x,
+                y: sw.y
+            };
 
-        var worldWidth = projection.getWorldWidth();
-        while (max.x < min.x + 100) {  //  Ignoe dateline from being the rect.
-            max.x += worldWidth;
-        }
-        while (min.x > center.x) {
-            min.x -= worldWidth;
-            max.x -= worldWidth;
-        }
+            var worldWidth = projection.getWorldWidth();
+            while (max.x < min.x + 100) {  //  Ignoe dateline from being the rect.
+                max.x += worldWidth;
+            }
+            while (min.x > center.x) {
+                min.x -= worldWidth;
+                max.x -= worldWidth;
+            }
 
-        if (min.x !== this._prevMin.x || min.y !== this._prevMin.y || max.x !== this._prevMax.x || max.y !== this._prevMax.y) {
-            this._viewportSurface
-                .widgetX(min.x)
-                .widgetY(min.y)
-                .widgetWidth(max.x - min.x)
-                .widgetHeight(max.y - min.y)
-                .render()
-            ;
-            this._prevMin = min;
-            this._prevMax = max;
-        }
+            if (min.x !== context._prevMin.x || min.y !== context._prevMin.y || max.x !== context._prevMax.x || max.y !== context._prevMax.y) {
+                context._viewportSurface
+                    .widgetX(min.x)
+                    .widgetY(min.y)
+                    .widgetWidth(max.x - min.x)
+                    .widgetHeight(max.y - min.y)
+                    .render()
+                ;
 
-        var worldMin = projection.fromLatLngToDivPixel(new google.maps.LatLng(85, -179.9));
-        var worldMax = projection.fromLatLngToDivPixel(new google.maps.LatLng(-85, 179.9));
-        while (worldMax.x < worldMin.x + 100) {  //  Ignoe dateline from being the rect.
-            worldMax.x += worldWidth;
-        }
-        while (worldMin.x > center.x) {
-            worldMin.x -= worldWidth;
-            worldMax.x -= worldWidth;
-        }
-        if (worldMin.x !== this._prevWorldMin.x || worldMin.y !== this._prevWorldMin.y || worldMax.x !== this._prevWorldMax.x || worldMax.y !== this._prevWorldMax.y) {
-            this._worldSurface
-                .widgetX(worldMin.x)
-                .widgetY(worldMin.y)
-                .widgetWidth(worldMax.x - worldMin.x)
-                .widgetHeight(worldMax.y - worldMin.y)
-                .render()
-            ;
-            this._prevWorldMin = worldMax;
-            this._prevWorldMax = worldMax;
-        }
+                console.log(context._viewportSurface);
+                window.xxx = context._viewportSurface;
+                context._prevMin = min;
+                context._prevMax = max;
+            }
+
+            var worldMin = projection.fromLatLngToDivPixel(new google.maps.LatLng(85, -179.9));
+            var worldMax = projection.fromLatLngToDivPixel(new google.maps.LatLng(-85, 179.9));
+            while (worldMax.x < worldMin.x + 100) {  //  Ignoe dateline from being the rect.
+                worldMax.x += worldWidth;
+            }
+            while (worldMin.x > center.x) {
+                worldMin.x -= worldWidth;
+                worldMax.x -= worldWidth;
+            }
+            if (worldMin.x !== context._prevWorldMin.x || worldMin.y !== context._prevWorldMin.y || worldMax.x !== context._prevWorldMax.x || worldMax.y !== context._prevWorldMax.y) {
+                context._worldSurface
+                    .widgetX(worldMin.x)
+                    .widgetY(worldMin.y)
+                    .widgetWidth(worldMax.x - worldMin.x)
+                    .widgetHeight(worldMax.y - worldMin.y)
+                    .render()
+                ;
+                context._prevWorldMin = worldMax;
+                context._prevWorldMax = worldMax;
+            }
     };
 
     Overlay.prototype.onRemove = function () {
@@ -208,7 +217,7 @@
             disableDefaultUI: true
         });
         this._overlay = new Overlay(this._googleMap, this._worldSurface, this._viewportSurface);
-
+        console.log(this._overlay);
         this._circleMap = d3.map([]);
         this._pinMap = d3.map([]);
 

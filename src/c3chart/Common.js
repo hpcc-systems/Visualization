@@ -75,7 +75,7 @@
         }
         total = total || this.columns().length;
         var retVal = [];
-        var s = this.xAxisType() === "time" ? 0 : 1; 
+        var s = this.xAxisType !== undefined && this.xAxisType() === "time" ? 0 : 1; 
         for (var i = s; i < total; ++i) {
             retVal.push(this.getC3Column(i));
         }

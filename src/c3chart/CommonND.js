@@ -149,7 +149,7 @@
         
         this.c3Chart.internal.config.axis_y_tick_format = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : undefined;
         if (this.xAxisType() === "time") {
-            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : undefined;
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : "%Y-%m-%d %I:%M:%S %p";
         } else {
             this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : undefined;
         }

@@ -26,6 +26,18 @@
                     );
                 });
             },
+            timeX: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.timeX.default.columns)
+                        .data(DataFactory.timeX.default.data)
+                        
+                        .xAxisType("time")
+                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                        //.yAxisType("linear") TODO
+                    );
+                });
+            }
         },
         Combo: {
             simple: function (callback) {
@@ -89,7 +101,18 @@
                     .data(DataFactory.ND.subjects.data)
                     );
                 });
-            }
+            },
+            timeX: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Line"], function (DataFactory, Line) {
+                    callback(new Line()
+                        .columns(DataFactory.timeX.default.columns)
+                        .data(DataFactory.timeX.default.data)
+                     
+                        .xAxisType("time")
+                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                    );
+                });
+            },
         },
         Area: {
             simple: function (callback) {

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Common", "../api/INDChart"], factory);
+        define(["d3", "./Common", "../api/INDChart"], factory);
     } else {
-        root.c3chart_CommonND = factory(root.c3chart_Common, root.api_INDChart);
+        root.c3chart_CommonND = factory(root.d3, root.c3chart_Common, root.api_INDChart);
     }
-}(this, function (Common, INDChart) {
+}(this, function (d3, Common, INDChart) {
     function CommonND(target) {
         Common.call(this);
         INDChart.call(this);
@@ -52,14 +52,23 @@
     CommonND.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical Axis Title Text Style (Color)",null,{tags:["Advanced","Shared"]});
     CommonND.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Advanced","Shared"]});
     CommonND.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
+    
+    CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "time", "indexed"],{tags:["Intermediate"]});
 
-    CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "timeseries", "indexed"],{tags:["Intermediate"]});
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart",null,{tags:["Private"]});
 
     CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid",null,{tags:["Intermediate"]});
     CommonND.prototype.publish("showYGrid", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
 
     CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    CommonND.prototype.publish("xAxisTickFormat", "", "string", "X-Axis Tick Format", null, {});
+    CommonND.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional:true });
+
+    CommonND.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
+    CommonND.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
+
+    CommonND.prototype.publish("axisTickLabelMultiLine", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
 
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
@@ -70,11 +79,20 @@
             };
         }
 
+        var xAxisType;
+        switch (this.xAxisType()) {
+            case "time":
+                xAxisType = "timeseries";
+                break;
+            default:
+                xAxisType = this.xAxisType();
+        }
+
         this._config.axis.x = {
-            type: this.xAxisType(),
+            type: xAxisType,
             tick: {
                 rotate: this.xAxisLabelRotation(),
-                multiline: false
+                multiline: this.axisTickLabelMultiLine()
             },
             label:{
                 text: this.xAxisTitle(),
@@ -82,7 +100,7 @@
             }
         };
         this._config.axis.y = {
-            label:{
+            label: {
                 text: this.yAxisTitle(),
                 position: "outer-center"
             }
@@ -100,14 +118,21 @@
         case "category":
             this._config.axis.tick = {
                 centered: true,
-                multiline: false
+                multiline: this.axisTickLabelMultiLine()
             };
             break;
-        case "timeseries":
-            this._config.data.x = this._columns[0];
-            this._config.axis.tick = {
-                format: "%d %b %Y"
-            };
+        case "time":
+            this.data(this.data().map(function(row, rIdx) {
+                return row.map(function(column, cIdx) {
+                    if (cIdx === 0 && typeof column === "number") {
+                        return column.toString();
+                    } else {
+                        return column;
+                    }
+                });
+            }));
+            this._config.data.x = this.columns()[0];
+            this._config.data.xFormat = this.xAxisTypeTimePattern();
             break;
         }
 
@@ -121,7 +146,16 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
-
+        
+        this.c3Chart.internal.config.axis_y_tick_format = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : undefined;
+        if (this.xAxisType() === "time") {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : undefined;
+        } else {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : undefined;
+        }
+                
+        Common.prototype.update.apply(this, arguments);
+        
         element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
         element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
 
@@ -155,7 +189,7 @@
                 chartOptions.columns = this.getC3Columns();
                 break;
             case "indexed":
-            case "timeseries":
+            case "time":
                 chartOptions.columns = this.getC3Columns();
                 break;
         }

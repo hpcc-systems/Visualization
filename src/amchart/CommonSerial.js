@@ -1,12 +1,12 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require", "../common/Utility"], factory);
     } else {
-        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts, require) {
+}(this, function(d3, HTMLWidget, AmCharts, require, Utility) {
     function CommonSerial() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -102,6 +102,7 @@
     CommonSerial.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
 
     CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
+    CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
 
@@ -129,7 +130,7 @@
     CommonSerial.prototype.formatData = function (d) {
         switch (this.xAxisType()) {
             case "time":
-                return this._dateParserData(d);
+                return this._dateParserData(typeof d === "number" ? d.toString() : d);
             default:
                 return d;
         }
@@ -149,7 +150,7 @@
 
         switch (this.yAxisType()) {
             case "time":
-                return this._dateParserValue(d);
+                return this._dateParserValue(typeof d === "number" ? d.toString() : d);
             default:
                 if (typeof d === "string") {
                     return +d;
@@ -257,9 +258,6 @@
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
-        this._chart.dataProvider = this.amFormatData(this.data());
-        this.amFormatColumns();
-
         this._chart.valueAxes[0].title = this.yAxisTitle();
         this._chart.valueAxes[0].titleColor = this.yAxisTitleFontColor();
         this._chart.valueAxes[0].titleFontSize = this.yAxisTitleFontSize();
@@ -286,6 +284,9 @@
                 this._chart.valueAxes[0].parseDates = true;
                 //this._chart.valueAxes[0].minPeriod = "hh";
                 this._chart.valueAxes[0].logarithmic = false;
+                if (this.sortDates()) {
+                    this.data(Utility.naturalSort(this.data(), "ascending", 0));
+                }
                 break;
             case "log":
                 this._chart.valueAxes[0].parseDates = false;
@@ -306,6 +307,9 @@
         } else {
             this._chart.chartScrollbar.enabled = false;
         }
+
+        this._chart.dataProvider = this.amFormatData(this.data());
+        this.amFormatColumns();
 
         return this._chart;
     };
@@ -412,6 +416,7 @@
 
     CommonSerial.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+
         domNode.style.width = this.size().width + "px";
         domNode.style.height = this.size().height + "px";
         this._palette = this._palette.switch(this.paletteID());

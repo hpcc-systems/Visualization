@@ -18,12 +18,12 @@
     Line.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
     Line.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
     Line.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
-    Line.prototype.publish("connectNULL", true, "boolean", "Connect null data points in line",null,{tags:["Basic","Shared"]});
+    Line.prototype.publish("connectNull", true, "boolean", "Connect null data points in line",null,{tags:["Basic","Shared"]});
 
     Line.prototype.enter = function (domNode, element) {
         this._config.line = {
-            connectNull : this.connectNULL()
-        }
+            connectNull : this.connectNull()
+        };
         CommonND.prototype.enter.apply(this, arguments);
     };
 

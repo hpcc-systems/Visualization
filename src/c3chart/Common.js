@@ -77,7 +77,6 @@
         var retVal = [];
         var s = this.xAxisType() === "time" ? 0 : 1; 
         for (var i = s; i < total; ++i) {
-            console.log(this.getC3Column(i));
             retVal.push(this.getC3Column(i));
         }
         return retVal;

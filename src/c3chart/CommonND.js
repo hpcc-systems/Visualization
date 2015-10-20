@@ -7,6 +7,8 @@
     }
 }(this, function (d3, Common, INDChart, Utility) {
     function CommonND(target) {
+        //https://github.com/masayuki0812/c3/blob/931109f8269688b8d623b4523335670dd813b4dc/src/config.js
+
         Common.call(this);
         INDChart.call(this);
 
@@ -67,6 +69,8 @@
     CommonND.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
     CommonND.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
 
+    CommonND.prototype.publish("axisTickLabelMultiLine", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
+
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
             this._config.subchart = {
@@ -80,7 +84,7 @@
         switch (this.xAxisType()) {
             case "time":
                 xAxisType = "timeseries";
-                break
+                break;
             default:
                 xAxisType = this.xAxisType();
         }
@@ -89,7 +93,7 @@
             type: xAxisType,
             tick: {
                 rotate: this.xAxisLabelRotation(),
-                multiline: false
+                multiline: this.axisTickLabelMultiLine()
             },
             label:{
                 text: this.xAxisTitle(),
@@ -115,7 +119,7 @@
         case "category":
             this._config.axis.tick = {
                 centered: true,
-                multiline: false
+                multiline: this.axisTickLabelMultiLine()
             };
             break;
         case "time":
@@ -126,8 +130,8 @@
                     } else {
                         return column;
                     }
-                })
-            }))
+                });
+            }));
             this._config.data.x = this.columns()[0];
             this._config.data.xFormat = this.xAxisTypeTimePattern();
             break;
@@ -142,15 +146,15 @@
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
         
+        this.c3Chart.internal.config.axis_y_tick_format = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(d) { return d; };
+        if (this.xAxisType() === "time") {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : function(d) { return d; };
+        } else {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : function(d) { return d; };
+        }
+                
         Common.prototype.update.apply(this, arguments);
         
-        this.c3Chart.internal.config.axis_y_tick_format = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : undefined;
-        if (this.xAxisType() === "time") {
-            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : undefined;
-        } else {
-            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : undefined;
-        }
-
         element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
         element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
 

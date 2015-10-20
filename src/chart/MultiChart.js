@@ -6,11 +6,31 @@
         root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.api_INDChart, root.require);
     }
 }(this, function (d3, SVGWidget, INDChart, require) {
-    var _1DChartTypes = [
+    function MultiChart() {
+        SVGWidget.call(this);
+        INDChart.call(this);
+
+        this._allCharts = {};
+        this._allChartTypes.forEach(function (item) {
+            var newItem = JSON.parse(JSON.stringify(item));
+            newItem.widget = null;
+            this._allCharts[item.id] = newItem;
+            this._allCharts[item.display] = newItem;
+            this._allCharts[item.widgetClass] = newItem;
+        }, this);
+        //  Backward compatability until we roll our own BAR  ---
+        this._allCharts["BAR"] = this._allCharts["COLUMN"];
+    }
+    MultiChart.prototype = Object.create(SVGWidget.prototype);
+    MultiChart.prototype.constructor = MultiChart;
+    MultiChart.prototype._class += " chart_MultiChart";
+    MultiChart.prototype.implements(INDChart.prototype);
+
+    MultiChart.prototype._1DChartTypes = [
         { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
     ];
-    var _2DChartTypes = [
+    MultiChart.prototype._2DChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
@@ -21,7 +41,7 @@
         { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
     ];
-    var _NDChartTypes = [
+    MultiChart.prototype._NDChartTypes = [
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
@@ -42,38 +62,12 @@
         { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
         { id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
     ];
-    var _anyChartTypes = [
+    MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }
     ];
-    var _allChartTypes = _1DChartTypes.concat(_2DChartTypes.concat(_NDChartTypes.concat(_anyChartTypes)));
+    MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 
-    function MultiChart() {
-        SVGWidget.call(this);
-        INDChart.call(this);
-
-        this._1DChartTypes = _1DChartTypes;
-        this._2DChartTypes = _2DChartTypes;
-        this._NDChartTypes = _NDChartTypes;
-        this._anyChartTypes = _anyChartTypes;
-        this._allChartTypes = _allChartTypes;
-
-        this._allCharts = {};
-        this._allChartTypes.forEach(function (item) {
-            var newItem = JSON.parse(JSON.stringify(item));
-            newItem.widget = null;
-            this._allCharts[item.id] = newItem;
-            this._allCharts[item.display] = newItem;
-            this._allCharts[item.widgetClass] = newItem;
-        }, this);
-        //  Backward compatability until we roll our own BAR  ---
-        this._allCharts["BAR"] = this._allCharts["COLUMN"];
-    }
-    MultiChart.prototype = Object.create(SVGWidget.prototype);
-    MultiChart.prototype.constructor = MultiChart;
-    MultiChart.prototype._class += " chart_MultiChart";
-    MultiChart.prototype.implements(INDChart.prototype);
-
-    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", _allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
+    MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:["Basic"]});
 
     MultiChart.prototype.columns = function (_) {

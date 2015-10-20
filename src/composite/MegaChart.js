@@ -13,15 +13,14 @@
         ;
     }
 }(this, function (Surface, Border, MultiChart, Text, Legend) {
-    var _chartTypes = new MultiChart()._NDChartTypes;
     function MegaChart() {
         Surface.call(this);
 
         this._tag = "div";
-        
+        this._chart = new MultiChart();
+
         this._layout = new Border();
         
-        this._chart = new MultiChart();
         this._valueTitle = new Text();
         this._domainTitle = new Text();
     }
@@ -36,8 +35,8 @@
     
     MegaChart.prototype.publish("gutter", 8, "number", "Gap Between Cells",null,{tags:["Basic"]});
     
-    MegaChart.prototype.publish("chartType", "LINE", "set", "Chart Type", _chartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
-    
+    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType"); 
+        
     MegaChart.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);
         

@@ -8,6 +8,7 @@
 }(this, function (d3, HTMLWidget, AbsoluteSurface) {
 
     function Overlay(map, worldSurface, viewportSurface) {
+        google.maps.OverlayView.call(this);
         this._div = null;
 
         this._worldSurface = worldSurface;
@@ -29,7 +30,7 @@
         this._prevMin = { x: 0, y: 0 };
         this._prevMax = { x: 0, y: 0 };
     }
-    Overlay.prototype = new google.maps.OverlayView();
+    Overlay.prototype = google.maps.OverlayView.prototype;
 
     Overlay.prototype.onAdd = function () {
         this.div = document.createElement("div");

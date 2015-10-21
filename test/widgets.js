@@ -16,6 +16,8 @@
     describe("Widget Declarations", function () {
         this.timeout(10000);
         var allWidgets = [
+            { path: "src/map/GMapGraph" },
+            { path: "src/map/GMapHeat" },
             { path: "src/common/FAChar" },
             { path: "src/common/Icon" },
             { path: "src/common/List" },
@@ -43,12 +45,9 @@
             { path: "src/map/ChoroplethCountries" },
             { path: "src/map/ChoroplethStates" },
             { path: "src/map/ChoroplethStatesHeat" },
-            { path: "src/map/GMap" },
-            { path: "src/map/GMapHeat" },
-            { path: "src/map/GMapGraph" },
-            { path: "src/tree/CirclePacking" },
             { path: "src/tree/Dendrogram" },
             { path: "src/tree/SunburstPartition" },
+            { path: "src/tree/CirclePacking" },
             { path: "src/graph/Edge" },
             { path: "src/graph/Graph" },
             { path: "src/graph/Vertex" },
@@ -91,7 +90,8 @@
             { path: "src/amchart/Pie" },
             { path: "src/amchart/Polar" },
             { path: "src/amchart/Pyramid" },
-            { path: "src/amchart/Scatter" }
+            { path: "src/amchart/Scatter" },
+            { path: "src/map/GMap" }
         ];
         allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
             var path = widget.path;

@@ -1,12 +1,20 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require"], factory);
+        define(["d3", "../common/Widget", "../common/HTMLWidget", "amcharts.serial", "require"], factory);
     } else {
-        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.common_HTMLWidget, root.AmCharts, root.require);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts, require) {
+}(this, function(d3, Widget, HTMLWidget, AmCharts, require) {
+
+
+    function Axis() {
+
+    }
+    Axis.prototype = Object.create(Widget.prototype);
+    Axis.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
+
     function CommonSerial() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -18,6 +26,10 @@
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
+
+        this.xAxis = [];
+        this.xAxis[0] = new Axis();
+
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 

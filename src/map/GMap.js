@@ -22,7 +22,7 @@
         google.maps.event.addListener(map, "bounds_changed", function () {
             context.draw();
         });
-        google.maps.event.addListener(map, "center_changed", function () {
+        google.maps.event.addListener(map, "projection_changed", function () {
             context.draw();
         });
 
@@ -47,6 +47,8 @@
 
     Overlay.prototype.draw = function () {
         var projection = this.getProjection();
+        if (!projection)
+            return;
 
         var bounds = this._map.getBounds();
         var center = projection.fromLatLngToDivPixel(bounds.getCenter());

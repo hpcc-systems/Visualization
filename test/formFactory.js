@@ -15,7 +15,7 @@
                             new Input()
                                 .name("textbox-test")
                                 .label("Alphanumeric")
-                                .type("textbox")
+                                .type("text")
                                 .validate("^[A-Za-z0-9]+$")
                                 .value("SomeString123"),
                             new Input()
@@ -35,7 +35,7 @@
                                     new Input()
                                         .name("textbox-test")
                                         .label("Only Alpha")
-                                        .type("textbox")
+                                        .type("text")
                                         .validate("^[A-Za-z]+$")
                                         .value("SomeString"),
                                     new Input()

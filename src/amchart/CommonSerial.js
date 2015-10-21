@@ -30,11 +30,14 @@
         this.xAxis = [];
         this.xAxis[0] = new Axis();
 
+
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
+    
+    CommonSerial.prototype._additionalPP = ["xAxis","yAxis"]; //additional publish params to be read by disocver
 
     CommonSerial.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonSerial.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});

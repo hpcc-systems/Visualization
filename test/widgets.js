@@ -93,6 +93,7 @@
             { path: "src/amchart/Scatter" },
             { path: "src/map/GMap" }
         ];
+        //
         allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {

@@ -24,8 +24,8 @@
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
-    CommonSerial.prototype.publish("_origXAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
-    CommonSerial.prototype.publish("_origYAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    CommonSerial.prototype.publish("_origXAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] }); // rename to _xAxis
+    CommonSerial.prototype.publish("_origYAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] }); // rename to _yAxis
     //CommonSerial.prototype.publish("graph", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
 
     CommonSerial.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
@@ -123,6 +123,7 @@
     // Axes
     //CommonSerial.prototype._origXAxis = CommonSerial.prototype.xAxis;
     //TODO need to figure out how to allow overwriting of 
+    // also if we dont do the override then we can shorted the _orgiXAxis call and rename that function
     CommonSerial.prototype.xAxis = function (_) {
         if (!arguments.length) {
            return CommonSerial.prototype._origXAxis.call(this);

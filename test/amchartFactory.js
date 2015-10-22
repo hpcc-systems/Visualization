@@ -13,9 +13,11 @@
                     callback(new Bar()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
-                        .yAxisType("linear")
-                        .xAxisType("ordinal")
+                        //.getXAxis(0).xAxisAutoGridCount(10)
+                        //.xAxis()[0].xAxisAutoGridCount(10)
+                        .xAxis(0).xAxisAutoGridCount(10)
+                        //.yAxisType("linear")
+                        //.xAxisType("ordinal")
                     );
                 });
             },

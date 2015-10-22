@@ -189,6 +189,7 @@
             set: set,
             ext: ext || {}
         };
+        var context = this;
         this[id] = function (_) {
             var isPrototype = this._id === undefined;
             if (!arguments.length) {
@@ -246,7 +247,8 @@
                     this["__prop_" + id] = _;
                 }
             }
-            return this;
+
+            return this._context ? this._context : this;
         };
         this[id + "_modified"] = function () {
             var isPrototype = this._id === undefined;

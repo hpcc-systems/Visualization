@@ -1,12 +1,12 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require", "./Axis"], factory);
     } else {
-        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_Axis);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts, require) {
+}(this, function(d3, HTMLWidget, AmCharts, require, Axis) {
     function CommonSerial() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -18,11 +18,22 @@
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
+
+        // this._xAxis = [new Axis(), new Axis()];
+        // this._yAxis = [new Axis(), new Axis()];
+
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
+
+    // CommonSerial.prototype.xAxis = function () {
+    //     return this._xAxis;
+    // };
+    // CommonSerial.prototype.yAxis = function () {
+    //     return this._yAxis;
+    // };
 
     CommonSerial.prototype.publish("xAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
     CommonSerial.prototype.publish("yAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
@@ -81,6 +92,48 @@
         }
         return retVal;
     };
+
+
+    var _origXAxis = CommonSerial.prototype.xAxis;
+    CommonSerial.prototype.xAxis = function (_) {
+        if (!arguments.length) {
+           return _origXAxis.call(this);
+        }
+        if (_origXAxis.call(this)[_]) {
+             return _origXAxis.call(this)[_]
+        } else {
+            var axis = new Axis();
+            axis._context = this;
+            var currentAxes = _origXAxis.call(this);
+            currentAxes.push(axis)
+            _origXAxis.call(this,[axis])
+        } 
+        return axis;
+    };
+    // var _origXAxis = CommonSerial.prototype.xAxis;
+    // CommonSerial.prototype.xAxis = function (_) {
+    //     // if (!arguments.length) {
+    //     //    return "error";
+    //     // }
+    //     // if (_origXAxis.call(this)[_]) {
+    //     //      return _origXAxis.call(this)[_]
+    //     // } else {
+    //     //     var axis = new Axis();
+    //     //     axis._context = this;
+    //     //     var currentAxes = _origXAxis.call(this);
+    //     //     currentAxes.push()
+    //     //     _origXAxis.call(this,[axis])
+    //     // } 
+    //     if (arguments.length) {
+    //         var axis = new Axis();
+    //         axis._context = this;
+    //         var currentAxes = _origXAxis.call(this);
+    //         currentAxes.push(axis);
+    //         _origXAxis.call(this,currentAxes);
+    //     }
+
+    //     return axis;
+    // };
 
     CommonSerial.prototype.formatData = function (d) {
         switch (this.xAxisType()) {
@@ -163,7 +216,7 @@
         this._chart.fontFamily = this.fontFamily();
 
         this._chart.categoryAxis = {};
-        this._chart.categoryAxis.autoGridCount = this.xAxisAutoGridCount();
+        this._chart.categoryAxis.autoGridCount = this.xAxis()[0].xAxisAutoGridCount();
         this._chart.categoryAxis.gridPosition = this.xAxisGridPosition();
         this._chart.categoryAxis.axisAlpha = this.axisAlpha();
         this._chart.categoryAxis.gridAlpha = this.xAxisGridAlpha();

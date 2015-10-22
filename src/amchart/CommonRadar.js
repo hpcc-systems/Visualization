@@ -179,7 +179,6 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
         var initObj = {
-            theme: "none",
             type: "radar",
             addClassNames: true,
             chartScrollbar: {}

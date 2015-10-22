@@ -205,6 +205,7 @@
                             ++createCount;
                             var widgetKey = item.id;
                             context.create(state.__properties[item.id], function (widgetItem) {
+                                console.log(widget._class)
                                 widget[widgetKey](widgetItem);
                                 --createCount;
                             });
@@ -212,6 +213,7 @@
                         case "widgetArray":
                             ++createCount;
                             var widgetArrayKey = item.id;
+                            console.log(widgetArrayKey);
                             var widgetStateArray = state.__properties[item.id];
                             var widgetArray = [];
                             widgetArray.length = widgetStateArray.length;
@@ -233,7 +235,14 @@
                             });
                             break;
                         default:
+                            console.log(item.id)
+                            console.log(state.__properties[item.id])
                             widget[item.id](state.__properties[item.id]);
+                            console.log('herexxxxx');
+                            console.log(widget[item.id]())
+                            console.log(widget.id())
+                            console.log('/herexxxxx');
+
                             break;
                     }
                 }

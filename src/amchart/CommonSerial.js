@@ -24,8 +24,8 @@
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
-    CommonSerial.prototype.publish("xAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
-    CommonSerial.prototype.publish("yAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    CommonSerial.prototype.publish("_origXAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    CommonSerial.prototype.publish("_origYAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
     //CommonSerial.prototype.publish("graph", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
 
     CommonSerial.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
@@ -82,40 +82,86 @@
         return retVal;
     };
 
+    // // Axes
+    // var _origXAxis = CommonSerial.prototype.xAxis;
+    // CommonSerial.prototype.xAxis = function (_) {
+    //     if (!arguments.length) {
+    //        return _origXAxis.call(this);
+    //     }
+    //     if (_origXAxis.call(this)[_]) {
+    //          return _origXAxis.call(this)[_]
+    //     } else {
+    //         var axis = new Axis();
+    //         axis._context = this;
+    //         var currentAxes = _origXAxis.call(this);
+    //         currentAxes.push(axis);
+    //         _origXAxis.call(this, currentAxes)
+    //     } 
+    //     return axis;
+    // };
+
+    // var _origYAxis = CommonSerial.prototype.yAxis;
+    // CommonSerial.prototype.yAxis = function (_) {
+    //     if (!arguments.length) {
+    //        return _origYAxis.call(this);
+    //     }
+    //     if (_origYAxis.call(this)[_]) {
+    //          return _origYAxis.call(this)[_];
+    //          //return _origYAxis.content()[_];
+    //     } else {
+    //         var axis = new Axis();
+    //         axis._context = this;
+    //         var currentAxes = _origYAxis.call(this);
+    //         //var currentAxes = _origYAxis.content();
+    //         currentAxes.push(axis);
+    //         _origYAxis.call(this, currentAxes)
+    //     } 
+    //     return axis;
+    // };
+
+
     // Axes
-    var _origXAxis = CommonSerial.prototype.xAxis;
+    //CommonSerial.prototype._origXAxis = CommonSerial.prototype.xAxis;
+    //TODO need to figure out how to allow overwriting of 
     CommonSerial.prototype.xAxis = function (_) {
         if (!arguments.length) {
-           return _origXAxis.call(this);
+           return CommonSerial.prototype._origXAxis.call(this);
         }
-        if (_origXAxis.call(this)[_]) {
-             return _origXAxis.call(this)[_]
+        if (CommonSerial.prototype._origXAxis.call(this)[_]) {
+             return CommonSerial.prototype._origXAxis.call(this)[_]
         } else {
+            console.log('bob')
+            console.log(CommonSerial.prototype._origXAxis())
+            console.log('/bob')
             var axis = new Axis();
             axis._context = this;
-            var currentAxes = _origXAxis.call(this);
+            var currentAxes = CommonSerial.prototype._origXAxis.call(this);
             currentAxes.push(axis);
-            _origXAxis.call(this, currentAxes)
+            CommonSerial.prototype._origXAxis.call(this, currentAxes)
         } 
         return axis;
     };
 
-    var _origYAxis = CommonSerial.prototype.yAxis;
+    //CommonSerial.prototype._origYAxis = CommonSerial.prototype.yAxis;
     CommonSerial.prototype.yAxis = function (_) {
         if (!arguments.length) {
-           return _origYAxis.call(this);
+           return CommonSerial.prototype._origYAxis.call(this);
         }
-        if (_origYAxis.call(this)[_]) {
-             return _origYAxis.call(this)[_]
+        if (CommonSerial.prototype._origYAxis.call(this)[_]) {
+             return CommonSerial.prototype._origYAxis.call(this)[_];
+             //return _origYAxis.content()[_];
         } else {
             var axis = new Axis();
             axis._context = this;
-            var currentAxes = _origYAxis.call(this);
+            var currentAxes = CommonSerial.prototype._origYAxis.call(this);
+            //var currentAxes = _origYAxis.content();
             currentAxes.push(axis);
-            _origYAxis.call(this, currentAxes)
+            CommonSerial.prototype._origYAxis.call(this, currentAxes)
         } 
         return axis;
     };
+
+
 
     CommonSerial.prototype.createAxis = function(_) { // do we want it to create any kind of access and we can set its type internally and or also have it auto append when passing null to yAxis(null)
         switch (_) {
@@ -363,6 +409,23 @@
 
     CommonSerial.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+
+        if (!this.xAxis().length) {
+            console.log('here')
+            this.xAxis(0).render();
+        }
+        if (!this.yAxis().length) {
+            this.yAxis(0).render();
+        }
+
+
+        if (this.xAxis().length) {
+            console.log(this.xAxis(0).xAxisBaselineColor())
+            console.log(this.xAxis(0).id())
+            
+        }
+
+
         var context = this;
         var initObj = {
             type: "serial",

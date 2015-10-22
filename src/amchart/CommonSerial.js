@@ -101,13 +101,15 @@
     CommonSerial.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"],{tags:["Intermediate","Shared"]});
     CommonSerial.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
 
-    CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
+    CommonSerial.prototype.publish("yAxisTickFormat", ".2f", "string", "Y-Axis Tick Format");
     CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
 
     CommonSerial.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+
+    CommonSerial.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
 
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
@@ -307,6 +309,18 @@
         } else {
             this._chart.chartScrollbar.enabled = false;
         }
+        
+        if (this.showCursor()) {
+            this._chart.chartCursor.enabled = true;
+            this._chart.chartCursor.valueLineEnabled = true;
+            this._chart.chartCursor.valueLineBalloonEnabled = true;
+            this._chart.chartCursor.categoryBalloonEnabled = true;
+        } else {
+            this._chart.chartCursor.enabled = false;
+            this._chart.chartCursor.valueLineEnabled = false;
+            this._chart.chartCursor.valueLineBalloonEnabled = false;
+            this._chart.chartCursor.categoryBalloonEnabled = false;
+        }
 
         this._chart.dataProvider = this.amFormatData(this.data());
         this.amFormatColumns();
@@ -369,7 +383,19 @@
         var initObj = {
             type: "serial",
             addClassNames: true,
-            chartScrollbar: {}
+            chartScrollbar: {},
+            //precision: 1,
+            chartCursor: {
+                "enabled": false,
+                "valueLineEnabled": false,
+                "valueLineBalloonEnabled": false,
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "valueLineAlpha": 0.2,
+                "oneBalloonOnly": true,
+                "balloonPointerOrientation": "vertical",
+                "valueBalloonsEnabled": false //always set false
+            }
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");

@@ -116,11 +116,17 @@
     //CommonSerial.prototype._origYAxis = CommonSerial.prototype.yAxis;
     CommonSerial.prototype.yAxis = function (_) {
         if (!arguments.length) {
-           return CommonSerial.prototype._origYAxis.call(this);
+            var context = this;
+            var axes = CommonSerial.prototype._origYAxis.call(this);
+            axes.forEach(function(axis) {
+                axis._context = context;
+            });
+           return axes;
         }
         if (CommonSerial.prototype._origYAxis.call(this)[_]) {
-             return CommonSerial.prototype._origYAxis.call(this)[_];
-             //return _origYAxis.content()[_];
+             var axis = CommonSerial.prototype._origYAxis.call(this)[_];
+             axis._context = this;
+             return axis;
         } else {
             var axis = new Axis();
             axis._context = this;

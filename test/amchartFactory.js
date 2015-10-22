@@ -16,6 +16,7 @@
                         //.getXAxis(0).xAxisAutoGridCount(10)
                         //.xAxis()[0].xAxisAutoGridCount(10)
                         .xAxis(0).xAxisAutoGridCount(10)
+                        .yAxis(0).xAxisAutoGridCount(10)
                         //.yAxisType("linear")
                         //.xAxisType("ordinal")
                     );

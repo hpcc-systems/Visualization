@@ -18,22 +18,11 @@
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
-
-        // this._xAxis = [new Axis(), new Axis()];
-        // this._yAxis = [new Axis(), new Axis()];
-
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
-
-    // CommonSerial.prototype.xAxis = function () {
-    //     return this._xAxis;
-    // };
-    // CommonSerial.prototype.yAxis = function () {
-    //     return this._yAxis;
-    // };
 
     CommonSerial.prototype.publish("xAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
     CommonSerial.prototype.publish("yAxis", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
@@ -93,7 +82,7 @@
         return retVal;
     };
 
-
+    // Axes
     var _origXAxis = CommonSerial.prototype.xAxis;
     CommonSerial.prototype.xAxis = function (_) {
         if (!arguments.length) {
@@ -105,38 +94,42 @@
             var axis = new Axis();
             axis._context = this;
             var currentAxes = _origXAxis.call(this);
-            currentAxes.push(axis)
-            _origXAxis.call(this,[axis])
+            currentAxes.push(axis);
+            _origXAxis.call(this, currentAxes)
         } 
         return axis;
     };
-    // var _origXAxis = CommonSerial.prototype.xAxis;
-    // CommonSerial.prototype.xAxis = function (_) {
-    //     // if (!arguments.length) {
-    //     //    return "error";
-    //     // }
-    //     // if (_origXAxis.call(this)[_]) {
-    //     //      return _origXAxis.call(this)[_]
-    //     // } else {
-    //     //     var axis = new Axis();
-    //     //     axis._context = this;
-    //     //     var currentAxes = _origXAxis.call(this);
-    //     //     currentAxes.push()
-    //     //     _origXAxis.call(this,[axis])
-    //     // } 
-    //     if (arguments.length) {
-    //         var axis = new Axis();
-    //         axis._context = this;
-    //         var currentAxes = _origXAxis.call(this);
-    //         currentAxes.push(axis);
-    //         _origXAxis.call(this,currentAxes);
-    //     }
 
-    //     return axis;
-    // };
+    var _origYAxis = CommonSerial.prototype.yAxis;
+    CommonSerial.prototype.yAxis = function (_) {
+        if (!arguments.length) {
+           return _origYAxis.call(this);
+        }
+        if (_origYAxis.call(this)[_]) {
+             return _origYAxis.call(this)[_]
+        } else {
+            var axis = new Axis();
+            axis._context = this;
+            var currentAxes = _origYAxis.call(this);
+            currentAxes.push(axis);
+            _origYAxis.call(this, currentAxes)
+        } 
+        return axis;
+    };
 
+    CommonSerial.prototype.createAxis = function(_) { // do we want it to create any kind of access and we can set its type internally and or also have it auto append when passing null to yAxis(null)
+        switch (_) {
+            case "x":
+                return this.xAxis(0);
+            break;
+            case "y":
+                return this.yAxis(0);
+            default:
+                // TODO
+        }
+    }
     CommonSerial.prototype.formatData = function (d) {
-        switch (this.xAxisType()) {
+        switch (this.xAxis()[0].xAxisType()) {
             case "time":
                 return this._dateParserData(d);
             default:
@@ -156,7 +149,7 @@
             }, this);
         }
 
-        switch (this.yAxisType()) {
+        switch (this.yAxis()[0].yAxisType()) {
             case "time":
                 return this._dateParserValue(d);
             default:
@@ -217,30 +210,30 @@
 
         this._chart.categoryAxis = {};
         this._chart.categoryAxis.autoGridCount = this.xAxis()[0].xAxisAutoGridCount();
-        this._chart.categoryAxis.gridPosition = this.xAxisGridPosition();
-        this._chart.categoryAxis.axisAlpha = this.axisAlpha();
-        this._chart.categoryAxis.gridAlpha = this.xAxisGridAlpha();
-        this._chart.categoryAxis.startOnAxis = this.startOnAxis();
-        this._chart.categoryAxis.labelRotation = this.xAxisLabelRotation();
-        this._chart.categoryAxis.title = this.xAxisTitle();
+        this._chart.categoryAxis.gridPosition = this.xAxis()[0].xAxisGridPosition();
+        this._chart.categoryAxis.axisAlpha = this.xAxis()[0].axisAlpha();
+        this._chart.categoryAxis.gridAlpha = this.xAxis()[0].xAxisGridAlpha();
+        this._chart.categoryAxis.startOnAxis = this.xAxis()[0].startOnAxis();
+        this._chart.categoryAxis.labelRotation = this.xAxis()[0].xAxisLabelRotation();
+        this._chart.categoryAxis.title = this.xAxis()[0].xAxisTitle();
 
-        this._chart.categoryAxis.axisColor = this.xAxisBaselineColor();
-        this._chart.categoryAxis.axisThickness = this.axisLineWidth();
-        this._chart.categoryAxis.boldPeriodBeginning = this.xAxisBoldPeriodBeginning();
-        this._chart.categoryAxis.dashLength = this.xAxisDashLength();
-        this._chart.categoryAxis.fillAlpha = this.xAxisFillAlpha();
-        this._chart.categoryAxis.fillColor = this.xAxisFillColor();
-        this._chart.categoryAxis.fontSize = this.axisFontSize();
-        this._chart.categoryAxis.color = this.xAxisFontColor();
-        this._chart.categoryAxis.titleColor = this.xAxisTitleFontColor();
-        this._chart.categoryAxis.titleFontSize = this.xAxisTitleFontSize();
+        this._chart.categoryAxis.axisColor = this.xAxis()[0].xAxisBaselineColor();
+        this._chart.categoryAxis.axisThickness = this.xAxis()[0].axisLineWidth();
+        this._chart.categoryAxis.boldPeriodBeginning = this.xAxis()[0].xAxisBoldPeriodBeginning();
+        this._chart.categoryAxis.dashLength = this.xAxis()[0].xAxisDashLength();
+        this._chart.categoryAxis.fillAlpha = this.xAxis()[0].xAxisFillAlpha();
+        this._chart.categoryAxis.fillColor = this.xAxis()[0].xAxisFillColor();
+        this._chart.categoryAxis.fontSize = this.xAxis()[0].axisFontSize();
+        this._chart.categoryAxis.color = this.xAxis()[0].xAxisFontColor();
+        this._chart.categoryAxis.titleColor = this.xAxis()[0].xAxisTitleFontColor();
+        this._chart.categoryAxis.titleFontSize = this.xAxis()[0].xAxisTitleFontSize();
         //this._chart.titles = [];
 
         this._chart.categoryAxis.labelFunction = function(d) {
             return d;
         };
 
-        switch(this.xAxisType()) {
+        switch(this.xAxis()[0].xAxisType()) { // need to think about the axistype stuff weather we stoer that inside axis or outside? // also can do xAxis(0)
             case "time":
                 this._chart.categoryAxis.type = "date";
                 this._chart.categoryAxis.parseDates = true;
@@ -269,27 +262,27 @@
         this._chart.dataProvider = this.amFormatData(this.data());
         this.amFormatColumns();
 
-        this._chart.valueAxes[0].title = this.yAxisTitle();
-        this._chart.valueAxes[0].titleColor = this.yAxisTitleFontColor();
-        this._chart.valueAxes[0].titleFontSize = this.yAxisTitleFontSize();
-        this._chart.valueAxes[0].axisThickness = this.axisLineWidth();
-        this._chart.valueAxes[0].color = this.yAxisFontColor();
-        this._chart.valueAxes[0].fontSize = this.axisFontSize();
-        this._chart.valueAxes[0].axisColor = this.yAxisBaselineColor();
-        this._chart.valueAxes[0].axisAlpha = this.axisAlpha();
-        this._chart.valueAxes[0].fillColor = this.yAxisFillColor();
-        this._chart.valueAxes[0].fillAlpha = this.yAxisFillAlpha();
+        this._chart.valueAxes[0].title = this.yAxis()[0].yAxisTitle();
+        this._chart.valueAxes[0].titleColor = this.yAxis()[0].yAxisTitleFontColor();
+        this._chart.valueAxes[0].titleFontSize = this.yAxis()[0].yAxisTitleFontSize();
+        this._chart.valueAxes[0].axisThickness = this.yAxis()[0].axisLineWidth();
+        this._chart.valueAxes[0].color = this.yAxis()[0].yAxisFontColor();
+        this._chart.valueAxes[0].fontSize = this.yAxis()[0].axisFontSize();
+        this._chart.valueAxes[0].axisColor = this.yAxis()[0].yAxisBaselineColor();
+        this._chart.valueAxes[0].axisAlpha = this.yAxis()[0].axisAlpha();
+        this._chart.valueAxes[0].fillColor = this.yAxis()[0].yAxisFillColor();
+        this._chart.valueAxes[0].fillAlpha = this.yAxis()[0].yAxisFillAlpha();
 
-        this._chart.valueAxes[0].gridAlpha = this.yAxisGridAlpha();
-        this._chart.valueAxes[0].dashLength = this.yAxisDashLength();
-        this._chart.valueAxes[0].boldPeriodBeginning = this.yAxisBoldPeriodBeginning();
-        this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset();
+        this._chart.valueAxes[0].gridAlpha = this.yAxis()[0].yAxisGridAlpha();
+        this._chart.valueAxes[0].dashLength = this.yAxis()[0].yAxisDashLength();
+        this._chart.valueAxes[0].boldPeriodBeginning = this.yAxis()[0].yAxisBoldPeriodBeginning();
+        this._chart.valueAxes[0].axisTitleOffset = this.yAxis()[0].yAxisTitleOffset();
 
         this._chart.valueAxes[0].labelFunction = function(d) {
-            return typeof d === "number" ? d3.format(context.yAxisTickFormat())(d) : d;
+            return typeof d === "number" ? d3.format(context.yAxis()[0].yAxisTickFormat())(d) : d;
         };
 
-        switch(this.yAxisType()) {
+        switch(this.yAxis()[0].yAxisType()) {
             case "time":
                 this._chart.valueAxes[0].type = "date";
                 this._chart.valueAxes[0].parseDates = true;

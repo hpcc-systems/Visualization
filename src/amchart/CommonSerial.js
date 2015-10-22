@@ -88,10 +88,10 @@
     // also if we dont do the override then we can shorted the _orgiXAxis call and rename that function
     CommonSerial.prototype.xAxis = function (_) {
         if (!arguments.length) {
-           return CommonSerial.prototype._origXAxis.call(this);
+           return CommonSerial.prototype._origXAxis.call(this); // might need to override _context b4 passing ...  but so far dont need to
         }
         if (CommonSerial.prototype._origXAxis.call(this)[_]) {
-             return CommonSerial.prototype._origXAxis.call(this)[_]
+             return CommonSerial.prototype._origXAxis.call(this)[_] // might need to override _context b4 passing ...  but so far dont need to
         } else {
             console.log('bob')
             console.log(CommonSerial.prototype._origXAxis())

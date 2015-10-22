@@ -181,6 +181,7 @@
         var initObj = {
             theme: "none",
             type: "radar",
+            addClassNames: true,
             chartScrollbar: {}
         };
         if (typeof define === "function" && define.amd) {

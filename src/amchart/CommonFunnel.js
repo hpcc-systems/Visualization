@@ -116,6 +116,7 @@
         var initObj = {
             theme: "none",
             type: "funnel",
+            addClassNames: true,
             autoResize: true,
             autoMargins: true,
             chartScrollbar: {}

@@ -82,44 +82,6 @@
         return retVal;
     };
 
-    // // Axes
-    // var _origXAxis = CommonSerial.prototype.xAxis;
-    // CommonSerial.prototype.xAxis = function (_) {
-    //     if (!arguments.length) {
-    //        return _origXAxis.call(this);
-    //     }
-    //     if (_origXAxis.call(this)[_]) {
-    //          return _origXAxis.call(this)[_]
-    //     } else {
-    //         var axis = new Axis();
-    //         axis._context = this;
-    //         var currentAxes = _origXAxis.call(this);
-    //         currentAxes.push(axis);
-    //         _origXAxis.call(this, currentAxes)
-    //     } 
-    //     return axis;
-    // };
-
-    // var _origYAxis = CommonSerial.prototype.yAxis;
-    // CommonSerial.prototype.yAxis = function (_) {
-    //     if (!arguments.length) {
-    //        return _origYAxis.call(this);
-    //     }
-    //     if (_origYAxis.call(this)[_]) {
-    //          return _origYAxis.call(this)[_];
-    //          //return _origYAxis.content()[_];
-    //     } else {
-    //         var axis = new Axis();
-    //         axis._context = this;
-    //         var currentAxes = _origYAxis.call(this);
-    //         //var currentAxes = _origYAxis.content();
-    //         currentAxes.push(axis);
-    //         _origYAxis.call(this, currentAxes)
-    //     } 
-    //     return axis;
-    // };
-
-
     // Axes
     //CommonSerial.prototype._origXAxis = CommonSerial.prototype.xAxis;
     //TODO need to figure out how to allow overwriting of 

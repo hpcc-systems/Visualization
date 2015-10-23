@@ -51,8 +51,8 @@
     Column.prototype.publish("xAxisInversed", false, "boolean", "The Direction In Which The Values Along The Horizontal Axis Grow.",null,{tags:["Advanced"]});
     Column.prototype.publish("yAxisInversed", false, "boolean", "The Direction In Which The Values Along The Vertical Axis Grow.",null,{tags:["Advanced"]});
 
-    Column.prototype.publish("xAxisFormat", "", "string", "Format String For Numeric Axis Labels", ["","decimal","scientific","currency","percent","short","long"],{tags:["Intermediate"]});
-    Column.prototype.publish("yAxisFormat", "", "string", "Format String For Numeric Axis Labels", ["","decimal","scientific","currency","percent","short","long"],{tags:["Intermediate"]});
+    Column.prototype.publish("xAxisFormatType", "", "set", "Format String For Numeric Axis Labels", ["","decimal","scientific","currency","percent","short","long"],{tags:["Intermediate"]});
+    Column.prototype.publish("yAxisFormatType", "", "set", "Format String For Numeric Axis Labels", ["","decimal","scientific","currency","percent","short","long"],{tags:["Intermediate"]});
 
     Column.prototype.publish("xAxisGridlinesCount", 5, "number", "The Number of Horizontal Gridlines Between Two Regular Gridlines",null,{tags:["Intermediate"]});
     Column.prototype.publish("yAxisGridlinesCount", 5, "number", "The Number of Vertical Gridlines Between Two Regular Gridline",null,{tags:["Intermediate"]});
@@ -120,7 +120,7 @@
         retVal.hAxis.minValue = this.xAxisMinValue();
         retVal.hAxis.maxValue = this.xAxisMaxValue();
 
-        retVal.hAxis.format = this.xAxisFormat();
+        retVal.hAxis.format = this.xAxisFormatType();
         retVal.hAxis.textStyle = {
             color: this.xAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),
@@ -157,7 +157,7 @@
         retVal.vAxis.minValue = this.yAxisMinValue();
         retVal.vAxis.maxValue = this.yAxisMaxValue();
 
-        retVal.vAxis.format = this.yAxisFormat();
+        retVal.vAxis.format = this.yAxisFormatType();
         retVal.vAxis.textStyle = {
             color: this.yAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),

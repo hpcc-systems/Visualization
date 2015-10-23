@@ -18,8 +18,11 @@
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 
-    Input.prototype.publish("type", "text", "set", "Input type", ["textbox", "number", "checkbox", "button", "select", "textarea", "date", "html-color"]);
+    Input.prototype.publish("type", "text", "set", "Input type", ["html-color", "number", "checkbox", "button", "select", "textarea", "date", "text", "range", "search", "email", "time", "datetime"]);
     Input.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
+    Input.prototype.publish("low", null, "number", "Minimum value for Range input");
+    Input.prototype.publish("high", null, "number", "Maximum value for Range input");
+    Input.prototype.publish("step", null, "number", "Step value for Range input");
 
     Input.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -68,6 +71,19 @@
                 this._inputElement[0].property("value", this.value());
                 this._inputElement[1].property("value", d3.rgb(this.value()).toString());
                 break;
+            case "range":
+                this.checkNodeName("INPUT", element);
+                this._inputElement[0].attr("type", "range");
+                this._inputElement[0].property("value", this.value());
+                this._inputElement[0].attr("min", this.low());
+                this._inputElement[0].attr("max", this.high());
+                this._inputElement[0].attr("step", this.step());
+                this._inputElement[1].attr("type", "number");
+                this._inputElement[1].property("value", this.value());
+                this._inputElement[1].attr("min", this.low());
+                this._inputElement[1].attr("max", this.high());
+                this._inputElement[1].attr("step", this.step());
+                break;
             default:
                 this.checkNodeName("INPUT", element);
                 this._inputElement[0].attr("type", this.type());
@@ -105,6 +121,10 @@
                 this._inputElement[0].classed("color-text", true);
                 this._inputElement[1] = element.append("input").attr("type", "color");
                 break;
+            case "range":
+                this._inputElement[0] = element.append("input").attr("type", "range");
+                this._inputElement[1] = element.append("input").attr("type", "number");
+                break;
             default:
                 this._inputElement[0] = element.append("input").attr("type", this.type());
                 break;
@@ -133,6 +153,7 @@
                         });
                         context.value(vals);
                         break;
+                    case "range":
                     case "html-color":
                         if (idx === 0) {
                             context._inputElement[1].property("value",d3.rgb(context._inputElement[0].property("value")).toString());

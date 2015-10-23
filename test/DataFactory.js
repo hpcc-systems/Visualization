@@ -194,7 +194,82 @@
         },
         Form: {
             simple: {
-                 
+                inputs: function () {
+                    return [
+                        new Input()
+                            .name("textbox-test")
+                            .label("Alphanumeric")
+                            .type("text")
+                            .validate("^[A-Za-z0-9]+$")
+                            .value("SomeString123"),
+                        new Input()
+                            .name("email-test")
+                            .label("Email")
+                            .type("email")
+                            .validate("^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$")
+                            .value("test@test.com"),
+                        new Input()
+                            .name("search-test")
+                            .label("Search")
+                            .type("search")
+                            .validate("^[A-Za-z0-9]+$")
+                            .value("Some Search String"),
+                        new Input()
+                            .name("html-color-test")
+                            .label("HTML Color")
+                            .type("html-color")
+                            .value("#f00"),
+                        new Input()
+                            .name("date-test")
+                            .label("Date")
+                            .type("date")
+                            .value("2015-01-01"),
+                        new Input()
+                            .name("time-test")
+                            .label("Time")
+                            .type("time")
+                            .value("01:00 AM"),
+                        new Input()
+                            .name("range-test")
+                            .label("Range Test")
+                            .type("range")
+                            .min(0)
+                            .max(500)
+                            .validate("\\d+")
+                            .value(123),
+                        new Input()
+                            .name("number-test")
+                            .label("Number Test")
+                            .type("number")
+                            .validate("\\d+")
+                            .value(123),
+                        new Input()
+                            .name("select-test")
+                            .label("Select Test")
+                            .type("select")
+                            .selectOptions(["A", "B", "C"])
+                            .value("B"),
+                        new WidgetArray()
+                            .content([
+                                new Input()
+                                    .name("textbox-test")
+                                    .label("Only Alpha")
+                                    .type("text")
+                                    .validate("^[A-Za-z]+$")
+                                    .value("SomeString"),
+                                new Input()
+                                    .name("checkbox-test")
+                                    .label("Checkbox Test")
+                                    .type("checkbox")
+                                    .value(true)
+                            ]),
+                        new Input()
+                            .name("textarea-test")
+                            .label("Textarea Test")
+                            .type("textarea")
+                            .value("Textarea Text")
+                    ];
+                }
             }
         },
         Slider: {

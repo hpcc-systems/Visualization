@@ -114,6 +114,18 @@
                     );
                 });
             },
+            timeX: function (callback) {
+                require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
+                    callback(new Line()
+                        .columns(DataFactory.timeX.default.columns)
+                        .data(DataFactory.timeX.default.data)
+                        
+                        .xAxisType("time")
+                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                        .yAxisType("linear")
+                    );
+                });
+            },
             cardinal_interpolation: function (callback) {
                 require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
                     callback(new Line()

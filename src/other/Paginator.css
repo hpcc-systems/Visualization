@@ -1,16 +1,12 @@
 .other_Paginator {
   display: block;
   position:absolute;
-  bottom: 20px;
-  right: 20px;
+  white-space: nowrap;
 }
 
 .other_Paginator .pagination {
   display: inline-block;
-  padding-left: 0;
-  margin: 0 0;
-  border-radius: 4px;
-  float: left;
+  white-space: nowrap;
 }
 
 .other_Paginator .pagination > li {
@@ -21,18 +17,17 @@
   border: 1px solid #ddd;
   outline: 0 none;
   position: relative;
-  top: 4px;
   width: 37px;
   text-align: center;
 }
 
 .other_Paginator div.side {
-  padding-left: 20px;
+  padding: 5px 20px;
+  vertical-align: top;;
 }
 
 .other_Paginator span.side {
   position: relative;
-  top: 6px;
   color: #337ab7;
 }
 

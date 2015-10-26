@@ -15,6 +15,59 @@
                         .data(DataFactory.HeatMap.simple.data)
                     );
                 });
+            },
+            skew: function (callback) {
+                require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
+                    callback(new HeatMap()
+                        .columns(DataFactory.HeatMap.skew.columns)
+                        .data(DataFactory.HeatMap.skew.data)
+                        .topLeftX(-10000).topLeftY(-10000)
+                        .bottomRightX(10000).bottomRightY(10000)
+                    );
+                });
+            },
+            rapidInterval: function (callback) {
+                require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
+                    var heat = new HeatMap().columns(DataFactory.HeatMap.center.columns).data(DataFactory.HeatMap.center.data)
+                        .topLeftX(-10000).topLeftY(-10000)
+                        .bottomRightX(10000).bottomRightY(10000)
+                        .radius(13).blur(5)
+                    ;
+                    var step = 400;
+                    var renderTimeLimit = 2000;
+                    var mitosisLoop = setInterval(function(){
+                        var prevRenderTime = new Date().getTime();
+                        var newData = [];
+                        heat.data().forEach(function(n){
+                            var splitChance = 1/(heat.data().length/20);
+                            var rand = Math.random();
+                            if(rand <= splitChance * n[2] * 5){
+                                _split(n);
+                            } else if (rand <= splitChance * 100) {
+                                _move(n);
+                            } else {
+                                n[2] = rand >= 0.999999 ? 1 : n[2];
+                                newData.push(n);
+                            }
+                        });
+                        heat.data(newData).render();
+                        if(new Date().getTime() - prevRenderTime > renderTimeLimit){
+                            clearInterval(mitosisLoop);
+                        }
+                        function _split(c){
+                            var o = step + (Math.random()*step);
+                            newData.push(c);
+                            newData.push([[c[0],c[1]-o,c[2]],[c[0]+o,c[1],c[2]],[c[0],c[1]+o,c[2]],[c[0]-o,c[1],c[2]]][Math.floor(Math.random()*4)]);
+                        }
+                        function _move(cell){
+                            var movedCell = [cell[0] + (step*Math.random()*[-1,1][Math.floor(Math.random()*2)]),cell[1] + (step*Math.random()*[-1,1][Math.floor(Math.random()*2)]),cell[2] * 0.99];
+                            if(movedCell[2] > 0.01){
+                                newData.push(movedCell);
+                            }
+                        }
+                    },100);
+                    callback(heat);
+                });
             }
         },
         Image: {

@@ -53,24 +53,20 @@
             bbox = this._textElement.node().getBBox();
         } catch (e) {
         }
-        var xOffset = 0;
-        var yOffset = 0;
+        var xOffset = -(bbox.x + bbox.width / 2);
+        var yOffset = -(bbox.y + bbox.height / 2);
         switch(this.anchor()) {
             case "start":
-                xOffset = -bbox.width / 2;
+                xOffset = -bbox.x + bbox.width / 2;
                 break;
             case "end":
-                xOffset = bbox.width / 2;
+                xOffset = bbox.x + bbox.width / 2;
                 break;
         }
-        var yShift = -(bbox.y + bbox.height / 2);
-        var xShift = xOffset;
         
-        var r = xShift + yShift;
         var theta = -this.rotation() * Math.PI/180;
-        
-        xOffset = Math.round(r * Math.sin(theta));
-        yOffset = Math.round(r * Math.cos(theta));
+        xOffset = -1*Math.abs(xOffset*Math.cos(theta) + yOffset*Math.sin(theta));
+        yOffset = -1*Math.abs(xOffset*Math.sin(theta) + yOffset*Math.cos(theta));
         
         this._textElement
             .style("text-anchor", this.anchor())

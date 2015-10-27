@@ -89,6 +89,14 @@
                     return _;
                 };
                 break;
+            case "propertyArray":
+                this.checkedAssign = function (_) {
+                    if (_.some(function (row) { return !row.publishedProperties; })) {
+                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
             default:
                 this.checkedAssign = function (_) {
                     if (window.__hpcc_debug) {
@@ -109,10 +117,13 @@
     }
 
     function PropertyExt() {
+        this._watchArr = [];
+
         this.publishedProperties().forEach(function (meta) {
             switch (meta.type) {
                 case "array":
                 case "widgetArray":
+                case "propertyArray":
                     this[__prop_ + meta.id] = [];
                     break;
             }

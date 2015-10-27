@@ -6,6 +6,16 @@
         root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid);
     }
 }(this, function (d3, HTMLWidget, Persist, Grid) {
+    function hasProperties(type) {
+        switch (type) {
+            case "widget":
+            case "widgetArray":
+            case "propertyArray":
+                return true;
+        }
+        return false;
+    }
+
     function PropertyEditor() {
         HTMLWidget.call(this);
 
@@ -16,8 +26,8 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("showColumns", true, "boolean", "If true, widget.columns() will display as if it was a publish parameter.",null,{tags:["Basic"]});
-    PropertyEditor.prototype.publish("showData", true, "boolean", "If true, widget.data() will display as if it was a publish parameter.",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("showColumns", false, "boolean", "If true, widget.columns() will display as if it was a publish parameter.",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
     
     PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type",["none","A-Z","Z-A","type"],{tags:["Basic"],icons:["fa-sort","fa-sort-alpha-asc","fa-sort-alpha-desc","fa-sort-amount-asc"]});
     PropertyEditor.prototype.publish("collapsed", false, "boolean", "If true, the table will default to collapased",null,{tags:["Basic"]});
@@ -202,6 +212,7 @@
                     node.children.push(this.gatherDataTree(widget[prop.id]()));
                     break;
                 case "widgetArray":
+                case "propertyArray":
                     var arr = widget[prop.id]();
                     if (arr) {
                         arr.forEach(function (item) {
@@ -221,7 +232,7 @@
     
     PropertyEditor.prototype._rowSorting = function (paramArr) {
         if(this.sorting() === "type"){
-            var typeOrder = ["boolean","number","string","html-color","array","object","widget","widgetArray"];
+            var typeOrder = ["boolean","number","string","html-color","array","object","widget","widgetArray","propertyArray"];
             paramArr.sort(function(a,b){
                 if(a.type === b.type){
                     return a.id < b.id ? -1 : 1;
@@ -250,7 +261,7 @@
             }
             if (this.hideNonWidgets()) {
                 discArr = discArr.filter(function (n) {
-                    return n.type === "widget" || n.type === "widgetArray";
+                    return hasProperties(n.type);
                 });
             }
             this._rowSorting(discArr);
@@ -262,7 +273,7 @@
             .attr("class", "property-wrapper prop" + this.id())
             .each(function (param) {
                 var tr = d3.select(this);
-                if (param.type === "widget" || param.type === "widgetArray") {
+                if (hasProperties(param.type)) {
                     tr.classed("property-widget-wrapper", true);
                     var rowCell = tr.append("td")
                         .attr("colspan", "2")
@@ -286,7 +297,7 @@
         ;
         rows.each(function (param) {
             var tr = d3.select(this);
-            if (param.type === "widget" || param.type === "widgetArray") {
+            if (hasProperties(param.type)) {
                 context.updateWidgetRow(tr.select("td"), param);
             } else {
                 context.updateInputs(param);
@@ -294,7 +305,7 @@
         });
         rows.exit().each(function (param) {
             var tr = d3.select(this);
-            if (param.type === "widget" || param.type === "widgetArray") {
+            if (hasProperties(param.type)) {
                 context.updateWidgetRow(tr.select("td"), null);
             }
         }).remove();

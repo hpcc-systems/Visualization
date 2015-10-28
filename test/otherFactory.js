@@ -63,6 +63,16 @@
                     );
                 });
             },
+            totalled: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    callback(new Table()
+                        .columns(DataFactory.Table.large.columns)
+                        .data(DataFactory.Table.large.data)
+                        .totalledColumns([1,2,5,6,7])
+                        .totalledLabel("Total")
+                    );
+                });
+            },
             large: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()

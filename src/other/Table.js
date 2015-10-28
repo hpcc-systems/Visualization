@@ -30,7 +30,7 @@
     Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     
-    Table.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
+    Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
@@ -136,11 +136,11 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-        if(this.fixedSize()){
-            var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
-            element.style({width: box.width + "px",height: box.height + "px"});
+        var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
+        if(this.fixedSize() && box.width !== 0 && box.height !== 0){
+            element.attr({width: box.width + "px",height: box.height + "px"});
         } else {
-            element.style({width: "100%",height: "100%"});
+            element.attr({width: "100%",height: "100%"});
         }
         
         if (!this.showHeader()) {
@@ -202,7 +202,7 @@
 
             this._paginator.numItems(this.data().length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
-            if (this.pageNumber() > this._tNumPages) { this.pageNumber(1); } // resets if current pagenum selected out of range
+            if (this.pageNumber() > this._tNumPages || this.pageNumber() <= 0) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
             this._paginator._onSelect = function (p, d) {
                 context.pageNumber(p);

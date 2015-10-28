@@ -141,6 +141,7 @@
         var initObj = {
             theme: "none",
             type: "gauge",
+            addClassNames: true,
             axes: [{}],
             arrows:[{}],
         };

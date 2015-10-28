@@ -33,8 +33,8 @@
     CommonXY.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:["Basic","Shared"]});
 
-    CommonXY.prototype.publish("xAxisBaselineColor", null, "html-color", "Axis color",null,{tags:["Basic","Shared"]});
-    CommonXY.prototype.publish("yAxisBaselineColor", null, "html-color", "Axis color",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("xAxisBaselineColor", "#000000", "html-color", "Axis color",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("yAxisBaselineColor", "#000000", "html-color", "Axis color",null,{tags:["Basic","Shared"]});
 
     CommonXY.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal axis text style (Color)",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("yAxisFontColor", null, "html-color", "Vertical axis text style (Color)",null,{tags:["Basic","Shared"]});
@@ -121,13 +121,13 @@
         this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
 
+        this._chart.dataProvider = this.formatData(this.data());
+
         if (this.xAxisType() === "ordinal") {
             this._chart.valueAxes[0].integersOnly = true;
+            this._chart.valueAxes[0].maximum = this.data().length;
             this._chart.valueAxes[0].labelFunction = function(val) {
-                if (val > 0) {
-                    return typeof(context.data()[val]) !== "undefined" ? context.data()[val][0] : ""; // shift chart right by 1 so it does not start on axis
-                }
-                return "";
+                return context.data().length && val > 0 ? context.data()[val-1][0] : "";
             };
         } else {
             this._chart.valueAxes[0].labelFunction = function(d) {
@@ -154,8 +154,6 @@
         this._chart.valueAxes[1].labelFunction = function(d) {
             return d3.format(context.yAxisTickFormat())(d);
         };
-
-        this._chart.dataProvider = this.formatData(this.data());
 
         this._chart.dataProvider.forEach(function(dataPoint,i){
             context._chart.dataProvider[i].color = context._palette(dataPoint[context.columns()[2]]); // By Y value
@@ -227,7 +225,8 @@
         var initObj = {
             theme: "none",
             type: "xy",
-            automargins: false,
+            addClassNames: true,
+            autoMargins: false,
             chartScrollbar: {},
             valueAxes: [
                 {position:"bottom",title:" "},

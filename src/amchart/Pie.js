@@ -126,6 +126,7 @@
         var context = this;
         var initObj = {
             type: "pie",
+            addClassNames: true,
             theme: "none"
         };
         if (typeof define === "function" && define.amd) {

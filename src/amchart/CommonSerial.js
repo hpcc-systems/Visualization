@@ -368,6 +368,7 @@
         var context = this;
         var initObj = {
             type: "serial",
+            addClassNames: true,
             chartScrollbar: {}
         };
         if (typeof define === "function" && define.amd) {

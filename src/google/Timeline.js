@@ -20,7 +20,7 @@
     Timeline.prototype._class += " google_Timeline";
 
     Timeline.prototype.publish("tooltipIsHtml", true, "boolean", "Set to false to use SVG-rendered (rather than HTML-rendered) tooltips. See Customizing Tooltip Content for more details.",null,{tags:["Advanced"]});
-    Timeline.prototype.publish("tooltipTrigger", "focus", "set", "The user interaction that causes the tooltip to be displayed: - The tooltip will be displayed when the user hovers over the element;  - The tooltip will not be displayed.",["none", "focus"],{tags:["Basic"]});
+    Timeline.prototype.publish("tooltipTrigger", "focus", "set", "The user interaction that causes the tooltip to be displayed: focus - The tooltip will be displayed when the user hovers over the element; none - The tooltip will not be displayed.",["none", "focus"],{tags:["Basic"]});
     Timeline.prototype.publish("backgroundColor", null, "html-color", "The background color for the main area of the chart. Can be either a simple HTML color string, for example:  or '#00cc00'.",null,{tags:["Basic"]});
 
     Timeline.prototype.publish("avoidOverlappingGridLines", true, "boolean", "Whether display elements (e.g., the bars in a timeline) should obscure grid lines. If false, grid lines may be covered completely by display elements. If true, display elements may be altered to keep grid lines visible.",null,{tags:["Basic"]});
@@ -28,7 +28,8 @@
     Timeline.prototype.publish("timelineGroupByRowLabel", true, "boolean", "If set to false, creates one row for every dataTable entry. The default is to collect bars with the same row label into one row.",null,{tags:["Basic"]});
     Timeline.prototype.publish("timelineShowBarLabels", true, "boolean", "If set to false, omits bar labels. The default is to show them.", null,{tags:["Basic"]});
     Timeline.prototype.publish("timelineShowRowLabels", true, "boolean", "If set to false, omits row labels. The default is to show them.",null,{tags:["Basic"]});
-    Timeline.prototype.publish("timelineSingleColor", null, "string", "Colors all bars the same. Specified as a hex value (e.g., '#8d8').",null,{tags:["Basic"]});
+    Timeline.prototype.publish("timelineSingleColor", null, "html-color", "Colors all bars the same. Specified as a hex value (e.g., '#8d8').",null,{tags:["Basic"]});
+    Timeline.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time format of the data.",null,{tags:["Basic"]});
 
     Timeline.prototype.getChartOptions = function () {
         var retVal = [];
@@ -44,6 +45,7 @@
         retVal.tooltipTrigger = this.tooltipTrigger();
         retVal.width = this.width();
         retVal.height = this.height();
+        retVal.timePattern = this.timePattern();
 
         return retVal;
     };
@@ -60,7 +62,7 @@
 
             var start;
             var end;
-            var parseDate = d3.time.format("%Y-%m-%d").parse;
+            var parseDate = d3.time.format(this.timePattern()).parse;
 
             _.forEach(function(d) {
                 start = parseDate(d[2]);

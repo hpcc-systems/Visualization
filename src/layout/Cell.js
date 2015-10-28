@@ -157,7 +157,7 @@
         var indicatorBorderColor = this.indicatorBorderColor();
         var indicatorGlowColor = this.indicatorGlowColor();
         return function(){
-            for(var i in arr){
+            for(var i = 0; i < arr.length; i++){
                 var node = document.getElementById(arr[i]);
                 var rect = node.getBoundingClientRect();
                 d3.select(this).append("div").classed("update-indicator",true)

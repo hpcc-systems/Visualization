@@ -75,7 +75,8 @@
         }
         total = total || this.columns().length;
         var retVal = [];
-        for (var i = 1; i < total; ++i) {
+        var s = typeof this.xAxisType === "function" && this.xAxisType() === "time" ? 0 : 1; 
+        for (var i = s; i < total; ++i) {
             retVal.push(this.getC3Column(i));
         }
         return retVal;
@@ -101,6 +102,7 @@
         this._config.bindto = element.append("div").datum(null);
 
         this._config.data.columns = this.getC3Columns();
+
         this.c3Chart = c3.generate(this._config);
     };
 

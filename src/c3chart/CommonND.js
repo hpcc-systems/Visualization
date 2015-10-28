@@ -16,7 +16,7 @@
         };
 
         this._config.data.onclick = function (d, element) {
-            context.click(context.rowToObj(context.data()[d.index]), d.id);
+            context.click(context.rowToObj(context._data[d.index]), d.id);
         };
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
@@ -54,6 +54,7 @@
     CommonND.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
     
     CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "time", "indexed"],{tags:["Intermediate"]});
+
     CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart",null,{tags:["Private"]});
 
     CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid",null,{tags:["Intermediate"]});
@@ -139,6 +140,8 @@
     };
 
     CommonND.prototype.update = function (domNode, element) {
+        Common.prototype.update.apply(this, arguments);
+
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());

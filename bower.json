@@ -42,7 +42,7 @@
     "topojson": "~1.6.19",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.1/dist/dagre.js",
     "d3-cloud": "~1.2.0",
-    "amcharts3": "~3.17.0",
+    "amcharts": "~3.14.1",
     "simpleheat": "git://github.com/mourner/simpleheat.git#gh-pages"
   },
   "resolutions": {

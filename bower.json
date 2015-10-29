@@ -37,16 +37,16 @@
   "dependencies": {
     "c3": "~0.4.10",
     "colorbrewer": "~1.0.0",
-    "d3": "~3.5.5",
-    "font-awesome": "~4.3.0",
+    "d3": "~3.5.6",
+    "font-awesome": "~4.4.0",
     "topojson": "~1.6.19",
-    "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.1/dist/dagre.js",
-    "d3-cloud": "~1.2.0",
-    "amcharts3": "~3.17.0",
-    "simpleheat": "git://github.com/mourner/simpleheat.git#gh-pages"
+    "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",
+    "d3-cloud": "~1.2.1",
+    "amcharts3": "~3.17.3",
+    "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js"
   },
   "resolutions": {
-    "d3": "~3.5.5"
+    "d3": "~3.5.6"
   },
   "license": "Apache",
   "authors": [

@@ -240,7 +240,7 @@
                             new Line()
                                 .columns(DataFactory.ND.subjects.columns)
                                 .data(DataFactory.TwoD.subjects.data)
-                            , "Line CHart")
+                            , "Line Chart")
                         .addTab(
                             new Column()
                                 .columns(DataFactory.ND.subjects.columns)

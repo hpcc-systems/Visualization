@@ -264,7 +264,9 @@
             ;
         }
 
-        this._menu.element().node().parentNode.appendChild(this._menu.element().node()); // Make sure menu is on top (Z-Order POV)
+        if (this._menu.element() && this._menu.element().node() && this._menu.element().node().parentNode) {
+            this._menu.element().node().parentNode.appendChild(this._menu.element().node()); // Make sure menu is on top (Z-Order POV)
+        }
     };
 
     Surface.prototype.exit = function (domNode, element) {

@@ -777,6 +777,7 @@
         },
         Countries: {
             simple: {
+                columns: [],
                 rawData: [
                     { "name": "United States", "weight": 29.946185501741 }, { "name": "China", "weight": 229.946185501741 }
                 ]
@@ -817,6 +818,7 @@
                 ]
             },
             heat: {
+                columns: [],
                 data: [
                     [37.665074, -122.384375, null, null, 0.234],
                     [32.690680, -117.178540, null, null, 0.234],
@@ -830,6 +832,7 @@
                 ]
             },
             graph: {
+                columns: [],
                 data: [
                     [37.665074, -122.384375, { fillColor: "green" }, null, 0.234],
                     [32.690680, -117.178540, null, null, 0.234],

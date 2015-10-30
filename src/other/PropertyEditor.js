@@ -7,7 +7,7 @@
     }
 }(this, function (d3, Widget, HTMLWidget, Persist, Grid, Accordion, Form, Input) {
     function PropertyEditor() {
-        HTMLWidget.call(this);
+        Accordion.call(this);
 
         this._tag = "div";
         this._columns = ["Key", "Value"];
@@ -15,8 +15,8 @@
         this._show_settings = true;
         this._dataDiv = {};
         this._previousIds = "";
+        this.__propertyEditor_watch = [];
     }
-    
     PropertyEditor.prototype = Object.create(Accordion.prototype);
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
@@ -224,15 +224,14 @@
     };
     
     PropertyEditor.prototype.exit = function (domNode, element) {
+        this.removeWatches();
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
     
-    PropertyEditor.prototype.removeWatches = function(){
-        for(var n in this.__propertyEditor_watch){
-            if(typeof (this.__propertyEditor_watch[n].remove) === "function"){
-                this.__propertyEditor_watch[n].remove();
-            }
-        }
+    PropertyEditor.prototype.removeWatches = function () {
+        this.__propertyEditor_watch.forEach(function (watchObj) {
+            watchObj.remove();
+        });
         this.__propertyEditor_watch = [];
     };
     

@@ -28,17 +28,18 @@
 
     Cell.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);
-        element.classed("layout_Surface", true);
+        var context = this;
+        element
+            .classed("layout_Surface", true)
+            .on("mouseenter", function (d) { context.onMouseEnter(); })
+            .on("mouseleave", function (d) { context.onMouseLeave(); })
+        ;
     };
 
     Cell.prototype.update = function (domNode, element) {
         Surface.prototype.update.apply(this, arguments);
         var context = this;
         var offsetMultiple;
-        
-        element
-            .on("mouseenter",this.onMouseEnter())
-            .on("mouseleave",this.onMouseLeave());
 
         var dragHandles = element.selectAll(".dragHandle").data(this._dragHandles, function (d) { return d; });
         dragHandles.enter().append("div")
@@ -156,35 +157,34 @@
         var opacity = this.indicatorOpacity();
         var indicatorBorderColor = this.indicatorBorderColor();
         var indicatorGlowColor = this.indicatorGlowColor();
-        return function(){
-            for(var i = 0; i < arr.length; i++){
-                var node = document.getElementById(arr[i]);
-                var rect = node.getBoundingClientRect();
-                d3.select(this).append("div").classed("update-indicator",true)
-                    .style({
-                        "box-sizing":"border-box",
-                        position: "fixed",
-                        top: rect.top + "px",
-                        left: rect.left + "px",
-                        width: rect.width + "px",
-                        height: rect.height + "px",
-                        opacity: opacity,
-                        padding: "0px",
-                        "z-index": 1000,
-                        "border": "4px solid "+indicatorBorderColor,
-                        "-webkit-box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
-                        "-moz-box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
-                        "box-shadow": "inset 0px 0px 30px 0px "+indicatorGlowColor,
-                    })
-                ;
-            }
-        };
+        for (var i = 0; i < arr.length; i++) {
+            var otherElement = d3.select("#" + arr[i]);
+            var rect = otherElement.node().getBoundingClientRect();
+            otherElement.append("div")
+                .classed("update-indicator", true)
+                .style({
+                    "box-sizing": "border-box",
+                    position: "fixed",
+                    top: rect.top + "px",
+                    left: rect.left + "px",
+                    width: rect.width + "px",
+                    height: rect.height + "px",
+                    opacity: opacity,
+                    padding: "0px",
+                    "z-index": 1000,
+                    "border": "4px solid " + indicatorBorderColor,
+                    "-webkit-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                    "-moz-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                    "box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                })
+            ;
+        }
     };
-    Cell.prototype.onMouseLeave = function (){
-        var element = this.element();
-        return function (){
-            element.selectAll(".update-indicator").remove();
-        };
+    Cell.prototype.onMouseLeave = function () {
+        var arr = this.indicateTheseIds();
+        for (var i = 0; i < arr.length; i++) {
+            d3.selectAll("#" + arr[i] + " > div.update-indicator").remove();
+        }
     };
 
     return Cell;

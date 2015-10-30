@@ -312,6 +312,7 @@
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
+                    widgetPath = "src/"+currWidget._class.split(" ").pop().split("_").join("/");
                     frame
                         .title(widgetPath)
                         .render(function (mainWidget) {

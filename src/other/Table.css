@@ -85,3 +85,9 @@
     white-space: nowrap;
     box-sizing:border-box;
 }
+
+.other_Table tfoot td, .rows-wrapper tfoot td {
+    background-color: #ADDFF3;
+    font-weight: bold;
+    border-top-width: 3px
+}

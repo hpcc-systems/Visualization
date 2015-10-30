@@ -34,13 +34,18 @@
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tfootFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadFontColor", null, "html-color", "Table head font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontColor", null, "html-color", "Table body font color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tfootFontColor", null, "html-color", "Table body font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadFontFamily", null, "string", "Table head font family", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontFamily", null, "string", "Table body font family", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tfootFontFamily", null, "string", "Table body font family", null, { tags: ["Basic"], optional: true });
     
     Table.prototype.publish("theadCellBorderColor", null, "html-color", "Table head cell border color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tfootCellBorderColor", null, "html-color", "Table head cell border color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("theadRowBackgroundColor", null, "html-color", "Table head row color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tfootRowBackgroundColor", null, "html-color", "Table head row color", null, { tags: ["Basic"], optional: true });
     
     Table.prototype.publish("tbodyCellBorderColor", null, "html-color", "Table body cell border color", null, { tags: ["Basic"], optional: true });
     
@@ -54,6 +59,8 @@
     Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true });
 
     Table.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
@@ -89,6 +96,7 @@
         this.table = this.tableDiv.append("table");
         this.thead = this.table.append("thead").append("tr");
         this.tbody = this.table.append("tbody");
+        this.tfoot = this.table.append("tfoot").append("tr");
         this.headerDiv = element;
         this.tableDiv
             .style("overflow", "auto")
@@ -125,11 +133,12 @@
         this._paginator.render();
 
         var thHeight = this.thead.selectAll("th").node().clientHeight;
+        var tfootHeight = this.tfoot.selectAll("td").node().clientHeight;
         var tmpRow = this._generateTempRow();
         var tcellHeight = tmpRow.node().clientHeight;
         tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
         return ipp;
     };
 
@@ -223,10 +232,42 @@
         var end = parseInt(startIndex * itemsOnPage) + parseInt(itemsOnPage);
 
         var tData = null;
+
         if (this.pagination()) {
             tData = this.data().slice(start, end);
         } else {
             tData = this.data();
+        }
+
+        var totalRow = [this.totalledLabel() ? this.totalledLabel() : null];
+        if (context.totalledColumns() !== []) {
+            var totArr = context.totalledColumns();
+            // var x = this.totalledLabel() ? 1 : 0;1
+            for (var i = 1; i < context.columns().length; i++) {
+                var sum = 0;
+                if (totArr.indexOf(i) !== -1) {                  
+                    for (var k = 0; k < tData.length; k++) {
+                        sum = sum + tData[k][i];
+                    }
+                    totalRow.push(sum);
+                } else {
+                    totalRow.push("");
+                }
+            }
+            this.tfoot.selectAll("td").remove();
+            var tf = this.tfoot.selectAll("td").data(totalRow)
+                .enter()
+                .append("td")
+                .text(function(d) {
+                    return d;
+                })
+            ;
+            tf
+                .style("background-color",this.tfootRowBackgroundColor())
+                .style("border-color",this.tfootCellBorderColor())
+                .style("color",this.tfootFontColor())
+                .style("font-size",this.tfootFontSize())
+            ;
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);
@@ -304,7 +345,7 @@
             .remove()
         ;
         
-        rows.each(function(){
+        rows.each(function() {
             var d = d3.select(this);
             context.applyStyleToRows(d);
         });
@@ -488,6 +529,12 @@
                         ;
                     })
                 ;  
+                if (context.totalledColumns() && context.totalledLabel()) {
+                    tBody
+                        .append("tr").append("td")
+                        .text(context.totalledLabel())
+                    ;
+                }
                 tds
                     .style("color", context.tbodyFontColor())
                     .style("font-size", context.tbodyFontSize())

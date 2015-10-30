@@ -136,12 +136,6 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-        var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
-        if(this.fixedSize() && box.width !== 0 && box.height !== 0){
-            element.attr({width: box.width + "px",height: box.height + "px"});
-        } else {
-            element.attr({width: "100%",height: "100%"});
-        }
         
         if (!this.showHeader()) {
             this.fixedHeader(false);
@@ -427,6 +421,9 @@
             
             var rowWrapperWidth;
             var newTableHeight;
+            var newTableWidth;
+            var finalWidth;
+            var maxWidth;
             if (context.fixedColumn()) {
                 rowLabelsWrapper.html("");
 
@@ -556,13 +553,22 @@
                 tableMarginHeight = 0;
             }
 
-            newTableHeight = parseInt(context.headerDiv.node().style.height) - parseInt(tableMarginHeight);
-            var newTableWidth = parseInt(context.headerDiv.node().style.width) - parseInt(rowWrapperWidth);
-            var maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
-            var finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
+            var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
+            if(context.fixedSize() && box.width !== 0 && box.height !== 0){
+                newTableHeight = box.height - parseInt(tableMarginHeight);
+                newTableWidth = box.width - parseInt(rowWrapperWidth);
+                maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
+                finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
+                finalWidth = finalWidth + "px";
+                newTableHeight = newTableHeight + "px";
+            } else {
+                finalWidth = "100%";
+                newTableHeight ="100%";
+            }
+        
             context.tableDiv
-                .style("width", finalWidth + "px")
-                .style("height", newTableHeight + "px")
+                .style("width", finalWidth)
+                .style("height", newTableHeight)
                 .style("position", "absolute")
                 .style("top", tableMarginHeight + "px")
                 .style("left", rowWrapperWidth + "px")

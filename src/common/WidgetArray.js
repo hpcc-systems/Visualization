@@ -15,5 +15,12 @@
 
     WidgetArray.prototype.publish("content", [], "widgetArray", "Widget Array");
 
+    WidgetArray.prototype.target = function (target) {
+        if (!target) {
+            this.content_reset();
+            this.exit();
+        }
+    };
+
     return WidgetArray;
 }));

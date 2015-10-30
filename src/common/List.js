@@ -72,9 +72,17 @@
         line.exit()
             .remove()
             .each(function (d) {
+                context._listWidgets[d].target(null);
                 delete context._listWidgets[d];
             })
         ;
+    };
+
+    List.prototype.exit = function (domNode, element) {
+        for (var key in this._listWidgets) {
+            this._listWidgets[key].target(null);
+        }
+        SVGWidget.prototype.exit.apply(this, arguments);
     };
 
     return List;

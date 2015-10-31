@@ -128,6 +128,34 @@ define(["src/common/Utility"], function (Utility) {
                 ["b", 2, "c"]
             ]);
         });
+
+        it("util-d3arrayapater-test", function () {
+            var arr = ["a", "b", "c", "d", "e", "f", "z"];
+            var arr1 = arr.map(function(row) {return row;});
+            var arr2 = ["z", "x", "a", "c", "f", "b"];
+            var tmp = d3.select(Utility.d3ArrayAdapter(arr1));
+            var sel = tmp.selectAll("");
+            var join = sel.data(arr2, function (d) { return d; });
+            join.enter().append("")
+                .each(function (d) {
+                    //console.log("enter:  " + d);
+                })
+            ;
+            join
+                .each(function (d) {
+                    //console.log("update:  " + d);
+                })
+            ;
+            join.exit()
+                .each(function (d) {
+                    //console.log("exit:  " + d);
+                }).remove()
+            ;
+            join.order();
+            assert.deepEqual(arr1, arr2);
+            assert.deepEqual(sel.filter(function (d, i) { return i % 2 === 1; }).data(), arr.filter(function (d, i) { return i % 2 === 1; }));
+            assert.deepEqual(join.filter(function (d, i) { return i % 2 === 1; }).data(), arr2.filter(function (d, i) { return i % 2 === 1; }));
+        });
     });
 });
 

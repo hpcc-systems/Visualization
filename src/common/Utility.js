@@ -193,6 +193,52 @@
             position -= searchString.length;
             var lastIndex = subjectString.indexOf(searchString, position);
             return lastIndex !== -1 && lastIndex === position;
+        },
+
+        d3ArrayAdapter: function (array) {
+            return {
+                ownerDocument: {
+                    createElement: function (tagName) {
+                        return {
+                            get __data__() { return this.row; },
+                            set __data__(_) { this.row = array[this.index] = _; }
+                        };
+                    }
+                },
+                querySelectorAll: function (selectors) {
+                    if (selectors) throw "unsupported";
+                    var context = this;
+                    return array.map(function (row, idx) {
+                        return {
+                            ownerDocument: context.ownerDocument,
+                            parentNode: context,
+                            get __data__() { return row; },
+                            set __data__(_) { array[idx] = _; }
+                        };
+                    });
+                },
+                appendChild: function (node) {
+                    node.parentNode = this;
+                    node.index = array.length;
+                    array.push(null);
+                    return node;
+                },
+                insertBefore: function (node, referenceNode) {
+                    var idx = array.indexOf(node.__data__);
+                    var refIdx = array.indexOf(referenceNode.__data__);
+                    if (idx > refIdx) {
+                        array.splice(refIdx, 0, array.splice(idx, 1)[0]);
+                    } else if (idx < refIdx - 1) {
+                        array.splice(refIdx - 1, 0, array.splice(idx, 1)[0]);
+                    }
+                    return node;
+                },
+                removeChild: function (node) {
+                    array.splice(array.indexOf(node.__data__), 1);
+                    return node;
+                }
+            };
         }
+
     };
 }));

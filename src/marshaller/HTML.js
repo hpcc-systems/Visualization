@@ -8,6 +8,8 @@
 }(this, function (d3, Grid, HipieDDL, Surface, Cell) {
     function HTML() {
         Grid.call(this);
+
+        this.surfacePadding(0);
     }
     HTML.prototype = Object.create(Grid.prototype);
     HTML.prototype.constructor = HTML;
@@ -92,12 +94,20 @@
                     var cellCol = 0;
                     var maxCol = Math.floor(Math.sqrt(dashboards[key].visualizations.length));
                     dashboards[key].visualizations.forEach(function (viz, idx) {
+                        if (viz.widget instanceof Surface) {
+                            viz.widgetSurface = viz.widget;
+                        } else {
+                            viz.widgetSurface = new Surface()
+                                .widget(viz.widget)
+                            ;
+                        }
                         if (idx && (idx % maxCol === 0)) {
                             cellRow++;
                             cellCol = 0;
                         }
                         viz.widget.size({ width: 0, height: 0 });
-                        context.setContent(cellRow, cellCol, viz.widget, viz.title);
+                        viz.widgetSurface.title(viz.title);
+                        context.setContent(cellRow, cellCol, viz.widgetSurface);
                         cellCol++;
                     });
                 }

@@ -353,6 +353,14 @@
         return retVal;
     };
 
+    Source.prototype.getXTitle = function () {
+        return this.mappings.columns[0];
+    };
+
+    Source.prototype.getYTitle = function () {
+        return this.mappings.columns.filter(function(d, i) {return i > 0;}).join(" / ");
+    };
+
     //  Viz Events ---
     function Event(visualization, eventID, event) {
         this.visualization = visualization;
@@ -493,7 +501,7 @@
                 case "BUBBLE":
                 case "BAR":
                 case "WORD_CLOUD":
-                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
@@ -501,9 +509,12 @@
                     });
                     break;
                 case "LINE":
-                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
+                            .showLegend(true)
+                            .domainAxisTitle(context.source.getXTitle())
+                            .valueAxisTitle(context.source.getYTitle())
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     });
@@ -678,6 +689,16 @@
         visitor.visit(this);
     };
 
+    Visualization.prototype.update = function () {
+        var params = this.source.getOutput().getParams();
+        if (exists("widgetSurface.title", this)) {
+            this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
+            this.widgetSurface.render();
+        } else {
+            this.widget.render();
+        }
+    };
+
     Visualization.prototype.notify = function () {
         if (this.source.hasData()) {
             if (this.widget) {
@@ -686,18 +707,23 @@
                 var data = this.source.getData();
                 this.widget.data(data);
 
-                var params = this.source.getOutput().getParams();
-                if (exists("widget.title", this)) {
-                    this.widget.title(this.title + (params ? " (" +params + ")": ""));
-                    this.widget.render();
-                } else if (exists("widgetSurface.title", this)) {
-                    this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
-                    this.widgetSurface.render();
-                } else {
-                    this.widget.render();
-                }
+                this.update();
             }
         }
+    };
+
+    Visualization.prototype.clear = function () {
+        if (this.widget) {
+            this.widget.data([]);
+            this.source.getOutput().request = {};
+        }
+        if (this._eventValues) {
+            delete this._eventValues;
+            this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                updatedViz.clear();
+            });
+        }
+        this.update();
     };
 
     Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
@@ -737,6 +763,7 @@
                             }
                         }
                     });
+                    updatedViz.clear();
                     if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
                         dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
                     }

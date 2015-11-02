@@ -185,16 +185,15 @@
             }
             return retVal;
         },
-
-        endsWith: function(subjectString, searchString, position) {
-            if (position === undefined || position > subjectString.length) {
-                position = subjectString.length;
+        endsWith: function(str, searchStr, pos) {
+            var subjectString = str.toString();
+            if (typeof pos !== "number" || !isFinite(pos) || Math.floor(pos) !== pos || pos > subjectString.length) {
+                pos = subjectString.length;
             }
-            position -= searchString.length;
-            var lastIndex = subjectString.indexOf(searchString, position);
-            return lastIndex !== -1 && lastIndex === position;
+            pos -= searchStr.length;
+            var lastIndex = subjectString.indexOf(searchStr, pos);
+            return lastIndex !== -1 && lastIndex === pos;
         },
-
         d3ArrayAdapter: function (array) {
             return {
                 ownerDocument: {

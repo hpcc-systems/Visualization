@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -38,13 +38,14 @@
                 ;
             }
             if (newUrl) {
-                HTML.prototype.doResize = HTML.prototype.debounce(function () {
+                var Marshaller = (myUrl._params["HTML"] ? HTML : Graph);
+                Marshaller.prototype.doResize = Marshaller.prototype.debounce(function () {
                     this
                         .resize()
                         .render()
                     ;
                 }, 250);
-                marshaller = (myUrl._params["HTML"] ? new HTML() : new Graph())
+                marshaller = new Marshaller()
                     .target("marshaller")
                     .ddlUrl(newUrl.constructUrl())
                     //.visualizeRoxie(true)

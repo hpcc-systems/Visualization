@@ -27,20 +27,31 @@
                 });
             }
         },
-        Scatter: {
+        Line: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/google/Scatter"], function (DataFactory, Scatter) {
-                    callback(new Scatter()
+                require(["test/DataFactory", "src/google/Line"], function (DataFactory, Line) {
+                    callback(new Line()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
             }
         },
-        Line: {
+        Combo: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/google/Line"], function (DataFactory, Line) {
-                    callback(new Line()
+                require(["test/DataFactory", "src/google/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.fivecolumn.columns)
+                        .data(DataFactory.ND.fivecolumn.data)
+                        .customSeries({2: {type: 'line'}})
+                    );
+                });
+            }
+        },
+        Scatter: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/google/Scatter"], function (DataFactory, Scatter) {
+                    callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );

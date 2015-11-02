@@ -18,6 +18,10 @@
 
         this._tag = "div";
         this._chart = new MultiChart();
+        var context = this;
+        this._chart.click = function () {
+            context.click.apply(this, arguments);
+        };
 
         this._layout = new Border();
         
@@ -27,6 +31,12 @@
     MegaChart.prototype = Object.create(Surface.prototype);
     MegaChart.prototype.constructor = MegaChart;
     MegaChart.prototype._class += " composite_MegaChart";
+
+    MegaChart.prototype._1DChartTypes = MultiChart.prototype._1DChartTypes;
+    MegaChart.prototype._2DChartTypes = MultiChart.prototype._2DChartTypes;
+    MegaChart.prototype._NDChartTypes = MultiChart.prototype._NDChartTypes;
+    MegaChart.prototype._anyChartTypes = MultiChart.prototype._anyChartTypes;
+    MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
 
     MegaChart.prototype.publishProxy("valueAxisTitle","_valueTitle","text");
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
@@ -40,7 +50,7 @@
     MegaChart.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);
         
-        this._layout.setContent("center",new MultiChart().chartType(this.chartType()));
+        this._layout.setContent("center", this._chart.chartType(this.chartType()));
         
         this._layout.setContent("right", new Legend().targetWidget(this._layout.getContent("center")));
         

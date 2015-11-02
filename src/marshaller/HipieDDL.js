@@ -377,6 +377,14 @@
         return this.mappings.doMapAll(data);
     };
 
+    Source.prototype.getXTitle = function () {
+        return this.mappings.columns[0];
+    };
+
+    Source.prototype.getYTitle = function () {
+        return this.mappings.columns.filter(function(d, i) {return i > 0;}).join(" / ");
+    };
+
     //  Viz Events ---
     function Event(visualization, eventID, event) {
         this.visualization = visualization;
@@ -517,7 +525,7 @@
                 case "BUBBLE":
                 case "BAR":
                 case "WORD_CLOUD":
-                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
@@ -525,9 +533,12 @@
                     });
                     break;
                 case "LINE":
-                    this.loadWidget("src/chart/MultiChart", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
+                            .showLegend(true)
+                            .domainAxisTitle(context.source.getXTitle())
+                            .valueAxisTitle(context.source.getYTitle())
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     });
@@ -712,10 +723,7 @@
                 this.widget.data(data);
 
                 var params = this.source.getOutput().getParams();
-                if (exists("widget.title", this)) {
-                    this.widget.title(this.title + (params ? " (" +params + ")": ""));
-                    this.widget.render();
-                } else if (exists("widgetSurface.title", this)) {
+                if (exists("widgetSurface.title", this)) {
                     this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
                     this.widgetSurface.render();
                 } else {

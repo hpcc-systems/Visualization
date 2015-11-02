@@ -170,6 +170,15 @@
                 });
             }
             return retVal;
+        },
+        endsWith: function(str, searchStr, pos) {
+            var subjectString = str.toString();
+            if (typeof pos !== "number" || !isFinite(pos) || Math.floor(pos) !== pos || pos > subjectString.length) {
+                pos = subjectString.length;
+            }
+            pos -= searchStr.length;
+            var lastIndex = subjectString.indexOf(searchStr, pos);
+            return lastIndex !== -1 && lastIndex === pos;
         }
     };
 }));

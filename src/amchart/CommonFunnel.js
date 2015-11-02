@@ -152,7 +152,7 @@
 
             e.chart.validateData();
 
-            context.click(context.rowToObj(context.data()[e.dataItem.index]));
+            context.click(context.rowToObj(context.data()[e.dataItem.index]), context.columns()[1], context._selected !== null);
         });
     };
 

@@ -270,7 +270,7 @@
 
             e.chart.validateData();
 
-            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index], context.data()[e.index][e.target.index]);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index], context._selected !== null);
         });
     };
 

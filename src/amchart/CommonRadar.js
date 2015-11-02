@@ -216,7 +216,7 @@
 
             e.chart.validateData();
             
-            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index+1]);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.index + 1], context._selected !== null);
         });
     };
 

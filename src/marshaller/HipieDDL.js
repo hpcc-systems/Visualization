@@ -713,6 +713,16 @@
         visitor.visit(this);
     };
 
+    Visualization.prototype.update = function () {
+        var params = this.source.getOutput().getParams();
+        if (exists("widgetSurface.title", this)) {
+            this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
+            this.widgetSurface.render();
+        } else {
+            this.widget.render();
+        }
+    };
+
     Visualization.prototype.notify = function () {
         if (this.source.hasData()) {
             if (this.widget) {
@@ -722,15 +732,23 @@
                 this.dashboard.marshaller.updateViz(this, data);
                 this.widget.data(data);
 
-                var params = this.source.getOutput().getParams();
-                if (exists("widgetSurface.title", this)) {
-                    this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
-                    this.widgetSurface.render();
-                } else {
-                    this.widget.render();
-                }
+                this.update();
             }
         }
+    };
+
+    Visualization.prototype.clear = function () {
+        if (this.widget) {
+            this.widget.data([]);
+            this.source.getOutput().request = {};
+        }
+        if (this._eventValues) {
+            delete this._eventValues;
+            this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                updatedViz.clear();
+            });
+        }
+        this.update();
     };
 
     Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
@@ -770,6 +788,7 @@
                             }
                         }
                     });
+                    updatedViz.clear();
                     if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
                         dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
                     }

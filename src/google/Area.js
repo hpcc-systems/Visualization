@@ -105,7 +105,7 @@
         retVal.selectionMode = this.selectionMode();
         retVal.dataOpacity = this.dataOpacity();
 
-        retVal.stacked = this.stacked();
+        retVal.isStacked = this.stacked();
         retVal.areaOpacity = this.fillOpacity();
 
         retVal.hAxis = {};

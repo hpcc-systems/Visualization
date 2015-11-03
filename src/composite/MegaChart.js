@@ -52,7 +52,7 @@
         
         this._layout.setContent("center", this._chart.chartType(this.chartType()));
         
-        this._layout.setContent("right", new Legend().targetWidget(this._layout.getContent("center")));
+        this._layout.setContent("right", new Legend().fixedSize(true).targetWidget(this._layout.getContent("center")));
         
         this._layout.setContent("bottom", this._valueTitle.rotation(-90));
         this._layout.setContent("left", this._domainTitle);
@@ -80,7 +80,7 @@
         }
         
         if(this.showLegend()){
-            this._layout.setContent("right", new Legend().targetWidget(this._layout.getContent("center")));
+            this._layout.setContent("right", new Legend().fixedSize(true).targetWidget(this._layout.getContent("center")));
         } else {
             this._layout.clearContent("right");
         }

@@ -94,7 +94,7 @@
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
 
         retVal.dataOpacity = this.dataOpacity();
-        retVal.stacked = this.stacked();
+        retVal.isStacked = this.stacked();
         retVal.bar = {
             groupWidth: this.groupWidth()
         };

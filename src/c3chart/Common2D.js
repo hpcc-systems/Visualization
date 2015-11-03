@@ -15,9 +15,6 @@
             pattern: this._palette.colors()
         };
 
-        this._config.data.onclick = function (d, element) {
-            context.click(context.rowToObj(context.data()[d.index]), context.columns()[1]);
-        };
         this._config.data.color = function (color, d) {
             return context._palette(d.id ? d.id : d);
         };

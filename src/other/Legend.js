@@ -82,6 +82,7 @@
         Table.prototype.enter.apply(this, arguments);
         this.renderHtmlDataCells(true);
         this.fixedHeader(false);
+        this.fixedSize(true);
         element.classed("other_Legend", true);
     };
 

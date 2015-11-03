@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../other/Persist", "../layout/Grid", "css!./PropertyEditor"], factory);
+        define(["d3", "../common/HTMLWidget", "../other/Persist", "../layout/Grid", "../common/Widget", "css!./PropertyEditor"], factory);
     } else {
-        root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid);
+        root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid, root.common_Widget);
     }
-}(this, function (d3, HTMLWidget, Persist, Grid) {
+}(this, function (d3, HTMLWidget, Persist, Grid, Widget) {
     function hasProperties(type) {
         switch (type) {
             case "widget":
@@ -440,7 +440,12 @@
         switch (param.type) {
             case "array":
             case "object":
-                element.property("value", JSON.stringify(val));
+                element.property("value", JSON.stringify(val, function replacer(key, value) {
+                    if (value instanceof Widget) {
+                        return Persist.serialize(value);
+                    }
+                    return value;
+                }));
                 break;
             case "boolean":
                 element.property("checked", val);

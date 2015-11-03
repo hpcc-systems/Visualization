@@ -116,6 +116,16 @@
                     );
                 });
             },
+            widget: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    callback(new Table()
+                        .columns(DataFactory.Table.widget.columns)
+                        .data(DataFactory.Table.widget.data)
+                        .minWidgetHeight(200)
+                        .minWidgetWidth(200)
+                    );
+                });
+            },
             large: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()

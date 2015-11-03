@@ -83,5 +83,15 @@
         }
     };
 
+    TextBox.prototype.exit = function (domNode, element) {
+        this._shape
+            .target(null)
+        ;
+        this._text
+            .target(null)
+        ;
+        SVGWidget.prototype.exit.apply(this, arguments);
+    };
+
     return TextBox;
 }));

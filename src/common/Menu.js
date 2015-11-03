@@ -115,5 +115,17 @@
         ;
     };
 
+    Menu.prototype.exit = function (domNode, element) {
+        this._icon
+            .target(null)
+        ;
+
+        this._list
+            .target(null)
+        ;
+
+        SVGWidget.prototype.exit.apply(this, arguments);
+    };
+
     return Menu;
 }));

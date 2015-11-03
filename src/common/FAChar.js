@@ -37,5 +37,12 @@
         ;
     };
 
+    FAChar.prototype.exit = function (domNode, element) {
+        this._text
+            .target(null)
+        ;
+        SVGWidget.prototype.exit.apply(this, arguments);
+    };
+
     return FAChar;
 }));

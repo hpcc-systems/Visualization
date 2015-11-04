@@ -1,17 +1,20 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart", "require", "../common/Utility"], factory);
     } else {
-        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.require);
+        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.require, root.common_Utility);
     }
-}(this, function(d3, HTMLWidget, AmCharts, I2DChart, require) {
+}(this, function(d3, HTMLWidget, AmCharts, I2DChart, require, Utility) {
     function Pie() {
         HTMLWidget.call(this);
         this._tag = "div";
         this._chart = {};
 
         this._selected = null;
+        this._selections = [];
+
+        this.pDataHash = null;
     }
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.constructor = Pie;
@@ -85,13 +88,19 @@
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         } else {
-        	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
+            sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
         this.data(this.data().sort(sortingMethod));
 
         this._chart.colorField = "sliceColor";
-
-        this._chart.dataProvider = this.formatData(this.data());
+        
+        // if Data hasnt changed dont update it (alt method to store second obj of color data and loop over it reapplying?)
+        var data = this.formatData(this.data());
+        var hash = Utility.hash(JSON.stringify(data));
+        if (hash !== this.pDataHash) {
+            this._chart.dataProvider = data;
+        }
+        this.pDataHash = hash;
 
         this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);
@@ -138,14 +147,17 @@
             var data = e.dataItem.dataContext;
 
             if (data[field] !== null && data[field] !== undefined) {
+                console.log('here')
                 delete data[field];
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
                     }
                     context._selected = null;
+                    context._selections = [];
                 }
             } else {
+                console.log('here2')
                 data[field] = context.selectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
@@ -154,7 +166,13 @@
                     context._selected = {
                         field: field,
                         data: data
-                    };
+                    };     
+                } else { //
+                    context._selected = {
+                        field: field,
+                        data: data
+                    };  
+                    context._selections.push(context._selected)
                 }
             }
 

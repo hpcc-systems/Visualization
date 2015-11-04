@@ -370,7 +370,7 @@
     };
 
     Widget.prototype.broadcast = function (key, newVal, oldVal) {
-        if (this._watchArr) {
+        if (this._watchArr && newVal !== oldVal) {
             this._watchArr.forEach(function (func) {
                 if (func) {
                     setTimeout(function () {

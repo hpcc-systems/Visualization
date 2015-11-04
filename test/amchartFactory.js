@@ -7,6 +7,19 @@
     }
 }(this, function (callback) {
     var amchartFactory = {
+        Combo: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/amchart/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+
+                        // .yAxisType("linear")
+                        // .xAxisType("ordinal")
+                    );
+                });
+            },
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {

@@ -1,101 +1,83 @@
 .other_PropertyEditor{
-    overflow:auto;
+    overflow-y:scroll;
+    height:100%;
+    width:100%;
 }
 .other_PropertyEditor .other_PropertyEditor{
     overflow:hidden;
 }
-.other_PropertyEditor *{
-    box-sizing:border-box;
-}
-.other_PropertyEditor table{
+.other_PropertyEditor .property-table{
     width:100%;
+    border: 1px solid #ddd;
 }
-/*
-.other_PropertyEditor table:last-child{
-    margin-bottom:0px;
-}
-*/
-.other_PropertyEditor thead > tr > th{
+.other_PropertyEditor .property-table thead > tr > th{
     text-align:left;
+    background-color:#333;
+    color:#fff;
+    padding-left:4px;
 }
-.other_PropertyEditor thead > tr > th > b{
-    font-weight:bold;
+.other_PropertyEditor .property-table thead > tr > th > i{
+    float:right;
+    padding: 4px;
 }
-.other_PropertyEditor thead > tr > th{
-    background-color:#FAFAFA;
-}
-.other_PropertyEditor thead > tr:first-child > th{
-    background-color:#E5E5E5;
-}
-.other_PropertyEditor thead > tr.mm-content > th {
-  padding: 0 4px;
-  font-size: 12px;
-}
-.other_PropertyEditor th,
-.other_PropertyEditor td{
-    padding:4px;
-    white-space: nowrap;
-}
-.other_PropertyEditor thead.mm-label > tr:first-child > th{
-    position:relative;
-    padding-left: 29px;
-}
-.other_PropertyEditor thead.mm-label > tr:first-child > th::before{
-    content:"[+]";
-    position:absolute;
-    left: 3px;
-    top: 3px;
-    color: #404040;
-    height:15px;
-    width:15px;
-    font-family:monospace;
-}
-.other_PropertyEditor thead.mm-label.max > tr:first-child > th::before{
-    content:"[-]";
-}
-.other_PropertyEditor tr.sharedPropertyRow > td.label::after{
-    content:"[+]";
-    position:absolute;
-    right: 10px;
-    top: 3px;
-    color: #404040;
-    height:15px;
-    width:15px;
-    font-family:monospace;
-}
-.other_PropertyEditor tr.sharedPropertyRow > td.label.expanded::after{
-    content:"[-]";
-}
-.other_PropertyEditor tr.sharedPropertyRow > td.label{
-    position:relative;
-    padding-right:30px;
-    text-decoration:underline;
-}
-.other_PropertyEditor tr.sharedPropertyRow > td.label:hover{
-    text-decoration:none;
+.other_PropertyEditor .property-table thead > tr > th:hover{
+    background-color: #555;
     cursor:pointer;
 }
-.other_PropertyEditor tr.propertyRow{
-    background-color:#fafafa;
-}
-.other_PropertyEditor tr.propertyRow > td.label{
-    padding-left: 24px;
-}
-
-.other_PropertyEditor table,
-.other_PropertyEditor th,
-.other_PropertyEditor td{
-    border:1px solid #e5e5e5;
-}
-.other_PropertyEditor .mm-label.min .mm-content,
-.other_PropertyEditor .mm-label.min + .mm-content {
+.other_PropertyEditor .property-table.property-table-collapsed tbody{
     display:none;
 }
-.mm-label:hover {
-    cursor:pointer;
+.other_PropertyEditor .property-table tbody > tr:nth-child(even){
+    background-color: #F7F7F7;
 }
-/*
-.widget-property-hover{
-    background-color: #F1C40F!important;
-    border-color:#f39c12;
-}*/
+.other_PropertyEditor .property-table tbody > tr:nth-child(odd){
+    background-color: #FFF;
+}
+.other_PropertyEditor .property-table tbody > tr > td{
+    text-align:left;
+    color:#333;
+    padding:2px;
+}
+.other_PropertyEditor .property-input-cell > div{
+    padding-left: 8px;
+}
+.other_PropertyEditor .property-label{
+    padding-right: 4px;
+    box-sizing: border-box;
+    height: 20px;
+}
+.other_PropertyEditor td.property-input-cell{
+    text-align:left;
+    height:20px;
+    padding:1px 0;
+}
+.other_PropertyEditor .property-input-cell > input,
+.other_PropertyEditor .property-input-cell > textarea{
+    width:100%;
+    box-sizing: border-box;
+}
+.other_PropertyEditor .property-input-cell > input{
+    height: 20px;
+}
+.other_PropertyEditor .property-input-cell > textarea{
+    height: 40px;
+}
+.other_PropertyEditor .property-input-cell.boolean-cell{
+    width:auto;
+    margin:0;
+    position:relative;
+}
+.other_PropertyEditor .property-input-cell > input[type="checkbox"]{
+    width:auto;
+    margin:0;
+    position:absolute;
+    top: 0;
+}
+.other_PropertyEditor .html-color-cell > input{
+    width:80%;
+}
+.other_PropertyEditor .html-color-cell > input[type="color"]{
+    width:20%;
+    position: relative;
+    top: -1px;
+}

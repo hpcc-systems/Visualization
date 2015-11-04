@@ -89,6 +89,7 @@
         function populateContent() {
             var dashboards = walkDashboards(context.marshaller, context.databomb());
             if (context.marshaller.widgetMappings().empty()) {
+                var vizCellMap = {};
                 for (var key in dashboards) {
                     var cellRow = 0;
                     var cellCol = 0;
@@ -108,7 +109,17 @@
                         viz.widget.size({ width: 0, height: 0 });
                         viz.widgetSurface.title(viz.title);
                         context.setContent(cellRow, cellCol, viz.widgetSurface);
+                        vizCellMap[viz.id] = context.getWidgetCell(viz.widgetSurface.id());
                         cellCol++;
+                    });
+                }
+                for (key in dashboards) {
+                    dashboards[key].visualizations.forEach(function (viz, idx) {
+                        var targetVizs = viz.events.getUpdatesVisualizations();
+                        var targetIDs = targetVizs.map(function (targetViz) {
+                            return vizCellMap[targetViz.id].id();
+                        });
+                        vizCellMap[viz.id].indicateTheseIds(targetIDs);
                     });
                 }
             }

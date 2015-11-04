@@ -63,5 +63,15 @@
         this._tooltipElement.text(this.tooltip());
     };
 
+    Icon.prototype.exit = function (domNode, element) {
+        SVGWidget.prototype.exit.apply(this, arguments);
+        this._shapeWidget
+            .target(null)
+        ;
+        this._faChar
+            .target(null)
+        ;
+    };
+
     return Icon;
 }));

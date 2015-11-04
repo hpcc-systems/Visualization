@@ -100,6 +100,18 @@
         return retVal;
     };
 
+    Grid.prototype.getWidgetCell = function (id) {
+        var retVal = null;
+        this.content().some(function (cell) {
+            if (cell.widget()._id === id) {
+                retVal = cell;
+                return true;
+            }
+            return false;
+        });
+        return retVal;
+    };
+
     Grid.prototype.getContent = function (id) {
         var retVal = null;
         this.content().some(function (cell) {

@@ -140,7 +140,7 @@
         ;
 
         var context = this;
-        var controls = [
+        this._controls = [
                 new Input()
                     .type("button")
                     .value("Submit")
@@ -158,7 +158,7 @@
             .append("div")
             .style("float", "right")
         ;
-        controls.forEach(function (w) {
+        this._controls.forEach(function (w) {
             var leftJust = rightJust
                 .append("span")
                 .style("float", "left")
@@ -210,6 +210,10 @@
     };
 
     Form.prototype.exit = function (domNode, element) {
+        this.inputs_reset();
+        this._controls.forEach(function (w) {
+            w.target(null);
+        });
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 

@@ -270,6 +270,21 @@
     };
 
     Surface.prototype.exit = function (domNode, element) {
+        this._titleRect
+            .target(null)
+        ;
+        this._icon
+            .target(null)
+        ;
+        this._menu
+            .target(null)
+        ;
+        this._text
+            .target(null)
+        ;
+        this._container
+            .target(null)
+        ;
         if (this.content()) {
             this.content().target(null);
         }

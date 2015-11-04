@@ -97,10 +97,11 @@
         // if Data hasnt changed dont update it (alt method to store second obj of color data and loop over it reapplying?)
         var data = this.formatData(this.data());
         var hash = Utility.hash(JSON.stringify(data));
-        if (hash !== this.pDataHash) {
+        if (hash !== this._pDataHash) {
             this._chart.dataProvider = data;
+            this._pDataHash = hash;
         }
-        this.pDataHash = hash;
+        
 
         this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);

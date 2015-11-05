@@ -85,7 +85,7 @@
         surfaceButtons.enter().append("button").classed("surface-button",true)
             .each(function (button, idx) {
                 var el = context._surfaceButtons[idx] = d3.select(this)
-                    .attr("class", "surface-button " + button.class)
+                    .attr("class", "surface-button" + (button.class ? " " + button.class : ""))
                     .attr("id", button.id)
                     .style("padding", button.padding)
                     .style("width", button.width)
@@ -93,10 +93,10 @@
                     .style("cursor","pointer");
                 if (button.font === "FontAwesome") {
                     el
+                      .on("click", function(d) { context.click(d); })
                       .append("i")
                       .attr("class","fa")
-                      .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
+                      .text(function(d) { return button.label; });
                 } else {
                     el
                       .text(function(d) { return button.label; })

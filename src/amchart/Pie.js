@@ -85,7 +85,7 @@
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         } else {
-        	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
+            sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
         this.data(this.data().sort(sortingMethod));
 

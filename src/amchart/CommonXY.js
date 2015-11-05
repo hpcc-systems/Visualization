@@ -90,6 +90,8 @@
     CommonXY.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonXY.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
+    CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -105,54 +107,60 @@
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
-        this._chart.valueAxes[0].position = "bottom";
-        this._chart.valueAxes[0].axisAlpha = this.axisAlpha();
-        this._chart.valueAxes[0].title = this.xAxisTitle();
-        this._chart.valueAxes[0].axisThickness = this.axisLineWidth();
-        this._chart.valueAxes[0].axisColor = this.xAxisBaselineColor();
-        this._chart.valueAxes[0].color = this.xAxisFontColor();
-        this._chart.valueAxes[0].titleFontSize = this.xAxisTitleFontSize();
-        this._chart.valueAxes[0].titleColor = this.xAxisTitleFontColor();
-        this._chart.valueAxes[0].labelRotation = this.xAxisLabelRotation();
-        this._chart.valueAxes[0].autoGridCount = this.xAxisAutoGridCount();
-        this._chart.valueAxes[0].gridPosition = this.xAxisGridPosition();
-        this._chart.valueAxes[0].fillAlpha = this.xAxisFillAlpha();
-        this._chart.valueAxes[0].fillColor = this.xAxisFillColor();
-        this._chart.valueAxes[0].gridAlpha = this.xAxisGridAlpha();
-        this._chart.valueAxes[0].dashLength = this.xAxisDashLength();
+        
+        // left vAxis must always be 0 and bottom 1
+
+        this._chart.valueAxes[1].position = "bottom";
+        this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
+        this._chart.valueAxes[1].title = this.xAxisTitle();
+        this._chart.valueAxes[1].axisThickness = this.axisLineWidth();
+        this._chart.valueAxes[1].axisColor = this.xAxisBaselineColor();
+        this._chart.valueAxes[1].color = this.xAxisFontColor();
+        this._chart.valueAxes[1].titleFontSize = this.xAxisTitleFontSize();
+        this._chart.valueAxes[1].titleColor = this.xAxisTitleFontColor();
+        this._chart.valueAxes[1].labelRotation = this.xAxisLabelRotation();
+        this._chart.valueAxes[1].autoGridCount = this.xAxisAutoGridCount();
+        this._chart.valueAxes[1].gridPosition = this.xAxisGridPosition();
+        this._chart.valueAxes[1].fillAlpha = this.xAxisFillAlpha();
+        this._chart.valueAxes[1].fillColor = this.xAxisFillColor();
+        this._chart.valueAxes[1].gridAlpha = this.xAxisGridAlpha();
+        this._chart.valueAxes[1].dashLength = this.xAxisDashLength();
 
         this._chart.dataProvider = this.formatData(this.data());
 
         if (this.xAxisType() === "ordinal") {
-            this._chart.valueAxes[0].integersOnly = true;
-            this._chart.valueAxes[0].maximum = this.data().length;
-            this._chart.valueAxes[0].labelFunction = function(val) {
-                return context.data().length && val > 0 ? context.data()[val-1][0] : "";
+            this._chart.valueAxes[1].integersOnly = true;
+            this._chart.valueAxes[1].maximum = this.data().length;
+            this._chart.valueAxes[1].labelFunction = function(a, b) {
+                if (b > context.data().length) {
+                    return ""; // so the the last dots arent on the edge
+                }
+                return context.data().length && b > 0 ? context.data()[b-1][0] : "";
             };
         } else {
-            this._chart.valueAxes[0].labelFunction = function(d) {
+            this._chart.valueAxes[1].labelFunction = function(d) {
                 return d3.format(context.xAxisTickFormat())(d);
             };
         }
 
-        this._chart.valueAxes[1].position = "left";
-        this._chart.valueAxes[1].axisAlpha = this.axisAlpha();
-        this._chart.valueAxes[1].title = this.yAxisTitle();
-        this._chart.valueAxes[1].axisThickness = this.axisLineWidth();
-        this._chart.valueAxes[1].axisColor = this.yAxisBaselineColor();
-        this._chart.valueAxes[1].color = this.yAxisFontColor();
-        this._chart.valueAxes[1].titleFontSize = this.yAxisTitleFontSize();
-        this._chart.valueAxes[1].titleColor = this.yAxisTitleFontColor();
-        this._chart.valueAxes[1].autoGridCount = this.yAxisAutoGridCount();
-        this._chart.valueAxes[1].gridPosition = this.yAxisGridPosition();
-        this._chart.valueAxes[1].fillAlpha = this.yAxisFillAlpha();
-        this._chart.valueAxes[1].fillColor = this.yAxisFillColor();
-        this._chart.valueAxes[1].gridAlpha = this.yAxisGridAlpha();
-        this._chart.valueAxes[1].dashLength = this.yAxisDashLength();
-        this._chart.valueAxes[1].axisTitleOffset = this.yAxisTitleOffset();
+        this._chart.valueAxes[0].position = "left";
+        this._chart.valueAxes[0].axisAlpha = this.axisAlpha();
+        this._chart.valueAxes[0].title = this.yAxisTitle();
+        this._chart.valueAxes[0].axisThickness = this.axisLineWidth();
+        this._chart.valueAxes[0].axisColor = this.yAxisBaselineColor();
+        this._chart.valueAxes[0].color = this.yAxisFontColor();
+        this._chart.valueAxes[0].titleFontSize = this.yAxisTitleFontSize();
+        this._chart.valueAxes[0].titleColor = this.yAxisTitleFontColor();
+        this._chart.valueAxes[0].autoGridCount = this.yAxisAutoGridCount();
+        this._chart.valueAxes[0].gridPosition = this.yAxisGridPosition();
+        this._chart.valueAxes[0].fillAlpha = this.yAxisFillAlpha();
+        this._chart.valueAxes[0].fillColor = this.yAxisFillColor();
+        this._chart.valueAxes[0].gridAlpha = this.yAxisGridAlpha();
+        this._chart.valueAxes[0].dashLength = this.yAxisDashLength();
+        this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset();
 
-        this._chart.valueAxes[1].labelFunction = function(d) {
-            return d3.format(context.yAxisTickFormat())(d);
+        this._chart.valueAxes[0].labelFunction = function(a, b) {
+            return d3.format(context.yAxisTickFormat())(b);
         };
 
         this._chart.dataProvider.forEach(function(dataPoint,i){
@@ -166,6 +174,20 @@
             this._chart.chartScrollbar.enabled = true;
         } else {
             this._chart.chartScrollbar.enabled = false;
+        }
+
+        if (this.showCursor()) {
+            this._chart.precision = this.xAxisType() === "ordinal" ? 1 : undefined; // so ordinal will work with labelfunction
+            this._chart.chartCursor.enabled = true;
+            this._chart.chartCursor.valueLineEnabled = true;
+            this._chart.chartCursor.valueLineBalloonEnabled = true;
+            this._chart.chartCursor.categoryBalloonEnabled = true;
+        } else {
+            this._chart.precision = undefined; // so ordinal will work with labelfunction
+            this._chart.chartCursor.enabled = false;
+            this._chart.chartCursor.valueLineEnabled = false;
+            this._chart.chartCursor.valueLineBalloonEnabled = false;
+            this._chart.chartCursor.categoryBalloonEnabled = false;
         }
 
         return this._chart;
@@ -223,15 +245,22 @@
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
         var initObj = {
-            theme: "none",
             type: "xy",
             addClassNames: true,
-            autoMargins: false,
+            autoMargins: true,
             chartScrollbar: {},
-            valueAxes: [
-                {position:"bottom",title:" "},
-                {position:"left",title:" "}
-            ],
+            valueAxes: [],
+            chartCursor: {
+                "enabled": false,
+                "valueLineEnabled": false,
+                "valueLineBalloonEnabled": false,
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "valueLineAlpha": 0.2,
+                "oneBalloonOnly": true,
+                "balloonPointerOrientation": "vertical",
+                "valueBalloonsEnabled": false //always set false
+            },
             graphs: [{}],
             dataProvider: [{}],
             responsive: {

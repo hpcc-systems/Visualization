@@ -35,7 +35,7 @@
 
     Pie.prototype.publish("holePercent", 0, "number", "Hole Size (Percent)",null,{tags:["Basic"]});
 
-    //Pie.prototype.publish("radius", 45, "number", "Radius","Radius as a percentage of width/height of chart",{tags:["Basic"]});
+    Pie.prototype.publish("radius", null, "number", "Radius",null,{tags:["Basic"]});
     Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice",null,{tags:["Private"]});
 
     Pie.prototype.publish("labelPosition", "outside", "set", "Label Position", ["inside","outside"],{tags:["Intermediate"]});
@@ -54,13 +54,11 @@
         this._chart.labelsEnabled = true;
 
         if (this.labelPosition()==="inside") {
-            this._radius = (this._radius ? this._radius : "50");
-            this._chart.radius = this._radius + "%";
+            this._chart.radius = "50%";
             this._chart.labelRadius = -40;
             this._chart.pullOutRadius = "20%";
         } else {
-            this._radius = (this._radius ? this._radius : "45");
-            this._chart.radius = this._radius + "%";
+            this._chart.radius = "45%";
             this._chart.labelRadius = 20;
             this._chart.pullOutRadius = "20%";
         }
@@ -87,7 +85,7 @@
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         } else {
-        	sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
+            sortingMethod = function(a,b){ return a[1] > b[1] ? 1 : -1; };
         }
         this.data(this.data().sort(sortingMethod));
 
@@ -124,16 +122,12 @@
     };
 
     Pie.prototype.enter = function (domNode, element) {
-        this._initialScreenWidth = window.innerWidth;
-        this._initialScreenHeight = window.innerHeight;
-        this._resizeCount=0;
-        this._previousResizeCount = 0;
-
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
         var initObj = {
             type: "pie",
             addClassNames: true,
+            theme: "none"
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");
@@ -166,7 +160,7 @@
 
             e.chart.validateData();
 
-            context.click(context.rowToObj(context.data()[e.dataItem.index]));
+            context.click(context.rowToObj(context.data()[e.dataItem.index]), context.columns()[1], context._selected !== null);
         });
     };
 
@@ -183,63 +177,6 @@
 
         this._chart.validateNow();
         this._chart.validateData();
-        
-        if (this._initialScreenWidth < window.innerWidth || this._initialScreenHeight < window.innerHeight) {
-            this._windowResized = 1;
-        } else if (this._initialScreenWidth > window.innerWidth || this._initialScreenHeight > window.innerHeight) {
-            this._windowResized = -1;
-        } else {
-            this._windowResized = 0;
-        }
-        this._initialScreenWidth = window.innerWidth;
-        this._initialScreenHeight = window.innerHeight;
-
-        var context = this;
-
-        setTimeout(function() {
-            element.selectAll(".amcharts-pie-label").each(function(d, i) {
-                var label = d3.select(this);
-
-
-                // if it doesnt overlap try to make it bigger
-                if(
-                    (label.node().getBoundingClientRect().bottom < element.node().getBoundingClientRect().bottom) &&
-                    (label.node().getBoundingClientRect().top > element.node().getBoundingClientRect().top) &&
-                    (label.node().getBoundingClientRect().left > element.node().getBoundingClientRect().left) &&
-                    (label.node().getBoundingClientRect().right < element.node().getBoundingClientRect().right)
-
-                    )
-                {
-                        if (this._windowResized === 1 || !this.incRadius) {          
-                            console.log("inc");              
-                            ++context._radius;
-                            if (context._radius <= 45) {
-                                this.incRadius = true;
-                                context.render();
-                            }
-                        }
-                    
-                }
-
-                else
-
-                if ((label.node().getBoundingClientRect().bottom > element.node().getBoundingClientRect().bottom) ||
-                    (label.node().getBoundingClientRect().top < element.node().getBoundingClientRect().top) ||
-                    (label.node().getBoundingClientRect().left < element.node().getBoundingClientRect().left) ||
-                    (label.node().getBoundingClientRect().right > element.node().getBoundingClientRect().right)) 
-                {
-                    console.log('here');
-                        if (this._windowResized === -1 || this.incRadius) { 
-                            console.log("dec");  
-                            --context._radius;
-                            if (context._radius > 0) {
-                                this.incRadius = false;
-                                context.render();
-                            }
-                        }
-                }
-            });
-        }, 10);
     };
 
     return Pie;

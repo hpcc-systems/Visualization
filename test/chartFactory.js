@@ -7,6 +7,16 @@
     }
 }(this, function () {
     var chartFactory = {
+        Bar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/Bar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {

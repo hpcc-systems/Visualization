@@ -201,7 +201,7 @@
 
         this._chart.type = "serial";
         this._chart.startDuration = this.startDuration();
-        this._chart.rotate = this.orientation() === "vertical"; // this messes up the hover over things
+        this._chart.rotate = this.orientation() === "vertical";
 
         this._chart.color = this.fontColor();
         this._chart.fontSize = this.fontSize();

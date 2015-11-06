@@ -1,0 +1,20 @@
+.other_ButtonAnnotations .button-annotation{
+    float:left;
+    box-sizing:border-box;
+    position:relative;
+    white-space: nowrap;
+}
+.other_ButtonAnnotations .button-annotation:hover{
+    cursor:pointer;
+    background-color:#DDD;
+}
+.other_ButtonAnnotations .button-annotation > span{
+    color:#468CC6;
+}
+.other_ButtonAnnotations .button-annotation > i,
+.other_ButtonAnnotations .button-annotation > span{
+    position:relative;
+}
+.other_ButtonAnnotations .button-annotation > span{
+    margin-left: 6px;
+}

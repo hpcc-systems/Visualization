@@ -35,7 +35,6 @@
 
     Overlay.prototype.onAdd = function () {
         this.div = document.createElement("div");
-
         this._viewportSurface
             .target(this.div)
             .units("pixels")
@@ -209,6 +208,7 @@
 
     GMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         this._googleMapNode = element.append("div")
             .style({
                 width: this.width() + "px",
@@ -220,6 +220,10 @@
             center: new google.maps.LatLng(this.centerLat(), this.centerLong()),
             mapTypeId: this.getMapType(),
             disableDefaultUI: true
+        });
+        google.maps.event.addListener(this._googleMap, 'dragend', function(){
+            context.centerLat(this.center.lat());
+            context.centerLong(this.center.lng());
         });
         this._overlay = new Overlay(this._googleMap, this._worldSurface, this._viewportSurface);
 

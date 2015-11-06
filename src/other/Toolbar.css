@@ -1,0 +1,32 @@
+.other_Toolbar{
+    height:100%;
+}
+.other_Toolbar .toolbar-title{
+    float:left;
+    height: 100%;
+    font-weight:bold;
+}
+.other_Toolbar .toolbar-title span{
+    position:relative;
+}
+.other_Toolbar .toolbar-left-buttons{
+    float:left;
+}
+.other_Toolbar.condensed .toolbar-left-buttons span{
+    display:none;
+}
+.other_Toolbar.condensed .toolbar-title,
+.other_Toolbar.min-condensed .toolbar-title{
+    width:auto!important;
+}
+.other_Toolbar.min-condensed .toolbar-left-buttons{
+    display:none;
+}
+.other_Toolbar .toolbar-right-buttons{
+    float:right;
+}
+.other_Toolbar .toolbar-buttons,
+.other_Toolbar .toolbar-buttons > div,
+.other_Toolbar .toolbar-buttons .other_ButtonAnnotations{
+    height:100%;
+}

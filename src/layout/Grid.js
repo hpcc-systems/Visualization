@@ -35,9 +35,9 @@
     Grid.prototype.publish("designGridColor", "#dddddd", "html-color", "Color of grid lines in Design Mode",null,{tags:["Private"]});
     Grid.prototype.publish("designGridColorExtra", "#333333", "html-color", "Color of excess grid lines in Design Mode",null,{tags:["Private"]});
 
-    Grid.prototype.publish("surfacePadding", null, "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
+    Grid.prototype.publish("surfacePadding", 0, "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
     
-    Grid.prototype.publish("surfaceBorderWidth", 1, "number", "Width (px) of Cell Border", null, { tags: ["Intermediate"] });
+    Grid.prototype.publish("surfaceBorderWidth", 0, "number", "Width (px) of Cell Border", null, { tags: ["Intermediate"] });
     
     Grid.prototype.publish("extraDesignModeWidth", 0, "number", "Number of additional columns added when in Design Mode.",null,{tags:["Private"]});
     Grid.prototype.publish("extraDesignModeHeight", 0, "number", "Number of additional rows added when in Design Mode.",null,{tags:["Private"]});
@@ -85,6 +85,7 @@
                 .title(title)
                 .gridRowSpan(rowSpan*mult)
                 .gridColSpan(colSpan*mult)
+                .surfaceBorderRadius(0)
             ;
             this.prevDensity = mult;
             this.content().push(cell);

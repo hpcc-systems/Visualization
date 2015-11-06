@@ -27,6 +27,9 @@
     Combo.prototype.publish("defaultType", "column", "set", "Default chart type", ["bar","line","spline","area","area-spline","step","area-step","scatter"],{tags:["Basic"]});
     Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
     
+    // need chart/graph Objs and Axis Objs ... so that stuff like fillopacity can be set per Chart type
+
+
     Combo.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };

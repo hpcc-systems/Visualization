@@ -55,7 +55,8 @@
         return [];
     };
 
-    function ForceDirected(graphData, width, height, oneShot) {
+    function ForceDirected(graphData, width, height, options) {
+        options = options || {};
         var context = this;
         this.pos = {};
 
@@ -83,15 +84,20 @@
             });
         });
         this.force = d3.layout.force()
+            .linkDistance(options.linkDistance)
+            .linkStrength(options.linkStrength)
+            .friction(options.friction)
             .charge(function (d) {
                 var cs = d.value.getBBox();
-                return -25 * Math.max(cs.width, cs.height);
+                return options.charge * Math.max(cs.width, cs.height);
             })
-            .linkDistance(300)
+            .chargeDistance(options.chargeDistance)
+            .theta(options.theta)
+            .gravity(options.gravity)
             .nodes(this.vertices)
             .links(this.edges)
         ;
-        if (oneShot) {
+        if (options.oneShot) {
             this.force.start();
             var total = graphData.nodeCount();
             total = Math.min(total * total, 500);

@@ -210,27 +210,29 @@
                             });
                             break;
                         case "widgetArray":
-                            ++createCount;
                             var widgetArrayKey = item.id;
                             var widgetStateArray = state.__properties[item.id];
-                            var widgetArray = [];
-                            widgetArray.length = widgetStateArray.length;
-                            var arrayCreateCount = 0;
-                            widgetStateArray.forEach(function (widgetState, idx) {
-                                ++arrayCreateCount;
-                                context.create(widgetState, function (widgetItem) {
-                                    widgetArray[idx] = widgetItem;
-                                    --arrayCreateCount;
+                            if (widgetStateArray.length) {
+                                ++createCount;
+                                var widgetArray = [];
+                                widgetArray.length = widgetStateArray.length;
+                                var arrayCreateCount = 0;
+                                widgetStateArray.forEach(function (widgetState, idx) {
+                                    ++arrayCreateCount;
+                                    context.create(widgetState, function (widgetItem) {
+                                        widgetArray[idx] = widgetItem;
+                                        --arrayCreateCount;
+                                    });
+                                    var arrayIntervalHandler = setInterval(function () {
+                                        if (arrayCreateCount <= 0) {
+                                            clearInterval(arrayIntervalHandler);
+                                            arrayCreateCount = undefined;
+                                            widget[widgetArrayKey](widgetArray);
+                                            --createCount;
+                                        }
+                                    }, 20);
                                 });
-                                var arrayIntervalHandler = setInterval(function () {
-                                    if (arrayCreateCount <= 0) {
-                                        clearInterval(arrayIntervalHandler);
-                                        arrayCreateCount = undefined;
-                                        widget[widgetArrayKey](widgetArray);
-                                        --createCount;
-                                    }
-                                }, 20);
-                            });
+                            }
                             break;
                         default:
                             widget[item.id](state.__properties[item.id]);

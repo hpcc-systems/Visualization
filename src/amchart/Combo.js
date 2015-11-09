@@ -76,8 +76,7 @@
             
             gObj.colorField = "selected" + i;
 
-            gObj.type = gObj.type === "area" ? "line" : gObj.type;
-            console.log(gObj.type)
+            gObj.type = gObj.type === "area" ? "line" : gObj.type; // an area chart is a line chart with fillOpacity set
             return gObj;
         }
     };

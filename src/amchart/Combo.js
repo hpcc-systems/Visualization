@@ -65,11 +65,11 @@
 
         function buildGraphObj(gObj, i) {
             // Combo Specific Options
-            if (gType !== 'line') {
+            if (gType !== "line") {
                 gObj.fillAlphas = this.fillOpacity();
             }
             //console.log(gType)
-            if (gType !== 'column') {
+            if (gType !== "column") {
                 gObj.bullet = this.bulletType();
                 gObj.bulletSize = this.bulletSize();
             }

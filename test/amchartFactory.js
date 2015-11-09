@@ -13,7 +13,7 @@
                     callback(new Combo()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
+                        .types(["column","line"])
                         // .yAxisType("linear")
                         // .xAxisType("ordinal")
                     );

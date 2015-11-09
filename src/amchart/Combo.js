@@ -27,8 +27,7 @@
     Combo.prototype.publish("defaultType", "column", "set", "Default chart type", ["bar","line","spline","area","area-spline","step","area-step","scatter"],{tags:["Basic"]});
     Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
     
-    // need chart/graph Objs and Axis Objs ... so that stuff like fillopacity can be set per Chart type
-
+    Combo.prototype.publish("charts", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
 
     Combo.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
@@ -55,11 +54,9 @@
 
     Combo.prototype.buildGraphs = function() {
         this._chart.graphs = [];
-        this.types(["column","line"])
+
         for(var i = 0; i < this.columns().length - 1; i++) {
             var gType = this.types()[i] || this.defaultType();
-            console.log(this.types())
-            //console.log(this.types)
             var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
             var gObj = buildGraphObj.call(this, gRetVal, i);
 
@@ -68,12 +65,19 @@
 
         function buildGraphObj(gObj, i) {
             // Combo Specific Options
-            gObj.fillAlphas = this.fillOpacity();
-            gObj.bullet = this.bulletType();
-            gObj.bulletSize = this.bulletSize();
+            if (gType !== 'line') {
+                gObj.fillAlphas = this.fillOpacity();
+            }
+            //console.log(gType)
+            if (gType !== 'column') {
+                gObj.bullet = this.bulletType();
+                gObj.bulletSize = this.bulletSize();
+            }
             
             gObj.colorField = "selected" + i;
 
+            gObj.type = gObj.type === "area" ? "line" : gObj.type;
+            console.log(gObj.type)
             return gObj;
         }
     };

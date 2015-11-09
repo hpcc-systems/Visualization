@@ -411,11 +411,12 @@
         var margin = { top: this.selectionMode() ? 10 : 2, right: this.selectionMode() ? 10 : 2, bottom: this.selectionMode() ? 10 : 2, left: this.selectionMode() ? 10 : 2, overlapModulus: 1 };
         var height = this.height() - margin.top - margin.bottom;
 
-        var test = element.append("g");
+        var test = element.append("g").classed("test", true);
 
         this.setScaleRange(this.width(), this.height());
+        var svgYAxis;
         if (this.yAxisType() !== "none") {
-            var svgYAxis = test.append("g")
+            svgYAxis = test.append("g")
                 .attr("class", isHorizontal ? "y axis" : "x axis")
                 .call(this.otherAxis)
             ;
@@ -457,6 +458,11 @@
         margin.right -= width - (x_bbox.x + x_bbox.width);
         margin.bottom = x_bbox.height;
         this.setScaleRange(this.width() - margin.left - margin.right, this.height() - margin.top - margin.bottom);
+
+        var marginRightOffset = svgXAxis.node().getBBox().width - svgXAxis.select("path").node().getBBox().width - (svgYAxis ? svgYAxis.node().getBBox().width : 0);
+        if (marginRightOffset > 0) {
+            margin.right += marginRightOffset;
+        }
 
         test.remove();
         return margin;
@@ -612,7 +618,7 @@
 
         //  Render  ---
         this.svg.transition()
-            .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
+            .attr("transform", "translate(" + (this.margin.left + this.margin.right - 1) + "," + this.margin.top + ")") // -1 for tick width
         ;
 
         this.svgXAxis.transition()

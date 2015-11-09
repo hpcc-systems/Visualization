@@ -27,7 +27,7 @@
                             ["Science", 66, 60, 72]
                         ])
 
-                        .xAxisOverlapMode("rotate")
+                        .xAxisOverlapMode("stagger")
                         .xAxisLabelRotation(45)
                     );
                 });

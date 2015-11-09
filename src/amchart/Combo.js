@@ -9,7 +9,7 @@
     function Combo() {
         CommonSerial.call(this);
         this._tag = "div";
-        this._gType = "line";
+        //this._gType = "";
     }
     Combo.prototype = Object.create(CommonSerial.prototype);
     Combo.prototype.constructor = Combo;
@@ -27,7 +27,7 @@
     Combo.prototype.publish("defaultType", "column", "set", "Default chart type", ["bar","line","spline","area","area-spline","step","area-step","scatter"],{tags:["Basic"]});
     Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
     
-    Combo.prototype.publish("charts", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    Combo.prototype.publish("charts", [], "widgetArray", "widgets", null, { tags: ["Basic"] }); // perhaps we want to load up the params on a chart and pass in the chart and just read the params there?
 
     Combo.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);

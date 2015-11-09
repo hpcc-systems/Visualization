@@ -101,7 +101,7 @@
     CommonSerial.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"],{tags:["Intermediate","Shared"]});
     CommonSerial.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
 
-    CommonSerial.prototype.publish("yAxisTickFormat", ".2f", "string", "Y-Axis Tick Format");
+    CommonSerial.prototype.publish("yAxisTickFormat", ".0f", "string", "Y-Axis Tick Format");
     CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
@@ -384,7 +384,6 @@
             type: "serial",
             addClassNames: true,
             chartScrollbar: {},
-            //precision: 1,
             chartCursor: {
                 "enabled": false,
                 "valueLineEnabled": false,

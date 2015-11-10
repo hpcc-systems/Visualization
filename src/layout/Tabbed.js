@@ -20,6 +20,7 @@
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
     Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
+    Tabbed.prototype.publish("tabLocation", "top", "set", "Position the tabs at the bottom of the widget", ["top", "bottom"], { tags: ["Private"] });
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.clearTabs = function () {
@@ -61,13 +62,17 @@
 
     Tabbed.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-        this._tabContainer = element.append("div");
         this._contentContainer = element.append("div");
     };
 
     Tabbed.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
+
+        if (this._tabContainer) {this._tabContainer.remove();}
+
+        this._tabContainer = element.insert("div", this.tabLocation() === "bottom" ? null : "div");
+        this._tabContainer.attr("class", "on_" + this.tabLocation());
 
         element.style("padding", this.surfacePadding() + "px");
 

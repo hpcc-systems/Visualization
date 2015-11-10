@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../common/TextBox", "../common/Text", "css!./Tabbed"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/Surface", "../common/Text", "css!./Tabbed"], factory);
     } else {
-        root.layout_Tabbed = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.common_TextBox, root.common_Text);
+        root.layout_Tabbed = factory(root.d3, root.common_HTMLWidget, root.layout_Surface, root.common_Text);
     }
-}(this, function (d3, HTMLWidget, Surface, TextBox, Text) {
+}(this, function (d3, HTMLWidget, Surface,Text) {
     function Tabbed() {
         HTMLWidget.call(this);
 
@@ -20,6 +20,7 @@
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
     Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
+    Tabbed.prototype.publish("tabLocation", "top", "set", "Position the tabs at the bottom of the widget", ["top", "bottom"], { tags: ["Private"] });
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.clearTabs = function () {
@@ -118,6 +119,31 @@
                 ;
             })
             .remove();
+
+        switch(this.tabLocation()) {
+            case "bottom":
+                this._tabContainer
+                    .attr("class", "on_bottom")
+                    .style("top", (this._contentContainer.node().offsetHeight + this.surfacePadding()) + "px")
+                    .style("position", "absolute")
+                ;
+                this._contentContainer
+                    .style("top", this.surfacePadding() + "px")
+                    .style("position", "absolute")
+                ;
+                break;
+            default:
+                this._tabContainer
+                    .attr("class", "on_top")
+                    .style("top", null)
+                    .style("position", "relative")
+                ;
+                this._contentContainer
+                    .style("top", (this._tabContainer.node().offsetHeight + this.surfacePadding()) + "px")
+                    .style("position", "absolute")
+                ;
+                break;
+        }
     };
 
     Tabbed.prototype.click = function (widget, column, idx) {

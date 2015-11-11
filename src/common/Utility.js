@@ -152,19 +152,24 @@
                 ["Jan","Feb","Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
                 ["January","February","March","April","May","June","July","August","September","October","November","December"]
             ];
-
-            //todo auto figure out tIdx;
             var tIdx = 0;
-            if (type === "full") { // full vs short
-                tIdx = 1;
+            for (var i = 0; i < data.length; i++) { // 
+                if (months[0].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                    tIdx = 0;
+                    break;
+                }
+                if (months[1].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                    tIdx = 1;
+                    break;
+                }
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(a[idx]) < months[tIdx].indexOf(b[idx]);
+                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(capitalizeFirstLetterb[idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(a[idx]) > months[tIdx].indexOf(b[idx]);
+                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) > months[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
                 });
             }
         },
@@ -173,20 +178,29 @@
                 ["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"],
                 ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
             ];
-            //todo auto figure out tIdx;
             var tIdx = 0;
-            if (type === "full") { // full vs short
-                tIdx = 1;
+            for (var i = 0; i < data.length; i++) { // 
+                if (months[0].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                    tIdx = 0;
+                    break;
+                }
+                if (months[1].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                    tIdx = 1;
+                    break;
+                }
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(a[idx]) < months[tIdx].indexOf(b[idx]);
+                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(capitalizeFirstLetterb[idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(a[idx]) > months[tIdx].indexOf(b[idx]);
+                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) > months[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
                 });
             }
+        },
+        capitalizeFirstLetter: function (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
         },
 
         Selection: SelectionBag,

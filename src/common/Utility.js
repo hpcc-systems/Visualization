@@ -182,7 +182,7 @@
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(context.capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(context.capitalizeFirstLetterb([idx]));
+                    return months[tIdx].indexOf(context.capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(context.capitalizeFirstLetter(b[idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {
@@ -208,7 +208,7 @@
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return days[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < days[tIdx].indexOf(capitalizeFirstLetterb([idx]));
+                    return days[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < days[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {

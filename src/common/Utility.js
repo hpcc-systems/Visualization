@@ -147,6 +147,47 @@
                 return _naturalSort(a,b,order,idx,sortCaseSensitive);
             });
         },
+        sortMonth: function(data, order, idx) {
+            var months = [
+                ["Jan","Feb","Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                ["January","February","March","April","May","June","July","August","September","October","November","December"]
+            ];
+
+            //todo auto figure out tIdx;
+            var tIdx = 0;
+            if (type === "full") { // full vs short
+                tIdx = 1;
+            }
+            if (order === "descending") {
+                return data.slice(0).sort(function (a, b) {
+                    return months[tIdx].indexOf(a[idx]) < months[tIdx].indexOf(b[idx]);
+                });
+            } else {
+                return data.slice(0).sort(function (a, b) {
+                    return months[tIdx].indexOf(a[idx]) > months[tIdx].indexOf(b[idx]);
+                });
+            }
+        },
+        sortDay: function(data, order, idx) {
+            var months = [
+                ["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"],
+                ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+            ];
+            //todo auto figure out tIdx;
+            var tIdx = 0;
+            if (type === "full") { // full vs short
+                tIdx = 1;
+            }
+            if (order === "descending") {
+                return data.slice(0).sort(function (a, b) {
+                    return months[tIdx].indexOf(a[idx]) < months[tIdx].indexOf(b[idx]);
+                });
+            } else {
+                return data.slice(0).sort(function (a, b) {
+                    return months[tIdx].indexOf(a[idx]) > months[tIdx].indexOf(b[idx]);
+                });
+            }
+        },
 
         Selection: SelectionBag,
         SimpleSelection: SimpleSelection,

@@ -328,7 +328,7 @@
         return this._chart;
     };
 
-    CommonSerial.prototype.buildGraphObj = function(gType,i) {
+    CommonSerial.prototype.buildGraphObj = function(gType, i) {
         var context = this;
         var gObj = {};
 
@@ -346,8 +346,8 @@
         gObj.title = "";
         var fieldArr = ["value","open","close","high","low"];
         fieldArr.forEach(function(field){
-            if(typeof(context["_"+field+"Field"]) !== "undefined" && typeof(context["_"+field+"Field"][i]) !== "undefined"){
-                gObj[field+"Field"] = context["_"+field+"Field"][i];
+            if (typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
+                gObj[field + "Field"] = context["_" + field + "Field"][i];
             }
         });
 

@@ -147,55 +147,72 @@
                 return _naturalSort(a,b,order,idx,sortCaseSensitive);
             });
         },
+
+/*
+
+        var month = [
+            ["January"],
+            ["August"],
+            ["December"],
+            ["April"],
+            ["June"],
+            ["March"]
+        ];
+
+        console.log(Utility.sortMonth(month,null,0));
+
+
+*/
         sortMonth: function(data, order, idx) {
+            var context = this;
             var months = [
                 ["Jan","Feb","Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
                 ["January","February","March","April","May","June","July","August","September","October","November","December"]
             ];
             var tIdx = 0;
             for (var i = 0; i < data.length; i++) { // 
-                if (months[0].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                if (months[0].indexOf(this.capitalizeFirstLetter(data[i][idx])) !== -1) {
                     tIdx = 0;
                     break;
                 }
-                if (months[1].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                if (months[1].indexOf(this.capitalizeFirstLetter(data[i][idx])) !== -1) {
                     tIdx = 1;
                     break;
                 }
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(capitalizeFirstLetterb[idx]));
+                    return months[tIdx].indexOf(context.capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(context.capitalizeFirstLetterb([idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) > months[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
+                    return months[tIdx].indexOf(context.capitalizeFirstLetter(a[idx])) > months[tIdx].indexOf(context.capitalizeFirstLetter(b[idx]));
                 });
             }
         },
         sortDay: function(data, order, idx) {
-            var months = [
+            var days = [
                 ["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"],
                 ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
             ];
             var tIdx = 0;
             for (var i = 0; i < data.length; i++) { // 
-                if (months[0].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                if (days[0].indexOf(capitalizeFirstLetter(data[i][idx])) !== -1) {
                     tIdx = 0;
                     break;
                 }
-                if (months[1].indexOf(capitalizeFirstLetter(a[idx])) !== -1) {
+                if (days[1].indexOf(capitalizeFirstLetter(data[i][idx])) !== -1) {
                     tIdx = 1;
                     break;
                 }
             }
             if (order === "descending") {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < months[tIdx].indexOf(capitalizeFirstLetterb[idx]));
+                    return days[tIdx].indexOf(capitalizeFirstLetter(a[idx])) < days[tIdx].indexOf(capitalizeFirstLetterb([idx]));
                 });
             } else {
                 return data.slice(0).sort(function (a, b) {
-                    return months[tIdx].indexOf(capitalizeFirstLetter(a[idx])) > months[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
+                    return days[tIdx].indexOf(capitalizeFirstLetter(a[idx])) > days[tIdx].indexOf(capitalizeFirstLetter(b[idx]));
                 });
             }
         },

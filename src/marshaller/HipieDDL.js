@@ -368,6 +368,13 @@
                 return 0;
             });
         }
+
+        if (this.labelsort.slice(0).replace("-").toLowerCase() === "month") {
+            data = Utility.sortMonth(data, this.labelsort.indexOf("-") === 0 ? "descending" : "ascending", 0));
+        } else if (this.labelsort.slice(0).replace("-").toLowerCase() === "day") {
+            data = Utility.sortDay(data, this.labelsort.indexOf("-") === 0 ? "descending" : "ascending", 0));
+        }
+
         if (this.reverse) {
             data.reverse();
         }

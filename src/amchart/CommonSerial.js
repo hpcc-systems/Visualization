@@ -52,6 +52,8 @@
     CommonSerial.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical Axis Title Text Style (Color)",null,{tags:["Basic","Shared"]});
 
     CommonSerial.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+    CommonSerial.prototype.publish("yAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+
 
     CommonSerial.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
 
@@ -101,8 +103,11 @@
     CommonSerial.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"],{tags:["Intermediate","Shared"]});
     CommonSerial.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
 
-    CommonSerial.prototype.publish("yAxisTickFormat", ".0f", "string", "Y-Axis Tick Format");
-    CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
+    CommonSerial.prototype.publish("yAxisTickFormat", "", "string", "Y-Axis Tick Format");
+    CommonSerial.prototype.publish("xAxisTickFormat", "", "string", "Y-Axis Tick Format");
+
+    CommonSerial.prototype.publish("sortDates", true, "boolean", "Sort date field for timeseries data");
+    CommonSerial.prototype.publish("axisMinPeriod", "MM", "string", "Minimum period when parsing dates");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
 
@@ -110,6 +115,11 @@
     CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
     CommonSerial.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("showFirstLabel", true, "boolean", "Show first label",null,{tags:["Intermediate","Shared"]});
+    CommonSerial.prototype.publish("showLastLabel", true, "boolean", "Show last label",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("equalSpacing", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
 
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
@@ -165,6 +175,7 @@
         this._rangeType = null;
         var dataObjArr = [];
         var context = this;
+
         dataArr.forEach(function(dataRow) {
             var dataObj = {};
             dataRow.forEach(function(cell, cIdx) {
@@ -184,6 +195,7 @@
                     }
 
                 } else {
+                    
                     if (cIdx === 0) {
                         dataObj[colName] = context.formatData(cell);
                     } else if (cIdx >= context.columns().length) {
@@ -195,6 +207,13 @@
             });
             dataObjArr.push(dataObj);
         });
+        if (this.sortDates()) {
+            var sortField = context.columns()[0];
+            dataObjArr.sort(function (a, b) {
+                return a[sortField] - b[sortField];
+            });
+        }
+
         return dataObjArr;
     };
 
@@ -228,30 +247,40 @@
         this._chart.categoryAxis.color = this.xAxisFontColor();
         this._chart.categoryAxis.titleColor = this.xAxisTitleFontColor();
         this._chart.categoryAxis.titleFontSize = this.xAxisTitleFontSize();
-        //this._chart.titles = [];
 
-        this._chart.categoryAxis.labelFunction = function(d) {
-            return d;
-        };
+        this._chart.categoryAxis.showFirstLabel = this.showFirstLabel();
+        this._chart.categoryAxis.showLastLabel = this.showLastLabel();
+
+        this._chart.categoryAxis.equalSpacing = this.equalSpacing();
+
+        //this._chart.titles = [];
 
         switch(this.xAxisType()) {
             case "time":
-                this._chart.categoryAxis.type = "date";
                 this._chart.categoryAxis.parseDates = true;
-                //this._chart.valueAxes[0].minPeriod = "hh";
+                this._chart.categoryAxis.minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
                 this._chart.categoryAxis.logarithmic = false;
+
+                if (this.xAxisTickFormat()) {
+                    this.dataFormatter = d3.time.format(this.xAxisTickFormat());
+                } else if (this.xAxisTypeTimePattern()) {
+                    this.dataFormatter = d3.time.format(this.xAxisTypeTimePattern());
+                } else {
+                    this.dataFormatter =  function(v) { return v; };
+                }
+
                 break;
             case "log":
                 this._chart.categoryAxis.parseDates = false;
                 this._chart.categoryAxis.logarithmic = true;
-                this._chart.categoryAxis.type = "mumeric";
+                this.dataFormatter = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : function(v) { return v; };
                 break;
             case "linear":
                 /* falls through */
             default:
                 this._chart.categoryAxis.parseDates = false;
-                this._chart.categoryAxis.type = "mumeric";
                 this._chart.categoryAxis.logarithmic = false;
+                this.dataFormatter = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : function(v) { return v; };
                 break;
         }
 
@@ -259,6 +288,15 @@
         if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
         if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
         if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
+        
+        this._chart.categoryAxis.labelFunction = function(v1, v2, v3) {
+            switch (context.xAxisType()) {
+                case "time":
+                    return context.dataFormatter(context.xAxisTickFormat() || context.xAxisTypeTimePattern()  ? new Date(v2) : v2);
+                default:
+                    return context.dataFormatter(v1);
+            }
+        };
 
         this._chart.valueAxes[0].title = this.yAxisTitle();
         this._chart.valueAxes[0].titleColor = this.yAxisTitleFontColor();
@@ -270,30 +308,32 @@
         this._chart.valueAxes[0].axisAlpha = this.axisAlpha();
         this._chart.valueAxes[0].fillColor = this.yAxisFillColor();
         this._chart.valueAxes[0].fillAlpha = this.yAxisFillAlpha();
+        this._chart.valueAxes[0].labelRotation = this.yAxisLabelRotation();
 
         this._chart.valueAxes[0].gridAlpha = this.yAxisGridAlpha();
         this._chart.valueAxes[0].dashLength = this.yAxisDashLength();
         this._chart.valueAxes[0].boldPeriodBeginning = this.yAxisBoldPeriodBeginning();
         this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset();
 
-        this._chart.valueAxes[0].labelFunction = function(d) {
-            return typeof d === "number" ? d3.format(context.yAxisTickFormat())(d) : d;
-        };
-
         switch(this.yAxisType()) {
             case "time":
                 this._chart.valueAxes[0].type = "date";
                 this._chart.valueAxes[0].parseDates = true;
-                //this._chart.valueAxes[0].minPeriod = "hh";
+                this._chart.valueAxes[0].minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
                 this._chart.valueAxes[0].logarithmic = false;
-                if (this.sortDates()) {
-                    this.data(Utility.naturalSort(this.data(), "ascending", 0));
+                if (this.yAxisTickFormat()) {
+                    this.valueFormatter = d3.time.format(this.yAxisTickFormat());
+                } else if (this.xAxisTypeTimePattern()) {
+                    this.valueFormatter = d3.time.format(this.yAxisTypeTimePattern());
+                } else {
+                    this.valueFormatter =  function(v) { return v; };
                 }
                 break;
             case "log":
                 this._chart.valueAxes[0].parseDates = false;
                 this._chart.valueAxes[0].logarithmic = true;
                 this._chart.valueAxes[0].type = "mumeric";
+                this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
                 break;
             case "linear":
                 /* falls through */
@@ -301,8 +341,18 @@
                 this._chart.valueAxes[0].parseDates = false;
                 this._chart.valueAxes[0].type = "mumeric";
                 this._chart.valueAxes[0].logarithmic = false;
+                this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
                 break;
         }
+
+        this._chart.valueAxes[0].labelFunction = function(v1, v2, v3) {
+            switch (context.yAxisType()) {
+                case "time":
+                    return context.valueFormatter(context.yAxisTickFormat() || context.yAxisTypeTimePattern() ? new Date(v2) : v2);
+                default:
+                    return context.valueFormatter(v1);
+            }
+        };
 
         if (this.showScrollbar()) {
             this._chart.chartScrollbar.enabled = true;

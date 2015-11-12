@@ -87,6 +87,7 @@
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
                         
+                        .axisMinPeriod("MM")
                         .xAxisType("time")
                         .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
                         .yAxisType("linear")
@@ -99,6 +100,7 @@
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
                         
+                        .axisMinPeriod("DD")
                         .xAxisType("ordinal")
                         .yAxisType("time")
                         .yAxisTypeTimePattern("%Y-%m-%d")

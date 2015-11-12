@@ -20,7 +20,7 @@
     Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
 
     Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
-    Tabbed.prototype.publish("tabLocation", "top", "set", "Position the tabs at the bottom of the widget", ["top", "bottom"], { tags: ["Private"] });
+    Tabbed.prototype.publish("tabLocation", "bottom", "set", "Position the tabs at the bottom of the widget", ["top", "bottom"], { tags: ["Private"] });
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.clearTabs = function () {
@@ -63,16 +63,30 @@
     Tabbed.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._contentContainer = element.append("div");
+        this._contentContainer.attr("id", "content_container");
     };
 
     Tabbed.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        if (this._tabContainer) {this._tabContainer.remove();}
+        // if (this._tabContainer) {this._tabContainer.remove();}
+        // this._tabContainer = element.insert("div", this.tabLocation() === "bottom" ? null : "div");
+        // this._tabContainer.attr("class", "on_" + this.tabLocation());
 
-        this._tabContainer = element.insert("div", this.tabLocation() === "bottom" ? null : "div");
-        this._tabContainer.attr("class", "on_" + this.tabLocation());
+        this._tabContainer = element.selectAll("#tab_contanier").data([this.tabLocation()], function(d) {return d;});
+        this._tabContainer
+            .enter()
+            .insert("div", function(d1) {
+                var x = d1 === "top" ? "#content_container" : null;
+                console.log(x, d1);
+                return x;
+            })
+            .attr("class", function(d2) {
+                return "on_" + d2;
+            })
+            .attr("id", "tab_contanier")
+        ;
 
         element.style("padding", this.surfacePadding() + "px");
 

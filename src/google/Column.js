@@ -119,6 +119,8 @@
         retVal.hAxis.title = this.xAxisTitle();
         retVal.hAxis.minValue = this.xAxisMinValue();
         retVal.hAxis.maxValue = this.xAxisMaxValue();
+        retVal.hAxis.slantedText = this.xAxisLabelRotation() !== 0;
+        retVal.hAxis.slantedTextAngle = this.xAxisLabelRotation();
 
         retVal.hAxis.format = this.xAxisFormatType();
         retVal.hAxis.textStyle = {

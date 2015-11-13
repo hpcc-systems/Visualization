@@ -17,6 +17,7 @@ require.config({
         "colorbrewer": "../bower_components/colorbrewer/colorbrewer",
         "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
+
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
         "amcharts.gauge": "../bower_components/amcharts3/amcharts/gauge",
@@ -24,10 +25,10 @@ require.config({
         "amcharts.radar": "../bower_components/amcharts3/amcharts/radar",
         "amcharts.serial": "../bower_components/amcharts3/amcharts/serial",
         "amcharts.xy": "../bower_components/amcharts3/amcharts/xy",
+        "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
         "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
         "simpleheat": "../bower_components/simpleheat/index",
-
         "src": "../src"
     },
     shim: {
@@ -73,6 +74,13 @@ require.config({
                 AmCharts.isReady = true;
             }
         },
+        'amcharts.gantt': {
+            deps: [ 'amcharts', 'amcharts.serial' ],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
         "simpleheat": {
             exports: "simpleheat",
             init: function() {
@@ -101,6 +109,7 @@ case "cdn.rawgit.com":
             "colorbrewer": "//" + window.location.hostname + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": "//" + window.location.hostname + "/jasondavies/d3-cloud/v1.2.0/build/d3.layout.cloud",
             "font-awesome": "//" + window.location.hostname + "/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
+
             "amcharts": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/amcharts",
             "amcharts.funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/funnel",
             "amcharts.gauge": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/gauge",
@@ -108,6 +117,7 @@ case "cdn.rawgit.com":
             "amcharts.radar": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/radar",
             "amcharts.serial": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/serial",
             "amcharts.xy": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/xy",
+            "amcharts.gantt": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/gantt",
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/plugins/dataloader",
             "amchartsImg": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.3/amcharts/images/",

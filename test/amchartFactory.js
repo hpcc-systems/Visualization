@@ -7,7 +7,18 @@
     }
 }(this, function (callback) {
     var amchartFactory = {
-        Column: {
+        Gantt: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/amchart/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .columns(DataFactory.ganttDateRanges.default.columns)
+                        .data(DataFactory.ganttDateRanges.default.data)
+
+                    );
+                });
+            },
+        },
+        Bar: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
                     callback(new Bar()
@@ -19,15 +30,27 @@
                     );
                 });
             },
+        },
+        Column: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+
+                        .yAxisType("linear")
+                        .xAxisType("ordinal")
+                    );
+                });
+            },
             bar: function (callback) {
                 amchartFactory.Column.simple(function (widget) {
-                    widget.orientation("vertical");
                     callback(widget);
                 });
             },
             ordinalRange: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
                         
@@ -37,8 +60,8 @@
                 });
             },
             ordinalCandleOHLC: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.ordinalCandleOHLC.default.columns)
                         .data(DataFactory.ordinalCandleOHLC.default.data)
                         
@@ -48,8 +71,8 @@
                 });
             },
             linear: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
                         
@@ -59,8 +82,8 @@
                 });
             },
             timeX: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
                         
@@ -71,8 +94,8 @@
                 });
             },
             timeY: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
                         

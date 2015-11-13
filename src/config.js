@@ -17,6 +17,7 @@ require.config({
         "colorbrewer": "../bower_components/colorbrewer/colorbrewer",
         "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
+        "es6-promise": "../bower_components/es6-promise/promise",
 
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -28,7 +29,7 @@ require.config({
         "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
         "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
-        
+
         "simpleheat": "../bower_components/simpleheat/simpleheat",
 
         "src": "../src"
@@ -111,6 +112,7 @@ case "cdn.rawgit.com":
             "colorbrewer": "//" + window.location.hostname + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": "//" + window.location.hostname + "/jasondavies/d3-cloud/v1.2.0/build/d3.layout.cloud",
             "font-awesome": "//" + window.location.hostname + "/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
+            "es6-promise": "//" + window.location.hostname + "/jakearchibald/es6-promise/v3.0.2/dist/es6-promise.min",
 
             "amcharts": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.0/amcharts/amcharts",
             "amcharts.funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.17.0/amcharts/funnel",

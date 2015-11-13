@@ -389,7 +389,9 @@
         var origFunc = this[eventID];
         this[eventID] = function () {
             if (stopPropagation) {
-                d3.event.stopPropagation();
+                if (d3.event) {
+                    d3.event.stopPropagation();
+                }
             } else {
                 origFunc.apply(this, arguments);
             }

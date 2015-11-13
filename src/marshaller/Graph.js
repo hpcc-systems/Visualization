@@ -422,8 +422,15 @@
         this._prev_databomb = this.databomb();
         this._prev_visualizeRoxie = this.visualizeRoxie();
 
-        var marshaller = new HipieDDL.Marshaller().proxyMappings(this.proxyMappings());
         var context = this;
+        var marshaller = new HipieDDL.Marshaller()
+            .proxyMappings(this.proxyMappings())
+            .on("commsError", function (source, error) {
+                context.commsError(source, error);
+            })
+        ;
+
+        //  Parse DDL  ---
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
             marshaller.parse(this.ddlUrl(), function () {
                 postParse();
@@ -448,6 +455,10 @@
             });
         }
         return this;
+    };
+
+    Graph.prototype.commsError = function (source, error) {
+        alert("Comms Error:\n" + source + "\n" + error);
     };
 
     return Graph;

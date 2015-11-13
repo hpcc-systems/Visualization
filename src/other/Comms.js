@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["es6-promise"], factory);
     } else {
         root.other_Comms = factory();
     }
@@ -161,10 +161,14 @@
         ESPUrl.call(this);
         this._proxyMappings = {};
         this._mappings = new ESPMappings({});
+        this._timeout = 1;
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
 
     function exists(prop, scope) {
+        if (!prop || !scope) {
+            return false;
+        }
         var propParts = prop.split(".");
         var testScope = scope;
         for (var i = 0; i < propParts.length; ++i) {
@@ -188,53 +192,93 @@
     };
 
     Comms.prototype.jsonp = function (url, request, callback) {
-        for (var key in this._proxyMappings) {
-            var newUrlParts = url.split(key);
-            var newUrl = newUrlParts[0];
-            if(newUrlParts.length > 1) {
-                var espUrl = new ESPUrl()
-                    .url(url)
-                ;
-                url = newUrl + this._proxyMappings[key];
-                request.IP = espUrl._hostname;
-                request.PORT = espUrl._port;
-                if (newUrlParts.length > 0) {
-                    request.PATH = newUrlParts[1];
+        var context = this;
+        return new Promise(function (resolve, reject) {
+            for (var key in context._proxyMappings) {
+                var newUrlParts = url.split(key);
+                var newUrl = newUrlParts[0];
+                if (newUrlParts.length > 1) {
+                    var espUrl = new ESPUrl()
+                        .url(url)
+                    ;
+                    url = newUrl + context._proxyMappings[key];
+                    request.IP = espUrl._hostname;
+                    request.PORT = espUrl._port;
+                    if (newUrlParts.length > 0) {
+                        request.PATH = newUrlParts[1];
+                    }
+                    break;
                 }
-                break;
             }
-        }
 
-        var respondedTimeout = 60000;
-        var respondedTick = 5000;
-        var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
-        window[callbackName] = function (response) {
-            respondedTimeout = 0;
-            doCallback(response);
-        };
-        var script = document.createElement("script");
-        script.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "jsonp=" + callbackName + "&" + serialize(request);
-        document.body.appendChild(script);
-        var progress = setInterval(function () {
-            if (respondedTimeout <= 0) {
-                clearInterval(progress);
-            } else {
-                respondedTimeout -= respondedTick;
+            var respondedTimeout = context.timeout() * 1000;
+            var respondedTick = 5000;
+            var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
+            window[callbackName] = function (response) {
+                respondedTimeout = 0;
+                doCallback(response);
+                resolve(response);
+            };
+            var script = document.createElement("script");
+            script.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "jsonp=" + callbackName + "&" + serialize(request);
+            document.body.appendChild(script);
+            var progress = setInterval(function () {
                 if (respondedTimeout <= 0) {
                     clearInterval(progress);
-                    console.log("Request timeout:  " + script.src);
-                    doCallback();
                 } else {
-                    console.log("Request pending (" + respondedTimeout / 1000 + " sec):  " + script.src);
+                    respondedTimeout -= respondedTick;
+                    if (respondedTimeout <= 0) {
+                        clearInterval(progress);
+                        console.log("Request timeout:  " + script.src);
+                        doCallback();
+                        reject(Error("Request timeout:  " + script.src));
+                    } else {
+                        console.log("Request pending (" + respondedTimeout / 1000 + " sec):  " + script.src);
+                    }
+                }
+            }, respondedTick);
+
+            function doCallback(response) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (Comms.prototype.jsonp)");
+                    callback(response);
                 }
             }
-        }, respondedTick);
+        });
+    };
 
-        function doCallback(response) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            callback(response);
-        }
+    Comms.prototype.ajax = function (method, url, request) {
+        return new Promise(function (resolve, reject) {
+            var uri = url;
+            if (request) {
+                uri += "?" + serialize(request);
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function (e) {
+                if (this.status >= 200 && this.status < 300) {
+                    resolve(JSON.parse(this.response));
+                }
+                else {
+                    reject(Error(this.statusText));
+                }
+            };
+            xhr.onerror = function () {
+                reject(Error(this.statusText));
+            };
+            xhr.open(method, uri);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.send();
+        });
+    };
+
+    Comms.prototype.get = function (url, request) {
+        return this.ajax("GET", url, request);
+    };
+
+    Comms.prototype.post = function (url, request) {
+        return this.ajax("POST", url, request);
     };
 
     Comms.prototype.mappings = function (_) {
@@ -246,6 +290,12 @@
     Comms.prototype.proxyMappings = function (_) {
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
+        return this;
+    };
+
+    Comms.prototype.timeout = function (_) {
+        if (!arguments.length) return this._timeout;
+        this._timeout = _;
         return this;
     };
 
@@ -262,32 +312,37 @@
 
     Basic.prototype.call = function (request, callback) {
         var url = this._url + (this._url.indexOf("?") >= 0 ? "&" : "?") + serialize(request);
-        function doCall(request, callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.onload = function (e) {
-                callback(JSON.parse(xhr.responseText));
-            };
-            xhr.onerror = function (e) {
-                callback({});
-            };
-            xhr.send(null);
-        }
         if (this._cacheCalls) {
-            var response = localStorage.getItem("hpcc.viz." + url);
-            if (response && response !== null) {
-                setTimeout(function () {
-                    callback(JSON.parse(response));
-                }, 0);
-            } else {
-                doCall(request, function (response) {
-                    localStorage.setItem("hpcc.viz." + url,JSON.stringify(response));
+            var context = this;
+            return new Promise(function (resolve, reject) {
+                var response = JSON.parse(localStorage.getItem("hpcc.viz." + url));
+                if (!response) {
+                    throw Error("not cached");
+                }
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
                     callback(response);
+                }
+                resolve(response);
+            }).catch(function (response) {
+                return context.get(url).then(function (response) {
+                    localStorage.setItem("hpcc.viz." + url, JSON.stringify(response));
+                    if (callback) {
+                        console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
+                        callback(response);
+                    }
+                    return response;
                 });
-            }
+            });
         } else {
             localStorage.removeItem("hpcc.viz." + url);
-            doCall(request, callback);
+            return this.get(url).then(function (response) {
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
+                    callback(response);
+                }
+                return response;
+            });
         }
     };
 
@@ -369,19 +424,33 @@
         var url = this.getUrl({
             pathname: "WsEcl/submit/query/" + target.target + "/" + target.query + "/json"
         });
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function(response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
                 response = response[key].Results;
                 break;
             }
+            // Check for exceptions
+            if (response.Exception) {
+                throw Error(response.Exception.reduce(function (previousValue, exception, index, array) {
+                    if (previousValue.length) {
+                        previousValue += "\n";
+                    }
+                    return previousValue + exception.Source + " " + exception.Code + ":  " + exception.Message;
+                }, ""));
+            }
             // Remove "response.result.Row"
             for (key in response) {
-                response[key] = response[key].Row.map(espRowFix);
-
+                if (response[key].Row) {
+                    response[key] = response[key].Row.map(espRowFix);
+                }
             }
             context._mappings.mapResponse(response);
-            callback(response);
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (WsECL.prototype.call)");
+                callback(response);
+            }
+            return response;
         });
     };
 
@@ -491,7 +560,7 @@
         };
         this._resultNameCache[target.resultname] = {};
         var context = this;
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function (response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
                 if (!response[key].Result) {
@@ -509,18 +578,22 @@
             if (!skipMapping) {
                 context._mappings.mapResult(context._resultNameCache, target.resultname);
             }
-            callback(context._resultNameCache[target.resultname]);
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (WsWorkunits.prototype._fetchResult)");
+                callback(context._resultNameCache[target.resultname]);
+            }
+            return context._resultNameCache[target.resultname];
         });
     };
 
     WsWorkunits.prototype.fetchResult = function (target, callback, skipMapping) {
         if (target.wuid) {
-            this._fetchResult(target, callback, skipMapping);
+            return this._fetchResult(target, callback, skipMapping);
         } else if (target.jobname) {
             var context = this;
-            this.WUQuery(target, function (response) {
+            return this.WUQuery(target, function (response) {
                 target.wuid = response[0].Wuid;
-                context._fetchResult(target, callback, skipMapping);
+                return context._fetchResult(target, callback, skipMapping);
             });
         }
     };
@@ -536,12 +609,16 @@
 
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function (response) {
             if (!exists("WUQueryResponse.Workunits.ECLWorkunit", response)) {
                 throw "No workunit found.";
             }
             response = response.WUQueryResponse.Workunits.ECLWorkunit;
-            callback(response);
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.WUQuery)");
+                callback(response);
+            }
+            return response;
         });
     };
 
@@ -570,32 +647,35 @@
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
         var context = this;
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function (response) {
             if (exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                 response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
                     context._resultNameCache[item.Name] = [];
                     ++context._resultNameCacheCount;
                 });
+            }
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResultNames)");
                 callback(context._resultNameCache);
             }
+            return context._resultNameCache;
         });
     };
 
     WsWorkunits.prototype.fetchResults = function (callback, skipMapping) {
         var context = this;
-        this.fetchResultNames(function (response) {
-            var toFetch = context._resultNameCacheCount;
-            if (toFetch > 0) {
-                for (var key in context._resultNameCache) {
-                    context.fetchResult({ wuid: context._wuid, resultname: key }, function (response) {
-                        if (--toFetch <= 0) {
-                            callback(context._resultNameCache);
-                        }
-                    }, skipMapping);
-                }
-            } else {
-                callback(context._resultNameCache);
+        return this.fetchResultNames().then(function (response) {
+            var fetchArray = [];
+            for (var key in context._resultNameCache) {
+                fetchArray.push(context.fetchResult({ wuid: context._wuid, resultname: key }, null, skipMapping));
             }
+            return Promise.all(fetchArray).then(function (responseArray) {
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (WsWorkunits.prototype.fetchResults)");
+                    callback(context._resultNameCache);
+                }
+                return context._resultNameCache;
+            });
         });
     };
 
@@ -665,11 +745,19 @@
         var url = this.getUrl({
             pathname: "WsWorkunits/WUGetStats.json?WUID=" + this._wuid
         });
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function (response) {
             if (exists("WUGetStatsResponse.Statistics.WUStatisticItem", response)) {
-                callback(response.WUGetStatsResponse.Statistics.WUStatisticItem);
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
+                    callback(response.WUGetStatsResponse.Statistics.WUStatisticItem);
+                }
+                return response.WUGetStatsResponse.Statistics.WUStatisticItem;
             } else {
-                callback([]);
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
+                    callback([]);
+                }
+                return [];
             }
         });
     };
@@ -685,18 +773,33 @@
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
         var context = this;
-        this.jsonp(url, request, function (response) {
+        return this.jsonp(url, request).then(function (response) {
             // Remove "xxxResponse.Result"
             for (var key in response) {
                 response = response[key].Results;
                 break;
             }
+            // Check for exceptions
+            if (response.Exception) {
+                throw Error(response.Exception.reduce(function (previousValue, exception, index, array) {
+                    if (previousValue.length) {
+                        previousValue += "\n";
+                    }
+                    return previousValue + exception.Source + " " + exception.Code + ":  " + exception.Message;
+                }, ""));
+            }
             // Remove "response.result.Row"
             for (key in response) {
-                context._resultNameCache[key] = response[key].Row.map(espRowFix);
-                ++context._resultNameCacheCount;
+                if (response[key].Row) {
+                    context._resultNameCache[key] = response[key].Row.map(espRowFix);
+                    ++context._resultNameCacheCount;
+                }
             }
-            callback(context._resultNameCache);
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResults)");
+                callback(context._resultNameCache);
+            }
+            return context._resultNameCache;
         });
     };
 
@@ -705,7 +808,7 @@
     };
 
     HIPIERoxie.prototype.call = function (request, callback) {
-        this.fetchResults(request, callback);
+        return this.fetchResults(request, callback);
     };
 
     //  HIPIEWorkunit  ---
@@ -730,61 +833,71 @@
 
     HIPIEWorkunit.prototype.fetchResults = function (callback) {
         var context = this;
-        return WsWorkunits.prototype.fetchResultNames.call(this, function (response) {
-            var toFetch = context._hipieResultsLength;
-            if (toFetch > 0) {
-                for (var key in context._hipieResults) {
-                    var item = context._hipieResults[key];
-                    context.fetchResult(item.from, function (response) {
-                        if (--toFetch <= 0) {
-                            callback(context._resultNameCache);
-                        }
-                    });
-                }
-            } else {
-                callback(context._resultNameCache);
+        return WsWorkunits.prototype.fetchResultNames.call(this).then(function (response) {
+            var fetchArray = [];
+            for (var key in context._hipieResults) {
+                var item = context._hipieResults[key];
+                fetchArray.push(context.fetchResult(item.from));
             }
+            return Promise.all(fetchArray).then(function (response) {
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResults)");
+                    callback(context._resultNameCache);
+                }
+                return context._resultNameCache;
+            });
         });
     };
 
     HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
-        return WsWorkunits.prototype.fetchResult.call(this, { wuid: this._wuid, resultname: name }, function (response) {
-            callback(response);
+        return WsWorkunits.prototype.fetchResult.call(this, { wuid: this._wuid, resultname: name }).then(function (response) {
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResult)");
+                callback(response);
+            }
+            return response;
         });
     };
 
     HIPIEWorkunit.prototype.call = function (request, callback) {
         if (request.refresh || !this._resultNameCache || !this._resultNameCacheCount) {
-            this.fetchResults(callback);
+            return this.fetchResults(callback);
         } else {
-            var changedFilter = {};
-            for (var key in request) {
-                if (request[key] && request[key + "_changed"] !== undefined) {
-                    changedFilter[key] = request[key];
-                }
-            }
-            var retVal = {};
-            for (var hipieKey in this._hipieResults) {
-                var item = this._hipieResults[hipieKey];
-                var matchedResult = true;
-                for (var key2 in changedFilter) {
-                    if (item.filter.indexOf(key2) < 0) {
-                        matchedResult = false;
-                        break;
+            var context = this;
+            return new Promise(function (resolve, reject) {
+                var changedFilter = {};
+                for (var key in request) {
+                    if (request[key] && request[key + "_changed"] !== undefined) {
+                        changedFilter[key] = request[key];
                     }
                 }
-                if (matchedResult) {
-                    retVal[item.from] = this._resultNameCache[item.from].filter(function (row) {
-                        for (var key2 in changedFilter) {
-                            if (row[key2] !== changedFilter[key2] && row[key2.toLowerCase()] !== changedFilter[key2]) {
-                                return false;
-                            }
+                var retVal = {};
+                for (var hipieKey in context._hipieResults) {
+                    var item = context._hipieResults[hipieKey];
+                    var matchedResult = true;
+                    for (var key2 in changedFilter) {
+                        if (item.filter.indexOf(key2) < 0) {
+                            matchedResult = false;
+                            break;
                         }
-                        return true;
-                    });
+                    }
+                    if (matchedResult) {
+                        retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
+                            for (var key2 in changedFilter) {
+                                if (row[key2] !== changedFilter[key2] && row[key2.toLowerCase()] !== changedFilter[key2]) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        });
+                    }
                 }
-            }
-            callback(retVal);
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.call)");
+                    callback(retVal);
+                }
+                resolve(retVal);
+            });
         }
     };
 
@@ -809,9 +922,13 @@
 
     HIPIEDatabomb.prototype.fetchResults = function (callback) {
         var context = this;
-        setTimeout(function () {
-            callback(context._resultNameCache);
-        }, 0);
+        return new Promise(function (resolve, reject) {
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (HIPIEDatabomb.prototype.fetchResults)");
+                callback(context._resultNameCache);
+            }
+            resolve(context._resultNameCache);
+        });
     };
 
     return {

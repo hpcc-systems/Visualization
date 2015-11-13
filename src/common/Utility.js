@@ -142,6 +142,16 @@
 
 
     return {
+        hash: function(str) {
+            var hash = 0, i, chr, len;
+            if (str.length == 0) return hash;
+            for (i = 0, len = str.length; i < len; i++) {
+                chr   = str.charCodeAt(i);
+                hash  = ((hash << 5) - hash) + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        },
         naturalSort: function(data, order, idx, sortCaseSensitive) {
             return data.slice(0).sort(function(a,b) {
                 return _naturalSort(a,b,order,idx,sortCaseSensitive);

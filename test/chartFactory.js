@@ -7,16 +7,6 @@
     }
 }(this, function () {
     var chartFactory = {
-        Bar: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(DataFactory.ND.subjects.data)
-                    );
-                });
-            },
-        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
@@ -94,6 +84,31 @@
                     );
                 });
             },
+        },
+        Bar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/Bar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            }
+        },
+        Gantt: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .yAxisTypeTimePattern("%Y-%m-%d")
+                        .columns(["Project", "Date Range"])
+                        .data([
+                            ["Docs", ["2012-09-09", "2012-10-09"]],
+                            ["Coding", ["2011-08-09", "2012-09-09"]],
+                            ["Specs", ["2010-07-09", "2011-08-09"]]
+                        ])
+                    );
+                });
+            }
         },
         Bubble: {
             simple: function (callback) {

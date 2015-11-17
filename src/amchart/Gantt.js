@@ -12,7 +12,10 @@
         this._chart = {};
         
         this._selected = null;
-        this._selection = [];
+        this._selections = [];
+
+        this._dataUpdated = 0;
+        this._lastDataUpdated = -1;
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
     }
@@ -61,19 +64,22 @@
         this._chart.depth3D = this.depth3D();
         this._chart.angle = this.angle3D();
 
-        this._chart.dataProvider = [];
-        var data = this.amFormattedData();
-        for (var key in data) {
-            var obj = {};
-            obj.category = key;
-            obj.segments = [];
-            data[key].forEach(function (range) {
-                var segment = { "start": context._dateParserData(range[0]), "end": context._dateParserData(range[1]) };
-                obj.segments.push(segment);
-            });
-            this._chart.dataProvider.push(obj); 
+        if (this._dataUpdated > this._lastDataUpdated) {
+            this._chart.dataProvider = [];
+            var data = this.amFormattedData();
+            for (var key in data) {
+                var obj = {};
+                obj.category = key;
+                obj.segments = [];
+                data[key].forEach(function (range) {
+                    var segment = { "start": context._dateParserData(range[0]), "end": context._dateParserData(range[1]) };
+                    obj.segments.push(segment);
+                });
+                this._chart.dataProvider.push(obj); 
+            }
         }
-
+        this._lastDataUpdated = this._dataUpdated;
+        
         this._chart.dataProvider.forEach(function(dataPoint,i){
             context._chart.dataProvider[i].color = context._palette(i);
         });
@@ -154,8 +160,11 @@
                     }
                     context._selected = {
                         field: field,
-                        data: data
+                        data: data,
+                        colIndex: e.target.columnIndex,
+                        dIdx: e.index
                     };
+                    context._selections.push(context._selected);
                 }
             }
 
@@ -178,6 +187,17 @@
 
         this._chart.validateNow();
         this._chart.validateData();
+    };
+
+    Gantt.prototype.render = function(callback) {
+        return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+    Gantt.prototype.data = function(_) {
+        if (arguments.length) {
+            this._dataUpdated++;
+        }
+        return HTMLWidget.prototype.data.apply(this, arguments);
     };
 
     return Gantt;

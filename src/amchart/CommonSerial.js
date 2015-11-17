@@ -14,7 +14,10 @@
         this._chart = {};
 
         this._selected = null;
-        this._selection = [];
+        this._selections = [];
+
+        this._dataUpdated = 0;
+        this._lastDataUpdated = -1;
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
@@ -321,6 +324,7 @@
                 this._chart.valueAxes[0].parseDates = true;
                 this._chart.valueAxes[0].minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
                 this._chart.valueAxes[0].logarithmic = false;
+
                 if (this.yAxisTickFormat()) {
                     this.valueFormatter = d3.time.format(this.yAxisTickFormat());
                 } else if (this.xAxisTypeTimePattern()) {
@@ -372,7 +376,11 @@
             this._chart.chartCursor.categoryBalloonEnabled = false;
         }
 
-        this._chart.dataProvider = this.amFormatData(this.data());
+        if (this._dataUpdated > this._lastDataUpdated) {
+            this._chart.dataProvider = this.amFormatData(this.data());
+        }
+        this._lastDataUpdated = this._dataUpdated;
+
         this.amFormatColumns();
 
         return this._chart;
@@ -486,8 +494,11 @@
                         context._selected = {
                             field: field,
                             field2: field2,
-                            data: data
+                            data: data,
+                            colIdx: e.target.columnIndex,
+                            dIdx: e.index
                         };
+                        context._selections.push(context._selected);
                     }
                 }
                 e.chart.validateData();
@@ -506,6 +517,17 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+    };
+
+    CommonSerial.prototype.render = function(callback) {
+        return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+    CommonSerial.prototype.data = function(_) {
+        if (arguments.length) {
+            this._dataUpdated++;
+        }
+        return HTMLWidget.prototype.data.apply(this, arguments);
     };
 
     return CommonSerial;

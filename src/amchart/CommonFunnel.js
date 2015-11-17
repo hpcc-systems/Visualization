@@ -14,6 +14,10 @@
         this._chart = {};
 
         this._selected = null;
+        this._selections = [];
+        
+        this._dataUpdated = 0;
+        this._lastDataUpdated = -1;
     }
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
     CommonFunnel.prototype.constructor = CommonFunnel;
@@ -77,10 +81,13 @@
         if(this.reverseDataSorting()){
             sortingMethod = function(a,b){ return a[1] < b[1] ? 1 : -1; };
         }
-        this.data(this.data().sort(sortingMethod));
+        this.data().sort(sortingMethod);
 
         // DataProvider
-        this._chart.dataProvider = this.formatData(this.data());
+        if (this._dataUpdated > this._lastDataUpdated) {
+            this._chart.dataProvider = this.formatData(this.data());
+        }
+        this._lastDataUpdated = this._dataUpdated;
 
         // Color Palette
         this._chart.colors = this.data().map(function (row) {
@@ -144,8 +151,11 @@
                     }
                     context._selected = {
                         field: field,
-                        data: data
+                        data: data,
+                        colIdx: 1,
+                        dIdx: e.dataItem.index
                     };
+                    context._selections.push(context._selected);
                 }
             }
 
@@ -170,6 +180,17 @@
 
         this._chart.validateNow();
         this._chart.validateData();
+    };
+
+    CommonFunnel.prototype.render = function(callback) {
+        return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+    CommonFunnel.prototype.data = function(_) {
+        if (arguments.length) {
+            this._dataUpdated++;
+        }
+        return HTMLWidget.prototype.data.apply(this, arguments);
     };
 
     return CommonFunnel;

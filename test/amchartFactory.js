@@ -49,7 +49,7 @@
                 });
             },
             ordinalRange: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
@@ -71,7 +71,7 @@
                 });
             },
             linear: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
@@ -82,7 +82,7 @@
                 });
             },
             timeX: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
@@ -94,7 +94,7 @@
                 });
             },
             timeY: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Column) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)

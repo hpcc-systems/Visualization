@@ -16,3 +16,8 @@
     background-color: white;
     z-index:999;
 }
+.layout_Tabbed .on_bottom .tab-button {
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+    top: -1px;
+}

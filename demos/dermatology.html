@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html>
 <head>
@@ -229,7 +229,9 @@
                 ;
             });
             
-            propEditor = new PropertyEditor();
+            propEditor = new PropertyEditor()
+                .show_settings(true);
+            ;
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {

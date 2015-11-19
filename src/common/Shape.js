@@ -47,42 +47,43 @@
         ;
         var context = this;
         shape
-            .attr("fill", context.colorFill())
-            .attr("stroke", context.colorStroke())
+            .style("fill", this.colorFill())
+            .style("stroke", this.colorStroke())
             .each(function (d) {
-            var element = d3.select(this);
-            switch (context.shape()) {
-                case "circle":
-                    var radius = context.radius();
-                    element
-                        .attr("r", radius)
-                    ;
-                    break;
-                case "square":
-                    var width = Math.max(context.width(), context.height());
-                    element
-                        .attr("x", -width / 2)
-                        .attr("y", -width / 2)
-                        .attr("width", width)
-                        .attr("height", width)
-                    ;
-                    break;
-                case "rect":
-                    element
-                        .attr("x", -context.width() / 2)
-                        .attr("y", -context.height() / 2)
-                        .attr("width", context.width())
-                        .attr("height", context.height())
-                    ;
-                    break;
-                case "ellipse":
-                    element
-                        .attr("rx", context.width() / 2)
-                        .attr("ry", context.height() / 2)
-                    ;
-                    break;
-            }
-        });
+                var element = d3.select(this);
+                switch (context.shape()) {
+                    case "circle":
+                        var radius = context.radius();
+                        element
+                            .attr("r", radius)
+                        ;
+                        break;
+                    case "square":
+                        var width = Math.max(context.width(), context.height());
+                        element
+                            .attr("x", -width / 2)
+                            .attr("y", -width / 2)
+                            .attr("width", width)
+                            .attr("height", width)
+                        ;
+                        break;
+                    case "rect":
+                        element
+                            .attr("x", -context.width() / 2)
+                            .attr("y", -context.height() / 2)
+                            .attr("width", context.width())
+                            .attr("height", context.height())
+                        ;
+                        break;
+                    case "ellipse":
+                        element
+                            .attr("rx", context.width() / 2)
+                            .attr("ry", context.height() / 2)
+                        ;
+                        break;
+                }
+            })
+        ;
         shape.exit().remove();
     };
 

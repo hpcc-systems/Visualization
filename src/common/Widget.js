@@ -335,6 +335,7 @@
                 throw "Setting default value of proxied properties is not supported.";
             }
             if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
+            this.broadcast(id, _, this[proxy][method]());
             if (defaultValue && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
             } else {
@@ -758,16 +759,18 @@
         for (var key in this) {
             if (key.indexOf("__meta_") === 0) {
                 var meta = this[key];
-                switch (meta.type) {
-                    case "widget":
-                        var widget = this[meta.id]();
-                        if (widget) {
-                            widgets.push(this[meta.id]());
-                        }
-                        break;
-                    case "widgetArray":
-                        widgets = widgets.concat(this[meta.id]());
-                        break;
+                if (!meta.ext || meta.ext.render !== false) {
+                    switch (meta.type) {
+                        case "widget":
+                            var widget = this[meta.id]();
+                            if (widget) {
+                                widgets.push(this[meta.id]());
+                            }
+                            break;
+                        case "widgetArray":
+                            widgets = widgets.concat(this[meta.id]());
+                            break;
+                    }
                 }
             }
         }

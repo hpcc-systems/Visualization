@@ -13,6 +13,10 @@
         this._chart = {};
 
         this._selected = null;
+        this._selections = [];
+
+        this._dataUpdated = 0;
+        this._lastDataUpdated = -1;
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
@@ -126,7 +130,10 @@
         this._chart.valueAxes[1].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[1].dashLength = this.xAxisDashLength();
 
-        this._chart.dataProvider = this.formatData(this.data());
+        if (this._dataUpdated > this._lastDataUpdated) {
+            this._chart.dataProvider = this.formatData(this.data());
+        }
+        this._lastDataUpdated = this._dataUpdated;
 
         if (this.xAxisType() === "ordinal") {
             this._chart.valueAxes[1].integersOnly = true;
@@ -292,8 +299,11 @@
                     }
                     context._selected = {
                         field: field,
-                        data: data
+                        data: data,
+                        colIdx: e.target.index,
+                        dIdx: e.index
                     };
+                    context._selections.push(context._selected);
                 }
             }
 
@@ -313,6 +323,17 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+    };
+
+    CommonXY.prototype.render = function(callback) {
+        return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+    CommonXY.prototype.data = function(_) {
+        if (arguments.length) {
+            this._dataUpdated++;
+        }
+        return HTMLWidget.prototype.data.apply(this, arguments);
     };
 
     return CommonXY;

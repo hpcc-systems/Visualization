@@ -71,8 +71,8 @@
         
             this._layout
                 .getContent("center")
-                    .data(this.data())
-                    .columns(this.columns());
+                    .columns(this.columns())
+                    .data(this.data());
             
             if(this._layout.getContent("center").chartType() !== this.chartType()){
                 this._layout.getContent("center").chartType(this.chartType());

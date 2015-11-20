@@ -9,6 +9,7 @@
     function Common(target) {
         HTMLWidget.call(this);
 
+        var context = this;
         this._tag = "div";
         this._type = "unknown";
         this._config = {
@@ -21,6 +22,10 @@
             data: {}
         };
         this._prevColumnIDs = [];
+        
+        this._config.data.onclick = function (d, element) {
+            context.click(context.rowToObj(context.data()[d.index]), d.id, context.c3Chart.selected().length > 0);
+        };
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype.constructor = Common;
@@ -99,6 +104,10 @@
                 position: this.legendPosition()
             };
         }
+        this._config.data.selection = {
+            enabled: true,
+            multiple: false
+        };
         this._config.bindto = element.append("div").datum(null);
 
         this._config.data.columns = this.getC3Columns();

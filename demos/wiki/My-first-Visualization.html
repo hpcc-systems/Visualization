@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js"></script>
+    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js"></script>
+    <script>
+        require.config({
+            paths: {
+                "src": "http://viz.hpccsystems.com/v1.6.6/dist-amd",
+                "font-awesome": "http://viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min"
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="myViz" style="width:640px; height:480px">
+    </div>
+    <script>
+        require(["src/chart/Column"], function (Column) {
+            var myCol = new Column()
+                .target("myViz")
+                .columns(["Subject", "Year 1", "Year 2"])
+                .data([
+                            ["Math", 66, 72],
+                            ["History", 88, 82],
+                            ["Science", 77, 78]
+                ])
+                .on("click", function (row, col, selected) {
+                    alert("row:  " + JSON.stringify(row) + ", col: " + col + ", selected:  " + selected);
+                })
+                .render()
+            ;
+            setTimeout(function () {
+                //  Some time later   ---
+                myCol
+                    .orientation("vertical")
+                    .paletteID("Dark2")
+                    .render()
+                ;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

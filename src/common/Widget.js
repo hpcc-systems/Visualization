@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3"], factory);
+        define(["d3", "./Database"], factory);
     } else {
         root.require = root.require || function (paths, cb) {
             if (typeof paths === "function") {
@@ -18,16 +18,15 @@
             cb.apply(null, objs);
         };
 
-        root.common_Widget = factory(root.d3);
+        root.common_Widget = factory(root.d3, root.common_Database);
     }
-}(this, function (d3) {
+}(this, function (d3, Database) {
     var widgetID = 0;
     function Widget() {
         this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
 
-        this._private_columns = [];
-        this._private_data = [];
+        this._db = new Database.Grid();
         this._pos = { x: 0, y: 0 };
         this._size = { width: 0, height: 0 };
         this._scale = 1;
@@ -336,6 +335,7 @@
                 throw "Setting default value of proxied properties is not supported.";
             }
             if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
+            this.broadcast(id, _, this[proxy][method]());
             if (defaultValue && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
             } else {
@@ -416,14 +416,14 @@
     };
 
     Widget.prototype.columns = function (_) {
-        if (!arguments.length) return this._private_columns;
-        this._private_columns = _;
+        if (!arguments.length) return this._db.legacyColumns();
+        this._db.legacyColumns(_);
         return this;
     };
 
     Widget.prototype.data = function (_) {
-        if (!arguments.length) return this._private_data;
-        this._private_data = _;
+        if (!arguments.length) return this._db.legacyData();
+        this._db.legacyData(_);
         return this;
     };
 
@@ -759,16 +759,18 @@
         for (var key in this) {
             if (key.indexOf("__meta_") === 0) {
                 var meta = this[key];
-                switch (meta.type) {
-                    case "widget":
-                        var widget = this[meta.id]();
-                        if (widget) {
-                            widgets.push(this[meta.id]());
-                        }
-                        break;
-                    case "widgetArray":
-                        widgets = widgets.concat(this[meta.id]());
-                        break;
+                if (!meta.ext || meta.ext.render !== false) {
+                    switch (meta.type) {
+                        case "widget":
+                            var widget = this[meta.id]();
+                            if (widget) {
+                                widgets.push(this[meta.id]());
+                            }
+                            break;
+                        case "widgetArray":
+                            widgets = widgets.concat(this[meta.id]());
+                            break;
+                    }
                 }
             }
         }

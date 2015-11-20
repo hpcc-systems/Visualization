@@ -57,7 +57,6 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
-
         this.d3Arc.innerRadius(this.innerRadius_exists() ? this.calcRadius() * this.innerRadius() / 100 : 0);
         var arc = element.selectAll(".arc").data(this.d3Pie(this.data()), function (d) { return d.data[0]; });
 

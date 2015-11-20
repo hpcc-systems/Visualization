@@ -92,7 +92,6 @@
 
                 if (isHorizontal) {
                     columnRect.transition()
-                        .attr("class", "columnRect")
                         .attr("x", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) : context.valueScale(d.value); })
@@ -102,7 +101,6 @@
                     ;
                 } else {
                     columnRect.transition()
-                        .attr("class", "columnRect")
                         .attr("y", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) : 0; })

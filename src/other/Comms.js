@@ -693,8 +693,15 @@
             }
             // Remove "response.result.Row"
             for (key in response) {
-                context._resultNameCache[key] = response[key].Row.map(espRowFix);
-                ++context._resultNameCacheCount;
+                if (response.Exception) {
+                    response.Exception.forEach(function (row) {
+                        console.log("Server Exception:  " + JSON.stringify(row));
+                    });
+                }
+                if (response[key].Row) {
+                    context._resultNameCache[key] = response[key].Row.map(espRowFix);
+                    ++context._resultNameCacheCount;
+                }
             }
             callback(context._resultNameCache);
         });

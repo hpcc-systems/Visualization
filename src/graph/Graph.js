@@ -38,6 +38,14 @@
     Graph.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { tags: ["Advanced"] });
     Graph.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { tags: ["Advanced"] });
 
+    Graph.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedFriction", 0.9, "number", "Friction coefficient", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedCharge", -25, "number", "Charge strength ", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedChargeDistance", 10000, "number", "Maximum distance over which charge forces are applied", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedTheta", 0.8, "number", "Barnes–Hut approximation criterion", null, { tags: ["Advanced"] });
+    Graph.prototype.publish("forceDirectedGravity", 0.1, "number", "Gravitational strength", null, { tags: ["Advanced"] });
+
     //  Properties  ---
     Graph.prototype.getOffsetPos = function () {
         return { x: 0, y: 0 };
@@ -617,9 +625,26 @@
             case "Circle":
                 return new GraphLayouts.Circle(this.graphData, this._size.width, this._size.height);
             case "ForceDirected":
-                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height, true);
+                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height, {
+                    oneShot: true,
+                    linkDistance: this.forceDirectedLinkDistance(),
+                    linkStrength: this.forceDirectedLinkStrength(),
+                    friction: this.forceDirectedFriction(),
+                    charge: this.forceDirectedCharge(),
+                    chargeDistance: this.forceDirectedChargeDistance(),
+                    theta: this.forceDirectedTheta(),
+                    gravity: this.forceDirectedGravity()
+                });
             case "ForceDirected2":
-                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height);
+                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height, {
+                    linkDistance: this.forceDirectedLinkDistance(),
+                    linkStrength: this.forceDirectedLinkStrength(),
+                    friction: this.forceDirectedFriction(),
+                    charge: this.forceDirectedCharge(),
+                    chargeDistance: this.forceDirectedChargeDistance(),
+                    theta: this.forceDirectedTheta(),
+                    gravity: this.forceDirectedGravity()
+                });
             case "Hierarchy":
                 return new GraphLayouts.Hierarchy(this.graphData, this._size.width, this._size.height, {
                     rankdir: this.hierarchyRankDirection(),

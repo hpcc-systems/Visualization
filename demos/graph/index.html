@@ -9,7 +9,10 @@
     <script src="../../src/config.js"></script>
     <script>
         requirejs.config({
-            baseUrl: ".."
+            baseUrl: "..",
+            paths: {
+                "app": "./graph/app"
+            }
         });
     </script>
 </head>
@@ -19,16 +22,27 @@
             <h1><a>Graph Test Page</a></h1>
             <nav>
                 <ul>
-                    <li><a id="info" title="Data: Randomize" onclick="doRandom()">R</a></li>
-                    <li><a title="Layout: Circle" onclick="graph.layout('Circle', transitionDuration)">C</a></li>
-                    <li><a title="Layout: ForceDirected" onclick="graph.layout('ForceDirected', transitionDuration)">F</a></li>
-                    <li><a title="Layout: Force Directed (Animated)" onclick="graph.layout('ForceDirected2')">F2</a></li>
-                    <li><a title="Layout: Hierarchy" onclick="graph.layout('Hierarchy', transitionDuration)">H</a></li>
-                    <li><a title="Edges: Show/Hide" onclick="graph.showEdges(!graph.showEdges()).render()">E</a></li>
-                    <li><a title="Zoom: Fit" onclick="graph.zoomTo('all')">Z F</a></li>
-                    <li><a title="Zoom: Width" onclick="graph.zoomTo('width')">Z W</a></li>
-                    <li><a title="Zoom: Selection" onclick="graph.zoomTo('selection')">Z S</a></li>
-                    <li><a title="Zoom: 100%" onclick="graph.zoomTo('100%')">Z 100%</a></li>
+                    <li><label><input type="checkbox" checked onclick="doShowSelected(event)" />Selection</label></li>
+                    <li>
+                        <select onchange="doFilterEntities(event)">
+                            <option value="all">All</option>
+                            <option value="claims">Claims</option>
+                            <option value="people">People</option>
+                            <option value="vehicles">Vehicle</option>
+                            <option value="policies">Policies</option>
+                        </select>
+                    </li>
+                    <li><a title="Persist: Save" onclick="doSave()">S</a></li>
+                    <li><a title="Persist: Load" onclick="doLoad()">L</a></li>
+                    <li><a title="Data: Randomize" onclick="doRandom()">R</a></li>
+                    <li><a title="Layout: Circle" onclick="app.graph.layout('Circle', transitionDuration)">C</a></li>
+                    <li><a title="Layout: ForceDirected" onclick="app.graph.layout('ForceDirected', transitionDuration)">F</a></li>
+                    <li><a title="Layout: Force Directed (Animated)" onclick="app.graph.layout('ForceDirected2')">F2</a></li>
+                    <li><a title="Layout: Hierarchy" onclick="app.graph.layout('Hierarchy', transitionDuration)">H</a></li>
+                    <li><a title="Zoom: Fit" onclick="app.graph.zoomTo('all')">Z F</a></li>
+                    <li><a title="Zoom: Width" onclick="app.graph.zoomTo('width')">Z W</a></li>
+                    <li><a title="Zoom: Selection" onclick="app.graph.zoomTo('selection')">Z S</a></li>
+                    <li><a title="Zoom: 100%" onclick="app.graph.zoomTo('100%')">Z 100%</a></li>
                 </ul>
             </nav>
         </div>

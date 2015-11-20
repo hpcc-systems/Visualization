@@ -124,7 +124,7 @@
         return {
             _id: d,
             element: function () {
-                return context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; });
+                return context.tbody ? context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; }) : d3.select(null);
             }
         };
     };

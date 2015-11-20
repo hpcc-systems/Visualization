@@ -62,15 +62,26 @@
         return retVal;
     };
 
-    Form.prototype.values = function () {
-        var dataArr = {};
-        this.inputsForEach(function (inp) {
-            var value = inp.value();
-            if (value || !this.omitBlank()) {
-                dataArr[inp.name()] = inp.value();
-            }
-        }, this);
-        return dataArr;
+    Form.prototype.values = function (_) {
+        if (!arguments.length) {
+            var dataArr = {};
+            this.inputsForEach(function (inp) {
+                var value = inp.value();
+                if (value || !this.omitBlank()) {
+                    dataArr[inp.name()] = inp.value();
+                }
+            }, this);
+            return dataArr;
+        } else {
+            this.inputsForEach(function (inp) {
+                if (_[inp.name()]) {
+                    inp.value(_[inp.name()]);
+                } else if (this.omitBlank()){
+                    inp.value("");
+                }
+            }, this);
+        }
+        return this;
     };
 
     Form.prototype.submit = function(){
@@ -134,13 +145,13 @@
                     .type("button")
                     .value("Submit")
                     .on("click", function () {
-                        context.submit();
+                        context.submit(context.values());
                     }, true),
                 new Input()
                     .type("button")
                     .value("Clear")
                     .on("click", function () {
-                        context.clear();
+                        context.clear({});
                     }, true)
         ];
         var rightJust = context.btntd

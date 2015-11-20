@@ -9,7 +9,7 @@
     return {
         Form: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/common/WidgetArray"], function (DataFactory, Form, Input, WidgetArray) {
+                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/form/TextArea", "src/common/WidgetArray"], function (DataFactory, Form, Input, TextArea, WidgetArray) {
                     callback(new Form()
                         .inputs([
                             new Input()
@@ -44,11 +44,12 @@
                                         .type("checkbox")
                                         .value(true)
                                 ]),
-                            new Input()
+                            new TextArea()
                                 .name("textarea-test")
                                 .label("Textarea Test")
-                                .type("textarea")
                                 .value("Textarea Text")
+                                .minHeight(64)
+                                .rows(10)
                             ]
                         )
                     );

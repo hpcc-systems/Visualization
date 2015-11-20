@@ -222,15 +222,10 @@ header nav span {
   -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.2);
 }
-#main .graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
-    stroke: #f48a00!important;
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
+    stroke: red;
 }
 
-#main .graph_Graph .graphVertex .graph_Vertex.selected .common_TextBox .common_Shape {
-    fill: #f48a00;
+.chart_XYAxis .axis > text {
+    visibility:hidden;
 }
-
-#main .graph_Graph .graphVertex .graph_Vertex.selected .common_TextBox .common_Text {
-    fill:white;
-}
-

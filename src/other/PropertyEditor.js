@@ -1,401 +1,406 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Widget", "../common/HTMLWidget", "./Persist", "../layout/Grid", "../layout/Accordion", "../form/Form", "../form/Input", "css!./PropertyEditor"], factory);
+        define(["d3", "../common/HTMLWidget", "../other/Persist", "../layout/Grid", "css!./PropertyEditor"], factory);
     } else {
-        root.other_PropertyEditor = factory(root.d3, root.common_Widget, root.common_HTMLWidget, root.other_Persist, root.layout_Grid, root.layout_Accordion, root.form_Form, root.form_Input);
+        root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid);
     }
-}(this, function (d3, Widget, HTMLWidget, Persist, Grid, Accordion, Form, Input) {
+}(this, function (d3, HTMLWidget, Persist, Grid) {
     function PropertyEditor() {
-        Accordion.call(this);
+        HTMLWidget.call(this);
 
         this._tag = "div";
-        this._columns = ["Key", "Value"];
-        this._contentEditors = [];
-        this._show_settings = true;
-        this._dataDiv = {};
-        this._previousIds = "";
-        this.__propertyEditor_watch = [];
     }
-    PropertyEditor.prototype = Object.create(Accordion.prototype);
+    PropertyEditor.prototype = Object.create(HTMLWidget.prototype);
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("showColumns", false, "boolean", "Show Columns",null,{tags:["Intermediate"]});
-    PropertyEditor.prototype.publish("showData", false, "boolean", "Show Data",null,{tags:["Intermediate"]});
-    PropertyEditor.prototype.publish("paramsBeforeWidgets", true, "boolean", "The non-widget parameter collapsible is placed before widget section(s)",null,{tags:["Private"]});
-    PropertyEditor.prototype.publish("paramGrouping", "By Widget", "set", "Param Grouping", ["By Param", "By Widget"],{tags:["Basic"]});
-    PropertyEditor.prototype.publish("excludeTags", [], "array", "Array of publish parameter tags to exclude from PropertEditor",null,{tags:["Private"]});
-    PropertyEditor.prototype.publish("showProperties", [], "array", "Array of publish parameter IDs to include in PropertEditor (all others will be excluded)",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("showColumns", true, "boolean", "If true, widget.columns() will display as if it was a publish parameter.",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("showData", true, "boolean", "If true, widget.data() will display as if it was a publish parameter.",null,{tags:["Basic"]});
     
-    PropertyEditor.prototype.publish("settingsWidget", null, "widget", "Another instance of PropertyEditor containing the publish parameters for the main instance of PropertyEditor",null,{tags:["Private"]});
+    PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type",["none","A-Z","Z-A","type"],{tags:["Basic"],icons:["fa-sort","fa-sort-alpha-asc","fa-sort-alpha-desc","fa-sort-amount-asc"]});
+    PropertyEditor.prototype.publish("collapsed", false, "boolean", "If true, the table will default to collapased",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)",null,{tags:["Basic"]});
     
-    PropertyEditor.prototype.publish("ignoredClasses", [], "array", "Array of class chain substrings to hide params on match",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
 
-    PropertyEditor.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
+    PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
+    PropertyEditor.prototype.widget = function (_) {
+        if (arguments.length && this._widgetOrig() === _) return this;
+        var retVal = PropertyEditor.prototype._widgetOrig.apply(this, arguments);
         if (arguments.length) {
-            var context = this;
-            if (_[0] instanceof Grid) {
-                _[0].postSelectionChange = function () {
-                    var selectedItems = _[0]._selectionBag.get().map(function(item){ return item.widget; });
-                    context
-                        .data(selectedItems.length > 0 ? selectedItems : [_[0]])
-                        .paramGrouping( selectedItems.length > 1 ? "By Param" : "By Widget")
-                        .render();
-                };
-            }
+            this.watchWidget(_);
         }
         return retVal;
     };
-
-    PropertyEditor.prototype.show_settings = function (_) {
-        if (!arguments.length) {
-            return this._show_settings;
-        }
-        this._show_settings = _;
-        return this;
-    };
-    PropertyEditor.prototype.excludeWidgets = function (_) {
-        if (!arguments.length) {
-            return this._excludeWidgets;
-        }
-        this._excludeWidgets = _;
-        return this;
-    };
-
-    PropertyEditor.prototype.onChange = function (widget, propID) {};
-
-    PropertyEditor.prototype.paramFilter = function (){
-        var showPropsList = this.showProperties();
-        var excludeTagsList = this.excludeTags();
-        return function (widget, publishItem){
-            var showProperties = showPropsList;
-            if(showProperties.length > 0){
-                if(showProperties.indexOf(publishItem.id) === -1){
-                    return true;
-                }
-            }
-            if(excludeTagsList.length > 0){
-                if(typeof(publishItem.ext) === "object" && typeof(publishItem.ext.tags) === "object"){
-                    for(var tag in publishItem.ext.tags){
-                        if(excludeTagsList.indexOf(publishItem.ext.tags[tag]) !== -1){
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        };
-    };
-
-    PropertyEditor.prototype.enter = function (domNode, element) {
-        Accordion.prototype.enter.apply(this, arguments);
-        
-        if(this._parentElement.filter(".other_PropertyEditor div").empty()){
-            this._parentElement.style("overflow", "auto");
-        }
-        
-        if(this.title() === ""){
-            this.title("Property Editor");
-        }
-        if (this.show_settings()) {
-            this.pushListItem(
-                new PropertyEditor()
-                    .showColumns(false)
-                    .showData(false)
-                    .show_settings(false)
-                    .excludeWidgets(true)
-                    .defaultCollapsed(true)
-                    .excludeTags(["Private"])
-                    .paramGrouping("By Widget")
-                    .title("Editor Settings")
-                    .data([this]),null,true
-            );
-        }
-    };
     
     PropertyEditor.prototype.update = function (domNode, element) {
+        HTMLWidget.prototype.update.apply(this, arguments);
+
         var context = this;
-        
-        switch(this.paramGrouping()){
-            case "By Param":
-                var paramObjs = this.getAllParams();
-                
-                this.clearListItems();
-                
-                this.removeWatches();
-                for(var j in this.data()) {
-                    this.createWatch(this.data()[j]);
+        var table = element.selectAll(".table" + this.id()).data(this.widget() ? [this.widget()] : []);
+        table.enter().append("table")
+            .attr("class", "property-table table" + this.id())
+            .each(function (d) {
+                context._table = d3.select(this);
+                context._table.append("thead").append("tr").append("th")
+                    .attr("colspan", "2")
+                    .each(function (d) {
+                        var th = d3.select(this);
+                        th.append("span");
+                        context.thButtons(th);
+                    })
+                ;
+                context._table.append("tbody");
+            })
+        ;
+        table
+            .each(function (d) {
+                var element = d3.select(this);
+                element.select("thead > tr > th > span")
+                    .text(function (d) {
+                        return d.classID();
+                    })
+                ;
+                context.renderInputs(element.select("tbody"), d);
+            })
+        ;
+        table.exit()
+            .each(function (d) {
+                context.renderInputs(element.select("tbody"), null);
+            })
+            .remove()
+        ;
+
+        if (this.widget() instanceof Grid) {
+            this.widget().postSelectionChange = function () {
+                var selectedItems = context.widget()._selectionBag.get().map(function (item) { return item.widget; });
+                var tablePath = "#" + this.id() + " > table";
+                element.selectAll(tablePath + " [data-widgetid] tr").style("display", "none");
+                var selected = selectedItems.map(function(n){return n.id();});
+                if(selected.length > 0){
+                    var selectString = selected.map(function(n){
+                        return '[data-widgetid="'+n+'"] tr';
+                    }).join(",");
+                    element.selectAll(tablePath + " > tbody > tr.property-widget-wrapper").style("display", "table-row");
+                    element.selectAll(selectString).style("display","table-row");
+                    context.hideNonWidgets(true);
+                } else {
+                    element.selectAll(tablePath + " tr").style("display", "table-row");
+                    context.hideNonWidgets(false);
                 }
-
-                var categorizedParams = this.categorizeParams(paramObjs);
-
-                for(var categoryName in categorizedParams){
-                    var paramArr1 = [];
-                    for(var paramNode in categorizedParams[categoryName]){
-                        var pNode = categorizedParams[categoryName][paramNode];
-                        paramArr1.push(this.getSharedParamInputObj(pNode));
-                    }
-                    this.pushListItem(
-                        new Accordion()
-                            .title(categoryName+":")
-                            .pushListItem(new Form().showSubmit(false).inputs(paramArr1))
-                    );
-                }
-                break;
-            case "By Widget":
-                this.clearListItems();
-
-                this.removeWatches();
-
-                for(var i=0;i<this.data().length;i++) {
-                    this.createWatch(this.data()[i]);
-                    var paramArr2 = [];
-                    var parentWidgetClass = this.data()[i]._class.split("_").pop();
-                    Persist.propertyWalker(this.data()[i],context.paramFilter(),function(widget, param){
-                        switch(param.type){
-                            case "widget":
-                                if(!context.excludeWidgets()){
-                                    var wClass = widget[param.id]()._class.split("_").pop();
-                                    context.pushListItem(
-                                        new PropertyEditor()
-                                        .showData(context.showData())
-                                        .showColumns(context.showColumns())
-                                        .show_settings(false)
-                                        .title(wClass)
-                                        .data([widget[param.id]()])
-                                        .ignoredClasses(context.ignoredClasses())
-                                    );
-                                }
-                                break;
-                            case "widgetArray":
-                                if(!context.excludeWidgets()){
-                                    var w = widget[param.id]();
-                                    var wClassArr = [];
-                                    for(var widx=0;widx<w.length;widx++){
-                                        wClassArr.push(w[widx]._class.split("_").pop());
-                                    }
-                                    context.pushListItem(
-                                        new PropertyEditor()
-                                            .show_settings(false)
-                                            .title(parentWidgetClass+"."+param.id+": ["+wClassArr.join(", ")+"]")
-                                            .data(w)
-                                            .ignoredClasses(context.ignoredClasses())
-                                    );
-                                }
-                                break;
-                            default:
-                                paramArr2.push(context.getParamInputObj(widget,param));
-                                break;
-                        }
-                    });
-
-                    if(this.showData()){
-                        paramArr2.push(this.getDataInputObj(this.data()[i]));
-                    }
-                    if(this.showColumns()){
-                        paramArr2.push(this.getColumnsInputObj(this.data()[i]));
-                    }
-
-                    if(paramArr2.length > 0 && this.classIsNotHidden(this.data()[i]._class)){
-                        var paramListItem;
-                        if(this.excludeWidgets()){
-                            this.clearListItems();
-                            paramListItem = new Form().showSubmit(false).inputs(paramArr2);
-                        } else {
-                            if(this.content().length > 0){
-                                paramListItem = new Accordion()
-                                    .title(parentWidgetClass+" Params:")
-                                    .pushListItem(
-                                        new Form().showSubmit(false).inputs(paramArr2)
-                                    )
-                                ;
-                            } else {
-                                paramListItem = new Form().showSubmit(false).inputs(paramArr2);
-                            }
-                        }
-                        this.pushListItem(paramListItem,this.paramsBeforeWidgets());
-                    }
-                }
-                break;
+                context.render();
+            };
         }
-        Accordion.prototype.update.apply(this, arguments);
     };
     
     PropertyEditor.prototype.exit = function (domNode, element) {
-        this.removeWatches();
         HTMLWidget.prototype.exit.apply(this, arguments);
+        this.watchWidget(null);
     };
-    
-    PropertyEditor.prototype.removeWatches = function () {
-        this.__propertyEditor_watch.forEach(function (watchObj) {
-            watchObj.remove();
-        });
-        this.__propertyEditor_watch = [];
-    };
-    
-    PropertyEditor.prototype.createWatch = function(obj){
-        var context = this;
-        this.__propertyEditor_watch.push(obj.watch(function(key, newVal){
-            if(typeof (newVal) === "object"){
-                context.render();
+
+    var watchDepth = 0;
+    PropertyEditor.prototype.watchWidget = function (widget) {
+        if (this._watch) {
+            if (window.__hpcc_debug) {
+                --watchDepth;
+                console.log("watchDepth:  " + watchDepth);
             }
-        }));
-    };
-    
-    PropertyEditor.prototype.categorizeParams = function (arr) {
-        var categories = {
-            "Colors":["palette","color"],
-            "Font":["font"],
-            "Axis":["axis"],
-            "General":[],
-        };
-        var ret = {};
-        for(var p in arr){
-            for(var c in categories){
-                if(p.toLowerCase().indexOf(categories[c]) !== -1){
-                    break;
+            this._watch.remove();
+            delete this._watch;
+        }
+        if (widget) {
+            var context = this;
+            this._watch = widget.watch(function (paramId, newVal, oldVal) {
+                if (oldVal !== newVal) {
+                    context.lazyRender();
                 }
-            }
-            if(typeof (ret[c]) === "undefined"){
-                ret[c] = [];
-            }
-            ret[c].push(arr[p]);
-        }
-        return ret;
-    };
-    
-    PropertyEditor.prototype.classIsNotHidden = function (classNameString) {
-        var classesToHide = this.ignoredClasses();
-        for(var n in classesToHide){
-            if(classNameString.indexOf(classesToHide[n]) !== -1){
-                return false;
+            });
+            if (window.__hpcc_debug) {
+                ++watchDepth;
+                console.log("watchDepth:  " + watchDepth);
             }
         }
-        return true;
     };
-    
-    PropertyEditor.prototype.getAllParams = function () {
+
+    PropertyEditor.prototype.lazyRender = PropertyEditor.prototype.debounce(function () {
+        this.render();
+    }, 100);
+
+    PropertyEditor.prototype.thButtons = function (th) {
         var context = this;
-        var paramObjArr = {};
-        for(var i in this.data()){
-            Persist.widgetPropertyWalker(this.data()[i],context.paramFilter(),function(widget, param){
-                switch(param.type){
-                    case "widget":
-                    case "widgetArray":
-                        break;
-                    default:
-                        if(typeof (paramObjArr[param.id]) === "undefined"){
-                            paramObjArr[param.id] = [];
-                        }
-                        paramObjArr[param.id].push({
-                            widget:widget,
-                            param:param,
-                        });
-                        break;
+        var collapseIcon = th.append("i")
+            .attr("class", "fa fa-minus-square-o")
+            .on("click", function () {
+                context._table
+                    .classed("property-table-collapsed", !context.collapsed())
+                ;
+                collapseIcon
+                    .classed("fa-minus-square-o", !context._table.classed("property-table-collapsed"))
+                    .classed("fa-plus-square-o", context._table.classed("property-table-collapsed"))
+                ;
+                context.collapsed(!context.collapsed());
+            })
+        ;
+        var sortIcon = th.append("i")
+            .attr("class", "fa " + context.__meta_sorting.ext.icons[context.__meta_sorting.set.indexOf(context.sorting())])
+            .on("click", function () {
+                var sort = context.sorting();
+                var types = context.__meta_sorting.set;
+                var icons = context.__meta_sorting.ext.icons;
+                sortIcon
+                    .classed(icons[types.indexOf(sort)], false)
+                    .classed(icons[(types.indexOf(sort) + 1) % types.length], true)
+                ;
+                context.sorting(types[(types.indexOf(sort) + 1) % types.length]).render();
+            })
+        ;
+        var hideParamsIcon = th.append("i")
+            .attr("class", "fa " + (context.hideNonWidgets() ? "fa-eye-slash" : "fa-eye"))
+            .on("click",function(){
+                hideParamsIcon
+                    .classed("fa-eye", context.hideNonWidgets())
+                    .classed("fa-eye-slash", !context.hideNonWidgets())
+                ;
+                context.hideNonWidgets(!context.hideNonWidgets()).render();
+            })
+        ;
+    };
+
+    PropertyEditor.prototype.gatherDataTree = function (widget) {
+        if (!widget) return null;
+        var retVal = {
+            label: widget.id() + " (" + widget.classID() + ")",
+            children: []
+        };
+        var arr = Persist.discover(widget);
+        arr.forEach(function (prop) {
+            var node = {
+                label: prop.id,
+                children: []
+            };
+            switch (prop.type) {
+                case "widget":
+                    node.children.push(this.gatherDataTree(widget[prop.id]()));
+                    break;
+                case "widgetArray":
+                    var arr = widget[prop.id]();
+                    if (arr) {
+                        arr.forEach(function (item) {
+                            node.children.push(this.gatherDataTree(item));
+                        }, this);
+                    }
+                    break;
+            }
+            retVal.children.push(node);
+        }, this);
+        return retVal;
+    };
+
+    PropertyEditor.prototype.getDataTree = function () {
+        return this.gatherDataTree(this.widget());
+    };
+    
+    PropertyEditor.prototype._rowSorting = function (paramArr) {
+        if(this.sorting() === "type"){
+            var typeOrder = ["boolean","number","string","html-color","array","object","widget","widgetArray"];
+            paramArr.sort(function(a,b){
+                if(a.type === b.type){
+                    return a.id < b.id ? -1 : 1;
+                }else{
+                    return typeOrder.indexOf(a.type) < typeOrder.indexOf(b.type) ? -1 : 1;
                 }
             });
         }
-        return paramObjArr;
-    };
-    
-    PropertyEditor.prototype.getParamInputObj = function (widget,paramObj) {
-        var val = ["widget","widgetArray"].indexOf(paramObj.type) === -1 ? widget[paramObj.id]() : null;
-        var inp = new Input()
-            .name(widget._id+"-"+paramObj.id)
-            .label(paramObj.id)
-            .type(this.inputTypeMapping(paramObj.type))
-            .value(val)
-        ;
-        if(paramObj.type === "set"){
-            inp.selectOptions(paramObj.set).value(val);
+        else if(this.sorting() === "A-Z") {
+            paramArr.sort(function(a,b){ return a.id < b.id ? -1 : 1;});
         }
-        inp.change = function(w){
-            if(paramObj.type === "boolean"){
-                widget[paramObj.id](w._element.select("input").property("checked")).render();
-            } else if(paramObj.type === "array") {
-                var newArrayVal = w.value().split(",").filter(function(a){return a.length;});
-                widget[paramObj.id](newArrayVal).render();
-            } else {
-                widget[paramObj.id](w.value()).render();
-            }
-        };
-        inp._paramId = paramObj.id;
-        return inp;
-        
-    };
-    
-    PropertyEditor.prototype.getSharedParamInputObj = function (sharedParamObj) {
-        var paramId = sharedParamObj[0].param.id;
-        var type = sharedParamObj[0].param.type;
-        var inp = new Input()
-            .name(paramId)
-            .label(paramId)
-            .type(this.inputTypeMapping(type))
-        ;
-        if(type === "set"){
-            inp.selectOptions(sharedParamObj[0].param.set);
+        else if(this.sorting() === "Z-A") {
+            paramArr.sort(function(a,b){ return a.id > b.id ? -1 : 1;});
         }
-        inp.change = function(w){
-            for(var i in sharedParamObj){
-                if(type === "boolean"){
-                    sharedParamObj[i].widget[paramId](w._element.select("input").property("checked")).render();
-                } else if(type === "array") {
-                    var newArrayVal = w.value().split(",").filter(function(a){return a.length;});
-                    sharedParamObj[i].widget[paramId](newArrayVal).render();
-                } else {
-                    sharedParamObj[i].widget[paramId](w.value()).render();
-                }
-            }
-        };
-        inp._paramId = paramId;
-        return inp;
-    };
-    
-    PropertyEditor.prototype.getDataInputObj = function (widget) {
-        var dataStr = "";
-        try{
-            dataStr = JSON.stringify(widget.data());
-        }catch(e){}
-        var inp = new Input()
-            .name(widget._id+"-data")
-            .label("Data")
-            .type("textarea")
-            .value(dataStr)
-        ;
-        inp.change = function(w){
-            try{
-                widget.data(JSON.parse(w.value())).render();
-            }catch(e){}
-        };
-        return inp;
-    };
-    PropertyEditor.prototype.getColumnsInputObj = function (widget) {
-        var inp = new Input()
-            .name(widget._id+"-columns")
-            .label("Columns")
-            .type("textarea")
-            .value(widget.columns())
-        ;
-        inp.change = function(w){
-            widget.columns(w.value().split(",")).render();
-        };
-        return inp;
-    };
-    
-    PropertyEditor.prototype.inputTypeMapping = function (type){
-        switch(type){
-            case "set": return "select";
-            case "array": return "textarea";
-            case "boolean": return "checkbox";
-            case "string": return "text";
-            default: return type;
-        }
-    };
-    
-    PropertyEditor.prototype.click = function (d) {
     };
 
+    PropertyEditor.prototype.renderInputs = function (element, d) {
+        var discArr = [];
+        if (d) {
+            discArr = Persist.discover(d);
+            if (this.showData()) {
+                discArr.push({ id: "data", type: "array" });
+            }
+            if (this.showColumns()) {
+                discArr.push({ id: "columns", type: "array" });
+            }
+            if (this.hideNonWidgets()) {
+                discArr = discArr.filter(function (n) {
+                    return n.type === "widget" || n.type === "widgetArray";
+                });
+            }
+            this._rowSorting(discArr);
+        }
+
+        var context = this;
+        var rows = element.selectAll("tr.prop" + this.id()).data(discArr, function (d) { return d.id; });
+        rows.enter().append("tr")
+            .attr("class", "property-wrapper prop" + this.id())
+            .each(function (param) {
+                var tr = d3.select(this);
+                if (param.type === "widget" || param.type === "widgetArray") {
+                    tr.classed("property-widget-wrapper", true);
+                    var rowCell = tr.append("td")
+                        .attr("colspan", "2")
+                    ;
+                    rowCell.append("span")
+                        .classed("property-label", true)
+                        .text(param.id)
+                    ;
+                } else {
+                    tr.classed("property-input-wrapper", true);
+                    tr.append("td")
+                        .classed("property-label", true)
+                        .text(param.id)
+                    ;
+                    var inputCell = tr.append("td")
+                        .classed("property-input-cell", true)
+                    ;
+                    context.enterInputs(inputCell, param);
+                }
+            })
+        ;
+        rows.each(function (param) {
+            var tr = d3.select(this);
+            if (param.type === "widget" || param.type === "widgetArray") {
+                context.updateWidgetRow(tr.select("td"), param);
+            } else {
+                context.updateInputs(param);
+            }
+        });
+        rows.exit().each(function (param) {
+            var tr = d3.select(this);
+            if (param.type === "widget" || param.type === "widgetArray") {
+                context.updateWidgetRow(tr.select("td"), null);
+            }
+        }).remove();
+        rows.order();
+    };
+    
+    PropertyEditor.prototype.updateWidgetRow = function (element, param) {
+        var widget = [];
+        if (this.widget() && param) {
+            widget = this.widget()[param.id]() || [];
+        }
+        var widgetArr = widget instanceof Array ? widget : [widget];
+
+        var widgetCell = element.selectAll("div.propEditor" + this.id()).data(widgetArr, function (d) { return d.id(); });
+        widgetCell.enter().append("div")
+            .attr("class", "property-input-cell propEditor" + this.id())
+            .each(function (w) {
+                d3.select(this)
+                    .attr("data-widgetid", w.id())
+                    .property("data-propEditor", new PropertyEditor().target(this))
+                ;
+            })
+        ;
+        widgetCell
+            .each(function (w) {
+                d3.select(this).property("data-propEditor")
+                    .widget(w)
+                    .render()
+                ;
+            })
+        ;
+        widgetCell.exit()
+            .each(function (w) {
+                var element = d3.select(this);
+                element.property("data-propEditor")
+                    .widget(null)
+                    .render()
+                    .target(null)
+                ;
+                element
+                    .property("data-propEditor", null)
+                ;
+            })
+            .remove()
+        ;
+    };
+
+    PropertyEditor.prototype.enterInputs = function (cell, param) {
+        var widget = this.widget();
+        cell.classed(param.type+"-cell",true);
+        switch (param.type) {
+            case "boolean":
+                cell.append("input")
+                    .attr("id", this.id() + "_" + param.id)
+                    .classed("property-input", true)
+                    .attr("type", "checkbox")
+                    .on("change", function () {
+                        widget[param.id](this.checked).render();
+                    })
+                ;
+                break;
+            case "set":
+                cell.append("select")
+                    .attr("id", this.id() + "_" + param.id)
+                    .classed("property-input", true)
+                    .on("change", function () {
+                        widget[param.id](this.value).render();
+                    })
+                    .each(function (d) {
+                        var input = d3.select(this);
+                        for (var i = 0; i < param.set.length; i++) {
+                            input.append("option").attr("value", param.set[i]).text(param.set[i]);
+                        }
+                    })
+                ;
+                break;
+            case "array":
+            case "object":
+                cell.append("textarea")
+                    .attr("id", this.id() + "_" + param.id)
+                    .classed("property-input", true)
+                    .on("change", function () {
+                        widget[param.id](JSON.parse(this.value)).render();
+                    })
+                ;
+                break;
+            default:
+                cell.append("input")
+                    .attr("id", this.id() + "_" + param.id)
+                    .classed("property-input", true)
+                    .on("change", function () {
+                        widget[param.id](this.value).render();
+                    })
+                ;
+                if (param.type === "html-color" && !this.isIE) {
+                    cell.append("input")
+                        .attr("id", this.id() + "_" + param.id + "_2")
+                        .classed("property-input", true)
+                        .attr("type", "color")
+                        .on("change", function () {
+                            widget[param.id](this.value).render();
+                        })
+                    ;
+                }
+                break;
+        }
+    };
+
+    PropertyEditor.prototype.updateInputs = function (param) {
+        var element = d3.selectAll("#" + this.id() + "_" + param.id + ", #" + this.id() + "_" + param.id + "_2");
+        var val = this.widget() ? this.widget()[param.id]() : "";
+        switch (param.type) {
+            case "array":
+            case "object":
+                element.property("value", JSON.stringify(val));
+                break;
+            case "boolean":
+                element.property("checked", val);
+                break;
+            default:
+                element.property("value", val);
+                break;
+        }
+    };
+    
     return PropertyEditor;
 }));

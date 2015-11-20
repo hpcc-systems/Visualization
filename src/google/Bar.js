@@ -16,5 +16,7 @@
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " google_Bar";
 
+
+
     return Bar;
 }));

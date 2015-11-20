@@ -14,6 +14,10 @@
         this._chart = {};
 
         this._selected = null;
+        this._selections = [];
+        
+        this._dataUpdated = 0;
+        this._lastDataUpdated = -1;
     }
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
     CommonRadar.prototype.constructor = CommonRadar;
@@ -96,7 +100,10 @@
         this.titles = [];
 
         // DataProvider
-        this._chart.dataProvider = this.formatData(this.data());
+        if (this._dataUpdated > this._lastDataUpdated) {
+            this._chart.dataProvider = this.formatData(this.data());
+        }
+        this._lastDataUpdated = this._dataUpdated;
 
         // ValueAxis
         this._chart.valueAxes[0].title = this.yAxisTitle();
@@ -208,8 +215,11 @@
                     }
                     context._selected = {
                         field: field,
-                        data: data
+                        data: data,
+                        colIdx: e.target.index,
+                        dIdx: e.index
                     };
+                    context._selections.push(context._selected);
                 }
             }
 
@@ -229,6 +239,17 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+    };
+
+    CommonRadar.prototype.render = function(callback) {
+        return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+    CommonRadar.prototype.data = function(_) {
+        if (arguments.length) {
+            this._dataUpdated++;
+        }
+        return HTMLWidget.prototype.data.apply(this, arguments);
     };
 
     return CommonRadar;

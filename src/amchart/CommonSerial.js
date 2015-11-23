@@ -546,7 +546,6 @@
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
                             context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
-
                         }
                         context._selected = {
                             field: field,

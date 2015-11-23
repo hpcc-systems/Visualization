@@ -20,6 +20,8 @@
     Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
     Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
 
+    Form.prototype.publish("allowEmptyRequest", false, "boolean", "Drop Blank Fields From Submit");
+
     Form.prototype.data = function (_) {
         if (!arguments.length) {
             var retVal = [];
@@ -77,6 +79,19 @@
         var isValid = true;
         if (this.validate()) {
             isValid = this.checkValidation();
+        }
+        if (!this.allowEmptyRequest()) {
+            var hasValue = false;
+            for (var key in this.values()) {
+                var val = this.values()[key];
+                if (val !== undefined && val !== null && val.trim() !== "") {
+                    hasValue = true;
+                    break;
+                }
+            }  
+            if (!hasValue) {
+                return;
+            }
         }
         this.click(isValid ? this.values() : null);
     };
@@ -154,6 +169,10 @@
             ;
             w.target(leftJust.node()).render();
         });
+
+        if (!this.allowEmptyRequest()) {
+            context._controls[0]._inputElement[0].attr("disabled", "disabled"); // default disabled state
+        }
     };
 
     Form.prototype.update = function (domNode, element) {
@@ -196,6 +215,51 @@
         this.btntd
             .attr("colspan", this._maxCols * 2)
         ;
+        
+        // Disable Submit unless there is data
+        if (!this.allowEmptyRequest()) {
+            this.inputs().forEach(function(input, idx) {
+                if (input._inputElement instanceof Array) {
+                    input._inputElement.forEach(function(e) {
+                        e.on("change.form", function(w) {
+                            setTimeout(function() {
+                                var hasValue = false;
+                                var hasValue = context.inputs().some(function(w) {
+                                    if (w.value() && w.value != "false") {
+                                        return true;
+                                    }
+                                    return false;
+                                });
+                                if (hasValue) {
+                                    context._controls[0]._inputElement[0].attr("disabled", null);
+                                } else {
+                                    context._controls[0]._inputElement[0].attr("disabled", "disabled");
+                                }
+                            }, 100);
+                        });
+                    });
+                }
+            });
+        }
+    };
+
+    Form.prototype.render = function (callback) {
+        var retVal =  HTMLWidget.prototype.render.apply(this, arguments);
+        if (!this.allowEmptyRequest()) {
+            var hasValue = false;
+            var hasValue = this.inputs().some(function(w) {
+                if (w.value()) {
+                    return true;
+                }
+                return false;
+            });
+            if (hasValue) {
+                this._controls[0]._inputElement[0].attr("disabled", null);
+            } else {
+                this._controls[0]._inputElement[0].attr("disabled", "disabled");
+            }
+        }
+        return retVal;
     };
 
     Form.prototype.exit = function (domNode, element) {

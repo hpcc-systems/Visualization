@@ -124,7 +124,7 @@
             this._chart.valueAxes[vAxisCount].fillColor = yAxis.axisFillColor();
             this._chart.valueAxes[vAxisCount].gridAlpha = yAxis.axisGridAlpha();
             this._chart.valueAxes[vAxisCount].dashLength = yAxis.axisDashLength();
-
+            
             this._chart.valueAxes[vAxisCount].labelFunction = function(d) {
                 return d3.format(yAxis.axisTickFormat())(d);
             };

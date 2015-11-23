@@ -18,6 +18,19 @@
                 });
             },
         },
+        Combo: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/amchart/Combo"], function (DataFactory, Combo) {
+                    callback(new Combo()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                        .types(["column","column","line"])
+                        // .yAxisType("linear")
+                        // .xAxisType("ordinal")
+                    );
+                });
+            }
+        },
         Bar: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {

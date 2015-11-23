@@ -298,7 +298,7 @@
             this._chart.valueAxes[i].gridAlpha = yAxis.axisGridAlpha();
             this._chart.valueAxes[i].dashLength = yAxis.axisDashLength();
             this._chart.valueAxes[i].boldPeriodBeginning = yAxis.axisBoldPeriodBeginning();
-   
+
             switch(yAxis.axisType()) {
                 case "time":
                     this._chart.valueAxes[i].type = "date";
@@ -420,9 +420,11 @@
         return this._chart;
     };
 
-    CommonSerial.prototype.buildGraphObj = function(gType,i) {
+    CommonSerial.prototype.buildGraphObj = function(gType, i) {
         var context = this;
         var gObj = {};
+
+        gObj.id = "g" + i;
 
         if (this.y2().indexOf(i) !== -1) {
             gObj.valueAxis = "v1";
@@ -431,8 +433,11 @@
         }
 
         gObj.balloonFunction = function(d) {
-            var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
-            return balloonText;
+            if (d.graph.type === "line") {
+                return d.category + ", " + context.columns()[d.graph.index + 1]  + ": " + context.data()[d.index][d.graph.index + 1];
+            } else {
+                return d.category + ", " + context.columns()[d.graph.columnIndex + 1]  + ": " + context.data()[d.index][d.graph.columnIndex + 1];   
+            }
         };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
@@ -444,8 +449,8 @@
         gObj.title = "";
         var fieldArr = ["value","open","close","high","low"];
         fieldArr.forEach(function(field){
-            if(typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
-                gObj[field+"Field"] = context["_" + field + "Field"][i];
+            if (typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
+                gObj[field + "Field"] = context["_" + field + "Field"][i];
             }
         });
 

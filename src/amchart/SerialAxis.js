@@ -32,6 +32,7 @@
     SerialAxis.prototype.publish("axisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
     SerialAxis.prototype.publish("axisGridAlpha", 0.0, "number", "Grid alpha.",null,{tags:["Intermediate"]});
     //SerialAxis.prototype.publish("axisMinimum", null, "number", "",null,{tags:["Intermediate"]});
+
     SerialAxis.prototype.publish("startOnAxis", true, "boolean", "Draw Chart Starting On Axis.",null,{tags:["Intermediate"]});
     SerialAxis.prototype.publish("axisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     SerialAxis.prototype.publish("axisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time", "pow", "log", "none"]);

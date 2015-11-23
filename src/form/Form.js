@@ -84,7 +84,7 @@
             var hasValue = false;
             for (var key in this.values()) {
                 var val = this.values()[key];
-                if (val !== undefined && val !== null && val.trim() !== "") {
+                if (val !== undefined && val !== null && val.trim() !== "") { // check for false here too?
                     hasValue = true;
                     break;
                 }
@@ -223,9 +223,8 @@
                     input._inputElement.forEach(function(e) {
                         e.on("change.form", function(w) {
                             setTimeout(function() {
-                                var hasValue = false;
                                 var hasValue = context.inputs().some(function(w) {
-                                    if (w.value() && w.value != "false") {
+                                    if (w.value() && w.value !== "false") {
                                         return true;
                                     }
                                     return false;
@@ -246,9 +245,8 @@
     Form.prototype.render = function (callback) {
         var retVal =  HTMLWidget.prototype.render.apply(this, arguments);
         if (!this.allowEmptyRequest()) {
-            var hasValue = false;
             var hasValue = this.inputs().some(function(w) {
-                if (w.value()) {
+                if (w.value() && w.value() !== "false") {
                     return true;
                 }
                 return false;

@@ -31,11 +31,6 @@
     Line.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
 
-        // Color Palette
-        this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
-            return this._palette(row);
-        }, this);
-
         this.buildGraphs(this._gType);
 
         return this._chart;
@@ -59,8 +54,6 @@
             } else {
                 gObj.type = "line";
             }
-
-            gObj.colorField = "selected" + i;
 
             gObj.bullet = this.bulletType();
             gObj.bulletSize = this.bulletSize();

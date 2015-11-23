@@ -31,10 +31,6 @@
     Area.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
 
-        this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
-            return this._palette(row);
-        }, this);
-
         // Stacked
         if(this.stacked()){
             this._chart.valueAxes[0].stackType = this.stackType();
@@ -62,8 +58,6 @@
             gObj.fillAlphas = this.fillOpacity();
             gObj.bullet = this.bulletType();
             gObj.bulletSize = this.bulletSize();
-            
-            gObj.colorField = "selected" + i;
 
             return gObj;
         }

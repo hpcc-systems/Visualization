@@ -23,8 +23,6 @@
     Column.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
     Column.prototype.publish("fillOpacity", 0.7, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
 
-    Column.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
-
     Column.prototype.publish("cylinderBars", false, "boolean", "Cylinder Bars",null,{tags:["Basic"]});
     Column.prototype.publish("circleRadius", 1, "number", "Circle Radius of Cylinder Bars",null,{tags:["Basic"]});
 
@@ -42,36 +40,6 @@
 
     Column.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
-        var context = this;
-
-        // Stacked
-        if(this.stacked()){
-            this._chart.valueAxes[0].stackType = this.stackType();
-        } else {
-            this._chart.valueAxes[0].stackType = "none";
-        }
-
-        // Color Palette
-        switch(this.paletteGrouping()) {
-            case "By Category":
-                this._chart.dataProvider.forEach(function(dataPoint,i){
-                    context._chart.dataProvider[i].color = context._palette(i);
-                    context._chart.dataProvider[i].linecolor = context.lineColor() !== null ? context.lineColor() : context._palette(i);
-                });
-                this._chart.colors = [];
-            break;
-            case "By Column":
-                /* falls through */
-            default:
-                this._chart.colors = this.columns().filter(function (d, i) { return i > 0; }).map(function (row) {
-                    return this._palette(row);
-                }, this);
-            break;
-        }
-
-        this._chart.depth3D = this.Depth3D();
-        this._chart.angle = this.Angle3D();
-        this._chart.categoryAxis.startOnAxis = false; //override due to render issue
 
         if (this._rangeType === "candle-ohlc") {
             this._gType = this.useOhlcLines() ? "ohlc" : "candlestick";
@@ -80,6 +48,17 @@
         }
 
         this.buildGraphs(this._gType);
+
+        // Stacked
+        if(this.stacked()){
+            this._chart.valueAxes[0].stackType = this.stackType();
+        } else {
+            this._chart.valueAxes[0].stackType = "none";
+        }
+
+        this._chart.depth3D = this.Depth3D();
+        this._chart.angle = this.Angle3D();
+        this._chart.categoryAxis.startOnAxis = false;
 
         return this._chart;
     };
@@ -104,10 +83,6 @@
             } else {
                  gObj.topRadius = undefined;
             }
-
-            gObj.colorField = "color";
-            gObj.lineColorField = "linecolor" + i;
-            gObj.fillColorsField = "fillcolor" + i;
             
             if (this._rangeType === "normal") {
                 gObj.openField = "openField" + i;
@@ -128,6 +103,7 @@
 
     Column.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
+
         this.updateChartOptions();
 
         this._chart.validateNow();

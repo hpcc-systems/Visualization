@@ -9,7 +9,7 @@
     return {
         Form: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/common/WidgetArray"], function (DataFactory, Form, Input, WidgetArray) {
+                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/common/WidgetArray", "src/form/Slider"], function (DataFactory, Form, Input, WidgetArray, Slider) {
                     callback(new Form()
                         .inputs([
                             new Input()
@@ -48,7 +48,10 @@
                                 .name("textarea-test")
                                 .label("Textarea Test")
                                 .type("textarea")
-                                .value("Textarea Text")
+                                .value("Textarea Text"),
+                                new Slider()
+                        .columns(DataFactory.Slider.simple.columns)
+                        .data(DataFactory.Slider.simple.data)
                             ]
                         )
                     );

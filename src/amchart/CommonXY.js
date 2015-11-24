@@ -16,7 +16,9 @@
         this._selections = [];
 
         this._dataUpdated = 0;
-        this._lastDataUpdated = -1;
+        this._prevDataUpdated = -1;
+        this._columnsUpdated = 0;
+        this._prevColumnsUpdated = -1;
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
@@ -130,10 +132,11 @@
         this._chart.valueAxes[1].gridAlpha = this.xAxisGridAlpha();
         this._chart.valueAxes[1].dashLength = this.xAxisDashLength();
 
-        if (this._dataUpdated > this._lastDataUpdated) {
+        if (this._dataUpdated > this._prevDataUpdated || this._columnsUpdated > this._prevColumnsUpdated) {
             this._chart.dataProvider = this.formatData(this.data());
         }
-        this._lastDataUpdated = this._dataUpdated;
+        this._prevDataUpdated = this._dataUpdated;
+        this._prevColumnsUpdated = this._columnsUpdated;
 
         if (this.xAxisType() === "ordinal") {
             this._chart.valueAxes[1].integersOnly = true;
@@ -334,6 +337,13 @@
             this._dataUpdated++;
         }
         return HTMLWidget.prototype.data.apply(this, arguments);
+    };
+    
+    CommonXY.prototype.columns = function(_) {
+        if (arguments.length) {
+            this._columnsUpdated++;
+        }
+        return HTMLWidget.prototype.columns.apply(this, arguments);
     };
 
     return CommonXY;

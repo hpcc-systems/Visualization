@@ -15,7 +15,9 @@
         this._selections = [];
 
         this._dataUpdated = 0;
-        this._lastDataUpdated = -1;
+        this._prevDataUpdated = -1;
+        this._columnsUpdated = 0;
+        this._prevColumnsUpdated = -1;
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
     }
@@ -64,7 +66,7 @@
         this._chart.depth3D = this.depth3D();
         this._chart.angle = this.angle3D();
 
-        if (this._dataUpdated > this._lastDataUpdated) {
+        if (this._dataUpdated > this._prevDataUpdated || this._prevTimePattern !== this.timePattern()) {
             this._chart.dataProvider = [];
             var data = this.amFormattedData();
             for (var key in data) {
@@ -78,7 +80,8 @@
                 this._chart.dataProvider.push(obj); 
             }
         }
-        this._lastDataUpdated = this._dataUpdated;
+        this._prevDataUpdated = this._dataUpdated;
+        this._prevTimePattern = this.timePattern();
         
         this._chart.dataProvider.forEach(function(dataPoint,i){
             context._chart.dataProvider[i].color = context._palette(i);
@@ -198,6 +201,13 @@
             this._dataUpdated++;
         }
         return HTMLWidget.prototype.data.apply(this, arguments);
+    };
+
+    Gantt.prototype.columns = function(_) {
+        if (arguments.length) {
+            this._columnsUpdated++;
+        }
+        return HTMLWidget.prototype.columns.apply(this, arguments);
     };
 
     return Gantt;

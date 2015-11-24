@@ -122,7 +122,7 @@
     };
 
     Graph.prototype.applyZoom = function (transitionDuration) {
-        if (d3.event && d3.event.sourceEvent && !d3.event.sourceEvent.ctrlKey && (d3.event.sourceEvent.type === "wheel" || d3.event.sourceEvent.type === "mousewheel" || d3.event.sourceEvent.type === "DOMMouseScroll")) {
+        if (d3.event && d3.event.sourceEvent && d3.event.sourceEvent.ctrlKey && (d3.event.sourceEvent.type === "wheel" || d3.event.sourceEvent.type === "mousewheel" || d3.event.sourceEvent.type === "DOMMouseScroll")) {
             if (d3.event.sourceEvent.wheelDelta) {
                 this.zoom.translate([this.prevTranslate[0], this.prevTranslate[1] + d3.event.sourceEvent.wheelDelta]);
                 this.zoom.scale(this.prevScale);
@@ -554,10 +554,13 @@
             }
         }
 
-        var edgeElements = this.svgE.selectAll("#" + this._id + "E > .edge").data(this.showEdges() ? this.graphData.edgeValues() : [], function (d) { return d.id(); });
+        var edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this.graphData.edgeValues() : [], function (d) { return d.id(); });
         edgeElements.enter().append("g")
-            .attr("class", "edge")
+            .attr("class", "graphEdge")
             .style("opacity", 1e-6)
+            .on("click.selectionBag", function (d) {
+                context._selection.click(d, d3.event);
+            })
             .on("click", function (d) {
                 context.edge_click(d);
             })
@@ -703,7 +706,7 @@
 
     Graph.prototype.highlightEdges = function (edgeMap) {
         var context = this;
-        var edgeElements = this.svgE.selectAll(".edge");
+        var edgeElements = this.svgE.selectAll(".graphEdge");
         edgeElements
             .style("stroke-width", function (o) {
                 if (edgeMap && edgeMap[o.id()]) {

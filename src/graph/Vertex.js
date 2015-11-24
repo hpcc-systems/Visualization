@@ -28,6 +28,8 @@
     Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
     Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
+    Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
+
     Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:["Private"]});
     Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:["Private"]});
     Vertex.prototype.publish("annotationIcons", [], "array", "Annotations",null,{tags:["Private"]});
@@ -47,9 +49,15 @@
 
     Vertex.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        this._icon.render();
+        this._icon
+            .tooltip(this.tooltip())
+            .render()
+        ;
         var iconClientSize = this._icon.getBBox(true);
-        this._textBox.render();
+        this._textBox
+            .tooltip(this.tooltip())
+            .render()
+        ;
         var bbox = this._textBox.getBBox(true);
         this._icon
             .move({ x: -(bbox.width / 2) + (iconClientSize.width / 3), y: -(bbox.height / 2) - (iconClientSize.height / 3) })

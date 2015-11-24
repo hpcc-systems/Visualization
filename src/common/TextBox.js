@@ -29,6 +29,8 @@
     TextBox.prototype.publishProxy("anchor", "_text");
     TextBox.prototype.publish("fixedSize", null);
 
+    TextBox.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
+
     TextBox.prototype.padding = function (_) {
         this.paddingLeft(_);
         this.paddingRight(_);
@@ -39,6 +41,7 @@
 
     TextBox.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
+        this._tooltipElement = element.append("title");
         this._shape
             .target(domNode)
             .render()
@@ -51,7 +54,7 @@
 
     TextBox.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-
+        this._tooltipElement.text(this.tooltip());
         this._text
             .render()
         ;

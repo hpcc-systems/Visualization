@@ -14,7 +14,7 @@
     Text.prototype._class += " common_Text";
 
     Text.prototype.publish("text", "", "string", "Display Text",null,{tags:["Basic"]});
-    Text.prototype.publish("fontFamily", "", "string", "Font Family",null,{tags:["Intermediate"]});
+    Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags: ["Intermediate"], optional: true});
     Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
     Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
@@ -34,7 +34,7 @@
             .attr("font-size", this.fontSize())
         ;
         var textParts = this.text().split("\n");
-        var textLine = this._textElement.selectAll("tspan").data(textParts, function (d) { return d; });
+        var textLine = this._textElement.selectAll("tspan").data(textParts);
         textLine.enter().append("tspan")
             .attr("class", function (d, i) { return "tspan_" + i; })
             .attr("dy", "1em")

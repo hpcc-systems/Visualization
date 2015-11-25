@@ -116,6 +116,15 @@
                     );
                 });
             },
+            large: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    callback(new Table()
+                    .columns(DataFactory.Table.large.columns)
+                    .data(DataFactory.Table.large.data)
+                    .fixedHeader(true)
+                    );
+                });
+            },
             totalled: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()
@@ -123,6 +132,7 @@
                         .data(DataFactory.Table.large.data)
                         .totalledColumns([1,2,5,6,7])
                         .totalledLabel("Total")
+                        .columnPatterns(["", "", ".6r", "", "", "", "", "", "", "", ""])
                     );
                 });
             },
@@ -132,15 +142,6 @@
                         .columns(DataFactory.Table.formatted.columns)
                         .data(DataFactory.Table.formatted.data)
                         .columnPatterns([".4%", "", ".6r", "", "%d-%m-%y"])
-                    );
-                });
-            },
-            large: function (callback) {
-                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
-                    callback(new Table()
-                    .columns(DataFactory.Table.large.columns)
-                    .data(DataFactory.Table.large.data)
-                    .fixedHeader(true)
                     );
                 });
             }

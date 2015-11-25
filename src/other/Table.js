@@ -23,11 +23,12 @@
 
     Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells",null,{tags:["Private"]});
     Table.prototype.publish("pagination", false, "boolean", "Enable or disable pagination",null,{tags:["Private"]});
+    Table.prototype.publish("paginationLimit", null, "number", "Maximum number of rows allowed before pagination defaults to on",null,{tags:["Private"]});
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
     Table.prototype.publishProxy("adjacentPages", "_paginator");
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
-    Table.prototype.publish("fixedHeader", false, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
+    Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     
     Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
@@ -50,8 +51,8 @@
     Table.prototype.publish("tbodyCellBorderColor", null, "html-color", "Table body cell border color", null, { tags: ["Basic"], optional: true });
     
     Table.prototype.publish("tbodyRowBackgroundColor", null, "html-color", "Table body row color", null, { tags: ["Basic"], optional: true });
-    Table.prototype.publish("tbodyFixedColFontColor", null, "html-color", "Table body first column font color", null, { tags: ["Basic"], optional: true });
-    Table.prototype.publish("tbodyFixedColBackgroundColor", null, "html-color", "Table body first column background color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tbodyFirstColFontColor", null, "html-color", "Table body first column font color", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("tbodyFirstColBackgroundColor", null, "html-color", "Table body first column background color", null, { tags: ["Basic"], optional: true });
     
     Table.prototype.publish("tbodyHoverRowFontColor", null, "html-color", "Table body hover row font color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyHoverRowBackgroundColor", null, "html-color", "Table body hover row background color", null, { tags: ["Basic"], optional: true });
@@ -77,18 +78,21 @@
 
     Table.prototype.size = function (_) {
         var retVal = HTMLWidget.prototype.size.apply(this, arguments);
+        
         if (arguments.length) {
             if (this.tableDiv) {
+                var topMargin = this.showHeader() && this.fixedHeader() ? this.thead.node().offsetHeight : 0;
                 this.tableDiv
                     .style("width", this._size.width + "px")
-                    .style("height", this._size.height + "px")
+                    .style("height", this._size.height - topMargin + "px")
                 ;
-                this.headerDiv
+                this._element
                     .style("width", this._size.width + "px")
                     .style("height", this._size.height + "px")
                 ;
             }
         }
+
         return retVal;
     };
 
@@ -98,80 +102,61 @@
 
         this.tableDiv = element.append("div").attr("class", "tableDiv");
         this.table = this.tableDiv.append("table");
-        this.thead = this.table.append("thead").append("tr");
+        this.fixedHead =  this._element.append("div").classed("header-wrapper", true);
+        this.fixedHeadTable = this.fixedHead.append("table");
+        this.fixedThead = this.fixedHeadTable.append("thead").append("tr");
+        this.unfixedThead = this.table.append("thead").append("tr");
         this.tbody = this.table.append("tbody");
         this.tfoot = this.table.append("tfoot").append("tr");
-        this.headerDiv = element;
+        this.fixedCol = this._element.append("div").classed("rows-wrapper", true);
+        this.fixedColTable = this.fixedCol.append("table");
+        this.fixedColHead = this.fixedColTable.append("thead");
+        this.fixedColHeadRow = this.fixedColHead.append("tr");
+        this.fixedColBody = this.fixedColTable.append("tbody");
+        this.fixedColFoot = this.fixedColTable.append("tfoot");
+        this.fixedColFootRow = this.fixedColFoot.append("tr");
+
         this.tableDiv
             .style("overflow", "auto")
-            .style("width", this.width() + "px")
-            .style("height", this.height() + "px")
         ;
-        this.headerDiv
-            .style("width", this.width() + "px")
-            .style("height", this.height() + "px")
-        ;
-    };
-
-    Table.prototype._generateTempRow = function() {
-        var trow = this.tbody.append("tr");
-        trow.append("td").text("QQQ");
-        return trow;
-    };
-
-    Table.prototype._createSelectionObject = function (d) {
-        var context = this;
-        return {
-            _id: d,
-            element: function () {
-                return context.tbody ? context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; }) : d3.select(null);
-            }
-        };
-    };
-
-    Table.prototype._calcRowsPerPage = function(th) {
-        if (this._paginator.numItems() === 0) { // only run on first render
-            this._paginator.numItems(1);
-            this.itemsPerPage(1);
-        }
-        this._paginator.render();
-
-        var thHeight = this.thead.selectAll("th").node().clientHeight;
-        var tfootHeight = this.tfoot.node().clientHeight;
-        var tmpRow = this._generateTempRow();
-        var tcellHeight = tmpRow.node().clientHeight;
-        tmpRow.remove();
-        var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
-        return ipp;
     };
 
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-        
-        if (!this.showHeader()) {
-            this.fixedHeader(false);
-        } 
+
+        if (this.fixedHeader()) {
+            this.thead = this.fixedThead;
+        } else {
+            this.thead = this.unfixedThead;
+        }
+        this.fixedHead.style("display", this.fixedHeader() ? "table-row" : "none");
+        this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         var th = this.thead.selectAll("th").data(this.showHeader() ? this.columns() : [], function (d) { return d; });
-        th.enter()
+        th
+            .enter()
             .append("th")
                 .each(function (d) {
                     var element = d3.select(this);
-                    element.append("span").classed("thText",true);
-                    element.append("span").classed("thIcon",true);
+                    element
+                        .append("span")
+                            .attr("class", "thText")
+                    ;
+                    element
+                        .append("span")
+                            .attr("class", "thIcon")
+                    ;
                 })
             .on("click", function (column, idx) {
                 context.headerClick(column, idx);
             })
         ;
-        th.style({
-                "color":this.theadFontColor(),
-                "font-size":this.theadFontSize(),
-                "border-color":this.theadCellBorderColor(),
-                "background-color":this.theadRowBackgroundColor()
-            })
+        th
+            .style("background-color",this.theadRowBackgroundColor())
+            .style("border-color",this.theadCellBorderColor())
+            .style("color",this.theadFontColor())
+            .style("font-size",this.theadFontSize())
         ;
         th.select(".thText")
             .style("font-family",this.theadFontFamily())
@@ -193,6 +178,9 @@
         ;
         th.order();
 
+        if (this.paginationLimit()) {
+            this.pagination(this.data().length >= parseInt(this.paginationLimit()) ? true : false);
+        }
         if (this.pagination()) {
             if (this._paginator.target() === null) {
                 this._paginator.target(element.node());
@@ -232,28 +220,32 @@
         }
 
         var totalRow = [this.totalledLabel() ? this.totalledLabel() : null];
-
         if (context.totalledColumns().length !== 0) {
-            var totArr = context.totalledColumns();
-            for (var i = 1; i < context.columns().length; i++) {
+            for(var i=0; i < context.totalledColumns().length; i++) context.totalledColumns()[i] = +context.totalledColumns()[i];
+
+            for (var j = 1; j < context.columns().length; j++) {
                 var sum = 0;
-                if (totArr.indexOf(i) !== -1) {                  
+                if (context.totalledColumns().indexOf(j) !== -1) {                  
                     for (var k = 0; k < tData.length; k++) {
-                        sum = sum + tData[k][i];
+                        sum = sum + tData[k][j];
                     }
                     totalRow.push(sum);
                 } else {
                     totalRow.push("");
                 }
             }
-            this.tfoot.selectAll("td").remove();
-            var tf = this.tfoot.selectAll("td").data(totalRow)
-                .enter()
+
+            var tf = this.tfoot.selectAll("td").data(totalRow);
+            tf.enter()
                 .append("td")
-                .text(function(d) {
-                    return d;
-                })
             ;
+            tf[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
+                var retVal = context.columnPatterns()[idx] ? context.getColumnFormatting(d, idx) : d;
+                return retVal; 
+            });
+            tf.exit()
+                .remove()
+            ; 
             tf
                 .style("background-color",this.tfootRowBackgroundColor())
                 .style("border-color",this.tfootCellBorderColor())
@@ -263,9 +255,40 @@
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);
-        
-        this.setRowEvents(rows);
-
+        rows
+            .enter()
+            .append("tr")
+            .on("click.selectionBag", function (d, i) {
+                context.selectionBagClick(d);
+                context.render();
+                context.applyRowStyles(context.getBodyRow(i));
+                context.applyFirstColRowStyles(context.getFixedRow(i));
+            })
+            .on("click", function (d) {
+                context.click(context.rowToObj(d), null, context._selectionBag.isSelected(context._createSelectionObject(d)));
+                context.applyRowStyles(d3.select(this));
+            })
+            .on("mouseover", function (d, i) {
+                var fixedLeftRows = context.getFixedRow(i);
+                if (fixedLeftRows.empty()) { return; }
+                fixedLeftRows.classed("hover", true);
+                var tbodyRows = context.getBodyRow(i);
+                tbodyRows.classed("hover", true);
+                if (tbodyRows.classed("selected")) {
+                    fixedLeftRows.classed("selected", true);
+                }
+                context.applyStyleToRows(tbodyRows);
+                context.applyFirstColRowStyles(fixedLeftRows);
+            })
+            .on("mouseout", function (d, i) {
+                var fixedLeftRows = context.getFixedRow(i);
+                fixedLeftRows.classed("hover", false);
+                var tbodyRows = context.getBodyRow(i);
+                tbodyRows.classed("hover", false);
+                context.applyStyleToRows(tbodyRows);
+                context.applyFirstColRowStyles(fixedLeftRows);
+            })
+        ;
         rows
             .attr("class", function (d) {
                 if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
@@ -273,16 +296,11 @@
                 }
             })
         ;
-
         rows.exit()
             .remove()
         ;
-        
-        rows.each(function() {
-            var d = d3.select(this);
-            context.applyStyleToRows(d);
-        });
-        var cells = rows.selectAll("td").data(function (row) {
+
+        var cells = rows.selectAll("td").data(function (row, i) {
             return row;
         });
         cells.enter()
@@ -294,7 +312,7 @@
         });
         cells.exit()
             .remove()
-        ;
+        ;      
         rows.each(function(tr,trIdx){
             d3.select(this).selectAll("td").each(function(tdContents,tdIdx){
                 var alignment = context.getColumnAlignment(tdContents);
@@ -303,11 +321,178 @@
                     .style("text-align", alignment)
                 ;
             });
-        });
-        this._paginator.render();
-        if (this.data().length) {
-            this.fixedLabelsUpdate(domNode, element);
+            var dis = d3.select(this);
+            context.applyStyleToRows(dis);
+        });  
+
+        var tableMarginHeight = this.thead.node().offsetHeight;
+
+        var tbodyRows = context.table.select("tbody tr");
+        var tds = tbodyRows.selectAll("td");
+        var totalWidth = 0;
+        if (this.fixedHeader()) {
+            th.each(function(d, i) {
+                var thwidth = this.offsetWidth;
+                var tdwidth = tds.length ? tds[0][i].offsetWidth : 0;
+                var usewidth = thwidth >= tdwidth ? thwidth : tdwidth;
+                this.style.width = usewidth + "px";
+                if (tds.length) {
+                    tds[0][i].style.width = usewidth + "px";
+                }
+                totalWidth += usewidth;
+            });
         }
+
+        this.size(this._size);
+
+        this.thead
+            .style("position", this.fixedHeader() ? "absolute" : "relative")
+            .style("width", totalWidth + "px")
+        ;
+        this.table
+            .style("width", totalWidth + "px" )
+        ;
+        this.tbody
+            .style("width", totalWidth + "px" )
+        ;
+        
+        var fixedColWidth = 0;
+        var fixedColTh = this.fixedColHeadRow.selectAll("th").data(this.fixedColumn() && this.showHeader() ? [this.columns()[0]] : []);
+        fixedColTh
+            .enter()
+            .append("th")
+                .each(function (d) {
+                    var element = d3.select(this);
+                    element
+                        .append("span")
+                            .attr("class", "thText")
+                    ;
+                    element
+                        .append("span")
+                            .attr("class", "thIcon")
+                    ;
+                })
+            .on("click", function (column, idx) {
+                context.headerClick(column, idx);
+            })
+        ;
+        fixedColTh
+            .style("background-color",this.theadRowBackgroundColor())
+            .style("border-color",this.theadCellBorderColor())
+            .style("color",this.theadFontColor())
+            .style("font-size",this.theadFontSize())
+        ;
+        fixedColTh.select(".thText")
+            .style("font-family",this.theadFontFamily())
+            .text(function (column) {
+                return column;
+            })
+        ;
+        fixedColTh.select(".thIcon")
+            .text(function (column, idx) {
+                if (context._currentSortOrder === -1) {
+                    return context._currentSort === idx ? "\uf078" : "";
+                } else {
+                    return context._currentSort === idx ? "\uf077" : "";
+                }
+            })
+        ;
+        fixedColTh.exit()
+            .remove()
+        ;
+
+        var fixedColTr = this.fixedColBody.selectAll("tr").data(this.fixedColumn() ? tData : []);
+        fixedColTr.enter()
+            .append("tr")
+        ;
+        fixedColTr
+            .classed("selected", function (d) {
+                return context._selectionBag.isSelected(context._createSelectionObject(d));
+            })
+            .on("click", function (d, i) {
+                d3.select(rows[0][i]).on("click.selectionBag")(rows.data()[i], i)
+                ;
+            })
+            .on("mouseover", function (d, i) {
+                d3.select(rows[0][i]).on("mouseover")(rows.data()[i], i)
+                ;
+            })
+            .on("mouseout", function (d, i) {
+                d3.select(rows[0][i]).on("mouseout")(rows.data()[i], i)
+                ;
+            })
+        ;
+        fixedColTr.exit()
+            .remove()
+        ;
+        var fixedColTd = fixedColTr.selectAll("td").data(function(d, i) {
+            return [d[0]];
+        });
+        fixedColTd
+            .enter()
+            .append("td")
+        ;
+        fixedColTd[this.renderHtmlDataCells() ? "html" : "text"](function (d) { 
+            if(typeof(d) === "string"){
+                return d.trim();
+            } else if (typeof(d) === "number") {
+                return d;
+            }
+            return ""; 
+        });
+        fixedColTd.exit()
+            .remove()
+        ;
+
+        var fixedColFootTd = this.fixedColFootRow.selectAll("td").data(this.fixedColumn() && this.totalledLabel() ? [this.totalledLabel()] : []);
+        fixedColFootTd
+            .enter()
+            .append("td")
+        ;
+        fixedColFootTd[this.renderHtmlDataCells() ? "html" : "text"](function (d) { 
+            if(typeof(d) === "string"){
+                return d.trim();
+            } else if (typeof(d) === "number") {
+                return d;
+            }
+            return ""; 
+        });
+        fixedColFootTd.exit()
+            .remove()
+        ;
+
+        if (this.fixedColumn()) {
+            if (this.showHeader()) {
+                fixedColWidth = fixedColTd.node().offsetWidth > fixedColTh.node().offsetWidth ? fixedColTd.node().offsetWidth : fixedColTh.node().offsetWidth;
+            } else {
+                fixedColWidth = fixedColTd.node().offsetWidth;
+            }
+            this.fixedCol
+                .style("position", "absolute")
+                .style("margin-top", -this.tableDiv.node().scrollTop + tableMarginHeight + "px")
+            ;
+            fixedColTd
+                .style("width", fixedColWidth + "px")
+            ;
+            this.fixedColHead
+                .style("position", "absolute")
+                .style("margin-top", (this.fixedHeader() ? this.tableDiv.node().scrollTop: 0) - tableMarginHeight + "px")
+            ;
+            fixedColTh
+                .style("width", fixedColWidth + "px")
+            ;
+        }
+
+        this.table
+            .style("margin-left", -fixedColWidth + "px" )
+        ;
+        this.tableDiv
+            .style("margin-left", fixedColWidth + "px" )
+            .style("margin-top", (this.fixedHeader() ? tableMarginHeight : 0) + "px" )
+            .style("width", this.width() - fixedColWidth + "px")
+        ;
+
+        this._paginator.render();
         
         context.applyStyleToRows(this.tbody.selectAll("tr"));
         this._paginator
@@ -315,316 +500,133 @@
             .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
             .render()
         ;
-    };
 
-    Table.prototype.fixedLabelsUpdate = function (domNode, element) {
-        var context = this;
-        var rows = this.tbody.selectAll("tr");
-        rows.selectAll("td")
-            .style({
-                "color":this.tbodyFontColor(),
-                "font-size":this.tbodyFontSize(),
-                "font-family":this.tbodyFontFamily(),
-                "border-color":this.tbodyCellBorderColor()
-            })
-        ;
-        var colsWrapper = this.headerDiv.selectAll(".cols-wrapper").data(this.fixedHeader() ? [0] : []);
-        colsWrapper.enter()
-            .insert("div", ".rows-wrapper")
-            .classed("cols-wrapper",true)
-            .each(function () {
-                d3.select(this)
-                    .append("table")
-                    .classed("labels-wrapper", true)
-                    .append("thead")
-                ;
-            })
-        ;
-        colsWrapper.exit()
-            .remove()
-        ;
-        var colLabelsWrapper = colsWrapper.select(".labels-wrapper");
-
-        var rowsWrapper = this.headerDiv.selectAll(".rows-wrapper").data(this.fixedColumn() ? [0] : []);
-        rowsWrapper.enter()
-            .append("div")
-            .attr("class", "rows-wrapper")
-            .each(function (d) {
-                var element = d3.select(this);
-                element
-                    .append("table")
-                    .classed("labels-wrapper", true)
-                ;
-            })
-        ;
-        rowsWrapper.exit()
-            .remove()
-        ;
-        var rowLabelsWrapper = rowsWrapper.select(".labels-wrapper");
-
-        var theadSelection = this.table.select("thead");
-        var colWrapperHeight = this.fixedHeader() || !this.showHeader() ? theadSelection.node().offsetHeight : 0;
-        var tableMarginHeight = colWrapperHeight;
-        _copyLabelContents();
-        _setOnScrollEvents(this.tableDiv.node());
-        
-        colsWrapper.selectAll(".labels-wrapper tr").style("background-color",this.theadRowBackgroundColor());
-        rowsWrapper.selectAll(".labels-wrapper thead > tr").style("background-color",this.theadRowBackgroundColor());
-        
-        var fixedColumnRows = rowsWrapper.selectAll(".labels-wrapper tbody > tr");
-        context.applyRowStyles(fixedColumnRows,true);
-        
-        setTimeout(function(){
-            context.applyStyleToRows(context.tbody.selectAll("tr"));
-        },0);
-
-        function _copyLabelContents() {
-            var origThead = element.selectAll("th");
-            origThead
-                .style("border-color",context.theadCellBorderColor())
-            ;
-            if (context.fixedHeader()) {
-                colsWrapper.select(".labels-wrapper > thead").html(theadSelection.html());
-                colLabelsWrapper
-                    .style("width", context.table.style("width"))
-                    .style("position", "absolute")
-                ;
-                var newThead = context._parentElement.selectAll(".cols-wrapper th");
-                origThead.each(function(d, i){
-                    var el = newThead.filter(function (d, idx) { return idx === i;});
-                    var elWidth = d3.select(this).style("width");
-                    el
-                        .style("width", elWidth)
-                    ;
-                });                
-                newThead.on("click", function(d, idx){
-                    context.headerClick(d, idx);
-                });
-                rowLabelsWrapper.html("");
-            }
-            
-            var rowWrapperWidth;
-            var newTableHeight;
-            var newTableWidth;
-            var finalWidth;
-            var maxWidth;
-            if (context.fixedColumn()) {
-                rowLabelsWrapper.html("");
-
-                var borderWidth = parseInt(context.table.select("td").style("border-width"));
-                var rowSelection = context.table.selectAll("tbody > tr > td:first-child");
-                rowWrapperWidth = context.fixedColumn() ? rowSelection.node().offsetWidth : 0;
-                var theadWidth = parseInt(rowWrapperWidth) + parseInt(2 * borderWidth);
-
-                var tHead = rowLabelsWrapper.selectAll("thead").data([0]);
-                if (context.showHeader()) {
-                    var tHead_tr = tHead.enter()
-                        .insert("thead", "tbody")
-                        .append("tr")
-                        .style("background-color", context.theadRowBackgroundColor())
-                    ;
-                    tHead.exit()
-                        .remove()
-                    ;
-
-                    var ths =  tHead_tr.selectAll("th").data(origThead.filter(function (d, idx) { return idx === 0; }));
-                    ths.attr("class", "update");
-                    ths.enter()
-                        .append("th")
-                        .html(function(d, i) {
-                            return d[i].innerHTML;
-                        })
-                    ;
-                    ths.style({
-                        "width":theadWidth + "px",
-                        "color":context.theadFontColor(),
-                        "font-size":context.theadFontSize(),
-                        "font-family":context.theadFontFamily(),
-                        "border-color":context.theadCellBorderColor()
-                    });
-                    ths.exit()
-                        .remove()
-                    ;
-                } 
-
-                var tBody = rowLabelsWrapper.selectAll("tbody").data([0]);
-                tBody.enter()
-                    .append("tbody")
-                ;
-                tBody.exit()
-                    .remove()
-                ;
-
-                var tds = tBody.selectAll("tr").data(rowSelection[0]);
-                tds
-                    .enter() 
-                    .append("tr")
-                    .html(function(d) {
-                        return d.outerHTML || "<td>&nbsp;</td>";  
-                    })
-                ;  
-                if (context.totalledColumns() && context.totalledLabel()) {
-                    tBody
-                        .append("tr").append("td")
-                        .text(context.totalledLabel())
-                    ;
-                }
-                tds
-                    .style({
-                        "color":context.tbodyFontColor(),
-                        "font-size":context.tbodyFontSize(),
-                        "font-family":context.tbodyFontFamily(),
-                        "border-color":context.tbodyCellBorderColor(),
-                    })
-                ;
-                rowsWrapper
-                    .style("position", "absolute")
-                ;
-                rowLabelsWrapper
-                    .style("width", rowWrapperWidth)
-                ;
-
-                if (context.fixedHeader()){
-                    tHead.style({
-                        "position": "absolute",
-                        "width": theadWidth + "px"
-                    });
-                    rowLabelsWrapper
-                        .style("margin-top", -domNode.scrollTop + colWrapperHeight + "px")
-                    ;
-                    element
-                        .style("top", colWrapperHeight + "px")
-                    ;
-                } else {
-                    if (context.showHeader()) {
-                        tHead
-                            .style("margin-top", "0px")
-                            .style("position", "relative")
-                        ;
-                        rowLabelsWrapper
-                            .style("margin-top", -domNode.scrollTop + "px")
-                        ;
-                        element
-                            .style("top", "0px")
-                        ;
-                    } else {
-                        tHead.remove();
-                    }
-                }
-                var fixedRows = rowLabelsWrapper.selectAll("tr");
-                fixedRows
-                    .on("click", function (d, i) {
-                        d3.select(rows[0][i]).on("click.selectionBag")(rows.data()[i - 1], i - 1)
-                        ;
-                    })
-                    .on("mouseover", function (d, i) {
-                        d3.select(rows[0][i]).on("mouseover")(rows.data()[i - 1], i - 1)
-                        ;
-                    })
-                    .on("mouseout", function (d, i) {
-                        d3.select(rows[0][i]).on("mouseout")(rows.data()[i - 1], i - 1)
-                        ;
-                    })
-                    .attr("class", function (d, i) {
-                        var offSet = context.showHeader() ? 1 : 0;
-                        if (rows[0][i - offSet] && (d3.select(rows[0][i - offSet]).classed("selected")) === true) {
-                            return rows[0][i - offSet].parentElement.querySelector(":hover") === rows[0][i - offSet] ? "selected hover" : "selected";
-                        }
-                    })
-                ;
-            } else {
-                rowWrapperWidth = 0; 
-            }
-
-            if (!context.showHeader()) {
-                tableMarginHeight = 0;
-            }
-
+        if(this.fixedSize()) {
             var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
-            if(context.fixedSize() && box.width !== 0 && box.height !== 0){
+            var newTableHeight, finalWidth, maxWidth;
+            if (box.width !== 0 && box.height !== 0) {
                 calcWidth();
                 calcHeight();
             } else {
-                if (context.node().offsetheight - parseInt(tableMarginHeight) <= context.tableDiv.node().offsetHeight ) {
+                if (box.height - tableMarginHeight <= context.tableDiv.node().offsetHeight ) {
                     calcHeight();
                 } else {
                     if (context.fixedHeader()) {
-                        newTableHeight = context.node().offsetHeight - parseInt(tableMarginHeight);
+                        newTableHeight = context.node().offsetHeight;
                         newTableHeight = newTableHeight + "px";
                     } else {
                         newTableHeight ="100%";
                     }
                 }
-                if (context.node().offsetwidth - parseInt(rowWrapperWidth) < context.tableDiv.node().offsetWidth ) {
+                if (box.width - parseInt(fixedColWidth) < context.tableDiv.node().offsetWidth ) {
                     calcWidth();
                 } else {
                     if (context.fixedColumn()) {
-                        finalWidth = context.node().offsetWidth - parseInt(rowWrapperWidth);
+                        finalWidth = context.node().offsetWidth - parseInt(fixedColWidth);
                         finalWidth = finalWidth + "px";
                     } else {
                         finalWidth = "100%";
                     }
                 }            
             }
-            function calcWidth() {
-                newTableWidth = box.width - parseInt(rowWrapperWidth);
-                maxWidth = context.table.node().offsetWidth - rowWrapperWidth + context.getScrollbarWidth();
-                finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
-                finalWidth = finalWidth + "px";
-            }
-            function calcHeight() {
-                newTableHeight = box.height - parseInt(tableMarginHeight) + context.getScrollbarWidth();
-                newTableHeight = newTableHeight + "px";
-            }
-        
             context.tableDiv
                 .style("width", finalWidth)
                 .style("height", newTableHeight)
-                .style("position", "absolute")
-                .style("top", tableMarginHeight + "px")
-                .style("left", rowWrapperWidth + "px")
-                .style("overflow", "auto")
-            ;
-            context.table
-                .style({
-                    "margin-left":"-" + rowWrapperWidth + "px",
-                    "margin-top":"-" + colWrapperHeight + "px"
-                })
-            ;
-            rowsWrapper
-                .style("width", rowWrapperWidth + "px")
-            ;
-            rowLabelsWrapper
-                .style("margin-top", -context.tableDiv.node().scrollTop + tableMarginHeight + "px")
-            ;
-            rowLabelsWrapper.select("thead")
-                .style("margin-top", context.tableDiv.node().scrollTop - tableMarginHeight + "px")
-                .on("click", function (d, idx) {
-                    context.headerClick(d, idx);
-                })
             ;
         }
 
-        function _setOnScrollEvents(domNode) {
-            domNode.onscroll = function (e) {
-                var leftDelta = e.target.scrollLeft;
-                var topDelta = e.target.scrollTop;
-                colLabelsWrapper
-                    .style("margin-left", -leftDelta + "px")
-                ;
-                rowLabelsWrapper
-                    .style("margin-top", -topDelta + tableMarginHeight + "px")
-                ;
-                rowLabelsWrapper.select("thead")
-                    .style("margin-top", topDelta - tableMarginHeight + "px")
-                ;
-            };
+        this.setOnScrollEvents(this.tableDiv.node(), tableMarginHeight);
+
+
+        function calcWidth() {
+            var newTableWidth = box.width - parseInt(fixedColWidth);
+            maxWidth = context.table.node().offsetWidth - fixedColWidth + context.getScrollbarWidth();
+            finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
+            finalWidth = finalWidth + "px";
         }
+
+        function calcHeight() {
+            newTableHeight = box.height - tableMarginHeight + context.getScrollbarWidth();
+            newTableHeight = newTableHeight + "px";
+        }
+
     };
 
     Table.prototype.exit = function (domNode, element) {
         this._paginator.target(null);
         HTMLWidget.prototype.exit.apply(this, arguments);
+    };
+        
+    Table.prototype.getBodyRow = function(i) {
+        return this.table.selectAll("tbody tr")
+            .filter(function (d, idx) {
+                return idx === i;
+            })
+        ;
+    };
+
+    Table.prototype.getFixedRow = function(i) {
+        return this._element.selectAll(".rows-wrapper tbody tr")
+            .filter(function (d, idx) {
+                return idx === i;
+            })
+        ;
+    };
+
+    Table.prototype.setOnScrollEvents = function(scrollNode, margHeight) {
+        var context = this;
+        scrollNode.onscroll = function (e) {
+            var topDelta = e.target.scrollTop;
+            var leftDelta = e.target.scrollLeft;
+            if (context.fixedHeader()) {
+                context.thead
+                    .style("margin-left", -leftDelta +  "px")
+                ;
+            }
+            if (context.fixedColumn()) {
+                context.fixedCol
+                    .style("margin-top", -topDelta + parseInt(margHeight) + "px")
+                ;
+                if (context.fixedHeader()) {
+                    context.fixedColHead
+                        .style("margin-top", topDelta - parseInt(margHeight) + "px")
+                    ;
+                }
+            }
+        };
+    };
+
+    Table.prototype._generateTempRow = function() {
+        var trow = this.tbody.append("tr");
+        trow.append("td").text("QQQ");
+        return trow;
+    };
+
+    Table.prototype._createSelectionObject = function (d) {
+        var context = this;
+        return {
+            _id: d,
+            element: function () {
+                return context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; });
+            }
+        };
+    };
+
+    Table.prototype._calcRowsPerPage = function(th) {
+        if (this._paginator.numItems() === 0) { // only run on first render
+            this._paginator.numItems(1);
+            this.itemsPerPage(1);
+        }
+        this._paginator.render();
+
+        var thHeight = this.thead.selectAll("th").node() ? this.thead.selectAll("th").node().clientHeight : 0;
+        var tfootHeight = this.tfoot.selectAll("td").node() ? this.tfoot.selectAll("td").node().clientHeight : 0;
+        var tmpRow = this._generateTempRow();
+        var tcellHeight = tmpRow.node().clientHeight;
+        tmpRow.remove();
+        var paginatorHeight = this.calcHeight(this._paginator.element());
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        return ipp;
     };
 
     Table.prototype.sort = function (idx) {
@@ -646,102 +648,13 @@
         return this;
     };
 
-    Table.prototype.applyStyleToRows = function(rows,isFixedCol){
-        var context = this;
-        rows.each(function () {
-                var tr = d3.select(this);
-                if (tr.classed("hover")) {
-                    context.applyHoverRowStyles(tr);
-                } else if (tr.classed("selected")) {
-                    context.applySelectedRowStyles(tr);
-                } else {
-                    context.applyRowStyles(tr,isFixedCol);
-                }
-            })
+    Table.prototype.headerClick = function (column, idx) {
+        this
+            .sort(idx)
+            .render()
         ;
     };
-    Table.prototype.applyRowStyles = function(row, isFixedCol){
-        row.style({
-            "color":isFixedCol ? this.tbodyFixedColFontColor() : this.tbodyFontColor(),
-            "background-color":isFixedCol ? this.tbodyFixedColBackgroundColor() : this.tableZebraColor_exists() && this.data().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor()
-        });
-    };
-    Table.prototype.applyHoverRowStyles = function(row){
-        row.style({
-            "color":this.tbodyHoverRowFontColor(),
-            "background-color":this.tbodyHoverRowBackgroundColor()
-        });
-    };
-    Table.prototype.applySelectedRowStyles = function(row){
-        row.style({
-            "color":this.tbodySelectedRowFontColor(),
-            "background-color":this.tbodySelectedRowBackgroundColor()
-        });
-    };
-    
-    Table.prototype.setRowEvents = function(rows){
-        var context = this;
-        rows.enter()
-            .append("tr")
-            .on("click.selectionBag", function (d, i) {
-                context.selectionBagClick(d);
-                context.render();
-                var fixedLeftRows = context.headerDiv.selectAll(".rows-wrapper tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                ;
-                var tbodyRows = context.table.selectAll("tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                ;
-                tbodyRows.classed("hover",true);
-                context.applyRowStyles(tbodyRows);
-                context.applyRowStyles(fixedLeftRows,true);
-            })
-            .on("click", function (d) {
-                context.click(context.rowToObj(d), null, context._selectionBag.isSelected(context._createSelectionObject(d)));
-                context.applyRowStyles(d3.select(this));
-            })
-            .on("mouseover", function (d, i) {
-                var fixedLeftRows = context.headerDiv.selectAll(".rows-wrapper tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                ;
-                if (fixedLeftRows.empty()) { return; }
-                fixedLeftRows.classed("hover", true);
-                var tbodyRows = context.table.selectAll("tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                ;
-                tbodyRows.classed("hover", true);
-                if (tbodyRows.classed("selected")) {
-                    fixedLeftRows.classed("selected", true);
-                }
-                context.applyStyleToRows(tbodyRows);
-                context.applyStyleToRows(fixedLeftRows,true);
-            })
-            .on("mouseout", function (d, i) {
-                var fixedLeftRows = context.headerDiv.selectAll(".rows-wrapper tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                ;
-                fixedLeftRows.classed("hover", false);
-                var tbodyRows = context.table.selectAll("tbody tr")
-                    .filter(function (d, idx) {
-                        return idx === i;
-                    })
-                    .classed("hover", false)
-                ;
-                context.applyStyleToRows(tbodyRows);
-                context.applyStyleToRows(fixedLeftRows,true);
-            })
-        ;
-    };
+
     Table.prototype.selection = function (_) {
         if (!arguments.length) return this._selectionBag.get().map(function (d) { return d._id; });
         this._selectionBag.set(_.map(function (row) {
@@ -749,8 +662,9 @@
         }, this));
         return this;
     };
+
     Table.prototype.selectionBagClick = function (d) {
-        if (d3.event.shiftKey) {
+        if (d3.event.shiftKey && this._selectionPrevClick) {
             var inRange = false;
             var rows = [];
             var selection = this.data().filter(function (row, i) {
@@ -767,14 +681,59 @@
             this.selection(selection);
             return rows;
         } else {
-            this._selectionBag.click(this._createSelectionObject(d), d3.event);
-            this._selectionPrevClick = d;
+            if (this._selectionBag.isSelected(this._createSelectionObject(d))) {
+                this._selectionBag.clear();
+                this._selectionPrevClick = null;
+            } else {
+                this._selectionBag.click(this._createSelectionObject(d), d3.event);
+                this._selectionPrevClick = d;
+            }
         }
     };
 
-    Table.prototype.getColumnFormatting = function(cellData,colIdx){
+    Table.prototype.applyHoverRowStyles = function(row){
         var context = this;
-        if(typeof(cellData) === "string"){
+        row
+            .style("color",context.tbodyHoverRowFontColor())
+            .style("background-color",context.tbodyHoverRowBackgroundColor())
+        ;
+    };
+    Table.prototype.applySelectedRowStyles = function(row){
+        var context = this;
+        row
+            .style("color",context.tbodySelectedRowFontColor())
+            .style("background-color",context.tbodySelectedRowBackgroundColor())
+        ;
+    };
+    Table.prototype.applyRowStyles = function(row, isFirstCol){
+        row
+            .style("color", isFirstCol ? this.tbodyFirstColFontColor() : this.tbodyFontColor())
+            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.data().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
+        ;
+    };
+    Table.prototype.applyFirstColRowStyles = function(rows){
+        this.applyStyleToRows(rows,true);
+    };
+
+    Table.prototype.applyStyleToRows = function(rows,isFirstCol){
+        isFirstCol = typeof isFirstCol !== "undefined" ? isFirstCol : false;
+        var context = this;
+        rows.each(function () {
+                var tr = d3.select(this);
+                if (tr.classed("hover")) {
+                    context.applyHoverRowStyles(tr);
+                } else if (tr.classed("selected")) {
+                    context.applySelectedRowStyles(tr);
+                } else {
+                    context.applyRowStyles(tr,isFirstCol);
+                }
+            })
+        ;
+    };
+
+    Table.prototype.getColumnFormatting = function(cellData,colIdx){
+         var context = this;
+         if(typeof(cellData) === "string"){
             var timeFormat = d3.time.format(context.columnPatterns()[colIdx]);
             return timeFormat(new Date(cellData));
         } else if (typeof(cellData) === "number") {
@@ -783,9 +742,10 @@
         }
         return cellData;
     };
+
     Table.prototype.getColumnAlignment = function(cellData){
-        var context = this;
-        switch(typeof(cellData)){
+         var context = this;
+         switch(typeof(cellData)){
             case "number":
                 return function(){
                     return context.numberAlign();
@@ -797,11 +757,12 @@
             default:
                 return "";
         }
-    };
+     };
 
     Table.prototype.click = function (row, column) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column);
     };
+
     Table.prototype.headerClick = function (column, idx) {
         this
             .sort(idx)

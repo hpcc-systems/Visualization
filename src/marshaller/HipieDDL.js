@@ -24,7 +24,17 @@
     //  Mappings ---
     function SourceMappings(visualization, mappings) {
         this.visualization = visualization;
-        this.mappings = mappings;
+        var newMappings = {};
+        for (var key in mappings) {
+            if (mappings[key] instanceof Array) {
+                mappings[key].forEach(function (mapingItem, idx) {
+                    newMappings[idx === 0 ? key : key + "_" + idx] = mapingItem;
+                });
+            } else {
+                newMappings[key] = mappings[key];
+            }
+        }
+        this.mappings = newMappings;
         this.hasMappings = false;
         this.reverseMappings = {};
         this.columns = [];
@@ -110,6 +120,23 @@
         this.init();
     }
     ChoroMappings.prototype = Object.create(SourceMappings.prototype);
+
+    function ChoroMappings2(visualization, mappings) {
+        SourceMappings.call(this, visualization, mappings);
+        if (mappings.state) {
+            this.columns = ["state"];
+            this.columnsIdx = { state: 0 };
+        } else if (mappings.county) {
+            this.columns = ["county"];
+            this.columnsIdx = { county: 0};
+        }
+        mappings.weight.forEach(function (w, i) {
+            this.columns.push(w);
+            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + 1;
+        }, this);
+        this.init();
+    }
+    ChoroMappings2.prototype = Object.create(SourceMappings.prototype);
 
     function HeatMapMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
@@ -295,7 +322,14 @@
                 this.mappings = new GraphMappings(this.visualization, source.mappings, source.link);
                 break;
             case "CHORO":
-                this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                if (source.mappings.weight instanceof Array && source.mappings.weight.length) {
+                    this.mappings = new ChoroMappings2(this.visualization, source.mappings, source.link);
+                    if (source.mappings.weight.length > 1) {
+                        this.visualization.type = "LINE";
+                    }
+                } else {
+                    this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                }
                 break;
             case "HEAT_MAP":
                 this.mappings = new HeatMapMappings(this.visualization, source.mappings, source.link);

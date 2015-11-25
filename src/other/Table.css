@@ -20,6 +20,7 @@
     color:white;
     white-space: nowrap;
     cursor : pointer;
+    box-sizing: border-box;
 }
 .other_Table thead > tr, .cols-wrapper tr {
     background-color:#1f77b4;
@@ -39,12 +40,12 @@
     background-color: white;
     color:black;
 }
-
-.other_Table .tableDiv tbody > tr:hover  {
+/*
+.other_Table .tableDiv tbody > tr:hover {
     background-color:#bfd7e7;
     color: white;
 }
-
+*/
 .other_Table .tableDiv tbody > tr.selected  {
     background-color:#f48a00;
     color: white;
@@ -63,10 +64,14 @@
     color: white;
 }
 
-.other_Table tbody > tr:hover, .other_Table tbody > tr.hover, .rows-wrapper tbody tr.hover {
+.other_Table .tableDiv tbody > tr:hover, .other_Table .tableDiv tbody > tr.hover, .rows-wrapper tbody tr.hover {
     background-color: #bfd7e7;
+    color: white;
 }
-
+.other_Table .tableDiv tbody > tr.selected:hover, .other_Table .tableDiv tbody > tr.selected.hover {
+    background-color: #5ea8db;
+    color: white;
+}
 .other_Table .rows-wrapper tbody tr.hover.selected {
     background-color:#5ea8db;
     color: white;
@@ -89,5 +94,4 @@
 .other_Table tfoot td, .rows-wrapper tfoot td {
     background-color: #ADDFF3;
     font-weight: bold;
-    border-top-width: 3px
 }

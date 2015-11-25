@@ -34,7 +34,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUInfo?Wuid=W20150915-131533&ResultName=chittahx_anthemsuspectbadaddresses_Comp_Ins119_DDL")
+                        .ddlUrl("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20151027-101517&ResultName=lrenn_choroweight_Comp_Ins002_DDL&Widget=ResultWidget")
                     );
                 });
             },

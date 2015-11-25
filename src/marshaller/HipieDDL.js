@@ -525,7 +525,7 @@
                 case "BUBBLE":
                 case "BAR":
                 case "WORD_CLOUD":
-                    this.loadWidget("src/composite/MegaChart", function (widget) {
+                    this.loadWidget("src/chart/MultiChart", function (widget) {
                         widget
                             .id(visualization.id)
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
@@ -533,7 +533,7 @@
                     });
                     break;
                 case "LINE":
-                    this.loadWidget("src/composite/MegaChart", function (widget) {
+                    this.loadWidget("src/chart/MultiChart", function (widget) {
                         widget
                             .id(visualization.id)
                             .showLegend(true)

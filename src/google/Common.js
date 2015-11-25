@@ -12,11 +12,6 @@
 
         this._tag = "div";
 
-        this.columns([]);
-        this.data([]);
-        this._data_google = google.visualization.arrayToDataTable([["", { role: "annotation" }],["",""]]);
-
-        this._chart = null;
         this._selection = {};
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
@@ -58,31 +53,27 @@
     Common.prototype.publish("backgroundColorStrokeWidth", 0, "number", "Background Border Width",null,{tags:["Advanced","Shared"]});
     Common.prototype.publish("backgroundColorFill", "transparent", "html-color", "Background Color",null,{tags:["Advanced","Shared"]});
 
-    Common.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            var data = null;
-            if (this.data().length) {
-                data = [this.columns()].concat(this.data().map(function (row, row_idx) {
-                    return row.map(function (cell, idx) {
-                        if (idx > 0) {
-                            if (isNaN(cell)) {
-                                console.log("Invalid Data:  " + cell + " (" + row_idx + ", " + idx + ")");
-                            }
-                            return parseFloat(cell);
+    Common.prototype.formatData = function () {
+        var data = null;
+        if (this.data().length) {
+            data = [this.columns()].concat(this.data().map(function (row, row_idx) {
+                return row.map(function (cell, idx) {
+                    if (idx > 0) {
+                        if (isNaN(cell)) {
+                            console.log("Invalid Data:  " + cell + " (" + row_idx + ", " + idx + ")");
                         }
-                        return cell;
-                    });
-                }));
-            } else {
-                data = [
-                    ["", { role: "annotation" }],
-                    ["", ""]
-                ];
-            }
-            this._data_google = google.visualization.arrayToDataTable(data);
+                        return parseFloat(cell);
+                    }
+                    return cell;
+                });
+            }));
+        } else {
+            data = [
+                ["", { role: "annotation" }],
+                ["", ""]
+            ];
         }
-        return retVal;
+        return google.visualization.arrayToDataTable(data);
     };
 
     Common.prototype.getChartOptions = function () {
@@ -137,8 +128,14 @@
     };
 
     Common.prototype.enter = function (domNode, element) {
+        HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("overflow", "hidden");
+    };
 
+    Common.prototype.init = function (domNode, element) {
+        if (this._chart) {
+            return;
+        }
         this._chart = new google.visualization[this._chartType](domNode);
 
         var context = this;
@@ -150,15 +147,30 @@
                     column: context.columns()[selectedItem.column] || null
                 };
             } else {
-                context._selection = {data: {}, column: null};
+                context._selection = { data: {}, column: null };
             }
             context.click(context._selection.data, context._selection.column, Object.keys(context._selection.data).length !== 0);
         });
     };
 
-    Common.prototype.update = function(domNode, element) {
+    Common.prototype.kill = function (domNode, element) {
+        if (!this._chart) {
+            return;
+        }
+
+        google.visualization.events.removeAllListeners(this._chart);
+        element.html("");
+        delete this._chart;
+    };
+
+    Common.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        this._chart.draw(this._data_google, this.getChartOptions());
+        if (this.data().length && this.columns().length) {
+            this.init(domNode, element);
+            this._chart.draw(this.formatData(), this.getChartOptions());
+        } else {
+            this.kill(domNode, element);
+        }
     };
 
     return Common;

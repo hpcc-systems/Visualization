@@ -1,28 +1,16 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Database"], factory);
+        define(["d3", "./Class", "./Platform", "./PropertyExt", "./Database"], factory);
     } else {
-        root.require = root.require || function (paths, cb) {
-            if (typeof paths === "function") {
-                cb = paths;
-                paths = [];
-            }
-
-            var objs = paths.map(function (path) {
-                var pathIdx = path.indexOf("src/") === 0 ? "src/".length : 0;
-                var prop = path.substring(pathIdx).split("/").join("_");
-                return root[prop];
-            });
-
-            cb.apply(null, objs);
-        };
-
-        root.common_Widget = factory(root.d3, root.common_Database);
+        root.common_Widget = factory(root.d3, root.common_Class, root.common_Platform, root.common_PropertyExt, root.common_Database);
     }
-}(this, function (d3, Database) {
+}(this, function (d3, Class, Platform, PropertyExt, Database) {
     var widgetID = 0;
     function Widget() {
+        Class.call(this);
+        Platform.call(this);
+        PropertyExt.call(this);
         this._class = Object.getPrototypeOf(this)._class;
         this._id = "_w" + widgetID++;
 
@@ -31,17 +19,6 @@
         this._size = { width: 0, height: 0 };
         this._scale = 1;
         this._visible = true;
-
-        for (var key in this) {
-            if (key.indexOf("__meta_") === 0) {
-                switch (this[key].type) {
-                    case "array":
-                    case "widgetArray":
-                        this["__prop_" + this[key].id] = [];
-                        break;
-                }
-            }
-        }
 
         this._target = null;
         this._parentElement = null;
@@ -64,7 +41,11 @@
             this.applyTheme(window.__hpcc_theme);
         }
     }
+    Widget.prototype = Object.create(Class.prototype);
+    Widget.prototype.constructor = Widget;
     Widget.prototype._class = "common_Widget";
+    Widget.prototype.mixin(Platform);
+    Widget.prototype.mixin(PropertyExt);
 
     Widget.prototype.leakCheck = function (newNode) {
         var context = this;
@@ -100,283 +81,11 @@
         for (var i in clsArr) {
             if (theme[clsArr[i]]) {
                 for (var paramName in theme[clsArr[i]]) {
-                    if (this["__meta_" + paramName]) {
-                        this["__meta_" + paramName].defaultValue = theme[clsArr[i]][paramName];
+                    if (this.publishedProperty(paramName)) {
+                        this.publishedProperty(paramName).defaultValue = theme[clsArr[i]][paramName];
                     }
                 }
             }
-        }
-    };
-
-    Widget.prototype.ieVersion = (function () {
-        var ua = navigator.userAgent, tem,
-            M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-        if (/trident/i.test(M[1])) {
-            tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-            return parseFloat(tem[1]);
-        }
-        if (/msie/i.test(M[1])) {
-            return parseFloat(M[2]);
-        }
-        return null;
-    })();
-    Widget.prototype.isIE = Widget.prototype.ieVersion !== null;
-    Widget.prototype.svgMarkerGlitch = Widget.prototype.isIE && Widget.prototype.ieVersion <= 12;
-    Widget.prototype.MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || function (callback) {
-        //  Just enough for HTMLOverlay and C3  ---
-        this.callback = callback;
-        this.listeners = [];
-
-        var MutationListener = function (callback, domNode, type) {
-            this.callback = callback;
-            this.domNode = domNode;
-            this.type = type;
-        };
-        MutationListener.prototype = {
-            handleEvent: function (evt) {
-                var mutation = {
-                    type: this.type,
-                    target: this.domNode,
-                    addedNodes: [],
-                    removedNodes: [],
-                    previousSibling: evt.target.previousSibling,
-                    nextSibling: evt.target.nextSibling,
-                    attributeName: null,
-                    attributeNamespace: null,
-                    oldValue: null
-                };
-                this.callback([mutation]);
-            }
-        };
-
-        this.observe = function (domNode, config) {
-            var listener = null;
-            if (config.attributes) {
-                listener = new MutationListener(this.callback, domNode, "attributes");
-                this.listeners.push(listener);
-                domNode.addEventListener("DOMAttrModified", listener, true);
-            }
-
-            if (config.characterData) {
-                listener = new MutationListener(this.callback, domNode, "characterData");
-                this.listeners.push(listener);
-                domNode.addEventListener("DOMCharacterDataModified", listener, true);
-            }
-
-            if (config.childList) {
-                listener = new MutationListener(this.callback, domNode, "childList");
-                this.listeners.push(listener);
-                domNode.addEventListener("DOMNodeInserted", listener, true);
-                domNode.addEventListener("DOMNodeRemoved", listener, true);
-            }
-        };
-
-        this.disconnect = function () {
-            this.listeners.forEach(function (item) {
-                switch (item.type) {
-                    case "attributes":
-                        item.domNode.removeEventListener("DOMAttrModified", item, true);
-                        break;
-                    case "characterData":
-                        item.domNode.removeEventListener("DOMCharacterDataModified", item, true);
-                        break;
-                    case "childList":
-                        item.domNode.removeEventListener("DOMNodeRemoved", item, true);
-                        item.domNode.removeEventListener("DOMNodeInserted", item, true);
-                        break;
-                }
-            });
-            this.listeners = [];
-        };
-    };
-    if (!window.MutationObserver) {
-        window.MutationObserver = Widget.prototype.MutationObserver;
-    }
-
-    Widget.prototype.implements = function (source) {
-        for (var prop in source) {
-            if (this[prop] === undefined && source.hasOwnProperty(prop)) {
-                this[prop] = source[prop];
-            }
-        }
-    };
-
-    // Serialization  ---
-    Widget.prototype.publish = function (id, defaultValue, type, description, set, ext) {
-        if (this["__meta_" + id] !== undefined && !ext.override) {
-            throw id + " is already published.";
-        }
-        this["__meta_" + id] = {
-            id: id,
-            type: type,
-            origDefaultValue: defaultValue,
-            defaultValue: defaultValue,
-            description: description,
-            set: set,
-            ext: ext || {}
-        };
-        this[id] = function (_) {
-            var isPrototype = this._id === undefined;
-            if (!arguments.length) {
-                return !isPrototype && this["__prop_" + id] !== undefined ? this["__prop_" + id] : this["__meta_" + id].defaultValue;
-            }
-            if (_ === "" && this["__meta_" + id].ext.optional) {
-                _ = null;
-            } else if (_ !== null) {
-                switch (type) {
-                    case "set":
-                        if (!set || set.indexOf(_) < 0) {
-                            console.log("Invalid value for '" + id + "':  " + _);
-                        }
-                        break;
-                    case "html-color":
-                        if (window.__hpcc_debug && _ && _ !== "red") {
-                            var litmus = "red";
-                            var d = document.createElement("div");
-                            d.style.color = litmus;
-                            d.style.color = _;
-                            //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
-                            if (d.style.color === litmus || d.style.color === "") {
-                                console.log("Invalid value for '" + id + "':  " + _);
-                            }
-                        }
-                        break;
-                    case "boolean":
-                        _ = typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
-                        break;
-                    case "number":
-                        _ = Number(_);
-                        break;
-                    case "string":
-                        _ = String(_);
-                        break;
-                    case "array":
-                        if (!(_ instanceof Array)) {
-                            console.log("Invalid value for '" + id);
-                        }
-                        break;
-                    case "object":
-                        if (!(_ instanceof Object)) {
-                            console.log("Invalid value for '" + id);
-                        }
-                        break;
-                }
-            }
-            if (isPrototype) {
-                this["__meta_" + id].defaultValue = _;
-            } else {
-                this.broadcast(id, _, this["__prop_" + id]);
-                if (_ === null) {
-                    delete this["__prop_" + id];
-                } else {
-                    this["__prop_" + id] = _;
-                }
-            }
-            return this;
-        };
-        this[id + "_modified"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                return this["__meta_" + id].defaultValue !== defaultValue;
-            }
-            return this["__prop_" + id] !== undefined;
-        };
-        this[id + "_exists"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                return this["__meta_" + id].defaultValue !== undefined;
-            }
-            return this["__prop_" + id] !== undefined || this["__meta_" + id].defaultValue !== undefined;
-        };
-        this[id + "_reset"] = function () {
-            switch (type) {
-                case "widget":
-                    if (this["__prop_" + id]) {
-                        this["__prop_" + id].target(null);
-                    }
-                    break;
-                case "widgetArray":
-                    if (this["__prop_" + id]) {
-                        this["__prop_" + id].forEach(function (widget) {
-                            widget.target(null);
-                        });
-                    }
-                    break;
-            }
-            this["__prop_" + id] = undefined;
-        };
-        this["__prop_" + id] = undefined;
-    };
-
-    Widget.prototype.publishWidget = function (prefix, WidgetType, id) {
-        for (var key in WidgetType.prototype) {
-            if (key.indexOf("__meta") === 0) {
-                var publishItem = WidgetType.prototype[key];
-                this.publishProxy(prefix + "__prop_" + publishItem.id, id, publishItem.method || publishItem.id);
-            }
-        }
-    };
-
-    Widget.prototype.publishProxy = function (id, proxy, method, defaultValue) {
-        method = method || id;
-        if (this["__meta_" + id] !== undefined) {
-            throw id + " is already published.";
-        }
-        this["__meta_" + id] = {
-            id: id,
-            type: "proxy",
-            proxy: proxy,
-            method: method,
-            defaultValue: defaultValue
-        };
-        this[id] = function (_) {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default value of proxied properties is not supported.";
-            }
-            if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
-            if (defaultValue && _ === defaultValue) {
-                this[proxy][method + "_reset"]();
-            } else {
-                this[proxy][method](_);
-            }
-            return this;
-        };
-        this[id + "_modified"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported.";
-            }
-            return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
-        };
-        this[id + "_reset"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported.";
-            }
-            this[proxy][method + "_reset"]();
-        };
-    };
-
-    Widget.prototype.watch = function (func) {
-        var context = this;
-        var idx = this._watchArr.push(func) - 1;
-        return {
-            remove: function () {
-                delete context._watchArr[idx];
-            }
-        };
-    };
-
-    Widget.prototype.broadcast = function (key, newVal, oldVal) {
-        if (this._watchArr && newVal !== oldVal) {
-            this._watchArr.forEach(function (func) {
-                if (func) {
-                    setTimeout(function () {
-                        func(key, newVal, oldVal);
-                    }, 0);
-                }
-            });
         }
     };
 
@@ -523,32 +232,6 @@
             height: height
         });
         return this;
-    };
-
-    Widget.prototype._scrollBarWidth = null;
-    Widget.prototype.getScrollbarWidth = function () {
-        if (Widget.prototype._scrollBarWidth === null) {
-            var outer = document.createElement("div");
-            outer.style.visibility = "hidden";
-            outer.style.width = "100px";
-            outer.style.msOverflowStyle = "scrollbar";
-
-            document.body.appendChild(outer);
-
-            var widthNoScroll = outer.offsetWidth;
-            outer.style.overflow = "scroll";
-
-            var inner = document.createElement("div");
-            inner.style.width = "100%";
-            outer.appendChild(inner);
-
-            var widthWithScroll = inner.offsetWidth;
-
-            outer.parentNode.removeChild(outer);
-
-            Widget.prototype._scrollBarWidth = widthNoScroll - widthWithScroll;
-        }
-        return Widget.prototype._scrollBarWidth;
     };
 
     Widget.prototype.scale = function (_) {
@@ -755,22 +438,20 @@
 
         //  ASync Render Contained Widgets  ---
         var widgets = [];
-        for (var key in this) {
-            if (key.indexOf("__meta_") === 0) {
-                var meta = this[key];
-                switch (meta.type) {
-                    case "widget":
-                        var widget = this[meta.id]();
-                        if (widget) {
-                            widgets.push(this[meta.id]());
-                        }
-                        break;
-                    case "widgetArray":
-                        widgets = widgets.concat(this[meta.id]());
-                        break;
-                }
+        this.publishedProperties().forEach(function (meta) {
+            switch (meta.type) {
+                case "widget":
+                    var widget = this[meta.id]();
+                    if (widget) {
+                        widgets.push(this[meta.id]());
+                    }
+                    break;
+                case "widgetArray":
+                    widgets = widgets.concat(this[meta.id]());
+                    break;
             }
-        }
+        }, this);
+
         var context = this;
         switch (widgets.length) {
             case 0:
@@ -802,23 +483,6 @@
     Widget.prototype.update = function (domeNode, element) { };
     Widget.prototype.postUpdate = function (domeNode, element) { };
     Widget.prototype.exit = function (domeNode, element) { };
-
-    //  Util  ---
-    Widget.prototype.debounce = function (func, threshold, execAsap) {
-        return function debounced() {
-            var obj = this || {}, args = arguments;
-            function delayed() {
-                if (!execAsap)
-                    func.apply(obj, args);
-                obj.timeout = null;
-            }
-            if (obj.timeout)
-                clearTimeout(obj.timeout);
-            else if (execAsap)
-                func.apply(obj, args);
-            obj.timeout = setTimeout(delayed, threshold || 100);
-        };
-    };
 
     return Widget;
 }));

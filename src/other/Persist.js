@@ -9,25 +9,23 @@
     function discover(widget) {
         var retVal = [];
         var isPrototype = widget._id === undefined;
-        for (var key in widget) {
-            if (key.indexOf("__meta_") >= 0) {
-                var item = widget;
-                var meta = item[key];
-                if (meta.type) {
-                    if (!(isPrototype && meta.type === "proxy")) {
-                        while (meta.type === "proxy") {
-                            item = item[meta.proxy];
-                            meta = item["__meta_" + meta.method];
-                        }
-                        if (meta.id !== widget[key].id) {
-                            meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                            meta.id = widget[key].id;
-                        }
-                        retVal.push(meta);
+        widget.publishedProperties().forEach(function (_meta) {
+            var item = widget;
+            var meta = _meta;
+            if (meta.type) {
+                if (!(isPrototype && meta.type === "proxy")) {
+                    while (meta.type === "proxy") {
+                        item = item[meta.proxy];
+                        meta = item.publishedProperty(meta.method);
                     }
+                    if (meta.id !== widget.publishedProperty(_meta.id).id) {
+                        meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                        meta.id = widget.publishedProperty(_meta.id).id;
+                    }
+                    retVal.push(meta);
                 }
             }
-        }
+        }, this);
         return retVal;
     }
 
@@ -81,7 +79,7 @@
 
             var propObj = {};
             widgetPropertyWalker(widget, null, function (widget, item) {
-                if (widget[item.id + "_modified"]() || widget["__meta_" + item.id].origDefaultValue !== widget["__meta_" + item.id].defaultValue) {
+                if (widget[item.id + "_modified"]() || widget.publishedProperties(item.id).origDefaultValue !== widget.publishedProperties(item.id).defaultValue) {
                     if (_isFilterMatch(item.id, filter)) {
                         var classParts = widget._class.trim().split(" ");
                         for (var i in classParts) {
@@ -113,7 +111,7 @@
         },
         removeTheme: function (widget,callback) {
             widgetPropertyWalker(widget, null, function (widget, item) {
-                widget["__meta_" + item.id].defaultValue = widget["__meta_" + item.id].origDefaultValue;
+                widget.publishedProperties(item.id).defaultValue = widget.publishedProperties(item.id).origDefaultValue;
             });
 
             if (typeof (callback) === "function") {

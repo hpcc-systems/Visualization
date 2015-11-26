@@ -17,7 +17,9 @@
         this._selections = [];
         
         this._dataUpdated = 0;
-        this._lastDataUpdated = -1;
+        this._prevDataUpdated = -1;
+        this._columnsUpdated = 0;
+        this._prevColumnsUpdated = -1;
     }
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
     CommonFunnel.prototype.constructor = CommonFunnel;
@@ -84,10 +86,11 @@
         this.data().sort(sortingMethod);
 
         // DataProvider
-        if (this._dataUpdated > this._lastDataUpdated) {
+        if (this._dataUpdated > this._prevDataUpdated || this._columnsUpdated > this._prevColumnsUpdated) {
             this._chart.dataProvider = this.formatData(this.data());
         }
-        this._lastDataUpdated = this._dataUpdated;
+        this._prevDataUpdated = this._dataUpdated;
+        this._prevColumnsUpdated = this._columnsUpdated;
 
         // Color Palette
         this._chart.colors = this.data().map(function (row) {

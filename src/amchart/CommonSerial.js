@@ -17,7 +17,9 @@
         this._selections = [];
 
         this._dataUpdated = 0;
-        this._lastDataUpdated = -1;
+        this._prevDataUpdated = -1;
+        this._columnsUpdated = 0;
+        this._prevColumnsUpdated = -1;
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
@@ -56,7 +58,6 @@
 
     CommonSerial.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
     CommonSerial.prototype.publish("yAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
-
 
     CommonSerial.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
 
@@ -336,14 +337,14 @@
             case "log":
                 this._chart.valueAxes[0].parseDates = false;
                 this._chart.valueAxes[0].logarithmic = true;
-                this._chart.valueAxes[0].type = "mumeric";
+                this._chart.valueAxes[0].type = "numeric";
                 this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
                 break;
             case "linear":
                 /* falls through */
             default:
                 this._chart.valueAxes[0].parseDates = false;
-                this._chart.valueAxes[0].type = "mumeric";
+                this._chart.valueAxes[0].type = "numeric";
                 this._chart.valueAxes[0].logarithmic = false;
                 this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
                 break;
@@ -376,10 +377,23 @@
             this._chart.chartCursor.categoryBalloonEnabled = false;
         }
 
-        if (this._dataUpdated > this._lastDataUpdated) {
+        if (this._dataUpdated > this._prevDataUpdated || this._prevYAxisType !== this.yAxisType() || 
+            this._prevXAxisType !== this.xAxisType() || this._prevXAxisTypeTimePattern !== this.xAxisTypeTimePattern() || 
+            this._prevYAxisTypeTimePattern !== this.yAxisTypeTimePattern() || (this.paletteGrouping && this._prevPaletteGrouping !== this.paletteGrouping()) ||
+            this._columnsUpdated > this._prevColumnsUpdated
+        ) {
             this._chart.dataProvider = this.amFormatData(this.data());
         }
-        this._lastDataUpdated = this._dataUpdated;
+        this._chart.dataProvider = this.amFormatData(this.data());
+        this._prevDataUpdated = this._dataUpdated;
+        this._prevColumnsUpdated = this._columnsUpdated;
+        this._prevYAxisType = this.yAxisType();
+        this._prevXAxisType = this.xAxisType();
+        this._prevXAxisTypeTimePattern = this.xAxisTypeTimePattern();
+        this._prevYAxisTypeTimePattern = this.yAxisTypeTimePattern();
+        if (this.paletteGrouping) {
+            this._prevPaletteGrouping =  this.paletteGrouping();
+        }
 
         this.amFormatColumns();
 
@@ -528,6 +542,13 @@
             this._dataUpdated++;
         }
         return HTMLWidget.prototype.data.apply(this, arguments);
+    };
+
+    CommonSerial.prototype.columns = function(_) {
+        if (arguments.length) {
+            this._columnsUpdated++;
+        }
+        return HTMLWidget.prototype.columns.apply(this, arguments);
     };
 
     return CommonSerial;

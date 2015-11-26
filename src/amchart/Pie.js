@@ -15,7 +15,9 @@
         this._selections = [];
 
         this._dataUpdated = 0;
-        this._lastDataUpdated = -1;
+        this._prevDataUpdated = -1;
+        this._columnsUpdated = 0;
+        this._prevColumnsUpdated = -1;
     }
     Pie.prototype = Object.create(HTMLWidget.prototype);
     Pie.prototype.constructor = Pie;
@@ -96,10 +98,11 @@
 
         this._chart.colorField = "sliceColor";
 
-        if (this._dataUpdated > this._lastDataUpdated) {
+        if (this._dataUpdated > this._prevDataUpdated || this._columnsUpdated > this._prevColumnsUpdated) {
             this._chart.dataProvider = this.formatData(this.data());
         }
-        this._lastDataUpdated = this._dataUpdated;
+        this._prevDataUpdated = this._dataUpdated;
+        this._prevColumnsUpdated = this._columnsUpdated;
 
         this._chart.colors = this.data().map(function (row) {
             return this._palette(row[0]);
@@ -199,6 +202,13 @@
             this._dataUpdated++;
         }
         return HTMLWidget.prototype.data.apply(this, arguments);
+    };
+
+    Pie.prototype.columns = function(_) {
+        if (arguments.length) {
+            this._columnsUpdated++;
+        }
+        return HTMLWidget.prototype.columns.apply(this, arguments);
     };
 
     return Pie;

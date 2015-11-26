@@ -181,6 +181,11 @@ gulp.task("build-amd-src", function (done) {
     optimize(opts, done);
 });
 
+gulp.task("copy-amchart-images", function() {
+   gulp.src("./bower_components/amcharts3/amcharts/images/**/*.*")
+   .pipe(gulp.dest(cfg.distamd + "/" + "img/amcharts"));
+});
+
 gulp.task("build-amd", ["build-amd-src","copy-amchart-images"], function (done) {
     var requireConfig = {
         bundles: amd_bundles
@@ -225,7 +230,12 @@ gulp.task("bump", [], function () {
 });
 
 const TAG_FILES = ["./package.json", "./bower.json", "./dist", "./dist-amd"];
-gulp.task("git-add-dist", ["build-all"], function (cb) {
+gulp.task("git-create-branch", function (cb) {
+    var version = require("./package.json").version;
+    git.checkout("b" + version, {args: "-b"}, cb);
+});
+
+gulp.task("git-add-dist", ["git-create-branch", "build-all"], function (cb) {
     return gulp.src(TAG_FILES)
         .pipe(git.add({ args: "-f" }))
     ;
@@ -243,10 +253,13 @@ gulp.task("tag", ["git-add-dist"], function () {
 gulp.task("tag-release", ["tag"], function (cb) {
     var version = require("./package.json").version;
     var target = argv.upstream ? "upstream" : "origin"
-    git.push(target, 'v' + version, cb);
-});
-
-gulp.task("copy-amchart-images", function() {
-   gulp.src("./bower_components/amcharts3/amcharts/images/**/*.*")
-   .pipe(gulp.dest(cfg.distamd + "/" + "img/amcharts"));
+    git.push(target, 'b' + version, function(err) {
+        if (err) {
+            cb(err);
+        } else {
+            git.push(target, 'v' + version, function(err) {
+                cb(err);
+            });
+        }
+    });
 });

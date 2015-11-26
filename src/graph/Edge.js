@@ -23,6 +23,7 @@
     Edge.prototype._class += " graph_Edge";
 
     Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
+    Edge.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;
@@ -84,6 +85,7 @@
     Edge.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._elementPath = element.append("path");
+        this._tooltipElement = this._elementPath.append("title");
 
         if (this._sourceMarker) {
             this._elementPath.attr("marker-start", "url(#" + this._sourceMarker + ")");
@@ -94,6 +96,7 @@
         if (this._textBox.text()) {
             this._textBox
                 .target(domNode)
+                .tooltip(this.tooltip())
                 .render()
             ;
         }
@@ -102,8 +105,6 @@
     Edge.prototype.update = function (domNode, element, transitionDuration, skipPushMarkers) {
         SVGWidget.prototype.update.apply(this, arguments);
         var context = this;
-        var pathElements = this._elementPath;
-
         if (this.svgMarkerGlitch && !skipPushMarkers) {
             element.transition().duration((transitionDuration ? transitionDuration : 0) + 100)
                 .each("start", function (d) {
@@ -136,6 +137,7 @@
                         points[2].x + "," +
                         points[2].y;
         }
+        var pathElements = this._elementPath;
         if (transitionDuration) {
             pathElements = pathElements.transition().duration(transitionDuration);
         }
@@ -144,9 +146,11 @@
             .attr("stroke-dasharray", this._strokeDasharray)
             .attr("d", line)
         ;
+        this._tooltipElement.text(this.tooltip());
 
         if (this._textBox.text()) {
             this._textBox
+                .tooltip(this.tooltip())
                 .move(this._findMidPoint(points), transitionDuration)
             ;
         }

@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define([],t):e.common_Class=t()})(this,function(){function e(){}return e.prototype.constructor=e,e.prototype.implements=function(e){for(var t in e)this[t]===undefined&&e.hasOwnProperty(t)&&(this[t]=e[t])},e.prototype.mixin=function(t){e.prototype.implements(t.prototype)},e});

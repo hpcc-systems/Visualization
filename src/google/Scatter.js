@@ -138,7 +138,9 @@
         retVal.hAxis.maxValue = this.xAxisMaxValue();
         retVal.hAxis.slantedText = this.xAxisLabelRotation() !== 0;
         retVal.hAxis.slantedTextAngle = this.xAxisLabelRotation();
-        retVal.hAxis.format = this.xAxisFormatType();
+        if (this.xAxisFormatType()) {
+            retVal.hAxis.format = this.xAxisFormatType();
+        }
         retVal.hAxis.textStyle = {
             color: this.xAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),
@@ -174,7 +176,9 @@
         retVal.vAxis.title = this.yAxisTitle();
         retVal.vAxis.minValue = this.yAxisMinValue();
         retVal.vAxis.maxValue = this.yAxisMaxValue();
-        retVal.vAxis.format = this.yAxisFormatType();
+        if (this.yAxisFormatType()) {
+            retVal.vAxis.format = this.yAxisFormatType();
+        }
         retVal.vAxis.textStyle = {
             color: this.yAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),

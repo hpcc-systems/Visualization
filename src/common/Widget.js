@@ -4,7 +4,7 @@
         define(["d3", "./Class", "./Platform", "./PropertyExt", "./Database"], factory);
     } else {
         root.common_Widget = factory(root.d3, root.common_Class, root.common_Platform, root.common_PropertyExt, root.common_Database);
-    }
+            }
 }(this, function (d3, Class, Platform, PropertyExt, Database) {
     var widgetID = 0;
     function Widget() {
@@ -439,16 +439,18 @@
         //  ASync Render Contained Widgets  ---
         var widgets = [];
         this.publishedProperties().forEach(function (meta) {
-            switch (meta.type) {
-                case "widget":
-                    var widget = this[meta.id]();
-                    if (widget) {
-                        widgets.push(this[meta.id]());
-                    }
-                    break;
-                case "widgetArray":
-                    widgets = widgets.concat(this[meta.id]());
-                    break;
+            if (!meta.ext || meta.ext.render !== false) {
+                switch (meta.type) {
+                    case "widget":
+                        var widget = this[meta.id]();
+                        if (widget) {
+                            widgets.push(this[meta.id]());
+                        }
+                        break;
+                    case "widgetArray":
+                        widgets = widgets.concat(this[meta.id]());
+                        break;
+                }
             }
         }, this);
 

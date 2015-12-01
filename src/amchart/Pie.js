@@ -165,7 +165,7 @@
                     context._selected = {
                         field: field,
                         data: data,
-                        colIdx: 1,
+                        cIdx: 1,
                         dIdx: e.dataItem.index
                     };
                     context._selections.push(context._selected);

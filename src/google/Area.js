@@ -135,7 +135,9 @@
         retVal.hAxis.maxTextLines = this.xAxisMaxTextLines();
         retVal.hAxis.minTextSpacing = this.xAxisMinTextSpacing();
 
-        retVal.hAxis.format = this.xAxisFormatType();
+        if (this.xAxisFormatType()) {
+            retVal.hAxis.format = this.xAxisFormatType();
+        }
         retVal.hAxis.textStyle = {
             color: this.xAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),
@@ -173,7 +175,9 @@
         retVal.vAxis.minValue = this.yAxisMinValue();
         retVal.vAxis.maxValue = this.yAxisMaxValue();
 
-        retVal.vAxis.format = this.yAxisFormatType();
+        if (this.yAxisFormatType()) {
+            retVal.vAxis.format = this.yAxisFormatType();
+        }
         retVal.vAxis.textStyle = {
             color: this.yAxisFontColor(),
             fontName: this.axisFontFamily() ? this.axisFontFamily() : this.fontFamily(),

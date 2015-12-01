@@ -19,6 +19,7 @@
     Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets");
     Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
     Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
+    Form.prototype.publish("allowEmptyRequest", false, "boolean", "Allow Blank Form to be Submitted");
 
     Form.prototype.data = function (_) {
         if (!arguments.length) {
@@ -77,6 +78,16 @@
         var isValid = true;
         if (this.validate()) {
             isValid = this.checkValidation();
+        }
+        if (!this.allowEmptyRequest() && !this.inputs().some(function(w) {
+            if (w._class.indexOf("WidgetArray") !== -1) {
+                return w.content().some(function(wa) {
+                    return wa.hasValue();
+                });
+            }
+            return w.hasValue(); 
+        })) {
+            return;
         }
         this.click(isValid ? this.values() : null);
     };
@@ -185,6 +196,24 @@
                         input.style("height", bbox.height + "px");
                         inputWidget.resize().render();
                     }
+
+                    if (inputWidget._inputElement instanceof Array) {
+                        inputWidget._inputElement.forEach(function(e) {
+                            e.on("change.form", function(w) {
+                                setTimeout(function() {
+
+                                    context._controls[0].disable(!context.allowEmptyRequest() && !context.inputs().some(function(w) { 
+                                        if (w._class.indexOf("WidgetArray") !== -1) {
+                                            return w.content().some(function(wa) {
+                                                return wa.hasValue();
+                                            });
+                                        }
+                                        return w.hasValue(); 
+                                    }));
+                                }, 100);
+                            });
+                        });
+                    }
                 });
             })
         ;
@@ -196,6 +225,21 @@
         this.btntd
             .attr("colspan", this._maxCols * 2)
         ;
+        
+        // Disable Submit unless there is data
+        if (!this.allowEmptyRequest()) {
+            setTimeout(function() {
+                context._controls[0].disable(!context.allowEmptyRequest() && !context.inputs().some(function(w) { 
+                    if (w._class.indexOf("WidgetArray") !== -1) {
+                        return w.content().some(function(wa) {
+                            return wa.hasValue();
+                        });
+                    }
+                    return w.hasValue(); 
+                }));
+            }, 100);
+        }
+
     };
 
     Form.prototype.exit = function (domNode, element) {

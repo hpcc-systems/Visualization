@@ -219,7 +219,7 @@
                     context._selected = {
                         field: field,
                         data: data,
-                        colIdx: e.target.index,
+                        cIdx: e.target.index,
                         dIdx: e.index
                     };
                     context._selections.push(context._selected);

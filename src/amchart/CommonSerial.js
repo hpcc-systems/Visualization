@@ -23,6 +23,10 @@
 
         this._dateParserData = d3.time.format("%Y-%m-%d").parse;
         this._dateParserValue = d3.time.format("%Y-%m-%d").parse;
+
+        this._colorObj = {};
+        this._selectionObj = {};
+
     }
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
@@ -124,6 +128,8 @@
     CommonSerial.prototype.publish("showLastLabel", true, "boolean", "Show last label",null,{tags:["Intermediate","Shared"]});
 
     CommonSerial.prototype.publish("equalSpacing", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     var xAxisTypeTimePattern = CommonSerial.prototype.xAxisTypeTimePattern;
     CommonSerial.prototype.xAxisTypeTimePattern = function (_) {
@@ -397,6 +403,37 @@
 
         this.amFormatColumns();
 
+        var color;
+        var cType;
+        this._chart.colors = [];
+        if (context._class.indexOf("amchart_Area") !== -1) {
+            cType = "Area";
+        }
+        this._chart.dataProvider.forEach(function(dataPoint,i){
+            context.columns().filter(function (d, i) { return i > 0; }).forEach(function(col, idx) {
+                if (context.paletteGrouping() === "By Category") {
+                    color = context._palette(i);
+                } else {
+                    color = context._palette(col); 
+                }
+
+                context._chart.colors.push(color); // needed to work with area and line chart and all?
+                context._chart.dataProvider[i]["color"+idx] = color;
+                if (cType !== "Area") {
+                    context._chart.dataProvider[i]["linecolor" + idx] = context.lineColor() ? context.lineColor() : color;
+                }
+
+                if (context._colorObj[i] === undefined) {
+                    context._colorObj[i] = {};
+                }
+
+                context._colorObj[i][idx] = {
+                    color: color,
+                    lineColor: context.lineColor() ? context.lineColor() : color
+                };
+            }); 
+        });
+
         return this._chart;
     };
 
@@ -436,6 +473,11 @@
             console.log("e:");
             console.log(e);
         }
+
+        gObj.colorField = "color" + i;
+
+        gObj.lineColorField = "linecolor" + i;
+        gObj.fillColorsField = "fillcolor" + i;
 
         return gObj;
     };
@@ -489,11 +531,11 @@
             if (field) {
                 if (data[field] !== null && data[field] !== undefined) {
                     delete data[field];
-                    delete data[field2];
+                    data[field2] = context._colorObj[e.index][e.target.columnIndex].lineColor;
                     if (context.selectionMode() === "simple") {
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
-                            delete context._selected.data[context._selected.field2];
+                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
                         }
                         context._selected = null;
                     }
@@ -503,14 +545,15 @@
                     if (context.selectionMode() === "simple") {
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
-                            delete context._selected.data[context._selected.field2];
+                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
+
                         }
                         context._selected = {
                             field: field,
                             field2: field2,
                             data: data,
-                            colIdx: e.target.columnIndex,
-                            dIdx: e.index
+                            dIdx: e.index,
+                            cIdx: e.target.columnIndex
                         };
                         context._selections.push(context._selected);
                     }

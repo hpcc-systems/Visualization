@@ -27,6 +27,27 @@
         return true;
     };
 
+    IInput.prototype.hasValue = function () {
+        if (typeof this.type === "function") {
+            switch (this.type()) {
+                case "radio":
+                    /* falls through */
+                case "checkbox":
+                    if (this.value() && this.value() !== "false") {
+                        return true;
+                    }
+                    break;
+                default:
+                    if (this.value()) {
+                        return true;
+                    }
+                    break;
+            }
+            return false;
+        }
+        return this.value() !== "";
+    };
+
     //  Events  ---
     IInput.prototype.blur = function (w) {
     };

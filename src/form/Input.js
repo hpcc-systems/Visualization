@@ -29,6 +29,12 @@
         this.createInput(element);
     };
 
+    Input.prototype.disable = function (disable) {
+        this._inputElement.forEach(function(e, idx) {
+            e.attr("disabled", disable ? "disabled" : null);
+        });
+    };
+
     Input.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 

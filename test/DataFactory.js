@@ -49,6 +49,15 @@
                     ["Science", 66, 60, 72]
                 ]
             },
+            multiY: {
+                columns: ["Label", "C1", "C2", "C3"],
+                data: [
+                    ["Label 1", 75, 3000, 2900],
+                    ["Label 2", 45, 3100, 3120],
+                    ["Label 3", 98, 3300, 3460],
+                    ["Label 4", 66, 3600, 3950]
+                ]
+            },
             ampolar: {
                 columns: ["Subject", "Year 1", "Year 2", "Year 3", "Year 4"],
                 data: [

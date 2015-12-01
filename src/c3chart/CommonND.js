@@ -66,6 +66,8 @@
     CommonND.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
 
     CommonND.prototype.publish("axisTickLabelMultiLine", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
+    
+    CommonND.prototype.publish("y2", [], "array", "Array of columns to be associated with a Second Y-Axis",null,{tags:["Intermediate"]});
 
     CommonND.prototype.enter = function (domNode, element) {
         if (this.subchart()) {
@@ -104,10 +106,10 @@
         };
         this._config.grid = {
             x: {
-                show: this.showXGrid(),
+                show: this.showXGrid()
             },
             y: {
-                show: this.showYGrid(),
+                show: this.showYGrid()
             }
         };
 
@@ -131,6 +133,23 @@
             this._config.data.x = this.columns()[0];
             this._config.data.xFormat = this.xAxisTypeTimePattern();
             break;
+        }
+
+        if(this.y2() instanceof Array && this.y2().length > 0){
+            var axesObj = {};
+            var y2arr = this.y2();
+            this._config.axis.y2 = {
+                show: y2arr.length > 0
+            };
+            if(this.columns().length > 1){
+                var cols = this.columns();
+                for(var i = 0;i<y2arr.length;i++){
+                    for(var j = 1;j<cols.length;j++){
+                        axesObj[cols[j]] = y2arr.indexOf(cols[j]) !== -1 ? "y2" : "y";
+                    }
+                }
+                this._config.data.axes = axesObj;
+            }
         }
 
         Common.prototype.enter.apply(this, arguments);

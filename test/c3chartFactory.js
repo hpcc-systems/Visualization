@@ -16,6 +16,15 @@
                     );
                 });
             },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Bar"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
+                    );
+                });
+            }
         },
         Column: {
             simple: function (callback) {
@@ -35,6 +44,15 @@
                         .xAxisType("time")
                         .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
                         //.yAxisType("linear") TODO
+                    );
+                });
+            },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Column"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
                     );
                 });
             }
@@ -68,10 +86,20 @@
                                 .columns(DataFactory.ND.random.columns(6))
                                 .data(DataFactory.ND.random.data(6,6))
                                 .types(["spline","scatter","scatter","scatter","scatter"]))
-                    
+                    ;
                     callback(grid);
                 });
             },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Combo"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .types(["bar","line","line"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
+                    );
+                });
+            }
         },
         Donut: {
             simple: function (callback) {
@@ -89,6 +117,15 @@
                     callback(new Scatter()
                     .columns(DataFactory.ND.subjects.columns)
                     .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Scatter"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
                     );
                 });
             }
@@ -113,6 +150,15 @@
                     );
                 });
             },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Line"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
+                    );
+                });
+            }
         },
         Area: {
             simple: function (callback) {
@@ -120,6 +166,15 @@
                     callback(new Area()
                     .columns(DataFactory.ND.subjects.columns)
                     .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Area"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
                     );
                 });
             }
@@ -140,6 +195,15 @@
                     callback(new Step()
                     .columns(DataFactory.ND.subjects.columns)
                     .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Step"], function (DataFactory, Widget) {
+                    callback(new Widget()
+                        .y2(["C2","C3"])
+                        .columns(DataFactory.ND.multiY.columns)
+                        .data(DataFactory.ND.multiY.data)
                     );
                 });
             }

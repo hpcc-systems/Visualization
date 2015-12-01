@@ -1,3 +1,4 @@
+﻿
 <!doctype html>
 <html>
 <head>
@@ -111,6 +112,10 @@
                         <input id="showProperties" type="checkbox" checked onchange="showProperties(this.checked);" />
                     </li>
                     <li>
+                        <label for="showPropertyTree">&nbsp;&nbsp;Property Tree:</label>
+                        <input id="showPropertyTree" type="checkbox" onchange="showPropertyTree(this.checked);" />
+                    </li>
+                    <li>
                         <label for="showSerialization">&nbsp;&nbsp;S. Test:</label>
                         <input id="showSerialization" type="checkbox" onchange="showSerialization(this.checked);" />
                     </li>
@@ -172,13 +177,16 @@
         var mainDiv = document.getElementById("main");
         var frame = null;
         var main = null;
+        var propTree = null;
         var testTheme = null;
         var testWidget = null;
         var currWidget = null;
+        var propEditor = null;
         var showProperties = null;
+        var showPropertyTree = null;
         var debouncedResize = null;
 
-        require(["d3", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "test/Factory"], function (d3, Surface, Grid, Persist, PropertyEditor, testFactory) {
+        require(["d3", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "src/tree/CirclePacking", "test/Factory"], function (d3, Surface, Grid, Persist, PropertyEditor, Dendrogram, testFactory) {
             var sampleSelect = d3.select("#widgetSelect");
             var categoryOptions = sampleSelect.selectAll("li").data(d3.map(testFactory.categories).entries());
             categoryOptions.enter()
@@ -221,7 +229,9 @@
                 ;
             });
             
-            var propEditor = new PropertyEditor().showColumns(false).showData(false).ignoredClasses(["layout_Cell"]);
+            propEditor = new PropertyEditor()
+                .show_settings(true);
+            ;
             propEditor.onChange =  Surface.prototype.debounce(function (widget, propID) {
                 if (propID === "columns") {
                 } else if (propID === "data") {
@@ -231,6 +241,8 @@
                     displayThemeText();
                 }
             }, 500);
+            
+            propTree = new Dendrogram();
             var serializationSurface = new Surface()
             ;
             var themeTextSurface = new Surface()
@@ -254,9 +266,17 @@
                 if (document.getElementById("showProperties").checked) {
                     sourceWidget = sourceWidget || currWidget;
                     propEditor
-                        .data([sourceWidget])
+                        .widget(sourceWidget)
                         .render()
                     ;
+                }
+            }
+            
+            function displayPropertyTree(sourceWidget) {
+                if (document.getElementById("showPropertyTree").checked) {
+                    sourceWidget = sourceWidget || currWidget;
+                    propTree.data(propEditor.getDataTree());
+                    propTree.render();
                 }
             }
 
@@ -312,11 +332,13 @@
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
+                    propEditor.widget(currWidget);
                     widgetPath = "src/"+currWidget._class.split(" ").pop().split("_").join("/");
                     frame
                         .title(widgetPath)
                         .render(function (mainWidget) {
                             displayProperties(currWidget);
+                            displayPropertyTree(currWidget);
                             displaySerialization(currWidget);
                             displaySerializationText(currWidget);
                             displayThemeText(currWidget);
@@ -344,6 +366,13 @@
                             displayProperties();
                         }
                     })
+                ;
+            };
+            showPropertyTree = function (show) {
+                propTree.data(propEditor.getDataTree());
+                main
+                    .setContent(3, 0, show ? propTree : null, "", 5, 3)
+                    .render()
                 ;
             };
             showSerialization = function (show) {
@@ -387,14 +416,6 @@
                 if (first) {
                     first = false;
                     testWidget(widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params);
-                    /*
-                    var factory = testFactory.categories[0].factory;
-                    var widget = testFactory.categories[0].widgets[0].id;
-                    var sample = testFactory.categories[0].widgets[0].samples[0].id;
-
-                    console.log(widget, sample);
-                    testWidget(factory, widget, sample, params);
-                    */
                 }
             }, 250);
             frame.doResize();

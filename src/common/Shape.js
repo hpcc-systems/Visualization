@@ -52,8 +52,8 @@
             })
         ;
         shape
-            .style("fill", context.colorFill())
-            .style("stroke", context.colorStroke())
+            .style("fill", this.colorFill())
+            .style("stroke", this.colorStroke())
             .each(function (d) {
                 var element = d3.select(this);
                 context._tooltipElement.text(context.tooltip());

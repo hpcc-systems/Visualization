@@ -48,6 +48,8 @@
     Gantt.prototype.publish("minPeriod", "DD", "string", "Value axis minimum period",null,{tags:["Basic"]});
 
     Gantt.prototype.publish("guides", [], "array", "Vertical lines",null,{tags:["Intermediate"]});
+    Gantt.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
+
 
     var timePattern = Gantt.prototype.timePattern;
     Gantt.prototype.timePattern = function (_) {
@@ -136,10 +138,7 @@
             },
             "rotate": true,
             "dataProvider": [],
-            "chartScrollbar": {},
-            "export": {
-                "enabled": true
-             }
+            "chartScrollbar": {}
         };
 
         if (typeof define === "function" && define.amd) {

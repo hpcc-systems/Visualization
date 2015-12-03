@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require", "../common/Utility", "./SerialAxis"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require", "../common/Utility", "./SerialAxis", "amcharts.plugins.export"], factory);
     } else {
         root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility, root.amchart_SerialAxis);
     }
@@ -79,6 +79,7 @@
     CommonSerial.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     CommonSerial.prototype.publish("y2", [], "array", "Columns to associate with second Y-Axis");
+    CommonSerial.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
 
     var xAxes = CommonSerial.prototype.xAxes;
     var yAxes = CommonSerial.prototype.yAxes;
@@ -486,6 +487,7 @@
         var context = this;
         var initObj = {
             type: "serial",
+            "theme": "light",
             addClassNames: true,
             chartScrollbar: {},
             chartCursor: {
@@ -498,12 +500,16 @@
                 "oneBalloonOnly": true,
                 "balloonPointerOrientation": "vertical",
                 "valueBalloonsEnabled": false // always set false
+            },
+            "export": {
+                "enabled": this.enableExport(),
             }
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
+
         this._chart.addListener("clickGraphItem", function(e) {
             var graph = e.graph;
             var data  = e.item.dataContext;

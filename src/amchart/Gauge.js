@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart", "require", "amcharts.plugins.export"], factory);
     } else {
         root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart, root.require);
     }
@@ -49,6 +49,8 @@
     Gauge.prototype.publish("animatationDuration", 2, "number", "Animation Duration (sec)",null,{tags:["Intermediate"]});
 
     Gauge.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    Gauge.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
 
     Gauge.prototype.updateChartOptions = function() {
         this._chart.type = "gauge";
@@ -143,6 +145,9 @@
             addClassNames: true,
             axes: [{}],
             arrows:[{}],
+            "export": {
+                "enabled": this.enableExport(),
+            }
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");

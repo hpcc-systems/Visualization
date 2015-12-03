@@ -28,6 +28,8 @@ require.config({
         "amcharts.xy": "../bower_components/amcharts3/amcharts/xy",
         "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
         "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
+        "amcharts.plugins.dataloader": "../bower_components/amcharts3/amcharts/plugins/dataloader/dataloader",
+        "amcharts.plugins.export": "../bower_components/amcharts3/amcharts/plugins/export/export",
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
 
         "simpleheat": "../bower_components/simpleheat/index",
@@ -84,6 +86,23 @@ require.config({
                 AmCharts.isReady = true;
             }
         },
+        'amcharts.plugins.responsive': {
+            deps: [ 'amcharts' ]
+        },
+        'amcharts.plugins.dataloader': {
+            deps: [ 'amcharts' ]
+        },
+        'amcharts.plugins.export': {
+            deps: [ 'amcharts' ],
+                        init: function() {
+                            // CSS exception; load once it's ready
+                            var link = document.createElement("link");
+                            link.type = "text/css";
+                            link.rel = "stylesheet";
+                            link.href = "../bower_components/amcharts3/amcharts/plugins/export/export.css";
+                            document.getElementsByTagName("head")[0].appendChild(link);
+                        }
+        },
         "simpleheat": {
             exports: "simpleheat",
             init: function() {
@@ -124,10 +143,26 @@ case "cdn.rawgit.com":
             "amcharts.gantt": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
+            "amcharts.plugins.export": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/export/export",
             "amchartsImg": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/images/",
+
             "simpleheat": "//" + window.location.hostname + "/mourner/simpleheat/v0.3.0/simpleheat",
 
             "src": "../src"
+        }, 
+        shim: {
+            'amcharts.plugins.export': {
+                deps: [ 'amcharts' ],
+                            init: function() {
+                                var protocol = window.location.protocol !== "https" ? "http://" : "https://";
+                                // CSS exception; load once it's ready
+                                var link = document.createElement("link");
+                                link.type = "text/css";
+                                link.rel = "stylesheet";
+                                link.href = protocol + "cdn.amcharts.com/lib/3/plugins/export/export.css";
+                                document.getElementsByTagName("head")[0].appendChild(link);
+                            }
+            }
         }
     });
 }

@@ -788,7 +788,9 @@
                             }
                         }
                     });
-                    updatedViz.clear();
+                    if (updatedViz.type !== "GRAPH") {
+                        updatedViz.clear();    
+                    } 
                     if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
                         dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
                     }

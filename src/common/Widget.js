@@ -359,7 +359,7 @@
         };
     };
 
-    Widget.prototype.watch = function (func) {
+    Widget.prototype.monitor = function (func) {
         var context = this;
         var idx = this._watchArr.push(func) - 1;
         return {

@@ -129,7 +129,7 @@
         }
         if (widget) {
             var context = this;
-            this._watch = widget.watch(function (paramId, newVal, oldVal) {
+            this._watch = widget.monitor(function (paramId, newVal, oldVal) {
                 if (oldVal !== newVal) {
                     context.lazyRender();
                 }

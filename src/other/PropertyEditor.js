@@ -237,7 +237,7 @@
     
     PropertyEditor.prototype.createWatch = function(obj){
         var context = this;
-        this.__propertyEditor_watch.push(obj.watch(function(key, newVal){
+        this.__propertyEditor_watch.push(obj.monitor(function(key, newVal){
             if(typeof (newVal) === "object"){
                 context.render();
             }

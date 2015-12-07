@@ -48,6 +48,9 @@
                 marshaller = new Marshaller()
                     .target("marshaller")
                     .ddlUrl(newUrl.constructUrl())
+                    .on("commsError", function (source, error) {
+                        alert("Pah Humbug:\n" + source + "\n" + error);
+                    }, true)
                     //.visualizeRoxie(true)
                     .render()
                 ;

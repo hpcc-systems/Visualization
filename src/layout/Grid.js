@@ -314,7 +314,7 @@
                 d
                    .target(this)
                 ;
-                d.__grid_watch = d.watch(function (key, newVal, oldVal) {
+                d.__grid_watch = d.monitor(function (key, newVal, oldVal) {
                     if (context._renderCount && key.indexOf("grid") === 0 && newVal !== oldVal) {
                         context.childMoved();
                     }

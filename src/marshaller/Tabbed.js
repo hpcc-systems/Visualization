@@ -88,6 +88,7 @@
         this.widgets().forEach(function (d) {
             tabContent = tabContent.concat(d.widget().content());
         });
+        var context = this;
         this.marshaller = new HipieDDL.Marshaller()
             .proxyMappings(this.proxyMappings())
             .widgetMappings(d3.map(tabContent.map(function (d) {
@@ -95,10 +96,12 @@
             }), function (d) {
                 return d.id();
             }))
+            .on("commsError", function (source, error) {
+                context.commsError(source, error);
+            })
         ;
 
         //  Parse DDL  ---
-        var context = this;
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
             this.marshaller.parse(this.ddlUrl(), function () {
                 populateContent();
@@ -144,6 +147,10 @@
             });
         }
         return this;
+    };
+
+    Tabbed.prototype.commsError = function (source, error) {
+        alert("Comms Error:\n" + source + "\n" + error);
     };
 
     return Tabbed;

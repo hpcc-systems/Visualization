@@ -377,7 +377,7 @@
         var retVal = this.mappings.doMapAll(db);
         if (this.sort) {
             Utility.multiSort(retVal, db.hipieMapSortArray(this.sort));
-        }
+                    }
         if (this.reverse) {
             retVal.reverse();
         }
@@ -558,6 +558,7 @@
                         widget
                             .id(visualization.id)
                             .columns(context.label)
+                            .pagination(true)
                         ;
                     });
                     break;
@@ -797,7 +798,9 @@
                             }
                         }
                     });
-                    updatedViz.clear();
+                    if (updatedViz.type !== "GRAPH") {
+                        updatedViz.clear();    
+                    } 
                     if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
                         dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
                     }
@@ -941,9 +944,11 @@
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
-        this.comms.call(this.request, function (response) {
+        this.comms.call(this.request).then(function (response) {
             context.processResponse(response, request, updates);
             ++context._loadedCount;
+        }).catch(function (e) {
+            context.dashboard.marshaller.commsError("DataSource.prototype.fetchData", e);
         });
     };
 
@@ -1092,26 +1097,20 @@
         };
 
         var context = this;
-        transport
-            .call(request, function (response) {
-                if (exists(hipieResultName, response)) {
-                    transport.fetchResult(hipieResultName, function (ddlResponse) {
-                        var json = ddlResponse[0][hipieResultName];
-                        //  Temp Hack  ---
-                        var ddlParts = json.split("<RoxieBase>\\");
-                        if (ddlParts.length > 1) {
-                            var urlEndQuote = ddlParts[1].indexOf("\"");
-                            ddlParts[1] = ddlParts[1].substring(urlEndQuote);
-                            json = ddlParts.join(url);
-                        }
-                        //  ---  ---
-                        context.parse(json, function () {
-                            callback(response);
-                        });
+        transport.call(request).then(function (response) {
+            if (exists(hipieResultName, response)) {
+                return transport.fetchResult(hipieResultName).then(function (ddlResponse) {
+                    var json = ddlResponse[0][hipieResultName];
+                    context.parse(json, function () {
+                        callback(response);
                     });
-                }
-            })
-        ;
+                }).catch(function (e) {
+                    context.commsError("Marshaller.prototype.url", e);
+                });
+            }
+        }).catch(function (e) {
+            context.commsError("Marshaller.prototype.url", e);
+        });
     };
 
     Marshaller.prototype.proxyMappings = function (_) {
@@ -1152,6 +1151,18 @@
         return this._visualizationArray;
     };
 
+    Marshaller.prototype.on = function (eventID, func) {
+        if (this[eventID] === undefined) {
+            throw "Method:  " + eventID + " does not exist.";
+        }
+        var origFunc = this[eventID];
+        this[eventID] = function () {
+            origFunc.apply(this, arguments);
+            func.apply(this, arguments);
+        };
+        return this;
+    };
+
     Marshaller.prototype.allDashboardsLoaded = function () {
         return this.dashboardArray.filter(function (item) { return !item.allVisualizationsLoaded(); }).length === 0;
     };
@@ -1169,6 +1180,10 @@
             }
         }
         waitForLoad(callback);
+    };
+
+    Marshaller.prototype.commsError = function (source, error) {
+        console.log("Comms Error:\n" + source + "\n" + error);
     };
 
     return {

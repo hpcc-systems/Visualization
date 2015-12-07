@@ -237,7 +237,7 @@
         };
     };
 
-    PropertyExt.prototype.watch = function (func) {
+    PropertyExt.prototype.monitor = function (func) {
         var context = this;
         var idx = this._watchArr.push(func) - 1;
         return {

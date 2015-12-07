@@ -1,5 +1,5 @@
 {
-    "predef": [ "define", "colorbrewer", "google" ],
+    "predef": [ "define", "colorbrewer", "google", "Promise" ],
 
     // JSHint Default Configuration File (as on JSHint website)
     // See http://jshint.com/docs/ for more details

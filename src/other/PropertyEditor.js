@@ -229,7 +229,7 @@
                     return typeOrder.indexOf(a.type) < typeOrder.indexOf(b.type) ? -1 : 1;
                 }
             });
-        }
+            }
         else if(this.sorting() === "A-Z") {
             paramArr.sort(function(a,b){ return a.id < b.id ? -1 : 1;});
         }

@@ -102,7 +102,7 @@
                             arr.push(Math.floor(Math.random() * max) + min);
                         }
                     }
-                    //arr = arr.sort(function(a,b){return a > b ? 1 : -1});
+                    arr = arr.sort(function(a,b){return a > b ? 1 : -1});
                     for(var j2 = 0;j2<categoryCount;j2++){
                         var row = [];
                         for(var k2 = 0;k2<dataCount;k2++){

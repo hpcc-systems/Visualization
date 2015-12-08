@@ -483,10 +483,43 @@
     };
 
     Widget.prototype.enter = function (domNode, element) { };
-    Widget.prototype.preUpdate = function (domeNode, element) { };
+    Widget.prototype.preUpdate = function (domeNode, element) { this.preUpdateTime(); };
     Widget.prototype.update = function (domeNode, element) { };
-    Widget.prototype.postUpdate = function (domeNode, element) { };
+    Widget.prototype.postUpdate = function (domeNode, element) { this.postUpdateTime(); };
     Widget.prototype.exit = function (domeNode, element) { };
+    
+    Widget.prototype.preUpdateTime = function () { 
+        if(window.__hpcc_debug){
+            if(this._preUpdateTime === undefined){
+                this._preUpdateTime = [];
+            }
+            this._preUpdateTime.push(new Date().getTime());
+        }
+    };
+    Widget.prototype.postUpdateTime = function () { 
+        if(window.__hpcc_debug){
+            if(this._postUpdateTime === undefined){
+                this._postUpdateTime = [];
+            }
+            this._postUpdateTime.push(new Date().getTime());
+        }
+    };
+    Widget.prototype.updateDuration = function () { 
+        var diff = [];
+        var context = this;
+        if(this._preUpdateTime instanceof Array && this._postUpdateTime instanceof Array){
+            if(this._preUpdateTime.length === this._postUpdateTime.length){
+                this._preUpdateTime.forEach(function(n,i){
+                    diff.push(context._postUpdateTime[i] - context._preUpdateTime[i]);
+                });
+            }
+        }
+        var sum = 0;
+        diff.forEach(function(n){
+            sum += n;
+        });
+        return sum/diff.length;
+    };
 
     return Widget;
 }));

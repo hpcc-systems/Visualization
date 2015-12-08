@@ -320,29 +320,38 @@
                 }
             }
 
-            updateUrl = function (widget) {
-                var urlParam = "src/" + widget.classID().split("_").join("/");
-                var params = Persist.serializeToObject(widget).__properties;
-                for (var key in params) {
-                    switch (typeof (params[key])) {
-                        case "boolean":
-                        case "number":
-                        case "string":
-                            var newParam = "&" + encodeURIComponent(key);
-                            if (params[key] !== undefined) {
-                                newParam += "=" + encodeURIComponent(params[key]);
-                            }
-                            if (urlParam.length + newParam.length < 2000) { //  2000 comes from:  http://stackoverflow.com/a/417184
-                                urlParam += newParam;
-                            }
-                    }
-                }
-                try {
-                    window.history.pushState("", "", searchParts[0] + "?" + urlParam);
-                } catch (e) {
-                    //  Local files do not have history...
-                }
-            };
+            updateUrl = function (widget) {}
+//            updateUrl = function (widget) {
+//                var urlParam = "src/" + widget.classID().split("_").join("/");
+//                var params = Persist.serializeToObject(widget).__properties;
+//                for (var key in params) {
+//                    switch (typeof (params[key])) {
+//                        case "boolean":
+//                        case "number":
+//                        case "string":
+//                            var newParam = "&" + encodeURIComponent(key);
+//                            if (params[key] !== undefined) {
+//                                newParam += "=" + encodeURIComponent(params[key]);
+//                            }
+//                            if (urlParam.length + newParam.length < 2000) { //  2000 comes from:  http://stackoverflow.com/a/417184
+//                                urlParam += newParam;
+//                            }
+//                    }
+//                }
+//                try {
+//                    if(widgetPath && widgetTest){
+//                        var urlParams = urlParam.split("&").splice(1).join("&");
+//                        if(urlParams.length > 0){
+//                            urlParams = widgetPath+"."+widgetTest+"&"+urlParams;
+//                        }
+//                        window.history.pushState("", "", searchParts[0] + "?" + urlParams);
+//                    } else {
+//                        window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+//                    }
+//                } catch (e) {
+//                    //  Local files do not have history...
+//                }
+//            };
 
             testWidget = function (func, params) {
                 func(function (widget) {

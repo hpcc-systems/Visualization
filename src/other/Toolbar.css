@@ -8,6 +8,7 @@
 }
 .other_Toolbar .toolbar-title span{
     position:relative;
+    display: inline-block;
 }
 .other_Toolbar .toolbar-left-buttons{
     float:left;

@@ -8,8 +8,8 @@
 }
 .composite_CommandWidget > div,
 .composite_CommandWidget > div > div,
-.composite_CommandWidget > div > div > div,
-.composite_CommandWidget > div > div > div > div{
+.composite_CommandWidget > div > div > div:not(.popupWidget),
+.composite_CommandWidget > div > div > div:not(.popupWidget) > div{
     width:100%!important;
     /*height:100%;*/
 }
@@ -46,4 +46,30 @@
 }
 .composite_CommandWidget > .surfaceWidget > div > .layout_Border{
     background-color:#FFFFFF;
+}
+.popupWidget > div {
+    background-color: #FFF;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.4)
+}
+.popupWidget > div:before, .popupWidget > div:after {
+    content:"\A";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+
+}
+.popupWidget > div:before {
+    border-color: transparent transparent #ccc transparent;
+    right:11px;
+    top:-12px;
+    border-width: 0 10px 10px 10px;
+}
+.popupWidget > div:after {
+    border-color: transparent transparent #fff transparent;
+    right:11px;
+    top:-10px;
+    border-width: 0 10px 10px 10px;
 }

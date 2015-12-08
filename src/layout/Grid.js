@@ -374,7 +374,9 @@
                 
                 context._dragCellOffsetX = context._currLoc[0] - d.gridCol();
                 context._dragCellOffsetY = context._currLoc[1] - d.gridRow();
-                context.createDropTarget(context._currLoc,context._handle);
+                
+                context._dropTargetExists = false;
+                
                 setTimeout(function () {
                     context.contentDiv.selectAll(".cell_." + context._id)
                         .classed("dragItem", function (d2) {
@@ -384,12 +386,15 @@
                         })
                     ;
                 }, 0);
-                
                 context._initSelection = true;
             })
             .on("drag", function (d) {
                 context._initSelection = false;
                 context._dragCell = d;
+                if(!context._dropTargetExists){
+                    context.createDropTarget(context._currLoc,context._handle);
+                    context._dropTargetExists = true;
+                }
                 context.findCurrentLocation(d3.event.sourceEvent);
                 if(typeof (context._currLocation) === "undefined" || (context._currLocation[0] !== context._currLoc[0] || context._currLocation[1] !== context._currLoc[1])){
                     context._currLocation = context._currLoc;
@@ -623,7 +628,6 @@
 
     Grid.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-        var context = this;
         
         this._parentElement.style("overflow-x", this.fitTo() === "width" ? "hidden" : null);
         this._parentElement.style("overflow-y", this.fitTo() === "width" ? "scroll" : null);

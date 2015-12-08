@@ -42,19 +42,16 @@
             var box = this.getBoundingClientRect();
             var spanBox = span.node().getBoundingClientRect();
             var offset = (box.height/2) - (spanBox.height/2) - (spanBox.top - box.top);
-            span.style({
-                top:offset+"px",
-                left:offset+"px"
-            });
+            span.style("padding", offset+"px");
         });
         title.exit().remove();
         
         element.style("background-color",this.backgroundColor());
                 
         var leftBtns = element.selectAll("div.toolbar-left-buttons")
-                .data([this.leftButtons()],function(d){return d.id();});
+                .data(this.leftButtons() !== null ? [this.leftButtons()] : [],function(d){return d.id();});
         var rightBtns = element.selectAll("div.toolbar-right-buttons")
-                .data([this.rightButtons()],function(d){return d.id();});
+                .data(this.rightButtons() !== null ? [this.rightButtons()] : [],function(d){return d.id();});
         
         leftBtns.enter().append("div").classed("toolbar-left-buttons toolbar-buttons",true)
                 .each(function(d){

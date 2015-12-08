@@ -9,7 +9,14 @@
 .other_PropertyEditor .property-table{
     width:100%;
     border: 1px solid #ddd;
+    border-width:0 0 0 1px;
 }
+.other_PropertyEditor thead > tr > th{background-color:#333;}
+.other_PropertyEditor .other_PropertyEditor th{background-color:#444;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#555;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#666;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#777;}
+
 .other_PropertyEditor .property-table thead > tr > th{
     text-align:left;
     background-color:#333;
@@ -28,7 +35,7 @@
     display:none;
 }
 .other_PropertyEditor .property-table tbody > tr:nth-child(even){
-    background-color: #F7F7F7;
+    background-color: #F9F9F9;
 }
 .other_PropertyEditor .property-table tbody > tr:nth-child(odd){
     background-color: #FFF;
@@ -36,7 +43,7 @@
 .other_PropertyEditor .property-table tbody > tr > td{
     text-align:left;
     color:#333;
-    padding:2px;
+    padding:0 0 0 2px;
 }
 .other_PropertyEditor .property-input-cell > div{
     padding-left: 8px;

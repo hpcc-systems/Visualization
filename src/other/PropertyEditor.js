@@ -23,6 +23,8 @@
     PropertyEditor.prototype.publish("collapsed", false, "boolean", "If true, the table will default to collapased",null,{tags:["Basic"]});
     PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)",null,{tags:["Basic"]});
     
+    PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table",null,{tags:["Basic"]});
+    
     PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
 
     PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
@@ -77,9 +79,23 @@
                 var element = d3.select(this);
                 element.select("thead > tr > th > span")
                     .text(function (d) {
-                        return d.classID();
+                        var spanText = '';
+                        if(context.label()){
+                            spanText += context.label() + ": ";
+                        }
+                        spanText += d.classID();
+                        return spanText;
                     })
                 ;
+                element.selectAll("i").each(function(){
+                    var i = d3.select(this);
+                    if(i.classed("fa-eye") || i.classed("fa-eye-slash")){
+                        i
+                            .classed("fa-eye",!context.hideNonWidgets())
+                            .classed("fa-eye-slash",context.hideNonWidgets())
+                        ;
+                    }
+                });
                 context.renderInputs(element.select("tbody"), d);
             })
         ;
@@ -102,10 +118,32 @@
                     }).join(",");
                     element.selectAll(tablePath + " > tbody > tr.property-widget-wrapper").style("display", "table-row");
                     element.selectAll(selectString).style("display","table-row");
-                    context.hideNonWidgets(true);
+                    context.hideNonWidgets(true).render();
+                    
+                    if(selected.length > 0){
+                        var pe;
+                        d3.selectAll(".other_PropertyEditor").each(function(){
+                            var _pe = d3.select(this).datum();
+                            if(selected.indexOf(_pe.widget().id()) !== -1){
+                                _pe.hideNonWidgets(false).render();
+                                pe = _pe;
+                            } else {
+                                _pe.hideNonWidgets(true).render();
+                            }
+                        });
+                        d3.select("#"+pe.id()).selectAll(".other_PropertyEditor").each(function(){
+                            d3.select(this).datum().hideNonWidgets(false).render();
+                        });
+                    } else {
+                        d3.selectAll(".other_PropertyEditor").each(function(){
+                            d3.select(this).datum().hideNonWidgets(false).render();
+                        });
+                    }
                 } else {
                     element.selectAll(tablePath + " tr").style("display", "table-row");
-                    context.hideNonWidgets(false);
+                    d3.selectAll(".other_PropertyEditor").each(function(){
+                        d3.select(this).datum().hideNonWidgets(false).render();
+                    });
                 }
                 context.render();
             };
@@ -182,6 +220,10 @@
                 ;
                 context.hideNonWidgets(!context.hideNonWidgets()).render();
             })
+        ;
+        hideParamsIcon
+                .classed("fa-eye",!context.hideNonWidgets())
+                .classed("fa-eye-slash",context.hideNonWidgets())
         ;
     };
 
@@ -264,12 +306,8 @@
                 var tr = d3.select(this);
                 if (param.type === "widget" || param.type === "widgetArray") {
                     tr.classed("property-widget-wrapper", true);
-                    var rowCell = tr.append("td")
+                    tr.append("td")
                         .attr("colspan", "2")
-                    ;
-                    rowCell.append("span")
-                        .classed("property-label", true)
-                        .text(param.id)
                     ;
                 } else {
                     tr.classed("property-input-wrapper", true);
@@ -314,7 +352,7 @@
             .each(function (w) {
                 d3.select(this)
                     .attr("data-widgetid", w.id())
-                    .property("data-propEditor", new PropertyEditor().target(this))
+                    .property("data-propEditor", new PropertyEditor().label(param.id).target(this))
                 ;
             })
         ;

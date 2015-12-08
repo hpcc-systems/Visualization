@@ -11,6 +11,12 @@
     border: 1px solid #ddd;
     border-width:0 0 0 1px;
 }
+.other_PropertyEditor thead > tr > th{background-color:#333;}
+.other_PropertyEditor .other_PropertyEditor th{background-color:#444;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#555;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#666;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#777;}
+
 .other_PropertyEditor .property-table thead > tr > th{
     text-align:left;
     background-color:#333;

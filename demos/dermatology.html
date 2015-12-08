@@ -338,7 +338,15 @@
                     }
                 }
                 try {
-                    window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                    if(widgetPath && widgetTest){
+                        var urlParams = urlParam.split("&").splice(1).join("&");
+                        if(urlParams.length > 0){
+                            urlParams = widgetPath+"."+widgetTest+"&"+urlParams;
+                        }
+                        window.history.pushState("", "", searchParts[0] + "?" + urlParams);
+                    } else {
+                        window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                    }
                 } catch (e) {
                     //  Local files do not have history...
                 }

@@ -776,6 +776,32 @@
                   { "source": 76, "target": 58, "value": 1 }
                 ]
             },
+            verySimple: {
+                nodes: [
+                  { "name": "Myriel", "group": 1 },
+                  { "name": "Napoleon", "group": 1 },
+                  { "name": "Mlle.Baptistine", "group": 1 },
+                  { "name": "Mme.Magloire", "group": 1 },
+                  { "name": "CountessdeLo", "group": 2 },
+                  { "name": "Geborand", "group": 2 },
+                  { "name": "Champtercier", "group": 2 },
+                  { "name": "Cravatte", "group": 3 },
+                  { "name": "Count", "group": 3 },
+                  { "name": "Marguerite", "group": 3 },
+                ],
+                "links": [
+                  { "source": 1, "target": 0, "value": 1 },
+                  { "source": 2, "target": 1, "value": 8 },
+                  { "source": 2, "target": 1, "value": 8 },
+                  { "source": 3, "target": 2, "value": 10 },
+                  { "source": 3, "target": 2, "value": 6 },
+                  { "source": 4, "target": 3, "value": 1 },
+                  { "source": 5, "target": 3, "value": 1 },
+                  { "source": 6, "target": 3, "value": 1 },
+                  { "source": 7, "target": 3, "value": 1 },
+                  { "source": 8, "target": 3, "value": 2 },
+                ]
+            },
             vertex: {
                 annotationIcons: [{ faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }]
             }

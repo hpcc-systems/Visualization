@@ -39,7 +39,10 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;        
 
-        this.visible(this.popupState());
+        this._parentElement.style({
+            visibility: this.popupState() ? null : "hidden",
+            opacity: this.popupState() ? null : 0
+        });
         
         var widgets = element.selectAll("#" + this._id + " > .popupWidget").data(this.widget() ? [this.widget()] : [], function (d) { return d._id; });
         widgets.enter().append("div")

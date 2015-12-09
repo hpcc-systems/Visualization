@@ -143,10 +143,12 @@
     <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
     </div>
     <script>
-        var def = window.location.search.split("?")[1];
+        var searchParts = window.location.search.split("?");
+        var def = searchParts[1];
         var widgetPath = "";
         var widgetTest = "";
         var params = {};
+        var monitorHandle;
         if (def) {
             def.split("&").forEach(function (param, idx) {
                 var paramParts = param.split("=");
@@ -315,13 +317,31 @@
                 }
             }
 
+            updateUrl = function (widget) {
+                var urlParam = "src/" + widget.classID().split("_").join("/");
+                var params = Persist.serializeToObject(widget).__properties;
+                for (var key in params) {
+                    switch (typeof (params[key])) {
+                        case "boolean":
+                        case "number":
+                        case "string":
+                            urlParam += "&";
+                            urlParam += key;
+                            if (params[key] !== undefined) {
+                                urlParam += "=" + params[key];
+                            }
+                    }
+                }
+                window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+            };
+
             testWidget = function (func, params) {
                 func(function (widget) {
                     currWidget = widget;
                     if (params) {
                         for (var key in params) {
-                            if(currWidget["__meta_"+key] !== undefined){
-                                if(currWidget["__meta_"+key].type === "array"){
+                            if (currWidget["__meta_" + key] !== undefined) {
+                                if (currWidget["__meta_" + key].type === "array") {
                                     currWidget[key](params[key].split(","));
                                 } else {
                                     currWidget[key](params[key]);
@@ -329,6 +349,13 @@
                             }
                         }
                     }
+                    if (monitorHandle) {
+                        monitorHandle.remove();
+                    }
+                    updateUrl(currWidget);
+                    monitorHandle = currWidget.monitor(function () {
+                        updateUrl(currWidget);
+                    });
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;

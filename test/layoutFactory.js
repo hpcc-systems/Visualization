@@ -166,6 +166,70 @@
                     grid.content()[1].indicateTheseIds([grid.content()[2].id(),grid.content()[3].id()]);
                     callback(grid);
                 });
+            },
+            complex: function (callback) {
+                require(["test/DataFactory", "src/layout/Grid", "src/chart/Pie", "src/chart/Area", "src/chart/Line", "src/other/Table", "src/map/GMap"], function (DataFactory, Grid, Pie, Area, Line, Table, GMap) {
+                    var d = DataFactory.ND.subjects.data;
+                    var c = DataFactory.ND.subjects.columns;
+                    callback(
+                        new Grid()
+                            .setContent(0,0,new GMap()
+                                .columns(DataFactory.GMap.simple.columns)
+                                .data(DataFactory.GMap.simple.data),"",2,2)
+                            .setContent(2, 0, new Area().columns(c).data(d))
+                            .setContent(2, 1, 
+                                    new Grid()
+                                    .setContent(0,0,new Line().data(d).columns(c))
+                                    .setContent(0,1,new Area().data(d).columns(c))
+                                )
+                            .setContent(3,0,new Table().columns(["Col 1", "Col 2", "Col 3"]).data([[1,2,3],[4,5,6]]))
+                            .setContent(3,1,new Pie()
+                                .columns(DataFactory.TwoD.subjects.columns)
+                                .data(DataFactory.TwoD.subjects.data))
+                            .setContent(4,0,new Area().data(d).columns(c),"",1,2)
+                    );
+                });
+            },
+            hugeTables:function(callback){
+                require(["test/DataFactory", "src/layout/Grid", "src/other/Table"], function (DataFactory, Grid, Table) {
+                    var colCount = 10;
+                    var rowCount = 1000;
+                    var t1 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    var t2 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    var t3 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    var t4 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    var t5 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    var t6 = new Table().columns(_columns(colCount)).data(_rows(colCount,rowCount));
+                    ;
+                    var grid = new Grid()
+                        .setContent(0, 0, t1,"Table 1")
+                        .setContent(0, 1, t2,"Table 2")
+                        .setContent(1, 0, t3,"Table 3")
+                        .setContent(1, 1, t4,"Table 4")
+                        .setContent(2, 0, t5,"Table 5")
+                        .setContent(2, 1, t6,"Table 6")
+                    ;
+                    callback(grid);
+                    function _columns(n){
+                        var ret = [];
+                        for(var i=1;i<=n;i++){
+                            ret.push("Column "+i);
+                        }
+                        return ret;
+                    }
+                    function _rows(n,m){
+                        var ret = [];
+                        for(var i=1;i<=m;i++){
+                            var ret2 = [];
+                            var rowStr = "Row "+i;
+                            for(var j=1;j<=n;j++){
+                                ret2.push(rowStr + " Cell "+j);
+                            }
+                            ret.push(ret2);
+                        }
+                        return ret;
+                    }
+                });
             }
         },
         Layered: {

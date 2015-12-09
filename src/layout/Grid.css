@@ -23,6 +23,9 @@
 .layout_Grid .notDragItem { 
     opacity: 1;
 }
+.layout_Grid div.hideDragCellContent[draggable=true] .surfaceWidget {
+    display:none;
+}
 .layout_Grid div[draggable=true] { 
     cursor: move;
 }

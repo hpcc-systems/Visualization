@@ -625,7 +625,7 @@
         var tcellHeight = tmpRow.node().clientHeight;
         tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
         return ipp;
     };
 

@@ -8,6 +8,14 @@
 }(this, function () {
     return {
         HTML: {
+            databomb: function (callback) {
+                require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
+                    callback(new HTML()
+                        .ddlUrl(DataFactory.Marshaller.simple.ddlUrl)
+                        .databomb(DataFactory.Marshaller.simple.databomb)
+                    );
+                });
+            },
             scale: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
@@ -35,14 +43,6 @@
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
                         .ddlUrl("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20151027-101517&ResultName=lrenn_choroweight_Comp_Ins002_DDL&Widget=ResultWidget")
-                    );
-                });
-            },
-            databomb: function (callback) {
-                require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
-                    callback(new HTML()
-                        .ddlUrl(DataFactory.Marshaller.simple.ddlUrl)
-                        .databomb(DataFactory.Marshaller.simple.databomb)
                     );
                 });
             }

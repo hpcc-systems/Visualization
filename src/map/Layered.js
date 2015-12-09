@@ -214,7 +214,6 @@
 
             var scale = this._zoom.scale();
             var newScale = scale * Math.min(this.width() / bbox.width, this.height() / bbox.height);
-            console.log(newScale * bbox.width + ":" + newScale * bbox.height );
 
             this._zoom
                 .scale(newScale)

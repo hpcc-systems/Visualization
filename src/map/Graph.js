@@ -62,7 +62,6 @@
             .attr("d", base._d3GeoPath)
         ;
         this.edgesPaths.exit().remove();
-        console.log("fullRender:" + this._renderCount);
     };
 
     Graph.prototype.layerZoomed = function (base) {

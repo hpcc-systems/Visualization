@@ -41,9 +41,11 @@
     }
     Widget.prototype = Object.create(Class.prototype);
     Widget.prototype.constructor = Widget;
-    Widget.prototype._class += " common_Widget";
     Widget.prototype.mixin(Platform);
     Widget.prototype.mixin(PropertyExt);
+    Widget.prototype._class += " common_Widget";
+
+    Widget.prototype.publishProxy("fields", "_db", "fields");
 
     Widget.prototype.export = function (_) {
         var formattedData;
@@ -132,6 +134,14 @@
         if (!arguments.length) return this._db.legacyColumns();
         this._db.legacyColumns(_);
         return this;
+    };
+
+    Widget.prototype.parsedData = function () {
+        return this._db.parsedData();
+    };
+
+    Widget.prototype.formattedData = function () {
+        return this._db.formattedData();
     };
 
     Widget.prototype.data = function (_) {

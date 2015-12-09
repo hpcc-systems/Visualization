@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
@@ -54,6 +54,38 @@
             this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
             this.hasMappings = true;
         }
+    };
+
+    function hipieType2DBType(hipieType) {
+        switch (hipieType) {
+            case "bool":
+            case "boolean":
+                return "boolean";
+            case "integer":
+            case "float":
+            case "double":
+                return "number";
+            case "date":
+            case "time":
+                return "time";
+        }
+        return "string";
+    }
+
+    SourceMappings.prototype.getFields = function () {
+        if (this.visualization.fields) {
+            return Object.keys(this.mappings).map(function(key) {
+                return this.visualization.fields.filter(function(field) {
+                   return field.id === this.mappings[key];
+                }, this).map(function(field) {
+                    return new Database.Field(field.id)
+                        .type(hipieType2DBType(field.properties.type))
+                        .label(this.reverseMappings[field.id])
+                    ;
+                }, this)[0];
+            }, this);
+        }
+        return null;
     };
 
     SourceMappings.prototype.contains = function (key) {
@@ -372,6 +404,10 @@
 
     Source.prototype.hasData = function () {
         return this.getOutput().db ? true : false;
+    };
+
+    Source.prototype.getFields = function () {
+        return this.mappings.getFields();
     };
 
     Source.prototype.getColumns = function () {

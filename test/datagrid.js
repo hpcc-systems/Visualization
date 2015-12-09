@@ -15,13 +15,43 @@ define(["d3", "src/common/Database"], function (d3, Database) {
                 .legacyColumns(testColumns, true)
                 .legacyData(testData, true)
             ;
-            assert.deepEqual(db.legacyColumns(), testColumns);
-            assert.deepEqual(db.row(0), db.legacyColumns());
-            assert.deepEqual(db.data(), testData);
-            assert.deepEqual(db.row(0), testColumns);
-            assert.deepEqual(db.row(3), ["Math", 98, 92, 90]);
-            assert.deepEqual(db.column(0), ["Subject", "Geography", "English", "Math", "Science"]);
-            assert.deepEqual(db.column(3), ["Year 3", 65, 52, 90, 66]);
+            assert.deepEqual(db.legacyColumns(), testColumns, "assert 1");
+            assert.deepEqual(db.row(0), db.legacyColumns(), "assert 2");
+            assert.deepEqual(db.data(), testData, "assert 3");
+            assert.deepEqual(db.row(0), testColumns, "assert 4");
+            assert.deepEqual(db.row(3), ["Math", 98, 92, 90], "assert 5");
+            assert.deepEqual(db.column(0), ["Subject", "Geography", "English", "Math", "Science"], "assert 6");
+            assert.deepEqual(db.column(3), ["Year 3", 65, 52, 90, 66], "assert 7");
+            var fields = db.fields();
+        });
+        it("mask/format", function () {
+            var fields = [
+                new Database.Field().label("Subject"),
+                new Database.Field().label("Year 1").type("number").format(".0%"),
+                new Database.Field().label("Year 1 Date").type("time").mask("%d/%m/%Y").format("%a %d %b, %Y")
+            ];
+            var data = [
+                ["Geography", 75/100, "01/07/2014"],
+                ["English", 90/200, "08/07/2014"],
+                ["Math", 8/10, "15/07/2014"],
+                ["Science", 666/1000, "22/07/2014"]
+            ];
+            var formattedData = [
+                ["Geography", "75%", "Tue 01 Jul, 2014"],
+                ["English", "45%", "Tue 08 Jul, 2014"],
+                ["Math", "80%", "Tue 15 Jul, 2014"],
+                ["Science", "67%", "Tue 22 Jul, 2014"]
+            ];
+            assert.equal(fields[0].label(), "Subject", "assert 1");
+            var formatDB = new Database.Grid()
+                .fields(fields, true)
+                .legacyData(data, true)
+            ;
+            assert.deepEqual(formatDB.data(), data, "assert 2");
+            assert.deepEqual(formatDB.formattedData(), formattedData, "assert 3");
+            var newDB = formatDB.clone();
+            assert.deepEqual(formatDB.data(), newDB.data(), "assert 4");
+            assert.deepEqual(formatDB.formattedData(), newDB.formattedData(), "assert 5");
         });
         it("modification", function () {
             var x = db.grid();
@@ -49,6 +79,9 @@ define(["d3", "src/common/Database"], function (d3, Database) {
             assert.equal(db.cell(2, 2), 55);
             assert.equal(db.cell(3, 3), 90);
             assert.equal(db.cell(1, 1, 33).cell(1,1), 33);
+            var fields = db.fields();
+            var newDB = new Database.Grid();
+            var fields2 = db.fields();
             var db2 = db.clone().pivot();
             for (var i = 0; i < db.length() ; ++i) {
                 assert.deepEqual(db.row(i), db2.column(i));

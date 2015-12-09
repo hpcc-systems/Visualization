@@ -118,15 +118,18 @@
                     });
                 });
 
+                var knownMixins = ["PropertyExt"];
                 if (!window.skipHierarchTest) {
                     it("Class Hierarchy", function (done) {
                         require(["src/common/Widget", path], function (Widget, TestWidget) {
                             var proto = TestWidget.prototype;
                             while (proto) {
                                 var className = getClassName(proto);
-                                var constructorName = getContructorName(proto);
-                                assert.equal(className, constructorName);
-                                if (className === "Widget") {
+                                if (className && knownMixins.indexOf(className) < 0) {
+                                    var constructorName = getContructorName(proto);
+                                    assert.equal(className, constructorName);
+                                }
+                                if (className === "Class") {
                                     break;
                                 }
                                 proto = proto.__proto__;
@@ -264,6 +267,9 @@
         return (results && results.length > 1) ? results[1] : "";
     };
     function getClassName(__prototype) {
+        if (!__prototype.classID) {
+            return "";
+        }
         var classParts = __prototype.classID().split("_");
         return classParts[classParts.length - 1];
     };

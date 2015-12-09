@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/INDChart", "require"], factory);
+        define(["d3", "../common/SVGWidget", "../common/Utility", "../api/INDChart"], factory);
     } else {
-        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.api_INDChart, root.require);
+        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.common_Utility, root.api_INDChart);
     }
-}(this, function (d3, SVGWidget, INDChart, require) {
+}(this, function (d3, SVGWidget, Utility, INDChart) {
     function MultiChart() {
         SVGWidget.call(this);
         INDChart.call(this);
@@ -117,9 +117,8 @@
     };
 
     MultiChart.prototype.requireContent = function (chartType, callback) {
-        var path = "src/" + this._allCharts[chartType].widgetClass.split("_").join("/");
-        require([path], function (WidgetClass) {
-            callback(new WidgetClass());
+        Utility.requireWidget(this._allCharts[chartType].widgetClass).then(function(Widget) {
+            callback(new Widget());
         });
     };
 

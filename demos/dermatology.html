@@ -321,6 +321,9 @@
                 var urlParam = "src/" + widget.classID().split("_").join("/");
                 var params = Persist.serializeToObject(widget).__properties;
                 for (var key in params) {
+                    if (key === "ddlUrl") {
+                        continue;
+                    }
                     switch (typeof (params[key])) {
                         case "boolean":
                         case "number":

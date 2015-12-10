@@ -23,6 +23,8 @@
     PropertyEditor.prototype.publish("collapsed", false, "boolean", "If true, the table will default to collapased",null,{tags:["Basic"]});
     PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)",null,{tags:["Basic"]});
     
+    PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table",null,{tags:["Basic"]});
+    
     PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
 
     PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
@@ -77,7 +79,12 @@
                 var element = d3.select(this);
                 element.select("thead > tr > th > span")
                     .text(function (d) {
-                        return d.classID();
+                        var spanText = '';
+                        if(context.label()){
+                            spanText += context.label() + ": ";
+                        }
+                        spanText += d.classID();
+                        return spanText;
                     })
                 ;
                 context.renderInputs(element.select("tbody"), d);
@@ -264,12 +271,8 @@
                 var tr = d3.select(this);
                 if (param.type === "widget" || param.type === "widgetArray") {
                     tr.classed("property-widget-wrapper", true);
-                    var rowCell = tr.append("td")
+                    tr.append("td")
                         .attr("colspan", "2")
-                    ;
-                    rowCell.append("span")
-                        .classed("property-label", true)
-                        .text(param.id)
                     ;
                 } else {
                     tr.classed("property-input-wrapper", true);
@@ -314,7 +317,7 @@
             .each(function (w) {
                 d3.select(this)
                     .attr("data-widgetid", w.id())
-                    .property("data-propEditor", new PropertyEditor().target(this))
+                    .property("data-propEditor", new PropertyEditor().label(param.id).target(this))
                 ;
             })
         ;

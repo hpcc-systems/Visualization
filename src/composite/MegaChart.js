@@ -54,8 +54,8 @@
         
         this._layout.setContent("right", new Legend().fixedSize(true).targetWidget(this._layout.getContent("center")));
         
-        this._layout.setContent("bottom", this._valueTitle.rotation(-90));
-        this._layout.setContent("left", this._domainTitle);
+        this._layout.setContent("left", this._valueTitle.rotation(-90));
+        this._layout.setContent("bottom", this._domainTitle);
         
         this.widget(this._layout);
     };
@@ -78,24 +78,11 @@
                 this._layout.getContent("center").chartType(this.chartType());
             }
         }
-        
         if(this.showLegend()){
             this._layout.setContent("right", new Legend().fixedSize(true).targetWidget(this._layout.getContent("center")));
         } else {
             this._layout.clearContent("right");
         }
-        if(this.valueAxisTitle() !== ""){
-            this._layout.setContent("left", this._valueTitle);
-        } else {
-            this._layout.clearContent("left");
-        }
-        
-        if(this.domainAxisTitle() !== ""){
-            this._layout.setContent("bottom", this._domainTitle);
-        } else {
-            this._layout.clearContent("bottom");
-        }
-        
     };
     MegaChart.prototype.exit = function (domNode, element) {
         Surface.prototype.exit.apply(this, arguments);

@@ -36,7 +36,7 @@
     };
 
     Grid.prototype.fieldByLabel = function (_, ignoreCase) {
-        return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label.toLowerCase() === _.toLowerCase() : field.label === _; })[0];
+        return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label.toLowerCase() === _.toLowerCase() : field.label === _; })[0] || {};
     };
 
     Grid.prototype.data = function (_, clone) {

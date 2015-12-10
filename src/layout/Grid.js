@@ -331,10 +331,6 @@
                 
                 context._startLoc = [context._currLoc[0],context._currLoc[1]];
                 
-                context._element.selectAll(".dragHandle")
-                    .style("visibility", "hidden")
-                ;
-                
                 context._handle = context.overHandle(d3.event.sourceEvent);
                 if(context._dragCell._dragHandles.indexOf(context._handle) === -1){
                     context._handle = undefined;
@@ -367,7 +363,7 @@
             .on("dragend", function () {
                 d3.event.sourceEvent.stopPropagation();
         
-                if(context._initSelection || context._startLoc[0] === context._currLoc[0] || context._startLoc[1] === context._currLoc[1]){
+                if(context._initSelection){
                     context.selectionBagClick(context.getCell(context._currLoc[1],context._currLoc[0]));
                 }
         
@@ -604,14 +600,12 @@
     Grid.prototype.selectionBagClick = function (d) {
         if(d !== null){
             var selectionObj = this._createSelectionObject(d);
-            if(d3.event.sourceEvent.ctrlKey){
-                if(this._selectionBag.isSelected(selectionObj)){
-                    this._selectionBag.remove(selectionObj);
-                    this.postSelectionChange();
-                } else {
-                    this._selectionBag.append(selectionObj);
-                    this.postSelectionChange();
-                }
+            if(this._selectionBag.isSelected(selectionObj)){
+                this._selectionBag.remove(selectionObj);
+                this.postSelectionChange();
+            } else if (d3.event.sourceEvent.ctrlKey) {
+                this._selectionBag.append(selectionObj);
+                this.postSelectionChange();
             } else {
                 this._selectionBag.set([selectionObj]);
                 this.postSelectionChange();

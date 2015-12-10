@@ -17,15 +17,6 @@
     top: 8px;
 }
 
-.tableDiv {
-    overflow: auto;
-    position: absolute;
-    left: 71%;
-    width: 27%;
-    bottom: 8px;
-    top: 8px;
-}
-
 #table table {
     width: 100%;
 }

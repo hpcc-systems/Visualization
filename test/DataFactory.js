@@ -302,7 +302,7 @@
             simple: {
                 title: ["Hello and welcome!"],
                 menu: ["aaa", "bbb", "ccc"],
-                buttonAnnotations: [{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}],
+                buttonAnnotations: [{id:"button_1",label:"\uf010",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}, {id:"button_2",label:"\uf00e",shape:"square",diameter:14,padding:"0px 5px",font:"FontAwesome"}]
             }
         },
         AbsoluteSurface: {

@@ -93,14 +93,16 @@
                     .style("cursor","pointer");
                 if (button.font === "FontAwesome") {
                     el
-                      .on("click", function(d) { context.click(d); })
-                      .append("i")
-                      .attr("class","fa")
-                      .text(function(d) { return button.label; });
+                        .style("background", "transparent")
+                        .style("border", "none")
+                        .on("click", function(d) { context.click(d); })
+                        .append("i")
+                        .attr("class","fa")
+                        .text(function(d) { return button.label; });
                 } else {
                     el
-                      .text(function(d) { return button.label; })
-                      .on("click", function(d) { context.click(d); });
+                        .text(function(d) { return button.label; })
+                        .on("click", function(d) { context.click(d); });
                 }
             })
         ;

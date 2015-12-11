@@ -47,6 +47,21 @@
     Widget.prototype.mixin(Platform);
     Widget.prototype.mixin(PropertyExt);
 
+    Widget.prototype.export = function (_) {
+        var formattedData;
+        switch(_) {
+            case "TSV":
+                formattedData = this._db.tsv();
+                break;
+            case "JSON":
+                formattedData = this._db.json();
+                break;
+            default:
+                formattedData = this._db.csv();
+        }
+        return formattedData;
+    };
+
     Widget.prototype.leakCheck = function (newNode) {
         var context = this;
         var watchArray = [newNode];

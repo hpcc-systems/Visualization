@@ -43,7 +43,7 @@
     
     MegaChart.prototype.publish("showLegend",false,"boolean","Show/Hide Legend", null, {tags:["Basic"]});
     
-    MegaChart.prototype.publish("gutter", 8, "number", "Gap Between Cells",null,{tags:["Basic"]});
+    MegaChart.prototype.publish("gutter", 0, "number", "Gap Between Cells",null,{tags:["Basic"]});
     
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType"); 
         

@@ -42,7 +42,7 @@
         ;
 
         var panes = this.getPanes();
-        panes.overlayLayer.appendChild(this.div);
+        panes.overlayMouseTarget.appendChild(this.div);
     };
 
     Overlay.prototype.draw = function () {
@@ -119,22 +119,32 @@
         this._tag = "div";
 
         var context = this;
-        this._worldSurface = new AbsoluteSurface();
-        this._worldSurface.project = function (lat, long) {
+        function calcProjection(surface, lat, long) {
             var projection = context._overlay.getProjection();
             var retVal = projection.fromLatLngToDivPixel(new google.maps.LatLng(lat, long));
-            retVal.x -= this.widgetX();
-            retVal.y -= this.widgetY();
+            var worldWidth = projection.getWorldWidth();
+            var widgetX = parseFloat(surface.widgetX());
+            var widgetY = parseFloat(surface.widgetY());
+            var widgetWidth = parseFloat(surface.widgetWidth());
+            retVal.x -= widgetX;
+            retVal.y -= widgetY;
+            while (retVal.x < 0) {
+                retVal.x += worldWidth;
+            }
+            while (retVal.x > widgetWidth) {
+                retVal.x -= worldWidth;
+            }
             return retVal;
+        }
+
+        this._worldSurface = new AbsoluteSurface();
+        this._worldSurface.project = function (lat, long) {
+            return calcProjection(this, lat, long);
         };
 
         this._viewportSurface = new AbsoluteSurface();
         this._viewportSurface.project = function (lat, long) {
-            var projection = context._overlay.getProjection();
-            var retVal = projection.fromLatLngToDivPixel(new google.maps.LatLng(lat, long));
-            retVal.x -= this.widgetX();
-            retVal.y -= this.widgetY();
-            return retVal;
+            return calcProjection(this, lat, long);
         };
     }
     GMap.prototype = Object.create(HTMLWidget.prototype);

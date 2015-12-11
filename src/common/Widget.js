@@ -4,7 +4,7 @@
         define(["d3", "./Class", "./Platform", "./PropertyExt", "./Database"], factory);
     } else {
         root.common_Widget = factory(root.d3, root.common_Class, root.common_Platform, root.common_PropertyExt, root.common_Database);
-            }
+    }
 }(this, function (d3, Class, Platform, PropertyExt, Database) {
     var widgetID = 0;
     function Widget() {
@@ -26,8 +26,6 @@
 
         this._element = d3.select();
 
-        this._watchArr = [];
-
         this._renderCount = 0;
 
         if (window.__hpcc_debug) {
@@ -43,7 +41,7 @@
     }
     Widget.prototype = Object.create(Class.prototype);
     Widget.prototype.constructor = Widget;
-    Widget.prototype._class = "common_Widget";
+    Widget.prototype._class += " common_Widget";
     Widget.prototype.mixin(Platform);
     Widget.prototype.mixin(PropertyExt);
 
@@ -128,16 +126,6 @@
         if (!arguments.length) return this._id;
         this._id = _;
         return this;
-    };
-
-    Widget.prototype.class = function (_) {
-        if (!arguments.length) return this._class;
-        this._class = _;
-        return this;
-    };
-
-    Widget.prototype.classID = function () {
-        return this._class.split(" ").pop();
     };
 
     Widget.prototype.columns = function (_) {

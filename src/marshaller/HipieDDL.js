@@ -116,6 +116,9 @@
         } else if (mappings.county) {
             this.columns = ["county", "weight"];
             this.columnsIdx = { county: 0, weight: 1 };
+        } else if (mappings.geohash) {
+            this.columns = ["geohash", "weight"];
+            this.columnsIdx = { geohash: 0, weight: 1 };
         }
         this.init();
     }
@@ -129,6 +132,9 @@
         } else if (mappings.county) {
             this.columns = ["county"];
             this.columnsIdx = { county: 0};
+        } else if (mappings.geohash) {
+            this.columns = ["geohash"];
+            this.columnsIdx = { geohash: 0 };
         }
         mappings.weight.forEach(function (w, i) {
             this.columns.push(w);
@@ -523,12 +529,28 @@
             var context = this;
             switch (this.type) {
                 case "CHORO":
-                    this.loadWidget(this.source.mappings.contains("county") ? "src/map/ChoroplethCounties" : "src/map/ChoroplethStates", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .paletteID(visualization.color)
-                        ;
-                    });
+                    if (this.source.mappings.contains("state")) {
+                        this.loadWidget("src/map/ChoroplethStates", function (widget) {
+                            widget
+                                .id(visualization.id)
+                                .paletteID(visualization.color)
+                            ;
+                        });
+                    } else if (this.source.mappings.contains("county")) {
+                        this.loadWidget("src/map/ChoroplethCounties", function (widget) {
+                            widget
+                                .id(visualization.id)
+                                .paletteID(visualization.color)
+                            ;
+                        });
+
+                    } else if (this.source.mappings.contains("geohash")) {
+                        this.loadWidget("src/map/Layered", function (widget) {
+                            widget
+                                .id(visualization.id)
+                            ;
+                        });
+                    }
                     break;
                 case "2DCHART":
                 case "PIE":

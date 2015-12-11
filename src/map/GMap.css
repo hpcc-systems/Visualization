@@ -7,9 +7,9 @@
     stroke-width: 1.0px;
 }
 
-.map_GMap .zoom {
-    fill: none;
-    pointer-events: all;
+.map_GMap .map_Layered {
+    pointer-events: auto;
+    cursor:auto;
 }
 
 .gm-style img { max-width: none; }

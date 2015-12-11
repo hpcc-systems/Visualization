@@ -1,66 +1,81 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Choropleth", "topojson", "./us-counties"], factory);
+        define(["d3", "topojson", "./Choropleth", "./us-counties", "../common/Utility"], factory);
     } else {
-        root.map_ChoroplethCounties = factory(root.d3, root.map_Choropleth, root.topojson, root.map_usCounties);
+        root.map_ChoroplethCounties = factory(root.d3, root.topojson, root.map_Choropleth, root.map_usCounties, root.common_Utility);
     }
-}(this, function (d3, Choropleth, topojson, usCounties) {
+}(this, function (d3, topojson, Choropleth, usCounties, Utility) {
+    var features = topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features;
+    var rFeatures = {};
+    for (var key in features) {
+        if (features[key].id) {
+            rFeatures[features[key].id] = features[key];
+        }
+    }
     function ChoroplethCounties() {
         Choropleth.call(this);
 
         this.projection("albersUsaPr");
+
+        this._choroTopology = usCounties.topology;
+        this._choroTopologyObjects = usCounties.topology.objects.counties;
     }
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
     ChoroplethCounties.prototype.constructor = ChoroplethCounties;
     ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
 
-    ChoroplethCounties.prototype.enter = function (domNode, element) {
-        Choropleth.prototype.enter.apply(this, arguments);
-        element.classed("map_Choropleth", true);
+    ChoroplethCounties.prototype.layerEnter = function (base, svgElement, domElement) {
+        Choropleth.prototype.layerEnter.apply(this, arguments);
 
-        var choroPaths = this._svg.selectAll("path").data(topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features);
+        this._choroplethCounties = this._choroplethTransform.insert("g", ".mesh");
+        this._selection = new Utility.SimpleSelection(this._choroplethCounties);
+        this.choroPaths = d3.select(null);
+    };
 
-        //  Enter  ---
+    ChoroplethCounties.prototype.layerUpdate = function (base) {
+        Choropleth.prototype.layerUpdate.apply(this, arguments);
+        this.choroPaths = this._choroplethCounties.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         var context = this;
-        this.choroPaths = choroPaths.enter().append("path")
+        this.choroPaths.enter().append("path")
+            .attr("class", "data")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                if (context._dataMap[d.id]) {
-                    context.click(context.rowToObj(context._dataMap[d.id]), "weight", context._selection.selected(this));
+                if (context._dataMap[d[0]]) {
+                    context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(this));
                 }
             })
-            .on("dblclick", function (d) {
-                d3.event.stopPropagation();
-                context.zoomToFit(context.active === this ? null : this, 750);
-                context.active = this;
-            })
             .on("mouseover.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d.id], context._dataMap[d.id] ? context._dataMap[d.id][1] : "N/A"], context.columns(), 1);
+                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
             })
             .on("mouseout.tooltip", function (d) {
                 context.tooltipShow();
             })
             .on("mousemove.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d.id], context._dataMap[d.id] ? context._dataMap[d.id][1] : "N/A"], context.columns(), 1);
+                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
             })
         ;
+        this.choroPaths
+            .attr("d", function (d) {
+                var retVal = base._d3GeoPath(rFeatures[d[0]]);
+                if (!retVal) {
+                    console.log("Unknown US County:  " + d);
+                }
+                return retVal;
+            })
+            .style("fill", function (d) {
+                var retVal = context._palette(d[1], context._dataMinWeight, context._dataMaxWeight);
+                return retVal;
+            })
+        ;
+        this.choroPaths.exit().remove();
     };
 
-    ChoroplethCounties.prototype.update = function (domNode, element) {
-        Choropleth.prototype.update.apply(this, arguments);
-
-        //console.time("ChoroplethCounties.prototype.update");
-        var context = this;
-        //  Update  ---
+    ChoroplethCounties.prototype.layerZoomed = function (base) {
+        Choropleth.prototype.layerZoomed.apply(this, arguments);
         this.choroPaths
-            .attr("d", this.d3Path)
-            .style("fill", function (d) {
-                var weight = context._dataMap[d.id] ? context._dataMap[d.id][1] : undefined;
-                return weight === undefined ? "url(#hash)" : context._palette(weight, context._dataMinWeight, context._dataMaxWeight);
-            })
+            .attr("stroke-width", 1.5 / base._zoom.scale() + "px")
         ;
-        //console.timeEnd("ChoroplethCounties.prototype.update");
     };
 
     return ChoroplethCounties;

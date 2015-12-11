@@ -25,8 +25,8 @@
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
 
-                        .yAxisType("linear")
-                        .xAxisType("ordinal")
+                        .yAxis(0).axisType("linear")
+                        .xAxis(0).axisType("ordinal")
                     );
                 });
             },
@@ -38,8 +38,28 @@
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
 
-                        .yAxisType("linear")
-                        .xAxisType("ordinal")
+                        .yAxis(0)
+                            .axisType("linear")
+                        .xAxis(0)
+                            .axisType("ordinal")
+                    );
+                });
+            },
+            multiY: function (callback) {
+                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+
+                        .yAxis(0)
+                            .axisType("linear")
+                        .yAxis(1)
+                            .axisType("linear")
+                        .yAxis(1)
+                            .position("right") 
+                        .y2([2,4])
+                        .xAxis(0)
+                            .axisType("ordinal")
                     );
                 });
             },
@@ -53,9 +73,10 @@
                     callback(new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
-                        
-                        .yAxisType("linear")
-                        .xAxisType("ordinal")
+                        .yAxis(0)
+                            .axisType("linear")
+                        .xAxis(0)
+                            .axisType("ordinal")
                     );
                 });
             },
@@ -64,9 +85,10 @@
                     callback(new Column()
                         .columns(DataFactory.ordinalCandleOHLC.default.columns)
                         .data(DataFactory.ordinalCandleOHLC.default.data)
-                        
-                        .yAxisType("linear")
-                        .xAxisType("ordinal")
+                        .yAxis(0)
+                            .axisType("linear")
+                        .yAxis(0)
+                            .axisType("ordinal")
                     );
                 });
             },
@@ -75,9 +97,8 @@
                     callback(new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
-                        
-                        .xAxisType("linear")
-                        .yAxisType("linear")
+                        .xAxis(0).axisType("linear")
+                        .yAxis(0).axisType("linear")
                     );
                 });
             },
@@ -86,11 +107,11 @@
                     callback(new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                        
+
                         .axisMinPeriod("MM")
-                        .xAxisType("time")
-                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                        .yAxisType("linear")
+                        .xAxis(0).axisType("time")
+                        .xAxis(0).axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                        .yAxis(0).axisType("linear")
                     );
                 });
             },
@@ -99,11 +120,12 @@
                     callback(new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
-                        
+
                         .axisMinPeriod("DD")
-                        .xAxisType("ordinal")
-                        .yAxisType("time")
-                        .yAxisTypeTimePattern("%Y-%m-%d")
+                        .xAxis(0).axisType("ordinal")
+                        .yAxis(0).axisType("time")
+                        .yAxis(0).axisTypeTimePattern("%Y-%m-%d")
+
                     );
                 });
             },
@@ -132,8 +154,7 @@
                     callback(new Scatter()
                         .columns(DataFactory.scatterLinear.default.columns)
                         .data(DataFactory.scatterLinear.default.data)
-                        
-                        .xAxisType("linear")
+                        .xAxis(0).axisType("linear")
                     );
                 });
             },
@@ -152,10 +173,9 @@
                     callback(new Line()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                        
-                        .xAxisType("time")
-                        .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                        .yAxisType("linear")
+                        .xAxis(0).axisType("time")
+                        .xAxis(0).axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                        .yAxis(0).axisType("linear")
                     );
                 });
             }

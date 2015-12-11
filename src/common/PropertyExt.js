@@ -22,7 +22,7 @@
             case "set":
                 this.checkedAssign = function (_) {
                     if (!set || set.indexOf(_) < 0) {
-                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -36,7 +36,7 @@
                         d.style.color = _;
                         //Element's style.color will be reverted to litmus or set to "" if an invalid color is given
                         if (d.style.color === litmus || d.style.color === "") {
-                            console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                            console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                         }
                     }
                     return _;
@@ -60,7 +60,7 @@
             case "array":
                 this.checkedAssign = function (_) {
                     if (!(_ instanceof Array)) {
-                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -68,7 +68,7 @@
             case "object":
                 this.checkedAssign = function (_) {
                     if (!(_ instanceof Object)) {
-                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -76,7 +76,7 @@
             case "widget":
                 this.checkedAssign = function (_) {
                     if (!_._class || _._class.indexOf("common_Widget") < 0) {
-                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -84,7 +84,7 @@
             case "widgetArray":
                 this.checkedAssign = function (_) {
                     if (_.some(function (row) { return (!row._class || row._class.indexOf("common_Widget") < 0); })) {
-                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -92,7 +92,7 @@
             default:
                 this.checkedAssign = function (_) {
                     if (window.__hpcc_debug) {
-                        console.log("Unchecked property type for '" + id + "':  " + _ + " expected " + type);
+                        console.error("Unchecked property type for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -158,7 +158,7 @@
                     this[__prop_ + id] = _;
                 }
             }
-            return this;
+            return this._context ? this._context : this;
         };
         this[id + "_modified"] = function () {
             var isPrototype = this._id === undefined;

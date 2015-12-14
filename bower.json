@@ -42,7 +42,7 @@
     "topojson": "~1.6.19",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",
     "d3-cloud": "~1.2.1",
-    "amcharts3": "~3.17.3",
+    "amcharts3": "~3.18.0",
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
     "es6-promise":  "~3.0.2"
   },

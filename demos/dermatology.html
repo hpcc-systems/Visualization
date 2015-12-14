@@ -325,14 +325,20 @@
                         case "boolean":
                         case "number":
                         case "string":
-                            urlParam += "&";
-                            urlParam += key;
+                            var newParam = "&" + encodeURIComponent(key);
                             if (params[key] !== undefined) {
-                                urlParam += "=" + params[key];
+                                newParam += "=" + encodeURIComponent(params[key]);
+                            }
+                            if (urlParam.length + newParam.length < 2000) { //  2000 comes from:  http://stackoverflow.com/a/417184
+                                urlParam += newParam;
                             }
                     }
                 }
-                window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                try {
+                    window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                } catch (e) {
+                    //  Local files do not have history...
+                }
             };
 
             testWidget = function (func, params) {

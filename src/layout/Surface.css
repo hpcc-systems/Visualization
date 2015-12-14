@@ -7,8 +7,6 @@
 .layout_Surface > h3 {
     margin: 0px;
     padding: 2px;
-    text-align: center;
-    font-weight: bold;
     background-color: #e5e5e5;
 }
 .layout_Surface .html-button-container {
@@ -22,11 +20,11 @@
 }
 
 .layout_Surface .html-button-container .surface-button {
-    position: relative;
-    background: transparent;
-    border: none;
+    margin-right: 5px;
+}
+.layout_Surface .html-button-container .surface-button i {
     opacity: 0.8;
-}​
+}
 
 .layout_Surface .html-button-container .surface-button:hover { opacity: 1; }
 .layout_Surface .html-button-container .surface-button:active { opacity: 0.5; }

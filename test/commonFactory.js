@@ -151,6 +151,30 @@
                         });
                     });
             }
+        },
+        Exporter: {
+            Simple: function (callback) {
+                require(["test/DataFactory", "src/layout/Surface", "src/chart/Line", "src/common/Utility"], function (DataFactory, Surface, Line, Utility) {
+                    var retVal = new Surface()
+                        .title(DataFactory.Surface.simple.title)
+                        .buttonAnnotations([{id:"export_CSV",label:"CSV",width:"50px", height:"18px",padding:"0px 5px", format:"CSV"},
+                            {id:"export_TSV",label:"TSV",width:"50px", height:"18px",padding:"0px 5px", format:"TSV"},
+                            {id:"export_CSV",label:"JSON",width:"50px", height:"18px",padding:"0px 5px", format:"JSON"}])
+                        .widget(new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .on("click", function(d) {
+                            var formattedData = retVal.widget().export(d.format);
+                            var classID = retVal.widget().classID();
+                            if (confirm("The data in " + d.format + " format:\n\n" + formattedData + "\n\n Would you like to save it as a file?")) {
+                                Utility.downloadData(d.format, formattedData, classID);
+                            }
+                        })
+                    ;
+                    callback(retVal);
+                });
+            }
         }
     };
 

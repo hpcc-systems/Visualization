@@ -41,6 +41,7 @@
                     widgetWalker(widget[publishItem.id](), visitor);
                     break;
                 case "widgetArray":
+                case "propertyArray":
                     var widgetArray = widget[publishItem.id]();
                     widgetArray.forEach(function(widget) {
                         widgetWalker(widget, visitor);
@@ -159,6 +160,7 @@
                             retVal.__properties[item.id] = context.serializeToObject(widget[item.id](), null, includeData);
                             return true;
                         case "widgetArray":
+                        case "propertyArray":
                             retVal.__properties[item.id] = [];
                             var widgetArray = widget[item.id]();
                             widgetArray.forEach(function (widget, idx) {
@@ -208,6 +210,7 @@
                             });
                             break;
                         case "widgetArray":
+                        case "propertyArray":
                             var widgetArrayKey = item.id;
                             var widgetStateArray = state.__properties[item.id];
                             if (widgetStateArray.length) {

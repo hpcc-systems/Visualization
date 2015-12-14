@@ -237,6 +237,53 @@
                     return node;
                 }
             };
+        },
+        downloadData: function (format, data, id) {
+            id = id || "data";
+            var currentdate = new Date(); 
+            var timeFormat =  d3.time.format("%Y-%m-%dT%H_%M_%S");
+            var now = timeFormat(currentdate);
+
+            var filename = id + "_" + now + "." + format.toLowerCase();
+            
+            var mimeType = "";
+            switch (format) {
+                case "TSV":
+                    mimeType = "text/tab-seperated-values";
+                    break;
+                case "JSON":
+                    mimeType = "application/json";
+                    break;
+                default:
+                    mimeType = "text/csv";
+            }
+
+            var a = document.createElement('a');
+            if (navigator.msSaveBlob) { // IE10+
+                a = null;
+                return navigator.msSaveBlob(new Blob([data], { type: mimeType }), filename);
+            } else if ('download' in a) { //html 5
+                a.href = 'data:' + mimeType + ',' + encodeURIComponent(data);
+                a.setAttribute('download', filename);
+                document.body.appendChild(a);
+                setTimeout(function() {
+                    a.click();
+                    document.body.removeChild(a);
+                }, 10);
+                return true;
+            } else { //old chrome and FF:
+                a = null;
+                var frame = document.createElement('iframe');
+                document.body.appendChild(frame);
+                frame.src = 'data:' + mimeType + ',' + encodeURIComponent(data);
+
+                setTimeout(function() {
+                    document.body.removeChild(frame);
+                }, 100);
+                return true;
+            }
+
+            return false;
         }
 
     };

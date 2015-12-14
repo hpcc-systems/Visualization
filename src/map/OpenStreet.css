@@ -1,0 +1,20 @@
+.map_OpenStreet .background {
+    fill: white;
+}
+
+.map_OpenStreet .raster image {
+}
+
+.map_OpenStreet .graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+
+.map_Layered .vector {
+  fill: none;
+  stroke: navy;
+  stroke-linejoin: round;
+}

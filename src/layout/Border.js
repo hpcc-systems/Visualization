@@ -51,8 +51,48 @@
 
     Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.", null, { tags: ["Private"] });
 
-    Border.prototype.borderLayoutObject = function () {
-        var t,b,r,l,c,retObj = {},context=this;
+    Border.prototype.watchWidget = function (widget) {
+        if(this._watch === undefined){
+            this._watch = {};
+        }
+        if (this._watch[widget.id()]) {
+            this._watch[widget.id()].remove();
+            delete this._watch[widget.id()];
+        }
+        if (widget) {
+            var context = this;
+            this._watch[widget.id()] = widget.monitor(function (paramId, newVal, oldVal) {
+                if (oldVal !== newVal) {
+                    context.lazyRender();
+                }
+            });
+        }
+    };
+    
+    Border.prototype.lazyRender = Border.prototype.debounce(function(){
+        this.postUpdate();
+    },100);
+
+    Border.prototype.applyLayoutType = function () {
+        var layoutObj = this.borderLayoutObject();
+        this.content().forEach(function (cell, i) {
+            cell._fixedLeft = layoutObj[this.sectionTypes()[i]].left;
+            cell._fixedTop = layoutObj[this.sectionTypes()[i]].top;
+            cell._fixedWidth = layoutObj[this.sectionTypes()[i]].width;
+            cell._fixedHeight = layoutObj[this.sectionTypes()[i]].height;
+            cell._dragHandles = this.cellSpecificDragHandles(this.sectionTypes()[i]);
+        }, this);
+    };
+    Border.prototype.cellSpecificDragHandles = function (sectionType) {
+        switch(sectionType){
+            case "top":return ["s"];
+            case "right":return ["w"];
+            case "bottom":return ["n"];
+            case "left":return ["e"];
+            case "center":return [];
+        }
+    };
+    Border.prototype.borderLayoutObject = function (layoutType) {        var t,b,r,l,c,retObj = {},context=this;
         var topSize,topPerc,bottomSize,bottomPerc,leftSize,leftPerc,rightSize,rightPerc;
 
         var bcRect = this.target().getBoundingClientRect();
@@ -161,22 +201,24 @@
                 contentWidget.target(null);
                 return false;
             });
-            d3.select("#"+this.id()+" > div.borderHandle")
+
+d3.select("#"+this.id()+" > div.borderHandle")
                     .classed("borderHandleDisabled",true);
-            this.content([]);
+delete this._watch;            this.content([]);
             this.sectionTypes([]);
         } else {
             var idx = this.sectionTypes().indexOf(sectionType);
             if (idx >= 0) {
-                
-                d3.select("#"+this.id()+" > div.borderHandle_"+sectionType)
-                        .classed("borderHandleDisabled",true);
-                this.content().splice(idx, 1);
+				if(this.content()[idx]){
+                    delete this._watch[this.content()[idx].id()];
+                }
+                this.content()[idx].target(null);				d3.select("#"+this.id()+" > div.borderHandle_"+sectionType)
+                        .classed("borderHandleDisabled",true);                this.content().splice(idx, 1);
                 this.sectionTypes().splice(idx, 1);
             }
         }
     };
-    
+
     Border.prototype.hasContent = function (sectionType, widget, title) {
         return this.sectionTypes().indexOf(sectionType) >= 0;
     };
@@ -190,6 +232,7 @@
                 .widget(widget)
                 .title(title)
             ;
+            this.watchWidget(widget);
             this.content().push(cell);
             this.sectionTypes().push(sectionType);
         }
@@ -520,7 +563,20 @@
             context._cellSizes[size] = context._cellSizes[size] === undefined ? 0 : context._cellSizes[size];
         });
     };
+
     
+    Border.prototype.postUpdate = function (domNode, element) {
+        var context = this;
+        this.content().forEach(function(n){
+            if(n._element.node() !== null){
+                var prevBox = n.widget().getBBox();
+                var currBox = n.widget().getBBox(true);
+                if(prevBox.width !== currBox.width || prevBox.height !== currBox.height){
+                    context.render();
+                }
+            }
+        });
+    };
     Border.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };

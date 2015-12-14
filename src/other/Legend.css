@@ -37,3 +37,37 @@
     white-space: nowrap;
     box-sizing: border-box;
 }
+.other_Legend > .tableDiv > table > tbody > tr:hover{
+    cursor:pointer;
+    color:#000;
+    background-color:#DDD;
+}
+.other_Legend.horiz-legend .tableDiv {
+    width: 100%!important;
+    text-align: left;
+}
+.other_Legend.horiz-legend .tableDiv > table {
+    display:inline-block;
+    width:100%!important;
+    top:0px!important;
+    left:0px!important;
+}
+.other_Legend.horiz-legend thead,
+.other_Legend.horiz-legend tbody,
+.other_Legend.horiz-legend tr
+{
+    display: inline-block;
+}
+.other_Legend.horiz-legend td,
+.other_Legend.horiz-legend td > div {
+    display:inline-block;
+    white-space:nowrap;
+}
+.other_Legend.horiz-legend tr{
+    white-space: nowrap;
+}
+.other_Legend.horiz-legend tbody{
+    display:inline-block;
+    width:100%!important;
+    text-align:center;
+}

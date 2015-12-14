@@ -25,6 +25,14 @@
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
+            },
+            material: function (callback) {
+                require(["test/DataFactory", "src/google/MaterialBar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
             }
         },
         Line: {

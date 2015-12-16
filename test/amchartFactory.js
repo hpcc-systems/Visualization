@@ -13,7 +13,24 @@
                     callback(new Gantt()
                         .columns(DataFactory.ganttDateRanges.default.columns)
                         .data(DataFactory.ganttDateRanges.default.data)
-
+                        .guides([{
+                            "value": new Date("2014-06-13"),
+                            "lineThickness": 4,
+                            "lineColor": "#cc0000",
+                            "label": "Guide #1",
+                            "inside": true
+                        },
+                        {
+                            "value": new Date("2014-07-13"),
+                            "toValue": new Date("2014-08-13"),
+                            "lineAlpha": 0.2,
+                            "lineColor": "#00cc00",
+                            "lineThickness": 3,
+                            "fillAlpha": 0.1,
+                            "fillColor": "#00cc00",
+                            "label": "Guide #1",
+                            "inside": false
+                        }])
                     );
                 });
             },

@@ -270,8 +270,9 @@
             })
             .on("mouseover", function (d, i) {
                 var fixedLeftRows = context.getFixedRow(i);
-                if (fixedLeftRows.empty()) { return; }
-                fixedLeftRows.classed("hover", true);
+                if (!fixedLeftRows.empty()) { 
+                    fixedLeftRows.classed("hover", true);
+                }
                 var tbodyRows = context.getBodyRow(i);
                 tbodyRows.classed("hover", true);
                 if (tbodyRows.classed("selected")) {
@@ -714,7 +715,6 @@
     Table.prototype.applyFirstColRowStyles = function(rows){
         this.applyStyleToRows(rows,true);
     };
-
     Table.prototype.applyStyleToRows = function(rows,isFirstCol){
         isFirstCol = typeof isFirstCol !== "undefined" ? isFirstCol : false;
         var context = this;

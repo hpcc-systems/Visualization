@@ -8,22 +8,19 @@
 }(this, function (require) {
     function discover(widget) {
         var retVal = [];
-        var isPrototype = widget._id === undefined;
         widget.publishedProperties().forEach(function (_meta) {
             var item = widget;
             var meta = _meta;
             if (meta.type) {
-                if (!(isPrototype && meta.type === "proxy")) {
-                    while (meta.type === "proxy") {
-                        item = item[meta.proxy];
-                        meta = item.publishedProperty(meta.method);
-                    }
-                    if (meta.id !== widget.publishedProperty(_meta.id).id) {
-                        meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                        meta.id = widget.publishedProperty(_meta.id).id;
-                    }
-                    retVal.push(meta);
+                while (meta.type === "proxy") {
+                    item = item[meta.proxy];
+                    meta = item.publishedProperty(meta.method);
                 }
+                if (meta.id !== widget.publishedProperty(_meta.id).id) {
+                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                    meta.id = widget.publishedProperty(_meta.id).id;
+                }
+                retVal.push(meta);
             }
         }, this);
         return retVal;

@@ -69,6 +69,8 @@
               .tickSize(0)
               .tickPadding(12)
         ;
+
+        this._inputElement = [];
     }
     Slider.prototype = Object.create(SVGWidget.prototype);
     Slider.prototype.constructor = Slider;
@@ -163,6 +165,8 @@
 
     Slider.prototype.enter = function (domNode, element) {
         this.sliderElement = element.append("g");
+        this._inputElement.push(this.sliderElement);
+        
         this.axisElement = this.sliderElement.append("g")
             .attr("class", "x axis")
         ;

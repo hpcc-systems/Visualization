@@ -174,6 +174,15 @@
                     default:
                         console.log("Unknown field function - " + mapping.function);
                 }
+            } else if (mapping.indexOf("_AVE") === mapping.length - 4 && this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true) && this.fieldByLabel("base_count", true)) {
+                //  Symposium AVE Hack
+                console.log("Deprecated - Symposium AVE Hack");
+                var sumField = this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true);
+                var baseCountField = this.fieldByLabel("base_count", true);
+                rollupBy.push(sumField.idx);
+                fieldIndicies.push(function (row) {
+                    return row[sumField.idx] / row[baseCountField.idx];
+                });
             } else {
                 try {
                     rollupBy.push(this.fieldByLabel(mapping, true).idx);
@@ -181,7 +190,7 @@
                 }
                 try {
                     var idx = this.fieldByLabel(mapping, true).idx;
-                    fieldIndicies.push(function(row) {
+                    fieldIndicies.push(function (row) {
                         return row[idx];
                     });
                 } catch (e) {

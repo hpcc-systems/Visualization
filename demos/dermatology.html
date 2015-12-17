@@ -222,7 +222,7 @@
                                 .append("li")
                                 .text(function (d) { return d.key; })
                                 .on("click", function (d) {
-                                    testWidget(d.value.factory);
+                                    testWidget(d.value.factory, {}, d.key);
                                     d3.select("#widgetSelect").classed("hide", true);
                                 })
                             ;
@@ -317,8 +317,8 @@
                 }
             }
 
-            updateUrl = function (widget) {
-                var urlParam = "src/" + widget.classID().split("_").join("/");
+            updateUrl = function (widget, testID) {
+                var urlParam = "src/" + widget.classID().split("_").join("/") + (testID ? "." + testID : "");
                 var params = Persist.serializeToObject(widget).__properties;
                 for (var key in params) {
                     switch (typeof (params[key])) {
@@ -341,7 +341,7 @@
                 }
             };
 
-            testWidget = function (func, params) {
+            testWidget = function (func, params, testID) {
                 func(function (widget) {
                     currWidget = widget;
                     if (params) {
@@ -358,9 +358,9 @@
                     if (monitorHandle) {
                         monitorHandle.remove();
                     }
-                    updateUrl(currWidget);
+                    updateUrl(currWidget, testID);
                     monitorHandle = currWidget.monitor(function () {
-                        updateUrl(currWidget);
+                        updateUrl(currWidget, testID);
                     });
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
@@ -448,7 +448,7 @@
                 ;
                 if (first) {
                     first = false;
-                    testWidget(widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params);
+                    testWidget(widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params, widgetTest);
                 }
             }, 250);
             frame.doResize();

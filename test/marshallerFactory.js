@@ -42,7 +42,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20151027-101517&ResultName=lrenn_choroweight_Comp_Ins002_DDL&Widget=ResultWidget")
+                        .ddlUrl("http://10.241.100.157:8010/WsWorkunits/WUResult.json?Wuid=W20151214-134734&ResultName=easwka01_dashboardtest1_Comp_Ins016_DDL&Widget=ResultWidget")
                     );
                 });
             }

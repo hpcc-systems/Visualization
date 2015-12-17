@@ -27,6 +27,7 @@
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
     Table.prototype.publishProxy("adjacentPages", "_paginator");
+    Table.prototype.publish("topN", null, "number", "Total number or rows of data to be displayed in the table",null,{tags:["Private"]});
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
@@ -213,7 +214,9 @@
 
         var tData = null;
 
-        if (this.pagination()) {
+        if (this.topN()) {
+            tData = this.data().slice(0, this.topN());
+        } else if (this.pagination()) {
             tData = this.data().slice(start, end);
         } else {
             tData = this.data();
@@ -653,13 +656,6 @@
             return context._currentSortOrder * -1;
         });
         return this;
-    };
-
-    Table.prototype.headerClick = function (column, idx) {
-        this
-            .sort(idx)
-            .render()
-        ;
     };
 
     Table.prototype.selection = function (_) {

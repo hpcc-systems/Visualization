@@ -63,7 +63,6 @@
     Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true });
     
-    Table.prototype.publish("columnPatterns", [], "array", "Array of formatting rules for each column", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("stringAlign", "left", "set", "Array of alignment positions for strings", ["left","right","center"], { tags: ["Basic"], optional: true });
     Table.prototype.publish("numberAlign", "right", "set", "Array of alignment positions for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
 
@@ -124,6 +123,7 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
+        var fields = this.fields();
 
         if (this.fixedHeader()) {
             this.thead = this.fixedThead;
@@ -240,8 +240,7 @@
                 .append("td")
             ;
             tf[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-                var retVal = context.columnPatterns()[idx] ? context.getColumnFormatting(d, idx) : d;
-                return retVal; 
+                return fields[idx].transform(d);
             });
             tf.exit()
                 .remove()
@@ -308,15 +307,14 @@
             .append("td")
         ;
         cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-            var retVal = context.columnPatterns()[idx] ? context.getColumnFormatting(d, idx) : d;
-            return retVal; 
+            return fields[idx].transform(d);
         });
         cells.exit()
             .remove()
         ;      
         rows.each(function(tr,trIdx){
             d3.select(this).selectAll("td").each(function(tdContents,tdIdx){
-                var alignment = context.getColumnAlignment(tdContents);
+                var alignment = context.getColumnAlignment(fields[tdIdx].transform(tdContents));
                 d3.select(this)
                     .classed("tr-"+trIdx+"-td-"+tdIdx,true)
                     .style("text-align", alignment)
@@ -630,6 +628,10 @@
         return ipp;
     };
 
+    function isNull(value) {
+        return value === undefined || value === null;
+    }
+
     Table.prototype.sort = function (idx) {
         if (this._currentSort !== idx) {
             this._currentSort = idx;
@@ -637,12 +639,16 @@
         } else {
             this._currentSortOrder *= -1;
         }
+        var fields = this.fields();
         var context = this;
         this.data().sort(function (l, r) {
             if (l[idx] === r[idx]) {
                 return 0;
-            } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
-                return context._currentSortOrder;
+            } else {
+                var rFormattedVal = fields[idx].parse(r[idx]);
+                if (isNull(rFormattedVal) || fields[idx].parse(l[idx] > rFormattedVal)) {
+                    return context._currentSortOrder;
+                }
             }
             return context._currentSortOrder * -1;
         });
@@ -729,18 +735,6 @@
                 }
             })
         ;
-    };
-
-    Table.prototype.getColumnFormatting = function(cellData,colIdx){
-         var context = this;
-         if(typeof(cellData) === "string"){
-            var timeFormat = d3.time.format(context.columnPatterns()[colIdx]);
-            return timeFormat(new Date(cellData));
-        } else if (typeof(cellData) === "number") {
-            var format = d3.format(context.columnPatterns()[colIdx]);
-            return format(cellData);
-        }
-        return cellData;
     };
 
     Table.prototype.getColumnAlignment = function(cellData){

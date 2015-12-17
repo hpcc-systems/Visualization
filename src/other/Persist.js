@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["require"], factory);
+        define(["../common/Utility"], factory);
     } else {
-        root.other_Persist = factory(root.require);
+        root.other_Persist = factory(root.common_Utility);
     }
-}(this, function (require) {
+}(this, function (Utility) {
     function discover(widget) {
         var retVal = [];
         var isPrototype = widget._id === undefined;
@@ -182,9 +182,8 @@
                     }, this);
                 }
             }
-            if (includeData) {
+            if (includeData && widget.data) {
                 retVal.__data = {};
-                retVal.__data.columns = widget.columns();
                 retVal.__data.data = widget.data();
             }
             return retVal;
@@ -269,11 +268,10 @@
             if (typeof state === "string") {
                 state = JSON.parse(state);
             }
-            var path = "src/" + state.__class.split("_").join("/");
             var context = this;
-            require([path], function (Widget) {
+            Utility.requireWidget(state.__class).then(function (Widget) {
                 var widget = new Widget();
-                if (state.__id && state.__id.indexOf("_w") !== 0) {
+                if (state.__id && state.__id.indexOf("_w") !== 0 && state.__id.indexOf("_pe") !== 0) {
                     widget._id = state.__id;
                 }
                 context.deserializeFromObject(widget, state, callback);

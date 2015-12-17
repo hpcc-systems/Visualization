@@ -31,7 +31,7 @@ const cfg = {
 
 const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat"];
 const bundles = ["common", "layout", "api", "form", "other", "chart", "c3chart", "google", "amchart", "tree", "graph", "map", "marshaller", "composite"];  //  Order is important ---
-const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js"]);
+const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 
 function buildModule(module, cb) {
   gutil.log('Building ' + module + '...')

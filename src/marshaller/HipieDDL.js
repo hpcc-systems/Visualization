@@ -983,13 +983,18 @@
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
             this.request[item + "_changed"] = request[item + "_changed"] || false;
-            var value = request[item] === undefined ? "" : request[item];
+            var value = request[item] === undefined ? null : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
             }
         }, this);
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+        }
+        for (var key in this.request) {
+            if (this.request[key] === null) {
+                delete this.request[key];
+            }
         }
         this.comms.call(this.request).then(function (response) {
             context.processResponse(response, request, updates);

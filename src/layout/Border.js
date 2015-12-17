@@ -217,6 +217,14 @@
         }
         return null;
     };
+    
+    Border.prototype.getCell = function (id) {
+        var idx = this.sectionTypes().indexOf(id);
+        if (idx >= 0) {
+            return this.content()[idx];
+        }
+        return null;
+    };
 
     Border.prototype.getSize = function(i){
         switch(this.sectionTypes()[i]){
@@ -339,6 +347,10 @@
         return retVal;
     };
 
+    Border.prototype.preUpdate = function (domNode, element) {
+        this.resize();
+    };
+    
     Border.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         element.style("position", "relative");

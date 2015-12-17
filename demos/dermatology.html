@@ -10,7 +10,7 @@
             margin: 0px;
             padding: 0px;
             font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color:white;
+            background-color:#F9F9F9;
             font-weight: 300;
             overflow:hidden;
         }
@@ -62,6 +62,9 @@
         }
         #selectButton i {
             padding-left: 5px
+        }
+        #_w4 .layout_Surface > .surfaceTitle > h3 {
+            padding: 12px 20px;
         }
     </style>
     <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
@@ -335,7 +338,15 @@
                     }
                 }
                 try {
-                    window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                    if(widgetPath && widgetTest){
+                        var urlParams = urlParam.split("&").splice(1).join("&");
+                        if(urlParams.length > 0){
+                            urlParams = widgetPath+"."+widgetTest+"&"+urlParams;
+                        }
+                        window.history.pushState("", "", searchParts[0] + "?" + urlParams);
+                    } else {
+                        window.history.pushState("", "", searchParts[0] + "?" + urlParam);
+                    }
                 } catch (e) {
                     //  Local files do not have history...
                 }

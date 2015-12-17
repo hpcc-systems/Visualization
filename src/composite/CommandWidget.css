@@ -1,0 +1,75 @@
+.composite_CommandWidget{
+    width:100%!important;
+    height:100%!important;
+    position:relative;
+    border:1px solid #CCCCCC;
+    box-sizing: border-box;
+    overflow:hidden;
+}
+.composite_CommandWidget > div,
+.composite_CommandWidget > div > div,
+.composite_CommandWidget > div > div > div:not(.popupWidget),
+.composite_CommandWidget > div > div > div:not(.popupWidget) > div{
+    width:100%!important;
+    /*height:100%;*/
+}
+.composite_CommandWidget .other_Toolbar{
+    width:100%!important;
+    height:100%!important;
+    position:relative;
+    border-bottom:1px solid #CCCCCC;
+    border-bottom-width:1px!important;
+}
+.composite_CommandWidget .layout_Border > div > div:last-child{
+    border-top:1px solid #CCCCCC;
+}
+.composite_CommandWidget .layout_Cell{
+    background-color:#FFFFFF;
+}
+.composite_CommandWidget.maximized{
+    width:100%!important;
+    height:100%!important;
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    z-index:1000;
+}
+.composite_CommandWidget > .surfaceWidget{
+    padding:0;
+}
+.composite_CommandWidget.maximized > .surfaceWidget,
+.composite_CommandWidget.maximized > .surfaceWidget > div,
+.composite_CommandWidget.maximized > .surfaceWidget > div > .layout_Border,
+.composite_CommandWidget.maximized > .surfaceWidget > div > .layout_Border > div{
+    width:100%!important;
+    height:100%!important;
+}
+.composite_CommandWidget > .surfaceWidget > div > .layout_Border{
+    background-color:#FFFFFF;
+}
+.popupWidget > div {
+    background-color: #FFF;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.4)
+}
+.popupWidget > div:before, .popupWidget > div:after {
+    content:"\A";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+
+}
+.popupWidget > div:before {
+    border-color: transparent transparent #ccc transparent;
+    right:11px;
+    top:-12px;
+    border-width: 0 10px 10px 10px;
+}
+.popupWidget > div:after {
+    border-color: transparent transparent #fff transparent;
+    right:11px;
+    top:-10px;
+    border-width: 0 10px 10px 10px;
+}

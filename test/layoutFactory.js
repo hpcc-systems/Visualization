@@ -225,7 +225,7 @@
                         )
                     );
                 });
-            }
+            },
         },
         Tabbed: {
             simple: function (callback) {

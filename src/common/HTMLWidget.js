@@ -106,7 +106,8 @@
     HTMLWidget.prototype.target = function (_) {
         if (!arguments.length) return this._target;
         if (this._target && _) {
-            throw "Target can only be assigned once.";
+            this._target = null;
+            //throw "Target can only be assigned once.";
         }
         this._target = _;
 

@@ -15,7 +15,7 @@
 .layout_Grid .dropCell {
     box-sizing:border-box;
     background-color: lightgrey;
-    opacity: 0.33;
+    /*opacity: 0.33;*/
     border-radius: 5px;
     border:1px solid #333;
     display: inline-block;
@@ -31,19 +31,24 @@
 }
 .layout_Grid .dragItem { 
     z-index: 0;
-    opacity:0.33;
+    /*opacity:0.33;*/
 }
 
 .layout_Grid .notDragItem { 
     opacity: 1;
 }
+.layout_Grid .layout_Surface{
+    height: 100%;
+    width: 100%;
+    box-sizing:border-box;
+}
 .layout_Grid div[draggable=true] { 
-    opacity: 0.75;
+    /*opacity: 0.75;*/
     cursor: move;
 }
-.layout_Grid div[draggable=true] > .layout_Surface{ 
+/*.layout_Grid div[draggable=true] > .layout_Surface{
     overflow:visible;
-}
+}*/
 
 .layout_Grid div[draggable=true] .dragHandle {
     opacity: 1.0;
@@ -100,7 +105,7 @@
 }
 
 .layout_Grid .selected div.dragHandle{
-    background-color: #F48A00;
+     background-color: #F48A00; 
 }
 
 .layout_Grid .selected div.dragHandle_nw, 
@@ -132,4 +137,30 @@
         rgba(17, 155, 215, 0.1) 6px,
         rgba(17, 155, 215, 0.1) 12px
     );
+}
+.layout_Grid .grid-drop-target.grid-drag-handle-{
+    cursor:move;
+}
+.layout_Grid .grid-drop-target.grid-drag-handle-n,
+.layout_Grid .grid-drop-target.grid-drag-handle-s{
+    cursor:ns-resize;
+}
+.layout_Grid .grid-drop-target.grid-drag-handle-e,
+.layout_Grid .grid-drop-target.grid-drag-handle-w{
+    cursor:ew-resize;
+}
+.layout_Grid .grid-drop-target.grid-drag-handle-ne,
+.layout_Grid .grid-drop-target.grid-drag-handle-sw{
+    cursor:nesw-resize;
+}
+.layout_Grid .grid-drop-target.grid-drag-handle-nw,
+.layout_Grid .grid-drop-target.grid-drag-handle-se{
+    cursor:nwse-resize;
+}
+.layout_Grid.hideHandles div.dragHandle,
+.layout_Grid.hideHandles div.dragHandle_nw, 
+.layout_Grid.hideHandles div.dragHandle_ne, 
+.layout_Grid.hideHandles div.dragHandle_se, 
+.layout_Grid.hideHandles div.dragHandle_sw{
+     background-color: transparent; 
 }

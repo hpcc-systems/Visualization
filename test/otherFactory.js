@@ -159,6 +159,76 @@
                 });
             }
         },
+        ButtonAnnotations: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/ButtonAnnotations"], function (DataFactory, ButtonAnnotations) {
+                    var b = new ButtonAnnotations()
+                            .buttonHeight("46px")
+                            .buttonPadding("0px 12px")
+                            .backgroundColor("#FFFFFF")
+                            .iconColor("#4C4A49")
+                            .labelColor("#5C9ACD")
+                            .borderColor("#CCCCCC")
+                            .borderWidth("0 0 0 1px")
+                            .iconSize("18px")
+                        .data([
+                            {icon:"fa-link",label:"Link",click:function(){console.log('Link btn has been clicked.');}},
+                            {icon:"fa-th-large",click:function(){console.log('TH Large btn has been clicked.');}},
+                        ])
+                    ;
+                    callback(b);
+                });
+            },
+        },
+        Toolbar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/Toolbar", "src/layout/Border", "src/google/Column", "src/other/ButtonAnnotations"], function (DataFactory, Toolbar, Border, GColumn, ButtonAnnotations) {
+                    var toolBar = new Toolbar()
+                        .title("Testing")
+                        .titleWidth("150px")
+                        .backgroundColor("#FFFFFF")
+                        .leftButtons(
+                            new ButtonAnnotations()
+                                .buttonHeight("30px")
+                                .buttonMargin("8px 0px")
+                                .buttonPadding("0px 12px")
+                                .backgroundColor("#FFFFFF")
+                                .iconColor("#4C4A49")
+                                .labelColor("#5C9ACD")
+                                .borderColor("#CCCCCC")
+                                .borderWidth("0 0 0 1px")
+                                .iconSize("18px")
+                                .data([
+                                    {icon:"fa-link",label:"Link",click:function(){console.log('Link btn has been clicked.');}},
+                                    {icon:"fa-th-large",click:function(){console.log('TH Large btn has been clicked.');}},
+                                ])
+                        )
+                        .rightButtons(
+                            new ButtonAnnotations()
+                                .buttonPadding("0px 12px")
+                                .backgroundColor("#FFFFFF")
+                                .iconColor("#4C4A49")
+                                .labelColor("#5C9ACD")
+                                .borderColor("#CCCCCC")
+                                .borderWidth("0 0 0 1px")
+                                .iconSize("18px")
+                                .data([
+                                    {icon:"fa-medkit",click:function(){console.log('Link btn has been clicked.');}},
+                                    {icon:"fa-close",click:function(){console.log('TH Large btn has been clicked.');}},
+                                ])
+                        )
+                    ;
+                    var googleColumn = new GColumn().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data);
+                    callback(
+                        new Border().gutter(0)
+                        .topSize(46)
+                        .topPercentage(0)
+                        .setContent("top",toolBar)
+                        .setContent("center",googleColumn)
+                    );
+                });
+            },
+        },
         Legend: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/layout/Border", "src/chart/Line", "src/other/Legend"], function (DataFactory, Border, Line, Legend) {

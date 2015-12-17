@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3"], factory);
+        define(["d3", "require", "es6-promise"], factory);
     } else {
-        root.common_Utility = factory(root.d3);
+        root.common_Utility = factory(root.d3, root.require);
     }
-}(this, function (d3) {
+}(this, function (d3, require) {
 
     function _naturalSort(a, b, order, idx, sortCaseSensitive) {
         var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
@@ -284,6 +284,15 @@
             }
 
             return false;
+        },
+        requireWidget: function(classID) {
+            return new Promise(function (resolve, reject) {
+                var parts = classID.split(".");
+                var path = "src/" + parts[0].split("_").join("/");
+                require([path], function (Widget) {
+                    resolve(parts.length > 1 ? Widget[parts[1]] : Widget);
+                });
+            });
         }
 
     };

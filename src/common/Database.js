@@ -1,18 +1,161 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3"], factory);
+        define(["d3", "./Class", "./PropertyExt"], factory);
     } else {
-        root.common_Database = factory(root.d3);
+        root.common_Database = factory(root.d3, root.common_Class, root.common_PropertyExt);
     }
-}(this, function (d3) {
+}(this, function (d3, Class, PropertyExt) {
+    //  Field  ---
+    function Field(id, opt) {
+        Class.call(this);
+        PropertyExt.call(this);
+
+        this._id = id || this._id;
+        opt = opt || {};
+        this.label(opt.label || "");
+        this.type(opt.type || "");
+        this.mask(opt.mask || null);
+        this.format(opt.format || null);
+    }
+    Field.prototype = Object.create(Class.prototype);
+    Field.prototype.constructor = Field;
+    Field.prototype.mixin(PropertyExt);
+    Field.prototype._class += " common_Database.Field";
+
+    Field.prototype.id = function () {
+        return this._id;
+    };
+
+    Field.prototype.publish("label", "", "string", "Label");
+    Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time"]);
+    var origType = Field.prototype.type;
+    Field.prototype.type = function (_) {
+        var retVal = origType.apply(this, arguments);
+        if (arguments.length) {
+            switch (this.type()) {
+                case "number":
+                    this._typeTransformer = function (_) {
+                        return Number(_);
+                    };
+                    break;
+                case "string":
+                    this._typeTransformer = function (_) {
+                        return String(_);
+                    };
+                    break;
+                case "boolean":
+                    this._typeTransformer = function (_) {
+                        return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+                    };
+                    break;
+                case "time":
+                case "date":
+                    this._typeTransformer = function (_) {
+                        return this._maskTransformer.parse(_);
+                    };
+                    break;
+                default:
+                    this._typeTransformer = function (_) {
+                        return _;
+                    };
+                    break;
+            }
+        }
+        return retVal;
+    };
+
+    Field.prototype.publish("mask", "", "string", "Time Mask");
+    var origMask = Field.prototype.mask;
+    Field.prototype.mask = function (_) {
+        var retVal = origMask.apply(this, arguments);
+        if (arguments.length) {
+            this._maskTransformer = this.formatter(_);
+        }
+        return retVal;
+    };
+
+    Field.prototype.publish("format", "", "string", "Format");
+    var origFormat = Field.prototype.format;
+    Field.prototype.format = function (_) {
+        var retVal = origFormat.apply(this, arguments);
+        if (arguments.length) {
+            this._formatTransformer = this.formatter(_);
+        }
+        return retVal;
+    };
+
+    Field.prototype.parse = function (_) {
+        if (!_) {
+            return _;
+        }
+        try {
+            return this._typeTransformer(_);
+        } catch (e) {
+            console.log("Unable to parse:  " + _);
+            return null;
+        }
+    };
+
+    Field.prototype.transform = function (_) {
+        if (!_) {
+            return _;
+        }
+        try {
+            return this._formatTransformer(this._typeTransformer(_));
+        } catch (e) {
+            console.log("Unable to transform:  " + _);
+            return null;
+        }
+    };
+
+    Field.prototype.clone = function () {
+        return new Field(this._id, {
+            label: this.label(),
+            type: this.type(),
+            mask: this.mask(),
+            format: this.format(),
+        });
+    };
+
+    Field.prototype.formatter = function (format) {
+        var retVal;
+        if (!format) {
+            retVal = function (_) {
+                return _;
+            };
+            retVal.parse = function (_) {
+                return _;
+            };
+            return retVal;
+        }
+        switch (this.type()) {
+            case "time":
+            case "date":
+                return d3.time.format(format);
+        }
+        retVal = d3.format(format);
+        retVal.parse = function (_) {
+            return _;
+        };
+        return retVal;
+    };
+
+    //  Grid  ---
     function Grid() {
+        Class.call(this);
+        PropertyExt.call(this);
+
         this.clear();
     }
+    Grid.prototype = Object.create(Class.prototype);
     Grid.prototype.constructor = Grid;
+    Grid.prototype.mixin(PropertyExt);
+    Grid.prototype._class += " common_Database.Grid";
+
+    Grid.prototype.publish("fields", [], "propertyArray", "Fields");
 
     Grid.prototype.clear = function () {
-        this._fields = [];
         this._data = [];
         return this;
     };
@@ -29,14 +172,18 @@
     };
 
     //  Meta  ---
+    Grid.prototype.field = function (idx) {
+        return this.fields()[idx];
+    };
+
+    var fieldsOrig = Grid.prototype.fields;
     Grid.prototype.fields = function (_, clone) {
-        if (!arguments.length) return this._fields;
-        this._fields = clone ? _.map(function (d) { return d; }) : _;
-        return this;
+        if (!arguments.length) return fieldsOrig.apply(this, arguments);
+        return fieldsOrig.call(this, clone ? _.map(function (d) { return d.clone(); }) : _);
     };
 
     Grid.prototype.fieldByLabel = function (_, ignoreCase) {
-        return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label.toLowerCase() === _.toLowerCase() : field.label === _; })[0];
+        return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
     };
 
     Grid.prototype.data = function (_, clone) {
@@ -45,11 +192,29 @@
         return this;
     };
 
+    Grid.prototype.parsedData = function () {
+        var context = this;
+        return this._data.map(function (row) {
+            return row.map(function (cell, idx) {
+                return context.fields()[idx].parse(cell);
+            });
+        });
+    };
+
+    Grid.prototype.formattedData = function () {
+        var context = this;
+        return this._data.map(function (row) {
+            return row.map(function (cell, idx) {
+                return context.fields()[idx].transform(cell);
+            });
+        });
+    };
+
     //  Row Access  ---
     Grid.prototype.row = function (row, _) {
-        if (arguments.length < 2) return row === 0 ? this._fields.map(function (d) { return d.label; }) : this._data[row - 1];
+        if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
-            this._fields = _.map(function (d) { return { label: d }; });
+            this.fields(_.map(function (d) { return new Field().label(d); }));
         } else {
             this._data[row - 1] = _;
         }
@@ -65,10 +230,10 @@
 
     //  Column Access  ---
     Grid.prototype.column = function (col, _) {
-        if (arguments.length < 2) return [this._fields[col].label].concat(this._data.map(function (row, idx) { return row[col]; }));
+        if (arguments.length < 2) return [this.fields()[col].label()].concat(this._data.map(function (row, idx) { return row[col]; }));
         _.forEach(function (d, idx) {
             if (idx === 0) {
-                this._fields[col] = { label: _[0] };
+                this.fields()[col] = new Field().label(_[0]);
             } else {
                 this._data[idx - 1][col] = d;
             }
@@ -85,7 +250,7 @@
     };
 
     Grid.prototype.columns = function (_) {
-        if (!arguments.length) return this._fields.map(function (col, idx) {
+        if (!arguments.length) return this.fields().map(function (col, idx) {
             return this.column(idx);
         }, this);
         _.forEach(function (col, idx) {
@@ -98,7 +263,7 @@
     Grid.prototype.cell = function (row, col, _) {
         if (arguments.length < 3) return this.row(row)[col];
         if (row === 0) {
-            this._fields[col] = { label: _ };
+            this.fields()[col] = new Field().label(_);
         } else {
             this._data[row][col] = _;
         }
@@ -174,6 +339,15 @@
                     default:
                         console.log("Unknown field function - " + mapping.function);
                 }
+            } else if (mapping.indexOf("_AVE") === mapping.length - 4 && this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true) && this.fieldByLabel("base_count", true)) {
+                //  Symposium AVE Hack
+                console.log("Deprecated - Symposium AVE Hack");
+                var sumField = this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true);
+                var baseCountField = this.fieldByLabel("base_count", true);
+                rollupBy.push(sumField.idx);
+                fieldIndicies.push(function (row) {
+                    return row[sumField.idx] / row[baseCountField.idx];
+                });
             } else {
                 try {
                     rollupBy.push(this.fieldByLabel(mapping, true).idx);
@@ -181,7 +355,7 @@
                 }
                 try {
                     var idx = this.fieldByLabel(mapping, true).idx;
-                    fieldIndicies.push(function(row) {
+                    fieldIndicies.push(function (row) {
                         return row[idx];
                     });
                 } catch (e) {
@@ -274,7 +448,7 @@
     };
 
     Grid.prototype.width = function () {
-        return this._fields.length;
+        return this.fields().length;
     };
 
     Grid.prototype.pivot = function () {
@@ -318,16 +492,16 @@
             });
             retVal.push(rollup);
             var keys = rollup.map(function (d) { return d.key; });
-            this._fields[col].isBoolean = typeTest(keys, isBoolean);
-            this._fields[col].isNumber = typeTest(keys, isNumber);
-            this._fields[col].isString = !this._fields[col].isNumber && typeTest(keys, isString);
-            this._fields[col].isUSState = this._fields[col].isString && typeTest(keys, isUSState);
-            this._fields[col].isDateTime = this._fields[col].isString && typeTest(keys, isDateTime);
-            this._fields[col].isDateTimeFormat = lastFoundFormat;
-            this._fields[col].isDate = !this._fields[col].isDateTime && typeTest(keys, isDate);
-            this._fields[col].isDateFormat = lastFoundFormat;
-            this._fields[col].isTime = this._fields[col].isString && !this._fields[col].isDateTime && !this._fields[col].isDate && typeTest(keys, isTime);
-            this._fields[col].isTimeFormat = lastFoundFormat;
+            this.fields()[col].isBoolean = typeTest(keys, isBoolean);
+            this.fields()[col].isNumber = typeTest(keys, isNumber);
+            this.fields()[col].isString = !this.fields()[col].isNumber && typeTest(keys, isString);
+            this.fields()[col].isUSState = this.fields()[col].isString && typeTest(keys, isUSState);
+            this.fields()[col].isDateTime = this.fields()[col].isString && typeTest(keys, isDateTime);
+            this.fields()[col].isDateTimeFormat = lastFoundFormat;
+            this.fields()[col].isDate = !this.fields()[col].isDateTime && typeTest(keys, isDate);
+            this.fields()[col].isDateFormat = lastFoundFormat;
+            this.fields()[col].isTime = this.fields()[col].isString && !this.fields()[col].isDateTime && !this.fields()[col].isDate && typeTest(keys, isTime);
+            this.fields()[col].isTimeFormat = lastFoundFormat;
         }, this);
         return retVal;
     };
@@ -347,8 +521,8 @@
             for (var key in row) {
                 var colIdx = this.row(0).indexOf(key);
                 if (colIdx < 0) {
-                    colIdx = this._fields.length;
-                    this._fields.push({ label: key });
+                    colIdx = this.fields().length;
+                    this.fields().push(new Field().label(key));
                 }
                 retVal[colIdx] = row[key];
             }
@@ -432,6 +606,7 @@
     }
 
     return {
-        Grid: Grid,
+        Field: Field,
+        Grid: Grid
     };
 }));

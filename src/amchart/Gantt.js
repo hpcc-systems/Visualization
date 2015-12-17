@@ -47,6 +47,8 @@
     Gantt.prototype.publish("columnWidth", 0.5, "number", "column width",null,{tags:["Basic"]});
     Gantt.prototype.publish("minPeriod", "DD", "string", "Value axis minimum period",null,{tags:["Basic"]});
 
+    Gantt.prototype.publish("guides", [], "array", "Vertical lines",null,{tags:["Intermediate"]});
+
     var timePattern = Gantt.prototype.timePattern;
     Gantt.prototype.timePattern = function (_) {
         var retVal = timePattern.apply(this, arguments);
@@ -99,6 +101,8 @@
         this._chart.segmentsField = "segments";
         this._chart.startDateField = "start";
         this._chart.endDateField = "end";
+
+        this._chart.guides = this.guides();
     };
 
     Gantt.prototype.amFormattedData = function() {

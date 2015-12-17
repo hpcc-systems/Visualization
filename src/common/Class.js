@@ -9,7 +9,7 @@
     function Class() {
     }
     Class.prototype.constructor = Class;
-    Class.prototype._class = "common_Widget";
+    Class.prototype._class = "common_Class";
 
     Class.prototype.class = function (_) {
         if (!arguments.length) return this._class;
@@ -28,8 +28,14 @@
             }
         }
     };
+
     Class.prototype.mixin = function (mixinClass) {
-        Class.prototype.implements(mixinClass.prototype);
+        this.implements(mixinClass.prototype);
+        for (var prop in mixinClass.prototype) {
+            if (prop === "_class" && mixinClass.prototype.hasOwnProperty(prop)) {
+                this[prop] += " " + mixinClass.prototype[prop];
+            }
+        }
     };
 
     return Class;

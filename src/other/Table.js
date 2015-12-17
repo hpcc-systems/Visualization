@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "./Paginator", "../common/Utility", "css!./Table"], factory);
+        define(["d3", "../common/HTMLWidget", "./Paginator", "../common/Utility", "../common/Widget", "css!./Table"], factory);
     } else {
-        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.common_Utility);
+        root.other_Table = factory(root.d3, root.common_HTMLWidget, root.other_Paginator, root.common_Utility, root.common_Widget);
     }
-}(this, function (d3, HTMLWidget, Paginator, Utility) {
+}(this, function (d3, HTMLWidget, Paginator, Utility, Widget) {
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -27,6 +27,7 @@
     Table.prototype.publishProxy("itemsPerPage", "_paginator");
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
     Table.prototype.publishProxy("adjacentPages", "_paginator");
+    Table.prototype.publish("topN", null, "number", "Total number or rows of data to be displayed in the table",null,{tags:["Private"]});
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
@@ -63,9 +64,11 @@
     Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true });
     
-    Table.prototype.publish("columnPatterns", [], "array", "Array of formatting rules for each column", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("stringAlign", "left", "set", "Array of alignment positions for strings", ["left","right","center"], { tags: ["Basic"], optional: true });
     Table.prototype.publish("numberAlign", "right", "set", "Array of alignment positions for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
+
+    Table.prototype.publish("minWidgetWidth", null, "number", "Minimum width of a child widget", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("minWidgetHeight", null, "number", "Minimum height of a child widget", null, { tags: ["Basic"], optional: true });
 
     Table.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
@@ -78,10 +81,9 @@
 
     Table.prototype.size = function (_) {
         var retVal = HTMLWidget.prototype.size.apply(this, arguments);
-        
         if (arguments.length) {
             if (this.tableDiv) {
-                var topMargin = this.showHeader() && this.fixedHeader() ? this.thead.node().offsetHeight : 0;
+                var topMargin = this.showHeader() && this.fixedHeader() ? this.thead.property("offsetHeight") : 0;
                 this.tableDiv
                     .style("width", this._size.width + "px")
                     .style("height", this._size.height - topMargin + "px")
@@ -102,13 +104,13 @@
 
         this.tableDiv = element.append("div").attr("class", "tableDiv");
         this.table = this.tableDiv.append("table");
-        this.fixedHead =  this._element.append("div").classed("header-wrapper", true);
+        this.fixedHead =  element.append("div").classed("header-wrapper", true);
         this.fixedHeadTable = this.fixedHead.append("table");
         this.fixedThead = this.fixedHeadTable.append("thead").append("tr");
         this.unfixedThead = this.table.append("thead").append("tr");
         this.tbody = this.table.append("tbody");
         this.tfoot = this.table.append("tfoot").append("tr");
-        this.fixedCol = this._element.append("div").classed("rows-wrapper", true);
+        this.fixedCol = element.append("div").classed("rows-wrapper", true);
         this.fixedColTable = this.fixedCol.append("table");
         this.fixedColHead = this.fixedColTable.append("thead");
         this.fixedColHeadRow = this.fixedColHead.append("tr");
@@ -119,11 +121,19 @@
         this.tableDiv
             .style("overflow", "auto")
         ;
+
+        this._childWidgets = [];
     };
 
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
+        var fields = this.fields();
+
+        this._childWidgets.forEach(function(d, i) {
+            d.target(null);
+        });
+        this._childWidgets = [];
 
         if (this.fixedHeader()) {
             this.thead = this.fixedThead;
@@ -198,9 +208,7 @@
                 context.render();
                 return;
             };
-            this.tableDiv.style("overflow-y", "hidden");
         } else {
-            this.tableDiv.style("overflow-y", null);
             this._paginator.numItems(0); // remove widget
         }
 
@@ -213,7 +221,9 @@
 
         var tData = null;
 
-        if (this.pagination()) {
+        if (this.topN()) {
+            tData = this.data().slice(0, this.topN());
+        } else if (this.pagination()) {
             tData = this.data().slice(start, end);
         } else {
             tData = this.data();
@@ -240,8 +250,7 @@
                 .append("td")
             ;
             tf[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-                var retVal = context.columnPatterns()[idx] ? context.getColumnFormatting(d, idx) : d;
-                return retVal; 
+                return fields[idx].transform(d);
             });
             tf.exit()
                 .remove()
@@ -259,24 +268,18 @@
             .enter()
             .append("tr")
             .on("click.selectionBag", function (d, i) {
-                context.selectionBagClick(d);
-                context.render();
+                context.selectionBagClick(d, i);
                 context.applyRowStyles(context.getBodyRow(i));
                 context.applyFirstColRowStyles(context.getFixedRow(i));
-            })
-            .on("click", function (d) {
-                context.click(context.rowToObj(d), null, context._selectionBag.isSelected(context._createSelectionObject(d)));
-                context.applyRowStyles(d3.select(this));
+                context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
             })
             .on("mouseover", function (d, i) {
                 var fixedLeftRows = context.getFixedRow(i);
-                if (fixedLeftRows.empty()) { return; }
-                fixedLeftRows.classed("hover", true);
+                if (!fixedLeftRows.empty()) { 
+                    fixedLeftRows.classed("hover", true);
+                }
                 var tbodyRows = context.getBodyRow(i);
                 tbodyRows.classed("hover", true);
-                if (tbodyRows.classed("selected")) {
-                    fixedLeftRows.classed("selected", true);
-                }
                 context.applyStyleToRows(tbodyRows);
                 context.applyFirstColRowStyles(fixedLeftRows);
             })
@@ -290,11 +293,8 @@
             })
         ;
         rows
-            .attr("class", function (d) {
-                if (context._selectionBag.isSelected(context._createSelectionObject(d))) {
-                    return "selected";
-                }
-            })
+            .classed("selected", function (d) { return context._selectionBag.isSelected(context._createSelectionObject(d)); })
+            .classed("trId" + context._id, true)
         ;
         rows.exit()
             .remove()
@@ -307,55 +307,60 @@
             .append("td")
         ;
         cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-            var retVal = context.columnPatterns()[idx] ? context.getColumnFormatting(d, idx) : d;
-            return retVal; 
+            if (!(d instanceof Widget)) {
+                return fields[idx].transform(d);
+            }
+            return; 
         });
         cells.exit()
             .remove()
-        ;      
+        ;
+
         rows.each(function(tr,trIdx){
-            d3.select(this).selectAll("td").each(function(tdContents,tdIdx){
-                var alignment = context.getColumnAlignment(tdContents);
-                d3.select(this)
-                    .classed("tr-"+trIdx+"-td-"+tdIdx,true)
-                    .style("text-align", alignment)
-                ;
-            });
             var dis = d3.select(this);
+            dis.selectAll("td").each(function(tdContents,tdIdx){    
+                var alignment = context.getColumnAlignment(fields[tdIdx].transform(tdContents));
+                var el = d3.select(this);
+                el
+                    .style({
+                        "height": null,
+                        "text-align": alignment
+                    })
+                    .classed("tr-"+trIdx+"-td-"+tdIdx,true)
+                ;
+                if (tdContents instanceof Widget) {
+                    if (context.pagination()) {
+                        console.log("Warning: displaying another widget in the table may cause problems with pagination");
+                    }
+                    if (tdContents.size().height === 0 ) {
+                        tdContents.height(context.minWidgetHeight());
+                        tdContents.width(this.offsetWidth > context.minWidgetWidth() ? this.offsetWidth : context.minWidgetWidth());
+                    }
+                    tdContents.target(null);
+                    tdContents.target(this);
+                    tdContents._parentWidget = context;
+                    if (tdContents._class.indexOf("childWidget") < 0) {
+                        tdContents._class = "childWidget " + tdContents._class;
+                    }
+                    tdContents.render();
+                    context._childWidgets.push(tdContents);
+                }
+            });
             context.applyStyleToRows(dis);
         });  
 
-        var tableMarginHeight = this.thead.node().offsetHeight;
+        var tableMarginHeight = parseInt(this.thead.node().offsetHeight);
 
-        var tbodyRows = context.table.select("tbody tr");
-        var tds = tbodyRows.selectAll("td");
-        var totalWidth = 0;
-        if (this.fixedHeader()) {
-            th.each(function(d, i) {
-                var thwidth = this.offsetWidth;
-                var tdwidth = tds.length ? tds[0][i].offsetWidth : 0;
-                var usewidth = thwidth >= tdwidth ? thwidth : tdwidth;
-                this.style.width = usewidth + "px";
-                if (tds.length) {
-                    tds[0][i].style.width = usewidth + "px";
-                }
-                totalWidth += usewidth;
-            });
+        if (this.pagination() && this._childWidgets.length) {
+            this.tableDiv.style("overflow-y", "auto");
+            this.table.style("margin-bottom", "50px");
+        } else {
+            this.tableDiv.style("overflow-y", null);
+            this.table.style("margin-bottom", null);
+
         }
-
         this.size(this._size);
 
-        this.thead
-            .style("position", this.fixedHeader() ? "absolute" : "relative")
-            .style("width", totalWidth + "px")
-        ;
-        this.table
-            .style("width", totalWidth + "px" )
-        ;
-        this.tbody
-            .style("width", totalWidth + "px" )
-        ;
-        
         var fixedColWidth = 0;
         var fixedColTh = this.fixedColHeadRow.selectAll("th").data(this.fixedColumn() && this.showHeader() ? [this.columns()[0]] : []);
         fixedColTh
@@ -404,11 +409,11 @@
         var fixedColTr = this.fixedColBody.selectAll("tr").data(this.fixedColumn() ? tData : []);
         fixedColTr.enter()
             .append("tr")
+            .attr("class", function(){
+                return "trId" + context._id;
+            })
         ;
         fixedColTr
-            .classed("selected", function (d) {
-                return context._selectionBag.isSelected(context._createSelectionObject(d));
-            })
             .on("click", function (d, i) {
                 d3.select(rows[0][i]).on("click.selectionBag")(rows.data()[i], i)
                 ;
@@ -420,6 +425,9 @@
             .on("mouseout", function (d, i) {
                 d3.select(rows[0][i]).on("mouseout")(rows.data()[i], i)
                 ;
+            })
+            .classed("selected", function (d) {
+                return context._selectionBag.isSelected(context._createSelectionObject(d));
             })
         ;
         fixedColTr.exit()
@@ -461,26 +469,30 @@
             .remove()
         ;
 
-        if (this.fixedColumn()) {
+        if (this.fixedColumn() && !this.fixedSize()) {
             if (this.showHeader()) {
-                fixedColWidth = fixedColTd.node().offsetWidth > fixedColTh.node().offsetWidth ? fixedColTd.node().offsetWidth : fixedColTh.node().offsetWidth;
+                fixedColWidth = fixedColTd.property("offsetWidth") > fixedColTh.property("offsetWidth") ? fixedColTd.property("offsetWidth") : fixedColTh.property("offsetWidth");
             } else {
-                fixedColWidth = fixedColTd.node().offsetWidth;
+                fixedColWidth = fixedColTd.property("offsetWidth");
             }
             this.fixedCol
                 .style("position", "absolute")
-                .style("margin-top", -this.tableDiv.node().scrollTop + tableMarginHeight + "px")
+                .style("margin-top", -this.tableDiv.property("scrollTop") + tableMarginHeight + "px")
             ;
             fixedColTd
                 .style("width", fixedColWidth + "px")
             ;
             this.fixedColHead
                 .style("position", "absolute")
-                .style("margin-top", (this.fixedHeader() ? this.tableDiv.node().scrollTop: 0) - tableMarginHeight + "px")
+                .style("margin-top", (this.fixedHeader() ? this.tableDiv.property("scrollTop"): 0) - tableMarginHeight + "px")
             ;
             fixedColTh
                 .style("width", fixedColWidth + "px")
             ;
+            rows.each(function(d, i) {
+                var height = d3.select(this).select("td").property("offsetHeight");
+                d3.select(fixedColTd[i][0]).style("height", height + "px");
+            });
         }
 
         this.table
@@ -488,18 +500,18 @@
         ;
         this.tableDiv
             .style("margin-left", fixedColWidth + "px" )
-            .style("margin-top", (this.fixedHeader() ? tableMarginHeight : 0) + "px" )
             .style("width", this.width() - fixedColWidth + "px")
         ;
 
         this._paginator.render();
         
-        context.applyStyleToRows(this.tbody.selectAll("tr"));
         this._paginator
             .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
             .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
             .render()
         ;
+
+        if (!rows.empty()) this.setColumnWidths(rows);
 
         if(this.fixedSize()) {
             var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
@@ -508,48 +520,52 @@
                 calcWidth();
                 calcHeight();
             } else {
-                if (box.height - tableMarginHeight <= context.tableDiv.node().offsetHeight ) {
+                if (box.height - tableMarginHeight <= context.tableDiv.property("offsetHeight") ) {
                     calcHeight();
                 } else {
                     if (context.fixedHeader()) {
-                        newTableHeight = context.node().offsetHeight;
+                        newTableHeight = context.property("offsetHeight");
                         newTableHeight = newTableHeight + "px";
                     } else {
                         newTableHeight ="100%";
                     }
                 }
-                if (box.width - parseInt(fixedColWidth) < context.tableDiv.node().offsetWidth ) {
+                if (box.width - fixedColWidth < context.tableDiv.property("offsetWidth") ) {
                     calcWidth();
                 } else {
                     if (context.fixedColumn()) {
-                        finalWidth = context.node().offsetWidth - parseInt(fixedColWidth);
+                        finalWidth = context.property("offsetWidth") - fixedColWidth;
                         finalWidth = finalWidth + "px";
                     } else {
                         finalWidth = "100%";
                     }
                 }            
             }
-            context.tableDiv
-                .style("width", finalWidth)
-                .style("height", newTableHeight)
-            ;
+            if (element.classed("childWidget")) {
+                context._parentElement
+                    .style("width", finalWidth + "px")
+                    .style("height", newTableHeight + "px")
+                ;
+                context.tableDiv
+                    .style("overflow", "hidden")
+                ;
+            }
+            context.size({width:finalWidth, height: newTableHeight});
         }
 
         this.setOnScrollEvents(this.tableDiv.node(), tableMarginHeight);
 
-
         function calcWidth() {
-            var newTableWidth = box.width - parseInt(fixedColWidth);
-            maxWidth = context.table.node().offsetWidth - fixedColWidth + context.getScrollbarWidth();
+            var newTableWidth = box.width;
+            maxWidth = context.tbody.property("offsetWidth") + 1;
             finalWidth = newTableWidth > maxWidth ? maxWidth : newTableWidth;
-            finalWidth = finalWidth + "px";
+            finalWidth = finalWidth;
         }
 
         function calcHeight() {
-            newTableHeight = box.height - tableMarginHeight + context.getScrollbarWidth();
-            newTableHeight = newTableHeight + "px";
+            newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight + 1;
+            newTableHeight = newTableHeight;
         }
-
     };
 
     Table.prototype.exit = function (domNode, element) {
@@ -557,8 +573,52 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
         
+    Table.prototype.setColumnWidths = function(rows) {
+        var context = this;
+        var firstRow = rows.filter(function(d,i){ return i === 0; });
+
+        var tds = [];
+        firstRow.each(function(d) {
+            tds = d3.selectAll(this.childNodes);
+        });
+
+        var tableMarginHeight = this.fixedHeader() ? this.thead.property("offsetHeight") : 0;
+        var totalWidth = 0;
+        var tdWidths = {};
+
+        tds.each(function(d, i) {
+            tdWidths[i] = this.offsetWidth;
+        });
+
+        var th = this.thead.selectAll("th");
+        th.each(function(d, i) {
+            var thwidth = this.offsetWidth;
+            var tdwidth = tds.empty() ? 0 : tdWidths[i];
+            var usewidth = thwidth >= tdwidth ? thwidth : tdwidth;
+            this.style.width = usewidth + "px";
+            if (!tds.empty() &&  tds[0][i]) {
+                tds[0][i].style.width = usewidth + "px";
+            }
+            totalWidth += usewidth;
+        });
+        this.thead
+            .style("position", this.fixedHeader() ? "absolute" : "relative")
+            .style("width", totalWidth + "px")
+            .style("margin-top", "0px")
+        ;
+        this.table
+            .style("width", totalWidth + "px" )
+        ;
+        this.tableDiv
+            .style("margin-top", (context.fixedHeader() ? tableMarginHeight : 0) + "px" )
+        ;
+        this.tbody
+            .style("width", totalWidth + "px" )
+        ;
+    };
+
     Table.prototype.getBodyRow = function(i) {
-        return this.table.selectAll("tbody tr")
+        return this.table.selectAll("tbody tr.trId" + this._id)
             .filter(function (d, idx) {
                 return idx === i;
             })
@@ -585,11 +645,11 @@
             }
             if (context.fixedColumn()) {
                 context.fixedCol
-                    .style("margin-top", -topDelta + parseInt(margHeight) + "px")
+                    .style("margin-top", -topDelta + margHeight + "px")
                 ;
                 if (context.fixedHeader()) {
                     context.fixedColHead
-                        .style("margin-top", topDelta - parseInt(margHeight) + "px")
+                        .style("margin-top", topDelta - margHeight + "px")
                     ;
                 }
             }
@@ -629,6 +689,10 @@
         return ipp;
     };
 
+    function isNull(value) {
+        return value === undefined || value === null;
+    }
+
     Table.prototype.sort = function (idx) {
         if (this._currentSort !== idx) {
             this._currentSort = idx;
@@ -636,23 +700,20 @@
         } else {
             this._currentSortOrder *= -1;
         }
+        var fields = this.fields();
         var context = this;
         this.data().sort(function (l, r) {
             if (l[idx] === r[idx]) {
                 return 0;
-            } else if (typeof (r[idx]) === "undefined" || l[idx] > r[idx]) {
-                return context._currentSortOrder;
+            } else {
+                var rFormattedVal = fields[idx].parse(r[idx]);
+                if (isNull(rFormattedVal) || fields[idx].parse(l[idx] > rFormattedVal)) {
+                    return context._currentSortOrder;
+                }
             }
             return context._currentSortOrder * -1;
         });
         return this;
-    };
-
-    Table.prototype.headerClick = function (column, idx) {
-        this
-            .sort(idx)
-            .render()
-        ;
     };
 
     Table.prototype.selection = function (_) {
@@ -663,7 +724,7 @@
         return this;
     };
 
-    Table.prototype.selectionBagClick = function (d) {
+    Table.prototype.selectionBagClick = function (d, i) {
         if (d3.event.shiftKey && this._selectionPrevClick) {
             var inRange = false;
             var rows = [];
@@ -678,15 +739,24 @@
                 }
                 return inRange || lastInRangeRow;
             }, this);
+            this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
+            for (var iDx = rows[0]; iDx <= rows[1]; iDx++) {
+                this.getFixedRow(iDx).classed("selected", true);
+            }
             this.selection(selection);
             return rows;
         } else {
             if (this._selectionBag.isSelected(this._createSelectionObject(d))) {
+                this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
                 this._selectionBag.clear();
                 this._selectionPrevClick = null;
             } else {
+                if (!d3.event.ctrlKey) {
+                    this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
+                }
                 this._selectionBag.click(this._createSelectionObject(d), d3.event);
                 this._selectionPrevClick = d;
+                this.getFixedRow(i).classed("selected", true);
             }
         }
     };
@@ -714,7 +784,6 @@
     Table.prototype.applyFirstColRowStyles = function(rows){
         this.applyStyleToRows(rows,true);
     };
-
     Table.prototype.applyStyleToRows = function(rows,isFirstCol){
         isFirstCol = typeof isFirstCol !== "undefined" ? isFirstCol : false;
         var context = this;
@@ -729,18 +798,6 @@
                 }
             })
         ;
-    };
-
-    Table.prototype.getColumnFormatting = function(cellData,colIdx){
-         var context = this;
-         if(typeof(cellData) === "string"){
-            var timeFormat = d3.time.format(context.columnPatterns()[colIdx]);
-            return timeFormat(new Date(cellData));
-        } else if (typeof(cellData) === "number") {
-            var format = d3.format(context.columnPatterns()[colIdx]);
-            return format(cellData);
-        }
-        return cellData;
     };
 
     Table.prototype.getColumnAlignment = function(cellData){
@@ -759,8 +816,14 @@
         }
      };
 
-    Table.prototype.click = function (row, column) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column);
+    Table.prototype.click = function (row, column, selected) {
+        function replacer(key, value) {
+            if (value instanceof Widget) {
+                return "Widget with class: " + value.classID();
+            }
+            return value;
+        }
+        console.log("Click:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     };
 
     Table.prototype.headerClick = function (column, idx) {

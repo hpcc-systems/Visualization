@@ -161,7 +161,7 @@
         ESPUrl.call(this);
         this._proxyMappings = {};
         this._mappings = new ESPMappings({});
-        this._timeout = 1;
+        this._timeout = 60;
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
 

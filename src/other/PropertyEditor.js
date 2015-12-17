@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../other/Persist", "../layout/Grid", "css!./PropertyEditor"], factory);
+        define(["d3", "../common/HTMLWidget", "../other/Persist", "../layout/Grid", "../common/Widget", "css!./PropertyEditor"], factory);
     } else {
-        root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid);
+        root.other_PropertyEditor = factory(root.d3, root.common_HTMLWidget, root.other_Persist, root.layout_Grid, root.common_Widget);
     }
-}(this, function (d3, HTMLWidget, Persist, Grid) {
+}(this, function (d3, HTMLWidget, Persist, Grid, Widget) {
     function hasProperties(type) {
         switch (type) {
             case "widget":
@@ -16,8 +16,9 @@
         return false;
     }
 
-    function PropertyEditor() {
+    function PropertyEditor(parent) {
         HTMLWidget.call(this);
+        this._parent = parent || null;
 
         this._tag = "div";
         this._show_settings = false;
@@ -247,11 +248,9 @@
                     return typeOrder.indexOf(a.type) < typeOrder.indexOf(b.type) ? -1 : 1;
                 }
             });
-            }
-        else if(this.sorting() === "A-Z") {
+        } else if(this.sorting() === "A-Z") {
             paramArr.sort(function(a,b){ return a.id < b.id ? -1 : 1;});
-        }
-        else if(this.sorting() === "Z-A") {
+        }  else if(this.sorting() === "Z-A") {
             paramArr.sort(function(a,b){ return a.id > b.id ? -1 : 1;});
         }
     };
@@ -322,17 +321,17 @@
         }
         var widgetArr = widget instanceof Array ? widget : [widget];
 
+        var context = this;
         var widgetCell = element.selectAll("div.propEditor" + this.id()).data(widgetArr, function (d) { return d.id(); });
         widgetCell.enter().append("div")
             .attr("class", "property-input-cell propEditor" + this.id())
             .each(function (w) {
                 d3.select(this)
                     .attr("data-widgetid", w.id())
-                    .property("data-propEditor", new PropertyEditor().label(param.id).target(this))
+                    .property("data-propEditor", new PropertyEditor(context).label(param.id).target(this))
                 ;
             })
         ;
-        var context = this;
         widgetCell
             .each(function (w) {
                 d3.select(this).property("data-propEditor")
@@ -359,9 +358,24 @@
         ;
     };
 
+    PropertyEditor.prototype.setProperty = function (id, value) {
+        //  With PropertyExt not all "widgets" have a render, if not use parents render...
+        var propEditor = this;
+        while (propEditor) {
+            var widget = propEditor.rootWidget();
+            if (propEditor === this) {
+                widget[id](value);
+            }
+            if (widget.render) {
+                widget.render();
+            }
+            propEditor = propEditor._parent;
+        }
+    };
+
     PropertyEditor.prototype.enterInputs = function (cell, param) {
-        var widget = this.rootWidget();
-        cell.classed(param.type+"-cell",true);
+        cell.classed(param.type + "-cell", true);
+        var context = this;
         switch (param.type) {
             case "boolean":
                 cell.append("input")
@@ -369,7 +383,7 @@
                     .classed("property-input", true)
                     .attr("type", "checkbox")
                     .on("change", function () {
-                        widget[param.id](this.checked).render();
+                        context.setProperty(param.id, this.checked);
                     })
                 ;
                 break;
@@ -378,7 +392,7 @@
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)
                     .on("change", function () {
-                        widget[param.id](this.value).render();
+                        context.setProperty(param.id, this.value);
                     })
                     .each(function (d) {
                         var input = d3.select(this);
@@ -394,7 +408,7 @@
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)
                     .on("change", function () {
-                        widget[param.id](JSON.parse(this.value)).render();
+                        context.setProperty(param.id, JSON.parse(this.value));
                     })
                 ;
                 break;
@@ -403,7 +417,7 @@
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)
                     .on("change", function () {
-                        widget[param.id](this.value).render();
+                        context.setProperty(param.id, this.value);
                     })
                 ;
                 if (param.type === "html-color" && !this.isIE) {
@@ -412,7 +426,7 @@
                         .classed("property-input", true)
                         .attr("type", "color")
                         .on("change", function () {
-                            widget[param.id](this.value).render();
+                            context.setProperty(param.id, this.value);
                         })
                     ;
                 }
@@ -426,7 +440,12 @@
         switch (param.type) {
             case "array":
             case "object":
-                element.property("value", JSON.stringify(val));
+                element.property("value", JSON.stringify(val, function replacer(key, value) {
+                    if (value instanceof Widget) {
+                        return Persist.serialize(value);
+                    }
+                    return value;
+                }));
                 break;
             case "boolean":
                 element.property("checked", val);

@@ -40,18 +40,12 @@
     background-color: white;
     color:black;
 }
-/*
-.other_Table .tableDiv tbody > tr:hover {
-    background-color:#bfd7e7;
-    color: white;
-}
-*/
 .other_Table .tableDiv tbody > tr.selected  {
     background-color:#f48a00;
     color: white;
 }
 
-.other_Table .rows-wrapper tbody > tr {
+.other_Table .rows-wrapper table > tbody > tr {
     background-color:#BCE1FB;
     color:black;
 }
@@ -59,12 +53,12 @@
 .other_Table .rows-wrapper .labels-wrapper {
     width: 100%;
 }
-.other_Table tbody > tr.selected {
+.other_Table table tbody > tr.selected {
     background-color:#f48a00;
     color: white;
 }
 
-.other_Table .tableDiv tbody > tr:hover, .other_Table .tableDiv tbody > tr.hover, .rows-wrapper tbody tr.hover {
+.other_Table .tableDiv tbody > tr:hover, .other_Table .tableDiv tbody > tr.hover, .rows-wrapper table tbody tr.hover {
     background-color: #bfd7e7;
     color: white;
 }
@@ -89,6 +83,7 @@
     border-color: #a9c6c9;
     white-space: nowrap;
     box-sizing:border-box;
+    vertical-align: middle;
 }
 
 .other_Table tfoot td, .rows-wrapper tfoot td {

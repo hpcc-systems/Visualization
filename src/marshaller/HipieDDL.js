@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
@@ -56,6 +56,38 @@
         }
     };
 
+    function hipieType2DBType(hipieType) {
+        switch (hipieType) {
+            case "bool":
+            case "boolean":
+                return "boolean";
+            case "integer":
+            case "float":
+            case "double":
+                return "number";
+            case "date":
+            case "time":
+                return "time";
+        }
+        return "string";
+    }
+
+    SourceMappings.prototype.getFields = function () {
+        if (this.visualization.fields) {
+            return Object.keys(this.mappings).map(function(key) {
+                return this.visualization.fields.filter(function(field) {
+                   return field.id === this.mappings[key];
+                }, this).map(function(field) {
+                    return new Database.Field(field.id)
+                        .type(hipieType2DBType(field.properties.type))
+                        .label(this.reverseMappings[field.id])
+                    ;
+                }, this)[0];
+            }, this);
+        }
+        return null;
+    };
+
     SourceMappings.prototype.contains = function (key) {
         return this.mappings[key] !== undefined;
     };
@@ -68,17 +100,6 @@
                 var val = item[rhsKey];
                 if (val === undefined) {
                     val = item[rhsKey.toLowerCase()];
-                }
-                //  Symposium AVE Hack
-                if (val === undefined && rhsKey.indexOf("_AVE") === rhsKey.length - 4 && item.base_count !== undefined) {
-                    var rhsSum = rhsKey.substring(0, rhsKey.length - 4) + "_SUM";
-                    val = item[rhsSum];
-                    if (val === undefined) {
-                        val = item[rhsSum.toLowerCase()];
-                    }
-                    if (val) {
-                        val /= item.base_count;
-                    }
                 }
                 retVal[this.columnsIdx[key]] = val;
             } catch (e) {
@@ -372,6 +393,10 @@
 
     Source.prototype.hasData = function () {
         return this.getOutput().db ? true : false;
+    };
+
+    Source.prototype.getFields = function () {
+        return this.mappings.getFields();
     };
 
     Source.prototype.getColumns = function () {
@@ -958,13 +983,18 @@
         this.request.refresh = refresh ? true : false;
         this.filter.forEach(function (item) {
             this.request[item + "_changed"] = request[item + "_changed"] || false;
-            var value = request[item] === undefined ? "" : request[item];
+            var value = request[item] === undefined ? null : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
             }
         }, this);
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+        }
+        for (var key in this.request) {
+            if (this.request[key] === null) {
+                delete this.request[key];
+            }
         }
         this.comms.call(this.request).then(function (response) {
             context.processResponse(response, request, updates);

@@ -75,7 +75,7 @@
                 break;
             case "widget":
                 this.checkedAssign = function (_) {
-                    if (!_._class || _._class.indexOf("common_Widget") < 0) {
+                    if (!_._class || _._class.indexOf("common_PropertyExt") < 0) {
                         console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
@@ -85,6 +85,14 @@
                 this.checkedAssign = function (_) {
                     if (_.some(function (row) { return (!row._class || row._class.indexOf("common_Widget") < 0); })) {
                         console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "propertyArray":
+                this.checkedAssign = function (_) {
+                    if (_.some(function (row) { return !row.publishedProperties; })) {
+                        console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
                 };
@@ -116,7 +124,9 @@
         this.defaultValue = defaultValue;
     }
 
+    var propExtID = 0;
     function PropertyExt() {
+        this._id = "_pe" + (++propExtID);
         this._watchArr = [];
 
         this.publishedProperties().forEach(function (meta) {
@@ -129,6 +139,9 @@
             }
         }, this);
     }
+
+    PropertyExt.prototype._class = "common_PropertyExt";
+
     // Publish Properties  ---
     PropertyExt.prototype.publishedProperties = function () {
         var retVal = [];

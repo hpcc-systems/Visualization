@@ -12,6 +12,7 @@
 
         this._tag = "div";
 
+        this._chartLibrary = "visualization";
         this._selection = {};
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
@@ -136,7 +137,7 @@
         if (this._chart) {
             return;
         }
-        this._chart = new google.visualization[this._chartType](domNode);
+        this._chart = new google[this._chartLibrary][this._chartType](domNode);
 
         var context = this;
         google.visualization.events.addListener(this._chart, "select", function () {

@@ -116,6 +116,16 @@
                     );
                 });
             },
+            widget: function (callback) {
+                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                    callback(new Table()
+                        .columns(DataFactory.Table.widget.columns)
+                        .data(DataFactory.Table.widget.data)
+                        .minWidgetHeight(200)
+                        .minWidgetWidth(200)
+                    );
+                });
+            },
             large: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()
@@ -127,22 +137,25 @@
             },
             totalled: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
-                    callback(new Table()
+                    var table = new Table()
                         .columns(DataFactory.Table.large.columns)
                         .data(DataFactory.Table.large.data)
-                        .totalledColumns([1,2,5,6,7])
+                        .totalledColumns([1, 2, 5, 6, 7])
                         .totalledLabel("Total")
-                        .columnPatterns(["", "", ".6r", "", "", "", "", "", "", "", ""])
-                    );
+                    ;
+                    callback(table);
                 });
             },
             formatted: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
-                    callback(new Table()
+                    var table = new Table()
                         .columns(DataFactory.Table.formatted.columns)
                         .data(DataFactory.Table.formatted.data)
-                        .columnPatterns([".4%", "", ".6r", "", "%d-%m-%y"])
-                    );
+                    ;
+                    table.fields()[0].format(".2f");
+                    table.fields()[2].format(".6r");
+                    table.fields()[4].type("time").mask("%Y-%_m-%_d").format("%d %b '%y");
+                    callback(table);
                 });
             }
         },

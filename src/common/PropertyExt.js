@@ -283,5 +283,21 @@
         }
     };
 
+    PropertyExt.prototype.applyTheme = function (theme) {
+        if (!theme) {
+            return;
+        }
+        var clsArr = this._class.split(" ");
+        for (var i in clsArr) {
+            if (theme[clsArr[i]]) {
+                for (var paramName in theme[clsArr[i]]) {
+                    if (this.publishedProperty(paramName)) {
+                        this.publishedProperty(paramName).defaultValue = theme[clsArr[i]][paramName];
+                    }
+                }
+            }
+        }
+    };
+
     return PropertyExt;
 }));

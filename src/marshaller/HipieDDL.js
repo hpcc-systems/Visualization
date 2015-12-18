@@ -276,13 +276,13 @@
             if (!retVal) {
                 retVal = new Vertex()
                     .faChar("\uf128")
-                    .text(item[1])
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
             }
             if (origItem) {
+                retVal.text(item[1]);
                 // Icon  ---
                 var icon = context.calcAnnotation(context.visualization.icon, origItem);
                 if (icon) {
@@ -406,9 +406,9 @@
     Source.prototype.getData = function () {
         var db = this.getOutput().db;
         var retVal = this.mappings.doMapAll(db);
-        if (this.sort) {
+        if (retVal.length && this.sort) {
             Utility.multiSort(retVal, db.hipieMapSortArray(this.sort));
-                    }
+        }
         if (this.reverse) {
             retVal.reverse();
         }

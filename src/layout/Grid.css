@@ -12,20 +12,6 @@
     text-align: center;
 }
 
-.layout_Grid .dropCell {
-    box-sizing:border-box;
-    background-color: lightgrey;
-    opacity: 0.33;
-    border-radius: 5px;
-    border:1px solid #333;
-    display: inline-block;
-    overflow: hidden;
-}
-
-.layout_Grid .dropCell.over {
-    border: 2px dashed #000;
-}
-
 .layout_Grid .layout_Cell.over {
     border: 2px dashed #000;
 }
@@ -38,7 +24,6 @@
     opacity: 1;
 }
 .layout_Grid div[draggable=true] { 
-    opacity: 0.75;
     cursor: move;
 }
 .layout_Grid div[draggable=true] > .layout_Surface{ 
@@ -112,7 +97,7 @@
 .layout_Grid .grid-drop-target{
     position:fixed;
     box-sizing:border-box;
-    border:2px dashed #7f8c8d;
+    border:2px dashed #444;
     border-radius:0px;
     background: repeating-linear-gradient(
         -45deg,
@@ -124,7 +109,7 @@
 }
 
 .layout_Grid .grid-drop-target.drop-target-over{
-    border:2px dashed #179BD7;
+    border:3px dashed #179BD7;
     background: repeating-linear-gradient(
         -45deg,
         rgba(0, 0, 0, 0),

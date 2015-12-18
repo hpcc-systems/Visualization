@@ -29,7 +29,7 @@
     MultiChart.prototype._1DChartTypes = [
         { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
-    ];
+    ].map(function(item) { item.family = "1D"; return item;});
     MultiChart.prototype._2DChartTypes = [
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
@@ -40,7 +40,7 @@
         { id: "AM_PIE", display: "Pie (amCharts)", widgetClass: "amchart_Pie" },
         { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
         { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
-    ];
+    ].map(function(item) { item.family = "2D"; return item;});
     MultiChart.prototype._NDChartTypes = [
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
@@ -61,10 +61,10 @@
         { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
         { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
         { id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
-    ];
+    ].map(function(item) { item.family = "ND"; return item;});
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }
-    ];
+    ].map(function(item) { item.family = "any"; return item;});
     MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
@@ -114,6 +114,10 @@
         if (!arguments.length) return this._chartTypeProperties;
         this._chartTypeProperties = _;
         return this;
+    };
+    
+    MultiChart.prototype.getChartDataFamily = function () {
+        return this._allCharts[this.chartType()].family;
     };
 
     MultiChart.prototype.requireContent = function (chartType, callback) {

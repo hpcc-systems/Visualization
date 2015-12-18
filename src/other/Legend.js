@@ -16,24 +16,31 @@
     Legend.prototype.constructor = Legend;
     Legend.prototype._class += " other_Legend";
 
-    //We may need a new publish param "type" to store references to widgets
-    //Legend.prototype.publish("targetWidget", null, "widget", "Target widget for Legend",null,{tags:["Private"]});
+    Legend.prototype.publish("dataFamily", "ND", "set", "Type of data",["1D","2D","ND"],{tags:["Private"]});
+    Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows",["vertical","horizontal"],{tags:["Private"]});
     
     Legend.prototype.targetWidget = function (widget) {
         var context = this;
+        if(widget === undefined){
+            return context._targetWidget;
+        }
             var colArr = ["Key", "Label"];
             var dataArr = [];
             var widgetColumns = widget.columns();
 
             var paletteType = widget._palette.toString().split("function ")[1].split("(")[0];
             if(paletteType === "ordinal"){
-                for(var i in widgetColumns){
-                    if(i > 0){
-                        dataArr.push([
-                            _htmlColorBlock(widget._palette(widgetColumns[i])),
-                            widgetColumns[i]
-                        ]);
-                    }
+                switch(this.dataFamily()){
+                    case '2D':
+                        dataArr = widget.data().map(function(n){
+                            return [_htmlColorBlock(widget._palette(n[0])),n[0]];
+                        });
+                        break;
+                    case 'ND':
+                        dataArr = widgetColumns.filter(function(n,i){return i>0;}).map(function(n){
+                            return [_htmlColorBlock(widget._palette(n)),n];
+                        });
+                        break;
                 }
             } 
             else if (paletteType === "rainbow"){
@@ -93,6 +100,8 @@
         if(typeof (this._targetWidget) !== "undefined"){
             this.targetWidget(this._targetWidget);
         }
+        
+        element.classed("horiz-legend",this.orientation() === "horizontal");
         
         var table = element.select(".tableDiv > table");
         var tableRect = table.node().getBoundingClientRect();

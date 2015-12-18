@@ -211,6 +211,38 @@
 
                     callback(retVal);
                 });
+            },
+            shrink: function (callback) {
+                require(["test/DataFactory", "src/layout/Popup", "src/layout/Surface", "src/other/Table"], function (DataFactory, Popup, Surface, Table) {
+                    var retVal =  new Popup();
+
+                    retVal
+                        .widget(new Table()
+                            .columns(DataFactory.Table.simple.columns)
+                            .data(DataFactory.Table.simple.data)
+                            .fixedSize(true)
+                        )
+                        .shrinkWrap(true)
+                    ;
+
+                    callback(retVal);
+                });
+            },
+            shrink2: function (callback) {
+                require(["test/DataFactory", "src/layout/Popup", "src/layout/Surface", "src/chart/Line"], function (DataFactory, Popup, Surface, Line) {
+                    var retVal =  new Popup();
+
+                    retVal
+                        .widget(new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                            .size({width: 500, height:400})
+                        )
+                        .shrinkWrap(true)
+                    ;
+
+                    callback(retVal);
+                });
             }
         },
         Surface: {

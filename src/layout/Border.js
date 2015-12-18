@@ -29,7 +29,7 @@
     
     Border.prototype.publish("content", [], "widgetArray", "widgets", null, { tags: ["Intermediate"] });
     
-    Border.prototype.publish("gutter", 2, "number", "Gap Between Widgets",null,{tags:["Basic"]});
+    Border.prototype.publish("gutter", 0, "number", "Gap Between Widgets",null,{tags:["Basic"]});
 
     Border.prototype.publish("topShrinkWrap", false, "boolean", "'Top' Cell shrinks to fit content",null,{tags:["Intermediate"]});
     Border.prototype.publish("leftShrinkWrap", false, "boolean", "'Left' Cell shrinks to fit content",null,{tags:["Intermediate"]});
@@ -51,26 +51,7 @@
 
     Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.", null, { tags: ["Private"] });
 
-    Border.prototype.applyLayoutType = function () {
-        var layoutObj = this.borderLayoutObject();
-        this.content().forEach(function (cell, i) {
-            cell._fixedLeft = layoutObj[this.sectionTypes()[i]].left;
-            cell._fixedTop = layoutObj[this.sectionTypes()[i]].top;
-            cell._fixedWidth = layoutObj[this.sectionTypes()[i]].width;
-            cell._fixedHeight = layoutObj[this.sectionTypes()[i]].height;
-            cell._dragHandles = this.cellSpecificDragHandles(this.sectionTypes()[i]);
-        }, this);
-    };
-    Border.prototype.cellSpecificDragHandles = function (sectionType) {
-        switch(sectionType){
-            case "top":return ["s"];
-            case "right":return ["w"];
-            case "bottom":return ["n"];
-            case "left":return ["e"];
-            case "center":return [];
-        }
-    };
-    Border.prototype.borderLayoutObject = function (layoutType) {
+    Border.prototype.borderLayoutObject = function () {
         var t,b,r,l,c,retObj = {},context=this;
         var topSize,topPerc,bottomSize,bottomPerc,leftSize,leftPerc,rightSize,rightPerc;
 
@@ -180,17 +161,22 @@
                 contentWidget.target(null);
                 return false;
             });
+            d3.select("#"+this.id()+" > div.borderHandle")
+                    .classed("borderHandleDisabled",true);
             this.content([]);
             this.sectionTypes([]);
         } else {
             var idx = this.sectionTypes().indexOf(sectionType);
             if (idx >= 0) {
+                
+                d3.select("#"+this.id()+" > div.borderHandle_"+sectionType)
+                        .classed("borderHandleDisabled",true);
                 this.content().splice(idx, 1);
                 this.sectionTypes().splice(idx, 1);
             }
         }
     };
-
+    
     Border.prototype.hasContent = function (sectionType, widget, title) {
         return this.sectionTypes().indexOf(sectionType) >= 0;
     };
@@ -218,113 +204,151 @@
         return null;
     };
 
-    Border.prototype.getSize = function(i){
-        switch(this.sectionTypes()[i]){
-            case "top":return this.topSize();
-            case "right":return this.rightSize();
-            case "bottom":return this.bottomSize();
-            case "left":return this.leftSize();
-        }
-    };
-    Border.prototype.changeSize = function(i,delta){
-        switch(this.sectionTypes()[i]){
-            case "top":
-                this.topSize(this.topSize() + delta);
-                break;
-            case "right":
-                this.rightSize(this.rightSize() + delta);
-                break;
-            case "bottom":
-                this.bottomSize(this.bottomSize() + delta);
-                break;
-            case "left":
-                this.leftSize(this.leftSize() + delta);
-                break;
-            case "center":
-                this.centerSize(this.centerSize() + delta);
-                break;
-        }
-    };
-
-    Border.prototype.overHandle = function (e) {
-        var handle = "";
-        var handleSize = this._dragCell.handleSize();
-
-        var top = this._offsetY + this._dragCell._fixedTop - this.gutter()/2;
-        var left = this._offsetX + this._dragCell._fixedLeft - this.gutter()/2;
-        var width = this._dragCell._fixedWidth;
-        var height = this._dragCell._fixedHeight;
-
-        if(Math.ceil(top + height - this.gutter()) >= e.clientY && Math.floor(top + height - handleSize - this.gutter()) <= e.clientY){
-            handle = "s";//within SOUTH handle range
-        }
-        else if(Math.floor(top) <= e.clientY && Math.ceil(top + handleSize) >= e.clientY){
-            handle = "n";//within NORTH handle range
-        }
-        if(Math.ceil(left + width - this.gutter()) >= e.clientX && Math.floor(left + width - handleSize - this.gutter()) <= e.clientX){
-            handle += "e";//within EAST handle range
-        }
-        else if(Math.floor(left) <= e.clientX && Math.ceil(left + handleSize) >= e.clientX){
-            handle += "w";//within WEST handle range
-        }
-        return handle;
-    };
-
     Border.prototype.setLayoutOffsets = function () {
         this._offsetX = this._element.node().getBoundingClientRect().left + (this.gutter()/2);
         this._offsetY = this._element.node().getBoundingClientRect().top + (this.gutter()/2);
     };
 
-    Border.prototype.dragStart = function(d,i){
+    Border.prototype.dragStart = function(handle){
         d3.event.sourceEvent.stopPropagation();
         var context = this;
 
-        this._dragCell = d;
-        this._dragCellStartSize = this.getSize(i);
-
-        context._handle = context.overHandle(d3.event.sourceEvent);
-        if(context._dragCell._dragHandles.indexOf(context._handle) === -1){
-            context._handle = undefined;
+        this._dragCell = handle;
+        this._dragCellStartSize = this[handle+"Size"]();
+        
+        if(this[handle+"ShrinkWrap"]()){
+            this[handle+"Percentage"](0);
+            this[handle+"ShrinkWrap"](false);
         }
+        
+        var handleElm = d3.select("#" + context.id() + " > div.borderHandle_"+handle);
+        context._handleTop = parseFloat(handleElm.style("top").split("px")[0]);
+        context._handleLeft = parseFloat(handleElm.style("left").split("px")[0]);
+        
         this._dragPrevX = d3.event.sourceEvent.clientX;
         this._dragPrevY = d3.event.sourceEvent.clientY;
     };
-    Border.prototype.dragTick = function(d,i){
-        if(this._handle){
+    Border.prototype.dragTick = function(handle){
+        var context = this;
+        
+        var xDelta = this._dragPrevX - d3.event.sourceEvent.clientX;
+        var yDelta = this._dragPrevY - d3.event.sourceEvent.clientY;
+
+        switch(handle){
+            case "top":
+            case "bottom":
+                _moveHandles(handle,yDelta);
+                break;
+            case "right":
+            case "left":
+                _moveHandles(handle,xDelta);
+                break;
+        }
+        
+        function _moveHandles(handle,delta){
+            if(delta===0)return;
+            var handles = d3.selectAll("#" + context.id() + " > div.borderHandle");
+            var grabbedHandle = d3.select("#" + context.id() + " > div.borderHandle_"+handle);
+            
+            if(grabbedHandle.classed("borderHandle_top")){
+                grabbedHandle.style({
+                    top: (context._handleTop-delta)+"px"
+                });
+                context._cellSizes.topHeight = context._handleTop-delta;
+                context._cellSizes.leftHeight = context._cellSizes.height;
+                context._cellSizes.leftHeight -= context._cellSizes.topHeight;
+                context._cellSizes.leftHeight -= context._cellSizes.bottomHeight;
+                context._cellSizes.rightHeight = context._cellSizes.leftHeight;
+            }
+            else if(grabbedHandle.classed("borderHandle_right")){
+                grabbedHandle.style({
+                    left: (context._handleLeft-delta)+"px"
+                });
+                context._cellSizes.rightWidth = context._cellSizes.width - context._handleLeft + delta;
+            }
+            else if(grabbedHandle.classed("borderHandle_bottom")){
+                grabbedHandle.style({
+                    top: (context._handleTop-delta)+"px"
+                });
+                context._cellSizes.bottomHeight = context._cellSizes.height - context._handleTop + delta;
+                context._cellSizes.leftHeight = context._cellSizes.height;
+                context._cellSizes.leftHeight -= context._cellSizes.bottomHeight;
+                context._cellSizes.leftHeight -= context._cellSizes.topHeight;
+                context._cellSizes.rightHeight = context._cellSizes.leftHeight;
+            }
+            else if(grabbedHandle.classed("borderHandle_left")){
+                grabbedHandle.style({
+                    left: (context._handleLeft-delta)+"px"
+                });
+                context._cellSizes.leftWidth = context._handleLeft-delta;
+            }
+            
+            handles.each(function(){
+                var handle = d3.select(this);
+                if(handle.classed("borderHandle_top")){
+                    handle.style({
+                        width:context._cellSizes.width+"px",
+                        top:(context._cellSizes.topHeight - 3)+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_right")){
+                    handle.style({
+                        left:(context._cellSizes.width - context._cellSizes.rightWidth)+"px",
+                        top:(context._cellSizes.topHeight + 3)+"px",
+                        height:context._cellSizes.rightHeight+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_bottom")){
+                    handle.style({
+                        width:context._cellSizes.width+"px",
+                        top:(context._cellSizes.height - context._cellSizes.bottomHeight - 3)+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_left")){
+                    handle.style({
+                        left:context._cellSizes.leftWidth+"px",
+                        height:context._cellSizes.leftHeight+"px",
+                        top:(context._cellSizes.topHeight + 3)+"px"
+                    });
+                }
+            });
+        }
+    };
+    Border.prototype.dragEnd = function(handle){
+        if(handle){
             var xDelta = this._dragPrevX - d3.event.sourceEvent.clientX;
             var yDelta = this._dragPrevY - d3.event.sourceEvent.clientY;
-
-            switch(this._sectionTypeArr[i]){
+            
+            switch(handle){
                 case "top":
                     if(yDelta !== 0){
-                        this.changeSize(i,-yDelta);
+                        this.topPercentage(0);
+                        this.topSize(this.topSize() === 0 ? this.getContent("top").getBBox().height - yDelta : this.topSize() - yDelta);
                     }
                     break;
                 case "right":
                     if(xDelta !== 0){
-                        this.changeSize(i,xDelta);
+                        this.rightPercentage(0);
+                        this.rightSize(this.rightSize() === 0 ? this.getContent("right").getBBox().width + xDelta : this.rightSize() + xDelta);
                     }
                     break;
                 case "bottom":
                     if(yDelta !== 0){
-                        this.changeSize(i,yDelta);
+                        this.bottomPercentage(0);
+                        this.bottomSize(this.bottomSize() === 0 ? this.getContent("bottom").getBBox().height + yDelta : this.bottomSize() + yDelta);
                     }
                     break;
                 case "left":
                     if(xDelta !== 0){
-                        this.changeSize(i,-xDelta);
+                        this.leftPercentage(0);
+                        this.leftSize(this.leftSize() === 0 ? this.getContent("left").getBBox().width - xDelta : this.leftSize() - xDelta);
                     }
                     break;
-                case "center":
-                    break;
             }
-
+            
             this._dragPrevX = d3.event.sourceEvent.clientX;
             this._dragPrevY = d3.event.sourceEvent.clientY;
         }
-        this.render();
-    };
-    Border.prototype.dragEnd = function(d){
         this.render();
     };
 
@@ -338,29 +362,44 @@
         }
         return retVal;
     };
-
+    
     Border.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         element.style("position", "relative");
-        this.contentDiv = element.append("div");
+        this.contentDiv = element.append("div").classed("border-content",true);
         this._scrollBarWidth = this.getScrollbarWidth();
+        this._borderHandles = ["top","left","right","bottom"];
+        
+        var handles = element.selectAll("div.borderHandle").data(this._borderHandles);
+        handles.enter().append("div")
+            .classed("borderHandle",true)
+            .each(function(handle){
+                var h = d3.select(this);
+                h.classed("borderHandle_"+handle,true)
+                    .classed("borderHandleDisabled",context.getContent(handle) === null)
+                ;
+            });
     };
-
+    
     Border.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         this._sectionTypeArr = this.sectionTypes();
         var context = this;
 
+        element.classed("design-mode",this.designMode());
+
         this.setLayoutOffsets();
 
         var rows = this.contentDiv.selectAll(".cell_" + this._id).data(this.content(), function (d) { return d._id; });
         rows.enter().append("div")
-            .attr("class", "cell_" + this._id)
+            .classed("cell_" + this._id,true)
             .style("position", "absolute")
-            .each(function (d) {
-                d
-                   .target(this)
-                ;
+            .each(function (d,i) {
+                d3.select(this).classed("border-cell border-cell-"+context._sectionTypeArr[i],true);
+                d.target(this);
+                d3.select("#"+context.id()+" > div.borderHandle_"+context._sectionTypeArr[i])
+                        .classed("borderHandleDisabled",false);
             });
         rows.each(function (d, idx) {
                 var sectionType = context.sectionTypes()[idx];
@@ -378,11 +417,19 @@
             .on("dragend", function (d,i) { context.dragEnd.call(context,d,i); })
         ;
         if(this.designMode()){
-            this.contentDiv.selectAll(".cell_" + this._id).call(drag);
+            element.selectAll("#"+this.id()+" > div.borderHandle").call(drag);
         } else {
-            this.contentDiv.selectAll(".cell_" + this._id).on(".drag", null);
+            element.selectAll("#"+this.id()+" > div.borderHandle").on(".drag", null);
         }
-        this.applyLayoutType();
+        
+        var layoutObj = this.borderLayoutObject();
+        this.content().forEach(function (cell, i) {
+            cell._fixedLeft = layoutObj[this.sectionTypes()[i]].left;
+            cell._fixedTop = layoutObj[this.sectionTypes()[i]].top;
+            cell._fixedWidth = layoutObj[this.sectionTypes()[i]].width;
+            cell._fixedHeight = layoutObj[this.sectionTypes()[i]].height;
+            cell._dragHandles = [];
+        }, this);
 
         rows
             .style("left", function (d) { return d._fixedLeft + "px"; })
@@ -405,9 +452,75 @@
                .target(null)
             ;
         }).remove();
-
+        
+        this.getCellSizes();
+        
+        element
+            .selectAll("#"+this.id()+" > div.borderHandle")
+            .each(function(){
+                var handle = d3.select(this);
+                if(handle.classed("borderHandle_top")){
+                    handle.style({
+                        width:context._cellSizes.width+"px",
+                        top:(context._cellSizes.topHeight - 3)+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_right")){
+                    handle.style({
+                        left:(context._cellSizes.width - context._cellSizes.rightWidth)+"px",
+                        top:(context._cellSizes.topHeight + 3)+"px",
+                        height:context._cellSizes.rightHeight+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_bottom")){
+                    handle.style({
+                        width:context._cellSizes.width+"px",
+                        top:(context._cellSizes.height - context._cellSizes.bottomHeight - 3)+"px"
+                    });
+                }
+                else if(handle.classed("borderHandle_left")){
+                    handle.style({
+                        left:context._cellSizes.leftWidth+"px",
+                        height:context._cellSizes.leftHeight+"px",
+                        top:(context._cellSizes.topHeight + 3)+"px"
+                    });
+                }
+                
+            })
+        ;
     };
 
+    Border.prototype.getCellSizes = function () {
+        var context = this;
+        context._cellSizes = {};
+        var contentRect = this.element().node().getBoundingClientRect();
+        context._cellSizes.width = contentRect.width;
+        context._cellSizes.height = contentRect.height;
+        this.element()
+            .selectAll("#"+this.id()+" > div > div.border-cell")
+            .each(function(){
+                var cell = d3.select(this);
+                if(typeof cell.node === "function"){
+                    var rect = cell.node().getBoundingClientRect();
+                    if(cell.classed("border-cell-top")){
+                        context._cellSizes.topHeight = rect.height;
+                    }else if(cell.classed("border-cell-left")){
+                        context._cellSizes.leftWidth = rect.width;
+                        context._cellSizes.leftHeight = rect.height;
+                    }else if(cell.classed("border-cell-right")){
+                        context._cellSizes.rightWidth = rect.width;
+                        context._cellSizes.rightHeight = rect.height;
+                    }else if(cell.classed("border-cell-bottom")){
+                        context._cellSizes.bottomHeight = rect.height;
+                    }
+                }
+            });
+        var sizes = ['height','width','topHeight','bottomHeight','leftHeight','rightHeight','leftWidth','rightWidth'];
+        sizes.forEach(function(size){
+            context._cellSizes[size] = context._cellSizes[size] === undefined ? 0 : context._cellSizes[size];
+        });
+    };
+    
     Border.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };

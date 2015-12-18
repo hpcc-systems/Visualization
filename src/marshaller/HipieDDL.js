@@ -585,6 +585,7 @@
                     this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
+                            .legendPosition("none")
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     });
@@ -593,7 +594,7 @@
                     this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
-                            .showLegend(true)
+                            .legendPosition("right")
                             .domainAxisTitle(context.source.getXTitle())
                             .valueAxisTitle(context.source.getYTitle())
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)

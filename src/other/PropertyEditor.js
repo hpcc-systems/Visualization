@@ -98,6 +98,9 @@
                         return spanText;
                     })
                 ;
+                element.selectAll("i")
+                        .classed("fa-eye",!context.hideNonWidgets())
+                        .classed("fa-eye-slash",context.hideNonWidgets());
                 context.renderInputs(element.select("tbody"), d);
             })
         ;
@@ -120,10 +123,31 @@
                     }).join(",");
                     element.selectAll(tablePath + " > tbody > tr.property-widget-wrapper").style("display", "table-row");
                     element.selectAll(selectString).style("display","table-row");
-                    context.hideNonWidgets(true);
+                    context.hideNonWidgets(true).render();
+                    
+                    if(selected.length > 0){
+                        var pe;
+                        d3.selectAll(".other_PropertyEditor").each(function(_pe){
+                            if(selected.indexOf(_pe.widget().id()) !== -1){
+                                _pe.hideNonWidgets(false).render();
+                                pe = _pe;
+                            } else {
+                                _pe.hideNonWidgets(true).render();
+                            }
+                        });
+                        d3.select("#"+pe.id()).selectAll(".other_PropertyEditor").each(function(d){
+                            d.hideNonWidgets(false).render();
+                        });
+                    } else {
+                        d3.selectAll(".other_PropertyEditor").each(function(d){
+                            d.hideNonWidgets(false).render();
+                        });
+                    }
                 } else {
                     element.selectAll(tablePath + " tr").style("display", "table-row");
-                    context.hideNonWidgets(false);
+                    d3.selectAll(".other_PropertyEditor").each(function(){
+                        d3.select(this).datum().hideNonWidgets(false).render();
+                    });
                 }
                 context.render();
             };
@@ -200,6 +224,10 @@
                 ;
                 context.hideNonWidgets(!context.hideNonWidgets()).render();
             })
+        ;
+        hideParamsIcon
+                .classed("fa-eye",!context.hideNonWidgets())
+                .classed("fa-eye-slash",context.hideNonWidgets())
         ;
     };
 

@@ -349,16 +349,12 @@
                     return row[sumField.idx] / row[baseCountField.idx];
                 });
             } else {
-                try {
-                    rollupBy.push(this.fieldByLabel(mapping, true).idx);
-                } catch (e) {
-                }
-                try {
-                    var idx = this.fieldByLabel(mapping, true).idx;
+                var field = this.fieldByLabel(mapping, true);
+                if (field) {
+                    rollupBy.push(field.idx);
                     fieldIndicies.push(function (row) {
-                        return row[idx];
+                        return row[field.idx];
                     });
-                } catch (e) {
                 }
             }
         }, this);

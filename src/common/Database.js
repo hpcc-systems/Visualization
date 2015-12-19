@@ -477,6 +477,7 @@
         ;
     };
 
+    var lastFoundFormat = null;
     Grid.prototype.analyse = function (columns) {
         if (!(columns instanceof Array)) {
             columns = [columns];
@@ -577,7 +578,6 @@
             dateTimeFormats.push(d + "T" + t);
         });
     });
-    var lastFoundFormat = null;
     function formatPicker(formats, cell) {
         for (var i = 0; i < formats.length; ++i) {
             var date = d3.time.format(formats[i]).parse(cell);

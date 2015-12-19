@@ -142,9 +142,9 @@
         }
     };
     
-    Grid.prototype.childMoved = Grid.prototype.debounce(function (domNode, element) {
+    Grid.prototype.childMoved = function (domNode, element) {
         this.render();
-    }, 250);
+    };
 
     Grid.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);

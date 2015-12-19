@@ -594,9 +594,9 @@
                     this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
-                            .legendPosition("right")
-                            .domainAxisTitle(context.source.getXTitle())
-                            .valueAxisTitle(context.source.getYTitle())
+                            .legendPosition("none")
+                            //.domainAxisTitle(context.source.getXTitle())
+                            //.valueAxisTitle(context.source.getYTitle())
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     });

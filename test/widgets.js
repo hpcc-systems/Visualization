@@ -188,6 +188,9 @@
                             case "src/marshaller/Graph-roxie":
                                 it("Roxie Call");
                                 break;
+                            case "src/layout/Grid-hugeTables":
+                                it("Large Data");
+                                break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     sample.value.factory(function (testWidget) {
@@ -226,6 +229,9 @@
                             case "src/map/GMap-heat":
                             case "src/map/ChoroplethStates-heat":
                                 it("Adding widget to a Surface");
+                                break;
+                            case "src/layout/Grid-hugeTables":
+                                it("Large Data");
                                 break;
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {

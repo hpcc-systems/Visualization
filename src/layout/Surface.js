@@ -118,6 +118,7 @@
         widgets.enter().append("div")
             .attr("class", "surfaceWidget")
             .each(function (d) {
+                d3.select(context.element().node().parentElement).classed("content-icon content-icon-"+(d.classID().split("_")[1]),true);
                 d.target(this);
             })
         ;

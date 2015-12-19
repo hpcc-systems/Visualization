@@ -1,0 +1,22 @@
+.graph_Graph .marker {
+    fill: #656565;
+    stroke: none;
+    stroke-width: 1.0px;
+}
+.graph_Graph .zoom {
+    fill: none;
+    pointer-events: all;
+}
+.graph_Graph .selectionBrush {
+    fill: none;
+    stroke: darkgray;
+}
+.graph_Graph .graphVertex .graph_Vertex.selected .common_Shape {
+    stroke:red !important;
+}
+.graph_Graph .graphEdge .graph_Edge.selected {
+    stroke:red !important;
+}
+.graph_Graph .graphEdge .graph_Edge.selected .common_Text {
+    fill:red !important;
+}

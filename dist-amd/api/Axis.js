@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["../common/Widget"],t):e.amchart_Axis=t(e.common_Widget)})(this,function(e){function t(){e.call(this)}return t.prototype=Object.create(e.prototype),t.prototype.constructor=t,t.prototype._class+=" amchart_Axis",t.prototype.publish("type",null,"set","X/Y Axis Text Font Size",["x","y"],{tags:["Basic","Shared"]}),t});

@@ -1,0 +1,29 @@
+.common_Surface .container .common_Shape {
+    fill: #f9fcff;
+    stroke: #1f77b4;
+    stroke-width: 1.0px;
+}
+.common_Surface .title {
+    cursor: move;
+}
+.common_Surface .title .common_Shape {
+    fill: #1f77b4;
+    stroke: #1f77b4;
+    stroke-width: 1.0px;
+}
+.common_Surface .title text {
+    fill: white;
+    stroke: none;
+}
+.svg-button-container {
+    position: fixed;
+}
+.svg-button-container .surface-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    opacity: 0.8;
+    color: #fff;
+}
+.svg-button-container .surface-button:hover { opacity: 1; }
+.svg-button-container .surface-button:active { opacity: 0.5; }

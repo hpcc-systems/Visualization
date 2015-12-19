@@ -1,0 +1,80 @@
+.layout_Surface {
+    margin: 0px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    overflow:hidden;
+    height: 100%;
+    width: 100%;
+}
+.layout_Surface > h3 {
+    margin: 0px;
+    padding: 2px;
+    background-color: #e5e5e5;
+}
+.layout_Surface .html-button-container {
+    position: absolute;
+    right: 0px;
+    top:3px;
+}
+.layout_Surface > div {
+    padding: 8px;
+}
+.layout_Surface .html-button-container .surface-button {
+    margin-right: 5px;
+}
+.layout_Surface .html-button-container .surface-button i {
+    opacity: 0.8;
+}
+.layout_Surface .html-button-container .surface-button:hover { opacity: 1; }
+.layout_Surface .html-button-container .surface-button:active { opacity: 0.5; }
+div[draggable=true].hideDragCellContent.content-icon:before{
+    content: "\f080";
+    font-family: FontAwesome;
+    position: absolute;
+    top: calc(50% - 74px);
+    left: calc(50% - 56px);
+    font-size: 100px;
+}
+div[draggable=true].hideDragCellContent.content-icon-Line:before{
+    content:"\f201";
+}
+div[draggable=true].hideDragCellContent.content-icon-Pie:before{
+    top: calc(50% - 72px);
+    left: calc(50% - 45px);
+    content:"\f200";
+}
+div[draggable=true].hideDragCellContent.content-icon-Area:before{
+    content:"\f1fe";
+}
+div[draggable=true].hideDragCellContent.content-icon-Gauge:before{
+    content:"\f0e4";
+}
+div[draggable=true].hideDragCellContent.content-icon-Table:before{
+    content:"\f0ce";
+}
+div[draggable=true].hideDragCellContent.content-icon-Form:before{
+    content:"\f11c";
+}
+div[draggable=true].hideDragCellContent.content-icon-Grid:before,
+div[draggable=true].hideDragCellContent.content-icon-Graph:before,
+div[draggable=true].hideDragCellContent.content-icon-Border:before,
+div[draggable=true].hideDragCellContent.content-icon-Tabbed:before,
+div[draggable=true].hideDragCellContent.content-icon-Accordion:before,
+div[draggable=true].hideDragCellContent.content-icon-MultiChart:before,
+div[draggable=true].hideDragCellContent.content-icon-MultiChartSurface:before{
+    content:"\f247";
+}
+div[draggable=true].hideDragCellContent.content-icon-ChoroplethStates:before,
+div[draggable=true].hideDragCellContent.content-icon-ChoroplethStatesHeat:before,
+div[draggable=true].hideDragCellContent.content-icon-ChoroplethCounties:before,
+div[draggable=true].hideDragCellContent.content-icon-ChoroplethCountries:before,
+div[draggable=true].hideDragCellContent.content-icon-GMap:before,
+div[draggable=true].hideDragCellContent.content-icon-GMapHeat:before,
+div[draggable=true].hideDragCellContent.content-icon-GMapGraph:before{
+    content:"\f278";
+}
+div[draggable=true].hideDragCellContent.content-icon-Text:before,
+div[draggable=true].hideDragCellContent.content-icon-TextBox:before,
+div[draggable=true].hideDragCellContent.content-icon-FAChar:before{
+    content:"\f278";
+}

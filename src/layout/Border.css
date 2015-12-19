@@ -1,3 +1,39 @@
+.layout_Border{
+    width: 100%;
+    height: 100%;
+}
+.layout_Border > .border-content{
+    width: 100%;
+    height: 100%;
+    position:relative;
+}
+.layout_Border > .borderHandle{
+    width: 6px;
+    height: 6px;
+    background-color: #444;
+    opacity: 0.3;
+    position:absolute;
+    visibility:hidden;
+}
+.layout_Border.design-mode > .borderHandle{
+    visibility:visible;
+}
+.layout_Border > .borderHandle:hover{
+    background-color: #666;
+}
+.layout_Border > .borderHandle.borderHandleDisabled{
+    display:none;
+}
+.layout_Border > .borderHandle_top,
+.layout_Border > .borderHandle_bottom
+{
+    cursor:ns-resize;
+}
+.layout_Border > .borderHandle_left,
+.layout_Border > .borderHandle_right
+{
+    cursor:ew-resize;
+}
 .layout_Border .cell {
     border-radius: 5px;
     border: 1px solid #e5e5e5;
@@ -10,20 +46,6 @@
     padding-top: 4px;
     -webkit-margin: 0px;
     text-align: center;
-}
-
-.layout_Border .dropCell {
-    box-sizing:border-box;
-    background-color: lightgrey;
-    opacity: 0.33;
-    border-radius: 5px;
-    border:1px solid #333;
-    display: inline-block;
-    overflow: hidden;
-}
-
-.layout_Border .dropCell.over {
-    border: 2px dashed #000;
 }
 
 .layout_Border .layout_BorderCell.over {

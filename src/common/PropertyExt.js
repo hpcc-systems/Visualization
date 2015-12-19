@@ -163,39 +163,26 @@
         }
         var meta = this[__meta_ + id] = new Meta(id, defaultValue, type, description, set, ext);
         this[id] = function (_) {
-            var isPrototype = this._id === undefined;
             if (!arguments.length) {
-                return !isPrototype && this[__prop_ + id] !== undefined ? this[__prop_ + id] : meta.defaultValue;
+                return this[__prop_ + id] !== undefined ? this[__prop_ + id] : meta.defaultValue;
             }
             if (_ === "" && meta.ext.optional) {
                 _ = null;
             } else if (_ !== null) {
                 _ = meta.checkedAssign(_);
             }
-            if (isPrototype) {
-                meta.defaultValue = _;
+            this.broadcast(id, _, this[__prop_ + id]);
+            if (_ === null) {
+                delete this[__prop_ + id];
             } else {
-                this.broadcast(id, _, this[__prop_ + id]);
-                if (_ === null) {
-                    delete this[__prop_ + id];
-                } else {
-                    this[__prop_ + id] = _;
-                }
+                this[__prop_ + id] = _;
             }
             return this._context ? this._context : this;
         };
         this[id + "_modified"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                return meta.defaultValue !== defaultValue;
-            }
             return this[__prop_ + id] !== undefined;
         };
         this[id + "_exists"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                return meta.defaultValue !== undefined;
-            }
             return this[__prop_ + id] !== undefined || meta.defaultValue !== undefined;
         };
         this[id + "_reset"] = function () {
@@ -233,10 +220,6 @@
         }
         this[__meta_ + id] = new MetaProxy(id, proxy, method, defaultValue);
         this[id] = function (_) {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default value of proxied properties is not supported.";
-            }
             if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
             if (defaultValue && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
@@ -246,17 +229,9 @@
             return this;
         };
         this[id + "_modified"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported.";
-            }
             return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
         };
         this[id + "_reset"] = function () {
-            var isPrototype = this._id === undefined;
-            if (isPrototype) {
-                throw "Setting default values of proxied properties is not supported.";
-            }
             this[proxy][method + "_reset"]();
         };
     };
@@ -280,6 +255,22 @@
                     }, 0);
                 }
             });
+        }
+    };
+
+    PropertyExt.prototype.applyTheme = function (theme) {
+        if (!theme) {
+            return;
+        }
+        var clsArr = this._class.split(" ");
+        for (var i in clsArr) {
+            if (theme[clsArr[i]]) {
+                for (var paramName in theme[clsArr[i]]) {
+                    if (this.publishedProperty(paramName)) {
+                        this.publishedProperty(paramName).defaultValue = theme[clsArr[i]][paramName];
+                    }
+                }
+            }
         }
     };
 

@@ -75,7 +75,7 @@
                 this.graphData = new GraphData();
                 this._renderCount = 0;
             }
-            var data = this.graphData.setData(this.data().vertices, this.data().edges, this.data().hierarchy, this.data().merge);
+            var data = this.graphData.setData(this.data().vertices || [], this.data().edges || [], this.data().hierarchy || [], this.data().merge || false);
 
             var context = this;
             data.addedVertices.forEach(function (item) {

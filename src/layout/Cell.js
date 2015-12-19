@@ -38,117 +38,93 @@
 
     Cell.prototype.update = function (domNode, element) {
         Surface.prototype.update.apply(this, arguments);
-        var context = this;
-        var offsetMultiple;
 
         var dragHandles = element.selectAll("#"+this.id()+" > .dragHandle").data(this._dragHandles, function (d) { return d; });
         dragHandles.enter().append("div")
             .attr("class", function (d) { return "dragHandle dragHandle_" + d; })
-            .style("position", "absolute")
-        ;
-
-        dragHandles
             .style({
-                padding: "0px",
-                margin: "0px",
-                left: function (d) {
-                    switch (d) {
-                        case "ne":
-                        case "e":
-                        case "se":
-                            return context._size.width - context.handleSize() + "px";
-                        case "nw":
-                        case "w":
-                        case "sw":
-                            return "0px";
-                        case "n":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("nw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context.handleSize()*offsetMultiple + "px";
-                        case "s":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("sw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context.handleSize()*offsetMultiple + "px";
-                    }
-                },
-                top: function (d) {
-                    switch (d) {
-                        case "nw":
-                        case "n":
-                        case "ne":
-                            return "0px";
-                        case "e":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("ne") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context.handleSize()*offsetMultiple + "px";
-                        case "w":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("nw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context.handleSize()*offsetMultiple + "px";
-                        case "sw":
-                        case "s":
-                        case "se":
-                            return context._size.height - context.handleSize() + "px";
-                    }
-                },
-                width: function (d) {
-                    switch (d) {
-                        case "n":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("ne") !== -1){
-                                offsetMultiple++;
-                            }
-                            if(context._dragHandles.indexOf("nw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context._size.width - (context.handleSize()*offsetMultiple) + "px";
-                        case "s":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("se") !== -1){
-                                offsetMultiple++;
-                            }
-                            if(context._dragHandles.indexOf("sw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context._size.width - (context.handleSize()*offsetMultiple) + "px";
-                        default:
-                            return context.handleSize() + "px";
-                    }
-                },
-                height: function (d) {
-                    switch (d) {
-                        case "w":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("nw") !== -1){
-                                offsetMultiple++;
-                            }
-                            if(context._dragHandles.indexOf("sw") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context._size.height - (context.handleSize()*offsetMultiple) + "px";
-                        case "e":
-                            offsetMultiple = 0;
-                            if(context._dragHandles.indexOf("ne") !== -1){
-                                offsetMultiple++;
-                            }
-                            if(context._dragHandles.indexOf("se") !== -1){
-                                offsetMultiple++;
-                            }
-                            return context._size.height - (context.handleSize()*offsetMultiple) + "px";
-                        default:
-                            return context.handleSize() + "px";
-                    }
+                padding:"0px",
+                margin:"0px",
+                position: "absolute"
+            })
+            .each(function(d){
+                switch(d){
+                    case "nw":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"6px",
+                            left:"0px",
+                            top:"0px",
+                            "z-index":1000
+                        });
+                        break;
+                    case "ne":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"6px",
+                            left:"calc(100% - 6px)",
+                            top:"0px",
+                            "z-index":1000
+                        });
+                        break;
+                    case "se":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"6px",
+                            left:"calc(100% - 6px)",
+                            top:"calc(100% - 6px)",
+                            "z-index":1000
+                        });
+                        break;
+                    case "sw":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"6px",
+                            left:"0px",
+                            top:"calc(100% - 6px)",
+                            "z-index":1000
+                        });
+                        break;
+                    case "n":
+                        d3.select(this).style({
+                            width:"100%",
+                            height:"6px",
+                            left:"0px",
+                            top:"0px",
+                            "z-index":900
+                        });
+                        break;
+                    case "e":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"100%",
+                            left:"calc(100% - 6px)",
+                            top:"0px",
+                            "z-index":900
+                        });
+                        break;
+                    case "s":
+                        d3.select(this).style({
+                            width:"100%",
+                            height:"6px",
+                            left:"0px",
+                            top:"calc(100% - 6px)",
+                            "z-index":900
+                        });
+                        break;
+                    case "w":
+                        d3.select(this).style({
+                            width:"6px",
+                            height:"100%",
+                            left:"0px",
+                            top:"0px",
+                            "z-index":900
+                        });
+                        break;
                 }
             })
         ;
+
         dragHandles.exit().remove();
     };
 

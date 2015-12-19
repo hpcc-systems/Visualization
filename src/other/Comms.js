@@ -804,7 +804,14 @@
     };
 
     HIPIERoxie.prototype.fetchResult = function (name, callback) {
-        callback(this._resultNameCache[name]);
+        var context = this;
+        return new Promise(function (resolve, reject) {
+            if (callback) {
+                console.log("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResult)");
+                callback(context._resultNameCache[name]);
+            }
+            resolve(context._resultNameCache[name]);
+        });
     };
 
     HIPIERoxie.prototype.call = function (request, callback) {

@@ -16,9 +16,11 @@
     Text.prototype.publish("text", "", "string", "Display Text",null,{tags:["Basic"]});
     Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags: ["Intermediate"], optional: true});
     Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
+    Text.prototype.publish("fontWeight", "normal", "set", "Font Weight", ["normal","bold", "bolder", "lighter"], { tags: ["Intermediate"] });
     Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
     Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
-    
+     Text.prototype.publish("autoWrap", false, "boolean", "Enable auto text wrap",null,{tags:["Intermediate","Shared"]});
+
     Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });
 
     Text.prototype.enter = function (domNode, element) {
@@ -32,6 +34,7 @@
         this._textElement
             .attr("font-family", this.fontFamily())
             .attr("font-size", this.fontSize())
+            .attr("font-weight", this.fontWeight())
         ;
         var textParts = this.text().split("\n");
         var textLine = this._textElement.selectAll("tspan").data(textParts);

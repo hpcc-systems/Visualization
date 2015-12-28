@@ -872,13 +872,13 @@
             simple: {
                 columns: ["latitude", "longtitude", "pin", "circle"],
                 data: [
-                    [51.897969, -8.475438, { fillColor: "green" }, { radius: 50, fillColor: "red" }],
+                    [51.897969, -8.475438, { fillColor: "white", pinScale: 0.9, imgPath: "../icons/FullPin.png", imgWidth: "50", imgHeight: "50", pinShape: "none"}, { radius: 50, fillColor: "red",  }],
                     [35.652930, 139.687128],
                     [37.665074, -122.384375],
                     [32.690680, -117.178540],
                     [39.709455, -104.969859],
                     [41.244123, -95.961610],
-                    [32.688980, -117.192040, null, { radius: 100, fillColor: "green", strokeColor: "green" }],
+                    [32.688980, -117.192040, {fillColor: "white", strokeColor: "#c7c7c7", pinScale: 1.0, yTextOffset: 25, iconFontFamily: "customFont", icon: "\ue900", text: "Car Accident", yIconOffset: -2, iconFontSize: "25px", textFontSize: "9px", pinShape: "square", textFontFamily: "Myriad Pro", textFontWeight: "Bold", textFillColor: "#525252", iconFillColor: "#00a8e6", iconAlignmentBaseline: "", iconTextAnchor: "middle" }, { radius: 100, fillColor: "green", strokeColor: "green"}],
                     [45.786490, -108.526600],
                     [45.796180, -108.535652],
                     [45.774320, -108.494370],

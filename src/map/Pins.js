@@ -15,6 +15,7 @@
 
     Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 
+    Pins.prototype.publish("pinShape", "square", "set", "Shape of pin", ["square","circle"]);
     Pins.prototype.publish("pinColor", "#006ccc", "html-color", "Pin Color", null, { optional: true });
     Pins.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");
 
@@ -34,7 +35,10 @@
         this.pinsPaths.enter().append("path")
             .attr("class", "data")
             .attr("d", function (d) {
-                return "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30";
+                    if(context.pinShape() === "circle"){
+                        return "m-24,-31c0,10.8335 6.8925,20.0592 16.53,23.53l8.47,8.47l8.47,-8.47c9.6375,-3.4708 16.53,-12.6965 16.53,-23.53c0,-13.8073 -11.1927,-25 -25,-25c-13.8073,0 -25,11.1927 -25,25z";
+                    }
+                return "m-23.53906,-54.02734l0,40c0,3.0458 0.9541,4 4,4l10,0l10,10l10,-10l10,0c3.0459,0 4,-0.9542 4,-4l0,-40c0,-3.0458 -0.9541,-4 -4,-4l-40,0c-3.0459,0 -4,0.9542 -4,4z";
             })
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
@@ -43,7 +47,16 @@
         ;
         this.pinsPaths
             .style("fill", function (d) {
+                if(d[3] && d[3].fillColor){
+                    return d[3].fillColor;
+                }
                 return d[2] && d[2].fillColor ? d[2].fillColor : context.pinColor();
+            })
+            .style("stroke", function (d) {
+                if(d[3] && d[3].strokeColor){
+                    return d[3].strokeColor;
+                }
+                return d[2] && d[2].strokeColor ? d[2].strokeColor : context.pinColor();
             })
         ;
         this.pinsPaths.exit().remove();

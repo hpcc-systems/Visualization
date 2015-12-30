@@ -96,6 +96,33 @@
                 });
             }
         },
+        Gantt: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/google/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .columns(DataFactory.ganttDateRanges.default.columns)
+                        .data(DataFactory.ganttDateRanges.default.data)
+                    );
+                });
+            },
+            detailed: function (callback) {
+                require(["test/DataFactory", "src/google/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .columns(DataFactory.ganttDateRanges.google.columns)
+                        .data(DataFactory.ganttDateRanges.google.data)
+                    );
+                });
+            },
+            time: function (callback) {
+                require(["test/DataFactory", "src/google/Gantt"], function (DataFactory, Gantt) {
+                    callback(new Gantt()
+                        .durationUnit("minute")
+                        .columns(DataFactory.ganttDateRanges.googleTime.columns)
+                        .data(DataFactory.ganttDateRanges.googleTime.data)
+                    );
+                });
+            }
+        },
         TreeMap: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/google/TreeMap"], function (DataFactory, TreeMap) {

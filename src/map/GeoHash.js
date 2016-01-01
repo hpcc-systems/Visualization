@@ -59,6 +59,8 @@
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
 
+        this._geoHashTransform.style("opacity", this.opacity());
+
         this.geoHashPaths = this._geoHashTransform.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         var context = this;
         this.geoHashPaths.enter().append("path")
@@ -93,7 +95,6 @@
     GeoHash.prototype.layerZoomed = function (base) {
         Layer.prototype.layerZoomed.apply(this, arguments);
         this._geoHashTransform
-            .style("opacity", this.opacity())
             .attr("transform", "translate(" + base._zoom.translate() + ")scale(" + base._zoom.scale() + ")")
             .attr("stroke-width", 1.5 / base._zoom.scale() + "px")
         ;

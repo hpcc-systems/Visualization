@@ -53,6 +53,11 @@
 
     Graph.prototype.layerUpdate = function (base) {
         Pins.prototype.layerUpdate.apply(this, arguments);
+
+        this._edgesTransform
+            .style("opacity", this.opacity())
+        ;
+
         this.edgesPaths = this._edgesTransform.selectAll(".dataEdge").data(this.visible() ? this.dataEdges : []);
         this.edgesPaths.enter().append("path")
             .attr("class", "dataEdge")
@@ -67,7 +72,6 @@
     Graph.prototype.layerZoomed = function (base) {
         Pins.prototype.layerZoomed.apply(this, arguments);
         this._edgesTransform
-            .style("opacity", this.opacity())
             .attr("transform", "translate(" + base._zoom.translate() + ")scale(" + base._zoom.scale() + ")")
             .style("stroke-width", 0.5 / base._zoom.scale() + "px")
         ;

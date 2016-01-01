@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -212,7 +212,7 @@
                         if (d3.keys(d.value).length === 1) {
                             element
                                 .on("click", function (d) {
-                                    testWidget(d3.map(d.value).values()[0].factory);
+                                    testWidget(d3.map(d.value).values()[0].widgetPath);
                                     d3.select("#widgetSelect").classed("hide", true);
                                 })
                             ;
@@ -222,7 +222,7 @@
                                 .append("li")
                                 .text(function (d) { return d.key; })
                                 .on("click", function (d) {
-                                    testWidget(d.value.factory, {}, d.key);
+                                    testWidget(d.value.widgetPath, d.key);
                                     d3.select("#widgetSelect").classed("hide", true);
                                 })
                             ;
@@ -317,8 +317,8 @@
                 }
             }
 
-            updateUrl = function (widget, testID) {
-                var urlParam = "src/" + widget.classID().split("_").join("/") + (testID ? "." + testID : "");
+            updateUrl = function (widget, widgetPath, widgetTest) {
+                var urlParam = widgetPath + (widgetTest ? "." + widgetTest : "");
                 var params = Persist.serializeToObject(widget).__properties;
                 for (var key in params) {
                     switch (typeof (params[key])) {
@@ -341,7 +341,8 @@
                 }
             };
 
-            testWidget = function (func, params, testID) {
+            testWidget = function (widgetPath, widgetTest, params) {
+                var func = widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory;
                 func(function (widget) {
                     currWidget = widget;
                     if (params) {
@@ -358,15 +359,14 @@
                     if (monitorHandle) {
                         monitorHandle.remove();
                     }
-                    updateUrl(currWidget, testID);
+                    updateUrl(widget, widgetPath, widgetTest);
                     monitorHandle = currWidget.monitor(function () {
-                        updateUrl(currWidget, testID);
+                        updateUrl(currWidget, widgetPath, widgetTest);
                     });
                     main
                         .setContent(0, 0, currWidget, "", 2, 2)
                     ;
                     propEditor.widget(currWidget);
-                    widgetPath = "src/"+currWidget._class.split(" ").pop().split("_").join("/");
                     frame
                         .title(widgetPath)
                         .render(function (mainWidget) {
@@ -448,7 +448,7 @@
                 ;
                 if (first) {
                     first = false;
-                    testWidget(widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory, params, widgetTest);
+                    testWidget(widgetPath, widgetTest, params);
                 }
             }, 250);
             frame.doResize();

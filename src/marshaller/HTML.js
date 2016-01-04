@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../layout/Grid", "./HipieDDL", "../layout/Surface", "../layout/Cell", "../layout/Popup"], factory);
+        define(["d3", "../layout/Grid", "./HipieDDL", "../layout/Surface", "../layout/Cell", "../layout/Popup", "../other/Persist"], factory);
     } else {
-        root.marshaller_HTML = factory(root.d3, root.layout_Grid, root.marshaller_HipieDDL, root.layout_Surface, root.layout_Cell, root.layout_Popup);
+        root.marshaller_HTML = factory(root.d3, root.layout_Grid, root.marshaller_HipieDDL, root.layout_Surface, root.layout_Cell, root.layout_Popup, root.other_Persist);
     }
-}(this, function (d3, Grid, HipieDDL, Surface, Cell, Popup) {
+}(this, function (d3, Grid, HipieDDL, Surface, Cell, Popup, Persist) {
     function HTML() {
         Grid.call(this);
 
@@ -74,12 +74,14 @@
         this._prev_databomb = this.databomb();
 
         //  Gather existing widgets for reuse  ---
+        var widgetArr = [];
+        Persist.widgetWalker(this,function(w){
+            widgetArr.push(w);
+        });
         var context = this;
         this.marshaller = new HipieDDL.Marshaller()
             .proxyMappings(this.proxyMappings())
-            .widgetMappings(d3.map(this.content().map(function (d) {
-                return d.widget();
-            }), function (d) {
+            .widgetMappings(d3.map(widgetArr, function (d) {
                 return d.id();
             }))
             .on("commsError", function (source, error) {

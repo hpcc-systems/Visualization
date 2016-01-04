@@ -172,6 +172,27 @@
                     );
                 });
             }
+        },
+        Html: {
+            simple: function (callback) {
+                require(["src/other/Html"], function (Html) {
+                    var w = new Html();
+                    w.html('<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>');
+                    callback(w);
+                });
+            },
+            array: function (callback) {
+                require(["src/other/Html"], function (Html) {
+                    var w = new Html();
+                    var arr = [];
+                    var testCellCount = 300;
+                    for(var i = 0;i<testCellCount;i++){
+                        arr.push('<div style="border:1px solid red;float:left;margin:10px;padding:10px;font-size:20px;">Test '+i+'</div>');
+                    }
+                    w.data(arr);
+                    callback(w);
+                });
+            }
         }
     };
 }));

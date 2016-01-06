@@ -34,7 +34,6 @@
             }
             window.g_all[this._id] = this;
         }
-
         if (window.__hpcc_theme) {
             this.applyTheme(window.__hpcc_theme);
         }

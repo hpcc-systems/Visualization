@@ -130,6 +130,7 @@
                     <li>
                         <select id="themeSelect" onchange="testTheme(this.value);">
                             <option value="Default">Default</option>
+                            <option value="Param Tag Override">Param Tag Override</option>
                             <option value="LN Red/Grey">LN Red/Grey</option>
                             <option value="Green/Light-Grey">Green/Light-Grey</option>
                             <option value="Blue-Bordered">Blue-Bordered</option>
@@ -168,6 +169,13 @@
 
         var themeSelectObj = {
             "Default":null,
+            "Param Tag Override":{
+                "chart_Column":{ 
+                    "overrideTags":{ 
+                        "stacked": ["Intermediate"]
+                    }   
+                }
+            },
             "LN Red/Grey":{"common_Widget":{"surfaceTitleFontSize":16,"surfaceTitleFontColor":"#FAFAFA","surfaceTitleFontFamily":"PT Sans","surfaceTitleFontBold":false,"surfaceTitleBackgroundColor":"#ED1C24","surfacePadding":"null","surfaceBackgroundColor":"#FAFAFA","surfaceBorderWidth":1,"surfaceBorderColor":"#6D6E71","surfaceBorderRadius":4,"surfaceTitleAlignment":"center","paletteID":"Set1"},"other_Table":{"theadRowBackgroundColor":"#ED1C24","theadFontColor":"#FAFAFA","tbodyFirstColFontColor":"#333333","theadCellBorderColor":"#333333","tbodyCellBorderColor":"#333333","tbodyFirstColBackgroundColor":"#CCCCCC","tbodyHoverRowBackgroundColor":"#777777","tbodySelectedRowFontColor":"#333333","tbodySelectedRowBackgroundColor":"#FDFFB3"}},
             "Blue-Bordered":{"common_Widget":{"surfaceTitlePadding":0,"surfaceTitleFontSize":16,"surfaceTitleFontColor":"#5a6b92","surfaceTitleFontFamily":"'Courier New'","surfaceTitleFontBold":false,"surfaceTitleBackgroundColor":"transparent","surfacePadding":"null","surfaceBackgroundColor":"transparent","surfaceBorderWidth":2,"surfaceBorderColor":"#5a6b92","surfaceBorderRadius":0,"surfaceTitleAlignment":"left","paletteID":"Dark2","axisFontSize":14,"axisFontFamily":"Tahoma","xAxisTitleFontFamily":"'Courier New'","yAxisTitleFontFamily":"'Courier New'","legendFontSize":14,"legendFontFamily":"Tahoma"},"other_Table":{"theadRowBackgroundColor":"#5a6b92","theadFontColor":"#FAFAFA","tbodyFirstColFontColor":"#5a6b92","theadCellBorderColor":"#5a6b92","tbodyCellBorderColor":"#5a6b92","tbodyFirstColBackgroundColor":"#EEE","tbodyHoverRowFontColor":"#333333","tbodyHoverRowBackgroundColor":"#a0b0cd","tbodySelectedRowFontColor":"#333333","tbodySelectedRowBackgroundColor":"#c4cbdb"}},
             "Red-Bordered":{"common_Widget":{"surfaceTitleFontSize":19,"surfaceTitleFontColor":"rgb(237, 28, 36)","surfaceTitleFontFamily":"'Arial Black'","surfaceTitleBackgroundColor":"rgb(250, 250, 250)","surfacePadding":"null","surfaceBackgroundColor":"rgb(250, 250, 250)","surfaceBorderColor":"rgb(237, 28, 36)","paletteID":"BrBG","axisFontFamily":"'Arial Black'","xAxisTitleFontFamily":"'Arial Black'","xAxisTitleFontSize":19,"yAxisTitleFontFamily":"'Arial Black'","yAxisTitleFontSize":19,"legendFontFamily":"'Arial Black'"},"other_Table":{ "theadFontSize": "10px", "tbodyFontSize": "10px", "theadFontColor": "#ffffff", "theadFontFamily": "Tahoma", "tbodyFontFamily": "Tahoma", "theadCellBorderColor": "#ff4246", "theadRowBackgroundColor": "#ff4246", "tbodyCellBorderColor": "#ff4246", "tbodyFirstColFontColor": "#FFFFFF", "tbodyFirstColBackgroundColor": "#ff4246", "tbodyHoverRowBackgroundColor": "#ff4246", "tbodySelectedRowFontColor": "#333333", "tbodySelectedRowBackgroundColor": "#ff84cb" }},

@@ -37,6 +37,7 @@
         Layer.prototype.layerUpdate.apply(this, arguments);
 
         this._heatTransform
+            .style("opacity", this.opacity())
             .style("width", base.width() + "px")
             .style("height", base.height() + "px")
         ;

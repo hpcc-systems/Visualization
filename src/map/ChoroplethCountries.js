@@ -70,12 +70,5 @@
         this.choroPaths.exit().remove();
     };
 
-    ChoroplethCountries.prototype.layerZoomed = function (base) {
-        Choropleth.prototype.layerZoomed.apply(this, arguments);
-        this.choroPaths
-            .attr("stroke-width", 1.5 / base._zoom.scale() + "px")
-        ;
-    };
-
     return ChoroplethCountries;
 }));

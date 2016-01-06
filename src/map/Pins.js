@@ -29,6 +29,10 @@
     Pins.prototype.layerUpdate = function (base) {
         Layer.prototype.layerUpdate.apply(this, arguments);
 
+        this._pinsTransform
+            .style("opacity", this.opacity())
+        ;
+
         this.pinsPaths = this._pinsTransform.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         var context = this;
         this.pinsPaths.enter().append("path")
@@ -42,6 +46,14 @@
             })
         ;
         this.pinsPaths
+            .attr("stroke-width", 1.5 + "px")
+            .style("display", function (d) {
+                var pos = base.project(d[0], d[1]);
+                if (!pos) {
+                    return "none";
+                }
+                return null;
+            })
             .style("fill", function (d) {
                 return d[2] && d[2].fillColor ? d[2].fillColor : context.pinColor();
             })
@@ -52,21 +64,13 @@
     Pins.prototype.layerZoomed = function (base) {
         Layer.prototype.layerZoomed.apply(this, arguments);
         this.pinsPaths
-            .style("display", function (d) {
-                var pos = base.project(d[0], d[1]);
-                if (!pos) {
-                    return "none";
-                }
-                return null;
-            })
             .attr("transform", function (d) {
                 var pos = base.project(d[0], d[1]);
                 if (!pos) {
                     pos = [0, 0];
                 }
-                return "translate(" + pos[0] + ", " + pos[1] + ")scale(" + 0.5 /* * base._zoom.scale() */ + ")";
+                return "translate(" + pos[0] + ", " + pos[1] + ")scale(" + 0.5 + ")";
             })
-            .attr("stroke-width", 1.5 + "px")
         ;
     };
 

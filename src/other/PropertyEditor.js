@@ -32,10 +32,14 @@
     PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
     
     PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type",["none","A-Z","Z-A","type"],{tags:["Basic"],icons:["fa-sort","fa-sort-alpha-asc","fa-sort-alpha-desc","fa-sort-amount-asc"]});
-    PropertyEditor.prototype.publish("hideNonWidgets", true, "boolean", "Hides non-widget params (at this tier only)",null,{tags:["Basic"]});
-    
+
+    PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)",null,{tags:["Basic"]});
+
     PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table",null,{tags:["Basic"]});
-    
+    PropertyEditor.prototype.publish("filterTags", "", "set", "Only show Publish Params of this type",["Basic","Intermediate","Advance",""], {});
+    PropertyEditor.prototype.publish("excludeTags", [], "array", "Exclude this array of tags",null, {});
+    PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)",null, {});
+
     PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
 
     PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
@@ -247,11 +251,41 @@
         }
     };
 
+    PropertyEditor.prototype.filterInputs = function(d) {
+        var discArr = Persist.discover(d);
+        if ((this.filterTags() || this.excludeTags().length > 0 || this.excludeParams.length > 0) && d instanceof PropertyEditor === false) {
+
+            var context = this;
+            return discArr.filter(function(param, idx) {
+                for (var i = 0; i < context.excludeParams().length; i++) {
+                    var arr = context.excludeParams()[i].split(".");
+                    var widgetName = arr[0];
+                    var excludeParam = arr[1];
+                    if (d.class().indexOf(widgetName) !== -1) {
+                        if (param.id === excludeParam) {
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+                if (context.excludeTags().length > 0 && param.ext && param.ext.tags && param.ext.tags.some(function(item){ return (context.excludeTags().indexOf(item) > -1); })) {
+                   return false; 
+                }
+                if ((context.filterTags() && param.ext && param.ext.tags && param.ext.tags.indexOf(context.filterTags()) !== -1) || !context.filterTags()) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        return discArr;
+    };
+
     PropertyEditor.prototype.renderInputs = function (element, d) {
+        var context = this;
         var discArr = [];
         var showColumns = !this.show_settings() && this.showColumns();
         if (d) {
-            discArr = Persist.discover(d).filter(function (prop) { return prop.id !== "fields" ? true : showColumns; });
+            discArr = this.filterInputs(d).filter(function (prop) { return prop.id !== "fields" ? true : showColumns; });
             if (!this.show_settings() && this.showData() && d.data) {
                 discArr.push({ id: "data", type: "array" });
             }
@@ -266,7 +300,6 @@
             this._rowSorting(discArr);
         }
 
-        var context = this;
         var rows = element.selectAll("tr.prop" + this.id()).data(discArr, function (d) { return d.id; });
         rows.enter().append("tr")
             .attr("class", "property-wrapper prop" + this.id())
@@ -332,6 +365,9 @@
                     .showColumns(context.showColumns())
                     .showData(context.showData())
                     .sorting(context.sorting())
+                    .filterTags(context.filterTags())
+                    .excludeTags(context.excludeTags())
+                    .excludeParams(context.excludeParams())
                     .hideNonWidgets(context.hideNonWidgets() && w._class.indexOf("layout_") >= 0)
                     .widget(w)
                     .render()

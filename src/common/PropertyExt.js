@@ -141,6 +141,18 @@
     }
 
     PropertyExt.prototype._class = "common_PropertyExt";
+    
+    PropertyExt.prototype.tag = function(id, tag) {
+        if (!tag) {
+            if (this[__meta_ + id].ext && this[__meta_ + id].ext.tags) {
+                return this[__meta_ + id].ext.tags;
+            } 
+        } else {
+            if (this[__meta_ + id].ext && this[__meta_ + id].ext.tags) {
+                this[__meta_ + id].ext.tags = tag;
+            }
+        }
+    };
 
     // Publish Properties  ---
     PropertyExt.prototype.publishedProperties = function () {

@@ -264,8 +264,16 @@
         }
         var clsArr = this._class.split(" ");
         for (var i in clsArr) {
+            console.log(i);
+            console.log('xxx')
             if (theme[clsArr[i]]) {
                 for (var paramName in theme[clsArr[i]]) {
+                    if (paramName === "overrideTags" && theme[clsArr[i]][paramName] instanceof Object) {
+                        for (var param in theme[clsArr[i]][paramName]) {
+                            this.tag(param,theme[clsArr[i]][paramName][param]);
+                        }
+                        continue;
+                    }
                     if (this.publishedProperty(paramName)) {
                         this.publishedProperty(paramName).defaultValue = theme[clsArr[i]][paramName];
                     }
@@ -273,6 +281,16 @@
             }
         }
     };
-
+    PropertyExt.prototype.tag = function(id, tag) {
+        if (!tag) {
+            if (this.publishedProperty(id).ext && this.publishedProperty(id).ext.tags) {
+                return this.publishedProperty(id).ext.tags;
+            } 
+        } else {
+            if (this.publishedProperty(id).ext && this.publishedProperty(id).ext.tags) {
+                this.publishedProperty(id).ext.tags = tag;
+            }
+        }
+    };
     return PropertyExt;
 }));

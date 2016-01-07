@@ -512,7 +512,7 @@
             .remove()
         ;
 
-        if (this.fixedColumn() && !this.fixedSize()) {
+        if (this.fixedColumn() && !this.fixedSize() && fixedColTd.length) {
             if (this.showHeader()) {
                 fixedColWidth = fixedColTd.property("offsetWidth") > fixedColTh.property("offsetWidth") ? fixedColTd.property("offsetWidth") : fixedColTh.property("offsetWidth");
             } else {
@@ -710,7 +710,7 @@
         return {
             _id: d,
             element: function () {
-                return context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; });
+                return context.tbody ? context.tbody.selectAll("tr").filter(function (d2) { return d2 === d; }) : d3.select();
             }
         };
     };

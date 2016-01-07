@@ -221,7 +221,9 @@
                 if (propIdx[key] === undefined) {
                     propIdx[key] = data.length;
                     row = [key];
-                    row.length = selection.length + 1;
+                    for (var i = row.length; i < selection.length + 1; ++i) {
+                        row[i] = "";
+                    }
                     data.push(row);
                 } else {
                     row = data[propIdx[key]];
@@ -269,6 +271,11 @@
             data.push(row);
         });
         data.forEach(function (row, idx) {
+            for (var col = 0; col < columns.length; ++col) {
+                if (row[col] === undefined) {
+                    row[col] = "";
+                }
+            }
             row.length = columns.length + 1;
             row[columns.length] = filteredSelection[idx];
             if (table === this.allTable) {

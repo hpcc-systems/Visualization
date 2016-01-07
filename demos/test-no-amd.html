@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../bower_components/c3/c3.css" />
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="../dist/hpcc-viz.min.css">
+    
+    <link href="../bower_components/amcharts3/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css">
 
     <!--
     Most scripts are optional, include only what you need
@@ -25,6 +27,9 @@
     <script src="../bower_components/amcharts3/amcharts/radar.js"></script>
     <script src="../bower_components/amcharts3/amcharts/xy.js"></script>
     <script src="../bower_components/amcharts3/amcharts/gantt.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/responsive/responsive.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/dataloader/dataloader.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/export/export.js"></script>
     <script src="../bower_components/dagre/index.js"></script>
     <script src="../bower_components/colorbrewer/colorbrewer.js"></script>
     <script src="../bower_components/topojson/topojson.js"></script>
@@ -81,12 +86,23 @@
             <p>This project is maintained by <a href="https://github.com/hpcc-systems">HPCC Systems</a></p>
         </footer>
     </div>
+	
     <script src="test.js"></script>
+	<div id="test-wrapper" style="width:500px;height:500px"></div>
     <script>
-        google.load("visualization", "1", {
-            callback: doTest,
-            packages: ["corechart", "timeline", "treemap"]
-        });
+
+var column = new amchart_Column();
+//column.size({width:"500px",height:"500px"})
+column.columns(["Subject", "Year 1", "Year 2", "Year 3"]);
+column.data([["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 72]]);
+column.target("test-wrapper")
+column.enableExport(true);
+column.render();
+
     </script>
+
 </body>
 </html>

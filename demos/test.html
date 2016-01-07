@@ -5,35 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>HPCC Systems - Visualization Framework</title>
     <link rel="stylesheet" href="test.css">
-    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
-    <script src="../src/config.js"></script>
-    <script>
-        require.config({
-            baseUrl: ".",
-            paths: {
-                "src": "../src",
-                "test": "../test"
-            }
-        });
-    </script>
+    <link rel="stylesheet" href="../bower_components/c3/c3.css" />
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../dist/hpcc-viz.min.css">
+    <link rel="stylesheet" href="../bower_components/amcharts3/amcharts/plugins/export/export.css">
 
-    <!--  Uncomment to develop
-    <script src="../bower_components/requirejs/require.js"></script>
-    <script src="../src/config.js"></script>
+    <!--
+    Most scripts are optional, include only what you need
+    @TODO: shoud document dependencies in README
     -->
-    <!--  Uncomment to test build
-    <script src="../dist-amd/hpcc-viz.js"></script>
-    <script src="../dist-amd/hpcc-bundles.js"></script>
-    <script>
-        require.config({
-            paths: {
-                "src": "../dist-amd",
-                "font-awesome": "../dist-amd/font-awesome/css/font-awesome.min",
-                "amchartsImg": "../dist-amd/img/amcharts/"
-            }
-        });
-    </script>
-    -->
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="../bower_components/d3/d3.js"></script>
+    <script src="../bower_components/c3/c3.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/amcharts.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/serial.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/funnel.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/gauge.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/pie.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/radar.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/xy.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/gantt.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/responsive/responsive.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/dataloader/dataloader.js"></script>
+    <script src="../bower_components/amcharts3/amcharts/plugins/export/export.js"></script>
+    <script src="../bower_components/dagre/index.js"></script>
+    <script src="../bower_components/colorbrewer/colorbrewer.js"></script>
+    <script src="../bower_components/topojson/topojson.js"></script>
+    <script src="../bower_components/d3-cloud/build/d3.layout.cloud.js"></script>
+    <script src="../bower_components/simpleheat/index.js"></script>
+    <script src="../bower_components/es6-promise/promise.js"></script>
+
+    <script src="../dist/hpcc-viz-common.min.js"></script>
+    <script src="../dist/hpcc-viz-layout.min.js"></script>
+    <script src="../dist/hpcc-viz-api.min.js"></script>
+    <script src="../dist/hpcc-viz-form.min.js"></script>
+    <script src="../dist/hpcc-viz-other.min.js"></script>
+    <script src="../dist/hpcc-viz-chart.min.js"></script>
+    <script src="../dist/hpcc-viz-c3chart.min.js"></script>
+    <script src="../dist/hpcc-viz-google.min.js"></script>
+    <script src="../dist/hpcc-viz-amchart.min.js"></script>
+    <script src="../dist/hpcc-viz-tree.min.js"></script>
+    <script src="../dist/hpcc-viz-graph.min.js"></script>
+    <script src="../dist/hpcc-viz-map.min.js"></script>
+    <script src="../dist/hpcc-viz-marshaller.min.js"></script>
+    <script src="../dist/hpcc-viz-composite.min.js"></script>
+
+    <script src="../test/DataFactory.js"></script>
+    <script src="../test/amchartFactory.js"></script>
+    <script src="../test/c3chartFactory.js"></script>
+    <script src="../test/chartFactory.js"></script>
+    <script src="../test/compositeFactory.js"></script>
+    <script src="../test/commonFactory.js"></script>
+    <script src="../test/formFactory.js"></script>
+    <script src="../test/googleFactory.js"></script>
+    <script src="../test/graphFactory.js"></script>
+    <script src="../test/layoutFactory.js"></script>
+    <script src="../test/mapFactory.js"></script>
+    <script src="../test/marshallerFactory.js"></script>
+    <script src="../test/otherFactory.js"></script>
+    <script src="../test/treeFactory.js"></script>
+    <script src="../test/Factory.js"></script>
+
 </head>
 <body>
     <div class="wrapper">
@@ -54,7 +87,10 @@
     </div>
     <script src="test.js"></script>
     <script>
-        doTest();
+        google.load("visualization", "1", {
+            callback: doTest,
+            packages: ["corechart", "timeline", "treemap"]
+        });
     </script>
 </body>
 </html>

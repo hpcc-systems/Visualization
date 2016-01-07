@@ -283,7 +283,7 @@
             context.applyStyleToRows(d);
         });
         var cells = rows.selectAll("td").data(function (row) {
-            return row;
+            return row.filter(function (cell, idx) { return idx < context.columns().length; });
         });
         cells.enter()
             .append("td")

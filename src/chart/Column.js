@@ -63,7 +63,7 @@
             .each(function (dataRow, i) {
                 var element = d3.select(this);
 
-                var columnRect = element.selectAll("rect").data(dataRow.map(function (d, i) {
+                var columnRect = element.selectAll("rect").data(dataRow.filter(function (d, i) { return i < context.columns().length; }).map(function (d, i) {
                     return {
                         column: context.columns()[i],
                         row: dataRow,

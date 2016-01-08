@@ -26,7 +26,8 @@
     Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber",1);
     Table.prototype.publishProxy("adjacentPages", "_paginator");
     Table.prototype.publish("topN", null, "number", "Total number or rows of data to be displayed in the table",null,{tags:["Private"]});
-    Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header",null,{tags:["Private"]});
+    Table.prototype.publish("pivot", false, "boolean", "Pivot Table");
+    Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header", null, { tags: ["Private"] });
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
     
@@ -59,8 +60,8 @@
     Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
-    Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true });
-    Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot();} });
+    Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot(); } });
     
     Table.prototype.publish("stringAlign", "left", "set", "Array of alignment positions for strings", ["left","right","center"], { tags: ["Basic"], optional: true });
     Table.prototype.publish("numberAlign", "right", "set", "Array of alignment positions for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
@@ -88,6 +89,34 @@
         }
 
         return retVal;
+    };
+
+    var origColumns = Table.prototype.columns;
+    Table.prototype.columns = function (_) {
+        var retVal = origColumns.apply(this, arguments);
+        if (!arguments.length && this.pivot()) {
+            return this._db.column(0);
+        }
+        return retVal;
+    };
+
+    var origData = Table.prototype.data;
+    Table.prototype.data = function (_) {
+        var retVal = origData.apply(this, arguments);
+        if (!arguments.length && this.pivot()) {
+            return this._db.columns().filter(function (col, idx) { return idx > 0; });
+        }
+        return retVal;
+    };
+
+    var noTransform = { transform: function (d) { return d; } };
+    Table.prototype.field = function (rowIdx, colIdx) {
+        if (this.pivot()) {
+            if (colIdx === 0) return noTransform;
+            return this.fields()[rowIdx + 1];
+        }
+        if (rowIdx === -1) return noTransform;
+        return this.fields()[colIdx];
     };
 
     Table.prototype.enter = function (domNode, element) {
@@ -120,8 +149,7 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-        var fields = this.fields();
-        
+
         Utility.multiSort(this.data(), [{idx: this.sortByFieldIndex(), reverse: this.descending()}]);
 
         this._childWidgets.forEach(function(d, i) {
@@ -164,8 +192,8 @@
         ;
         th.select(".thText")
             .style("font-family",this.theadFontFamily())
-            .text(function (column) {
-                return column;
+            .text(function (column, idx) {
+                return context.field(-1, idx).transform(column);
             })
         ;
         th.select(".thIcon")
@@ -229,7 +257,7 @@
 
             for (var j = 1; j < context.columns().length; j++) {
                 var sum = 0;
-                if (context.totalledColumns().indexOf(j) !== -1) {                  
+                if (context.totalledColumns().indexOf(j) !== -1) {
                     for (var k = 0; k < tData.length; k++) {
                         sum = sum + tData[k][j];
                     }
@@ -244,7 +272,7 @@
                 .append("td")
             ;
             tf[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-                return fields[idx].transform(d);
+                return context.fields()[idx].transform(d);
             });
             tf.exit()
                 .remove()
@@ -257,17 +285,25 @@
             ;
         }
 
-        var rows = this.tbody.selectAll("tr").data(tData);
+        var rows = this.tbody.selectAll("tr").data(tData.map(function (d, idx) {
+            return {
+                rowIdx: idx,
+                row: d
+            };
+        }));
         rows
             .enter()
             .append("tr")
-            .on("click.selectionBag", function (d, i) {
+            .on("click.selectionBag", function (_d) {
+                var d = _d.row;
+                var i = _d.rowIdx;
                 context.selectionBagClick(d, i);
                 context.applyRowStyles(context.getBodyRow(i));
                 context.applyFirstColRowStyles(context.getFixedRow(i));
                 context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
             })
-            .on("mouseover", function (d, i) {
+            .on("mouseover", function (_d) {
+                var i = _d.rowIdx;
                 var fixedLeftRows = context.getFixedRow(i);
                 if (!fixedLeftRows.empty()) { 
                     fixedLeftRows.classed("hover", true);
@@ -277,7 +313,8 @@
                 context.applyStyleToRows(tbodyRows);
                 context.applyFirstColRowStyles(fixedLeftRows);
             })
-            .on("mouseout", function (d, i) {
+            .on("mouseout", function (_d) {
+                var i = _d.rowIdx;
                 var fixedLeftRows = context.getFixedRow(i);
                 fixedLeftRows.classed("hover", false);
                 var tbodyRows = context.getBodyRow(i);
@@ -287,22 +324,31 @@
             })
         ;
         rows
-            .classed("selected", function (d) { return context._selectionBag.isSelected(context._createSelectionObject(d)); })
+            .classed("selected", function (_d) {
+                var d = _d.row;
+                return context._selectionBag.isSelected(context._createSelectionObject(d));
+            })
             .classed("trId" + context._id, true)
         ;
         rows.exit()
             .remove()
         ;
 
-        var cells = rows.selectAll("td").data(function (row, i) {
-            return row;
+        var cells = rows.selectAll("td").data(function (_d) {
+            return _d.row.map(function (cell, idx) {
+                return {
+                    rowIdx: _d.rowIdx,
+                    colIdx: idx,
+                    cell: cell
+                };
+            });
         });
         cells.enter()
             .append("td")
         ;
-        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, idx) { 
-            if (!(d instanceof Widget)) {
-                return fields[idx].transform(d);
+        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, colIdx) { 
+            if (!(d.cell instanceof Widget)) {
+                return context.field(d.rowIdx, d.colIdx).transform(d.cell);
             }
             return; 
         });
@@ -312,8 +358,8 @@
 
         rows.each(function(tr,trIdx){
             var dis = d3.select(this);
-            dis.selectAll("td").each(function(tdContents,tdIdx){    
-                var alignment = context.getColumnAlignment(fields[tdIdx].transform(tdContents));
+            dis.selectAll("td").each(function(tdContents, tdIdx){    
+                var alignment = context.getColumnAlignment(context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell));
                 var el = d3.select(this);
                 el
                     .style({
@@ -322,22 +368,22 @@
                     })
                     .classed("tr-"+trIdx+"-td-"+tdIdx,true)
                 ;
-                if (tdContents instanceof Widget) {
+                if (tdContents.cell instanceof Widget) {
                     if (context.pagination()) {
                         console.log("Warning: displaying another widget in the table may cause problems with pagination");
                     }
-                    if (tdContents.size().height === 0 ) {
-                        tdContents.height(context.minWidgetHeight());
-                        tdContents.width(this.offsetWidth > context.minWidgetWidth() ? this.offsetWidth : context.minWidgetWidth());
+                    if (tdContents.cell.size().height === 0 ) {
+                        tdContents.cell.height(context.minWidgetHeight());
+                        tdContents.cell.width(this.offsetWidth > context.minWidgetWidth() ? this.offsetWidth : context.minWidgetWidth());
                     }
-                    tdContents.target(null);
-                    tdContents.target(this);
-                    tdContents._parentWidget = context;
-                    if (tdContents._class.indexOf("childWidget") < 0) {
-                        tdContents._class = "childWidget " + tdContents._class;
+                    tdContents.cell.target(null);
+                    tdContents.cell.target(this);
+                    tdContents.cell._parentWidget = context;
+                    if (tdContents.cell._class.indexOf("childWidget") < 0) {
+                        tdContents.cell._class = "childWidget " + tdContents._class;
                     }
-                    tdContents.render();
-                    context._childWidgets.push(tdContents);
+                    tdContents.cell.render();
+                    context._childWidgets.push(tdContents.cell);
                 }
             });
             context.applyStyleToRows(dis);

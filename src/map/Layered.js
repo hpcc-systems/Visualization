@@ -43,7 +43,7 @@
             this._d3GeoPath = d3.geo.path()
                 .projection(this._d3GeoProjection)
             ;
-            this._zoomToFitOnNextRender = true;
+            this._zoomToFitOnNextRender = false;
         }
         return retVal;
     };

@@ -60,7 +60,7 @@
         ;
     };
 
-    Choropleth.prototype.layerUpdate = function (base) {
+    Choropleth.prototype.layerUpdate = function (base, forcePath) {
         Layer.prototype.layerUpdate.apply(this, arguments);
 
         this._palette = this._palette.switch(this.paletteID());
@@ -74,7 +74,7 @@
             return;
         }
 
-        if (this._prevProjection !== base.projection() || this._prevInternalOnly !== this.internalOnly()) {
+        if (forcePath || this._prevProjection !== base.projection() || this._prevInternalOnly !== this.internalOnly()) {
             this._choropleth
                 .attr("d", base._d3GeoPath(topojson.mesh(this._choroTopology, this._choroTopologyObjects, this.internalOnly() ? function (a, b) { return a !== b; } : function (a, b) { return true; })))
             ;

@@ -46,6 +46,8 @@ function buildModule(module, cb) {
       'async': '../rjs.noop',
       'css': '../rjs.noop',
       'goog': '../rjs.noop',
+      'text': '../rjs.noop',
+      'json': '../rjs.noop',
       'propertyParser': '../rjs.noop',
     }
 
@@ -175,7 +177,7 @@ gulp.task("build-amd-src", function (done) {
         mainConfigFile: "src/config.js",
         modules: [{
             name: cfg.prefix,
-            include: ["requireLib", "css", "normalize", "async", "goog", "propertyParser"],
+            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser"],
             create: true
         }].concat(amd_modules)
     };

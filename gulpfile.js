@@ -46,6 +46,8 @@ function buildModule(module, cb) {
       'async': '../rjs.noop',
       'css': '../rjs.noop',
       'goog': '../rjs.noop',
+      'text': '../rjs.noop',
+      'json': '../rjs.noop',
       'propertyParser': '../rjs.noop',
     }
 

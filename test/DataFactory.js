@@ -387,7 +387,7 @@
                 columns: ["Lat","Long","Pin"]
             },
             formatted: {
-                data: [[37.665074,-122.384375,-122.384375,"green-dot.png", "1592-1-12"],[32.69068,-117.17854,-117.17854,"red-dot.png", "1776-7-4"],[39.709455,-104.969859,-104.969859,"yellow-dot.png", "2000-12-2"],[41.244123,-95.96161,-95.96161,"red-dot.png", "1995-12-17T03:24:00"],[32.68898,-117.19204,-117.19204,"blue-dot.png", "2000-12-2"],[45.78649,-108.5266,-108.5266, "red-dot.png","3-15-1971"],[45.79618,-108.535652,-108.535652,"orange-dot.png", "2000-12-2"],[45.77432,-108.49437,-108.49437,"red-dot.png", "2-2-2"],[45.777062,-108.549835,-108.549835,"red-dot.png", "2015-12-2"]],
+                data: [[37.665074,-122.384375,-122.384375,"green-dot.png", "1592-1-12"],[32.69068,-117.17854,-117.17854,"red-dot.png", "1776-7-4"],[39.709455,-104.969859,-104.969859,"yellow-dot.png", "2000-12-2"],[41.244123,-95.96161,-95.96161,"red-dot.png", "1985-10-26"],[32.68898,-117.19204,-117.19204,"blue-dot.png", "2000-12-2"],[45.78649,-108.5266,-108.5266, "red-dot.png","1971-3-15"],[45.79618,-108.535652,-108.535652,"orange-dot.png", "2000-12-2"],[45.77432,-108.49437,-108.49437,"red-dot.png", "2-2-2"],[45.777062,-108.549835,-108.549835,"red-dot.png", "2015-12-2"]],
                 columns: ["Latitude (Formatted)","Longitude (Unformatted)","Longitude (Formatted)","String","String (Date formatted)"]
             },
             large: {
@@ -997,6 +997,28 @@
                 data: [ 
                     [ "Math", ["2014-05-13", "2014-06-13"], ["2014-08-13", "2014-09-13"], ["2014-11-13", "2015-01-13"] ],
                     [ "English", ["2014-05-13", "2014-06-13"], ["2014-08-13", "2014-09-13"], ["2014-11-13", "2015-01-13"] ],
+
+                ]
+            },
+            google: {
+                columns: ["Label", "Range", "Duration", "ID", "Resourse", "Completeness", "Dependencies"],
+                data: [
+                    ['Find sources', ["2015-1-1", "2015-1-5"], null, "Research", "", 100,  null],
+                    ['Write paper', ["", "2015-1-9"], 3, 'Write', "write", 25, 'Research,Outline'],
+                    ['Create bibliography', ["","2015-1-7"], 1, 'Cite', "write", 20, 'Research'],
+                    ['Hand in paper', ["", "2015-1-10"], 1, 'Complete', "complete", 0, 'Cite,Write'],
+                    ['Outline paper', ["", "2015-1-6"], 1, 'Outline', "write", 100, 'Research']
+                ]
+            },
+            googleTime: {
+                columns: ["Label", "Range", "Duration", "ID", "Resourse", "Completeness", "Dependencies"],
+                data: [
+                    ['Walk to train stop', ["", ""], 15, 'toTrain', 'walk', 100, null],
+                    ['Listen to music', ["", ""], 48, 'music', 'music', 100, null],
+                    ['Wait for train', ["", ""], 3, 'wait', 'wait', 100, 'toTrain'],
+                    ['Train ride', ["", ""], 25, 'train', 'train', 75, 'wait'],
+                    ['Walk to work', ["", ""], 4, 'toWork', 'walk', 0, 'train'],
+                    ['Sit down at desk', ["", ""], 1, 'work', null, 0, 'toWork'],
 
                 ]
             }

@@ -81,7 +81,8 @@
             this._prevProjection = base.projection();
             this._prevInternalOnly = this.internalOnly();
         }
-        this._choropleth
+        this._choroplethTransform
+            .style("opacity", this.opacity())
             .style("stroke", this.meshColor())
         ;
     };
@@ -95,7 +96,6 @@
         Layer.prototype.layerZoomed.apply(this, arguments);
 
         this._choroplethTransform
-            .style("opacity", this.opacity())
             .attr("transform", "translate(" + base._zoom.translate() + ")scale(" + base._zoom.scale() + ")")
             .style("stroke-width", this.meshStrokeWidth() / base._zoom.scale() + "px")
         ;

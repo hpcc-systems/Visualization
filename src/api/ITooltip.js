@@ -24,7 +24,7 @@
     ITooltip.prototype.publish("tooltipOffset", 5, "number", "Offset from the cursor", null, {});
 
     //  Implementation  ---
-    ITooltip.prototype.tooltipShow = function (row, _columns, idx) {
+    ITooltip.prototype.lazyTooltipShow = ITooltip.prototype.debounce(function (row, _columns, idx, point) {
         var context = this;
         if (row !== undefined) {
             this._textBox
@@ -44,8 +44,6 @@
             } else {
                 this._textBox.render();
             }
-
-            var point = d3.mouse(this._parentOverlay.node());
 
             var bbox = this._textBox.getBBox(true);
             var x = point[0] - bbox.width / 2;
@@ -71,6 +69,10 @@
             .visible(row !== undefined)
             .render()
         ;
+    }, 250);
+
+    ITooltip.prototype.tooltipShow = function (row, _columns, idx) {
+        this.lazyTooltipShow(row, _columns, idx, d3.mouse(this._parentOverlay.node()));
     };
 
     return ITooltip;

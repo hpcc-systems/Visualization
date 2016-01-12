@@ -9,8 +9,6 @@
     function Table() {
         HTMLWidget.call(this);
         this._tag = "div";
-        this._currentSort = "";
-        this._currentSortOrder = 1;
         this.columns([]);
         this._paginator = new Paginator();
         this._selectionBag = new Utility.Selection();
@@ -70,14 +68,8 @@
     Table.prototype.publish("minWidgetWidth", null, "number", "Minimum width of a child widget", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("minWidgetHeight", null, "number", "Minimum height of a child widget", null, { tags: ["Basic"], optional: true });
 
-    Table.prototype.data = function (_) {
-        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            this._currentSort = "";
-            this._currentSortOrder = 1;
-        }
-        return retVal;
-    };
+    Table.prototype.publish("sortByFieldIndex", null, "number", "Index for the field/column to sort the data", null, { tags: ["Basic"], optional: true });
+    Table.prototype.publish("descending", false, "boolean", "Direction for sorting the data: ascending (true) or descending (false)", null, { tags: ["Basic"], optional: true });
 
     Table.prototype.size = function (_) {
         var retVal = HTMLWidget.prototype.size.apply(this, arguments);
@@ -129,6 +121,8 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
         var fields = this.fields();
+        
+        Utility.multiSort(this.data(), [{idx: this.sortByFieldIndex(), reverse: this.descending()}]);
 
         this._childWidgets.forEach(function(d, i) {
             d.target(null);
@@ -176,10 +170,10 @@
         ;
         th.select(".thIcon")
             .text(function (column, idx) {
-                if (context._currentSortOrder === -1) {
-                    return context._currentSort === idx ? "\uf078" : "";
+                if (context.descending()) {
+                    return context.sortByFieldIndex() === idx ? "\uf078" : "";
                 } else {
-                    return context._currentSort === idx ? "\uf077" : "";
+                    return context.sortByFieldIndex() === idx ? "\uf077" : "";
                 }
             })
         ;
@@ -395,10 +389,10 @@
         ;
         fixedColTh.select(".thIcon")
             .text(function (column, idx) {
-                if (context._currentSortOrder === -1) {
-                    return context._currentSort === idx ? "\uf078" : "";
+                if (context.descending()) {
+                    return context.sortByFieldIndex() === idx ? "\uf078" : "";
                 } else {
-                    return context._currentSort === idx ? "\uf077" : "";
+                    return context.sortByFieldIndex() === idx ? "\uf077" : "";
                 }
             })
         ;
@@ -563,7 +557,7 @@
         }
 
         function calcHeight() {
-            newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight + 1;
+            newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight;
             newTableHeight = newTableHeight;
         }
     };
@@ -583,7 +577,7 @@
         });
 
         var tableMarginHeight = this.fixedHeader() ? this.thead.property("offsetHeight") : 0;
-        var totalWidth = 0;
+        var totalWidth = 1;
         var tdWidths = {};
 
         tds.each(function(d, i) {
@@ -689,30 +683,14 @@
         return ipp;
     };
 
-    function isNull(value) {
-        return value === undefined || value === null;
-    }
-
     Table.prototype.sort = function (idx) {
-        if (this._currentSort !== idx) {
-            this._currentSort = idx;
-            this._currentSortOrder = 1;
+        if (this.sortByFieldIndex() !== idx) {
+            this.descending(false);
         } else {
-            this._currentSortOrder *= -1;
+            this.descending(!this.descending());
         }
-        var fields = this.fields();
-        var context = this;
-        this.data().sort(function (l, r) {
-            if (l[idx] === r[idx]) {
-                return 0;
-            } else {
-                var rFormattedVal = fields[idx].parse(r[idx]);
-                if (isNull(rFormattedVal) || fields[idx].parse(l[idx] > rFormattedVal)) {
-                    return context._currentSortOrder;
-                }
-            }
-            return context._currentSortOrder * -1;
-        });
+        this.sortByFieldIndex(idx);
+
         return this;
     };
 

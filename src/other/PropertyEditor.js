@@ -360,6 +360,7 @@
             if (propEditor === this) {
                 widget[id](value);
             }
+            
             if (widget.render) {
                 widget.render();
                 propEditor = null;
@@ -410,6 +411,7 @@
                 ;
                 break;
             default:
+
                 cell.append("input")
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)

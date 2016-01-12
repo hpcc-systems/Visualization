@@ -183,7 +183,13 @@
     };
 
     Grid.prototype.fieldByLabel = function (_, ignoreCase) {
-        return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
+        var retVal = this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
+        if (!retVal) {
+            console.log("Not able to find field: " + _);
+            console.log(this.fields());
+            return {};
+        }
+        return retVal;
     };
 
     Grid.prototype.data = function (_, clone) {

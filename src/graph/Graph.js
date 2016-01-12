@@ -22,6 +22,9 @@
     Graph.prototype.constructor = Graph;
     Graph.prototype._class += " graph_Graph";
     Graph.prototype.implements(IGraph.prototype);
+    
+    Graph.prototype.Vertex = Vertex;
+    Graph.prototype.Edge = Edge;
 
     Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
     Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });

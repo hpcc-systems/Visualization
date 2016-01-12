@@ -6,8 +6,6 @@
         root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Database, Utility, Comms, Widget, require) {
-    var Vertex = null;
-    var Edge = null;
     var exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
@@ -205,6 +203,7 @@
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
+        this.visualization = visualization;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
@@ -270,11 +269,12 @@
         var context = this;
         var vertexMap = {};
         var vertices = [];
+        var graph = this.visualization.widget;
         function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
             if (!retVal) {
-                retVal = new Vertex()
+                retVal = new graph.Vertex()
                     .faChar("\uf128")
                 ;
                 retVal.__hpcc_uid = item[0];
@@ -314,7 +314,7 @@
                     var childMappedItem = context.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
                     if (vertex.id() !== childVertex.id()) {
-                        var edge = new Edge()
+                        var edge = new graph.Edge()
                             .sourceVertex(vertex)
                             .targetVertex(childVertex)
                             .sourceMarker("circleFoot")
@@ -631,9 +631,7 @@
                     });
                     break;
                 case "GRAPH":
-                    this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
-                        Vertex = widgetClasses[1];
-                        Edge = widgetClasses[2];
+                    this.loadWidgets(["src/graph/Graph"], function (widget) {
                         widget
                             .id(visualization.id)
                             .layout("ForceDirected2")

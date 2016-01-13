@@ -7,6 +7,16 @@
     }
 }(this, function () {
     return {
+        MaterialBar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/google/MaterialBar"], function (DataFactory, Bar) {
+                    callback(new Bar()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            }
+        },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/google/Column"], function (DataFactory, Column) {
@@ -26,14 +36,7 @@
                     );
                 });
             },
-            material: function (callback) {
-                require(["test/DataFactory", "src/google/MaterialBar"], function (DataFactory, Bar) {
-                    callback(new Bar()
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(DataFactory.ND.subjects.data)
-                    );
-                });
-            }
+
         },
         Line: {
             simple: function (callback) {
@@ -92,6 +95,33 @@
                     callback(new Timeline()
                         .columns(DataFactory.Timeline.default.columns)
                         .data(DataFactory.Timeline.default.data)
+                    );
+                });
+            }
+        },
+        MaterialGantt: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/google/MaterialGantt"], function (DataFactory, MaterialGantt) {
+                    callback(new MaterialGantt()
+                        .columns(DataFactory.ganttDateRanges.default.columns)
+                        .data(DataFactory.ganttDateRanges.default.data)
+                    );
+                });
+            },
+            detailed: function (callback) {
+                require(["test/DataFactory", "src/google/MaterialGantt"], function (DataFactory, MaterialGantt) {
+                    callback(new MaterialGantt()
+                        .columns(DataFactory.ganttDateRanges.google.columns)
+                        .data(DataFactory.ganttDateRanges.google.data)
+                    );
+                });
+            },
+            time: function (callback) {
+                require(["test/DataFactory", "src/google/MaterialGantt"], function (DataFactory, MaterialGantt) {
+                    callback(new MaterialGantt()
+                        .durationUnit("minute")
+                        .columns(DataFactory.ganttDateRanges.googleTime.columns)
+                        .data(DataFactory.ganttDateRanges.googleTime.data)
                     );
                 });
             }

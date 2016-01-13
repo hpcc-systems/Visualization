@@ -164,6 +164,7 @@
         var meta = this[__meta_ + id] = new Meta(id, defaultValue, type, description, set, ext);
         this[id] = function (_) {
             if (!arguments.length) {
+                if (this[id + "_disabled"]()) return meta.defaultValue;
                 return this[__prop_ + id] !== undefined ? this[__prop_ + id] : meta.defaultValue;
             }
             if (_ === "" && meta.ext.optional) {
@@ -178,6 +179,9 @@
                 this[__prop_ + id] = _;
             }
             return this._context ? this._context : this;
+        };
+        this[id + "_disabled"] = function () {
+            return ext && ext.disable ? ext.disable(this) : false;
         };
         this[id + "_modified"] = function () {
             return this[__prop_ + id] !== undefined;
@@ -227,6 +231,9 @@
                 this[proxy][method](_);
             }
             return this;
+        };
+        this[id + "_disabled"] = function () {
+            return this[proxy][method + "_disabled"]();
         };
         this[id + "_modified"] = function () {
             return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);

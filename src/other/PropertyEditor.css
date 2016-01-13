@@ -45,6 +45,9 @@
     color:#333;
     padding:0 0 0 2px;
 }
+.other_PropertyEditor .property-table tbody > tr.disabled > td {
+    color:gray;
+}
 .other_PropertyEditor .property-input-cell > div{
     padding-left: 8px;
 }

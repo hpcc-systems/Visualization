@@ -267,6 +267,11 @@
             data.push(row);
         });
         data.forEach(function (row, idx) {
+            for (var col = 0; col < columns.length; ++col) {
+                if (row[col] === undefined) {
+                    row[col] = "";
+                }
+            }
             row.length = columns.length + 1;
             row[columns.length] = filteredSelection[idx];
             if (table === this.allTable) {

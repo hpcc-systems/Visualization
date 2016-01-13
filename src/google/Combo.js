@@ -17,7 +17,7 @@
     Combo.prototype._class += " google_Combo";
 
     Combo.prototype.publish("defaultseriesType", "bars", "set", "The default type for the series (columns) in the chart (line, area or bars)", ["line", "area", "bars"],{tags:["Basic","Shared"]});
-    Combo.prototype.publish("customSeries", {}, "object", "Define specific series in the data to be a specific type of chart (line, area or bars) via and object e.g. .customSeries({5: {type: 'line'}})", null,{tags:["Basic","Shared"]});
+    Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
     Combo.prototype.publish("stacked", false, "boolean", "Stacks the elements in a series",null,{tags:["Basic","Shared"]});
     Combo.prototype.publish("lineWidth", null, "number", "The width of the lines in the chart.  Set to '0' to show only the points",null,{tags:["Basic","Shared"]});
     Combo.prototype.publish("lineDashStyle", [], "array", "Line Dash Style",null,{tags:["Advanced","Shared"]});
@@ -100,8 +100,13 @@
     Combo.prototype.getChartOptions = function () {
         var retVal = CommonND.prototype.getChartOptions.apply(this, arguments);
 
+        var googleFormattedSeries = {};
+        this.types().forEach(function(type, idx) {
+             googleFormattedSeries[idx] = { "type": type };
+        });
+
         retVal.seriesType = this.defaultseriesType();
-        retVal.series = this.customSeries();
+        retVal.series = googleFormattedSeries;
         retVal.dataOpacity = this.dataOpacity();
         retVal.isStacked = this.stacked();
         retVal.lineWidth = this.lineWidth();

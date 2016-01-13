@@ -292,6 +292,7 @@
         ;
         rows.each(function (param) {
             var tr = d3.select(this);
+            tr.classed("disabled", d[param.id + "_disabled"]());
             if (hasProperties(param.type)) {
                 context.updateWidgetRow(d, tr.select("td"), param);
             } else {
@@ -360,6 +361,7 @@
             if (propEditor === this) {
                 widget[id](value);
             }
+            
             if (widget.render) {
                 widget.render();
                 propEditor = null;
@@ -410,6 +412,7 @@
                 ;
                 break;
             default:
+
                 cell.append("input")
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)
@@ -434,6 +437,7 @@
     PropertyEditor.prototype.updateInputs = function (widget, param) {
         var element = d3.selectAll("#" + this.id() + "_" + param.id + ", #" + this.id() + "_" + param.id + "_2");
         var val = widget ? widget[param.id]() : "";
+        element.property("disabled", widget[param.id + "_disabled"]());
         switch (param.type) {
             case "array":
             case "object":

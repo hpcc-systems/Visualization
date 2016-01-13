@@ -137,6 +137,7 @@
         if (this._chart) {
             return;
         }
+        
         this._chart = new google[this._chartLibrary][this._chartType](domNode);
 
         var context = this;

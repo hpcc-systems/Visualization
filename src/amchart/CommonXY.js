@@ -24,8 +24,8 @@
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
 
-    CommonXY.prototype.publish("xAxes", [], "widgetArray", "widgets", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
-    CommonXY.prototype.publish("yAxes", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    CommonXY.prototype.publish("xAxes", [], "propertyArray", "widgets", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
+    CommonXY.prototype.publish("yAxes", [], "propertyArray", "widgets", null, { tags: ["Basic"] });
 
     CommonXY.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonXY.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});

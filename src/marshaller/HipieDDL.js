@@ -753,6 +753,8 @@
         if (!skipProperties) {
             if (widget.classID() === "chart_MultiChart") {
                 widget.chartTypeProperties(this.properties);
+            } else if (widget.classID() === "composite_MegaChart"){
+                widget._chart.chartTypeProperties(this.properties);
             } else {
                 for (var key in this.properties) {
                     if (this.widget[key]) {

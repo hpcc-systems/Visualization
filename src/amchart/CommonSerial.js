@@ -31,8 +31,8 @@
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
-    CommonSerial.prototype.publish("xAxes", [], "widgetArray", "widgets", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
-    CommonSerial.prototype.publish("yAxes", [], "widgetArray", "widgets", null, { tags: ["Basic"] });
+    CommonSerial.prototype.publish("xAxes", [], "propertyArray", "xAxis", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
+    CommonSerial.prototype.publish("yAxes", [], "propertyArray", "yAxis", null, { tags: ["Basic"] });
     
     CommonSerial.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonSerial.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
@@ -84,7 +84,6 @@
     var yAxes = CommonSerial.prototype.yAxes;
     CommonSerial.prototype.Axes = function (type, idx) {
         var axe = type === "x" ? xAxes : yAxes;
-
         if (idx === undefined) {
             var context = this;
             var axes = axe.call(this);
@@ -103,8 +102,9 @@
         }
 
         axis = new Axis();
-        axis._context = this;
+        
         var currentAxes = axe.call(this);
+        axis._context = this;
         currentAxes.push(axis);
         axe.call(this, currentAxes);
         return axis;

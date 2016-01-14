@@ -9,7 +9,7 @@
     return {
         Form: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/form/Form", "src/form/Input", "src/form/TextArea", "src/common/WidgetArray", "src/form/Slider"], function (DataFactory, Form, Input, TextArea, WidgetArray, Slider) {
+                require(["test/DataFactory", "src/form/Button", "src/form/ColorInput", "src/form/Radio", "src/form/CheckBox", "src/form/Form", "src/form/Input", "src/form/Select", "src/form/TextArea", "src/common/WidgetArray", "src/form/Slider"], function (DataFactory, Button, ColorInput, Radio, CheckBox, Form, Input, Select, TextArea, WidgetArray, Slider) {
                     callback(new Form()
                         .inputs([
                             new Input()
@@ -24,10 +24,9 @@
                                 .type("number")
                                 .validate("\\d+")
                                 .value(123),
-                            new Input()
+                            new Select()
                                 .name("select-test")
                                 .label("Select Test")
-                                .type("select")
                                 .selectOptions(["A", "B", "C"])
                                 .value("B"),
                             new WidgetArray()
@@ -38,11 +37,17 @@
                                         .type("text")
                                         .validate("^[A-Za-z]+$")
                                         .value("SomeString"),
-                                    new Input()
+                                    new CheckBox()
                                         .name("checkbox-test")
                                         .label("Checkbox Test")
-                                        .type("checkbox")
-                                        .value(true)
+                                        .value(true),
+                                    new Radio()
+                                        .name("radio-test")
+                                        .label("Radio Test")
+                                        .value(true),
+                                    new Button()
+                                        .name("button-test")
+                                        .value("Button Test")
                                 ]),
                             new TextArea()
                                 .name("textarea-test")
@@ -50,6 +55,9 @@
                                 .value("Textarea Text")
                                 .minHeight(64)
                                 .rows(10),
+                            new ColorInput()
+                                .name("color-input-test")
+                                .label("Color Input Test"),
                             new Slider()
                                 .columns(DataFactory.Slider.simple.columns)
                                 .data(DataFactory.Slider.simple.data)

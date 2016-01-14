@@ -56,5 +56,15 @@
     IInput.prototype.change = function (w) {
     };
 
+    IInput.prototype.resetValue = function (w) {
+        w.value(w._inputElement[0].node().value);
+    };
+
+    IInput.prototype.disable = function (disable) {
+        this._inputElement.forEach(function(e, idx) {
+            e.attr("disabled", disable ? "disabled" : null);
+        });
+    };
+
     return IInput;
 }));

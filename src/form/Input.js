@@ -18,7 +18,7 @@
     Input.prototype._class += " form_Input";
     Input.prototype.implements(IInput.prototype);
 
-    Input.prototype.publish("type", "text", "set", "Input type", ["number", "button", "date", "text","textarea", "search", "email", "time", "datetime"]);
+    Input.prototype.publish("type", "text", "set", "Input type", ["number", "button", "date", "text", "textarea", "search", "email", "time", "datetime", "hidden"]);
 
     Input.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);

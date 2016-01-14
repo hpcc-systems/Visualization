@@ -3,13 +3,13 @@
     if (typeof define === "function" && define.amd) {
         define(["./SerialAxis"], factory);
     } else {
-        root.amchart_XYAxis = factory(root.amchart_Axis);
+        root.amchart_XYAxis = factory(root.amchart_SerialAxis);
     }
-}(this, function(Axis) {
+}(this, function (SerialAxis) {
     function XYAxis() {
-        Axis.call(this);
+        SerialAxis.call(this);
     }
-    XYAxis.prototype = Object.create(Axis.prototype);
+    XYAxis.prototype = Object.create(SerialAxis.prototype);
     XYAxis.prototype.constructor = XYAxis;
     XYAxis.prototype._class += " amchart_XYAxis";
 

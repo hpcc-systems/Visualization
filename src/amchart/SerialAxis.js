@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../api/Axis", "d3"], factory);
+        define(["./Axis", "d3"], factory);
     } else {
         root.amchart_SerialAxis = factory(root.amchart_Axis, root.d3);
     }

@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/PropertyExt","../common/Class"], factory);
     } else {
-        root.amchart_Axis = factory(root.common_Widget, root.common_Class);
+        root.amchart_Axis = factory(root.common_PropertyExt, root.common_Class);
     }
 }(this, function(PropertyExt, Class) {
     function Axis() {
@@ -15,7 +15,7 @@
     Axis.prototype.mixin(PropertyExt);
 
     Axis.prototype.constructor = Axis;
-    Axis.prototype._class += " api_Axis";
+    Axis.prototype._class += " amchart_Axis";
 
     Axis.prototype.publish("type", null, "set", "X/Y Axis Text Font Size",["x","y"],{tags:["Basic","Shared"]}); //just incase we need it
 
@@ -26,7 +26,7 @@
     };
 
     Axis.prototype.render = function (callback) {
-        this._context.render(callback);
+        this._owningWidget.render(callback);
     };
 
     return Axis;

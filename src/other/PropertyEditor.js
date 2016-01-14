@@ -78,7 +78,17 @@
         HTMLWidget.prototype.update.apply(this, arguments);
 
         var context = this;
-        var table = element.selectAll(".table" + this.id()).data(this.rootWidgets(), function (d) { return d.id(); });
+
+        var rootWidgets = this.rootWidgets().filter(function(w) {
+            if (w._owningWidget && w._owningWidget.excludeObjs instanceof Array) {
+                if (w._owningWidget.excludeObjs.indexOf(w.classID()) !== -1) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        var table = element.selectAll(".table" + this.id()).data(rootWidgets, function (d) { return d.id(); });
         table.enter().append("table")
             .attr("class", "property-table table" + this.id())
             .each(function (d) {
@@ -254,13 +264,19 @@
     PropertyEditor.prototype.filterInputs = function(d) {
         var discArr = Persist.discover(d);
         if ((this.filterTags() || this.excludeTags().length > 0 || this.excludeParams.length > 0) && d instanceof PropertyEditor === false) {
-
             var context = this;
             return discArr.filter(function(param, idx) {
                 for (var i = 0; i < context.excludeParams().length; i++) {
                     var arr = context.excludeParams()[i].split(".");
-                    var widgetName = arr[0];
-                    var excludeParam = arr[1];
+                    var widgetName, obj, excludeParam;
+                    if (arr.length > 2) {
+                        widgetName = arr[0];
+                        obj = arr[1];
+                        excludeParam = arr[2];
+                    } else {
+                        widgetName = arr[0];
+                        excludeParam = arr[1];   
+                    }
                     if (d.class().indexOf(widgetName) !== -1) {
                         if (param.id === excludeParam) {
                             return false;

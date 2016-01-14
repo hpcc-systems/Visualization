@@ -178,7 +178,7 @@
             } else {
                 this[__prop_ + id] = _;
             }
-            return this._context ? this._context : this;
+            return this;
         };
         this[id + "_disabled"] = function () {
             return ext && ext.disable ? ext.disable(this) : false;

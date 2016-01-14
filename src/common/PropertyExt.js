@@ -147,6 +147,7 @@
         var retVal = [];
         for (var key in this) {
             if (key.indexOf(__meta_) === 0) {
+                this[key].class = this.classID();
                 retVal.push(this[key]);
             }
         }

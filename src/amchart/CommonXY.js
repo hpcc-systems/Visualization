@@ -19,10 +19,18 @@
         this._prevDataUpdated = -1;
         this._columnsUpdated = 0;
         this._prevColumnsUpdated = -1;
+
+        if (this.backwardsCompatible()) {
+            this.switchProperties(true);
+        } else {
+            this.switchProperties(false);
+        }
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
+
+    CommonXY.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
     CommonXY.prototype.publish("xAxes", [], "propertyArray", "widgets", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
     CommonXY.prototype.publish("yAxes", [], "propertyArray", "widgets", null, { tags: ["Basic"] });
@@ -47,10 +55,77 @@
     CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)",null,{tags:["Intermediate"]});
     CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
-
     CommonXY.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonXY.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+    
+    CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("xAxisType", "ordinal", "set", "X Axis Type", ["linear", "ordinal"],{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:["Basic","Shared"]});
+
+    CommonXY.prototype.publish("xAxisBaselineColor", "#000000", "html-color", "Axis color",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("yAxisBaselineColor", "#000000", "html-color", "Axis color",null,{tags:["Basic","Shared"]});
+
+    CommonXY.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal axis text style (Color)",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("yAxisFontColor", null, "html-color", "Vertical axis text style (Color)",null,{tags:["Basic","Shared"]});
+
+    CommonXY.prototype.publish("xAxisTitleFontSize", null, "number", "Vertical axis titletext style (Font Size)",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical axis titletext style (Font Size)",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("xAxisTitleFontColor", null, "html-color", "Color of axis value labels. Will use chart's color if not set.",null,{tags:["Basic","Shared"]});
+    CommonXY.prototype.publish("yAxisTitleFontColor", null, "html-color", "Color of axis value labels. Will use chart's color if not set.",null,{tags:["Basic","Shared"]});
+
+    CommonXY.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("axisLineWidth", 1, "number", "Thickness of axis",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("axisAlpha", 1, "number", "Axis opacity",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
+    CommonXY.prototype.publish("yAxisAutoGridCount", true, "boolean", "Specifies whether number of gridCount is specified automatically, acoarding to the axis size",null,{tags:["Advanced"]});
+
+    CommonXY.prototype.publish("xAxisGridPosition", "middle", "set", "Specifies if a grid line is placed on the center of a cell or on the beginning of a cell", ["start","middle"],{tags:["Advanced"]});
+    CommonXY.prototype.publish("yAxisGridPosition", "middle", "set", "Specifies if a grid line is placed on the center of a cell or on the beginning of a cell", ["start","middle"],{tags:["Advanced"]});
+
+    CommonXY.prototype.publish("xAxisFillAlpha", 0, "number", "Fill opacity. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+    CommonXY.prototype.publish("yAxisFillAlpha", 0, "number", "Fill opacity. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("xAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+    CommonXY.prototype.publish("yAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("xAxisGridAlpha", 0.2, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+    CommonXY.prototype.publish("yAxisGridAlpha", 0.2, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("xAxisDashLength", 0, "number", "Length of a dash. 0 means line is not dashed.",null,{tags:["Advanced"]});
+    CommonXY.prototype.publish("yAxisDashLength", 0, "number", "Length of a dash. 0 means line is not dashed.",null,{tags:["Advanced"]});
+
+    //CommonXY.prototype.publish("yAxisMinimum", null, "number", "",null,{tags:["Intermediate"]});
+    CommonXY.prototype.publish("yAxisTitleOffset", null, "number", "",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional: true });
+    CommonXY.prototype.publish("xAxisTickFormat", null, "string", "X-Axis Tick Format", null, { optional: true });
+
+    CommonXY.prototype._origBackwardsCompatible = CommonXY.prototype.backwardsCompatible;
+    CommonXY.prototype.backwardsCompatible = function(_) {
+      var retVal = CommonXY.prototype._origBackwardsCompatible.apply(this, arguments);
+        if (arguments.length) {
+            this.switchProperties(_);
+        }
+        return retVal;
+    };
+
+    CommonXY.prototype.switchProperties = function(val) {
+        if (val === true) {
+            CommonXY.prototype.excludeObjs = ["amchart_SerialAxis"];
+            // hide the regular ones with the exclude tags?
+        } else {
+            CommonXY.prototype.excludeObjs = [];
+        }
+    };
 
     // Axes
     var xAxes = CommonXY.prototype.xAxes;
@@ -91,8 +166,6 @@
         return this.Axes("y", idx);
     };
 
-    CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
-
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -111,24 +184,29 @@
             var yAxis = this.yAxis()[iy];
 
             this._chart.valueAxes[vAxisCount].position = yAxis.position() ? yAxis.position() : "left";
-            this._chart.valueAxes[vAxisCount].axisAlpha = yAxis.axisAlpha();
-            this._chart.valueAxes[vAxisCount].title = yAxis.axisTitle();
-            this._chart.valueAxes[vAxisCount].axisThickness = yAxis.axisLineWidth();
-            this._chart.valueAxes[vAxisCount].axisColor = yAxis.axisBaselineColor();
-            this._chart.valueAxes[vAxisCount].color = yAxis.axisFontColor();
-            this._chart.valueAxes[vAxisCount].titleFontSize = yAxis.axisTitleFontSize();
-            this._chart.valueAxes[vAxisCount].titleColor = yAxis.axisTitleFontColor();
-            this._chart.valueAxes[vAxisCount].autoGridCount = yAxis.axisAutoGridCount();
-            this._chart.valueAxes[vAxisCount].gridPosition = yAxis.axisGridPosition();
-            this._chart.valueAxes[vAxisCount].fillAlpha = yAxis.axisFillAlpha();
-            this._chart.valueAxes[vAxisCount].fillColor = yAxis.axisFillColor();
-            this._chart.valueAxes[vAxisCount].gridAlpha = yAxis.axisGridAlpha();
-            this._chart.valueAxes[vAxisCount].dashLength = yAxis.axisDashLength();
-            
-            this._chart.valueAxes[vAxisCount].labelFunction = function(d) {
-                return d3.format(yAxis.axisTickFormat())(d);
-            };
+            this._chart.valueAxes[vAxisCount].axisAlpha = (this.axisAlpha() && this.backwardsCompatible()) ? this.axisAlpha() : yAxis.axisAlpha();
+            this._chart.valueAxes[vAxisCount].title = (this.yAxisTitle() && this.backwardsCompatible()) ? this.yAxisTitle() : yAxis.axisTitle();
+            this._chart.valueAxes[vAxisCount].axisThickness = (this.axisLineWidth() && this.backwardsCompatible()) ? this.axisLineWidth() : yAxis.axisLineWidth();
+            this._chart.valueAxes[vAxisCount].axisColor = (this.yAxisBaselineColor() && this.backwardsCompatible()) ? this.yAxisBaselineColor() : yAxis.axisBaselineColor();
+            this._chart.valueAxes[vAxisCount].color = (this.yAxisFontColor() && this.backwardsCompatible()) ? this.yAxisFontColor() : yAxis.axisFontColor();
+            this._chart.valueAxes[vAxisCount].titleFontSize = (this.yAxisTitleFontSize() && this.backwardsCompatible()) ? this.yAxisTitleFontSize() : yAxis.axisTitleFontSize();
+            this._chart.valueAxes[vAxisCount].titleColor = (this.yAxisTitleFontColor() && this.backwardsCompatible()) ? this.yAxisTitleFontColor() : yAxis.axisTitleFontColor();
+            this._chart.valueAxes[vAxisCount].autoGridCount = (this.yAxisAutoGridCount() && this.backwardsCompatible()) ? this.yAxisAutoGridCount() : yAxis.axisAutoGridCount();
+            this._chart.valueAxes[vAxisCount].gridPosition = (this.yAxisGridPosition() && this.backwardsCompatible())  ? this.yAxisGridPosition() : yAxis.axisGridPosition();
+            this._chart.valueAxes[vAxisCount].fillAlpha = (this.yAxisFillAlpha() && this.backwardsCompatible()) ? this.yAxisFillAlpha() : yAxis.axisFillAlpha();
+            this._chart.valueAxes[vAxisCount].fillColor = (this.yAxisFillColor() && this.backwardsCompatible()) ? this.yAxisFillColor() : yAxis.axisFillColor();
+            this._chart.valueAxes[vAxisCount].gridAlpha = (this.yAxisGridAlpha() && this.backwardsCompatible()) ? this.yAxisGridAlpha() : yAxis.axisGridAlpha();
+            this._chart.valueAxes[vAxisCount].dashLength = (this.yAxisDashLength() && this.backwardsCompatible()) ? this.yAxisDashLength() : yAxis.axisDashLength();
 
+            if (this.backwardsCompatible()) {
+                this._chart.valueAxes[vAxisCount].labelFunction = function(d) {
+                    return d3.format(context.yAxisTickFormat())(d);
+                };
+            } else {
+                this._chart.valueAxes[vAxisCount].labelFunction = function(d) {
+                    return d3.format(yAxis.axisTickFormat())(d);
+                };
+            }
             vAxisCount++;
         }
 
@@ -208,6 +286,8 @@
     CommonXY.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
+        
+        gObj.id = "g" + i;
 
         gObj.balloonFunction = function(d) {
             var balloonText = context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];

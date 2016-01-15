@@ -54,7 +54,7 @@
                     callback(new Combo()
                         .columns(DataFactory.ND.fivecolumn.columns)
                         .data(DataFactory.ND.fivecolumn.data)
-                        .customSeries({2: {type: 'line'}})
+                        .types(["bar","line","area"])
                     );
                 });
             }

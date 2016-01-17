@@ -749,20 +749,21 @@
         this.widget = widget;
         this.events.setWidget(widget);
         if (!skipProperties) {
-            if (widget.classID() === "chart_MultiChart") {
-                widget.chartTypeProperties(this.properties);
-            } else if (widget.classID() === "composite_MegaChart"){
-                widget._chart.chartTypeProperties(this.properties);
-            } else {
-                for (var key in this.properties) {
-                    if (this.widget[key]) {
-                        try {
-                            this.widget[key](this.properties[key]);
-                        } catch (e) {
-                            console.log("Invalid Property:" + this.id + ".properties." + key);
+            switch (widget.classID()) {
+                case "chart_MultiChart":
+                case "composite_MegaChart":
+                    widget.chartTypeProperties(this.properties);
+                    break;
+                default:
+                    for (var key in this.properties) {
+                        if (this.widget[key]) {
+                            try {
+                                this.widget[key](this.properties[key]);
+                            } catch (e) {
+                                console.log("Invalid Property:" + this.id + ".properties." + key);
+                            }
                         }
                     }
-                }
             }
         }
         return this.widget;

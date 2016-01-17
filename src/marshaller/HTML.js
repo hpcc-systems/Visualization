@@ -75,7 +75,7 @@
 
         //  Gather existing widgets for reuse  ---
         var widgetArr = [];
-        Persist.widgetWalker(this,function(w){
+        Persist.widgetArrayWalker(this.content(), function (w) {
             widgetArr.push(w);
         });
         var context = this;

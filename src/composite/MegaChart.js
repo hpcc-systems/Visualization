@@ -45,7 +45,13 @@
     
     MegaChart.prototype.publish("gutter", 0, "number", "Gap Between Cells",null,{tags:["Basic"]});
     
-    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType"); 
+    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
+
+    MegaChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chart.chartTypeProperties();
+        this._chart.chartTypeProperties(_);
+        return this;
+    };
 
     MegaChart.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);

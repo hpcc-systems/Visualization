@@ -32,7 +32,7 @@
     //   true     : all variables, last function parameter
     //   "vars"   : all variables only
     //   "strict" : all variables, all function parameters
-    "strict": true, // true: Requires all functions run in ES5 Strict Mode
+    "strict": "global", // true: Requires all functions run in ES5 Strict Mode
     "maxparams": false, // {int} Max number of formal params allowed per function
     "maxdepth": false, // {int} Max depth of nested blocks (within functions)
     "maxstatements": false, // {int} Max number statements per function
@@ -51,7 +51,6 @@
     "evil": false, // true: Tolerate use of `eval` and `new Function()`
     "expr": false, // true: Tolerate `ExpressionStatement` as Programs
     "funcscope": false, // true: Tolerate defining variables inside control statements
-    "globalstrict": true, // true: Allow global "use strict" (also enables 'strict')
     "iterator": false, // true: Tolerate using the `__iterator__` property
     "lastsemic": false, // true: Tolerate omitting a semicolon for the last statement of a 1-line block
     "laxbreak": false, // true: Tolerate possibly unsafe line breakings

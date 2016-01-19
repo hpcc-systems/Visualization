@@ -48,6 +48,14 @@
         }
     }
 
+    function widgetArrayWalker(widgets, visitor) {
+        if (!widgets)
+            return;
+        widgets.forEach(function (widget) {
+            widgetWalker(widget, visitor);
+        });
+    }
+
     function propertyWalker(widget, filter, visitor) {
         var publishedProps = discover(widget);
         for (var i = 0; i < publishedProps.length; ++i) {
@@ -67,6 +75,7 @@
     return {
         discover: discover,
         widgetWalker: widgetWalker,
+        widgetArrayWalker: widgetArrayWalker,
         propertyWalker: propertyWalker,
         widgetPropertyWalker: widgetPropertyWalker,
         serializeTheme: function(widget,filter){

@@ -169,7 +169,7 @@
 
     Layered.prototype.render = function (callback) {
         SVGWidget.prototype.render.apply(this, arguments);
-        if (this._zoomToFitOnNextRender) {
+        if (this._renderCount && this._zoomToFitOnNextRender) {
             this._zoomToFitOnNextRender = false;
             this.zoomToFit();
         }

@@ -640,8 +640,13 @@
                     });
                     break;
                 case "FORM":
-                    this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
+                    this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
                         var Input = widgetClasses[1];
+                        var CheckBox = widgetClasses[3];
+                        var Radio = widgetClasses[5];
+                        var Range = widgetClasses[6];
+                        var Select = widgetClasses[7];
+                        var TextArea = widgetClasses[9];
 
                         widget
                             .id(visualization.id)
@@ -650,42 +655,57 @@
                                 var inputType = null;
                                 var selectOptions = [];
                                 var options = [];
+                                var inp;
                                 switch(field.properties.charttype) {
                                     case "TEXT":
-                                        inputType = "textbox";
+                                        inp = new Input()
+                                            .type("text")
+                                        ;
+                                        inputType = "text";
                                         break;
                                     case "TEXTAREA":
+                                        inp = new TextArea();
                                         inputType = "textarea";
                                         break;
                                     case "CHECKBOX":
+                                        inp = new CheckBox();
                                         inputType = "checkbox";
                                         break;
                                     case "RADIO":
+                                        inp = new Radio();
                                         inputType = "radio";
                                         break;
                                     case "HIDDEN":
+                                        inp = new Input()
+                                            .type("hidden")
+                                        ;
                                         inputType = "hidden";
                                         break;
                                     default:
                                         if (field.properties.enumvals) {
+                                            inp = new Select();
                                             inputType = "select";
                                             options = field.properties.enumvals;
                                             for (var val in options) {
                                                  selectOptions.push([val,options[val]]);
                                             }
                                         } else {
-                                            inputType = "textbox";
+                                            inp = new Input()
+                                                .type("text")
+                                            ;
+                                            inputType = "text";
                                         }
                                         break;
                                 }
 
-                                var inp = new Input()
+                                //var inp = new Input()
+                                inp
                                     .name(field.id)
                                     .label((field.properties ? field.properties.label : null) || field.label)
-                                    .type(inputType)
+                                //    .type(inputType)
                                     .value(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
                                 ;
-                                if (inputType === "checkbox" || inputType === "radio") {
+                                if (inputType === "checkbox" || inputType === "radio") { // change this to instanceof?
                                     var vals = Object.keys(field.properties.enumvals);
                                     inp.selectOptions(vals);
                                 } else if (selectOptions.length) {
@@ -698,7 +718,7 @@
                     });
                     break;
                 case "HEAT_MAP":
-                    this.loadWidgets(["src/other/HeatMap", ], function (widget, widgetClasses) {
+                    this.loadWidgets(["src/other/HeatMap"], function (widget) {
                         widget
                             .id(visualization.id)
                             .image(context.properties.imageUrl)

@@ -34,7 +34,6 @@
             }
             window.g_all[this._id] = this;
         }
-
         if (window.__hpcc_theme) {
             this.applyTheme(window.__hpcc_theme);
         }
@@ -46,6 +45,7 @@
     Widget.prototype._class += " common_Widget";
 
     Widget.prototype.publishProxy("fields", "_db", "fields");
+    Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
 
     Widget.prototype.export = function (_) {
         var formattedData;
@@ -419,6 +419,7 @@
                 })
             ;
             elements
+                .classed(this.classed())
                 .each(function (context) {
                     context.preUpdate(this, context._element);
                     context.update(this, context._element);

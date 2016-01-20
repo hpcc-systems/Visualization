@@ -6,8 +6,6 @@
         root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Database, Utility, Comms, Widget, require) {
-    var Vertex = null;
-    var Edge = null;
     var exists = function (prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
@@ -205,6 +203,7 @@
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
+        this.visualization = visualization;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
@@ -270,11 +269,12 @@
         var context = this;
         var vertexMap = {};
         var vertices = [];
+        var graph = this.visualization.widget;
         function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
             if (!retVal) {
-                retVal = new Vertex()
+                retVal = new graph.Vertex()
                     .faChar("\uf128")
                 ;
                 retVal.__hpcc_uid = item[0];
@@ -314,7 +314,7 @@
                     var childMappedItem = context.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
                     if (vertex.id() !== childVertex.id()) {
-                        var edge = new Edge()
+                        var edge = new graph.Edge()
                             .sourceVertex(vertex)
                             .targetVertex(childVertex)
                             .sourceMarker("circleFoot")
@@ -631,9 +631,7 @@
                     });
                     break;
                 case "GRAPH":
-                    this.loadWidgets(["src/graph/Graph", "src/graph/Vertex", "src/graph/Edge"], function (widget, widgetClasses) {
-                        Vertex = widgetClasses[1];
-                        Edge = widgetClasses[2];
+                    this.loadWidgets(["src/graph/Graph"], function (widget) {
                         widget
                             .id(visualization.id)
                             .layout("ForceDirected2")
@@ -642,52 +640,63 @@
                     });
                     break;
                 case "FORM":
-                    this.loadWidgets(["src/form/Form", "src/form/Input"], function (widget, widgetClasses) {
+                    this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
                         var Input = widgetClasses[1];
+                        var CheckBox = widgetClasses[3];
+                        var Radio = widgetClasses[5];
+                        var Select = widgetClasses[7];
+                        var TextArea = widgetClasses[9];
 
                         widget
                             .id(visualization.id)
                             .inputs(visualization.fields.map(function(field) {
 
-                                var inputType = null;
                                 var selectOptions = [];
                                 var options = [];
+                                var inp;
                                 switch(field.properties.charttype) {
                                     case "TEXT":
-                                        inputType = "textbox";
+                                        inp = new Input()
+                                            .type("text")
+                                        ;
                                         break;
                                     case "TEXTAREA":
-                                        inputType = "textarea";
+                                        inp = new TextArea();
                                         break;
                                     case "CHECKBOX":
-                                        inputType = "checkbox";
+                                        inp = new CheckBox();
                                         break;
                                     case "RADIO":
-                                        inputType = "radio";
+                                        inp = new Radio();
                                         break;
                                     case "HIDDEN":
-                                        inputType = "hidden";
+                                        inp = new Input()
+                                            .type("hidden")
+                                        ;
                                         break;
                                     default:
                                         if (field.properties.enumvals) {
-                                            inputType = "select";
+                                            inp = new Select();
                                             options = field.properties.enumvals;
                                             for (var val in options) {
                                                  selectOptions.push([val,options[val]]);
                                             }
                                         } else {
-                                            inputType = "textbox";
+                                            inp = new Input()
+                                                .type("text")
+                                            ;
                                         }
                                         break;
                                 }
 
-                                var inp = new Input()
+                                inp
                                     .name(field.id)
                                     .label((field.properties ? field.properties.label : null) || field.label)
-                                    .type(inputType)
+                                    
                                     .value(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
                                 ;
-                                if (inputType === "checkbox" || inputType === "radio") {
+
+                                if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
                                     var vals = Object.keys(field.properties.enumvals);
                                     inp.selectOptions(vals);
                                 } else if (selectOptions.length) {
@@ -700,7 +709,7 @@
                     });
                     break;
                 case "HEAT_MAP":
-                    this.loadWidgets(["src/other/HeatMap", ], function (widget, widgetClasses) {
+                    this.loadWidgets(["src/other/HeatMap"], function (widget) {
                         widget
                             .id(visualization.id)
                             .image(context.properties.imageUrl)
@@ -751,20 +760,21 @@
         this.widget = widget;
         this.events.setWidget(widget);
         if (!skipProperties) {
-            if (widget.classID() === "chart_MultiChart") {
-                widget.chartTypeProperties(this.properties);
-            } else if (widget.classID() === "composite_MegaChart"){
-                widget._chart.chartTypeProperties(this.properties);
-            } else {
-                for (var key in this.properties) {
-                    if (this.widget[key]) {
-                        try {
-                            this.widget[key](this.properties[key]);
-                        } catch (e) {
-                            console.log("Invalid Property:" + this.id + ".properties." + key);
+            switch (widget.classID()) {
+                case "chart_MultiChart":
+                case "composite_MegaChart":
+                    widget.chartTypeProperties(this.properties);
+                    break;
+                default:
+                    for (var key in this.properties) {
+                        if (this.widget[key]) {
+                            try {
+                                this.widget[key](this.properties[key]);
+                            } catch (e) {
+                                console.log("Invalid Property:" + this.id + ".properties." + key);
+                            }
                         }
                     }
-                }
             }
         }
         return this.widget;

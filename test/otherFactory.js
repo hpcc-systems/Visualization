@@ -159,6 +159,43 @@
                 });
             }
         },
+        Toolbar: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/composite/MegaChart", "src/form/Select"], function (DataFactory, MegaChart, Select) {
+                    callback(new MegaChart()
+                        .chartType("LINE")
+                        .title("Simple Toolbar")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data));
+                });
+            },
+            megaChart: function (callback) {
+                require(["test/DataFactory", "src/layout/Border", "src/chart/Pie", "src/chart/MultiChartSurface", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Border, Pie, MultiChartSurface, Line, Column, Step) {
+                    callback(new Border()
+                        .setContent("top", new Pie()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .setContent("right", new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .setContent("bottom", new Column()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .setContent("left", new Step()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .setContent("center", new MultiChartSurface()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                    );
+                });
+            },
+        },
         Legend: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/layout/Border", "src/chart/Line", "src/other/Legend"], function (DataFactory, Border, Line, Legend) {
@@ -170,6 +207,27 @@
                         .setContent("center", line)
                         .setContent("right", legend)
                     );
+                });
+            }
+        },
+        Html: {
+            simple: function (callback) {
+                require(["src/other/Html"], function (Html) {
+                    var w = new Html();
+                    w.html('<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>');
+                    callback(w);
+                });
+            },
+            array: function (callback) {
+                require(["src/other/Html"], function (Html) {
+                    var w = new Html();
+                    var arr = [];
+                    var testCellCount = 300;
+                    for(var i = 0;i<testCellCount;i++){
+                        arr.push('<div style="border:1px solid red;float:left;margin:10px;padding:10px;font-size:20px;">Test '+i+'</div>');
+                    }
+                    w.data(arr);
+                    callback(w);
                 });
             }
         }

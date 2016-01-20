@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["src/form/Input", "src/common/WidgetArray", "src/chart/MultiChartSurface", "src/layout/Surface", "src/chart/Column", "src/other/Table"], factory);
+        define(["src/form/Input", "src/form/Button", "src/form/CheckBox" ,"src/form/ColorInput","src/form/Radio","src/form/Range","src/form/Select", "src/form/Slider","src/form/TextArea", "src/common/WidgetArray", "src/chart/MultiChartSurface", "src/layout/Surface", "src/chart/Column", "src/other/Table"], factory);
     } else {
-        root.test_DataFactory = factory(root.form_Input, root.common_WidgetArray, root.chart_MultiChartSurface, root.layout_Surface, root.chart_Column, root.other_Table);
+        root.test_DataFactory = factory(root.form_Input, root.form_Button, root.form_CheckBox, root.form_ColorInput, root.form_Radio, root.form_Range, root.form_Select, root.form_Slider, root.form_TextArea, root.common_WidgetArray, root.chart_MultiChartSurface, root.layout_Surface, root.chart_Column, root.other_Table);
     }
-}(this, function (Input, WidgetArray, MultiChartSurface, Surface, Column, Table) {
+}(this, function (Input, Button, CheckBox, ColorInput, Radio, Range, Select, TextArea, Slider, WidgetArray, MultiChartSurface, Surface, Column, Table) {
     var DataFactory = {
         OneD: {
             subjects: {
@@ -214,10 +214,9 @@
                             .type("search")
                             .validate("^[A-Za-z0-9]+$")
                             .value("Some Search String"),
-                        new Input()
+                        new ColorInput()
                             .name("html-color-test")
                             .label("HTML Color")
-                            .type("html-color")
                             .value("#f00"),
                         new Input()
                             .name("date-test")
@@ -229,10 +228,9 @@
                             .label("Time")
                             .type("time")
                             .value("01:00 AM"),
-                        new Input()
+                        new Range()
                             .name("range-test")
                             .label("Range Test")
-                            .type("range")
                             .min(0)
                             .max(500)
                             .validate("\\d+")
@@ -243,10 +241,9 @@
                             .type("number")
                             .validate("\\d+")
                             .value(123),
-                        new Input()
+                        new Select()
                             .name("select-test")
                             .label("Select Test")
-                            .type("select")
                             .selectOptions(["A", "B", "C"])
                             .value("B"),
                         new WidgetArray()
@@ -257,16 +254,14 @@
                                     .type("text")
                                     .validate("^[A-Za-z]+$")
                                     .value("SomeString"),
-                                new Input()
+                                new CheckBox()
                                     .name("checkbox-test")
                                     .label("Checkbox Test")
-                                    .type("checkbox")
                                     .value(true)
                             ]),
-                        new Input()
+                        new TextArea()
                             .name("textarea-test")
                             .label("Textarea Test")
-                            .type("textarea")
                             .value("Textarea Text")
                     ];
                 }
@@ -435,12 +430,12 @@
                     ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
                 ],
                 columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            },
+},
             widget: {
                 data: [
                     ["Label0", 37.665074, -122.384375, "green-dot.png", 4525, 4243545, 24354, 54, 2552345, 2455, 245435],
                     ["Label1", 39.709455, -104.969859, new Table().fixedSize(true).fixedHeader(false).columns( ["Subject","Year 1", "Year 2", "Year 3"]).data([["Math",76,63,87],["History",65,87,67],["Science",88,91,78]]), 4525, 423545, 24354, 524, 2552345, 2455, 245435],
-                    ["Label2", 32.690680, -117.178540, new Input().name("checkbox-test").label("Checkbox Test").type("checkbox").value(true), 4525, 423545, 24354, 354, 2552345, 2455, 245435],
+                    ["Label2", 32.690680, -117.178540, new CheckBox().name("checkbox-test").label("Checkbox Test").value(true), 4525, 423545, 24354, 354, 2552345, 2455, 245435],
                     ["Label4", 41.244123, -95.961610, new Column().columns( ["Subject","Year 1", "Year 2", "Year 3"]).data([["Math",76,65,87],["History",65,87,67],["Science",88,91,78]]), 4525, 423545, 24354, 564, 2552345, 2455, 245435],
                     ["Label5", 32.688980, -117.192040, "", 4525, 423545, 24354, 454, 2552345, 2455, 245435],
                     ["Label6", 45.786490, -108.526600, "", 4525, 423545, 24354, 534, 2552345, 2455, 245435],
@@ -481,8 +476,7 @@
                     ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
                 ],
                 columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            }
-        },
+            }        },
         Graph: {
             simple: {
                 nodes: [

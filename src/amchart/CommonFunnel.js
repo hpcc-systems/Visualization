@@ -1,11 +1,10 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.funnel", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.funnel", "require", "amcharts.plugins.export"], factory);
     } else {
         root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
-
 }(this, function(d3, HTMLWidget, AmCharts, require) {
     function CommonFunnel() {
         HTMLWidget.call(this);
@@ -50,6 +49,8 @@
     CommonFunnel.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
     CommonFunnel.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
     CommonFunnel.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
+
+    CommonFunnel.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
 
     CommonFunnel.prototype.updateChartOptions = function() {
 
@@ -128,7 +129,10 @@
             addClassNames: true,
             autoResize: true,
             autoMargins: true,
-            chartScrollbar: {}
+            chartScrollbar: {},
+            "export": {
+                "enabled": this.enableExport(),
+            }
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");

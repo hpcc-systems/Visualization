@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.xy", "require", "./XYAxis"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.xy", "require", "./XYAxis", "amcharts.plugins.export"], factory);
     } else {
         root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_SerialAxis);
     }
@@ -92,6 +92,8 @@
     };
 
     CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
 
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
@@ -278,6 +280,9 @@
             dataProvider: [{}],
             responsive: {
                 enabled: true
+            },
+            "export": {
+                "enabled": this.enableExport(),
             }
         };
         if (typeof define === "function" && define.amd) {

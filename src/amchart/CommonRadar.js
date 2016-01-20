@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.radar", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.radar", "require", "amcharts.plugins.export"], factory);
     } else {
         root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
@@ -80,6 +80,8 @@
     
     CommonRadar.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonRadar.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+
+    CommonRadar.prototype.publish("enableExport", false, "boolean", "Enables Exporting",null,{tags:["Basic"]});
 
     CommonRadar.prototype.updateChartOptions = function() {
         var context = this;
@@ -191,7 +193,10 @@
         var initObj = {
             type: "radar",
             addClassNames: true,
-            chartScrollbar: {}
+            chartScrollbar: {},
+            "export": {
+                "enabled": this.enableExport(),
+            }
         };
         if (typeof define === "function" && define.amd) {
             initObj.pathToImages = require.toUrl("amchartsImg");

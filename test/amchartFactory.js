@@ -57,6 +57,7 @@
 
                         .yAxis(0).axisType("linear")
                         .xAxis(0).axisType("ordinal")
+                        .enableExport(true);
                     );
                 });
             },

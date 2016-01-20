@@ -273,6 +273,14 @@
         for (var i in clsArr) {
             if (theme[clsArr[i]]) {
                 for (var paramName in theme[clsArr[i]]) {
+                    if (paramName === "overrideTags" && theme[clsArr[i]][paramName] instanceof Object) {
+                        for (var param in theme[clsArr[i]][paramName]) {
+                            if(this.publishedProperty(paramName).ext){
+                                this.publishedProperty(paramName).ext.tags = theme[clsArr[i]][paramName][param];
+                            }
+                        }
+                        continue;
+                    }
                     if (this.publishedProperty(paramName)) {
                         this.publishedProperty(paramName).defaultValue = theme[clsArr[i]][paramName];
                     }
@@ -280,6 +288,6 @@
             }
         }
     };
-
+    
     return PropertyExt;
 }));

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../common/SVGWidget", "../common/WidgetArray", "./Input", "./Slider", "css!./Form"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/SVGWidget", "../common/WidgetArray", "./Input", "./Button", "./Slider", "css!./Form"], factory);
     } else {
-        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.common_SVGWidget, root.common_WidgetArray, root.form_Input, root.form_Slider);
+        root.form_Form = factory(root.d3, root.common_HTMLWidget, root.common_SVGWidget, root.common_WidgetArray, root.form_Input, root.form_Button, root.form_Slider);
     }
-}(this, function (d3, HTMLWidget, SVGWidget, WidgetArray, Input, Slider) {
+}(this, function (d3, HTMLWidget, SVGWidget, WidgetArray, Input, Button, Slider) {
     function Form() {
         HTMLWidget.call(this);
 
@@ -105,16 +105,23 @@
 
     Form.prototype.clear = function () {
         this.inputsForEach(function(inp){
-            if (inp instanceof Slider) {
-                if (inp.allowRange()) {
-                    inp.value([inp.low(), inp.low()]).render();
-                } else {
-                    inp.value(inp.low()).render();
-                }
-            } else if(inp.type() === "checkbox"){
-                inp.value(false).render();
-            } else {
-                inp.value("").render();
+            switch(inp.classID()) {
+                case "form_Slider":
+                    if (inp.allowRange()) {
+                        inp.value([inp.low(), inp.low()]).render();
+                    } else {
+                        inp.value(inp.low()).render();
+                    }
+                break;
+                case "form_CheckBox":
+                    inp.value(false).render();
+                break;
+                case "form_Button":
+                    /* skip */
+                break;
+                default:
+                    inp.value("").render();
+                break;
             }
         });
     };
@@ -152,14 +159,12 @@
 
         var context = this;
         this._controls = [
-                new Input()
-                    .type("button")
+                new Button()
                     .value("Submit")
                     .on("click", function () {
                         context.submit(context.values());
                     }, true),
-                new Input()
-                    .type("button")
+                new Button()
                     .value("Clear")
                     .on("click", function () {
                         context.clear({});

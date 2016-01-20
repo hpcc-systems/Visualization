@@ -335,7 +335,7 @@
         ;
 
         var cells = rows.selectAll("td").data(function (_d) {
-            return _d.row.map(function (cell, idx) {
+            return _d.row.filter(function (cell, idx) { return idx < context.columns().length; }).map(function (cell, idx) {
                 return {
                     rowIdx: _d.rowIdx,
                     colIdx: idx,

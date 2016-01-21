@@ -25,11 +25,29 @@
 
         this._colorObj = {};
         this._selectionObj = {};
+
+        if (!this.xAxis().length) {
+            this.xAxis(0);
+            this._xAxis = this.xAxis()[0];
+
+        }
+        if (!this.yAxis().length) {
+            this.yAxis(0);
+            this._yAxis = this.yAxis()[0];
+        }
+
+        if (this.y2().length) {
+            this.yAxis(1);
+            this._yAxis = this.yAxis()[0];
+        }
     }
+
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
+
+    CommonSerial.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
     CommonSerial.prototype.publish("xAxes", [], "propertyArray", "xAxis", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
     CommonSerial.prototype.publish("yAxes", [], "propertyArray", "yAxis", null, { tags: ["Basic"] });
@@ -59,7 +77,6 @@
 
     CommonSerial.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
     CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
     
     CommonSerial.prototype.publish("axisMinPeriod", "MM", "string", "Minimum period when parsing dates");
@@ -79,6 +96,81 @@
     CommonSerial.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     CommonSerial.prototype.publish("y2", [], "array", "Columns to associate with second Y-Axis");
+
+    CommonSerial.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("axisAlpha", 1, "number", "Axis Alpha",null,{tags:["Intermediate"]}); // share?
+
+    CommonSerial.prototype.publish("startOnAxis", true, "boolean", "Draw Chart Starting On Axis.",null,{tags:["Intermediate"]});    
+
+    // proxy
+
+    CommonSerial.prototype.publish("axisFontSize", null, "number", "X/Y Axis Text Font Size",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publishProxy("xAxisBaselineColor", "_xAxis", "axisBaselineColor");
+    CommonSerial.prototype.publishProxy("yAxisBaselineColor", "_yAxis", "axisBaselineColor");
+
+    CommonSerial.prototype.publishProxy("xAxisFontColor", "_xAxis", "axisFontColor");
+    CommonSerial.prototype.publishProxy("yAxisFontColor", "_yAxis", "axisFontColor");
+
+    CommonSerial.prototype.publishProxy("xAxisTitle", "_xAxis", "axisTitle");
+    CommonSerial.prototype.publishProxy("yAxisTitle", "_yAxis", "axisTitle");
+
+    CommonSerial.prototype.publishProxy("xAxisTitleFontSize", "_xAxis", "axisTitleFontSize");
+    CommonSerial.prototype.publishProxy("yAxisTitleFontSize", "_yAxis", "axisTitleFontSize");
+
+    CommonSerial.prototype.publishProxy("xAxisTitleFontColor", "_xAxis", "axisTitleFontColor");
+    CommonSerial.prototype.publishProxy("yAxisTitleFontColor", "_yAxis", "axisTitleFontColor");
+
+    CommonSerial.prototype.publishProxy("xAxisLabelRotation", "_xAxis", "axisLabelRotation");
+    CommonSerial.prototype.publishProxy("yAxisLabelRotation", "_yAxis", "axisLabelRotation");
+
+    CommonSerial.prototype.publishProxy("xAxisAutoGridCount", "_xAxis", "axisAutoGridCount");
+    CommonSerial.prototype.publishProxy("yAxisAutoGridCount", "_yAxis", "axisAutoGridCount"); // need to add?
+
+    CommonSerial.prototype.publishProxy("xAxisGridPosition", "_xAxis", "axisGridPosition");
+
+    CommonSerial.prototype.publishProxy("xAxisBoldPeriodBeginning", "_xAxis", "axisBoldPeriodBeginning");
+    CommonSerial.prototype.publishProxy("yAxisBoldPeriodBeginning", "_yAxis", "axisBoldPeriodBeginning");
+
+    CommonSerial.prototype.publishProxy("xAxisDashLength", "_xAxis", "axisDashLength");
+    CommonSerial.prototype.publishProxy("yAxisDashLength", "_yAxis", "axisDashLength");
+
+    CommonSerial.prototype.publishProxy("xAxisFillAlpha", "_xAxis", "axisFillAlpha");
+    CommonSerial.prototype.publishProxy("yAxisFillAlpha", "_yAxis", "axisFillAlpha");
+
+    CommonSerial.prototype.publishProxy("xAxisFillColor", "_xAxis", "axisFillColor");
+    CommonSerial.prototype.publishProxy("yAxisFillColor", "_yAxis", "axisFillColor");
+
+    CommonSerial.prototype.publishProxy("xAxisGridAlpha", "_xAxis", "axisGridAlpha");
+    CommonSerial.prototype.publishProxy("yAxisGridAlpha", "_yAxis", "axisGridAlpha");
+
+    CommonSerial.prototype.publishProxy("xAxisTypeTimePattern", "_xAxis", "axisTypeTimePattern");
+    CommonSerial.prototype.publishProxy("yAxisTypeTimePattern", "_yAxis", "axisTypeTimePattern");
+
+    CommonSerial.prototype.publishProxy("xAxisType", "_xAxis", "axisType");
+    CommonSerial.prototype.publishProxy("yAxisType", "_yAxis", "axisType");
+
+    CommonSerial.prototype.publishProxy("xAxisTickFormat", "_xAxis", "axisTickFormat");
+    CommonSerial.prototype.publishProxy("yAxisTickFormat", "_yAxis", "axisTickFormat");
+
+    CommonSerial.prototype._origBackwardsCompatible = CommonSerial.prototype.backwardsCompatible;
+    CommonSerial.prototype.backwardsCompatible = function(_) {
+      var retVal = CommonSerial.prototype._origBackwardsCompatible.apply(this, arguments);
+        if (arguments.length) {
+            this.switchProperties(_);
+        }
+        return retVal;
+    };
+
+    CommonSerial.prototype.switchProperties = function(val) {
+        if (val === true) {
+            CommonSerial.prototype.excludeObjs = ["amchart_SerialAxis"];
+            // hide the regular ones with the exclude tags?
+        } else {
+            CommonSerial.prototype.excludeObjs = [];
+        }
+    };
 
     var xAxes = CommonSerial.prototype.xAxes;
     var yAxes = CommonSerial.prototype.yAxes;
@@ -196,6 +288,7 @@
     };
 
     CommonSerial.prototype.updateChartOptions = function() {
+        var context = this;
         this._chart.type = "serial";
         this._chart.startDuration = this.startDuration();
         this._chart.rotate = this.orientation() === "vertical";
@@ -264,7 +357,6 @@
                 break;
         }
 
-        var context = this;
         this._chart.categoryAxis.labelFunction = function(v1, v2, v3) {
             switch (xAxis.axisType()) {
                 case "time":
@@ -298,6 +390,8 @@
             this._chart.valueAxes[i].gridAlpha = yAxis.axisGridAlpha();
             this._chart.valueAxes[i].dashLength = yAxis.axisDashLength();
             this._chart.valueAxes[i].boldPeriodBeginning = yAxis.axisBoldPeriodBeginning();
+
+            this._chart.valueAxes[i].autoGridCount = yAxis.axisAutoGridCount();
 
             switch(yAxis.axisType()) {
                 case "time":
@@ -420,7 +514,7 @@
         return this._chart;
     };
 
-    CommonSerial.prototype.buildGraphObj = function(gType, i) {
+    CommonSerial.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
 
@@ -433,6 +527,7 @@
         }
 
         gObj.balloonFunction = function(d) {
+            //var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
             if (d.graph.type === "line") {
                 return d.category + ", " + context.columns()[d.graph.index + 1]  + ": " + context.data()[d.index][d.graph.index + 1];
             } else {
@@ -449,8 +544,8 @@
         gObj.title = "";
         var fieldArr = ["value","open","close","high","low"];
         fieldArr.forEach(function(field){
-            if (typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
-                gObj[field + "Field"] = context["_" + field + "Field"][i];
+            if(typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
+                gObj[field+"Field"] = context["_" + field + "Field"][i];
             }
         });
 
@@ -562,15 +657,10 @@
     CommonSerial.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
-        if (!this.xAxis().length) {
-            this.xAxis(0);
-        }
-        if (!this.yAxis().length) {
-            this.yAxis(0);
-        }
-
-        if (this.y2().length) {
-            this.yAxis(1);
+        if (this.backwardsCompatible()) {
+            this.switchProperties(true);
+        } else {
+            this.switchProperties(false);
         }
 
         domNode.style.width = this.size().width + "px";

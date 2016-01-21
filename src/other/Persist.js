@@ -40,9 +40,11 @@
                 case "widgetArray":
                 case "propertyArray":
                     var widgetArray = widget[publishItem.id]();
-                    widgetArray.forEach(function(widget) {
-                        widgetWalker(widget, visitor);
-                    });
+                    if (widgetArray) {
+                        widgetArray.forEach(function (widget) {
+                            widgetWalker(widget, visitor);
+                        });
+                    }
                     break;
             }
         }
@@ -281,6 +283,10 @@
                     widget._id = state.__id;
                 }
                 context.deserializeFromObject(widget, state, callback);
+            }).catch(function (e) {
+                console.log("Persist.create:  ***exception***");
+                console.log(e);
+                callback(null);
             });
         },
 

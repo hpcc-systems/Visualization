@@ -23,7 +23,7 @@
     
     Toolbar.prototype.publish("responsive", true, "boolean", "Adapts to pixel width",null,{tags:["Basic"]});
     
-    Toolbar.prototype.publish("widgets", null, "widgetArray", "Child widgets of the toolbar",null,{tags:["Basic"]});
+    Toolbar.prototype.publish("widgets", [], "widgetArray", "Child widgets of the toolbar",null,{tags:["Basic"]});
     Toolbar.prototype.publish("widgetClasses", [], "array", "Array of Html Element classes to be assigned to the child widgets (shares index with widgets param)",null,{tags:["Basic"]});
 
     Toolbar.prototype.enter = function (domNode, element) {

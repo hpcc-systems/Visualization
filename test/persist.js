@@ -4,7 +4,6 @@ define(["d3", "src/other/Persist", "./layoutFactory"], function (d3, Persist, la
         this.timeout(10000);
         describe("Grid", function () {
             var grid;
-            var clone;
             it("create", function (done) {
                 assert.equal(d3.select("#persistSource").html(), "");
                 layoutFactory.Grid.simple(function(widget) {
@@ -20,12 +19,12 @@ define(["d3", "src/other/Persist", "./layoutFactory"], function (d3, Persist, la
             it("clone", function (done) {
                 assert.equal(d3.select("#persistTarget").html(), "");
                 Persist.clone(grid, function (widget) {
-                    clone = widget;
+                    assert.isNotNull(widget);
                     widget
                         .target("persistTarget")
                         .render(function () {
                             assert.notEqual(d3.select("#persistTarget").html(), "");
-                            assert.equal(Persist.serialize(widget), Persist.serialize(clone));
+                            assert.equal(Persist.serialize(widget), Persist.serialize(widget));
                             done();
                         })
                     ;

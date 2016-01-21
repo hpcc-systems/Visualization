@@ -43,6 +43,7 @@
     ].map(function(item) { item.family = "2D"; return item;});
     MultiChart.prototype._NDChartTypes = [
         { id: "COLUMN", display: "Column", widgetClass: "chart_Column" },
+        { id: "BAR", display: "Bar", widgetClass: "chart_Bar" },
         { id: "LINE", display: "Line", widgetClass: "chart_Line" },
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
         { id: "STEP", display: "Step", widgetClass: "chart_Step" },
@@ -51,16 +52,21 @@
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
         { id: "GOOGLE_SCATTER", display: "Scatter (Google)", widgetClass: "google_Scatter" },
+        { id: "GOOGLE_COMBO", display: "Combo (Google)", widgetClass: "google_Combo" },
         { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
         { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
         { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
         { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
         { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" },
         { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
+        { id: "C3_COMBO", display: "Combo (C3)", widgetClass: "c3chart_Combo" },
         { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
         { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
         { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
         { id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
+        { id: "AM_COLUMN", display: "Column (amCharts)", widgetClass: "amchart_Column" },
+        { id: "AM_GANTT", display: "Gantt (amCharts)", widgetClass: "amchart_Gantt" },
+        { id: "AM_COMBO", display: "Combo (amCharts)", widgetClass: "amchart_Combo" },
     ].map(function(item) { item.family = "ND"; return item;});
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" }

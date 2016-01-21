@@ -201,19 +201,23 @@
                 contentWidget.target(null);
                 return false;
             });
-
-d3.select("#"+this.id()+" > div.borderHandle")
-                    .classed("borderHandleDisabled",true);
-delete this._watch;            this.content([]);
+            d3.select("#" + this.id() + " > div.borderHandle")
+                .classed("borderHandleDisabled", true)
+            ;
+            delete this._watch;
+            this.content([]);
             this.sectionTypes([]);
         } else {
             var idx = this.sectionTypes().indexOf(sectionType);
             if (idx >= 0) {
-				if(this.content()[idx]){
+                if (this._watch && this.content()[idx]) {
                     delete this._watch[this.content()[idx].id()];
                 }
-                this.content()[idx].target(null);				d3.select("#"+this.id()+" > div.borderHandle_"+sectionType)
-                        .classed("borderHandleDisabled",true);                this.content().splice(idx, 1);
+                this.content()[idx].target(null);
+                d3.select("#" + this.id() + " > div.borderHandle_" + sectionType)
+                    .classed("borderHandleDisabled", true)
+                ; 
+                this.content().splice(idx, 1);
                 this.sectionTypes().splice(idx, 1);
             }
         }

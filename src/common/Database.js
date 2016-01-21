@@ -276,18 +276,6 @@
     };
 
     //  Hipie Helpers  ---
-    Grid.prototype.hipieFieldsByMappings = function (mappings) {
-        return mappings.map(function (mapping) {
-            return this.fieldByLabel(mapping, true);
-        }, this);
-    };
-
-    Grid.prototype.hipieFieldIdxByMappings = function (mappings) {
-        return this.hipieFieldsByMappings(mappings).map(function (field) {
-            return field.idx;
-        });
-    };
-
     Grid.prototype.hipieMapSortArray = function (sort) {
         return sort.map(function (sortField) {
             var reverse = false;
@@ -295,11 +283,15 @@
                 sortField = sortField.substring(1);
                 reverse = true;
             }
+            var field = this.fieldByLabel(sortField, true);
+            if (!field) {
+                console.log("Grid.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
+            }
             return {
-                idx: this.fieldByLabel(sortField, true).idx,
+                idx: field ? field.idx : -1,
                 reverse: reverse
             };
-        }, this);
+        }, this).filter(function(d) { return d.idx >= 0; });
     };
 
     Grid.prototype.hipieMappings = function (columns) {
@@ -320,7 +312,12 @@
                         }
                         rollupField = key;
                         mapping.params.forEach(function (params) {
-                            rollupValueIdx.push(this.fieldByLabel(params.param1, true).idx);
+                            var field = this.fieldByLabel(params.param1, true);
+                            if (!field) {
+                                console.log("Grid.prototype.hipieMappings:  Invalid rollup field - " + params.param1);
+                            } else {
+                                rollupValueIdx.push(field.idx);
+                            }
                         }, this);
                         break;
                     case "SCALE":
@@ -329,11 +326,16 @@
                         }
                         scaleField = key;
                         mapping.params.forEach(function (params) {
-                            var idx = this.fieldByLabel(params.param1, true).idx;
-                            var scale = params.param2; 
-                            fieldIndicies.push(function(row) {
-                                return row[idx] / scale;
-                            });
+                            var field = this.fieldByLabel(params.param1, true);
+                            if (!field) {
+                                console.log("Grid.prototype.hipieMappings:  Invalid scale field - " + params.param1);
+                            } else {
+                                var idx = field.idx;
+                                var scale = params.param2;
+                                fieldIndicies.push(function (row) {
+                                    return row[idx] / scale;
+                                });
+                            }
                         }, this);
                         break;
                     default:

@@ -6,7 +6,7 @@
         root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Database, Utility, Comms, Widget, require) {
-    var exists = function (prop, scope) {
+    function exists(prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
         for (var i = 0; i < propParts.length; ++i) {
@@ -17,7 +17,14 @@
             testScope = testScope[item];
         }
         return true;
-    };
+    }
+
+    function faCharFix(faChar) {
+        if (faChar) {
+            return String.fromCharCode(parseInt(faChar));
+        }
+        return faChar;
+    }
 
     //  Mappings ---
     function SourceMappings(visualization, mappings) {
@@ -209,12 +216,6 @@
 
     GraphMappings.prototype.calcAnnotation = function (field, origItem, forAnnotation) {
         var retVal = {};
-        function faCharFix(faChar) {
-            if (faChar) {
-                return String.fromCharCode(parseInt(faChar));
-            }
-            return faChar;
-        }
         function mapStruct(struct, retVal) {
             if (struct) {
                 for (var key in struct) {
@@ -275,7 +276,8 @@
             var retVal = vertexMap[id];
             if (!retVal) {
                 retVal = new graph.Vertex()
-                    .faChar("\uf128")
+                    .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
+                    .text(item[1])
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;

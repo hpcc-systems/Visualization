@@ -150,7 +150,11 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        Utility.multiSort(this.data(), [{idx: this.sortByFieldIndex(), reverse: this.descending()}]);
+        if (this.sortByFieldIndex_exists() && (this._prevSortByFieldIndex !== this.sortByFieldIndex() || this._prevDescending !== this.descending())) {
+            Utility.multiSort(this.data(), [{ idx: this.sortByFieldIndex(), reverse: this.descending() }]);
+            this._prevSortByFieldIndex = this.sortByFieldIndex();
+            this._prevDescending = this.descending();
+        }
 
         this._childWidgets.forEach(function(d, i) {
             d.target(null);
@@ -291,8 +295,7 @@
                 row: d
             };
         }));
-        rows
-            .enter()
+        rows.enter()
             .append("tr")
             .on("click.selectionBag", function (_d) {
                 var d = _d.row;
@@ -763,26 +766,12 @@
                 }
                 return inRange || lastInRangeRow;
             }, this);
-            this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
-            for (var iDx = rows[0]; iDx <= rows[1]; iDx++) {
-                this.getFixedRow(iDx).classed("selected", true);
-            }
             this.selection(selection);
-            return rows;
         } else {
-            if (this._selectionBag.isSelected(this._createSelectionObject(d))) {
-                this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
-                this._selectionBag.clear();
-                this._selectionPrevClick = null;
-            } else {
-                if (!d3.event.ctrlKey) {
-                    this._element.selectAll(".rows-wrapper tbody tr.trId" + this._id).classed("selected", false);
-                }
-                this._selectionBag.click(this._createSelectionObject(d), d3.event);
-                this._selectionPrevClick = d;
-                this.getFixedRow(i).classed("selected", true);
-            }
+            this._selectionBag.click(this._createSelectionObject(d), d3.event);
+            this._selectionPrevClick = d;
         }
+        this.render();
     };
 
     Table.prototype.applyHoverRowStyles = function(row){

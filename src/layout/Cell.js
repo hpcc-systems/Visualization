@@ -135,25 +135,27 @@
         var indicatorGlowColor = this.indicatorGlowColor();
         for (var i = 0; i < arr.length; i++) {
             var otherElement = d3.select("#" + arr[i]);
-            var rect = otherElement.node().getBoundingClientRect();
-            otherElement.append("div")
-                .classed("update-indicator", true)
-                .style({
-                    "box-sizing": "border-box",
-                    position: "fixed",
-                    top: rect.top + "px",
-                    left: rect.left + "px",
-                    width: rect.width + "px",
-                    height: rect.height + "px",
-                    opacity: opacity,
-                    padding: "0px",
-                    "z-index": 1000,
-                    "border": "4px solid " + indicatorBorderColor,
-                    "-webkit-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
-                    "-moz-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
-                    "box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
-                })
-            ;
+            if (otherElement.node()) {
+                var rect = otherElement.node().getBoundingClientRect();
+                otherElement.append("div")
+                    .classed("update-indicator", true)
+                    .style({
+                        "box-sizing": "border-box",
+                        position: "fixed",
+                        top: rect.top + "px",
+                        left: rect.left + "px",
+                        width: rect.width + "px",
+                        height: rect.height + "px",
+                        opacity: opacity,
+                        padding: "0px",
+                        "z-index": 1000,
+                        "border": "4px solid " + indicatorBorderColor,
+                        "-webkit-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                        "-moz-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                        "box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
+                    })
+                ;
+            }
         }
     };
     Cell.prototype.onMouseLeave = function () {

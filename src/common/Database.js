@@ -156,6 +156,7 @@
     Grid.prototype.publish("fields", [], "propertyArray", "Fields");
 
     Grid.prototype.clear = function () {
+        this.fields([]);
         this._data = [];
         return this;
     };

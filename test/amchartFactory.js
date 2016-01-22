@@ -51,46 +51,42 @@
         Bar: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
-                    callback(new Bar()
+                    var bar = new Bar()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
-                        .yAxis(0).axisType("linear")
-                        .xAxis(0).axisType("ordinal")
-                    );
+                    ;
+                    bar.yAxis(0).axisType("linear");
+                    bar.xAxis(0).axisType("ordinal");
+                    callback(bar);
                 });
             },
         },
         Column: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
-                        .yAxis(0)
-                            .axisType("linear")
-                        .xAxis(0)
-                            .axisType("ordinal")
-                    );
+                    ;
+                    col.yAxis(0).axisType("linear");
+                    col.xAxis(0).axisType("ordinal");
+                    callback(col);
                 });
             },
             multiY: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
-                        .yAxis(0)
-                            .axisType("linear")
-                        .yAxis(1)
-                            .axisType("linear")
-                        .yAxis(1)
-                            .position("right") 
-                        .y2([2,4])
-                        .xAxis(0)
-                            .axisType("ordinal")
-                    );
+                        .y2([2, 4])
+                    ;
+                    col.xAxis(0).axisType("ordinal");
+                    col.yAxis(0).axisType("linear");
+                    col.yAxis(1)
+                        .axisType("linear")
+                        .position("right")
+                    ;
+                    callback(col);
                 });
             },
             bar: function (callback) {
@@ -100,63 +96,67 @@
             },
             ordinalRange: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
-                        .yAxis(0)
-                            .axisType("linear")
-                        .xAxis(0)
-                            .axisType("ordinal")
-                    );
+                    ;
+                    col.xAxis(0).axisType("ordinal");
+                    col.yAxis(0).axisType("linear");
+                    callback(col);
                 });
             },
             ordinalCandleOHLC: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.ordinalCandleOHLC.default.columns)
                         .data(DataFactory.ordinalCandleOHLC.default.data)
-                        .yAxis(0)
-                            .axisType("linear")
-                        .yAxis(0)
-                            .axisType("ordinal")
-                    );
+                    ;
+                    col.yAxis(0)
+                        .axisType("linear")
+                        .axisType("ordinal")
+                    ;
+                    callback(col);
                 });
             },
             linear: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
-                        .xAxis(0).axisType("linear")
-                        .yAxis(0).axisType("linear")
-                    );
+                    ;
+                    col.xAxis(0).axisType("linear");
+                    col.yAxis(0).axisType("linear");
+                    callback(col);
                 });
             },
             timeX: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-
                         .axisMinPeriod("MM")
-                        .xAxis(0).axisType("time")
-                        .xAxis(0).axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                        .yAxis(0).axisType("linear")
-                    );
+                    ;
+                    col.xAxis(0)
+                        .axisType("time")
+                        .axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                    ;
+                    col.yAxis(0).axisType("linear");
+                    callback(col);
                 });
             },
             timeY: function (callback) {
                 require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
-                    callback(new Column()
+                    var col = new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
-
                         .axisMinPeriod("DD")
-                        .xAxis(0).axisType("ordinal")
-                        .yAxis(0).axisType("time")
-                        .yAxis(0).axisTypeTimePattern("%Y-%m-%d")
-
-                    );
+                    ;
+                    col.xAxis(0).axisType("ordinal");
+                    col.yAxis(0)
+                        .axisType("time")
+                        .axisTypeTimePattern("%Y-%m-%d")
+                    ;
+                    callback(col);
                 });
             },
         },
@@ -174,18 +174,18 @@
                     callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-
                         .scatterType("bubble")
                     );
                 });
             },
             linear: function (callback) {
                 require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
-                    callback(new Scatter()
+                    var scatter = new Scatter()
                         .columns(DataFactory.scatterLinear.default.columns)
                         .data(DataFactory.scatterLinear.default.data)
-                        .xAxis(0).axisType("linear")
-                    );
+                    ;
+                    scatter.xAxis(0).axisType("linear");
+                    callback(scatter);
                 });
             },
         },
@@ -200,13 +200,16 @@
             },
             timeX: function (callback) {
                 require(["test/DataFactory", "src/amchart/Line"], function (DataFactory, Line) {
-                    callback(new Line()
+                    var line = new Line()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                        .xAxis(0).axisType("time")
-                        .xAxis(0).axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                        .yAxis(0).axisType("linear")
-                    );
+                    ;
+                    line.xAxis(0)
+                        .axisType("time")
+                        .axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
+                    ;
+                    line.yAxis(0).axisType("linear");
+                    callback(line);
                 });
             }
         },

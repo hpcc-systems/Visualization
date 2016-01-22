@@ -19,10 +19,22 @@
         this._prevDataUpdated = -1;
         this._columnsUpdated = 0;
         this._prevColumnsUpdated = -1;
+
+        if (!this.xAxis().length) {
+            this.xAxis(0);
+            this._xAxis = this.xAxis()[0];
+
+        }
+        if (!this.yAxis().length) {
+            this.yAxis(0);
+            this._yAxis = this.yAxis()[0];
+        }
     }
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
+
+    CommonXY.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
     CommonXY.prototype.publish("xAxes", [], "propertyArray", "widgets", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
     CommonXY.prototype.publish("yAxes", [], "propertyArray", "widgets", null, { tags: ["Basic"] });
@@ -47,10 +59,80 @@
     CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)",null,{tags:["Intermediate"]});
     CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
 
-    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
-
     CommonXY.prototype.publish("selectionColor", "#f00", "html-color", "Font Color",null,{tags:["Basic"]});
     CommonXY.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
+    
+    CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    CommonXY.prototype.publishProxy("xAxisType", "_xAxis", "axisType");
+    CommonXY.prototype.publishProxy("yAxisType", "_yAxis", "axisType");
+
+    CommonXY.prototype.publishProxy("xAxisTitle", "_xAxis", "axisTitle");
+    CommonXY.prototype.publishProxy("yAxisTitle", "_yAxis", "axisTitle");
+
+    CommonXY.prototype.publishProxy("xAxisBaselineColor", "_xAxis", "axisBaselineColor");
+    CommonXY.prototype.publishProxy("yAxisBaselineColor", "_yAxis", "axisBaselineColor");
+
+    CommonXY.prototype.publishProxy("xAxisFontColor", "_xAxis", "axisFontColor");
+    CommonXY.prototype.publishProxy("yAxisFontColor", "_yAxis", "axisFontColor");
+
+    CommonXY.prototype.publishProxy("xAxisTitleFontSize", "_xAxis", "axisTitleFontSize");
+    CommonXY.prototype.publishProxy("yAxisTitleFontSize", "_yAxis", "axisTitleFontSize");
+
+    CommonXY.prototype.publishProxy("xAxisTitleFontColor", "_xAxis", "axisTitleFontColor");
+    CommonXY.prototype.publishProxy("yAxisTitleFontColor", "_yAxis", "axisTitleFontColor");
+
+    CommonXY.prototype.publishProxy("xAxisLabelRotation", "_xAxis", "axisLabelRotation");
+    CommonXY.prototype.publishProxy("yAxisLabelRotation", "_yAxis", "axisLabelRotation");
+
+    CommonXY.prototype.publish("axisLineWidth", 1, "number", "Thickness of axis",null,{tags:["Intermediate","Shared"]}); //??
+
+    CommonXY.prototype.publishProxy("xAxisAutoGridCount", "_xAxis", "axisAutoGridCount");
+    CommonXY.prototype.publishProxy("yAxisAutoGridCount", "_yAxis", "axisAutoGridCount");
+
+
+    CommonXY.prototype.publishProxy("xAxisGridPosition", "_xAxis", "axisGridPosition");
+    CommonXY.prototype.publishProxy("yAxisGridPosition", "_yAxis", "axisGridPosition");
+
+    CommonXY.prototype.publishProxy("xAxisFillAlpha", "_xAxis", "axisFillAlpha");
+    CommonXY.prototype.publishProxy("yAxisFillAlpha", "_yAxis", "axisFillAlpha");
+
+    CommonXY.prototype.publishProxy("xAxisFillColor", "_xAxis", "axisFillColor");
+    CommonXY.prototype.publishProxy("yAxisFillColor", "_yAxis", "axisFillColor");
+
+    CommonXY.prototype.publishProxy("xAxisGridAlpha", "_xAxis", "axisGridAlpha");
+    CommonXY.prototype.publishProxy("yAxisGridAlpha", "_yAxis", "axisGridAlpha");
+
+    CommonXY.prototype.publishProxy("xAxisDashLength", "_xAxis", "axisDashLength");
+    CommonXY.prototype.publishProxy("yAxisDashLength", "_yAxis", "axisDashLength");
+
+    //CommonXY.prototype.publish("yAxisMinimum", null, "number", "",null,{tags:["Intermediate"]});
+
+    CommonXY.prototype.publishProxy("xAxisTickFormat", "_xAxis", "axisTickFormat");
+    CommonXY.prototype.publishProxy("yAxisTickFormat", "_yAxis", "axisTickFormat");
+
+    CommonXY.prototype.publish("axisAlpha", 1, "number", "Axis opacity",null,{tags:["Intermediate"]}); // need to covnert to axis alpha this need to be publish proxied?
+
+
+    CommonXY.prototype._origBackwardsCompatible = CommonXY.prototype.backwardsCompatible;
+    CommonXY.prototype.backwardsCompatible = function(_) {
+      var retVal = CommonXY.prototype._origBackwardsCompatible.apply(this, arguments);
+        if (arguments.length) {
+            this.switchProperties(_);
+        }
+        return retVal;
+    };
+
+    CommonXY.prototype.switchProperties = function(val) {
+        if (val === true) {
+            CommonXY.prototype.excludeObjs = ["amchart_XYAxis"];
+            // hide the regular ones with the exclude tags?
+        } else {
+            CommonXY.prototype.excludeObjs = [];
+        }
+    };
 
     // Axes
     var xAxes = CommonXY.prototype.xAxes;
@@ -62,7 +144,7 @@
             var context = this;
             var axes = axe.call(this);
             axes.forEach(function(axis) {
-                axis._context = context;
+                axis._owningWidget = context;
             });
             return axes;
         }
@@ -71,12 +153,12 @@
 
         axis = axe.call(this)[idx];
         if (axis) {
-             axis._context = this;
-             return axis;
+            axis._owningWidget = this;
+            return axis;
         }
 
         axis = new Axis();
-        axis._context = this;
+        axis._owningWidget = this;
         var currentAxes = axe.call(this);
         currentAxes.push(axis);
         axe.call(this, currentAxes);
@@ -91,8 +173,6 @@
         return this.Axes("y", idx);
     };
 
-    CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate","Shared"]});
-
     CommonXY.prototype.updateChartOptions = function() {
         var context = this;
 
@@ -105,7 +185,7 @@
 
         // left vAxis must always be 0 and bottom 1 !!
 
-        var vAxisCount = 0;
+       var vAxisCount = 0;
 
         for (var iy = 0; iy < this.yAxes().length; iy++) {
             var yAxis = this.yAxis()[iy];
@@ -208,6 +288,8 @@
     CommonXY.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
+        
+        gObj.id = "g" + i;
 
         gObj.balloonFunction = function(d) {
             var balloonText = context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
@@ -322,11 +404,10 @@
     CommonXY.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
-        if (!this.xAxis().length) {
-            this.xAxis(0);
-        }
-        if (!this.yAxis().length) {
-            this.yAxis(0);
+        if (this.backwardsCompatible()) {
+            this.switchProperties(true);
+        } else {
+            this.switchProperties(false);
         }
 
         domNode.style.width = this.size().width + "px";

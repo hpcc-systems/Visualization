@@ -150,6 +150,8 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
+        this.element().selectAll("table,tbody,th,td").style("width", null);
+
         if (this.sortByFieldIndex_exists() && (this._prevSortByFieldIndex !== this.sortByFieldIndex() || this._prevDescending !== this.descending())) {
             Utility.multiSort(this.data(), [{ idx: this.sortByFieldIndex(), reverse: this.descending() }]);
             this._prevSortByFieldIndex = this.sortByFieldIndex();

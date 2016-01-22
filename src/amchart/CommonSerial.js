@@ -25,11 +25,20 @@
 
         this._colorObj = {};
         this._selectionObj = {};
+
+        if (this.backwardsCompatible()) {
+            this.switchProperties(true);
+        } else {
+            this.switchProperties(false);
+        }
     }
+
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
 
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
+
+    CommonSerial.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
     CommonSerial.prototype.publish("xAxes", [], "propertyArray", "xAxis", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
     CommonSerial.prototype.publish("yAxes", [], "propertyArray", "yAxis", null, { tags: ["Basic"] });
@@ -59,7 +68,6 @@
 
     CommonSerial.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    CommonSerial.prototype.publish("yAxisTickFormat", "s", "string", "Y-Axis Tick Format");
     CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
     
     CommonSerial.prototype.publish("axisMinPeriod", "MM", "string", "Minimum period when parsing dates");
@@ -79,6 +87,81 @@
     CommonSerial.prototype.publish("paletteGrouping", "By Column", "set", "Palette Grouping",["By Category","By Column"],{tags:["Basic"]});
 
     CommonSerial.prototype.publish("y2", [], "array", "Columns to associate with second Y-Axis");
+
+//
+
+    CommonSerial.prototype.publish("axisFontSize", null, "number", "X/Y Axis Text Font Size",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisBaselineColor", "#000000", "html-color", "X Axis Baseline Color",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisBaselineColor", "#000000", "html-color", "Y Axis baseline Color",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisFontColor", null, "html-color", "Horizontal Axis Text Style (Color)",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisFontColor", null, "html-color", "Vertical Axis Text Style (Color)",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisTitleFontColor", null, "html-color", "Horizontal Axis Title Text Style (Color)",null,{tags:["Basic","Shared"]});
+    CommonSerial.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical Axis Title Text Style (Color)",null,{tags:["Basic","Shared"]});
+
+    CommonSerial.prototype.publish("xAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+    CommonSerial.prototype.publish("yAxisLabelRotation", null, "number", "X-Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
+
+    CommonSerial.prototype.publish("axisAlpha", 1, "number", "Axis Alpha",null,{tags:["Intermediate"]}); // share?
+//
+    CommonSerial.prototype.publish("xAxisAutoGridCount", true, "boolean", "Specifies Whether Number of GridCount Is Specified Automatically, According To The Axis Size",null,{tags:["Advanced"]});
+    CommonSerial.prototype.publish("xAxisGridPosition", "start", "set", "Specifies If A Grid Line Is Placed On The Center of A Cell or On The Beginning of A Cell", ["start","middle"],{tags:["Advanced"]});
+
+    CommonSerial.prototype.publish("xAxisBoldPeriodBeginning", true, "boolean", "When parse dates is on for the category axis, the chart will try to highlight the beginning of the periods, like month, in bold.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("yAxisBoldPeriodBeginning", true, "boolean", "When parse dates is on for the category axis, the chart will try to highlight the beginning of the periods, like month, in bold.",null,{tags:["Intermediate"]});
+
+    CommonSerial.prototype.publish("xAxisDashLength", 0, "number", "Length of a dash. 0 means line is not dashed.",null,{tags:["Advanced"]});
+    CommonSerial.prototype.publish("yAxisDashLength", 0, "number", "Length of a dash. 0 means line is not dashed.",null,{tags:["Advanced"]});
+
+    CommonSerial.prototype.publish("xAxisFillAlpha", 0, "number", "Fill opacity. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("yAxisFillAlpha", 0, "number", "Fill opacity. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+
+    CommonSerial.prototype.publish("xAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("yAxisFillColor", null, "html-color", "Fill color. Every second space between grid lines can be filled with color. Set fillAlpha to a value greater than 0 to see the fills.",null,{tags:["Intermediate"]});
+
+    CommonSerial.prototype.publish("xAxisGridAlpha", 0.0, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+    CommonSerial.prototype.publish("yAxisGridAlpha", 0.0, "number", "Grid alpha.",null,{tags:["Intermediate"]});
+
+    CommonSerial.prototype.publish("yAxisTitleOffset", null, "number", "",null,{tags:["Intermediate"]});
+
+    CommonSerial.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
+    CommonSerial.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
+
+    CommonSerial.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"],{tags:["Intermediate","Shared"]});
+    CommonSerial.prototype.publish("xAxisType", "ordinal", "set", "X-Axis Type", ["ordinal", "linear", "time"]);
+
+    CommonSerial.prototype.publish("yAxisTickFormat", "", "string", "Y-Axis Tick Format");
+    CommonSerial.prototype.publish("xAxisTickFormat", "", "string", "Y-Axis Tick Format");
+
+    CommonSerial.prototype.publish("startOnAxis", true, "boolean", "Draw Chart Starting On Axis.",null,{tags:["Intermediate"]});    
+
+    CommonSerial.prototype._origBackwardsCompatible = CommonSerial.prototype.backwardsCompatible;
+    CommonSerial.prototype.backwardsCompatible = function(_) {
+      var retVal = CommonSerial.prototype._origBackwardsCompatible.apply(this, arguments);
+        if (arguments.length) {
+            this.switchProperties(_);
+        }
+        return retVal;
+    };
+
+    CommonSerial.prototype.switchProperties = function(val) {
+        if (val === true) {
+            CommonSerial.prototype.excludeObjs = ["amchart_SerialAxis"];
+            // hide the regular ones with the exclude tags?
+        } else {
+            CommonSerial.prototype.excludeObjs = [];
+        }
+    };
 
     var xAxes = CommonSerial.prototype.xAxes;
     var yAxes = CommonSerial.prototype.yAxes;
@@ -196,6 +279,7 @@
     };
 
     CommonSerial.prototype.updateChartOptions = function() {
+        var context = this;
         this._chart.type = "serial";
         this._chart.startDuration = this.startDuration();
         this._chart.rotate = this.orientation() === "vertical";
@@ -210,134 +294,214 @@
         var xAxis = this.xAxis()[0];
         xAxis.type("x");
 
-        this._chart.categoryAxis.position =  xAxis.position() ? xAxis.position() : "bottom";
-        this._chart.categoryAxis.autoGridCount = xAxis.axisAutoGridCount();
-        this._chart.categoryAxis.gridPosition = xAxis.axisGridPosition();
-        this._chart.categoryAxis.axisAlpha = xAxis.axisAlpha();
-        this._chart.categoryAxis.gridAlpha = xAxis.axisGridAlpha();
-        this._chart.categoryAxis.startOnAxis = xAxis.startOnAxis();
-        this._chart.categoryAxis.labelRotation = xAxis.axisLabelRotation();
-        this._chart.categoryAxis.title = xAxis.axisTitle();
+        this._chart.categoryAxis.position = xAxis.position() ? xAxis.position() : "bottom";
+        this._chart.categoryAxis.autoGridCount = (this.xAxisAutoGridCount() && this.backwardsCompatible()) ? this.xAxisAutoGridCount() : xAxis.axisAutoGridCount();
+        this._chart.categoryAxis.gridPosition = (this.xAxisGridPosition() && this.backwardsCompatible())  ? this.xAxisGridPosition() : xAxis.axisGridPosition();
+        this._chart.categoryAxis.axisAlpha = (this.axisAlpha() && this.backwardsCompatible()) ? this.axisAlpha() : xAxis.axisAlpha();
+        this._chart.categoryAxis.gridAlpha = (this.xAxisGridAlpha() && this.backwardsCompatible()) ? this.xAxisGridAlpha() : xAxis.axisGridAlpha();
+        this._chart.categoryAxis.startOnAxis = (this.startOnAxis() && this.backwardsCompatible()) ? this.startOnAxis() : xAxis.startOnAxis();
+        this._chart.categoryAxis.labelRotation = (this.xAxisLabelRotation() && this.backwardsCompatible()) ? this.xAxisLabelRotation() : xAxis.axisLabelRotation();
+        this._chart.categoryAxis.title = (this.xAxisTitle() && this.backwardsCompatible()) ? this.xAxisTitle() : xAxis.axisTitle();
 
-        this._chart.categoryAxis.axisColor = xAxis.axisBaselineColor();
-        this._chart.categoryAxis.axisThickness = xAxis.axisLineWidth();
-        this._chart.categoryAxis.boldPeriodBeginning = xAxis.axisBoldPeriodBeginning();
-        this._chart.categoryAxis.dashLength = xAxis.axisDashLength();
-        this._chart.categoryAxis.fillAlpha = xAxis.axisFillAlpha();
-        this._chart.categoryAxis.fillColor = xAxis.axisFillColor();
-        this._chart.categoryAxis.fontSize = xAxis.axisFontSize();
-        this._chart.categoryAxis.color = xAxis.axisFontColor();
-        this._chart.categoryAxis.titleColor = xAxis.axisTitleFontColor();
-        this._chart.categoryAxis.titleFontSize = xAxis.axisTitleFontSize();
+        this._chart.categoryAxis.axisColor = (this.xAxisBaselineColor() && this.backwardsCompatible()) ? this.xAxisBaselineColor() : xAxis.axisBaselineColor();
+        this._chart.categoryAxis.axisThickness = (this.axisLineWidth() && this.backwardsCompatible()) ? this.axisLineWidth() : xAxis.axisLineWidth();
+        this._chart.categoryAxis.boldPeriodBeginning = (this.xAxisBoldPeriodBeginning() && this.backwardsCompatible()) ? this.xAxisBoldPeriodBeginning() : xAxis.axisBoldPeriodBeginning();
+        this._chart.categoryAxis.dashLength = (this.xAxisDashLength() && this.backwardsCompatible()) ? this.xAxisDashLength() : xAxis.axisDashLength();
+        this._chart.categoryAxis.fillAlpha = (this.xAxisFillAlpha() && this.backwardsCompatible()) ? this.xAxisFillAlpha() : xAxis.axisFillAlpha();
+        this._chart.categoryAxis.fillColor = (this.xAxisFillColor() && this.backwardsCompatible()) ? this.xAxisFillColor() : xAxis.axisFillColor();
+        this._chart.categoryAxis.fontSize = (this.axisFontSize() && this.backwardsCompatible()) ? this.axisFontSize() : xAxis.axisFontSize();
+        this._chart.categoryAxis.color = (this.xAxisFontColor() && this.backwardsCompatible()) ? this.xAxisFontColor() : xAxis.axisFontColor();
+        this._chart.categoryAxis.titleColor = (this.xAxisTitleFontColor() && this.backwardsCompatible()) ? this.xAxisTitleFontColor() : xAxis.axisTitleFontColor();
+        this._chart.categoryAxis.titleFontSize = (this.xAxisTitleFontSize() && this.backwardsCompatible()) ? this.xAxisTitleFontSize() : xAxis.axisTitleFontSize();
 
         this._chart.categoryAxis.showFirstLabel = this.showFirstLabel();
         this._chart.categoryAxis.showLastLabel = this.showLastLabel();
 
         this._chart.categoryAxis.equalSpacing = this.equalSpacing();
 
-        switch(xAxis.axisType()) {
-            case "time":
-                this._chart.categoryAxis.parseDates = true;
-                this._chart.categoryAxis.minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
-                this._chart.categoryAxis.logarithmic = false;
-
-                if (xAxis.axisTickFormat()) {
-                    this.dataFormatter = d3.time.format(xAxis.axisTickFormat());
-                } else if (xAxis.axisTypeTimePattern()) {
-                    this.dataFormatter = d3.time.format(xAxis.axisTypeTimePattern());
-                } else {
-                    this.dataFormatter =  function(v) { return v; };
-                }
-
-                break;
-            case "log":
-                this._chart.categoryAxis.parseDates = false;
-                this._chart.categoryAxis.logarithmic = true;
-                this.dataFormatter = xAxis.axisTickFormat() ? d3.format(xAxis.axisTickFormat()) : function(v) { return v; };
-                break;
-            case "linear":
-                /* falls through */
-            default:
-                this._chart.categoryAxis.parseDates = false;
-                this._chart.categoryAxis.logarithmic = false;
-                this.dataFormatter = xAxis.axisTickFormat() ? d3.format(xAxis.axisTickFormat()) : function(v) { return v; };
-                break;
-        }
-
-        var context = this;
-        this._chart.categoryAxis.labelFunction = function(v1, v2, v3) {
-            switch (xAxis.axisType()) {
+        if (this.backwardsCompatible()) {
+            switch(this.xAxisType()) {
                 case "time":
-                    return context.dataFormatter(xAxis.axisTickFormat() || xAxis.axisTypeTimePattern()  ? new Date(v2) : v2);
-                default:
-                    return context.dataFormatter(v1);
-            }
-        };
+                    this._chart.categoryAxis.parseDates = true;
+                    this._chart.categoryAxis.minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
+                    this._chart.categoryAxis.logarithmic = false;
 
-        for (var i = 0; i < this.yAxes().length; i++) {
-            var yAxis = this.yAxis()[i];
-            yAxis.type("y");
-
-            if (!this._chart.valueAxes[i]) {
-                this._chart.valueAxes.push(new AmCharts.ValueAxis());
-            }
-
-            this._chart.valueAxes[i].id = "v" + i;
-            this._chart.valueAxes[i].position = yAxis.position() ? yAxis.position() : "left";
-            this._chart.valueAxes[i].title = yAxis.axisTitle();
-            this._chart.valueAxes[i].titleColor = yAxis.axisTitleFontColor();
-            this._chart.valueAxes[i].titleFontSize = yAxis.axisTitleFontSize();
-            this._chart.valueAxes[i].axisThickness = yAxis.axisLineWidth();
-            this._chart.valueAxes[i].color = yAxis.axisFontColor();
-            this._chart.valueAxes[i].fontSize = yAxis.axisFontSize();
-            this._chart.valueAxes[i].axisColor = yAxis.axisBaselineColor();
-            this._chart.valueAxes[i].axisAlpha = yAxis.axisAlpha();
-            this._chart.valueAxes[i].fillColor = yAxis.axisFillColor();
-            this._chart.valueAxes[i].fillAlpha = yAxis.axisFillAlpha();
-
-            this._chart.valueAxes[i].gridAlpha = yAxis.axisGridAlpha();
-            this._chart.valueAxes[i].dashLength = yAxis.axisDashLength();
-            this._chart.valueAxes[i].boldPeriodBeginning = yAxis.axisBoldPeriodBeginning();
-
-            switch(yAxis.axisType()) {
-                case "time":
-                    this._chart.valueAxes[i].type = "date";
-                    this._chart.valueAxes[i].parseDates = true;
-                    this._chart.valueAxes[i].minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
-                    this._chart.valueAxes[i].logarithmic = false;
-
-                    if (yAxis.axisTickFormat()) {
-                        this.valueFormatter = d3.time.format(yAxis.axisTickFormat());
-                    } else if (yAxis.axisTypeTimePattern()) {
-                        this.valueFormatter = d3.time.format(yAxis.axisTypeTimePattern());
+                    if (this.xAxisTickFormat()) {
+                        this.dataFormatter = d3.time.format(this.xAxisTickFormat());
+                    } else if (this.xAxisTypeTimePattern()) {
+                        this.dataFormatter = d3.time.format(xAxis.axisTypeTimePattern());
                     } else {
-                        this.valueFormatter =  function(v) { return v; };
+                        this.dataFormatter =  function(v) { return v; };
                     }
+
                     break;
                 case "log":
-                    this._chart.valueAxes[i].parseDates = false;
-                    this._chart.valueAxes[i].logarithmic = true;
-                    this._chart.valueAxes[i].type = "numeric";
-                    this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                    this._chart.categoryAxis.parseDates = false;
+                    this._chart.categoryAxis.logarithmic = true;
+                    this.dataFormatter = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : function(v) { return v; };
                     break;
                 case "linear":
                     /* falls through */
                 default:
-                    this._chart.valueAxes[i].parseDates = false;
-                    this._chart.valueAxes[i].type = "numeric";
-                    this._chart.valueAxes[i].logarithmic = false;
-                    this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                    this._chart.categoryAxis.parseDates = false;
+                    this._chart.categoryAxis.logarithmic = false;
+                    this.dataFormatter = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : function(v) { return v; };
                     break;
             }
 
-            this._chart.valueAxes[i].labelFunction = function(v1, v2, v3) {
-                switch (yAxis.axisType()) {
+            this._chart.categoryAxis.labelFunction = function(v1, v2, v3) {
+                switch (context.xAxisType()) {
                     case "time":
-                        return context.valueFormatter(yAxis.axisTickFormat() || yAxis.axisTypeTimePattern() ? new Date(v2) : v2);
+                        return context.dataFormatter(this.xAxisTickFormat() || this.xAxisTypeTimePattern()  ? new Date(v2) : v2);
                     default:
-                        return context.valueFormatter(v1);
+                        return context.dataFormatter(v1);
                 }
             };
+        } else {
+            switch(xAxis.axisType()) {
+                case "time":
+                    this._chart.categoryAxis.parseDates = true;
+                    this._chart.categoryAxis.minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
+                    this._chart.categoryAxis.logarithmic = false;
+
+                    if (xAxis.axisTickFormat()) {
+                        this.dataFormatter = d3.time.format(xAxis.axisTickFormat());
+                    } else if (xAxis.axisTypeTimePattern()) {
+                        this.dataFormatter = d3.time.format(xAxis.axisTypeTimePattern());
+                    } else {
+                        this.dataFormatter =  function(v) { return v; };
+                    }
+
+                    break;
+                case "log":
+                    this._chart.categoryAxis.parseDates = false;
+                    this._chart.categoryAxis.logarithmic = true;
+                    this.dataFormatter = xAxis.axisTickFormat() ? d3.format(xAxis.axisTickFormat()) : function(v) { return v; };
+                    break;
+                case "linear":
+                    /* falls through */
+                default:
+                    this._chart.categoryAxis.parseDates = false;
+                    this._chart.categoryAxis.logarithmic = false;
+                    this.dataFormatter = xAxis.axisTickFormat() ? d3.format(xAxis.axisTickFormat()) : function(v) { return v; };
+                    break;
+            }
+
+            this._chart.categoryAxis.labelFunction = function(v1, v2, v3) {
+                switch (xAxis.axisType()) {
+                    case "time":
+                        return context.dataFormatter(xAxis.axisTickFormat() || xAxis.axisTypeTimePattern()  ? new Date(v2) : v2);
+                    default:
+                        return context.dataFormatter(v1);
+                }
+            };
+        }
+        for (var i = 0; i < this.yAxes().length; i++) {
+            var yAxis = this.yAxis()[i];
+            yAxis.type("y");
+
+            this._chart.valueAxes.push(new AmCharts.ValueAxis());
+
+            this._chart.valueAxes[i].id = "v" + i;
+            this._chart.valueAxes[i].position = yAxis.position() ? yAxis.position() : "left";
+            this._chart.valueAxes[i].title = (this.yAxisTitle() && this.backwardsCompatible()) ? this.yAxisTitle() : yAxis.axisTitle();
+            this._chart.valueAxes[i].titleColor = (this.yAxisTitleFontColor() && this.backwardsCompatible()) ? this.yAxisTitleFontColor() : yAxis.axisTitleFontColor();
+            this._chart.valueAxes[i].titleFontSize = (this.yAxisTitleFontSize() && this.backwardsCompatible()) ? this.yAxisTitleFontSize() : yAxis.axisTitleFontSize();
+            this._chart.valueAxes[i].axisThickness = (this.axisLineWidth() && this.backwardsCompatible()) ? this.axisLineWidth() : yAxis.axisLineWidth();
+            this._chart.valueAxes[i].color = (this.yAxisFontColor() && this.backwardsCompatible()) ? this.yAxisFontColor() : yAxis.axisFontColor();
+            this._chart.valueAxes[i].fontSize = (this.axisFontSize() && this.backwardsCompatible()) ? this.axisFontSize() : yAxis.axisFontSize();
+            this._chart.valueAxes[i].axisColor = (this.yAxisBaselineColor() && this.backwardsCompatible()) ? this.yAxisBaselineColor() : yAxis.axisBaselineColor();
+            this._chart.valueAxes[i].axisAlpha = (this.axisAlpha() && this.backwardsCompatible()) ? this.axisAlpha() : yAxis.axisAlpha();
+            this._chart.valueAxes[i].fillColor = (this.yAxisFillColor() && this.backwardsCompatible()) ? this.yAxisFillColor() : yAxis.axisFillColor();
+            this._chart.valueAxes[i].fillAlpha = (this.yAxisFillAlpha() && this.backwardsCompatible()) ? this.yAxisFillAlpha() : yAxis.axisFillAlpha();
+            this._chart.valueAxes[i].labelRotation = (this.xAxisLabelRotation() && this.backwardsCompatible()) ? this.xAxisLabelRotation() : yAxis.axisLabelRotation(); // need to check serial axis object
+
+            this._chart.valueAxes[i].gridAlpha = (this.yAxisGridAlpha() && this.backwardsCompatible()) ? this.yAxisGridAlpha() : yAxis.axisGridAlpha();
+            this._chart.valueAxes[i].dashLength = (this.yAxisDashLength() && this.backwardsCompatible()) ? this.yAxisDashLength() : yAxis.axisDashLength();
+            this._chart.valueAxes[i].boldPeriodBeginning = (this.yAxisBoldPeriodBeginning() && this.backwardsCompatible()) ? this.yAxisBoldPeriodBeginning() : yAxis.axisBoldPeriodBeginning();
+            //this._chart.valueAxes[0].axisTitleOffset = this.yAxisTitleOffset(); ?? TODO
+
+            if (this.backwardsCompatible()) {
+                switch(this.yAxisType()) {
+                    case "time":
+                        this._chart.valueAxes[i].type = "date";
+                        this._chart.valueAxes[i].parseDates = true;
+                        this._chart.valueAxes[i].minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
+                        this._chart.valueAxes[i].logarithmic = false;
+
+                        if (yAxis.axisTickFormat()) {
+                            this.valueFormatter = d3.time.format(this.yAxisTickFormat());
+                        } else if (this.yAxisTypeTimePattern()) {
+                            this.valueFormatter = d3.time.format(this.yAxisTypeTimePattern());
+                        } else {
+                            this.valueFormatter =  function(v) { return v; };
+                        }
+                        break;
+                    case "log":
+                        this._chart.valueAxes[i].parseDates = false;
+                        this._chart.valueAxes[i].logarithmic = true;
+                        this._chart.valueAxes[i].type = "numeric";
+                        this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
+                        break;
+                    case "linear":
+                        /* falls through */
+                    default:
+                        this._chart.valueAxes[i].parseDates = false;
+                        this._chart.valueAxes[i].type = "numeric";
+                        this._chart.valueAxes[i].logarithmic = false;
+                        this.valueFormatter = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : function(v) { return v; };
+                        break;
+                }
+
+                this._chart.valueAxes[i].labelFunction = function(v1, v2, v3) {
+                    switch (context.yAxisType()) {
+                        case "time":
+                            return context.valueFormatter(this.yAxisTickFormat() || this.yAxisTypeTimePattern() ? new Date(v2) : v2);
+                        default:
+                            return context.valueFormatter(v1);
+                    }
+                };
+            } else {
+                switch(yAxis.axisType()) {
+                    case "time":
+                        this._chart.valueAxes[i].type = "date";
+                        this._chart.valueAxes[i].parseDates = true;
+                        this._chart.valueAxes[i].minPeriod = this.axisMinPeriod() ? this.axisMinPeriod() : undefined;
+                        this._chart.valueAxes[i].logarithmic = false;
+
+                        if (yAxis.axisTickFormat()) {
+                            this.valueFormatter = d3.time.format(yAxis.axisTickFormat());
+                        } else if (yAxis.axisTypeTimePattern()) {
+                            this.valueFormatter = d3.time.format(yAxis.axisTypeTimePattern());
+                        } else {
+                            this.valueFormatter =  function(v) { return v; };
+                        }
+                        break;
+                    case "log":
+                        this._chart.valueAxes[i].parseDates = false;
+                        this._chart.valueAxes[i].logarithmic = true;
+                        this._chart.valueAxes[i].type = "numeric";
+                        this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                        break;
+                    case "linear":
+                        /* falls through */
+                    default:
+                        this._chart.valueAxes[i].parseDates = false;
+                        this._chart.valueAxes[i].type = "numeric";
+                        this._chart.valueAxes[i].logarithmic = false;
+                        this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                        break;
+                }
+
+                this._chart.valueAxes[i].labelFunction = function(v1, v2, v3) {
+                    switch (yAxis.axisType()) {
+                        case "time":
+                            return context.valueFormatter(yAxis.axisTickFormat() || yAxis.axisTypeTimePattern() ? new Date(v2) : v2);
+                        default:
+                            return context.valueFormatter(v1);
+                    }
+                };
+            }
         }
 
         if (this.showScrollbar()) {
@@ -358,10 +522,18 @@
             this._chart.chartCursor.categoryBalloonEnabled = false;
         }
 
-        this._currXAxisTypes = this.xAxes().map(function(axe) { return axe.axisType(); }).toString();
-        this._currYAxisTypes = this.yAxes().map(function(axe) { return axe.axisType(); }).toString();
-        this._currXAxisTypeTimePatterns = this.xAxes().map(function(axe) { return axe.axisTypeTimePattern(); }).toString();
-        this._currYAxisTypeTimePatterns = this.yAxes().map(function(axe) { return axe.axisTypeTimePattern(); }).toString();
+        if (this.backwardsCompatible()) {
+            this._currXAxisTypes = this.xAxisType();
+            this._currYAxisTypes = this.yAxisType();
+            this._currXAxisTypeTimePatterns = this.xAxisTypeTimePattern();
+            this._currYAxisTypeTimePatterns = this.yAxisTypeTimePattern();
+
+        } else {
+            this._currXAxisTypes = this.xAxes().map(function(axe) { return axe.axisType(); }).toString();
+            this._currYAxisTypes = this.yAxes().map(function(axe) { return axe.axisType(); }).toString();
+            this._currXAxisTypeTimePatterns = this.xAxes().map(function(axe) { return axe.axisTypeTimePattern(); }).toString();
+            this._currYAxisTypeTimePatterns = this.yAxes().map(function(axe) { return axe.axisTypeTimePattern(); }).toString();
+        }
 
         if (this._dataUpdated > this._prevDataUpdated || this._prevYAxisType !== this._currYAxisTypes || 
             this._prevXAxisType !== this._currXAxisTypes || this._prevXAxisTypeTimePattern !== this._currXAxisTypeTimePatterns || 
@@ -377,6 +549,7 @@
         this._prevYAxisTypes = this._currYAxisTypes;
         this._prevXAxisTypeTimePatterns = this._currXAxisTypeTimePatterns;
         this._prevYAxisTypeTimePatterns = this._currXAxisTypeTimePatterns;
+    
 
         if (this.paletteGrouping) {
             this._prevPaletteGrouping =  this.paletteGrouping();
@@ -420,7 +593,7 @@
         return this._chart;
     };
 
-    CommonSerial.prototype.buildGraphObj = function(gType, i) {
+    CommonSerial.prototype.buildGraphObj = function(gType,i) {
         var context = this;
         var gObj = {};
 
@@ -433,6 +606,7 @@
         }
 
         gObj.balloonFunction = function(d) {
+            //var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
             if (d.graph.type === "line") {
                 return d.category + ", " + context.columns()[d.graph.index + 1]  + ": " + context.data()[d.index][d.graph.index + 1];
             } else {
@@ -449,8 +623,8 @@
         gObj.title = "";
         var fieldArr = ["value","open","close","high","low"];
         fieldArr.forEach(function(field){
-            if (typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
-                gObj[field + "Field"] = context["_" + field + "Field"][i];
+            if(typeof(context["_" + field + "Field"]) !== "undefined" && typeof(context["_" + field + "Field"][i]) !== "undefined"){
+                gObj[field+"Field"] = context["_" + field + "Field"][i];
             }
         });
 

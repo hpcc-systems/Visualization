@@ -57,6 +57,24 @@
         return this;
     };
 
+    MegaChart.prototype.fields = function (_) {
+        if (!arguments.length) return this._chart.fields();
+        this._chart.fields(_);
+        return this;
+    };
+
+    MegaChart.prototype.columns = function (_) {
+        if (!arguments.length) return this._chart.columns();
+        this._chart.columns(_);
+        return this;
+    };
+
+    MegaChart.prototype.data = function (_) {
+        if (!arguments.length) return this._chart.data();
+        this._chart.data(_);
+        return this;
+    };
+
     MegaChart.prototype.enter = function (domNode, element) {
         Border.prototype.enter.apply(this, arguments);
         var context = this;
@@ -94,7 +112,7 @@
     MegaChart.prototype.update = function (domNode, element) {
 
         this._chart
-                .columns(this.columns())
+                .fields(this.fields())
                 .data(this.data());
 
         if(this._chart.chartType() !== this.chartType()){

@@ -152,13 +152,15 @@
 
         serializeToObject: function (widget, filter, includeData) {
             var retVal = {
-                __version: 3,
                 __class: widget.classID(),
-                __properties: {}
             };
             if (widget._id.indexOf("_w") !== 0) {
                 retVal.__id = widget._id;
             }
+            if (widget.version) {
+                retVal.__version = widget.version();
+            }
+            retVal.__properties = {};
 
             var context = this;
             propertyWalker(widget, filter, function (widget, item) {

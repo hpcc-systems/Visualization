@@ -39,7 +39,8 @@
     MegaChart.prototype._anyChartTypes = MultiChart.prototype._anyChartTypes;
     MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
 
-    MegaChart.prototype.publishProxy("valueAxisTitle","_valueTitle","text");
+    MegaChart.prototype.publishReset();
+    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
     
     MegaChart.prototype.publish("legendPosition","right","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
@@ -47,10 +48,11 @@
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
     
-    MegaChart.prototype.publishProxy("chart", "_chart", "chart");
-    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
-    MegaChart.prototype.publishProxy("toolbarWidgets", "_toolbar", "widgets");    
+    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
+    MegaChart.prototype.publishProxy("chart", "_chart", "chart");
+    MegaChart.prototype.publishProxy("toolbarWidgets", "_toolbar", "widgets");
+
     MegaChart.prototype.chartTypeProperties = function (_) {
         if (!arguments.length) return this._chart.chartTypeProperties();
         this._chart.chartTypeProperties(_);

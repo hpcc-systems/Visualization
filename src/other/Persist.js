@@ -88,7 +88,7 @@
 
             var propObj = {};
             widgetPropertyWalker(widget, null, function (widget, item) {
-                if (widget[item.id + "_modified"]() || widget.publishedProperties(item.id).origDefaultValue !== widget.publishedProperties(item.id).defaultValue) {
+                if (widget[item.id + "_modified"]() || widget.publishedProperty(item.id).origDefaultValue !== widget.publishedProperty(item.id).defaultValue) {
                     if (_isFilterMatch(item.id, filter)) {
                         var classParts = widget._class.trim().split(" ");
                         for (var i in classParts) {
@@ -120,7 +120,7 @@
         },
         removeTheme: function (widget,callback) {
             widgetPropertyWalker(widget, null, function (widget, item) {
-                widget.publishedProperties(item.id).defaultValue = widget.publishedProperties(item.id).origDefaultValue;
+                widget.publishedProperty(item.id).defaultValue = widget.publishedProperty(item.id).origDefaultValue;
             });
 
             if (typeof (callback) === "function") {

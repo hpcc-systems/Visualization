@@ -18,8 +18,6 @@
             this._allCharts[item.display] = newItem;
             this._allCharts[item.widgetClass] = newItem;
         }, this);
-        //  Backward compatability until we roll our own BAR  ---
-        this._allCharts["BAR"] = this._allCharts["COLUMN"];
     }
     MultiChart.prototype = Object.create(SVGWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;

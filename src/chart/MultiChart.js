@@ -18,8 +18,6 @@
             this._allCharts[item.display] = newItem;
             this._allCharts[item.widgetClass] = newItem;
         }, this);
-        //  Backward compatability until we roll our own BAR  ---
-        this._allCharts["BAR"] = this._allCharts["COLUMN"];
     }
     MultiChart.prototype = Object.create(SVGWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -73,8 +71,17 @@
     ].map(function(item) { item.family = "any"; return item;});
     MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 
+    MultiChart.prototype.publishReset();
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:["Basic"]});
+
+    MultiChart.prototype.fields = function (_) {
+        var retVal = SVGWidget.prototype.fields.apply(this, arguments);
+        if (arguments.length && this.chart()) {
+            this.chart().fields(_);
+        }
+        return retVal;
+    };
 
     MultiChart.prototype.columns = function (_) {
         var retVal = SVGWidget.prototype.columns.apply(this, arguments);
@@ -148,7 +155,7 @@
             if (newContent !== oldContent) {
                 var size = context.size();
                 newContent
-                    .columns(context.columns())
+                    .fields(context.fields())
                     .data(context.data())
                     .size(size)
                 ;

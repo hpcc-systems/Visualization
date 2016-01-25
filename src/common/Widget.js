@@ -438,7 +438,7 @@
 
         //  ASync Render Contained Widgets  ---
         var widgets = [];
-        this.publishedProperties().forEach(function (meta) {
+        this.publishedProperties(true).forEach(function (meta) {
             if (!meta.ext || meta.ext.render !== false) {
                 switch (meta.type) {
                     case "widget":

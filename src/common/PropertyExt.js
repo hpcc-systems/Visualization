@@ -7,7 +7,16 @@
     }
 }(this, function (d3) {
     var __meta_ = "__meta_";
+    var __private_ = "__private_";
     var __prop_ = "__prop_";
+
+    function isMeta(key) {
+        return key.indexOf(__meta_) === 0;
+    }
+
+    function isPrivate(obj, key) {
+        return obj[__private_ + key];
+    }
 
     function Meta(id, defaultValue, type, description, set, ext) {
         this.id = id;
@@ -116,12 +125,13 @@
         }
     }
 
-    function MetaProxy(id, proxy, method, defaultValue) {
+    function MetaProxy(id, proxy, method, defaultValue, ext) {
         this.id = id;
         this.type = "proxy";
         this.proxy = proxy;
         this.method = method;
         this.defaultValue = defaultValue;
+        this.ext = ext || {};
     }
 
     var propExtID = 0;
@@ -129,7 +139,7 @@
         this._id = "_pe" + (++propExtID);
         this._watchArr = [];
 
-        this.publishedProperties().forEach(function (meta) {
+        this.publishedProperties(true).forEach(function (meta) {
             switch (meta.type) {
                 case "array":
                 case "widgetArray":
@@ -143,10 +153,10 @@
     PropertyExt.prototype._class = "common_PropertyExt";
 
     // Publish Properties  ---
-    PropertyExt.prototype.publishedProperties = function () {
+    PropertyExt.prototype.publishedProperties = function (includePrivate) {
         var retVal = [];
         for (var key in this) {
-            if (key.indexOf(__meta_) === 0) {
+            if (isMeta(key) && (includePrivate || !isPrivate(this, key))) {
                 retVal.push(this[key]);
             }
         }
@@ -155,6 +165,20 @@
 
     PropertyExt.prototype.publishedProperty = function (id) {
         return this[__meta_ + id];
+    };
+
+    PropertyExt.prototype.publishReset = function (privateArr, exceptionsArr) {
+        privateArr = (privateArr || []).map(function (id) { return __meta_ + id; });
+        exceptionsArr = (exceptionsArr || []).map(function (id) { return __meta_ + id; });
+        for (var key in this) {
+            if (isMeta(key)) {
+                var isPrivate = !privateArr.length || (privateArr.length && privateArr.indexOf(key) >= 0);
+                var isException = exceptionsArr.indexOf(key) >= 0;
+                if (isPrivate && !isException) {
+                    this[__private_ + key] = true;
+                }
+            }
+        }
     };
 
     PropertyExt.prototype.publish = function (id, defaultValue, type, description, set, ext) {

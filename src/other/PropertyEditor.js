@@ -16,10 +16,9 @@
         return false;
     }
 
-    function PropertyEditor(parent, parentWidget) {
+    function PropertyEditor() {
         HTMLWidget.call(this);
-        this._parent = parent || null;
-        this._parentWidget = parentWidget || null;
+        this._parentPropertyEditor = null;
 
         this._tag = "div";
         this._show_settings = false;
@@ -28,7 +27,7 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
-    PropertyEditor.prototype.publish("showColumns", false, "boolean", "If true, widget.columns() will display as if it was a publish parameter.",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.",null,{tags:["Basic"]});
     PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
     
     PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type",["none","A-Z","Z-A","type"],{tags:["Basic"],icons:["fa-sort","fa-sort-alpha-asc","fa-sort-alpha-desc","fa-sort-amount-asc"]});
@@ -41,6 +40,12 @@
     PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)",null, {});
 
     PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
+
+    PropertyEditor.prototype.parentPropertyEditor = function (_) {
+        if (!arguments.length) return this._parentPropertyEditor;
+        this._parentPropertyEditor = _;
+        return this;
+    };
 
     PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
     PropertyEditor.prototype.widget = function (_) {
@@ -178,7 +183,7 @@
                 ;
             })
         ;
-        if (this._parent === null) {
+        if (this.parentPropertyEditor() === null) {
             var sortIcon = th.append("i")
                 .attr("class", "fa " + context.__meta_sorting.ext.icons[context.__meta_sorting.set.indexOf(context.sorting())])
                 .on("click", function () {
@@ -299,14 +304,11 @@
     PropertyEditor.prototype.renderInputs = function (element, d) {
         var context = this;
         var discArr = [];
-        var showColumns = !this.show_settings() && this.showColumns();
+        var showFields = !this.show_settings() && this.showFields();
         if (d) {
-            discArr = this.filterInputs(d).filter(function (prop) { return prop.id !== "fields" ? true : showColumns; });
+            discArr = this.filterInputs(d).filter(function (prop) { return prop.id !== "fields" ? true : showFields; });
             if (!this.show_settings() && this.showData() && d.data) {
                 discArr.push({ id: "data", type: "array" });
-            }
-            if (showColumns && d.columns) {
-                discArr.push({ id: "columns", type: "array" });
             }
             if (this.hideNonWidgets()) {
                 discArr = discArr.filter(function (n) {
@@ -341,7 +343,7 @@
         ;
         rows.each(function (param) {
             var tr = d3.select(this);
-            tr.classed("disabled", d[param.id + "_disabled"]());
+            tr.classed("disabled", d[param.id + "_disabled"] && d[param.id + "_disabled"]());
             if (hasProperties(param.type)) {
                 context.updateWidgetRow(d, tr.select("td"), param);
             } else {
@@ -371,14 +373,15 @@
             .each(function (w) {
                 d3.select(this)
                     .attr("data-widgetid", w.id())
-                    .property("data-propEditor", new PropertyEditor(context, widget).label(param.id).target(this))
+                    .property("data-propEditor", new PropertyEditor().label(param.id).target(this))
                 ;
             })
         ;
         widgetCell
             .each(function (w) {
                 d3.select(this).property("data-propEditor")
-                    .showColumns(context.showColumns())
+                    .parentPropertyEditor(context)
+                    .showFields(context.showFields())
                     .showData(context.showData())
                     .sorting(context.sorting())
                     .filterTags(context.filterTags())
@@ -415,11 +418,14 @@
             }
             
             if (widget.render) {
-                widget.render();
+                var tmpPE = propEditor;
+                widget.render(function (w) {
+                    tmpPE.render();
+                });
                 propEditor = null;
             } else {
-                propEditor = propEditor._parent;
-                widget = propEditor._parentWidget;
+                propEditor = propEditor.parentPropertyEditor();
+                widget = propEditor.widget();
             }
         }
     };
@@ -489,7 +495,7 @@
     PropertyEditor.prototype.updateInputs = function (widget, param) {
         var element = d3.selectAll("#" + this.id() + "_" + param.id + ", #" + this.id() + "_" + param.id + "_2");
         var val = widget ? widget[param.id]() : "";
-        element.property("disabled", widget[param.id + "_disabled"]());
+        element.property("disabled", widget[param.id + "_disabled"] && widget[param.id + "_disabled"]());
         switch (param.type) {
             case "array":
             case "object":

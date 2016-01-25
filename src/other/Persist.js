@@ -88,7 +88,7 @@
 
             var propObj = {};
             widgetPropertyWalker(widget, null, function (widget, item) {
-                if (widget[item.id + "_modified"]() || widget.publishedProperties(item.id).origDefaultValue !== widget.publishedProperties(item.id).defaultValue) {
+                if (widget[item.id + "_modified"]() || widget.publishedProperty(item.id).origDefaultValue !== widget.publishedProperty(item.id).defaultValue) {
                     if (_isFilterMatch(item.id, filter)) {
                         var classParts = widget._class.trim().split(" ");
                         for (var i in classParts) {
@@ -120,7 +120,7 @@
         },
         removeTheme: function (widget,callback) {
             widgetPropertyWalker(widget, null, function (widget, item) {
-                widget.publishedProperties(item.id).defaultValue = widget.publishedProperties(item.id).origDefaultValue;
+                widget.publishedProperty(item.id).defaultValue = widget.publishedProperty(item.id).origDefaultValue;
             });
 
             if (typeof (callback) === "function") {
@@ -152,13 +152,15 @@
 
         serializeToObject: function (widget, filter, includeData) {
             var retVal = {
-                __version: 3,
                 __class: widget.classID(),
-                __properties: {}
             };
             if (widget._id.indexOf("_w") !== 0) {
                 retVal.__id = widget._id;
             }
+            if (widget.version) {
+                retVal.__version = widget.version();
+            }
+            retVal.__properties = {};
 
             var context = this;
             propertyWalker(widget, filter, function (widget, item) {
@@ -190,8 +192,12 @@
                     }, this);
                 }
             }
+            if (widget.fields) {
+                if (!retVal.__data) retVal.__data = {};
+                retVal.__data.fields = widget.fields();
+            }
             if (includeData && widget.data) {
-                retVal.__data = {};
+                if (!retVal.__data) retVal.__data = {};
                 retVal.__data.data = widget.data();
             }
             return retVal;

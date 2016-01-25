@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../other/Toolbar", "../form/Select"], factory);
+        define(["../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../other/Toolbar", "../form/Select", "../form/Button"], factory);
     } else {
         root.composite_MegaChart = factory(
                 root.layout_Border,
@@ -13,7 +13,7 @@
             )
         ;
     }
-}(this, function (Border, MultiChart, Text, Legend, Toolbar, Select) {
+}(this, function (Border, MultiChart, Text, Legend, Toolbar, Select, Button) {
     function MegaChart() {
         Border.call(this);
 
@@ -47,12 +47,13 @@
     
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
+    MegaChart.prototype.publish("showCSV",true,"boolean","Show/Hide CSV button", null, {tags:["Basic"]});
     
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("chart", "_chart", "chart");
     MegaChart.prototype.publishProxy("toolbarWidgets", "_toolbar", "widgets");
-
+    
     MegaChart.prototype.chartTypeProperties = function (_) {
         if (!arguments.length) return this._chart.chartTypeProperties();
         this._chart.chartTypeProperties(_);
@@ -94,7 +95,9 @@
         if(this.domainAxisTitle()){
             this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
         }
+        
         if(this.showToolbar()){
+            var twArr = [];
             this.topShrinkWrap(false).topPercentage(0).topSize(30);
             var chartTypeSelect = new Select()
                 .selectOptions(this._allChartTypes.map(function(a){return [a.id,a.display];}))
@@ -103,7 +106,24 @@
             chartTypeSelect.change = function(a){
                 context.chartType(a.value()).render();
             };
-            this.toolbarWidgets([chartTypeSelect]);
+            
+            chartTypeSelect.change = function(a){
+                context.chartType(a.value()).render();
+            };
+            
+            var csvButton = new Button().value("CSV");
+            csvButton.click = function(a){
+                require(["src/common/Utility"],function(Util){
+                    Util.downloadData("CSV",[context._chart.columns()].concat(context._chart.data()).join("\r\n"));
+                });
+            };
+            if(this.showCSV()){
+                twArr.push(csvButton);
+            }
+            if(this.showChartSelect()){
+                twArr.push(chartTypeSelect);
+            }
+            this.toolbarWidgets(twArr);
             this.setContent("top", this._toolbar);
         }
         if(this.legendPosition() !== "none"){

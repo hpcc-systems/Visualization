@@ -1,0 +1,26 @@
+.noFill {
+    fill: whitesmoke;
+    stroke: none;
+}
+.map_Choropleth .zoom {
+    stroke: none;
+    fill: none;
+    pointer-events: all;
+}
+.map_Choropleth path {
+    cursor: pointer;
+    fill: whitesmoke;
+    stroke: #6d6e71;
+    stroke-width: 0.125px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
+.map_Choropleth path.selected {
+    stroke: red;
+    stroke-width: 1.5px;
+}
+.map_Choropleth path.over {
+    stroke: orange;
+    stroke-width: 1.5px;
+}

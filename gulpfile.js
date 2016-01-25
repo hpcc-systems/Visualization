@@ -195,7 +195,10 @@ gulp.task("build-amd", ["build-amd-src","copy-amchart-images"], function (done) 
         "require.config(" + JSON.stringify(requireConfig) + ");",
         function (error) { if (error) throw error; }
     );
-
+    fs.writeFile(cfg.distamd + "/hpcc-bundles-def.js",
+        "(function (root, factory) { define([], factory); } (this, function () { return " + JSON.stringify(amd_bundles) + "; }));",
+        function (error) { if (error) throw error; }
+    );
     return gulp.src([
         'bower_components/font-awesome/css/font-awesome.min.css',
         'bower_components/font-awesome/fonts/fontawesome-webfont.woff',

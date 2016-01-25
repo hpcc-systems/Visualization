@@ -20,9 +20,15 @@
         root.common_Platform = factory(root.d3);
     }
 }(this, function (d3) {
+    //  Do not touch - updated by gulp bump  ---
+    var version = "1.9.0";
 
     function Platform() {
     }
+
+    Platform.prototype.version = function () {
+        return version;
+    };
 
     Platform.prototype.ieVersion = (function () {
         var ua = navigator.userAgent, tem,

@@ -19,6 +19,7 @@ const tag_version = require('gulp-tag-version');
 const jshint = require('gulp-jshint');
 const jscs = require('gulp-jscs');
 const mochaPhantomJS = require('gulp-mocha-phantomjs');
+const replace = require('gulp-replace');
 
 // Consts
 const cfg = {
@@ -210,7 +211,7 @@ gulp.task("build-all", ["build-nonamd", "build-amd"]);
 gulp.task("default", ["build-all"]);
 
 //  Bumping / tagging  ---
-gulp.task("bump", [], function () {
+gulp.task("bump-packages", [], function () {
     var args = {};
     if (argv.version) {
         args.version = argv.version;
@@ -226,6 +227,14 @@ gulp.task("bump", [], function () {
     return gulp.src(["./package.json", "./bower.json"])
         .pipe(bump(args))
         .pipe(gulp.dest("./"))
+    ;
+});
+
+gulp.task("bump", ["bump-packages"], function () {
+    const npmPackage = require('./package.json');
+    return gulp.src(["./src/common/Platform.js"])
+        .pipe(replace(/var version = "(.*?)";/, "var version = \"" + npmPackage.version + "\";"))
+        .pipe(gulp.dest("./src/common/"))
     ;
 });
 

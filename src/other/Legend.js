@@ -16,7 +16,7 @@
     Legend.prototype.constructor = Legend;
     Legend.prototype._class += " other_Legend";
 
-    Legend.prototype.publish("dataFamily", "ND", "set", "Type of data",["1D","2D","ND"],{tags:["Private"]});
+    Legend.prototype.publish("dataFamily", "ND", "set", "Type of data",["1D","2D","ND", "any"],{tags:["Private"]});
     Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows",["vertical","horizontal"],{tags:["Private"]});
     
     Legend.prototype.targetWidget = function (widget) {

@@ -124,7 +124,7 @@
                     var maxCol = Math.floor(Math.sqrt(mainVisualizations.length));
 
                     mainVisualizations.forEach(function (viz, idx) {
-                        if (viz.widget instanceof Surface) {
+                        if (viz.widget instanceof Surface || viz.widget.classID() === "composite_MegaChart") {
                             viz.widgetSurface = viz.widget;
                         } else {
                             viz.widgetSurface = new Surface()

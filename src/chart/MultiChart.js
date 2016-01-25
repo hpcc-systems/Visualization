@@ -71,6 +71,7 @@
     ].map(function(item) { item.family = "any"; return item;});
     MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 
+    MultiChart.prototype.publishReset();
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:["Basic"]});
 

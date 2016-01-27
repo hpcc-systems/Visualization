@@ -108,8 +108,9 @@
             enabled: true,
             multiple: false
         };
-        this._config.bindto = element.append("div").datum(null);
 
+        this._config.bindto = element.append("div").datum(null);
+        
         this._config.data.columns = [];
 
         this.c3Chart = c3.generate(this._config);
@@ -131,7 +132,8 @@
 
         var options = this.getChartOptions();
         var columnIDs = options.columns.map(function (row) { return row[0]; });
-        options.unload = this._prevColumnIDs.filter(function (i) { return columnIDs.indexOf(i) < 0; });
+        options.unload = options.columns;
+
         this.c3Chart.load(options);
         this._prevColumnIDs = columnIDs;
 

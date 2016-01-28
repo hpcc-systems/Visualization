@@ -211,9 +211,9 @@
     };
 
     CommonSerial.prototype.formatData = function (d) {
-        switch (this.xAxis()[0].axisType()) {
+        switch (this._xAxis.axisType()) {
             case "time":
-                return this.xAxis()[0]._parser(typeof d === "number" ? d.toString() : d);
+                return this._xAxis._parser(typeof d === "number" ? d.toString() : d);
             default:
                 return d;
         }
@@ -231,9 +231,9 @@
             }, this);
         }
 
-        switch (this.yAxis()[0].axisType()) {
+        switch (this._yAxis.axisType()) {
             case "time":
-                return this.yAxis()[0]._parser(typeof d === "number" ? d.toString() : d);
+                return this._yAxis._parser(typeof d === "number" ? d.toString() : d);
             default:
                 if (typeof d === "string") {
                     return +d;
@@ -301,6 +301,9 @@
         //this._chart.titles = [];
 
         var xAxis = this.xAxis()[0];
+        if(typeof xAxis === "undefined"){
+            xAxis = this._xAxis;
+        }
         xAxis.type("x");
 
         this._chart.categoryAxis.position =  xAxis.position() ? xAxis.position() : "bottom";
@@ -368,6 +371,9 @@
 
         for (var i = 0; i < this.yAxes().length; i++) {
             var yAxis = this.yAxis()[i];
+            if(typeof yAxis === "undefined"){
+                yAxis = this._yAxis;
+            }
             yAxis.type("y");
 
             if (!this._chart.valueAxes[i]) {

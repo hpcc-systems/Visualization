@@ -241,7 +241,7 @@ gulp.task("bump", ["bump-packages"], function () {
     ;
 });
 
-const TAG_FILES = ["./package.json", "./bower.json", "./dist", "./dist-amd"];
+const TAG_FILES = ["./package.json", "./bower.json", "./src/common/Platform.js", "./dist", "./dist-amd"];
 gulp.task("git-create-branch", function (cb) {
     var version = require("./package.json").version;
     git.checkout("b" + version, {args: "-b"}, cb);

@@ -1,14 +1,16 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../common/Utility", "../api/INDChart"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/Utility", "../api/INDChart"], factory);
     } else {
-        root.chart_MultiChart = factory(root.d3, root.common_SVGWidget, root.common_Utility, root.api_INDChart);
+        root.chart_MultiChart = factory(root.d3, root.common_HTMLWidget, root.common_Utility, root.api_INDChart);
     }
-}(this, function (d3, SVGWidget, Utility, INDChart) {
+}(this, function (d3, HTMLWidget, Utility, INDChart) {
     function MultiChart() {
-        SVGWidget.call(this);
+        HTMLWidget.call(this);
         INDChart.call(this);
+
+        this._tag = "div";
 
         this._allCharts = {};
         this._allChartTypes.forEach(function (item) {
@@ -19,7 +21,7 @@
             this._allCharts[item.widgetClass] = newItem;
         }, this);
     }
-    MultiChart.prototype = Object.create(SVGWidget.prototype);
+    MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
@@ -76,7 +78,7 @@
     MultiChart.prototype.publish("chart", null, "widget", "Chart",null,{tags:["Basic"]});
 
     MultiChart.prototype.fields = function (_) {
-        var retVal = SVGWidget.prototype.fields.apply(this, arguments);
+        var retVal = HTMLWidget.prototype.fields.apply(this, arguments);
         if (arguments.length && this.chart()) {
             this.chart().fields(_);
         }
@@ -84,7 +86,7 @@
     };
 
     MultiChart.prototype.columns = function (_) {
-        var retVal = SVGWidget.prototype.columns.apply(this, arguments);
+        var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
         if (arguments.length && this.chart()) {
             this.chart().columns(_);
         }
@@ -92,7 +94,7 @@
     };
 
     MultiChart.prototype.data = function (_) {
-        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         if (arguments.length && this.chart()) {
             this.chart().data(_);
         }
@@ -190,7 +192,7 @@
     };
 
     MultiChart.prototype.update = function (domNode, element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+        HTMLWidget.prototype.update.apply(this, arguments);
         var content = element.selectAll(".multiChart").data(this.chart() ? [this.chart()] : [], function (d) { return d._id; });
         content.enter().append("g")
             .attr("class", "multiChart")
@@ -219,7 +221,7 @@
         if (this.chart()) {
             this.chart().target(null);
         }
-        SVGWidget.prototype.exit.apply(this, arguments);
+        HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
 
@@ -228,11 +230,11 @@
             var context = this;
             var args = arguments;
             this.switchChart(function () {
-                SVGWidget.prototype.render.apply(context, args);
+                HTMLWidget.prototype.render.apply(context, args);
             });
             return this;
         }
-        return SVGWidget.prototype.render.apply(this, arguments);
+        return HTMLWidget.prototype.render.apply(this, arguments);
     };
 
     return MultiChart;

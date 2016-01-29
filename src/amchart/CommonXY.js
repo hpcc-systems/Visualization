@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "amcharts.xy", "require", "./XYAxis"], factory);
     } else {
-        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_SerialAxis);
+        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_XYAxis);
     }
 }(this, function(d3, HTMLWidget, AmCharts, require, Axis) {
     function CommonXY() {
@@ -19,17 +19,14 @@
         this._prevDataUpdated = -1;
         this._columnsUpdated = 0;
         this._prevColumnsUpdated = -1;
+        
+        this._xAxis = new Axis();
+        this._xAxis._owningWidget  = this;
 
-        if (!this.xAxis().length) {
-            this.xAxis(0);
-            this._xAxis = this.xAxis()[0];
-
-        }
-        if (!this.yAxis().length) {
-            this.yAxis(0);
-            this._yAxis = this.yAxis()[0];
-        }
+        this._yAxis = new Axis();
+        this._yAxis._owningWidget  = this;
     }
+
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
@@ -115,7 +112,6 @@
 
     CommonXY.prototype.publish("axisAlpha", 1, "number", "Axis opacity",null,{tags:["Intermediate"]}); // need to covnert to axis alpha this need to be publish proxied?
 
-
     CommonXY.prototype._origBackwardsCompatible = CommonXY.prototype.backwardsCompatible;
     CommonXY.prototype.backwardsCompatible = function(_) {
       var retVal = CommonXY.prototype._origBackwardsCompatible.apply(this, arguments);
@@ -134,43 +130,22 @@
         }
     };
 
-    // Axes
-    var xAxes = CommonXY.prototype.xAxes;
-    var yAxes = CommonXY.prototype.yAxes;
-    CommonXY.prototype.Axes = function (type, idx) {
-        var axe = type === "x" ? xAxes : yAxes;
-
-        if (idx === undefined) {
-            var context = this;
-            var axes = axe.call(this);
-            axes.forEach(function(axis) {
-                axis._owningWidget = context;
-            });
-            return axes;
-        }
-
-        var axis;
-
-        axis = axe.call(this)[idx];
-        if (axis) {
-            axis._owningWidget = this;
-            return axis;
-        }
-
-        axis = new Axis();
-        axis._owningWidget = this;
-        var currentAxes = axe.call(this);
-        currentAxes.push(axis);
-        axe.call(this, currentAxes);
-        return axis;
-    };
-
     CommonXY.prototype.xAxis = function (idx) {
-        return this.Axes("x", idx);
+        if (!this.xAxes()[idx]) {
+            var xAxis = new Axis();
+            xAxis._owningWidget = this;
+            this.xAxes()[idx] = xAxis;
+        }
+        return this.xAxes()[idx];
     };
 
     CommonXY.prototype.yAxis = function (idx) {
-        return this.Axes("y", idx);
+        if (!this.yAxes()[idx]) {
+            var yAxis = new Axis();
+            yAxis._owningWidget = this;
+            this.yAxes()[idx] = yAxis;
+        }
+        return this.yAxes()[idx];
     };
 
     CommonXY.prototype.updateChartOptions = function() {
@@ -188,7 +163,7 @@
        var vAxisCount = 0;
 
         for (var iy = 0; iy < this.yAxes().length; iy++) {
-            var yAxis = this.yAxis()[iy];
+            var yAxis = this.yAxes()[iy];
 
             this._chart.valueAxes[vAxisCount].position = yAxis.position() ? yAxis.position() : "left";
             this._chart.valueAxes[vAxisCount].axisAlpha = yAxis.axisAlpha();
@@ -213,7 +188,7 @@
         }
 
         for (var ix = 0; ix < this.xAxes().length; ix++) {
-            var xAxis = this.xAxis()[ix];
+            var xAxis = this.xAxes()[ix];
 
             this._chart.valueAxes[vAxisCount].position = xAxis.position() ? xAxis.position() : "bottom";
             this._chart.valueAxes[vAxisCount].axisAlpha = xAxis.axisAlpha();
@@ -269,7 +244,7 @@
         }
 
         if (this.showCursor()) {
-            this._chart.precision = this.xAxis(0).axisType() === "ordinal" ? 1 : undefined; // so ordinal will work with labelfunction 
+            this._chart.precision = this.xAxes()[0].axisType() === "ordinal" ? 1 : undefined; // so ordinal will work with labelfunction 
             this._chart.chartCursor.enabled = true;
             this._chart.chartCursor.valueLineEnabled = true;
             this._chart.chartCursor.valueLineBalloonEnabled = true;
@@ -310,11 +285,11 @@
         gObj.lineColorField = "linecolor";
 
         // XY Values
-        if (this.xAxis()[0].axisType() === "ordinal") {
+        if (this.xAxes()[0].axisType() === "ordinal") {
             gObj.xField = "idx";
             gObj.yField = context.columns()[i];
         }
-        if (this.xAxis()[0].axisType() === "linear") {
+        if (this.xAxes()[0].axisType() === "linear") {
             gObj.xField = context.columns()[0];
             gObj.yField = context.columns()[1];
         }
@@ -337,6 +312,13 @@
 
     CommonXY.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        
+        if (this.xAxes().length === 0) {
+            this.xAxes().push(this._xAxis);
+        }
+        if (this.yAxes().length === 0) {
+            this.yAxes().push(this._yAxis);
+        }
 
         var context = this;
         var initObj = {

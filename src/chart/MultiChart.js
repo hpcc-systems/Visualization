@@ -194,7 +194,7 @@
     MultiChart.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var content = element.selectAll(".multiChart").data(this.chart() ? [this.chart()] : [], function (d) { return d._id; });
-        content.enter().append("g")
+        content.enter().append("div")
             .attr("class", "multiChart")
             .each(function (d) {
                 d.target(this);
@@ -205,7 +205,7 @@
         content
             .each(function (d) {
                 d
-                    .size(size)
+                    .resize(size)
                     .render()
                 ;
             })

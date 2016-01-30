@@ -66,7 +66,7 @@
 
     HTMLWidget.prototype.getBBox = function (refresh, round) {
         if (refresh || this._boundingBox === null) {
-            var domNode = this._element.node().firstElementChild;   //  Needs to be first child, as element has its width/height forced onto it.
+            var domNode = this._element.node() ? this._element.node().firstElementChild : null;   //  Needs to be first child, as element has its width/height forced onto it.
             if (domNode instanceof Element) {
                 var rect = domNode.getBoundingClientRect();
                 this._boundingBox = {

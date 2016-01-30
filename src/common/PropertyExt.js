@@ -228,7 +228,16 @@
                     }
                     break;
             }
-            delete this[__prop_ + id];
+
+            switch (type) {
+                case "array":
+                case "widgetArray":
+                case "propertyArray":
+                    this[__prop_ + meta.id] = [];
+                    break;
+                default:
+                    delete this[__prop_ + id];
+            }
         };
     };
 

@@ -684,7 +684,7 @@
         for (var key in response) {
             retVal[key] = response[key].filter(function (row, idx) {
                 for (var request_key in request) {
-                    if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] !== request[request_key]) {
+                    if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] != request[request_key]) { // jshint ignore:line
                         return false;
                     }
                 }
@@ -891,7 +891,7 @@
                     if (matchedResult) {
                         retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
                             for (var key2 in changedFilter) {
-                                if (row[key2] !== changedFilter[key2] && row[key2.toLowerCase()] !== changedFilter[key2]) {
+                                if (row[key2] != changedFilter[key2] && row[key2.toLowerCase()] != changedFilter[key2]) { // jshint ignore:line
                                     return false;
                                 }
                             }

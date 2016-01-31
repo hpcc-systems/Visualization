@@ -277,14 +277,16 @@
             if (!retVal) {
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
-                    .text(item[1])
+                    .text(item[1] ? item[1] : "")
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
             }
             if (origItem) {
-                retVal.text(item[1]);
+                if (item[1]) {
+                    retVal.text(item[1]);
+                }
                 // Icon  ---
                 var icon = context.calcAnnotation(context.visualization.icon, origItem);
                 if (icon) {

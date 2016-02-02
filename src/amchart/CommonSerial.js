@@ -26,24 +26,14 @@
         this._colorObj = {};
         this._selectionObj = {};
 
-        if (!this.xAxis().length) {
-            this.xAxis(0);
-            this._xAxis = this.xAxis()[0];
+        this._xAxis = new Axis();
+        this._xAxis.owningWidget  = this;
 
-        }
-        if (!this.yAxis().length) {
-            this.yAxis(0);
-            this._yAxis = this.yAxis()[0];
-        }
-
-        if (this.y2().length) {
-            this.yAxis(1);
-            this._yAxis = this.yAxis()[0];
-        }
+        this._yAxis = new Axis();
+        this._yAxis.owningWidget  = this;
     }
 
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
-
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
 
@@ -172,48 +162,28 @@
         }
     };
 
-    var xAxes = CommonSerial.prototype.xAxes;
-    var yAxes = CommonSerial.prototype.yAxes;
-    CommonSerial.prototype.Axes = function (type, idx) {
-        var axe = type === "x" ? xAxes : yAxes;
-        if (idx === undefined) {
-            var context = this;
-            var axes = axe.call(this);
-            axes.forEach(function(axis) {
-                axis._owningWidget = context;
-            });
-            return axes;
-        }
-
-        var axis;
-
-        axis = axe.call(this)[idx];
-        if (axis) {
-            axis._owningWidget = this;
-             return axis;
-        }
-
-        axis = new Axis();
-        
-        var currentAxes = axe.call(this);
-        axis._owningWidget = this;
-        currentAxes.push(axis);
-        axe.call(this, currentAxes);
-        return axis;
-    };
-
     CommonSerial.prototype.xAxis = function (idx) {
-        return this.Axes("x", idx);
+        if (!this.xAxes()[idx]) {
+            var xAxis = new Axis();
+            xAxis._owningWidget = this;
+            this.xAxes()[idx] = xAxis;
+        }
+        return this.xAxes()[idx];
     };
 
     CommonSerial.prototype.yAxis = function (idx) {
-        return this.Axes("y", idx);
+        if (!this.yAxes()[idx]) {
+            var yAxis = new Axis();
+            yAxis._owningWidget = this;
+            this.yAxes()[idx] = yAxis;
+        }
+        return this.yAxes()[idx];
     };
 
     CommonSerial.prototype.formatData = function (d) {
-        switch (this.xAxis()[0].axisType()) {
+        switch (this.xAxes()[0].axisType()) {
             case "time":
-                return this.xAxis()[0]._parser(typeof d === "number" ? d.toString() : d);
+                return this.xAxes()[0]._parser(typeof d === "number" ? d.toString() : d);
             default:
                 return d;
         }
@@ -231,9 +201,9 @@
             }, this);
         }
 
-        switch (this.yAxis()[0].axisType()) {
+        switch (this.yAxes()[0].axisType()) {
             case "time":
-                return this.yAxis()[0]._parser(typeof d === "number" ? d.toString() : d);
+                return this.yAxes()[0]._parser(typeof d === "number" ? d.toString() : d);
             default:
                 if (typeof d === "string") {
                     return +d;
@@ -300,8 +270,9 @@
         this._chart.categoryAxis = {};
         //this._chart.titles = [];
 
-        var xAxis = this.xAxis()[0];
-        xAxis.type("x");
+        var xAxis = this.xAxes()[0];
+
+        //xAxis.type("x");
 
         this._chart.categoryAxis.position =  xAxis.position() ? xAxis.position() : "bottom";
         this._chart.categoryAxis.autoGridCount = xAxis.axisAutoGridCount();
@@ -367,8 +338,8 @@
         };
 
         for (var i = 0; i < this.yAxes().length; i++) {
-            var yAxis = this.yAxis()[i];
-            yAxis.type("y");
+            var yAxis = this.yAxes()[i];
+            //yAxis.type("y");
 
             if (!this._chart.valueAxes[i]) {
                 this._chart.valueAxes.push(new AmCharts.ValueAxis());
@@ -582,6 +553,18 @@
 
     CommonSerial.prototype.enter = function(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+
+        if (this.xAxes().length === 0) {
+            this.xAxes().push(this._xAxis);
+        }
+        if (this.yAxes().length === 0) {
+            this.yAxes().push(this._yAxis);
+        }
+        if (this.y2().length && this.yAxes().length === 1) {
+            var y2Axis = new Axis();
+            y2Axis.owningWidget  = this;
+            this.yAxes().push(y2Axis);
+        }
 
         var context = this;
         var initObj = {

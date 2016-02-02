@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../common/Utility", "css!./XYAxis"], factory);
@@ -491,10 +491,12 @@
         this.margin = this.calcMargin(domNode, element, isHorizontal);
 
         //  Update Range  ---
-        var width = this.width() - this.margin.left - this.margin.right,
-            height = this.height() - this.margin.top - this.margin.bottom,
-            maxCurrExtent = isHorizontal ? width : height,
-            maxOtherExtent = isHorizontal ? height : width;
+        var width = this.width() - this.margin.left - this.margin.right;
+        if (width < 0) width = 0;
+        var height = this.height() - this.margin.top - this.margin.bottom;
+        if (height < 0) height = 0;
+        var maxCurrExtent = isHorizontal ? width : height;
+        var maxOtherExtent = isHorizontal ? height : width;
 
         //  Render  ---
         this.svg.transition()

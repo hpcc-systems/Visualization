@@ -68,8 +68,11 @@
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     ;
-                    col.yAxis(0).axisType("linear");
-                    col.xAxis(0).axisType("ordinal");
+                    col.backwardsCompatible(false);
+                    col.yAxis(0)
+                        .axisType("linear")
+                        .axisType("ordinal");
+                    col.xAxis(0)
                     callback(col);
                 });
             },
@@ -82,10 +85,8 @@
                     ;
                     col.xAxis(0).axisType("ordinal");
                     col.yAxis(0).axisType("linear");
-                    col.yAxis(1)
-                        .axisType("linear")
-                        .position("right")
-                    ;
+                    col.yAxis(1).axisType("linear");
+                    col.yAxis(1).position("right")  ; 
                     callback(col);
                 });
             },

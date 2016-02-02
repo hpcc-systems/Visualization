@@ -20,11 +20,15 @@
     Cell.prototype.publish("gridColSpan", 1, "number", "Grid Column Span",null,{tags:["Private"]});
     Cell.prototype.publish("handleSize", 6, "number", "Grid Row Position",null,{tags:["Private"]});
     
-    Cell.prototype.publish("indicateTheseIds", [], "array", "Array of DOM Ids to display update-indicators over.",null,{tags:["Private"]});
-    
     Cell.prototype.publish("indicatorGlowColor", "#EEEE11", "html-color", "Glow color of update-indicator",null,{tags:["Basic"]});
     Cell.prototype.publish("indicatorBorderColor", "#F48A00", "html-color", "Border color of update-indicator",null,{tags:["Basic"]});
     Cell.prototype.publish("indicatorOpacity", 0.8, "number", "Opacity of update-indicator",null,{tags:["Basic"]});
+
+    Cell.prototype.indicateTheseIds = function (_) {
+        if (!arguments.length) return this._indicateTheseIds ? this._indicateTheseIds : [];
+        this._indicateTheseIds = _;
+        return this;
+    };
 
     Cell.prototype.enter = function (domNode, element) {
         Surface.prototype.enter.apply(this, arguments);

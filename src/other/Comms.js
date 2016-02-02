@@ -34,6 +34,7 @@
         this._url = _;
         var parser = document.createElement("a");
         parser.href = this._url;
+        parser.href = parser.href; //This fixes an IE9/IE10 DOM value issue
 
         var params = {};
         if (parser.search.length) {

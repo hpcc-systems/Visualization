@@ -874,7 +874,7 @@
             return new Promise(function (resolve, reject) {
                 var changedFilter = {};
                 for (var key in request) {
-                    if (request[key] && request[key + "_changed"] !== undefined) {
+                    if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
                         changedFilter[key] = request[key];
                     }
                 }

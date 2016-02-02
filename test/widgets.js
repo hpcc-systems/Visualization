@@ -93,7 +93,7 @@
             { path: "src/amchart/Pyramid" },
             { path: "src/amchart/Scatter" }
         ];
-        allWidgets.filter(function (widget) { return !someWidgets.length || someWidgets.indexOf(widget.path) >= 0 }).forEach(function (widget) {
+        allWidgets.filter(function (widget) { return !someWidgets.length || widget.path.indexOf(someWidgets) >= 0 }).forEach(function (widget) {
             var path = widget.path;
             describe(path, function () {
                 var pathParts = path.split("/");
@@ -178,7 +178,7 @@
         this.timeout(10000);
         d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
             var widgetPath = widget.key;
-            if (!someWidgets.length || someWidgets.indexOf(widgetPath) >= 0) {
+            if (!someWidgets.length || widgetPath.indexOf(someWidgets) >= 0) {
                 describe(widgetPath, function () {
                     d3.map(widget.value).entries().forEach(function (sample) {
                         var noSurfaceHTML = null;

@@ -27,7 +27,7 @@
     Paginator.prototype.publish("bottom", 20, "number", "Pagination bottom offset", null, { tags: ["Private"] });
     Paginator.prototype.publish("right", 20, "number", "Pagination right offset", null, { tags: ["Private"] });
 
-    Paginator.prototype.postUpdate = function (domeNode, element) { };
+    Paginator.prototype.postUpdate = function (domNode, element) { };
 
     Paginator.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);

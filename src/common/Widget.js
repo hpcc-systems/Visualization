@@ -481,10 +481,10 @@
     };
 
     Widget.prototype.enter = function (domNode, element) { };
-    Widget.prototype.preUpdate = function (domeNode, element) { };
-    Widget.prototype.update = function (domeNode, element) { };
-    Widget.prototype.postUpdate = function (domeNode, element) { };
-    Widget.prototype.exit = function (domeNode, element) { };
+    Widget.prototype.preUpdate = function (domNode, element) { };
+    Widget.prototype.update = function (domNode, element) { };
+    Widget.prototype.postUpdate = function (domNode, element) { };
+    Widget.prototype.exit = function (domNode, element) { };
 
     return Widget;
 }));

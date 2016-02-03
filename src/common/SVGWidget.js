@@ -120,15 +120,15 @@
         return this;
     };
 
-    SVGWidget.prototype.enter = function (domeNode, element) {
+    SVGWidget.prototype.enter = function (domNode, element) {
         Widget.prototype.enter.apply(this, arguments);
     };
 
-    SVGWidget.prototype.update = function (domeNode, element) {
+    SVGWidget.prototype.update = function (domNode, element) {
         Widget.prototype.update.apply(this, arguments);
     };
 
-    SVGWidget.prototype.postUpdate = function (domeNode, element) {
+    SVGWidget.prototype.postUpdate = function (domNode, element) {
         Widget.prototype.postUpdate.apply(this, arguments);
         if (this._drawStartPos === "origin" && this._target instanceof SVGElement) {
             this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._scale + ")");
@@ -137,7 +137,7 @@
         }
     };
 
-    SVGWidget.prototype.exit = function (domeNode, element) {
+    SVGWidget.prototype.exit = function (domNode, element) {
         if (this._parentRelativeDiv) {
             this._parentOverlay.remove();
             this._parentElement.remove();

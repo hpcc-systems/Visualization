@@ -21,7 +21,7 @@
     HTML.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
     HTML.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
 
-    HTML.prototype.enter = function(domeNode, element) {
+    HTML.prototype.enter = function(domNode, element) {
         Grid.prototype.enter.apply(this, arguments);
         this.popupContainer = element.append("div")
             .classed("popup-container", true)

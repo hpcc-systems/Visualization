@@ -108,8 +108,9 @@
             enabled: true,
             multiple: false
         };
-        this._config.bindto = element.append("div").datum(null);
 
+        this._config.bindto = element.append("div").datum(null);
+        
         this._config.data.columns = [];
 
         this.c3Chart = c3.generate(this._config);
@@ -117,12 +118,14 @@
 
     Common.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+        
+        var context = this;
 
-        if (this.showLegend()) {
-            this.c3Chart.legend.show();
-        } else {
-            this.c3Chart.legend.hide();
-        }
+        // if (this.showLegend()) {
+        //     this.c3Chart.legend.show();
+        // } else {
+        //     this.c3Chart.legend.hide();
+        // }
 
         this.c3Chart.resize({
             width: this.width(),
@@ -131,28 +134,50 @@
 
         var options = this.getChartOptions();
         var columnIDs = options.columns.map(function (row) { return row[0]; });
-        options.unload = this._prevColumnIDs.filter(function (i) { return columnIDs.indexOf(i) < 0; });
-        this.c3Chart.load(options);
-        this._prevColumnIDs = columnIDs;
+        //options.unload = this._prevColumnIDs.filter(function (i) { console.log(i); return columnIDs.indexOf(i) < 0; });
+        var unload = this._prevColumnIDs.filter(function (i) { console.log(i); return columnIDs.indexOf(i) < 0; });
 
-        element.selectAll(".c3 text")
-                .style({
-                    "stroke": this.fontColor(),
-                    "fill": this.fontColor(),
-                    "font-size": this.fontSize()+"px",
-                    "font-family": this.fontFamily(),
-                })
-                .attr("font-family",this.fontFamily());
+        //options.unload = options.columns;
+        //options.unload = true;
+        //context.c3Chart.load({unload:true});
 
-        element.selectAll(".c3 .c3-legend-item text")
-                .style({
-                    "fill": this.legendFontColor(),
-                    "font-size": this.legendFontSize()+"px",
-                    "font-family": this.legendFontFamily(),
-                    "font-weight": this.legendFontBold() ? "bold" : "normal",
-                    "font-style": this.legendFontItalic() ? "italic" : "normal"
-                })
-                .attr("font-family",this.legendFontFamily());
+        context._prevColumnIDs = columnIDs;
+context.c3Chart.load(options);
+        //setTimeout(function() {
+        //context.c3Chart.internal.data = {}
+
+        setTimeout(function() {
+            context.c3Chart.unload(unload);
+        })
+        
+        setTimeout(function() {
+            context.c3Chart.load(options);
+        })
+        
+
+
+        //context.c3Chart.unload(options.columns);
+            
+
+            // element.selectAll(".c3 text")
+            //         .style({
+            //             "stroke": this.fontColor(),
+            //             "fill": this.fontColor(),
+            //             "font-size": this.fontSize()+"px",
+            //             "font-family": this.fontFamily(),
+            //         })
+            //         .attr("font-family",this.fontFamily());
+
+            // element.selectAll(".c3 .c3-legend-item text")
+            //         .style({
+            //             "fill": this.legendFontColor(),
+            //             "font-size": this.legendFontSize()+"px",
+            //             "font-family": this.legendFontFamily(),
+            //             "font-weight": this.legendFontBold() ? "bold" : "normal",
+            //             "font-style": this.legendFontItalic() ? "italic" : "normal"
+            //         })
+            //         .attr("font-family",this.legendFontFamily());
+        //}, 1000);
     };
 
     Common.prototype.getChartOptions = function () {

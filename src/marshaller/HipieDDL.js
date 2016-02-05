@@ -611,11 +611,14 @@
                     });
                     break;
                 case "TABLE":
-                    this.loadWidget("src/other/Table", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
                             .columns(context.source.getColumns())
-                            .pagination(true)
+                            .legendPosition("none")
+                            .showChartSelect(false)
+                            .chartType("TABLE")
+                            .chartTypeProperties({ pagination: true })
                         ;
                     });
                     break;
@@ -772,13 +775,13 @@
         this.widget = widget;
         this.events.setWidget(widget);
         if (!skipProperties) {
-            switch (widget.classID()) {
-                case "chart_MultiChart":
-                case "composite_MegaChart":
-                    widget.chartTypeProperties(this.properties);
-                    break;
-                default:
-                    for (var key in this.properties) {
+            for (var key in this.properties) {
+                switch (widget.classID()) {
+                    case "chart_MultiChart":
+                    case "composite_MegaChart":
+                        widget.chartTypeProperties()[key] = this.properties;
+                        break;
+                    default:
                         if (this.widget[key]) {
                             try {
                                 this.widget[key](this.properties[key]);
@@ -786,7 +789,7 @@
                                 console.log("Invalid Property:" + this.id + ".properties." + key);
                             }
                         }
-                    }
+                }
             }
         }
         return this.widget;
@@ -796,8 +799,8 @@
         visitor.visit(this);
     };
 
-    Visualization.prototype.update = function () {
-        var params = this.source.getOutput().getParams();
+    Visualization.prototype.update = function (msg) {
+        var params = msg || this.source.getOutput().getParams();
         if (exists("widgetSurface.title", this)) {
             this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
             this.widgetSurface.render();
@@ -828,7 +831,7 @@
                 updatedViz.clear();
             });
         }
-        this.update();
+        this.update("...loading...");
     };
 
     Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {

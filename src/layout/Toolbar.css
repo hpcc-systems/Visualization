@@ -1,0 +1,21 @@
+.layout_Toolbar {
+    height:100%;
+    background-color:#dddddd;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.layout_Toolbar .toolbar-title {
+    height: 100%;
+    font-weight:bold;
+}
+.layout_Toolbar .toolbar-child {
+    float:right;
+    margin:4px;
+}
+.layout_Toolbar .toolbar-title span {
+    position:relative;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

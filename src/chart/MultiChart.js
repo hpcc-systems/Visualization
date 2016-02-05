@@ -20,6 +20,7 @@
             this._allCharts[item.display] = newItem;
             this._allCharts[item.widgetClass] = newItem;
         }, this);
+        this._chartTypeProperties = {};
     }
     MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -161,20 +162,20 @@
                     .data(context.data())
                     .size(size)
                 ;
-                if (context._chartTypeProperties) {
-                    for (var key in context._chartTypeProperties) {
-                        if (newContent[key]) {
-                            try {
-                                newContent[key](context._chartTypeProperties[key]);
-                            } catch (e) {
-                                console.log("Exception Setting Property:  " + key);
-                            }
-                        } else {
-                            console.log("Unknown Property:  " + key);
+
+                for (var key in context._chartTypeProperties) {
+                    if (newContent[key]) {
+                        try {
+                            newContent[key](context._chartTypeProperties[key]);
+                        } catch (e) {
+                            console.log("Exception Setting Property:  " + key);
                         }
+                    } else {
+                        console.log("Unknown Property:  " + key);
                     }
-                    delete context._chartTypeProperties;
                 }
+                context._chartTypeProperties = {};
+
                 context.chart(newContent);
                 if (oldContent) {
                     oldContent

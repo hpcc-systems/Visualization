@@ -27,6 +27,7 @@
     PropertyEditor.prototype.constructor = PropertyEditor;
     PropertyEditor.prototype._class += " other_PropertyEditor";
 
+    PropertyEditor.prototype.publish("showColumns", false, "boolean", "Show Columns",null,{tags:["Intermediate"]});
     PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.",null,{tags:["Basic"]});
     PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
     
@@ -305,9 +306,19 @@
         var context = this;
         var discArr = [];
         var showFields = !this.show_settings() && this.showFields();
+        var showColumns = !this.show_settings() && this.showColumns();
+        var showData = !this.show_settings() && this.showColumns();
+
         if (d) {
-            discArr = this.filterInputs(d).filter(function (prop) { return prop.id !== "fields" ? true : showFields; });
-            if (!this.show_settings() && this.showData() && d.data) {
+            discArr = this.filterInputs(d).filter(function (prop) { 
+                return prop.id !== "fields" ? true : showFields; 
+            });
+
+            if (showColumns && d.columns) {
+                discArr.push({ id: "columns", type: "array" });
+            }
+
+            if (showData && d.data) {
                 discArr.push({ id: "data", type: "array" });
             }
             if (this.hideNonWidgets()) {
@@ -381,6 +392,7 @@
             .each(function (w) {
                 d3.select(this).property("data-propEditor")
                     .parentPropertyEditor(context)
+                    .showColumns(context.showColumns())
                     .showFields(context.showFields())
                     .showData(context.showData())
                     .sorting(context.sorting())

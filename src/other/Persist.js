@@ -192,10 +192,6 @@
                     }, this);
                 }
             }
-            if (widget.fields) {
-                if (!retVal.__data) retVal.__data = {};
-                retVal.__data.fields = widget.fields();
-            }
             if (includeData && widget.data) {
                 if (!retVal.__data) retVal.__data = {};
                 retVal.__data.data = widget.data();

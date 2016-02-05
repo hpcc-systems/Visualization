@@ -124,7 +124,6 @@
         }
 
         this._chart
-                .fields(this.fields())
                 .data(this.data());
 
         if(this._chart.chartType() !== this.chartType()){

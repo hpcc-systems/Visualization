@@ -132,6 +132,64 @@
                     .data(DataFactory.TwoD.subjects.data)
                     );
                 });
+            },
+            changingData: function (callback) {
+                require(["test/DataFactory", "src/c3chart/Pie"], function (DataFactory, Pie) {
+                    var pie = new Pie()
+                        .columns(["Subject", "Year 1"])
+                        .data([
+                            ["Geog", 75],
+                            ["English", 45],
+                            ["Math", 98],
+                            ["Science", 66]
+                        ])
+                    ;
+                    callback(pie);
+                    var timeLapse = 100;
+                    setTimeout(function () {
+                        pie
+                            .columns(["Subject", "Year 1"])
+                            .data([
+                                ["Geog2", 75],
+                                ["English", 45],
+                                ["Math", 98],
+                                [, 66]
+                            ])
+                            .render()
+                        ;
+                        setTimeout(function () {
+                            pie
+                                .columns(["Subject", "Year 1"])
+                                .data([
+                                    ["Geog3", 75],
+                                    ["English", 45],
+                                    ["Math", 98],
+                                    ["Science", 66]
+                                ])
+                                .render()
+                            ;
+                            setTimeout(function () {
+                                pie
+                                    .columns(["Subject", "Year 1"])
+                                    .data([])
+                                    .render()
+                                ;
+                                setTimeout(function () {
+                                    pie
+                                        .columns(["Subject", "Year 1"])
+                                        .data([
+                                            ["Geog4", 75],
+                                            ["English2", 45],
+                                            ["Math", 98],
+                                            [, 66]
+                                        ])
+                                        .render()
+                                    ;
+                                }, timeLapse);
+                            }, timeLapse);
+                        }, timeLapse);
+                    }, timeLapse);
+                });
             }
         },
         Step: {

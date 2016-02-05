@@ -20,6 +20,7 @@
     TextArea.prototype.publish("cols", null, "number", "Columns", null, { optional: true });
     TextArea.prototype.publish("wrap", "off", "set", "Wrap", ["off", "on"]);
     TextArea.prototype.publish("minHeight", null, "number", "Minimum Height", null, { optional: true });
+    TextArea.prototype.publish("spellcheck", null, "boolean", "Input spell checking", { optional: true });
 
     TextArea.prototype.enter = function (domNode, element) {
         Input.prototype.enter.apply(this, arguments);
@@ -35,6 +36,7 @@
             .attr("rows", this.rows())
             .attr("cols", this.cols())
             .attr("wrap", this.wrap())
+            .attr("spellcheck", this.spellcheck())
             .style("height", this.calcHeight() + "px")
         ;
     };

@@ -24,6 +24,7 @@
     Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });
 
     Tabbed.prototype.clearTabs = function () {
+        this.labels([]);
         this.widgets([]);
         return this;
     };

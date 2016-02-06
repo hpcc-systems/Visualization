@@ -26,8 +26,6 @@
         this._config.data.onclick = function (d, element) {
             context.click(context.rowToObj(context.data()[d.index]), d.id, context.c3Chart.selected().length > 0);
         };
-
-        this._renderPromise = Promise.resolve();
     }
     Common.prototype = Object.create(HTMLWidget.prototype);
     Common.prototype.constructor = Common;
@@ -45,7 +43,7 @@
     Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
 
     Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:["Intermediate"]});
-    Common.prototype.publish("animationDuration", 350, "number", "Animation Duration",null,{tags:["Advanced"]});
+    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:["Advanced"]});
 
     Common.prototype.type = function (_) {
         if (!arguments.length) return this._type;
@@ -155,23 +153,6 @@
                     "font-style": this.legendFontItalic() ? "italic" : "normal"
                 })
                 .attr("font-family",this.legendFontFamily());
-    };
-
-    var timeBuffer = 400; //  C3 Tranistion default is 350, legend transition cannot be changed...  ---
-    Common.prototype.render = function (callback) {
-        var context = this;
-        this._renderPromise = this._renderPromise.then(function() {
-            return new Promise(function (resolve, reject) {
-                HTMLWidget.prototype.render.call(context, function (w) {
-                    setTimeout(function () {
-                        if (callback) {
-                            callback(w);
-                        }
-                        resolve();
-                    }, Math.max(timeBuffer, context.animationDuration()));
-                });
-            });
-        });
     };
 
     Common.prototype.getChartOptions = function () {

@@ -34,6 +34,7 @@
         this._url = _;
         var parser = document.createElement("a");
         parser.href = this._url;
+        parser.href = parser.href; //This fixes an IE9/IE10 DOM value issue
 
         var params = {};
         if (parser.search.length) {
@@ -874,7 +875,7 @@
             return new Promise(function (resolve, reject) {
                 var changedFilter = {};
                 for (var key in request) {
-                    if (request[key] && request[key + "_changed"] !== undefined) {
+                    if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
                         changedFilter[key] = request[key];
                     }
                 }

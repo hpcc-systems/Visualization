@@ -21,7 +21,7 @@
     HTML.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
     HTML.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
 
-    HTML.prototype.enter = function(domeNode, element) {
+    HTML.prototype.enter = function(domNode, element) {
         Grid.prototype.enter.apply(this, arguments);
         this.popupContainer = element.append("div")
             .classed("popup-container", true)
@@ -124,7 +124,7 @@
                     var maxCol = Math.floor(Math.sqrt(mainVisualizations.length));
 
                     mainVisualizations.forEach(function (viz, idx) {
-                        if (viz.widget instanceof Surface) {
+                        if (viz.widget instanceof Surface || viz.widget.classID() === "composite_MegaChart") {
                             viz.widgetSurface = viz.widget;
                         } else {
                             viz.widgetSurface = new Surface()

@@ -562,7 +562,6 @@
                         this.loadWidget("src/map/ChoroplethStates", function (widget) {
                             widget
                                 .id(visualization.id)
-                                .columns(context.source.getColumns())
                                 .paletteID(visualization.color)
                             ;
                         });
@@ -570,7 +569,6 @@
                         this.loadWidget("src/map/ChoroplethCounties", function (widget) {
                             widget
                                 .id(visualization.id)
-                                .columns(context.source.getColumns())
                                 .paletteID(visualization.color)
                             ;
                         });
@@ -579,7 +577,6 @@
                         this.loadWidget("src/map/Layered", function (widget) {
                             widget
                                 .id(visualization.id)
-                                .columns(context.source.getColumns())
                             ;
                         });
                     }
@@ -592,7 +589,6 @@
                     this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
                             .legendPosition("none")
                             .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
@@ -602,7 +598,6 @@
                     this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
                             .legendPosition("none")
                             //.domainAxisTitle(context.source.getXTitle())
                             //.valueAxisTitle(context.source.getYTitle())
@@ -611,11 +606,13 @@
                     });
                     break;
                 case "TABLE":
-                    this.loadWidget("src/other/Table", function (widget) {
+                    this.loadWidget("src/composite/MegaChart", function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
-                            .pagination(true)
+                            .legendPosition("none")
+                            .showChartSelect(false)
+                            .chartType("TABLE")
+                            .chartTypeProperties({ pagination: true })
                         ;
                     });
                     break;
@@ -623,7 +620,6 @@
                     this.loadWidget("src/form/Slider", function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
                         ;
                         if (visualization.range) {
                             var selectionLabel = "";
@@ -644,7 +640,6 @@
                     this.loadWidgets(["src/graph/Graph"], function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
                             .layout("ForceDirected2")
                             .applyScaleOnLayout(true)
                         ;
@@ -723,7 +718,6 @@
                     this.loadWidgets(["src/other/HeatMap"], function (widget) {
                         widget
                             .id(visualization.id)
-                            .columns(context.source.getColumns())
                             .image(context.properties.imageUrl)
                         ;
                     });
@@ -772,13 +766,13 @@
         this.widget = widget;
         this.events.setWidget(widget);
         if (!skipProperties) {
-            switch (widget.classID()) {
-                case "chart_MultiChart":
-                case "composite_MegaChart":
-                    widget.chartTypeProperties(this.properties);
-                    break;
-                default:
-                    for (var key in this.properties) {
+            for (var key in this.properties) {
+                switch (widget.classID()) {
+                    case "chart_MultiChart":
+                    case "composite_MegaChart":
+                        widget.chartTypeProperties()[key] = this.properties;
+                        break;
+                    default:
                         if (this.widget[key]) {
                             try {
                                 this.widget[key](this.properties[key]);
@@ -786,7 +780,7 @@
                                 console.log("Invalid Property:" + this.id + ".properties." + key);
                             }
                         }
-                    }
+                }
             }
         }
         return this.widget;
@@ -796,8 +790,8 @@
         visitor.visit(this);
     };
 
-    Visualization.prototype.update = function () {
-        var params = this.source.getOutput().getParams();
+    Visualization.prototype.update = function (msg) {
+        var params = msg || this.source.getOutput().getParams();
         if (exists("widgetSurface.title", this)) {
             this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
             this.widgetSurface.render();
@@ -809,6 +803,10 @@
     Visualization.prototype.notify = function () {
         if (this.source.hasData()) {
             if (this.widget) {
+                if (!this.widget.fields().length) {
+                    var columns = this.source.getColumns();
+                    this.widget.columns(columns);
+                }
                 var data = this.source.getData();
                 this.widget.data(data);
 
@@ -828,7 +826,7 @@
                 updatedViz.clear();
             });
         }
-        this.update();
+        this.update("...loading...");
     };
 
     Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {

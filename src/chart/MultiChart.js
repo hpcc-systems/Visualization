@@ -20,6 +20,7 @@
             this._allCharts[item.display] = newItem;
             this._allCharts[item.widgetClass] = newItem;
         }, this);
+        this._chartTypeProperties = {};
     }
     MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -79,7 +80,8 @@
 
     MultiChart.prototype.fields = function (_) {
         var retVal = HTMLWidget.prototype.fields.apply(this, arguments);
-        if (arguments.length && this.chart()) {
+        if (this.chart()) {
+            if (!arguments.length) return this.chart().fields();
             this.chart().fields(_);
         }
         return retVal;
@@ -87,7 +89,8 @@
 
     MultiChart.prototype.columns = function (_) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
-        if (arguments.length && this.chart()) {
+        if (this.chart()) {
+            if (!arguments.length) return this.chart().columns();
             this.chart().columns(_);
         }
         return retVal;
@@ -95,7 +98,8 @@
 
     MultiChart.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
-        if (arguments.length && this.chart()) {
+        if (this.chart()) {
+            if (!arguments.length) return this.chart().data();
             this.chart().data(_);
         }
         return retVal;
@@ -161,20 +165,20 @@
                     .data(context.data())
                     .size(size)
                 ;
-                if (context._chartTypeProperties) {
-                    for (var key in context._chartTypeProperties) {
-                        if (newContent[key]) {
-                            try {
-                                newContent[key](context._chartTypeProperties[key]);
-                            } catch (e) {
-                                console.log("Exception Setting Property:  " + key);
-                            }
-                        } else {
-                            console.log("Unknown Property:  " + key);
+
+                for (var key in context._chartTypeProperties) {
+                    if (newContent[key]) {
+                        try {
+                            newContent[key](context._chartTypeProperties[key]);
+                        } catch (e) {
+                            console.log("Exception Setting Property:  " + key);
                         }
+                    } else {
+                        console.log("Unknown Property:  " + key);
                     }
-                    delete context._chartTypeProperties;
                 }
+                context._chartTypeProperties = {};
+
                 context.chart(newContent);
                 if (oldContent) {
                     oldContent

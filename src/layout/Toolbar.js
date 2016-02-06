@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/HTMLWidget", "css!./Toolbar"], factory);
     } else {
-        root.other_Toolbar = factory(root.d3, root.common_HTMLWidget);
+        root.layout_Toolbar = factory(root.d3, root.common_HTMLWidget);
     }
 }(this, function (d3, HTMLWidget) {
     function Toolbar() {
@@ -13,11 +13,9 @@
     }
     Toolbar.prototype = Object.create(HTMLWidget.prototype);
     Toolbar.prototype.constructor = Toolbar;
-    Toolbar.prototype._class += " other_Toolbar";
+    Toolbar.prototype._class += " layout_Toolbar";
 
     Toolbar.prototype.publish("title", "", "string", "Title",null,{tags:["Intermediate"]});
-    
-    Toolbar.prototype.publish("titleWidth", null, "string", "Title",null,{tags:["Intermediate"]});
     
     Toolbar.prototype.publish("backgroundColor", null, "html-color", "Styling",null,{tags:["Intermediate"]});
     
@@ -33,27 +31,32 @@
     Toolbar.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
-        
+
+        element
+            .attr("title", context.title())
+            .style("background-color", this.backgroundColor())
+        ;
+
         var title = element.selectAll("div.toolbar-title")
                 .data(this.title() ? [this.title()] : []);
         title.enter().append("div").classed("toolbar-title",true).each(function(){
             var div = d3.select(this);
-            div.style("width",context.titleWidth());
-            var span = div.append("span").text(context.title());
+            var span = div.append("span").text("QQQ");
 
             var box = this.getBoundingClientRect();
             var spanBox = span.node().getBoundingClientRect();
             var offset = (box.height/2) - (spanBox.height/2) - (spanBox.top - box.top);
             span.style("padding", offset+"px");
         });
+        title.selectAll("div.toolbar-title > span")
+            .text(context.title())
+        ;
         title.exit().remove();
         
-        element.style("background-color",this.backgroundColor());
-                
         var childWidgets = element.selectAll("div.toolbar-child")
                 .data(this.widgets() !== null ? this.widgets() : [],function(d){return d.id();});
         
-        childWidgets.enter().append("div")
+        childWidgets.enter().insert("div", "div.toolbar-title")
             .each(function(d,i){
                 var widgetClass = context.widgetClasses()[i] ? context.widgetClasses()[i] + " toolbar-child" : "toolbar-child";
                 d3.select(this).classed(widgetClass,true);
@@ -62,26 +65,35 @@
         childWidgets.exit().each(function(d){
             d.target(null);
         }).remove();
-        
-        var thisBox = this.element().node().getBoundingClientRect();
-        if(thisBox.width < 500){
-            this.element()
-                .classed("min-condensed",true)
-                .classed("condensed",false);
-        } else if(thisBox.width < 700){
-            this.element()
-                .classed("min-condensed",false)
-                .classed("condensed",true);
-        }
-        else {
-            this.element()
-                .classed("min-condensed",false)
-                .classed("condensed",false);
-        }
+        childWidgets.order();
+    };
+
+    Toolbar.prototype.render = function (callback) {
+        var context = this;
+        HTMLWidget.prototype.render.call(this, function (w) {
+            var toolbarBBox = context.element().node().getBoundingClientRect();
+            var minX = toolbarBBox.left + toolbarBBox.width;
+            context.element().selectAll("div.toolbar-child")
+                .each(function (d, i) {
+                    var childBBox = this.getBoundingClientRect();
+                    if (minX > childBBox.left)
+                        minX = childBBox.left;
+                })
+            ;
+            context.element().select(".toolbar-title span")
+                .style("width", (minX - toolbarBBox.left - 4) + "px")
+            ;
+            if (callback) {
+                callback(w);
+            }
+        });
     };
 
     Toolbar.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
+        this.widgets().forEach(function (w) {
+            w.target(null);
+        });
     };
 
     return Toolbar;

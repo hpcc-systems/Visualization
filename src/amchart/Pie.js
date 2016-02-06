@@ -58,13 +58,12 @@
         this._chart.type = "pie";
         
         this._chart.labelsEnabled = true;
-
         if (this.labelPosition()==="inside") {
             this._chart.radius = "50%";
             this._chart.labelRadius = -40;
             this._chart.pullOutRadius = "20%";
         } else {
-            this._chart.radius = "45%";
+            this._chart.radius = this.calcRadius();
             this._chart.labelRadius = 20;
             this._chart.pullOutRadius = "20%";
         }
@@ -72,10 +71,11 @@
         this._chart.labelFunction = function(d) {
             return d.title;
         };
-        if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
-        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
-        if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
-        if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
+
+        this._chart.marginRight = this.marginRight();
+        this._chart.marginLeft = this.marginLeft();
+        this._chart.marginTop = this.marginTop();
+        this._chart.marginBottom = this.marginBottom();
 
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
@@ -195,6 +195,68 @@
 
     Pie.prototype.render = function(callback) {
         return HTMLWidget.prototype.render.apply(this, arguments);
+   };
+
+    Pie.prototype.postUpdate = function (domNode, element) {
+        var context = this;
+
+        var containerBoundingClientRect = context._element.select("svg").node().getBoundingClientRect(); // might need to change this selection (could get a bit more accurate results?)
+        this.d3LabelSelection = element.selectAll(".amcharts-pie-label");
+
+        var left = [];
+        var right = [];
+        var top = [];
+        var bottom = [];
+
+        this.d3LabelSelection.each(function(d, i) {
+            var boundingRect = d3.select(this).node().getBoundingClientRect();
+
+            var labelTopPos = boundingRect.top;
+            if (labelTopPos < containerBoundingClientRect.top) {
+                top.push(labelTopPos - containerBoundingClientRect.top);
+            }
+
+            var labelBottomPos = boundingRect.bottom;
+            if (labelBottomPos > containerBoundingClientRect.bottom) {
+                bottom.push(containerBoundingClientRect.bottom - labelTopPos);
+
+            }
+            
+            var labelRightPos = boundingRect.right; 
+            if (labelRightPos > containerBoundingClientRect.right) {
+                right.push(containerBoundingClientRect.right - labelRightPos);
+            }
+
+            var labelLeftPos = boundingRect.left;
+            if (labelLeftPos < containerBoundingClientRect.left) {
+                left.push(labelLeftPos - containerBoundingClientRect.left);
+            }
+        });
+
+        var topOffset = top.length ? d3.min(top) : 0;
+        var bottomOffset = bottom.length ? d3.min(bottom) : 0;
+        var rightOffset = right.length ? d3.min(right) : 0;
+        var leftOffset = left.length ? d3.min(left) : 0;
+
+        var smallerOffset = 0;
+
+        if (topOffset < 0){
+            smallerOffset += topOffset;
+        }
+        if (bottomOffset < 0){
+            smallerOffset += bottomOffset;
+        }
+        if (rightOffset < 0){
+            smallerOffset += rightOffset;
+        }
+        if (leftOffset < 0){
+            smallerOffset += leftOffset;
+        }
+
+        if (this.calcRadius() + smallerOffset - 20 < this.calcRadius()) {
+            this._chart.radius = this.calcRadius() + smallerOffset - 20; // 20 for the label line lengths
+            this._chart.validateNow();
+        }
     };
 
     Pie.prototype.data = function(_) {

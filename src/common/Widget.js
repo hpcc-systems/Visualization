@@ -12,7 +12,7 @@
         Platform.call(this);
         PropertyExt.call(this);
         this._class = Object.getPrototypeOf(this)._class;
-        this._id = "_w" + widgetID++;
+        this._id = this._idSeed + widgetID++;
 
         this._db = new Database.Grid();
         this._pos = { x: 0, y: 0 };
@@ -43,6 +43,8 @@
     Widget.prototype.mixin(Platform);
     Widget.prototype.mixin(PropertyExt);
     Widget.prototype._class += " common_Widget";
+
+    Widget.prototype._idSeed = "_w";
 
     Widget.prototype.publishProxy("fields", "_db", "fields");
     Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
@@ -481,10 +483,10 @@
     };
 
     Widget.prototype.enter = function (domNode, element) { };
-    Widget.prototype.preUpdate = function (domeNode, element) { };
-    Widget.prototype.update = function (domeNode, element) { };
-    Widget.prototype.postUpdate = function (domeNode, element) { };
-    Widget.prototype.exit = function (domeNode, element) { };
+    Widget.prototype.preUpdate = function (domNode, element) { };
+    Widget.prototype.update = function (domNode, element) { };
+    Widget.prototype.postUpdate = function (domNode, element) { };
+    Widget.prototype.exit = function (domNode, element) { };
 
     return Widget;
 }));

@@ -154,7 +154,7 @@
             var retVal = {
                 __class: widget.classID(),
             };
-            if (widget._id.indexOf("_w") !== 0) {
+            if (widget._id.indexOf(widget._idSeed) !== 0) {
                 retVal.__id = widget._id;
             }
             if (widget.version) {
@@ -191,10 +191,6 @@
                         return this.serializeToObject(item, null, includeData);
                     }, this);
                 }
-            }
-            if (widget.fields) {
-                if (!retVal.__data) retVal.__data = {};
-                retVal.__data.fields = widget.fields();
             }
             if (includeData && widget.data) {
                 if (!retVal.__data) retVal.__data = {};
@@ -272,7 +268,7 @@
             if (typeof state === "string") {
                 state = JSON.parse(state);
             }
-            if (state.__id && state.__id.indexOf("_w") !== 0 && widget._id !== state.__id) {
+            if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && widget._id !== state.__id) {
                 console.log("Deserialize:  IDs do not match - " + widget._id);
             }
             this.deserializeFromObject(widget, state, callback);
@@ -285,7 +281,7 @@
             var context = this;
             Utility.requireWidget(state.__class).then(function (Widget) {
                 var widget = new Widget();
-                if (state.__id && state.__id.indexOf("_w") !== 0 && state.__id.indexOf("_pe") !== 0) {
+                if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && state.__id.indexOf("_pe") !== 0) {
                     widget._id = state.__id;
                 }
                 context.deserializeFromObject(widget, state, callback);

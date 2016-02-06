@@ -156,7 +156,7 @@
         return this;
     };
 
-    HTMLWidget.prototype.postUpdate = function (domeNode, element) {
+    HTMLWidget.prototype.postUpdate = function (domNode, element) {
         Widget.prototype.postUpdate.apply(this, arguments);
         if (this._drawStartPos === "origin") {
             this._element.style({
@@ -175,7 +175,7 @@
         }
     };
 
-    HTMLWidget.prototype.exit = function (domeNode, element) {
+    HTMLWidget.prototype.exit = function (domNode, element) {
         if (this.observer) {
             this.observer.disconnect();
         }

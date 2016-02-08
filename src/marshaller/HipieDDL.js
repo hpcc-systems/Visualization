@@ -849,9 +849,11 @@
             selected = selected === undefined ? true : selected;
             if (event.exists()) {
                 var request = {};
-                for (var key in event.mappings) {
-                    var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                    request[event.mappings[key]] = selected ? row[origKey] : "";
+                if (selected) {
+                    for (var key in event.mappings) {
+                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
+                        request[event.mappings[key]] = row[origKey];
+                    }
                 }
 
                 //  New request calculation:

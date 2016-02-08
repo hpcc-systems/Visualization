@@ -205,14 +205,9 @@
             })
         ;
 
-        var size = this.size();
+        var context = this;
         content
-            .each(function (d) {
-                d
-                    .resize(size)
-                    .render()
-                ;
-            })
+            .each(function (d) { d.resize(context.size()); })
         ;
 
         content.exit().transition()

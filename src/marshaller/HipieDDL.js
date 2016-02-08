@@ -834,7 +834,7 @@
             this.widget.data([]);
             this.source.getOutput().request = {};
         }
-        if (this._eventValues) {
+        if (this.dashboard.marshaller.propogateClear() && this._eventValues) {
             delete this._eventValues;
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
                 updatedViz.clear();
@@ -1123,6 +1123,7 @@
     function Marshaller() {
         this._proxyMappings = {};
         this._widgetMappings = d3.map();
+        this._propogateClear = false;
     }
 
     Marshaller.prototype.commsDataLoaded = function () {
@@ -1198,6 +1199,12 @@
     Marshaller.prototype.widgetMappings = function (_) {
         if (!arguments.length) return this._widgetMappings;
         this._widgetMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.propogateClear = function (_) {
+        if (!arguments.length) return this._propogateClear;
+        this._propogateClear = _;
         return this;
     };
 

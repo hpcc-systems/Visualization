@@ -398,6 +398,14 @@
 
     //  Render  ---
     Widget.prototype.render = function (callback) {
+        if (window.__hpcc_debug) {
+            var now = Date.now();
+            if (now - this._prevNow < 500) {
+                console.log("Double Render:  " + (now - this._prevNow) + " - " + this.id() + " - " + this.classID());
+            }
+            this._prevNow = now;
+        }
+
         callback = callback || function () { };
         if (!this.visible()) {
             callback(this);

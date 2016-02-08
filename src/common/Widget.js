@@ -303,9 +303,7 @@
     };
 
     Widget.prototype.locateParentWidget = function (domNode) {
-        if (!domNode) {
-            return null;
-        }
+        domNode = domNode || this._target.parentNode;
         var widget = this.toWidget(domNode);
         if (widget) {
             return widget;

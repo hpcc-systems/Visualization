@@ -791,10 +791,24 @@
     };
 
     Visualization.prototype.update = function (msg) {
-        var params = msg || this.source.getOutput().getParams();
-        if (exists("widgetSurface.title", this)) {
-            this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
-            this.widgetSurface.render();
+        var updatedBy = this.getInputVisualizations();
+        var paramsArr = [];
+        updatedBy.forEach(function (viz) {
+            for (var key in viz._eventValues) {
+                paramsArr.push(viz._eventValues[key]);
+            }
+        });
+        var params = msg || paramsArr.join(", ");
+
+        var titleWidget = this.widget;
+        while (titleWidget && !titleWidget.title) {
+            titleWidget = titleWidget.locateParentWidget();
+        }
+        if (titleWidget) {
+            titleWidget
+                .title(this.title + (params ? " (" + params + ")" : ""))
+                .render()
+            ;
         } else {
             this.widget.render();
         }
@@ -904,19 +918,6 @@
 
     Output.prototype.getQualifiedID = function () {
         return this.dataSource.getQualifiedID() + "." + this.id;
-    };
-
-    Output.prototype.getParams = function () {
-        var retVal = "";
-        for (var key in this.request) {
-            if (!Utility.endsWith(key, "_changed")) {
-                if (retVal.length) {
-                    retVal += ", ";
-                }
-                retVal += this.request[key];
-            }
-        }
-        return retVal;
     };
 
     Output.prototype.accept = function (visitor) {

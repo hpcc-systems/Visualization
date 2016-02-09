@@ -791,10 +791,24 @@
     };
 
     Visualization.prototype.update = function (msg) {
-        var params = msg || this.source.getOutput().getParams();
-        if (exists("widgetSurface.title", this)) {
-            this.widgetSurface.title(this.title + (params ? " (" + params + ")" : ""));
-            this.widgetSurface.render();
+        var updatedBy = this.getInputVisualizations();
+        var paramsArr = [];
+        updatedBy.forEach(function (viz) {
+            for (var key in viz._eventValues) {
+                paramsArr.push(viz._eventValues[key]);
+            }
+        });
+        var params = msg || paramsArr.join(", ");
+
+        var titleWidget = this.widget;
+        while (titleWidget && !titleWidget.title) {
+            titleWidget = titleWidget.locateParentWidget();
+        }
+        if (titleWidget) {
+            titleWidget
+                .title(this.title + (params ? " (" + params + ")" : ""))
+                .render()
+            ;
         } else {
             this.widget.render();
         }
@@ -820,7 +834,7 @@
             this.widget.data([]);
             this.source.getOutput().request = {};
         }
-        if (this._eventValues) {
+        if (this.dashboard.marshaller.propogateClear() && this._eventValues) {
             delete this._eventValues;
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
                 updatedViz.clear();
@@ -835,9 +849,11 @@
             selected = selected === undefined ? true : selected;
             if (event.exists()) {
                 var request = {};
-                for (var key in event.mappings) {
-                    var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                    request[event.mappings[key]] = selected ? row[origKey] : "";
+                if (selected) {
+                    for (var key in event.mappings) {
+                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
+                        request[event.mappings[key]] = row[origKey];
+                    }
                 }
 
                 //  New request calculation:
@@ -904,19 +920,6 @@
 
     Output.prototype.getQualifiedID = function () {
         return this.dataSource.getQualifiedID() + "." + this.id;
-    };
-
-    Output.prototype.getParams = function () {
-        var retVal = "";
-        for (var key in this.request) {
-            if (!Utility.endsWith(key, "_changed")) {
-                if (retVal.length) {
-                    retVal += ", ";
-                }
-                retVal += this.request[key];
-            }
-        }
-        return retVal;
     };
 
     Output.prototype.accept = function (visitor) {
@@ -1017,9 +1020,13 @@
                 delete this.request[key];
             }
         }
+        var now = Date.now();
         this.comms.call(this.request).then(function (response) {
-            context.processResponse(response, request, updates);
-            ++context._loadedCount;
+            var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
+            setTimeout(function() {
+                context.processResponse(response, request, updates);
+                ++context._loadedCount;
+            }, delay > 0 ? delay : 0);
         }).catch(function (e) {
             context.dashboard.marshaller.commsError("DataSource.prototype.fetchData", e);
         });
@@ -1120,6 +1127,7 @@
     function Marshaller() {
         this._proxyMappings = {};
         this._widgetMappings = d3.map();
+        this._propogateClear = false;
     }
 
     Marshaller.prototype.commsDataLoaded = function () {
@@ -1195,6 +1203,12 @@
     Marshaller.prototype.widgetMappings = function (_) {
         if (!arguments.length) return this._widgetMappings;
         this._widgetMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.propogateClear = function (_) {
+        if (!arguments.length) return this._propogateClear;
+        this._propogateClear = _;
         return this;
     };
 

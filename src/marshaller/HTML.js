@@ -20,6 +20,7 @@
     HTML.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:["Private"]});
     HTML.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
     HTML.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
+    HTML.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
 
     HTML.prototype.enter = function(domNode, element) {
         Grid.prototype.enter.apply(this, arguments);
@@ -63,6 +64,12 @@
 
     HTML.prototype.render = function (callback) {
         if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb)) {
+            if (this.marshaller) {
+                this.marshaller
+                    .proxyMappings(this.proxyMappings())
+                    .propogateClear(this.propogateClear())
+                ;
+            }
             return Grid.prototype.render.apply(this, arguments);
         } else if (this._prev_ddlUrl && this._prev_ddlUrl !== this.ddlUrl()) {
             //  DDL has actually changed (not just a deserialization)
@@ -81,6 +88,7 @@
         var context = this;
         this.marshaller = new HipieDDL.Marshaller()
             .proxyMappings(this.proxyMappings())
+            .propogateClear(this.propogateClear())
             .widgetMappings(d3.map(widgetArr, function (d) {
                 return d.id();
             }))

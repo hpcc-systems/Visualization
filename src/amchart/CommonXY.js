@@ -386,6 +386,23 @@
     CommonXY.prototype.update = function(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
+        var context = this;
+        
+        // assign correct axe to PPs and correct context to PropertyExt Obj
+        this.yAxes().forEach(function(axe, idx) {
+            if (idx === 0) {
+                context._yAxis = axe;
+            }
+            axe._owningWidget = context;
+        });
+
+        this.xAxes().forEach(function(axe, idx) {
+            if (idx === 0) {
+                context._xAxis = axe;
+            }
+            axe._owningWidget = context;
+        });
+        
         if (this.backwardsCompatible()) {
             this.switchProperties(true);
         } else {

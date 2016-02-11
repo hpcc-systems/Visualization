@@ -44,7 +44,12 @@
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("chart", "_chart", "chart");
-    MegaChart.prototype.publishProxy("toolbarWidgets", "_toolbar", "widgets");
+
+    MegaChart.prototype.toolbarWidgets = function (_) {
+        if (!arguments.length) return this._toolbar.widgets();
+        this._toolbar.widgets(_);
+        return this;
+    };
 
     MegaChart.prototype.chartTypeProperties = function (_) {
         if (!arguments.length) return this._chart.chartTypeProperties();
@@ -76,12 +81,16 @@
         
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
 
-        this._csvButton = new Button().value("CSV");
+        this._csvButton = new Button()
+            .id(this.id() + "_csv")
+            .value("CSV")
+        ;
         this._csvButton.click = function (a) {
             Utility.downloadData("CSV", [context._chart.columns()].concat(context._chart.data()).join("\r\n"));
         };
 
         this._chartTypeSelect = new Select()
+            .id(this.id() + "_chartType")
             .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
             .value(this.chartType())
         ;
@@ -109,13 +118,19 @@
     };
     
     MegaChart.prototype.update = function (domNode, element) {
-        var twArr = [];
-        if (this.showCSV()) {
-            twArr.push(this._csvButton);
+        function showHideButton(twArr, button, show) {
+            if (show && twArr.indexOf(button) === -1) {
+                twArr.push(button);
+            } else {
+                var idx = twArr.indexOf(button);
+                if (!show && idx >= 0) {
+                    twArr.slice(idx, 1);
+                }
+            }
         }
-        if (this.showChartSelect()) {
-            twArr.push(this._chartTypeSelect);
-        }
+        var twArr = this.toolbarWidgets();
+        showHideButton(twArr, this._csvButton, this.showCSV());
+        showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         this.toolbarWidgets(twArr);
 
         if (this._prevShowToolbar !== this.showToolbar()) {

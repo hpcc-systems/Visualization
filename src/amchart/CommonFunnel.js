@@ -32,12 +32,6 @@
     CommonFunnel.prototype.publish("flip", true, "boolean", "Flip Chart",null,{tags:["Intermediate"]});
     CommonFunnel.prototype.publish("reverseDataSorting", false, "boolean", "Reverse Data Sorting",null,{tags:["Intermediate"]});
 
-    CommonFunnel.prototype.publish("marginLeft", 0, "number", "Margin (Left)",null,{tags:["Intermediate"]});
-    CommonFunnel.prototype.publish("marginRight", 0, "number", "Margin (Right)",null,{tags:["Intermediate"]});
-
-    CommonFunnel.prototype.publish("marginTop", null, "number", "Margin (Top)",null,{tags:["Intermediate"]});
-    CommonFunnel.prototype.publish("marginBottom", null, "number", "Margin (Bottom)",null,{tags:["Intermediate"]});
-
     CommonFunnel.prototype.publish("labelPosition", "center", "set", "Label Position", ["left","right","center"],{tags:["Intermediate"]});
 
     CommonFunnel.prototype.publish("showScrollbar", false, "boolean", "Show Chart Scrollbar",null,{tags:["Intermediate"]});
@@ -62,11 +56,6 @@
         this._chart.colorField = "sliceColor";
         this._chart.fontSize = this.fontSize();
         this._chart.fontFamily = this.fontFamily();
-
-        if (this.marginLeft()) { this._chart.marginLeft = this.marginLeft(); }
-        if (this.marginRight()) { this._chart.marginRight = this.marginRight(); }
-        if (this.marginTop()) { this._chart.marginTop = this.marginTop(); }
-        if (this.marginBottom()) { this._chart.marginBottom = this.marginBottom(); }
 
         this._chart.labelPosition = this.labelPosition();
 
@@ -187,6 +176,56 @@
 
     CommonFunnel.prototype.render = function(callback) {
         return HTMLWidget.prototype.render.apply(this, arguments);
+    };
+
+
+    CommonFunnel.prototype.postUpdate = function (domNode, element) {
+        var context = this;
+        if (this.labelPosition() !== "center") {
+            var containerBoundingClientRect = context._element.select("svg").node().getBoundingClientRect(); // might need to change this selection (could get a bit more accurate results?)
+            this.d3LabelSelection = element.selectAll(".amcharts-funnel-item");
+
+            var left = [];
+            var right = [];
+
+            this.d3LabelSelection.each(function(d, i) {
+                var boundingRect = d3.select(this).node().getBoundingClientRect();
+
+                var labelRightPos = boundingRect.right;
+                if (labelRightPos > containerBoundingClientRect.right) {
+                    right.push(containerBoundingClientRect.right - labelRightPos);
+                }
+
+                var labelLeftPos = boundingRect.left;
+                if (labelLeftPos < containerBoundingClientRect.left) {
+                    left.push(labelLeftPos - containerBoundingClientRect.left);
+                }
+            });
+
+            var rightOffset = right.length ? d3.min(right) : 0;
+            var leftOffset = left.length ? d3.min(left) : 0;
+
+            var smallerOffset = 0;
+
+            if (rightOffset < 0) {
+                smallerOffset += rightOffset;
+            }
+            if (leftOffset < 0) {
+                smallerOffset += leftOffset;
+            }
+
+            switch(this.labelPosition()) {
+                case "right":
+                    this._chart.marginRight = Math.abs(smallerOffset);
+                    this._chart.marginLeft = 0;
+                    break;
+                case "left":
+                    this._chart.marginLeft = Math.abs(smallerOffset);
+                    this._chart.marginRight = 0;
+                    break;
+            }
+            this._chart.validateNow();
+        }
     };
 
     CommonFunnel.prototype.data = function(_) {

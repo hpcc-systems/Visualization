@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define([],t):e.other_IWordCloud=t()})(this,function(){function e(){}return e.prototype.click=function(e){console.log("Click:  "+e.label)},e});

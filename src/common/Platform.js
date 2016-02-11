@@ -21,7 +21,7 @@
     }
 }(this, function (d3) {
     //  Do not touch - updated by gulp bump  ---
-    var version = "1.9.0";
+    var version = "1.10.0-rc9";
 
     function Platform() {
     }

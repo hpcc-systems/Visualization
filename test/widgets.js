@@ -185,6 +185,7 @@
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
+                            case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Graph-roxie":
                                 it("Roxie Call");
                                 break;
@@ -220,6 +221,7 @@
                         switch (widgetPath + "-" + sample.key) {
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
+                            case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Graph-roxie":
                                 it("Roxie Call");
                                 break;

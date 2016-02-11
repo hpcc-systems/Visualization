@@ -830,7 +830,7 @@
     };
 
     Visualization.prototype.clear = function () {
-        if (this.widget) {
+        if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
             this.source.getOutput().request = {};
         }
@@ -926,16 +926,19 @@
         visitor.visit(this);
     };
 
+    Output.prototype.vizNotify = function (updates) {
+        this.notify.filter(function (item) {
+            return !updates || updates.indexOf(item) >= 0;
+        }).forEach(function (item) {
+            var viz = this.dataSource.dashboard.getVisualization(item);
+            viz.notify();
+        }, this);
+    };
+
     Output.prototype.setData = function (data, request, updates) {
-        var context = this;
         this.request = request;
         this.db = new Database.Grid().jsonObj(data);
-        this.notify.forEach(function (item) {
-            if (!updates || updates.indexOf(item) >= 0) {
-                var viz = context.dataSource.dashboard.getVisualization(item);
-                viz.notify();
-            }
-        });
+        this.vizNotify(updates);
     };
 
     //  DataSource  ---
@@ -1046,11 +1049,17 @@
             if (exists(from, response)) {
                 if (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"])) {
                     this.outputs[key].setData(response[from], request, updates);
+                } else {
+                    //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
+                    this.outputs[key].vizNotify(updates);
                 }
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
                 if (!exists(from + "_changed", lowerResponse) || (exists(from + "_changed", lowerResponse) && response[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"])) {
                     this.outputs[key].setData(lowerResponse[from], request, updates);
+                } else {
+                    //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
+                    this.outputs[key].vizNotify(updates);
                 }
             } else {
                 var responseItems = [];
@@ -1127,6 +1136,7 @@
     function Marshaller() {
         this._proxyMappings = {};
         this._widgetMappings = d3.map();
+        this._clearDataOnUpdate = true;
         this._propogateClear = false;
     }
 
@@ -1203,6 +1213,12 @@
     Marshaller.prototype.widgetMappings = function (_) {
         if (!arguments.length) return this._widgetMappings;
         this._widgetMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.clearDataOnUpdate = function (_) {
+        if (!arguments.length) return this._clearDataOnUpdate;
+        this._clearDataOnUpdate = _;
         return this;
     };
 

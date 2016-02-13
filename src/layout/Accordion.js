@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "../common/FAChar", "css!./Accordion"], factory);
+        define(["../common/HTMLWidget", "../common/FAChar", "css!./Accordion.css"], factory);
     } else {
         root.layout_Accordion = factory(root.common_HTMLWidget, root.common_FAChar);
     }

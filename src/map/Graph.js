@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Pins", "../graph/Graph", "../graph/Edge", "../common/Shape", "css!./Graph"], factory);
+        define(["d3", "topojson", "./Pins", "../graph/Graph", "../graph/Edge", "../common/Shape", "css!./Graph.css"], factory);
     } else {
         root.map_Graph = factory(root.d3, root.topojson, root.map_Pins, root.graph_Graph, root.graph_Edge, root.common_Shape);
     }

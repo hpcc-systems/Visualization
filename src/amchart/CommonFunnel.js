@@ -7,6 +7,8 @@
     }
 
 }(this, function(d3, HTMLWidget, AmCharts, require) {
+    AmCharts.isReady = true;
+
     function CommonFunnel() {
         HTMLWidget.call(this);
         this._tag = "div";

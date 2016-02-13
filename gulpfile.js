@@ -20,6 +20,7 @@ const jshint = require('gulp-jshint');
 const jscs = require('gulp-jscs');
 const mochaPhantomJS = require('gulp-mocha-phantomjs');
 const replace = require('gulp-replace');
+const jspm = require('gulp-jspm-build');
 
 // Consts
 const cfg = {
@@ -31,7 +32,7 @@ const cfg = {
 };
 
 const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat"];
-const bundles = ["common", "layout", "api", "form", "other", "chart", "c3chart", "google", "amchart", "tree", "graph", "map", "marshaller", "composite"];  //  Order is important ---
+const bundles = ["common", "layout", "api", "form", "other", "chart", "c3chart", "google", "amchart", "tree", "graph", "composite", "marshaller", "map"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 
 function buildModule(module, cb) {
@@ -77,7 +78,7 @@ function css(minify) {
 }
 
 function optimize(opts, cb) {
-  //opts.optimize = "none";
+  opts.optimize = "none";
   rjs.optimize(opts,
     function (text) { cb(null, text) },
     cb
@@ -149,19 +150,29 @@ function getJSFiles(dir, folder) {
 
 const excludeShallow = ["src/map/us-counties", "src/map/us-states", "src/map/countries"];
 var amd_bundles = {};
+var jspm_bundles = {};
 const amd_modules = bundles.map(function (bundle, idx) {
     var name = cfg.prefix + "-" + bundle;
-    var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
+    var jspmInclude = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
+    var include = [];
     switch (bundle) {
         case "common":
-            include = ["d3", "es6-promise"].concat(include);
+            include = ["d3", "es6-promise"].concat(jspmInclude);
             break;
+        default:
+            include = jspmInclude;
     }
+    jspm_bundles["src/" + name] = jspmInclude;
     amd_bundles["src/" + name] = include;
+    var bundleExclude = bundles.filter(function (bundle2, idx2) { return bundle2 !== bundle && idx2 < idx }).map(function (bundle) { return cfg.prefix + "-" + bundle });
+    var jspmExclude = [].concat(bundleExclude.map(function (bundle) { return "dist-jspm/" + bundle + ".js" }));
+    var exclude = [cfg.prefix, "css!font-awesome"].concat(bundleExclude);
     return {
         name: name,
+        jspmInclude: jspmInclude,
         include: include,
-        exclude: [cfg.prefix, "css!font-awesome"].concat(bundles.filter(function (bundle2, idx2) { return bundle2 !== bundle && idx2 < idx }).map(function (bundle) { return cfg.prefix + "-" + bundle })),
+        jspmExclude: jspmExclude,
+        exclude: exclude,
         excludeShallow: excludeShallow,
         create: true
     };
@@ -182,7 +193,45 @@ gulp.task("build-amd-src", function (done) {
     optimize(opts, done);
 });
 
-gulp.task("copy-amchart-images", function() {
+function createTask(name, bundle, prev, min) {
+    var src = bundle.jspmInclude.join(" + ") + (bundle.jspmExclude.length ? " - " + bundle.jspmExclude.join(" - ") : "");
+    gulp.task(name, prev ? [prev] : [], function () {
+        console.log(name);//src);
+        return jspm({
+            bundleOptions: {
+                minify: min,
+            },
+            bundles: [
+                { src: src, dst: name + ".js" }
+            ]
+        })
+        .pipe(gulp.dest("./dist-jspm"));
+    });
+}
+var jspmTasks = [];
+var prev = null;
+var jspmMinTasks = [];
+var minPrev = null;
+amd_modules.forEach(function (bundle) {
+    createTask(bundle.name, bundle, prev, false);
+    jspmTasks.push(bundle.name);
+    prev = bundle.name;
+    createTask(bundle.name + "-min", bundle, minPrev, true);
+    jspmTasks.push(bundle.name + "-min");
+    minPrev = bundle.name + "-min";
+});
+
+gulp.task("build-jspm", [prev], function (done) {
+});
+
+gulp.task("build-jspm-min", [minPrev], function (done) {
+});
+
+gulp.task("build-jspm-all", ["build-jspm", "build-jspm-min"], function (done) {
+});
+
+
+gulp.task("copy-amchart-images", function () {
    gulp.src("./bower_components/amcharts3/amcharts/images/**/*.*")
    .pipe(gulp.dest(cfg.distamd + "/" + "img/amcharts"));
 });
@@ -274,4 +323,7 @@ gulp.task("tag-release", ["tag"], function (cb) {
             });
         }
     });
+});
+
+gulp.task("build2", function (cb) {
 });

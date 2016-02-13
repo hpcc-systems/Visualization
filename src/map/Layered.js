@@ -1,7 +1,7 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "../common/SVGWidget", "./Utility", "css!./Layered"], factory);
+        define(["d3", "topojson", "../common/SVGWidget", "./Utility", "css!./Layered.css"], factory);
     } else {
         root.map_Layered = factory(root.d3, root.topojson, root.common_SVGWidget, root.map_Utility);
     }

@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./SVGWidget", "css!./Text"], factory);
+        define(["./SVGWidget", "css!./Text.css"], factory);
     } else {
         root.common_Text = factory(root.common_SVGWidget);
     }

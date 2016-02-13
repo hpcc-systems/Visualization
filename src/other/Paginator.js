@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget","css!./Paginator"], factory);
+        define(["d3", "../common/HTMLWidget", "css!./Paginator.css"], factory);
     } else {
         root.other_Paginator = factory(root.d3, root.common_HTMLWidget);
     }

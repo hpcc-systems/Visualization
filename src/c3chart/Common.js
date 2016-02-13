@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "c3", "../common/HTMLWidget", "css!c3"], factory);
+        define(["d3", "c3", "../common/HTMLWidget", "css!c3.css"], factory);
     } else {
         root.c3chart_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
     }

@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../api/I1DChart", "css!font-awesome", "css!./Summary"], factory);
+        define(["d3", "../common/HTMLWidget", "../api/I1DChart", "css!font-awesome.css", "css!./Summary.css"], factory);
     } else {
         root.chart_Summary = factory(root.d3, root.common_HTMLWidget, root.api_I1DChart);
     }

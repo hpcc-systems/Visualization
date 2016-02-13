@@ -1,7 +1,7 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "./Utility", "css!./OpenStreet"], factory);
+        define(["d3", "topojson", "./Layer", "./Utility", "css!./OpenStreet.css"], factory);
     } else {
         root.map_OpenStreet = factory(root.d3, root.topojson, root.map_Layer, root.map_Utility);
     }

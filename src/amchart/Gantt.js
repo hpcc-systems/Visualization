@@ -6,6 +6,8 @@
         root.amchart_Gantt = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_INDChart, root.require);
     }
 }(this, function(d3, HTMLWidget, AmCharts, INDChart, require) {
+    AmCharts.isReady = true;
+
     function Gantt() {
         HTMLWidget.call(this);
         this._tag = "div";

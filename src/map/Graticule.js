@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Graticule"], factory);
+        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Graticule.css"], factory);
     } else {
         root.map_Graticule = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette, root.api_ITooltip);
     }

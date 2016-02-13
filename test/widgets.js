@@ -14,7 +14,7 @@
         }
     }
     describe("Widget Declarations", function () {
-        this.timeout(10000);
+        this.timeout(30000);
         var allWidgets = [
             { path: "src/common/FAChar" },
             { path: "src/common/Icon" },
@@ -175,7 +175,7 @@
     });
 
     describe("Sample Renders", function () {
-        this.timeout(10000);
+        this.timeout(30000);
         d3.map(testFactory.widgets).entries().forEach(function (widget, idx) {
             var widgetPath = widget.key;
             if (!someWidgets.length || widgetPath.indexOf(someWidgets) >= 0) {

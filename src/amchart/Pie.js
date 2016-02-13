@@ -5,7 +5,9 @@
     } else {
         root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.require);
     }
-}(this, function(d3, HTMLWidget, AmCharts, I2DChart, require) {
+}(this, function (d3, HTMLWidget, AmCharts, I2DChart, require) {
+    AmCharts.isReady = true;
+
     function Pie() {
         HTMLWidget.call(this);
         this._tag = "div";

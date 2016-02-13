@@ -28,7 +28,9 @@
     "chai": "~3.4.0",
     "gulp-jscs": "~3.0.2",
     "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
-    "require-css": "~0.1.8"
+    "require-css": "~0.1.8",
+    "jspm": "^0.16.27",
+    "gulp-jspm-build": "^0.0.14"
   },
   "repository": {
     "type": "git",
@@ -39,5 +41,102 @@
   },
   "author": "HPCC Systems",
   "license": "Apache",
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+  "homepage": "https://github.com/hpcc-systems/Visualization",
+  "jspm": {
+    "dependencies": {
+      "amcharts": "npm:amcharts@^3.14.5",
+      "c3": "npm:c3@^0.4.11-rc4",
+      "colorbrewer": "npm:colorbrewer@^1.0.0",
+      "cpettitt/dagre": "github:cpettitt/dagre@^0.7.4",
+      "css": "github:systemjs/plugin-css@^0.1.20",
+      "d3": "npm:d3@^3.5.15",
+      "d3-cloud": "npm:d3-cloud@^1.2.1",
+      "dagre": "github:cpettitt/dagre@^0.7.4",
+      "es6-promise": "npm:es6-promise@^3.1.2",
+      "font-awesome": "npm:font-awesome@^4.5.0",
+      "simpleheat": "github:mourner/simpleheat@^0.3.0",
+      "topojson": "npm:topojson@^1.6.24"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "clean-css": "npm:clean-css@^3.4.9",
+      "core-js": "npm:core-js@^1.1.4"
+    },
+    "overrides": {
+      "npm:amcharts@3.14.5": {
+        "main": false,
+        "format": "global"
+      },
+      "npm:babel-runtime@5.8.35": {
+        "main": false,
+        "dependencies": {},
+        "optionalDependencies": {
+          "core-js": "^1.2.0"
+        }
+      },
+      "npm:base64-js@0.0.8": {
+        "ignore": [
+          "bench",
+          "node_modules"
+        ]
+      },
+      "npm:d3@3.5.15": {
+        "meta": {
+          "d3.js": {
+            "exports": "d3"
+          }
+        }
+      },
+      "npm:font-awesome@4.5.0": {
+        "main": "css/font-awesome.css!",
+        "jspmNodeConversion": false,
+        "registry": "jspm",
+        "dependencies": {
+          "css": "0.1"
+        }
+      },
+      "npm:inherits@2.0.1": {
+        "ignore": [
+          "test.js",
+          "node_modules"
+        ]
+      },
+      "npm:readable-stream@1.0.33": {
+        "map": {
+          "stream": "stream-browserify/index"
+        },
+        "systemjs": {},
+        "dependencies": {
+          "core-util-is": "~1.0.0",
+          "isarray": "0.0.1",
+          "string_decoder": "~0.10.0",
+          "inherits": "~2.0.1",
+          "stream-browserify": "~1.0.0"
+        }
+      },
+      "npm:readable-stream@1.1.13": {
+        "map": {
+          "stream": "stream-browserify/index",
+          "util": "@empty"
+        },
+        "systemjs": {},
+        "dependencies": {
+          "core-util-is": "~1.0.0",
+          "inherits": "~2.0.1",
+          "isarray": "0.0.1",
+          "string_decoder": "~0.10.0",
+          "stream-browserify": "^1.0.0"
+        }
+      },
+      "github:cpettitt/dagre@0.7.4": {
+        "main": false,
+        "format": "amd"
+      },
+      "npm:colorbrewer@1.0.0": {
+        "main": "colorbrewer",
+        "format": "global"
+      }
+    }
+  }
 }

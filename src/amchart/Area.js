@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "css!./Area"], factory);
+        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "css!./Area.css"], factory);
     } else {
         root.amchart_Area = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
     }

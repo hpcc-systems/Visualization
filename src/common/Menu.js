@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./SVGWidget", "./IMenu", "./Icon", "./List", "css!./Menu"], factory);
+        define(["d3", "./SVGWidget", "./IMenu", "./Icon", "./List", "css!./Menu.css"], factory);
     } else {
         root.common_Menu = factory(root.d3, root.common_SVGWidget, root.common_IMenu, root.common_Icon, root.common_List);
     }

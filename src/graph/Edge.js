@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../common/TextBox", "css!./Edge"], factory);
+        define(["d3", "../common/SVGWidget", "../common/TextBox", "css!./Edge.css"], factory);
     } else {
         root.graph_Edge = factory(root.d3, root.common_SVGWidget, root.common_TextBox);
     }

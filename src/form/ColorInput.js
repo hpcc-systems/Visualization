@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../api/IInput", "css!./Input"], factory);
+        define(["d3", "../common/HTMLWidget", "../api/IInput", "css!./Input.css"], factory);
     } else {
         root.form_ColorInput = factory(root.d3, root.common_HTMLWidget, root.api_IInput);
     }

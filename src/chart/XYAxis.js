@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../common/Utility", "css!./XYAxis"], factory);
+        define(["d3", "../common/SVGWidget", "../common/Utility", "css!./XYAxis.css"], factory);
     } else {
         root.chart_XYAxis = factory(root.d3, root.common_SVGWidget, root.common_Utility);
     }

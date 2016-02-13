@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Surface", "css!./ResizeSurface"], factory);
+        define(["d3", "./Surface", "css!./ResizeSurface.css"], factory);
     } else {
         root.common_ResizeSurface = factory(root.d3, root.common_Surface);
     }

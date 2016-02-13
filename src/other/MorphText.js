@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/SVGWidget", "css!./MorphText"], factory);
+        define(["../common/SVGWidget", "css!./MorphText.css"], factory);
     } else {
         root.other_MorphText = factory(root.common_SVGWidget);
     }

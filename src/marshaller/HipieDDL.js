@@ -770,7 +770,7 @@
                 switch (widget.classID()) {
                     case "chart_MultiChart":
                     case "composite_MegaChart":
-                        widget.chartTypeProperties()[key] = this.properties;
+                        widget.chartTypeProperties()[key] = this.properties[key];
                         break;
                     default:
                         if (this.widget[key]) {

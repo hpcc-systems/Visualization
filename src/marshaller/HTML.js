@@ -195,9 +195,15 @@
                         dashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
                     }
                 }
-                if (callback) {
-                    callback(widget);
-                }
+                var timeoutCounter = 0;
+                var intervalHandler = setInterval(function () {
+                    if (context.marshaller.commsDataLoaded() || ++timeoutCounter > 120) {
+                        clearInterval(intervalHandler);
+                        if (callback) {
+                            callback(widget);
+                        }
+                    }
+                }, 500);
             });
         }
         return this;

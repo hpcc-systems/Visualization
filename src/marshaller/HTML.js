@@ -112,12 +112,8 @@
         function populateContent() {
             var dashboards = walkDashboards(context.marshaller, context.databomb());
             for (var key in dashboards) {
-                var cellRow = 0;
-                var cellCol = 0;
-
                 var popupVisualizations = [];
                 var mainVisualizations = [];
-
                 dashboards[key].visualizations.forEach(function (viz, idx) {
                     if (viz.properties.flyout) {
                         popupVisualizations.push(viz);
@@ -126,8 +122,10 @@
                     }
                 });
 
+                var cellRow = 0;
+                var cellCol = 0;
+                var cellDensity = context.cellDensity();
                 var maxCol = Math.floor(Math.sqrt(mainVisualizations.length));
-
                 mainVisualizations.forEach(function (viz, idx) {
                     if (!context.marshaller.widgetMappings().get(viz.id)) {
                         var widgetSurface = null;
@@ -138,15 +136,17 @@
                                 .widget(viz.widget)
                             ;
                         }
-                        if (idx && (idx % maxCol === 0)) {
-                            cellRow++;
-                            cellCol = 0;
-                        }
                         viz.widget.size({ width: 0, height: 0 });
                         widgetSurface.title(viz.title);
+                        while (context.getCell(cellRow * cellDensity, cellCol * cellDensity) !== null) {
+                            cellCol++;
+                            if (cellCol % maxCol === 0) {
+                                cellRow++;
+                                cellCol = 0;
+                            }
+                        }
                         context.setContent(cellRow, cellCol, widgetSurface);
                     }
-                    cellCol++;
                 });
 
                 popupVisualizations.forEach(function (viz, idx) {

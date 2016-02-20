@@ -6,6 +6,8 @@
         root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Database, Utility, Comms, Widget, require) {
+    var loading = "...loading...";
+
     function exists(prop, scope) {
         var propParts = prop.split(".");
         var testScope = scope;
@@ -840,7 +842,7 @@
                 updatedViz.clear();
             });
         }
-        this.update("...loading...");
+        this.update(loading);
     };
 
     Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
@@ -998,11 +1000,13 @@
             updates = [];
             for (var oKey in this.outputs) {
                 var output = this.outputs[oKey];
-                if (!output.filter || !output.filter.length) {
-                    output.notify.forEach(function (item) {
+                output.notify.forEach(function (item) {
+                    if (!output.filter || !output.filter.length) {
                         updates.push(item);
-                    });
-                }
+                    }
+                    var viz = this.dashboard.getVisualization(item);
+                    viz.update(loading);
+                }, this);
             }
         }
 

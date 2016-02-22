@@ -98,7 +98,7 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
                     var words = DataFactory.WordCloud.simple.words.map(function (d) {
-                        return [d, 10 + Math.random() * 14];
+                        return [d, 1 + Math.random() * 100];
                     });
                     callback(new WordCloud()
                         .columns(DataFactory.WordCloud.simple.columns)

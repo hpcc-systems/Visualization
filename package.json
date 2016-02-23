@@ -28,7 +28,8 @@
     "chai": "~3.4.0",
     "gulp-jscs": "~3.0.2",
     "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
-    "require-css": "~0.1.8"
+    "require-css": "~0.1.8",
+    "requirejs-text": "~2.0.12"
   },
   "repository": {
     "type": "git",

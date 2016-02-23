@@ -175,7 +175,7 @@ gulp.task("build-amd-src", function (done) {
         mainConfigFile: "src/config.js",
         modules: [{
             name: cfg.prefix,
-            include: ["requireLib", "css", "normalize", "async", "goog", "propertyParser"],
+            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser", "src/Loader"],
             create: true
         }].concat(amd_modules)
     };

@@ -252,9 +252,6 @@
         if (loadResult.changed) {
             this.layout("");
         }
-        if (!loadResult.dataChanged) {
-            this.fetchData();
-        }
         return this;
     };
 
@@ -449,9 +446,16 @@
                 .renderDashboards(true)
             ;
             GraphWidget.prototype.render.call(context, function (widget) {
-                if (callback) {
-                    callback(widget);
-                }
+                context.fetchData();
+                var timeoutCounter = 0;
+                var intervalHandler = setInterval(function () {
+                    if (marshaller.commsDataLoaded() || ++timeoutCounter > 120) {
+                        clearInterval(intervalHandler);
+                        if (callback) {
+                            callback(widget);
+                        }
+                    }
+                }, 500);
             });
         }
         return this;

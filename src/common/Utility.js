@@ -202,6 +202,9 @@
                             get __data__() { return this.row; },
                             set __data__(_) { this.row = array[this.index] = _; }
                         };
+                    },
+                    createElementNS: function (ns, tagName) {
+                        return this.createElement(tagName);
                     }
                 },
                 querySelectorAll: function (selectors) {

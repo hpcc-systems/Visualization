@@ -46,12 +46,12 @@
         var offset = 0;
         switch (this.xAxisType()) {
             case "ordinal":
-                dataLen = this.dataScale.rangeBand();
-                offset = 0;
+                dataLen = this.domainAxis.d3Scale.rangeBand();
+                offset = -dataLen / 2;
                 break;
             case "linear":
             case "time":
-                dataLen = Math.max(Math.abs(this.dataScale(2) - this.dataScale(1)) * (100 - this._linearGap) / 100, dataLen);
+                dataLen = Math.max(Math.abs(this.dataPos(2) - this.dataPos(1)) * (100 - this._linearGap) / 100, dataLen);
                 offset = -dataLen/2;
                 break;
         }
@@ -62,7 +62,7 @@
         ;
 
         var column = this.svgData.selectAll(".dataRow")
-            .data(this.formattedData())
+            .data(this.data())
         ;
 
         column.enter().append("g")
@@ -96,19 +96,19 @@
 
                 if (isHorizontal) {
                     columnRect.transition()
-                        .attr("x", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
+                        .attr("x", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
-                        .attr("y", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) : context.valueScale(d.value); })
-                        .attr("height", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) - context.valueScale(d.value[1]) : height - context.valueScale(d.value); })
+                        .attr("y", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
+                        .attr("height", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
                         .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 } else {
                     columnRect.transition()
-                        .attr("y", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
+                        .attr("y", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
-                        .attr("x", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) : 0; })
-                        .attr("width", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) - context.valueScale(d.value[0]) : context.valueScale(d.value); })
+                        .attr("x", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
+                        .attr("width", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
                         .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;

@@ -84,6 +84,19 @@
                         //.data(DataFactory.Slider.simple.range)
                     );
                 });
+            },
+            dateRange: function (callback) {
+                require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
+                    callback(new Slider()
+                        .allowRange(true)
+                        .type("time")
+                        .low("1995-01-01")
+                        .high("2004-12-31")
+                        .step(1)
+                        .columns(["Date/Time"])
+                        .data(["1999-07-03", "2001-05-24"])
+                    );
+                });
             }
         }
     };

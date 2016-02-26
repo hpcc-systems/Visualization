@@ -252,6 +252,9 @@
             dataObjArr.sort(function (a, b) {
                 return a[sortField] - b[sortField];
             });
+            this.data().sort(function (a, b) {
+                return a[0] - b[0];
+            });
         }
 
         return dataObjArr;

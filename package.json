@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.12.0-dev",
+  "version": "1.14.0-dev",
   "description": "HPCC Visualization Framework",
   "devDependencies": {
     "async": "~1.5.0",
@@ -28,6 +28,7 @@
     "chai": "~3.4.0",
     "gulp-jscs": "~3.0.2",
     "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
+    "requirejs-text": "~2.0.12",
     "require-css": "~0.1.8"
   },
   "repository": {

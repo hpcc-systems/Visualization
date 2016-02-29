@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../common/TextBox", "css!./AbsoluteSurface",], factory);
+        define(["d3", "../common/HTMLWidget", "../common/TextBox", "css!./AbsoluteSurface.css", ], factory);
     } else {
         root.layout_AbsoluteSurface = factory(root.d3, root.common_HTMLWidget, root.common_TextBox);
     }

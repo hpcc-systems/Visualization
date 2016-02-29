@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget","css!./Html"], factory);
+        define(["../common/HTMLWidget", "css!./Html.css"], factory);
     } else {
         root.other_Html = factory(root.common_HTMLWidget);
     }

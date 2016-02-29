@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "../common/TextBox", "../common/Text", "css!./Layered"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "../common/TextBox", "../common/Text", "css!./Layered.css"], factory);
     } else {
         root.layout_Layered = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface, root.common_TextBox, root.common_Text);
     }

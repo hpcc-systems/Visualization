@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/IInput", "../common/Icon", "css!./Slider"], factory);
+        define(["d3", "../common/SVGWidget", "../api/IInput", "../common/Icon", "css!./Slider.css"], factory);
     } else {
         root.form_Slider = factory(root.d3, root.common_SVGWidget, root.api_IInput, root.common_Icon);
     }

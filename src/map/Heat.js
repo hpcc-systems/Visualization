@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../other/HeatMap", "../common/Palette", "../api/ITooltip", "css!./Heat"], factory);
+        define(["d3", "topojson", "./Layer", "../other/HeatMap", "../common/Palette", "../api/ITooltip", "css!./Heat.css"], factory);
     } else {
         root.map_Heat = factory(root.d3, root.topojson, root.map_Layer, root.other_HeatMap, root.common_Palette, root.api_ITooltip);
     }

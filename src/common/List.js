@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./IList", "../common/TextBox", "css!./List"], factory);
+        define(["d3", "../common/SVGWidget", "./IList", "../common/TextBox", "css!./List.css"], factory);
     } else {
         root.common_List = factory(root.d3, root.common_SVGWidget, root.common_IList, root.common_TextBox);
     }

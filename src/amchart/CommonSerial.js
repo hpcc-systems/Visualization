@@ -6,6 +6,8 @@
         root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility, root.amchart_SerialAxis);
     }
 }(this, function(d3, HTMLWidget, AmCharts, require, Utility, Axis) {
+    AmCharts.isReady = true;
+
     function CommonSerial() {
         HTMLWidget.call(this);
         this._tag = "div";

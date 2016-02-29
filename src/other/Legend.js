@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Table", "css!./Legend"], factory);
+        define(["d3", "./Table", "css!./Legend.css"], factory);
     } else {
         root.other_Legend = factory(root.d3, root.other_Table);
     }

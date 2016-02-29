@@ -6,6 +6,8 @@
         root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_XYAxis);
     }
 }(this, function(d3, HTMLWidget, AmCharts, require, Axis) {
+    AmCharts.isReady = true;
+
     function CommonXY() {
         HTMLWidget.call(this);
         this._tag = "div";

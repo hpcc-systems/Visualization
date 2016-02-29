@@ -6,6 +6,8 @@
         root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart, root.require);
     }
 }(this, function(d3, HTMLWidget, AmCharts, I1DChart, require) {
+    AmCharts.isReady = true;
+
     function Gauge() {
         HTMLWidget.call(this);
         this._tag = "div";

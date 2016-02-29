@@ -32,6 +32,8 @@ require.config({
 
         "simpleheat": "../bower_components/simpleheat/index",
 
+        "google-maps": "https://maps.google.com/maps/api/js",
+
         "src": "../src"
     },
     shim: {

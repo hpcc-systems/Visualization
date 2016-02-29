@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Choropleth"], factory);
+        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Choropleth.css"], factory);
     } else {
         root.map_Choropleth = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette, root.api_ITooltip);
     }

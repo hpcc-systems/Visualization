@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "./Utility", "../common/Palette", "../common/Utility", "css!./GeoHash"], factory);
+        define(["d3", "topojson", "./Layer", "./Utility", "../common/Palette", "../common/Utility", "css!./GeoHash.css"], factory);
     } else {
         root.map_GeoHash = factory(root.d3, root.topojson, root.map_Layer, root.map_Utility, root.common_Palette, root.common_Utility);
     }

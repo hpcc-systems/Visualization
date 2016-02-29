@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./SVGWidget", "css!./Shape"], factory);
+        define(["d3", "./SVGWidget", "css!./Shape.css"], factory);
     } else {
         root.common_Shape = factory(root.d3, root.common_SVGWidget);
     }

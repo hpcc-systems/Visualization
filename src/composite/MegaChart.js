@@ -86,7 +86,7 @@
             .value("CSV")
         ;
         this._csvButton.click = function (a) {
-            Utility.downloadData("CSV", [context._chart.columns()].concat(context._chart.data()).join("\r\n"));
+            Utility.downloadBlob("CSV", context._chart.export("CSV"));
         };
 
         this._chartTypeSelect = new Select()

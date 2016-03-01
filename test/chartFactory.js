@@ -130,6 +130,22 @@
                 });
             }
         },
+        HexBin: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/HexBin"], function (DataFactory, HexBin) {
+                    var randomX = d3.random.normal(200, 80),
+                        randomY = d3.random.normal(200, 80),
+                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+
+                    callback(new HexBin()
+                        .xAxisType("linear")
+                        .yAxisType("linear")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(points)
+                    );
+                });
+            }
+        },
         Line: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {

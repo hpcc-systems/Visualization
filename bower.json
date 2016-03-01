@@ -44,7 +44,8 @@
     "d3-cloud": "~1.2.1",
     "amcharts3": "~3.18.0",
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
-    "es6-promise": "~3.0.2"
+    "es6-promise": "~3.0.2",
+    "d3-hexbin": "https://raw.githubusercontent.com/d3/d3-plugins/master/hexbin/hexbin.js"
   },
   "resolutions": {
     "d3": "~3.5.6"

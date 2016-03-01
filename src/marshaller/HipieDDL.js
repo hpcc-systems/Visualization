@@ -204,6 +204,17 @@
     }
     TableMappings.prototype = Object.create(SourceMappings.prototype);
 
+    TableMappings.prototype.init = function () {
+        this.visualization.label.forEach(function (label, idx) {
+            this.reverseMappings[this.mappings[label]] = label;
+            this.columns.push(label);
+            this.columnsIdx[label] = idx;
+            this.columnsRHS[idx] = this.mappings[label];
+            this.columnsRHSIdx[this.mappings[label]] = idx;
+            this.hasMappings = true;
+        }, this);
+    };
+
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
         this.icon = visualization.icon || {};

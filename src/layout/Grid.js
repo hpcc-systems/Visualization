@@ -32,6 +32,8 @@
     Grid.prototype.publish("gutter", 4, "number", "Gap Between Widgets",null,{tags:["Basic"]});
     Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Basic"] });
     
+    Grid.prototype.publish("moveByTitleOnly", false, "boolean", "Restrict Cell dragging to the bounds of the Grid",null,{tags:["Basic"]});
+    
     Grid.prototype.publish("designGridColor", "#dddddd", "html-color", "Color of grid lines in Design Mode",null,{tags:["Private"]});
     Grid.prototype.publish("designGridColorExtra", "#333333", "html-color", "Color of excess grid lines in Design Mode",null,{tags:["Private"]});
 
@@ -193,7 +195,10 @@
         else if(Math.floor(left) <= e.clientX && Math.ceil(left + handleSize) >= e.clientX && onWestEdge){
             handle += "w";//within WEST handle range
         }
-        return handle;
+        if(handle === "" && (!this.moveByTitleOnly() || d3.selectAll(".surfaceTitle:hover")[0].length > 0)){
+            handle = "title";
+        }
+        return handle ? handle : undefined;
     };
     
     Grid.prototype.createDropTarget = function (loc,handle) {
@@ -312,20 +317,21 @@
                     this._sizeY = Math.abs(loc[1] - pivotCell[1]) + 1;
                     break;
             }
-        } else if (document.getElementById("grid-drop-target"+this.id()) !== null) {
-            var target = this.getCell(loc[1], loc[0]);
-            if(target !== null && this._dragCell._id !== target._id){
-                document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target drop-target-over";
-                this._locX = target.gridCol();
-                this._locY = target.gridRow();
-                this._sizeX = target.gridColSpan();
-                this._sizeY = target.gridRowSpan();
-            } else {
-                document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target";
-                this._locX = loc[0] - this._dragCellOffsetX;
-                this._locY = loc[1] - this._dragCellOffsetY;
-                this._sizeX = this._dragCell.gridColSpan();
-                this._sizeY = this._dragCell.gridRowSpan();
+            if(this._handle === "title"){
+                var target = this.getCell(loc[1], loc[0]);
+                if(target !== null && this._dragCell._id !== target._id){
+                    document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target drop-target-over";
+                    this._locX = target.gridCol();
+                    this._locY = target.gridRow();
+                    this._sizeX = target.gridColSpan();
+                    this._sizeY = target.gridRowSpan();
+                } else {
+                    document.getElementById("grid-drop-target"+this.id()).className = "grid-drop-target";
+                    this._locX = loc[0] - this._dragCellOffsetX;
+                    this._locY = loc[1] - this._dragCellOffsetY;
+                    this._sizeX = this._dragCell.gridColSpan();
+                    this._sizeY = this._dragCell.gridRowSpan();
+                }
             }
         }
         
@@ -367,32 +373,33 @@
                 ;
                 
                 context._handle = context.overHandle(d3.event.sourceEvent);
-                if(context._dragCell._dragHandles.indexOf(context._handle) === -1){
-                    context._handle = undefined;
-                }
+                if(context._handle){
+                    context._dragCellOffsetX = context._currLoc[0] - d.gridCol();
+                    context._dragCellOffsetY = context._currLoc[1] - d.gridRow();
+                    context.createDropTarget(context._currLoc,context._handle);
                 
-                context._dragCellOffsetX = context._currLoc[0] - d.gridCol();
-                context._dragCellOffsetY = context._currLoc[1] - d.gridRow();
-                context.createDropTarget(context._currLoc,context._handle);
-                setTimeout(function () {
-                    context.contentDiv.selectAll(".cell_." + context._id)
-                        .classed("dragItem", function (d2) {
-                            return d._id === d2._id;
-                        }).classed("notDragItem", function (d2) {
-                            return d._id !== d2._id;
-                        })
-                    ;
-                }, 0);
+                    setTimeout(function () {
+                        context.contentDiv.selectAll(".cell_." + context._id)
+                            .classed("dragItem", function (d2) {
+                                return d._id === d2._id;
+                            }).classed("notDragItem", function (d2) {
+                                return d._id !== d2._id;
+                            })
+                        ;
+                    }, 0);
+                }
                 
                 context._initSelection = true;
             })
             .on("drag", function (d) {
                 context._initSelection = false;
                 context._dragCell = d;
-                context.findCurrentLocation(d3.event.sourceEvent);
-                if(typeof (context._currLocation) === "undefined" || (context._currLocation[0] !== context._currLoc[0] || context._currLocation[1] !== context._currLoc[1])){
-                    context._currLocation = context._currLoc;
-                    context.moveDropTarget(context._currLoc);
+                if(context._handle){
+                    context.findCurrentLocation(d3.event.sourceEvent);
+                    if(typeof (context._currLocation) === "undefined" || (context._currLocation[0] !== context._currLoc[0] || context._currLocation[1] !== context._currLoc[1])){
+                        context._currLocation = context._currLoc;
+                        context.moveDropTarget(context._currLoc);
+                    }
                 }
             })
             .on("dragend", function () {
@@ -408,7 +415,7 @@
                     .style("visibility", null)
                 ;
         
-                if (context._handle) {
+                if (context._handle && context._handle !== "title") {
                     if(context.restrictDraggingOut()){
                         //Contain the dragCell (while 'resizing') within the bounds of the Grid
                         var locY = context._locY > 0 ? context._locY : 0;
@@ -426,7 +433,8 @@
                         context._dragCell.gridCol(context._locX);
                         context._dragCell.gridColSpan(context._sizeX);
                     }
-                } else {
+                } 
+                else if(context._handle === "title") {
                     var targetRow = context._currLoc[1];
                     var targetCol = context._currLoc[0];
                     var targetRowSpan = context._dragCell.gridRowSpan();
@@ -477,7 +485,9 @@
                     ;
                 }
                 var gridDropTarget = document.getElementById("grid-drop-target"+context.id());
-                gridDropTarget.parentNode.removeChild(gridDropTarget);
+                if(gridDropTarget){
+                    gridDropTarget.parentNode.removeChild(gridDropTarget);
+                }
                 
                 setTimeout(function () {
                     context.contentDiv.selectAll(".cell_." + context._id)

@@ -242,6 +242,7 @@
                     }
                 }
             });
+            dataObj.__origRow = dataRow;
             dataObjArr.push(dataObj);
         });
 
@@ -250,6 +251,11 @@
             dataObjArr.sort(function (a, b) {
                 return a[sortField] - b[sortField];
             });
+            this.data(dataObjArr.map(function (row) {
+                var retVal = row.__origRow;
+                delete row.__origRow;
+                return retVal;
+            }));
         }
 
         return dataObjArr;

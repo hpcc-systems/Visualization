@@ -153,13 +153,13 @@
                 
         Common.prototype.update.apply(this, arguments);
         
-        element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize()+"px" });
+        element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize_exists() ? this.axisFontSize() + "px" : null });
         element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
 
         element.selectAll(".c3 .c3-axis.c3-axis-x text").style({ "fill": this.xAxisFontColor() });
         element.selectAll(".c3 .c3-axis.c3-axis-y text").style({ "fill": this.yAxisFontColor() });
 
-        element.selectAll(".c3 .c3-axis path").style({ "stroke-width": this.axisLineWidth()+"px" });
+        element.selectAll(".c3 .c3-axis path").style({ "stroke-width": this.axisLineWidth_exists() ? this.axisLineWidth() + "px" : null });
         element.selectAll(".c3 .c3-axis-x path, .c3 .c3-axis-x line").style({ "stroke": this.xAxisBaselineColor() });
         element.selectAll(".c3 .c3-axis-y path, .c3 .c3-axis-y line").style({ "stroke": this.yAxisBaselineColor() });
 

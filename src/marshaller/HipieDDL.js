@@ -807,8 +807,10 @@
             titleWidget = titleWidget.locateParentWidget();
         }
         if (titleWidget) {
+            var title = titleWidget.title();
+            var titleParts = title.split(" (");
             titleWidget
-                .title(this.title + (params ? " (" + params + ")" : ""))
+                .title(titleParts[0] + (params ? " (" + params + ")" : ""))
                 .render()
             ;
         } else {

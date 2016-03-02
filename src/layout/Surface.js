@@ -71,11 +71,11 @@
             .text(function (d) { return d; })
             .style("text-align",this.surfaceTitleAlignment())
             .style("color",this.surfaceTitleFontColor())
-            .style("font-size",this.surfaceTitleFontSize()+"px")
+            .style("font-size",this.surfaceTitleFontSize_exists() ? this.surfaceTitleFontSize() + "px" : null)
             .style("font-family",this.surfaceTitleFontFamily())
             .style("font-weight",this.surfaceTitleFontBold() ? "bold" : "normal")
             .style("background-color",this.surfaceTitleBackgroundColor())
-            .style("padding",this.surfaceTitlePadding()+"px")
+            .style("padding",this.surfaceTitlePadding_exists() ? this.surfaceTitlePadding() + "px" : null)
         ;
         titles.exit().remove();
 

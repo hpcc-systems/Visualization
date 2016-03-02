@@ -32,7 +32,7 @@
         CommonND.prototype.update.apply(this, arguments);
 
         element.selectAll(".c3-line").style({
-            "stroke-width": this.lineWidth()+"px",
+            "stroke-width": this.lineWidth_exists() ? this.lineWidth() + "px" : null,
             "stroke-opacity": this.lineOpacity(),
             "stroke-dasharray": this.lineDashStyle().toString(),
         });

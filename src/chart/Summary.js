@@ -79,8 +79,8 @@
         var row = this._playIntervalIdx < data.length ? data[this._playIntervalIdx] : ["", ""];
         element
             .style({
-                width: this.fixedSize() ? this.minWidth() + "px" : "100%",
-                height: this.fixedSize() ? this.minHeight() + "px" : "100%"
+                width: this.fixedSize() ? this.minWidth_exists() ? this.minWidth() + "px" : null : "100%",
+                height: this.fixedSize() ? this.minHeight_exists() ? this.minHeight() + "px" : null : "100%"
             })
         ;
         this._mainDiv
@@ -88,8 +88,8 @@
             .style({
                 "background-color": this.colorFill(),
                 "color": this.colorStroke(),
-                "min-width": this.minWidth() + "px",
-                "min-height": this.minHeight() + "px"
+                "min-width": this.minWidth_exists() ? this.minWidth() + "px" : null,
+                "min-height": this.minHeight_exists() ? this.minHeight() + "px" : null
             })
         ;
         this._headerDiv

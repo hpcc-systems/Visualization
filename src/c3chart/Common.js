@@ -139,7 +139,7 @@
                 .style({
                     "stroke": this.fontColor(),
                     "fill": this.fontColor(),
-                    "font-size": this.fontSize()+"px",
+                    "font-size": this.fontSize_exists() ? this.fontSize() + "px" : null,
                     "font-family": this.fontFamily(),
                 })
                 .attr("font-family",this.fontFamily());
@@ -147,7 +147,7 @@
         element.selectAll(".c3 .c3-legend-item text")
                 .style({
                     "fill": this.legendFontColor(),
-                    "font-size": this.legendFontSize()+"px",
+                    "font-size": this.legendFontSize_exists() ? this.legendFontSize() + "px" : null,
                     "font-family": this.legendFontFamily(),
                     "font-weight": this.legendFontBold() ? "bold" : "normal",
                     "font-style": this.legendFontItalic() ? "italic" : "normal"

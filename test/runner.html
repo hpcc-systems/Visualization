@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>HPCC Visualization Unit Tests</title>
@@ -6,15 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
     <link rel="stylesheet" href="runner.css" />
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
 </head>
 <body>
     <div id="mocha"></div>
     <div id="testWidget"></div>
     <div id="persistSource" class="widget"></div>
     <div id="persistTarget" class="widget"></div>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script src="../node_modules/chai/chai.js"></script>
-
     <script src="../node_modules/requirejs/require.js"></script>
     <script src="../src/config.js"></script>
     <script>
@@ -29,7 +28,7 @@
     <script>
         mocha.setup('bdd');
         var assert = chai.assert;
-        require(["./widgets", "./persist", "./utility", "./datagrid"], function () {
+        require(["./loader", "./widgets", "./persist", "./utility", "./datagrid"], function () {
             mocha.run();
         });
     </script>

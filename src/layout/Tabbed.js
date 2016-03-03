@@ -71,7 +71,7 @@
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
 
-        element.style("padding", this.surfacePadding() + "px");
+        element.style("padding", this.surfacePadding_exists() ? this.surfacePadding() + "px" : null);
 
         var tabs = this._tabContainer.selectAll(".tab-button.id" + this.id()).data(this.showTabs() ? this.labels() : [], function (d) { return d; });
         tabs.enter().append("span")
@@ -129,7 +129,7 @@
                     .style("position", "absolute")
                 ;
                 this._contentContainer
-                    .style("top", this.surfacePadding() + "px")
+                    .style("top", this.surfacePadding_exists() ? this.surfacePadding() + "px" : null)
                     .style("position", "absolute")
                 ;
                 break;

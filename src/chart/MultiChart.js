@@ -28,10 +28,10 @@
     MultiChart.prototype.implements(INDChart.prototype);
 
     MultiChart.prototype._1DChartTypes = [
-        { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
     ].map(function(item) { item.family = "1D"; return item;});
     MultiChart.prototype._2DChartTypes = [
+        { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },

@@ -1,21 +1,22 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../api/I1DChart", "css!font-awesome", "css!./Summary"], factory);
+        define(["d3", "../common/HTMLWidget", "../api/I2DChart", "css!font-awesome", "css!./Summary"], factory);
     } else {
-        root.chart_Summary = factory(root.d3, root.common_HTMLWidget, root.api_I1DChart);
+        root.chart_Summary = factory(root.d3, root.common_HTMLWidget, root.api_I2DChart);
     }
-}(this, function (d3, HTMLWidget, I1DChart) {
+}(this, function (d3, HTMLWidget, I2DChart) {
     function Summary() {
         HTMLWidget.call(this);
         this._tag = "div";
 
         this._drawStartPos = "center";
-
+        this.playInterval(this.playInterval());
+        this._playIntervalIdx = 0;
     }
     Summary.prototype = Object.create(HTMLWidget.prototype);
     Summary.prototype.constructor = Summary;
-    Summary.prototype.implements(I1DChart.prototype);
+    Summary.prototype.implements(I2DChart.prototype);
     Summary.prototype._class += " chart_Summary";
 
     Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null);
@@ -26,6 +27,27 @@
     Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
     Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");
     Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
+    Summary.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });
+
+    var playInterval = Summary.prototype.playInterval;
+    Summary.prototype.playInterval = function (_) {
+        var retVal = playInterval.apply(this, arguments);
+        if (arguments.length) {
+            if (this._playIntervalHandle) {
+                clearInterval(this._playIntervalHandle);
+            }
+            var context = this;
+            if (_) {
+                this._playIntervalHandle = setInterval(function () {
+                    context._playIntervalIdx++;
+                    if (context._renderCount && context.data().length) {
+                        context.render();
+                    }
+                }, _);
+            }
+        }
+        return retVal;
+    };
 
     Summary.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -34,23 +56,27 @@
         var context = this;
         this._headerDiv = this._mainDiv.append("h2")
             .on("click", function (d) {
-                var clickEvent = {};
-                clickEvent[context.columns()] = context.data();
-                context.click(clickEvent, "value");
+                context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
             })
         ;
         this._textDiv = this._mainDiv.append("div")
             .attr("class", "text")
             .on("click", function (d) {
-                var clickEvent = {};
-                clickEvent[context.columns()] = context.data();
-                context.click(clickEvent, "text");
+                context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
             })
         ;
     };
 
     Summary.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+        if (this.data().length) {
+
+        }
+        var data = this.data();
+        if (this._playIntervalIdx >= data.length) {
+            this._playIntervalIdx = 0;
+        }
+        var row = this._playIntervalIdx < data.length ? data[this._playIntervalIdx] : ["", ""];
         element
             .style({
                 width: this.fixedSize() ? this.minWidth() + "px" : "100%",
@@ -68,10 +94,10 @@
         ;
         this._headerDiv
             .style("color", this.colorStroke())
-            .text(this.data())
+            .text(row[1])
         ;
         this._textDiv
-            .text(this.columns())
+            .text(row[0])
         ;
         var context = this;
         var moreDivs = this._mainDiv.selectAll(".more").data(this.moreText() ? [this.moreText()] : []);

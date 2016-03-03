@@ -40,7 +40,6 @@
     XYAxis.prototype.publish("yAxisDomainHigh", "", "string", "Y-Axis High");
     XYAxis.prototype.publish("yAxisDomainPadding", 5, "number", "Y-Axis Low/High Padding (if no low/high specified");
 
-    XYAxis.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
     XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
@@ -389,10 +388,6 @@
             case "time":
                 this.dataScale = d3.time.scale();
                 this.dataFormatter = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : null;
-
-                if (this.sortDates()) {
-                    this.data(Utility.naturalSort(this.data(), "ascending", 0));
-                }
                 break;
             case "ordinal":
                 /* falls through */

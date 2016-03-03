@@ -67,8 +67,6 @@
 
     CommonSerial.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    CommonSerial.prototype.publish("sortDates", false, "boolean", "Sort date field for timeseries data");
-    
     CommonSerial.prototype.publish("axisMinPeriod", "MM", "string", "Minimum period when parsing dates");
 
     //CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
@@ -244,14 +242,20 @@
                     }
                 }
             });
+            dataObj.__origRow = dataRow;
             dataObjArr.push(dataObj);
         });
 
-        if (this.sortDates()) {
+        if (this.xAxisType() === "time") {
             var sortField = context.columns()[0];
             dataObjArr.sort(function (a, b) {
                 return a[sortField] - b[sortField];
             });
+            this.data(dataObjArr.map(function (row) {
+                var retVal = row.__origRow;
+                delete row.__origRow;
+                return retVal;
+            }));
         }
 
         return dataObjArr;

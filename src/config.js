@@ -20,6 +20,7 @@ require.config({
         "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
         "es6-promise": "../bower_components/es6-promise/promise",
+        "d3-hexbin": "../bower_components/d3-hexbin/index",
 
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -117,6 +118,7 @@ case "cdn.rawgit.com":
             "d3-cloud": "//" + window.location.hostname + "/jasondavies/d3-cloud/v1.2.0/build/d3.layout.cloud",
             "font-awesome": "//" + window.location.hostname + "/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
             "es6-promise": "//" + window.location.hostname + "/jakearchibald/es6-promise/v3.0.2/dist/es6-promise.min",
+            "d3-hexbin": "//" + window.location.hostname + "/d3/d3-plugins/master/hexbin/hexbin",
 
             "amcharts": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
             "amcharts.funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/funnel",

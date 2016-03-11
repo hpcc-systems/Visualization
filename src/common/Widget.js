@@ -50,18 +50,13 @@
     Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
 
     Widget.prototype.export = function (_) {
-        var formattedData;
         switch(_) {
             case "TSV":
-                formattedData = this._db.tsv();
-                break;
+                return this._db.tsv();
             case "JSON":
-                formattedData = this._db.json();
-                break;
-            default:
-                formattedData = this._db.csv();
+                return this._db.json();
         }
-        return formattedData;
+        return this._db.csv();
     };
 
     Widget.prototype.leakCheck = function (newNode) {

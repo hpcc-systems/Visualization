@@ -49,6 +49,7 @@
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
         { id: "STEP", display: "Step", widgetClass: "chart_Step" },
         { id: "SCATTER", display: "Scatter", widgetClass: "chart_Scatter" },
+        { id: "HEXBIN", display: "Hex Bin", widgetClass: "chart_HexBin" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },

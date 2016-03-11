@@ -22,7 +22,7 @@
         this.id = id;
         this.type = type;
         this.origDefaultValue = defaultValue;
-        this.defaultValue = defaultValue;
+        this.defaultValue = defaultValue === null ? undefined : defaultValue;
         this.description = description;
         this.set = set;
         this.ext = ext || {};

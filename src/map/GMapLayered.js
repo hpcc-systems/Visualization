@@ -130,8 +130,9 @@
     };
 
     GMapLayered.prototype.render = function (callback) {
-        GMap.prototype.render.apply(this, arguments);
+        var retVal = GMap.prototype.render.apply(this, arguments);
         this.layered.fullRender();
+        return retVal;
     };
 
     return GMapLayered;

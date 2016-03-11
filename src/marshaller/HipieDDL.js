@@ -204,6 +204,17 @@
     }
     TableMappings.prototype = Object.create(SourceMappings.prototype);
 
+    TableMappings.prototype.init = function () {
+        this.visualization.label.forEach(function (label, idx) {
+            this.reverseMappings[this.mappings[label]] = label;
+            this.columns.push(label);
+            this.columnsIdx[label] = idx;
+            this.columnsRHS[idx] = this.mappings[label];
+            this.columnsRHSIdx[this.mappings[label]] = idx;
+            this.hasMappings = true;
+        }, this);
+    };
+
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
         this.icon = visualization.icon || {};
@@ -411,10 +422,11 @@
 
     Source.prototype.getData = function () {
         var db = this.getOutput().db;
-        var retVal = this.mappings.doMapAll(db);
-        if (retVal.length && this.sort) {
-            Utility.multiSort(retVal, db.hipieMapSortArray(this.sort));
+        var dataRef = db.data();
+        if (dataRef.length && this.sort) {
+            Utility.multiSort(dataRef, db.hipieMapSortArray(this.sort));
         }
+        var retVal = this.mappings.doMapAll(db);
         if (this.reverse) {
             retVal.reverse();
         }

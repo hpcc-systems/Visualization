@@ -241,7 +241,7 @@
                 }
             };
         },
-        downloadData: function (format, data, id) {
+        downloadBlob: function (format, blob, id) {
             id = id || "data";
             var currentdate = new Date(); 
             var timeFormat =  d3.time.format("%Y-%m-%dT%H_%M_%S");
@@ -264,9 +264,9 @@
             var a = document.createElement('a');
             if (navigator.msSaveBlob) { // IE10+
                 a = null;
-                return navigator.msSaveBlob(new Blob([data], { type: mimeType }), filename);
+                return navigator.msSaveBlob(new Blob([blob], { type: mimeType }), filename);
             } else if ('download' in a) { //html 5
-                a.href = 'data:' + mimeType + ',' + encodeURIComponent(data);
+                a.href = 'data:' + mimeType + ',' + encodeURIComponent(blob);
                 a.setAttribute('download', filename);
                 document.body.appendChild(a);
                 setTimeout(function() {
@@ -278,7 +278,7 @@
                 a = null;
                 var frame = document.createElement('iframe');
                 document.body.appendChild(frame);
-                frame.src = 'data:' + mimeType + ',' + encodeURIComponent(data);
+                frame.src = 'data:' + mimeType + ',' + encodeURIComponent(blob);
 
                 setTimeout(function() {
                     document.body.removeChild(frame);

@@ -17,7 +17,11 @@
 
     Toolbar.prototype.publish("title", "", "string", "Title",null,{tags:["Intermediate"]});
     
-    Toolbar.prototype.publish("backgroundColor", null, "html-color", "Styling",null,{tags:["Intermediate"]});
+    Toolbar.prototype.publish("fontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
+    Toolbar.prototype.publish("fontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
+    Toolbar.prototype.publish("fontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
+    Toolbar.prototype.publish("fontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
+    Toolbar.prototype.publish("backgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
     
     Toolbar.prototype.publish("responsive", true, "boolean", "Adapts to pixel width",null,{tags:["Basic"]});
     
@@ -49,6 +53,11 @@
             span.style("padding", offset+"px");
         });
         title.selectAll("div.toolbar-title > span")
+            .style("font-size", this.fontSize_exists() ? this.fontSize() + "px" : null)
+            .style("color", this.fontColor_exists() ? this.fontColor() : null)
+            .style("font-family", this.fontFamily_exists() ? this.fontFamily() : null)
+            .style("font-weight", this.fontBold_exists() ? (this.fontBold() ? "bold" : "normal") : null)
+            .style("background-color", this.backgroundColor_exists() ? this.backgroundColor() : null)
             .text(context.title())
         ;
         title.exit().remove();

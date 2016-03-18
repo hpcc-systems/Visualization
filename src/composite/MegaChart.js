@@ -32,6 +32,7 @@
     MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
 
     MegaChart.prototype.publishReset();
+
     MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
     
@@ -42,6 +43,14 @@
     MegaChart.prototype.publish("showCSV",true,"boolean","Show/Hide CSV button", null, {tags:["Basic"]});
     
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
+
+    //TODO:  Proxy + themes not working...
+    MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
+    MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
+    MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
+    MegaChart.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
+    MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
+
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("chart", "_chart", "chart");
 
@@ -137,6 +146,15 @@
             this.setContent("top", this.showToolbar() ? this._toolbar : null);
             this._prevShowToolbar = this.showToolbar();
         }
+
+        //TODO:  Proxy + themes not working...
+        this._toolbar
+            .fontSize(this.titleFontSize())
+            .fontColor(this.titleFontColor())
+            .fontFamily(this.titleFontFamily())
+            .fontBold(this.titleFontBold())
+            .backgroundColor(this.titleBackgroundColor())
+        ;
 
         this._chart
                 .data(this.data());

@@ -24,6 +24,10 @@
             .padRadius(this.calcRadius())
             .innerRadius(this.innerRadius())
         ;
+        this
+            .tooltipTick(false)
+            .tooltipOffset(0)
+        ;
     }
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.constructor = Pie;
@@ -47,6 +51,12 @@
     Pie.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._selection = new Utility.SimpleSelection(element);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+            })
+        ;
     };
 
     Pie.prototype.update = function (domNode, element) {
@@ -71,15 +81,8 @@
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d.data, context.columns(), 1);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d.data, context.columns(), 1);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .on("mouseover", arcTween(0, 0))
                     .on("mouseout", arcTween(-5, 150))
                 ;

@@ -31,6 +31,13 @@
         this._choroplethStates = this._choroplethTransform.insert("g", ".mesh");
         this._selection = new Utility.SimpleSelection(this._choroplethStates);
         this.choroPaths = d3.select(null);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                var code = rFeatures[d[0]].id;
+                return context.tooltipFormat({ label: usStates.stateNames[code].name, value: d[1] });
+            })
+        ;
     };
 
     ChoroplethStates.prototype.layerUpdate = function (base) {
@@ -44,17 +51,8 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
-            .on("mouseover.tooltip", function (d) {
-                var code = rFeatures[d[0]].id;
-                context.tooltipShow([usStates.stateNames[code].name, d[1]], context.columns(), 1);
-            })
-            .on("mouseout.tooltip", function (d) {
-                context.tooltipShow();
-            })
-            .on("mousemove.tooltip", function (d) {
-                var code = rFeatures[d[0]].id;
-                context.tooltipShow([usStates.stateNames[code].name, d[1]], context.columns(), 1);
-            })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
         ;
         this.choroPaths
             .attr("d", function (d) {

@@ -385,7 +385,7 @@
                     tdContents.cell.target(this);
                     tdContents.cell._parentWidget = context;
                     if (tdContents.cell._class.indexOf("childWidget") < 0) {
-                        tdContents.cell._class = "childWidget " + tdContents._class;
+                        tdContents.cell._class = "childWidget " + tdContents.cell._class;
                     }
                     tdContents.cell.render();
                     context._childWidgets.push(tdContents.cell);

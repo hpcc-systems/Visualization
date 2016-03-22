@@ -12,7 +12,7 @@
         "d3": "//rawgit.com/mbostock/d3/v3.5.16/d3.min",
         "c3": "//rawgit.com/masayuki0812/c3/0.4.10/c3.min",
         "dagre": "//rawgit.com/cpettitt/dagre/v0.7.3/dist/dagre.min",
-        "topojson": "//rawgit.com/mbostock/topojson/v1.6.24/topojson",
+        "topojson": "//rawgit.com/mbostock-bower/topojson-bower/v1.6.24/topojson",
         "colorbrewer": "//rawgit.com/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
         "d3-cloud": "//rawgit.com/jasondavies/d3-cloud/v1.2.1/build/d3.layout.cloud",
         "font-awesome": "//rawgit.com/FortAwesome/Font-Awesome/v4.5.0/css/font-awesome.min",

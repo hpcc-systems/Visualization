@@ -5,12 +5,14 @@
     } else {
         root.chart_HexBin = factory(root.d3, root.common_SVGWidget, root.chart_XYAxis, root.api_INDChart, root.api_ITooltip, root.common_Palette);
     }
-}(this, function (d3, SVGWidget, XYAxis, INDChart, ITooltip, Palette) {
+}(this, function (d3, SVGWidget, XYAxis, INDChart, ITooltip, Palette, D3HexBin) {
+    D3HexBin = D3HexBin || d3.hexbin || window.d3.hexbin;
+
     function HexBin(target) {
         XYAxis.call(this);
         INDChart.call(this);
         ITooltip.call(this);
-        this._hexbin = new d3.hexbin();
+        this._hexbin = new D3HexBin();
     }
     HexBin.prototype = Object.create(XYAxis.prototype);
     HexBin.prototype.constructor = HexBin;

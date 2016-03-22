@@ -21,7 +21,7 @@
     SerialAxis.prototype.publish("axisTitle", "", "string", "X-Axis Title",null,{tags:["Basic","Shared"]});
     SerialAxis.prototype.publish("axisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Basic","Shared"]});
     SerialAxis.prototype.publish("axisTitleFontColor", "#000000", "html-color", "Axis Title Text Style (Color)",null,{tags:["Basic","Shared"]});
-    SerialAxis.prototype.publish("axisLabelRotation", null, "number", "Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
+    SerialAxis.prototype.publish("axisLabelRotation", 0, "number", "Axis Label Rotation", null, {min:0,max:90,step:0.1,inputType:"range",tags:["Intermediate","Shared"]});
     SerialAxis.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
     SerialAxis.prototype.publish("axisAlpha", 1, "number", "Axis Alpha",null,{tags:["Intermediate"]});
     SerialAxis.prototype.publish("axisAutoGridCount", true, "boolean", "Specifies Whether Number of GridCount Is Specified Automatically, According To The Axis Size",null,{tags:["Advanced"]});

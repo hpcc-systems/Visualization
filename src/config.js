@@ -113,7 +113,7 @@ case "cdn.rawgit.com":
             "d3": "//" + window.location.hostname + "/mbostock/d3/v3.5.16/d3.min",
             "c3": "//" + window.location.hostname + "/masayuki0812/c3/0.4.10/c3.min",
             "dagre": "//" + window.location.hostname + "/cpettitt/dagre/v0.7.3/dist/dagre.min",
-            "topojson": "//" + window.location.hostname + "/mbostock/topojson/v1.6.24/topojson",
+            "topojson": "//" + window.location.hostname + "/mbostock-bower/topojson-bower/v1.6.24/topojson",
             "colorbrewer": "//" + window.location.hostname + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": "//" + window.location.hostname + "/jasondavies/d3-cloud/v1.2.1/build/d3.layout.cloud",
             "font-awesome": "//" + window.location.hostname + "/FortAwesome/Font-Awesome/v4.5.0/css/font-awesome.min",

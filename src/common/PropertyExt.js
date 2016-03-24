@@ -9,6 +9,7 @@
     var __meta_ = "__meta_";
     var __private_ = "__private_";
     var __prop_ = "__prop_";
+    var __default_ = "__default_";
 
     function isMeta(key) {
         return key.indexOf(__meta_) === 0;
@@ -188,8 +189,8 @@
         var meta = this[__meta_ + id] = new Meta(id, defaultValue, type, description, set, ext);
         this[id] = function (_) {
             if (!arguments.length) {
-                if (this[id + "_disabled"]()) return meta.defaultValue;
-                return this[__prop_ + id] !== undefined ? this[__prop_ + id] : meta.defaultValue;
+                if (this[id + "_disabled"]()) return this[id + "_default"]();
+                return this[__prop_ + id] !== undefined ? this[__prop_ + id] : this[id + "_default"]();
             }
             if (_ === "" && meta.ext.optional) {
                 _ = null;
@@ -208,10 +209,22 @@
             return ext && ext.disable ? ext.disable(this) : false;
         };
         this[id + "_modified"] = function () {
-            return this[__prop_ + id] !== undefined;
+            return this[__prop_ + id] !== undefined && this[__prop_ + id] !== this[id + "_default"]();
         };
         this[id + "_exists"] = function () {
-            return this[__prop_ + id] !== undefined || meta.defaultValue !== undefined;
+            return this[__prop_ + id] !== undefined || this[id + "_default"]() !== undefined;
+        };
+        this[id + "_default"] = function (_) {
+            if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;
+            if (_ === "") {
+                _ = null;
+            }
+            if (_ === null) {
+                delete this[__default_ + id];
+            } else {
+                this[__default_ + id] = _;
+            }
+            return this;
         };
         this[id + "_reset"] = function () {
             switch (type) {
@@ -271,14 +284,22 @@
         this[id + "_modified"] = function () {
             return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
         };
+        this[id + "_exists"] = function () {
+            return this[proxy][method + "_exists"]();
+        };
+        this[id + "_default"] = function (_) {
+            if (!arguments.length) return this[proxy][method + "_default"]();
+            this[proxy][method + "_default"](_);
+            return this;
+        };
         this[id + "_reset"] = function () {
             this[proxy][method + "_reset"]();
         };
     };
 
-    PropertyExt.prototype.monitor = function (func) {
+    PropertyExt.prototype._monitorProperty = function (propID, func) {
         var context = this;
-        var idx = this._watchArr.push(func) - 1;
+        var idx = this._watchArr.push({ propertyID: propID, callback: func }) - 1;
         return {
             remove: function () {
                 delete context._watchArr[idx];
@@ -286,12 +307,31 @@
         };
     };
 
+    PropertyExt.prototype.monitor = function (func) {
+        var context = this;
+        if (this._watchArr.length === 0) {
+            //  Need to monitor all proxies  as well ---
+            this.publishedProperties().forEach(function (meta) {
+                switch (meta.type) {
+                    case "proxy":
+                        if (this[meta.proxy]) {
+                            this[meta.proxy]._monitorProperty(meta.id, function (key, newVal, oldVal) {
+                                context.broadcast(key, newVal, oldVal);
+                            });
+                        }
+                        break;
+                }
+            }, this);
+        }
+        return this._monitorProperty(undefined, func);
+    };
+
     PropertyExt.prototype.broadcast = function (key, newVal, oldVal) {
-        if (this._watchArr && newVal !== oldVal) {
-            this._watchArr.forEach(function (func) {
-                if (func) {
+        if (this._watchArr.length && newVal !== oldVal) {
+            this._watchArr.forEach(function (monitor) {
+                if ((monitor.propertyID === undefined || monitor.propertyID === key) && monitor.callback) {
                     setTimeout(function () {
-                        func(key, newVal, oldVal);
+                        monitor.callback(key, newVal, oldVal);
                     }, 0);
                 }
             });

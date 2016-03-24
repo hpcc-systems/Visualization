@@ -20,7 +20,7 @@
             this._allCharts[item.display] = newItem;
             this._allCharts[item.widgetClass] = newItem;
         }, this);
-        this._chartTypeProperties = {};
+        this._chartTypeDefaults = {};
     }
     MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -130,9 +130,9 @@
         return this;
     };
 
-    MultiChart.prototype.chartTypeProperties = function (_) {
-        if (!arguments.length) return this._chartTypeProperties;
-        this._chartTypeProperties = _;
+    MultiChart.prototype.chartTypeDefaults = function (_) {
+        if (!arguments.length) return this._chartTypeDefaults;
+        this._chartTypeDefaults = _;
         return this;
     };
     
@@ -167,19 +167,6 @@
                     .size(size)
                 ;
 
-                for (var key in context._chartTypeProperties) {
-                    if (newContent[key]) {
-                        try {
-                            newContent[key](context._chartTypeProperties[key]);
-                        } catch (e) {
-                            console.log("Exception Setting Property:  " + key);
-                        }
-                    } else {
-                        console.log("Unknown Property:  " + key);
-                    }
-                }
-                context._chartTypeProperties = {};
-
                 context.chart(newContent);
                 if (oldContent) {
                     oldContent
@@ -205,6 +192,22 @@
                 d.target(this);
             })
         ;
+
+        var currChart = this.chart();
+        if (currChart) {
+            for (var key in this._chartTypeDefaults) {
+                if (currChart[key + "_default"]) {
+                    try {
+                        currChart[key + "_default"](this._chartTypeDefaults[key]);
+                    } catch (e) {
+                        console.log("Exception Setting Property:  " + key);
+                    }
+                } else {
+                    console.log("Unknown Property:  " + key);
+                }
+            }
+            this._chartTypeDefaults = {};
+        }
 
         var context = this;
         content

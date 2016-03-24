@@ -37,18 +37,18 @@
   "dependencies": {
     "c3": "~0.4.10",
     "colorbrewer": "~1.0.0",
-    "d3": "~3.5.6",
-    "font-awesome": "~4.4.0",
-    "topojson": "~1.6.19",
+    "d3": "~3.5.16",
+    "font-awesome": "~4.5.0",
+    "topojson": "~1.6.24",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",
     "d3-cloud": "~1.2.1",
     "amcharts3": "~3.18.0",
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
-    "es6-promise": "~3.0.2",
+    "es6-promise": "~3.2.1",
     "d3-hexbin": "https://raw.githubusercontent.com/d3/d3-plugins/master/hexbin/hexbin.js"
   },
   "resolutions": {
-    "d3": "~3.5.6"
+    "d3": "~3.5.16"
   },
   "license": "Apache",
   "authors": [

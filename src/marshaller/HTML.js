@@ -85,14 +85,18 @@
         Persist.widgetArrayWalker(this.content(), function (w) {
             widgetArr.push(w);
         });
+        var widgetMap = d3.map(widgetArr, function (d) {
+            return d.id();
+        });
+        var removedMap = d3.map(widgetArr.filter(function (d) { return d.id().indexOf(d._idSeed) !== 0 && d.id().indexOf("_pe") !== 0; }), function (d) {
+            return d.id();
+        });
         var context = this;
         this.marshaller = new HipieDDL.Marshaller()
             .proxyMappings(this.proxyMappings())
             .clearDataOnUpdate(this.clearDataOnUpdate())
             .propogateClear(this.propogateClear())
-            .widgetMappings(d3.map(widgetArr, function (d) {
-                return d.id();
-            }))
+            .widgetMappings(widgetMap)
             .on("commsError", function (source, error) {
                 context.commsError(source, error);
             })
@@ -115,13 +119,16 @@
                 var popupVisualizations = [];
                 var mainVisualizations = [];
                 dashboards[key].visualizations.forEach(function (viz, idx) {
+                    removedMap.remove(viz.id);
                     if (viz.properties.flyout) {
                         popupVisualizations.push(viz);
                     } else {
                         mainVisualizations.push(viz);
                     }
                 });
-
+                removedMap.forEach(function (key, value) {
+                    context.clearContent(value);
+                });
                 var cellRow = 0;
                 var cellCol = 0;
                 var cellDensity = context.cellDensity();

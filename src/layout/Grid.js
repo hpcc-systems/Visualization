@@ -58,10 +58,21 @@
         return size;
     };
 
-    Grid.prototype.clearContent = function () {
+    Grid.prototype.clearContent = function (widget) {
         this.content(this.content().filter(function (contentWidget) {
-            contentWidget.target(null);
-            return false;
+            if (!widget) {
+                contentWidget.target(null);
+                return false;
+            }
+            var w = contentWidget;
+            while (w) {
+                if (widget === w) {
+                    contentWidget.target(null);
+                    return false;
+                }
+                w = w.widget ? w.widget() : null;
+            }
+            return true;
         }));
     };
 

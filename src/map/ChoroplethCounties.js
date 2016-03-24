@@ -13,6 +13,7 @@
             rFeatures[features[key].id] = features[key];
         }
     }
+    var fipsFormatter = d3.format("05d");
     function ChoroplethCounties() {
         Choropleth.call(this);
 
@@ -24,6 +25,8 @@
     ChoroplethCounties.prototype = Object.create(Choropleth.prototype);
     ChoroplethCounties.prototype.constructor = ChoroplethCounties;
     ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
+
+    ChoroplethCounties.prototype.publish("onClickFormatFIPS", false, "boolean", "format FIPS code as a String on Click");
 
     ChoroplethCounties.prototype.layerEnter = function (base, svgElement, domElement) {
         Choropleth.prototype.layerEnter.apply(this, arguments);
@@ -42,7 +45,10 @@
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 if (context._dataMap[d[0]]) {
-                    context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(this));
+                    var row = context.onClickFormatFIPS() ? context._dataMap[d[0]].map(function (cell, idx) {
+                        return context.onClickFormatFIPS() && idx === 0 ? fipsFormatter(cell) : cell;
+                    }) : context._dataMap[d[0]];
+                    context.click(context.rowToObj(row), "weight", context._selection.selected(this));
                 }
             })
             .on("mouseover.tooltip", function (d) {

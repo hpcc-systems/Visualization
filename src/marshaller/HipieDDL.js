@@ -566,185 +566,180 @@
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
 
-        if (this.dashboard.marshaller._widgetMappings.has(visualization.id)) {
-            this.setWidget(this.dashboard.marshaller._widgetMappings.get(visualization.id), true);
-        } else {
-            var context = this;
-            switch (this.type) {
-                case "CHORO":
-                    if (this.source.mappings.contains("state")) {
-                        this.loadWidget("src/map/ChoroplethStates", function (widget) {
-                            widget
-                                .id(visualization.id)
-                                .paletteID(visualization.color)
-                            ;
-                        });
-                    } else if (this.source.mappings.contains("county")) {
-                        this.loadWidget("src/map/ChoroplethCounties", function (widget) {
-                            widget
-                                .id(visualization.id)
-                                .paletteID(visualization.color)
-                            ;
-                        });
+        var context = this;
+        switch (this.type) {
+            case "CHORO":
+                if (this.source.mappings.contains("state")) {
+                    this.loadWidget("src/map/ChoroplethStates", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .paletteID_default(visualization.color)
+                        ;
+                    });
+                } else if (this.source.mappings.contains("county")) {
+                    this.loadWidget("src/map/ChoroplethCounties", function (widget) {
+                        widget
+                            .id(visualization.id)
+                            .paletteID_default(visualization.color)
+                        ;
+                    });
 
-                    } else if (this.source.mappings.contains("geohash")) {
-                        this.loadWidget("src/map/Layered", function (widget) {
-                            widget
-                                .id(visualization.id)
-                            ;
-                        });
-                    }
-                    break;
-                case "2DCHART":
-                case "PIE":
-                case "BUBBLE":
-                case "BAR":
-                case "WORD_CLOUD":
-                    this.loadWidget("src/composite/MegaChart", function (widget) {
+                } else if (this.source.mappings.contains("geohash")) {
+                    this.loadWidget("src/map/Layered", function (widget) {
                         widget
                             .id(visualization.id)
-                            .legendPosition("none")
-                            .chartType(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     });
-                    break;
-                case "LINE":
-                    this.loadWidget("src/composite/MegaChart", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .legendPosition("none")
-                            //.domainAxisTitle(context.source.getXTitle())
-                            //.valueAxisTitle(context.source.getYTitle())
-                            .chartType(context.properties.chartType || context.properties.charttype || context.type)
-                        ;
-                    });
-                    break;
-                case "TABLE":
-                    this.loadWidget("src/composite/MegaChart", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .legendPosition("none")
-                            .showChartSelect(false)
-                            .chartType("TABLE")
-                            .chartTypeProperties({ pagination: true })
-                        ;
-                    });
-                    break;
-                case "SLIDER":
-                    this.loadWidget("src/form/Slider", function (widget) {
-                        widget
-                            .id(visualization.id)
-                        ;
-                        if (visualization.range) {
-                            var selectionLabel = "";
-                            for (var key in visualization.events.events.mappings) {
-                                selectionLabel = key;
-                                break;
-                            }
-                            widget
-                                .low(+visualization.range[0])
-                                .high(+visualization.range[1])
-                                .step(+visualization.range[2])
-                                .selectionLabel(selectionLabel)
-                            ;
+                }
+                break;
+            case "2DCHART":
+            case "PIE":
+            case "BUBBLE":
+            case "BAR":
+            case "WORD_CLOUD":
+                this.loadWidget("src/composite/MegaChart", function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .legendPosition_default("none")
+                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                    ;
+                });
+                break;
+            case "LINE":
+                this.loadWidget("src/composite/MegaChart", function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .legendPosition_default("none")
+                        //.domainAxisTitle(context.source.getXTitle())
+                        //.valueAxisTitle(context.source.getYTitle())
+                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                    ;
+                });
+                break;
+            case "TABLE":
+                this.loadWidget("src/composite/MegaChart", function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .legendPosition_default("none")
+                        .showChartSelect_default(false)
+                        .chartType_default("TABLE")
+                        .chartTypeDefaults({ pagination: true })
+                    ;
+                });
+                break;
+            case "SLIDER":
+                this.loadWidget("src/form/Slider", function (widget) {
+                    widget
+                        .id(visualization.id)
+                    ;
+                    if (visualization.range) {
+                        var selectionLabel = "";
+                        for (var key in visualization.events.events.mappings) {
+                            selectionLabel = key;
+                            break;
                         }
-                    });
-                    break;
-                case "GRAPH":
-                    this.loadWidgets(["src/graph/Graph"], function (widget) {
                         widget
-                            .id(visualization.id)
-                            .layout("ForceDirected2")
-                            .applyScaleOnLayout(true)
+                            .low_default(+visualization.range[0])
+                            .high_default(+visualization.range[1])
+                            .step_default(+visualization.range[2])
+                            .selectionLabel_default(selectionLabel)
                         ;
-                    });
-                    break;
-                case "FORM":
-                    this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
-                        var Input = widgetClasses[1];
-                        var CheckBox = widgetClasses[3];
-                        var Radio = widgetClasses[5];
-                        var Select = widgetClasses[7];
-                        var TextArea = widgetClasses[9];
+                    }
+                });
+                break;
+            case "GRAPH":
+                this.loadWidgets(["src/graph/Graph"], function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .layout_default("ForceDirected2")
+                        .applyScaleOnLayout_default(true)
+                    ;
+                });
+                break;
+            case "FORM":
+                this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
+                    var Input = widgetClasses[1];
+                    var CheckBox = widgetClasses[3];
+                    var Radio = widgetClasses[5];
+                    var Select = widgetClasses[7];
+                    var TextArea = widgetClasses[9];
 
-                        widget
-                            .id(visualization.id)
-                            .inputs(visualization.fields.map(function(field) {
+                    widget
+                        .id(visualization.id)
+                        .inputs(visualization.fields.map(function (field) {
 
-                                var selectOptions = [];
-                                var options = [];
-                                var inp;
-                                switch(field.properties.charttype) {
-                                    case "TEXT":
-                                        inp = new Input()
-                                            .type("text")
-                                        ;
-                                        break;
-                                    case "TEXTAREA":
-                                        inp = new TextArea();
-                                        break;
-                                    case "CHECKBOX":
-                                        inp = new CheckBox();
-                                        break;
-                                    case "RADIO":
-                                        inp = new Radio();
-                                        break;
-                                    case "HIDDEN":
-                                        inp = new Input()
-                                            .type("hidden")
-                                        ;
-                                        break;
-                                    default:
-                                        if (field.properties.enumvals) {
-                                            inp = new Select();
-                                            options = field.properties.enumvals;
-                                            for (var val in options) {
-                                                 selectOptions.push([val,options[val]]);
-                                            }
-                                        } else {
-                                            inp = new Input()
-                                                .type("text")
-                                            ;
+                            var selectOptions = [];
+                            var options = [];
+                            var inp;
+                            switch (field.properties.charttype) {
+                                case "TEXT":
+                                    inp = new Input()
+                                        .type_default("text")
+                                    ;
+                                    break;
+                                case "TEXTAREA":
+                                    inp = new TextArea();
+                                    break;
+                                case "CHECKBOX":
+                                    inp = new CheckBox();
+                                    break;
+                                case "RADIO":
+                                    inp = new Radio();
+                                    break;
+                                case "HIDDEN":
+                                    inp = new Input()
+                                        .type_default("hidden")
+                                    ;
+                                    break;
+                                default:
+                                    if (field.properties.enumvals) {
+                                        inp = new Select();
+                                        options = field.properties.enumvals;
+                                        for (var val in options) {
+                                            selectOptions.push([val, options[val]]);
                                         }
-                                        break;
-                                }
+                                    } else {
+                                        inp = new Input()
+                                            .type_default("text")
+                                        ;
+                                    }
+                                    break;
+                            }
 
-                                inp
-                                    .name(field.id)
-                                    .label((field.properties ? field.properties.label : null) || field.label)
-                                    
-                                    .value(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
-                                ;
+                            inp
+                                .name_default(field.id)
+                                .label_default((field.properties ? field.properties.label : null) || field.label)
+                                .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
+                            ;
 
-                                if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                    var vals = Object.keys(field.properties.enumvals);
-                                    inp.selectOptions(vals);
-                                } else if (selectOptions.length) {
-                                    inp.selectOptions(selectOptions);
-                                }
+                            if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
+                                var vals = Object.keys(field.properties.enumvals);
+                                inp.selectOptions_default(vals);
+                            } else if (selectOptions.length) {
+                                inp.selectOptions_default(selectOptions);
+                            }
 
-                                return inp;
-                            }))
-                        ;
-                    });
-                    break;
-                case "HEAT_MAP":
-                    this.loadWidgets(["src/other/HeatMap"], function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .image(context.properties.imageUrl)
-                        ;
-                    });
-                    break;
-                default:
-                    this.loadWidget("src/common/TextBox", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .text(context.id + "\n" + "TODO:  " + context.type)
-                        ;
-                    });
-                    break;
-            }
+                            return inp;
+                        }))
+                    ;
+                });
+                break;
+            case "HEAT_MAP":
+                this.loadWidgets(["src/other/HeatMap"], function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .image_default(context.properties.imageUrl)
+                    ;
+                });
+                break;
+            default:
+                this.loadWidget("src/common/TextBox", function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .text_default(context.id + "\n" + "TODO:  " + context.type)
+                    ;
+                });
+                break;
         }
     }
 
@@ -769,32 +764,34 @@
 
         var context = this;
         require(widgetPaths, function (Widget) {
-            context.setWidget(new Widget());
+            if (context.dashboard.marshaller._widgetMappings.has(context.id)) {
+                context.setWidget(context.dashboard.marshaller._widgetMappings.get(context.id));
+            } else {
+                context.setWidget(new Widget());
+            }
             if (callback) {
                 callback(context.widget, arguments);
             }
         });
     };
 
-    Visualization.prototype.setWidget = function (widget, skipProperties) {
+    Visualization.prototype.setWidget = function (widget) {
         this.widget = widget;
         this.events.setWidget(widget);
-        if (!skipProperties) {
-            for (var key in this.properties) {
-                switch (widget.classID()) {
-                    case "chart_MultiChart":
-                    case "composite_MegaChart":
-                        widget.chartTypeProperties()[key] = this.properties[key];
-                        break;
-                    default:
-                        if (this.widget[key]) {
-                            try {
-                                this.widget[key](this.properties[key]);
-                            } catch (e) {
-                                console.log("Invalid Property:" + this.id + ".properties." + key);
-                            }
+        for (var key in this.properties) {
+            switch (widget.classID()) {
+                case "chart_MultiChart":
+                case "composite_MegaChart":
+                    widget.chartTypeDefaults()[key] = this.properties[key];
+                    break;
+                default:
+                    if (this.widget[key + "_default"]) {
+                        try {
+                            this.widget[key + "_default"](this.properties[key]);
+                        } catch (e) {
+                            console.log("Invalid Property:" + this.id + ".properties." + key);
                         }
-                }
+                    }
             }
         }
         return this.widget;

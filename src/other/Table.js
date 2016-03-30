@@ -364,7 +364,7 @@
         rows.each(function(tr,trIdx){
             var dis = d3.select(this);
             dis.selectAll("td").each(function(tdContents, tdIdx){    
-                var alignment = context.getColumnAlignment(context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell));
+                var alignment = context.getColumnAlignment(tdContents.rowIdx, tdContents.colIdx, tdContents.cell);
                 var el = d3.select(this);
                 el
                     .style({
@@ -815,21 +815,24 @@
         ;
     };
 
-    Table.prototype.getColumnAlignment = function(cellData){
-         var context = this;
-         switch(typeof(cellData)){
-            case "number":
-                return function(){
-                    return context.numberAlign();
-                };
+    Table.prototype.getColumnAlignment = function (rowIdx, colIdx, cell) {
+        var field = this.field(rowIdx, colIdx);
+        switch (field.__prop_type) {
             case "string":
-                return function(){
-                    return context.stringAlign();
-                };
-            default:
-                return "";
+                return this.stringAlign();
+            case "number":
+                return this.numberAlign();
+            case "":
+            case undefined:
+                switch (typeof cell) {
+                    case "string":
+                        return this.stringAlign();
+                    case "number":
+                        return this.numberAlign();
+                }
         }
-     };
+        return null;
+    };
 
     Table.prototype.click = function (row, column, selected) {
         function replacer(key, value) {

@@ -1,8 +1,8 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        var protocol = window.location.protocol !== "https" ? "http://" : "https://";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "maps.google.com/maps/api/js", "css!./GMap"], factory);
+        var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be file:
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }

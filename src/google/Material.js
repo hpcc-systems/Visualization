@@ -17,7 +17,8 @@
     function materialHack(type, callback, depth) {
         depth = depth || 0;
         try {
-            require([(document.location.protocol === "https:" ? "https" : "http") + "://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js", "goog!visualization,1.1,packages:["+type+"]"], function () {
+            //  Could be file:
+            require([(document.location.protocol === "https:" ? "https:" : "http:") + "//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js", "goog!visualization,1.1,packages:["+type+"]"], function () {
                 try {
                     require(["./CommonND"], function () {
                         callback();

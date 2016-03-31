@@ -63,13 +63,13 @@
             var context = this;
             this._watch[widget.id()] = widget.monitor(function (paramId, newVal, oldVal) {
                 if (oldVal !== newVal) {
-                    context.lazyRender();
+                    context.lazyPostUpdate();
                 }
             });
         }
     };
     
-    Border.prototype.lazyRender = Border.prototype.debounce(function(){
+    Border.prototype.lazyPostUpdate = Border.prototype.debounce(function () {
         this.postUpdate();
     },100);
 

@@ -1,0 +1,15 @@
+.chart_Column .columnRect {
+  fill: steelblue;
+  cursor: pointer;
+}
+.chart_Column .data.axis path {
+  display: none;
+}
+.chart_Column .columnRect {
+    stroke: transparent;
+    border-width: 1.5px;
+}
+.chart_Column .columnRect.selected {
+    stroke: red;
+    stroke-width: 1.5px;
+}

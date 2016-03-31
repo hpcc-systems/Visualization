@@ -1,14 +1,13 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Graticule"], factory);
+        define(["d3", "topojson", "./Layer", "../common/Palette", "css!./Graticule"], factory);
     } else {
-        root.map_Graticule = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette, root.api_ITooltip);
+        root.map_Graticule = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette);
     }
-}(this, function (d3, topojson, Layer, Palette, ITooltip) {
+}(this, function (d3, topojson, Layer, Palette) {
     function Graticule() {
         Layer.call(this);
-        ITooltip.call(this);
 
         this._dataMap = {};
         this._path = d3.select(null);
@@ -16,7 +15,6 @@
     Graticule.prototype = Object.create(Layer.prototype);
     Graticule.prototype.constructor = Graticule;
     Graticule.prototype._class += " map_Graticule";
-    Graticule.prototype.implements(ITooltip.prototype);
 
     Graticule.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 

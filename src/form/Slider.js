@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../api/IInput", "../common/Icon", "css!./Slider"], factory);
+        define(["d3", "../common/SVGWidget", "../api/IInput", "../chart/Axis", "../common/Icon", "css!./Slider"], factory);
     } else {
-        root.form_Slider = factory(root.d3, root.common_SVGWidget, root.api_IInput, root.common_Icon);
+        root.form_Slider = factory(root.d3, root.common_SVGWidget, root.api_IInput, root.chart_Axis, root.common_Icon);
     }
-}(this, function (d3, SVGWidget, IInput, Icon) {
+}(this, function (d3, SVGWidget, IInput, Axis, Icon) {
     function Slider() {
         SVGWidget.call(this);
         IInput.call(this);
@@ -14,8 +14,7 @@
         this._playing = false;
         this._loop = false;
 
-        this.xScale = d3.scale.linear()
-            .clamp(true)
+        this.axis = new Axis()
         ;
 
         var context = this;
@@ -51,7 +50,6 @@
         };
 
         this.brush = d3.svg.brush()
-            .x(this.xScale)
             .extent([0, 0])
             .on("brushstart", function (d) { context.brushstart(d, this); })
             .on("brush", function (d) { context.brushmove(d, this); })
@@ -60,15 +58,6 @@
         this.brush.empty = function () {
             return false;
         };
-
-        this.axis = d3.svg.axis()
-              .scale(this.xScale)
-              .orient("bottom")
-              .tickValues(null)
-              .tickFormat(function (d) { return d; })
-              .tickSize(0)
-              .tickPadding(12)
-        ;
 
         this._inputElement = [];
     }
@@ -83,15 +72,24 @@
     Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
 
     Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection", null, { tags: ["Intermediate"] });
-    Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate"] });
-    Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
+    Slider.prototype.publish("low", "0", "string", "Low", null, { tags: ["Intermediate"] });
+    Slider.prototype.publish("high", "100", "string", "High", null, { tags: ["Intermediate"] });
     Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
     Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
+
+    Slider.prototype.publishProxy("tickCount", "axis", "tickCount");
+    Slider.prototype.publishProxy("tickFormat", "axis", "tickFormat");
+    Slider.prototype.publishProxy("type", "axis");
+    Slider.prototype.publishProxy("timePattern", "axis");
+    Slider.prototype.publishProxy("powExponent", "axis", "powExponent");
+    Slider.prototype.publishProxy("logBase", "axis", "logBase");
+    Slider.prototype.publishProxy("overlapMode", "axis");
+    Slider.prototype.publishProxy("labelRotation", "axis");
 
     Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
     Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
     Slider.prototype.publishProxy("playDiameter", "_playIcon", "diameter", 32);
-    Slider.prototype.publish("playGutter", 12, "number", "Play Gutter");
+    Slider.prototype.publish("playGutter", 4, "number", "Play Gutter");
     Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
     Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
 
@@ -99,8 +97,13 @@
         return Slider.prototype.columns.apply(this, arguments);
     };
 
+    var value = Slider.prototype.value;
     Slider.prototype.value = function (_) {
-        return Slider.prototype.data.apply(this, arguments);
+        var retVal = value.apply(this, arguments);
+        if (arguments.length) {
+            SVGWidget.prototype.data.apply(this, arguments);
+        }
+        return retVal;
     };
 
     Slider.prototype.play = function () {
@@ -166,11 +169,23 @@
     Slider.prototype.enter = function (domNode, element) {
         this.sliderElement = element.append("g");
         this._inputElement.push(this.sliderElement);
-        
-        this.axisElement = this.sliderElement.append("g")
-            .attr("class", "x axis")
+
+        this.axis
+            .target(this.sliderElement.node())
+            .x(this.width())
+            .y(0)
+            .width(this.width() - this.padding())
+            .low(this.low())
+            .high(this.high())
+            .render()
         ;
 
+        this.axis.d3Axis
+              //.tickValues(null)
+              .tickSize(0)
+              .tickPadding(12)
+        ;
+        
         this.brushg = this.sliderElement.append("g")
             .attr("class", "brush")
             .call(this.brush)
@@ -209,74 +224,44 @@
         ;
     };
 
-    Slider.prototype.calcDelta = function (domNode, element, leftPos, width) {
-        var axisElement = element.append("g")
-             .attr("class", "x axis")
-             .attr("transform", "translate(0, -64)")
-             .call(this.axis)
-        ;
-        axisElement.selectAll(".tick > text")
-            .style("fill", this.fontColor())
-            .style("font-size", this.fontSize())
-            .style("font-family", this.fontFamily())
-        ;
-        var x_bbox = axisElement.node().getBBox();
-        var retVal = {
-            left: x_bbox.x - leftPos,
-            right: x_bbox.x - leftPos + x_bbox.width - width
-        };
-        axisElement.remove();
-        return retVal;
-    };
-
     Slider.prototype.update = function (domNode, element) {
         var context = this;
-        var leftPos = -this.width() / 2 + this.padding();
-        var width = this.width() - this.padding() * 2;
+        var width = this.width() - this.padding() / 2;
 
         this._playIcon
-            .pos({ x: width / 2 - (this.loopDiameter() + this.loopGutter() + this.playDiameter() / 2), y: 0 })
+            .pos({ x: width - (this.loopDiameter() + this.loopGutter() + this.playDiameter() / 2), y: 0 })
             .diameter(this.playDiameter())
             .display(this.showPlay())
             .render()
         ;
 
         this._loopIcon
-            .pos({ x: width / 2 - (this.loopDiameter() / 2), y: 0 })
+            .pos({ x: width - (this.loopDiameter() / 2), y: 0 })
             .diameter(this.loopDiameter())
             .display(this.showPlay())
             .render()
         ;
 
         if ((this.high() - this.low()) / this.step() <= 10) {
-            this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
+            //this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         } else {
-            this.axis.tickValues(null);
+            //this.axis.tickValues(null);
         }
 
-        width -= this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
-        this.xScale
-            .domain([this.low(), this.high()])
-            .range([leftPos, leftPos + width])
-        ;
-        var delta = this.calcDelta(domNode, element, leftPos, width);
-        this.xScale
-            .range([leftPos - delta.left, leftPos + width - delta.right])
-        ;
-        this.axisElement
-            .call(this.axis)
-        ;
-
-        this.axisElement.selectAll(".tick > text")
-            .style("fill", this.fontColor())
-            .style("font-size", this.fontSize())
-            .style("font-family", this.fontFamily())
+        var offset = this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
+        width -= offset;
+        var overlap = this.axis.calcOverflow(element);
+        this.axis
+            .x(this.width() / 2 - offset / 2)
+            .y(overlap.depth)
+            .width(this.width() - this.padding() - offset)
+            .low(this.low())
+            .high(this.high())
+            .render()
         ;
 
-        var range = this.xScale.range();
-        this.brushg.select(".background")
-            .attr("x", range[0])
-            .attr("width", range[1] - range[0])
+        this.brushg
+            .attr("transform", "translate(" + this.padding() / 2 + ", 0)")
         ;
 
         this.handle
@@ -291,12 +276,17 @@
             }
         }
 
+        this.axis.d3Scale.clamp(true);
+        this.brush
+            .x(this.axis.d3Scale)
+        ;
+
         this.brushg
             .call(this.brush.extent(this.allowRange() ? this.data() : [this.data(), this.data()]))
         ;
 
         var bbox = this.sliderElement.node().getBBox();
-        this.sliderElement.attr("transform", "translate(0, " + -(bbox.y + bbox.height / 2) + ")");
+        this.sliderElement.attr("transform", "translate(" + -this.width() / 2 + ", " + -(bbox.y + bbox.height / 2) + ")");
     };
 
     Slider.prototype.brushstart = function (d, self) {
@@ -308,7 +298,7 @@
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
         if (!this.allowRange()) {
-            var mouseX = this.xScale.invert(d3.mouse(self)[0]);
+            var mouseX = this.axis.invert(d3.mouse(self)[0]);
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
@@ -319,26 +309,30 @@
         if (!d3.event || !d3.event.sourceEvent) return;
         d3.event.sourceEvent.stopPropagation();
         if (!this.allowRange()) {
-            var mouseX = this.nearestStep(this.xScale.invert(d3.mouse(self)[0]));
+            var mouseX = this.nearestStep(this.axis.invert(d3.mouse(self)[0]));
             d3.select(self)
                 .call(this.brush.extent([mouseX, mouseX]))
             ;
-            this.data(mouseX);
+            this.value(this.axis.parseInvert(mouseX));
             this._click();
         } else {
             var extent = this.brush.extent();
             extent[0] = this.nearestStep(extent[0]);
             extent[1] = this.nearestStep(extent[1]);
-            this.data(extent);
             d3.select(self)
                 .call(this.brush.extent(extent))
             ;
-            this.newSelection(extent[0], extent[1]);
+            this.newSelection(this.axis.parseInvert(extent[0]), this.axis.parseInvert(extent[1]));
         }
     };
 
     Slider.prototype.nearestStep = function (value) {
-        return this.low() + Math.round((value - this.low()) / this.step()) * this.step();
+        switch (this.type()) {
+            case "time":
+                return value;
+            default:
+                return +this.axis.parse(this.low()) + Math.round((value - +this.axis.parse(this.low())) / +this.step()) * +this.step();
+        }
     };
 
     Slider.prototype.handlePath = function (d, i) {

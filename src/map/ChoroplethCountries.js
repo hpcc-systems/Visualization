@@ -29,6 +29,12 @@
         this._ChoroplethCountries = this._choroplethTransform.insert("g", ".mesh");
         this._selection = new Utility.SimpleSelection(this._ChoroplethCountries);
         this.choroPaths = d3.select(null);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d[0], value: d[1] });
+            })
+        ;
     };
 
     ChoroplethCountries.prototype.layerUpdate = function (base) {
@@ -44,15 +50,8 @@
                     context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(this));
                 }
             })
-            .on("mouseover.tooltip", function (d) {
-                context.tooltipShow([d[0], d[1]], context.columns(), 1);
-            })
-            .on("mouseout.tooltip", function (d) {
-                context.tooltipShow();
-            })
-            .on("mousemove.tooltip", function (d) {
-                context.tooltipShow([d[0], d[1]], context.columns(), 1);
-            })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
         ;
         this.choroPaths
             .attr("d", function (d) {

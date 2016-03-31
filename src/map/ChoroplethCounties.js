@@ -34,6 +34,12 @@
         this._choroplethCounties = this._choroplethTransform.insert("g", ".mesh");
         this._selection = new Utility.SimpleSelection(this._choroplethCounties);
         this.choroPaths = d3.select(null);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: usCounties.countyNames[d[0]], value: context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A" });
+            })
+        ;
     };
 
     ChoroplethCounties.prototype.layerUpdate = function (base) {
@@ -51,15 +57,8 @@
                     context.click(context.rowToObj(row), "weight", context._selection.selected(this));
                 }
             })
-            .on("mouseover.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
-            })
-            .on("mouseout.tooltip", function (d) {
-                context.tooltipShow();
-            })
-            .on("mousemove.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
-            })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
         ;
         this.choroPaths
             .attr("d", function (d) {

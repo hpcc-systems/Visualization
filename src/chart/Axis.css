@@ -1,0 +1,15 @@
+.chart_Axis {
+  fill: black;
+  font: 10px sans-serif;
+}
+
+.chart_Axis .tick > text {
+  font: 10px sans-serif;
+}
+
+.chart_Axis path.domain,
+.chart_Axis .tick line {
+  fill: none;
+  stroke: black;
+}
+

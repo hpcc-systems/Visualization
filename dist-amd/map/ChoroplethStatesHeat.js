@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["../layout/Layered"],t):e.map_ChoroplethStatesHeat=t(e.layout_Layered)})(this,function(e){function t(t){e.call(this)}return t.prototype=Object.create(e.prototype),t.prototype.constructor=t,t.prototype._class+=" map_ChoroplethStatesHeat",t});

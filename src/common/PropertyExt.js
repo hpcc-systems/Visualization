@@ -327,12 +327,13 @@
         return this._monitorProperty(undefined, func);
     };
 
-    PropertyExt.prototype.broadcast = function (key, newVal, oldVal) {
+    PropertyExt.prototype.broadcast = function (key, newVal, oldVal, source) {
+        source = source || this;
         if (this._watchArr.length && newVal !== oldVal) {
             this._watchArr.forEach(function (monitor) {
                 if ((monitor.propertyID === undefined || monitor.propertyID === key) && monitor.callback) {
                     setTimeout(function () {
-                        monitor.callback(key, newVal, oldVal);
+                        monitor.callback(key, newVal, oldVal, source);
                     }, 0);
                 }
             });

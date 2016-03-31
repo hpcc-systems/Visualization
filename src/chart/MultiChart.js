@@ -113,6 +113,13 @@
             _.click = function (row, column, selected) {
                 context.click(row, column, selected);
             };
+            if (this._chartMonitor) {
+                this._chartMonitor.remove();
+                delete this._chartMonitor;
+            }
+            this._chartMonitor = _.monitor(function (key, newVal, oldVal) {
+                context.broadcast(key, newVal, oldVal, _);
+            });
         }
         return retVal;
     };
@@ -220,6 +227,10 @@
     };
 
     MultiChart.prototype.exit = function (domNode, element) {
+        if (this._chartMonitor) {
+            this._chartMonitor.remove();
+            delete this._chartMonitor;
+        }
         if (this.chart()) {
             this.chart().target(null);
         }

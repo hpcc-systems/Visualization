@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Table", "css!./Legend"], factory);
+        define(["d3", "./Table", "../common/Palette", "css!./Legend"], factory);
     } else {
-        root.other_Legend = factory(root.d3, root.other_Table);
+        root.other_Legend = factory(root.d3, root.other_Table, root.common_Palette);
     }
-}(this, function (d3, Table) {
+}(this, function (d3, Table, Palette) {
     function Legend() {
         Table.call(this);
         this._tag = "div";
@@ -19,70 +19,48 @@
     Legend.prototype.publish("dataFamily", "ND", "set", "Type of data",["1D","2D","ND", "any"],{tags:["Private"]});
     Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows",["vertical","horizontal"],{tags:["Private"]});
     
-    Legend.prototype.targetWidget = function (widget) {
+    Legend.prototype.targetWidget = function (_) {
+        if (!arguments.length) return this._targetWidget;
+        this._targetWidget = _;
+        if (this._targetWidgetMonitor) {
+            this._targetWidgetMonitor.remove();
+            delete this._targetWidgetMonitor;
+        }
         var context = this;
-        if(widget === undefined){
-            return context._targetWidget;
-        }
-            var colArr = ["Key", "Label"];
-            var dataArr = [];
-            var widgetColumns = widget.columns();
-
-            var paletteType = widget._palette.toString().split("function ")[1].split("(")[0];
-            if(paletteType === "ordinal"){
-                switch(this.dataFamily()){
-                    case '2D':
-                        dataArr = widget.data().map(function(n){
-                            return [_htmlColorBlock(widget._palette(n[0])),n[0]];
-                        });
-                        break;
-                    case 'ND':
-                        dataArr = widgetColumns.filter(function(n,i){return i>0;}).map(function(n){
-                            return [_htmlColorBlock(widget._palette(n)),n];
-                        });
-                        break;
-                }
-            } 
-            else if (paletteType === "rainbow"){
-                var colorArr = widget._palette.colors().reverse();
-                var steps = colorArr.length;
-                var weightMin = widget._dataMinWeight;
-                var weightMax = widget._dataMaxWeight;
-                for(var x = 0;x<steps;x++){
-                    var stepWeightDiff = parseInt((weightMax - weightMin) / steps);
-                    var lower,higher;
-                    if(x === 0){
-                        higher = commaSeparateNumber(weightMin + stepWeightDiff*(x+1));
-                        dataArr.push([_htmlColorBlock(colorArr[x]),"0 - " + higher]);
-                    } else if (x+1 === steps){
-                        lower = commaSeparateNumber(weightMin + (stepWeightDiff*x) + 1);
-                        dataArr.push([_htmlColorBlock(colorArr[x]),lower + "+"]);
-                    } else {
-                        lower = commaSeparateNumber(weightMin + (stepWeightDiff*x) + 1);
-                        higher = commaSeparateNumber(weightMin + stepWeightDiff*(x+1));
-                        dataArr.push([_htmlColorBlock(colorArr[x]),lower + " - " + higher]);
-                    }
-                }
+        this._targetWidgetMonitor = this._targetWidget.monitor(function (key, newProp, oldProp, source) {
+            switch (key) {
+                case "chart":
+                case "columns":
+                case "data":
+                case "paletteID":
+                    context.lazyRender();
+                    break;
             }
-
-            context.columns(colArr);
-            context.data(dataArr);
-
-            context._targetWidget = widget;
-        
+        });
         return this;
-        
-        function _htmlColorBlock(hexColor){
-            return "<div class=\"colorBlock\" style=\"background-color:"+hexColor+";\"></div>";
-        }
-        function commaSeparateNumber(val){
-            var int = val.toString().split(".")[0];
-            var dec = val.toString().split(".")[1];
-            while (/(\d+)(\d{3})/.test(int.toString())){
-                int = int.toString().replace(/(\d+)(\d{3})/, "$1"+","+"$2");
+    };
+
+    Legend.prototype.getWidget = function () {
+        if (this._targetWidget) {
+            switch (this._targetWidget.classID()) {
+                case "chart_MultiChart":
+                    return this._targetWidget.chart();
             }
-            return typeof(dec) !== "undefined" ? int+"."+dec : int;
         }
+        return this._targetWidget;
+    };
+
+    Legend.prototype.getPalette = function () {
+        var widget = this.getWidget();
+        if (widget && widget._palette) {
+            switch (widget._palette.type()) {
+                case "ordinal":
+                    return Palette.ordinal(widget._palette.id());
+                case "rainbow":
+                    return Palette.rainbow(widget._palette.id());
+            }
+        }
+        return Palette.ordinal("default");
     };
 
     Legend.prototype.enter = function (domNode, element) {
@@ -93,14 +71,65 @@
         element.classed("other_Legend", true);
     };
 
-    Legend.prototype.update = function (domNode, element) {
-        Table.prototype.update.apply(this, arguments);
-        
-        var context = this;
-        if(typeof (this._targetWidget) !== "undefined"){
-            this.targetWidget(this._targetWidget);
+    function _htmlColorBlock(hexColor) {
+        return "<div class=\"colorBlock\" style=\"background-color:" + hexColor + ";\"></div>";
+    }
+    function commaSeparateNumber(val) {
+        var int = val.toString().split(".")[0];
+        var dec = val.toString().split(".")[1];
+        while (/(\d+)(\d{3})/.test(int.toString())) {
+            int = int.toString().replace(/(\d+)(\d{3})/, "$1" + "," + "$2");
         }
-        
+        return typeof (dec) !== "undefined" ? int + "." + dec : int;
+    }
+    Legend.prototype.update = function (domNode, element) {
+        var colArr = ["Key", "Label"];
+        var dataArr = [];
+        if (this._targetWidget) {
+            var palette = this.getPalette();
+            switch (palette.type()) {
+                case "ordinal":
+                    switch (this.dataFamily()) {
+                        case '2D':
+                            dataArr = this._targetWidget.data().map(function (n) {
+                                return [_htmlColorBlock(palette(n[0])), n[0]];
+                            }, this);
+                            break;
+                        case 'ND':
+                            var widgetColumns = this._targetWidget.columns();
+                            dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
+                                return [_htmlColorBlock(palette(n)), n];
+                            }, this);
+                            break;
+                    }
+                    break;
+                case "rainbow":
+                    var colorArr = palette.colors().reverse();
+                    var steps = colorArr.length;
+                    var weightMin = this._targetWidget._dataMinWeight;
+                    var weightMax = this._targetWidget._dataMaxWeight;
+                    for (var x = 0; x < steps; x++) {
+                        var stepWeightDiff = parseInt((weightMax - weightMin) / steps);
+                        var lower, higher;
+                        if (x === 0) {
+                            higher = commaSeparateNumber(weightMin + stepWeightDiff * (x + 1));
+                            dataArr.push([_htmlColorBlock(colorArr[x]), "0 - " + higher]);
+                        } else if (x + 1 === steps) {
+                            lower = commaSeparateNumber(weightMin + (stepWeightDiff * x) + 1);
+                            dataArr.push([_htmlColorBlock(colorArr[x]), lower + "+"]);
+                        } else {
+                            lower = commaSeparateNumber(weightMin + (stepWeightDiff * x) + 1);
+                            higher = commaSeparateNumber(weightMin + stepWeightDiff * (x + 1));
+                            dataArr.push([_htmlColorBlock(colorArr[x]), lower + " - " + higher]);
+                        }
+                    }
+                    break;
+            }
+        }
+        this.columns(colArr);
+        this.data(dataArr);
+        Table.prototype.update.apply(this, arguments);
+
         element.classed("horiz-legend",this.orientation() === "horizontal");
         
         var table = element.select(".tableDiv > table");
@@ -127,6 +156,7 @@
         }
 
         var rows = this.tbody.selectAll("tr").data(tData);
+        var context = this;
         rows
             .on("click",function(d,i){
                 context.onClick(d,i);
@@ -137,7 +167,15 @@
         ;
     };
     
-    Legend.prototype.onClick = function (rowData,rowIdx) { 
+    Legend.prototype.exit = function (domNode, element) {
+        if (this._targetWidgetMonitor) {
+            this._targetWidgetMonitor.remove();
+            delete this._targetWidgetMonitor;
+        }
+        Table.prototype.exit.apply(this, arguments);
+    };
+
+    Legend.prototype.onClick = function (rowData, rowIdx) {
         console.log("Legend onClick method"); 
         console.log("rowData: "+rowData);
         console.log("rowIdx: "+rowIdx);

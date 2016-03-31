@@ -27,10 +27,10 @@
     HeatMap.prototype.publish("paletteID", "default", "set", "Palette ID", HeatMap.prototype._palette.switch(), { tags: ["Basic"] });
     HeatMap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
-    HeatMap.prototype.publish("topLeftX", null, "number", "Top left x-value",null,{tags:["Basic"]});
-    HeatMap.prototype.publish("topLeftY", null, "number", "Top left y-value",null,{tags:["Basic"]});
-    HeatMap.prototype.publish("bottomRightX", null, "number", "Bottom right x-value",null,{tags:["Basic"]});
-    HeatMap.prototype.publish("bottomRightY", null, "number", "Bottom right y-value",null,{tags:["Basic"]});
+    HeatMap.prototype.publish("topLeftX", null, "number", "Top left x-value", null, { tags: ["Basic"], optional: true });
+    HeatMap.prototype.publish("topLeftY", null, "number", "Top left y-value", null, { tags: ["Basic"], optional: true });
+    HeatMap.prototype.publish("bottomRightX", null, "number", "Bottom right x-value", null, { tags: ["Basic"], optional: true });
+    HeatMap.prototype.publish("bottomRightY", null, "number", "Bottom right y-value", null, { tags: ["Basic"], optional: true });
 
     HeatMap.prototype.enter = function (domNode, element) {
         CanvasWidget.prototype.enter.apply(this, arguments);
@@ -47,7 +47,7 @@
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
         
-        if(this.topLeftX() !== null && this.topLeftY() !== null && this.bottomRightX() !== null && this.bottomRightY() !== null){
+        if(this.topLeftX_exists() && this.topLeftY_exists() && this.bottomRightX_exists() && this.bottomRightY_exists()){
             this._heat.data(this.skewedData());
         } else {
             this._heat.data(this.data());

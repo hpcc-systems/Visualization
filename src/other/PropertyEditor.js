@@ -165,10 +165,6 @@
         }
     };
 
-    PropertyEditor.prototype.lazyRender = PropertyEditor.prototype.debounce(function () {
-        this.render();
-    }, 100);
-
     PropertyEditor.prototype.thButtons = function (th) {
         var context = this;
         var collapseIcon = th.append("i")

@@ -73,6 +73,9 @@
         function ordinal(_) {
             return scale(_);
         }
+        ordinal.type = function () {
+            return "ordinal";
+        };
         ordinal.id = function (_) {
             if (!arguments.length) return id;
             id = _;
@@ -173,6 +176,9 @@
         function rainbow(x, low, high) {
             return scale.domain([low, high])(x);
         }
+        rainbow.type = function () {
+            return "rainbow";
+        };
         rainbow.id = function (_) {
             if (!arguments.length) return id;
             id = _;

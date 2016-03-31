@@ -20,13 +20,14 @@
     }
 
     function Meta(id, defaultValue, type, description, set, ext) {
+        ext = ext || {};
         this.id = id;
         this.type = type;
         this.origDefaultValue = defaultValue;
-        this.defaultValue = defaultValue === null ? undefined : defaultValue;
+        this.defaultValue = ext.optional && defaultValue === null ? undefined : defaultValue;
         this.description = description;
         this.set = set;
-        this.ext = ext || {};
+        this.ext = ext;
 
         switch (type) {
             case "set":
@@ -212,7 +213,7 @@
             return this[__prop_ + id] !== undefined && this[__prop_ + id] !== this[id + "_default"]();
         };
         this[id + "_exists"] = function () {
-            return this[__prop_ + id] !== undefined || this[id + "_default"]() !== undefined;
+            return this[__prop_ + id] !== undefined && this[id + "_default"]() !== undefined;
         };
         this[id + "_default"] = function (_) {
             if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;
@@ -326,12 +327,13 @@
         return this._monitorProperty(undefined, func);
     };
 
-    PropertyExt.prototype.broadcast = function (key, newVal, oldVal) {
+    PropertyExt.prototype.broadcast = function (key, newVal, oldVal, source) {
+        source = source || this;
         if (this._watchArr.length && newVal !== oldVal) {
             this._watchArr.forEach(function (monitor) {
                 if ((monitor.propertyID === undefined || monitor.propertyID === key) && monitor.callback) {
                     setTimeout(function () {
-                        monitor.callback(key, newVal, oldVal);
+                        monitor.callback(key, newVal, oldVal, source);
                     }, 0);
                 }
             });

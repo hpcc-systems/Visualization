@@ -30,7 +30,8 @@
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header", null, { tags: ["Private"] });
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
-    
+    Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection", null, { tags: ["Basic"] });
+
     Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
@@ -364,7 +365,7 @@
         rows.each(function(tr,trIdx){
             var dis = d3.select(this);
             dis.selectAll("td").each(function(tdContents, tdIdx){    
-                var alignment = context.getColumnAlignment(context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell));
+                var alignment = context.getColumnAlignment(tdContents.rowIdx, tdContents.colIdx, tdContents.cell);
                 var el = d3.select(this);
                 el
                     .style({
@@ -754,7 +755,7 @@
     };
 
     Table.prototype.selectionBagClick = function (d, i) {
-        if (d3.event.shiftKey && this._selectionPrevClick) {
+        if (this.multiSelect() && d3.event.shiftKey && this._selectionPrevClick) {
             var inRange = false;
             var rows = [];
             var selection = this.data().filter(function (row, i) {
@@ -769,8 +770,12 @@
                 return inRange || lastInRangeRow;
             }, this);
             this.selection(selection);
-        } else {
+        } else if (this.multiSelect()) {
             this._selectionBag.click(this._createSelectionObject(d), d3.event);
+            this._selectionPrevClick = d;
+        } else {
+            var selObj = this._createSelectionObject(d);
+            this._selectionBag.click(selObj, { ctrlKey: this._selectionBag.isSelected(selObj) });
             this._selectionPrevClick = d;
         }
         this.render();
@@ -815,21 +820,24 @@
         ;
     };
 
-    Table.prototype.getColumnAlignment = function(cellData){
-         var context = this;
-         switch(typeof(cellData)){
-            case "number":
-                return function(){
-                    return context.numberAlign();
-                };
+    Table.prototype.getColumnAlignment = function (rowIdx, colIdx, cell) {
+        var field = this.field(rowIdx, colIdx);
+        switch (field.__prop_type) {
             case "string":
-                return function(){
-                    return context.stringAlign();
-                };
-            default:
-                return "";
+                return this.stringAlign();
+            case "number":
+                return this.numberAlign();
+            case "":
+            case undefined:
+                switch (typeof cell) {
+                    case "string":
+                        return this.stringAlign();
+                    case "number":
+                        return this.numberAlign();
+                }
         }
-     };
+        return null;
+    };
 
     Table.prototype.click = function (row, column, selected) {
         function replacer(key, value) {

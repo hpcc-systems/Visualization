@@ -483,6 +483,10 @@
         return this;
     };
 
+    Widget.prototype.lazyRender = Widget.prototype.debounce(function () {
+        this.render();
+    }, 100);
+
     Widget.prototype.enter = function (domNode, element) { };
     Widget.prototype.preUpdate = function (domNode, element) { };
     Widget.prototype.update = function (domNode, element) { };

@@ -24,6 +24,16 @@
     Column.prototype.publish("stackedOpacity", 0.66, "number", "Fill Stacked Opacity", null, { tags: ["Basic"] });
     Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
+    Column.prototype.enter = function (domNode, element) {
+        XYAxis.prototype.enter.apply(this, arguments);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: d.row[d.idx] });
+            })
+        ;
+    };
+
     Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
         var context = this;
 
@@ -59,6 +69,7 @@
             .attr("class", "dataRow")
         ;
 
+        this.tooltip.direction(isHorizontal ? "n" : "e");
         column
             .each(function (dataRow, i) {
                 var element = d3.select(this);
@@ -76,15 +87,8 @@
                   .enter().append("rect")
                     .attr("class", "columnRect")
                     .call(context._selection.enter.bind(context._selection))
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d.row, context.columns(), d.idx);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d.row, context.columns(), d.idx);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(d.row), d.column, context._selection.selected(this));
                     })

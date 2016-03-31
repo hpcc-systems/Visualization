@@ -1,17 +1,19 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["./Layered"], factory);
+        define(["./Layered", "../api/ITooltip"], factory);
     } else {
-        root.map_Layer = factory(root.map_Layered);
+        root.map_Layer = factory(root.map_Layered, root.api_ITooltip);
     }
-}(this, function (Layered, PropertyExt) {
+}(this, function (Layered, ITooltip) {
     function Layer(id) {
         Layered.call(this);
+        ITooltip.call(this);
     }
     Layer.prototype = Object.create(Layered.prototype);
     Layer.prototype.constructor = Layer;
     Layer.prototype._class += " map_Layer";
+    Layer.prototype.implements(ITooltip.prototype);
 
     Layer.prototype.layerEnter = function (base, svgElement, domElement) {
         this._parentOverlay = base._parentOverlay;

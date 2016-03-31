@@ -1,14 +1,13 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../common/Palette", "../api/ITooltip", "css!./Choropleth"], factory);
+        define(["d3", "topojson", "./Layer", "../common/Palette", "css!./Choropleth"], factory);
     } else {
-        root.map_Choropleth = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette, root.api_ITooltip);
+        root.map_Choropleth = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette);
     }
-}(this, function (d3, topojson, Layer, Palette, ITooltip) {
+}(this, function (d3, topojson, Layer, Palette) {
     function Choropleth() {
         Layer.call(this);
-        ITooltip.call(this);
 
         this._dataMap = {};
         this._path = d3.select(null);
@@ -16,7 +15,6 @@
     Choropleth.prototype = Object.create(Layer.prototype);
     Choropleth.prototype.constructor = Choropleth;
     Choropleth.prototype._class += " map_Choropleth";
-    Choropleth.prototype.implements(ITooltip.prototype);
 
     Choropleth.prototype._palette = Palette.rainbow("default");
 

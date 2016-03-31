@@ -10,12 +10,6 @@
     pointer-events: all;
 }
 
-.chart_Scatter .point .pointSelection.over {
-    fill: red;
-    stroke: none;
-    opacity: 0.25;
-}
-
 .chart_Scatter .point .pointSelection.selected {
     fill: none;
     stroke: red;

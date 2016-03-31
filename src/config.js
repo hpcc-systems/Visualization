@@ -21,6 +21,7 @@ require.config({
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
         "es6-promise": "../bower_components/es6-promise/promise",
         "d3-hexbin": "../bower_components/d3-hexbin/index",
+        "d3-tip": "../bower_components/d3-tip/index",
 
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -119,6 +120,7 @@ case "cdn.rawgit.com":
             "font-awesome": "//" + window.location.hostname + "/FortAwesome/Font-Awesome/v4.5.0/css/font-awesome.min",
             "es6-promise": "//" + window.location.hostname + "/jakearchibald/es6-promise/v3.2.1/dist/es6-promise.min",
             "d3-hexbin": "//" + window.location.hostname + "/d3/d3-plugins/master/hexbin/hexbin",
+            "d3-tip": "//" + window.location.hostname + "/Caged/d3-tip/v0.6.7/index",
 
             "amcharts": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
             "amcharts.funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/funnel",

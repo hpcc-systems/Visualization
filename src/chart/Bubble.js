@@ -42,6 +42,12 @@
     Bubble.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._selection = new Utility.SimpleSelection(element);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d[0], value: d[1] });
+            })
+        ;
     };
 
     Bubble.prototype.update = function (domNode, element) {
@@ -68,15 +74,8 @@
                 var element = d3.select(this);
                 element.append("circle")
                     .attr("r", function (d) { return d.r; })
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d, context.columns(), 1);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d, context.columns(), 1);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                 ;
                 if (d.__viz_faChar) {
                     context.labelWidgets[d[0]] = new FAChar()

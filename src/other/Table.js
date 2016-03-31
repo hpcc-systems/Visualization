@@ -30,7 +30,8 @@
     Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header", null, { tags: ["Private"] });
     Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header",null,{tags:["Private"]});
     Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column",null,{tags:["Private"]});
-    
+    Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection", null, { tags: ["Basic"] });
+
     Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
@@ -754,7 +755,7 @@
     };
 
     Table.prototype.selectionBagClick = function (d, i) {
-        if (d3.event.shiftKey && this._selectionPrevClick) {
+        if (this.multiSelect() && d3.event.shiftKey && this._selectionPrevClick) {
             var inRange = false;
             var rows = [];
             var selection = this.data().filter(function (row, i) {
@@ -769,8 +770,12 @@
                 return inRange || lastInRangeRow;
             }, this);
             this.selection(selection);
-        } else {
+        } else if (this.multiSelect()) {
             this._selectionBag.click(this._createSelectionObject(d), d3.event);
+            this._selectionPrevClick = d;
+        } else {
+            var selObj = this._createSelectionObject(d);
+            this._selectionBag.click(selObj, { ctrlKey: this._selectionBag.isSelected(selObj) });
             this._selectionPrevClick = d;
         }
         this.render();

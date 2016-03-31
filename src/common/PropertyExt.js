@@ -169,6 +169,10 @@
         return this[__meta_ + id];
     };
 
+    PropertyExt.prototype.publishedProperty = function (id) {
+        return this[__meta_ + id];
+    };
+
     PropertyExt.prototype.publishReset = function (privateArr, exceptionsArr) {
         privateArr = (privateArr || []).map(function (id) { return __meta_ + id; });
         exceptionsArr = (exceptionsArr || []).map(function (id) { return __meta_ + id; });

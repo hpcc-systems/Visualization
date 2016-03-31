@@ -40,6 +40,28 @@
     Pie.prototype.publish("outerText", false, "boolean", "Sets label position inside or outside chart",null,{tags:["Basic"]});
     Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart",null,{tags:["Basic"]});
 
+    Pie.prototype.pointInArc = function (pt, ptData) {
+        var r1 = this.d3Arc.innerRadius()(ptData),
+            r2 = this.d3Arc.outerRadius()(ptData),
+            theta1 = this.d3Arc.startAngle()(ptData),
+            theta2 = this.d3Arc.endAngle()(ptData);
+
+        var dist = pt.x * pt.x + pt.y * pt.y,
+            angle = Math.atan2(pt.x, -pt.y);
+
+        angle = (angle < 0) ? (angle + Math.PI * 2) : angle;
+
+        return (r1 * r1 <= dist) && (dist <= r2 * r2) && (theta1 <= angle) && (angle <= theta2);
+    };
+
+    Pie.prototype.boxInArc = function (pos, bb, ptData) {
+        var topLeft = { x: pos.x + bb.x, y: pos.y + bb.y };
+        var topRight = { x: topLeft.x + bb.width, y: topLeft.y };
+        var bottomLeft = { x: topLeft.x, y: topLeft.y + bb.height };
+        var bottomRight = { x: topLeft.x + bb.width, y: topLeft.y + bb.height };
+        return this.pointInArc(topLeft, ptData) && this.pointInArc(topRight, ptData) && this.pointInArc(bottomLeft, ptData) && this.pointInArc(bottomRight, ptData);
+    };
+
     Pie.prototype.calcRadius = function (_) {
         return Math.min(this._size.width, this._size.height) / 2 - 2;
     };
@@ -132,6 +154,7 @@
                     .element()
                         .classed("innerLabel", !context.outerText())
                         .classed("outerLabel", context.outerText())
+                        .style("opacity", (context.outerText() || context.boxInArc(pos, context.labelWidgets[d.data[0]].getBBox(), d)) ? null : 0)
                 ;
             })
         ;

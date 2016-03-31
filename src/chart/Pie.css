@@ -11,8 +11,8 @@
 }
 
 .chart_Pie .arc path{
-    stroke: transparent;
-    border-width: 1px;
+    stroke: white;
+    stroke-width: 0.75px;
 }
 
 .chart_Pie .arc.selected path{

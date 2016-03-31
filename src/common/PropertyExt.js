@@ -213,7 +213,7 @@
             return this[__prop_ + id] !== undefined && this[__prop_ + id] !== this[id + "_default"]();
         };
         this[id + "_exists"] = function () {
-            return this[__prop_ + id] !== undefined && this[id + "_default"]() !== undefined;
+            return this[__prop_ + id] !== undefined || this[id + "_default"]() !== undefined;
         };
         this[id + "_default"] = function (_) {
             if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;

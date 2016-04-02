@@ -13,6 +13,9 @@
         INDChart.call(this);
         ITooltip.call(this);
         this._hexbin = new D3HexBin();
+
+        this.xAxisGuideLines_default(false);
+        this.yAxisGuideLines_default(false);
     }
     HexBin.prototype = Object.create(XYAxis.prototype);
     HexBin.prototype.constructor = HexBin;

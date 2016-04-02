@@ -14,5 +14,4 @@
 
 .chart_Column .columnRect.selected {
     stroke: red;
-    stroke-width: 1.5px;
 }

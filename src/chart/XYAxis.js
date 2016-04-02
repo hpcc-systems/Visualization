@@ -39,6 +39,7 @@
     XYAxis.prototype.publishProxy("xAxisOverlapMode", "domainAxis", "overlapMode");
     XYAxis.prototype.publishProxy("xAxisLabelRotation", "domainAxis", "labelRotation");
     XYAxis.prototype.publishProxy("xAxisDomainPadding", "domainAxis", "extend");
+    XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Lines");
 
     XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
     XYAxis.prototype.publishProxy("yAxisTickCount", "valueAxis", "tickCount");
@@ -50,6 +51,7 @@
     XYAxis.prototype.publish("yAxisDomainLow", null, "string", "Y-Axis Low", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
     XYAxis.prototype.publish("yAxisDomainHigh", null, "string", "Y-Axis High", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
     XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
+    XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
 
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
@@ -97,13 +99,17 @@
         SVGWidget.prototype.enter.apply(this, arguments);
         this.svg = element.append("g");
         this.svgRegions = element.append("g");
+        this.svgDomainGuide = this.svg.append("g");
+        this.svgValueGuide = this.svg.append("g");
         this.svgData = this.svg.append("g");
 
         this.domainAxis
             .target(this.svg.node())
+            .guideTarget(this.svgDomainGuide.node())
         ;
         this.valueAxis
             .target(this.svg.node())
+            .guideTarget(this.svgValueGuide.node())
         ;
 
         //  Brush  ---
@@ -309,8 +315,6 @@
 
         //  Calculate Margins  ---
         this.margin = this.calcMargin(domNode, element, isHorizontal);
-        this.domainAxis.render();
-        this.valueAxis.render();
 
         //  Update Range  ---
         var width = this.width() - this.margin.left - this.margin.right;
@@ -321,6 +325,15 @@
         var maxOtherExtent = isHorizontal ? height : width;
 
         //  Render  ---
+        this.domainAxis
+            .tickLength(this.xAxisGuideLines() ? maxOtherExtent : 0)
+            .render()
+        ;
+        this.valueAxis
+            .tickLength(this.yAxisGuideLines() ? maxCurrExtent : 0)
+            .render()
+        ;
+
         this.svgData.transition()
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
         ;

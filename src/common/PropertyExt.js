@@ -367,6 +367,16 @@
             }
         }
     };
-    
+
+    PropertyExt.prototype.copyPropsTo = function (other) {
+        this.publishedProperties(false).forEach(function (meta) {
+            if (this[meta.id + "_exists"]()) {
+                other[meta.id](this[meta.id]());
+            } else {
+                other[meta.id + "_reset"]();
+            }
+        }, this);
+    };
+
     return PropertyExt;
 }));

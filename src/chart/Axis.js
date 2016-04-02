@@ -123,12 +123,26 @@
         return true;
     };
 
-    Axis.prototype.range = function (range) {
-        if (this.d3Scale.rangeRoundBands) {
-            this.d3Scale.rangeRoundBands(range, 0.1);
-        } else if (this.d3Scale.rangeRound) {
-            this.d3Scale.range(range);
+    Axis.prototype.domain = function (_) {
+        if (!arguments.length) return this.d3Scale.domain();
+        this.d3Scale.domain(_);
+        return this;
+    };
+
+    Axis.prototype.range = function (_) {
+        if (!arguments.length) {
+            if (this.d3Scale.rangeRoundBands) {
+                return this.d3Scale.rangeExtent();
+            } else if (this.d3Scale.rangeRound) {
+                return this.d3Scale.range();
+            }
         }
+        if (this.d3Scale.rangeRoundBands) {
+            this.d3Scale.rangeRoundBands(_, 0.1);
+        } else if (this.d3Scale.rangeRound) {
+            this.d3Scale.range(_);
+        }
+        return this;
     };
 
     Axis.prototype.invert = function (pos) {

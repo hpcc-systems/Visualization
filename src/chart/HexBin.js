@@ -37,7 +37,7 @@
         return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
     };
 
-    HexBin.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
+    HexBin.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal, duration) {
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -60,12 +60,12 @@
             .attr("class", "hexagon")
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
         ;
-        points.transition()
+        points.transition().duration(duration)
             .attr("d", this._hexbin.hexagon())
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(1)"; })
             .style("fill", function (d) { return context._palette(d.length, 0, maxBinPoints); })
         ;
-        points.exit().transition()
+        points.exit().transition().duration(duration)
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
             .remove()
         ;

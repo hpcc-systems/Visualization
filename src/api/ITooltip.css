@@ -8,6 +8,10 @@
   pointer-events: none !important;
 }
 
+.d3-tip.hidden {
+    visibility:hidden;
+}
+
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
   box-sizing: border-box;

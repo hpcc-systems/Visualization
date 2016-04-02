@@ -22,6 +22,17 @@
             .type("linear")
             .shrinkToFit("high")
         ;
+        var context = this;
+        this.xBrush = d3.svg.brush()
+            .on("brush", function () {
+                return context.brushMoved();
+            })
+        ;
+        this.yBrush = d3.svg.brush()
+            .on("brush", function () {
+                return context.brushMoved();
+            })
+        ;
     }
     XYAxis.prototype = Object.create(SVGWidget.prototype);
     XYAxis.prototype.constructor = XYAxis;
@@ -40,6 +51,8 @@
     XYAxis.prototype.publishProxy("xAxisLabelRotation", "domainAxis", "labelRotation");
     XYAxis.prototype.publishProxy("xAxisDomainPadding", "domainAxis", "extend");
     XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Lines");
+    XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus");
+    XYAxis.prototype.publish("xAxisFocusHeight", 80, "number", "X-Axis Focus Height", null, { disable: function (w) { return !w.xAxisFocus(); } });
 
     XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
     XYAxis.prototype.publishProxy("yAxisTickCount", "valueAxis", "tickCount");
@@ -103,6 +116,17 @@
         this.svgValueGuide = this.svg.append("g");
         this.svgData = this.svg.append("g");
 
+        this.svgDataClipRect = this.svg.append("clipPath")
+            .attr("id", this.id() + "_clippath")
+          .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+        ;
+        this.svgData = this.svg.append("g")
+            .attr("clip-path", "url(#" + this.id() + "_clippath)")
+        ;
+        this.svgFocus = element.append("g");
+
         this.domainAxis
             .target(this.svg.node())
             .guideTarget(this.svgDomainGuide.node())
@@ -115,17 +139,6 @@
         //  Brush  ---
         this.svgBrush = element.append("g")
             .attr("class", "brush")
-        ;
-        var context = this;
-        this.xBrush = d3.svg.brush()
-            .on("brush", function () {
-                return context.brushMoved.apply(context, arguments);
-            })
-        ;
-        this.yBrush = d3.svg.brush()
-            .on("brush", function () {
-                return context.brushMoved.apply(context, arguments);
-            })
         ;
         this._selection = new Utility.SimpleSelection(this.svgData);
     };
@@ -191,8 +204,8 @@
     XYAxis.prototype.calcMargin = function (domNode, element, isHorizontal) {
         var margin = {
             top: !isHorizontal && this.selectionMode() ? 10 : 2,
-            right: isHorizontal && this.selectionMode() ? 10 : 2,
-            bottom: 2,
+            right: isHorizontal && (this.selectionMode() || this.xAxisFocus()) ? 10 : 2,
+            bottom: (this.xAxisFocus() ? this.xAxisFocusHeight() : 0) + 2,
             left: 2
         };
         var width = this.width() - margin.left - margin.right;
@@ -334,6 +347,10 @@
             .render()
         ;
 
+        this.svgDataClipRect
+            .attr("width", width)
+            .attr("height", height)
+        ;
         this.svgData.transition()
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
         ;
@@ -394,10 +411,77 @@
             .attr("d", function (d) { return context.resizeBrushHandle(d, width, height); })
         ;
 
-        this.updateChart(domNode, element, this.margin, width, height, isHorizontal);
+        this.updateFocusChart(domNode, element, this.margin, width, height, isHorizontal);
+        this.updateChart(domNode, element, this.margin, width, height, isHorizontal, 250);
     };
 
-    XYAxis.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
+    XYAxis.prototype.updateFocusChart = function (domNode, element, margin, width, height, isHorizontal) {
+        var context = this;
+        var focusChart = this.svgFocus.selectAll("#" + this.id() + "_focusChart").data(this.xAxisFocus() ? [true] : []);
+        focusChart.enter().append("g")
+            .attr("id", this.id() + "_focusChart")
+            .each(function (d) {
+                context.focusChart = new context.constructor()
+                    .target(this)
+                ;
+                context.focusChart.xBrush
+                    .on("brush.focus", function () {
+                        syncAxis();
+                        context.updateChart(domNode, element, margin, width, height, isHorizontal, 0);
+                    })
+                ;
+            })
+        ;
+        focusChart
+            .each(function (d) {
+                context.copyPropsTo(context.focusChart);
+                context.focusChart
+                    .xAxisFocus(false)
+                    .selectionMode(true)
+                    .tooltipStyle("none")
+                    .orientation("horizontal")
+                    .xAxisGuideLines(false)
+                    .xAxisDomainLow(null)
+                    .xAxisDomainHigh(null)
+                    .yAxisGuideLines(false)
+                    .x(context.width() / 2)
+                    .y(context.height() - context.xAxisFocusHeight() / 2)
+                    .width(context.width())
+                    .height(context.xAxisFocusHeight())
+                    .columns(context.columns())
+                    .data(context.data())
+                    .render()
+                ;
+                syncAxis();
+            })
+        ;
+        focusChart.exit()
+            .each(function (d) {
+                if (context.focusChart) {
+                    context.focusChart
+                        .target(null)
+                    ;
+                    delete context.focusChart;
+                }
+            })
+            .remove()
+        ;
+
+        function syncAxis() {
+            if (context.focusChart.xAxisType() !== "ordinal") {
+                context.xAxis.domain(context.focusChart.xBrush.extent());
+                context.xAxis.svg.call(context.xAxis.d3Axis);
+            } else {
+                var brushExtent = context.focusChart.xBrush.extent();
+                var brushWidth = brushExtent[1] - brushExtent[0];
+                var scale = brushWidth / width;
+                context.xAxis.range([-brushExtent[0] / scale, (width - brushExtent[0]) / scale]);
+                context.xAxis.svg.call(context.xAxis.d3Axis);
+            }
+        }
+    };
+
+    XYAxis.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal, duration) {
     };
 
     XYAxis.prototype.exit = function (domNode, element) {

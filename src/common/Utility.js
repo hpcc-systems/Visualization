@@ -291,7 +291,7 @@
         requireWidget: function(classID) {
             return new Promise(function (resolve, reject) {
                 var parts = classID.split(".");
-                var path = "src/" + parts[0].split("_").join("/");
+                var path = "../" + parts[0].split("_").join("/");
                 require([path], function (Widget) {
                     resolve(parts.length > 1 ? Widget[parts[1]] : Widget);
                 });

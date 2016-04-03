@@ -570,14 +570,14 @@
         switch (this.type) {
             case "CHORO":
                 if (this.source.mappings.contains("state")) {
-                    this.loadWidget("src/map/ChoroplethStates", function (widget) {
+                    this.loadWidget("../map/ChoroplethStates", function (widget) {
                         widget
                             .id(visualization.id)
                             .paletteID_default(visualization.color)
                         ;
                     });
                 } else if (this.source.mappings.contains("county")) {
-                    this.loadWidget("src/map/ChoroplethCounties", function (widget) {
+                    this.loadWidget("../map/ChoroplethCounties", function (widget) {
                         widget
                             .id(visualization.id)
                             .paletteID_default(visualization.color)
@@ -585,7 +585,7 @@
                     });
 
                 } else if (this.source.mappings.contains("geohash")) {
-                    this.loadWidget("src/map/Layered", function (widget) {
+                    this.loadWidget("../map/Layered", function (widget) {
                         widget
                             .id(visualization.id)
                         ;
@@ -597,7 +597,7 @@
             case "BUBBLE":
             case "BAR":
             case "WORD_CLOUD":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -606,7 +606,7 @@
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -617,7 +617,7 @@
                 });
                 break;
             case "TABLE":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -628,7 +628,7 @@
                 });
                 break;
             case "SLIDER":
-                this.loadWidget("src/form/Slider", function (widget) {
+                this.loadWidget("../form/Slider", function (widget) {
                     widget
                         .id(visualization.id)
                     ;
@@ -648,7 +648,7 @@
                 });
                 break;
             case "GRAPH":
-                this.loadWidgets(["src/graph/Graph"], function (widget) {
+                this.loadWidgets(["../graph/Graph"], function (widget) {
                     widget
                         .id(visualization.id)
                         .layout_default("ForceDirected2")
@@ -657,7 +657,7 @@
                 });
                 break;
             case "FORM":
-                this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
+                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea"], function (widget, widgetClasses) {
                     var Input = widgetClasses[1];
                     var CheckBox = widgetClasses[3];
                     var Radio = widgetClasses[5];
@@ -725,7 +725,7 @@
                 });
                 break;
             case "HEAT_MAP":
-                this.loadWidgets(["src/other/HeatMap"], function (widget) {
+                this.loadWidgets(["../other/HeatMap"], function (widget) {
                     widget
                         .id(visualization.id)
                         .image_default(context.properties.imageUrl)
@@ -733,7 +733,7 @@
                 });
                 break;
             default:
-                this.loadWidget("src/common/TextBox", function (widget) {
+                this.loadWidget("../common/TextBox", function (widget) {
                     widget
                         .id(visualization.id)
                         .text_default(context.id + "\n" + "TODO:  " + context.type)

@@ -1,5 +1,6 @@
 ﻿"use strict";
 (function (root, factory) {
+    root.hpccsystems = root.hpccsystems || {};
     if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
@@ -7,6 +8,7 @@
     }
 }(this, function () {
     var require = require || window.require;  //  Keep lint quiet  ---
+    var hpccsystems = hpccsystems || window.hpccsystems;
 
     function requireErrorHandler(err) {
         console.log("Loader Error:\n" + err.message);
@@ -93,7 +95,7 @@
         }, requireErrorHandler);
     }
 
-    return {
+    var Loader = {
         cdn: function (version, callback) {
             resolveCDN({ ver: version }, callback);
         },
@@ -143,4 +145,11 @@
             }
         }
     };
+
+    //  First Loader loaded is added to global namespace (no overriding)  ---
+    if (!hpccsystems.Loader) {
+        hpccsystems.Loader = Loader; 
+    }
+
+    return Loader;
 }));

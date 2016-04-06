@@ -1,0 +1,20 @@
+{
+  "name": "hpcc-wecare",
+  "version": "0.0.1",
+  "description": "WeCare",
+  "homepage": "https://github.com/hpcc-systems/Visualization",
+  "license": "Apache",
+  "authors": [
+    "HPCC Systems"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "impress.js": "git://github.com/GordonSmith/impress.js.git#MILEHIGH_UI"
+  }
+}
+
+

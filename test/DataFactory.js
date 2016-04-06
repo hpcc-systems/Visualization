@@ -867,12 +867,12 @@
             simple: {
                 columns: ["latitude", "longtitude", "pin", "circle"],
                 data: [
-                    [51.897969, -8.475438, { fillColor: "green" }, { radius: 50, fillColor: "red" }],
-                    [35.652930, 139.687128],
-                    [37.665074, -122.384375],
-                    [32.690680, -117.178540],
-                    [39.709455, -104.969859],
-                    [41.244123, -95.961610],
+                    [51.897969, -8.475438, { icon:"&#xf13d;", text:"Test 1", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana" }],
+                    [35.652930, 139.687128, { icon:"&#xf013;", text:"Test 2", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana"  }],
+                    [37.665074, -122.384375, { icon:"C", text:"Test 3", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana"  }],
+                    [32.690680, -117.178540, { icon:"D", text:"Test 4", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana"  }],
+                    [39.709455, -104.969859, { icon:"E", text:"Test 5", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana"  }],
+                    [41.244123, -95.961610, { icon:"F", text:"Test 6", strokeColor:"#C8C8C8", fillColor: "white", "iconFont":"FontAwesome", "textFont":"Verdana"  }],
                     [32.688980, -117.192040, null, { radius: 100, fillColor: "green", strokeColor: "green" }],
                     [45.786490, -108.526600],
                     [45.796180, -108.535652],

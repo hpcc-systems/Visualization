@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
-}(this, function (d3, Database, Utility, Comms, Widget, require) {
+}(this, function (d3, Class, Database, Utility, Comms, Widget, require) {
     var loading = "...loading...";
 
     function exists(prop, scope) {
@@ -515,11 +515,11 @@
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
                 widget["vertex_" + key] = function (row) {
-                    context.visualization.onEvent(key, context.events[key], row);
+                    context.visualization.processEvent(key, context.events[key], row);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {
-                    context.visualization.onEvent(key, context.events[key], row, col, selected);
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             }
         }
@@ -555,6 +555,8 @@
 
     //  Visualization ---
     function Visualization(dashboard, visualization) {
+        Class.call(this);
+
         this.dashboard = dashboard;
         this.id = visualization.id;
         this.label = visualization.label;
@@ -742,6 +744,8 @@
                 break;
         }
     }
+    Visualization.prototype = Object.create(Class.prototype);
+    Visualization.prototype.constructor = Visualization;
 
     Visualization.prototype.getQualifiedID = function () {
         return this.id;
@@ -854,7 +858,18 @@
         this.update(loading);
     };
 
-    Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
+    Visualization.prototype.on = function (eventID, func) {
+        var context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            origFunc.apply(context, args);
+            setTimeout(function () {
+                func.apply(context, args);
+            }, 0);
+        });
+        return this;
+    };
+    
+    Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
         var context = this;
         setTimeout(function () {
             selected = selected === undefined ? true : selected;
@@ -1037,14 +1052,16 @@
             }
         }
         var now = Date.now();
+        this.dashboard.marshaller.commsEvent(this, "request", this.request);
         this.comms.call(this.request).then(function (response) {
             var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
             setTimeout(function() {
                 context.processResponse(response, request, updates);
+                context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
                 ++context._loadedCount;
             }, delay > 0 ? delay : 0);
         }).catch(function (e) {
-            context.dashboard.marshaller.commsError("DataSource.prototype.fetchData", e);
+            context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
         });
     };
 
@@ -1147,12 +1164,17 @@
 
     //  Marshaller  ---
     function Marshaller() {
+        Class.call(this);
+
         this._proxyMappings = {};
         this._widgetMappings = d3.map();
         this._clearDataOnUpdate = true;
         this._propogateClear = false;
+        this.id = "Marshaller";
         this._missingDataString = "";
     }
+    Marshaller.prototype = Object.create(Class.prototype);
+    Marshaller.prototype.constructor = Marshaller;
 
     Marshaller.prototype.commsDataLoaded = function () {
         for (var i = 0; i < this.dashboardArray.length; i++) {
@@ -1210,11 +1232,11 @@
                         callback(response);
                     });
                 }).catch(function (e) {
-                    context.commsError("Marshaller.prototype.url", e);
+                    context.commsEvent(context, "error", hipieResultName, e);
                 });
             }
         }).catch(function (e) {
-            context.commsError("Marshaller.prototype.url", e);
+            context.commsEvent(context, "error", request, e);
         });
     };
 
@@ -1262,6 +1284,11 @@
             context.dashboardArray.push(newDashboard);
         });
         this.dashboardTotal = this.dashboardArray.length;
+        this._visualizationArray.forEach(function (ddlViz) {
+            ddlViz.on("processEvent", function (eventID, event, row, col, selected) {
+                context.vizEvent(ddlViz.widget, eventID, row, col, selected);
+            });
+        });
         this.ready(callback);
         return this;
     };
@@ -1275,14 +1302,11 @@
     };
 
     Marshaller.prototype.on = function (eventID, func) {
-        if (this[eventID] === undefined) {
-            throw "Method:  " + eventID + " does not exist.";
-        }
-        var origFunc = this[eventID];
-        this[eventID] = function () {
-            origFunc.apply(this, arguments);
+        var context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            origFunc.apply(context, args);
             func.apply(this, arguments);
-        };
+        });
         return this;
     };
 
@@ -1305,8 +1329,45 @@
         waitForLoad(callback);
     };
 
-    Marshaller.prototype.commsError = function (source, error) {
-        console.log("Comms Error:\n" + source + "\n" + error);
+    Marshaller.prototype.vizEvent = function (sourceWidget, eventID, row, col, selected) {
+        console.log("Marshaller.vizEvent:  " + sourceWidget.id() + "-" + eventID);
+    };
+
+    Marshaller.prototype.commsEvent = function (ddlSource, eventID, request, response) {
+        switch (eventID) {
+            case "request":
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(request));
+                }
+                break;
+            case "response":
+            case "error":
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(response));
+                }
+                break;
+            default:
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + JSON.stringify(arguments));
+                }
+                break;
+
+        }
+    };
+
+    Marshaller.prototype.createDatabomb = function () {
+        var retVal = {};
+        this.dashboardArray.forEach(function (dashboard) {
+            for (var key in dashboard.datasources) {
+                var comms = dashboard.datasources[key].comms;
+                retVal[key] = {};
+                for (var key2 in comms._hipieResults) {
+                    var hipieResult = comms._hipieResults[key2];
+                    retVal[key][key2] = comms._resultNameCache[hipieResult.from];
+                }
+            }
+        });
+        return retVal;
     };
 
     return {

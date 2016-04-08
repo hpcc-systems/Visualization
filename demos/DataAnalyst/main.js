@@ -11,7 +11,7 @@ require(
         "src/other/Table", "src/other/Comms",
         "src/map/ChoroplethStates",
         "src/c3chart/Gauge",
-        "./DataAnalyst/sample_breach"
+        "./sample_breach"
     ],
     function (Border, Grid, Tabbed,
         Form, Input, TextArea,

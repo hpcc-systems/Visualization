@@ -174,10 +174,10 @@ gulp.task("build-amd-src", function (done) {
         baseUrl: ".",
         appDir: "src",
         dir: cfg.distamd,
-        mainConfigFile: "src/config.js",
+        mainConfigFile: "src/loader.js",
         modules: [{
             name: cfg.prefix,
-            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser", "src/Loader"],
+            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser", "src/loader"],
             create: true
         }].concat(amd_modules)
     };
@@ -201,6 +201,10 @@ gulp.task("build-amd", ["build-amd-src","copy-amchart-images"], function (done) 
         "(function (root, factory) { define([], factory); } (this, function () { return " + JSON.stringify(amd_bundles) + "; }));",
         function (error) { if (error) throw error; }
     );
+    gulp.src(["./dist-amd/hpcc-viz.js"])
+        .pipe(replace("bundles:{}", "bundles:" + JSON.stringify(amd_bundles)))
+        .pipe(gulp.dest("./dist-amd/"))
+    ;
     return gulp.src([
         'bower_components/font-awesome/css/font-awesome.min.css',
         'bower_components/font-awesome/fonts/fontawesome-webfont.woff',

@@ -34,7 +34,7 @@
         ;
     };
 
-    Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
+    Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal, duration) {
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -95,7 +95,7 @@
                 ;
 
                 if (isHorizontal) {
-                    columnRect.transition()
+                    columnRect.transition().duration(duration)
                         .attr("x", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
@@ -104,7 +104,7 @@
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 } else {
-                    columnRect.transition()
+                    columnRect.transition().duration(duration)
                         .attr("y", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
@@ -120,12 +120,12 @@
                     });
                 }
 
-                columnRect.exit().transition()
+                columnRect.exit().transition().duration(duration)
                     .remove()
                 ;
         });
 
-        column.exit().transition()
+        column.exit().transition().duration(duration)
             .remove()
         ;
     };

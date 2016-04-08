@@ -1,9 +1,0 @@
-.DS_Store
-
-.idea/.name
-.idea/*.iml
-.idea/*.xml
-.idea/*/*.xml
-
-vendor/
-node_modules/

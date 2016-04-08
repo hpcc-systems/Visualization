@@ -13,14 +13,10 @@
     <div id="mocha"></div>
     <div id="testWidget"></div>
     <script src="../dist-amd/hpcc-viz.js"></script>
-    <script src="../dist-amd/hpcc-bundles.js"></script>
     <script>
         require.config({
             paths: {
-                "src": "../dist-amd",
-                "test": "../test",
-                "font-awesome": "../dist-amd/font-awesome/css/font-awesome.min",
-                "amchartsImg": "../dist-amd/img/amcharts/"
+                "test": "../test"
             }
         });
     </script>
@@ -28,7 +24,7 @@
         mocha.setup('bdd');
         var assert = chai.assert;
         var skipHierarchTest = true;
-        require(["./loader", "./widgets"], function () {
+        require(["test/loader", "test/widgets"], function () {
             mocha.run();
         });
     </script>

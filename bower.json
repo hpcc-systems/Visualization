@@ -51,7 +51,7 @@
   "resolutions": {
     "d3": "~3.5.16"
   },
-  "license": "Apache",
+  "license": "Apache-2.0",
   "authors": [
     "HPCC Systems"
   ]

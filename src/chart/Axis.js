@@ -11,6 +11,7 @@
         this._drawStartPos = "origin";
 
         this.d3Axis = d3.svg.axis();
+        this.d3Guides = d3.svg.axis();
 
         this
             .type("linear")
@@ -30,6 +31,7 @@
     Axis.prototype.publish("ordinals", [], "array", "Ordinal Values", null, { disable: function (w) { return w.type() !== "ordinal"; } });
     Axis.prototype.publish("tickCount", null, "number", "Tick Count", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
     Axis.prototype.publish("tickFormat", null, "string", "Tick Format", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
+    Axis.prototype.publish("tickLength", null, "number", "Tick Length", { optional: true });
     Axis.prototype.publish("low", null, "any", "Low", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
     Axis.prototype.publish("high", null, "any", "High", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
     Axis.prototype.publish("overlapMode", "none", "set", "Label Overlap Mode", ["none", "stagger", "hide", "rotate"]);
@@ -133,10 +135,24 @@
         return this.d3Scale.invert(pos);
     };
 
+    Axis.prototype.guideTarget = function (_) {
+        this._guideElement = d3.select(_)
+            .attr("class", this._class)
+        ;
+    };
+
     Axis.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this.svg = element.append("g");
-        this.svgText = this.svg.append("text");
+        this.svgAxis = this.svg.append("g")
+            .attr("class", "axis")
+        ;
+        this.svgText = this.svgAxis.append("text");
+
+        this.svg2 = (this._guideElement || element).append("g");
+        this.svgGuides = this.svg2
+            .attr("class", "guide")
+        ;
     };
 
     Axis.prototype.updateScale = function () {
@@ -214,6 +230,13 @@
             .orient(this.orientation())
             .scale(this.d3Scale)
             .tickFormat(this.formatter)
+            .ticks(this.tickCount())
+        ;
+        this.d3Guides
+            .orient(this.orientation())
+            .scale(this.d3Scale)
+            .tickSize(-this.tickLength())
+            .tickFormat("")
             .ticks(this.tickCount())
         ;
     };
@@ -347,11 +370,8 @@
         this.range(this.isHorizontal() ? [overlap.left, this.width() - overlap.right] : [this.height() - overlap.top - overlap.bottom, 0]);
 
         var context = this;
-        this.svg
-            .call(this.d3Axis)
-            .transition()
-            .attr("class", this.isHorizontal() ? "x" : "y")
-            .attr("transform", function (d) {
+        function doPosition(element) {
+            element.attr("transform", function (d) {
                 switch (context.orientation()) {
                     case "left":
                         return "translate(" + overlap.depth + ", " + overlap.top + ")";
@@ -363,12 +383,26 @@
                         return "translate(0," + (context.height() - overlap.depth) + ")";
                 }
                 return "translate(0,0)";
-            })
+            });
+        }
+        this.svg
+            //.attr("class", this.isHorizontal() ? "x" : "y")
             .style("visibility", this.type() === "none" ? "hidden" : null)
+            .transition()
+            .call(doPosition)
         ;
-        this.adjustText(this.svg, overlap.tickOverlapModulus);
+        if (this._guideElement) {
+            this.svg2
+                .transition()
+                .call(doPosition)
+            ;
+        }
+        this.svgAxis
+            .call(this.d3Axis)
+        ;
+        this.adjustText(this.svgAxis, overlap.tickOverlapModulus);
 
-        var svgLine = this.svg.select("path.domain");
+        var svgLine = this.svgAxis.select("path.domain");
         var svgLineBBox = svgLine.node().getBBox();
         switch (this.orientation()) {
             case "left":
@@ -415,6 +449,18 @@
                     .text(this.title())
                 ;
                 break;
+        }
+        this.svgGuides
+            .call(this.d3Guides)
+        ;
+    };
+
+    Axis.prototype.postUpdate = function (domNode, element) {
+        SVGWidget.prototype.postUpdate.apply(this, arguments);
+        if (this._guideElement) {
+            this._guideElement
+                .attr("transform", this._element.attr("transform"))
+            ;
         }
     };
 

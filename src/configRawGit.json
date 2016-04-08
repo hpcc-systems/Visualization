@@ -18,6 +18,7 @@
         "font-awesome": "//rawgit.com/FortAwesome/Font-Awesome/v4.5.0/css/font-awesome.min",
         "es6-promise": "//rawgit.com/jakearchibald/es6-promise/v3.2.1/dist/es6-promise.min",
         "d3-hexbin": "//rawgit.com/d3/d3-plugins/master/hexbin/hexbin",
+        "d3-tip": "//rawgit.com/Caged/d3-tip/v0.6.7/index",
 
         "amcharts": "//rawgit.com/amcharts/amcharts3/3.18.0/amcharts/amcharts",
         "amcharts.funnel": "//rawgit.com/amcharts/amcharts3/3.18.0/amcharts/funnel",

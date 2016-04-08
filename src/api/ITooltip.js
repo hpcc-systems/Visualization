@@ -47,7 +47,7 @@
     }
     ITooltip.prototype = Object.create(Widget.prototype);
 
-    ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default"], {});
+    ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default", "none"], {});
     ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Value Format", null, {});
     ITooltip.prototype.publish("tooltipSeriesColor", "#EAFFFF", "html-color", "Series Color", null, {});
     ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Label Color", null, {});
@@ -73,8 +73,10 @@
 
     ITooltip.prototype.tooltipUpdate = function () {
         var classed = this.tooltip.attr("class");
-        classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick");
-        this.tooltip.attr("class", classed);
+        classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
+        this.tooltip
+            .attr("class", classed)
+        ;
     };
 
     ITooltip.prototype.tooltipExit = function () {
@@ -110,6 +112,8 @@
             opts.value = this._valueFormatter(opts.value) || "";
         }
         switch (this.tooltipStyle()) {
+            case "none":
+                break;
             default:
                 if (opts.series) {
                     return "<span style='color:" + this.tooltipSeriesColor() + "'>" + opts.series + "</span> / <span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";

@@ -470,13 +470,13 @@
         function syncAxis() {
             if (context.focusChart.xAxisType() !== "ordinal") {
                 context.xAxis.domain(context.focusChart.xBrush.extent());
-                context.xAxis.svg.call(context.xAxis.d3Axis);
+                context.xAxis.svgAxis.call(context.xAxis.d3Axis);
             } else {
                 var brushExtent = context.focusChart.xBrush.extent();
                 var brushWidth = brushExtent[1] - brushExtent[0];
                 var scale = brushWidth / width;
                 context.xAxis.range([-brushExtent[0] / scale, (width - brushExtent[0]) / scale]);
-                context.xAxis.svg.call(context.xAxis.d3Axis);
+                context.xAxis.svgAxis.call(context.xAxis.d3Axis);
             }
         }
     };

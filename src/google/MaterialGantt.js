@@ -10,7 +10,7 @@
     function MaterialGantt() {
         Material.call(this);
 
-        this._chartType = "GanttChart";
+        this._chartType = "Gantt";
         this._gType = "gantt";
         this._tag = "div";
         this._data_google = [];

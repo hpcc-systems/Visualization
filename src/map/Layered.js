@@ -24,6 +24,15 @@
     Layered.prototype.publish("centerLat", 0, "number", "Center Latitude", null, { tags: ["Basic"] });
     Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
     Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
+    Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
+
+    Layered.prototype.data = function (_) {
+        var retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._autoScaleOnNextRender = true;
+        }
+        return retVal;
+    };
 
     Layered.prototype.projection_orig = Layered.prototype.projection;
     Layered.prototype.projection = function (_) {
@@ -43,7 +52,7 @@
             this._d3GeoPath = d3.geo.path()
                 .projection(this._d3GeoProjection)
             ;
-            this._zoomToFitOnNextRender = false;
+            this._autoScaleOnNextRender = true;
         }
         return retVal;
     };
@@ -168,11 +177,24 @@
     };
 
     Layered.prototype.render = function (callback) {
-        var retVal = SVGWidget.prototype.render.apply(this, arguments);
-        if (this._renderCount && this._zoomToFitOnNextRender) {
-            this._zoomToFitOnNextRender = false;
-            this.zoomToFit();
-        }
+        var context = this;
+        var retVal = SVGWidget.prototype.render.call(this, function (w) {
+            if ((context._renderCount && context._autoScaleOnNextRender) || context._prevAutoScaleMode !== context.autoScaleMode()) {
+                context._prevAutoScaleMode = context.autoScaleMode();
+                context._autoScaleOnNextRender = false;
+                setTimeout(function () {
+                    context.autoScale();
+                    context.autoScale();  //TODO Fix math in autoScale 
+                    if (callback) {
+                        callback(w);
+                    }
+                }, 0);
+            } else {
+                if (callback) {
+                    callback(w);
+                }
+            }
+        });
         return retVal;
     };
 
@@ -199,28 +221,43 @@
         return this._d3GeoProjection.invert([x, y]);
     };
 
-    Layered.prototype.zoomToFit = function (scaleFactor) {
-        scaleFactor = scaleFactor || 0.95;
-
+    Layered.prototype.getBounds = function () {
         var bbox = this._layersTarget.node().getBBox();
-        if (bbox.width && bbox.height) {
-            var translate = this._zoom.translate();
-            var x = bbox.x + bbox.width / 2;
-            var y = bbox.y + bbox.height / 2;
-            translate[0] -= (x - this.width() / 2);
-            translate[1] -= (y - this.height() / 2);
-            this._zoom
-                .translate(translate)
-            ;
+        return {
+            x: bbox.x,
+            y: bbox.y,
+            width: bbox.width,
+            height: bbox.height
+        };
+    };
 
-            var scale = this._zoom.scale();
-            var newScale = scale * Math.min(this.width() / bbox.width, this.height() / bbox.height);
-
-            this._zoom
-                .scale(newScale)
-                .event(this._layersTarget)
-            ;
+    Layered.prototype.autoScale = function () {
+        switch (this.autoScaleMode()) {
+            case "none":
+                return;
+            case "all":
+                this.shrinkToFit(this.getBounds());
+                break;
         }
+    };
+
+    Layered.prototype.shrinkToFit = function (rect) {
+        var width = this.width();
+        var height = this.height();
+        var translate = this._zoom.translate();
+        var scale = this._zoom.scale();
+
+        rect.x += rect.width / 2;
+        rect.y += rect.height / 2;
+        translate[0] -= (rect.x - width / 2);
+        translate[1] -= (rect.y - height / 2);
+
+        var newScale = scale * Math.min(width / rect.width, height / rect.height);
+        this._zoom
+            .translate(translate)
+            .scale(newScale)
+            .event(this._layersTarget)
+        ;
     };
 
     return Layered;

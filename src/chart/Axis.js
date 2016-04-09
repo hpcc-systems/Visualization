@@ -34,7 +34,7 @@
     Axis.prototype.publish("tickLength", null, "number", "Tick Length", { optional: true });
     Axis.prototype.publish("low", null, "any", "Low", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
     Axis.prototype.publish("high", null, "any", "High", null, { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
-    Axis.prototype.publish("overlapMode", "none", "set", "Label Overlap Mode", ["none", "stagger", "hide", "rotate"]);
+    Axis.prototype.publish("overlapMode", "none", "set", "Label Overlap Mode", ["none", "stagger", "hide", "rotate", "linebreak", "wrap"]);
     Axis.prototype.publish("labelRotation", 33, "number", "Label Rotation", null, { optional: true, disable: function (w) { return w.overlapMode() !== "rotate"; } });
     Axis.prototype.publish("shrinkToFit", "both", "set", "Size to fit", ["none", "low", "high", "both"]);
     Axis.prototype.publish("extend", 5, "number", "Extend axis %", { optional: true, disable: function (w) { return w.type() === "ordinal"; } });
@@ -259,53 +259,72 @@
         var isHoriztontal = this.isHorizontal();
         var isLeft = this.orientation() === "left";
         var isBottom = this.orientation() === "bottom";
-        switch (isHoriztontal ? this.overlapMode() : "none") {
-            case "stagger":
+        var context = this;
+        if (this.overlapMode() === "linebreak") {
+            if (this.type() === "ordinal") {
                 svg.selectAll(".tick > text")
-                    .style("text-anchor", "middle")
-                    .attr("dy", function (d, i) { return (isBottom ? 1 : -1) * ((isBottom ? 0.71 : 0) + i % tickOverlapModulus) + "em"; })
-                    .attr("dx", 0)
-                    .attr("visibility", null)
-                    .attr("transform", "rotate(0)")
+                    .call(function () {
+                        return context.linebreak.apply(context, arguments);
+                    }, this.d3Scale.rangeBand())
                 ;
-                break;
-            case "hide":
+            }
+        } else if (this.overlapMode() === "wrap") {
+            if (this.type() === "ordinal") {
                 svg.selectAll(".tick > text")
-                    .style("text-anchor", "middle")
-                    .attr("dy", (isBottom ? 0.71 : 0) + "em")
-                    .attr("dx", 0)
-                    .attr("visibility", function (d, i) { return i % tickOverlapModulus ? "hidden" : null; })
-                    .attr("transform", "rotate(0)")
+                    .call(function () {
+                        return context.wrap.apply(context, arguments);
+                    }, this.d3Scale.rangeBand())
                 ;
-                break;
-            case "rotate":
-                var deg = -(this.labelRotation()) || 0;
-                if (deg !== 0 && tickOverlapModulus > 1) {
+            }
+        } else {
+            switch (isHoriztontal ? this.overlapMode() : "none") {
+                case "stagger":
                     svg.selectAll(".tick > text")
-                        .each(function () {
-                            var elm = d3.select(this);
-                            var bbox = elm.node().getBBox();
-                            var dyOff = (isBottom ? 1 : -1) * Math.sin(Math.PI * (-Math.abs(deg) / 180));
-                            elm
-                                .style("text-anchor", deg > 0 ? (isBottom ? "start" : "end") : (isBottom ? "end" : "start"))
-                                .attr("dy", (bbox.height / 2 * dyOff) + "px")
-                                .attr("dx", deg > 0 ? (isBottom ? "0.71em" : "-0.71em") : (isBottom ? "-0.71em" : "0.71em"))
-                                .attr("transform", "rotate(" + deg + ")")
-                                .attr("visibility", null)
-                            ;
-                        })
+                        .style("text-anchor", "middle")
+                        .attr("dy", function (d, i) { return (isBottom ? 1 : -1) * ((isBottom ? 0.71 : 0) + i % tickOverlapModulus) + "em"; })
+                        .attr("dx", 0)
+                        .attr("visibility", null)
+                        .attr("transform", "rotate(0)")
                     ;
                     break;
-                }
-                /* falls through */
-            default:
-                svg.selectAll(".tick > text")
-                    .style("text-anchor", isHoriztontal ? "middle" : isLeft ? "end" : "start")
-                    .attr("dy", isHoriztontal ? ((isBottom ? 0.71 : 0) + "em") : "0.32em")
-                    .attr("dx", 0)
-                    .attr("visibility", null)
-                    .attr("transform", "rotate(0)")
-                ;
+                case "hide":
+                    svg.selectAll(".tick > text")
+                        .style("text-anchor", "middle")
+                        .attr("dy", (isBottom ? 0.71 : 0) + "em")
+                        .attr("dx", 0)
+                        .attr("visibility", function (d, i) { return i % tickOverlapModulus ? "hidden" : null; })
+                        .attr("transform", "rotate(0)")
+                    ;
+                    break;
+                case "rotate":
+                    var deg = -(this.labelRotation()) || 0;
+                    if (deg !== 0 && tickOverlapModulus > 1) {
+                        svg.selectAll(".tick > text")
+                            .each(function () {
+                                var elm = d3.select(this);
+                                var bbox = elm.node().getBBox();
+                                var dyOff = (isBottom ? 1 : -1) * Math.sin(Math.PI * (-Math.abs(deg) / 180));
+                                elm
+                                    .style("text-anchor", deg > 0 ? (isBottom ? "start" : "end") : (isBottom ? "end" : "start"))
+                                    .attr("dy", (bbox.height / 2 * dyOff) + "px")
+                                    .attr("dx", deg > 0 ? (isBottom ? "0.71em" : "-0.71em") : (isBottom ? "-0.71em" : "0.71em"))
+                                    .attr("transform", "rotate(" + deg + ")")
+                                    .attr("visibility", null)
+                                ;
+                            })
+                        ;
+                        break;
+                    }
+                    /* falls through */
+                default:
+                    svg.selectAll(".tick > text")
+                        .style("text-anchor", isHoriztontal ? "middle" : isLeft ? "end" : "start")
+                        .attr("dy", isHoriztontal ? ((isBottom ? 0.71 : 0) + "em") : "0.32em")
+                        .attr("dx", 0)
+                        .attr("visibility", null)
+                        .attr("transform", "rotate(0)")
+                    ;
+            }
         }
     };
 
@@ -374,6 +393,53 @@
         tmpSvg.remove();
 
         return retVal;
+    };
+
+    Axis.prototype.wrap = function (text, bandSize, re) {
+        re = re || /\s+/;
+        var context = this;
+        text.each(function () {
+            var text = d3.select(this),
+                words = text.text().split(re).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, 
+                x = text.attr("x"),
+                y = text.attr("y"),
+                fs = parseFloat(text.style("font-size")) || 10,
+                maxLinesPerBand = Math.floor(bandSize / (fs * lineHeight)) - 1,
+                minWordsPerLine = context.isHorizontal() ? 1 : Math.ceil(words.length / maxLinesPerBand),
+                dy = parseFloat(text.attr("dy"))
+            ;
+            var tspan = text.text(null).append("tspan")
+                .attr("x", x)
+                .attr("y", y)
+                .attr("dy", dy + "em")
+            ;
+            var wordsOnLine = 0;
+            while ((word = words.pop())) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                wordsOnLine++;
+                if (tspan.node().getComputedTextLength() > bandSize && wordsOnLine >= minWordsPerLine) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                    wordsOnLine = 0;
+                }
+            }
+            if (!context.isHorizontal()) {
+                text.selectAll("tspan")
+                    .attr("y", (-lineNumber/2) + "em")
+                ;
+            }
+        });
+    };
+
+    Axis.prototype.linebreak = function (text, bandSize) {
+        this.wrap(text, bandSize, "\n");
     };
 
     Axis.prototype.update = function (domNode, element) {

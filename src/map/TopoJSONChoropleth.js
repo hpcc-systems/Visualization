@@ -20,8 +20,7 @@
     TopoJSONChoropleth.prototype.layerEnter = function (base, svgElement, domElement) {
         Choropleth.prototype.layerEnter.apply(this, arguments);
 
-        this._topoJSONChoropleth = this._choroplethTransform.insert("g", ".mesh");
-        this._selection = new Utility.SimpleSelection(this._topoJSONChoropleth);
+        this._selection = new Utility.SimpleSelection(this._choroplethData);
         this.choroPaths = d3.select(null);
     };
 
@@ -65,7 +64,7 @@
                     data.push(row);
                 }
             });
-            context.choroPaths = context._topoJSONChoropleth.selectAll(".data").data(context.visible() ? data : [], function (d) { return d[0]; });
+            context.choroPaths = context._choroplethData.selectAll(".data").data(context.visible() ? data : [], function (d) { return d[0]; });
             context.choroPaths.enter().append("path")
                 .attr("class", "data")
                 .call(context._selection.enter.bind(context._selection))

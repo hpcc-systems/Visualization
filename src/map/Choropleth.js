@@ -27,6 +27,7 @@
     Choropleth.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });
     Choropleth.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");
     Choropleth.prototype.publish("internalOnly", false, "boolean", "Internal mesh only");
+    Choropleth.prototype.publish("autoScaleMode", "mesh", "set", "Auto Scale", ["none", "mesh", "data"], { tags: ["Basic"], override: true });
 
     Choropleth.prototype.data = function (_) {
         var retVal = Layer.prototype.data.apply(this, arguments);
@@ -49,10 +50,43 @@
         return retVal;
     };
 
+    Choropleth.prototype.getDataBounds = function () {
+        var bbox = this._choroplethData.node().getBBox();
+        var retVal = {
+            x: bbox.x,
+            y: bbox.y,
+            width: bbox.width,
+            height: bbox.height
+        };
+        var scale = this._zoom.scale();
+        retVal.x *= scale;
+        retVal.y *= scale;
+        retVal.width *= scale;
+        retVal.height *= scale;
+        var translate = this._zoom.translate();
+        retVal.x += translate[0];
+        retVal.y += translate[1];
+        return retVal;
+    };
+
+    Choropleth.prototype.autoScale = function () {
+        switch (this.autoScaleMode()) {
+            case "none":
+                return;
+            case "mesh":
+                this.shrinkToFit(this.getBounds());
+                break;
+            case "data":
+                this.shrinkToFit(this.getDataBounds());
+                break;
+        }
+    };
+
     Choropleth.prototype.layerEnter = function (base, svgElement, domElement) {
         Layer.prototype.layerEnter.apply(this, arguments);
 
-        this._choroplethTransform = svgElement.append("g");
+        this._choroplethTransform = svgElement;
+        this._choroplethData = this._choroplethTransform.append("g");
         this._choropleth = this._choroplethTransform.append("path")
             .attr("class", "mesh")
         ;

@@ -19,8 +19,7 @@
             graticule: true,
             heat: true
         };
-        require(["test/DataFactory", "src/map/GMapLayered", "src/map/Layered", "src/map/OpenStreet", "src/map/ChoroplethContinents", "src/map/ChoroplethCountries", "src/map/ChoroplethStates", "src/map/TopoJSONChoropleth", "src/map/ChoroplethCounties", "src/map/Graticule", "src/map/GeoHash", "src/map/Graph", "src/map/Heat"], function (DataFactory, GMap, Layered, OpenStreet, ChoroplethContinents, ChoroplethCountries, ChoroplethStates, TopoJSONChoropleth, ChoroplethCounties, Graticule, GeoHash, Pins, Heat) {
-            var Base = gmapFlag ? GMap : Layered;
+        require(["test/DataFactory", gmapFlag ? "src/map/GMapLayered" : "src/map/Layered", "src/map/OpenStreet", "src/map/ChoroplethContinents", "src/map/ChoroplethCountries", "src/map/ChoroplethStates", "src/map/TopoJSONChoropleth", "src/map/ChoroplethCounties", "src/map/Graticule", "src/map/GeoHash", "src/map/Graph", "src/map/Heat"], function (DataFactory, Base, OpenStreet, ChoroplethContinents, ChoroplethCountries, ChoroplethStates, TopoJSONChoropleth, ChoroplethCounties, Graticule, GeoHash, Pins, Heat) {
             function Sample() {
                 Base.call(this);
 
@@ -172,6 +171,15 @@
                     callback(new ChoroplethStates()
                         .columns(DataFactory.States.simple.columns)
                         .data(DataFactory.States.simple.data)
+                    );
+                });
+            },
+            autoSizeData: function (callback) {
+                require(["src/map/ChoroplethStates"], function (ChoroplethStates) {
+                    callback(new ChoroplethStates()
+                        .columns(["State", "Weight"])
+                        .data([["AL", 4779736], ["FL", 710231]])
+                        .autoScaleMode("data")
                     );
                 });
             },

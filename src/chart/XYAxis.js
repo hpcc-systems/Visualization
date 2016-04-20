@@ -51,7 +51,7 @@
     XYAxis.prototype.publishProxy("xAxisLabelRotation", "domainAxis", "labelRotation");
     XYAxis.prototype.publishProxy("xAxisDomainPadding", "domainAxis", "extend");
     XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Lines");
-    XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus");
+    XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus", null, { disable: function (w) { return w.orientation() !== "horizontal"; } });
     XYAxis.prototype.publish("xAxisFocusHeight", 80, "number", "X-Axis Focus Height", null, { disable: function (w) { return !w.xAxisFocus(); } });
 
     XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
@@ -490,7 +490,6 @@
     };
 
     XYAxis.prototype.selection = function (selected) {
-        console.log(selected);
     };
 
     return XYAxis;

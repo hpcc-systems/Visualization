@@ -1,0 +1,1 @@
+!function(n,o){"function"==typeof define&&define.amd?define([],o):n.common_IList=o()}(this,function(){function n(){}return n.prototype.click=function(n){console.log("Click:  "+n)},n});

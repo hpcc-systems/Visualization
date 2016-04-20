@@ -135,7 +135,6 @@
             "amchartsImg": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
             "simpleheat": rawgitBaseUrl + "/mourner/simpleheat/v0.3.0/simpleheat",
 
-            "hpcc-viz": srcUrl,
             "src": srcUrl
         };
     }
@@ -147,7 +146,6 @@
         for (var key in config.paths) {
             paths[key] = srcUrl + "/" + config.paths[key];
         }
-        paths["hpcc-viz"] = srcUrl;
         root.hpccsystems.require.config({
             baseUrl: ".",
             paths: paths
@@ -157,10 +155,9 @@
     function buildConfig(srcUrl) {
         root.hpccsystems.require.config({
             baseUrl: ".",
-            bundles: {},  //  Bundles get injected during gulp build-amd
+            bundles: { replace: "me" },  //  Bundles get injected during gulp build-amd
             paths: {
-                "hpcc-viz": srcUrl,
-                src: srcUrl,
+                "src": srcUrl,
                 "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
                 "amchartsImg": srcUrl + "/img/amcharts/"
             }
@@ -202,8 +199,7 @@
                 baseUrl: srcUrl,
                 bundles: bundles,
                 paths: {
-                    "hpcc-viz": srcUrl,
-                    src: srcUrl,
+                    "src": srcUrl,
                     "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
                     "amchartsImg": srcUrl + "/img/amcharts/"
                 }
@@ -222,7 +218,7 @@
             myInfo.url = document.currentScript.src;
         } else {
             var scripts = document.getElementsByTagName('script');
-            for (var i = scripts.length - 1; i > 0 ; --i) {
+            for (var i = scripts.length - 1; i >= 0 ; --i) {
                 var script = scripts[i];
                 var url = script.getAttribute.length !== undefined ? script.src : script.getAttribute('src', -1);
                 if (url.indexOf("loader.js") > 0 || url.indexOf("hpcc-viz.js") > 0) {

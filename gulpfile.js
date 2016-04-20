@@ -200,7 +200,8 @@ gulp.task("build-amd", ["build-amd-src","copy-amchart-images"], function (done) 
         function (error) { if (error) throw error; }
     );
     gulp.src(["./dist-amd/hpcc-viz.js"])
-        .pipe(replace("bundles:{}", "bundles:" + JSON.stringify(amd_bundles)))
+        .pipe(replace("bundles:{replace:\"me\"}", "bundles:" + JSON.stringify(amd_bundles)))
+        .pipe(replace("bundles: { replace: \"me\" }", "bundles:" + JSON.stringify(amd_bundles)))
         .pipe(gulp.dest("./dist-amd/"))
     ;
     return gulp.src([

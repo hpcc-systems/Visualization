@@ -137,6 +137,8 @@
                 }
             }
         }
+
+        this._chartTypeSelect.value(this.chartType());
         var twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());

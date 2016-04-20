@@ -55,7 +55,7 @@
         var hexBinPoints = this._hexbin(dataPoints);
         var maxBinPoints = d3.max(hexBinPoints, function (d) { return d.length; });
 
-        var points = this.svgData.selectAll(".hexagon").data(hexBinPoints);
+        var points = this.svgData.selectAll(".hexagon").data(hexBinPoints, function (d, idx) { return d.i + "_" + d.j; });
         points.enter().append("path")
             .attr("class", "hexagon")
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })

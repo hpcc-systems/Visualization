@@ -16,11 +16,9 @@
     Donut.prototype._class += " c3chart_Donut";
 
     Donut.prototype.publish("showLabel", true, "boolean", "Show Label",null,{tags:["Basic"]});
-    //Donut.prototype.publish("labelFormat", null, "function", "???",null,{tags:["Intermediate"]});
-    //Donut.prototype.publish("labelThreshold", 0.05, "number", "???",null,{tags:["Intermediate"]});
     Donut.prototype.publish("arcWidth", 45, "number", "Arc Width",null,{tags:["Basic"]});
     Donut.prototype.publish("expand", true, "boolean", "Arc Explode",null,{tags:["Intermediate"]});
-    Donut.prototype.publish("title", "xxx", "string", "Center Label",null,{tags:["Intermediate"]});
+    Donut.prototype.publish("title", "", "string", "Center Label",null,{tags:["Intermediate"]});
 
     Donut.prototype.enter = function (domNode, element) {
         this._config.donut = {
@@ -34,14 +32,16 @@
     };
 
     Donut.prototype.update = function (domNode, element) {
-        Common2D.prototype.update.apply(this, arguments);
-
         this.c3Chart.internal.config.donut_label_show = this.showLabel();
-//        this.c3Chart.internal.config.donut_label_format = this.high();
-//        this.c3Chart.internal.config.donut_label_threshold = this.showValueLabel() ? this.columns() : "";
         this.c3Chart.internal.config.donut_width = this.arcWidth();
         this.c3Chart.internal.config.donut_expand = this.expand();
         this.c3Chart.internal.config.donut_title = this.title();
+
+        Common2D.prototype.update.apply(this, arguments);
+
+        element.select(".c3-chart-arcs-title")
+            .text(this.showLabel() ? this.title() : "")
+        ;
     };
 
     Donut.prototype.getChartOptions = function () {

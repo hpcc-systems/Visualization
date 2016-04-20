@@ -21,12 +21,12 @@
                     callback(new Column()                        
                         .columns(DataFactory.ND.subjects.columns)
                         .data([
-                            ["Geography-Geography-Geography-Geography-Geography", 75, 68, 65],
-                            ["English-English-English-English-English-English", 45, 55, 52],
-                            ["Math-Math-Math-Math-Math-Math-Math-Math-Math-Math", 98, 92, 90],
-                            ["Science-Science-Science-Science-Science-Science", 66, 60, 72]
+                            ["Geography Geography Geography\nGeography Geography", 75, 68, 65],
+                            ["English English English\nEnglish English English", 45, 55, 52],
+                            ["Math Math Math Math Math\nMath Math Math Math Math", 98, 92, 90],
+                            ["Science Science Science\nScience Science Science", 66, 60, 72]
                         ])
-                        //.xAxisOverlapMode("rotate")
+                        .xAxisOverlapMode("wrap")
                         //.xAxisLabelRotation(45)
                     );
                 });

@@ -163,6 +163,8 @@
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
 
+    GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
+
     GMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         return retVal;
@@ -191,7 +193,8 @@
             scaleControl: this.scaleControl(),
             streetViewControl: this.streetViewControl(),
             overviewMapControl: this.overviewMapControl(),
-            overviewMapControlOptions: { opened: true }
+            overviewMapControlOptions: { opened: true },
+            styles: this.googleMapStyles()
         };
     };
 

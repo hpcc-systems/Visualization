@@ -1,0 +1,10 @@
+.map_Layered .graticule {
+  fill: none;
+  stroke: darkgray;
+  stroke-linejoin: round;
+}
+.map_Layered .graticuleOutline {
+  fill: none;
+  stroke: black;
+  stroke-linejoin: round;
+}

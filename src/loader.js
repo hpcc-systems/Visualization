@@ -165,6 +165,7 @@
     }
 
     function githubConfig(srcUrl) {
+        optimizerConfig(root.hpccsystems.require);
         return root.hpccsystems.require.config({
             waitSeconds: 30,
             baseUrl: ".",

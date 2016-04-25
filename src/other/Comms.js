@@ -917,14 +917,18 @@
 
     HIPIEDatabomb.prototype.databomb = function (_) {
         if (!arguments.length) return this._databomb;
-        this._databomb = _.map(espRowFix);
+        this._databomb = _;
         return this;
     };
 
-    HIPIEDatabomb.prototype.databombOutput = function (_) {
+    HIPIEDatabomb.prototype.databombOutput = function (from, id) {
         if (!arguments.length) return undefined;
         this._resultNameCacheCount++;
-        this._resultNameCache[_] = this._databomb;
+        if (this._databomb instanceof Array) {
+            this._resultNameCache[from] = this._databomb.map(espRowFix);
+        } else {
+            this._resultNameCache[from] = this._databomb[id].map(espRowFix);
+        }
         return this;
     };
 

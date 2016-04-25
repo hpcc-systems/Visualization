@@ -46,7 +46,7 @@
                     }
                 } else if (item instanceof HipieDDL.Output) {
                     if (item.dataSource.databomb) {
-                        item.dataSource.comms.databombOutput(item.from);
+                        item.dataSource.comms.databombOutput(item.from, item.id);
                     }
                     if (this._visualizeRoxie) {
                         curr.vertexMap[item.getQualifiedID()] = new Vertex()

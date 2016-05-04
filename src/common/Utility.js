@@ -140,6 +140,8 @@
         return d3.select(domNode).classed("selected");
     };
 
+    var perf = window.performance;
+    var now = perf && (perf.now || perf.mozNow || perf.msNow || perf.oNow || perf.webkitNow);
 
     return {
         naturalSort: function(data, order, idx, sortCaseSensitive) {
@@ -296,7 +298,25 @@
                     resolve(parts.length > 1 ? (Widget.prototype ? Widget.prototype[parts[1]] : Widget[parts[1]]) : Widget);
                 });
             });
+        },
+        checksum: function (s) {
+            if (s instanceof Array) {
+                s = s.join("") + s.length;
+            }
+            switch (typeof s) {
+                case "string":
+                    break;
+                default:
+                    s = "" + s;
+            }
+            var chk = 0x12345678;
+            for (var i = 0, l = s.length; i < l; ++i) {
+                chk += (s.charCodeAt(i) * (i + 1));
+            }
+            return (chk & 0xffffffff).toString(16);
+        },
+        getTime: function () {
+            return (now && now.call(perf)) || (new Date().getTime());
         }
-
     };
 }));

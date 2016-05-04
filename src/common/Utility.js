@@ -293,7 +293,7 @@
                 var parts = classID.split(".");
                 var path = "src/" + parts[0].split("_").join("/");
                 require([path], function (Widget) {
-                    resolve(parts.length > 1 ? Widget[parts[1]] : Widget);
+                    resolve(parts.length > 1 ? (Widget.prototype ? Widget.prototype[parts[1]] : Widget[parts[1]]) : Widget);
                 });
             });
         }

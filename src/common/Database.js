@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Class", "./PropertyExt"], factory);
+        define(["d3", "./Class", "./PropertyExt", "./Utility"], factory);
     } else {
-        root.common_Database = factory(root.d3, root.common_Class, root.common_PropertyExt);
+        root.common_Database = factory(root.d3, root.common_Class, root.common_PropertyExt, root.common_Utility);
     }
-}(this, function (d3, Class, PropertyExt) {
+}(this, function (d3, Class, PropertyExt, Utility) {
     //  Field  ---
     function Field(id, opt) {
         Class.call(this);
@@ -25,6 +25,10 @@
 
     Field.prototype.id = function () {
         return this._id;
+    };
+
+    Field.prototype.checksum = function () {
+        return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
     };
 
     Field.prototype.publish("label", "", "string", "Label");
@@ -142,10 +146,12 @@
     };
 
     //  Grid  ---
-    function Grid() {
+    function Grid(dataChecksum) {
+        dataChecksum = dataChecksum || false;
         Class.call(this);
         PropertyExt.call(this);
-
+        this._dataChecksum = dataChecksum;
+        this._dataVersion = 0;
         this.clear();
     }
     Grid.prototype = Object.create(Class.prototype);
@@ -158,6 +164,8 @@
     Grid.prototype.clear = function () {
         this.fields([]);
         this._data = [];
+        this._dataChecksums = [];
+        ++this._dataVersion;
         return this;
     };
 
@@ -190,6 +198,7 @@
     Grid.prototype.data = function (_, clone) {
         if (!arguments.length) return this._data;
         this._data = clone ? _.map(function (d) { return d.map(function (d2) { return d2; }); }) : _;
+        this._dataCalcChecksum();
         return this;
     };
 
@@ -211,13 +220,38 @@
         });
     };
 
+    Grid.prototype.fieldsChecksum = function () {
+        return Utility.checksum(this.fields().map(function (field) { return field.checksum(); }));
+    };
+
+    Grid.prototype.dataChecksum = function () {
+        return Utility.checksum(this._dataChecksum ? this._dataChecksums : this._dataVersion);
+    };
+
+    Grid.prototype.checksum = function () {
+        return Utility.checksum([this.dataChecksum(), this.fieldsChecksum()]);
+    };
+
     //  Row Access  ---
+    Grid.prototype._dataCalcChecksum = function (idx) {
+        ++this._dataVersion;
+        if (this._dataChecksum) {
+            if (arguments.length) {
+                this._dataChecksums[idx] = Utility.checksum(this._data[idx]);
+            } else {
+                this._dataChecksums = this._data.map(function (row) { return Utility.checksum(row); });
+            }
+        }
+        return this;
+    };
+
     Grid.prototype.row = function (row, _) {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
             this.fields(_.map(function (d) { return new Field().label(d); }));
         } else {
             this._data[row - 1] = _;
+            this._dataCalcChecksum(row - 1);
         }
         return this;
     };
@@ -226,6 +260,7 @@
         if (!arguments.length) return [this.row(0)].concat(this._data);
         this.row(0, _[0]);
         this._data = _.filter(function (row, idx) { return idx > 0; });
+        this._dataCalcChecksum();
         return this;
     };
 
@@ -237,6 +272,7 @@
                 this.fields()[col] = new Field().label(_[0]);
             } else {
                 this._data[idx - 1][col] = d;
+                this._dataCalcChecksum(idx - 1);
             }
         }, this);
         return this;
@@ -246,6 +282,7 @@
         if (arguments.length < 2) return this._data.map(function (row, idx) { return row[col]; });
         _.forEach(function (d, idx) {
             this._data[idx][col] = d;
+            this._dataCalcChecksum(idx);
         }, this);
         return this;
     };
@@ -267,6 +304,7 @@
             this.fields()[col] = new Field().label(_);
         } else {
             this._data[row][col] = _;
+            this._dataCalcChecksum(row);
         }
         return this;
     };

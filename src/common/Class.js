@@ -33,7 +33,7 @@
         this.implements(mixinClass.prototype);
         for (var prop in mixinClass.prototype) {
             if (prop === "_class" && mixinClass.prototype.hasOwnProperty(prop)) {
-                this[prop] += " " + mixinClass.prototype[prop];
+                this[prop] += " " + mixinClass.prototype[prop].split(" ").pop();
             }
         }
     };

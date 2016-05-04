@@ -181,10 +181,10 @@
         ;
         if (this.parentPropertyEditor() === null) {
             var sortIcon = th.append("i")
-                .attr("class", "fa " + context.__meta_sorting.ext.icons[context.__meta_sorting.set.indexOf(context.sorting())])
+                .attr("class", "fa " + context.__meta_sorting.ext.icons[context.sorting_options().indexOf(context.sorting())])
                 .on("click", function () {
                     var sort = context.sorting();
-                    var types = context.__meta_sorting.set;
+                    var types = context.sorting_options();
                     var icons = context.__meta_sorting.ext.icons;
                     sortIcon
                         .classed(icons[types.indexOf(sort)], false)
@@ -449,8 +449,9 @@
                     })
                     .each(function (d) {
                         var input = d3.select(this);
-                        for (var i = 0; i < param.set.length; i++) {
-                            input.append("option").attr("value", param.set[i]).text(param.set[i]);
+                        var set = widget[param.id + "_options"]();
+                        for (var i = 0; i < set.length; i++) {
+                            input.append("option").attr("value", set[i]).text(set[i]);
                         }
                     })
                 ;

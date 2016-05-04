@@ -32,7 +32,8 @@
         switch (type) {
             case "set":
                 this.checkedAssign = function (_) {
-                    if (!set || set.indexOf(_) < 0) {
+                    var options = typeof set === "function" ? set.call(this) : set;
+                    if (!options || options.indexOf(_) < 0) {
                         console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
                     }
                     return _;
@@ -146,7 +147,7 @@
                 case "array":
                 case "widgetArray":
                 case "propertyArray":
-                    this[__prop_ + meta.id] = [];
+                    this[meta.id + "_reset"]();
                     break;
             }
         }, this);
@@ -184,10 +185,14 @@
     };
 
     PropertyExt.prototype.publish = function (id, defaultValue, type, description, set, ext) {
+        ext = ext || {};
         if (this[__meta_ + id] !== undefined && !ext.override) {
             throw id + " is already published.";
         }
         var meta = this[__meta_ + id] = new Meta(id, defaultValue, type, description, set, ext);
+        if (meta.ext.internal) {
+            this[__private_ + id] = true;
+        }
         this[id] = function (_) {
             if (!arguments.length) {
                 if (this[id + "_disabled"]()) return this[id + "_default"]();
@@ -196,7 +201,7 @@
             if (_ === "" && meta.ext.optional) {
                 _ = null;
             } else if (_ !== null) {
-                _ = meta.checkedAssign(_);
+                _ = meta.checkedAssign.call(this, _);
             }
             this.broadcast(id, _, this[__prop_ + id]);
             if (_ === null) {
@@ -210,7 +215,7 @@
             return ext && ext.disable ? ext.disable(this) : false;
         };
         this[id + "_modified"] = function () {
-            return this[__prop_ + id] !== undefined && this[__prop_ + id] !== this[id + "_default"]();
+            return this[__prop_ + id] !== undefined;
         };
         this[id + "_exists"] = function () {
             return this[__prop_ + id] !== undefined || this[id + "_default"]() !== undefined;
@@ -247,11 +252,18 @@
                 case "array":
                 case "widgetArray":
                 case "propertyArray":
-                    this[__prop_ + meta.id] = [];
+                    this[__default_ + id] = this[id + "_default"]().map(function (row) { return row; });
                     break;
-                default:
-                    delete this[__prop_ + id];
             }
+            delete this[__prop_ + id];
+            return this;
+        };
+        this[id + "_options"] = function () {
+            if (typeof set === "function") {
+                var retVal = meta.ext.optional ? [null] : [];
+                return retVal.concat(set.apply(this, arguments));
+            }
+            return set;
         };
     };
 
@@ -271,8 +283,8 @@
         }
         this[__meta_ + id] = new MetaProxy(id, proxy, method, defaultValue);
         this[id] = function (_) {
-            if (!arguments.length) return !defaultValue || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
-            if (defaultValue && _ === defaultValue) {
+            if (!arguments.length) return defaultValue === undefined || this[id + "_modified"]() ? this[proxy][method]() : defaultValue;
+            if (defaultValue !== undefined && _ === defaultValue) {
                 this[proxy][method + "_reset"]();
             } else {
                 this[proxy][method](_);
@@ -283,7 +295,7 @@
             return this[proxy][method + "_disabled"]();
         };
         this[id + "_modified"] = function () {
-            return this[proxy][method + "_modified"]() && (!defaultValue || this[proxy][method]() !== defaultValue);
+            return this[proxy][method + "_modified"]() && (defaultValue === undefined || this[proxy][method]() !== defaultValue);
         };
         this[id + "_exists"] = function () {
             return this[proxy][method + "_exists"]();
@@ -295,6 +307,10 @@
         };
         this[id + "_reset"] = function () {
             this[proxy][method + "_reset"]();
+            return this;
+        };
+        this[id + "_options"] = function () {
+            return this[proxy][method + "_options"]();
         };
     };
 

@@ -17,6 +17,7 @@
                 "goog": "../node_modules/requirejs-plugins/src/goog",
                 "text": "../node_modules/requirejs-text/text",
                 "json": "../node_modules/requirejs-plugins/src/json",
+                "jquery": "../bower_components/jquery/dist/jquery.min",
 
                 "d3": "../bower_components/d3/d3",
                 "c3": "../bower_components/c3/c3",
@@ -41,6 +42,7 @@
                 "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
 
                 "simpleheat": "../bower_components/simpleheat/index",
+                "kendo": "../lib/kendo/kendo.all.min",
 
                 "src": "../src"
             },
@@ -114,6 +116,7 @@
             "goog": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/goog",
             "text": rawgitBaseUrl + "/requirejs/text/2.0.12/text",
             "json": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/json",
+            "jquery": "../bower_components/jquery/dist/jquery.min",
 
             "d3": rawgitBaseUrl + "/mbostock/d3/v3.5.5/d3.min",
             "c3": rawgitBaseUrl + "/masayuki0812/c3/0.4.10/c3.min",
@@ -138,6 +141,9 @@
             "amcharts.plugins.dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
             "amchartsImg": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
             "simpleheat": rawgitBaseUrl + "/mourner/simpleheat/v0.3.0/simpleheat",
+
+            "kendo": "../lib/kendo/kendo.all.min",
+
 
             "src": srcUrl
         };

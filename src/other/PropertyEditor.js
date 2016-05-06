@@ -116,9 +116,8 @@
                     .text(function (d) {
                         var spanText = '';
                         if(context.label()){
-                            spanText += context.label() + ": ";
+                            spanText += context.label();
                         }
-                        spanText += d.classID();
                         return spanText;
                     })
                 ;
@@ -181,10 +180,10 @@
         ;
         if (this.parentPropertyEditor() === null) {
             var sortIcon = th.append("i")
-                .attr("class", "fa " + context.__meta_sorting.ext.icons[context.__meta_sorting.set.indexOf(context.sorting())])
+                .attr("class", "fa " + context.__meta_sorting.ext.icons[context.sorting_options().indexOf(context.sorting())])
                 .on("click", function () {
                     var sort = context.sorting();
-                    var types = context.__meta_sorting.set;
+                    var types = context.sorting_options();
                     var icons = context.__meta_sorting.ext.icons;
                     sortIcon
                         .classed(icons[types.indexOf(sort)], false)
@@ -361,6 +360,24 @@
             tmpWidget = widget[param.id]() || [];
         }
         var widgetArr = tmpWidget instanceof Array ? tmpWidget : [tmpWidget];
+        if (param && param.ext && param.ext.autoExpand) {
+            //  remove empties and ensure last row is an empty  ---
+            var lastModified = true;
+            var noEmpties = widgetArr.filter(function (row, idx) {
+                lastModified = row.publishedModified();
+                row._owner = widget;
+                return lastModified || idx === widgetArr.length - 1;
+            }, this);
+            var changed = widgetArr.length - noEmpties.length;
+            if (lastModified) {
+                changed = true;
+                noEmpties.push(new param.ext.autoExpand(widget));
+            }
+            if (changed) {
+                widget[param.id](noEmpties);
+                widgetArr = noEmpties;
+            }
+        }
 
         var context = this;
         var widgetCell = element.selectAll("div.propEditor" + this.id()).data(widgetArr, function (d) { return d.id(); });
@@ -449,8 +466,9 @@
                     })
                     .each(function (d) {
                         var input = d3.select(this);
-                        for (var i = 0; i < param.set.length; i++) {
-                            input.append("option").attr("value", param.set[i]).text(param.set[i]);
+                        var set = widget[param.id + "_options"]();
+                        for (var i = 0; i < set.length; i++) {
+                            input.append("option").attr("value", set[i]).text(set[i]);
                         }
                     })
                 ;

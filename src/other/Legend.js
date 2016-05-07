@@ -8,7 +8,6 @@
 }(this, function (d3, Table, Palette) {
     function Legend() {
         Table.call(this);
-        this._tag = "div";
         
         this.showHeader(false);
     }
@@ -16,8 +15,15 @@
     Legend.prototype.constructor = Legend;
     Legend.prototype._class += " other_Legend";
 
-    Legend.prototype.publish("dataFamily", "ND", "set", "Type of data",["1D","2D","ND", "any"],{tags:["Private"]});
+    Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "any"], { tags: ["Private"] });
     Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows",["vertical","horizontal"],{tags:["Private"]});
+    Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: function (w) { return !w.isRainbow(); } });
+    Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: function (w) { return !w.isRainbow(); } });
+
+    Legend.prototype.isRainbow = function () {
+        var widget = this.getWidget();
+        return widget && widget._palette && widget._palette.type() === "rainbow";
+    };
     
     Legend.prototype.targetWidget = function (_) {
         if (!arguments.length) return this._targetWidget;
@@ -65,6 +71,8 @@
 
     Legend.prototype.enter = function (domNode, element) {
         Table.prototype.enter.apply(this, arguments);
+        d3.select(domNode.parentNode).style("overflow-y", "auto");
+
         this.renderHtmlDataCells(true);
         this.fixedHeader(false);
         this.fixedSize(true);
@@ -74,14 +82,7 @@
     function _htmlColorBlock(hexColor) {
         return "<div class=\"colorBlock\" style=\"background-color:" + hexColor + ";\"></div>";
     }
-    function commaSeparateNumber(val) {
-        var int = val.toString().split(".")[0];
-        var dec = val.toString().split(".")[1];
-        while (/(\d+)(\d{3})/.test(int.toString())) {
-            int = int.toString().replace(/(\d+)(\d{3})/, "$1" + "," + "$2");
-        }
-        return typeof (dec) !== "undefined" ? int + "." + dec : int;
-    }
+
     Legend.prototype.update = function (domNode, element) {
         var colArr = ["Key", "Label"];
         var dataArr = [];
@@ -104,25 +105,18 @@
                     }
                     break;
                 case "rainbow":
-                    var colorArr = palette.colors().reverse();
-                    var steps = colorArr.length;
-                    var weightMin = this._targetWidget._dataMinWeight;
-                    var weightMax = this._targetWidget._dataMaxWeight;
-                    for (var x = 0; x < steps; x++) {
-                        var stepWeightDiff = parseInt((weightMax - weightMin) / steps);
-                        var lower, higher;
-                        if (x === 0) {
-                            higher = commaSeparateNumber(weightMin + stepWeightDiff * (x + 1));
-                            dataArr.push([_htmlColorBlock(colorArr[x]), "0 - " + higher]);
-                        } else if (x + 1 === steps) {
-                            lower = commaSeparateNumber(weightMin + (stepWeightDiff * x) + 1);
-                            dataArr.push([_htmlColorBlock(colorArr[x]), lower + "+"]);
-                        } else {
-                            lower = commaSeparateNumber(weightMin + (stepWeightDiff * x) + 1);
-                            higher = commaSeparateNumber(weightMin + stepWeightDiff * (x + 1));
-                            dataArr.push([_htmlColorBlock(colorArr[x]), lower + " - " + higher]);
-                        }
+                    var format = d3.format(this.rainbowFormat());
+                    var widget = this.getWidget();
+                    var steps = this.rainbowBins();
+                    var weightMin = widget._dataMinWeight;
+                    var weightMax = widget._dataMaxWeight;
+                    var stepWeightDiff = (weightMax - weightMin) / (steps - 1);
+                    dataArr.push([_htmlColorBlock(palette(weightMin, weightMin, weightMax)), format(weightMin)]);
+                    for (var x = 1; x < steps - 1; ++x) {
+                        var mid = stepWeightDiff * x;
+                        dataArr.push([_htmlColorBlock(palette(mid, weightMin, weightMax)), format(Math.floor(mid))]);
                     }
+                    dataArr.push([_htmlColorBlock(palette(weightMax, weightMin, weightMax)), format(weightMax)]);
                     break;
             }
         }

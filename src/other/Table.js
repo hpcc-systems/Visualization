@@ -306,32 +306,38 @@
         rows.enter()
             .append("tr")
             .on("click.selectionBag", function (_d) {
-                var d = _d.row;
-                var i = _d.rowIdx;
-                context.selectionBagClick(d, i);
-                context.applyRowStyles(context.getBodyRow(i));
-                context.applyFirstColRowStyles(context.getFixedRow(i));
-                context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
+                if (_d.row) {
+                    var d = _d.row;
+                    var i = _d.rowIdx;
+                    context.selectionBagClick(d, i);
+                    context.applyRowStyles(context.getBodyRow(i));
+                    context.applyFirstColRowStyles(context.getFixedRow(i));
+                    context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
+                }
             })
             .on("mouseover", function (_d) {
-                var i = _d.rowIdx;
-                var fixedLeftRows = context.getFixedRow(i);
-                if (!fixedLeftRows.empty()) { 
-                    fixedLeftRows.classed("hover", true);
+                if (_d.row) {
+                    var i = _d.rowIdx;
+                    var fixedLeftRows = context.getFixedRow(i);
+                    if (!fixedLeftRows.empty()) {
+                        fixedLeftRows.classed("hover", true);
+                    }
+                    var tbodyRows = context.getBodyRow(i);
+                    tbodyRows.classed("hover", true);
+                    context.applyStyleToRows(tbodyRows);
+                    context.applyFirstColRowStyles(fixedLeftRows);
                 }
-                var tbodyRows = context.getBodyRow(i);
-                tbodyRows.classed("hover", true);
-                context.applyStyleToRows(tbodyRows);
-                context.applyFirstColRowStyles(fixedLeftRows);
             })
             .on("mouseout", function (_d) {
-                var i = _d.rowIdx;
-                var fixedLeftRows = context.getFixedRow(i);
-                fixedLeftRows.classed("hover", false);
-                var tbodyRows = context.getBodyRow(i);
-                tbodyRows.classed("hover", false);
-                context.applyStyleToRows(tbodyRows);
-                context.applyFirstColRowStyles(fixedLeftRows);
+                if (_d.row) {
+                    var i = _d.rowIdx;
+                    var fixedLeftRows = context.getFixedRow(i);
+                    fixedLeftRows.classed("hover", false);
+                    var tbodyRows = context.getBodyRow(i);
+                    tbodyRows.classed("hover", false);
+                    context.applyStyleToRows(tbodyRows);
+                    context.applyFirstColRowStyles(fixedLeftRows);
+                }
             })
         ;
         rows
@@ -800,10 +806,11 @@
             .style("background-color",context.tbodySelectedRowBackgroundColor())
         ;
     };
-    Table.prototype.applyRowStyles = function(row, isFirstCol){
+    Table.prototype.applyRowStyles = function (row, isFirstCol) {
+        var dataRow = row.datum().row;
         row
             .style("color", isFirstCol ? this.tbodyFirstColFontColor() : this.tbodyFontColor())
-            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.tableData().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
+            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.tableData().indexOf(dataRow) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
         ;
     };
     Table.prototype.applyFirstColRowStyles = function(rows){

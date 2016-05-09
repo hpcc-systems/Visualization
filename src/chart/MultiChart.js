@@ -74,6 +74,7 @@
         { id: "TABLE_NESTED", display: "Nested Table", widgetClass: "other_NestedTable" },
         { id: "TABLE_TREEMAP", display: "Treemap", widgetClass: "tree_Treemap" },
         { id: "TABLE_CALENDAR", display: "Calendar HEat Map", widgetClass: "other_CalendarHeatMap" },
+        { id: "TABLE_SANKEY", display: "Sankey", widgetClass: "graph_Sankey" },
         { id: "TABLE_GMAP_PIN", display: "Google Map (pins)", widgetClass: "map_GMapPin" },
         { id: "TABLE_GMAP_PINLINE", display: "Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
     ].map(function (item) { item.family = "any"; return item; });

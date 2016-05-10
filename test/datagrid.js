@@ -1,6 +1,7 @@
 "use strict";
 define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Database, Utility) {
-    describe("Database", function (done) {
+    describe("Database", function () {
+        this.timeout(10000);
         var testColumns = ["Subject", "Year 1", "Year 2", "Year 3"];
         var testData = [
                     ["Geography", 75, 68, 65],

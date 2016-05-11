@@ -480,6 +480,17 @@
         Graph: {
             simple: {
                 nodes: [
+                  { "name": "John Doe", "icon":"" },
+                  { "name": "Jane Doe", "icon":"" },
+                  { "name": "123 Main Street", "icon":"" },
+                ],
+                "links": [
+                  { "source": 1, "target": 0 },
+                  { "source": 2, "target": 0 },
+                ]
+            },
+            les_miz: {
+                nodes: [
                   { "name": "Myriel", "group": 1 },
                   { "name": "Napoleon", "group": 1 },
                   { "name": "Mlle.Baptistine", "group": 1 },
@@ -816,8 +827,50 @@
                   { "source": 76, "target": 58, "value": 1 }
                 ]
             },
+            people: {
+                nodes: [
+                  { "name": "John Doe", "group": 1 }, //0
+                  { "name": "Jane Doe", "group": 1 }, //1
+                  { "name": "Bob Smith", "group": 1 }, //2
+                  { "name": "Emma Smith", "group": 1 },//3
+                  { "name": "Olivia Jones", "group": 1 },//4
+                  { "name": "David Anderson", "group": 1 },//5
+                  { "name": "Abigail Johnson", "group": 1 },//6
+                  { "name": "Emily Williams", "group": 1 },//7
+                  { "name": "Sophia Brown", "group": 1 },//8
+                  { "name": "Mia Jones", "group": 1 },//9
+                  { "name": "Noah Miller", "group": 1 },//10
+                  { "name": "Liam Davis", "group": 1 },//11
+                  { "name": "Jacob Rodriguez", "group": 1 },//12
+                  { "name": "Mason Taylor", "group": 1 },//13
+                  { "name": "Mia Thomas", "group": 1 },//14
+                  { "name": "Martin Wilson", "group": 1 },//15
+                ],
+                "links": [
+                  { "source": 1, "target": 0, "value": 1 },
+                  { "source": 2, "target": 0, "value": 8 },
+                  { "source": 3, "target": 0, "value": 8 },
+                  { "source": 4, "target": 0, "value": 1 },
+                  { "source": 5, "target": 0, "value": 8 },
+                  { "source": 6, "target": 0, "value": 8 },
+                  
+                  { "source": 7, "target": 1, "value": 1 },
+                  { "source": 8, "target": 1, "value": 8 },
+                  { "source": 9, "target": 2, "value": 8 },
+                  { "source": 10, "target": 2, "value": 8 },
+                  { "source": 11, "target": 3, "value": 8 },
+                  { "source": 12, "target": 3, "value": 8 },
+                  { "source": 13, "target": 4, "value": 8 },
+                  { "source": 14, "target": 5, "value": 8 },
+                  { "source": 15, "target": 6, "value": 8 },
+                ]
+            },
             vertex: {
-                annotationIcons: [{ faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "red" }, { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }]
+                annotationIcons: [
+                    { faChar: "\uf188", tooltip: "Test A", shape_colorFill: "white", image_colorFill: "red" }, 
+                    { faChar: "\uf0ad", tooltip: "Test B", shape_colorFill: "green", shape_colorStroke: "green", image_colorFill: "white" }, 
+                    { faChar: "\uf193", tooltip: "Test C", shape_colorFill: "navy", shape_colorStroke: "navy", image_colorFill: "white" }
+                ]
             }
         },
         Marshaller: {

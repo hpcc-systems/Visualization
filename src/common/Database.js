@@ -508,7 +508,7 @@
         if (!(columns instanceof Array)) {
             columns = [columns];
         }
-        this._columnIndicies = columns.map(function (column) {
+        this._columnIndicies = columns.filter(function (column) { return column; }).map(function (column) {
             switch (typeof column) {
                 case "string":
                     return this._grid.fieldByLabel(column).idx;
@@ -574,6 +574,25 @@
     Grid.prototype.rollupView = function (columnIndicies, rollupFunc) {
         return new RollupView(this, columnIndicies, rollupFunc);
     };
+    Grid.prototype.aggregateView = function (columnIndicies, aggrType, aggrColumn, aggrDeltaColumn) {
+        var context = this;
+        return new RollupView(this, columnIndicies, function (values) {
+            switch (aggrType) {
+                case null:
+                case undefined:
+                case "":
+                    return values.length;
+                default:
+                    var columns = context.legacyColumns();
+                    var colIdx = columns.indexOf(aggrColumn);
+                    var deltaIdx = columns.indexOf(aggrDeltaColumn);
+                    return d3[aggrType](values, function (value) {
+                        return (+value[colIdx] - (deltaIdx >= 0 ? +value[deltaIdx] : 0)) / (deltaIdx >= 0 ? +value[deltaIdx] : 1);
+                    });
+            }
+        });
+    };
+
     //  Nesting  ---
     Grid.prototype._nest = function (columnIndicies, rollup) {
         if (!(columnIndicies instanceof Array)) {

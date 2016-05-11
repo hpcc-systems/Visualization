@@ -27,30 +27,39 @@
 
     Bar.prototype.update = function (domNode, element) {
 
-        console.log(JSON.stringify(this.data()));
-        console.log(JSON.stringify(this.columns()));
+        var data = this.data();
+        var kendoCategories = [];
+        var kendoSeries = [];
+        this.data().forEach(function(ele, ind, arr){
+            kendoCategories.push(ele[0]);
+
+        });
+
+        this.columns().forEach(function(ele, ind, arr){
+            if(ind > 0){
+
+                var correspondingData = [];
+                data.forEach(function(dEle, dInd, dArr){
+                   correspondingData.push(dEle[ind]);
+                });
+                kendoSeries.push({name:arr[ind], data:correspondingData});
+            }
+        });
+
         var create = function() {
 
 
                 var kendoChartOptions = {
-                    title: {
-                        text: "Site Visitors Stats \n /thousands/"
-                    },
                     legend: {
                         visible: false
                     },
                     seriesDefaults: {
                         type: "bar"
                     },
-                    series: [{
-                        name: "Total Visits",
-                        data: [56000, 63000, 74000, 91000, 117000, 138000]
-                    }, {
-                        name: "Unique visitors",
-                        data: [52000, 34000, 23000, 48000, 67000, 83000]
-                    }],
+                    series:kendoSeries,
+
                     valueAxis: {
-                        max: 140000,
+                        max: 100,
                         line: {
                             visible: false
                         },
@@ -62,7 +71,7 @@
                         }
                     },
                     categoryAxis: {
-                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                        categories: kendoCategories,
                         majorGridLines: {
                             visible: false
                         }

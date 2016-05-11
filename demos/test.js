@@ -52,6 +52,7 @@
                                     break;
                                 case "layout":
                                 case "marshaller":
+                                case "kendo":
                                     widgetDiv
                                         .classed("xwide", true)
                                         .classed("xlarge", true)

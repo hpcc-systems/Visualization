@@ -6,7 +6,7 @@
         root.graph_Graph = factory(root.d3, root.common_SVGWidget, root.common_Palette, root.common_PropertyExt, root.d3.box);
     }
 }(this, function (d3, SVGWidget, Palette, PropertyExt, D3Box) {
-    D3Box = D3Box || d3.box || root.d3.box;
+    D3Box = D3Box || d3.box;
 
      function Box(target) {
         SVGWidget.call(this);

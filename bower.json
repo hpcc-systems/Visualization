@@ -46,7 +46,8 @@
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
     "es6-promise": "~3.2.1",
     "d3-hexbin": "https://raw.githubusercontent.com/d3/d3-plugins/master/hexbin/hexbin.js",
-    "d3-tip": "~0.6.7"
+    "d3-tip": "~0.6.7",
+    "jquery": "~2.1.1"
   },
   "resolutions": {
     "d3": "~3.5.16"

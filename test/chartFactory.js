@@ -201,6 +201,40 @@
                 });
             }
         },
+		 Box: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/Box"], function (DataFactory, Box) {
+                    var widget = new Box()
+                        .columns(DataFactory.Sample.DataBreach.columns)
+                        .data(DataFactory.Sample.DataBreach.data)
+                    ;
+                    callback(widget);
+                });
+            }
+        },
+		arcDiagram: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/arcdiagram"], function (DataFactory, arcDiagram) {
+                    var widget = new arcDiagram()
+                        .data(DataFactory.Arc)
+                        // .links(DataFactory.Arc.links)
+                    ;
+                    callback(widget);
+                });
+            }
+        },
+		BulletBox: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/bulletbox"], function (DataFactory, BulletBox) {
+                    var widget = new BulletBox()
+					.data(DataFactory.BulletBox.data)
+                        // .data(DataFactory.Sample.FlightPath.data)
+                        // .columns(DataFactory.Sample.FlightPath.columns)
+                    ;
+                    callback(widget);
+                });
+            }
+        },
         MultiChart: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {

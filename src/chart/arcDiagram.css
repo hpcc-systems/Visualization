@@ -1,0 +1,19 @@
+.chart_Arcs .axis {
+    stroke: #000;
+    stroke-width: 1px;
+}
+
+.chart_Arcs .node {
+  fill: #000;
+}
+
+.chart_Arcs .label {
+  stroke: #000;
+  font: 12px sans-serif;
+}
+
+.chart_Arcs .link {
+  stroke: #00F;
+  stroke-width: 2px;
+  fill: none;
+}

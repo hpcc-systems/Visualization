@@ -18,6 +18,8 @@ require.config({
         "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
         "font-awesome": "../bower_components/font-awesome/css/font-awesome",
         "es6-promise": "../bower_components/es6-promise/promise",
+        "d3-arcdiagram": "../bower_components/d3-plugins/arcdiagram/arcdiagram",
+        "d3-bulletbox": "../bower_components/d3-plugins/bulletbox/bulletbox",
 
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
         "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",

@@ -132,7 +132,7 @@ define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Databa
                 .legacyData(data)
             ;
         }
-        it.only("views", function () {
+        it("views", function () {
             var width = 10;
             var length = 10000;
             var db = createBig(width, length);

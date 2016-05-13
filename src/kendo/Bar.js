@@ -82,7 +82,7 @@
                     }
                 };
 
-                $("#"+domNode.id).kendoChart(kendoChartOptions);
+                $(domNode).kendoChart(kendoChartOptions);
 
         };
 

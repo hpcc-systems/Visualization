@@ -16,6 +16,16 @@
                     );
                 });
             }
-        }
+        },
+        Donut: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/kendo/Donut"], function (DataFactory, Donut) {
+                    callback(new Donut()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    );
+                });
+            }
+        },
     };
 }));

@@ -28,7 +28,7 @@
 
     BulletBox.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
-		var context=this;
+		// var context=this;
 
 	 var margin = {top: 5, right: 40, bottom: 20, left: 120};
 			var width = this.width() - margin.left - margin.right;

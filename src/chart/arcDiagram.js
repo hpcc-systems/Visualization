@@ -87,7 +87,7 @@
 
 			d3.selectAll("input").on("change", function change() {
 			if (this.name === "mode") this.mode = this.value;
-			else if (this.name === "arcStyle") arcStyle = this.value;
+			else if (this.name === "arcStyle") this.arcStyle = this.value;
 			this.arcd.linkLevel(this.mode);
 			this.arcd();  // run the layout
 
@@ -98,12 +98,12 @@
 			arc.yscale(yscale);
 
 			links.data(this.arcd.links())
-				.attr("d", arc[arcStyle]);
+				.attr("d", arc[this.arcStyle]);
 				
 		nodelines.exit().remove();
 		 });
 		}
-		function pathgen() {
+	;	function pathgen() {
     var gen = {},
         x = function(x) { return x; },
         y = function(y) { return y; };
@@ -142,13 +142,13 @@
 	  ;
     }
 
-    gen.yscale = function(a) {
+  ;  gen.yscale = function(a) {
       if (!arguments.length) return y;
       y = a;
       return gen
 	  ;
     }
-
+	;
     return gen;
 }
 return arcDiagram;

@@ -1,5 +1,5 @@
 "use strict";
-(function (root, factory) {
+(function (root, factory) { 
     if (typeof define === "function" && define.amd) {
         define(["d3", "../common/SVGWidget", "../common/Palette", "../common/PropertyExt", "d3-box", "css!./Box"], factory);
     } else {

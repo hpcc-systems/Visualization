@@ -20,12 +20,13 @@
 
     arcDiagram.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-	this.mode="compact",
-    this.arcStyle="ortho",
-    this.topMargin=50, // in case of overrun (perhaps i should just fix the code)
-    this.upperHeight=450, // where the arcs go
-    this.lowerHeight=150, // where the nodes and labels go
-    this.width=800, this.radius=5;
+	this.mode="compact";
+    this.arcStyle="ortho";
+    this.topMargin=50; // in case of overrun (perhaps i should just fix the code)
+    this.upperHeight=450; // where the arcs go
+    this.lowerHeight=15; // where the nodes and labels go
+    this.width=800;
+	this.radius=5;
 	// this.linkLevel(this.mode);
 	this.arcd = d3.arcDiagram().linkLevel(this.mode);
 	
@@ -85,9 +86,9 @@
 				.attr("d", arc[this.arcStyle]);
 
 			d3.selectAll("input").on("change", function change() {
-			if (this.name == "mode") mode = this.value;
-			else if (this.name == "arcStyle") arcStyle = this.value;
-			this.arcd.linkLevel(mode);
+			if (this.name === "mode") this.mode = this.value;
+			else if (this.name === "arcStyle") arcStyle = this.value;
+			this.arcd.linkLevel(this.mode);
 			this.arcd();  // run the layout
 
 			yscale = d3.scale.linear()
@@ -137,13 +138,15 @@
     gen.xscale = function(a) {
       if (!arguments.length) return x;
       x = a;
-      return gen;
+      return gen
+	  ;
     }
 
     gen.yscale = function(a) {
       if (!arguments.length) return y;
       y = a;
-      return gen;
+      return gen
+	  ;
     }
 
     return gen;

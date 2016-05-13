@@ -1,0 +1,14 @@
+.other_CalendarHeatMap {
+    shape-rendering: crispEdges;
+}
+
+.other_CalendarHeatMap .day {
+    fill: #fff;
+    stroke: #ccc;
+}
+
+.other_CalendarHeatMap .month {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+}

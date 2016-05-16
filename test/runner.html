@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>HPCC Visualization Unit Tests</title>
@@ -29,8 +29,10 @@
     <script>
         mocha.setup('bdd');
         var assert = chai.assert;
-        require(["./widgets", "./persist", "./utility", "./datagrid"], function () {
-            mocha.run();
+        require(["./publish", "./persist", "./utility", "./datagrid"], function () {
+            require(["./widgets"], function () {
+                mocha.run();
+            });
         });
     </script>
 </body>

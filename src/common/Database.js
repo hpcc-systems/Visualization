@@ -452,6 +452,124 @@
         }
     };
 
+    //  Views  ---
+    function LegacyView(grid) {
+        this._grid = grid;
+        d3.rebind(this, this._grid, "checksum", "fields");
+    }
+    LegacyView.prototype.constructor = LegacyView;
+
+    LegacyView.prototype.grid = function () {
+        return this._grid;
+    };
+    LegacyView.prototype.columns = function (_) {
+        if (!arguments.length) return this._grid.legacyColumns();
+        this._grid.legacyColumns(_);
+        return this;
+    };
+    LegacyView.prototype.rawData = function (_) {
+        if (!arguments.length) return this._grid.legacyData();
+        this._grid.legacyData(_);
+        return this;
+    };
+    LegacyView.prototype.formattedData = function () {
+        if (this._formattedDataChecksum !== this._grid.checksum()) {
+            this._formattedDataChecksum = this._grid.checksum();
+            this._formattedData = this._grid.formattedData();
+        }
+        return this._formattedData;
+    };
+    LegacyView.prototype.parsedData = function () {
+        if (this._parsedDataChecksum !== this._grid.checksum()) {
+            this._parsedDataChecksum = this._grid.checksum();
+            this._parsedData = this._grid.parsedData();
+        }
+        return this._parsedData;
+    };
+    LegacyView.prototype._whichData = function (opts) {
+        if (opts) {
+            if (opts.parsed) {
+                return this.formattedData();
+            } else if (opts.formatted) {
+                return this.formattedData();
+            }
+        }
+        return this.rawData();
+    };
+    LegacyView.prototype.data = function (_) {
+        return LegacyView.prototype.rawData.apply(this, arguments);
+    };
+
+    function RollupView(grid, columns, rollup) {
+        LegacyView.call(this, grid);
+        if (!(columns instanceof Array)) {
+            columns = [columns];
+        }
+        this._columnIndicies = columns.map(function (column) {
+            switch (typeof column) {
+                case "string":
+                    return this._grid.fieldByLabel(column).idx;
+            }
+            return column;
+        }, this);
+
+        rollup = rollup || function (d) { return d; };
+        this._rollup = rollup;
+    }
+    RollupView.prototype = Object.create(LegacyView.prototype);
+    RollupView.prototype.constructor = RollupView;
+
+    RollupView.prototype.nest = function () {
+        if (this._nestChecksum !== this._grid.checksum()) {
+            this._nestChecksum = this._grid.checksum();
+
+            var nest = d3.nest();
+            this._columnIndicies.forEach(function (idx) {
+                nest.key(function (d) {
+                    return d[idx];
+                });
+            });
+            this._nest = nest
+                .rollup(this._rollup)
+            ;
+        }
+        return this._nest;
+    };
+    RollupView.prototype.entries = function (opts) {
+        return this.nest().entries(this._whichData(opts));
+    };
+    RollupView.prototype.map = function (opts) {
+        return this.nest().map(this._whichData(opts));
+    };
+    RollupView.prototype.d3Map = function (opts) {
+        return this.nest().map(this._whichData(opts), d3.map);
+    };
+    RollupView.prototype._walkData = function (data, shaper) {
+        if (data instanceof Array) {
+            return data.map(function (row) {
+                if (row.key && row.values) {
+                    return [row.key, this._walkData(row.values)];
+                }
+                return row;
+            }, this);
+        }
+        return data;
+    };
+    RollupView.prototype.data = function (opts) {
+        return this._walkData(this.entries(opts));
+    };
+
+    Grid.prototype.legacyView = function () {
+        return new LegacyView(this);
+    };
+
+    Grid.prototype.nestView = function (columnIndicies) {
+        return new RollupView(this, columnIndicies);
+    };
+
+    Grid.prototype.rollupView = function (columnIndicies, rollupFunc) {
+        return new RollupView(this, columnIndicies, rollupFunc);
+    };
     //  Nesting  ---
     Grid.prototype._nest = function (columnIndicies, rollup) {
         if (!(columnIndicies instanceof Array)) {

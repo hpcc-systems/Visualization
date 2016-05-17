@@ -111,21 +111,46 @@ define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Databa
             var tmp = db.length();
             var tmp2 = db.width();
         });
-        it("big", function () {
+        function createBig(width, length) {
+            width = width || 100;
+            length = length || 100000;
+            var cols = [];
             var row = [];
             var data = [];
-            for (var i = 0; i < 100; ++i) {
+            for (var i = 0; i < width; ++i) {
+                cols.push("Col:  " + i);
                 row.push("Cell:  " + i);
             }
-            for (var i = 0; i < 100000; ++i) {
-                data.push(row);
+            for (var i = 0; i < length; ++i) {
+                var modulus1 = Math.floor(Math.random() * length / 1000);
+                var modulus2 = Math.floor(Math.random() * length / 1000);
+                var modulus3 = Math.floor(Math.random() * length / 1000);
+                data.push(["Aggr1:  " + modulus1, "Aggr2:  " + modulus2, "Aggr3:  " + modulus3].concat(row));
             }
-            var timeIn = Utility.getTime();
-            var db = new Database.Grid()
-                .grid(data)
+            return new Database.Grid()
+                .legacyColumns(["Aggr:  0", "Aggr:  1", "Aggr:  2"].concat(cols))
+                .legacyData(data)
             ;
+        }
+        it.only("views", function () {
+            var width = 10;
+            var length = 10000;
+            var db = createBig(width, length);
+            var view = db.legacyView();
+            var checksum = db.checksum();
+            var columns = db.legacyColumns();
+            var data = db.legacyData();
+            assert.equal(columns.length, width + 3);
+            assert.equal(data.length, length);
+
+            var view1 = db.legacyView();
+            var view2 = db.nestView([0, 1]);
+            var view3 = db.nestView(["Aggr:  0", "Aggr:  1"]);
+            assert.deepEqual(view2.data(), view3.data());
+        });
+        it("big", function () {
+            var db = createBig();
             var tmp = db.checksum();
-            console.log(Utility.getTime() - timeIn);
         });
     });
 });

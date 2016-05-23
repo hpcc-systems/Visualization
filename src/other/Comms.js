@@ -7,6 +7,9 @@
     }
 }(this, function () {
     function espValFix(val) {
+        if (val === undefined || val === null) {
+            return null;
+        }
         if (!val.trim) {
             return val;
         }

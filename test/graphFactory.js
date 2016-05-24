@@ -22,6 +22,127 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+                    var palette = Palette.ordinal("dark2");
+
+                    var rawData = DataFactory.Graph.simple;
+                    rawData.nodes.forEach(function (node) {
+                        vertices.push(
+                            new Vertex()
+                                .text(node.name)
+                                .textbox_shape_colorStroke(palette(node.group))
+                                .textbox_shape_colorFill("whitesmoke")
+                                .icon_shape_diameter(30)
+                                .icon_shape_colorStroke(palette(node.group))
+                                .icon_shape_colorFill(palette(node.group))
+                                .faChar(node.icon)
+                            )
+                        ;
+                    }, graph);
+
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(
+                            new Edge()
+                                .sourceVertex(vertices[link.source])
+                                .targetVertex(vertices[link.target])
+                                .sourceMarker("circleFoot")
+                                .targetMarker("arrowHead")
+                                .text("")
+                                .weight(link.value)
+                            )
+                        ;
+                    }, graph);
+
+                    graph.data({ vertices: vertices, edges: edges });
+                    callback(graph);
+                });
+            },
+            restyle: function (callback) {
+                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                    var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+                    var palette = Palette.ordinal("dark2");
+
+                    var rawData = DataFactory.Graph.simple;
+                    rawData.nodes.forEach(function (node) {
+                        vertices.push(
+                            new Vertex()
+                                .text(node.name)
+                                .textbox_shape_colorStroke(palette(node.group))
+                                .textbox_shape_colorFill("whitesmoke")
+                                .icon_shape_diameter(60)
+                                .icon_shape_colorStroke("transparent")
+                                .icon_shape_colorFill("transparent")
+                                .icon_image_colorFill("#333333")
+                                .textbox_shape_colorStroke("transparent")
+                                .textbox_shape_colorFill("transparent")
+                                .textbox_text_colorFill("#333333")
+                                .iconAnchor("middle")
+                                .faChar(node.icon)
+                            )
+                        ;
+                    }, graph);
+
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(
+                            new Edge()
+                                .sourceVertex(vertices[link.source])
+                                .targetVertex(vertices[link.target])
+                                .sourceMarker("circleFoot")
+                                .targetMarker("arrowHead")
+                                .text("")
+                                .weight(link.value)
+                            )
+                        ;
+                    }, graph);
+
+                    graph.data({ vertices: vertices, edges: edges });
+                    callback(graph);
+                });
+            },
+            les_miz: function (callback) {
+                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                    var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+                    var palette = Palette.ordinal("dark2");
+
+                    var rawData = DataFactory.Graph.les_miz;
+                    rawData.nodes.forEach(function (node) {
+                        vertices.push(
+                            new Vertex()
+                                .text(node.name)
+                                .textbox_shape_colorStroke(palette(node.group))
+                                .textbox_shape_colorFill("whitesmoke")
+                                .icon_shape_colorStroke(palette(node.group))
+                                .icon_shape_colorFill(palette(node.group))
+                                .faChar(node.name[0])
+                            )
+                        ;
+                    }, graph);
+
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(
+                            new Edge()
+                                .sourceVertex(vertices[link.source])
+                                .targetVertex(vertices[link.target])
+                                .sourceMarker("circleFoot")
+                                .targetMarker("arrowHead")
+                                .text("")
+                                .weight(link.value)
+                            )
+                        ;
+                    }, graph);
+
+                    graph.data({ vertices: vertices, edges: edges });
+                    callback(graph);
+                });
+            },
+            annotations: function (callback) {
+                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                    var graph = new Graph();
 
                     var vertices = [];
                     var edges = [];

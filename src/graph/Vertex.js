@@ -18,6 +18,7 @@
     Vertex.prototype._class += " graph_Vertex";
 
     Vertex.prototype.publishProxy("faChar", "_icon");
+    Vertex.prototype.publishProxy("icon_shape_diameter", "_icon", "diameter");
     Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
     Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
     Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
@@ -28,6 +29,8 @@
     Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
     Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
+    Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"],{tags:["Basic"]});
+    
     Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 
     Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:["Private"]});
@@ -59,9 +62,29 @@
             .render()
         ;
         var bbox = this._textBox.getBBox(true);
-        this._icon
-            .move({ x: -(bbox.width / 2) + (iconClientSize.width / 3), y: -(bbox.height / 2) - (iconClientSize.height / 3) })
-        ;
+        switch(this.iconAnchor()){
+            case 'start':
+                this._icon
+                    .move({ 
+                        x: -(bbox.width / 2) + (iconClientSize.width / 3),
+                        y: -(bbox.height / 2) - (iconClientSize.height / 3) 
+                    });
+                break;
+            case 'middle':
+                this._icon
+                    .move({ 
+                        x: 0, 
+                        y: -(bbox.height / 2) - (iconClientSize.height / 3) 
+                    });
+                break;
+            case 'end':
+                this._icon
+                    .move({ 
+                        x: (bbox.width / 2) - (iconClientSize.width / 3), 
+                        y: -(bbox.height / 2) - (iconClientSize.height / 3) 
+                    });
+                break;
+        }
 
         var context = this;
         var annotations = element.selectAll(".annotation").data(this.annotationIcons());

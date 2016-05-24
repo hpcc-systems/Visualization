@@ -10,6 +10,7 @@
         Widget.call(this);
 
         this._drawStartPos = "origin";
+        this._tag = "div";
         this._boundingBox = null;
     }
     HTMLWidget.prototype = Object.create(Widget.prototype);

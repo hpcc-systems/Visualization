@@ -11,7 +11,7 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/tree/CirclePacking"], function (DataFactory, CirclePacking) {
                     callback(new CirclePacking()
-                        .data(DataFactory.Tree.default.data)
+                        .data(DataFactory.Tree.flare.data)
                     );
                 });
             }
@@ -20,7 +20,7 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/tree/Dendrogram"], function (DataFactory, Dendrogram) {
                     callback(new Dendrogram()
-                        .data(DataFactory.Tree.default.data)
+                        .data(DataFactory.Tree.flare.data)
                     );
                 });
             }
@@ -29,7 +29,7 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/tree/SunburstPartition"], function (DataFactory, SunburstPartition) {
                     callback(new SunburstPartition()
-                        .data(DataFactory.Tree.default.data)
+                        .data(DataFactory.Tree.flare.data)
                     );
                 });
             }

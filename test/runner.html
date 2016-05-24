@@ -21,14 +21,15 @@
             baseUrl: ".",
             paths: {
                 "src": "../src",
-                "test": "../test"
+                "test": "../test",
+                "templates": "../templates"
             }
         });
     </script>
     <script>
         mocha.setup('bdd');
         var assert = chai.assert;
-        require(["./loader", "./widgets", "./persist", "./utility", "./datagrid"], function () {
+        require(["./loader", "./publish", "./widgets", "./persist", "./utility", "./datagrid"], function () {
             mocha.run();
         });
     </script>

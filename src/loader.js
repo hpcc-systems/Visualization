@@ -26,6 +26,7 @@
                 "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
                 "font-awesome": "../bower_components/font-awesome/css/font-awesome",
                 "es6-promise": "../bower_components/es6-promise/promise",
+                "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
 
                 "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
                 "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -121,6 +122,7 @@
             "d3-cloud": rawgitBaseUrl + "/jasondavies/d3-cloud/v1.2.0/build/d3.layout.cloud",
             "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
             "es6-promise": rawgitBaseUrl + "/jakearchibald/es6-promise/v3.0.2/dist/es6-promise.min",
+            "d3-bullet": rawgitBaseUrl + "/d3/d3-plugins/master/bullet/bullet",
 
             "amcharts": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
             "amcharts.funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",

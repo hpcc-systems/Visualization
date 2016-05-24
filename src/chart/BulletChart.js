@@ -98,7 +98,7 @@
         });
 
         //  Bullet Chart ---
-        var chart = D3Bullet()
+        var chart = new D3Bullet()
             .width(width - titleWidth)
             .height(height)
         ;

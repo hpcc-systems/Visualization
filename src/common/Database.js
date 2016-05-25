@@ -248,7 +248,10 @@
     Grid.prototype.row = function (row, _) {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
-            this.fields(_.map(function (d) { return new Field().label(d); }));
+            var fields = d3.map(this.fields(), function (field) { return field.label(); });
+            this.fields(_.map(function (label) {
+                return fields.get(label) || new Field().label(label);
+            }, this));
         } else {
             this._data[row - 1] = _;
             this._dataCalcChecksum(row - 1);

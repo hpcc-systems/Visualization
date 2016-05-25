@@ -70,8 +70,9 @@
         { id: "AM_COMBO", display: "Combo (amCharts)", widgetClass: "amchart_Combo" },
     ].map(function(item) { item.family = "ND"; return item;});
     MultiChart.prototype._anyChartTypes = [
-        { id: "TABLE", display: "Table", widgetClass: "other_Table" }
-    ].map(function(item) { item.family = "any"; return item;});
+        { id: "TABLE", display: "Table", widgetClass: "other_Table" },
+        { id: "NESTEDTABLE", display: "Nested Table", widgetClass: "other_NestedTable" }
+    ].map(function (item) { item.family = "any"; return item; });
     MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 
     MultiChart.prototype.publishReset();

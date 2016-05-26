@@ -1,0 +1,9 @@
+﻿.tree_Treemap .node {
+    border: solid 1px white;
+    //font: 10px sans-serif;
+    //line-height: 12px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    position: absolute;
+    text-indent: 2px;
+}

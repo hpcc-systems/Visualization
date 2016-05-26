@@ -186,6 +186,8 @@
             pins: function (callback) {
                 require(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
                     callback(new GMapPin()
+                        .latitudeColumn("dest_lat")
+                        .longtitudeColumn("dest_long")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                     );
@@ -194,6 +196,10 @@
             pinLines: function (callback) {
                 require(["test/DataFactory", "src/map/GMapPinLine"], function (DataFactory, GMapPinLine) {
                     callback(new GMapPinLine()
+                        .fromLatitudeColumn("orgin_lat")
+                        .fromLongtitudeColumn("orgin_long")
+                        .toLatitudeColumn("dest_lat")
+                        .toLongtitudeColumn("dest_long")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
                     );

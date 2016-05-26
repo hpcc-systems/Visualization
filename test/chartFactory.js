@@ -210,12 +210,27 @@
                     );
                 });
             },
+            dataBreach: function (callback) {
+                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+                    callback(new MultiChart()
+                        .chartType("TABLE")
+                        .chartTypeDefaults({
+                            pagination: true
+                        })
+                        .columns(DataFactory.Sample.DataBreach.columns)
+                        .data(DataFactory.Sample.DataBreach.data)
+                    );
+                });
+            },
             flightPath: function (callback) {
                 require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
                     callback(new MultiChart()
+                        .chartType("TABLE")
+                        .chartTypeDefaults({
+                            pagination: true
+                        })
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data)
-                        .chartType("TABLE")
                     );
                 });
             }

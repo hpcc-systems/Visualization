@@ -230,6 +230,7 @@
                                 widgetStateArray.forEach(function (widgetState, idx) {
                                     ++arrayCreateCount;
                                     context.create(widgetState, function (widgetItem) {
+                                        widgetItem._owner = widget;
                                         widgetArray[idx] = widgetItem;
                                         --arrayCreateCount;
                                     });

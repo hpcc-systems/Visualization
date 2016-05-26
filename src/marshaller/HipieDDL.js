@@ -830,10 +830,8 @@
     Visualization.prototype.notify = function () {
         if (this.source.hasData()) {
             if (this.widget) {
-                if (!this.widget.fields().length) {
-                    var columns = this.source.getColumns();
-                    this.widget.columns(columns);
-                }
+                var columns = this.source.getColumns();
+                this.widget.columns(columns);
                 var data = this.source.getData();
                 this.widget.data(data);
 

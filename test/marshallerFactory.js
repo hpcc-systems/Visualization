@@ -71,6 +71,13 @@
                     );
                 });
             },
+            wu: function (callback) {
+                require(["test/DataFactory", "src/marshaller/Graph"], function (DataFactory, Graph) {
+                    callback(new Graph()
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
+                    );
+                });
+            },
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/Graph"], function (DataFactory, Graph) {
                     callback(new Graph()

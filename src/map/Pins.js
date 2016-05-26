@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "./Utility", "../common/Palette", "../common/Utility", "css!./Pins"], factory);
+        define(["d3", "./Layer", "../common/Palette", "../common/Utility", "css!./Pins"], factory);
     } else {
-        root.map_Pins = factory(root.d3, root.topojson, root.map_Layer, root.map_Utility, root.common_Palette, root.common_Utility);
+        root.map_Pins = factory(root.d3, root.map_Layer, root.common_Palette, root.common_Utility);
     }
-}(this, function (d3, topojson, Layer, Utility, Palette, CommonUtility) {
+}(this, function (d3, Layer, Palette, Utility) {
     function Pins() {
         Layer.call(this);
     }
@@ -14,15 +14,13 @@
     Pins.prototype._class += " map_Pins";
 
     Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
-
-    Pins.prototype.publish("pinColor", "#006ccc", "html-color", "Pin Color", null, { optional: true });
-    Pins.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");
+    Pins.prototype.publish("fillColor", "#006ccc", "html-color", "Pin Color", null, { optional: true });
 
     Pins.prototype.layerEnter = function (base, svgElement, domElement) {
         Layer.prototype.layerEnter.apply(this, arguments);
 
         this._pinsTransform = svgElement;
-        this._selection = new CommonUtility.SimpleSelection(this._pinsTransform);
+        this._selection = new Utility.SimpleSelection(this._pinsTransform);
         this.pinsPaths = d3.select(null);
     };
 
@@ -44,6 +42,7 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
+            .append("title")
         ;
         this.pinsPaths
             .attr("stroke-width", 1.5 + "px")
@@ -55,7 +54,12 @@
                 return null;
             })
             .style("fill", function (d) {
-                return d[2] && d[2].fillColor ? d[2].fillColor : context.pinColor();
+                return d[2] && d[2].fillColor ? d[2].fillColor : context.fillColor();
+            })
+        ;
+        this.pinsPaths.select("title")
+            .text(function (d) {
+                return d[2] && d[2].tooltip ? d[2].tooltip : "";
             })
         ;
         this.pinsPaths.exit().remove();

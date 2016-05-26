@@ -1,11 +1,22 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGZoomWidget", "../api/ITree", "css!./Dendrogram"], factory);
+        define(["d3", "../common/SVGZoomWidget", "../common/PropertyExt", "../api/ITree", "css!./Dendrogram"], factory);
     } else {
-        root.tree_Dendrogram = factory(root.d3, root.common_SVGZoomWidget, root.api_ITree);
+        root.tree_Dendrogram = factory(root.d3, root.common_SVGZoomWidget, root.common_PropertyExt, root.api_ITree);
     }
-}(this, function (d3, SVGZoomWidget, ITree) {
+}(this, function (d3, SVGZoomWidget, PropertyExt, ITree) {
+    function Column(owner) {
+        PropertyExt.call(this);
+        this._owner = owner;
+    }
+    Column.prototype = Object.create(PropertyExt.prototype);
+    Column.prototype.constructor = Column;
+    Column.prototype._class += " tree_Dendrogram.Column";
+
+    Column.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+
+    // ===
     function Dendrogram(target) {
         SVGZoomWidget.call(this);
         ITree.call(this);
@@ -31,15 +42,37 @@
     Dendrogram.prototype.constructor = Dendrogram;
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
+    Dendrogram.prototype.Column = Column;
 
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+    Dendrogram.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: Column });
+
     Dendrogram.prototype.publish("circleRadius", 4.5, "number", "Text offset from circle");
     Dendrogram.prototype.publish("separation", 240, "number", "Leaf Separation");
     Dendrogram.prototype.publish("dendrogram", true, "boolean", "Dendrogram");
     Dendrogram.prototype.publish("radial", false, "boolean", "Radial");
     Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal", "vertical"], { tags: ["Private"], disabled: function () { return this.radial(); } });
 
+    Dendrogram.prototype.dendrogramData = function () {
+        if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
+            return this.data();
+        }
+        var view = this._db.rollupView(this.mappings().map(function (mapping) { return mapping.column(); }));
+        var retVal = {
+            key: "root",
+            values: view.entries()
+        };
+        return formatData(retVal);
+
+        function formatData(node) {
+            return {
+                label: node.key,
+                children: node.values.filter(function (value) { return !(value instanceof Array); }).map(function (value) { return formatData(value); })
+            };
+        }
+    };
+    
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGZoomWidget.prototype.enter.apply(this, arguments);
         this._renderElement.attr("opacity", 0);
@@ -74,7 +107,7 @@
             });
         }
 
-        var data = this.data();
+        var data = this.dendrogramData();
         var dataNodes = this._d3Layout.nodes(data);
         var links = this._d3Layout.links(dataNodes);
 

@@ -19,6 +19,20 @@
     Select.prototype.publish("multiple", false, "boolean", "Multiple selection");
     Select.prototype.publish("selectSize", 5, "number", "Size of multiselect box", null, { disable: function (w) { return !w.multiple(); } });
 
+    Select.prototype.selectData = function () {
+        var view = this._db.rollupView([this.valueColumn(), this.textColumn()]);
+        return view.entries().map(function (row) {
+            return {
+                value: row.key,
+                text: row.values.length ? row.values[0].key : ""
+            };
+        }, this).sort(function (l, r) {
+            if (l.text < r.text) return -1;
+            if (l.text > r.text) return 1;
+            return 0;
+        });
+    };
+
     Select.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._span = element.append("span");
@@ -54,15 +68,13 @@
             .attr("size", this.multiple() && this.selectSize() ? this.selectSize() : null)
         ;
 
-        var option = this._select.selectAll(".dataRow").data(this.data());
+        var option = this._select.selectAll(".dataRow").data(this.selectData());
         option.enter().append("option")
             .attr("class", "dataRow")
         ;
-        var context = this;
-        var columns = this.columns();
         option
-            .attr("value", function (row) { return row[columns.indexOf(context.valueColumn())]; })
-            .text(function (row) { return row[columns.indexOf(context.textColumn())]; })
+            .attr("value", function (row) { return row.value; })
+            .text(function (row) { return row.text; })
         ;
         option.exit().remove();
     };

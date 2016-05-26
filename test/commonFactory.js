@@ -103,12 +103,12 @@
                     "src/common/Utility", "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Graph", "src/graph/Edge", "src/graph/Vertex",
                     "src/tree/SunburstPartition", "src/tree/CirclePacking",
-                    "test/treeFactory", "test/otherFactory",
+                    "test/chartFactory", "test/otherFactory",
                     "src/other/MorphText", "src/form/Slider", "src/other/Table"], function (DataFactory,
                         Utility, Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
                     Graph, Edge, Vertex,
                     SunburstPartition, CirclePacking,
-                    treeFactory, otherFactory,
+                    chartFactory, otherFactory,
                     MorphText, Slider, Table) {
                         function createEdge(source, target, label) {
                             return new Edge()
@@ -119,7 +119,7 @@
                                 .text(label || "")
                             ;
                         }
-                        treeFactory.Dendrogram.simple(function (dendrogram) {
+                        chartFactory.Column.simple(function (column) {
                             otherFactory.Table.simple(function (table) {
                                 var vertices = [
                                     new Shape().shape("circle").size({ width: 32, height: 32 }),
@@ -133,7 +133,7 @@
                                     new List().data(DataFactory.List.simple.data),
                                     new Menu().faChar("\uf0c9").data(["Menu A", "And B", "a longer C"]),
                                     new ResizeSurface().size({ width: 200, height: 100 }).showTitle(true).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(table),
-                                    new ResizeSurface().size({ width: 200, height: 100 }).showTitle(true).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(dendrogram)
+                                    new ResizeSurface().size({ width: 200, height: 100 }).showTitle(true).title("Resize Me!!!").menu(["aaa", "bbb", "ccc"]).icon_faChar("\uf047").content(column)
                                 ];
                                 var edges = [
                                     createEdge(vertices[0], vertices[2]), createEdge(vertices[1], vertices[2]),

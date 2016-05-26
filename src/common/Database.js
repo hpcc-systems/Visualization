@@ -248,7 +248,10 @@
     Grid.prototype.row = function (row, _) {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
-            this.fields(_.map(function (d) { return new Field().label(d); }));
+            var fields = d3.map(this.fields(), function (field) { return field.label(); });
+            this.fields(_.map(function (label) {
+                return fields.get(label) || new Field().label(label);
+            }, this));
         } else {
             this._data[row - 1] = _;
             this._dataCalcChecksum(row - 1);
@@ -505,7 +508,7 @@
         if (!(columns instanceof Array)) {
             columns = [columns];
         }
-        this._columnIndicies = columns.map(function (column) {
+        this._columnIndicies = columns.filter(function (column) { return column; }).map(function (column) {
             switch (typeof column) {
                 case "string":
                     return this._grid.fieldByLabel(column).idx;
@@ -544,16 +547,17 @@
     RollupView.prototype.d3Map = function (opts) {
         return this.nest().map(this._whichData(opts), d3.map);
     };
-    RollupView.prototype._walkData = function (data, shaper) {
-        if (data instanceof Array) {
-            return data.map(function (row) {
-                if (row.key && row.values) {
-                    return [row.key, this._walkData(row.values)];
-                }
-                return row;
-            }, this);
-        }
-        return data;
+    RollupView.prototype._walkData = function (entries, prevRow) {
+        prevRow = prevRow || [];
+        var retVal = [];
+        entries.forEach(function (entry) {
+            if (entry instanceof Array) {
+                retVal.push(prevRow.concat([entry]));
+            } else {
+                retVal = retVal.concat(this._walkData(entry.values, prevRow.concat([entry.key])));
+            }
+        }, this);
+        return retVal;
     };
     RollupView.prototype.data = function (opts) {
         return this._walkData(this.entries(opts));
@@ -570,6 +574,26 @@
     Grid.prototype.rollupView = function (columnIndicies, rollupFunc) {
         return new RollupView(this, columnIndicies, rollupFunc);
     };
+
+    Grid.prototype.aggregateView = function (columnIndicies, aggrType, aggrColumn, aggrDeltaColumn) {
+        var context = this;
+        return new RollupView(this, columnIndicies, function (values) {
+            switch (aggrType) {
+                case null:
+                case undefined:
+                case "":
+                    return values.length;
+                default:
+                    var columns = context.legacyColumns();
+                    var colIdx = columns.indexOf(aggrColumn);
+                    var deltaIdx = columns.indexOf(aggrDeltaColumn);
+                    return d3[aggrType](values, function (value) {
+                        return (+value[colIdx] - (deltaIdx >= 0 ? +value[deltaIdx] : 0)) / (deltaIdx >= 0 ? +value[deltaIdx] : 1);
+                    });
+            }
+        });
+    };
+
     //  Nesting  ---
     Grid.prototype._nest = function (columnIndicies, rollup) {
         if (!(columnIndicies instanceof Array)) {

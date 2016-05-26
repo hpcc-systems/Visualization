@@ -303,6 +303,9 @@
                                 ["GJS6", 6],
                                 ["GJS7", 7],
                          ])
+                         .label("Label:  ")
+                         .valueColumn("Col Value")
+                         .textColumn("Col Label")
                     );
                  });
              }

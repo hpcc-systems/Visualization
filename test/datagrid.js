@@ -1,6 +1,7 @@
 "use strict";
 define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Database, Utility) {
-    describe("Database", function (done) {
+    describe("Database", function () {
+        this.timeout(10000);
         var testColumns = ["Subject", "Year 1", "Year 2", "Year 3"];
         var testData = [
                     ["Geography", 75, 68, 65],
@@ -142,11 +143,6 @@ define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Databa
             var data = db.legacyData();
             assert.equal(columns.length, width + 3);
             assert.equal(data.length, length);
-
-            var view1 = db.legacyView();
-            var view2 = db.nestView([0, 1]);
-            var view3 = db.nestView(["Aggr:  0", "Aggr:  1"]);
-            assert.deepEqual(view2.data(), view3.data());
         });
         it("big", function () {
             var db = createBig();

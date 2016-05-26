@@ -1,27 +1,27 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "d3-bullet", "css!./BulletChart"], factory);
+        define(["d3", "../common/HTMLWidget", "d3-bullet", "css!./Bullet"], factory);
     } else {
-        root.chart_BulletChart = factory(root.d3, root.common_HTMLWidget, root.d3.bullet);
+        root.chart_Bullet = factory(root.d3, root.common_HTMLWidget, root.d3.bullet);
     }
 }(this, function (d3, HTMLWidget, D3Bullet) {
     D3Bullet = D3Bullet || d3.bullet || window.d3.bullet;
 
-    function BulletChart(target) {
+    function Bullet(target) {
         HTMLWidget.call(this);
     }
-    BulletChart.prototype = Object.create(HTMLWidget.prototype);
-    BulletChart.prototype.constructor = BulletChart;
-    BulletChart.prototype._class += " chart_BulletChart";
+    Bullet.prototype = Object.create(HTMLWidget.prototype);
+    Bullet.prototype.constructor = Bullet;
+    Bullet.prototype._class += " chart_Bullet";
 
-    BulletChart.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
-    BulletChart.prototype.publish("subtitleColumn", null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true });
-    BulletChart.prototype.publish("rangesColumn", null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true });
-    BulletChart.prototype.publish("measuresColumn", null, "set", "Measures Column", function () { return this.columns(); }, { optional: true });
-    BulletChart.prototype.publish("markersColumn", null, "set", "Markers Column", function () { return this.columns(); }, { optional: true });
+    Bullet.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
+    Bullet.prototype.publish("subtitleColumn", null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true });
+    Bullet.prototype.publish("rangesColumn", null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true });
+    Bullet.prototype.publish("measuresColumn", null, "set", "Measures Column", function () { return this.columns(); }, { optional: true });
+    Bullet.prototype.publish("markersColumn", null, "set", "Markers Column", function () { return this.columns(); }, { optional: true });
 
-    BulletChart.prototype.bulletData = function () {
+    Bullet.prototype.bulletData = function () {
         var columns = this.columns();
         return this.data().map(function (row) {
             return {
@@ -45,12 +45,12 @@
         }
     };
 
-    BulletChart.prototype.enter = function (domNode, element) {
+    Bullet.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         d3.select(domNode.parentNode).style("overflow", "auto");
     };
 
-    BulletChart.prototype.update = function (domNode, element) {
+    Bullet.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
         var margin = { top: 8, right: 16, bottom: 20, left: 16 },
@@ -113,9 +113,9 @@
         svg.exit().remove();
     };
 
-    BulletChart.prototype.exit = function (domNode, element) {
+    Bullet.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    return BulletChart;
+    return Bullet;
 }));

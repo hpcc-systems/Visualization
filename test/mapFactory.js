@@ -183,6 +183,28 @@
                     );
                 });
             },
+            pins: function (callback) {
+                require(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
+                    callback(new GMapPin()
+                        .latitudeColumn("dest_lat")
+                        .longtitudeColumn("dest_long")
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data)
+                    );
+                });
+            },
+            pinLines: function (callback) {
+                require(["test/DataFactory", "src/map/GMapPinLine"], function (DataFactory, GMapPinLine) {
+                    callback(new GMapPinLine()
+                        .fromLatitudeColumn("orgin_lat")
+                        .fromLongtitudeColumn("orgin_long")
+                        .toLatitudeColumn("dest_lat")
+                        .toLongtitudeColumn("dest_long")
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data)
+                    );
+                });
+            },
             graph: function (callback) {
                 require(["test/DataFactory", "src/map/GMapGraph"], function (DataFactory, GMapGraph) {
                     callback(new GMapGraph()
@@ -231,6 +253,26 @@
                     callback(new Pins()
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
+                    );
+                });
+            }
+        },
+        Lines: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/map/Lines"], function (DataFactory, Lines) {
+                    callback(new Lines()
+                        .columns(["latitude", "longtitude", "pin", "circle"])
+                        .data([[51.897969, -8.475438, 35.652930, 139.687128],
+                                [35.652930, 139.687128, 37.665074, -122.384375],
+                                [37.665074, -122.384375, 32.690680, -117.178540],
+                                [32.690680, -117.178540, 39.709455, -104.969859],
+                                [39.709455, -104.969859, 41.244123, -95.961610],
+                                [41.244123, -95.961610, 32.688980, -117.192040],
+                                [32.688980, -117.192040, 45.786490, -108.526600],
+                                [45.786490, -108.526600, 45.796180, -108.535652],
+                                [45.796180, -108.535652, 45.774320, -108.494370],
+                                [45.774320, -108.494370, 45.777062, -108.549835],
+                                [45.777062, -108.549835, 51.897969, -8.475438]])
                     );
                 });
             }

@@ -50,7 +50,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.157:8010/WsWorkunits/WUResult.json?Wuid=W20151214-134734&ResultName=easwka01_dashboardtest1_Comp_Ins016_DDL&Widget=ResultWidget")
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
                     );
                 });
             },
@@ -68,6 +68,13 @@
                     callback(new Graph()
                         .ddlUrl(DataFactory.Marshaller.simple.ddlUrl)
                         .databomb(DataFactory.Marshaller.simple.databomb)
+                    );
+                });
+            },
+            wu: function (callback) {
+                require(["test/DataFactory", "src/marshaller/Graph"], function (DataFactory, Graph) {
+                    callback(new Graph()
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
                     );
                 });
             },

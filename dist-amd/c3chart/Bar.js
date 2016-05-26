@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["./Column"],t):e.c3chart_Bar=t(e.c3chart_Column)})(this,function(e){function t(t){e.call(this),this._config.axis.rotated=!0}return t.prototype=Object.create(e.prototype),t.prototype.constructor=t,t.prototype._class+=" c3chart_Bar",t});

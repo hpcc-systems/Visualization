@@ -111,17 +111,23 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
-                        .columns(["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"])
-                        .data([["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]])
+                        .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
+                        .data([
+                            ["Width 2 undefined", , 83, , 72],
+                            ["English II", 17, 43, 83, 93],
+                            ["English III", 6, 43, 64, 93],
+                            ["Width Blank", 7, "", 52, 83],
+                            ["Geography II", 16, 73, 52, 83],
+                            ["Width 2 undefined", , 83, , 72],
+                            ["Science", 66, 60, 85, 6],
+                            ["Science II", 46, 20, 53, 7],
+                            ["With 2 NULL", null, 20, null, 7],
+                            ["Math", 98, 30, 23, 13],
+                            ["Math II", 76, 30, 34, 6],
+                            ["Math III", 80, 30, 27, 8]
+                        ])
                     ;
                     callback(table);
-                    setTimeout(function () {
-                        table
-                            .columns(DataFactory.Table.simple.columns)
-                            .data(DataFactory.Table.simple.data)
-                            .render()
-                        ;
-                    }, 1000);
                 });
             },
             widget: function (callback) {
@@ -166,6 +172,49 @@
                     callback(table);
                 });
             }
+        },
+        NestedTable: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
+                    callback(new NestedTable()
+                        .columns(["Subject", "Year 1", { label: "Year2", columns: ["Subject", "Year 1", "Year 2", "Year 3"] }, "Year 3"])
+                        .data([
+                                ["Geography", 75, [["Geography", 75, 68, 65],
+                                                ["English", 45, 55, 52],
+                                                ["Math", 98, 92, 90],
+                                                ["Science", 66, 60, 72]], 65],
+                                ["English", 45, [], 52],
+                                ["Math", 98, [["Geography", 75, 68, 65],
+                                                ["English", 45, 55, 52],
+                                                ["Science", 66, 60, 72]], 90],
+                                ["Science", 66, [["Geography", 75, 68, 65],
+                                                ["Math", 98, 92, 90],
+                                                ["Science", 66, 60, 72]], 72]
+                        ])
+                    );
+                });
+            },
+            regularColumns: function (callback) {
+                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
+                    callback(new NestedTable()
+                        .columns(["Subject", "Year 1", "Children", "Year 3"])
+                        .data([
+                                ["Geography", 75, [["Geography", 75, 68, 65],
+                                                ["English", 45, 55, 52],
+                                                ["Math", 98, 92, 90],
+                                                ["Science", 66, 60, 72]], 65],
+                                ["English", 45, [], 52],
+                                ["Math", 98, [["Geography", 75, 68, 65],
+                                                ["English", 45, 55, 52],
+                                                ["Science", 66, 60, 72]], 90],
+                                ["Science", 66, [["Geography", 75, 68, 65],
+                                                ["Math", 98, 92, 90],
+                                                ["Science", 66, 60, 72]], 72]
+                        ])
+                    );
+                });
+            }
+           
         },
         Toolbar: {
             simple: function (callback) {
@@ -254,10 +303,23 @@
                                 ["GJS6", 6],
                                 ["GJS7", 7],
                          ])
+                         .label("Label:  ")
+                         .valueColumn("Col Value")
+                         .textColumn("Col Label")
                     );
                  });
              }
-       },    
-    
+        },
+        CalendarHeatMap: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
+                    callback(new CalendarHeatMap()
+                        .columns(DataFactory.Sample.StockMarket.columns)
+                        .data(DataFactory.Sample.StockMarket.data)
+                        .dateColumn("Date")
+                    );
+                });
+            }
+        }
     };
 }));

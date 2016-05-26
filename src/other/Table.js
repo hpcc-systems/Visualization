@@ -293,6 +293,12 @@
         }
 
         var rows = this.tbody.selectAll("tr").data(tData.map(function (d, idx) {
+            //  TODO - Move fix closer to data source?
+            for (var i = 0; i < d.length; ++i) {
+                if (d[i] === undefined) {
+                    d[i] = null;
+                }
+            }
             return {
                 rowIdx: idx,
                 row: d
@@ -352,7 +358,7 @@
         cells.enter()
             .append("td")
         ;
-        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, colIdx) { 
+        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, colIdx) {
             if (!(d.cell instanceof Widget)) {
                 return context.field(d.rowIdx, d.colIdx).transform(d.cell);
             }

@@ -112,7 +112,7 @@
         if (!id) return palette_rainbow();
         var retVal = rainbowCache[id];
         if (!retVal) {
-            retVal = palette_rainbow(id, colors);
+            retVal = palette_rainbow(id, colors, steps);
             rainbowCache[id] = retVal;
         }
         return retVal;
@@ -174,6 +174,9 @@
 
         }
         function rainbow(x, low, high) {
+            if (low === high) {
+                return scale.domain([low - 1, high + 1])(x);
+            }
             return scale.domain([low, high])(x);
         }
         rainbow.type = function () {
@@ -261,6 +264,9 @@
             .style("background-color", function(d) { return d; });
     };
 
+    colorbrewer.RdWhGr = {
+        3: ["red", "white", "green"]
+    };
     return {
         ordinal: fetchOrdinalItem,
         rainbow: fetchRainbowItem,

@@ -224,6 +224,42 @@
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
+            },
+            dataBreach: function (callback) {
+                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+                    callback(new MultiChart()
+                        .chartType("TABLE")
+                        .chartTypeDefaults({
+                            pagination: true
+                        })
+                        .columns(DataFactory.Sample.DataBreach.columns)
+                        .data(DataFactory.Sample.DataBreach.data)
+                    );
+                });
+            },
+            flightPath: function (callback) {
+                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+                    callback(new MultiChart()
+                        .chartType("TABLE")
+                        .chartTypeDefaults({
+                            pagination: true
+                        })
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data)
+                    );
+                });
+            },
+            stockMarket: function (callback) {
+                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+                    callback(new MultiChart()
+                        .chartType("TABLE")
+                        .chartTypeDefaults({
+                            pagination: true
+                        })
+                        .columns(DataFactory.Sample.StockMarket.columns)
+                        .data(DataFactory.Sample.StockMarket.data)
+                    );
+                });
             }
         },
         MultiChartSurface: {
@@ -272,10 +308,10 @@
                 });
             }
         },
-        BulletChart: {
+        Bullet: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/chart/BulletChart"], function (DataFactory, BulletChart) {
-                    callback(new BulletChart()
+                require(["test/DataFactory", "src/chart/Bullet"], function (DataFactory, Bullet) {
+                    callback(new Bullet()
                         .columns(["title",      "subtitle",             "ranges",           "measures",     "markers"])
                         .data([
                               ["Revenue",       "US$, in thousands",    [150,225,300],      [220,270],      [250, 25]],

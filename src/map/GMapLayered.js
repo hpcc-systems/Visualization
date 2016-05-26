@@ -113,6 +113,9 @@
     GMapLayered.prototype.constructor = GMapLayered;
     GMapLayered.prototype._class += " map_GMapLayered";
 
+    GMapLayered.prototype.updateCircles = function () { };
+    GMapLayered.prototype.updatePins = function () { };
+
     GMapLayered.prototype.layers = function (_) {
         if (!arguments.length) return this._layers;
         this._layers = _;

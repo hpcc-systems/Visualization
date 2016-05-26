@@ -209,6 +209,15 @@
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
+            },
+            flightPath: function (callback) {
+                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+                    callback(new MultiChart()
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data)
+                        .chartType("TABLE")
+                    );
+                });
             }
         },
         MultiChartSurface: {

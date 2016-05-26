@@ -187,6 +187,7 @@
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Graph-roxie":
+                            case "src/marshaller/Graph-wu":
                                 it("Roxie Call");
                                 break;
                             case "src/layout/Grid-hugeTables":
@@ -223,6 +224,7 @@
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
                             case "src/marshaller/Graph-roxie":
+                            case "src/marshaller/Graph-wu":
                                 it("Roxie Call");
                                 break;
                             case "src/other/HeatMap-simple":

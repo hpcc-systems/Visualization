@@ -547,16 +547,17 @@
     RollupView.prototype.d3Map = function (opts) {
         return this.nest().map(this._whichData(opts), d3.map);
     };
-    RollupView.prototype._walkData = function (data, shaper) {
-        if (data instanceof Array) {
-            return data.map(function (row) {
-                if (row.key && row.values) {
-                    return [row.key, this._walkData(row.values)];
-                }
-                return row;
-            }, this);
-        }
-        return data;
+    RollupView.prototype._walkData = function (entries, prevRow) {
+        prevRow = prevRow || [];
+        var retVal = [];
+        entries.forEach(function (entry) {
+            if (entry instanceof Array) {
+                retVal.push(prevRow.concat([entry]));
+            } else {
+                retVal = retVal.concat(this._walkData(entry.values, prevRow.concat([entry.key])));
+            }
+        }, this);
+        return retVal;
     };
     RollupView.prototype.data = function (opts) {
         return this._walkData(this.entries(opts));

@@ -71,7 +71,9 @@
     ].map(function(item) { item.family = "ND"; return item;});
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" },
-        { id: "NESTEDTABLE", display: "Nested Table", widgetClass: "other_NestedTable" }
+        { id: "TABLE_NESTED", display: "Nested Table", widgetClass: "other_NestedTable" },
+        { id: "TABLE_GMAP_PIN", display: "Google Map (pins)", widgetClass: "map_GMapPin" },
+        { id: "TABLE_GMAP_PINLINE", display: "Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
     ].map(function (item) { item.family = "any"; return item; });
     MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
 

@@ -306,7 +306,17 @@
                     );
                  });
              }
-       },    
-    
+        },
+        CalendarHeatMap: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
+                    callback(new CalendarHeatMap()
+                        .columns(DataFactory.Sample.StockMarket.columns)
+                        .data(DataFactory.Sample.StockMarket.data)
+                        .dateColumn("Date")
+                    );
+                });
+            }
+        }
     };
 }));

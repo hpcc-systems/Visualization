@@ -574,6 +574,7 @@
     Grid.prototype.rollupView = function (columnIndicies, rollupFunc) {
         return new RollupView(this, columnIndicies, rollupFunc);
     };
+
     Grid.prototype.aggregateView = function (columnIndicies, aggrType, aggrColumn, aggrDeltaColumn) {
         var context = this;
         return new RollupView(this, columnIndicies, function (values) {

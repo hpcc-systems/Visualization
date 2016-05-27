@@ -24,6 +24,7 @@
                 "topojson": "../bower_components/topojson/topojson",
                 "colorbrewer": "../bower_components/colorbrewer/colorbrewer",
                 "d3-cloud": "../bower_components/d3-cloud/build/d3.layout.cloud",
+                "d3-sankey": "../bower_components/d3-plugins/sankey/sankey",
                 "font-awesome": "../bower_components/font-awesome/css/font-awesome",
                 "es6-promise": "../bower_components/es6-promise/promise",
                 "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
@@ -120,6 +121,7 @@
             "topojson": rawgitBaseUrl + "/mbostock/topojson/v1.6.19/topojson",
             "colorbrewer": rawgitBaseUrl + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": rawgitBaseUrl + "/jasondavies/d3-cloud/v1.2.0/build/d3.layout.cloud",
+            "d3-sankey": rawgitBaseUrl + "/d3/d3-plugins/master/sankey/sankey",
             "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.3.0/css/font-awesome.min",
             "es6-promise": rawgitBaseUrl + "/jakearchibald/es6-promise/v3.0.2/dist/es6-promise.min",
             "d3-bullet": rawgitBaseUrl + "/d3/d3-plugins/master/bullet/bullet",
@@ -307,6 +309,32 @@
                 cdn: function (version, callback) {
                     var srcUrl = cdnUrl(version);
                     remoteCDNConfig(srcUrl, version, callback);
+                },
+                create: function (state, callback) {
+                    if (typeof state === "string") {
+                        state = JSON.parse(state);
+                    }
+                    switch (state.__version) {
+                        case "1":
+                        case "2":
+                        case "3":
+                            this.cdn("v1.10.0", function (require) {
+                                require(["src/other/Persist"], function (Persist) {
+                                    Persist.create(state, callback);
+                                }, requireErrorHandler);
+                            });
+                            break;
+                        default:
+                            this.cdn("v" + state.__version, function (require) {
+                                require(["src/other/Persist"], function (Persist) {
+                                    Persist.create(state, callback);
+                                }, requireErrorHandler);
+                            });
+                            break;
+                    }
+                    function requireErrorHandler(err) {
+                        console.log("Loader 'create' Error:\n" + err.message);
+                    }
                 }
             };
         }());

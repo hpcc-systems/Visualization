@@ -222,16 +222,18 @@
         },
 
         multiSort: function (data, sortBy) {
-            data.sort(function (l, r) {
-                for (var i = 0; i < sortBy.length; ++i) {
-                    var lVal = l[sortBy[i].idx];
-                    var rVal = r[sortBy[i].idx];
-                    if (lVal !== rVal) {
-                        return sortBy[i].reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal, rVal);
+            if (sortBy && sortBy.length) {
+                data.sort(function (l, r) {
+                    for (var i = 0; i < sortBy.length; ++i) {
+                        var lVal = l[sortBy[i].idx];
+                        var rVal = r[sortBy[i].idx];
+                        if (lVal !== rVal) {
+                            return sortBy[i].reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal, rVal);
+                        }
                     }
-                }
-                return 0;
-            });
+                    return 0;
+                });
+            }
             return data;
         },
 
@@ -361,6 +363,9 @@
             }
 
             return false;
+        },
+        widgetPath: function (classID) {
+            return "../" + classID.split("_").join("/");
         },
         parseClassID: function (classID, prefix) {
             prefix = prefix || "..";

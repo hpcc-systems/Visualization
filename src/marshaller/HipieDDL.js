@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require", "es6-promise"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "../composite/MegaChart", "../chart/MultiChart", "require", "es6-promise"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.composite_MegaChart, root.chart_MultiChart, root.require);
     }
-}(this, function (d3, Class, Database, Utility, Comms, Widget, require) {
+}(this, function (d3, Class, Database, Utility, Comms, Widget, MegaChart, MultiChart, require) {
     var LOADING = "...loading...";
     var _CHANGED = "_changed";
 
@@ -78,10 +78,19 @@
                 return "time";
             case "geohash":
                 return "geohash";
+            case "visualization":
+                return "widget";
             default:
-                if (hipieType.indexOf("unsigned") === 0) {
-                    return "number";
+                if (hipieType) {
+                    if (hipieType.indexOf("unsigned") === 0) {
+                        return "number";
+                    } else if (hipieType.indexOf("string") === 0) {
+                        return "string";
+                    }
                 }
+        }
+        if (window.__hpcc_debug) {
+            console.log("unknown hipieType:  " + hipieType);
         }
         return "string";
     }
@@ -223,10 +232,28 @@
         }, this);
     };
 
+    TableMappings.prototype.doMapAll = function (data) {
+        var retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
+        if (retVal instanceof Array) {
+            //var columnsRHS = this.visualization.source.getColumnsRHS();
+            this.visualization.fields.forEach(function (field, idx) {
+                var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
+                switch (fieldType) {
+                    case "widget":
+                        retVal = retVal.map(function (row) {
+                            //  TODO:  Insert Widget
+                            return row;
+                        });
+                }
+            });
+        }
+        return retVal;
+    };
+    
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
         this.icon = visualization.icon || {};
-        this.fields = visualization.fields || {};
+        this.fields = visualization.fields || [];
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
@@ -406,6 +433,10 @@
 
     Source.prototype.getFields = function () {
         return this.mappings.getFields();
+    };
+
+    Source.prototype.getColumnsRHS = function () {
+        return this.mappings.columnsRHS;
     };
 
     Source.prototype.getColumns = function () {
@@ -617,14 +648,28 @@
         this.type = visualization.type;
         this.icon = visualization.icon || {};
         this.flag = visualization.flag || [];
-        this.fields = visualization.fields || {};
+        this.fields = visualization.fields || [];
+        this.fieldsMap = {};
+        this.fields.forEach(function (d) {
+            this.fieldsMap[d.id] = d;
+        }, this);
+
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
-        this.layers = (visualization.visualizations || []).map(function (innerViz) {
-            return new Visualization(dashboard, innerViz, this);
-        }, this);
-
+        this.layers = [];
+        this.hasVizDeclarations = false;
+        this.vizDeclarations = {};
+        if (this.type === "CHORO") {
+            this.layers = (visualization.visualizations || []).map(function (innerViz) { 
+                return new Visualization(dashboard, innerViz, this); 
+            }, this);
+        } else {
+            (visualization.visualizations || []).forEach(function (innerViz) {
+                this.vizDeclarations[innerViz.id] = new Visualization(dashboard, innerViz, this);
+                this.hasVizDeclarations = true;
+            }, this);
+        }
         var context = this;
         switch (this.type) {
             case "CHORO":
@@ -846,6 +891,20 @@
 
     Visualization.prototype.isLoaded = function () {
         return this.widget instanceof Widget;
+    };
+
+
+    Visualization.prototype.loadMegaChartWidget = function (widgetPath, callback) {
+        this.loadWidgets(["../composite/MegaChart", widgetPath], function (megaChart, widgets) {
+            var chart = new widgets[1]();
+            megaChart
+                .chartType_default(MultiChart.prototype._allChartTypesByClass[chart.classID()].id)
+                .chart(chart)
+            ;
+            if (callback) {
+                callback(megaChart, chart, widgets);
+            }
+        });
     };
 
     Visualization.prototype.loadWidget = function (widgetPath, callback) {

@@ -21,6 +21,7 @@
             this._allCharts[item.widgetClass] = newItem;
         }, this);
         this._chartTypeDefaults = {};
+        this._chartTypeProperties = {};
     }
     MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -71,7 +72,7 @@
         { id: "AM_COMBO", display: "Combo (amCharts)", widgetClass: "amchart_Combo" },
     ].map(function(item) { item.family = "ND"; return item;});
     MultiChart.prototype._mapChartTypes = [
-        { id: "CHORO_USTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
+        { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
         { id: "CHORO_USCOUNTIES", display: "US County Choropleth", widgetClass: "map_ChoroplethCounties" },
         { id: "CHORO_COUNTRIES", display: "Counrty Choropleth", widgetClass: "map_ChoroplethCountries" }
     ].map(function (item) { item.family = "map"; return item; });
@@ -164,7 +165,13 @@
         this._chartTypeDefaults = _;
         return this;
     };
-    
+
+    MultiChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chartTypeProperties;
+        this._chartTypeProperties = _;
+        return this;
+    };
+
     MultiChart.prototype.getChartDataFamily = function () {
         return this._allCharts[this.chartType()].family;
     };
@@ -229,13 +236,25 @@
                     try {
                         currChart[key + "_default"](this._chartTypeDefaults[key]);
                     } catch (e) {
-                        console.log("Exception Setting Property:  " + key);
+                        console.log("Exception Setting Default:  " + key);
                     }
                 } else {
-                    console.log("Unknown Property:  " + key);
+                    console.log("Unknown Default:  " + key);
                 }
             }
             this._chartTypeDefaults = {};
+            for (var propKey in this._chartTypeProperties) {
+                if (currChart[propKey]) {
+                    try {
+                        currChart[propKey](this._chartTypeProperties[propKey]);
+                    } catch (e) {
+                        console.log("Exception Setting Property:  " + propKey);
+                    }
+                } else {
+                    console.log("Unknown Property:  " + propKey);
+                }
+            }
+            this._chartTypeProperties = {};
         }
 
         var context = this;

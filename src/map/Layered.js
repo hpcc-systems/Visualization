@@ -13,7 +13,6 @@
         SVGWidget.call(this);
 
         this._drawStartPos = "origin";
-        this._layers = [];
         this.projection("mercator");
     }
     Layered.prototype = Object.create(SVGWidget.prototype);
@@ -25,6 +24,7 @@
     Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
     Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
     Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
+    Layered.prototype.publish("layers", [], "widgetArray", "Layers");
 
     Layered.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -55,12 +55,6 @@
             this._autoScaleOnNextRender = true;
         }
         return retVal;
-    };
-
-    Layered.prototype.layers = function (_) {
-        if (!arguments.length) return this._layers;
-        this._layers = _;
-        return this;
     };
 
     Layered.prototype.size = function (_) {
@@ -108,7 +102,9 @@
             .attr("class", "background")
         ;
 
-        this._layersTarget = element.append("g");
+        this._layersTarget = element.append("g")
+            .attr("class", "layersTarget")
+        ;
 
         element.call(this._zoom);
     };
@@ -139,6 +135,7 @@
         var layers = this._layersTarget.selectAll(".layerContainer").data(this.layers().filter(function (d) { return d.visible(); }), function (d) { return d.id(); });
         var context = this;
         layers.enter().append("g")
+            .attr("id", function (d) { return d.id(); })
             .attr("class", "layerContainer")
             .each(function (d) {
                 d._svgElement = d3.select(this);
@@ -179,7 +176,7 @@
     Layered.prototype.render = function (callback) {
         var context = this;
         var retVal = SVGWidget.prototype.render.call(this, function (w) {
-            if ((context._renderCount && context._autoScaleOnNextRender) || context._prevAutoScaleMode !== context.autoScaleMode()) {
+            if (context._layersTarget && ((context._renderCount && context._autoScaleOnNextRender) || context._prevAutoScaleMode !== context.autoScaleMode())) {
                 context._prevAutoScaleMode = context.autoScaleMode();
                 context._autoScaleOnNextRender = false;
                 setTimeout(function () {
@@ -242,22 +239,26 @@
     };
 
     Layered.prototype.shrinkToFit = function (rect) {
-        var width = this.width();
-        var height = this.height();
-        var translate = this._zoom.translate();
-        var scale = this._zoom.scale();
+        if (rect.width && rect.height) {
+            var width = this.width();
+            var height = this.height();
+            var translate = this._zoom.translate();
+            var scale = this._zoom.scale();
 
-        rect.x += rect.width / 2;
-        rect.y += rect.height / 2;
-        translate[0] -= (rect.x - width / 2);
-        translate[1] -= (rect.y - height / 2);
+            rect.x += rect.width / 2;
+            rect.y += rect.height / 2;
+            translate[0] -= (rect.x - width / 2);
+            translate[1] -= (rect.y - height / 2);
 
-        var newScale = scale * Math.min(width / rect.width, height / rect.height);
-        this._zoom
-            .translate(translate)
-            .scale(newScale)
-            .event(this._layersTarget)
-        ;
+            var newScale = scale * Math.min(width / rect.width, height / rect.height);
+            this._zoom
+                .translate(translate)
+                .scale(newScale)
+                .event(this._layersTarget)
+            ;
+        } else {
+            console.log("Layered.prototype.shrinkToFit - invalid rect:  " + rect);
+        }
     };
 
     return Layered;

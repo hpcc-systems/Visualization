@@ -50,11 +50,13 @@
 
         for (key in this._ddlDashboards) {
             this._ddlDashboards[key].visualizations.forEach(function (viz, idx) {
-                if (viz.properties.flyout) {
+                if (viz.properties.flyout || viz.parentVisualization) {
                     return;
                 }
                 var targetVizs = viz.events.getUpdatesVisualizations();
-                var targetIDs = targetVizs.map(function (targetViz) {
+                var targetIDs = targetVizs.filter(function (targetViz) {
+                    return vizCellMap[targetViz.id];
+                }).map(function (targetViz) {
                     return vizCellMap[targetViz.id].id();
                 });
                 vizCellMap[viz.id].indicateTheseIds(targetIDs);

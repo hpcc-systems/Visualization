@@ -70,6 +70,12 @@
         return this;
     };
 
+    MegaChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chart.chartTypeProperties();
+        this._chart.chartTypeProperties(_);
+        return this;
+    };
+
     MegaChart.prototype.fields = function (_) {
         if (!arguments.length) return this._chart.fields();
         this._chart.fields(_);

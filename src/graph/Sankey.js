@@ -106,7 +106,7 @@
     Sankey.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
 
-        this._d3Sankey = d3.sankey();
+        this._d3Sankey = new D3Sankey();
         this._d3SankeyPath = this._d3Sankey.link();
     };
 

@@ -1,11 +1,11 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../common/PropertyExt", "../api/ITree", "css!./Treemap"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/PropertyExt", "../api/ITree", "../common/Utility", "css!./Treemap"], factory);
     } else {
-        root.tree_Treemap = factory(root.d3, root.common_HTMLWidget, root.common_PropertyExt, root.api_ITree);
+        root.tree_Treemap = factory(root.d3, root.common_HTMLWidget, root.common_PropertyExt, root.api_ITree, root.common_Utility);
     }
-}(this, function (d3, HTMLWidget, PropertyExt, ITree) {
+}(this, function (d3, HTMLWidget, PropertyExt, ITree, Utility) {
     function Column(owner) {
         PropertyExt.call(this);
         this._owner = owner;
@@ -48,26 +48,27 @@
         return formatData(retVal);
 
         function formatData(node) {
-            if (typeof node.values === "number") {
-                return {
-                    label: node.key,
-                    size: node.values
+            if (node.values instanceof Array) {
+                var children = node.values.filter(function (value) {
+                    return !(value instanceof Array);
+                }).map(function (value) {
+                    return formatData(value);
+                });
+                var retVal = {
+                    label: node.key
                 };
+                if (children.length) {
+                    retVal.children = children;
+                } else {
+                    retVal.size = 22;
+                }
+                return retVal;
             }
-            var children = node.values.filter(function (value) {
-                return !(value instanceof Array);
-            }).map(function (value) {
-                return formatData(value);
-            });
-            var retVal = {
-                label: node.key
+            return {
+                label: node.key,
+                size: node.values.aggregate,
+                origRows: node.values
             };
-            if (children.length) {
-                retVal.children = children;
-            } else {
-                retVal.size = 22;
-            }
-            return retVal;
         }
     };
 
@@ -80,6 +81,7 @@
         ;
 
         this._elementDIV = element.append("div");
+        this._selection = new Utility.SimpleSelection(this._elementDIV);
     };
 
     Treemap.prototype.update = function (domNode, element) {
@@ -104,6 +106,18 @@
         var node = this._elementDIV.selectAll(".node").data(nodes);
         node.enter().append("div")
             .attr("class", "node")
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                if (d && d.origRows) {
+                    var columnLabel = "";
+                    context.mappings().forEach(function (mapping) {
+                        if (mapping.column()) {
+                            columnLabel = mapping.column();
+                        }
+                    });
+                    context.click(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                }
+            })
             .call(enterPosition)
         ;
         node

@@ -2,11 +2,36 @@
   cursor: move;
   fill-opacity: .9;
   shape-rendering: crispEdges;
+  stroke: darkgray;
+}
+
+.graph_Sankey .node.selected rect {
+    stroke: red;
+}
+
+.graph_Sankey .node.over rect {
+    stroke: orange;
+}
+
+.graph_Sankey .node.selected.over rect {
+    stroke: red;
 }
 
 .graph_Sankey .node text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
+}
+
+.graph_Sankey .node.selected text {
+    fill: red;
+}
+
+.graph_Sankey .node.over text {
+    fill: orange;
+}
+
+.graph_Sankey .node.selected.over text {
+    fill: red;
 }
 
 .graph_Sankey .link {
@@ -18,3 +43,4 @@
 .graph_Sankey .link:hover {
   stroke-opacity: .5;
 }
+

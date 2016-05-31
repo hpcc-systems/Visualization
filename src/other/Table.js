@@ -92,18 +92,16 @@
         return retVal;
     };
 
-    var origColumns = Table.prototype.columns;
-    Table.prototype.columns = function (_) {
-        var retVal = origColumns.apply(this, arguments);
+    Table.prototype.tableColumns = function (_) {
+        var retVal = Table.prototype.columns.apply(this, arguments);
         if (!arguments.length && this.pivot()) {
             return this._db.column(0);
         }
         return retVal;
     };
 
-    var origData = Table.prototype.data;
-    Table.prototype.data = function (_) {
-        var retVal = origData.apply(this, arguments);
+    Table.prototype.tableData = function (_) {
+        var retVal = Table.prototype.data.apply(this, arguments);
         if (!arguments.length && this.pivot()) {
             return this._db.columns().filter(function (col, idx) { return idx > 0; });
         }
@@ -150,11 +148,13 @@
     Table.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
         var context = this;
+        var columns = context.tableColumns();
+        var data = context.tableData();
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
         if (this.sortByFieldIndex_exists() && (this._prevSortByFieldIndex !== this.sortByFieldIndex() || this._prevDescending !== this.descending())) {
-            Utility.multiSort(this.data(), [{ idx: this.sortByFieldIndex(), reverse: this.descending() }]);
+            Utility.multiSort(data, [{ idx: this.sortByFieldIndex(), reverse: this.descending() }]);
             this._prevSortByFieldIndex = this.sortByFieldIndex();
             this._prevDescending = this.descending();
         }
@@ -172,7 +172,7 @@
         this.fixedHead.style("display", this.fixedHeader() ? "table-row" : "none");
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
-        var th = this.thead.selectAll("th").data(this.showHeader() ? this.columns() : [], function (d) { return d; });
+        var th = this.thead.selectAll("th").data(this.showHeader() ? columns : []);
         th
             .enter()
             .append("th")
@@ -218,7 +218,7 @@
         th.order();
 
         if (this.paginationLimit()) {
-            this.pagination(this.data().length >= parseInt(this.paginationLimit()) ? true : false);
+            this.pagination(data.length >= parseInt(this.paginationLimit()) ? true : false);
         }
         if (this.pagination()) {
             if (this._paginator.target() === null) {
@@ -228,7 +228,7 @@
             var ipp = this._calcRowsPerPage(th);
             this.itemsPerPage(ipp);
 
-            this._paginator.numItems(this.data().length);
+            this._paginator.numItems(data.length);
             this._tNumPages = Math.ceil(this._paginator.numItems() / this.itemsPerPage()) || 1;
             if (this.pageNumber() > this._tNumPages || this.pageNumber() <= 0) { this.pageNumber(1); } // resets if current pagenum selected out of range
 
@@ -251,20 +251,19 @@
         var tData = null;
 
         if (this.topN()) {
-            tData = this.data().slice(0, this.topN());
+            tData = data.slice(0, this.topN());
         } else if (this.pagination()) {
-            tData = this.data().slice(start, end);
+            tData = data.slice(start, end);
         } else {
-            tData = this.data();
+            tData = data;
         }
 
         var totalRow = [this.totalledLabel() ? this.totalledLabel() : null];
-        if (context.totalledColumns().length !== 0) {
-            for(var i=0; i < context.totalledColumns().length; i++) context.totalledColumns()[i] = +context.totalledColumns()[i];
-
-            for (var j = 1; j < context.columns().length; j++) {
+        if (this.totalledColumns().length !== 0) {
+            for (var i = 0; i < this.totalledColumns().length; i++) this.totalledColumns()[i] = +this.totalledColumns()[i];
+            for (var j = 1; j < columns.length; j++) {
                 var sum = 0;
-                if (context.totalledColumns().indexOf(j) !== -1) {
+                if (this.totalledColumns().indexOf(j) !== -1) {
                     for (var k = 0; k < tData.length; k++) {
                         sum = sum + tData[k][j];
                     }
@@ -347,7 +346,7 @@
         ;
 
         var cells = rows.selectAll("td").data(function (_d) {
-            return _d.row.filter(function (cell, idx) { return idx < context.columns().length; }).map(function (cell, idx) {
+            return _d.row.filter(function (cell, idx) { return idx < columns.length; }).map(function (cell, idx) {
                 return {
                     rowIdx: _d.rowIdx,
                     colIdx: idx,
@@ -414,7 +413,7 @@
         this.size(this._size);
 
         var fixedColWidth = 0;
-        var fixedColTh = this.fixedColHeadRow.selectAll("th").data(this.fixedColumn() && this.showHeader() ? [this.columns()[0]] : []);
+        var fixedColTh = this.fixedColHeadRow.selectAll("th").data(this.fixedColumn() && this.showHeader() ? [columns[0]] : []);
         fixedColTh
             .enter()
             .append("th")
@@ -764,7 +763,7 @@
         if (this.multiSelect() && d3.event.shiftKey && this._selectionPrevClick) {
             var inRange = false;
             var rows = [];
-            var selection = this.data().filter(function (row, i) {
+            var selection = this.tableData().filter(function (row, i) {
                 var lastInRangeRow = false;
                 if (row === d || row === this._selectionPrevClick) {
                     if (inRange) {
@@ -804,7 +803,7 @@
     Table.prototype.applyRowStyles = function(row, isFirstCol){
         row
             .style("color", isFirstCol ? this.tbodyFirstColFontColor() : this.tbodyFontColor())
-            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.data().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
+            .style("background-color", isFirstCol ? this.tbodyFirstColBackgroundColor() : this.tableZebraColor_exists() && this.tableData().indexOf(row.datum()) % 2 ? this.tbodyRowBackgroundColor() : this.tableZebraColor())
         ;
     };
     Table.prototype.applyFirstColRowStyles = function(rows){

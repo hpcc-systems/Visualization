@@ -202,7 +202,9 @@
                 if (this[id + "_disabled"]()) return this[id + "_default"]();
                 return this[__prop_ + id] !== undefined ? this[__prop_ + id] : this[id + "_default"]();
             }
-            if (_ === "" && meta.ext.optional) {
+            if (_ === undefined) {
+                _ = null;
+            } else if (_ === "" && meta.ext.optional) {
                 _ = null;
             } else if (_ !== null) {
                 _ = meta.checkedAssign.call(this, _);

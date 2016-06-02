@@ -89,7 +89,9 @@
 
     CommonSerial.prototype.publish("axisAlpha", 1, "number", "Axis Alpha",null,{tags:["Intermediate"]}); // share?
 
-    CommonSerial.prototype.publish("startOnAxis", true, "boolean", "Draw Chart Starting On Axis.",null,{tags:["Intermediate"]});    
+    CommonSerial.prototype.publish("startOnAxis", true, "boolean", "Draw Chart Starting On Axis.",null,{tags:["Intermediate"]});  
+
+    CommonSerial.prototype.publish("xAxisShowAllLabels", false, "boolean", "show All Category Axis Labels",null,{tags:["Intermediate"]});    
 
     // proxy
 
@@ -452,6 +454,9 @@
         }
 
         this.amFormatColumns();
+        if (xAxis.axisAutoGridCount() === false && this.xAxisShowAllLabels()) {
+            this._chart.categoryAxis.gridCount = this._chart.dataProvider.length;
+        }
 
         var color;
         var cType;

@@ -337,6 +337,9 @@
     };
 
     Grid.prototype.hipieMappings = function (columns) {
+        if (!this.fields().length || !this._data.length) {
+            return [];
+        }
         var rollupField = -1;
         var rollupValueIdx = [];
         var rollupBy = [];
@@ -398,6 +401,11 @@
                     rollupBy.push(field.idx);
                     fieldIndicies.push(function (row) {
                         return row[field.idx];
+                    });
+                } else {
+                    console.log("Field mapping failed:  " + mapping);
+                    fieldIndicies.push(function (row) {
+                        return "***BAD MAPPING:  " + mapping + "***";
                     });
                 }
             }

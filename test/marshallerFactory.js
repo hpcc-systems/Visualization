@@ -35,7 +35,7 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_bipgraph4.ins004_service/json")
+                        .ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/jprichard_visualizegenericgraph3.ins55194_service_1/json")
                     );
                 });
             },

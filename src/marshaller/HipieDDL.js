@@ -223,6 +223,9 @@
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
+        this.linkMappings = new SourceMappings(visualization, this.link.mappings);
+        this.linkMappings.columns = ["uid"];
+        this.linkMappings.columnsIdx = { uid: 0 };
         this.visualization = visualization;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
@@ -328,7 +331,7 @@
             if (item[context.link.childfile] && item[context.link.childfile].Row) {
                 var childItems = item[context.link.childfile].Row;
                 childItems.forEach(function (childItem, i) {
-                    var childMappedItem = context.doMap(childItem);
+                    var childMappedItem = context.linkMappings.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
                     if (vertex.id() !== childVertex.id()) {
                         var edge = new graph.Edge()

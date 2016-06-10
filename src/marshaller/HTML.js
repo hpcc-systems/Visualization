@@ -20,6 +20,7 @@
     HTML.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
     HTML.prototype.publish("clearDataOnUpdate", true, "boolean", "Clear data prior to refresh", null);
     HTML.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
+    HTML.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
 
     HTML.prototype.enter = function(domNode, element) {
         Grid.prototype.enter.apply(this, arguments);
@@ -68,6 +69,7 @@
                     .proxyMappings(this.proxyMappings())
                     .clearDataOnUpdate(this.clearDataOnUpdate())
                     .propogateClear(this.propogateClear())
+                    .missingDataString(this.missingDataString())
                 ;
             }
             return Grid.prototype.render.apply(this, arguments);
@@ -96,6 +98,7 @@
             .proxyMappings(this.proxyMappings())
             .clearDataOnUpdate(this.clearDataOnUpdate())
             .propogateClear(this.propogateClear())
+            .missingDataString(this.missingDataString())
             .widgetMappings(widgetMap)
             .on("commsError", function (source, error) {
                 context.commsError(source, error);

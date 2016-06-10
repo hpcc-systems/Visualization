@@ -42,11 +42,52 @@
                 });
             }
         },
+        Image: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/common/Image"], function (DataFactory, Image) {
+                    callback(new Image().source(DataFactory.Image.floorplan));
+                });
+            },
+            layered: function (callback) {
+                require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/common/Image", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, Image, HeatMap) {
+                    var retVal = new Layered()
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(
+                                new Image()
+                                    .source(DataFactory.Image.floorplan)
+                                    .alignment("origin")
+                            )
+                        )
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).opacity(0.66).widget(
+                                new HeatMap()
+                                    .columns(DataFactory.HeatMap.floorplan.columns)
+                                    .data(DataFactory.HeatMap.floorplan.data)
+                            )
+                        )
+                    ;
+                    callback(retVal);
+                });
+            },
+            url: function (callback) {
+                require(["test/DataFactory", "src/common/Image"], function (DataFactory, Image) {
+                    callback(new Image().source("http://scoop.previewsworld.com/Image/NewsImage/4/41615/88069/1"));
+                });
+            }
+            
+        },
         Icon: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/common/Icon"], function (DataFactory, Icon) {
                     callback(new Icon()
                         .faChar(DataFactory.FAChar.simple.char)
+                    );
+                });
+            },
+            image: function (callback) {
+                require(["test/DataFactory", "src/common/Icon"], function (DataFactory, Icon) {
+                    callback(new Icon()
+                        .faChar("")
+                        .diameter(64)
+                        .imageUrl("https://cdn.discordapp.com/avatars/78237891792216064/e164780723ccb2ea08f6647272d4b92d.jpg")
                     );
                 });
             }

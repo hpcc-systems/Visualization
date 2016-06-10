@@ -117,7 +117,7 @@
     };
 
     SourceMappings.prototype.doMapAll = function (data) {
-        return data.hipieMappings(this.columnsRHS);
+        return data.hipieMappings(this.columnsRHS, this.visualization.dashboard.marshaller.missingDataString());
     };
 
     SourceMappings.prototype.getMap = function (key) {
@@ -1151,6 +1151,7 @@
         this._widgetMappings = d3.map();
         this._clearDataOnUpdate = true;
         this._propogateClear = false;
+        this._missingDataString = "";
     }
 
     Marshaller.prototype.commsDataLoaded = function () {
@@ -1238,6 +1239,12 @@
     Marshaller.prototype.propogateClear = function (_) {
         if (!arguments.length) return this._propogateClear;
         this._propogateClear = _;
+        return this;
+    };
+
+    Marshaller.prototype.missingDataString = function (_) {
+        if (!arguments.length) return this._missingDataString;
+        this._missingDataString = _;
         return this;
     };
 

@@ -336,7 +336,11 @@
         }, this).filter(function(d) { return d.idx >= 0; });
     };
 
-    Grid.prototype.hipieMappings = function (columns) {
+    Grid.prototype.hipieMappings = function (columns, missingDataString) {
+        missingDataString = missingDataString || "";
+        if (!this.fields().length || !this._data.length) {
+            return [];
+        }
         var rollupField = -1;
         var rollupValueIdx = [];
         var rollupBy = [];
@@ -399,7 +403,10 @@
                     fieldIndicies.push(function (row) {
                         return row[field.idx];
                     });
-                }
+                } else {
+                    console.log("Unable to locate '" + mapping + "' in server response.");
+                    fieldIndicies.push(missingDataString);
+               }
             }
         }, this);
 

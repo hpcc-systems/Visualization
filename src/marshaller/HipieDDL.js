@@ -569,28 +569,22 @@
         var context = this;
         switch (this.type) {
             case "CHORO":
+                var chartType = "CHORO_USTATES";
                 if (this.source.mappings.contains("state")) {
-                    this.loadWidget("../map/ChoroplethStates", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .paletteID_default(visualization.color)
-                        ;
-                    });
+                    chartType = "CHORO_USTATES";
                 } else if (this.source.mappings.contains("county")) {
-                    this.loadWidget("../map/ChoroplethCounties", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .paletteID_default(visualization.color)
-                        ;
-                    });
-
-                } else if (this.source.mappings.contains("geohash")) {
-                    this.loadWidget("../map/Layered", function (widget) {
-                        widget
-                            .id(visualization.id)
-                        ;
-                    });
+                    chartType = "CHORO_USCOUNTIES";
+                } else if (this.source.mappings.contains("country")) {
+                    chartType = "CHORO_COUNTRIES";
                 }
+                this.loadWidget("../composite/MegaChart", function (widget) {
+                    widget
+                        .id(visualization.id)
+                        .legendPosition_default("none")
+                        .showChartSelect_default(false)
+                        .chartType_default(chartType)
+                    ;
+                });
                 break;
             case "2DCHART":
             case "PIE":

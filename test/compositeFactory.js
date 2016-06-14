@@ -33,6 +33,18 @@
                     callback(mc);
                 });
             },
+            choro: function (callback) {
+                require(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {
+                    var mc = new MegaChart()
+                        .chartType("CHORO_USTATES")
+                        .legendPosition("bottom")
+                        .title("US States Choropleth")
+                        .columns(DataFactory.States.simple.columns)
+                        .data(DataFactory.States.simple.data)
+                    ;
+                    callback(mc);
+                });
+            }
         },
     };
 

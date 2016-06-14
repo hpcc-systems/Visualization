@@ -195,8 +195,8 @@
                 .id(id)
                 .sourceVertex(source)
                 .targetVertex(target)
-                .sourceMarker("circleFoot")
-                .targetMarker("arrowHead")
+                .sourceMarker("circle")
+                .targetMarker("arrow")
                 .text(label || "")
             ;
             this.edgeMap[id] = retVal;

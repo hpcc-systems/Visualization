@@ -88,10 +88,7 @@
                 });
             });
             data.addedEdges.forEach(function (item) {
-                if (item._sourceMarker)
-                    item._sourceMarker = context._id + "_" + item._sourceMarker;
-                if (item._targetMarker)
-                    item._targetMarker = context._id + "_" + item._targetMarker;
+                item._graphID = context._id;
             });
 
             //  Recalculate edge arcs  ---

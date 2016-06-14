@@ -18,6 +18,54 @@
                 });
             }
         },
+        Edge: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                    var graph = new Graph();
+                    var vertices = [];
+                    var edges = [];
+                    var palette = Palette.ordinal("dark2");
+
+                    var rawData = DataFactory.Graph.simple;
+                    rawData.nodes.forEach(function (node) {
+                        vertices.push(
+                            new Vertex()
+                                .text(node.name)
+                                .textbox_shape_colorStroke(palette(node.group))
+                                .textbox_shape_colorFill("whitesmoke")
+                                .icon_shape_diameter(60)
+                                .icon_shape_colorStroke("transparent")
+                                .icon_shape_colorFill("transparent")
+                                .icon_image_colorFill("#333333")
+                                .textbox_shape_colorStroke("transparent")
+                                .textbox_shape_colorFill("transparent")
+                                .textbox_text_colorFill("#333333")
+                                .iconAnchor("middle")
+                                .faChar(node.icon)
+                            )
+                        ;
+                    }, graph);
+
+                    rawData.links.forEach(function (link, idx) {
+                        edges.push(
+                            new Edge()
+                                .sourceVertex(vertices[link.source])
+                                .targetVertex(vertices[link.target])
+                                .sourceMarker("circle")
+                                .targetMarker("arrow")
+                                .text("Hello!")
+                                .strokeDasharray(idx === 0 ? "15, 10, 5, 10, 15" : null)
+                                .strokeColor(idx === 0 ? "cyan" : null)
+                                .weight(link.value)
+                            )
+                        ;
+                    }, graph);
+
+                    graph.data({ vertices: vertices, edges: edges });
+                    callback(graph);
+                });
+            }
+        },
         Graph: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
@@ -46,8 +94,8 @@
                             new Edge()
                                 .sourceVertex(vertices[link.source])
                                 .targetVertex(vertices[link.target])
-                                .sourceMarker("circleFoot")
-                                .targetMarker("arrowHead")
+                                .sourceMarker("circle")
+                                .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
                             )
@@ -90,8 +138,8 @@
                             new Edge()
                                 .sourceVertex(vertices[link.source])
                                 .targetVertex(vertices[link.target])
-                                .sourceMarker("circleFoot")
-                                .targetMarker("arrowHead")
+                                .sourceMarker("circle")
+                                .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
                             )
@@ -128,8 +176,8 @@
                             new Edge()
                                 .sourceVertex(vertices[link.source])
                                 .targetVertex(vertices[link.target])
-                                .sourceMarker("circleFoot")
-                                .targetMarker("arrowHead")
+                                .sourceMarker("circle")
+                                .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
                             )
@@ -193,8 +241,8 @@
                         return new Edge()
                             .sourceVertex(source)
                             .targetVertex(target)
-                            .sourceMarker("circleFoot")
-                            .targetMarker("arrowHead")
+                            .sourceMarker("circle")
+                            .targetMarker("arrow")
                             .text(label || "")
                         ;
                     }

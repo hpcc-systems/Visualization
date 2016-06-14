@@ -25,6 +25,11 @@
     Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
     Edge.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 
+    Edge.prototype.publish("sourceMarker", "circle", "set", "Source Marker", ["circle"], { optional: true });
+    Edge.prototype.publish("targetMarker", "arrow", "set", "Source Marker", ["arrow", "circle"], { optional: true });
+    Edge.prototype.publish("strokeDasharray", null, "string", "Stroke Dash Array", null, { optional: true });
+    Edge.prototype.publish("strokeColor", null, "html-color", "Stroke Color", null, { optional: true });
+
     Edge.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;
         this._sourceVertex = _;
@@ -37,27 +42,9 @@
         return this;
     };
 
-    Edge.prototype.sourceMarker = function (_) {
-        if (!arguments.length) return this._sourceMarker;
-        this._sourceMarker = _;
-        return this;
-    };
-
-    Edge.prototype.targetMarker = function (_) {
-        if (!arguments.length) return this._targetMarker;
-        this._targetMarker = _;
-        return this;
-    };
-
     Edge.prototype.weight = function (_) {
         if (!arguments.length) return this._weight;
         this._weight = _;
-        return this;
-    };
-
-    Edge.prototype.strokeDasharray = function (_) {
-        if (!arguments.length) return this._strokeDasharray;
-        this._strokeDasharray = _;
         return this;
     };
 
@@ -87,12 +74,6 @@
         this._elementPath = element.append("path");
         this._tooltipElement = this._elementPath.append("title");
 
-        if (this._sourceMarker) {
-            this._elementPath.attr("marker-start", "url(#" + this._sourceMarker + ")");
-        }
-        if (this._targetMarker) {
-            this._elementPath.attr("marker-end", "url(#" + this._targetMarker + ")");
-        }
         if (this._textBox.text()) {
             this._textBox
                 .target(domNode)
@@ -143,7 +124,10 @@
         }
         pathElements
             .attr("opacity", this._hidden ? 0 : 1)
-            .attr("stroke-dasharray", this._strokeDasharray)
+            .attr("marker-start", this.sourceMarker_exists() ? "url(#" + this._graphID + "_" + this.sourceMarker() + "Foot)" : null)
+            .attr("marker-end", this.targetMarker_exists() ? "url(#" + this._graphID + "_" + this.targetMarker() + "Head)" : null)
+            .attr("stroke", this.strokeColor_exists() ? this.strokeColor() : null)
+            .attr("stroke-dasharray", this.strokeDasharray_exists() ? this.strokeDasharray() : null)
             .attr("d", line)
         ;
         this._tooltipElement.text(this.tooltip());

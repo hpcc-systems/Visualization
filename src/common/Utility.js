@@ -354,10 +354,11 @@
 
             return false;
         },
-        parseClassID: function(classID) {
+        parseClassID: function (classID, prefix) {
+            prefix = prefix || "..";
             var parts = classID.split(".");
             return {
-                path: "../" + parts[0].split("_").join("/"),
+                path: prefix + "/" + parts[0].split("_").join("/"),
                 memberWidgetID: parts.length > 1 ? parts[1] : null
             };
         },

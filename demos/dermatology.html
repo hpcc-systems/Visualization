@@ -90,6 +90,18 @@
     <header>
         <div class="container">
             <h1><a>Dermatology</a></h1>
+            <span>
+                <prompt>Persist:  </prompt>
+                <button onclick="saveSerializationText();">Save</button>
+                <input type="file" id="persistFileInput" style="display:none" onchange="loadPersistFiles(this.files)">
+                <button onclick="loadSerializationText();">Load</button>
+            </span>
+            <span>
+                <prompt>Theme:  </prompt>
+                <button onclick="saveThemeText();">Save</button>
+                <input type="file" id="themeFileInput" style="display:none" onchange="loadThemeFiles(this.files)">
+                <button onclick="loadThemeText();">Load</button>
+            </span>
             <nav>
                 <ul>
                     <li>
@@ -127,6 +139,9 @@
                             <option value="Blue-Bordered">Blue-Bordered</option>
                             <option value="Red-Bordered">Red-Bordered</option>
                         </select>
+                    </li>
+                    <li>
+                        <a title="Save as databomb" onclick="doSave();">S</a>
                     </li>
                 </ul>
             </nav>
@@ -210,8 +225,9 @@
         var showProperties = null;
         var showPropertyTree = null;
         var debouncedResize = null;
+        var persistFileInput = document.getElementById("persistFileInput");
 
-        require(["d3", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "src/tree/CirclePacking", "test/Factory"], function (d3, Surface, Grid, Persist, PropertyEditor, Dendrogram, testFactory) {
+        require(["d3", "src/common/Utility", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "src/tree/CirclePacking", "test/Factory"], function (d3, Utility, Surface, Grid, Persist, PropertyEditor, Dendrogram, testFactory) {
             var sampleSelect = d3.select("#widgetSelect");
             var categoryOptions = sampleSelect.selectAll("li").data(d3.map(testFactory.categories).entries());
             categoryOptions.enter()
@@ -367,40 +383,43 @@
             testWidget = function (widgetPath, widgetTest, params) {
                 var func = widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory;
                 func(function (widget) {
-                    currWidget = widget;
                     if (params) {
                         for (var key in params) {
-                            if (currWidget["__meta_" + key] !== undefined) {
-                                if (currWidget["__meta_" + key].type === "array") {
-                                    currWidget[key](params[key].split(","));
+                            if (widget["__meta_" + key] !== undefined) {
+                                if (widget["__meta_" + key].type === "array") {
+                                    widget[key](params[key].split(","));
                                 } else {
-                                    currWidget[key](params[key]);
+                                    widget[key](params[key]);
                                 }
                             }
                         }
                     }
-                    if (monitorHandle) {
-                        monitorHandle.remove();
-                    }
-                    updateUrl(widget, widgetPath, widgetTest);
-                    monitorHandle = currWidget.monitor(function () {
-                        updateUrl(currWidget, widgetPath, widgetTest);
-                    });
-                    main
-                        .setContent(0, 0, currWidget, "", 2, 2)
-                    ;
-                    propEditor.widget(currWidget);
-                    frame
-                        .title(widgetPath)
-                        .render(function (mainWidget) {
-                            displayProperties(currWidget);
-                            displayPropertyTree(currWidget);
-                            displaySerialization(currWidget);
-                            displaySerializationText(currWidget);
-                            displayThemeText(currWidget);
-                        })
-                    ;
+                    showWidget(widget);
                 });
+            };
+            showWidget = function (widget) {
+                currWidget = widget;
+                if (monitorHandle) {
+                    monitorHandle.remove();
+                }
+                updateUrl(widget, widgetPath, widgetTest);
+                monitorHandle = currWidget.monitor(function () {
+                    updateUrl(currWidget, widgetPath, widgetTest);
+                });
+                main
+                    .setContent(0, 0, currWidget, "", 2, 2)
+                ;
+                propEditor.widget(currWidget);
+                frame
+                    .title(widgetPath)
+                    .render(function (mainWidget) {
+                        displayProperties(currWidget);
+                        displayPropertyTree(currWidget);
+                        displaySerialization(currWidget);
+                        displaySerializationText(currWidget);
+                        displayThemeText(currWidget);
+                    })
+                ;
             };
             testTheme = function (themeKey) {
                 window.__hpcc_theme = themeSelectObj[themeKey];
@@ -440,6 +459,71 @@
                         }
                     })
                 ;
+            };
+            saveSerializationText = function () {
+                var text = JSON.stringify(Persist.serializeToObject(currWidget, null, false), null, "  ");
+                Utility.downloadBlob("JSON", text, "persist");
+            };
+            loadSerializationText = function () {
+                if (persistFileInput) {
+                    persistFileInput.click();
+                }
+            };
+            loadPersistFiles = function (files) {
+                for (var i = 0, f; f = files[i]; i++) {
+                    var reader = new FileReader();
+                    reader.onload = (function (theFile) {
+                        return function (e) {
+                            console.log('e readAsText = ', e);
+                            console.log('e readAsText target = ', e.target);
+                            try {
+                                var json = JSON.parse(e.target.result);
+                                Persist.create(json, function (widget) {
+                                    showWidget(widget);
+                                });
+                            } catch (ex) {
+                                alert('ex when trying to parse json = ' + ex);
+                            }
+                        }
+                    })(f);
+                    reader.readAsText(f);
+                }
+            };
+            saveThemeText = function () {
+                var text = JSON.stringify(Persist.serializeThemeToObject(currWidget), null, "  ");
+                Utility.downloadBlob("JSON", text, "theme");
+            };
+            loadThemeText = function () {
+                if (themeFileInput) {
+                    themeFileInput.click();
+                }
+            };
+            loadThemeFiles = function (files) {
+                for (var i = 0, f; f = files[i]; i++) {
+                    var reader = new FileReader();
+                    reader.onload = (function (theFile) {
+                        return function (e) {
+                            console.log('e readAsText = ', e);
+                            console.log('e readAsText target = ', e.target);
+                            try {
+                                var json = JSON.parse(e.target.result);
+                                Persist.applyTheme(currWidget, json, function () {
+                                    currWidget.render();
+                                    displayProperties(currWidget);
+                                    displaySerialization(currWidget);
+                                    displaySerializationText(currWidget);
+                                    displayThemeText(currWidget);
+                                });
+                                Persist.create(json, function (widget) {
+                                    showWidget(widget);
+                                });
+                            } catch (ex) {
+                                alert('ex when trying to parse json = ' + ex);
+                            }
+                        }
+                    })(f);
+                    reader.readAsText(f);
+                }
             };
             showSerializationText = function (show) {
                 main
@@ -484,6 +568,12 @@
         function toggleMenu() {
             var menu = d3.select("#widgetSelect");
             menu.classed("hide", !menu.classed("hide"));
+        }
+        function doSave() {
+            if (currWidget && currWidget.generateTestPage) {
+                var d = currWidget.visualizations();
+                currWidget.generateTestPage();
+            }
         }
     </script>
 </body>

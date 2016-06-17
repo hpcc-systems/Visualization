@@ -20,6 +20,8 @@
         
         this._valueTitle = new Text();
         this._domainTitle = new Text();
+
+        this._legend = new Legend();
     }
     MegaChart.prototype = Object.create(Border.prototype);
     MegaChart.prototype.constructor = MegaChart;
@@ -37,7 +39,9 @@
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
     
     MegaChart.prototype.publish("legendPosition","right","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
-    
+    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
+    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
+
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showCSV",true,"boolean","Show/Hide CSV button", null, {tags:["Basic"]});
@@ -109,8 +113,11 @@
 
         this.setContent("center", this._chart);
         
-        this._legend = new Legend().fixedSize(true).targetWidget(this._chart);
-        this._legend.orientation(["top","bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical");
+        this._legend
+            .fixedSize(true)
+            .targetWidget(this._chart)
+            .orientation(["top", "bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical")
+        ;
         
         this._prevLegendPosition = this.legendPosition();
         
@@ -188,10 +195,9 @@
                 this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
             }
         }
-        
+
         this._legend.dataFamily(this._chart.getChartDataFamily());
-        
-        
+
         Border.prototype.update.apply(this, arguments);
     };
     

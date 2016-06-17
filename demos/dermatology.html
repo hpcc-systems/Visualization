@@ -128,6 +128,9 @@
                             <option value="Red-Bordered">Red-Bordered</option>
                         </select>
                     </li>
+                    <li>
+                        <a title="Save as databomb" onclick="doSave();">S</a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -484,6 +487,12 @@
         function toggleMenu() {
             var menu = d3.select("#widgetSelect");
             menu.classed("hide", !menu.classed("hide"));
+        }
+        function doSave() {
+            if (currWidget && currWidget.generateTestPage) {
+                var d = currWidget.visualizations();
+                currWidget.generateTestPage();
+            }
         }
     </script>
 </body>

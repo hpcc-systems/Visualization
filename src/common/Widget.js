@@ -87,20 +87,18 @@
 
     //  Events  ---
     Widget.prototype.on = function (eventID, func, stopPropagation) {
-        if (this[eventID] === undefined) {
-            throw "Method:  " + eventID + " does not exist.";
-        }
-        var origFunc = this[eventID];
-        this[eventID] = function () {
+        var context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            var retVal;
             if (stopPropagation) {
                 if (d3.event) {
                     d3.event.stopPropagation();
                 }
             } else {
-                origFunc.apply(this, arguments);
+                retVal = origFunc.apply(context, args);
             }
-            func.apply(this, arguments);
-        };
+            return func.apply(context, args) || retVal;
+        });
         return this;
     };
 

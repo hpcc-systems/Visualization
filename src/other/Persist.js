@@ -199,8 +199,8 @@
             return retVal;
         },
 
-        serialize: function (widget, properties, includeData) {
-            return JSON.stringify(this.serializeToObject(widget, properties, includeData));
+        serialize: function (widget, filter, includeData) {
+            return JSON.stringify(this.serializeToObject(widget, filter, includeData));
         },
 
         deserializeFromObject: function(widget, state, callback) {

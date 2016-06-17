@@ -38,5 +38,16 @@
         }
     };
 
+    Class.prototype.overrideMethod = function (methodID, newMethod) {
+        if (this[methodID] === undefined) {
+            throw "Method:  " + methodID + " does not exist.";
+        }
+        var origMethod = this[methodID];
+        this[methodID] = function () {
+            return newMethod(origMethod, arguments);
+        };
+        return this;
+    };
+
     return Class;
 }));

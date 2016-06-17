@@ -1,0 +1,38 @@
+.chart_Bullet {
+}
+.chart_Bullet .domain {
+    opacity: 0;
+}
+.chart_Bullet .bullet {
+    font: 10px sans-serif;
+}
+.chart_Bullet .bullet .marker {
+    stroke: #000;
+    stroke-width: 2px;
+}
+.chart_Bullet .bullet .tick line {
+    stroke: #666;
+    stroke-width: .5px;
+}
+.chart_Bullet .bullet .range.s0 {
+    fill: #eee;
+}
+.chart_Bullet .bullet .range.s1 {
+    fill: #ddd;
+}
+.chart_Bullet .bullet .range.s2 {
+    fill: #ccc;
+}
+.chart_Bullet .bullet .measure.s0 {
+    fill: lightsteelblue;
+}
+.chart_Bullet .bullet .measure.s1 {
+    fill: steelblue;
+}
+.chart_Bullet .bullet .title {
+    font-size: 14px;
+    font-weight: bold;
+}
+.chart_Bullet .bullet .subtitle {
+    fill: #999;
+}

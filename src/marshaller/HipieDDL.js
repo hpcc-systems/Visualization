@@ -765,8 +765,12 @@
 
         var context = this;
         require(widgetPaths, function (Widget) {
-            if (context.dashboard.marshaller._widgetMappings.has(context.id)) {
-                context.setWidget(context.dashboard.marshaller._widgetMappings.get(context.id));
+            var existingWidget = context.dashboard.marshaller._widgetMappings.get(context.id);
+            if (existingWidget) {
+                if (Widget.prototype._class !== existingWidget._class) {
+                    console.log("Unexpected persisted widget type (old persist string?)");
+                }
+                context.setWidget(existingWidget);
             } else {
                 context.setWidget(new Widget());
             }

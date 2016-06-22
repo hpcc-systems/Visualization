@@ -42,6 +42,17 @@
                     .append("div")
                         .attr("style", "width:100%; height:480px")
                 ;
+                var cellWidget = cell.widget();
+                if (cellWidget.title) {
+                    var origTitleMethod = cellWidget.title;
+                    cellWidget.title = function(_){
+                        var retVal = origTitleMethod.apply(this, arguments);
+                        if (arguments.length) {
+                            console.log(this.id() + " - title changed:  " + _);
+                        }
+                        return retVal;
+                    }
+                }
                 cell
                     .target(cellDiv.node())
                 ;

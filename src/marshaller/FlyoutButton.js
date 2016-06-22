@@ -66,7 +66,7 @@
     FlyoutButton.prototype.enter = function (domNode, element) {
         Button.prototype.enter.apply(this, arguments);
         var parentWidget = this;
-        while (parentWidget && ["marshaller_HTML", "marshaller_Graph"].indexOf(parentWidget.classID()) === -1) {
+        while (parentWidget && ["marshaller_HTML", "marshaller_Graph", "composite_MegaChart"].indexOf(parentWidget.classID()) === -1) {
             parentWidget = parentWidget.locateParentWidget();
         }
         if (parentWidget) {

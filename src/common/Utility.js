@@ -108,13 +108,17 @@
         }
     };
 
-    function SimpleSelection(widgetElement) {
+    function SimpleSelection(widgetElement, skipBringToTop) {
         this._widgetElement = widgetElement;
+        this._skipBringToTop = skipBringToTop;
     }
     SimpleSelection.prototype.enter = function (elements, idx) {
         var context = this;
         elements
             .on("click.SimpleSelection", function (d, idx) {
+                if (!context._skipBringToTop) {
+                    this.parentNode.appendChild(this);
+                }
                 var element = d3.select(this);
                 var wasSelected = element.classed("selected");
                 context._widgetElement.selectAll(".selected")

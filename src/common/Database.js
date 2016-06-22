@@ -589,14 +589,16 @@
                 case null:
                 case undefined:
                 case "":
-                    return values.length;
+                    values.aggregate = values.length;
+                    return values;
                 default:
                     var columns = context.legacyColumns();
                     var colIdx = columns.indexOf(aggrColumn);
                     var deltaIdx = columns.indexOf(aggrDeltaColumn);
-                    return d3[aggrType](values, function (value) {
+                    values.aggregate = d3[aggrType](values, function (value) {
                         return (+value[colIdx] - (deltaIdx >= 0 ? +value[deltaIdx] : 0)) / (deltaIdx >= 0 ? +value[deltaIdx] : 1);
                     });
+                    return values;
             }
         });
     };

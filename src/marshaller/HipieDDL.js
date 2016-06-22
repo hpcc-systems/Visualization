@@ -1013,11 +1013,12 @@
             for (var oKey in this.outputs) {
                 var output = this.outputs[oKey];
                 output.notify.forEach(function (item) {
-                    if (!output.filter || !output.filter.length) {
-                        updates.push(item);
-                    }
                     var viz = this.dashboard.getVisualization(item);
-                    viz.update(loading);
+                    var inputs = viz.getInputVisualizations();
+                    if (!inputs.length) {
+                        updates.push(item);
+                        viz.update(loading);
+                    }
                 }, this);
             }
         }

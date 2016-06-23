@@ -300,8 +300,10 @@
         var widget = this.toWidget(domNode);
         if (widget) {
             return widget;
+        } else if (domNode.parentNode) {
+            return this.locateParentWidget(domNode.parentNode);
         }
-        return this.locateParentWidget(domNode.parentNode);
+        return null;
     };
 
     Widget.prototype.locateSVGNode = function (domNode) {

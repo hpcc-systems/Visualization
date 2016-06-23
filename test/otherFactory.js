@@ -289,10 +289,13 @@
         CalendarHeatMap: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
+                    //DataFactory.Sample.StockMarket.data.length = 1500;
                     callback(new CalendarHeatMap()
                         .columns(DataFactory.Sample.StockMarket.columns)
                         .data(DataFactory.Sample.StockMarket.data)
                         .dateColumn("Date")
+                        .aggrType("mean")
+                        .aggrColumn("Close")
                     );
                 });
             }

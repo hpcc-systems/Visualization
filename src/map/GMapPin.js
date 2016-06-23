@@ -13,7 +13,7 @@
         this._pins = new Pins()
             .columns(["lat", "long", "ext"])
             .on("click", function (row, col, sel) {
-                context.click(row.ext.origRow, "", sel);
+                context.click(context.rowToObj(row.ext.origRow), "", sel);
             })
         ;
     }
@@ -59,8 +59,8 @@
         GMapLayered.prototype.exit.apply(this, arguments);
     };
 
-    GMapPin.prototype.click = function (row, col, sel) {
-        console.log("GMapPin-click:  ", row, col, sel);
+    GMapPin.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     };
 
     return GMapPin;

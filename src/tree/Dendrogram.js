@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGZoomWidget", "../common/PropertyExt", "../api/ITree", "css!./Dendrogram"], factory);
+        define(["d3", "../common/SVGZoomWidget", "../common/PropertyExt", "../api/ITree", "../common/Utility", "css!./Dendrogram"], factory);
     } else {
-        root.tree_Dendrogram = factory(root.d3, root.common_SVGZoomWidget, root.common_PropertyExt, root.api_ITree);
+        root.tree_Dendrogram = factory(root.d3, root.common_SVGZoomWidget, root.common_PropertyExt, root.api_ITree, root.common_Utility);
     }
-}(this, function (d3, SVGZoomWidget, PropertyExt, ITree) {
+}(this, function (d3, SVGZoomWidget, PropertyExt, ITree, Utility) {
     function Column(owner) {
         PropertyExt.call(this);
         this._owner = owner;
@@ -68,7 +68,8 @@
         function formatData(node) {
             return {
                 label: node.key,
-                children: node.values.filter(function (value) { return !(value instanceof Array); }).map(function (value) { return formatData(value); })
+                children: node.values.filter(function (value) { return !(value instanceof Array); }).map(function (value) { return formatData(value); }),
+                origRows: node.values
             };
         }
     };
@@ -76,6 +77,7 @@
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGZoomWidget.prototype.enter.apply(this, arguments);
         this._renderElement.attr("opacity", 0);
+        this._selection = new Utility.SimpleSelection(this._renderElement);
     };
 
     Dendrogram.prototype.update = function (domNode, element, secondPass) {
@@ -138,7 +140,16 @@
         nodes.enter().append("g")
             .attr("class", "node")
             .attr("transform", nodeTransform)
-            .on("click", function (d) { context.click(d); })
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                var tmp = d;
+                while (tmp.children) {
+                    tmp = tmp.children[0];
+                }
+                if (d.depth > 0) {
+                    context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                }
+            })
             .each(function (d, i) {
                 var element = d3.select(this);
                 element.append("circle");

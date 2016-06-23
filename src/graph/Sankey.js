@@ -1,11 +1,11 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "../common/Palette", "../common/PropertyExt", "d3-sankey", "css!./Sankey"], factory);
+        define(["d3", "../common/SVGWidget", "../common/Palette", "../common/PropertyExt", "../common/Utility", "d3-sankey", "css!./Sankey"], factory);
     } else {
-        root.graph_Sankey = factory(root.d3, root.common_SVGWidget, root.common_Palette, root.common_PropertyExt, root.d3.sankey);
+        root.graph_Sankey = factory(root.d3, root.common_SVGWidget, root.common_Palette, root.common_PropertyExt, root.common_Utility, root.d3.sankey);
     }
-}(this, function (d3, SVGWidget, Palette, PropertyExt, D3Sankey) {
+}(this, function (d3, SVGWidget, Palette, PropertyExt, Utility, D3Sankey) {
     D3Sankey = D3Sankey || d3.sankey || window.d3.sankey;
 
     function Column(owner) {
@@ -75,7 +75,7 @@
                         __id: id,
                         __category: mapping.column(),
                         name: row.key,
-                        origRow: row
+                        origRow: row.values
                     });
                     vertexIndex[id] = retVal.vertices.length - 1;
                 }
@@ -108,6 +108,7 @@
 
         this._d3Sankey = new D3Sankey();
         this._d3SankeyPath = this._d3Sankey.link();
+        this._selection = new Utility.SimpleSelection(element);
     };
 
     Sankey.prototype.update = function (domNode, element) {
@@ -149,14 +150,16 @@
         var node = element.selectAll(".node").data(sankeyData.vertices);
         node.enter().append("g")
             .attr("class", "node")
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d, idx) {
+                context.click(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
+            })
             .each(function (d) {
                 var gElement = d3.select(this);
                 gElement.append("rect");
                 gElement.append("text");
             })
-            .on("click.mouse", function (d, idx) {
-                context.click(d.origRow, "", true);
-            })
+            /*
             .call(d3.behavior.drag()
                 .origin(function (d) { return d; })
                 .on("dragstart", function () {
@@ -164,6 +167,7 @@
                 })
                 .on("drag", dragmove)
             )
+            */
         ;
         node
             .attr("transform", function (d) {
@@ -175,9 +179,6 @@
             .attr("width", this._d3Sankey.nodeWidth())
             .style("fill", function (d) {
                 return context._palette(d.name);
-            })
-            .style("stroke", function (d) {
-                return d3.rgb(context._palette(d.name)).darker(2);
             })
             .style("cursor", (this.xAxisMovement() || this.yAxisMovement()) ? null : "default")
         ;
@@ -194,6 +195,7 @@
         ;
         node.exit().remove();
 
+        /*
         function dragmove(d) {
             var gElement = d3.select(this);
             if (context.xAxisMovement()) {
@@ -218,14 +220,16 @@
                     .attr("text-anchor", "start")
             ;
         }
+        */
     };
 
     Sankey.prototype.exit = function (domNode, element) {
         SVGWidget.prototype.exit.apply(this, arguments);
     };
 
-    Sankey.prototype.click = function (row, col, sel) {
-        console.log(row + ", " + col + ", " + sel);
+    //  Events  ---
+    Sankey.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     };
 
     return Sankey;

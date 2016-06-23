@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../common/Palette", "css!./CalendarHeatMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/Palette", "../common/Utility", "css!./CalendarHeatMap"], factory);
     } else {
-        root.other_CalendarHeatMap = factory(root.d3, root.common_HTMLWidget, root.common_Palette);
+        root.other_CalendarHeatMap = factory(root.d3, root.common_HTMLWidget, root.common_Palette, root.common_Utility);
     }
-}(this, function (d3, HTMLWidget, Palette) {
+}(this, function (d3, HTMLWidget, Palette, Utility) {
     function CalendarHeatMap(target) {
         HTMLWidget.call(this);
     }
@@ -37,7 +37,8 @@
         }
         return this._view.entries().map(function (row) {
             row.dateKey = dateParser(row.key);
-            row.formattedValues = valueFormatter(row.values);
+            row.formattedValues = valueFormatter(row.values.aggregate);
+            row.origRows = valueFormatter(row.values);
             return row;
         });
     };
@@ -49,6 +50,7 @@
     CalendarHeatMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         d3.select(domNode.parentNode).style("overflow", "scroll");
+        this._selection = new Utility.SimpleSelection(element);
     };
 
     CalendarHeatMap.prototype.update = function (domNode, element) {
@@ -69,9 +71,16 @@
         svg.enter().append("svg")
             .each(function (d) {
                 var svg = d3.select(this);
-                svg.append("g")
-                   .append("text")
+                var g = svg.append("g");
+                g
+                    .append("text")
                     .style("text-anchor", "middle")
+                ;
+                g.append("g")
+                    .attr("class", "days")
+                ;
+                g.append("g")
+                    .attr("class", "months")
                 ;
             })
         ;
@@ -89,15 +98,22 @@
         svg.exit().remove();
 
         var dataExtent = d3.extent(data, function (d) {
-            return d.values;
+            return d.values.aggregate;
         });
         if (this.aggrDeltaColumn()) {
             var max = Math.max(Math.abs(dataExtent[0], dataExtent[1]));
             dataExtent = [-max, max];
         }
-        var dayRect = svg.select("g").selectAll(".day").data(function (d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
+        var dayRect = svg.select(".days").selectAll(".day").data(function (d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
         dayRect.enter().append("rect")
             .attr("class", "day")
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                var data = mappedData.get(d);
+                if (data && data.values && data.values && data.values.length) {
+                    context.click(context.rowToObj(data.values[0]), context.dateColumn(), context._selection.selected(this));
+                }
+            })
             .append("title")
         ;
         dayRect
@@ -111,7 +127,11 @@
         ;
         dayRect.filter(function (d) { return mappedData.has(d); })
             .style("fill", function (d) {
-                return context._palette(mappedData.get(d).values, dataExtent[0], dataExtent[1]);
+                var row = mappedData.get(d);
+                if (!row || !row.values || !row.values.aggregate) {
+                    return null;
+                }
+                return context._palette(row.values.aggregate, dataExtent[0], dataExtent[1]);
             })
           .select("title")
             .text(function (d) {
@@ -121,7 +141,7 @@
         ;
         dayRect.exit().remove();
 
-        var monthPath = svg.select("g").selectAll(".month").data(function (d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
+        var monthPath = svg.select(".months").selectAll(".month").data(function (d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
         monthPath.enter().append("path")
             .attr("class", "month")
         ;
@@ -144,6 +164,11 @@
 
     CalendarHeatMap.prototype.exit = function (domNode, element) {
         HTMLWidget.prototype.exit.apply(this, arguments);
+    };
+
+    //  Events  ---
+    CalendarHeatMap.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return CalendarHeatMap;

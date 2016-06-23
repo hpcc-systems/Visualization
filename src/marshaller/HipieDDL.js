@@ -290,7 +290,7 @@
         function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
-            if (!retVal) {
+            if (!retVal && origItem) {
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
                     .text(item[1] ? item[1] : "")
@@ -298,11 +298,7 @@
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
-            }
-            if (origItem) {
-                if (item[1]) {
-                    retVal.text(item[1]);
-                }
+
                 // Icon  ---
                 var icon = context.calcAnnotation(context.visualization.icon, origItem);
                 if (icon) {
@@ -312,6 +308,7 @@
                         }
                     }
                 }
+
                 // Annotations  ---
                 var annotations = [];
                 context.fields.forEach(function (field) {
@@ -327,13 +324,17 @@
         var edges = [];
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
+            getVertex(mappedItem, item);
+        });
+        data.forEach(function (item) {
+            var mappedItem = context.doMap(item);
             var vertex = getVertex(mappedItem, item);
             if (item[context.link.childfile] && item[context.link.childfile].Row) {
                 var childItems = item[context.link.childfile].Row;
                 childItems.forEach(function (childItem, i) {
                     var childMappedItem = context.linkMappings.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
-                    if (vertex.id() !== childVertex.id()) {
+                    if (childVertex && vertex.id() !== childVertex.id()) {
                         var edge = new graph.Edge()
                             .sourceVertex(vertex)
                             .targetVertex(childVertex)
@@ -1013,11 +1014,12 @@
             for (var oKey in this.outputs) {
                 var output = this.outputs[oKey];
                 output.notify.forEach(function (item) {
-                    if (!output.filter || !output.filter.length) {
-                        updates.push(item);
-                    }
                     var viz = this.dashboard.getVisualization(item);
-                    viz.update(loading);
+                    var inputs = viz.getInputVisualizations();
+                    if (!inputs.length) {
+                        updates.push(item);
+                        viz.update(loading);
+                    }
                 }, this);
             }
         }

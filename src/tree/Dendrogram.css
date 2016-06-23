@@ -7,6 +7,30 @@
     stroke-width: 1.0px;
 }
 
+.tree_Dendrogram .node.selected circle {
+    stroke: red;
+}
+
+.tree_Dendrogram .node.over circle {
+    stroke: orange;
+}
+
+.tree_Dendrogram .node.selected.over circle {
+    stroke: red;
+}
+
+.tree_Dendrogram .node.selected text {
+    fill: red;
+}
+
+.tree_Dendrogram .node.over text {
+    fill: orange;
+}
+
+.tree_Dendrogram .node.selected.over text {
+    fill: red;
+}
+
 .tree_Dendrogram .node text {
     font-size: 14px;
 }

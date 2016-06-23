@@ -17,11 +17,18 @@
     Select.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Select.prototype.publish("textColumn", null, "set", "Select value(s)", function () { return this.columns(); }, { optional: true });
     Select.prototype.publish("multiple", false, "boolean", "Multiple selection");
+    Select.prototype.publish("optional", true, "boolean", "Optional Select");
     Select.prototype.publish("selectSize", 5, "number", "Size of multiselect box", null, { disable: function (w) { return !w.multiple(); } });
 
     Select.prototype.selectData = function () {
         var view = this._db.rollupView([this.valueColumn(), this.textColumn()]);
-        return view.entries().map(function (row) {
+        this._valueRowMap = {};
+        var retVal = [];
+        if (this.optional()) {
+            retVal.push({ value: "", text: "" });
+        }
+        return retVal.concat(view.entries().map(function (row) {
+            this._valueRowMap[row.key] = row.values.length && row.values[0].values.length ? row.values[0].values[0] : [];
             return {
                 value: row.key,
                 text: row.values.length ? row.values[0].key : ""
@@ -30,7 +37,7 @@
             if (l.text < r.text) return -1;
             if (l.text > r.text) return 1;
             return 0;
-        });
+        }));
     };
 
     Select.prototype.enter = function (domNode, element) {
@@ -52,7 +59,11 @@
                         options.push(optionNode.value);
                     }
                 }
-                context.click(options);
+                if (options.length && context._valueRowMap[options[0]]) {
+                    context.click(context._valueRowMap[options[0]], "value", true);  //TODO:  Multiselect not support in HIPIE
+                } else {
+                    context.click([], "value", false);
+                }
             })
         ;
     };
@@ -84,8 +95,8 @@
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
 
-    Select.prototype.click = function (v) {
-        console.log(v);
+    Select.prototype.click = function (row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return Select;

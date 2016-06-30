@@ -33,6 +33,7 @@ require.config({
         "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
 
         "simpleheat": "../bower_components/simpleheat/index",
+        "autoComplete": "../bower_components/javascript-auto-complete/auto-complete",
 
         "src": "../src"
     },
@@ -129,7 +130,9 @@ case "cdn.rawgit.com":
             "amcharts.plugins.responsive": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
             "amcharts.plugins.dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
             "amchartsImg": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/images/",
+
             "simpleheat": "//" + window.location.hostname + "/mourner/simpleheat/v0.3.0/simpleheat",
+            "autoComplete": "//" + window.location.hostname + "/Pixabay/JavaScript-autoComplete/1.0.4/auto-complete",
 
             "src": "../src"
         }

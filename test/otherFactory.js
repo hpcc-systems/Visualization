@@ -70,6 +70,30 @@
                 });
             }
         },
+        Image: {
+            layered:function (callback) {
+                require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/other/Image", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, Image, HeatMap) {
+                    var retVal = new Layered()
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(
+                                new Image().source(DataFactory.Image.floorplan)
+                            )
+                        )
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).opacity(0.66).widget(
+                                new HeatMap()
+                                    .columns(DataFactory.HeatMap.floorplan.columns)
+                                    .data(DataFactory.HeatMap.floorplan.data)
+                            )
+                        )
+                    ;
+                    callback(retVal);
+                });
+            },
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/Image"], function (DataFactory, Image) {
+                    callback(new Image().source(DataFactory.Image.floorplan));
+                });
+            },
+        },
         WordCloud: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
@@ -87,23 +111,17 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
-                        .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
-                        .data([
-                            ["Width 2 undefined", , 83, , 72],
-                            ["English II", 17, 43, 83, 93],
-                            ["English III", 6, 43, 64, 93],
-                            ["Width Blank", 7, "", 52, 83],
-                            ["Geography II", 16, 73, 52, 83],
-                            ["Width 2 undefined", , 83, , 72],
-                            ["Science", 66, 60, 85, 6],
-                            ["Science II", 46, 20, 53, 7],
-                            ["With 2 NULL", null, 20, null, 7],
-                            ["Math", 98, 30, 23, 13],
-                            ["Math II", 76, 30, 34, 6],
-                            ["Math III", 80, 30, 27, 8]
-                        ])
+                        .columns(["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"])
+                        .data([["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]])
                     ;
                     callback(table);
+                    setTimeout(function () {
+                        table
+                            .columns(DataFactory.Table.simple.columns)
+                            .data(DataFactory.Table.simple.data)
+                            .render()
+                        ;
+                    }, 1000);
                 });
             },
             widget: function (callback) {
@@ -148,49 +166,6 @@
                     callback(table);
                 });
             }
-        },
-        NestedTable: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
-                    callback(new NestedTable()
-                        .columns(["Subject", "Year 1", { label: "Year2", columns: ["Subject", "Year 1", "Year 2", "Year 3"] }, "Year 3"])
-                        .data([
-                                ["Geography", 75, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 65],
-                                ["English", 45, [], 52],
-                                ["Math", 98, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Science", 66, 60, 72]], 90],
-                                ["Science", 66, [["Geography", 75, 68, 65],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 72]
-                        ])
-                    );
-                });
-            },
-            regularColumns: function (callback) {
-                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
-                    callback(new NestedTable()
-                        .columns(["Subject", "Year 1", "Children", "Year 3"])
-                        .data([
-                                ["Geography", 75, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 65],
-                                ["English", 45, [], 52],
-                                ["Math", 98, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Science", 66, 60, 72]], 90],
-                                ["Science", 66, [["Geography", 75, 68, 65],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 72]
-                        ])
-                    );
-                });
-            }
-           
         },
         Toolbar: {
             simple: function (callback) {
@@ -264,22 +239,35 @@
                 });
             }
         },
+
+        AutoCompleteText: {
+          	 simple: function (callback) {
+   	        	 require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
+   			        	 callback(new AutoCompleteText()
+   			        	 .columns(DataFactory.ND.ampolar.columns)
+   			        	 .data(DataFactory.ND.ampolar.data)
+   			        );
+   	        	 });
+          	 },
+           },
+
+        
         Select: {
-             simple: function (callback) {
-                 require(["src/other/Select"], function (Select) {
-                     callback(new Select()
-                         .columns(["Col Label", "Col Value"])
-                         .data([
-                                ["GJS0", 0],
-                                ["GJS1", 1],
-                                ["GJS2", 2],
-                                ["GJS3", 3],
-                                ["GJS4", 4],
-                                ["GJS5", 5],
-                                ["GJS6", 6],
-                                ["GJS7", 7],
-                         ])
-                         .label("Label:  ")
+        	 simple: function (callback) {
+	        	 require(["src/other/Select"], function (Select) {
+		        	 callback(new Select()
+			        	 .columns(["Col Label", "Col Value"])
+			        	 .data([
+			        	        ["GJS0", 0],
+			        	        ["GJS1", 1],
+			        	        ["GJS2", 2],
+			        	        ["GJS3", 3],
+			        	        ["GJS4", 4],
+			        	        ["GJS5", 5],
+			        	        ["GJS6", 6],
+			        	        ["GJS7", 7],
+			        	 ])
+			                     .label("Label:  ")
                          .valueColumn("Col Value")
                          .textColumn("Col Label")
                     );
@@ -289,13 +277,17 @@
         CalendarHeatMap: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
+                    //DataFactory.Sample.StockMarket.data.length = 1500;
                     callback(new CalendarHeatMap()
                         .columns(DataFactory.Sample.StockMarket.columns)
                         .data(DataFactory.Sample.StockMarket.data)
                         .dateColumn("Date")
+                        .aggrType("mean")
+                        .aggrColumn("Close")
                     );
                 });
             }
         }
+    
     };
 }));

@@ -29,6 +29,8 @@
     Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
     Summary.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });
 
+
+
     var playInterval = Summary.prototype.playInterval;
     Summary.prototype.playInterval = function (_) {
         var retVal = playInterval.apply(this, arguments);
@@ -48,6 +50,7 @@
         }
         return retVal;
     };
+
 
     Summary.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -92,14 +95,28 @@
                 "min-height": this.minHeight_exists() ? this.minHeight() + "px" : null
             })
         ;
-        this._headerDiv
-            .style("color", this.colorStroke())
-            .text(row[1])
-        ;
-        this._textDiv
-            .text(row[0])
-        ;
+        
+        if(typeof row[1] !== undefined && typeof this.fields()[1] !==undefined){
+            this._headerDiv 
+            .style("color", this.colorStroke()) 
+            .text(this.fields()[1].transform(row[1]));
+        }else{
+            this._headerDiv 
+            .style("color", this.colorStroke()) 
+            .text("");
+        }
+
+        
+        this._textDiv 
+            .text(row[0]) 
+        ; 
+
+    
+
+
         var context = this;
+
+        
         var moreDivs = this._mainDiv.selectAll(".more").data(this.moreText() ? [this.moreText()] : []);
         moreDivs.enter()
             .append("div")

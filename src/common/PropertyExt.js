@@ -134,7 +134,8 @@
         Class.call(this);
 
         this._id = "_pe" + (++propExtID);
-        this._watchArr = [];
+        this._watchArrIdx = 0;
+        this._watchArr = {};
 
         this.publishedProperties(true).forEach(function (meta) {
             switch (meta.type) {
@@ -320,45 +321,58 @@
         };
     };
 
-    PropertyExt.prototype._monitorProperty = function (propID, func) {
-        var context = this;
-        var idx = this._watchArr.push({ propertyID: propID, callback: func }) - 1;
+    PropertyExt.prototype.monitorProperty = function (propID, func) {
+        var meta = this.publishedProperty(propID);
+        switch (meta.type) {
+            case "proxy":
+                if (this[meta.proxy]) {
+                    return this[meta.proxy].monitorProperty(meta.method, function (key, newVal, oldVal) {
+                        func(meta.id, newVal, oldVal);
+                    });
+                } else {
+                    return {
+                        remove: function () {
+                        }
+                    };
+                }
+                break;
+            default:
+                var idx = this._watchArrIdx++;
+                this._watchArr[idx] = { propertyID: propID, callback: func };
+                var context = this;
+                return {
+                    remove: function () {
+                        delete context._watchArr[idx];
+                    }
+                };
+        }
+        return null;
+    };
+
+    PropertyExt.prototype.monitor = function (func) {
         return {
+            _watches: this.publishedProperties().map(function (meta) {
+                    return this.monitorProperty(meta.id, func);
+                }, this),
             remove: function () {
-                delete context._watchArr[idx];
+                this._watches.forEach(function (watch) {
+                    watch.remove();
+                });
             }
         };
     };
 
-    PropertyExt.prototype.monitor = function (func) {
-        var context = this;
-        if (this._watchArr.length === 0) {
-            //  Need to monitor all proxies  as well ---
-            this.publishedProperties().forEach(function (meta) {
-                switch (meta.type) {
-                    case "proxy":
-                        if (this[meta.proxy]) {
-                            this[meta.proxy]._monitorProperty(meta.id, function (key, newVal, oldVal) {
-                                context.broadcast(key, newVal, oldVal);
-                            });
-                        }
-                        break;
-                }
-            }, this);
-        }
-        return this._monitorProperty(undefined, func);
-    };
-
     PropertyExt.prototype.broadcast = function (key, newVal, oldVal, source) {
         source = source || this;
-        if (this._watchArr.length && newVal !== oldVal) {
-            this._watchArr.forEach(function (monitor) {
+        if (newVal !== oldVal) {
+            for (var idx in this._watchArr) {
+                var monitor = this._watchArr[idx];
                 if ((monitor.propertyID === undefined || monitor.propertyID === key) && monitor.callback) {
-                    setTimeout(function () {
+                    setTimeout(function (monitor) {
                         monitor.callback(key, newVal, oldVal, source);
-                    }, 0);
+                    }, 0, monitor);
                 }
-            });
+            }
         }
     };
 

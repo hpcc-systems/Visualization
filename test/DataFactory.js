@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea", "src/common/WidgetArray", "src/chart/MultiChartSurface", "src/layout/Surface", "src/chart/Column", "src/other/Table"], factory);
+        define([], factory);
     } else {
-        root.test_DataFactory = factory(root.form_Input, root.form_Button, root.form_CheckBox, root.form_ColorInput, root.form_Radio, root.form_Range, root.form_Select, root.form_Slider, root.form_TextArea, root.common_WidgetArray, root.chart_MultiChartSurface, root.layout_Surface, root.chart_Column, root.other_Table);
+        root.test_DataFactory = factory();
     }
-}(this, function (Input, Button, CheckBox, ColorInput, Radio, Range, Select, TextArea, Slider, WidgetArray, MultiChartSurface, Surface, Column, Table) {
+}(this, function () {
     var DataFactory = {
         OneD: {
             subjects: {
@@ -577,81 +577,6 @@
                 ]
             }
         },
-        Form: {
-            simple: {
-                inputs: function () {
-                    return [
-                        new Input()
-                            .name("textbox-test")
-                            .label("Alphanumeric")
-                            .type("text")
-                            .validate("^[A-Za-z0-9]+$")
-                            .value("SomeString123"),
-                        new Input()
-                            .name("email-test")
-                            .label("Email")
-                            .type("email")
-                            .validate("^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$")
-                            .value("test@test.com"),
-                        new Input()
-                            .name("search-test")
-                            .label("Search")
-                            .type("search")
-                            .validate("^[A-Za-z0-9]+$")
-                            .value("Some Search String"),
-                        new ColorInput()
-                            .name("html-color-test")
-                            .label("HTML Color")
-                            .value("#f00"),
-                        new Input()
-                            .name("date-test")
-                            .label("Date")
-                            .type("date")
-                            .value("2015-01-01"),
-                        new Input()
-                            .name("time-test")
-                            .label("Time")
-                            .type("time")
-                            .value("01:00 AM"),
-                        new Range()
-                            .name("range-test")
-                            .label("Range Test")
-                            .min(0)
-                            .max(500)
-                            .validate("\\d+")
-                            .value(123),
-                        new Input()
-                            .name("number-test")
-                            .label("Number Test")
-                            .type("number")
-                            .validate("\\d+")
-                            .value(123),
-                        new Select()
-                            .name("select-test")
-                            .label("Select Test")
-                            .selectOptions(["A", "B", "C"])
-                            .value("B"),
-                        new WidgetArray()
-                            .content([
-                                new Input()
-                                    .name("textbox-test")
-                                    .label("Only Alpha")
-                                    .type("text")
-                                    .validate("^[A-Za-z]+$")
-                                    .value("SomeString"),
-                                new CheckBox()
-                                    .name("checkbox-test")
-                                    .label("Checkbox Test")
-                                    .value(true)
-                            ]),
-                        new TextArea()
-                            .name("textarea-test")
-                            .label("Textarea Test")
-                            .value("Textarea Text")
-                    ];
-                }
-            }
-        },
         Slider: {
             simple: {
                 columns: ["Percent"],
@@ -776,52 +701,6 @@
                     ["Label2", 32.690680, -117.178540, "", 4525, 423545, 24354, 354, 2552345, 2455, 245435],
                     ["Label3", 39.709455, -104.969859, "", 4525, 423545, 24354, 524, 2552345, 2455, 245435],
                     ["Label4", 41.244123, -95.961610, "", 4525, 423545, 24354, 564, 2552345, 2455, 245435],
-                    ["Label5", 32.688980, -117.192040, "", 4525, 423545, 24354, 454, 2552345, 2455, 245435],
-                    ["Label6", 45.786490, -108.526600, "", 4525, 423545, 24354, 534, 2552345, 2455, 245435],
-                    ["Label7", 45.796180, -108.535652, "", 4525, 423545, 24354, 254, 2552345, 2455, 245435],
-                    ["Label8", 45.774320, -108.494370, "", 4525, 423545, 24354, 51, 2552345, 2455, 245435],
-                    ["Label9", 37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 504, 2552345, 2455, 245435],
-                    ["Label0", 32.690680, -117.178540, "", 4525, 423545, 24304, 54, 2552345, 2455, 245435],
-                    ["Label0", 39.709455, -104.969859, "", 4525, 423545, 249354, 54, 2552345, 2455, 245435],
-                    ["Label9", 41.244123, -95.961610, "", 4525, 423545, 247354, 54, 2552345, 2455, 245435],
-                    ["Label8", 32.688980, -117.192040, "", 4525, 423545, 243654, 54, 2552345, 2455, 245435],
-                    ["Label7", 45.786490, -108.526600, "", 4525, 423545, 245354, 54, 2552345, 2455, 245435],
-                    ["Label6", 45.796180, -108.535652, "", 4525, 423545, 243354, 54, 2552345, 2455, 245435],
-                    ["Label5", 45.774320, -108.494370, "", 4525, 423545, 243454, 54, 2552345, 2455, 245435],
-                    ["Label4", 37.665074, -122.384375, "green-dot.png", 4525, 423545, 243254, 54, 2552345, 2455, 245435],
-                    ["Label3", 32.690680, -117.178540, "", 4525, 4243545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label2", 39.709455, -104.969859, "", 4525, 4233545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label1", 41.244123, -95.961610, "", 4525, 4235145, 24354, 54, 2552345, 2455, 245435],
-                    ["Label1", 32.688980, -117.192040, "", 4525, 4523545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label2", 45.786490, -108.526600, "", 4525, 4263545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label3", 45.796180, -108.535652, "", 4525, 4235745, 24354, 54, 2552345, 2455, 245435],
-                    ["Label4", 45.774320, -108.494370, "", 4525, 4235845, 24354, 54, 2552345, 2455, 245435],
-                    ["Label5", 37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label6", 32.690680, -117.178540, "", 4525, 423545, 24354, 54, 2552345, 20455, 245435],
-                    ["Label7", 39.709455, -104.969859, "", 4525, 423545, 24354, 54, 2552345, 24955, 245435],
-                    ["Label8", 41.244123, -95.961610, "", 4525, 423545, 24354, 54, 2552345, 24855, 245435],
-                    ["Label9", 32.688980, -117.192040, "", 4525, 423545, 24354, 54, 2552345, 27455, 245435],
-                    ["Label0", 45.786490, -108.526600, "", 4525, 423545, 24354, 54, 2552345, 24655, 245435],
-                    ["Label0", 45.796180, -108.535652, "", 4525, 423545, 24354, 54, 2552345, 24555, 245435],
-                    ["Label9", 45.774320, -108.494370, "", 4525, 423545, 24354, 54, 2552345, 24455, 245435],
-                    ["Label8", 37.665074, -122.384375, "green-dot.png", 4525, 423545, 24354, 54, 23552345, 2455, 245435],
-                    ["Label7", 32.690680, -117.178540, "", 4525, 423545, 24354, 54, 2552345, 2455, 2405435],
-                    ["Label6", 39.709455, -104.969859, "", 4525, 423545, 24354, 54, 2552345, 2455, 2495435],
-                    ["Label5", 41.244123, -95.961610, "", 4525, 423545, 24354, 54, 2552345, 2455, 2454835],
-                    ["Label4", 32.688980, -117.192040, "", 4525, 423545, 24354, 54, 2552345, 2455, 2475435],
-                    ["Label3", 45.786490, -108.526600, "", 4525, 423545, 24354, 54, 2552345, 2455, 2456435],
-                    ["Label2", 45.796180, -108.535652, "", 4525, 423545, 24354, 54, 2552345, 2455, 2455435],
-                    ["Label1", 45.774320, -108.494370, "", 4525, 423545, 24354, 54, 2552345, 2455, 2445435],
-                    ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
-                ],
-                columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            },
-            widget: {
-                data: [
-                    ["Label0", 37.665074, -122.384375, "green-dot.png", 4525, 4243545, 24354, 54, 2552345, 2455, 245435],
-                    ["Label1", 39.709455, -104.969859, new Table().fixedSize(true).fixedHeader(false).columns(["Subject", "Year 1", "Year 2", "Year 3"]).data([["Math", 76, 63, 87], ["History", 65, 87, 67], ["Science", 88, 91, 78]]), 4525, 423545, 24354, 524, 2552345, 2455, 245435],
-                    ["Label2", 32.690680, -117.178540, new CheckBox().name("checkbox-test").label("Checkbox Test").value(true), 4525, 423545, 24354, 354, 2552345, 2455, 245435],
-                    ["Label4", 41.244123, -95.961610, new Column().columns(["Subject", "Year 1", "Year 2", "Year 3"]).data([["Math", 76, 65, 87], ["History", 65, 87, 67], ["Science", 88, 91, 78]]), 4525, 423545, 24354, 564, 2552345, 2455, 245435],
                     ["Label5", 32.688980, -117.192040, "", 4525, 423545, 24354, 454, 2552345, 2455, 245435],
                     ["Label6", 45.786490, -108.526600, "", 4525, 423545, 24354, 534, 2552345, 2455, 245435],
                     ["Label7", 45.796180, -108.535652, "", 4525, 423545, 24354, 254, 2552345, 2455, 245435],

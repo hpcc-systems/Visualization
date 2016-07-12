@@ -934,8 +934,10 @@
     Visualization.prototype.setWidget = function (widget) {
         this.widget = widget;
         this.events.setWidget(widget);
-        var columns = this.source.getColumns();
-        this.widget.columns(columns);
+        if (this.widget.columns) {
+            var columns = this.source.getColumns();
+            this.widget.columns(columns);
+        }
         for (var key in this.properties) {
             switch (widget.classID()) {
                 case "chart_MultiChart":

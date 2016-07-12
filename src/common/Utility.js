@@ -317,13 +317,13 @@
                 }
             };
         },
-        downloadBlob: function (format, blob, id) {
-            id = id || "data";
+        downloadBlob: function (format, blob, id, ext) {
             var currentdate = new Date(); 
             var timeFormat =  d3.time.format("%Y-%m-%dT%H_%M_%S");
             var now = timeFormat(currentdate);
+            id = id || "data" + "_" + now + "." + format.toLowerCase();
 
-            var filename = id + "_" + now + "." + format.toLowerCase();
+            var filename = id + (ext ? "." + ext : "");
             
             var mimeType = "";
             switch (format) {

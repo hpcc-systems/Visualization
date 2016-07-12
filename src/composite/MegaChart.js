@@ -88,6 +88,11 @@
         return this;
     };
 
+    MegaChart.prototype.downloadCSV = function () {
+        Utility.downloadBlob("CSV", this._chart.export("CSV"));
+        return this;
+    };
+
     MegaChart.prototype.enter = function (domNode, element) {
         Border.prototype.enter.apply(this, arguments);
         var context = this;
@@ -99,7 +104,7 @@
             .value("CSV")
         ;
         this._csvButton.click = function (a) {
-            Utility.downloadBlob("CSV", context._chart.export("CSV"));
+            context.downloadCSV();
         };
 
         this._chartTypeSelect = new Select()

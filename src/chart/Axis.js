@@ -13,10 +13,7 @@
         this.d3Axis = d3.svg.axis();
         this.d3Guides = d3.svg.axis();
 
-        this
-            .type("linear")
-            .timePattern(this.timePattern())
-        ;
+        this.updateScale();
     }
     Axis.prototype = Object.create(SVGWidget.prototype);
     Axis.prototype.constructor = Axis;
@@ -24,7 +21,7 @@
 
     Axis.prototype.publish("title", "", "string", "Title");
     Axis.prototype.publish("orientation", "bottom", "set", "Orientation", ["left", "top", "right", "bottom"]);
-    Axis.prototype.publish("type", "ordinal", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"]);
+    Axis.prototype.publish("type", "linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"]);
     Axis.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, { disable: function (w) { return w.type() !== "time"; } });
     Axis.prototype.publish("powExponent", 2, "number", "Exponent for Pow on Value Axis", null, { disable: function (w) { return w.type() !== "pow"; } });
     Axis.prototype.publish("logBase", 10, "number", "Base for log on Value Axis", null, { disable: function (w) { return w.type() !== "log"; } });

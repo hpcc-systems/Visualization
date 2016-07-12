@@ -25,8 +25,8 @@
             .innerRadius(this.innerRadius())
         ;
         this
-            .tooltipTick(false)
-            .tooltipOffset(0)
+            .tooltipTick_default(false)
+            .tooltipOffset_default(0)
         ;
     }
     Pie.prototype = Object.create(SVGWidget.prototype);

@@ -8,10 +8,12 @@
 }(this, function (d3, Layer, Palette, Utility) {
     function Pins() {
         Layer.call(this);
+        Utility.SimpleSelectionMixin.call(this);
     }
     Pins.prototype = Object.create(Layer.prototype);
     Pins.prototype.constructor = Pins;
     Pins.prototype._class += " map_Pins";
+    Pins.prototype.mixin(Utility.SimpleSelectionMixin);
 
     Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
     Pins.prototype.publish("fillColor", "#006ccc", "html-color", "Pin Color", null, { optional: true });
@@ -20,7 +22,7 @@
         Layer.prototype.layerEnter.apply(this, arguments);
 
         this._pinsTransform = svgElement;
-        this._selection = new Utility.SimpleSelection(this._pinsTransform);
+        this._selection.widgetElement(this._pinsTransform);
         this.pinsPaths = d3.select(null);
     };
 

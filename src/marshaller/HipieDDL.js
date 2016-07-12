@@ -936,6 +936,17 @@
         }, this);
     };
 
+    Visualization.prototype.serializeState = function () {
+        return {
+            eventValues: this._eventValues
+        };
+    };
+
+    Visualization.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this._eventValues = state.eventValues;
+    };
+
     //  Output  ---
     function Output(dataSource, output) {
         this.dataSource = dataSource;
@@ -1022,6 +1033,9 @@
     };
 
     DataSource.prototype.fetchData = function (request, refresh, updates) {
+        if (request && request.refresh !== undefined) { throw "refresh in this request????"; }
+        request = request || this.request || {};
+        refresh = refresh || false;
         if (!updates) {
             updates = [];
             for (var oKey in this.outputs) {
@@ -1038,7 +1052,7 @@
         }
 
         var context = this;
-        this.request.refresh = refresh ? true : false;
+        this.request.refresh = refresh;
         this.filter.forEach(function (item) {
             this.request[item + "_changed"] = request[item + "_changed"] || false;
             var value = request[item] === undefined ? null : request[item];
@@ -1056,15 +1070,19 @@
         }
         var now = Date.now();
         this.dashboard.marshaller.commsEvent(this, "request", this.request);
-        this.comms.call(this.request).then(function (response) {
-            var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
-            setTimeout(function() {
-                context.processResponse(response, request, updates);
-                context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
-                ++context._loadedCount;
-            }, delay > 0 ? delay : 0);
-        }).catch(function (e) {
-            context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+        return new Promise(function (resolve, reject) {
+            context.comms.call(context.request).then(function (response) {
+                var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
+                setTimeout(function () {
+                    context.processResponse(response, request, updates);
+                    context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                    ++context._loadedCount;
+                    resolve(response);
+                }, delay > 0 ? delay : 0);
+            }).catch(function (e) {
+                context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+                reject(e);
+            });
         });
     };
 
@@ -1102,6 +1120,17 @@
                 console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
+    };
+
+    DataSource.prototype.serializeState = function () {
+        return {
+            request: this.request
+        };
+    };
+
+    DataSource.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.request = state.request || {};
     };
 
     //  Dashboard  ---
@@ -1165,6 +1194,42 @@
         return notLoaded.length === 0;
     };
 
+    Dashboard.prototype.fetchData = function () {
+        var promises = [];
+        for (var key in this.datasources) {
+            promises.push(this.datasources[key].fetchData());
+        }
+        return Promise.all(promises);
+    };
+
+    Dashboard.prototype.serializeState = function () {
+        var retVal = {
+            datasources: {},
+            visualizations: {}
+        };
+        for (var key in this.datasources) {
+            retVal.datasources[key] = this.datasources[key].serializeState();
+        }
+        for (var vizKey in this._visualizations) {
+            retVal.visualizations[vizKey] = this._visualizations[vizKey].serializeState();
+        }
+        return retVal;
+    };
+
+    Dashboard.prototype.deserializeState = function (state) {
+        if (!state) return;
+        for (var key in this.datasources) {
+            if (state.datasources[key]) {
+                this.datasources[key].deserializeState(state.datasources[key]);
+            }
+        }
+        for (var vizKey in this._visualizations) {
+            if (state.visualizations[vizKey]) {
+                this._visualizations[vizKey].deserializeState(state.visualizations[vizKey]);
+            }
+        }
+    };
+
     //  Marshaller  ---
     function Marshaller() {
         Class.call(this);
@@ -1193,7 +1258,6 @@
     Marshaller.prototype.getVisualization = function (id) {
         return this._visualizations[id];
     };
-
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
@@ -1371,6 +1435,29 @@
             }
         });
         return retVal;
+    };
+
+    Marshaller.prototype.fetchData = function () {
+        var promises = this.dashboardArray.map(function (dashboard) {
+            return dashboard.fetchData();
+        });
+        return Promise.all(promises);
+    };
+
+    Marshaller.prototype.serializeState = function () {
+        var retVal = {};
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            retVal[dashboard.id] = dashboard.serializeState();
+        });
+        return retVal;
+    };
+
+    Marshaller.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            dashboard.deserializeState(state[dashboard.id]);
+        });
+        return this;
     };
 
     return {

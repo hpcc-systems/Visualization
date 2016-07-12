@@ -10,6 +10,7 @@
         SVGWidget.call(this);
         I2DChart.call(this);
         ITooltip.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this.labelWidgets = {};
 
@@ -34,6 +35,7 @@
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
     Pie.prototype.implements(ITooltip.prototype);
+    Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
@@ -72,7 +74,7 @@
 
     Pie.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-        this._selection = new Utility.SimpleSelection(element);
+        this._selection.widgetElement(element);
         var context = this;
         this
             .tooltipHTML(function (d) {
@@ -196,7 +198,6 @@
 
     Pie.prototype.exit = function (domNode, element) {
         SVGWidget.prototype.exit.apply(this, arguments);
-        delete this._selectionBag;
     };
 
     return Pie;

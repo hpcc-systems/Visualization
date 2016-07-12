@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Choropleth", "./us-states", "../common/Utility"], factory);
+        define(["d3", "topojson", "./Choropleth", "./us-states"], factory);
     } else {
-        root.map_ChoroplethStates = factory(root.d3, root.topojson, root.map_Choropleth, root.map_usStates, root.common_Utility);
+        root.map_ChoroplethStates = factory(root.d3, root.topojson, root.map_Choropleth, root.map_usStates);
     }
-}(this, function (d3, topojson, Choropleth, usStates, Utility) {
+}(this, function (d3, topojson, Choropleth, usStates) {
     var features = topojson.feature(usStates.topology, usStates.topology.objects.states).features;
     var rFeatures = {};
     for (var key in features) {
@@ -28,7 +28,7 @@
     ChoroplethStates.prototype.layerEnter = function (base, svgElement, domElement) {
         Choropleth.prototype.layerEnter.apply(this, arguments);
 
-        this._selection = new Utility.SimpleSelection(this._choroplethData);
+        this._selection.widgetElement(this._choroplethData);
         this.choroPaths = d3.select(null);
         var context = this;
         this

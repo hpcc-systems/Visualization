@@ -20,6 +20,7 @@
     function Dendrogram(target) {
         SVGZoomWidget.call(this);
         ITree.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this._drawStartPos = "origin";
 
@@ -42,6 +43,7 @@
     Dendrogram.prototype.constructor = Dendrogram;
     Dendrogram.prototype._class += " tree_Dendrogram";
     Dendrogram.prototype.implements(ITree.prototype);
+    Dendrogram.prototype.mixin(Utility.SimpleSelectionMixin);
     Dendrogram.prototype.Column = Column;
 
     Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(),{tags:["Basic","Shared"]});
@@ -77,7 +79,7 @@
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGZoomWidget.prototype.enter.apply(this, arguments);
         this._renderElement.attr("opacity", 0);
-        this._selection = new Utility.SimpleSelection(this._renderElement);
+        this._selection.widgetElement(this._renderElement);
     };
 
     Dendrogram.prototype.update = function (domNode, element, secondPass) {

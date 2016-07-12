@@ -8,6 +8,8 @@
 }(this, function (d3, SVGWidget, Axis, Utility) {
     function XYAxis() {
         SVGWidget.call(this);
+        Utility.SimpleSelectionMixin.call(this);
+
         this._drawStartPos = "origin";
 
         this.domainAxis = new Axis()
@@ -37,6 +39,7 @@
     XYAxis.prototype = Object.create(SVGWidget.prototype);
     XYAxis.prototype.constructor = XYAxis;
     XYAxis.prototype._class += " chart_XYAxis";
+    XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);
 
     XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
     XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
@@ -125,6 +128,8 @@
         this.svgData = this.svg.append("g")
             .attr("clip-path", "url(#" + this.id() + "_clippath)")
         ;
+        this._selection.widgetElement(this.svgData);
+
         this.svgFocus = element.append("g");
 
         this.domainAxis
@@ -140,7 +145,6 @@
         this.svgBrush = element.append("g")
             .attr("class", "brush")
         ;
-        this._selection = new Utility.SimpleSelection(this.svgData);
     };
 
     XYAxis.prototype.resizeBrushHandle = function (d, width, height) {
@@ -486,7 +490,6 @@
 
     XYAxis.prototype.exit = function (domNode, element) {
         SVGWidget.prototype.exit.apply(this, arguments);
-        delete this._selection;
     };
 
     XYAxis.prototype.selection = function (selected) {

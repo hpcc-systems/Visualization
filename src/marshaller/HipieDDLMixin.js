@@ -23,14 +23,6 @@
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
 
-    HipieDDLMixin.prototype.selection = function (_) {
-        if (!arguments.length) return this._marshaller ? this._marshaller.request : null;
-        if (this._marshaller) {
-            this._marshaller.fetchData(_, true);
-        }
-        return this;
-    };
-
     HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
         if (databomb instanceof Object) {
         } else if (databomb) {
@@ -124,7 +116,6 @@
                 context.vizEvent.apply(context, arguments);
             })
         ;
-        this.firstRender = true;
 
         //  Parse DDL  ---
         if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
@@ -134,6 +125,7 @@
         }
 
         function postParse() {
+            var hasData = false;
             context._gatherDashboards(context._marshaller, context.databomb());
             //  Remove existing widgets not used and prime popups ---
             context._ddlVisualizations.forEach(function(viz) {
@@ -150,6 +142,9 @@
                     }
                     viz.newWidgetSurface.title(viz.title);
                     viz.widget.size({ width: 0, height: 0 });
+                }
+                if (!hasData) {
+                    hasData = viz.widget.data().length;
                 }
             });
             context._ddlPopupVisualizations.forEach(function (viz) {
@@ -172,22 +167,21 @@
             });
             context.populateContent();
             BaseClass.render.call(context, function (widget) {
-                for (var dashKey in context._ddlDashboards) {
-                    for (var dsKey in context._ddlDashboards[dashKey].dashboard.datasources) {
-                        context._ddlDashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
-                    }
+                if (context._initialState) {
+                    context._marshaller.deserializeState(context._initialState.marshaller);
+                    delete context._initialState;
                 }
-
-                //  Delay callback until first data has loaded  ---
-                var timeoutCounter = 0;
-                var intervalHandler = setInterval(function () {
-                    if (context._marshaller.commsDataLoaded() || ++timeoutCounter > 120) {
-                        clearInterval(intervalHandler);
+                if (!hasData) {
+                    context._marshaller.fetchData().then(function (response) {
                         if (callback) {
                             callback(widget);
                         }
+                    });
+                } else {
+                    if (callback) {
+                        callback(widget);
                     }
-                }, 500);
+                }
             });
         }
     };
@@ -253,6 +247,21 @@
     };
 
     HipieDDLMixin.prototype.commsEvent = function (ddlSource, eventID, request, response) {
+    };
+
+    HipieDDLMixin.prototype.serializeState = function () {
+        return {
+            marshaller: this._marshaller ? this._marshaller.serializeState() : {}
+        };
+    };
+
+    HipieDDLMixin.prototype.deserializeState = function (state) {
+        if (this._marshaller) {
+            this._marshaller.deserializeState(state.marshaller);
+        } else {
+            this._initialState = state;
+        }
+        return this;
     };
 
     return HipieDDLMixin;

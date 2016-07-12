@@ -619,7 +619,7 @@
                 };
                 this.prevCellWidth = cellWidth;
                 this.prevCellHeight = cellHeight;
-            } else {
+            } else if (this._target) {
                 this._target.style.backgroundImage = "";
             }
         }

@@ -20,11 +20,13 @@
     function Treemap(target) {
         HTMLWidget.call(this);
         ITree.call(this);
+        Utility.SimpleSelectionMixin.call(this);
     }
     Treemap.prototype = Object.create(HTMLWidget.prototype);
     Treemap.prototype.constructor = Treemap;
     Treemap.prototype._class += " tree_Treemap";
     Treemap.prototype.implements(ITree.prototype);
+    Treemap.prototype.mixin(Utility.SimpleSelectionMixin);
     Treemap.prototype.Column = Column;
 
     Treemap.prototype.publish("paletteID", "default", "set", "Palette ID", Treemap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
@@ -81,7 +83,7 @@
         ;
 
         this._elementDIV = element.append("div");
-        this._selection = new Utility.SimpleSelection(this._elementDIV);
+        this._selection.widgetElement(this._elementDIV);
     };
 
     Treemap.prototype.update = function (domNode, element) {

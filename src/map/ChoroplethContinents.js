@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Choropleth", "./countries", "../common/Utility"], factory);
+        define(["d3", "topojson", "./Choropleth", "./countries"], factory);
     } else {
-        root.map_ChoroplethContinents = factory(root.d3, root.topojson, root.map_Choropleth, root.map_countries, root.common_Utility);
+        root.map_ChoroplethContinents = factory(root.d3, root.topojson, root.map_Choropleth, root.map_countries);
     }
-}(this, function (d3, topojson, Choropleth, Countries, Utility) {
+}(this, function (d3, topojson, Choropleth, Countries) {
     function ChoroplethContinents() {
         Choropleth.call(this);
 

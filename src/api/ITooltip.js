@@ -109,7 +109,12 @@
         if (opts.value instanceof Date) {
             opts.value = opts.value || "";
         } else {
-            opts.value = this._valueFormatter(opts.value) || "";
+            if(typeof opts.value !== undefined){
+                opts.value = this.fields()[1].transform(opts.value);
+            }
+            else{
+                opts.value = "";
+            }
         }
         switch (this.tooltipStyle()) {
             case "none":

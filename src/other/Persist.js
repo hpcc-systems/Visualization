@@ -7,47 +7,24 @@
     }
 }(this, function (Utility) {
     function discover(widget) {
-        var retVal = [];
-        widget.publishedProperties().forEach(function (_meta) {
-            var item = widget;
-            var meta = _meta;
-            if (meta.type) {
-                while (meta.type === "proxy") {
-                    item = item[meta.proxy];
-                    meta = item.publishedProperty(meta.method);
-                }
-                if (meta.id !== widget.publishedProperty(_meta.id).id) {
-                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                    meta.id = widget.publishedProperty(_meta.id).id;
-                }
-                retVal.push(meta);
-            }
-        }, this);
-        return retVal;
+        return widget.publishedProperties(false, true);
     }
 
     function widgetWalker(widget, visitor) {
         if (!widget)
             return;
         visitor(widget);
-        var publishedProps = discover(widget);
-        for (var i = 0; i < publishedProps.length; ++i) {
-            var publishItem = publishedProps[i];
+        discover(widget).forEach(function (publishItem) {
             switch (publishItem.type) {
                 case "widget":
                     widgetWalker(widget[publishItem.id](), visitor);
                     break;
                 case "widgetArray":
                 case "propertyArray":
-                    var widgetArray = widget[publishItem.id]();
-                    if (widgetArray) {
-                        widgetArray.forEach(function (widget) {
-                            widgetWalker(widget, visitor);
-                        });
-                    }
+                    widgetArrayWalker(widget[publishItem.id](), visitor);
                     break;
             }
-        }
+        });
     }
 
     function widgetArrayWalker(widgets, visitor) {
@@ -59,13 +36,7 @@
     }
 
     function propertyWalker(widget, filter, visitor) {
-        var publishedProps = discover(widget);
-        for (var i = 0; i < publishedProps.length; ++i) {
-            var publishItem = publishedProps[i];
-            if(typeof (filter) !== "function" || !filter(widget, publishItem)){
-                visitor(widget, publishItem);
-            }
-        }
+            widget.propertyWalker(filter, visitor);
     }
     
     function widgetPropertyWalker(widget, filter, visitor) {

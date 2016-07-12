@@ -19,6 +19,7 @@
     Select.prototype.implements(IInput.prototype);
 
     Select.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
+    Select.prototype.publish("maxWidth", 120, "number", "Width", null, { optional: true });
 
     Select.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
@@ -44,7 +45,10 @@
         HTMLWidget.prototype.update.apply(this, arguments);
 
         this.insertSelectOptions(this.selectOptions());
-        this._inputElement[0].property("value", this.value());
+        this._inputElement[0]
+            .property("value", this.value())
+            .style("max-width", this.maxWidth_exists() ? this.maxWidth() + "px" : null)
+        ;
     };
 
 

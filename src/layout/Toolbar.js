@@ -43,15 +43,10 @@
 
         var title = element.selectAll("div.toolbar-title")
                 .data(this.title() ? [this.title()] : []);
-        title.enter().append("div").classed("toolbar-title",true).each(function(){
-            var div = d3.select(this);
-            var span = div.append("span").text("QQQ");
-
-            var box = this.getBoundingClientRect();
-            var spanBox = span.node().getBoundingClientRect();
-            var offset = (box.height/2) - (spanBox.height/2) - (spanBox.top - box.top);
-            span.style("padding", offset+"px");
-        });
+        title.enter().append("div")
+            .classed("toolbar-title", true)
+            .append("span")
+        ;
         title.selectAll("div.toolbar-title > span")
             .style("font-size", this.fontSize_exists() ? this.fontSize() + "px" : null)
             .style("color", this.fontColor_exists() ? this.fontColor() : null)
@@ -89,7 +84,7 @@
                         minX = childBBox.left;
                 })
             ;
-            context.element().select(".toolbar-title span")
+            context.element().select(".toolbar-title")
                 .style("width", (minX - toolbarBBox.left - 4) + "px")
             ;
             if (callback) {

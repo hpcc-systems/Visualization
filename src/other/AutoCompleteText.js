@@ -3,10 +3,10 @@
     if (typeof define === "function" && define.amd) {
         define(["../common/HTMLWidget", "auto-complete", "css!./AutoCompleteText", "css!auto-complete"], factory);
     } else {
-        root.other_AutoCompleteText = factory(root.common_HTMLWidget, root.autoComplete);
+        root.other_AutoCompleteText = factory(root.common_HTMLWidget, root.AutoComplete);
     }
 }(this, function (HTMLWidget) {
-    function AutoCompleteText(target) {
+    function AutoCompleteText() {
         HTMLWidget.call(this);
         this._tag = 'div';
     }
@@ -29,7 +29,7 @@
     		.attr("for", this.id() + "_input")
     	;
 
-        var context = this;
+       // var context = this;
         // any value in placing in a form? 
         //this._form = this._span.append("form");
         //this._input = this._form.append("input")
@@ -53,10 +53,10 @@
         	.attr("size", this.autoCompleteTextSize())
         	.attr("type", this.inputType())
         ;
-var autoCompleted = this;
+//var autoCompleted = this;
 
         this._autoComplete =
-        new autoComplete({
+        new AutoComplete({
             //selector: 'input[name="'+ context.id()+'_input_name' + '"]',
         	selector: '#' + context.id()+'_input',
             minChars: context.minCharsText(),

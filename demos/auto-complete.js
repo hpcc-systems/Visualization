@@ -5,9 +5,9 @@
     License: http://www.opensource.org/licenses/mit-license.php
 */
 
-var autoComplete = (function(){
+var AutoComplete = (function(){
     // "use strict";
-    function autoComplete(options){
+    function AutoComplete(options){
         if (!document.querySelector) return;
 
         // helpers
@@ -209,14 +209,14 @@ var autoComplete = (function(){
             }
         };
     }
-    return autoComplete;
+    return AutoComplete;
 })();
 
 (function(){
     if (typeof define === 'function' && define.amd)
-        define('autoComplete', function () { return autoComplete; });
+        define('AutoComplete', function () { return AutoComplete; });
     else if (typeof module !== 'undefined' && module.exports)
-        module.exports = autoComplete;
+        module.exports = AutoComplete;
     else
-        window.autoComplete = autoComplete;
+        window.AutoComplete = AutoComplete;
 })();

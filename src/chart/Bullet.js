@@ -10,6 +10,7 @@
 
     function Bullet(target) {
         HTMLWidget.call(this);
+        Utility.SimpleSelectionMixin.call(this, true);
     }
     Bullet.prototype = Object.create(HTMLWidget.prototype);
     Bullet.prototype.constructor = Bullet;
@@ -49,7 +50,7 @@
     Bullet.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         d3.select(domNode.parentNode).style("overflow", "auto");
-        this._selection = new Utility.SimpleSelection(element, true);
+        this._selection.widgetElement(element);
     };
 
     Bullet.prototype.update = function (domNode, element) {

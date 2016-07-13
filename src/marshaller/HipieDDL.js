@@ -6,7 +6,8 @@
         root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Class, Database, Utility, Comms, Widget, require) {
-    var loading = "...loading...";
+    var LOADING = "...loading...";
+    var _CHANGED = "_changed";
 
     function exists(prop, scope) {
         var propParts = prop.split(".");
@@ -857,7 +858,7 @@
                 updatedViz.clear();
             });
         }
-        this.update(loading);
+        this.update(LOADING);
     };
 
     Visualization.prototype.on = function (eventID, func) {
@@ -906,7 +907,7 @@
                                     console.log("Duplicate Filter, with mismatched value:  " + key + "=" + inViz._eventValues[key]);
                                 }
                                 datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                datasourceRequests[dataSource.id].request[key + "_changed"] = inViz === context;
+                                datasourceRequests[dataSource.id].request[key + _CHANGED] = inViz === context;
                             }
                         }
                     });
@@ -1045,7 +1046,7 @@
                     var inputs = viz.getInputVisualizations();
                     if (!inputs.length) {
                         updates.push(item);
-                        viz.update(loading);
+                        viz.update(LOADING);
                     }
                 }, this);
             }
@@ -1054,7 +1055,7 @@
         var context = this;
         this.request.refresh = refresh;
         this.filter.forEach(function (item) {
-            this.request[item + "_changed"] = request[item + "_changed"] || false;
+            this.request[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
@@ -1098,7 +1099,7 @@
                 from = this.outputs[key].id.toLowerCase();
             }
             if (exists(from, response)) {
-                if (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(response[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1106,7 +1107,7 @@
                 }
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                if (!exists(from + "_changed", lowerResponse) || (exists(from + "_changed", lowerResponse) && response[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(lowerResponse[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)

@@ -154,7 +154,7 @@ const amd_modules = bundles.map(function (bundle, idx) {
     var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
     switch (bundle) {
         case "common":
-            include = ["d3", "es6-promise"].concat(include);
+            include = ["d3", "d3-bullet", "d3-sankey", "d3-cloud", "es6-promise"].concat(include);
             break;
     }
     amd_bundles["src/" + name] = include;

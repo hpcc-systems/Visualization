@@ -72,7 +72,7 @@
         if (this.data().length) {
 
         }
-        var data = this.data();
+        var data = this.formattedData();
         if (this._playIntervalIdx >= data.length) {
             this._playIntervalIdx = 0;
         }

@@ -408,7 +408,7 @@
     };
 
     Source.prototype.getDatasource = function () {
-        return this.visualization.dashboard.datasources[this._id];
+        return this.visualization.dashboard.getDatasource(this._id);
     };
 
     Source.prototype.getOutput = function () {
@@ -456,33 +456,54 @@
     };
 
     //  Viz Events ---
+    function EventUpdate(event, update, defMappings) {
+        this.event = event;
+        this.dashboard = event.visualization.dashboard;
+        this._visualization = update.visualization;
+        this._instance = update.instance;
+        this._datasource = update.datasource;
+        this._merge = update.merge;
+        this._mappings = update.mappings || defMappings;
+    }
+
+    EventUpdate.prototype.getDatasource = function () {
+        return this.dashboard.getDatasource(this._datasource);
+    };
+
+    EventUpdate.prototype.getVisualization = function () {
+        return this.dashboard.getVisualization(this._visualization);
+    };
+
+    EventUpdate.prototype.mapData = function (row) {
+        var retVal = {};
+        if (row) {
+            var vizSource = this.event.visualization.source;
+            for (var key in this._mappings) {
+                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+                retVal[this._mappings[key]] = row[origKey];
+            }
+        }
+        return retVal;
+    };
+
     function Event(visualization, eventID, event) {
         this.visualization = visualization;
         this.eventID = eventID;
+        this.mappings = "***legacy mappings***";
+        this._updates = [];
         if (event) {
-            this._updates = event.updates;
-            this.mappings = event.mappings;
+            this._updates = event.updates.map(function (updateInfo) {
+                return new EventUpdate(this, updateInfo, event.mappings);
+            }, this);
         }
     }
 
     Event.prototype.exists = function () {
-        return this._updates !== undefined;
+        return this._updates.length;
     };
 
     Event.prototype.getUpdates = function () {
-        var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var datasource = this.visualization.dashboard.datasources[item.datasource];
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                retVal.push({
-                    eventID: this.eventID,
-                    datasource: datasource,
-                    visualization: visualization
-                });
-            }, this);
-        }
-        return retVal;
+        return this._updates;
     };
 
     Event.prototype.getUpdatesDatasources = function () {
@@ -501,17 +522,84 @@
     Event.prototype.getUpdatesVisualizations = function () {
         var dedup = {};
         var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                if (!dedup[visualization.id]) {
-                    dedup[visualization.id] = true;
-                    retVal.push(visualization);
-                }
-            }, this);
+        this._updates.forEach(function (item, idx) {
+            var visualization = item.getVisualization();
+            if (!dedup[visualization.id]) {
+                dedup[visualization.id] = true;
+                retVal.push(visualization);
+            }
+        }, this);
+        return retVal;
+    };
+
+    Event.prototype.mapData = function (row) {
+        var vizSource = this.visualization.source;
+        var retVal = {};
+        for (var key in this._mappings) {
+            var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+            retVal[this._mappings[key]] = row[origKey];
         }
         return retVal;
     };
+
+    Event.prototype.fetchData = function () {
+        var optimizeFetchData = {};
+        var context = this;
+        this.getUpdates().forEach(function (updateObj) {
+            var updateDatasource = updateObj.getDatasource();
+            var updateVisualization = updateObj.getVisualization();
+            var request = {};
+            updateVisualization.getInputVisualizations().forEach(function (inViz, idx) {
+                var changed = inViz === context.visualization;
+                inViz.events.getUpdates().forEach(function (inVizUpdateObj) {
+                    if (inVizUpdateObj._datasource === updateObj._datasource) {
+                        if (inViz._widgetState && inViz._widgetState.selected) {
+                            var inVizRequest = inVizUpdateObj.mapData(inViz._widgetState.row);
+                            for (var key in inVizRequest) {
+                                if (request[key] && request[key] !== inVizRequest[key]) {
+                                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
+                                    if (changed) {
+                                        request[key] = inVizRequest[key];
+                                        request[key + _CHANGED] = changed;
+                                    }
+                                } else {
+                                    request[key] = inVizRequest[key];
+                                    request[key + _CHANGED] = changed;
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            if (updateVisualization.type !== "GRAPH") {
+                updateVisualization.clear();
+            }
+            var optimizeID = updateDatasource.id + "(" + JSON.stringify(request) + ")";
+            if (!optimizeFetchData[optimizeID]) {
+                optimizeFetchData[optimizeID] = {
+                    updateDatasource: updateDatasource,
+                    request: request,
+                    updates: [],
+                    appendUpdate: function(updateID) {
+                        if (this.updates.indexOf(updateID) < 0) {
+                            this.updates.push(updateID);
+                        }
+                    }
+                };
+            } else {
+                console.log("Optimized fetch:  " + optimizeID);
+            }
+            optimizeFetchData[optimizeID].appendUpdate(updateVisualization.id);
+        });
+
+        var promises = [];
+        for (var key in optimizeFetchData) {
+            var item = optimizeFetchData[key];
+            promises.push(item.updateDatasource.fetchData(item.request, item.updates));
+        }
+        return Promise.all(promises);
+    };
+
 
     function Events(visualization, events) {
         this.visualization = visualization;
@@ -835,8 +923,10 @@
     Visualization.prototype.setWidget = function (widget) {
         this.widget = widget;
         this.events.setWidget(widget);
-        var columns = this.source.getColumns();
-        this.widget.columns(columns);
+        if (this.widget.columns) {
+            var columns = this.source.getColumns();
+            this.widget.columns(columns);
+        }
         for (var key in this.properties) {
             switch (widget.classID()) {
                 case "chart_MultiChart":
@@ -934,65 +1024,18 @@
         });
         return this;
     };
-    
+
     Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
+        this._widgetState = {
+            row: row,
+            col: col,
+            selected: selected === undefined ? true : selected
+        };
         var context = this;
         setTimeout(function () {
-            selected = selected === undefined ? true : selected;
-            if (event.exists()) {
-                var request = {};
-                if (selected) {
-                    for (var key in event.mappings) {
-                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                        request[event.mappings[key]] = row[origKey];
-                    }
-                }
-
-                //  New request calculation:
-                context._eventValues = request;
-                var datasourceRequests = {};
-                var updatedVizs = event.getUpdatesVisualizations();
-                updatedVizs.forEach(function (updatedViz) {
-                    var dataSource = updatedViz.source.getDatasource();
-                    if (!datasourceRequests[dataSource.id]) {
-                        datasourceRequests[dataSource.id] = {
-                            datasource: dataSource,
-                            request: {
-                            },
-                            updates: []
-                        };
-                    }
-                    datasourceRequests[dataSource.id].updates.push(updatedViz.id);
-                    updatedViz.getInputVisualizations().forEach(function (inViz, idx) {
-                        if (inViz._eventValues) {
-                            for (var key in inViz._eventValues) {
-                                var changed = inViz === context;
-                                if (datasourceRequests[dataSource.id].request[key] && datasourceRequests[dataSource.id].request[key] !== inViz._eventValues[key]) {
-                                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
-                                    if (changed) {
-                                        datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                        datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                    }
-                                } else {
-                                    datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                    datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                }
-                            }
-                        }
-                    });
-                    if (updatedViz.type !== "GRAPH") {
-                        updatedViz.clear();    
-                    } 
-                    if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
-                        dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
-                    }
-                });
-                for (var drKey in datasourceRequests) {
-                    if (!datasourceRequests[drKey].datasource.WUID && !datasourceRequests[drKey].datasource.databomb) {  // TODO If we have filters for each output this would not be needed  ---
-                        datasourceRequests[drKey].datasource.fetchData(datasourceRequests[drKey].request, false, datasourceRequests[drKey].updates);
-                    }
-                }
-            }
+            event.fetchData().then(function () {
+                context.dashboard.marshaller.vizEvent(context.widget, "post_" + eventID, row, col, selected);
+            });
         }, 0);
     };
 
@@ -1056,7 +1099,7 @@
         this.id = dataSource.id;
         this.filter = dataSource.filter || [];
         this.WUID = dataSource.WUID;
-        this.URL = dataSource.URL;
+        this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
         this._loadedCount = 0;
@@ -1075,7 +1118,7 @@
 
         if (this.WUID) {
             this.comms = new Comms.HIPIEWorkunit()
-                .url(dashboard.marshaller.espUrl._url)
+                .url(this.URL)
                 .proxyMappings(proxyMappings)
                 .hipieResults(hipieResults)
             ;
@@ -1102,10 +1145,8 @@
         }
     };
 
-    DataSource.prototype.fetchData = function (request, refresh, updates) {
-        if (request && request.refresh !== undefined) { throw "refresh in this request????"; }
-        request = request || this.request || {};
-        refresh = refresh || false;
+    DataSource.prototype.fetchData = function (request, updates, all) {
+        request = request || { refresh: true };
         if (!updates) {
             updates = [];
             for (var oKey in this.outputs) {
@@ -1113,7 +1154,7 @@
                 output.notify.forEach(function (item) {
                     var viz = this.dashboard.getVisualization(item);
                     var inputs = viz.getInputVisualizations();
-                    if (!inputs.length) {
+                    if (all || !inputs.length) {
                         updates.push(item);
                         viz.update(LOADING);
                     }
@@ -1122,7 +1163,6 @@
         }
 
         var context = this;
-        this.request.refresh = refresh;
         this.filter.forEach(function (item) {
             this.request[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
@@ -1130,6 +1170,7 @@
                 this.request[item] = value;
             }
         }, this);
+        this.request.refresh = request.refresh;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
@@ -1235,6 +1276,10 @@
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
+    };
+
+    Dashboard.prototype.getDatasource = function (id) {
+        return this.datasources[id];
     };
 
     Dashboard.prototype.getVisualization = function (id) {
@@ -1444,8 +1489,8 @@
     Marshaller.prototype.on = function (eventID, func) {
         var context = this;
         this.overrideMethod(eventID, function (origFunc, args) {
-            origFunc.apply(context, args);
-            func.apply(this, arguments);
+            var retVal = origFunc.apply(context, args);
+            return func.apply(context, args) || retVal;
         });
         return this;
     };

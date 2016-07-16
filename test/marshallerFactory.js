@@ -43,14 +43,14 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("https://216.19.105.2:18002/WsEcl/submit/query/roxie/leeddx_issue_1191_childdstable.Ins029_Service_1/json")
+                        .ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/jprichard_visualizegenerichealthcaregraph18.ins55194_service_1/json")
                     );
                 });
             },
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160616-145742&ResultName=coremultiwidgetfilter_Comp_Ins49326_DDL&SuppressXmlSchema=true")
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160726-143554&ResultName=BIZOfficersDemo_Comp_Ins001_DDL")
                     );
                 });
             },

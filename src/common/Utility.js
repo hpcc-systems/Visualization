@@ -167,9 +167,11 @@
     SimpleSelection.prototype.selection = function (_) {
         if (!arguments.length) {
             var retVal = [];
-            this._widgetElement.selectAll(".selected")
-                .each(function (d) { retVal.push(JSON.stringify(d)); })
-            ;
+            if (this._widgetElement) {
+                this._widgetElement.selectAll(".selected")
+                    .each(function (d) { retVal.push(JSON.stringify(d)); })
+                ;
+            }
             return retVal;
         }
         if (this._widgetElement) {
@@ -194,14 +196,20 @@
 
     SimpleSelectionMixin.prototype.serializeState = function () {
         return {
-            selection: this._selection.selection()
+            selection: this._selection.selection(),
+            data: this.data()
         };
     };
 
     SimpleSelectionMixin.prototype.deserializeState = function (state) {
-        return this._selection.selection(state.selection);
+        if (state) {
+            this._selection.selection(state.selection);
+            if (state.data) {
+                this.data(state.data);
+            }
+        }
+        return this;
     };
-
 
     var perf = window.performance;
     var now = perf && (perf.now || perf.mozNow || perf.msNow || perf.oNow || perf.webkitNow);
@@ -388,6 +396,24 @@
         },
         getTime: function () {
             return (now && now.call(perf)) || (new Date().getTime());
+        },
+        mixin: function (dest, sources) {
+            dest = dest || {};
+            for (var i = 1, l = arguments.length; i < l; i++) {
+                _mixin(dest, arguments[i]);
+            }
+            return dest;
+
+            function _mixin(dest, source) {
+                var s, empty = {};
+                for (var key in source) {
+                    s = source[key];
+                    if (!(key in dest) || (dest[key] !== s && (!(key in empty) || empty[key] !== s))) {
+                        dest[key] = s;
+                    }
+                }
+                return dest;
+            }
         }
     };
 }));

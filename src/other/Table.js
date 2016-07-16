@@ -858,15 +858,24 @@
         return {
             selection: this._selectionBag.get().map(function (d) {
                 return d._id;
-            })
+            }),
+            data: this.data()
         };
     };
 
     Table.prototype.deserializeState = function (state) {
-        var context = this;
-        return this._selectionBag.set(state.selection.map(function(d) {
-            return context._createSelectionObject(d);
-        }));
+        if (state) {
+            if (state.selection) {
+                var context = this;
+                this._selectionBag.set(state.selection.map(function (d) {
+                    return context._createSelectionObject(d);
+                }));
+            }
+            if (state.data) {
+                this.data(state.data);
+            }
+        }
+        return this;
     };
 
     Table.prototype.click = function (row, column, selected) {

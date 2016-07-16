@@ -36,7 +36,7 @@
             choro: function (callback) {
                 require(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {
                     var mc = new MegaChart()
-                        .chartType("CHORO_USTATES")
+                        .chartType("CHORO_USSTATES")
                         .legendPosition("bottom")
                         .title("US States Choropleth")
                         .columns(DataFactory.States.simple.columns)

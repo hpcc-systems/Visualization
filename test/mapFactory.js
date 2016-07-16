@@ -183,6 +183,22 @@
                     );
                 });
             },
+            pins: function (callback) {
+                require(["test/DataFactory", "src/map/ChoroplethStates", "src/map/Pins"], function (DataFactory, ChoroplethStates, Pins) {
+                    var pins = new Pins()
+                        .columns(DataFactory.GMap.simple.columns)
+                        .data(DataFactory.GMap.simple.data)
+                    ;
+                    var choro = new ChoroplethStates()
+                        .columns(["State", "Weight"])
+                        .data([["AL", 4779736], ["FL", 710231]])
+                        .layers([pins])
+                    ;
+                    pins.render();
+                    callback(choro);
+                    setTimeout(function () { pins.render(); }, 2000)
+                });
+            },
             heat: function (callback) {
                 require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, HeatMap) {
                     mapFactory.ChoroplethStates.simple(function (map) {

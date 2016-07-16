@@ -31,6 +31,7 @@
         this._ddlDashboards = [];
         this._ddlVisualizations = [];
         this._ddlPopupVisualizations = [];
+        this._ddlLayerVisualizations = [];
         var context = this;
         var curr = null;
         marshaller.accept({
@@ -39,6 +40,7 @@
                     curr = {
                         dashboard: item,
                         visualizations: [],
+                        layerVisualizations: [],
                         popupVisualizations: []
                     };
                     context._ddlDashboards.push(curr);
@@ -55,6 +57,9 @@
                         if (item.properties.flyout) {
                             curr.popupVisualizations.push(item);
                             context._ddlPopupVisualizations.push(item);
+                        } else if (item.parentVisualization) {
+                            curr.layerVisualizations.push(item);
+                            context._ddlLayerVisualizations.push(item);
                         } else {
                             curr.visualizations.push(item);
                             context._ddlVisualizations.push(item);

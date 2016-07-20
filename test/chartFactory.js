@@ -210,8 +210,8 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Summary"], function (DataFactory, Summary) {
                     callback(new Summary()
-                        .columns(DataFactory.OneD.subjects.columns)
-                        .data(DataFactory.OneD.subjects.data)
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
                     );
                 });
             }

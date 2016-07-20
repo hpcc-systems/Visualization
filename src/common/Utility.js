@@ -109,12 +109,29 @@
     };
 
     function SimpleSelection(widgetElement, skipBringToTop) {
-        this._widgetElement = widgetElement;
-        this._skipBringToTop = skipBringToTop;
+        this.widgetElement(widgetElement);
+        this.skipBringToTop(skipBringToTop);
     }
-    SimpleSelection.prototype.enter = function (elements, idx) {
+    SimpleSelection.prototype.widgetElement = function (_) {
+        if (!arguments.length) return this._widgetElement;
+        this._widgetElement = _;
+        return this;
+    };
+    SimpleSelection.prototype.skipBringToTop = function (_) {
+        if (!arguments.length) return this._skipBringToTop;
+        this._skipBringToTop = _;
+        return this;
+    };
+    SimpleSelection.prototype.enter = function (elements) {
         var context = this;
         elements
+            .each(function (d) {
+                var selected = context._initialSelection ? context._initialSelection.indexOf(JSON.stringify(d)) >= 0 : false;
+                d3.select(this)
+                    .classed("selected", selected)
+                    .classed("deselected", !selected)
+                ;
+            })
             .on("click.SimpleSelection", function (d, idx) {
                 if (!context._skipBringToTop) {
                     this.parentNode.appendChild(this);
@@ -122,10 +139,14 @@
                 var element = d3.select(this);
                 var wasSelected = element.classed("selected");
                 context._widgetElement.selectAll(".selected")
-                    .classed("selected", null)
+                    .classed("selected", false)
+                    .classed("deselected", true)
                 ;
                 if (!wasSelected) {
-                    element.classed("selected", true);
+                    element
+                        .classed("selected", true)
+                        .classed("deselected", false)
+                    ;
                 }
             })
             .on("mouseover.SimpleSelection", function (d, idx) {
@@ -143,6 +164,44 @@
     SimpleSelection.prototype.selected = function (domNode) {
         return d3.select(domNode).classed("selected");
     };
+    SimpleSelection.prototype.selection = function (_) {
+        if (!arguments.length) {
+            var retVal = [];
+            this._widgetElement.selectAll(".selected")
+                .each(function (d) { retVal.push(JSON.stringify(d)); })
+            ;
+            return retVal;
+        }
+        if (this._widgetElement) {
+            this._widgetElement.selectAll(".selected,.deselected")
+                .each(function (d) {
+                    var selected = _.indexOf(JSON.stringify(d)) >= 0;
+                    d3.select(this)
+                        .classed("selected", selected)
+                        .classed("deselected", !selected)
+                    ;
+                })
+            ;
+        } else {
+            this._initialSelection = _;
+        }
+        return this;
+    };
+
+    function SimpleSelectionMixin(skipBringToTop) {
+        this._selection = new SimpleSelection(null, skipBringToTop);
+    }
+
+    SimpleSelectionMixin.prototype.serializeState = function () {
+        return {
+            selection: this._selection.selection()
+        };
+    };
+
+    SimpleSelectionMixin.prototype.deserializeState = function (state) {
+        return this._selection.selection(state.selection);
+    };
+
 
     var perf = window.performance;
     var now = perf && (perf.now || perf.mozNow || perf.msNow || perf.oNow || perf.webkitNow);
@@ -170,6 +229,7 @@
 
         Selection: SelectionBag,
         SimpleSelection: SimpleSelection,
+        SimpleSelectionMixin: SimpleSelectionMixin,
 
         urlParams: function () {
             var def = window.location.search.split("?")[1];
@@ -294,12 +354,19 @@
 
             return false;
         },
-        requireWidget: function(classID) {
+        parseClassID: function(classID) {
+            var parts = classID.split(".");
+            return {
+                path: "../" + parts[0].split("_").join("/"),
+                memberWidgetID: parts.length > 1 ? parts[1] : null
+            };
+        },
+        requireWidget: function (classID) {
+            var context = this;
             return new Promise(function (resolve, reject) {
-                var parts = classID.split(".");
-                var path = "../" + parts[0].split("_").join("/");
-                require([path], function (Widget) {
-                    resolve(parts.length > 1 ? (Widget.prototype ? Widget.prototype[parts[1]] : Widget[parts[1]]) : Widget);
+                var parsedClassID = context.parseClassID(classID);
+                require([parsedClassID.path], function (Widget) {
+                    resolve(parsedClassID.memberWidgetID ? (Widget.prototype ? Widget.prototype[parsedClassID.memberWidgetID] : Widget[parsedClassID.memberWidgetID]) : Widget);
                 });
             });
         },

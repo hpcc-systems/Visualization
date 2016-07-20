@@ -70,6 +70,12 @@
         return this;
     };
 
+    MegaChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chart.chartTypeProperties();
+        this._chart.chartTypeProperties(_);
+        return this;
+    };
+
     MegaChart.prototype.fields = function (_) {
         if (!arguments.length) return this._chart.fields();
         this._chart.fields(_);
@@ -88,6 +94,11 @@
         return this;
     };
 
+    MegaChart.prototype.downloadCSV = function () {
+        Utility.downloadBlob("CSV", this._chart.export("CSV"));
+        return this;
+    };
+
     MegaChart.prototype.enter = function (domNode, element) {
         Border.prototype.enter.apply(this, arguments);
         var context = this;
@@ -99,7 +110,7 @@
             .value("CSV")
         ;
         this._csvButton.click = function (a) {
-            Utility.downloadBlob("CSV", context._chart.export("CSV"));
+            context.downloadCSV();
         };
 
         this._chartTypeSelect = new Select()
@@ -137,10 +148,10 @@
         function showHideButton(twArr, button, show) {
             if (show && twArr.indexOf(button) === -1) {
                 twArr.push(button);
-            } else {
+            } else if (!show) {
                 var idx = twArr.indexOf(button);
-                if (!show && idx >= 0) {
-                    twArr.slice(idx, 1);
+                if (idx >= 0) {
+                    twArr.splice(idx, 1);
                 }
             }
         }

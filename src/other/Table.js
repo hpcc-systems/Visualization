@@ -851,6 +851,21 @@
         return null;
     };
 
+    Table.prototype.serializeState = function () {
+        return {
+            selection: this._selectionBag.get().map(function (d) {
+                return d._id;
+            })
+        };
+    };
+
+    Table.prototype.deserializeState = function (state) {
+        var context = this;
+        return this._selectionBag.set(state.selection.map(function(d) {
+            return context._createSelectionObject(d);
+        }));
+    };
+
     Table.prototype.click = function (row, column, selected) {
         function replacer(key, value) {
             if (value instanceof Widget) {

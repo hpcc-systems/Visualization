@@ -400,7 +400,7 @@
         }
 
         callback = callback || function () { };
-        if (!this.visible()) {
+        if (!this._parentElement || !this.visible()) {
             callback(this);
             return this;
         }

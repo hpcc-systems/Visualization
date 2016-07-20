@@ -8,10 +8,12 @@
 }(this, function (d3, HTMLWidget, Palette, Utility) {
     function CalendarHeatMap(target) {
         HTMLWidget.call(this);
+        Utility.SimpleSelectionMixin.call(this);
     }
     CalendarHeatMap.prototype = Object.create(HTMLWidget.prototype);
     CalendarHeatMap.prototype.constructor = CalendarHeatMap;
     CalendarHeatMap.prototype._class += " other_CalendarHeatMap";
+    CalendarHeatMap.prototype.mixin(Utility.SimpleSelectionMixin);
 
     CalendarHeatMap.prototype._palette = Palette.rainbow("default");
     CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
@@ -50,7 +52,7 @@
     CalendarHeatMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         d3.select(domNode.parentNode).style("overflow", "scroll");
-        this._selection = new Utility.SimpleSelection(element);
+        this._selection.widgetElement(element);
     };
 
     CalendarHeatMap.prototype.update = function (domNode, element) {

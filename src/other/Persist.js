@@ -7,47 +7,24 @@
     }
 }(this, function (Utility) {
     function discover(widget) {
-        var retVal = [];
-        widget.publishedProperties().forEach(function (_meta) {
-            var item = widget;
-            var meta = _meta;
-            if (meta.type) {
-                while (meta.type === "proxy") {
-                    item = item[meta.proxy];
-                    meta = item.publishedProperty(meta.method);
-                }
-                if (meta.id !== widget.publishedProperty(_meta.id).id) {
-                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                    meta.id = widget.publishedProperty(_meta.id).id;
-                }
-                retVal.push(meta);
-            }
-        }, this);
-        return retVal;
+        return widget.publishedProperties(false, true);
     }
 
     function widgetWalker(widget, visitor) {
         if (!widget)
             return;
         visitor(widget);
-        var publishedProps = discover(widget);
-        for (var i = 0; i < publishedProps.length; ++i) {
-            var publishItem = publishedProps[i];
+        discover(widget).forEach(function (publishItem) {
             switch (publishItem.type) {
                 case "widget":
                     widgetWalker(widget[publishItem.id](), visitor);
                     break;
                 case "widgetArray":
                 case "propertyArray":
-                    var widgetArray = widget[publishItem.id]();
-                    if (widgetArray) {
-                        widgetArray.forEach(function (widget) {
-                            widgetWalker(widget, visitor);
-                        });
-                    }
+                    widgetArrayWalker(widget[publishItem.id](), visitor);
                     break;
             }
-        }
+        });
     }
 
     function widgetArrayWalker(widgets, visitor) {
@@ -59,13 +36,7 @@
     }
 
     function propertyWalker(widget, filter, visitor) {
-        var publishedProps = discover(widget);
-        for (var i = 0; i < publishedProps.length; ++i) {
-            var publishItem = publishedProps[i];
-            if(typeof (filter) !== "function" || !filter(widget, publishItem)){
-                visitor(widget, publishItem);
-            }
-        }
+            widget.propertyWalker(filter, visitor);
     }
     
     function widgetPropertyWalker(widget, filter, visitor) {
@@ -150,7 +121,7 @@
             }
         },
 
-        serializeToObject: function (widget, filter, includeData) {
+        serializeToObject: function (widget, filter, includeData, includeState) {
             var retVal = {
                 __class: widget.classID(),
             };
@@ -167,14 +138,14 @@
                 if (widget[item.id + "_modified"]()) {
                     switch (item.type) {
                         case "widget":
-                            retVal.__properties[item.id] = context.serializeToObject(widget[item.id](), null, includeData);
+                            retVal.__properties[item.id] = context.serializeToObject(widget[item.id](), null, includeData, includeState);
                             return true;
                         case "widgetArray":
                         case "propertyArray":
                             retVal.__properties[item.id] = [];
                             var widgetArray = widget[item.id]();
                             widgetArray.forEach(function (widget, idx) {
-                                retVal.__properties[item.id].push(context.serializeToObject(widget, null, includeData));
+                                retVal.__properties[item.id].push(context.serializeToObject(widget, null, includeData, includeState));
                             });
                             return true;
                         default:
@@ -188,7 +159,7 @@
                 var vertices = widget.data().vertices;
                 if (vertices) {
                     this.__vertices = vertices.map(function (item) {
-                        return this.serializeToObject(item, null, includeData);
+                        return this.serializeToObject(item, null, includeData, includeState);
                     }, this);
                 }
             }
@@ -196,11 +167,14 @@
                 if (!retVal.__data) retVal.__data = {};
                 retVal.__data.data = widget.data();
             }
+            if (includeState && widget.serializeState) {
+                retVal.__state = widget.serializeState();
+            }
             return retVal;
         },
 
-        serialize: function (widget, filter, includeData) {
-            return JSON.stringify(this.serializeToObject(widget, filter, includeData));
+        serialize: function (widget, filter, includeData, includeState) {
+            return JSON.stringify(this.serializeToObject(widget, filter, includeData, includeState));
         },
 
         deserializeFromObject: function(widget, state, callback) {
@@ -257,8 +231,19 @@
                     createCount = undefined;
                     if (state.__data) {
                         for (var key in state.__data) {
-                            widget[key](state.__data[key]);
+                            switch (key) {
+                                case "data":
+                                    widget.data(state.__data[key]);
+                                    break;
+                                default:
+                                    console.log("Unexpected __data item:  " + key);
+                                    widget[key](state.__data[key]);
+                                    break;
+                            }
                         }
+                    }
+                    if (state.__state && widget.deserializeState) {
+                        widget.deserializeState(state.__state);
                     }
                     callback(widget);
                 }
@@ -294,7 +279,7 @@
         },
 
         clone: function (widget, callback) {
-            this.create(this.serializeToObject(widget, [], true), callback);
+            this.create(this.serializeToObject(widget, [], true, true), callback);
         }
     };
 }));

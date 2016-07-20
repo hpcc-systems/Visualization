@@ -1,12 +1,13 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require", "es6-promise"], factory);
     } else {
         root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
 }(this, function (d3, Class, Database, Utility, Comms, Widget, require) {
-    var loading = "...loading...";
+    var LOADING = "...loading...";
+    var _CHANGED = "_changed";
 
     function exists(prop, scope) {
         var propParts = prop.split(".");
@@ -75,6 +76,12 @@
             case "date":
             case "time":
                 return "time";
+            case "geohash":
+                return "geohash";
+            default:
+                if (hipieType.indexOf("unsigned") === 0) {
+                    return "number";
+                }
         }
         return "string";
     }
@@ -161,12 +168,13 @@
             this.columns = ["county"];
             this.columnsIdx = { county: 0};
         } else if (mappings.geohash) {
-            this.columns = ["geohash"];
-            this.columnsIdx = { geohash: 0 };
+            this.columns = ["geohash", "label"];
+            this.columnsIdx = { geohash: 0, label: 1 };
         }
+        var weightOffset = this.columns.length;
         mappings.weight.forEach(function (w, i) {
             this.columns.push(w);
-            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + 1;
+            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
         }, this);
         this.init();
     }
@@ -558,11 +566,13 @@
     };
 
     //  Visualization ---
-    function Visualization(dashboard, visualization) {
+    function Visualization(dashboard, visualization, parentVisualization) {
         Class.call(this);
 
         this.dashboard = dashboard;
+        this.parentVisualization = parentVisualization;
         this.id = visualization.id;
+
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
@@ -571,26 +581,55 @@
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
+        this.layers = (visualization.visualizations || []).map(function (innerViz) {
+            return new Visualization(dashboard, innerViz, this);
+        }, this);
 
         var context = this;
         switch (this.type) {
             case "CHORO":
-                var chartType = "CHORO_USTATES";
-                if (this.source.mappings.contains("state")) {
-                    chartType = "CHORO_USTATES";
-                } else if (this.source.mappings.contains("county")) {
-                    chartType = "CHORO_USCOUNTIES";
-                } else if (this.source.mappings.contains("country")) {
-                    chartType = "CHORO_COUNTRIES";
+                var chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
+                switch (chartType) {
+                    case "MAP_PINS":
+                        this.loadWidget("../map/Pins", function (widget) {
+                            widget
+                                .id(visualization.id)
+                                .columns(context.source.getColumns())
+                                .geohashColumn("geohash")
+                                .tooltipColumn("label")
+                                .fillColor(visualization.color ? visualization.color : null)
+                                .projection("albersUsaPr")
+                            ;
+                        });
+                        break;
+                    default:
+                        chartType = "CHORO_USSTATES";
+                        if (this.source.mappings.contains("state")) {
+                            chartType = "CHORO_USSTATES";
+                        } else if (this.source.mappings.contains("county")) {
+                            chartType = "CHORO_USCOUNTIES";
+                        } else if (this.source.mappings.contains("country")) {
+                            chartType = "CHORO_COUNTRIES";
+                        }
+                        Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
+                            context.loadWidget("../composite/MegaChart", function (widget) {
+                                var layers = context.layers.map(function (layer) { return layer.widget; });
+                                widget
+                                    .id(visualization.id)
+                                    .legendPosition_default("none")
+                                    .showChartSelect_default(false)
+                                    .chartType_default(chartType)
+                                    .chartTypeDefaults({
+                                        autoScaleMode: layers.length ? "data" : "mesh"
+                                    })
+                                    .chartTypeProperties({
+                                        layers: layers
+                                    })
+                                ;
+                            });
+                        });
+                        break;
                 }
-                this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        .showChartSelect_default(false)
-                        .chartType_default(chartType)
-                    ;
-                });
                 break;
             case "2DCHART":
             case "PIE":
@@ -749,11 +788,23 @@
         return this.id;
     };
 
-    Visualization.prototype.isLoading = function (widgetPath, callback) {
+    Visualization.prototype.loadedPromise = function () {
+        var context = this;
+        return new Promise(function (resolve, reject) {
+            var intervalHandle = setInterval(function () {
+                if (context.isLoaded()) {
+                    clearInterval(intervalHandle);
+                    resolve();
+                }
+            }, 100);
+        });
+    };
+
+    Visualization.prototype.isLoading = function () {
         return this.widget === null;
     };
 
-    Visualization.prototype.isLoaded = function (widgetPath, callback) {
+    Visualization.prototype.isLoaded = function () {
         return this.widget instanceof Widget;
     };
 
@@ -809,17 +860,25 @@
 
     Visualization.prototype.update = function (msg) {
         var updatedBy = this.getInputVisualizations();
-        var paramsArr = [];
-        updatedBy.forEach(function (viz) {
-            for (var key in viz._eventValues) {
-                paramsArr.push(viz._eventValues[key]);
-            }
-        });
-        var params = msg || paramsArr.join(", ");
+        function formatParams() {
+            var paramsArr = [];
+            updatedBy.forEach(function (viz) {
+                for (var key in viz._eventValues) {
+                    if (viz._eventValues[key]) {
+                        paramsArr.push(viz._eventValues[key]);
+                    }
+                }
+            });
+            return paramsArr.join(", ");
+        }
+        var params = msg || formatParams();
 
-        var titleWidget = this.widget;
-        while (titleWidget && !titleWidget.title) {
-            titleWidget = titleWidget.locateParentWidget();
+        var titleWidget = null;
+        if (!this.parentVisualization) {
+            titleWidget = this.widget;
+            while (titleWidget && !titleWidget.title) {
+                titleWidget = titleWidget.locateParentWidget();
+            }
         }
         if (titleWidget) {
             var title = titleWidget.title();
@@ -857,7 +916,7 @@
                 updatedViz.clear();
             });
         }
-        this.update(loading);
+        this.update(LOADING);
     };
 
     Visualization.prototype.on = function (eventID, func) {
@@ -906,7 +965,7 @@
                                     console.log("Duplicate Filter, with mismatched value:  " + key + "=" + inViz._eventValues[key]);
                                 }
                                 datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                datasourceRequests[dataSource.id].request[key + "_changed"] = inViz === context;
+                                datasourceRequests[dataSource.id].request[key + _CHANGED] = inViz === context;
                             }
                         }
                     });
@@ -934,6 +993,17 @@
             }
             return false;
         }, this);
+    };
+
+    Visualization.prototype.serializeState = function () {
+        return {
+            eventValues: this._eventValues
+        };
+    };
+
+    Visualization.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this._eventValues = state.eventValues;
     };
 
     //  Output  ---
@@ -1022,6 +1092,9 @@
     };
 
     DataSource.prototype.fetchData = function (request, refresh, updates) {
+        if (request && request.refresh !== undefined) { throw "refresh in this request????"; }
+        request = request || this.request || {};
+        refresh = refresh || false;
         if (!updates) {
             updates = [];
             for (var oKey in this.outputs) {
@@ -1031,16 +1104,16 @@
                     var inputs = viz.getInputVisualizations();
                     if (!inputs.length) {
                         updates.push(item);
-                        viz.update(loading);
+                        viz.update(LOADING);
                     }
                 }, this);
             }
         }
 
         var context = this;
-        this.request.refresh = refresh ? true : false;
+        this.request.refresh = refresh;
         this.filter.forEach(function (item) {
-            this.request[item + "_changed"] = request[item + "_changed"] || false;
+            this.request[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
@@ -1056,15 +1129,19 @@
         }
         var now = Date.now();
         this.dashboard.marshaller.commsEvent(this, "request", this.request);
-        this.comms.call(this.request).then(function (response) {
-            var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
-            setTimeout(function() {
-                context.processResponse(response, request, updates);
-                context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
-                ++context._loadedCount;
-            }, delay > 0 ? delay : 0);
-        }).catch(function (e) {
-            context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+        return new Promise(function (resolve, reject) {
+            context.comms.call(context.request).then(function (response) {
+                var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
+                setTimeout(function () {
+                    context.processResponse(response, request, updates);
+                    context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                    ++context._loadedCount;
+                    resolve(response);
+                }, delay > 0 ? delay : 0);
+            }).catch(function (e) {
+                context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+                reject(e);
+            });
         });
     };
 
@@ -1080,7 +1157,7 @@
                 from = this.outputs[key].id.toLowerCase();
             }
             if (exists(from, response)) {
-                if (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(response[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1088,7 +1165,7 @@
                 }
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                if (!exists(from + "_changed", lowerResponse) || (exists(from + "_changed", lowerResponse) && response[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(lowerResponse[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1102,6 +1179,17 @@
                 console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
+    };
+
+    DataSource.prototype.serializeState = function () {
+        return {
+            request: this.request
+        };
+    };
+
+    DataSource.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.request = state.request || {};
     };
 
     //  Dashboard  ---
@@ -1129,6 +1217,10 @@
         }, this);
         this._visualizationTotal = this._visualizationArray.length;
     }
+
+    Dashboard.prototype.loadedPromise = function () {
+        return Promise.all(this._visualizationArray.map(function (visualization) { return visualization.loadedPromise(); }));
+    };
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
@@ -1160,9 +1252,40 @@
         }, this);
     };
 
-    Dashboard.prototype.allVisualizationsLoaded = function () {
-        var notLoaded = this._visualizationArray.filter(function (item) { return !item.isLoaded(); });
-        return notLoaded.length === 0;
+    Dashboard.prototype.fetchData = function () {
+        var promises = [];
+        for (var key in this.datasources) {
+            promises.push(this.datasources[key].fetchData());
+        }
+        return Promise.all(promises);
+    };
+
+    Dashboard.prototype.serializeState = function () {
+        var retVal = {
+            datasources: {},
+            visualizations: {}
+        };
+        for (var key in this.datasources) {
+            retVal.datasources[key] = this.datasources[key].serializeState();
+        }
+        for (var vizKey in this._visualizations) {
+            retVal.visualizations[vizKey] = this._visualizations[vizKey].serializeState();
+        }
+        return retVal;
+    };
+
+    Dashboard.prototype.deserializeState = function (state) {
+        if (!state) return;
+        for (var key in this.datasources) {
+            if (state.datasources[key]) {
+                this.datasources[key].deserializeState(state.datasources[key]);
+            }
+        }
+        for (var vizKey in this._visualizations) {
+            if (state.visualizations[vizKey]) {
+                this._visualizations[vizKey].deserializeState(state.visualizations[vizKey]);
+            }
+        }
     };
 
     //  Marshaller  ---
@@ -1193,7 +1316,6 @@
     Marshaller.prototype.getVisualization = function (id) {
         return this._visualizations[id];
     };
-
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
@@ -1296,6 +1418,10 @@
         return this;
     };
 
+    Marshaller.prototype.dashboardsLoaded = function () {
+        return Promise.all(this.dashboardArray.map(function (dashboard) { return dashboard.loadedPromise(); }));
+    };
+
     Marshaller.prototype.getVisualizations = function () {
         return this._visualizations;
     };
@@ -1313,23 +1439,13 @@
         return this;
     };
 
-    Marshaller.prototype.allDashboardsLoaded = function () {
-        return this.dashboardArray.filter(function (item) { return !item.allVisualizationsLoaded(); }).length === 0;
-    };
-
     Marshaller.prototype.ready = function (callback) {
         if (!callback) {
             return;
         }
-        var context = this;
-        function waitForLoad(callback) {
-            if (context.allDashboardsLoaded()) {
-                callback();
-            } else {
-                setTimeout(waitForLoad, 100, callback);
-            }
-        }
-        waitForLoad(callback);
+        this.dashboardsLoaded().then(function () {
+            callback();
+        });
     };
 
     Marshaller.prototype.vizEvent = function (sourceWidget, eventID, row, col, selected) {
@@ -1371,6 +1487,29 @@
             }
         });
         return retVal;
+    };
+
+    Marshaller.prototype.fetchData = function () {
+        var promises = this.dashboardArray.map(function (dashboard) {
+            return dashboard.fetchData();
+        });
+        return Promise.all(promises);
+    };
+
+    Marshaller.prototype.serializeState = function () {
+        var retVal = {};
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            retVal[dashboard.id] = dashboard.serializeState();
+        });
+        return retVal;
+    };
+
+    Marshaller.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            dashboard.deserializeState(state[dashboard.id]);
+        });
+        return this;
     };
 
     return {

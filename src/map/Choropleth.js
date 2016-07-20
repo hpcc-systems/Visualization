@@ -1,13 +1,14 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Layer", "../common/Palette", "css!./Choropleth"], factory);
+        define(["d3", "topojson", "./Layer", "../common/Palette", "../common/Utility", "css!./Choropleth"], factory);
     } else {
-        root.map_Choropleth = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette);
+        root.map_Choropleth = factory(root.d3, root.topojson, root.map_Layer, root.common_Palette, root.common_Utility);
     }
-}(this, function (d3, topojson, Layer, Palette) {
+}(this, function (d3, topojson, Layer, Palette, Utility) {
     function Choropleth() {
         Layer.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this._dataMap = {};
         this._path = d3.select(null);
@@ -15,6 +16,7 @@
     Choropleth.prototype = Object.create(Layer.prototype);
     Choropleth.prototype.constructor = Choropleth;
     Choropleth.prototype._class += " map_Choropleth";
+    Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
 
     Choropleth.prototype._palette = Palette.rainbow("default");
 

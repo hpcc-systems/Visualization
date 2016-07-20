@@ -354,12 +354,19 @@
 
             return false;
         },
-        requireWidget: function(classID) {
+        parseClassID: function(classID) {
+            var parts = classID.split(".");
+            return {
+                path: "../" + parts[0].split("_").join("/"),
+                memberWidgetID: parts.length > 1 ? parts[1] : null
+            };
+        },
+        requireWidget: function (classID) {
+            var context = this;
             return new Promise(function (resolve, reject) {
-                var parts = classID.split(".");
-                var path = "../" + parts[0].split("_").join("/");
-                require([path], function (Widget) {
-                    resolve(parts.length > 1 ? (Widget.prototype ? Widget.prototype[parts[1]] : Widget[parts[1]]) : Widget);
+                var parsedClassID = context.parseClassID(classID);
+                require([parsedClassID.path], function (Widget) {
+                    resolve(parsedClassID.memberWidgetID ? (Widget.prototype ? Widget.prototype[parsedClassID.memberWidgetID] : Widget[parsedClassID.memberWidgetID]) : Widget);
                 });
             });
         },

@@ -860,13 +860,18 @@
 
     Visualization.prototype.update = function (msg) {
         var updatedBy = this.getInputVisualizations();
-        var paramsArr = [];
-        updatedBy.forEach(function (viz) {
-            for (var key in viz._eventValues) {
-                paramsArr.push(viz._eventValues[key]);
-            }
-        });
-        var params = msg || paramsArr.join(", ");
+        function formatParams() {
+            var paramsArr = [];
+            updatedBy.forEach(function (viz) {
+                for (var key in viz._eventValues) {
+                    if (viz._eventValues[key]) {
+                        paramsArr.push(viz._eventValues[key]);
+                    }
+                }
+            });
+            return paramsArr.join(", ");
+        }
+        var params = msg || formatParams();
 
         var titleWidget = null;
         if (!this.parentVisualization) {

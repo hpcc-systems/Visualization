@@ -148,10 +148,10 @@
         function showHideButton(twArr, button, show) {
             if (show && twArr.indexOf(button) === -1) {
                 twArr.push(button);
-            } else {
+            } else if (!show) {
                 var idx = twArr.indexOf(button);
-                if (!show && idx >= 0) {
-                    twArr.slice(idx, 1);
+                if (idx >= 0) {
+                    twArr.splice(idx, 1);
                 }
             }
         }

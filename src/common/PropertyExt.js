@@ -155,14 +155,34 @@
     };
 
     // Publish Properties  ---
-    PropertyExt.prototype.publishedProperties = function (includePrivate) {
+    PropertyExt.prototype.publishedProperties = function (includePrivate, expandProxies) {
         var retVal = [];
         for (var key in this) {
             if (isMeta(key) && (includePrivate || !isPrivate(this, key))) {
-                retVal.push(this[key]);
+                var meta = this[key];
+                if (expandProxies && meta.type) {
+                    var item = this;
+                    while (meta.type === "proxy") {
+                        item = item[meta.proxy];
+                        meta = item.publishedProperty(meta.method);
+                    }
+                    if (meta.id !== this[key].id) {
+                        meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                        meta.id = this[key].id;
+                    }
+                }
+                retVal.push(meta);
             }
         }
         return retVal;
+    };
+
+    PropertyExt.prototype.propertyWalker = function (filter, visitor) {
+        this.publishedProperties(false, true).forEach(function (publishItem) {
+            if (typeof (filter) !== "function" || !filter(this, publishItem)) {
+                visitor(this, publishItem);
+            }
+        }, this);
     };
 
     PropertyExt.prototype.publishedProperty = function (id) {

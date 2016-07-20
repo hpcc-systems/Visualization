@@ -9,7 +9,9 @@
     function Step(target) {
         Scatter.call(this);
 
-        this.interpolate("step");
+        this
+            .interpolate_default("step")
+        ;
     }
     Step.prototype = Object.create(Scatter.prototype);
     Step.prototype.constructor = Step;

@@ -11,8 +11,10 @@
         INDChart.call(this);
         ITooltip.call(this);
 
-        this.xAxisGuideLines_default(true);
-        this.yAxisGuideLines_default(true);
+        this
+            .xAxisGuideLines_default(true)
+            .yAxisGuideLines_default(true)
+        ;
     }
     Scatter.prototype = Object.create(XYAxis.prototype);
     Scatter.prototype.constructor = Scatter;

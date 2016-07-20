@@ -9,7 +9,9 @@
     function Bar(target) {
         Column.call(this);
 
-        this.orientation("vertical");
+        this
+            .orientation_default("vertical")
+        ;
     }
     Bar.prototype = Object.create(Column.prototype);
     Bar.prototype.constructor = Bar;

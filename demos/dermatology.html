@@ -353,8 +353,9 @@
                 }
             }
 
-            updateUrl = function (widget, widgetPath, widgetTest) {
-                var urlParam = widgetPath + (widgetTest ? "." + widgetTest : "");
+            updateUrl = function (widget, widgetTest) {
+                var parsedClassID = Utility.parseClassID(widget.classID());
+                var urlParam = parsedClassID.path + (widgetTest ? "." + widgetTest : "");
                 var params = Persist.serializeToObject(widget).__properties;
                 for (var key in params) {
                     switch (typeof (params[key])) {
@@ -399,9 +400,9 @@
                 if (monitorHandle) {
                     monitorHandle.remove();
                 }
-                updateUrl(widget, widgetPath, widgetTest);
+                updateUrl(widget, widgetTest);
                 monitorHandle = currWidget.monitor(function () {
-                    updateUrl(currWidget, widgetPath, widgetTest);
+                    updateUrl(currWidget, widgetTest);
                 });
                 main
                     .setContent(0, 0, currWidget, "", 2, 2)

@@ -1,0 +1,11 @@
+.layout_Cell .update-indicator {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    z-index: 1000;
+    border-width: 0px;
+    border-style: solid;
+    pointer-events: none;
+}

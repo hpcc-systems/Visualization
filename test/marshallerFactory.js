@@ -50,7 +50,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160616-145742&ResultName=coremultiwidgetfilter_Comp_Ins49326_DDL&SuppressXmlSchema=true")
                     );
                 });
             },

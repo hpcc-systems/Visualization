@@ -9,8 +9,10 @@
     function Area(target) {
         Scatter.call(this);
 
-        this.interpolate("linear");
-        this.interpolateFill(true);
+        this
+            .interpolate_default("linear")
+            .interpolateFill_default(true)
+        ;
     }
     Area.prototype = Object.create(Scatter.prototype);
     Area.prototype.constructor = Area;

@@ -9,7 +9,9 @@
     function Line(target) {
         Scatter.call(this);
 
-        this.interpolate("linear");
+        this
+            .interpolate_default("linear")
+        ;
     }
     Line.prototype = Object.create(Scatter.prototype);
     Line.prototype.constructor = Line;

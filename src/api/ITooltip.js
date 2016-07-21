@@ -9,7 +9,7 @@
     function ITooltip() {
         Widget.call(this);
 
-        this.tooltipValueFormat(this.tooltipValueFormat());
+        this._valueFormatter = d3.format(this.tooltipValueFormat());
 
         if (this.layerEnter) {
             var layerEnter = this.layerEnter;

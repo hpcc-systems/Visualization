@@ -9,9 +9,11 @@
     function Gantt(target) {
         Bar.call(this);
 
-        this.orientation("vertical");
-        this.xAxisType("ordinal");
-        this.yAxisType("time");
+        this
+            .orientation_default("vertical")
+            .xAxisType_default("ordinal")
+            .yAxisType_default("time")
+        ;
     }
     Gantt.prototype = Object.create(Bar.prototype);
     Gantt.prototype.constructor = Gantt;

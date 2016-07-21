@@ -13,16 +13,16 @@
         this._drawStartPos = "origin";
 
         this.domainAxis = new Axis()
-            .orientation("bottom")
-            .type("ordinal")
-            .overlapMode("stagger")
-            .shrinkToFit("high")
-            .extend(0)
+            .orientation_default("bottom")
+            .type_default("ordinal")
+            .overlapMode_default("stagger")
+            .shrinkToFit_default("high")
+            .extend_default(0)
         ;
         this.valueAxis = new Axis()
-            .orientation("left")
-            .type("linear")
-            .shrinkToFit("high")
+            .orientation_default("left")
+            .type_default("linear")
+            .shrinkToFit_default("high")
         ;
         var context = this;
         this.xBrush = d3.svg.brush()

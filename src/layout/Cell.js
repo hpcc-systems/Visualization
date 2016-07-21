@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Surface"], factory);
+        define(["d3", "./Surface", "css!./Cell"], factory);
     } else {
         root.layout_Cell = factory(root.d3, root.layout_Surface);
     }
@@ -140,21 +140,15 @@
         var indicatorGlowColor = this.indicatorGlowColor();
         for (var i = 0; i < arr.length; i++) {
             var otherElement = d3.select("#" + arr[i]);
-            if (otherElement.node()) {
-                var rect = otherElement.node().getBoundingClientRect();
+            var otherWidget = otherElement.datum();
+            if (otherElement) {
                 otherElement.append("div")
-                    .classed("update-indicator", true)
+                    .attr("class", "update-indicator")
                     .style({
-                        "box-sizing": "border-box",
-                        position: "fixed",
-                        top: rect.top + "px",
-                        left: rect.left + "px",
-                        width: rect.width + "px",
-                        height: rect.height + "px",
+                        width: otherWidget.width() + "px",
+                        height: otherWidget.height() + "px",
                         opacity: opacity,
-                        padding: "0px",
-                        "z-index": 1000,
-                        "border": "4px solid " + indicatorBorderColor,
+                        "border-color": indicatorBorderColor,
                         "-webkit-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
                         "-moz-box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,
                         "box-shadow": "inset 0px 0px 30px 0px " + indicatorGlowColor,

@@ -570,44 +570,47 @@
 
         if (!rows.empty()) this.setColumnWidths(rows);
 
-        if(this.fixedSize()) {
-            var box = d3.select(".tableDiv > table").node().getBoundingClientRect();
-            var newTableHeight, finalWidth, maxWidth;
-            if (box.width !== 0 && box.height !== 0) {
-                calcWidth();
-                calcHeight();
-            } else {
-                if (box.height - tableMarginHeight <= context.tableDiv.property("offsetHeight") ) {
+        if (this.fixedSize()) {
+            var node = d3.select(".tableDiv > table").node();
+            if (node) {
+                var box = node.getBoundingClientRect();
+                var newTableHeight, finalWidth, maxWidth;
+                if (box.width !== 0 && box.height !== 0) {
+                    calcWidth();
                     calcHeight();
                 } else {
-                    if (context.fixedHeader()) {
-                        newTableHeight = context.property("offsetHeight");
-                        newTableHeight = newTableHeight + "px";
+                    if (box.height - tableMarginHeight <= context.tableDiv.property("offsetHeight")) {
+                        calcHeight();
                     } else {
-                        newTableHeight ="100%";
+                        if (context.fixedHeader()) {
+                            newTableHeight = context.property("offsetHeight");
+                            newTableHeight = newTableHeight + "px";
+                        } else {
+                            newTableHeight = "100%";
+                        }
+                    }
+                    if (box.width - fixedColWidth < context.tableDiv.property("offsetWidth")) {
+                        calcWidth();
+                    } else {
+                        if (context.fixedColumn()) {
+                            finalWidth = context.property("offsetWidth") - fixedColWidth;
+                            finalWidth = finalWidth + "px";
+                        } else {
+                            finalWidth = "100%";
+                        }
                     }
                 }
-                if (box.width - fixedColWidth < context.tableDiv.property("offsetWidth") ) {
-                    calcWidth();
-                } else {
-                    if (context.fixedColumn()) {
-                        finalWidth = context.property("offsetWidth") - fixedColWidth;
-                        finalWidth = finalWidth + "px";
-                    } else {
-                        finalWidth = "100%";
-                    }
-                }            
+                if (element.classed("childWidget")) {
+                    context._parentElement
+                        .style("width", finalWidth + "px")
+                        .style("height", newTableHeight + "px")
+                    ;
+                    context.tableDiv
+                        .style("overflow", "hidden")
+                    ;
+                }
+                context.size({ width: finalWidth, height: newTableHeight });
             }
-            if (element.classed("childWidget")) {
-                context._parentElement
-                    .style("width", finalWidth + "px")
-                    .style("height", newTableHeight + "px")
-                ;
-                context.tableDiv
-                    .style("overflow", "hidden")
-                ;
-            }
-            context.size({width:finalWidth, height: newTableHeight});
         }
 
         this.setOnScrollEvents(this.tableDiv.node(), tableMarginHeight);

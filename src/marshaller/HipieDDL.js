@@ -835,6 +835,8 @@
     Visualization.prototype.setWidget = function (widget) {
         this.widget = widget;
         this.events.setWidget(widget);
+        var columns = this.source.getColumns();
+        this.widget.columns(columns);
         for (var key in this.properties) {
             switch (widget.classID()) {
                 case "chart_MultiChart":
@@ -858,20 +860,25 @@
         visitor.visit(this);
     };
 
-    Visualization.prototype.update = function (msg) {
-        var updatedBy = this.getInputVisualizations();
-        function formatParams() {
-            var paramsArr = [];
+    Visualization.prototype.update = function (params) {
+        if (!params) {
+            var validParams = {};
+            var updatedBy = this.getInputVisualizations();
             updatedBy.forEach(function (viz) {
                 for (var key in viz._eventValues) {
-                    if (viz._eventValues[key]) {
-                        paramsArr.push(viz._eventValues[key]);
-                    }
+                    validParams[key] = true;
                 }
             });
-            return paramsArr.join(", ");
+
+            var paramsArr = [];
+            var datasource = this.source.getDatasource();
+            for (var key in datasource.request) {
+                if (validParams[key]) {
+                    paramsArr.push(datasource.request[key]);
+                }
+            }
+            params = paramsArr.join(", ");
         }
-        var params = msg || formatParams();
 
         var titleWidget = null;
         if (!this.parentVisualization) {
@@ -895,8 +902,6 @@
     Visualization.prototype.notify = function () {
         if (this.source.hasData()) {
             if (this.widget) {
-                var columns = this.source.getColumns();
-                this.widget.columns(columns);
                 var data = this.source.getData();
                 this.widget.data(data);
 
@@ -961,11 +966,17 @@
                     updatedViz.getInputVisualizations().forEach(function (inViz, idx) {
                         if (inViz._eventValues) {
                             for (var key in inViz._eventValues) {
+                                var changed = inViz === context;
                                 if (datasourceRequests[dataSource.id].request[key] && datasourceRequests[dataSource.id].request[key] !== inViz._eventValues[key]) {
-                                    console.log("Duplicate Filter, with mismatched value:  " + key + "=" + inViz._eventValues[key]);
+                                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
+                                    if (changed) {
+                                        datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
+                                        datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
+                                    }
+                                } else {
+                                    datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
+                                    datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
                                 }
-                                datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                datasourceRequests[dataSource.id].request[key + _CHANGED] = inViz === context;
                             }
                         }
                     });

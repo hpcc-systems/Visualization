@@ -140,8 +140,8 @@
         var indicatorGlowColor = this.indicatorGlowColor();
         for (var i = 0; i < arr.length; i++) {
             var otherElement = d3.select("#" + arr[i]);
-            if (otherElement.datum()) {
-                var otherWidget = otherElement.datum();
+            var otherWidget = otherElement.datum();
+            if (otherElement) {
                 otherElement.append("div")
                     .attr("class", "update-indicator")
                     .style({

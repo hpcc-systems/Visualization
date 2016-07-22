@@ -428,7 +428,7 @@
     };
 
     Source.prototype.getColumns = function () {
-        return this.mappings.columns;
+        return this.mappings && this.mappings.columns ? this.mappings.columns : [];
     };
 
     Source.prototype.getData = function () {

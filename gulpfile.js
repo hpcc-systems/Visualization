@@ -30,7 +30,7 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey"];
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete"];
 const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "marshaller", "composite"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 

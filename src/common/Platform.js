@@ -10,7 +10,9 @@
             }
 
             var objs = paths.map(function (path) {
-                var pathIdx = path.indexOf("src/") === 0 ? "src/".length : 0;
+                var pathIdx = path.indexOf("src/") === 0 ? "src/".length :
+                    path.indexOf("hpcc-viz/") === 0 ? "hpcc-viz/".length : 
+                    path.indexOf("../") === 0 ? "../".length : 0;
                 var prop = path.substring(pathIdx).split("/").join("_");
                 return root[prop];
             });
@@ -21,7 +23,7 @@
     }
 }(this, function (d3) {
     //  Do not touch - updated by gulp bump  ---
-    var version = "1.10.2-dev";
+    var version = "1.14.0-dev";
 
     function Platform() {
     }

@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "topojson", "./Choropleth", "./us-counties", "../common/Utility"], factory);
+        define(["d3", "topojson", "./Choropleth", "./us-counties"], factory);
     } else {
-        root.map_ChoroplethCounties = factory(root.d3, root.topojson, root.map_Choropleth, root.map_usCounties, root.common_Utility);
+        root.map_ChoroplethCounties = factory(root.d3, root.topojson, root.map_Choropleth, root.map_usCounties);
     }
-}(this, function (d3, topojson, Choropleth, usCounties, Utility) {
+}(this, function (d3, topojson, Choropleth, usCounties) {
     var features = topojson.feature(usCounties.topology, usCounties.topology.objects.counties).features;
     var rFeatures = {};
     for (var key in features) {
@@ -31,14 +31,19 @@
     ChoroplethCounties.prototype.layerEnter = function (base, svgElement, domElement) {
         Choropleth.prototype.layerEnter.apply(this, arguments);
 
-        this._choroplethCounties = this._choroplethTransform.insert("g", ".mesh");
-        this._selection = new Utility.SimpleSelection(this._choroplethCounties);
+        this._selection.widgetElement(this._choroplethData);
         this.choroPaths = d3.select(null);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: usCounties.countyNames[d[0]], value: context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A" });
+            })
+        ;
     };
 
     ChoroplethCounties.prototype.layerUpdate = function (base) {
         Choropleth.prototype.layerUpdate.apply(this, arguments);
-        this.choroPaths = this._choroplethCounties.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
+        this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         var context = this;
         this.choroPaths.enter().append("path")
             .attr("class", "data")
@@ -51,15 +56,8 @@
                     context.click(context.rowToObj(row), "weight", context._selection.selected(this));
                 }
             })
-            .on("mouseover.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
-            })
-            .on("mouseout.tooltip", function (d) {
-                context.tooltipShow();
-            })
-            .on("mousemove.tooltip", function (d) {
-                context.tooltipShow([usCounties.countyNames[d[0]], context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A"], context.columns(), 1);
-            })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
         ;
         this.choroPaths
             .attr("d", function (d) {

@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.10.4-dev",
+  "version": "1.14.0-dev",
   "description": "HPCC Visualization Framework",
   "keywords": [
     "Visualization",
@@ -37,21 +37,21 @@
   "dependencies": {
     "c3": "~0.4.10",
     "colorbrewer": "~1.0.0",
-    "d3": "~3.5.6",
-    "font-awesome": "~4.4.0",
-    "topojson": "~1.6.19",
+    "d3": "~3.5.16",
+    "font-awesome": "~4.5.0",
+    "topojson": "~1.6.24",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",
     "d3-cloud": "~1.2.1",
     "d3-plugins": "*",
     "amcharts3": "~3.18.0",
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
-    "es6-promise": "~3.0.2",
-    "d3-plugins": "*"
+    "es6-promise": "~3.2.1",
+    "d3-tip": "~0.6.7"
   },
   "resolutions": {
-    "d3": "~3.5.6"
+    "d3": "~3.5.16"
   },
-  "license": "Apache",
+  "license": "Apache-2.0",
   "authors": [
     "HPCC Systems"
   ]

@@ -2,12 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
-    <script src="../../src/config.js"></script>
+    <script src="http://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+    <script src="../../src/loader.js"></script>
     <script>
-        requirejs.config({
-            baseUrl: "../"
-        });
         var persistObj =
             {"formText":null,"LayoutText":{"__class":"marshaller_HTML","__version":"1.10.0","__properties":{"ddlUrl":"https://216.19.105.2:18010/WsWorkunits/WUResult.json?Wuid=W20160226-140918&ResultName=tablecolumnorderingissue_Comp_Ins070_DDL&SuppressXmlSchema=true","proxyMappings":{"https://216.19.105.2:18010/WsWorkunits/WUResult.json":"http://172.23.40.63:9090/DSP_DEV/dev-dashboard/proxy-WUResult.do","https://216.19.105.2:18010/WsWorkunits/WUInfo.json":"http://172.23.40.63:9090/DSP_DEV/dev-dashboard/proxy-WUInfo.do","https://216.19.105.2:18002/WsEcl/submit/query/":"http://172.23.40.63:9090/DSP_DEV/dev-dashboard/proxy-WsEcl.do"},"designMode":false,"surfacePadding":"0","content":[{"__class":"layout_Cell","__version":"1.10.0","__properties":{"gridRow":0,"gridCol":0,"gridRowSpan":3,"gridColSpan":3,"title":"","widget":{"__class":"composite_MegaChart","__id":"table","__version":"1.10.0","__properties":{"legendPosition":"none","showChartSelect":false,"title":"table","chartType":"TABLE","chart":{"__class":"other_Table","__version":"1.10.0","__properties":{"pagination":true,"itemsPerPage":21,"totalledColumns":[],"fields":[{"__class":"common_Database.Field","__id":"_pe474","__properties":{"label":"1122","type":""}},{"__class":"common_Database.Field","__id":"_pe475","__properties":{"label":"MAX(quantityinstock)","type":""}},{"__class":"common_Database.Field","__id":"_pe476","__properties":{"label":"productname","type":""}},{"__class":"common_Database.Field","__id":"_pe477","__properties":{"label":"productline","type":""}},{"__class":"common_Database.Field","__id":"_pe478","__properties":{"label":"rowcount","type":""}}]}}}},"surfacePadding":"0","surfaceBorderWidth":1,"buttonAnnotations":[],"fields":[]}}],"fields":[]}}}
             //{ "__class": "marshaller_HTML", "__version": "1.10.0-rc9", "__properties": { "ddlUrl": "http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160212-142459&ResultName=ncfdashboard201602_Comp_Ins326_DDL&SuppressXmlSchema=true", "proxyMappings": { "http://10.241.100.159:8010/WsWorkunits/WUResult.json": "http://172.23.40.63:9190/DSP/ramps_dev_detached/proxy-WUResult.do", "http://10.241.100.159:8010/WsWorkunits/WUInfo.json": "http://172.23.40.63:9190/DSP/ramps_dev_detached/proxy-WUInfo.do", "http://10.241.100.159:8002/WsEcl/submit/query/": "http://172.23.40.63:9190/DSP/ramps_dev_detached/proxy-WsEcl.do" }, "designMode": false, "surfacePadding": "0", "content": [{ "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 0, "gridCol": 0, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Inquiries by Vendor", "widget": { "__class": "form_Form", "__id": "InquiriesbyVendorFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "month", "label": "month", "value": "null", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 2, "gridCol": 0, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "InquiriesbyVendor", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Inquiries by Vendor (null)", "chartType": "AM_PIE", "chart": { "__class": "amchart_Pie", "__version": "1.10.0-rc9", "__properties": { "pieAlpha": [], "fields": [{ "__class": "common_Database.Field", "__id": "_pe520", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe521", "__properties": { "label": "weight", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 0, "gridCol": 3, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Inquiries by Month", "widget": { "__class": "form_Form", "__id": "InquiriesbyMonthFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "customername", "label": "customername", "value": "American Strategic Ins", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 2, "gridCol": 3, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "InquiriesbyMonth", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Inquiries by Month (American Strategic Ins)", "chartType": "AM_LINE", "chart": { "__class": "amchart_Line", "__version": "1.10.0-rc9", "__properties": { "xAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe526", "__properties": { "axisTypeTimePattern": "%B", "axisType": "time", "axisTickFormat": "" } }], "yAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe527", "__properties": {} }], "sortDates": true, "y2": [], "xAxisTypeTimePattern": "%B", "xAxisType": "time", "xAxisTickFormat": "", "fields": [{ "__class": "common_Database.Field", "__id": "_pe528", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe529", "__properties": { "label": "vendorinquiries_SUM", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 0, "gridCol": 6, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Inquiry Status by Company and Month", "widget": { "__class": "form_Form", "__id": "InquiryStatusbyCompanyandMonthFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "month", "label": "month", "value": "null", "type": "text", "fields": [] } }, { "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "customername", "label": "customername", "value": "null", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 2, "gridCol": 6, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "InquiryStatusbyCompanyandMonth", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Inquiry Status by Company and Month (null, null)", "chartType": "AM_PIE", "chart": { "__class": "amchart_Pie", "__version": "1.10.0-rc9", "__properties": { "pieAlpha": [], "fields": [{ "__class": "common_Database.Field", "__id": "_pe538", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe539", "__properties": { "label": "weight", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 6, "gridCol": 0, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Status Count by Month", "widget": { "__class": "form_Form", "__id": "StatusCountbyMonthFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "customername", "label": "customername", "value": "null", "type": "text", "fields": [] } }, { "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "status", "label": "status", "value": "null", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 8, "gridCol": 0, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "StatusCountbyMonth", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Status Count by Month (null, null)", "chartType": "AM_LINE", "chart": { "__class": "amchart_Line", "__version": "1.10.0-rc9", "__properties": { "xAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe548", "__properties": { "axisTypeTimePattern": "%B", "axisType": "time" } }], "yAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe549", "__properties": {} }], "sortDates": true, "y2": [], "xAxisTypeTimePattern": "%B", "xAxisType": "time", "fields": [{ "__class": "common_Database.Field", "__id": "_pe550", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe551", "__properties": { "label": "statuscnt_SUM", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 6, "gridCol": 3, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Score Type", "widget": { "__class": "form_Form", "__id": "ScoreTypeFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "month", "label": "month", "value": "null", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 8, "gridCol": 3, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "ScoreType", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Score Type (null)", "chartType": "AM_COLUMN", "chart": { "__class": "amchart_Column", "__version": "1.10.0-rc9", "__properties": { "xAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe556", "__properties": {} }], "yAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe557", "__properties": {} }], "orientation": "horizontal", "y2": [], "fields": [{ "__class": "common_Database.Field", "__id": "_pe558", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe559", "__properties": { "label": "scorecnt_SUM", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 6, "gridCol": 6, "gridRowSpan": 2, "gridColSpan": 3, "title": "", "widget": { "__class": "layout_Surface", "__version": "1.10.0-rc9", "__properties": { "title": "Score Type by Month", "widget": { "__class": "form_Form", "__id": "ScoreTypebyMonthFORM", "__version": "1.10.0-rc9", "__properties": { "inputs": [{ "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "customername", "label": "customername", "value": "American Strategic Ins", "type": "text", "fields": [] } }, { "__class": "form_Input", "__version": "1.10.0-rc9", "__properties": { "name": "scoretype", "label": "scoretype", "value": "Attract V2", "type": "text", "fields": [] } }], "allowEmptyRequest": true, "fields": [] } }, "buttonAnnotations": [], "fields": [] } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }, { "__class": "layout_Cell", "__version": "1.10.0-rc9", "__properties": { "gridRow": 8, "gridCol": 6, "gridRowSpan": 4, "gridColSpan": 3, "title": "", "widget": { "__class": "composite_MegaChart", "__id": "ScoreTypebyMonth", "__version": "1.10.0-rc9", "__properties": { "legendPosition": "none", "title": "Score Type by Month (Attract V2, American Strategic Ins)", "chartType": "AM_LINE", "chart": { "__class": "amchart_Line", "__version": "1.10.0-rc9", "__properties": { "xAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe568", "__properties": { "axisTypeTimePattern": "%B", "axisType": "time" } }], "yAxes": [{ "__class": "amchart_SerialAxis", "__id": "_pe569", "__properties": {} }], "sortDates": true, "y2": [], "xAxisTypeTimePattern": "%B", "xAxisType": "time", "fields": [{ "__class": "common_Database.Field", "__id": "_pe570", "__properties": { "label": "label", "type": "" } }, { "__class": "common_Database.Field", "__id": "_pe571", "__properties": { "label": "scorecnt_SUM", "type": "" } }] } } } }, "surfacePadding": "0", "surfaceBorderWidth": 1, "buttonAnnotations": [], "fields": [] } }], "fields": [] } }
@@ -25,40 +22,8 @@
     </div>
     <script>
         var resolvedCache = {};
-        function resolveHPCCViz(opts, callback) {
-            opts.serverUrl = opts.serverUrl || "http://viz.hpccsystems.com/";
-            opts.useSrc = opts.useSrc || false;
-            if (resolvedCache[opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : "") + "/hpcc-bundles-def.js"]) {
-                setTimeout(function () {
-                    callback(resolvedCache[opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : "") + "/hpcc-bundles-def.js"]);
-                }, 0);
-            }
-            if (opts.bundles) {
-                setTimeout(function () {
-                    resolveRequire(opts.bundles);
-                }, 0);
-            } else {
-                require([opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : "") + "/hpcc-bundles-def.js"], resolveRequire);
-            }
-            function resolveRequire(bundles) {
-                var retVal = require.config({
-                    context: opts.ver,
-                    baseUrl: opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : ""),
-                    bundles: bundles,
-                    paths: {
-                        src: ".",
-                        "font-awesome": "./font-awesome/css/font-awesome.min",
-                    }
-                });
-                resolvedCache[opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : "") + "/hpcc-bundles-def.js"] = retVal;
-                retVal([opts.serverUrl + opts.ver + "/dist-amd" + (opts.useSrc ? "-src" : "") + "/hpcc-viz.js"], function () {
-
-                    callback(retVal);
-                });
-            }
-        };
         var main = null;
-        require(["src/common/Utility", "src/common/Widget", "src/layout/Grid", "src/form/Form", "src/form/TextArea", "src/layout/Tabbed", "src/other/Html", "src/other/Persist"], function (Utility, Widget, Grid, Form, TextArea, Tabbed, Html, Persist) {
+        require(["src/common/Utility", "src/common/Widget", "src/layout/Grid", "src/form/TextArea", "src/layout/Tabbed"], function (Utility, Widget, Grid, TextArea, Tabbed) {
             var params = Utility.urlParams();
 
             Tabbed.prototype.lazyRender = Tabbed.prototype.debounce(function () {
@@ -92,6 +57,7 @@
             var tabID = 0;
             var prevMarshallers = {};
             doPersistChanged();
+
             function doPersistChanged() {
                 for (var key in prevMarshallers) {
                     try {
@@ -114,53 +80,50 @@
                 ;
 
                 ++tabID;
-                for (var key in params) {
-                    switch (key) {
-                        case "dev":
-                            Persist.create(str, function (marshaller) {
-                                prevMarshallers["dev"] = marshaller;
-                                tabbed
-                                    .addTab(marshaller, "dev")
-                                    .render()
-                                ;
-                            });
-                            break;
-                        default:
-                            loadTab({
-                                ver: key,
-                                useSrc: false
-                            });
-                    }
-                }
-                /*
-                */
-
-                /*
-                loadTab({
-                    ver: "v1.6.10",
-                    useSrc: false
-                });
-                */
-                /*
-                loadTab({
-                    ver: "v1.10.0-rc6",
-                    useSrc: false
-                });
-                */
-                function loadTab(opts) {
-                    resolveHPCCViz(opts, function (require) {
-                        require(["src/other/Persist"], function (Persist) {
-                            try {
-                                Persist.create(str, function (marshaller) {
-                                    prevMarshallers[opts.ver] = marshaller;
+                require(["src/Loader"], function (Loader) {
+                    for (var key in params) {
+                        switch (key) {
+                            case "default":
+                                Loader.create(str, function (marshaller) {
+                                    prevMarshallers["dev"] = marshaller;
                                     tabbed
-                                        .addTab(marshaller, opts.ver)
+                                        .addTab(marshaller, "dev")
                                         .render()
                                     ;
                                 });
-                            } catch (e) {
-                            }
-                        });
+                                break;
+                            case "dev":
+                                loadTab(require, "dev");
+                                break;
+                            default:
+                                if (key.indexOf("v") === 0) {
+                                    Loader.cdn(key, function (require) {
+                                        loadTab(require, key);
+                                    });
+                                } else {
+                                    var keyParts = key.split(":");
+                                    var branch = keyParts.length > 1 ? keyParts[1] : keyParts[0];
+                                    var repo = keyParts.length > 1 ? keyParts[0] : "hpcc-systems";
+                                    Loader.github(branch, repo, function (require) {
+                                        loadTab(require, key);
+                                    });
+                                }
+                        }
+                    }
+                });
+
+                function loadTab(require, title) {
+                    require(["src/other/Persist"], function (Persist) {
+                        try {
+                            Persist.create(str, function (marshaller) {
+                                prevMarshallers[title] = marshaller;
+                                tabbed
+                                    .addTab(marshaller, title)
+                                    .render()
+                                ;
+                            });
+                        } catch (e) {
+                        }
                     });
                 }
                 ;

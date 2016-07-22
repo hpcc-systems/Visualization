@@ -23,19 +23,33 @@
 
     Class.prototype.implements = function (source) {
         for (var prop in source) {
-            if (this[prop] === undefined && source.hasOwnProperty(prop)) {
-                this[prop] = source[prop];
+            if (source.hasOwnProperty(prop)) {
+                if (this[prop] === undefined) {
+                    this[prop] = source[prop];
+                } else if (window.__hpcc_debug) {
+                    console.log("Duplicate member:  " + prop);
+                }
             }
         }
     };
 
     Class.prototype.mixin = function (mixinClass) {
         this.implements(mixinClass.prototype);
-        for (var prop in mixinClass.prototype) {
-            if (prop === "_class" && mixinClass.prototype.hasOwnProperty(prop)) {
-                this[prop] += " " + mixinClass.prototype[prop].split(" ").pop();
-            }
+        //  Special case mixins  ---
+        if (mixinClass.prototype.hasOwnProperty("_class")) {
+            this._class += " " + mixinClass.prototype._class.split(" ").pop();
         }
+    };
+
+    Class.prototype.overrideMethod = function (methodID, newMethod) {
+        if (this[methodID] === undefined) {
+            throw "Method:  " + methodID + " does not exist.";
+        }
+        var origMethod = this[methodID];
+        this[methodID] = function () {
+            return newMethod(origMethod, arguments);
+        };
+        return this;
     };
 
     return Class;

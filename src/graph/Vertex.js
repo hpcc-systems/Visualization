@@ -18,6 +18,7 @@
     Vertex.prototype._class += " graph_Vertex";
 
     Vertex.prototype.publishProxy("faChar", "_icon");
+    Vertex.prototype.publishProxy("imageUrl", "_icon");
     Vertex.prototype.publishProxy("icon_shape_diameter", "_icon", "diameter");
     Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
     Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");

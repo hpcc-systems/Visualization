@@ -18,6 +18,7 @@
 
     Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"],{tags:["Private"]});
     Icon.prototype.publishProxy("faChar", "_faChar", "char");
+    Icon.prototype.publish("imageUrl", null, "string", "Image URL", null, { optional: true });
     Icon.prototype.publishProxy("image_colorFill", "_faChar", "text_colorFill");
     Icon.prototype.publish("tooltip", "", "string", "Tooltip",null,{tags:["Private"]});
     Icon.prototype.publish("diameter", 24, "number", "Diameter",null,{tags:["Private"]});
@@ -31,12 +32,24 @@
 
     Icon.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
+        this._defs = element.append("defs");
+        this._defs.append("clipPath")
+            .attr("id", "clip_" + this.id() + "_circle")
+            .append("circle")
+                .attr("x", 0)
+                .attr("y", 0)
+        ;
+        this._defs.append("clipPath")
+            .attr("id", "clip_" + this.id() + "_square")
+            .append("rect")
+        ;
+        this._root = element.append("g");
         this._shapeWidget
-            .target(domNode)
+            .target(this._root.node())
             .render()
         ;
         this._faChar
-            .target(domNode)
+            .target(element.node())
             .render()
         ;
         this._tooltipElement = element.append("title");
@@ -50,15 +63,42 @@
 
     Icon.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
+
+        var diameter = this.diameter();
+        var radius = diameter / 2;
+        this._defs.select("circle")
+            .attr("r", radius)
+        ;
+        this._defs.select("rect")
+            .attr("x", -radius)
+            .attr("y", -radius)
+            .attr("width", diameter)
+            .attr("height", diameter)
+        ;
         this._faChar
-            .fontSize(this.diameter() * (100 - this.paddingPercent()) / 100)
+            .fontSize(diameter * (100 - this.paddingPercent()) / 100)
             .render()
         ;
         this._shapeWidget
             .shape(this.shape())
-            .width(this.diameter())
-            .height(this.diameter())
+            .width(diameter)
+            .height(diameter)
             .render()
+        ;
+        var image = this._root.selectAll("image").data(this.imageUrl() ? [this.imageUrl()] : [], function (d) { return d; });
+        image.enter()
+            .append("image")
+            .attr("xlink:href", this.imageUrl())
+        ;
+        image
+            .attr("clip-path", "url(#clip_" + this.id() + "_" + this.shape() + ")")
+            .attr("x", -radius)
+            .attr("y", -radius)
+            .attr("width", diameter)
+            .attr("height", diameter)
+        ;
+        image.exit()
+            .remove()
         ;
         this._tooltipElement.text(this.tooltip());
     };

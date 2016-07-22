@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>HPCC Visualization Unit Tests</title>
@@ -6,19 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://rawgit.com/mochajs/mocha/2.2.5/mocha.css" />
     <link rel="stylesheet" href="runner.css" />
+    <script src="http://rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script src="http://rawgit.com/chaijs/chai/3.2.0/chai.js"></script>
 </head>
 <body>
     <div id="mocha"></div>
     <div id="testWidget"></div>
-    <script src="http://rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
-    <script src="http://rawgit.com/chaijs/chai/3.2.0/chai.js"></script>
-
-    <script src="http://rawgit.com/jrburke/requirejs/2.1.17/require.js"></script>
-    <script src="../src/config.js"></script>
+    <script src="http://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+    <script src="../src/loader.js"></script>
     <script>
         mocha.setup('bdd');
         var assert = chai.assert;
-        require(["./widgets"], function () {
+        require(["./loader", "./widgets"], function () {
             mocha.run();
         });
     </script>

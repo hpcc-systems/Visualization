@@ -10,6 +10,7 @@
         SVGWidget.call(this);
         I2DChart.call(this);
         ITooltip.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this.labelWidgets = {};
 
@@ -24,17 +25,44 @@
             .padRadius(this.calcRadius())
             .innerRadius(this.innerRadius())
         ;
+        this
+            .tooltipTick_default(false)
+            .tooltipOffset_default(0)
+        ;
     }
     Pie.prototype = Object.create(SVGWidget.prototype);
     Pie.prototype.constructor = Pie;
     Pie.prototype._class += " chart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
     Pie.prototype.implements(ITooltip.prototype);
+    Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
     Pie.prototype.publish("outerText", false, "boolean", "Sets label position inside or outside chart",null,{tags:["Basic"]});
     Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart",null,{tags:["Basic"]});
+
+    Pie.prototype.pointInArc = function (pt, ptData) {
+        var r1 = this.d3Arc.innerRadius()(ptData),
+            r2 = this.d3Arc.outerRadius()(ptData),
+            theta1 = this.d3Arc.startAngle()(ptData),
+            theta2 = this.d3Arc.endAngle()(ptData);
+
+        var dist = pt.x * pt.x + pt.y * pt.y,
+            angle = Math.atan2(pt.x, -pt.y);
+
+        angle = (angle < 0) ? (angle + Math.PI * 2) : angle;
+
+        return (r1 * r1 <= dist) && (dist <= r2 * r2) && (theta1 <= angle) && (angle <= theta2);
+    };
+
+    Pie.prototype.boxInArc = function (pos, bb, ptData) {
+        var topLeft = { x: pos.x + bb.x, y: pos.y + bb.y };
+        var topRight = { x: topLeft.x + bb.width, y: topLeft.y };
+        var bottomLeft = { x: topLeft.x, y: topLeft.y + bb.height };
+        var bottomRight = { x: topLeft.x + bb.width, y: topLeft.y + bb.height };
+        return this.pointInArc(topLeft, ptData) && this.pointInArc(topRight, ptData) && this.pointInArc(bottomLeft, ptData) && this.pointInArc(bottomRight, ptData);
+    };
 
     Pie.prototype.calcRadius = function (_) {
         return Math.min(this._size.width, this._size.height) / 2 - 2;
@@ -46,7 +74,13 @@
 
     Pie.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-        this._selection = new Utility.SimpleSelection(element);
+        this._selection.widgetElement(element);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d.data[0], value: d.data[1] });
+            })
+        ;
     };
 
     Pie.prototype.update = function (domNode, element) {
@@ -71,15 +105,8 @@
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d.data, context.columns(), 1);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d.data, context.columns(), 1);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .on("mouseover", arcTween(0, 0))
                     .on("mouseout", arcTween(-5, 150))
                 ;
@@ -129,6 +156,7 @@
                     .element()
                         .classed("innerLabel", !context.outerText())
                         .classed("outerLabel", context.outerText())
+                        .style("opacity", (context.outerText() || context.boxInArc(pos, context.labelWidgets[d.data[0]].getBBox(), d)) ? null : 0)
                 ;
             })
         ;
@@ -170,7 +198,6 @@
 
     Pie.prototype.exit = function (domNode, element) {
         SVGWidget.prototype.exit.apply(this, arguments);
-        delete this._selectionBag;
     };
 
     return Pie;

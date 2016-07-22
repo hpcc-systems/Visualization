@@ -20,6 +20,8 @@
         
         this._valueTitle = new Text();
         this._domainTitle = new Text();
+
+        this._legend = new Legend();
     }
     MegaChart.prototype = Object.create(Border.prototype);
     MegaChart.prototype.constructor = MegaChart;
@@ -37,7 +39,9 @@
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
     
     MegaChart.prototype.publish("legendPosition","right","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
-    
+    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
+    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
+
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showCSV",true,"boolean","Show/Hide CSV button", null, {tags:["Basic"]});
@@ -66,6 +70,12 @@
         return this;
     };
 
+    MegaChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chart.chartTypeProperties();
+        this._chart.chartTypeProperties(_);
+        return this;
+    };
+
     MegaChart.prototype.fields = function (_) {
         if (!arguments.length) return this._chart.fields();
         this._chart.fields(_);
@@ -84,6 +94,11 @@
         return this;
     };
 
+    MegaChart.prototype.downloadCSV = function () {
+        Utility.downloadBlob("CSV", this._chart.export("CSV"));
+        return this;
+    };
+
     MegaChart.prototype.enter = function (domNode, element) {
         Border.prototype.enter.apply(this, arguments);
         var context = this;
@@ -95,7 +110,7 @@
             .value("CSV")
         ;
         this._csvButton.click = function (a) {
-            Utility.downloadBlob("CSV", context._chart.export("CSV"));
+            context.downloadCSV();
         };
 
         this._chartTypeSelect = new Select()
@@ -109,8 +124,11 @@
 
         this.setContent("center", this._chart);
         
-        this._legend = new Legend().fixedSize(true).targetWidget(this._chart);
-        this._legend.orientation(["top","bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical");
+        this._legend
+            .fixedSize(true)
+            .targetWidget(this._chart)
+            .orientation(["top", "bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical")
+        ;
         
         this._prevLegendPosition = this.legendPosition();
         
@@ -137,6 +155,8 @@
                 }
             }
         }
+
+        this._chartTypeSelect.value(this.chartType());
         var twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
@@ -186,10 +206,9 @@
                 this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
             }
         }
-        
+
         this._legend.dataFamily(this._chart.getChartDataFamily());
-        
-        
+
         Border.prototype.update.apply(this, arguments);
     };
     

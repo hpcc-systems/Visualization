@@ -1,12 +1,13 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "require", "es6-promise"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.d3, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.require);
     }
-}(this, function (d3, Database, Utility, Comms, Widget, require) {
-    var loading = "...loading...";
+}(this, function (d3, Class, Database, Utility, Comms, Widget, require) {
+    var LOADING = "...loading...";
+    var _CHANGED = "_changed";
 
     function exists(prop, scope) {
         var propParts = prop.split(".");
@@ -75,6 +76,12 @@
             case "date":
             case "time":
                 return "time";
+            case "geohash":
+                return "geohash";
+            default:
+                if (hipieType.indexOf("unsigned") === 0) {
+                    return "number";
+                }
         }
         return "string";
     }
@@ -161,12 +168,13 @@
             this.columns = ["county"];
             this.columnsIdx = { county: 0};
         } else if (mappings.geohash) {
-            this.columns = ["geohash"];
-            this.columnsIdx = { geohash: 0 };
+            this.columns = ["geohash", "label"];
+            this.columnsIdx = { geohash: 0, label: 1 };
         }
+        var weightOffset = this.columns.length;
         mappings.weight.forEach(function (w, i) {
             this.columns.push(w);
-            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + 1;
+            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
         }, this);
         this.init();
     }
@@ -230,7 +238,7 @@
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
-    GraphMappings.prototype.calcAnnotation = function (field, origItem, forAnnotation) {
+    GraphMappings.prototype.calcIconInfo = function (field, origItem, forAnnotation) {
         var retVal = {};
         function mapStruct(struct, retVal) {
             if (struct) {
@@ -269,9 +277,8 @@
                 }
             }
         }
-        mapStruct(field, retVal);
-        if (origItem && origItem[field.id] && field.valuemappings) {
-            var annotationInfo = field.valuemappings[origItem[field.id]];
+        if (origItem && origItem[field.fieldid] && field.valuemappings) {
+            var annotationInfo = field.valuemappings[origItem[field.fieldid]];
             mapStruct(annotationInfo, retVal);
         }
 
@@ -299,22 +306,22 @@
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
 
-                // Icon  ---
-                var icon = context.calcAnnotation(context.visualization.icon, origItem);
-                if (icon) {
-                    for (var key in icon) {
+                //  Icon  ---
+                var iconInfo = context.calcIconInfo(context.visualization.icon, origItem, false);
+                if (iconInfo) {
+                    for (var key in iconInfo) {
                         if (retVal[key]) {
-                            retVal[key](icon[key]);
+                            retVal[key](iconInfo[key]);
                         }
                     }
                 }
 
                 // Annotations  ---
                 var annotations = [];
-                context.fields.forEach(function (field) {
-                    var annotation = context.calcAnnotation(field, origItem, true);
-                    if (annotation) {
-                        annotations.push(annotation);
+                context.visualization.flag.forEach(function (field) {
+                    var iconInfo = context.calcIconInfo(field, origItem, true);
+                    if (iconInfo) {
+                        annotations.push(iconInfo);
                     }
                 });
                 retVal.annotationIcons(annotations);
@@ -519,11 +526,11 @@
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
                 widget["vertex_" + key] = function (row) {
-                    context.visualization.onEvent(key, context.events[key], row);
+                    context.visualization.processEvent(key, context.events[key], row);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {
-                    context.visualization.onEvent(key, context.events[key], row, col, selected);
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             }
         }
@@ -558,42 +565,70 @@
     };
 
     //  Visualization ---
-    function Visualization(dashboard, visualization) {
+    function Visualization(dashboard, visualization, parentVisualization) {
+        Class.call(this);
+
         this.dashboard = dashboard;
+        this.parentVisualization = parentVisualization;
         this.id = visualization.id;
+
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
         this.icon = visualization.icon || {};
+        this.flag = visualization.flag || [];
         this.fields = visualization.fields || {};
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
+        this.layers = (visualization.visualizations || []).map(function (innerViz) {
+            return new Visualization(dashboard, innerViz, this);
+        }, this);
 
         var context = this;
         switch (this.type) {
             case "CHORO":
-                if (this.source.mappings.contains("state")) {
-                    this.loadWidget("src/map/ChoroplethStates", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .paletteID_default(visualization.color)
-                        ;
-                    });
-                } else if (this.source.mappings.contains("county")) {
-                    this.loadWidget("src/map/ChoroplethCounties", function (widget) {
-                        widget
-                            .id(visualization.id)
-                            .paletteID_default(visualization.color)
-                        ;
-                    });
-
-                } else if (this.source.mappings.contains("geohash")) {
-                    this.loadWidget("src/map/Layered", function (widget) {
-                        widget
-                            .id(visualization.id)
-                        ;
-                    });
+                var chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
+                switch (chartType) {
+                    case "MAP_PINS":
+                        this.loadWidget("../map/Pins", function (widget) {
+                            widget
+                                .id(visualization.id)
+                                .columns(context.source.getColumns())
+                                .geohashColumn("geohash")
+                                .tooltipColumn("label")
+                                .fillColor(visualization.color ? visualization.color : null)
+                                .projection("albersUsaPr")
+                            ;
+                        });
+                        break;
+                    default:
+                        chartType = "CHORO_USSTATES";
+                        if (this.source.mappings.contains("state")) {
+                            chartType = "CHORO_USSTATES";
+                        } else if (this.source.mappings.contains("county")) {
+                            chartType = "CHORO_USCOUNTIES";
+                        } else if (this.source.mappings.contains("country")) {
+                            chartType = "CHORO_COUNTRIES";
+                        }
+                        Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
+                            context.loadWidget("../composite/MegaChart", function (widget) {
+                                var layers = context.layers.map(function (layer) { return layer.widget; });
+                                widget
+                                    .id(visualization.id)
+                                    .legendPosition_default("none")
+                                    .showChartSelect_default(false)
+                                    .chartType_default(chartType)
+                                    .chartTypeDefaults({
+                                        autoScaleMode: layers.length ? "data" : "mesh"
+                                    })
+                                    .chartTypeProperties({
+                                        layers: layers
+                                    })
+                                ;
+                            });
+                        });
+                        break;
                 }
                 break;
             case "2DCHART":
@@ -601,7 +636,7 @@
             case "BUBBLE":
             case "BAR":
             case "WORD_CLOUD":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -610,7 +645,7 @@
                 });
                 break;
             case "LINE":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -621,7 +656,7 @@
                 });
                 break;
             case "TABLE":
-                this.loadWidget("src/composite/MegaChart", function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     widget
                         .id(visualization.id)
                         .legendPosition_default("none")
@@ -632,7 +667,7 @@
                 });
                 break;
             case "SLIDER":
-                this.loadWidget("src/form/Slider", function (widget) {
+                this.loadWidget("../form/Slider", function (widget) {
                     widget
                         .id(visualization.id)
                     ;
@@ -652,7 +687,7 @@
                 });
                 break;
             case "GRAPH":
-                this.loadWidgets(["src/graph/Graph"], function (widget) {
+                this.loadWidgets(["../graph/Graph"], function (widget) {
                     widget
                         .id(visualization.id)
                         .layout_default("ForceDirected2")
@@ -661,7 +696,7 @@
                 });
                 break;
             case "FORM":
-                this.loadWidgets(["src/form/Form", "src/form/Input", "src/form/Button", "src/form/CheckBox", "src/form/ColorInput", "src/form/Radio", "src/form/Range", "src/form/Select", "src/form/Slider", "src/form/TextArea"], function (widget, widgetClasses) {
+                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea"], function (widget, widgetClasses) {
                     var Input = widgetClasses[1];
                     var CheckBox = widgetClasses[3];
                     var Radio = widgetClasses[5];
@@ -729,7 +764,7 @@
                 });
                 break;
             case "HEAT_MAP":
-                this.loadWidgets(["src/other/HeatMap"], function (widget) {
+                this.loadWidgets(["../other/HeatMap"], function (widget) {
                     widget
                         .id(visualization.id)
                         .image_default(context.properties.imageUrl)
@@ -737,7 +772,7 @@
                 });
                 break;
             default:
-                this.loadWidget("src/common/TextBox", function (widget) {
+                this.loadWidget("../common/TextBox", function (widget) {
                     widget
                         .id(visualization.id)
                         .text_default(context.id + "\n" + "TODO:  " + context.type)
@@ -746,16 +781,30 @@
                 break;
         }
     }
+    Visualization.prototype = Object.create(Class.prototype);
+    Visualization.prototype.constructor = Visualization;
 
     Visualization.prototype.getQualifiedID = function () {
         return this.id;
     };
 
-    Visualization.prototype.isLoading = function (widgetPath, callback) {
+    Visualization.prototype.loadedPromise = function () {
+        var context = this;
+        return new Promise(function (resolve, reject) {
+            var intervalHandle = setInterval(function () {
+                if (context.isLoaded()) {
+                    clearInterval(intervalHandle);
+                    resolve();
+                }
+            }, 100);
+        });
+    };
+
+    Visualization.prototype.isLoading = function () {
         return this.widget === null;
     };
 
-    Visualization.prototype.isLoaded = function (widgetPath, callback) {
+    Visualization.prototype.isLoaded = function () {
         return this.widget instanceof Widget;
     };
 
@@ -768,8 +817,12 @@
 
         var context = this;
         require(widgetPaths, function (Widget) {
-            if (context.dashboard.marshaller._widgetMappings.has(context.id)) {
-                context.setWidget(context.dashboard.marshaller._widgetMappings.get(context.id));
+            var existingWidget = context.dashboard.marshaller._widgetMappings.get(context.id);
+            if (existingWidget) {
+                if (Widget.prototype._class !== existingWidget._class) {
+                    console.log("Unexpected persisted widget type (old persist string?)");
+                }
+                context.setWidget(existingWidget);
             } else {
                 context.setWidget(new Widget());
             }
@@ -827,9 +880,12 @@
             params = paramsArr.join(", ");
         }
 
-        var titleWidget = this.widget;
-        while (titleWidget && !titleWidget.title) {
-            titleWidget = titleWidget.locateParentWidget();
+        var titleWidget = null;
+        if (!this.parentVisualization) {
+            titleWidget = this.widget;
+            while (titleWidget && !titleWidget.title) {
+                titleWidget = titleWidget.locateParentWidget();
+            }
         }
         if (titleWidget) {
             var title = titleWidget.title();
@@ -865,10 +921,21 @@
                 updatedViz.clear();
             });
         }
-        this.update(loading);
+        this.update(LOADING);
     };
 
-    Visualization.prototype.onEvent = function (eventID, event, row, col, selected) {
+    Visualization.prototype.on = function (eventID, func) {
+        var context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            origFunc.apply(context, args);
+            setTimeout(function () {
+                func.apply(context, args);
+            }, 0);
+        });
+        return this;
+    };
+    
+    Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
         var context = this;
         setTimeout(function () {
             selected = selected === undefined ? true : selected;
@@ -904,11 +971,11 @@
                                     console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
                                     if (changed) {
                                         datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                        datasourceRequests[dataSource.id].request[key + "_changed"] = changed;
+                                        datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
                                     }
                                 } else {
                                     datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                    datasourceRequests[dataSource.id].request[key + "_changed"] = changed;
+                                    datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
                                 }
                             }
                         }
@@ -937,6 +1004,17 @@
             }
             return false;
         }, this);
+    };
+
+    Visualization.prototype.serializeState = function () {
+        return {
+            eventValues: this._eventValues
+        };
+    };
+
+    Visualization.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this._eventValues = state.eventValues;
     };
 
     //  Output  ---
@@ -1025,6 +1103,9 @@
     };
 
     DataSource.prototype.fetchData = function (request, refresh, updates) {
+        if (request && request.refresh !== undefined) { throw "refresh in this request????"; }
+        request = request || this.request || {};
+        refresh = refresh || false;
         if (!updates) {
             updates = [];
             for (var oKey in this.outputs) {
@@ -1034,16 +1115,16 @@
                     var inputs = viz.getInputVisualizations();
                     if (!inputs.length) {
                         updates.push(item);
-                        viz.update(loading);
+                        viz.update(LOADING);
                     }
                 }, this);
             }
         }
 
         var context = this;
-        this.request.refresh = refresh ? true : false;
+        this.request.refresh = refresh;
         this.filter.forEach(function (item) {
-            this.request[item + "_changed"] = request[item + "_changed"] || false;
+            this.request[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
             if (this.request[item] !== value) {
                 this.request[item] = value;
@@ -1058,14 +1139,20 @@
             }
         }
         var now = Date.now();
-        this.comms.call(this.request).then(function (response) {
-            var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
-            setTimeout(function() {
-                context.processResponse(response, request, updates);
-                ++context._loadedCount;
-            }, delay > 0 ? delay : 0);
-        }).catch(function (e) {
-            context.dashboard.marshaller.commsError("DataSource.prototype.fetchData", e);
+        this.dashboard.marshaller.commsEvent(this, "request", this.request);
+        return new Promise(function (resolve, reject) {
+            context.comms.call(context.request).then(function (response) {
+                var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
+                setTimeout(function () {
+                    context.processResponse(response, request, updates);
+                    context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                    ++context._loadedCount;
+                    resolve(response);
+                }, delay > 0 ? delay : 0);
+            }).catch(function (e) {
+                context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+                reject(e);
+            });
         });
     };
 
@@ -1081,7 +1168,7 @@
                 from = this.outputs[key].id.toLowerCase();
             }
             if (exists(from, response)) {
-                if (!exists(from + "_changed", response) || (exists(from + "_changed", response) && response[from + "_changed"].length && response[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(response[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1089,7 +1176,7 @@
                 }
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                if (!exists(from + "_changed", lowerResponse) || (exists(from + "_changed", lowerResponse) && response[from + "_changed"].length && lowerResponse[from + "_changed"][0][from + "_changed"])) {
+                if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
                     this.outputs[key].setData(lowerResponse[from], request, updates);
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1103,6 +1190,17 @@
                 console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
+    };
+
+    DataSource.prototype.serializeState = function () {
+        return {
+            request: this.request
+        };
+    };
+
+    DataSource.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.request = state.request || {};
     };
 
     //  Dashboard  ---
@@ -1130,6 +1228,10 @@
         }, this);
         this._visualizationTotal = this._visualizationArray.length;
     }
+
+    Dashboard.prototype.loadedPromise = function () {
+        return Promise.all(this._visualizationArray.map(function (visualization) { return visualization.loadedPromise(); }));
+    };
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
@@ -1161,19 +1263,55 @@
         }, this);
     };
 
-    Dashboard.prototype.allVisualizationsLoaded = function () {
-        var notLoaded = this._visualizationArray.filter(function (item) { return !item.isLoaded(); });
-        return notLoaded.length === 0;
+    Dashboard.prototype.fetchData = function () {
+        var promises = [];
+        for (var key in this.datasources) {
+            promises.push(this.datasources[key].fetchData());
+        }
+        return Promise.all(promises);
+    };
+
+    Dashboard.prototype.serializeState = function () {
+        var retVal = {
+            datasources: {},
+            visualizations: {}
+        };
+        for (var key in this.datasources) {
+            retVal.datasources[key] = this.datasources[key].serializeState();
+        }
+        for (var vizKey in this._visualizations) {
+            retVal.visualizations[vizKey] = this._visualizations[vizKey].serializeState();
+        }
+        return retVal;
+    };
+
+    Dashboard.prototype.deserializeState = function (state) {
+        if (!state) return;
+        for (var key in this.datasources) {
+            if (state.datasources[key]) {
+                this.datasources[key].deserializeState(state.datasources[key]);
+            }
+        }
+        for (var vizKey in this._visualizations) {
+            if (state.visualizations[vizKey]) {
+                this._visualizations[vizKey].deserializeState(state.visualizations[vizKey]);
+            }
+        }
     };
 
     //  Marshaller  ---
     function Marshaller() {
+        Class.call(this);
+
         this._proxyMappings = {};
         this._widgetMappings = d3.map();
         this._clearDataOnUpdate = true;
         this._propogateClear = false;
+        this.id = "Marshaller";
         this._missingDataString = "";
     }
+    Marshaller.prototype = Object.create(Class.prototype);
+    Marshaller.prototype.constructor = Marshaller;
 
     Marshaller.prototype.commsDataLoaded = function () {
         for (var i = 0; i < this.dashboardArray.length; i++) {
@@ -1189,7 +1327,6 @@
     Marshaller.prototype.getVisualization = function (id) {
         return this._visualizations[id];
     };
-
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
@@ -1231,11 +1368,11 @@
                         callback(response);
                     });
                 }).catch(function (e) {
-                    context.commsError("Marshaller.prototype.url", e);
+                    context.commsEvent(context, "error", hipieResultName, e);
                 });
             }
         }).catch(function (e) {
-            context.commsError("Marshaller.prototype.url", e);
+            context.commsEvent(context, "error", request, e);
         });
     };
 
@@ -1283,8 +1420,17 @@
             context.dashboardArray.push(newDashboard);
         });
         this.dashboardTotal = this.dashboardArray.length;
+        this._visualizationArray.forEach(function (ddlViz) {
+            ddlViz.on("processEvent", function (eventID, event, row, col, selected) {
+                context.vizEvent(ddlViz.widget, eventID, row, col, selected);
+            });
+        });
         this.ready(callback);
         return this;
+    };
+
+    Marshaller.prototype.dashboardsLoaded = function () {
+        return Promise.all(this.dashboardArray.map(function (dashboard) { return dashboard.loadedPromise(); }));
     };
 
     Marshaller.prototype.getVisualizations = function () {
@@ -1296,38 +1442,85 @@
     };
 
     Marshaller.prototype.on = function (eventID, func) {
-        if (this[eventID] === undefined) {
-            throw "Method:  " + eventID + " does not exist.";
-        }
-        var origFunc = this[eventID];
-        this[eventID] = function () {
-            origFunc.apply(this, arguments);
+        var context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            origFunc.apply(context, args);
             func.apply(this, arguments);
-        };
+        });
         return this;
-    };
-
-    Marshaller.prototype.allDashboardsLoaded = function () {
-        return this.dashboardArray.filter(function (item) { return !item.allVisualizationsLoaded(); }).length === 0;
     };
 
     Marshaller.prototype.ready = function (callback) {
         if (!callback) {
             return;
         }
-        var context = this;
-        function waitForLoad(callback) {
-            if (context.allDashboardsLoaded()) {
-                callback();
-            } else {
-                setTimeout(waitForLoad, 100, callback);
-            }
-        }
-        waitForLoad(callback);
+        this.dashboardsLoaded().then(function () {
+            callback();
+        });
     };
 
-    Marshaller.prototype.commsError = function (source, error) {
-        console.log("Comms Error:\n" + source + "\n" + error);
+    Marshaller.prototype.vizEvent = function (sourceWidget, eventID, row, col, selected) {
+        console.log("Marshaller.vizEvent:  " + sourceWidget.id() + "-" + eventID);
+    };
+
+    Marshaller.prototype.commsEvent = function (ddlSource, eventID, request, response) {
+        switch (eventID) {
+            case "request":
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(request));
+                }
+                break;
+            case "response":
+            case "error":
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + ddlSource.id + "-" + eventID + ":  " + JSON.stringify(response));
+                }
+                break;
+            default:
+                if (window.__hpcc_debug) {
+                    console.log("Marshaller.commsEvent:  " + JSON.stringify(arguments));
+                }
+                break;
+
+        }
+    };
+
+    Marshaller.prototype.createDatabomb = function () {
+        var retVal = {};
+        this.dashboardArray.forEach(function (dashboard) {
+            for (var key in dashboard.datasources) {
+                var comms = dashboard.datasources[key].comms;
+                retVal[key] = {};
+                for (var key2 in comms._hipieResults) {
+                    var hipieResult = comms._hipieResults[key2];
+                    retVal[key][key2] = comms._resultNameCache[hipieResult.from];
+                }
+            }
+        });
+        return retVal;
+    };
+
+    Marshaller.prototype.fetchData = function () {
+        var promises = this.dashboardArray.map(function (dashboard) {
+            return dashboard.fetchData();
+        });
+        return Promise.all(promises);
+    };
+
+    Marshaller.prototype.serializeState = function () {
+        var retVal = {};
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            retVal[dashboard.id] = dashboard.serializeState();
+        });
+        return retVal;
+    };
+
+    Marshaller.prototype.deserializeState = function (state) {
+        if (!state) return;
+        this.dashboardArray.forEach(function (dashboard, idx) {
+            dashboard.deserializeState(state[dashboard.id]);
+        });
+        return this;
     };
 
     return {

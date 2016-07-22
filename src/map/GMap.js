@@ -1,8 +1,9 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be file:
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js", "css!./GMap"], factory);
+        var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
+        var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey, "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -163,6 +164,8 @@
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
 
+    GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
+
     GMap.prototype.data = function (_) {
         var retVal = HTMLWidget.prototype.data.apply(this, arguments);
         return retVal;
@@ -191,7 +194,8 @@
             scaleControl: this.scaleControl(),
             streetViewControl: this.streetViewControl(),
             overviewMapControl: this.overviewMapControl(),
-            overviewMapControlOptions: { opened: true }
+            overviewMapControlOptions: { opened: true },
+            styles: this.googleMapStyles()
         };
     };
 

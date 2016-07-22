@@ -24,7 +24,17 @@
     Column.prototype.publish("stackedOpacity", 0.66, "number", "Fill Stacked Opacity", null, { tags: ["Basic"] });
     Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
-    Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
+    Column.prototype.enter = function (domNode, element) {
+        XYAxis.prototype.enter.apply(this, arguments);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: d.row[d.idx] });
+            })
+        ;
+    };
+
+    Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal, duration) {
         var context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -36,12 +46,12 @@
         var offset = 0;
         switch (this.xAxisType()) {
             case "ordinal":
-                dataLen = this.dataScale.rangeBand();
-                offset = 0;
+                dataLen = this.domainAxis.d3Scale.rangeBand();
+                offset = -dataLen / 2;
                 break;
             case "linear":
             case "time":
-                dataLen = Math.max(Math.abs(this.dataScale(2) - this.dataScale(1)) * (100 - this._linearGap) / 100, dataLen);
+                dataLen = Math.max(Math.abs(this.dataPos(2) - this.dataPos(1)) * (100 - this._linearGap) / 100, dataLen);
                 offset = -dataLen/2;
                 break;
         }
@@ -52,13 +62,14 @@
         ;
 
         var column = this.svgData.selectAll(".dataRow")
-            .data(this.formattedData())
+            .data(this.data())
         ;
 
         column.enter().append("g")
             .attr("class", "dataRow")
         ;
 
+        this.tooltip.direction(isHorizontal ? "n" : "e");
         column
             .each(function (dataRow, i) {
                 var element = d3.select(this);
@@ -76,35 +87,28 @@
                   .enter().append("rect")
                     .attr("class", "columnRect")
                     .call(context._selection.enter.bind(context._selection))
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(d.row, context.columns(), d.idx);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(d.row, context.columns(), d.idx);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(d.row), d.column, context._selection.selected(this));
                     })
                 ;
 
                 if (isHorizontal) {
-                    columnRect.transition()
-                        .attr("x", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
+                    columnRect.transition().duration(duration)
+                        .attr("x", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
-                        .attr("y", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) : context.valueScale(d.value); })
-                        .attr("height", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) - context.valueScale(d.value[1]) : height - context.valueScale(d.value); })
+                        .attr("y", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
+                        .attr("height", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
                         .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 } else {
-                    columnRect.transition()
-                        .attr("y", function (d) { return context.dataScale(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
+                    columnRect.transition().duration(duration)
+                        .attr("y", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
                         .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
-                        .attr("x", function (d) { return d.value instanceof Array ? context.valueScale(d.value[0]) : 0; })
-                        .attr("width", function (d) { return d.value instanceof Array ? context.valueScale(d.value[1]) - context.valueScale(d.value[0]) : context.valueScale(d.value); })
+                        .attr("x", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
+                        .attr("width", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
                         .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
@@ -116,12 +120,12 @@
                     });
                 }
 
-                columnRect.exit().transition()
+                columnRect.exit().transition().duration(duration)
                     .remove()
                 ;
         });
 
-        column.exit().transition()
+        column.exit().transition().duration(duration)
             .remove()
         ;
     };

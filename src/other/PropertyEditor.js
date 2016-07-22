@@ -430,7 +430,7 @@
                 widget[id](value);
             }
             
-            if (widget.render) {
+            if (widget._parentElement) {
                 var tmpPE = propEditor;
                 widget.render(function (w) {
                     tmpPE.render();

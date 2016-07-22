@@ -22,6 +22,15 @@
     GMapPin.prototype._class += " map_GMapPin";
 
     GMapPin.prototype.publishProxy("pinColor", "_pins", "fillColor");
+    GMapPin.prototype.publishProxy("pinType", "_pins", "pinType");
+    GMapPin.prototype.publishProxy("pinWidth", "_pins", "pinWidth");
+    GMapPin.prototype.publishProxy("pinHeight", "_pins", "pinHeight");
+    GMapPin.prototype.publishProxy("cornerRadius", "_pins", "cornerRadius");
+    GMapPin.prototype.publishProxy("pinRadius", "_pins", "pinRadius");
+    GMapPin.prototype.publishProxy("arrowWidth", "_pins", "arrowWidth");
+    GMapPin.prototype.publishProxy("arrowHeight", "_pins", "arrowHeight");
+    GMapPin.prototype.publishProxy("textBaseline", "_pins", "textBaseline");
+    GMapPin.prototype.publishProxy("strokeWidth", "_pins", "strokeWidth");
 
     GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function () { return this.columns(); }, { optional: true });
     GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });

@@ -21,6 +21,7 @@
             this._allCharts[item.widgetClass] = newItem;
         }, this);
         this._chartTypeDefaults = {};
+        this._chartTypeProperties = {};
     }
     MultiChart.prototype = Object.create(HTMLWidget.prototype);
     MultiChart.prototype.constructor = MultiChart;
@@ -28,10 +29,10 @@
     MultiChart.prototype.implements(INDChart.prototype);
 
     MultiChart.prototype._1DChartTypes = [
-        { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
     ].map(function(item) { item.family = "1D"; return item;});
     MultiChart.prototype._2DChartTypes = [
+        { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
         { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
         { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
         { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
@@ -49,6 +50,7 @@
         { id: "AREA", display: "Area", widgetClass: "chart_Area" },
         { id: "STEP", display: "Step", widgetClass: "chart_Step" },
         { id: "SCATTER", display: "Scatter", widgetClass: "chart_Scatter" },
+        { id: "HEXBIN", display: "Hex Bin", widgetClass: "chart_HexBin" },
         { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
         { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
         { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
@@ -69,19 +71,32 @@
         { id: "AM_GANTT", display: "Gantt (amCharts)", widgetClass: "amchart_Gantt" },
         { id: "AM_COMBO", display: "Combo (amCharts)", widgetClass: "amchart_Combo" },
     ].map(function(item) { item.family = "ND"; return item;});
+    MultiChart.prototype._mapChartTypes = [
+        { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
+        { id: "CHORO_USCOUNTIES", display: "US County Choropleth", widgetClass: "map_ChoroplethCounties" },
+        { id: "CHORO_COUNTRIES", display: "Counrty Choropleth", widgetClass: "map_ChoroplethCountries" }
+    ].map(function (item) { item.family = "map"; return item; });
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" },
         { id: "TABLE_NESTED", display: "Nested Table", widgetClass: "other_NestedTable" },
-        { id: "TABLE_CALENDAR", display: "Calendar HEat Map", widgetClass: "other_CalendarHeatMap" },
+        { id: "TABLE_CALENDAR", display: "Table driven Calendar Heat Map", widgetClass: "other_CalendarHeatMap" },
         { id: "TABLE_BULLET", display: "Table driven bullet chart", widgetClass: "chart_Bullet" },
         { id: "TABLE_SELECT", display: "Table driven select", widgetClass: "other_Select" },
         { id: "TABLE_TREE", display: "Table driven tree", widgetClass: "tree_Dendrogram" },
-        { id: "TABLE_TREEMAP", display: "Treemap", widgetClass: "tree_Treemap" },
-        { id: "TABLE_SANKEY", display: "Sankey", widgetClass: "graph_Sankey" },
-        { id: "TABLE_GMAP_PIN", display: "Google Map (pins)", widgetClass: "map_GMapPin" },
-        { id: "TABLE_GMAP_PINLINE", display: "Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
+        { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
+        { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },
+        { id: "TABLE_GMAP_PIN", display: "Table driven Google Map (pins)", widgetClass: "map_GMapPin" },
+        { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
     ].map(function (item) { item.family = "any"; return item; });
-    MultiChart.prototype._allChartTypes = MultiChart.prototype._1DChartTypes.concat(MultiChart.prototype._2DChartTypes.concat(MultiChart.prototype._NDChartTypes.concat(MultiChart.prototype._anyChartTypes)));
+    MultiChart.prototype._allChartTypes =
+        MultiChart.prototype._1DChartTypes.concat(
+        MultiChart.prototype._2DChartTypes.concat(
+        MultiChart.prototype._NDChartTypes.concat(
+        MultiChart.prototype._mapChartTypes.concat(
+        MultiChart.prototype._anyChartTypes
+    ))));
+    MultiChart.prototype._allMap = d3.map(MultiChart.prototype._allChartTypes, function (item) { return item.family; });
+    MultiChart.prototype._allFamilies = MultiChart.prototype._allMap.keys();
 
     MultiChart.prototype.publishReset();
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});
@@ -150,7 +165,13 @@
         this._chartTypeDefaults = _;
         return this;
     };
-    
+
+    MultiChart.prototype.chartTypeProperties = function (_) {
+        if (!arguments.length) return this._chartTypeProperties;
+        this._chartTypeProperties = _;
+        return this;
+    };
+
     MultiChart.prototype.getChartDataFamily = function () {
         return this._allCharts[this.chartType()].family;
     };
@@ -215,13 +236,25 @@
                     try {
                         currChart[key + "_default"](this._chartTypeDefaults[key]);
                     } catch (e) {
-                        console.log("Exception Setting Property:  " + key);
+                        console.log("Exception Setting Default:  " + key);
                     }
                 } else {
-                    console.log("Unknown Property:  " + key);
+                    console.log("Unknown Default:  " + key);
                 }
             }
             this._chartTypeDefaults = {};
+            for (var propKey in this._chartTypeProperties) {
+                if (currChart[propKey]) {
+                    try {
+                        currChart[propKey](this._chartTypeProperties[propKey]);
+                    } catch (e) {
+                        console.log("Exception Setting Property:  " + propKey);
+                    }
+                } else {
+                    console.log("Unknown Property:  " + propKey);
+                }
+            }
+            this._chartTypeProperties = {};
         }
 
         var context = this;

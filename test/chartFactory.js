@@ -16,19 +16,18 @@
                     );
                 });
             },
-            "long-label": function (callback) {
+            longLabels: function (callback) {
                 require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
                     callback(new Column()                        
                         .columns(DataFactory.ND.subjects.columns)
                         .data([
-                            ["Geography-Geography-Geography-Geography-Geography", 75, 68, 65],
-                            ["English", 45, 55, 52],
-                            ["Math", 98, 92, 90],
-                            ["Science", 66, 60, 72]
+                            ["Geography Geography Geography\nGeography Geography", 75, 68, 65],
+                            ["English English English\nEnglish English English", 45, 55, 52],
+                            ["Math Math Math Math Math\nMath Math Math Math Math", 98, 92, 90],
+                            ["Science Science Science\nScience Science Science", 66, 60, 72]
                         ])
-
-                        .xAxisOverlapMode("rotate")
-                        .xAxisLabelRotation(45)
+                        .xAxisOverlapMode("wrap")
+                        //.xAxisLabelRotation(45)
                     );
                 });
             },
@@ -77,7 +76,7 @@
                     callback(new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
-                        
+                      
                         .xAxisType("ordinal")
                         .yAxisType("time")
                         .yAxisTypeTimePattern("%Y-%m-%d")
@@ -93,7 +92,7 @@
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
-            }
+            },
         },
         Gantt: {
             simple: function (callback) {
@@ -126,6 +125,22 @@
                     callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            }
+        },
+        HexBin: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/HexBin"], function (DataFactory, HexBin) {
+                    var randomX = d3.random.normal(200, 80),
+                        randomY = d3.random.normal(200, 80),
+                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+
+                    callback(new HexBin()
+                        .xAxisType("linear")
+                        .yAxisType("linear")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(points)
                     );
                 });
             }
@@ -195,8 +210,8 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Summary"], function (DataFactory, Summary) {
                     callback(new Summary()
-                        .columns(DataFactory.OneD.subjects.columns)
-                        .data(DataFactory.OneD.subjects.data)
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
                     );
                 });
             }
@@ -253,6 +268,42 @@
                     callback(new MultiChartSurface()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            }
+        },
+        Axis: {
+            ordinal: function (callback) {
+                require(["src/chart/Axis"], function (Axis) {
+                    callback(new Axis()
+                        .type("ordinal")
+                        .ordinals(["Year 1", "Year 2", "Year 3", "Year 4"])
+                    );
+                });
+            },
+            longLabels: function (callback) {
+                require(["src/chart/Axis"], function (Axis) {
+                    callback(new Axis()
+                        .type("ordinal")
+                        .ordinals(["Geography-Geography-Geography-Geography-Geography", "English-English-English-English-English-English", "Math-Math-Math-Math-Math-Math-Math-Math-Math-Math", "Science-Science-Science-Science-Science-Science"])
+                    );
+                });
+            },
+            linear: function (callback) {
+                require(["src/chart/Axis"], function (Axis) {
+                    callback(new Axis()
+                        .type("linear")
+                        .low(0)
+                        .high(100)
+                    );
+                });
+            },
+            time: function (callback) {
+                require(["src/chart/Axis"], function (Axis) {
+                    callback(new Axis()
+                        .type("time")
+                        .low("2010-03-15")
+                        .high("2012-01-14")
                     );
                 });
             }

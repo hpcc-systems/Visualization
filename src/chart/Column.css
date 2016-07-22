@@ -3,10 +3,6 @@
   cursor: pointer;
 }
 
-.chart_Column .columnRect:hover {
-  fill: #ff7f0e;
-}
-
 .chart_Column .data.axis path {
   display: none;
 }
@@ -18,5 +14,4 @@
 
 .chart_Column .columnRect.selected {
     stroke: red;
-    stroke-width: 1.5px;
 }

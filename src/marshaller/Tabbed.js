@@ -59,7 +59,7 @@
                     }
                 } else if (item instanceof HipieDDL.Output) {
                     if (item.dataSource.databomb) {
-                        item.dataSource.comms.databombOutput(item.from);
+                        item.dataSource.comms.databombOutput(item.from, item.id);
                     }
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {

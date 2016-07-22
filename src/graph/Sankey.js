@@ -43,12 +43,15 @@
     //  ---
     function Sankey(target) {
         SVGWidget.call(this);
+        Utility.SimpleSelectionMixin.call(this);
+
         this._drawStartPos = "origin";
     }
     Sankey.prototype = Object.create(SVGWidget.prototype);
     Sankey.prototype.constructor = Sankey;
     Sankey.prototype._class += " graph_Sankey";
     Sankey.prototype.Column = Column;
+    Sankey.prototype.mixin(Utility.SimpleSelectionMixin);
 
     Sankey.prototype._palette = Palette.ordinal("default");
 
@@ -108,7 +111,7 @@
 
         this._d3Sankey = new D3Sankey();
         this._d3SankeyPath = this._d3Sankey.link();
-        this._selection = new Utility.SimpleSelection(element);
+        this._selection.widgetElement(element);
     };
 
     Sankey.prototype.update = function (domNode, element) {

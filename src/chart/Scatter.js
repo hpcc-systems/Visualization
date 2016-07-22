@@ -10,6 +10,11 @@
         XYAxis.call(this);
         INDChart.call(this);
         ITooltip.call(this);
+
+        this
+            .xAxisGuideLines_default(true)
+            .yAxisGuideLines_default(true)
+        ;
     }
     Scatter.prototype = Object.create(XYAxis.prototype);
     Scatter.prototype.constructor = Scatter;
@@ -31,6 +36,16 @@
 
     Scatter.prototype.yPos = function (d) {
         return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
+    };
+
+    Scatter.prototype.enter = function (domNode, element) {
+        XYAxis.prototype.enter.apply(this, arguments);
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                return context.tooltipFormat({ label: d.label, series: context.columns()[d.colIdx], value: d.value });
+            })
+        ;
     };
 
     Scatter.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal) {
@@ -70,15 +85,8 @@
                 element
                     .append("circle")
                     .attr("class", "pointSelection")
-                    .on("mouseover.tooltip", function (d) {
-                        context.tooltipShow(context.data()[d.rowIdx], context.columns(), d.colIdx);
-                    })
-                    .on("mouseout.tooltip", function (d) {
-                        context.tooltipShow();
-                    })
-                    .on("mousemove.tooltip", function (d) {
-                        context.tooltipShow(context.data()[d.rowIdx], context.columns(), d.colIdx);
-                    })
+                    .on("mouseout.tooltip", context.tooltip.hide)
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .call(context._selection.enter.bind(context._selection))
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(context.data()[d.rowIdx]), context.columns()[d.colIdx], context._selection.selected(this));

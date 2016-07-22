@@ -30,8 +30,8 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-bullet", "d3-sankey"];
-const bundles = ["common", "layout", "api", "form", "other", "chart", "c3chart", "google", "amchart", "tree", "graph", "map", "marshaller", "composite"];  //  Order is important ---
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey"];
+const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "marshaller", "composite"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 
 function buildModule(module, cb) {
@@ -46,6 +46,8 @@ function buildModule(module, cb) {
       'async': '../rjs.noop',
       'css': '../rjs.noop',
       'goog': '../rjs.noop',
+      'text': '../rjs.noop',
+      'json': '../rjs.noop',
       'propertyParser': '../rjs.noop',
     }
 
@@ -172,10 +174,10 @@ gulp.task("build-amd-src", function (done) {
         baseUrl: ".",
         appDir: "src",
         dir: cfg.distamd,
-        mainConfigFile: "src/config.js",
+        mainConfigFile: "src/loader.js",
         modules: [{
             name: cfg.prefix,
-            include: ["requireLib", "css", "normalize", "async", "goog", "propertyParser"],
+            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser", "src/loader"],
             create: true
         }].concat(amd_modules)
     };
@@ -199,6 +201,11 @@ gulp.task("build-amd", ["build-amd-src","copy-amchart-images"], function (done) 
         "(function (root, factory) { define([], factory); } (this, function () { return " + JSON.stringify(amd_bundles) + "; }));",
         function (error) { if (error) throw error; }
     );
+    gulp.src(["./dist-amd/hpcc-viz.js"])
+        .pipe(replace("bundles:{replace:\"me\"}", "bundles:" + JSON.stringify(amd_bundles)))
+        .pipe(replace("bundles: { replace: \"me\" }", "bundles:" + JSON.stringify(amd_bundles)))
+        .pipe(gulp.dest("./dist-amd/"))
+    ;
     return gulp.src([
         'bower_components/font-awesome/css/font-awesome.min.css',
         'bower_components/font-awesome/fonts/fontawesome-webfont.woff',

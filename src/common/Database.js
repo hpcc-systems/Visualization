@@ -455,7 +455,11 @@
             return this._data.map(function (row) {
                 var retVal = [];
                 fieldIndicies.forEach(function (func) {
-                    retVal.push(typeof func === "function" ? func(row) : row);
+                    if (typeof func === "function") {
+                        retVal.push(func(row));
+                    } else {
+                        retVal.push(func + "(" + row + ")");
+                    }
                 });
                 return retVal;
             });

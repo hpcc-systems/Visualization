@@ -195,27 +195,9 @@
         return str.join("&");
     };
 
-    Comms.prototype.jsonp = function (url, request, callback) {
-        var context = this;
+    var jsonp = function (url, request, timeout) {
         return new Promise(function (resolve, reject) {
-            for (var key in context._proxyMappings) {
-                var newUrlParts = url.split(key);
-                var newUrl = newUrlParts[0];
-                if (newUrlParts.length > 1) {
-                    var espUrl = new ESPUrl()
-                        .url(url)
-                    ;
-                    url = newUrl + context._proxyMappings[key];
-                    request.IP = espUrl._hostname;
-                    request.PORT = espUrl._port;
-                    if (newUrlParts.length > 0) {
-                        request.PATH = newUrlParts[1];
-                    }
-                    break;
-                }
-            }
-
-            var respondedTimeout = context.timeout() * 1000;
+            var respondedTimeout = timeout * 1000;
             var respondedTick = 5000;
             var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
             window[callbackName] = function (response) {
@@ -245,12 +227,28 @@
             function doCallback(response) {
                 delete window[callbackName];
                 document.body.removeChild(script);
-                if (callback) {
-                    console.log("Deprecated:  callback, use promise (Comms.prototype.jsonp)");
-                    callback(response);
-                }
             }
         });
+    };
+
+    Comms.prototype.jsonp = function (url, request, callback) {
+        for (var key in this._proxyMappings) {
+            var newUrlParts = url.split(key);
+            var newUrl = newUrlParts[0];
+            if (newUrlParts.length > 1) {
+                var espUrl = new ESPUrl()
+                    .url(url)
+                ;
+                url = newUrl + this._proxyMappings[key];
+                request.IP = espUrl._hostname;
+                request.PORT = espUrl._port;
+                if (newUrlParts.length > 0) {
+                    request.PATH = newUrlParts[1];
+                }
+                break;
+            }
+        }
+        return jsonp(url, request, this.timeout());
     };
 
     Comms.prototype.ajax = function (method, url, request) {
@@ -920,14 +918,18 @@
 
     HIPIEDatabomb.prototype.databomb = function (_) {
         if (!arguments.length) return this._databomb;
-        this._databomb = _.map(espRowFix);
+        this._databomb = _;
         return this;
     };
 
-    HIPIEDatabomb.prototype.databombOutput = function (_) {
+    HIPIEDatabomb.prototype.databombOutput = function (from, id) {
         if (!arguments.length) return undefined;
         this._resultNameCacheCount++;
-        this._resultNameCache[_] = this._databomb;
+        if (this._databomb instanceof Array) {
+            this._resultNameCache[from] = this._databomb.map(espRowFix);
+        } else {
+            this._resultNameCache[from] = this._databomb[id].map(espRowFix);
+        }
         return this;
     };
 
@@ -972,6 +974,9 @@
                 ;
             }
             return null;
+        },
+        hookJsonp: function (func) {
+            jsonp = func;
         }
     };
 }));

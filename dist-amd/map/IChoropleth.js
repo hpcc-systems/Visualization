@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["../common/Palette"],t):e.map_IChoropleth=t(e.common_Palette,e.usStates,e.usCounties)})(this,function(e,t,n){function r(){}return r.prototype._palette=e.rainbow("default"),r.prototype.click=function(e,t,n){console.log("Click:  "+JSON.stringify(e)+", "+t+", "+n)},r});

@@ -21,7 +21,7 @@
     }
 }(this, function (d3) {
     //  Do not touch - updated by gulp bump  ---
-    var version = "1.10.2-dev";
+    var version = "1.10.10-rc2";
 
     function Platform() {
     }

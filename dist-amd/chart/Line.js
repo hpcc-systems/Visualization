@@ -1,0 +1,1 @@
+(function(e,t){typeof define=="function"&&define.amd?define(["d3","./Scatter","css!./Line"],t):e.chart_Line=t(e.d3,e.chart_Scatter)})(this,function(e,t){function n(e){t.call(this),this.interpolate_default("linear")}return n.prototype=Object.create(t.prototype),n.prototype.constructor=n,n.prototype._class+=" chart_Line",n});

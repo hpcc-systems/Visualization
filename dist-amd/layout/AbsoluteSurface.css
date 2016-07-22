@@ -1,0 +1,13 @@
+.layout_AbsoluteSurface {
+    pointer-events: none;
+}
+.layout_AbsoluteSurface .placeholder {
+    position: relative;
+    overflow: hidden;
+}
+.layout_Layered .placeholder .common_Widget {
+    pointer-events: all;
+}
+.layout_Layered .placeholder .common_Widget.layout_AbsoluteSurface {
+    pointer-events: none;
+}

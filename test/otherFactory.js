@@ -70,6 +70,30 @@
                 });
             }
         },
+        Image: {
+            layered:function (callback) {
+                require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/other/Image", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, Image, HeatMap) {
+                    var retVal = new Layered()
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(
+                                new Image().source(DataFactory.Image.floorplan)
+                            )
+                        )
+                        .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).opacity(0.66).widget(
+                                new HeatMap()
+                                    .columns(DataFactory.HeatMap.floorplan.columns)
+                                    .data(DataFactory.HeatMap.floorplan.data)
+                            )
+                        )
+                    ;
+                    callback(retVal);
+                });
+            },
+            simple: function (callback) {
+                require(["test/DataFactory", "src/other/Image"], function (DataFactory, Image) {
+                    callback(new Image().source(DataFactory.Image.floorplan));
+                });
+            },
+        },
         WordCloud: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
@@ -83,7 +107,7 @@
                 });
             }
         },
-        Table: {
+     Table: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
@@ -149,7 +173,7 @@
                 });
             }
         },
-        NestedTable: {
+         NestedTable: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
                     callback(new NestedTable()
@@ -264,22 +288,35 @@
                 });
             }
         },
+
+        AutoCompleteText: {
+          	 simple: function (callback) {
+   	        	 require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
+   			        	 callback(new AutoCompleteText()
+   			        	 .columns(DataFactory.ND.ampolar.columns)
+   			        	 .data(DataFactory.ND.ampolar.data)
+   			        );
+   	        	 });
+          	 },
+           },
+
+        
         Select: {
-             simple: function (callback) {
-                 require(["src/other/Select"], function (Select) {
-                     callback(new Select()
-                         .columns(["Col Label", "Col Value"])
-                         .data([
-                                ["GJS0", 0],
-                                ["GJS1", 1],
-                                ["GJS2", 2],
-                                ["GJS3", 3],
-                                ["GJS4", 4],
-                                ["GJS5", 5],
-                                ["GJS6", 6],
-                                ["GJS7", 7],
-                         ])
-                         .label("Label:  ")
+        	 simple: function (callback) {
+	        	 require(["src/other/Select"], function (Select) {
+		        	 callback(new Select()
+			        	 .columns(["Col Label", "Col Value"])
+			        	 .data([
+			        	        ["GJS0", 0],
+			        	        ["GJS1", 1],
+			        	        ["GJS2", 2],
+			        	        ["GJS3", 3],
+			        	        ["GJS4", 4],
+			        	        ["GJS5", 5],
+			        	        ["GJS6", 6],
+			        	        ["GJS7", 7],
+			        	 ])
+			                     .label("Label:  ")
                          .valueColumn("Col Value")
                          .textColumn("Col Label")
                     );
@@ -300,5 +337,6 @@
                 });
             }
         }
+    
     };
 }));

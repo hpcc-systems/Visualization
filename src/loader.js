@@ -43,6 +43,8 @@
                 "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
 
                 "simpleheat": "../bower_components/simpleheat/index",
+                
+                "auto-complete": "../bower_components/javascript-auto-complete/auto-complete",
 
                 "src": "../src"
             },
@@ -142,6 +144,8 @@
             "amcharts.plugins.dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
             "amchartsImg": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
             "simpleheat": rawgitBaseUrl + "/mourner/simpleheat/v0.3.0/simpleheat",
+            
+            "auto-complete": "//" + window.location.hostname + "/Pixabay/JavaScript-autoComplete/master/auto-complete",
 
             "src": srcUrl
         };

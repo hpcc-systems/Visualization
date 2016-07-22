@@ -1051,7 +1051,7 @@
     };
 
     //  DataSource  ---
-    function DataSource(dashboard, dataSource, proxyMappings) {
+    function DataSource(dashboard, dataSource, proxyMappings, timeout) {
         this.dashboard = dashboard;
         this.id = dataSource.id;
         this.filter = dataSource.filter || [];
@@ -1077,6 +1077,7 @@
             this.comms = new Comms.HIPIEWorkunit()
                 .url(dashboard.marshaller.espUrl._url)
                 .proxyMappings(proxyMappings)
+                .timeout(timeout)
                 .hipieResults(hipieResults)
             ;
         } else if (this.databomb) {
@@ -1087,6 +1088,7 @@
             this.comms = new Comms.HIPIERoxie()
                 .url(dataSource.URL)
                 .proxyMappings(proxyMappings)
+                .timeout(timeout)
             ;
         }
     }
@@ -1204,7 +1206,7 @@
     };
 
     //  Dashboard  ---
-    function Dashboard(marshaller, dashboard, proxyMappings) {
+    function Dashboard(marshaller, dashboard, proxyMappings, timeout) {
         this.marshaller = marshaller;
         this.id = dashboard.id;
         this.title = dashboard.title;
@@ -1213,7 +1215,7 @@
         this.datasources = {};
         this.datasourceTotal = 0;
         dashboard.datasources.forEach(function (item) {
-            context.datasources[item.id] = new DataSource(context, item, proxyMappings);
+            context.datasources[item.id] = new DataSource(context, item, proxyMappings, timeout);
             ++context.datasourceTotal;
         });
 
@@ -1348,11 +1350,13 @@
             transport = new Comms.HIPIEWorkunit()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
+                .timeout(this._timeout)
             ;
         } else {
             transport = new Comms.HIPIERoxie()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
+                .timeout(this._timeout)
             ;
         }
         var request = {
@@ -1379,6 +1383,12 @@
     Marshaller.prototype.proxyMappings = function (_) {
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.timeout = function (_) {
+        if (!arguments.length) return this._timeout;
+        this._timeout = _;
         return this;
     };
 

@@ -405,7 +405,9 @@
                     });
                 } else {
                     console.log("Unable to locate '" + mapping + "' in server response.");
-                    fieldIndicies.push(missingDataString);
+                    fieldIndicies.push(function (row) {
+                        return missingDataString;
+                    });
                }
             }
         }, this);
@@ -455,11 +457,7 @@
             return this._data.map(function (row) {
                 var retVal = [];
                 fieldIndicies.forEach(function (func) {
-                    if (typeof func === "function") {
-                        retVal.push(func(row));
-                    } else {
-                        retVal.push(func + "(" + row + ")");
-                    }
+                    retVal.push(func(row));
                 });
                 return retVal;
             });

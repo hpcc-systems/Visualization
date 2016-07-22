@@ -264,6 +264,17 @@
                 });
             }
         },
+        AutoCompleteText: {
+            simple: function (callback) {
+                require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
+                    callback(new AutoCompleteText()
+                        .columns(DataFactory.ND.ampolar.columns)
+                        .data(DataFactory.ND.ampolar.data)
+                        .valueColumn("Subject")
+                    );
+                });
+            },
+        },
         Select: {
              simple: function (callback) {
                  require(["src/other/Select"], function (Select) {

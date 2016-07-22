@@ -238,7 +238,7 @@
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
-    GraphMappings.prototype.calcAnnotation = function (field, origItem, forAnnotation) {
+    GraphMappings.prototype.calcIconInfo = function (field, origItem, forAnnotation) {
         var retVal = {};
         function mapStruct(struct, retVal) {
             if (struct) {
@@ -277,9 +277,8 @@
                 }
             }
         }
-        mapStruct(field, retVal);
-        if (origItem && origItem[field.id] && field.valuemappings) {
-            var annotationInfo = field.valuemappings[origItem[field.id]];
+        if (origItem && origItem[field.fieldid] && field.valuemappings) {
+            var annotationInfo = field.valuemappings[origItem[field.fieldid]];
             mapStruct(annotationInfo, retVal);
         }
 
@@ -307,22 +306,22 @@
                 vertexMap[id] = retVal;
                 vertices.push(retVal);
 
-                // Icon  ---
-                var icon = context.calcAnnotation(context.visualization.icon, origItem);
-                if (icon) {
-                    for (var key in icon) {
+                //  Icon  ---
+                var iconInfo = context.calcIconInfo(context.visualization.icon, origItem, false);
+                if (iconInfo) {
+                    for (var key in iconInfo) {
                         if (retVal[key]) {
-                            retVal[key](icon[key]);
+                            retVal[key](iconInfo[key]);
                         }
                     }
                 }
 
                 // Annotations  ---
                 var annotations = [];
-                context.fields.forEach(function (field) {
-                    var annotation = context.calcAnnotation(field, origItem, true);
-                    if (annotation) {
-                        annotations.push(annotation);
+                context.visualization.flag.forEach(function (field) {
+                    var iconInfo = context.calcIconInfo(field, origItem, true);
+                    if (iconInfo) {
+                        annotations.push(iconInfo);
                     }
                 });
                 retVal.annotationIcons(annotations);
@@ -429,7 +428,7 @@
     };
 
     Source.prototype.getColumns = function () {
-        return this.mappings.columns;
+        return this.mappings && this.mappings.columns ? this.mappings.columns : [];
     };
 
     Source.prototype.getData = function () {
@@ -577,6 +576,7 @@
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
         this.icon = visualization.icon || {};
+        this.flag = visualization.flag || [];
         this.fields = visualization.fields || {};
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
         this.source = new Source(this, visualization.source);

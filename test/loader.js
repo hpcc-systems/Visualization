@@ -32,5 +32,16 @@ define([], function (Loader) {
                 });
             });
         });
+        it("comms", function (done) {
+            require(["src/other/Comms"], function (Comms) {
+                assert.isNull(Comms.createESPConnection("xxxx"));
+                assert.isNotNull(Comms.createESPConnection("http://192.168.3.22:8010/?Wuid=W20160723-080936&Widget=WUDetailsWidget#/stub/Summary"));
+                assert.isNotNull(Comms.createESPConnection("http://192.168.3.22:8010/WsWorkunits/res/W20160723-080936/res/index.html"));
+                assert.isNotNull(Comms.createESPConnection("http://192.168.3.22:8010/?QuerySetId=roxie&Id=ie_pop.1&Widget=QuerySetDetailsWidget"));
+                assert.isNotNull(Comms.createESPConnection("http://192.168.3.22:8002/WsEcl/forms/soap/query/hthor/helloworld.1"));
+                assert.isNotNull(Comms.createESPConnection("http://192.168.3.22:8002/WsEcl/res/query/hthor/helloworld.1/res/index.html"));
+                done();
+            });
+        });
     });
 });

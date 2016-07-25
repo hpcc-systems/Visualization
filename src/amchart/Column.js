@@ -8,7 +8,6 @@
 }(this, function(d3, CommonSerial, AmCharts, INDChart) {
     function Column() {
         CommonSerial.call(this);
-
         this._tag = "div";
         this._gType = "column";
 
@@ -34,10 +33,12 @@
     Column.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%","3d"],{tags:["Basic"]});
     Column.prototype.publish("useOhlcLines", false, "boolean", "Use OHLC Lines",null,{tags:["Intermediate"]});
 
+    Column.prototype.publish("yAxisMinimumValue", null, "number", "Y axis Minimum value",null,{});
+    Column.prototype.publish("yAxisMaximumValue", null, "number", "Y axis Maximum value",null,{});
+
     Column.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
-
     Column.prototype.updateChartOptions = function() {
         CommonSerial.prototype.updateChartOptions.apply(this, arguments);
 
@@ -49,20 +50,19 @@
 
         this.buildGraphs(this._gType);
 
-        // Stacked
-        if(this.stacked()){
-            this._chart.valueAxes[0].stackType = this.stackType();
-        } else {
-            this._chart.valueAxes[0].stackType = "none";
-        }
+        if (this.yAxisMinimumValue_exists() && this.yAxisMaximumValue_exists()){
+        this._chart.valueAxes[0].minimum = this.yAxisMinimumValue();
+        this._chart.valueAxes[0].maximum = this.yAxisMaximumValue();
+        this._chart.valueAxes[0].baseValue = 0;
+        this._chart.valueAxes[0].strictMinMax = true;
 
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
         this._chart.categoryAxis.startOnAxis = false;
+         }
 
         return this._chart;
     };
-
     Column.prototype.buildGraphs = function(gType) {
         this._chart.graphs = [];
 
@@ -83,20 +83,19 @@
             } else {
                  gObj.topRadius = undefined;
             }
-            
+
             if (this._rangeType === "normal") {
                 gObj.openField = "openField" + i;
                 gObj.valueField = "valueField" + i;
             }
+
             if (this._rangeType === "candle-ohlc") {
                 gObj.lowField = "lowField" + i;
                 gObj.openField = "openField" + i;
                 gObj.closeField = "closeField" + i;
                 gObj.highField = "highField" + i;
             }
-
             gObj.fillAlphas = this.fillOpacity();
-
             return gObj;
         }
     };

@@ -247,32 +247,13 @@
                         case "faChar":
                             retVal.faChar = faCharFix(struct.faChar);
                             break;
-                        case "tooltip":
-                            retVal[key] = struct[key];
-                            break;
-                        case "icon_image_colorFill":
-                        case "icon_shape_colorFill":
-                        case "icon_shape_colorStroke":
-                            if (forAnnotation) {
-                                retVal[key.split("icon_")[1]] = struct[key];
-                            } else {
-                                retVal[key] = struct[key];
-                            }
-                            break;
-                        case "textbox_image_colorFill":
-                        case "textbox_shape_colorFill":
-                        case "textbox_shape_colorStroke":
-                            if (!forAnnotation) {
-                                retVal[key] = struct[key];
-                            }
-                            break;
-                        case "id":
-                        case "valuemappings":
-                        case "font":
-                        case "charttype":
-                            break;
                         default:
-                            console.log("Unknown annotation property:  " + key);
+                            if (forAnnotation && key.indexOf("icon_") === 0) { //  Backward compatability
+                                console.log("Deprecated flag property:  " + key);
+                                retVal[key.split("icon_")[1]] = struct[key];
+                            }else{
+                                retVal[key] = struct[key];
+                            }
                     }
                 }
             }

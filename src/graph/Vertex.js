@@ -111,6 +111,8 @@
                 for (var key in d) {
                     if (annotationWidget[key]) {
                         annotationWidget[key](d[key]);
+                    } else {
+                        console.log("Invalid annotation property:  " + key);
                     }
                 }
                 annotationWidget.render();
@@ -118,8 +120,8 @@
                 var aBBox = annotationWidget.getBBox(true);
                 annotationWidget
                     .move({
-                        x: xOffset - aBBox.width / 4,
-                        y: yOffset + aBBox.height / 4
+                        x: xOffset - aBBox.width / 2 + 4,
+                        y: yOffset + aBBox.height / 2 - 4
                     })
                 ;
                 xOffset -= aBBox.width + context.annotationSpacing();

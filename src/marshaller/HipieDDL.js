@@ -326,8 +326,8 @@
                         var edge = new graph.Edge()
                             .sourceVertex(vertex)
                             .targetVertex(childVertex)
-                            .sourceMarker("circleFoot")
-                            .targetMarker("arrowHead")
+                            .sourceMarker("circle")
+                            .targetMarker("arrow")
                         ;
                         edges.push(edge);
                     }

@@ -30,7 +30,7 @@
         var vertices = [];
         var edges = [];
         for (var key in this._ddlDashboards) {
-            this._ddlDashboards[key].visualizations.forEach(function (viz) {
+            this._ddlVisualizations.concat(this._ddlPopupVisualizations).forEach(function (viz) {
                 if (viz.widget) {
                     var newSurface = null;
                     if (viz.widget instanceof ResizeSurface) {

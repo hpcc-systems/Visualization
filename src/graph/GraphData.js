@@ -33,8 +33,12 @@
         for (i = 0; i < edges.length; ++i) {
             var edge = edges[i];
             if (!merge || !this.hasEdge(edge._id)) {
-                this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge, edge._id);
-                retVal.addedEdges.push(edge);
+                if (edge._sourceVertex && edge._targetVertex) {
+                    this.setEdge(edge._sourceVertex._id, edge._targetVertex._id, edge, edge._id);
+                    retVal.addedEdges.push(edge);
+                } else {
+                    console.log("Bad edge definition");
+                }
             }
         }
         if (hierarchy) {

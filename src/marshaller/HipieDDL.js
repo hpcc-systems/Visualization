@@ -437,33 +437,86 @@
     };
 
     //  Viz Events ---
+    function EventUpdate(event, update, defMappings) {
+        this.event = event;
+        this.dashboard = event.visualization.dashboard;
+        this._visualization = update.visualization;
+        this._instance = update.instance;
+        this._datasource = update.datasource;
+        this._merge = update.merge;
+        this._mappings = update.mappings || defMappings;
+    }
+
+    EventUpdate.prototype.getDatasource = function () {
+        return this.dashboard.getDatasource(this._datasource);
+    };
+
+    EventUpdate.prototype.getVisualization = function () {
+        return this.dashboard.getVisualization(this._visualization);
+    };
+
+    EventUpdate.prototype.mapData = function (row) {
+        var retVal = {};
+        if (row) {
+            var vizSource = this.event.visualization.source;
+            for (var key in this._mappings) {
+                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+                retVal[this._mappings[key]] = row[origKey];
+            }
+        }
+        return retVal;
+    };
+
+    EventUpdate.prototype.mapSelected = function () {
+        if (this.event.visualization.hasSelection()) {
+            return this.mapData(this.event.visualization._widgetState.row);
+        }
+        return {};
+    };
+
+    EventUpdate.prototype.calcRequestFor = function (visualization) {
+        var retVal = {};
+        var updateVisualization = this.getVisualization();
+        updateVisualization.getInputVisualizations().forEach(function (inViz, idx) {
+            //  Calc request for each visualization to be updated  ---
+            var changed = inViz === visualization;
+            inViz.getUpdatesForVisualization(updateVisualization).forEach(function (inVizUpdateObj) {
+                //  Gather all contributing "input visualization events" for the visualization that is to be updated  ---
+                var inVizRequest = inVizUpdateObj.mapSelected();
+                for (var key in inVizRequest) {
+                    if (retVal[key] && retVal[key] !== inVizRequest[key]) {
+                        console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
+                        if (changed) {
+                            retVal[key] = inVizRequest[key];
+                            retVal[key + _CHANGED] = changed;
+                        }
+                    } else {
+                        retVal[key] = inVizRequest[key];
+                        retVal[key + _CHANGED] = changed;
+                    }
+                }
+            });
+        });
+        return retVal;
+    };
+
     function Event(visualization, eventID, event) {
         this.visualization = visualization;
         this.eventID = eventID;
+        this._updates = [];
         if (event) {
-            this._updates = event.updates;
-            this.mappings = event.mappings;
+            this._updates = event.updates.map(function (updateInfo) {
+                return new EventUpdate(this, updateInfo, event.mappings);
+            }, this);
         }
     }
 
     Event.prototype.exists = function () {
-        return this._updates !== undefined;
+        return this._updates.length;
     };
 
     Event.prototype.getUpdates = function () {
-        var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var datasource = this.visualization.dashboard.datasources[item.datasource];
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                retVal.push({
-                    eventID: this.eventID,
-                    datasource: datasource,
-                    visualization: visualization
-                });
-            }, this);
-        }
-        return retVal;
+        return this._updates;
     };
 
     Event.prototype.getUpdatesDatasources = function () {
@@ -482,16 +535,51 @@
     Event.prototype.getUpdatesVisualizations = function () {
         var dedup = {};
         var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                if (!dedup[visualization.id]) {
-                    dedup[visualization.id] = true;
-                    retVal.push(visualization);
-                }
-            }, this);
-        }
+        this._updates.forEach(function (updateObj, idx) {
+            var visualization = updateObj.getVisualization();
+            if (!dedup[visualization.id]) {
+                dedup[visualization.id] = true;
+                retVal.push(visualization);
+            }
+        }, this);
         return retVal;
+    };
+
+    Event.prototype.fetchData = function () {
+        var optimizeFetchData = {};
+        this.getUpdates().forEach(function (updateObj) {
+            var request = updateObj.calcRequestFor(this.visualization);
+
+            var updateVisualization = updateObj.getVisualization();
+            if (updateVisualization.type !== "GRAPH") {
+                updateVisualization.clear();
+            }
+
+            var updateDatasource = updateObj.getDatasource();
+            var optimizeID = updateDatasource.id + "(" + JSON.stringify(request) + ")";
+            if (!optimizeFetchData[optimizeID]) {
+                optimizeFetchData[optimizeID] = {
+                    updateDatasource: updateDatasource,
+                    request: request,
+                    updates: [],
+                    appendUpdate: function(updateID) {
+                        if (this.updates.indexOf(updateID) < 0) {
+                            this.updates.push(updateID);
+                        }
+                    }
+                };
+            } else if (window.__hpcc_debug) {
+                console.log("Optimized duplicate fetch:  " + optimizeID);
+            }
+            optimizeFetchData[optimizeID].appendUpdate(updateVisualization.id);
+        }, this);
+
+        var promises = [];
+        for (var key in optimizeFetchData) {
+            var item = optimizeFetchData[key];
+            promises.push(item.updateDatasource.fetchData(item.request, false, item.updates));
+        }
+        return Promise.all(promises);
     };
 
     function Events(visualization, events) {
@@ -654,7 +742,7 @@
                     ;
                     if (visualization.range) {
                         var selectionLabel = "";
-                        for (var key in visualization.events.events.mappings) {
+                        for (var key in visualization.source.mappings) {
                             selectionLabel = key;
                             break;
                         }
@@ -841,23 +929,42 @@
         visitor.visit(this);
     };
 
+    Visualization.prototype.getUpdates = function () {
+        return this.events.getUpdates();
+    };
+
+    Visualization.prototype.getUpdatesForDatasource = function (otherDatasource) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getDatasource() === otherDatasource;
+        });
+    };
+
+    Visualization.prototype.getUpdatesForVisualization = function (otherViz) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getVisualization() === otherViz;
+        });
+    };
+
     Visualization.prototype.update = function (params) {
         if (!params) {
-            var validParams = {};
+            var paramsArr = [];
+            var dedupParams = {};
             var updatedBy = this.getInputVisualizations();
             updatedBy.forEach(function (viz) {
-                for (var key in viz._eventValues) {
-                    validParams[key] = true;
+                if (viz.hasSelection()) {
+                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                        var mappedData = updateObj.mapSelected();
+                        for (var key in mappedData) {
+                            if (mappedData[key]) {
+                                if (!dedupParams[key]) {
+                                    dedupParams[key] = true;
+                                    paramsArr.push(mappedData[key]);
+                                }
+                            }
+                        }
+                    });
                 }
-            });
-
-            var paramsArr = [];
-            var datasource = this.source.getDatasource();
-            for (var key in datasource.request) {
-                if (validParams[key]) {
-                    paramsArr.push(datasource.request[key]);
-                }
-            }
+            }, this);
             params = paramsArr.join(", ");
         }
 
@@ -896,8 +1003,8 @@
             this.widget.data([]);
             this.source.getOutput().request = {};
         }
-        if (this.dashboard.marshaller.propogateClear() && this._eventValues) {
-            delete this._eventValues;
+        if (this.dashboard.marshaller.propogateClear() && this._widgetState) {
+            delete this._widgetState;
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
                 updatedViz.clear();
             });
@@ -915,66 +1022,20 @@
         });
         return this;
     };
-    
-    Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
-        var context = this;
-        setTimeout(function () {
-            selected = selected === undefined ? true : selected;
-            if (event.exists()) {
-                var request = {};
-                if (selected) {
-                    for (var key in event.mappings) {
-                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                        request[event.mappings[key]] = row[origKey];
-                    }
-                }
 
-                //  New request calculation:
-                context._eventValues = request;
-                var datasourceRequests = {};
-                var updatedVizs = event.getUpdatesVisualizations();
-                updatedVizs.forEach(function (updatedViz) {
-                    var dataSource = updatedViz.source.getDatasource();
-                    if (!datasourceRequests[dataSource.id]) {
-                        datasourceRequests[dataSource.id] = {
-                            datasource: dataSource,
-                            request: {
-                            },
-                            updates: []
-                        };
-                    }
-                    datasourceRequests[dataSource.id].updates.push(updatedViz.id);
-                    updatedViz.getInputVisualizations().forEach(function (inViz, idx) {
-                        if (inViz._eventValues) {
-                            for (var key in inViz._eventValues) {
-                                var changed = inViz === context;
-                                if (datasourceRequests[dataSource.id].request[key] && datasourceRequests[dataSource.id].request[key] !== inViz._eventValues[key]) {
-                                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
-                                    if (changed) {
-                                        datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                        datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                    }
-                                } else {
-                                    datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                    datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                }
-                            }
-                        }
-                    });
-                    if (updatedViz.type !== "GRAPH") {
-                        updatedViz.clear();    
-                    } 
-                    if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
-                        dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
-                    }
-                });
-                for (var drKey in datasourceRequests) {
-                    if (!datasourceRequests[drKey].datasource.WUID && !datasourceRequests[drKey].datasource.databomb) {  // TODO If we have filters for each output this would not be needed  ---
-                        datasourceRequests[drKey].datasource.fetchData(datasourceRequests[drKey].request, false, datasourceRequests[drKey].updates);
-                    }
-                }
-            }
+    Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
+        this._widgetState = {
+            row: row,
+            col: col,
+            selected: selected === undefined ? true : selected
+        };
+        setTimeout(function () {
+            event.fetchData();
         }, 0);
+    };
+
+    Visualization.prototype.hasSelection = function () {
+        return this._widgetState && this._widgetState.selected;
     };
 
     Visualization.prototype.getInputVisualizations = function () {
@@ -1216,6 +1277,10 @@
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
+    };
+
+    Dashboard.prototype.getDatasource = function (id) {
+        return this.datasources[id];
     };
 
     Dashboard.prototype.getVisualization = function (id) {

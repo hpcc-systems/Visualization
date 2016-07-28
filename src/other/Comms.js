@@ -6,6 +6,7 @@
         root.other_Comms = factory();
     }
 }(this, function () {
+    var TIMEOUT_DEFAULT = 60;
     function espValFix(val) {
         if (val === undefined || val === null) {
             return null;
@@ -165,7 +166,7 @@
         ESPUrl.call(this);
         this._proxyMappings = {};
         this._mappings = new ESPMappings({});
-        this._timeout = 60;
+        this._timeout = TIMEOUT_DEFAULT;
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
 
@@ -297,7 +298,7 @@
 
     Comms.prototype.timeout = function (_) {
         if (!arguments.length) return this._timeout;
-        this._timeout = _;
+        this._timeout = _ || TIMEOUT_DEFAULT;
         return this;
     };
 

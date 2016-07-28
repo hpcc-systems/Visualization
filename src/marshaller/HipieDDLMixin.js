@@ -19,6 +19,7 @@
     HipieDDLMixin.prototype.publish("ddlUrl", "", "string", "DDL URL", null, { tags: ["Private"] });
     HipieDDLMixin.prototype.publish("databomb", "", "string", "Data Bomb", null, { tags: ["Private"] });
     HipieDDLMixin.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings", null, { tags: ["Private"] });
+    HipieDDLMixin.prototype.publish("timeout", null, "number", "Timout (seconds)", null, { optional: true });
     HipieDDLMixin.prototype.publish("clearDataOnUpdate", true, "boolean", "Clear data prior to refresh", null);
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
@@ -75,6 +76,7 @@
             if (this._marshaller) {
                 this._marshaller
                     .proxyMappings(this.proxyMappings())
+                    .timeout(this.timeout())
                     .clearDataOnUpdate(this.clearDataOnUpdate())
                     .propogateClear(this.propogateClear())
                     .missingDataString(this.missingDataString())

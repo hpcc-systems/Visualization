@@ -50,7 +50,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160616-145742&ResultName=coremultiwidgetfilter_Comp_Ins49326_DDL&SuppressXmlSchema=true")
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160726-143554&ResultName=BIZOfficersDemo_Comp_Ins001_DDL")
                     );
                 });
             },
@@ -74,7 +74,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/Graph"], function (DataFactory, Graph) {
                     callback(new Graph()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
+                        .ddlUrl("http://10.194.11.1:8010/WsWorkunits/WUResult.json?Wuid=W20160727-171521&ResultName=cccontribdemo_Comp_Ins62981_DDL")
                     );
                 });
             },

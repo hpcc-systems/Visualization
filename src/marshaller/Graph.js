@@ -176,7 +176,7 @@
                     }
 
                     item.events.getUpdates().forEach(function (updates) {
-                        addEdge(curr, item.getQualifiedID(), updates.visualization.getQualifiedID(), undefined, "arrowHead", "on " + updates.eventID);
+                        addEdge(curr, item.getQualifiedID(), updates.getVisualization().getQualifiedID(), undefined, "arrowHead", "on " + updates.eventID);
                     });
                 }
             }

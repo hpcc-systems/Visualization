@@ -247,32 +247,13 @@
                         case "faChar":
                             retVal.faChar = faCharFix(struct.faChar);
                             break;
-                        case "tooltip":
-                            retVal[key] = struct[key];
-                            break;
-                        case "icon_image_colorFill":
-                        case "icon_shape_colorFill":
-                        case "icon_shape_colorStroke":
-                            if (forAnnotation) {
-                                retVal[key.split("icon_")[1]] = struct[key];
-                            } else {
-                                retVal[key] = struct[key];
-                            }
-                            break;
-                        case "textbox_image_colorFill":
-                        case "textbox_shape_colorFill":
-                        case "textbox_shape_colorStroke":
-                            if (!forAnnotation) {
-                                retVal[key] = struct[key];
-                            }
-                            break;
-                        case "id":
-                        case "valuemappings":
-                        case "font":
-                        case "charttype":
-                            break;
                         default:
-                            console.log("Unknown annotation property:  " + key);
+                            if (forAnnotation && key.indexOf("icon_") === 0) { //  Backward compatability
+                                console.log("Deprecated flag property:  " + key);
+                                retVal[key.split("icon_")[1]] = struct[key];
+                            }else{
+                                retVal[key] = struct[key];
+                            }
                     }
                 }
             }
@@ -345,8 +326,8 @@
                         var edge = new graph.Edge()
                             .sourceVertex(vertex)
                             .targetVertex(childVertex)
-                            .sourceMarker("circleFoot")
-                            .targetMarker("arrowHead")
+                            .sourceMarker("circle")
+                            .targetMarker("arrow")
                         ;
                         edges.push(edge);
                     }
@@ -456,33 +437,86 @@
     };
 
     //  Viz Events ---
+    function EventUpdate(event, update, defMappings) {
+        this.event = event;
+        this.dashboard = event.visualization.dashboard;
+        this._visualization = update.visualization;
+        this._instance = update.instance;
+        this._datasource = update.datasource;
+        this._merge = update.merge;
+        this._mappings = update.mappings || defMappings;
+    }
+
+    EventUpdate.prototype.getDatasource = function () {
+        return this.dashboard.getDatasource(this._datasource);
+    };
+
+    EventUpdate.prototype.getVisualization = function () {
+        return this.dashboard.getVisualization(this._visualization);
+    };
+
+    EventUpdate.prototype.mapData = function (row) {
+        var retVal = {};
+        if (row) {
+            var vizSource = this.event.visualization.source;
+            for (var key in this._mappings) {
+                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+                retVal[this._mappings[key]] = row[origKey];
+            }
+        }
+        return retVal;
+    };
+
+    EventUpdate.prototype.mapSelected = function () {
+        if (this.event.visualization.hasSelection()) {
+            return this.mapData(this.event.visualization._widgetState.row);
+        }
+        return {};
+    };
+
+    EventUpdate.prototype.calcRequestFor = function (visualization) {
+        var retVal = {};
+        var updateVisualization = this.getVisualization();
+        updateVisualization.getInputVisualizations().forEach(function (inViz, idx) {
+            //  Calc request for each visualization to be updated  ---
+            var changed = inViz === visualization;
+            inViz.getUpdatesForVisualization(updateVisualization).forEach(function (inVizUpdateObj) {
+                //  Gather all contributing "input visualization events" for the visualization that is to be updated  ---
+                var inVizRequest = inVizUpdateObj.mapSelected();
+                for (var key in inVizRequest) {
+                    if (retVal[key] && retVal[key] !== inVizRequest[key]) {
+                        console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
+                        if (changed) {
+                            retVal[key] = inVizRequest[key];
+                            retVal[key + _CHANGED] = changed;
+                        }
+                    } else {
+                        retVal[key] = inVizRequest[key];
+                        retVal[key + _CHANGED] = changed;
+                    }
+                }
+            });
+        });
+        return retVal;
+    };
+
     function Event(visualization, eventID, event) {
         this.visualization = visualization;
         this.eventID = eventID;
+        this._updates = [];
         if (event) {
-            this._updates = event.updates;
-            this.mappings = event.mappings;
+            this._updates = event.updates.map(function (updateInfo) {
+                return new EventUpdate(this, updateInfo, event.mappings);
+            }, this);
         }
     }
 
     Event.prototype.exists = function () {
-        return this._updates !== undefined;
+        return this._updates.length;
     };
 
     Event.prototype.getUpdates = function () {
-        var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var datasource = this.visualization.dashboard.datasources[item.datasource];
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                retVal.push({
-                    eventID: this.eventID,
-                    datasource: datasource,
-                    visualization: visualization
-                });
-            }, this);
-        }
-        return retVal;
+        return this._updates;
     };
 
     Event.prototype.getUpdatesDatasources = function () {
@@ -501,16 +535,22 @@
     Event.prototype.getUpdatesVisualizations = function () {
         var dedup = {};
         var retVal = [];
-        if (exists("_updates", this) && this._updates instanceof Array) {
-            this._updates.forEach(function (item, idx) {
-                var visualization = this.visualization.dashboard.getVisualization(item.visualization);
-                if (!dedup[visualization.id]) {
-                    dedup[visualization.id] = true;
-                    retVal.push(visualization);
-                }
-            }, this);
-        }
+        this._updates.forEach(function (updateObj, idx) {
+            var visualization = updateObj.getVisualization();
+            if (!dedup[visualization.id]) {
+                dedup[visualization.id] = true;
+                retVal.push(visualization);
+            }
+        }, this);
         return retVal;
+    };
+    
+    Event.prototype.fetchData = function () {
+        var fetchDataOptimizer = new VisualizationRequestOptimizer();
+        this.getUpdates().forEach(function (updateObj) {
+            fetchDataOptimizer.appendRequest(updateObj.getDatasource(), updateObj.calcRequestFor(this.visualization), updateObj.getVisualization());
+        }, this);
+        return fetchDataOptimizer.fetchData();
     };
 
     function Events(visualization, events) {
@@ -673,7 +713,7 @@
                     ;
                     if (visualization.range) {
                         var selectionLabel = "";
-                        for (var key in visualization.events.events.mappings) {
+                        for (var key in visualization.source.mappings) {
                             selectionLabel = key;
                             break;
                         }
@@ -860,23 +900,42 @@
         visitor.visit(this);
     };
 
+    Visualization.prototype.getUpdates = function () {
+        return this.events.getUpdates();
+    };
+
+    Visualization.prototype.getUpdatesForDatasource = function (otherDatasource) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getDatasource() === otherDatasource;
+        });
+    };
+
+    Visualization.prototype.getUpdatesForVisualization = function (otherViz) {
+        return this.events.getUpdates().filter(function (updateObj) {
+            return updateObj.getVisualization() === otherViz;
+        });
+    };
+
     Visualization.prototype.update = function (params) {
         if (!params) {
-            var validParams = {};
+            var paramsArr = [];
+            var dedupParams = {};
             var updatedBy = this.getInputVisualizations();
             updatedBy.forEach(function (viz) {
-                for (var key in viz._eventValues) {
-                    validParams[key] = true;
+                if (viz.hasSelection()) {
+                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                        var mappedData = updateObj.mapSelected();
+                        for (var key in mappedData) {
+                            if (mappedData[key]) {
+                                if (!dedupParams[key]) {
+                                    dedupParams[key] = true;
+                                    paramsArr.push(mappedData[key]);
+                                }
+                            }
+                        }
+                    });
                 }
-            });
-
-            var paramsArr = [];
-            var datasource = this.source.getDatasource();
-            for (var key in datasource.request) {
-                if (validParams[key]) {
-                    paramsArr.push(datasource.request[key]);
-                }
-            }
+            }, this);
             params = paramsArr.join(", ");
         }
 
@@ -887,41 +946,46 @@
                 titleWidget = titleWidget.locateParentWidget();
             }
         }
-        if (titleWidget) {
-            var title = titleWidget.title();
-            var titleParts = title.split(" (");
-            titleWidget
-                .title(titleParts[0] + (params ? " (" + params + ")" : ""))
-                .render()
-            ;
-        } else {
-            this.widget.render();
-        }
+
+        var context = this;
+        return new Promise(function (resolve, reject) {
+            if (titleWidget) {
+                var title = titleWidget.title();
+                var titleParts = title.split(" (");
+                titleWidget
+                    .title(titleParts[0] + (params ? " (" + params + ")" : ""))
+                    .render(function () {
+                        resolve();
+                    })
+                ;
+            } else {
+                context.widget.render(function () {
+                    resolve();
+                });
+            }
+        });
     };
 
     Visualization.prototype.notify = function () {
-        if (this.source.hasData()) {
-            if (this.widget) {
-                var data = this.source.getData();
-                this.widget.data(data);
-
-                this.update();
-            }
+        if (this.widget) {
+            var data = this.source.hasData() ? this.source.getData() : [];
+            this.widget.data(data);
+            return this.update();
         }
+        return Promise.resolve();
     };
 
     Visualization.prototype.clear = function () {
+        delete this._widgetState;
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
             this.source.getOutput().request = {};
         }
-        if (this.dashboard.marshaller.propogateClear() && this._eventValues) {
-            delete this._eventValues;
+        if (this.dashboard.marshaller.propogateClear()) {
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
                 updatedViz.clear();
             });
         }
-        this.update(LOADING);
     };
 
     Visualization.prototype.on = function (eventID, func) {
@@ -934,66 +998,23 @@
         });
         return this;
     };
-    
+
     Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
+        this._widgetState = {
+            row: row,
+            col: col,
+            selected: selected === undefined ? true : selected
+        };
         var context = this;
         setTimeout(function () {
-            selected = selected === undefined ? true : selected;
-            if (event.exists()) {
-                var request = {};
-                if (selected) {
-                    for (var key in event.mappings) {
-                        var origKey = (context.source.mappings && context.source.mappings.hasMappings) ? context.source.mappings.getReverseMap(key) : key;
-                        request[event.mappings[key]] = row[origKey];
-                    }
-                }
-
-                //  New request calculation:
-                context._eventValues = request;
-                var datasourceRequests = {};
-                var updatedVizs = event.getUpdatesVisualizations();
-                updatedVizs.forEach(function (updatedViz) {
-                    var dataSource = updatedViz.source.getDatasource();
-                    if (!datasourceRequests[dataSource.id]) {
-                        datasourceRequests[dataSource.id] = {
-                            datasource: dataSource,
-                            request: {
-                            },
-                            updates: []
-                        };
-                    }
-                    datasourceRequests[dataSource.id].updates.push(updatedViz.id);
-                    updatedViz.getInputVisualizations().forEach(function (inViz, idx) {
-                        if (inViz._eventValues) {
-                            for (var key in inViz._eventValues) {
-                                var changed = inViz === context;
-                                if (datasourceRequests[dataSource.id].request[key] && datasourceRequests[dataSource.id].request[key] !== inViz._eventValues[key]) {
-                                    console.log("Duplicate Filter with mismatched value (defaulting to 'first' or 'first changed' instance):  " + key);
-                                    if (changed) {
-                                        datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                        datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                    }
-                                } else {
-                                    datasourceRequests[dataSource.id].request[key] = inViz._eventValues[key];
-                                    datasourceRequests[dataSource.id].request[key + _CHANGED] = changed;
-                                }
-                            }
-                        }
-                    });
-                    if (updatedViz.type !== "GRAPH") {
-                        updatedViz.clear();    
-                    } 
-                    if (dataSource.WUID || dataSource.databomb) { // TODO If we have filters for each output this would not be needed  ---
-                        dataSource.fetchData(datasourceRequests[dataSource.id].request, false, [updatedViz.id]);
-                    }
-                });
-                for (var drKey in datasourceRequests) {
-                    if (!datasourceRequests[drKey].datasource.WUID && !datasourceRequests[drKey].datasource.databomb) {  // TODO If we have filters for each output this would not be needed  ---
-                        datasourceRequests[drKey].datasource.fetchData(datasourceRequests[drKey].request, false, datasourceRequests[drKey].updates);
-                    }
-                }
-            }
+            event.fetchData().then(function (promises) {
+                context.dashboard.marshaller.vizEvent(context.widget, "post_" + eventID, row, col, selected);
+            });
         }, 0);
+    };
+
+    Visualization.prototype.hasSelection = function () {
+        return this._widgetState && this._widgetState.selected;
     };
 
     Visualization.prototype.getInputVisualizations = function () {
@@ -1007,14 +1028,33 @@
     };
 
     Visualization.prototype.serializeState = function () {
-        return {
-            eventValues: this._eventValues
+        var state = {
+            widgetState: this._widgetState
         };
+        if (this.widget) {
+            if (this.widget.serializeState) {
+                state.widget = this.widget.serializeState();
+            } else if (this.widget.data) {
+                state.widget = {
+                    data: this.widget.data()
+                };
+            }
+        }
+        return state;
     };
 
     Visualization.prototype.deserializeState = function (state) {
-        if (!state) return;
-        this._eventValues = state.eventValues;
+        if (state) {
+            this._widgetState = state.widgetState;
+            if (this.widget && state.widget) {
+                if (this.widget.deserializeState) {
+                    this.widget.deserializeState(state.widget);
+                } else if (this.widget.data && state.widget.data) {
+                    this.widget.data(state.widget.data);
+                }
+            }
+        }
+        return this;
     };
 
     //  Output  ---
@@ -1031,32 +1071,108 @@
         return this.dataSource.getQualifiedID() + "." + this.id;
     };
 
+    Output.prototype.getUpdatesVisualizations = function () {
+        var retVal = [];
+        this.notify.forEach(function (item) {
+            retVal.push(this.dataSource.dashboard.getVisualization(item));
+        }, this);
+        return retVal;
+    };
+
     Output.prototype.accept = function (visitor) {
         visitor.visit(this);
     };
 
     Output.prototype.vizNotify = function (updates) {
+        var promises = [];
         this.notify.filter(function (item) {
             return !updates || updates.indexOf(item) >= 0;
         }).forEach(function (item) {
             var viz = this.dataSource.dashboard.getVisualization(item);
-            viz.notify();
+            promises.push(viz.notify());
         }, this);
+        return Promise.all(promises);
     };
 
     Output.prototype.setData = function (data, request, updates) {
         this.request = request;
         this.db = new Database.Grid().jsonObj(data);
-        this.vizNotify(updates);
+        return this.vizNotify(updates);
+    };
+
+
+    //  FetchData Optimizers  ---
+    function DatasourceRequestOptimizer() {
+        this.datasourceRequests = {
+        };
+    }
+
+    DatasourceRequestOptimizer.prototype.appendRequest = function (updateDatasource, request, updateVisualization) {
+        var datasourceRequestID = updateDatasource.id + "(" + JSON.stringify(request) + ")";
+        if (!this.datasourceRequests[datasourceRequestID]) {
+            this.datasourceRequests[datasourceRequestID] = {
+                updateDatasource: updateDatasource,
+                request: request,
+                updates: []
+            };
+        } else if (window.__hpcc_debug) {
+            console.log("Optimized duplicate fetch:  " + datasourceRequestID);
+        }
+        var datasourceOptimizedItem = this.datasourceRequests[datasourceRequestID];
+        if (datasourceOptimizedItem.updates.indexOf(updateVisualization.id) < 0) {
+            datasourceOptimizedItem.updates.push(updateVisualization.id);
+        }
+    };
+
+    DatasourceRequestOptimizer.prototype.fetchData = function () {
+        var promises = [];
+        for (var key in this.datasourceRequests) {
+            var item = this.datasourceRequests[key];
+            promises.push(item.updateDatasource.fetchData(item.request, item.updates));
+        }
+        return Promise.all(promises);
+    };
+
+    function VisualizationRequestOptimizer() {
+        this.visualizationRequests = {
+        };
+    }
+
+    VisualizationRequestOptimizer.prototype.appendRequest = function (updateDatasource, request, updateVisualization) {
+        var visualizationRequestID = updateVisualization.id + "(" + updateDatasource.id + ")";
+        if (!this.visualizationRequests[visualizationRequestID]) {
+            this.visualizationRequests[visualizationRequestID] = {
+                updateVisualization: updateVisualization,
+                updateDatasource: updateDatasource,
+                request: {}
+            };
+        } else if (window.__hpcc_debug) {
+            console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+        }
+        var visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
+        Utility.mixin(visualizationOptimizedItem.request, request);
+    };
+
+    VisualizationRequestOptimizer.prototype.fetchData = function () {
+        var datasourceRequestOptimizer = new DatasourceRequestOptimizer();
+        for (var key in this.visualizationRequests) {
+            var item = this.visualizationRequests[key];
+            if (item.updateVisualization.type !== "GRAPH") {
+                item.updateVisualization.clear();
+            }
+            item.updateVisualization.update(LOADING);
+            datasourceRequestOptimizer.appendRequest(item.updateDatasource, item.request, item.updateVisualization);
+        }
+        return datasourceRequestOptimizer.fetchData();
     };
 
     //  DataSource  ---
-    function DataSource(dashboard, dataSource, proxyMappings) {
+    function DataSource(dashboard, dataSource, proxyMappings, timeout) {
         this.dashboard = dashboard;
         this.id = dataSource.id;
         this.filter = dataSource.filter || [];
         this.WUID = dataSource.WUID;
-        this.URL = dataSource.URL;
+        this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
         this._loadedCount = 0;
@@ -1075,8 +1191,9 @@
 
         if (this.WUID) {
             this.comms = new Comms.HIPIEWorkunit()
-                .url(dashboard.marshaller.espUrl._url)
+                .url(this.URL)
                 .proxyMappings(proxyMappings)
+                .timeout(timeout)
                 .hipieResults(hipieResults)
             ;
         } else if (this.databomb) {
@@ -1087,12 +1204,23 @@
             this.comms = new Comms.HIPIERoxie()
                 .url(dataSource.URL)
                 .proxyMappings(proxyMappings)
+                .timeout(timeout)
             ;
         }
     }
 
     DataSource.prototype.getQualifiedID = function () {
         return this.dashboard.getQualifiedID() + "." + this.id;
+    };
+
+    DataSource.prototype.getUpdatesVisualizations = function () {
+        var retVal = [];
+        for (var key in this.outputs) {
+            this.outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
+                retVal.push(visualization);
+            });
+        }
+        return retVal;
     };
 
     DataSource.prototype.accept = function (visitor) {
@@ -1102,27 +1230,8 @@
         }
     };
 
-    DataSource.prototype.fetchData = function (request, refresh, updates) {
-        if (request && request.refresh !== undefined) { throw "refresh in this request????"; }
-        request = request || this.request || {};
-        refresh = refresh || false;
-        if (!updates) {
-            updates = [];
-            for (var oKey in this.outputs) {
-                var output = this.outputs[oKey];
-                output.notify.forEach(function (item) {
-                    var viz = this.dashboard.getVisualization(item);
-                    var inputs = viz.getInputVisualizations();
-                    if (!inputs.length) {
-                        updates.push(item);
-                        viz.update(LOADING);
-                    }
-                }, this);
-            }
-        }
-
+    DataSource.prototype.fetchData = function (request, updates) {
         var context = this;
-        this.request.refresh = refresh;
         this.filter.forEach(function (item) {
             this.request[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
@@ -1130,6 +1239,7 @@
                 this.request[item] = value;
             }
         }, this);
+        this.request.refresh = request.refresh;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
@@ -1144,10 +1254,11 @@
             context.comms.call(context.request).then(function (response) {
                 var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
                 setTimeout(function () {
-                    context.processResponse(response, request, updates);
+                    context.processResponse(response, request, updates).then(function () {
+                        resolve(response);
+                    });
                     context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
                     ++context._loadedCount;
-                    resolve(response);
                 }, delay > 0 ? delay : 0);
             }).catch(function (e) {
                 context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
@@ -1161,6 +1272,7 @@
         for (var responseKey in response) {
             lowerResponse[responseKey.toLowerCase()] = response[responseKey];
         }
+        var promises = [];
         for (var key in this.outputs) {
             var from = this.outputs[key].from;
             if (!from) {
@@ -1169,18 +1281,18 @@
             }
             if (exists(from, response)) {
                 if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                    this.outputs[key].setData(response[from], request, updates);
+                    promises.push(this.outputs[key].setData(response[from], request, updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    this.outputs[key].vizNotify(updates);
+                    promises.push(this.outputs[key].vizNotify(updates));
                 }
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
                 if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                    this.outputs[key].setData(lowerResponse[from], request, updates);
+                    promises.push(this.outputs[key].setData(lowerResponse[from], request, updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    this.outputs[key].vizNotify(updates);
+                    promises.push(this.outputs[key].vizNotify(updates));
                 }
             } else {
                 var responseItems = [];
@@ -1190,6 +1302,7 @@
                 console.log("Unable to locate '" + from + "' in response {" + responseItems.join(", ") + "}");
             }
         }
+        return Promise.all(promises);
     };
 
     DataSource.prototype.serializeState = function () {
@@ -1204,7 +1317,7 @@
     };
 
     //  Dashboard  ---
-    function Dashboard(marshaller, dashboard, proxyMappings) {
+    function Dashboard(marshaller, dashboard, proxyMappings, timeout) {
         this.marshaller = marshaller;
         this.id = dashboard.id;
         this.title = dashboard.title;
@@ -1213,7 +1326,7 @@
         this.datasources = {};
         this.datasourceTotal = 0;
         dashboard.datasources.forEach(function (item) {
-            context.datasources[item.id] = new DataSource(context, item, proxyMappings);
+            context.datasources[item.id] = new DataSource(context, item, proxyMappings, timeout);
             ++context.datasourceTotal;
         });
 
@@ -1235,6 +1348,10 @@
 
     Dashboard.prototype.getQualifiedID = function () {
         return this.id;
+    };
+
+    Dashboard.prototype.getDatasource = function (id) {
+        return this.datasources[id];
     };
 
     Dashboard.prototype.getVisualization = function (id) {
@@ -1263,12 +1380,36 @@
         }, this);
     };
 
-    Dashboard.prototype.fetchData = function () {
-        var promises = [];
-        for (var key in this.datasources) {
-            promises.push(this.datasources[key].fetchData());
-        }
-        return Promise.all(promises);
+    Dashboard.prototype.primeData = function (state) {
+        var fetchDataOptimizer = new VisualizationRequestOptimizer();
+        this.getVisualizationArray().forEach(function (visualization) {
+            visualization.clear();
+            if (state) {
+                if (state[visualization.id]) {
+                    visualization.getUpdates().forEach(function (updateObj) {
+                        var request = {
+                        };
+                        var hasRequest = false;
+                        for (var key in updateObj._mappings) {
+                            if (state[visualization.id][key]) {
+                                hasRequest = true;
+                                request[key] = state[visualization.id][key];
+                                request[key + _CHANGED] = true;
+                            }
+                        }
+                        if (hasRequest) {
+                            fetchDataOptimizer.appendRequest(updateObj.getDatasource(), request, updateObj.getVisualization());
+                        }
+                    });
+                }
+            } else {
+                var inputVisualizations = visualization.getInputVisualizations();
+                if (inputVisualizations.length === 0) {
+                    fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
+                }
+            }
+        });
+        return fetchDataOptimizer.fetchData();
     };
 
     Dashboard.prototype.serializeState = function () {
@@ -1348,11 +1489,13 @@
             transport = new Comms.HIPIEWorkunit()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
+                .timeout(this._timeout)
             ;
         } else {
             transport = new Comms.HIPIERoxie()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
+                .timeout(this._timeout)
             ;
         }
         var request = {
@@ -1379,6 +1522,12 @@
     Marshaller.prototype.proxyMappings = function (_) {
         if (!arguments.length) return this._proxyMappings;
         this._proxyMappings = _;
+        return this;
+    };
+
+    Marshaller.prototype.timeout = function (_) {
+        if (!arguments.length) return this._timeout;
+        this._timeout = _;
         return this;
     };
 
@@ -1444,8 +1593,8 @@
     Marshaller.prototype.on = function (eventID, func) {
         var context = this;
         this.overrideMethod(eventID, function (origFunc, args) {
-            origFunc.apply(context, args);
-            func.apply(this, arguments);
+            var retVal = origFunc.apply(context, args);
+            return func.apply(context, args) || retVal;
         });
         return this;
     };
@@ -1500,9 +1649,9 @@
         return retVal;
     };
 
-    Marshaller.prototype.fetchData = function () {
+    Marshaller.prototype.primeData = function (state) {
         var promises = this.dashboardArray.map(function (dashboard) {
-            return dashboard.fetchData();
+            return dashboard.primeData(state);
         });
         return Promise.all(promises);
     };

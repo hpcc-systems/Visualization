@@ -229,6 +229,37 @@
         return obj;
     };
 
+    MegaChart.prototype.serializeState = function () {
+        var state = {
+            title: this.title(),
+            data: this.data()
+        };
+        var chart = this.chart();
+        if (chart) {
+            if (chart.serializeState) {
+                state.chart = chart.serializeState();
+                delete state.chart.data;
+            }
+        }
+        return state;
+    };
+
+    MegaChart.prototype.deserializeState = function (state) {
+        if (state) {
+            this
+                .title(state.title)
+                .data(state.data)
+            ;
+            var chart = this.chart();
+            if (chart && state.chart) {
+                if (chart.serializeState) {
+                    chart.deserializeState(state.chart);
+                }
+            }
+        }
+        return this;
+    };
+
     //  Events  ---
     MegaChart.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);

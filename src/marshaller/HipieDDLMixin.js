@@ -19,6 +19,7 @@
     HipieDDLMixin.prototype.publish("ddlUrl", "", "string", "DDL URL", null, { tags: ["Private"] });
     HipieDDLMixin.prototype.publish("databomb", "", "string", "Data Bomb", null, { tags: ["Private"] });
     HipieDDLMixin.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings", null, { tags: ["Private"] });
+    HipieDDLMixin.prototype.publish("timeout", null, "number", "Timout (seconds)", null, { optional: true });
     HipieDDLMixin.prototype.publish("clearDataOnUpdate", true, "boolean", "Clear data prior to refresh", null);
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
@@ -75,6 +76,7 @@
             if (this._marshaller) {
                 this._marshaller
                     .proxyMappings(this.proxyMappings())
+                    .timeout(this.timeout())
                     .clearDataOnUpdate(this.clearDataOnUpdate())
                     .propogateClear(this.propogateClear())
                     .missingDataString(this.missingDataString())
@@ -130,7 +132,6 @@
         }
 
         function postParse() {
-            var hasData = false;
             context._gatherDashboards(context._marshaller, context.databomb());
             //  Remove existing widgets not used and prime popups ---
             context._ddlVisualizations.forEach(function(viz) {
@@ -147,9 +148,6 @@
                     }
                     viz.newWidgetSurface.title(viz.title);
                     viz.widget.size({ width: 0, height: 0 });
-                }
-                if (!hasData) {
-                    hasData = viz.widget.data().length;
                 }
             });
             context._ddlPopupVisualizations.forEach(function (viz) {
@@ -171,24 +169,27 @@
                 context.clearContent(value);
             });
             context.populateContent();
-            BaseClass.render.call(context, function (widget) {
-                if (context._initialState) {
-                    context._marshaller.deserializeState(context._initialState.marshaller);
-                    delete context._initialState;
-                }
-                if (!hasData) {
-                    context._marshaller.fetchData().then(function (response) {
+            if (context._initialState) {
+                context._marshaller.deserializeState(context._initialState.marshaller);
+                delete context._initialState;
+                BaseClass.render.call(context, callback);
+            } else {
+                BaseClass.render.call(context, function (widget) {
+                    context._marshaller.primeData().then(function (response) {
                         if (callback) {
                             callback(widget);
                         }
                     });
-                } else {
-                    if (callback) {
-                        callback(widget);
-                    }
-                }
-            });
+                });
+            }
         }
+    };
+
+    HipieDDLMixin.prototype.primeData = function (state) {
+        if (this._marshaller) {
+            return this._marshaller.primeData(state);
+        }
+        return Promise.resolve();
     };
 
     HipieDDLMixin.prototype.dashboards = function () {
@@ -252,6 +253,14 @@
     };
 
     HipieDDLMixin.prototype.commsEvent = function (ddlSource, eventID, request, response) {
+    };
+
+    HipieDDLMixin.prototype.state = function (_) {
+        if (!arguments.length) {
+            return this.serializeState();
+        }
+        this.deserializeState(_);
+        return this;
     };
 
     HipieDDLMixin.prototype.serializeState = function () {

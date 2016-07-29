@@ -9,11 +9,13 @@
     return {
         HTML: {
             databomb: function (callback) {
+                var marshaller;
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
-                    callback(new HTML()
+                    marshaller = new HTML()
                         .ddlUrl(DataFactory.Marshaller.simple.ddlUrl)
                         .databomb(DataFactory.Marshaller.simple.databomb)
-                    );
+                    ;
+                    callback(marshaller);
                 });
             },
             databomb2: function (callback) {
@@ -43,14 +45,14 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("https://216.19.105.2:18002/WsEcl/submit/query/roxie/leeddx_issue_1191_childdstable.Ins029_Service_1/json")
+                        .ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/jprichard_visualizegenerichealthcaregraph11.ins55194_service_1/json")
                     );
                 });
             },
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160616-145742&ResultName=coremultiwidgetfilter_Comp_Ins49326_DDL&SuppressXmlSchema=true")
+                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160726-143554&ResultName=BIZOfficersDemo_Comp_Ins001_DDL")
                     );
                 });
             },
@@ -74,7 +76,7 @@
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/Graph"], function (DataFactory, Graph) {
                     callback(new Graph()
-                        .ddlUrl("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160525-142225&ResultName=joectestbizinteractions_Comp_Ins12811_DDL")
+                        .ddlUrl("http://10.194.11.1:8010/WsWorkunits/WUResult.json?Wuid=W20160727-171521&ResultName=cccontribdemo_Comp_Ins62981_DDL")
                     );
                 });
             },

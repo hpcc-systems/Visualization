@@ -239,7 +239,7 @@
             return this;
         };
         this[id + "_disabled"] = function () {
-            return ext && ext.disable ? ext.disable(this) : false;
+            return ext && ext.disable ? !!ext.disable(this) : false;
         };
         this[id + "_modified"] = function () {
             return this[__prop_ + id] !== undefined;

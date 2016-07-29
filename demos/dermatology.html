@@ -357,7 +357,7 @@
             }
 
             updateUrl = function (widget, widgetTest) {
-                var parsedClassID = Utility.parseClassID(widget.classID());
+                var parsedClassID = Utility.parseClassID(widget.classID(), "src");
                 var urlParam = parsedClassID.path + (widgetTest ? "." + widgetTest : "");
                 var params = Persist.serializeToObject(widget).__properties;
                 for (var key in params) {

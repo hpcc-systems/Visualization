@@ -60,7 +60,7 @@
                     }
                 }
                 if (options.length && context._valueRowMap[options[0]]) {
-                    context.click(context._valueRowMap[options[0]], "value", true);  //TODO:  Multiselect not support in HIPIE
+                    context.click(context.rowToObj(context._valueRowMap[options[0]]), "value", true); //TODO:  Multiselect not support in HIPIE
                 } else {
                     context.click([], "value", false);
                 }

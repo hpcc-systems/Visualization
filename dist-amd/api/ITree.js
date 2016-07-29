@@ -1,0 +1,1 @@
+!function(e,t){"function"==typeof define&&define.amd?define(["../common/Palette"],t):e.api_ITree=t(e.common_Palette)}(this,function(e){function t(){}return t.prototype._palette=e.ordinal("default"),t.prototype.click=function(e){console.log("Click:  "+e.label)},t});

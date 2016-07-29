@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.10.4-dev",
+  "version": "1.10.10",
   "description": "HPCC Visualization Framework",
   "keywords": [
     "Visualization",
@@ -45,8 +45,7 @@
     "d3-plugins": "*",
     "amcharts3": "~3.18.0",
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
-    "es6-promise": "~3.0.2",
-    "d3-plugins": "*"
+    "es6-promise": "~3.0.2"
   },
   "resolutions": {
     "d3": "~3.5.6"

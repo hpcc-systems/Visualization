@@ -1,0 +1,151 @@
+﻿.mdl-switch.is-checked .mdl-switch__thumb {
+    background: rgb(255,64,129);
+}
+
+.mdl-switch.is-checked .mdl-switch__track {
+    background: rgba(0,0,0, 0.26);
+}
+.mdl-layout__content {
+    background-color: ghostwhite;
+}
+
+.mdl-cell {
+    background-color: white;
+}
+
+#cellSurface {
+    position: relative;
+}
+
+#spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+#surface {
+    padding: 8px;
+}
+
+#widgetDropDown {
+    background-color: snow;
+    color: rgb(119, 119, 119);
+}
+
+#selectButton {
+    padding: 0 10px;
+    margin: 0 20px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    background-color: snow;
+    color: #111;
+    line-height: 25px;
+    height: 25px;
+    text-shadow: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#selectButton i {
+    padding-left: 5px;
+}
+
+#widgetSelect, .widgetMenu, .sampleMenu {
+    position: absolute;
+    border: 1px solid #A5A5A5;
+    box-shadow: 2px 3px 10px 0px rgba(0,0,0,.5);
+    margin: 0px;
+    padding: 0px;
+    z-index: 999;
+}
+
+.widgetMenu, .sampleMenu {
+}
+
+#widgetSelect {
+    top: 48px;
+    margin-left: -100px;
+}
+
+    #widgetSelect.hide {
+        display: none;
+    }
+
+.widgetMenu, .sampleMenu {
+    left: 100%;
+    margin-top: -25px;
+    white-space: nowrap;
+    display: none;
+}
+
+#widgetSelect li {
+    float: none;
+    background: snow;
+    color: #000;
+    text-shadow: none;
+    padding: 0 10px;
+    line-height: 25px;
+    list-style-type: none;
+}
+
+#widgetSelect li:hover {
+    cursor: pointer;
+    background-color: #E5E5E5;
+}
+
+#widgetSelect li:hover > ul {
+    display: block;
+}
+
+.draggable {
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkblue;
+    background-color: ghostwhite;
+    border-radius: 8px;
+    position: absolute;
+}
+
+.resizeHandle {
+    bottom: 4px;
+    right: 4px;
+    width: 4px;
+    height: 4px;
+    border-style: solid;
+    border-left-width: 0px;
+    border-top-width: 0px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-color: darkGray;
+    position: absolute;
+}
+
+.resizeHandle:hover {
+    border-color: orange;
+}
+
+.dragging {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: gray;
+    border-radius: 8px;
+    position: absolute;
+    background: repeating-linear-gradient( -45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 4px, rgba(100, 100, 100, 0.1) 4px, rgba(100, 100, 100, 0.1) 8px );
+}
+
+.resizing {
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    background-color: orange;
+    border-radius: 8px;
+    position: absolute;
+    opacity: 0.3;
+    background: repeating-linear-gradient( -45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 4px, orange 4px, orange 8px );
+}
+
+#drag-me::before {
+    content: "#" attr(id);
+    font-weight: bold;
+}

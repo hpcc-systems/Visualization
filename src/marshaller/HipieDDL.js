@@ -1098,7 +1098,7 @@
         this.id = dataSource.id;
         this.filter = dataSource.filter || [];
         this.WUID = dataSource.WUID;
-        this.URL = dataSource.URL;
+        this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
         this._loadedCount = 0;
@@ -1117,7 +1117,7 @@
 
         if (this.WUID) {
             this.comms = new Comms.HIPIEWorkunit()
-                .url(dashboard.marshaller.espUrl._url)
+                .url(this.URL)
                 .proxyMappings(proxyMappings)
                 .timeout(timeout)
                 .hipieResults(hipieResults)

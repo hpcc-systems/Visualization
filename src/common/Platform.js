@@ -149,13 +149,13 @@
             function delayed() {
                 if (!execAsap)
                     func.apply(obj, args);
-                obj.timeout = null;
+                obj.__hpcc_debounce_timeout = null;
             }
-            if (obj.timeout)
-                clearTimeout(obj.timeout);
+            if (obj.__hpcc_debounce_timeout)
+                clearTimeout(obj.__hpcc_debounce_timeout);
             else if (execAsap)
                 func.apply(obj, args);
-            obj.timeout = setTimeout(delayed, threshold || 100);
+            obj.__hpcc_debounce_timeout = setTimeout(delayed, threshold || 100);
         };
     };
 

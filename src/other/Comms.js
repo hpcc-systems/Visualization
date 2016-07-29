@@ -361,7 +361,7 @@
     WsECL.prototype.url = function (_) {
         var retVal = Comms.prototype.url.apply(this, arguments);
         if (arguments.length) {
-            //  http://192.168.1.201:8010/esp/files/stub.htm?QuerySetId=roxie&Id=stock.3&Widget=QuerySetDetailsWidget
+            //  http://localhost:8010/esp/files/stub.htm?QuerySetId=roxie&Id=stock.3&Widget=QuerySetDetailsWidget
             this._port = this._port === "8010" ? "8002" : this._port;  //  Need a better way  ---
             for (var key in this._params) {
                 switch (key) {
@@ -375,25 +375,14 @@
             }
 
             var pathParts, queryParts;
-            if (!this._target && !this._query) {
-                // http://192.168.1.201:8002/WsEcl/res/query/hthor/quicktest/res/index.html
-                pathParts = this._pathname.split("/res/");
+            if (!this._target || !this._query) {
+                //http://localhost:8002/WsEcl/forms/default/query/roxie/wecare
+                pathParts = this._pathname.split("/query/");
                 if (pathParts.length >= 2) {
                     queryParts = pathParts[1].split("/");
-                    if (queryParts.length >= 3) {
-                        this.target(queryParts[1]);
-                        this.query(queryParts[2]);
-                    }
-                }
-            }
-            if (!this._target && !this._query) {
-                //http://10.241.100.157:8002/WsEcl/forms/default/query/roxie/wecare
-                pathParts = this._pathname.split("/forms/default/");
-                if (pathParts.length >= 2) {
-                    queryParts = pathParts[1].split("/");
-                    if (queryParts.length >= 3) {
-                        this.target(queryParts[1]);
-                        this.query(queryParts[2]);
+                    if (queryParts.length >= 2) {
+                        this.target(queryParts[0]);
+                        this.query(queryParts[1]);
                     }
                 }
             }
@@ -478,7 +467,7 @@
     WsWorkunits.prototype.url = function (_) {
         var retVal = Comms.prototype.url.apply(this, arguments);
         if (arguments.length) {
-            //  http:x.x.x.x:8010/WsWorkunit/WuResult?Wuid=xxx&ResultName=yyy
+            //  http://localhost:8010/WsWorkunit/WuResult?Wuid=xxx&ResultName=yyy
             for (var key in this._params) {
                 switch (key) {
                     case "Wuid":
@@ -493,7 +482,7 @@
                 }
             }
             if (!this._wuid) {
-                //  http://192.168.1.201:8010/WsWorkunits/res/W20140922-213329/c:/temp/index.html
+                //  http://localhost:8010/WsWorkunits/res/W20140922-213329/c:/temp/index.html
                 var urlParts = this._url.split("/res/");
                 if (urlParts.length >= 2) {
                     var urlParts2 = urlParts[1].split("/");
@@ -720,7 +709,7 @@
     WsWorkunits_GetStats.prototype.url = function (_) {
         var retVal = Comms.prototype.url.apply(this, arguments);
         if (arguments.length) {
-            //  http://192.168.1.201:8010/WsWorkunits/WUGetStats?WUID="xxx"
+            //  http://localhost:8010/WsWorkunits/WUGetStats?WUID="xxx"
             for (var key in this._params) {
                 switch (key) {
                     case "WUID":

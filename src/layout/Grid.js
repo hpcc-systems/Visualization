@@ -177,10 +177,22 @@
         return this;
     };
 
-    Grid.prototype.renderContent = function () {
+    Grid.prototype.renderContent = function (callback) {
+        var renderCount = 0;
         this.content().forEach(function (cell) {
-            cell.render();
+            renderCount++;
+            cell.render(function () {
+                --renderCount;
+            });
         });
+        if (callback) {
+            var renderIntervalHandler = setInterval(function () {
+                if (renderCount <= 0) {
+                    clearInterval(renderIntervalHandler);
+                    callback();
+                }
+            }, 20);
+        }
         return this;
     };
 

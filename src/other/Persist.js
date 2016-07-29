@@ -134,22 +134,22 @@
             retVal.__properties = {};
 
             var context = this;
-            propertyWalker(widget, filter, function (widget, item) {
-                if (widget[item.id + "_modified"]()) {
+            propertyWalker(widget, filter, function (childWwidget, item) {
+                if (childWwidget[item.id + "_modified"]()) {
                     switch (item.type) {
                         case "widget":
-                            retVal.__properties[item.id] = context.serializeToObject(widget[item.id](), null, includeData, includeState);
+                            retVal.__properties[item.id] = context.serializeToObject(childWwidget[item.id](), null, includeData, includeState && !widget.serializeState);  //  Only include state once
                             return true;
                         case "widgetArray":
                         case "propertyArray":
                             retVal.__properties[item.id] = [];
-                            var widgetArray = widget[item.id]();
-                            widgetArray.forEach(function (widget, idx) {
-                                retVal.__properties[item.id].push(context.serializeToObject(widget, null, includeData, includeState));
+                            var widgetArray = childWwidget[item.id]();
+                            widgetArray.forEach(function (childWwidget, idx) {
+                                retVal.__properties[item.id].push(context.serializeToObject(childWwidget, null, includeData, includeState && !widget.serializeState));  //  Only include state once
                             });
                             return true;
                         default:
-                            retVal.__properties[item.id] = widget[item.id]();
+                            retVal.__properties[item.id] = childWwidget[item.id]();
                             break;
                     }
                 }
@@ -159,7 +159,7 @@
                 var vertices = widget.data().vertices;
                 if (vertices) {
                     this.__vertices = vertices.map(function (item) {
-                        return this.serializeToObject(item, null, includeData, includeState);
+                        return this.serializeToObject(item, null, includeData, includeState && !widget.serializeState);
                     }, this);
                 }
             }
@@ -167,8 +167,14 @@
                 if (!retVal.__data) retVal.__data = {};
                 retVal.__data.data = widget.data();
             }
-            if (includeState && widget.serializeState) {
-                retVal.__state = widget.serializeState();
+            if (includeState) {
+                if (widget.serializeState) {
+                    retVal.__state = widget.serializeState();
+                } else if (widget.data) {
+                    retVal.__state = {
+                        data: widget.data()
+                    };
+                }
             }
             return retVal;
         },
@@ -242,8 +248,12 @@
                             }
                         }
                     }
-                    if (state.__state && widget.deserializeState) {
-                        widget.deserializeState(state.__state);
+                    if (state.__state) {
+                        if (widget.deserializeState) {
+                            widget.deserializeState(state.__state);
+                        } else if (state.__state.data && widget.data) {
+                            widget.data(state.__state.data);
+                        }
                     }
                     callback(widget);
                 }

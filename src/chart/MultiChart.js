@@ -97,6 +97,13 @@
     ))));
     MultiChart.prototype._allMap = d3.map(MultiChart.prototype._allChartTypes, function (item) { return item.family; });
     MultiChart.prototype._allFamilies = MultiChart.prototype._allMap.keys();
+    MultiChart.prototype._allChartTypesMap = {};
+    MultiChart.prototype._allChartTypesByClass = {};
+    MultiChart.prototype._allChartTypes.forEach(function (item) {
+        item.widgetPath = Utility.widgetPath(item.widgetClass);
+        MultiChart.prototype._allChartTypesMap[item.id] = item;
+        MultiChart.prototype._allChartTypesByClass[item.widgetClass] = item;
+    }, this);
 
     MultiChart.prototype.publishReset();
     MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }),{tags:["Basic"]});

@@ -427,6 +427,13 @@
         return null;
     };
 
+    Source.prototype.clearOutputRequest = function () {
+        var op = this.getOutput();
+        if (op) {
+            op.request = {};
+        }
+    };
+
     Source.prototype.hasData = function () {
         return this.getOutput().db ? true : false;
     };
@@ -1040,7 +1047,7 @@
         delete this._widgetState;
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
-            this.source.getOutput().request = {};
+            this.source.clearOutputRequest();
         }
         if (this.dashboard.marshaller.propogateClear()) {
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
@@ -1200,18 +1207,20 @@
     }
 
     VisualizationRequestOptimizer.prototype.appendRequest = function (updateDatasource, request, updateVisualization) {
-        var visualizationRequestID = updateVisualization.id + "(" + updateDatasource.id + ")";
-        if (!this.visualizationRequests[visualizationRequestID]) {
-            this.visualizationRequests[visualizationRequestID] = {
-                updateVisualization: updateVisualization,
-                updateDatasource: updateDatasource,
-                request: {}
-            };
-        } else if (window.__hpcc_debug) {
-            console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+        if (updateDatasource && updateVisualization) {
+            var visualizationRequestID = updateVisualization.id + "(" + updateDatasource.id + ")";
+            if (!this.visualizationRequests[visualizationRequestID]) {
+                this.visualizationRequests[visualizationRequestID] = {
+                    updateVisualization: updateVisualization,
+                    updateDatasource: updateDatasource,
+                    request: {}
+                };
+            } else if (window.__hpcc_debug) {
+                console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+            }
+            var visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
+            Utility.mixin(visualizationOptimizedItem.request, request);
         }
-        var visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
-        Utility.mixin(visualizationOptimizedItem.request, request);
     };
 
     VisualizationRequestOptimizer.prototype.fetchData = function () {

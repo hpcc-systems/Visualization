@@ -80,10 +80,15 @@
                 .widgetY(min.y)
                 .widgetWidth(max.x - min.x)
                 .widgetHeight(max.y - min.y)
-                .render()
             ;
-            this._prevMin = min;
-            this._prevMax = max;
+            //  FF Issue on initial render (GH-1855) ---
+            if (this._viewportSurface._renderCount) {
+                this._viewportSurface.render();
+                this._prevMin = min;
+                this._prevMax = max;
+            } else {
+                this._viewportSurface.lazyRender();
+            }
         }
 
         var worldMin = projection.fromLatLngToDivPixel(new google.maps.LatLng(85, -179.9));

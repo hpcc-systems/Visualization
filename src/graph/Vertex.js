@@ -111,7 +111,7 @@
                 for (var key in d) {
                     if (annotationWidget[key]) {
                         annotationWidget[key](d[key]);
-                    } else {
+                    } else if (window.__hpcc_debug) {
                         console.log("Invalid annotation property:  " + key);
                     }
                 }

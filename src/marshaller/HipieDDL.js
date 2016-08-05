@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "../composite/MegaChart", "../chart/MultiChart", "require", "es6-promise"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "../composite/MegaChart", "../chart/MultiChart", "../other/Table", "require", "es6-promise"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.composite_MegaChart, root.chart_MultiChart, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.composite_MegaChart, root.chart_MultiChart, root.other_Table, root.require);
     }
-}(this, function (d3, Class, Database, Utility, Comms, Widget, MegaChart, MultiChart, require) {
+}(this, function (d3, Class, Database, Utility, Comms, Widget, MegaChart, MultiChart, Table, require) {
     var LOADING = "...loading...";
     var _CHANGED = "_changed";
 
@@ -78,11 +78,17 @@
                 return "time";
             case "geohash":
                 return "geohash";
+            case "dataset":
+                return "dataset";
             case "visualization":
                 return "widget";
             default:
                 if (hipieType) {
                     if (hipieType.indexOf("unsigned") === 0) {
+                        return "number";
+                    } else if (hipieType.indexOf("integer") === 0) {
+                        return "number";
+                    } else if (hipieType.indexOf("real") === 0) {
                         return "number";
                     } else if (hipieType.indexOf("string") === 0) {
                         return "string";
@@ -239,6 +245,35 @@
             this.visualization.fields.forEach(function (field, idx) {
                 var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
                 switch (fieldType) {
+                    case "dataset":
+                        retVal = retVal.map(function (row) {
+                            row.forEach(function (cell, cellIdx) {
+                                if (cellIdx === idx) {
+                                    cell = cell.Row || cell;
+                                    var columns = [];
+                                    var columnsIdx = {};
+                                    var data = cell.map(function (row, idx) {
+                                        var retVal = [];
+                                        retVal.length = columns.length;
+                                        for (var key in row) {
+                                            if (idx === 0) {
+                                                columnsIdx[key] = columns.length;
+                                                columns.push(key);
+                                            }
+                                            retVal[columnsIdx[key]] = row[key];
+                                        }
+                                        return retVal;
+                                    });
+                                    var table = new Table()
+                                        .columns(columns)
+                                        .data(data)
+                                    ;
+                                    row[cellIdx] = table;
+                                }
+                            });
+                            return row;
+                        });
+                        break;
                     case "widget":
                         retVal = retVal.map(function (row) {
                             //  TODO:  Insert Widget

@@ -87,7 +87,9 @@
                 context.click(context.rowToObj(d[2].origRow), "geohash", context._selection.selected(this));
             })
             .on('mouseover', function (d) {
-                this.parentNode.appendChild(this);
+                if (!this.isIE) {
+                    this.parentNode.appendChild(this);
+                }
             })
             .append("title")
         ;

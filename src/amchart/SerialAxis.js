@@ -43,7 +43,7 @@
     SerialAxis.prototype.publish("axisMinValue", null, "number", "Y axis Minimum value",null,{});
     SerialAxis.prototype.publish("axisMaxValue", null, "number", "Y axis Maximum value",null,{});
     
-    SerialAxis.prototype.publish("axislabelFrequency", null, "number", "Y axis Label Frequency",null,{});
+    SerialAxis.prototype.publish("axisLabelFrequency", null, "number", "Y axis Label Frequency",null,{});
 
     SerialAxis.prototype.publish("axisBaseValue", null, "number", "Y axis Base Value",null,{});
 

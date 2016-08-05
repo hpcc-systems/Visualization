@@ -387,8 +387,8 @@
                 this._chart.valueAxes[0].strictMinMax = false;
             }
 
-            if (this.yAxislabelFrequency()) {
-                this._chart.valueAxes[0].labelFrequency = this.yAxislabelFrequency();
+            if (this.yAxisLabelFrequency()) {
+                this._chart.valueAxes[0].labelFrequency = this.yAxisLabelFrequency();
             }
             
             if (this.yAxisGridCount()) {

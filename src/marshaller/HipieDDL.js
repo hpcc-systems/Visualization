@@ -344,8 +344,8 @@
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
             var vertex = getVertex(mappedItem, item);
-            if (item[context.link.childfile] && item[context.link.childfile].Row) {
-                var childItems = item[context.link.childfile].Row;
+            if (item[context.link.childfile] && item[context.link.childfile] instanceof Array) {
+                var childItems = item[context.link.childfile];
                 childItems.forEach(function (childItem, i) {
                     var childMappedItem = context.linkMappings.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);

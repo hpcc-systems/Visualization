@@ -205,15 +205,15 @@
     Main.prototype.doResize = function () {
         this._main
             .resize()
-            .render()
+            .lazyRender()
         ;
         this._propEditor
             .resize()
-            .render()
+            .lazyRender()
         ;
         this._cloneSurface
             .resize()
-            .render()
+            .lazyRender()
         ;
     };
 

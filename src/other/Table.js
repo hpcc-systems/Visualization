@@ -315,6 +315,13 @@
                     context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
                 }
             })
+            .on("dblclick", function (_d) {
+                if (_d.row) {
+                    var d = _d.row;
+                    var i = _d.rowIdx;
+                    context.dblclick(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
+                }
+            })
             .on("mouseover", function (_d) {
                 if (_d.row) {
                     var i = _d.rowIdx;
@@ -878,14 +885,19 @@
         return this;
     };
 
-    Table.prototype.click = function (row, column, selected) {
-        function replacer(key, value) {
-            if (value instanceof Widget) {
-                return "Widget with class: " + value.classID();
-            }
-            return value;
+    function replacer(key, value) {
+        if (value instanceof Widget) {
+            return "Widget with class: " + value.classID();
         }
-        console.log("Click:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
+        return value;
+    }
+
+    Table.prototype.click = function (row, column, selected) {
+        console.log("click:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
+    };
+
+    Table.prototype.dblclick = function (row, column, selected) {
+        console.log("dblclick:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     };
 
     Table.prototype.headerClick = function (column, idx) {

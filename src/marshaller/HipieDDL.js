@@ -241,11 +241,30 @@
                 switch (fieldType) {
                     case "widget":
                         retVal = retVal.map(function (row) {
-                            //  TODO:  Insert Widget
+                            row.forEach(function (cell, cellIdx) {
+                                if (cellIdx === idx) {
+                                    var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
+                                    var output = viz.source.getOutput();
+                                    var db = output.db;
+                                    output.setData(cell, {}, []);
+                                    var widget = viz.widget;
+                                    var newWidget = new widget.constructor()
+                                        .showToolbar(false)
+                                        .legendPosition("none")
+                                        .chartType(widget.chartType())
+                                        .chartTypeDefaults(widget.chartTypeDefaults())
+                                        .columns(viz.source.getColumns())
+                                        .data(viz.source.getData())
+                                    ;
+                                    output.db = db;
+                                    row[cellIdx] = newWidget;
+                                }
+                            }, this);
                             return row;
-                        });
+                        }, this);
+                        break;
                 }
-            });
+            }, this);
         }
         return retVal;
     };

@@ -45,14 +45,21 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.241.100.159:8002/WsEcl/submit/query/roxie/jprichard_visualizegenerichealthcaregraph18.ins55194_service_1/json")
+                        .ddlUrl_default("http://10.241.100.159:8002/WsEcl/submit/query/roxie/zz_speriasamy_SuspectAddressDemo.Ins011_Service_1/json")
                     );
                 });
             },
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20160729-125450&ResultName=issue_1846_multiselect_Comp_Ins001_DDL")
+                        .ddlUrl_default("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20160805-104712&ResultName=nestedwidgettest_Comp_Ins021_DDL&SuppressXmlSchema=true")
+                    );
+                });
+            },
+            flyout: function (callback) {
+                require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
+                    callback(new HTML()
+                        .ddlUrl("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20151102-091253&ResultName=leeddx_issue_986_formddl_Comp_Ins002_DDL")
                     );
                 });
             }
@@ -78,23 +85,6 @@
                     callback(new Graph()
                         .ddlUrl(DataFactory.Marshaller.hipie.ddlUrl)
                     );
-                });
-            }
-        },
-        Flyout: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/marshaller/FlyoutButton", "src/composite/MegaChart", "src/form/Form"], function (DataFactory, FlyoutButton, MegaChart, Form) {
-                    var form = new Form()
-                        .allowEmptyRequest(true)
-                    ;
-                    var flyoutButton = new FlyoutButton()
-                        .title("Test")
-                        .widget(form)
-                    ;
-                    var megaChart = new MegaChart()
-                    ;
-                    megaChart.toolbarWidgets().push(flyoutButton);
-                    callback(megaChart)
                 });
             }
         }

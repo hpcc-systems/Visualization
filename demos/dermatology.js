@@ -150,22 +150,25 @@
 
     Main.prototype.showClone = function () {
         var show = this.cloneVisible();
-        doResize();
-        if (show) {
-            var context = this;
-            this.cloneWidget(function (widget) {
-                context._cloneSurface
+        if (this._prevShowClone !== show) {
+            doResize();
+            if (show) {
+                var context = this;
+                this.cloneWidget(function (widget) {
+                    context._cloneSurface
+                        .surfacePadding(0)
+                        .widget(widget)
+                        .render()
+                    ;
+                });
+            } else {
+                this._cloneSurface
                     .surfacePadding(0)
-                    .widget(widget)
+                    .widget(null)
                     .render()
                 ;
-            });
-        } else {
-            this._cloneSurface
-                .surfacePadding(0)
-                .widget(null)
-                .render()
-            ;
+            }
+            this._prevShowClone = show;
         }
     };
 

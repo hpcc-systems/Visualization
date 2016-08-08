@@ -34,6 +34,12 @@
     Column.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%","3d"],{tags:["Basic"]});
     Column.prototype.publish("useOhlcLines", false, "boolean", "Use OHLC Lines",null,{tags:["Intermediate"]});
 
+    Column.prototype.publish("yAxisMinimumValue", null, "number", "Y axis Minimum value",null,{});
+    Column.prototype.publish("yAxisMaximumValue", null, "number", "Y axis Maximum value",null,{});
+    Column.prototype.publish("yAxisbaseValue", null, "number", "Y axis base value",null,{});
+    Column.prototype.publish("yAxislabelFrequency", 1,"number", "Y axis label frequency",null,{});
+    Column.prototype.publish("yAxisGridCount", 5,"number", "Y axis grid count",null,{});
+
     Column.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
@@ -54,6 +60,28 @@
             this._chart.valueAxes[0].stackType = this.stackType();
         } else {
             this._chart.valueAxes[0].stackType = "none";
+        }
+
+        if(this.yAxisMinimumValue() && this.yAxisMaximumValue()){
+            this._chart.valueAxes[0].minimum = this.yAxisMinimumValue();
+            this._chart.valueAxes[0].maximum = this.yAxisMaximumValue();
+            this._chart.valueAxes[0].strictMinMax = true;
+        }else{
+            this._chart.valueAxes[0].minimum = undefined;
+            this._chart.valueAxes[0].maximum = undefined;
+            this._chart.valueAxes[0].strictMinMax = false;
+        }
+
+        if(this.yAxislabelFrequency()) {
+            this._chart.valueAxes[0].labelFrequency = this.yAxislabelFrequency();
+            }
+
+        if(this.yAxisbaseValue()) {
+            this._chart.valueAxes[0].baseValue = this.yAxisbaseValue();
+            }
+
+        if (this.yAxisGridCount()) {
+            this._chart.valueAxes[0].gridCount = this.yAxisGridCount();
         }
 
         this._chart.depth3D = this.Depth3D();

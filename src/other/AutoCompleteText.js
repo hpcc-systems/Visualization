@@ -71,8 +71,23 @@
                     var re = new RegExp("(" + search.split(' ').join("|") + ")", "gi");
                     return '<div class="autocomplete-suggestion" data-val="' + item.value + '" data-row="' + item.origRow + '">' + item.value.replace(re, "<b>$1</b>") + '</div>';
                 },
-                onSelect: function (e, term, item) {
-                    context.click(item.getAttribute("data-row"), context.valueColumn(), true);
+                 onSelect: function(e, term, item){
+                var mappedDataObj = context.data().map(function(object,index){ 
+                    if(object[0] === term){
+                        var mappedObj = {};
+                        for(var x=0; x < object.length; x++){
+                            if(context.columns() !== undefined){
+                                var label = context.columns()[x];
+                                mappedObj[label]= object[x];
+                            }
+                        }
+                        mappedObj['Index'] = index;
+                        return mappedObj;
+                    }
+                });
+                var mappedDataObject = mappedDataObj.filter(function(val) { return val !== undefined; });
+                var objectData =  Object.assign({}, mappedDataObject[0]);
+                context.click(objectData,term,true);
                 }
             });
         }

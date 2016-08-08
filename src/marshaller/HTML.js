@@ -21,9 +21,9 @@
         var cellRow = 0;
         var cellCol = 0;
         var cellDensity = this.cellDensity();
-        for (var key in this._ddlDashboards) {
-            var maxCol = Math.floor(Math.sqrt(this._ddlDashboards[key].visualizations.length));
-            this._ddlDashboards[key].visualizations.forEach(function (viz) {
+        this._ddlDashboards.forEach(function (dashboard) {
+            var maxCol = Math.floor(Math.sqrt(dashboard.visualizations.length));
+            dashboard.visualizations.forEach(function (viz) {
                 if (viz.newWidgetSurface) {
                     while (this.getCell(cellRow * cellDensity, cellCol * cellDensity) !== null) {
                         cellCol++;
@@ -35,7 +35,7 @@
                     this.setContent(cellRow, cellCol, viz.newWidgetSurface);
                 }
             }, this);
-        }
+        }, this);
 
         var vizCellMap = {};
         this.content().forEach(function (cell) {
@@ -48,8 +48,8 @@
             }
         });
 
-        for (key in this._ddlDashboards) {
-            this._ddlDashboards[key].visualizations.forEach(function (viz, idx) {
+        this._ddlDashboards.forEach(function (dashboard) {
+            dashboard.visualizations.forEach(function (viz, idx) {
                 if (viz.properties.flyout || viz.parentVisualization) {
                     return;
                 }
@@ -61,7 +61,7 @@
                 });
                 vizCellMap[viz.id].indicateTheseIds(targetIDs);
             });
-        }
+        }, this);
     };
 
     HTML.prototype.enter = function (domNode, element) {

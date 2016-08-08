@@ -61,7 +61,6 @@
         } else {
             this._chart.valueAxes[0].stackType = "none";
         }
-        
 
         if(this.yAxisMinimumValue() && this.yAxisMaximumValue()){
             this._chart.valueAxes[0].minimum = this.yAxisMinimumValue();
@@ -72,6 +71,7 @@
             this._chart.valueAxes[0].maximum = undefined;
             this._chart.valueAxes[0].strictMinMax = false;
         }
+
         if(this.yAxislabelFrequency()) {
             this._chart.valueAxes[0].labelFrequency = this.yAxislabelFrequency();
             }
@@ -87,10 +87,8 @@
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
         this._chart.categoryAxis.startOnAxis = false;
-        
 
         return this._chart;
-
     };
 
     Column.prototype.buildGraphs = function(gType) {

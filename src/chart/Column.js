@@ -20,8 +20,6 @@
     Column.prototype.implements(ITooltip.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:["Basic","Shared"]});
-    Column.prototype.publish("stacked", false, "boolean", "Stacked Bars", null, { tags: ["Basic"] });
-    Column.prototype.publish("stackedOpacity", 0.66, "number", "Fill Stacked Opacity", null, { tags: ["Basic"] });
     Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Column.prototype.enter = function (domNode, element) {
@@ -29,9 +27,30 @@
         var context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: d.row[d.idx] });
+                var value = d.row[d.idx];
+                if (value instanceof Array) {
+                    value = value[1] - value[0];
+                }
+                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value: value });
             })
         ;
+    };
+
+    XYAxis.prototype.adjustedData = function () {
+        var retVal = this.data().map(function (row) {
+            var prevValue = 0;
+            return row.map(function (cell, idx) {
+                if (idx === 0) {
+                    return cell;
+                } if (idx >= this.columns().length) {
+                    return cell;
+                }
+                var retVal = this.yAxisStacked() ? [prevValue, prevValue + cell] : cell;
+                prevValue += cell;
+                return retVal;
+            }, this);
+        }, this);
+        return retVal;
     };
 
     Column.prototype.updateChart = function (domNode, element, margin, width, height, isHorizontal, duration) {
@@ -62,7 +81,7 @@
         ;
 
         var column = this.svgData.selectAll(".dataRow")
-            .data(this.data())
+            .data(this.adjustedData())
         ;
 
         column.enter().append("g")
@@ -96,28 +115,20 @@
 
                 if (isHorizontal) {
                     columnRect.transition().duration(duration)
-                        .attr("x", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
-                        .attr("width", context.stacked() ? dataLen : columnScale.rangeBand())
+                        .attr("x", function (d) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
+                        .attr("width", context.yAxisStacked() ? dataLen : columnScale.rangeBand())
                         .attr("y", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
                         .attr("height", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
-                        .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
                 } else {
                     columnRect.transition().duration(duration)
-                        .attr("y", function (d) { return context.dataPos(dataRow[0]) + (context.stacked() ? 0 : columnScale(d.column)) + offset; })
-                        .attr("height", context.stacked() ? dataLen : columnScale.rangeBand())
+                        .attr("y", function (d) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
+                        .attr("height", context.yAxisStacked() ? dataLen : columnScale.rangeBand())
                         .attr("x", function (d) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
                         .attr("width", function (d) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
-                        .style("opacity", context.stacked() ? context.stackedOpacity() : 1)
                         .style("fill", function (d) { return context._palette(d.column); })
                     ;
-                }
-
-                if (context.stacked()) {
-                    columnRect.sort(function (l, r) {
-                        return r - l;
-                    });
                 }
 
                 columnRect.exit().transition().duration(duration)

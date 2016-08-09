@@ -219,19 +219,29 @@
                 case "ordinal":
                     break;
                 default:
-                    var length, delta, newLow, newHigh;
+                    var length, delta, low, high, newLow, newHigh;
                     if (this.isHorizontal()) {
                         length = this.width();
                         this.d3Scale.range([0, length]);
                         delta = length * this.extend() / 100;
+                        low = this.d3Scale.invert(0);
                         newLow = this.d3Scale.invert(-delta);
+                        high = this.d3Scale.invert(length);
                         newHigh = this.d3Scale.invert(length + delta);
                     } else {
                         length = this.height();
                         this.d3Scale.range([length, 0]);
                         delta = length * this.extend() / 100;
+                        low = this.d3Scale.invert(length);
                         newLow = this.d3Scale.invert(length + delta);
+                        high = this.d3Scale.invert(0);
                         newHigh = this.d3Scale.invert(-delta);
+                    }
+                    if (Math.sign(low) !== Math.sign(newLow)) {
+                        newLow = 0;
+                    }
+                    if (Math.sign(high) !== Math.sign(newHigh)) {
+                        newHigh = 0;
                     }
                     this.d3Scale.domain([newLow, newHigh]);
                     break;

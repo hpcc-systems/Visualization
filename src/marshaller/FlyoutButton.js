@@ -46,6 +46,7 @@
 
     FlyoutButton.prototype.publishProxy("title", "_popupSurface");
     FlyoutButton.prototype.publishProxy("widget", "_popupSurface");
+    FlyoutButton.prototype.publish("autoClose", true, "boolean", "Auto Close");
 
     FlyoutButton.prototype.click = function (obj) {
         var context = this;
@@ -79,14 +80,15 @@
 
     FlyoutButton.prototype.render = function (callback) {
         var context = this;
+        var isVisible = this._popup.popupState();
         Button.prototype.render.call(context, function (widget) {
             var popupParentWidgetBBox = context._popupParentWidget.getBBox();
             var bbox = widget.getBBox();
             context._popup
                 .left(bbox.x - popupParentWidgetBBox.x + bbox.width - context._popup.width())
                 .top(bbox.y - popupParentWidgetBBox.y + bbox.height)
-                .visible(false)  //  hack:  closes the form when submit is clicked  ---
-                .popupState(false)
+                .visible(isVisible && context.autoClose() ? false : isVisible)  //  hack:  closes the form when submit is clicked  ---
+                .popupState(isVisible && context.autoClose() ? false : isVisible)
                 .render()
             ;
             if (callback) {

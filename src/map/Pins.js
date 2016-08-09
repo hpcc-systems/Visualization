@@ -80,9 +80,6 @@
         var context = this;
         var gPinEnter = this.pinsPaths.enter().append("g").attr("class","pin");
         gPinEnter
-            .append("path")
-            .attr("class", "data")
-            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 context.click(context.rowToObj(d[2].origRow), "geohash", context._selection.selected(this));
             })
@@ -90,7 +87,11 @@
                 if (!this.isIE) {
                     this.parentNode.appendChild(this);
                 }
-            })
+            });
+        gPinEnter
+            .append("path")
+            .attr("class", "data")
+            .call(this._selection.enter.bind(this._selection))
             .append("title")
         ;
         gPinEnter

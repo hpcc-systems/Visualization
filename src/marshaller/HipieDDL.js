@@ -1079,7 +1079,16 @@
     };
 
     Visualization.prototype.clear = function () {
-        delete this._widgetState;
+        this._widgetState = {
+            row: {},
+            selected: false
+        };
+        this.fields.forEach(function (field) {
+            if (field.properties && field.properties.default !== undefined) {
+                this._widgetState.row[field.id] = field.properties.default;
+                this._widgetState.selected = true;
+            }
+        }, this);
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
             this.source.clearOutputRequest();
@@ -1100,6 +1109,15 @@
             }, 0);
         });
         return this;
+    };
+
+    Visualization.prototype.calcRequestFor = function (visualization) {
+        var retVal = {};
+        this.getUpdatesForVisualization(visualization).forEach(function (updatesObj) {
+            //  TODO:  When we support more than "click" this will need enhancment...
+            retVal = updatesObj.calcRequestFor(visualization);
+        });
+        return retVal;
     };
 
     Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
@@ -1517,6 +1535,12 @@
                 var inputVisualizations = visualization.getInputVisualizations();
                 if (inputVisualizations.length === 0) {
                     fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
+                } else {
+                    inputVisualizations.forEach(function (inViz) {
+                        if (inViz.hasSelection()) {
+                            fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                        }
+                    });
                 }
             }
         });
@@ -1609,12 +1633,9 @@
                 .timeout(this._timeout)
             ;
         }
-        var request = {
-            refresh: false
-        };
 
         var context = this;
-        transport.call(request).then(function (response) {
+        transport.fetchResults().then(function (response) {
             if (exists(hipieResultName, response)) {
                 return transport.fetchResult(hipieResultName).then(function (ddlResponse) {
                     var json = ddlResponse[0][hipieResultName];
@@ -1626,7 +1647,7 @@
                 });
             }
         }).catch(function (e) {
-            context.commsEvent(context, "error", request, e);
+            context.commsEvent(context, "error", "fetchResults", e);
         });
     };
 

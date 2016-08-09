@@ -862,44 +862,46 @@
     };
 
     HIPIEWorkunit.prototype.call = function (request, callback) {
+        var context = this;
         if (request.refresh || !this._resultNameCache || !this._resultNameCacheCount) {
-            return this.fetchResults(callback);
-        } else {
-            var context = this;
-            return new Promise(function (resolve, reject) {
-                var changedFilter = {};
-                for (var key in request) {
-                    if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
-                        changedFilter[key] = request[key];
-                    }
-                }
-                var retVal = {};
-                for (var hipieKey in context._hipieResults) {
-                    var item = context._hipieResults[hipieKey];
-                    var matchedResult = true;
-                    for (var key2 in changedFilter) {
-                        if (item.filter.indexOf(key2) < 0) {
-                            matchedResult = false;
-                            break;
-                        }
-                    }
-                    if (matchedResult) {
-                        retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
-                            for (var key2 in changedFilter) {
-                                if (row[key2] != changedFilter[key2] && row[key2.toLowerCase()] != changedFilter[key2]) { // jshint ignore:line
-                                    return false;
-                                }
-                            }
-                            return true;
-                        });
-                    }
-                }
-                if (callback) {
-                    console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.call)");
-                    callback(retVal);
-                }
-                resolve(retVal);
+            return this.fetchResults(callback).then(function (response) {
+                return filterResults(request);
             });
+        } else {
+            return new Promise(function (resolve, reject) {
+                resolve(filterResults(request));
+            });
+        }
+
+        function filterResults(request) {
+            var changedFilter = {};
+            for (var key in request) {
+                if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
+                    changedFilter[key] = request[key];
+                }
+            }
+            var retVal = {};
+            for (var hipieKey in context._hipieResults) {
+                var item = context._hipieResults[hipieKey];
+                var matchedResult = true;
+                for (var key2 in changedFilter) {
+                    if (item.filter.indexOf(key2) < 0) {
+                        matchedResult = false;
+                        break;
+                    }
+                }
+                if (matchedResult) {
+                    retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
+                        for (var key2 in changedFilter) {
+                            if (row[key2] != changedFilter[key2] && row[key2.toLowerCase()] != changedFilter[key2]) { // jshint ignore:line
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                }
+            }
+            return retVal;
         }
     };
 

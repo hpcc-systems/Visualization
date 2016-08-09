@@ -29,34 +29,32 @@
     Graph.prototype.populateContent = function () {
         var vertices = [];
         var edges = [];
-        for (var key in this._ddlDashboards) {
-            this._ddlVisualizations.concat(this._ddlPopupVisualizations).forEach(function (viz) {
-                if (viz.widget) {
-                    var newSurface = null;
-                    if (viz.widget instanceof ResizeSurface) {
-                        newSurface = viz.widget
-                            .size({ width: 210, height: 210 })
-                        ;
-                    } else {    
-                        var width = 280;
-                        var height = 210;
-                        newSurface = new ResizeSurface()
-                            .showTitle(true)
-                            .size({ width: width, height: height })
-                            .content(viz.widget)
-                        ;
-                    }
-                    if (newSurface) {
-                        viz.newWidgetSurface = newSurface;
-                    }
-                    vertices.push(newSurface);
+        this._ddlVisualizations.concat(this._ddlPopupVisualizations).forEach(function (viz) {
+            if (viz.widget) {
+                var newSurface = null;
+                if (viz.widget instanceof ResizeSurface) {
+                    newSurface = viz.widget
+                        .size({ width: 210, height: 210 })
+                    ;
+                } else {    
+                    var width = 280;
+                    var height = 210;
+                    newSurface = new ResizeSurface()
+                        .showTitle(true)
+                        .size({ width: width, height: height })
+                        .content(viz.widget)
+                    ;
                 }
-                viz.getInputVisualizations().forEach(function () {
-                }, this);
+                if (newSurface) {
+                    viz.newWidgetSurface = newSurface;
+                }
+                vertices.push(newSurface);
+            }
+            viz.getInputVisualizations().forEach(function () {
             }, this);
-        }
-        for (key in this._ddlDashboards) {
-            this._ddlDashboards[key].visualizations.forEach(function (viz) {
+        }, this);
+        this._ddlDashboards.forEach(function (dashboard) {
+            dashboard.visualizations.forEach(function (viz) {
                 viz.getInputVisualizations().forEach(function (inViz) {
                     edges.push(new Edge()
                         .sourceVertex(inViz.newWidgetSurface)
@@ -65,7 +63,7 @@
                     );
                 }, this);
             }, this);
-        }
+        }, this);
         this.content(vertices);
         this.data({ vertices: vertices, edges: edges });
     };

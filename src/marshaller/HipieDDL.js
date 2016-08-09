@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "../composite/MegaChart", "../chart/MultiChart", "require", "es6-promise"], factory);
+        define(["d3", "../common/Class", "../common/Database", "../common/Utility", "../other/Comms", "../common/Widget", "../composite/MegaChart", "../chart/MultiChart", "../other/Table", "require", "es6-promise"], factory);
     } else {
-        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.composite_MegaChart, root.chart_MultiChart, root.require);
+        root.marshaller_HipieDDL = factory(root.d3, root.common_Class, root.common_Database, root.common_Utility, root.other_Comms, root.common_Widget, root.composite_MegaChart, root.chart_MultiChart, root.other_Table, root.require);
     }
-}(this, function (d3, Class, Database, Utility, Comms, Widget, MegaChart, MultiChart, require) {
+}(this, function (d3, Class, Database, Utility, Comms, Widget, MegaChart, MultiChart, Table, require) {
     var LOADING = "...loading...";
     var _CHANGED = "_changed";
 
@@ -78,11 +78,17 @@
                 return "time";
             case "geohash":
                 return "geohash";
+            case "dataset":
+                return "dataset";
             case "visualization":
                 return "widget";
             default:
                 if (hipieType) {
                     if (hipieType.indexOf("unsigned") === 0) {
+                        return "number";
+                    } else if (hipieType.indexOf("integer") === 0) {
+                        return "number";
+                    } else if (hipieType.indexOf("real") === 0) {
                         return "number";
                     } else if (hipieType.indexOf("string") === 0) {
                         return "string";
@@ -239,13 +245,61 @@
             this.visualization.fields.forEach(function (field, idx) {
                 var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
                 switch (fieldType) {
-                    case "widget":
+                    case "dataset":
                         retVal = retVal.map(function (row) {
-                            //  TODO:  Insert Widget
+                            row.forEach(function (cell, cellIdx) {
+                                if (cellIdx === idx) {
+                                    cell = cell.Row || cell;
+                                    var columns = [];
+                                    var columnsIdx = {};
+                                    var data = cell.map(function (row, idx) {
+                                        var retVal = [];
+                                        retVal.length = columns.length;
+                                        for (var key in row) {
+                                            if (idx === 0) {
+                                                columnsIdx[key] = columns.length;
+                                                columns.push(key);
+                                            }
+                                            retVal[columnsIdx[key]] = row[key];
+                                        }
+                                        return retVal;
+                                    });
+                                    var table = new Table()
+                                        .columns(columns)
+                                        .data(data)
+                                    ;
+                                    row[cellIdx] = table;
+                                }
+                            });
                             return row;
                         });
+                        break;
+                    case "widget":
+                        retVal = retVal.map(function (row) {
+                            row.forEach(function (cell, cellIdx) {
+                                if (cellIdx === idx) {
+                                    var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
+                                    var output = viz.source.getOutput();
+                                    var db = output.db;
+                                    output.setData(cell, {}, []);
+                                    var widget = viz.widget;
+                                    var newWidget = new widget.constructor()
+                                        .showToolbar(false)
+                                        .legendPosition("none")
+                                        .chartType(widget.chartType())
+                                        .chartTypeDefaults(widget.chartTypeDefaults())
+                                        .columns(viz.source.getColumns())
+                                        .data(viz.source.getData())
+                                    ;
+                                    output.db = db;
+                                    row[cellIdx] = newWidget;
+                                }
+                            }, this);
+                            return row;
+                        }, this);
+                        break;
                 }
-            });
+            }, this);
         }
         return retVal;
     };
@@ -344,8 +398,8 @@
         data.forEach(function (item) {
             var mappedItem = context.doMap(item);
             var vertex = getVertex(mappedItem, item);
-            if (item[context.link.childfile] && item[context.link.childfile].Row) {
-                var childItems = item[context.link.childfile].Row;
+            if (item[context.link.childfile] && item[context.link.childfile] instanceof Array) {
+                var childItems = item[context.link.childfile];
                 childItems.forEach(function (childItem, i) {
                     var childMappedItem = context.linkMappings.doMap(childItem);
                     var childVertex = getVertex(childMappedItem);
@@ -425,6 +479,13 @@
             return datasource.outputs[this._output];
         }
         return null;
+    };
+
+    Source.prototype.clearOutputRequest = function () {
+        var op = this.getOutput();
+        if (op) {
+            op.request = {};
+        }
     };
 
     Source.prototype.hasData = function () {
@@ -1037,10 +1098,19 @@
     };
 
     Visualization.prototype.clear = function () {
-        delete this._widgetState;
+        this._widgetState = {
+            row: {},
+            selected: false
+        };
+        this.fields.forEach(function (field) {
+            if (field.properties && field.properties.default !== undefined) {
+                this._widgetState.row[field.id] = field.properties.default;
+                this._widgetState.selected = true;
+            }
+        }, this);
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
-            this.source.getOutput().request = {};
+            this.source.clearOutputRequest();
         }
         if (this.dashboard.marshaller.propogateClear()) {
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
@@ -1058,6 +1128,15 @@
             }, 0);
         });
         return this;
+    };
+
+    Visualization.prototype.calcRequestFor = function (visualization) {
+        var retVal = {};
+        this.getUpdatesForVisualization(visualization).forEach(function (updatesObj) {
+            //  TODO:  When we support more than "click" this will need enhancment...
+            retVal = updatesObj.calcRequestFor(visualization);
+        });
+        return retVal;
     };
 
     Visualization.prototype.processEvent = function (eventID, event, row, col, selected) {
@@ -1200,18 +1279,20 @@
     }
 
     VisualizationRequestOptimizer.prototype.appendRequest = function (updateDatasource, request, updateVisualization) {
-        var visualizationRequestID = updateVisualization.id + "(" + updateDatasource.id + ")";
-        if (!this.visualizationRequests[visualizationRequestID]) {
-            this.visualizationRequests[visualizationRequestID] = {
-                updateVisualization: updateVisualization,
-                updateDatasource: updateDatasource,
-                request: {}
-            };
-        } else if (window.__hpcc_debug) {
-            console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+        if (updateDatasource && updateVisualization) {
+            var visualizationRequestID = updateVisualization.id + "(" + updateDatasource.id + ")";
+            if (!this.visualizationRequests[visualizationRequestID]) {
+                this.visualizationRequests[visualizationRequestID] = {
+                    updateVisualization: updateVisualization,
+                    updateDatasource: updateDatasource,
+                    request: {}
+                };
+            } else if (window.__hpcc_debug) {
+                console.log("Optimized duplicate fetch:  " + visualizationRequestID);
+            }
+            var visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
+            Utility.mixin(visualizationOptimizedItem.request, request);
         }
-        var visualizationOptimizedItem = this.visualizationRequests[visualizationRequestID];
-        Utility.mixin(visualizationOptimizedItem.request, request);
     };
 
     VisualizationRequestOptimizer.prototype.fetchData = function () {
@@ -1236,6 +1317,7 @@
         this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
+        this._requestID = 0;
         this._loadedCount = 0;
 
         var context = this;
@@ -1309,17 +1391,22 @@
                 delete this.request[key];
             }
         }
+        var requestID = ++context._requestID;
         var now = Date.now();
         this.dashboard.marshaller.commsEvent(this, "request", this.request);
         return new Promise(function (resolve, reject) {
             context.comms.call(context.request).then(function (response) {
                 var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
                 setTimeout(function () {
-                    context.processResponse(response, request, updates).then(function () {
+                    if (requestID !== context._requestID) {  //  User fired a new request while current request was being processed  ---
                         resolve(response);
-                    });
-                    context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
-                    ++context._loadedCount;
+                    } else {
+                        context.processResponse(response, request, updates).then(function () {
+                            resolve(response);
+                        });
+                        context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                        ++context._loadedCount;
+                    }
                 }, delay > 0 ? delay : 0);
             }).catch(function (e) {
                 context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
@@ -1467,6 +1554,12 @@
                 var inputVisualizations = visualization.getInputVisualizations();
                 if (inputVisualizations.length === 0) {
                     fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
+                } else {
+                    inputVisualizations.forEach(function (inViz) {
+                        if (inViz.hasSelection()) {
+                            fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                        }
+                    });
                 }
             }
         });
@@ -1559,12 +1652,9 @@
                 .timeout(this._timeout)
             ;
         }
-        var request = {
-            refresh: false
-        };
 
         var context = this;
-        transport.call(request).then(function (response) {
+        transport.fetchResults().then(function (response) {
             if (exists(hipieResultName, response)) {
                 return transport.fetchResult(hipieResultName).then(function (ddlResponse) {
                     var json = ddlResponse[0][hipieResultName];
@@ -1576,7 +1666,7 @@
                 });
             }
         }).catch(function (e) {
-            context.commsEvent(context, "error", request, e);
+            context.commsEvent(context, "error", "fetchResults", e);
         });
     };
 

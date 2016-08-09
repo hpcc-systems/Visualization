@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../common/Utility"], factory);
+        define(["../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility"], factory);
     } else {
-        root.composite_MegaChart = factory(root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.common_Utility);
+        root.composite_MegaChart = factory(root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility);
     }
-}(this, function (Border, MultiChart, Text, Legend, Toolbar, Select, Button, Utility) {
+}(this, function (Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility) {
     function MegaChart() {
         Border.call(this);
 
@@ -44,8 +44,9 @@
 
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
-    MegaChart.prototype.publish("showCSV",true,"boolean","Show/Hide CSV button", null, {tags:["Basic"]});
-    
+    MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
+
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
 
     //TODO:  Proxy + themes not working...
@@ -113,6 +114,15 @@
             context.downloadCSV();
         };
 
+        this._legendButton = new Input()
+            .id(this.id() + "_legend")
+            .type("checkbox")
+            .inlineLabel("Legend:  ")
+        ;
+        this._legendButton.click = function (a) {
+            context.render();
+        };
+
         this._chartTypeSelect = new Select()
             .id(this.id() + "_chartType")
             .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
@@ -159,6 +169,7 @@
         this._chartTypeSelect.value(this.chartType());
         var twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
+        showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         this.toolbarWidgets(twArr);
 
@@ -182,27 +193,32 @@
         if(this._chart.chartType() !== this.chartType()){
             this._chart.chartType(this.chartType());
         }
-        
-        if(this._prevLegendPosition !== this.legendPosition()){
+
+
+        var legendPosition = this.legendPosition();
+        if (this.toolbarShowLegend() && !this._legendButton.checked()) {
+            legendPosition = "none";
+        }
+        if (this._prevLegendPosition !== legendPosition) {
             if(this._prevLegendPosition !== "none"){
                 this.clearContent(this._prevLegendPosition);
             } 
-            this._prevLegendPosition = this.legendPosition();
-            if(this.legendPosition() !== "none"){
+            this._prevLegendPosition = legendPosition;
+            if (legendPosition !== "none") {
                 this._legend = new Legend().fixedSize(true).targetWidget(this.getContent("center"));
-                this.setContent(this.legendPosition(), this._legend);
-                this._legend.orientation(["top","bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical");
+                this.setContent(legendPosition, this._legend);
+                this._legend.orientation(["top", "bottom"].indexOf(legendPosition) !== -1 ? "horizontal" : "vertical");
             }
         }
         this._contentClasses = this.getContentClasses();
         
         if(this.valueAxisTitle() && this._contentClasses.left !== "common_Text"){
-            if(this.legendPosition() !== "left"){
+            if(legendPosition !== "left"){
                 this.setContent("left", this._valueTitle.rotation(-90));
             }
         }
         if(this.domainAxisTitle() && this._contentClasses.bottom !== "common_Text"){
-            if(this.legendPosition() !== "bottom"){
+            if(legendPosition !== "bottom"){
                 this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
             }
         }

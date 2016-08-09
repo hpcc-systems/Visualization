@@ -64,6 +64,7 @@
     XYAxis.prototype.publishProxy("yAxisTypeTimePattern", "valueAxis", "timePattern");
     XYAxis.prototype.publishProxy("yAxisTypePowExponent", "valueAxis", "powExponent");
     XYAxis.prototype.publishProxy("yAxisTypeLogBase", "valueAxis", "logBase");
+    XYAxis.prototype.publish("yAxisStacked", false, "boolean", "Stacked Chart", null, { tags: ["Basic"], disable: function (w) { return w.xAxisType() !== "ordinal" || w._class.indexOf("chart_Column") < 0; } });
     XYAxis.prototype.publish("yAxisDomainLow", null, "string", "Y-Axis Low", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
     XYAxis.prototype.publish("yAxisDomainHigh", null, "string", "Y-Axis High", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
     XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
@@ -99,16 +100,20 @@
     };
 
     XYAxis.prototype.parsedData = function () {
-        return this.data().map(function (row) {
+        var retVal = this.data().map(function (row) {
+            var prevValue = 0;
             return row.map(function (cell, idx) {
                 if (idx === 0) {
                     return this.parseData(cell);
                 } if (idx >= this.columns().length) {
                     return cell;
                 }
-                return this.parseValue(cell);
+                var retVal = this.yAxisStacked() ? [prevValue, prevValue + this.parseValue(cell)] : this.parseValue(cell);
+                prevValue += this.parseValue(cell);
+                return retVal;
             }, this);
         }, this);
+        return retVal;
     };
 
     XYAxis.prototype.enter = function (domNode, element) {

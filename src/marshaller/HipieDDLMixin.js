@@ -23,6 +23,7 @@
     HipieDDLMixin.prototype.publish("clearDataOnUpdate", true, "boolean", "Clear data prior to refresh", null);
     HipieDDLMixin.prototype.publish("propogateClear", false, "boolean", "Propogate clear to dependent visualizations", null);
     HipieDDLMixin.prototype.publish("missingDataString", "***MISSING***", "string", "Missing data display string");
+    HipieDDLMixin.prototype.publish("autoCloseFlyout", true, "boolean", "Auto Close Flyout Filters");
 
     HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
         if (databomb instanceof Object) {
@@ -159,6 +160,7 @@
                             var flyoutButton = new FlyoutButton()
                                 .title(viz.title)
                                 .widget(viz.widget)
+                                .autoClose(context.autoCloseFlyout())
                             ;
                             targetViz.widget.toolbarWidgets().push(flyoutButton);
                             break;

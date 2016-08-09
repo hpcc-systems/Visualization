@@ -141,8 +141,6 @@
         this.tableDiv
             .style("overflow", "auto")
         ;
-
-        this._childWidgets = [];
     };
 
     Table.prototype.update = function (domNode, element) {
@@ -159,10 +157,7 @@
             this._prevDescending = this.descending();
         }
 
-        this._childWidgets.forEach(function(d, i) {
-            d.target(null);
-        });
-        this._childWidgets = [];
+        this._hasChildWidgets = false;
 
         if (this.fixedHeader()) {
             this.thead = this.fixedThead;
@@ -291,7 +286,7 @@
             ;
         }
 
-        var rows = this.tbody.selectAll("tr").data(tData.map(function (d, idx) {
+        var rows = this.tbody.selectAll("tr.tr_" + this.id()).data(tData.map(function (d, idx) {
             //  TODO - Move fix closer to data source?
             for (var i = 0; i < d.length; ++i) {
                 if (d[i] === undefined) {
@@ -303,8 +298,8 @@
                 row: d
             };
         }));
-        rows.enter()
-            .append("tr")
+        rows.enter().append("tr")
+            .attr("class", "tr_" + this.id())
             .on("click.selectionBag", function (_d) {
                 if (_d.row) {
                     var d = _d.row;
@@ -352,15 +347,17 @@
                 var d = _d.row;
                 return context._selectionBag.isSelected(context._createSelectionObject(d));
             })
-            .classed("trId" + context._id, true)
+            .classed("trId" + this._id, true)
         ;
         rows.exit()
             .remove()
         ;
+        this.applyStyleToRows(rows);
 
-        var cells = rows.selectAll("td").data(function (_d) {
+        var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) { return idx < columns.length; }).map(function (cell, idx) {
                 return {
+                    trIdx: _trIdx,
                     rowIdx: _d.rowIdx,
                     colIdx: idx,
                     cell: cell
@@ -369,20 +366,8 @@
         });
         cells.enter()
             .append("td")
-        ;
-        cells[this.renderHtmlDataCells() ? "html" : "text"](function (d, colIdx) {
-            if (!(d.cell instanceof Widget)) {
-                return context.field(d.rowIdx, d.colIdx).transform(d.cell);
-            }
-            return; 
-        });
-        cells.exit()
-            .remove()
-        ;
-
-        rows.each(function(tr,trIdx){
-            var dis = d3.select(this);
-            dis.selectAll("td").each(function(tdContents, tdIdx){    
+            .attr("class", "td_" + this.id())
+            .each(function (tdContents, tdIdx) {
                 var alignment = context.getColumnAlignment(tdContents.rowIdx, tdContents.colIdx, tdContents.cell);
                 var el = d3.select(this);
                 el
@@ -390,34 +375,66 @@
                         "height": null,
                         "text-align": alignment
                     })
-                    .classed("tr-"+trIdx+"-td-"+tdIdx,true)
+                    .classed("tr-" + tdContents.trIdx + "-td-" + tdIdx, true)
                 ;
+            })
+        ;
+        cells
+            .each(function (tdContents) {
+                var el = d3.select(this);
                 if (tdContents.cell instanceof Widget) {
-                    if (context.pagination()) {
-                        console.log("Warning: displaying another widget in the table may cause problems with pagination");
-                    }
-                    if (tdContents.cell.size().height === 0 ) {
-                        tdContents.cell.height(context.minWidgetHeight());
-                        tdContents.cell.width(context.minWidgetWidth());
-                    }
-                    tdContents.cell.target(null);
-                    tdContents.cell.target(this);
-                    tdContents.cell._parentWidget = context;
-                    if (tdContents.cell._class.indexOf("childWidget") < 0) {
-                        tdContents.cell._class = "childWidget " + tdContents.cell._class;
-                    }
-                    tdContents.cell.render();
-                    context._childWidgets.push(tdContents.cell);
+                    el[context.renderHtmlDataCells() ? "html" : "text"](null);
+                    var widgetDiv = el.selectAll(".div_" + context.id()).data([tdContents.cell], function (d) { return d.id(); });
+                    widgetDiv.exit()
+                        .each(function (d) {
+                            d.target(null);
+                        })
+                        .remove()
+                    ;
+                    widgetDiv.enter().append("div")
+                        .attr("class", "div_" + context.id())
+                        .style({
+                            "width": context.minWidgetWidth() + "px",
+                            "height": context.minWidgetHeight() + "px"
+                        })
+                        .each(function (d) {
+                            var widgetDiv = d3.select(this);
+                            d._parentWidget = context;
+                            if (d._class.indexOf("childWidget") < 0) {
+                                d._class = "childWidget " + d._class;
+                            }
+                            d
+                                .target(null)
+                                .target(widgetDiv.node())
+                            ;
+                        })
+                    ;
+                    widgetDiv
+                        .each(function (d) {
+                            d
+                                .resize()
+                                .lazyRender()
+                            ;
+                            context._hasChildWidgets = true;
+                        })
+                    ;
+                } else {
+                    el.selectAll(".div_" + context.id()).remove();
+                    el[context.renderHtmlDataCells() ? "html" : "text"](
+                        context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell)
+                    );
                 }
-            });
-            context.applyStyleToRows(dis);
-        });  
-
+            })
+        ;
+        cells.exit()
+            .remove()
+        ;
         var tableMarginHeight = parseInt(this.thead.node().offsetHeight);
 
-        if (this.pagination() && this._childWidgets.length) {
+        if (this.pagination() && this._hasChildWidgets) {
             this.tableDiv.style("overflow-y", "auto");
             this.table.style("margin-bottom", "50px");
+            console.log("Warning: displaying another widget in the table may cause problems with pagination");
         } else {
             this.tableDiv.style("overflow-y", null);
             this.table.style("margin-bottom", null);

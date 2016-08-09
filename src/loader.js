@@ -121,7 +121,7 @@
             "d3": rawgitBaseUrl + "/mbostock/d3/v3.5.17/d3.min",
             "c3": rawgitBaseUrl + "/masayuki0812/c3/0.4.11/c3.min",
             "dagre": rawgitBaseUrl + "/cpettitt/dagre/v0.7.3/dist/dagre.min",
-            "topojson": rawgitBaseUrl + "/mbostock/topojson/v1.6.26/topojson",
+            "topojson": rawgitBaseUrl + "/mbostock-bower/topojson-bower/v1.6.26/topojson.min",
             "colorbrewer": rawgitBaseUrl + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": rawgitBaseUrl + "/jasondavies/d3-cloud/v1.2.2/build/d3.layout.cloud",
             "d3-sankey": rawgitBaseUrl + "/d3/d3-plugins/master/sankey/sankey",

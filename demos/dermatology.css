@@ -149,3 +149,8 @@
     content: "#" attr(id);
     font-weight: bold;
 }
+
+.common_Widget h3 {
+    font-size: 14px;
+    line-height: 20px;
+}

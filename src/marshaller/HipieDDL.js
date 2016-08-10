@@ -1317,7 +1317,6 @@
         this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
         this.request = {};
-        this._requestID = 0;
         this._loadedCount = 0;
 
         var context = this;
@@ -1391,22 +1390,17 @@
                 delete this.request[key];
             }
         }
-        var requestID = ++context._requestID;
         var now = Date.now();
         this.dashboard.marshaller.commsEvent(this, "request", this.request);
         return new Promise(function (resolve, reject) {
             context.comms.call(context.request).then(function (response) {
                 var delay = 500 - (Date.now() - now);  //  500 is to allow for all "clear" transitions to complete...
                 setTimeout(function () {
-                    if (requestID !== context._requestID) {  //  User fired a new request while current request was being processed  ---
+                    context.processResponse(response, request, updates).then(function () {
                         resolve(response);
-                    } else {
-                        context.processResponse(response, request, updates).then(function () {
-                            resolve(response);
-                        });
-                        context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
-                        ++context._loadedCount;
-                    }
+                    });
+                    context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                    ++context._loadedCount;
                 }, delay > 0 ? delay : 0);
             }).catch(function (e) {
                 context.dashboard.marshaller.commsEvent(context, "error", context.request, e);

@@ -19,6 +19,15 @@
     AutoCompleteText.prototype.publish("valueColumn", null, "set", "Select column for autocomplete", function () { return this.columns(); }, { optional: true });
     AutoCompleteText.prototype.publish("minCharsText", 1, "number", "Size of multiAutoCompleteText box");
 
+    AutoCompleteText.prototype.autoCompleteTextData = function (domNode, element) {
+        return this.data().map(function (row, idx) {
+            return {
+                idx: idx,
+                origRow: row
+            };
+        });
+    };
+
     AutoCompleteText.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._span = element.append("span");
@@ -55,12 +64,12 @@
                     var field = context._db.fieldByLabel(context.valueColumn());
                     if (field) {
                         term = term.toLowerCase();
-                        var suggestions = context.data().filter(function (row) {
-                            return row[field.idx].toLowerCase().indexOf(term) >= 0;
+                        var suggestions = context.autoCompleteTextData().filter(function (row) {
+                            return row.origRow[field.idx].toLowerCase().indexOf(term) >= 0;
                         }).map(function(row) {
                             return {
-                                value: row[field.idx],
-                                origRow: row
+                                value: row.origRow[field.idx],
+                                rowIdx: row.idx
                             };
                         });
                         suggest(suggestions);
@@ -69,10 +78,12 @@
                 renderItem: function (item, search) {
                     search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
                     var re = new RegExp("(" + search.split(' ').join("|") + ")", "gi");
-                    return '<div class="autocomplete-suggestion" data-val="' + item.value + '" data-row="' + item.origRow + '">' + item.value.replace(re, "<b>$1</b>") + '</div>';
+                    return '<div class="autocomplete-suggestion" data-val="' + item.value + '" data-row-idx="' + item.rowIdx + '">' + item.value.replace(re, "<b>$1</b>") + '</div>';
                 },
                 onSelect: function (e, term, item) {
-                    context.click(item.getAttribute("data-row"), context.valueColumn(), true);
+                    var rowIdx = +item.getAttribute("data-row-idx");
+                    var row = context.data()[rowIdx];
+                    context.click(context.rowToObj(row), context.valueColumn(), true);
                 }
             });
         }

@@ -71,8 +71,8 @@
                     var re = new RegExp("(" + search.split(' ').join("|") + ")", "gi");
                     return '<div class="autocomplete-suggestion" data-val="' + item.value + '" data-row="' + item.origRow + '">' + item.value.replace(re, "<b>$1</b>") + '</div>';
                 },
-                onSelect: function (e, term, item) {
-                    context.click(item.getAttribute("data-row"), context.valueColumn(), true);
+                onSelect: function(e, term, item){
+                context.click(context.rowToObj(item.getAttribute("data-row").split(',')), context.valueColumn(), true);
                 }
             });
         }

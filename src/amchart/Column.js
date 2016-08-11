@@ -34,6 +34,12 @@
     Column.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%","3d"],{tags:["Basic"]});
     Column.prototype.publish("useOhlcLines", false, "boolean", "Use OHLC Lines",null,{tags:["Intermediate"]});
 
+    Column.prototype.publish("yAxisDomainLow", null, "number", "Y axis Minimum value",null,{optional:true});
+    Column.prototype.publish("yAxisDomainHigh", null, "number", "Y axis Maximum value",null,{optional:true});
+    Column.prototype.publish("yAxisBaseValue", null, "number", "Y axis base value",null,{optional:true});
+    Column.prototype.publish("yAxisLabelFrequency", 1,"number", "Y axis label frequency",null,{optional:true});
+    Column.prototype.publish("yAxisTickCount", null,"number", "Y axis grid count",null,{optional:true});
+
     Column.prototype.enter = function(domNode, element) {
         CommonSerial.prototype.enter.apply(this, arguments);
     };
@@ -54,6 +60,27 @@
             this._chart.valueAxes[0].stackType = this.stackType();
         } else {
             this._chart.valueAxes[0].stackType = "none";
+        }
+
+        if(this.yAxisDomainLow_exists()){
+            this._chart.valueAxes[0].minimum = this.yAxisDomainLow();
+        }
+
+        if(this.yAxisDomainHigh_exists()){
+            this._chart.valueAxes[0].maximum = this.yAxisDomainHigh();
+        }
+        this._chart.valueAxes[0].strictMinMax = false;
+
+        if(this.yAxisLabelFrequency_exists()) {
+            this._chart.valueAxes[0].labelFrequency = this.yAxisLabelFrequency();
+            }
+
+        if(this.yAxisBaseValue_exists()) {
+            this._chart.valueAxes[0].baseValue = this.yAxisBaseValue();
+            }
+
+        if (this.yAxisTickCount_exists()) {
+            this._chart.valueAxes[0].gridCount = this.yAxisTickCount();
         }
 
         this._chart.depth3D = this.Depth3D();

@@ -339,6 +339,7 @@
         rows.each(function (param) {
             var tr = d3.select(this);
             tr.classed("disabled", d[param.id + "_disabled"] && d[param.id + "_disabled"]());
+            tr.attr("title", param.description);
             if (hasProperties(param.type)) {
                 context.updateWidgetRow(d, tr.select("td"), param);
             } else {

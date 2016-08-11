@@ -1,0 +1,1 @@
+!function(t,c){"function"==typeof define&&define.amd?define(["./CommonND"],c):t.c3chart_Scatter=c(t.c3chart_CommonND)}(this,function(t){function c(c){t.call(this),this._type="scatter"}return c.prototype=Object.create(t.prototype),c.prototype.constructor=c,c.prototype._class+=" c3chart_Scatter",c});

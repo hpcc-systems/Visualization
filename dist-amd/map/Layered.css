@@ -1,0 +1,16 @@
+.map_Layered .background {
+    fill: none;
+}
+.map_Layered .raster image {
+    fill: #B5D0D0
+}
+.map_Layered .vector {
+  fill: none;
+  stroke: navy;
+  stroke-linejoin: round;
+}
+.map_Layered .hash path {
+  fill: none;
+  stroke: red;
+  stroke-linejoin: round;
+}

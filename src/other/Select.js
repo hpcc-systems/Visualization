@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget", "css!./Select"], factory);
+        define(["d3", "../common/HTMLWidget", "css!./Select"], factory);
     } else {
-        root.other_Select = factory(root.common_HTMLWidget);
+        root.other_Select = factory(root.d3, root.common_HTMLWidget);
     }
-}(this, function (HTMLWidget) {
+}(this, function (d3, HTMLWidget) {
     function Select(target) {
         HTMLWidget.call(this);
     }
@@ -16,28 +16,33 @@
     Select.prototype.publish("label", null, "string", "Label for select");
     Select.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Select.prototype.publish("textColumn", null, "set", "Select value(s)", function () { return this.columns(); }, { optional: true });
-    Select.prototype.publish("multiple", false, "boolean", "Multiple selection");
     Select.prototype.publish("optional", true, "boolean", "Optional Select");
+    Select.prototype.publish("sort", null, "set", "Sort contents", ["", "ascending", "descending"], { optional: true });
+    Select.prototype.publish("multiple", false, "boolean", "Multiple selection");
     Select.prototype.publish("selectSize", 5, "number", "Size of multiselect box", null, { disable: function (w) { return !w.multiple(); } });
 
     Select.prototype.selectData = function () {
-        var view = this._db.rollupView([this.valueColumn(), this.textColumn()]);
-        this._valueRowMap = {};
+        var view = this._db.rollupView([this.textColumn(), this.valueColumn()]);
         var retVal = [];
-        if (this.optional()) {
-            retVal.push({ value: "", text: "" });
-        }
-        return retVal.concat(view.entries().map(function (row) {
-            this._valueRowMap[row.key] = row.values.length && row.values[0].values.length ? row.values[0].values[0] : [];
+        retVal = retVal.concat(view.entries().map(function (row) {
             return {
-                value: row.key,
-                text: row.values.length ? row.values[0].key : ""
+                text: row.key,
+                value: row.values.length ? row.values[0].key : "",
+                origRow: row.values.length && row.values[0].values.length ? row.values[0].values[0] : []
             };
-        }, this).sort(function (l, r) {
-            if (l.text < r.text) return -1;
-            if (l.text > r.text) return 1;
-            return 0;
-        }));
+        }, this));
+        if (this.sort_exists()) {
+            var descending = this.sort() === "descending";
+            retVal.sort(function (l, r) {
+                if (l.text < r.text) return descending ? 1 : -1;
+                if (l.text > r.text) return descending ? -1 : 1;
+                return 0;
+            });
+        }
+        if (this.optional()) {
+            retVal.unshift({ value: "", text: "" });
+        }
+        return retVal;
     };
 
     Select.prototype.enter = function (domNode, element) {
@@ -56,13 +61,13 @@
                 for (var i = 0; i < options_dom_node.length; ++i) {
                     var optionNode = options_dom_node[i];
                     if (optionNode.selected) {
-                        options.push(optionNode.value);
+                        options.push(d3.select(optionNode).datum().origRow);
                     }
                 }
-                if (options.length && context._valueRowMap[options[0]]) {
-                    context.click(context.rowToObj(context._valueRowMap[options[0]]), "value", true); //TODO:  Multiselect not support in HIPIE
+                if (options.length) {
+                    context.click(context.rowToObj(options[0]), context.valueColumn(), true); //TODO:  Multiselect not support in HIPIE
                 } else {
-                    context.click([], "value", false);
+                    context.click([], context.valueColumn(), false);
                 }
             })
         ;
@@ -88,6 +93,7 @@
             .text(function (row) { return row.text; })
         ;
         option.exit().remove();
+        option.order();
     };
 
     Select.prototype.exit = function (domNode, element) {

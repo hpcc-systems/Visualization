@@ -324,12 +324,12 @@
                          .data([
                                 ["GJS0", 0],
                                 ["GJS1", 1],
-                                ["GJS2", 2],
                                 ["GJS3", 3],
-                                ["GJS4", 4],
                                 ["GJS5", 5],
-                                ["GJS6", 6],
                                 ["GJS7", 7],
+                                ["GJS2", 2],
+                                ["GJS4", 4],
+                                ["GJS6", 6]
                          ])
                          .label("Label:  ")
                          .valueColumn("Col Value")

@@ -808,7 +808,6 @@
                         .legendPosition_default("none")
                         .showChartSelect_default(false)
                         .chartType_default("TABLE")
-                        .chartTypeDefaults({ pagination: true })
                     ;
                 });
                 break;

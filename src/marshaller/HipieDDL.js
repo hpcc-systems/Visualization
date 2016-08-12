@@ -808,7 +808,6 @@
                         .legendPosition_default("none")
                         .showChartSelect_default(false)
                         .chartType_default("TABLE")
-                        .chartTypeDefaults({ pagination: true })
                     ;
                 });
                 break;
@@ -1533,7 +1532,10 @@
     Dashboard.prototype.primeData = function (state) {
         var fetchDataOptimizer = new VisualizationRequestOptimizer();
         this.getVisualizationArray().forEach(function (visualization) {
+            //  Clear all charts back to their default values ---
             visualization.clear();
+        });
+        this.getVisualizationArray().forEach(function (visualization) {
             if (state) {
                 if (state[visualization.id]) {
                     visualization.getUpdates().forEach(function (updateObj) {

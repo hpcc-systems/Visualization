@@ -1533,7 +1533,10 @@
     Dashboard.prototype.primeData = function (state) {
         var fetchDataOptimizer = new VisualizationRequestOptimizer();
         this.getVisualizationArray().forEach(function (visualization) {
+            //  Clear all charts back to their default values ---
             visualization.clear();
+        });
+        this.getVisualizationArray().forEach(function (visualization) {
             if (state) {
                 if (state[visualization.id]) {
                     visualization.getUpdates().forEach(function (updateObj) {

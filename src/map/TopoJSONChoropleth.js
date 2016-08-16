@@ -22,6 +22,16 @@
 
         this._selection.widgetElement(this._choroplethData);
         this.choroPaths = d3.select(null);
+
+        var context = this;
+        this
+            .tooltipHTML(function (d) {
+                var columns = context.columns();
+                var series = columns && columns.length ? columns[0] : "Location";
+                var origData = d && d.length ? d[d.length - 1] : [""];
+                return context.tooltipFormat({ label: origData[0], series: series, value: d[1] });
+            })
+        ;
     };
 
     TopoJSONChoropleth.prototype.layerUpdate = function (base) {
@@ -55,13 +65,13 @@
                         for (var key2 in context._choroTopologyIndex[key]) {
                             if (key2 === row[0]) {
                                 context._choroTopologyIndex[key][key2].forEach(function (idx) {
-                                    data.push([idx].concat(row.filter(function (d, i) { return i > 0; })));
+                                    data.push([idx].concat(row.filter(function (d, i) { return i > 0; })).concat([row]));
                                 });
                             }
                         }
                     }
                 } else {
-                    data.push(row);
+                    data.push(row.concat([row]));
                 }
             });
             context.choroPaths = context._choroplethData.selectAll(".data").data(context.visible() ? data : [], function (d) { return d[0]; });
@@ -73,15 +83,8 @@
                         context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(context));
                     }
                 })
-                .on("mouseover.tooltip", function (d) {
-                    context.tooltipShow([d[0], d[1]], context.columns(), 1);
-                })
-                .on("mouseout.tooltip", function (d) {
-                    context.tooltipShow();
-                })
-                .on("mousemove.tooltip", function (d) {
-                    context.tooltipShow([d[0], d[1]], context.columns(), 1);
-                })
+                .on("mouseout.tooltip", context.tooltip.hide)
+                .on("mousemove.tooltip", context.tooltip.show)
             ;
             context.choroPaths
                 .attr("d", function (d) {

@@ -32,6 +32,16 @@ define([], function (Loader) {
                 });
             });
         });
+        it("cdnAltHost", function (done) {
+            hpccsystems.redirect
+                .cdnHost("cdn.rawgit.com/hpcc-systems/Visualization")
+                .cdn("v1.14.0-rc10", function (require) {
+                    require(["src/common/Widget"], function (Widget) {
+                        assert.equal(Widget.prototype.classID(), "common_Widget");
+                        done();
+                    });
+                });
+        });
         it("comms", function (done) {
             require(["src/other/Comms"], function (Comms) {
                 assert.isNull(Comms.createESPConnection("xxxx"));

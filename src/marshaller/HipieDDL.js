@@ -281,7 +281,7 @@
                                     var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
                                     var output = viz.source.getOutput();
                                     var db = output.db;
-                                    output.setData(cell, {}, []);
+                                    output.setData(cell, []);
                                     var widget = viz.widget;
                                     var newWidget = new widget.constructor()
                                         .showToolbar(false)
@@ -479,13 +479,6 @@
             return datasource.outputs[this._output];
         }
         return null;
-    };
-
-    Source.prototype.clearOutputRequest = function () {
-        var op = this.getOutput();
-        if (op) {
-            op.request = {};
-        }
     };
 
     Source.prototype.hasData = function () {
@@ -1109,7 +1102,6 @@
         }, this);
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
-            this.source.clearOutputRequest();
         }
         if (this.dashboard.marshaller.propogateClear()) {
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
@@ -1201,7 +1193,6 @@
         this.dataSource = dataSource;
         this.id = output.id;
         this.from = output.from;
-        this.request = {};
         this.notify = output.notify || [];
         this.filter = output.filter || [];
     }
@@ -1233,12 +1224,10 @@
         return Promise.all(promises);
     };
 
-    Output.prototype.setData = function (data, request, updates) {
-        this.request = request;
+    Output.prototype.setData = function (data, updates) {
         this.db = new Database.Grid().jsonObj(data);
         return this.vizNotify(updates);
     };
-
 
     //  FetchData Optimizers  ---
     function DatasourceRequestOptimizer() {
@@ -1315,7 +1304,6 @@
         this.WUID = dataSource.WUID;
         this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
-        this.request = {};
         this._loadedCount = 0;
 
         var context = this;
@@ -1377,40 +1365,41 @@
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
-        var context = this;
+        var dsRequest = {};
         this.filter.forEach(function (item) {
-            this.request[item + _CHANGED] = request[item + _CHANGED] || false;
+            dsRequest[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
-            if (this.request[item] !== value) {
-                this.request[item] = value;
+            if (dsRequest[item] !== value) {
+                dsRequest[item] = value;
             }
-        }, this);
-        this.request.refresh = request.refresh;
+        });
+        dsRequest.refresh = request.refresh;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
-        for (var key in this.request) {
-            if (this.request[key] === null) {
-                delete this.request[key];
+        for (var key in dsRequest) {
+            if (dsRequest[key] === null) {
+                delete dsRequest[key];
             }
         }
         var now = Date.now();
-        this.dashboard.marshaller.commsEvent(this, "request", this.request);
+        this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
+        var context = this;
         return new Promise(function (resolve, reject) {
-            context.comms.call(context.request).then(function (response) {
+            context.comms.call(dsRequest).then(function (response) {
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);
                         context.processResponse(response, request, updates).then(function () {
                             transactionQueue.shift();
                             resolve(response);
-                            context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                            context.dashboard.marshaller.commsEvent(context, "response", dsRequest, response);
                             ++context._loadedCount;
                         });
                     }
                 }, 100);
             }).catch(function (e) {
-                context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+                context.dashboard.marshaller.commsEvent(context, "error", dsRequest, e);
                 reject(e);
             });
         });
@@ -1430,7 +1419,7 @@
             }
             if (exists(from, response)) {
                 if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(response[from], request, updates));
+                    promises.push(this.outputs[key].setData(response[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
                     promises.push(this.outputs[key].vizNotify(updates));
@@ -1438,7 +1427,7 @@
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
                 if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(lowerResponse[from], request, updates));
+                    promises.push(this.outputs[key].setData(lowerResponse[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
                     promises.push(this.outputs[key].vizNotify(updates));
@@ -1456,13 +1445,11 @@
 
     DataSource.prototype.serializeState = function () {
         return {
-            request: this.request
         };
     };
 
     DataSource.prototype.deserializeState = function (state) {
         if (!state) return;
-        this.request = state.request || {};
     };
 
     //  Dashboard  ---

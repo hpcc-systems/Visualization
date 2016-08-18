@@ -238,6 +238,15 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
                     callback(new Gauge()
+                        .low(DataFactory.OneD.amgauge.low)
+                        .high(DataFactory.OneD.amgauge.high)
+                        .data(DataFactory.OneD.amgauge.data)
+                    );
+                });
+            },
+            sample: function (callback) {
+                require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
+                    callback(new Gauge()
                         .numBands(DataFactory.OneD.amgauge.numBands)
                         .bandsColor(DataFactory.OneD.amgauge.bandsColor)
                         .bandsEndValue(DataFactory.OneD.amgauge.bandsEndValue)

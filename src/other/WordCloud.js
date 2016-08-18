@@ -69,6 +69,14 @@
         this._cloud = new D3Cloud()
             .canvas(this._canvas)
         ;
+
+        this
+            .tooltipHTML(function (d) {
+                var columns = context.columns();
+                var series = columns && columns.length ? columns[0] : "Word";
+                return context.tooltipFormat({ label: d.__viz_0, series: series, value: d.__viz_1 });
+            })
+        ;
     };
 
     WordCloud.prototype.update = function (domNode, element) {
@@ -109,16 +117,9 @@
                 .on("click", function (d) {
                     context.click({ label: d.__viz_0, weight: d.__viz_1 });
                 })
+                .on("mouseout.tooltip", context.tooltip.hide)
+                .on("mousemove.tooltip", context.tooltip.show)
                 .style("opacity", 1e-6)
-                .on("mouseover.tooltip", function (d) {
-                    context.tooltipShow([d.__viz_0, d.__viz_1], context.columns(), 1);
-                })
-                .on("mouseout.tooltip", function (d) {
-                    context.tooltipShow();
-                })
-                .on("mousemove.tooltip", function (d) {
-                    context.tooltipShow([d.__viz_0, d.__viz_1], context.columns(), 1);
-                })
             ;
             text
                 .style("font-size", function (d) { return scale(d.__viz_1) + "px"; })

@@ -36,13 +36,13 @@
 
     Gauge.prototype.publish("numBands", null, "number", "",null,{tags:["Intermediate"]});
     Gauge.prototype.publish("bandsColor", [], "array", "Bands Color",null,{tags:["Basic"]});
-    Gauge.prototype.publish("bandsStartValue", [], "array", "Bands Start Value",null,{tags:["Advanced"]});
-    Gauge.prototype.publish("bandsEndValue", [], "array", "Bands End Value",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("bandsStartValue", [], "array", "Bands Start Value %",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("bandsEndValue", [], "array", "Bands End Value %",null,{tags:["Advanced"]});
     Gauge.prototype.publish("bandsInnerRadius", [], "array", "Bands Inner Radius",null,{tags:["Advanced"]});
 
     Gauge.prototype.publish("axisAlpha", 0.2, "number", "Axis Alpha",null,{tags:["Intermediate"]});
     Gauge.prototype.publish("tickAlpha", 0.2, "number", "Tick Alpha",null,{tags:["Intermediate"]});
-    Gauge.prototype.publish("valueInterval", 20, "number", "Value Interval",null,{tags:["Advanced"]});
+    Gauge.prototype.publish("valueInterval", null, "number", "Value Interval",null,{tags:["Advanced"], optional: true});
     Gauge.prototype.publish("bottomText", "", "string", "Text Along Bottom",null,{tags:["Intermediate"]});
     Gauge.prototype.publish("bottomTextYOffset", -20, "number", "Bottom Text Vertical Offset",null,{tags:["Intermediate"]});
 
@@ -81,11 +81,15 @@
         // 3 Color Methods
         var i, l;
         if (this.colorType() === "a") {
+            var scale = d3.scale.linear()
+                .domain([0, 100])
+                .range([this.low(), this.high()])
+            ;
             for (i = 0, l = this.numBands(); i < l; i++) {
                 var a_band = {
                     color: this.bandsColor()[i],
-                    startValue: this.bandsStartValue()[i],
-                    endValue: this.bandsEndValue()[i],
+                    startValue: scale(this.bandsStartValue()[i]),
+                    endValue: scale(this.bandsEndValue()[i]),
                     innerRadius: this.bandsInnerRadius()[i],
                 };
                 this._chart.axes[0].bands.push(a_band);

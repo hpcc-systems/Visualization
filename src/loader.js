@@ -273,6 +273,7 @@
 
     if (!root.hpccsystems.redirect) {
         root.hpccsystems.redirect = (function () {
+            var cdnHost = "viz.hpccsystems.com";
             function url(opts) {
                 opts = opts || {};
                 var protocol = opts.protocol || (root.location.protocol === "https:" ? "https:" : "http:");
@@ -286,13 +287,18 @@
 
             function cdnUrl(version) {
                 return url({
-                    hostname: "viz.hpccsystems.com",
+                    hostname: cdnHost,
                     port: "",
                     pathname: "/" + version + "/dist-amd"
                 });
             }
 
             return {
+                cdnHost: function(_) {
+                    if (!arguments.length) return cdnHost;
+                    cdnHost = _;
+                    return this;
+                },
                 github: function (branch, org, repo, callback) {
                     callback = arguments[arguments.length - 1];
                     switch (arguments.length) {

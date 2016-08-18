@@ -686,7 +686,9 @@
     Graph.prototype.highlightVerticies = function (vertexMap) {
         var context = this;
         var vertexElements = this.svgV.selectAll(".graphVertex");
-        vertexElements.transition().duration(this.transitionDuration())
+        vertexElements
+            .classed("graphVertex-highlighted", function (d) { return !vertexMap || vertexMap[d.id()]; })
+            .transition().duration(this.transitionDuration())
             .each("end", function (d) {
                 if (vertexMap && vertexMap[d.id()]) {
                     if (d._parentElement.node() && d._parentElement.node().parentNode) {
@@ -708,6 +710,7 @@
         var context = this;
         var edgeElements = this.svgE.selectAll(".graphEdge");
         edgeElements
+            .classed("graphEdge-highlighted", function (d) { return !edgeMap || edgeMap[d.id()]; })
             .style("stroke-width", function (o) {
                 if (edgeMap && edgeMap[o.id()]) {
                     return context.highlight.edge;

@@ -241,15 +241,19 @@
     TableMappings.prototype.doMapAll = function (data) {
         var retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
         if (retVal instanceof Array) {
-            //var columnsRHS = this.visualization.source.getColumnsRHS();
-            this.visualization.fields.forEach(function (field, idx) {
+            var columnsRHSIdx = this.visualization.source.getColumnsRHSIdx();
+            this.visualization.fields.forEach(function (field) {
                 var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
-                switch (fieldType) {
-                    case "dataset":
-                        retVal = retVal.map(function (row) {
-                            row.forEach(function (cell, cellIdx) {
-                                if (cellIdx === idx) {
-                                    cell = cell.Row || cell;
+                var colIdx = columnsRHSIdx[field.id];
+                if (colIdx === undefined) {
+                    console.log("Invalid Mapping:  " + field.id);
+                } else {
+                    retVal = retVal.map(function (row) {
+                        var cell = row[colIdx];
+                        cell = cell.Row || cell;
+                        if (cell instanceof Array) {
+                            switch (fieldType) {
+                                case "dataset":
                                     var columns = [];
                                     var columnsIdx = {};
                                     var data = cell.map(function (row, idx) {
@@ -268,16 +272,9 @@
                                         .columns(columns)
                                         .data(data)
                                     ;
-                                    row[cellIdx] = table;
-                                }
-                            });
-                            return row;
-                        });
-                        break;
-                    case "widget":
-                        retVal = retVal.map(function (row) {
-                            row.forEach(function (cell, cellIdx) {
-                                if (cellIdx === idx) {
+                                    row[colIdx] = table;
+                                    break;
+                                case "widget":
                                     var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
                                     var output = viz.source.getOutput();
                                     var db = output.db;
@@ -292,12 +289,12 @@
                                         .data(viz.source.getData())
                                     ;
                                     output.db = db;
-                                    row[cellIdx] = newWidget;
-                                }
-                            }, this);
-                            return row;
-                        }, this);
-                        break;
+                                    row[colIdx] = newWidget;
+                                    break;
+                            }
+                        }
+                        return row;
+                    }, this);
                 }
             }, this);
         }
@@ -491,6 +488,10 @@
 
     Source.prototype.getColumnsRHS = function () {
         return this.mappings.columnsRHS;
+    };
+
+    Source.prototype.getColumnsRHSIdx = function () {
+        return this.mappings.columnsRHSIdx;
     };
 
     Source.prototype.getColumns = function () {

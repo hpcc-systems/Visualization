@@ -48,6 +48,17 @@
     FlyoutButton.prototype.publishProxy("widget", "_popupSurface");
     FlyoutButton.prototype.publish("autoClose", true, "boolean", "Auto Close");
 
+    FlyoutButton.prototype.reference = function (obj) {
+        var retVal = new Button()
+            .value(this.value())
+        ;
+        var context = this;
+        retVal.click = function (obj) {
+            context.click();
+        };
+        return retVal;
+    };
+
     FlyoutButton.prototype.click = function (obj) {
         var context = this;
         this._popup

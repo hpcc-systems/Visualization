@@ -309,9 +309,20 @@
             simple: function (callback) {
                 require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
                     callback(new AutoCompleteText()
-                        .columns(DataFactory.ND.ampolar.columns)
-                        .data(DataFactory.ND.ampolar.data)
-                        .valueColumn("Subject")
+                        .columns(["Col Label", "Col Value"])
+                        .data([
+                            ["Math", 0],
+                            ["Science", 1],
+                            ["Geography", 3],
+                            ["Irish", 5],
+                            ["English", 7],
+                            ["Spanish", 2],
+                            ["Physics", 4],
+                            ["Astrology", 6]
+                        ])
+                        .label("Label:  ")
+                        .valueColumn("Col Value")
+                        .textColumn("Col Label")
                     );
                 });
             },
@@ -320,20 +331,20 @@
              simple: function (callback) {
                  require(["src/other/Select"], function (Select) {
                      callback(new Select()
-                         .columns(["Col Label", "Col Value"])
-                         .data([
-                                ["GJS0", 0],
-                                ["GJS1", 1],
-                                ["GJS3", 3],
-                                ["GJS5", 5],
-                                ["GJS7", 7],
-                                ["GJS2", 2],
-                                ["GJS4", 4],
-                                ["GJS6", 6]
-                         ])
-                         .label("Label:  ")
-                         .valueColumn("Col Value")
-                         .textColumn("Col Label")
+                        .columns(["Col Label", "Col Value"])
+                        .data([
+                            ["Math", 0],
+                            ["Science", 1],
+                            ["Geography", 3],
+                            ["Irish", 5],
+                            ["English", 7],
+                            ["Spanish", 2],
+                            ["Physics", 4],
+                            ["Astrology", 6]
+                        ])
+                        .label("Label:  ")
+                        .valueColumn("Col Value")
+                        .textColumn("Col Label")
                     );
                  });
              }

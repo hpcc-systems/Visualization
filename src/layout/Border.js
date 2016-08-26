@@ -573,10 +573,10 @@
         var context = this;
         this.content().forEach(function(n){
             if(n._element.node() !== null){
-                var prevBox = n.widget().getBBox();
-                var currBox = n.widget().getBBox(true);
+                var prevBox = n.widget().getBBox(false, true);
+                var currBox = n.widget().getBBox(true, true);
                 if(prevBox.width !== currBox.width || prevBox.height !== currBox.height){
-                    context.render();
+                    context.lazyRender();
                 }
             }
         });

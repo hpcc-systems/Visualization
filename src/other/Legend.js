@@ -10,6 +10,7 @@
         Table.call(this);
         
         this.showHeader(false);
+        this.pagination(false);
     }
     Legend.prototype = Object.create(Table.prototype);
     Legend.prototype.constructor = Legend;

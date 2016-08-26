@@ -138,6 +138,23 @@
         return retVal;
     };
 
+    SourceMappings.prototype.doReverseMap = function (item) {
+        var retVal = {};
+        for (var key in this.mappings) {
+            var rhsKey = this.mappings[key];
+            try {
+                var val = item[key];
+                if (val === undefined) {
+                    val = item[key.toLowerCase()];
+                }
+                retVal[rhsKey] = val;
+            } catch (e) {
+                console.log("Invalid Mapping:  " + this.visualization.id + " [" + key + "->" + item + "]");
+            }
+        }
+        return retVal;
+    };
+
     SourceMappings.prototype.doMapAll = function (data) {
         return data.hipieMappings(this.columnsRHS, this.visualization.dashboard.marshaller.missingDataString());
     };
@@ -1148,6 +1165,20 @@
         return this._widgetState && this._widgetState.selected;
     };
 
+    Visualization.prototype.selection = function () {
+        if (this.hasSelection()) {
+            return this._wdigetState.row;
+        }
+        return null;
+    };
+
+    Visualization.prototype.reverseMappedSelection = function () {
+        if (this.hasSelection()) {
+            return this.source.mappings.doReverseMap(this._widgetState.row);
+        }
+        return null;
+    };
+
     Visualization.prototype.getInputVisualizations = function () {
         return this.dashboard.marshaller.getVisualizationArray().filter(function (viz) {
             var updates = viz.events.getUpdatesVisualizations();
@@ -1261,7 +1292,8 @@
         return Promise.all(promises);
     };
 
-    function VisualizationRequestOptimizer() {
+    function VisualizationRequestOptimizer(skipClear) {
+        this.skipClear = skipClear;
         this.visualizationRequests = {
         };
     }
@@ -1287,7 +1319,7 @@
         var datasourceRequestOptimizer = new DatasourceRequestOptimizer();
         for (var key in this.visualizationRequests) {
             var item = this.visualizationRequests[key];
-            if (item.updateVisualization.type !== "GRAPH") {
+            if (!this.skipClear && item.updateVisualization.type !== "GRAPH") {
                 item.updateVisualization.clear();
             }
             item.updateVisualization.update(LOADING);
@@ -1517,41 +1549,30 @@
     };
 
     Dashboard.prototype.primeData = function (state) {
-        var fetchDataOptimizer = new VisualizationRequestOptimizer();
+        var fetchDataOptimizer = new VisualizationRequestOptimizer(true);
         this.getVisualizationArray().forEach(function (visualization) {
             //  Clear all charts back to their default values ---
             visualization.clear();
+            visualization.update();
+            if (state && state[visualization.id]) {
+                for (var key in visualization.source.mappings.mappings) {
+                    if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
+                        visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
+                        visualization._widgetState.selected = true;
+                    }
+                }
+            }
         });
         this.getVisualizationArray().forEach(function (visualization) {
-            if (state) {
-                if (state[visualization.id]) {
-                    visualization.getUpdates().forEach(function (updateObj) {
-                        var request = {
-                        };
-                        var hasRequest = false;
-                        for (var key in updateObj._mappings) {
-                            if (state[visualization.id][key]) {
-                                hasRequest = true;
-                                request[key] = state[visualization.id][key];
-                                request[key + _CHANGED] = true;
-                            }
-                        }
-                        if (hasRequest) {
-                            fetchDataOptimizer.appendRequest(updateObj.getDatasource(), request, updateObj.getVisualization());
-                        }
-                    });
-                }
+            var inputVisualizations = visualization.getInputVisualizations();
+            if (inputVisualizations.length === 0) {
+                fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
             } else {
-                var inputVisualizations = visualization.getInputVisualizations();
-                if (inputVisualizations.length === 0) {
-                    fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
-                } else {
-                    inputVisualizations.forEach(function (inViz) {
-                        if (inViz.hasSelection()) {
-                            fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
-                        }
-                    });
-                }
+                inputVisualizations.forEach(function (inViz) {
+                    if (inViz.hasSelection()) {
+                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                    }
+                });
             }
         });
         return fetchDataOptimizer.fetchData();

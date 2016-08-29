@@ -78,7 +78,11 @@
     
     Dendrogram.prototype.enter = function (domNode, element) {
         SVGZoomWidget.prototype.enter.apply(this, arguments);
-        this._renderElement.attr("opacity", 0);
+        this._renderElement
+            .attr("opacity", 0)
+            .transition().duration(500)
+            .attr("opacity", 1)
+        ;
         this._selection.widgetElement(this._renderElement);
     };
 
@@ -90,10 +94,6 @@
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
-
-        this._renderElement.transition().duration(500)
-            .attr("opacity", 1)
-        ;
 
         this._d3Layout = this.dendrogram() ? this._d3LayoutCluster : this._d3LayoutTree;
 

@@ -284,5 +284,18 @@
         return this;
     };
 
+    HipieDDLMixin.prototype.serializeRequests = function () {
+        var retVal = null;
+        this._ddlPopupVisualizations.concat(this._ddlVisualizations).forEach(function (ddlViz) {
+            if (ddlViz.hasSelection()) {
+                if (!retVal) {
+                    retVal = {};
+                }
+                retVal[ddlViz.id] = ddlViz.reverseMappedSelection();
+            }
+        });
+        return retVal;
+    };
+
     return HipieDDLMixin;
 }));

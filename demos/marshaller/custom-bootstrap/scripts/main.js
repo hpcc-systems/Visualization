@@ -92,26 +92,26 @@
         .on("click", function () {
             stackFinger--;
             refreshNavButtons();
-            marshaller
-                .state(stack[stackFinger])
-                .renderContent()
-            ;
+            marshaller.primeData(stack[stackFinger]).then(function () {
+                marshaller.renderContent();
+            });
         })
     ;
     var next = d3.select("#next")
         .on("click", function () {
             stackFinger++;
             refreshNavButtons();
-            marshaller
-                .state(stack[stackFinger])
-                .renderContent()
-            ;
+            marshaller.primeData(stack[stackFinger]).then(function () {
+                marshaller.renderContent();
+            });
         })
     ;
     var reset = d3.select("#reset")
         .on("click", function () {
             marshaller.primeData().then(function () {
-                marshaller.renderContent();
+                marshaller.renderContent(function () {
+                    updateHistory();
+                });
             });
         });
     ;
@@ -124,14 +124,15 @@
                 "errorsummary": {
                     clean_error: "E412"
                 }
+            }).then(function () {
+                updateHistory();
             });
         });
     ;
 
     function updateHistory() {
         stack.length = stackFinger + 1;
-        stack.push(marshaller.state());
-        var tmp = JSON.stringify(marshaller.state());
+        stack.push(marshaller.serializeRequests());
         stackFinger = stack.length - 1;
         refreshNavButtons();
     }

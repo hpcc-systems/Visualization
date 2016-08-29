@@ -296,12 +296,14 @@
     };
 
     Widget.prototype.locateParentWidget = function (domNode) {
-        domNode = domNode || this._target.parentNode;
-        var widget = this.toWidget(domNode);
-        if (widget) {
-            return widget;
-        } else if (domNode.parentNode) {
-            return this.locateParentWidget(domNode.parentNode);
+        domNode = domNode || (this._target ? this._target.parentNode : null);
+        if (domNode) {
+            var widget = this.toWidget(domNode);
+            if (widget) {
+                return widget;
+            } else if (domNode.parentNode) {
+                return this.locateParentWidget(domNode.parentNode);
+            }
         }
         return null;
     };

@@ -363,6 +363,7 @@
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
                     .text(item[1] ? item[1] : "")
+                    .data(origItem)
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
@@ -409,6 +410,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
+                            .data(childItem)
                         ;
                         edges.push(edge);
                     }

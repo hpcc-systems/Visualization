@@ -157,12 +157,16 @@
                 targetVizs.forEach(function (targetViz) {
                     switch (targetViz.widget.classID()) {
                         case "composite_MegaChart":
-                            var flyoutButton = new FlyoutButton()
-                                .title(viz.title)
-                                .widget(viz.widget)
-                                .autoClose(context.autoCloseFlyout())
-                            ;
-                            targetViz.widget.toolbarWidgets().push(flyoutButton);
+                            if (!viz._flyoutButton) {
+                                viz._flyoutButton = new FlyoutButton()
+                                    .title(viz.title)
+                                    .widget(viz.widget)
+                                    .autoClose(context.autoCloseFlyout())
+                                ;
+                                targetViz.widget.toolbarWidgets().push(viz._flyoutButton);
+                            } else {
+                                targetViz.widget.toolbarWidgets().push(viz._flyoutButton.reference());
+                            }
                             break;
                     }
                 });

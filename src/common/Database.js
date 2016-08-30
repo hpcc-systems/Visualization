@@ -401,7 +401,7 @@
                 if (field) {
                     rollupBy.push(field.idx);
                     fieldIndicies.push(function (row) {
-                        return row[field.idx];
+                        return row[field.idx] !== undefined && row[field.idx] !== null ? row[field.idx] : missingDataString;
                     });
                 } else {
                     console.log("Unable to locate '" + mapping + "' in server response.");

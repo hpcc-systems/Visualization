@@ -267,7 +267,9 @@
                 } else {
                     retVal = retVal.map(function (row) {
                         var cell = row[colIdx];
-                        cell = cell.Row || cell;
+                        if (cell && cell.Row) {
+                            cell = cell.Row;
+                        }
                         if (cell instanceof Array) {
                             switch (fieldType) {
                                 case "dataset":

@@ -1099,6 +1099,11 @@
                     resolve();
                 });
             }
+            if (context.dashboard.marshaller.propogateClear()) {
+                context.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                    updatedViz.update();
+                });
+            }
         });
     };
 

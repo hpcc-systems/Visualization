@@ -595,10 +595,11 @@
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             var graph = e.graph;
-            var data  = e.item.dataContext;
+            var column = graph.valueField;
+            var data = e.item.dataContext;
+
             var field;
             var field2;
-
             if (context._gType === "column") {
                 field = graph.fillColorsField;
                 field2 = graph.lineColorField;
@@ -608,29 +609,32 @@
                 field = graph.colorField;
             }
             if (field) {
-                if (data[field] !== null && data[field] !== undefined) {
-                    delete data[field];
-                    data[field2] = context._colorObj[e.index][e.target.columnIndex].lineColor;
-                    if (context.selectionMode() === "simple") {
-                        if (context._selected !== null) {
-                            delete context._selected.data[context._selected.field];
-                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
-                        }
-                        context._selected = null;
+                var deselectMode = context._selected && context._selected.dIdx === e.index && context._selected.column === column;
+                if (context._selected !== null) {
+                    delete context._selected.data[context._selected.field];
+                    if (context._selected.field2) {
+                        context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
                     }
-                } else {
+                    context._selected = null;
+                }
+                if (!deselectMode) {
                     data[field] = context.selectionColor();
-                    data[field2] = context.selectionColor();
+                    if (field2) {
+                        data[field2] = context.selectionColor();
+                    }
                     if (context.selectionMode() === "simple") {
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
-                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
+                            if (context._selected.field2) {
+                                context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
+                            }
                         }
                         context._selected = {
                             field: field,
                             field2: field2,
                             data: data,
                             dIdx: e.index,
+                            column: column,
                             cIdx: e.target.columnIndex
                         };
                         context._selections.push(context._selected);
@@ -639,7 +643,7 @@
                 e.chart.validateData();
             }
 
-            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex + 1], context._selected !== null);
+            context.click(context.rowToObj(context.data()[e.index]), column, context._selected !== null);
         });
     };
 

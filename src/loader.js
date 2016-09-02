@@ -333,14 +333,18 @@
                         case "3":
                             this.cdn("v1.10.0", function (require) {
                                 require(["src/other/Persist"], function (Persist) {
-                                    Persist.create(state, callback);
+                                    Persist.create(state, function (widget) {
+                                        callback(widget, require);
+                                    });
                                 }, requireErrorHandler);
                             });
                             break;
                         default:
                             this.cdn("v" + state.__version, function (require) {
                                 require(["src/other/Persist"], function (Persist) {
-                                    Persist.create(state, callback);
+                                    Persist.create(state, function (widget) {
+                                        callback(widget, require);
+                                    });
                                 }, requireErrorHandler);
                             });
                             break;

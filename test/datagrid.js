@@ -51,8 +51,9 @@ define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Databa
             assert.deepEqual(formatDB.data(), data, "assert 2");
             assert.deepEqual(formatDB.formattedData(), formattedData, "assert 3");
             var newDB = formatDB.clone();
-            assert.deepEqual(formatDB.data(), newDB.data(), "assert 4");
-            assert.deepEqual(formatDB.formattedData(), newDB.formattedData(), "assert 5");
+            assert.deepEqual(formatDB.columns(), newDB.columns(), "assert 4");
+            assert.deepEqual(formatDB.data(), newDB.data(), "assert 5");
+            assert.deepEqual(formatDB.formattedData(), newDB.formattedData(), "assert 6");
         });
         it("modification", function () {
             var x = db.grid();
@@ -84,8 +85,11 @@ define(["d3", "src/common/Database", "src/common/Utility"], function (d3, Databa
             var fields = db.fields();
             var newDB = new Database.Grid();
             var fields2 = db.fields();
-            var db2 = db.clone().pivot();
-            for (var i = 0; i < db.length() ; ++i) {
+            var db2 = db.clone();
+            assert.deepEqual(db2.columns(), db.columns(), "cloned columns");
+            assert.deepEqual(db2.data(), db.data(), "cloned Data");
+            db2.pivot();
+            for (var i = 0; i < db.length(); ++i) {
                 assert.deepEqual(db.row(i), db2.column(i));
             }
         });

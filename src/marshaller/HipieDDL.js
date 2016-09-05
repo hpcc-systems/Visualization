@@ -753,14 +753,18 @@
                 switch (chartType) {
                     case "MAP_PINS":
                         this.loadWidget("../map/Pins", function (widget) {
-                            widget
-                                .id(visualization.id)
-                                .columns(context.source.getColumns())
-                                .geohashColumn("geohash")
-                                .tooltipColumn("label")
-                                .fillColor(visualization.color ? visualization.color : null)
-                                .projection("albersUsaPr")
-                            ;
+                            try {
+                                widget
+                                    .id(visualization.id)
+                                    .columns(context.source.getColumns())
+                                    .geohashColumn("geohash")
+                                    .tooltipColumn("label")
+                                    .fillColor(visualization.color ? visualization.color : null)
+                                    .projection("albersUsaPr")
+                                ;
+                            } catch (e) {
+                                console.log("Unexpected widget type:  " + widget.classID());
+                            }
                         });
                         break;
                     default:
@@ -775,18 +779,33 @@
                         Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
                             context.loadWidget("../composite/MegaChart", function (widget) {
                                 var layers = context.layers.map(function (layer) { return layer.widget; });
-                                widget
-                                    .id(visualization.id)
-                                    .legendPosition_default("none")
-                                    .showChartSelect_default(false)
-                                    .chartType_default(chartType)
-                                    .chartTypeDefaults({
-                                        autoScaleMode: layers.length ? "data" : "mesh"
-                                    })
-                                    .chartTypeProperties({
-                                        layers: layers
-                                    })
-                                ;
+                                try {
+                                    switch (widget.classID()) {
+                                        case "composite_MegaChart":
+                                            widget
+                                                .id(visualization.id)
+                                                .legendPosition_default("none")
+                                                .showChartSelect_default(false)
+                                                .chartType_default(chartType)
+                                                .chartTypeDefaults({
+                                                    autoScaleMode: layers.length ? "data" : "mesh"
+                                                })
+                                                .chartTypeProperties({
+                                                    layers: layers
+                                                })
+                                            ;
+                                            break;
+                                        default:
+                                            widget
+                                                .id(visualization.id)
+                                                .autoScaleMode(layers.length ? "data" : "mesh")
+                                                .layers(layers)
+                                            ;
+                                            break;
+                                    }
+                                } catch (e) {
+                                    console.log("Unexpected widget type:  " + widget.classID());
+                                }
                             });
                         });
                         break;
@@ -798,61 +817,81 @@
             case "BAR":
             case "WORD_CLOUD":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .legendPosition_default("none")
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "LINE":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        //.domainAxisTitle(context.source.getXTitle())
-                        //.valueAxisTitle(context.source.getYTitle())
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .legendPosition_default("none")
+                            //.domainAxisTitle(context.source.getXTitle())
+                            //.valueAxisTitle(context.source.getYTitle())
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "TABLE":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        .showChartSelect_default(false)
-                        .chartType_default("TABLE")
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .legendPosition_default("none")
+                            .showChartSelect_default(false)
+                            .chartType_default("TABLE")
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "SLIDER":
                 this.loadWidget("../form/Slider", function (widget) {
-                    widget
-                        .id(visualization.id)
-                    ;
-                    if (visualization.range) {
-                        var selectionLabel = "";
-                        for (var key in visualization.source.mappings) {
-                            selectionLabel = key;
-                            break;
-                        }
+                    try {
                         widget
-                            .low_default(+visualization.range[0])
-                            .high_default(+visualization.range[1])
-                            .step_default(+visualization.range[2])
-                            .selectionLabel_default(selectionLabel)
+                            .id(visualization.id)
                         ;
+                        if (visualization.range) {
+                            var selectionLabel = "";
+                            for (var key in visualization.source.mappings) {
+                                selectionLabel = key;
+                                break;
+                            }
+                            widget
+                                .low_default(+visualization.range[0])
+                                .high_default(+visualization.range[1])
+                                .step_default(+visualization.range[2])
+                                .selectionLabel_default(selectionLabel)
+                            ;
+                        }
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
             case "GRAPH":
                 this.loadWidgets(["../graph/Graph"], function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .layout_default("ForceDirected2")
-                        .applyScaleOnLayout_default(true)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .layout_default("ForceDirected2")
+                            .applyScaleOnLayout_default(true)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "FORM":
@@ -863,80 +902,92 @@
                     var Select = widgetClasses[7];
                     var TextArea = widgetClasses[9];
 
-                    widget
-                        .id(visualization.id)
-                        .inputs(visualization.fields.map(function (field) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .inputs(visualization.fields.map(function (field) {
 
-                            var selectOptions = [];
-                            var options = [];
-                            var inp;
-                            switch (field.properties.charttype) {
-                                case "TEXT":
-                                    inp = new Input()
-                                        .type_default("text")
-                                    ;
-                                    break;
-                                case "TEXTAREA":
-                                    inp = new TextArea();
-                                    break;
-                                case "CHECKBOX":
-                                    inp = new CheckBox();
-                                    break;
-                                case "RADIO":
-                                    inp = new Radio();
-                                    break;
-                                case "HIDDEN":
-                                    inp = new Input()
-                                        .type_default("hidden")
-                                    ;
-                                    break;
-                                default:
-                                    if (field.properties.enumvals) {
-                                        inp = new Select();
-                                        options = field.properties.enumvals;
-                                        for (var val in options) {
-                                            selectOptions.push([val, options[val]]);
-                                        }
-                                    } else {
+                                var selectOptions = [];
+                                var options = [];
+                                var inp;
+                                switch (field.properties.charttype) {
+                                    case "TEXT":
                                         inp = new Input()
                                             .type_default("text")
                                         ;
-                                    }
-                                    break;
-                            }
+                                        break;
+                                    case "TEXTAREA":
+                                        inp = new TextArea();
+                                        break;
+                                    case "CHECKBOX":
+                                        inp = new CheckBox();
+                                        break;
+                                    case "RADIO":
+                                        inp = new Radio();
+                                        break;
+                                    case "HIDDEN":
+                                        inp = new Input()
+                                            .type_default("hidden")
+                                        ;
+                                        break;
+                                    default:
+                                        if (field.properties.enumvals) {
+                                            inp = new Select();
+                                            options = field.properties.enumvals;
+                                            for (var val in options) {
+                                                selectOptions.push([val, options[val]]);
+                                            }
+                                        } else {
+                                            inp = new Input()
+                                                .type_default("text")
+                                            ;
+                                        }
+                                        break;
+                                }
 
-                            inp
-                                .name_default(field.id)
-                                .label_default((field.properties ? field.properties.label : null) || field.label)
-                                .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
-                            ;
+                                inp
+                                    .name_default(field.id)
+                                    .label_default((field.properties ? field.properties.label : null) || field.label)
+                                    .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
+                                ;
 
-                            if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                var vals = Object.keys(field.properties.enumvals);
-                                inp.selectOptions_default(vals);
-                            } else if (selectOptions.length) {
-                                inp.selectOptions_default(selectOptions);
-                            }
+                                if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
+                                    var vals = Object.keys(field.properties.enumvals);
+                                    inp.selectOptions_default(vals);
+                                } else if (selectOptions.length) {
+                                    inp.selectOptions_default(selectOptions);
+                                }
 
-                            return inp;
-                        }))
-                    ;
+                                return inp;
+                            }))
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "HEAT_MAP":
                 this.loadWidgets(["../other/HeatMap"], function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .image_default(context.properties.imageUrl)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .image_default(context.properties.imageUrl)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             default:
                 this.loadWidget("../common/TextBox", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .text_default(context.id + "\n" + "TODO:  " + context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .text_default(context.id + "\n" + "TODO:  " + context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
         }

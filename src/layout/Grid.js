@@ -558,8 +558,8 @@
                 ;
 
                 d
-                    .surfacePadding(context.surfacePadding())
-                    .surfaceBorderWidth(context.surfaceBorderWidth())
+                    .surfacePadding_default(context.surfacePadding())
+                    .surfaceBorderWidth_default(context.surfaceBorderWidth())
                     .resize()
                 ;
             });

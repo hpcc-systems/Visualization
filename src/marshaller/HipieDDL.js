@@ -565,10 +565,8 @@
     EventUpdate.prototype.mapData = function (row) {
         var retVal = {};
         if (row) {
-            var vizSource = this.event.visualization.source;
             for (var key in this._mappings) {
-                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
-                retVal[this._mappings[key]] = row[origKey];
+                retVal[this._mappings[key]] = row[key];
             }
         }
         return retVal;

@@ -1631,7 +1631,9 @@
             } else {
                 inputVisualizations.forEach(function (inViz) {
                     if (inViz.hasSelection()) {
-                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                        var request = inViz.calcRequestFor(visualization);
+                        request.refresh = true;
+                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), request, visualization);
                     }
                 });
             }

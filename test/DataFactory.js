@@ -577,6 +577,7 @@
                 ]
             }
         },
+
         Slider: {
             simple: {
                 columns: ["Percent"],
@@ -740,7 +741,7 @@
                     ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
                 ],
                 columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            }
+            },
         },
         Graph: {
             simple: {

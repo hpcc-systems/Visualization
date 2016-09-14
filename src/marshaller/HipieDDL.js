@@ -1477,7 +1477,8 @@
         this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
         var context = this;
         return new Promise(function (resolve, reject) {
-            context.comms.call(dsRequest).then(function (response) {
+            context.comms.call(dsRequest).then(function (_response) {
+                var response = JSON.parse(JSON.stringify(_response));
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);

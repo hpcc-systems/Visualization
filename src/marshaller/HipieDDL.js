@@ -670,8 +670,8 @@
         var context = this;
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
-                widget["vertex_" + key] = function (row) {
-                    context.visualization.processEvent(key, context.events[key], row);
+                widget["vertex_" + key] = function (row, col, selected) {
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {

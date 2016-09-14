@@ -1464,7 +1464,7 @@
                 dsRequest[item] = value;
             }
         });
-        dsRequest.refresh = request.refresh;
+        dsRequest.refresh = request.refresh || false;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }

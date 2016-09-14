@@ -143,7 +143,10 @@
         if (arguments.length) {
             var context = this;
             _.click = function (row, column, selected) {
-                context.click(row, column, selected);
+                context.click.apply(context, arguments);
+            };
+            _.dblclick = function (row, column, selected) {
+                context.dblclick.apply(context, arguments);
             };
             if (this._chartMonitor) {
                 this._chartMonitor.remove();

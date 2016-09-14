@@ -15,6 +15,9 @@
             .on("click", function (row, col, sel) {
                 context.click(context.rowToObj(row.ext.origRow), "", sel);
             })
+            .on("dblclick", function (row, col, sel) {
+                context.dblclick(context.rowToObj(row.ext.origRow), "", sel);
+            })
         ;
     }
     GMapPin.prototype = Object.create(GMapLayered.prototype);
@@ -70,6 +73,10 @@
 
     GMapPin.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    };
+
+    GMapPin.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     };
 
     return GMapPin;

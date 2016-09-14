@@ -152,6 +152,15 @@
                     context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
                 }
             })
+            .on("dblclick", function (d) {
+                var tmp = d;
+                while (tmp.children) {
+                    tmp = tmp.children[0];
+                }
+                if (d.depth > 0) {
+                    context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                }
+            })
             .each(function (d, i) {
                 var element = d3.select(this);
                 element.append("circle");

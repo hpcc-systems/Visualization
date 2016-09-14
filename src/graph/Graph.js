@@ -585,6 +585,16 @@
                     edge: d
                 });
             })
+            .on("dblclick", function (d) {
+                var edgeElement = d3.select(this).select(".graph_Edge");
+                var selected = false;
+                if (!edgeElement.empty()) {
+                    selected = edgeElement.classed("selected");
+                }
+                context.edge_dblclick(context.rowToObj(d.data()), "", selected, {
+                    edge: d
+                });
+            })
             .on("mouseover", function (d) {
                 if (context._dragging)
                     return;

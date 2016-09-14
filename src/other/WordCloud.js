@@ -117,6 +117,9 @@
                 .on("click", function (d) {
                     context.click({ label: d.__viz_0, weight: d.__viz_1 });
                 })
+                .on("dblclick", function (d) {
+                    context.dblclick({ label: d.__viz_0, weight: d.__viz_1 });
+                })
                 .on("mouseout.tooltip", context.tooltip.hide)
                 .on("mousemove.tooltip", context.tooltip.show)
                 .style("opacity", 1e-6)

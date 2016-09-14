@@ -116,6 +116,12 @@
                     context.click(context.rowToObj(data.values[0]), context.dateColumn(), context._selection.selected(this));
                 }
             })
+            .on("dblclick", function (d) {
+                var data = mappedData.get(d);
+                if (data && data.values && data.values && data.values.length) {
+                    context.dblclick(context.rowToObj(data.values[0]), context.dateColumn(), context._selection.selected(this));
+                }
+            })
             .append("title")
         ;
         dayRect
@@ -171,6 +177,10 @@
     //  Events  ---
     CalendarHeatMap.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    CalendarHeatMap.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return CalendarHeatMap;

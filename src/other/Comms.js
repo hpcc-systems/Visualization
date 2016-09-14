@@ -352,6 +352,20 @@
         }
     };
 
+    function locateRoxieResponse(response) {
+        // v5 and v6 compatible ---
+        for (var key in response) {
+            if (response[key].Row && response[key].Row instanceof Array) {
+                return response;
+            }
+            var retVal = locateRoxieResponse(response[key]);
+            if (retVal) {
+                return retVal;
+            }
+        }
+        return null;
+    }
+
     function WsECL() {
         Comms.call(this);
 
@@ -420,11 +434,8 @@
             pathname: "WsEcl/submit/query/" + target.target + "/" + target.query + "/json"
         });
         return this.jsonp(url, request).then(function(response) {
-            // Remove "xxxResponse.Result"
-            for (var key in response) {
-                response = response[key].Results;
-                break;
-            }
+            response = locateRoxieResponse(response);
+
             // Check for exceptions
             if (response.Exception) {
                 throw Error(response.Exception.reduce(function (previousValue, exception, index, array) {
@@ -435,7 +446,7 @@
                 }, ""));
             }
             // Remove "response.result.Row"
-            for (key in response) {
+            for (var key in response) {
                 if (response[key].Row) {
                     response[key] = response[key].Row.map(espRowFix);
                 }
@@ -450,7 +461,7 @@
     };
 
     WsECL.prototype.send = function (request, callback) {
-        this.call({target: this._target, query: this._query}, request, callback);
+        return this.call({target: this._target, query: this._query}, request, callback);
     };
 
     function WsWorkunits() {
@@ -777,11 +788,8 @@
         this._resultNameCacheCount = 0;
         var context = this;
         return this.jsonp(url, request).then(function (response) {
-            // Remove "xxxResponse.Result"
-            for (var key in response) {
-                response = response[key].Results;
-                break;
-            }
+            response = locateRoxieResponse(response);
+
             // Check for exceptions
             if (response.Exception) {
                 throw Error(response.Exception.reduce(function (previousValue, exception, index, array) {
@@ -792,7 +800,7 @@
                 }, ""));
             }
             // Remove "response.result.Row"
-            for (key in response) {
+            for (var key in response) {
                 if (response[key].Row) {
                     context._resultNameCache[key] = response[key].Row.map(espRowFix);
                     ++context._resultNameCacheCount;

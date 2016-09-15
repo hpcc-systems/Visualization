@@ -565,10 +565,8 @@
     EventUpdate.prototype.mapData = function (row) {
         var retVal = {};
         if (row) {
-            var vizSource = this.event.visualization.source;
             for (var key in this._mappings) {
-                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
-                retVal[this._mappings[key]] = row[origKey];
+                retVal[this._mappings[key]] = row[key];
             }
         }
         return retVal;
@@ -672,8 +670,8 @@
         var context = this;
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
-                widget["vertex_" + key] = function (row) {
-                    context.visualization.processEvent(key, context.events[key], row);
+                widget["vertex_" + key] = function (row, col, selected) {
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {
@@ -1466,7 +1464,7 @@
                 dsRequest[item] = value;
             }
         });
-        dsRequest.refresh = request.refresh;
+        dsRequest.refresh = request.refresh || false;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
@@ -1631,7 +1629,9 @@
             } else {
                 inputVisualizations.forEach(function (inViz) {
                     if (inViz.hasSelection()) {
-                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                        var request = inViz.calcRequestFor(visualization);
+                        request.refresh = true;
+                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), request, visualization);
                     }
                 });
             }

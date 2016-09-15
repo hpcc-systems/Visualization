@@ -231,7 +231,6 @@
                     );
                 });
             }
-           
         },
         Toolbar: {
             simple: function (callback) {
@@ -348,6 +347,16 @@
                         .dateColumn("Date")
                         .aggrType("mean")
                         .aggrColumn("Close")
+                    );
+                });
+            }
+        },
+        Opportunity: {
+            simple: function (callback) {
+                require(["test/DataFactory","src/other/Opportunity"], function (DataFactory,Opportunity) {
+                    callback(new Opportunity()
+                        .columns(DataFactory.OpportunityData.Sample.dropdownList)
+                        .data(DataFactory.OpportunityData.Sample.data)
                     );
                 });
             }

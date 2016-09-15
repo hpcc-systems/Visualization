@@ -15,17 +15,17 @@
             amgauge: {
                 numBands: [3],
                 bandsColor: ["#84b761", "#fdd400", "#cc4748"],
-                bandsEndValue: [90, 130, 220],
-                bandsStartValue: [0, 90, 130],
+                bandsStartValue: [0, 40, 80],
+                bandsEndValue: [40, 80, 100],
                 bandsInnerRadius: [null, null, "95%"],
                 bottomText: ["[[data]] km/h"],
-                high: [220],
-                low: [0],
+                high: 220,
+                low: 0,
                 data: [100],
                 axisAlpha: [0.2],
                 axisLineWidth: [1],
                 tickAlpha: [0.2],
-                valueInterval: [20]
+                valueInterval: null
             }
         },
         TwoD: {
@@ -577,6 +577,7 @@
                 ]
             }
         },
+
         Slider: {
             simple: {
                 columns: ["Percent"],
@@ -740,7 +741,7 @@
                     ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
                 ],
                 columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            }
+            },
         },
         Graph: {
             simple: {
@@ -1179,6 +1180,19 @@
                 ]
             }
         },
+        OpportunityData: {
+						Sample : {
+							dropdownList : ['id','cname','optyname','prev_group','cur_group','salesrep','closedate','value','prev_value','valuenorm','prevdate','curdate'],
+							data:[
+										{"id": "2-B", "cur_group": 7, "prev_group": 2, "delta": 5, "cname": "ABC AK", "salesrep": "Smith, Andrew", "closedate": "11/30/2016", "value":"$23,000", "optyname": "ABC AK", "prev_value":400000, "valuenorm": 600000, "prevdate": 20160812, "curdate": 20160812},
+										{"id": "2-C", "cur_group": 6, "prev_group": 3, "delta": 3, "cname": "Gillit", "salesrep": "Smith, Andrew", "closedate": "11/30/2016", "value":"$2,000", "optyname": "Gillit", "prev_value":40000, "valuenorm": 500000, "prevdate": 20160812, "curdate": 20160801},
+										{"id": "2-D", "cur_group": 5, "prev_group": 2, "delta": 3, "cname": "ABC MED", "salesrep": "Smith, Andrew", "closedate": "11/31/2016",  "value":"$73,000", "optyname": "ABC", "prev_value":4000000, "valuenorm": 500000, "prevdate": 20160810, "curdate": 20160812},
+										{"id": "2-E", "cur_group": 7, "prev_group": 1, "delta": 6, "cname": "Blue Cross", "salesrep": "Smith, Andrew", "closedate": "10/31/2016",  "value":"$1,100,000", "optyname": "BCBS", "prev_value":33000, "valuenorm": 33000, "prevdate": 20160812, "curdate": 20161012},
+										{"id": "2-F", "cur_group": 7, "prev_group": 3, "delta": 4, "cname": "My Health", "salesrep": "Smith, Andrew", "closedate": "11/30/2016", "value":"$250,000", "optyname": "My care", "prev_value":400000, "valuenorm": 500000, "prevdate": 20160812, "curdate": 20160812},
+										{"id": "2-A", "cur_group": 1, "prev_group": 2, "delta": -1, "cname": "PGA LLC", "salesrep": "Smith, Andrew", "closedate": "12/31/2016", "value":"$500,000", "optyname": "PGA LLC ", "prev_value":100000, "valuenorm": 100000, "prevdate": 20160721, "curdate": 20160904},
+									]
+						}
+				},
         GMap: {
             simple: {
                 columns: ["latitude", "longtitude", "pin", "circle"],

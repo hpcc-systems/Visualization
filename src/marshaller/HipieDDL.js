@@ -379,7 +379,7 @@
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
                     .text(item[1] ? item[1] : "")
-                    .data(origItem)
+                    .data(item)
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
@@ -426,7 +426,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
-                            .data(childItem)
+                            .data(childMappedItem)
                         ;
                         edges.push(edge);
                     }
@@ -565,8 +565,10 @@
     EventUpdate.prototype.mapData = function (row) {
         var retVal = {};
         if (row) {
+            var vizSource = this.event.visualization.source;
             for (var key in this._mappings) {
-                retVal[this._mappings[key]] = row[key];
+                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+                retVal[this._mappings[key]] = row[origKey];
             }
         }
         return retVal;

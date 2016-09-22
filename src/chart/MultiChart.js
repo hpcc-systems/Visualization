@@ -74,7 +74,9 @@
     MultiChart.prototype._mapChartTypes = [
         { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
         { id: "CHORO_USCOUNTIES", display: "US County Choropleth", widgetClass: "map_ChoroplethCounties" },
-        { id: "CHORO_COUNTRIES", display: "Counrty Choropleth", widgetClass: "map_ChoroplethCountries" }
+        { id: "CHORO_COUNTRIES", display: "Country Choropleth", widgetClass: "map_ChoroplethCountries" },
+        { id: "GOOGLE_MAP", display: "Google Map", widgetClass: "map_GMapLayered" },
+        { id: "OPENSTREET", display: "Open Street Map", widgetClass: "map_OpenStreet" }
     ].map(function (item) { item.family = "map"; return item; });
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" },

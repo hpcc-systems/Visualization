@@ -154,8 +154,8 @@
 
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
-        this.columns().forEach(function(col, idx) {
-            retVal[col] = row[idx];
+        this.fields().forEach(function (field, idx) {
+            retVal[field.label_default() || field.label()] = row[idx];
         });
         if (row.length === this.columns().length + 1) {
             retVal.__lparam = row[this.columns().length];

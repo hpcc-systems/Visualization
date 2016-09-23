@@ -506,7 +506,7 @@
                 if (!vertexElement.empty()) {
                     selected = vertexElement.classed("selected");
                 }
-                context.vertex_click(d.data(), "", selected, {
+                context.vertex_click(context.rowToObj(d.data()), "", selected, {
                     vertex:  d
                 });
             })
@@ -516,7 +516,7 @@
                 if (!vertexElement.empty()) {
                     selected = vertexElement.classed("selected");
                 }
-                context.vertex_dblclick(d.data(), "", selected, {
+                context.vertex_dblclick(context.rowToObj(d.data()), "", selected, {
                     vertex:  d
                 });
             })
@@ -581,7 +581,7 @@
                 if (!edgeElement.empty()) {
                     selected = edgeElement.classed("selected");
                 }
-                context.edge_click(d.data(), "", selected, {
+                context.edge_click(context.rowToObj(d.data()), "", selected, {
                     edge: d
                 });
             })

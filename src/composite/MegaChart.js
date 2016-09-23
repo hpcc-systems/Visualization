@@ -38,7 +38,7 @@
     MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
     MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
     
-    MegaChart.prototype.publish("legendPosition","right","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
+    MegaChart.prototype.publish("legendPosition","none","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
     MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
     MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
 

@@ -301,7 +301,6 @@
                                     var widget = viz.widget;
                                     var newWidget = new widget.constructor()
                                         .showToolbar(false)
-                                        .legendPosition("none")
                                         .chartType(widget.chartType())
                                         .chartTypeDefaults(widget.chartTypeDefaults())
                                         .columns(viz.source.getColumns())
@@ -784,7 +783,6 @@
                                         case "composite_MegaChart":
                                             widget
                                                 .id(visualization.id)
-                                                .legendPosition_default("none")
                                                 .showChartSelect_default(false)
                                                 .chartType_default(chartType)
                                                 .chartTypeDefaults({
@@ -820,7 +818,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     } catch (e) {
@@ -833,9 +830,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
-                            //.domainAxisTitle(context.source.getXTitle())
-                            //.valueAxisTitle(context.source.getYTitle())
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     } catch (e) {
@@ -848,7 +842,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
                             .showChartSelect_default(false)
                             .chartType_default("TABLE")
                         ;
@@ -1068,6 +1061,9 @@
             switch (widget.classID()) {
                 case "chart_MultiChart":
                 case "composite_MegaChart":
+                    if (widget[key + "_default"]) {
+                        widget[key + "_default"](this.properties[key]);
+                    }
                     widget.chartTypeDefaults()[key] = this.properties[key];
                     break;
                 default:

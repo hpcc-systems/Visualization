@@ -157,12 +157,16 @@
                 targetVizs.forEach(function (targetViz) {
                     switch (targetViz.widget.classID()) {
                         case "composite_MegaChart":
-                            var flyoutButton = new FlyoutButton()
-                                .title(viz.title)
-                                .widget(viz.widget)
-                                .autoClose(context.autoCloseFlyout())
-                            ;
-                            targetViz.widget.toolbarWidgets().push(flyoutButton);
+                            if (!viz._flyoutButton) {
+                                viz._flyoutButton = new FlyoutButton()
+                                    .title(viz.title)
+                                    .widget(viz.widget)
+                                    .autoClose(context.autoCloseFlyout())
+                                ;
+                                targetViz.widget.toolbarWidgets().push(viz._flyoutButton);
+                            } else {
+                                targetViz.widget.toolbarWidgets().push(viz._flyoutButton.reference());
+                            }
                             break;
                     }
                 });
@@ -278,6 +282,19 @@
             this._initialState = state;
         }
         return this;
+    };
+
+    HipieDDLMixin.prototype.serializeRequests = function () {
+        var retVal = null;
+        this._ddlPopupVisualizations.concat(this._ddlVisualizations).forEach(function (ddlViz) {
+            if (ddlViz.hasSelection()) {
+                if (!retVal) {
+                    retVal = {};
+                }
+                retVal[ddlViz.id] = ddlViz.reverseMappedSelection();
+            }
+        });
+        return retVal;
     };
 
     return HipieDDLMixin;

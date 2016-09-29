@@ -138,6 +138,23 @@
         return retVal;
     };
 
+    SourceMappings.prototype.doReverseMap = function (item) {
+        var retVal = {};
+        for (var key in this.mappings) {
+            var rhsKey = this.mappings[key];
+            try {
+                var val = item[key];
+                if (val === undefined) {
+                    val = item[key.toLowerCase()];
+                }
+                retVal[rhsKey] = val;
+            } catch (e) {
+                console.log("Invalid Mapping:  " + this.visualization.id + " [" + key + "->" + item + "]");
+            }
+        }
+        return retVal;
+    };
+
     SourceMappings.prototype.doMapAll = function (data) {
         return data.hipieMappings(this.columnsRHS, this.visualization.dashboard.marshaller.missingDataString());
     };
@@ -241,15 +258,21 @@
     TableMappings.prototype.doMapAll = function (data) {
         var retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
         if (retVal instanceof Array) {
-            //var columnsRHS = this.visualization.source.getColumnsRHS();
-            this.visualization.fields.forEach(function (field, idx) {
+            var columnsRHSIdx = this.visualization.source.getColumnsRHSIdx();
+            this.visualization.fields.forEach(function (field) {
                 var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
-                switch (fieldType) {
-                    case "dataset":
-                        retVal = retVal.map(function (row) {
-                            row.forEach(function (cell, cellIdx) {
-                                if (cellIdx === idx) {
-                                    cell = cell.Row || cell;
+                var colIdx = columnsRHSIdx[field.id];
+                if (colIdx === undefined) {
+                    console.log("Invalid Mapping:  " + field.id);
+                } else {
+                    retVal = retVal.map(function (row) {
+                        var cell = row[colIdx];
+                        if (cell && cell.Row) {
+                            cell = cell.Row;
+                        }
+                        if (cell instanceof Array) {
+                            switch (fieldType) {
+                                case "dataset":
                                     var columns = [];
                                     var columnsIdx = {};
                                     var data = cell.map(function (row, idx) {
@@ -268,36 +291,28 @@
                                         .columns(columns)
                                         .data(data)
                                     ;
-                                    row[cellIdx] = table;
-                                }
-                            });
-                            return row;
-                        });
-                        break;
-                    case "widget":
-                        retVal = retVal.map(function (row) {
-                            row.forEach(function (cell, cellIdx) {
-                                if (cellIdx === idx) {
+                                    row[colIdx] = table;
+                                    break;
+                                case "widget":
                                     var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
                                     var output = viz.source.getOutput();
                                     var db = output.db;
-                                    output.setData(cell, {}, []);
+                                    output.setData(cell, []);
                                     var widget = viz.widget;
                                     var newWidget = new widget.constructor()
                                         .showToolbar(false)
-                                        .legendPosition("none")
                                         .chartType(widget.chartType())
                                         .chartTypeDefaults(widget.chartTypeDefaults())
                                         .columns(viz.source.getColumns())
                                         .data(viz.source.getData())
                                     ;
                                     output.db = db;
-                                    row[cellIdx] = newWidget;
-                                }
-                            }, this);
-                            return row;
-                        }, this);
-                        break;
+                                    row[colIdx] = newWidget;
+                                    break;
+                            }
+                        }
+                        return row;
+                    }, this);
                 }
             }, this);
         }
@@ -363,6 +378,7 @@
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
                     .text(item[1] ? item[1] : "")
+                    .data(item)
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
@@ -409,6 +425,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
+                            .data(childMappedItem)
                         ;
                         edges.push(edge);
                     }
@@ -481,13 +498,6 @@
         return null;
     };
 
-    Source.prototype.clearOutputRequest = function () {
-        var op = this.getOutput();
-        if (op) {
-            op.request = {};
-        }
-    };
-
     Source.prototype.hasData = function () {
         return this.getOutput().db ? true : false;
     };
@@ -498,6 +508,10 @@
 
     Source.prototype.getColumnsRHS = function () {
         return this.mappings.columnsRHS;
+    };
+
+    Source.prototype.getColumnsRHSIdx = function () {
+        return this.mappings.columnsRHSIdx;
     };
 
     Source.prototype.getColumns = function () {
@@ -657,8 +671,8 @@
         var context = this;
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
-                widget["vertex_" + key] = function (row) {
-                    context.visualization.processEvent(key, context.events[key], row);
+                widget["vertex_" + key] = function (row, col, selected) {
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {
@@ -738,14 +752,18 @@
                 switch (chartType) {
                     case "MAP_PINS":
                         this.loadWidget("../map/Pins", function (widget) {
-                            widget
-                                .id(visualization.id)
-                                .columns(context.source.getColumns())
-                                .geohashColumn("geohash")
-                                .tooltipColumn("label")
-                                .fillColor(visualization.color ? visualization.color : null)
-                                .projection("albersUsaPr")
-                            ;
+                            try {
+                                widget
+                                    .id(visualization.id)
+                                    .columns(context.source.getColumns())
+                                    .geohashColumn("geohash")
+                                    .tooltipColumn("label")
+                                    .fillColor(visualization.color ? visualization.color : null)
+                                    .projection("albersUsaPr")
+                                ;
+                            } catch (e) {
+                                console.log("Unexpected widget type:  " + widget.classID());
+                            }
                         });
                         break;
                     default:
@@ -760,18 +778,32 @@
                         Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
                             context.loadWidget("../composite/MegaChart", function (widget) {
                                 var layers = context.layers.map(function (layer) { return layer.widget; });
-                                widget
-                                    .id(visualization.id)
-                                    .legendPosition_default("none")
-                                    .showChartSelect_default(false)
-                                    .chartType_default(chartType)
-                                    .chartTypeDefaults({
-                                        autoScaleMode: layers.length ? "data" : "mesh"
-                                    })
-                                    .chartTypeProperties({
-                                        layers: layers
-                                    })
-                                ;
+                                try {
+                                    switch (widget.classID()) {
+                                        case "composite_MegaChart":
+                                            widget
+                                                .id(visualization.id)
+                                                .showChartSelect_default(false)
+                                                .chartType_default(chartType)
+                                                .chartTypeDefaults({
+                                                    autoScaleMode: layers.length ? "data" : "mesh"
+                                                })
+                                                .chartTypeProperties({
+                                                    layers: layers
+                                                })
+                                            ;
+                                            break;
+                                        default:
+                                            widget
+                                                .id(visualization.id)
+                                                .autoScaleMode(layers.length ? "data" : "mesh")
+                                                .layers(layers)
+                                            ;
+                                            break;
+                                    }
+                                } catch (e) {
+                                    console.log("Unexpected widget type:  " + widget.classID());
+                                }
                             });
                         });
                         break;
@@ -783,61 +815,76 @@
             case "BAR":
             case "WORD_CLOUD":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "LINE":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        //.domainAxisTitle(context.source.getXTitle())
-                        //.valueAxisTitle(context.source.getYTitle())
-                        .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "TABLE":
                 this.loadWidget("../composite/MegaChart", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .legendPosition_default("none")
-                        .showChartSelect_default(false)
-                        .chartType_default("TABLE")
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .showChartSelect_default(false)
+                            .chartType_default("TABLE")
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "SLIDER":
                 this.loadWidget("../form/Slider", function (widget) {
-                    widget
-                        .id(visualization.id)
-                    ;
-                    if (visualization.range) {
-                        var selectionLabel = "";
-                        for (var key in visualization.source.mappings) {
-                            selectionLabel = key;
-                            break;
-                        }
+                    try {
                         widget
-                            .low_default(+visualization.range[0])
-                            .high_default(+visualization.range[1])
-                            .step_default(+visualization.range[2])
-                            .selectionLabel_default(selectionLabel)
+                            .id(visualization.id)
                         ;
+                        if (visualization.range) {
+                            var selectionLabel = "";
+                            for (var key in visualization.source.mappings) {
+                                selectionLabel = key;
+                                break;
+                            }
+                            widget
+                                .low_default(+visualization.range[0])
+                                .high_default(+visualization.range[1])
+                                .step_default(+visualization.range[2])
+                                .selectionLabel_default(selectionLabel)
+                            ;
+                        }
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
                     }
                 });
                 break;
             case "GRAPH":
                 this.loadWidgets(["../graph/Graph"], function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .layout_default("ForceDirected2")
-                        .applyScaleOnLayout_default(true)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .layout_default("ForceDirected2")
+                            .applyScaleOnLayout_default(true)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "FORM":
@@ -848,80 +895,92 @@
                     var Select = widgetClasses[7];
                     var TextArea = widgetClasses[9];
 
-                    widget
-                        .id(visualization.id)
-                        .inputs(visualization.fields.map(function (field) {
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .inputs(visualization.fields.map(function (field) {
 
-                            var selectOptions = [];
-                            var options = [];
-                            var inp;
-                            switch (field.properties.charttype) {
-                                case "TEXT":
-                                    inp = new Input()
-                                        .type_default("text")
-                                    ;
-                                    break;
-                                case "TEXTAREA":
-                                    inp = new TextArea();
-                                    break;
-                                case "CHECKBOX":
-                                    inp = new CheckBox();
-                                    break;
-                                case "RADIO":
-                                    inp = new Radio();
-                                    break;
-                                case "HIDDEN":
-                                    inp = new Input()
-                                        .type_default("hidden")
-                                    ;
-                                    break;
-                                default:
-                                    if (field.properties.enumvals) {
-                                        inp = new Select();
-                                        options = field.properties.enumvals;
-                                        for (var val in options) {
-                                            selectOptions.push([val, options[val]]);
-                                        }
-                                    } else {
+                                var selectOptions = [];
+                                var options = [];
+                                var inp;
+                                switch (field.properties.charttype) {
+                                    case "TEXT":
                                         inp = new Input()
                                             .type_default("text")
                                         ;
-                                    }
-                                    break;
-                            }
+                                        break;
+                                    case "TEXTAREA":
+                                        inp = new TextArea();
+                                        break;
+                                    case "CHECKBOX":
+                                        inp = new CheckBox();
+                                        break;
+                                    case "RADIO":
+                                        inp = new Radio();
+                                        break;
+                                    case "HIDDEN":
+                                        inp = new Input()
+                                            .type_default("hidden")
+                                        ;
+                                        break;
+                                    default:
+                                        if (field.properties.enumvals) {
+                                            inp = new Select();
+                                            options = field.properties.enumvals;
+                                            for (var val in options) {
+                                                selectOptions.push([val, options[val]]);
+                                            }
+                                        } else {
+                                            inp = new Input()
+                                                .type_default("text")
+                                            ;
+                                        }
+                                        break;
+                                }
 
-                            inp
-                                .name_default(field.id)
-                                .label_default((field.properties ? field.properties.label : null) || field.label)
-                                .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
-                            ;
+                                inp
+                                    .name_default(field.id)
+                                    .label_default((field.properties ? field.properties.label : null) || field.label)
+                                    .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
+                                ;
 
-                            if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                var vals = Object.keys(field.properties.enumvals);
-                                inp.selectOptions_default(vals);
-                            } else if (selectOptions.length) {
-                                inp.selectOptions_default(selectOptions);
-                            }
+                                if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
+                                    var vals = Object.keys(field.properties.enumvals);
+                                    inp.selectOptions_default(vals);
+                                } else if (selectOptions.length) {
+                                    inp.selectOptions_default(selectOptions);
+                                }
 
-                            return inp;
-                        }))
-                    ;
+                                return inp;
+                            }))
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             case "HEAT_MAP":
                 this.loadWidgets(["../other/HeatMap"], function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .image_default(context.properties.imageUrl)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .image_default(context.properties.imageUrl)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
             default:
                 this.loadWidget("../common/TextBox", function (widget) {
-                    widget
-                        .id(visualization.id)
-                        .text_default(context.id + "\n" + "TODO:  " + context.type)
-                    ;
+                    try {
+                        widget
+                            .id(visualization.id)
+                            .text_default(context.id + "\n" + "TODO:  " + context.type)
+                        ;
+                    } catch (e) {
+                        console.log("Unexpected widget type:  " + widget.classID());
+                    }
                 });
                 break;
         }
@@ -1002,6 +1061,9 @@
             switch (widget.classID()) {
                 case "chart_MultiChart":
                 case "composite_MegaChart":
+                    if (widget[key + "_default"]) {
+                        widget[key + "_default"](this.properties[key]);
+                    }
                     widget.chartTypeDefaults()[key] = this.properties[key];
                     break;
                 default:
@@ -1084,6 +1146,11 @@
                     resolve();
                 });
             }
+            if (context.dashboard.marshaller.propogateClear()) {
+                context.events.getUpdatesVisualizations().forEach(function (updatedViz) {
+                    updatedViz.update();
+                });
+            }
         });
     };
 
@@ -1109,7 +1176,6 @@
         }, this);
         if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
             this.widget.data([]);
-            this.source.clearOutputRequest();
         }
         if (this.dashboard.marshaller.propogateClear()) {
             this.events.getUpdatesVisualizations().forEach(function (updatedViz) {
@@ -1154,6 +1220,20 @@
 
     Visualization.prototype.hasSelection = function () {
         return this._widgetState && this._widgetState.selected;
+    };
+
+    Visualization.prototype.selection = function () {
+        if (this.hasSelection()) {
+            return this._wdigetState.row;
+        }
+        return null;
+    };
+
+    Visualization.prototype.reverseMappedSelection = function () {
+        if (this.hasSelection()) {
+            return this.source.mappings.doReverseMap(this._widgetState.row);
+        }
+        return null;
     };
 
     Visualization.prototype.getInputVisualizations = function () {
@@ -1201,7 +1281,6 @@
         this.dataSource = dataSource;
         this.id = output.id;
         this.from = output.from;
-        this.request = {};
         this.notify = output.notify || [];
         this.filter = output.filter || [];
     }
@@ -1233,12 +1312,10 @@
         return Promise.all(promises);
     };
 
-    Output.prototype.setData = function (data, request, updates) {
-        this.request = request;
+    Output.prototype.setData = function (data, updates) {
         this.db = new Database.Grid().jsonObj(data);
         return this.vizNotify(updates);
     };
-
 
     //  FetchData Optimizers  ---
     function DatasourceRequestOptimizer() {
@@ -1272,7 +1349,8 @@
         return Promise.all(promises);
     };
 
-    function VisualizationRequestOptimizer() {
+    function VisualizationRequestOptimizer(skipClear) {
+        this.skipClear = skipClear;
         this.visualizationRequests = {
         };
     }
@@ -1298,7 +1376,7 @@
         var datasourceRequestOptimizer = new DatasourceRequestOptimizer();
         for (var key in this.visualizationRequests) {
             var item = this.visualizationRequests[key];
-            if (item.updateVisualization.type !== "GRAPH") {
+            if (!this.skipClear && item.updateVisualization.type !== "GRAPH") {
                 item.updateVisualization.clear();
             }
             item.updateVisualization.update(LOADING);
@@ -1315,7 +1393,6 @@
         this.WUID = dataSource.WUID;
         this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
         this.databomb = dataSource.databomb;
-        this.request = {};
         this._loadedCount = 0;
 
         var context = this;
@@ -1377,40 +1454,42 @@
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
-        var context = this;
+        var dsRequest = {};
         this.filter.forEach(function (item) {
-            this.request[item + _CHANGED] = request[item + _CHANGED] || false;
+            dsRequest[item + _CHANGED] = request[item + _CHANGED] || false;
             var value = request[item] === undefined ? null : request[item];
-            if (this.request[item] !== value) {
-                this.request[item] = value;
+            if (dsRequest[item] !== value) {
+                dsRequest[item] = value;
             }
-        }, this);
-        this.request.refresh = request.refresh;
+        });
+        dsRequest.refresh = request.refresh || false;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
-        for (var key in this.request) {
-            if (this.request[key] === null) {
-                delete this.request[key];
+        for (var key in dsRequest) {
+            if (dsRequest[key] === null) {
+                delete dsRequest[key];
             }
         }
         var now = Date.now();
-        this.dashboard.marshaller.commsEvent(this, "request", this.request);
+        this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
+        var context = this;
         return new Promise(function (resolve, reject) {
-            context.comms.call(context.request).then(function (response) {
+            context.comms.call(dsRequest).then(function (_response) {
+                var response = JSON.parse(JSON.stringify(_response));
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);
                         context.processResponse(response, request, updates).then(function () {
                             transactionQueue.shift();
                             resolve(response);
-                            context.dashboard.marshaller.commsEvent(context, "response", context.request, response);
+                            context.dashboard.marshaller.commsEvent(context, "response", dsRequest, response);
                             ++context._loadedCount;
                         });
                     }
                 }, 100);
             }).catch(function (e) {
-                context.dashboard.marshaller.commsEvent(context, "error", context.request, e);
+                context.dashboard.marshaller.commsEvent(context, "error", dsRequest, e);
                 reject(e);
             });
         });
@@ -1430,7 +1509,7 @@
             }
             if (exists(from, response)) {
                 if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(response[from], request, updates));
+                    promises.push(this.outputs[key].setData(response[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
                     promises.push(this.outputs[key].vizNotify(updates));
@@ -1438,7 +1517,7 @@
             } else if (exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
                 if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(lowerResponse[from], request, updates));
+                    promises.push(this.outputs[key].setData(lowerResponse[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
                     promises.push(this.outputs[key].vizNotify(updates));
@@ -1456,13 +1535,11 @@
 
     DataSource.prototype.serializeState = function () {
         return {
-            request: this.request
         };
     };
 
     DataSource.prototype.deserializeState = function (state) {
         if (!state) return;
-        this.request = state.request || {};
     };
 
     //  Dashboard  ---
@@ -1530,41 +1607,32 @@
     };
 
     Dashboard.prototype.primeData = function (state) {
-        var fetchDataOptimizer = new VisualizationRequestOptimizer();
+        var fetchDataOptimizer = new VisualizationRequestOptimizer(true);
         this.getVisualizationArray().forEach(function (visualization) {
             //  Clear all charts back to their default values ---
             visualization.clear();
+            visualization.update();
+            if (state && state[visualization.id]) {
+                for (var key in visualization.source.mappings.mappings) {
+                    if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
+                        visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
+                        visualization._widgetState.selected = true;
+                    }
+                }
+            }
         });
         this.getVisualizationArray().forEach(function (visualization) {
-            if (state) {
-                if (state[visualization.id]) {
-                    visualization.getUpdates().forEach(function (updateObj) {
-                        var request = {
-                        };
-                        var hasRequest = false;
-                        for (var key in updateObj._mappings) {
-                            if (state[visualization.id][key]) {
-                                hasRequest = true;
-                                request[key] = state[visualization.id][key];
-                                request[key + _CHANGED] = true;
-                            }
-                        }
-                        if (hasRequest) {
-                            fetchDataOptimizer.appendRequest(updateObj.getDatasource(), request, updateObj.getVisualization());
-                        }
-                    });
-                }
+            var inputVisualizations = visualization.getInputVisualizations();
+            if (inputVisualizations.length === 0) {
+                fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
             } else {
-                var inputVisualizations = visualization.getInputVisualizations();
-                if (inputVisualizations.length === 0) {
-                    fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
-                } else {
-                    inputVisualizations.forEach(function (inViz) {
-                        if (inViz.hasSelection()) {
-                            fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
-                        }
-                    });
-                }
+                inputVisualizations.forEach(function (inViz) {
+                    if (inViz.hasSelection()) {
+                        var request = inViz.calcRequestFor(visualization);
+                        request.refresh = true;
+                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), request, visualization);
+                    }
+                });
             }
         });
         return fetchDataOptimizer.fetchData();

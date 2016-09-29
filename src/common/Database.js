@@ -7,16 +7,11 @@
     }
 }(this, function (d3, Class, PropertyExt, Utility) {
     //  Field  ---
-    function Field(id, opt) {
+    function Field(id) {
         Class.call(this);
         PropertyExt.call(this);
 
         this._id = id || this._id;
-        opt = opt || {};
-        this.label(opt.label || "");
-        this.type(opt.type || "");
-        this.mask(opt.mask || null);
-        this.format(opt.format || null);
     }
     Field.prototype = Object.create(Class.prototype);
     Field.prototype.constructor = Field;
@@ -31,62 +26,32 @@
         return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
     };
 
-    Field.prototype.publish("label", "", "string", "Label");
-    Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time"]);
-    var origType = Field.prototype.type;
-    Field.prototype.type = function (_) {
-        var retVal = origType.apply(this, arguments);
-        if (arguments.length) {
-            switch (this.type()) {
-                case "number":
-                    this._typeTransformer = function (_) {
-                        return Number(_);
-                    };
-                    break;
-                case "string":
-                    this._typeTransformer = function (_) {
-                        return String(_);
-                    };
-                    break;
-                case "boolean":
-                    this._typeTransformer = function (_) {
-                        return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
-                    };
-                    break;
-                case "time":
-                case "date":
-                    this._typeTransformer = function (_) {
-                        return this._maskTransformer.parse(_);
-                    };
-                    break;
-                default:
-                    this._typeTransformer = function (_) {
-                        return _;
-                    };
-                    break;
-            }
+    Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
+    Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time"], { optional: true });
+    Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: function (w) { return w.type() !== "time"; }, optional: true });
+    Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
+
+    Field.prototype.typeTransformer = function (_) {
+        switch (this.type()) {
+            case "number":
+                return Number(_);
+            case "string":
+                return String(_);
+            case "boolean":
+                return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+            case "time":
+            case "date":
+                return this.maskTransformer(_);
         }
-        return retVal;
+        return _;
     };
 
-    Field.prototype.publish("mask", "", "string", "Time Mask");
-    var origMask = Field.prototype.mask;
-    Field.prototype.mask = function (_) {
-        var retVal = origMask.apply(this, arguments);
-        if (arguments.length) {
-            this._maskTransformer = this.formatter(_);
-        }
-        return retVal;
+    Field.prototype.maskTransformer = function (_) {
+        return this.formatter(this.mask()).parse(_);
     };
 
-    Field.prototype.publish("format", "", "string", "Format");
-    var origFormat = Field.prototype.format;
-    Field.prototype.format = function (_) {
-        var retVal = origFormat.apply(this, arguments);
-        if (arguments.length) {
-            this._formatTransformer = this.formatter(_);
-        }
-        return retVal;
+    Field.prototype.formatTransformer = function (_) {
+        return this.formatter(this.format())(_);
     };
 
     Field.prototype.parse = function (_) {
@@ -94,7 +59,7 @@
             return _;
         }
         try {
-            return this._typeTransformer(_);
+            return this.typeTransformer(_);
         } catch (e) {
             console.log("Unable to parse:  " + _);
             return null;
@@ -106,7 +71,7 @@
             return _;
         }
         try {
-            return this._formatTransformer(this._typeTransformer(_));
+            return this.formatTransformer(this.typeTransformer(_));
         } catch (e) {
             console.log("Unable to transform:  " + _);
             return null;
@@ -114,12 +79,20 @@
     };
 
     Field.prototype.clone = function () {
-        return new Field(this._id, {
-            label: this.label(),
-            type: this.type(),
-            mask: this.mask(),
-            format: this.format(),
-        });
+        var context = this;
+        var retVal = new Field(this._id);
+        cloneProp(retVal, "label");
+        cloneProp(retVal, "type");
+        cloneProp(retVal, "mask");
+        cloneProp(retVal, "format");
+
+        function cloneProp(dest, key) {
+            dest[key + "_default"](context[key + "_default"]());
+            if (context[key + "_exists"]()) {
+                dest[key](context[key]());
+            }
+        }
+        return retVal;
     };
 
     Field.prototype.formatter = function (format) {
@@ -170,6 +143,14 @@
     };
 
     //  Backward compatability  ---
+    Grid.prototype.resetColumns = function (_) {
+        var fields = this.fields();
+        this.legacyColumns([]);
+        this.legacyColumns(fields.map(function (field) {
+            return field.label();
+        }));
+    };
+
     Grid.prototype.legacyColumns = function (_) {
         if (!arguments.length) return this.row(0);
         this.row(0, _);
@@ -248,9 +229,9 @@
     Grid.prototype.row = function (row, _) {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
-            var fields = d3.map(this.fields(), function (field) { return field.label(); });
-            this.fields(_.map(function (label) {
-                return fields.get(label) || new Field().label(label);
+            var fieldsArr = this.fields();
+            this.fields(_.map(function (label, idx) {
+                return (fieldsArr[idx] || new Field()).label_default(label);
             }, this));
         } else {
             this._data[row - 1] = _;
@@ -401,7 +382,7 @@
                 if (field) {
                     rollupBy.push(field.idx);
                     fieldIndicies.push(function (row) {
-                        return row[field.idx];
+                        return row[field.idx] !== undefined && row[field.idx] !== null ? row[field.idx] : missingDataString;
                     });
                 } else {
                     console.log("Unable to locate '" + mapping + "' in server response.");
@@ -642,6 +623,7 @@
     };
 
     Grid.prototype.pivot = function () {
+        this.resetColumns();
         this.rows(this.columns());
         return this;
     };

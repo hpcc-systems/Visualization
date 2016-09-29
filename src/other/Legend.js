@@ -10,6 +10,7 @@
         Table.call(this);
         
         this.showHeader(false);
+        this.pagination(false);
     }
     Legend.prototype = Object.create(Table.prototype);
     Legend.prototype.constructor = Legend;
@@ -67,6 +68,24 @@
             }
         }
         return Palette.ordinal("default");
+    };
+
+    var origGetBBox = Table.prototype.getBBox;
+    Legend.prototype.getBBox = function (refresh, round) {
+        var retVal = origGetBBox.apply(this, arguments);
+        var table = this.element().select(".tableDiv > table");
+        if (!table.empty()) {
+            var tableRect = table.node().getBoundingClientRect();
+            var width = tableRect.width + 8 + (this.hasVScroll(this._parentElement) ? this.getScrollbarWidth() : 0);
+            var height = tableRect.height + 8 + (this.hasHScroll(this._parentElement) ? this.getScrollbarWidth() : 0);
+            return {
+                x: retVal.x,
+                y:retVal.y,
+                width: (round ? Math.round(width) : width) * this._scale,
+                height: (round ? Math.round(height) : height) * this._scale
+            };
+        }
+        return retVal;
     };
 
     Legend.prototype.enter = function (domNode, element) {

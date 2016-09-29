@@ -15,17 +15,17 @@
             amgauge: {
                 numBands: [3],
                 bandsColor: ["#84b761", "#fdd400", "#cc4748"],
-                bandsEndValue: [90, 130, 220],
-                bandsStartValue: [0, 90, 130],
+                bandsStartValue: [0, 40, 80],
+                bandsEndValue: [40, 80, 100],
                 bandsInnerRadius: [null, null, "95%"],
                 bottomText: ["[[data]] km/h"],
-                high: [220],
-                low: [0],
+                high: 220,
+                low: 0,
                 data: [100],
                 axisAlpha: [0.2],
                 axisLineWidth: [1],
                 tickAlpha: [0.2],
-                valueInterval: [20]
+                valueInterval: null
             }
         },
         TwoD: {
@@ -577,6 +577,7 @@
                 ]
             }
         },
+
         Slider: {
             simple: {
                 columns: ["Percent"],
@@ -740,7 +741,7 @@
                     ["Label1", 45.777062, -108.549835, "red-dot.png", 4525, 423545, 24354, 54, 25523345, 2455, 245435]
                 ],
                 columns: ["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"]
-            }
+            },
         },
         Graph: {
             simple: {

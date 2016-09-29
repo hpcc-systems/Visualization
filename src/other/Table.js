@@ -64,8 +64,9 @@
     Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot();} });
     Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot(); } });
     
-    Table.prototype.publish("stringAlign", "left", "set", "Array of alignment positions for strings", ["left","right","center"], { tags: ["Basic"], optional: true });
-    Table.prototype.publish("numberAlign", "right", "set", "Array of alignment positions for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
+    Table.prototype.publish("stringAlign", "left", "set", "Cell alignment for strings", ["left", "right", "center"], { tags: ["Basic"], optional: true });
+    Table.prototype.publish("numberAlign", "right", "set", "Cell alignment for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
+    Table.prototype.publish("verticalAlign", null, "set", "Cell vertical alignment", [null, "middle", "top", "bottom"], { tags: ["Basic"], optional: true });
 
     Table.prototype.publish("minWidgetWidth", 320, "number", "Minimum width of a child widget", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("minWidgetHeight", 240, "number", "Minimum height of a child widget", null, { tags: ["Basic"], optional: true });
@@ -373,7 +374,8 @@
                 el
                     .style({
                         "height": null,
-                        "text-align": alignment
+                        "text-align": alignment,
+                        "vertical-align": context.verticalAlign()
                     })
                     .classed("tr-" + tdContents.trIdx + "-td-" + tdIdx, true)
                 ;
@@ -584,14 +586,6 @@
             .style("width", this.width() - fixedColWidth + "px")
         ;
 
-        this._paginator.render();
-        
-        this._paginator
-            .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
-            .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
-            .render()
-        ;
-
         if (!rows.empty()) this.setColumnWidths(rows);
 
         if (this.fixedSize()) {
@@ -650,6 +644,15 @@
             newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight;
             newTableHeight = newTableHeight;
         }
+
+        this._paginator.render();
+        setTimeout(function () {
+            context._paginator
+                .right((context.hasVScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .bottom((context.hasHScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .render()
+            ;
+        }, 0);
     };
 
     Table.prototype.exit = function (domNode, element) {
@@ -769,7 +772,10 @@
         var tcellHeight = tmpRow.node().clientHeight;
         tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight - paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        if (this.totalledColumns().length !== 0) {
+            ipp -= 1;
+        }
         return ipp;
     };
 

@@ -17,15 +17,19 @@
     AutoCompleteText.prototype.publish("label", "Label: ", "string", "Label for AutoCompleteText");
     AutoCompleteText.prototype.publish("placeholder", "Search...", "string", "Placeholder for AutoCompleteText");
     AutoCompleteText.prototype.publish("valueColumn", null, "set", "Select column for autocomplete", function () { return this.columns(); }, { optional: true });
+    AutoCompleteText.prototype.publish("textColumn", null, "set", "Select value(s)", function () { return this.columns(); }, { optional: true });
     AutoCompleteText.prototype.publish("minCharsText", 1, "number", "Size of multiAutoCompleteText box");
 
     AutoCompleteText.prototype.autoCompleteTextData = function (domNode, element) {
-        return this.data().map(function (row, idx) {
+        var view = this._db.rollupView([this.textColumn(), this.valueColumn()]);
+        return view.entries().map(function (row, idx) {
             return {
                 idx: idx,
-                origRow: row
+                text: row.key,
+                value: row.values.length ? row.values[0].key : "",
+                origRow: row.values.length && row.values[0].values.length ? row.values[0].values[0] : []
             };
-        });
+        }, this);
     };
 
     AutoCompleteText.prototype.enter = function (domNode, element) {
@@ -61,14 +65,14 @@
                 offsetLeft: 0,
                 offsetTop: 1,
                 source: function (term, suggest) {
-                    var field = context._db.fieldByLabel(context.valueColumn());
+                    var field = context._db.fieldByLabel(context.textColumn());
                     if (field) {
                         term = term.toLowerCase();
                         var suggestions = context.autoCompleteTextData().filter(function (row) {
                             return row.origRow[field.idx].toLowerCase().indexOf(term) >= 0;
                         }).map(function(row) {
                             return {
-                                value: row.origRow[field.idx],
+                                text: row.origRow[field.idx],
                                 rowIdx: row.idx
                             };
                         });
@@ -78,12 +82,12 @@
                 renderItem: function (item, search) {
                     search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
                     var re = new RegExp("(" + search.split(' ').join("|") + ")", "gi");
-                    return '<div class="autocomplete-suggestion" data-val="' + item.value + '" data-row-idx="' + item.rowIdx + '">' + item.value.replace(re, "<b>$1</b>") + '</div>';
+                    return '<div class="autocomplete-suggestion" data-val="' + item.text + '" data-row-idx="' + item.rowIdx + '">' + item.text.replace(re, "<b>$1</b>") + '</div>';
                 },
                 onSelect: function (e, term, item) {
                     var rowIdx = +item.getAttribute("data-row-idx");
-                    var row = context.data()[rowIdx];
-                    context.click(context.rowToObj(row), context.valueColumn(), true);
+                    var row = context.autoCompleteTextData()[rowIdx];
+                    context.click(context.rowToObj(row.origRow), context.valueColumn(), true);
                 }
             });
         }

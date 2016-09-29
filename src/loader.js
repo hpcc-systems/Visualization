@@ -30,6 +30,7 @@
                 "d3-hexbin": "../bower_components/d3-plugins/hexbin/hexbin",
                 "d3-tip": "../bower_components/d3-tip/index",
                 "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
+                "handsontable": "../bower_components/handsontable/dist/handsontable.full",
 
                 "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
                 "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -130,6 +131,7 @@
             "d3-hexbin": rawgitBaseUrl + "/d3/d3-plugins/master/hexbin/hexbin",
             "d3-tip": rawgitBaseUrl + "/Caged/d3-tip/v0.6.7/index",
             "d3-bullet": rawgitBaseUrl + "/d3/d3-plugins/master/bullet/bullet",
+            "handsontable": rawgitBaseUrl + "/handsontable/handsontable/0.24.3/dist/handsontable.full.min",
 
             "amcharts": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
             "amcharts.funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
@@ -273,6 +275,7 @@
 
     if (!root.hpccsystems.redirect) {
         root.hpccsystems.redirect = (function () {
+            var cdnHost = "viz.hpccsystems.com";
             function url(opts) {
                 opts = opts || {};
                 var protocol = opts.protocol || (root.location.protocol === "https:" ? "https:" : "http:");
@@ -286,13 +289,18 @@
 
             function cdnUrl(version) {
                 return url({
-                    hostname: "viz.hpccsystems.com",
+                    hostname: cdnHost,
                     port: "",
                     pathname: "/" + version + "/dist-amd"
                 });
             }
 
             return {
+                cdnHost: function(_) {
+                    if (!arguments.length) return cdnHost;
+                    cdnHost = _;
+                    return this;
+                },
                 github: function (branch, org, repo, callback) {
                     callback = arguments[arguments.length - 1];
                     switch (arguments.length) {
@@ -327,14 +335,18 @@
                         case "3":
                             this.cdn("v1.10.0", function (require) {
                                 require(["src/other/Persist"], function (Persist) {
-                                    Persist.create(state, callback);
+                                    Persist.create(state, function (widget) {
+                                        callback(widget, require);
+                                    });
                                 }, requireErrorHandler);
                             });
                             break;
                         default:
                             this.cdn("v" + state.__version, function (require) {
                                 require(["src/other/Persist"], function (Persist) {
-                                    Persist.create(state, callback);
+                                    Persist.create(state, function (widget) {
+                                        callback(widget, require);
+                                    });
                                 }, requireErrorHandler);
                             });
                             break;

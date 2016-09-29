@@ -154,8 +154,8 @@
 
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
-        this.columns().forEach(function(col, idx) {
-            retVal[col] = row[idx];
+        this.fields().forEach(function (field, idx) {
+            retVal[field.label_default() || field.label()] = row[idx];
         });
         if (row.length === this.columns().length + 1) {
             retVal.__lparam = row[this.columns().length];
@@ -296,12 +296,14 @@
     };
 
     Widget.prototype.locateParentWidget = function (domNode) {
-        domNode = domNode || this._target.parentNode;
-        var widget = this.toWidget(domNode);
-        if (widget) {
-            return widget;
-        } else if (domNode.parentNode) {
-            return this.locateParentWidget(domNode.parentNode);
+        domNode = domNode || (this._target ? this._target.parentNode : null);
+        if (domNode) {
+            var widget = this.toWidget(domNode);
+            if (widget) {
+                return widget;
+            } else if (domNode.parentNode) {
+                return this.locateParentWidget(domNode.parentNode);
+            }
         }
         return null;
     };

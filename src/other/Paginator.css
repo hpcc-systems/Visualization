@@ -7,6 +7,8 @@
 .other_Paginator .pagination {
   display: inline-block;
   white-space: nowrap;
+  margin: 0px;
+  padding: 0px;
 }
 
 .other_Paginator .pagination > li {
@@ -22,8 +24,9 @@
 }
 
 .other_Paginator div.side {
-  padding: 5px 20px;
-  vertical-align: top;;
+  padding-top: 5px;
+  padding-left: 8px;
+  vertical-align: top;
 }
 
 .other_Paginator span.side {

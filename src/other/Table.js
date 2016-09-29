@@ -586,14 +586,6 @@
             .style("width", this.width() - fixedColWidth + "px")
         ;
 
-        this._paginator.render();
-        
-        this._paginator
-            .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
-            .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
-            .render()
-        ;
-
         if (!rows.empty()) this.setColumnWidths(rows);
 
         if (this.fixedSize()) {
@@ -652,6 +644,15 @@
             newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight;
             newTableHeight = newTableHeight;
         }
+
+        this._paginator.render();
+        setTimeout(function () {
+            context._paginator
+                .right((context.hasVScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .bottom((context.hasHScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .render()
+            ;
+        }, 0);
     };
 
     Table.prototype.exit = function (domNode, element) {
@@ -771,7 +772,10 @@
         var tcellHeight = tmpRow.node().clientHeight;
         tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight - paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        if (this.totalledColumns().length !== 0) {
+            ipp -= 1;
+        }
         return ipp;
     };
 

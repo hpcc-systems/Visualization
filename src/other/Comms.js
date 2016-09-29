@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["es6-promise"], factory);
+        define(["../common/Utility"], factory);
     } else {
-        root.other_Comms = factory();
+        root.other_Comms = factory(root.common_Utility);
     }
-}(this, function () {
+}(this, function (Utility) {
     var TIMEOUT_DEFAULT = 60;
     function espValFix(val) {
         if (val === undefined || val === null) {
@@ -130,7 +130,7 @@
     }
 
     ESPMappings.prototype.contains = function (resultName, origField) {
-        return exists(resultName + "." + origField, this._mappings);
+        return Utility.exists(resultName + "." + origField, this._mappings);
     };
 
     ESPMappings.prototype.mapResult = function (response, resultName) {
@@ -172,22 +172,6 @@
         this._timeout = TIMEOUT_DEFAULT;
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
-
-    function exists(prop, scope) {
-        if (!prop || !scope) {
-            return false;
-        }
-        var propParts = prop.split(".");
-        var testScope = scope;
-        for (var i = 0; i < propParts.length; ++i) {
-            var item = propParts[i];
-            if (testScope[item] === undefined) {
-                return false;
-            }
-            testScope = testScope[item];
-        }
-        return true;
-    }
 
     var serialize = function (obj) {
         var str = [];
@@ -626,7 +610,7 @@
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
         return this.jsonp(url, request).then(function (response) {
-            if (!exists("WUQueryResponse.Workunits.ECLWorkunit", response)) {
+            if (!Utility.exists("WUQueryResponse.Workunits.ECLWorkunit", response)) {
                 throw "No workunit found.";
             }
             response = response.WUQueryResponse.Workunits.ECLWorkunit;
@@ -665,7 +649,7 @@
             this._resultNameCacheCount = 0;
             var context = this;
             this._fetchResultNamesPromise = this.jsonp(url, request).then(function (response) {
-                if (exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
+                if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                     response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
                         context._resultNameCache[item.Name] = [];
                         ++context._resultNameCacheCount;
@@ -765,7 +749,7 @@
             pathname: "WsWorkunits/WUGetStats.json?WUID=" + this._wuid
         });
         return this.jsonp(url, request).then(function (response) {
-            if (exists("WUGetStatsResponse.Statistics.WUStatisticItem", response)) {
+            if (Utility.exists("WUGetStatsResponse.Statistics.WUStatisticItem", response)) {
                 if (callback) {
                     console.log("Deprecated:  callback, use promise (WsWorkunits_GetStats.prototype.send)");
                     callback(response.WUGetStatsResponse.Statistics.WUStatisticItem);

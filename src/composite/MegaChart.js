@@ -107,6 +107,7 @@
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
 
         this._csvButton = new Button()
+            .classed({ "composite_MegaChart-CSV": true })
             .id(this.id() + "_csv")
             .value("CSV")
         ;
@@ -115,6 +116,7 @@
         };
 
         this._legendButton = new Input()
+            .classed({ "composite_MegaChart-legend": true })
             .id(this.id() + "_legend")
             .type("checkbox")
             .inlineLabel("Legend:  ")
@@ -124,6 +126,7 @@
         };
 
         this._chartTypeSelect = new Select()
+            .classed({ "composite_MegaChart-chartType": true })
             .id(this.id() + "_chartType")
             .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
             .value(this.chartType())

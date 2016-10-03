@@ -737,11 +737,11 @@
         this.vizDeclarations = {};
         if (this.type === "CHORO") {
             this.layers = (visualization.visualizations || []).map(function (innerViz) { 
-                return new Visualization(dashboard, innerViz, this); 
+                return dashboard.createVisualization(innerViz, this); 
             }, this);
         } else {
             (visualization.visualizations || []).forEach(function (innerViz) {
-                this.vizDeclarations[innerViz.id] = new Visualization(dashboard, innerViz, this);
+                this.vizDeclarations[innerViz.id] = dashboard.createVisualization(innerViz, this);
                 this.hasVizDeclarations = true;
             }, this);
         }
@@ -749,25 +749,28 @@
         switch (this.type) {
             case "CHORO":
                 var chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
-                switch (chartType) {
-                    case "MAP_PINS":
-                        this.loadWidget("../map/Pins", function (widget) {
-                            try {
-                                widget
-                                    .id(visualization.id)
-                                    .columns(context.source.getColumns())
-                                    .geohashColumn("geohash")
-                                    .tooltipColumn("label")
-                                    .fillColor(visualization.color ? visualization.color : null)
-                                    .projection("albersUsaPr")
-                                ;
-                            } catch (e) {
-                                console.log("Unexpected widget type:  " + widget.classID());
-                            }
-                        });
-                        break;
-                    default:
-                        chartType = "CHORO_USSTATES";
+                if (parentVisualization) {
+                    switch (chartType) {
+                        case "MAP_PINS":
+                            this.loadWidget("../map/Pins", function (widget) {
+                                try {
+                                    widget
+                                        .id(visualization.id)
+                                        .columns(context.source.getColumns())
+                                        .geohashColumn("geohash")
+                                        .tooltipColumn("label")
+                                        .fillColor(visualization.color ? visualization.color : null)
+                                        .projection("albersUsaPr")
+                                    ;
+                                } catch (e) {
+                                    console.log("Unexpected widget type:  " + widget.classID());
+                                }
+                            });
+                            break;
+                    }
+                } else {
+                    chartType = chartType || "CHORO_USSTATES";
+                    if (chartType === "CHORO_USSTATES") {
                         if (this.source.mappings.contains("state")) {
                             chartType = "CHORO_USSTATES";
                         } else if (this.source.mappings.contains("county")) {
@@ -775,38 +778,38 @@
                         } else if (this.source.mappings.contains("country")) {
                             chartType = "CHORO_COUNTRIES";
                         }
-                        Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
-                            context.loadWidget("../composite/MegaChart", function (widget) {
-                                var layers = context.layers.map(function (layer) { return layer.widget; });
-                                try {
-                                    switch (widget.classID()) {
-                                        case "composite_MegaChart":
-                                            widget
-                                                .id(visualization.id)
-                                                .showChartSelect_default(false)
-                                                .chartType_default(chartType)
-                                                .chartTypeDefaults({
-                                                    autoScaleMode: layers.length ? "data" : "mesh"
-                                                })
-                                                .chartTypeProperties({
-                                                    layers: layers
-                                                })
-                                            ;
-                                            break;
-                                        default:
-                                            widget
-                                                .id(visualization.id)
-                                                .autoScaleMode(layers.length ? "data" : "mesh")
-                                                .layers(layers)
-                                            ;
-                                            break;
-                                    }
-                                } catch (e) {
-                                    console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                    Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
+                        context.loadWidget("../composite/MegaChart", function (widget) {
+                            var layers = context.layers.map(function (layer) { return layer.widget; });
+                            try {
+                                switch (widget.classID()) {
+                                    case "composite_MegaChart":
+                                        widget
+                                            .id(visualization.id)
+                                            .showChartSelect_default(false)
+                                            .chartType_default(chartType)
+                                            .chartTypeDefaults({
+                                                autoScaleMode: layers.length ? "data" : "mesh"
+                                            })
+                                            .chartTypeProperties({
+                                                layers: layers
+                                            })
+                                        ;
+                                        break;
+                                    default:
+                                        widget
+                                            .id(visualization.id)
+                                            .autoScaleMode(layers.length ? "data" : "mesh")
+                                            .layers(layers)
+                                        ;
+                                        break;
                                 }
-                            });
+                            } catch (e) {
+                                console.log("Unexpected widget type:  " + widget.classID());
+                            }
                         });
-                        break;
+                    });
                 }
                 break;
             case "2DCHART":
@@ -1142,7 +1145,11 @@
                     })
                 ;
             } else {
-                context.widget.render(function () {
+                var ddlViz = context;
+                while (ddlViz.parentVisualization) {
+                    ddlViz = ddlViz.parentVisualization;
+                }
+                ddlViz.widget.render(function () {
                     resolve();
                 });
             }
@@ -1559,14 +1566,19 @@
         this._visualizations = {};
         this._visualizationArray = [];
         dashboard.visualizations.forEach(function (item) {
-            var newItem = new Visualization(this, item);
-            this._visualizations[item.id] = newItem;
-            this._visualizationArray.push(newItem);
-            this.marshaller._visualizations[item.id] = newItem;
-            this.marshaller._visualizationArray.push(newItem);
+            this.createVisualization(item);
         }, this);
         this._visualizationTotal = this._visualizationArray.length;
     }
+
+    Dashboard.prototype.createVisualization = function (ddlVisualization, parentVisualization) {
+        var retVal = new Visualization(this, ddlVisualization, parentVisualization);
+        this._visualizations[ddlVisualization.id] = retVal;
+        this._visualizationArray.push(retVal);
+        this.marshaller._visualizations[ddlVisualization.id] = retVal;
+        this.marshaller._visualizationArray.push(retVal);
+        return retVal;
+    };
 
     Dashboard.prototype.loadedPromise = function () {
         return Promise.all(this._visualizationArray.map(function (visualization) { return visualization.loadedPromise(); }));

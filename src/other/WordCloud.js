@@ -14,6 +14,7 @@
         this._prevOffsetX = this.offsetX();
         this._prevOffsetY = this.offsetY();
         this._prevZoom = this.zoom();
+        this._vizData = [];
     }
     WordCloud.prototype = Object.create(SVGWidget.prototype);
     WordCloud.prototype.constructor = WordCloud;

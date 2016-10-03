@@ -333,19 +333,19 @@
                         case "1":
                         case "2":
                         case "3":
-                            this.cdn("v1.10.0", function (require) {
-                                require(["src/other/Persist"], function (Persist) {
+                            this.cdn("v1.10.0", function (_req) {
+                                _req(["src/other/Persist"], function (Persist) {
                                     Persist.create(state, function (widget) {
-                                        callback(widget, require);
+                                        callback(widget, _req);
                                     });
                                 }, requireErrorHandler);
                             });
                             break;
                         default:
-                            this.cdn("v" + state.__version, function (require) {
-                                require(["src/other/Persist"], function (Persist) {
+                            this.cdn("v" + state.__version, function (_req) {
+                                _req(["src/other/Persist"], function (Persist) {
                                     Persist.create(state, function (widget) {
-                                        callback(widget, require);
+                                        callback(widget, _req);
                                     });
                                 }, requireErrorHandler);
                             });

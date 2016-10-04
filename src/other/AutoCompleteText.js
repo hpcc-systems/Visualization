@@ -15,6 +15,7 @@
     AutoCompleteText.prototype._class += " other_AutoCompleteText";
 
     AutoCompleteText.prototype.publish("label", "Label: ", "string", "Label for AutoCompleteText");
+    AutoCompleteText.prototype.publish("textboxWidth", null, "number", "width of textbox", null, {optional:true});   
     AutoCompleteText.prototype.publish("placeholder", "Search...", "string", "Placeholder for AutoCompleteText");
     AutoCompleteText.prototype.publish("valueColumn", null, "set", "Select column for autocomplete", function () { return this.columns(); }, { optional: true });
     AutoCompleteText.prototype.publish("minCharsText", 1, "number", "Size of multiAutoCompleteText box");
@@ -37,6 +38,7 @@
         HTMLWidget.prototype.update.apply(this, arguments);
 
         this._label.text(this.label());
+        this._input.style("width",this.textboxWidth_exists() ? this.textboxWidth()+"px" : null);
 
         if (this._prevMinCharsText !== this.minCharsText()) {
             this._prevMinCharsText = this.minCharsText();

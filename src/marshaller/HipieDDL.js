@@ -1238,7 +1238,7 @@
 
     Visualization.prototype.reverseMappedSelection = function () {
         if (this.hasSelection()) {
-            return this.source.mappings.doReverseMap(this._widgetState.row);
+            return this.source.mappings ? this.source.mappings.doReverseMap(this._widgetState.row) : this._widgetState.row;
         }
         return null;
     };
@@ -1625,10 +1625,12 @@
             visualization.clear();
             visualization.update();
             if (state && state[visualization.id]) {
-                for (var key in visualization.source.mappings.mappings) {
-                    if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
-                        visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
-                        visualization._widgetState.selected = true;
+                if (exists("source.mappings.mappings", visualization)) {
+                    for (var key in visualization.source.mappings.mappings) {
+                        if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
+                            visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
+                            visualization._widgetState.selected = true;
+                        }
                     }
                 }
             }

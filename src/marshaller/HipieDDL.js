@@ -770,7 +770,7 @@
                     }
                 } else {
                     chartType = chartType || "CHORO_USSTATES";
-                    if (chartType === "CHORO_USSTATES") {
+                    if (chartType === "CHORO") {
                         if (this.source.mappings.contains("state")) {
                             chartType = "CHORO_USSTATES";
                         } else if (this.source.mappings.contains("county")) {

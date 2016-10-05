@@ -166,10 +166,10 @@ Orb.prototype.update = function (domNode, element) {
      this.columnFields.push(this.newField()[h] .__prop_addField);
 
      if (rowIndex > -1){
-      this.rowFields.splice(columnIndex,1)
+      this.rowFields.splice(columnIndex,1);
      }
      if (dataIndex > -1){
-      this.dataFields.splice(dataIndex,1)
+      this.dataFields.splice(dataIndex,1);
      }
 
     }
@@ -180,10 +180,10 @@ Orb.prototype.update = function (domNode, element) {
       this.dataFields.push(this.newField()[h] .__prop_addField);
 
       if (rowIndex > -1){
-       this.rowFields.splice(columnIndex,1)
+       this.rowFields.splice(columnIndex,1);
       }
       if (columnIndex > -1){
-       this.columnFields.splice(dataIndex,1)
+       this.columnFields.splice(dataIndex,1);
       }
       
      }
@@ -206,7 +206,7 @@ Orb.prototype.update = function (domNode, element) {
      formatFunc:function(value){
       return d3.format(ft)(value);
       }      
-    }
+    };
 
 
    }
@@ -247,8 +247,8 @@ Orb.prototype.update = function (domNode, element) {
  }
  
 
-     
- React.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
+ var react = React;
+ react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
  this._div = element.append("div").attr("id", this.id() + "_orb");
  this._orb = new orb.pgridwidget(this.orbConfig(ds,this.orbFields,this.rowFields,this.columnFields,this.dataFields));
  this._orb.render(document.getElementById(this.id() + "_orb"));

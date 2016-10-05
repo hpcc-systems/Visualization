@@ -14,7 +14,7 @@
     }
     Layered.prototype = Object.create(SVGWidget.prototype);
     Layered.prototype.constructor = Layered;
-    Layered.prototype._class += " map_GMapLayered";
+    Layered.prototype._class += " map_Layered map_GMapLayered";
 
     Layered.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);

@@ -144,6 +144,11 @@
         var retVal = MultiChart.prototype._origChart.apply(this, arguments);
         if (arguments.length) {
             var context = this;
+            if (this._allChartTypesByClass[_.classID()]) {
+                this.chartType(this._allChartTypesByClass[_.classID()].id);
+            } else {
+                console.log("Unknown Class ID:  " + _.classID());
+            }
             _.click = function (row, column, selected) {
                 context.click(row, column, selected);
             };

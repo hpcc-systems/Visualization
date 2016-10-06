@@ -90,7 +90,7 @@
     "yui": false, // Yahoo User Interface
 
     // Custom Globals
-    "globals": { "React": false }, // additional predefined global variables
+    "globals": { "React": true }, // additional predefined global variables
 
     //  HPCC  ---
     "nomen": false

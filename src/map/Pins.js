@@ -22,7 +22,7 @@
     Pins.prototype.publish("fillColor", "#00FFDD", "html-color", "Pin Color", null, { optional: true });
     
     Pins.prototype.publish("strokeWidth", 0.5, "number", "Pin Border Thickness (pixels)", null, { tags: ["Basic"] });
-    Pins.prototype.publish("strokeColor", "#000000", "html-color", "Pin Border Color", null, { optional: true });
+    Pins.prototype.publish("strokeColor", null, "html-color", "Pin Border Color", null, { optional: true });
     
     Pins.prototype.publish("fontSize", 18, "number", "Font Size",null,{tags:["Basic","Shared"]});
     Pins.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
@@ -44,18 +44,22 @@
         var geohashField = this._db.fieldByLabel(this.geohashColumn());
         var tooltipField = this._db.fieldByLabel(this.tooltipColumn());
         return this.data().map(function (row) {
-            var retVal = [row[0], row[1], row[2] instanceof Object ? row[2] : {}];
-            retVal[2].origRow = row;
+            var retVal = {
+                lat: row[0],
+                long: row[1],
+                ext: row[2] instanceof Object ? row[2] : {},
+                origRow: row
+            };
             if (geohashField) {
                 try {
                     var pos = this._geohash.bounds(row[geohashField.idx]);
-                    retVal[0] = (pos.ne.lat + pos.sw.lat) / 2;
-                    retVal[1] = (pos.ne.lon + pos.sw.lon) / 2;
+                    retVal.lat = (pos.ne.lat + pos.sw.lat) / 2;
+                    retVal.long = (pos.ne.lon + pos.sw.lon) / 2;
                 } catch (e) {
                 }
             }
             if (tooltipField) {
-                retVal[2].tooltip = row[tooltipField.idx];
+                retVal.ext.tooltip = row[tooltipField.idx];
             }
             return retVal;
         }, this);
@@ -76,22 +80,23 @@
             .style("opacity", this.opacity())
         ;
 
-        this.pinsPaths = this._pinsTransform.selectAll(".pin").data(this.visible() ? this.pinsData() : [], function (d) { return d[0]; });
+        this.pinsPaths = this._pinsTransform.selectAll(".pin").data(this.visible() ? this.pinsData() : []);
         var context = this;
-        var gPinEnter = this.pinsPaths.enter().append("g").attr("class","pin");
-        gPinEnter
+        var gPinEnter = this.pinsPaths.enter().append("g")
+            .attr("class", "pin")
+            .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                context.click(context.rowToObj(d[2].origRow), "geohash", context._selection.selected(this));
+                context.click(context.rowToObj(d.origRow), "geohash", context._selection.selected(this));
             })
             .on('mouseover', function (d) {
                 if (!context.isIE) {
                     this.parentNode.appendChild(this);
                 }
-            });
+            })
+        ;
         gPinEnter
             .append("path")
             .attr("class", "data")
-            .call(this._selection.enter.bind(this._selection))
             .append("title")
         ;
         gPinEnter
@@ -107,29 +112,29 @@
             .attr("dx",0)
             .attr("dy",this.pinTextDY())
             .text(function(d){
-                return d[2] && d[2].text ? d[2].text : "";
+                return d.ext && d.ext.text ? d.ext.text : "";
             });
         var svgPath = this.svgPinPath();
         this.pinsPaths.selectAll("path.data")
             .attr("d", svgPath)
             .attr("stroke-width", this.strokeWidth() + "px")
             .style("display", function (d) {
-                var pos = base.project(d[0], d[1]);
+                var pos = base.project(d.lat, d.long);
                 if (!pos) {
                     return "none";
                 }
                 return null;
             })
             .style("stroke", function (d) {
-                return d[2] && d[2].strokeColor ? d[2].strokeColor : context.strokeColor();
+                return d.ext && d.ext.strokeColor ? d.ext.strokeColor : context.strokeColor();
             })
             .style("fill", function (d) {
-                return d[2] && d[2].fillColor ? d[2].fillColor : context.fillColor();
+                return d.ext && d.ext.fillColor ? d.ext.fillColor : context.fillColor();
             })
         ;
         this.pinsPaths.select("title")
             .text(function (d) {
-                return d[2] && d[2].tooltip ? d[2].tooltip : "";
+                return d.ext && d.ext.tooltip ? d.ext.tooltip : "";
             })
         ;
         this.pinsPaths.exit().remove();
@@ -139,7 +144,7 @@
         Layer.prototype.layerZoomed.apply(this, arguments);
         this.pinsPaths
             .attr("transform", function (d) {
-                var pos = base.project(d[0], d[1]);
+                var pos = base.project(d.lat, d.long);
                 if (!pos) {
                     pos = [0, 0];
                 }

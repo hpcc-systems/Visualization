@@ -1,0 +1,1 @@
+!function(e,n){"function"==typeof define&&define.amd?define([],n):e.api_IGraph=n()}(this,function(){function e(){}return e.prototype.vertex_click=function(e,n,i,o){o&&o.vertex&&console.log("Vertex Click: "+o.vertex.id())},e.prototype.edge_click=function(e,n,i,o){o&&o.edge&&console.log("Edge Click: "+o.edge.id())},e});

@@ -447,6 +447,9 @@
     PropertyEditor.prototype.enterInputs = function (widget, cell, param) {
         cell.classed(param.type+"-cell",true);
         var context = this;
+        if(typeof(param.ext.editor_input) === "function") {
+            param.ext.editor_input(this,widget,cell,param);
+        }
         switch (param.type) {
             case "boolean":
                 cell.append("input")

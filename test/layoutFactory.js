@@ -246,22 +246,12 @@
                                 .data(DataFactory.ND.subjects.data)
                             )
                         )
-                        .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(30).widget(new Column()
+                        .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(60).widget(new Column()
                                 .columns(DataFactory.ND.subjects.columns)
                                 .data(DataFactory.ND.subjects.data)
                             )
                         )
                     ;
-                    var context = retVal;
-                    setInterval(function () {
-                        context.widgets().sort(function (l, r) {
-                            if (Math.random() < 0.5) {
-                                return -1;
-                            }
-                            return 1;
-                        });
-                        context.render();
-                    }, 3000);
                     callback(retVal);
                 });
             }

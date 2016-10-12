@@ -30,8 +30,8 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete", "handsontable"];
-const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "handson", "composite", "marshaller"];  //  Order is important ---
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete", "handsontable", "orb", "orb-react"];
+const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "handson", "react", "composite", "marshaller"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 
 function buildModule(module, cb) {
@@ -79,7 +79,7 @@ function css(minify) {
 }
 
 function optimize(opts, cb) {
-  //opts.optimize = "none";
+  opts.optimize = "none";
   rjs.optimize(opts,
     function (text) { cb(null, text) },
     cb
@@ -157,6 +157,9 @@ const amd_modules = bundles.map(function (bundle, idx) {
     switch (bundle) {
         case "common":
             include = ["d3", "d3-bullet", "d3-sankey", "d3-cloud", "d3-hexbin", "es6-promise"].concat(include);
+            break;
+        case "react":
+            include = ["orb-react", "orb"].concat(include);
             break;
     }
     amd_bundles["src/" + name] = include;

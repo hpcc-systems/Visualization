@@ -1,7 +1,7 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3","src/common/HTMLWidget","../common/Utility","../common/PropertyExt","css!orb", "css!./Orb"], factory);
+        define(["d3","../common/HTMLWidget","../common/Utility","../common/PropertyExt","css!orb", "css!./Orb"], factory);
     } else {
         root.template_Orb = factory(root.d3, root.common_HTMLWidget, root.common_Utility, root.common_PropertyExt, root.React);
     }
@@ -194,25 +194,49 @@ Orb.prototype.update = function (domNode, element) {
 
 
 
- for (var m=0; m<this.newField().length; m++){
+ // for (var m=0; m<this.newField().length; m++){
+      
+ //  for (var n=0;n<this.orbFields.length;n++){
+    
+ //   if (this.orbFields[n].caption === this.newField()[m].__prop_addField){
+ //    var ft = this.newField()[m].__prop_formatFunction;
+
+ //    this.orbFields[n].dataSettings={
+ //     aggregateFunc:this.newField()[m].__prop_aggregateFunc,
+ //     formatFunc:function(value){
+ //      return d3.format(ft)(value);
+ //      }      
+ //    };
+
+
+ //   }
+    
+ //  }
+ // }
+
+var context = this;
+function createFormatFunction(ft) {
+     return function (value) {
+         return d3.format(ft)(value);
+     };
+}
+for (var m = 0; m < this.newField().length; m++) {
       
   for (var n=0;n<this.orbFields.length;n++){
     
    if (this.orbFields[n].caption === this.newField()[m].__prop_addField){
-    let ft = this.newField()[m].__prop_formatFunction;
-
+    var ft = this.newField()[m].__prop_formatFunction;
+ 
     this.orbFields[n].dataSettings={
      aggregateFunc:this.newField()[m].__prop_aggregateFunc,
-     formatFunc:function(value){
-      return d3.format(ft)(value);
-      }      
+     formatFunc: createFormatFunction(ft)
     };
-
-
+ 
+ 
    }
     
   }
- }
+}
 
      
  if (this.removeField()){

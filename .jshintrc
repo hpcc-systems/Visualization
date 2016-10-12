@@ -1,11 +1,10 @@
 {
-    "predef": [ "define", "colorbrewer", "google", "Promise", "AmCharts", "simpleheat", "require" ],
+    "predef": [ "define", "colorbrewer", "google", "Promise", "AmCharts", "simpleheat", "require", "React" ],
 
     // JSHint Default Configuration File (as on JSHint website)
     // See http://jshint.com/docs/ for more details
 
     "maxerr": 50, // {int} Maximum error before stopping
-    "esversion": 6, // use  ECMAScript version 6 so that "let" is available
 
     // Enforcing
     "bitwise": false, // true: Prohibit bitwise operators (&, |, ^, etc.)
@@ -90,7 +89,7 @@
     "yui": false, // Yahoo User Interface
 
     // Custom Globals
-    "globals": { "React": true }, // additional predefined global variables
+    "globals": { }, // additional predefined global variables
 
     //  HPCC  ---
     "nomen": false

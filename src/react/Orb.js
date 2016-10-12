@@ -214,7 +214,7 @@ Orb.prototype.update = function (domNode, element) {
  //  }
  // }
 
-var context = this;
+// var context = this;
 function createFormatFunction(ft) {
      return function (value) {
          return d3.format(ft)(value);

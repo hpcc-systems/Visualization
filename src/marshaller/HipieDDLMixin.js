@@ -153,12 +153,14 @@
             });
             context._ddlPopupVisualizations.forEach(function (viz) {
                 removedMap.remove(viz.id);
+                viz.widget.classed({ "flyout": true });
                 var targetVizs = viz.events.getUpdatesVisualizations();
                 targetVizs.forEach(function (targetViz) {
                     switch (targetViz.widget.classID()) {
                         case "composite_MegaChart":
                             if (!viz._flyoutButton) {
                                 viz._flyoutButton = new FlyoutButton()
+                                    .classed({ "composite_MegaChart-flyout": true })
                                     .title(viz.title)
                                     .widget(viz.widget)
                                     .autoClose(context.autoCloseFlyout())

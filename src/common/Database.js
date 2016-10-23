@@ -27,7 +27,7 @@
     };
 
     Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
-    Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time"], { optional: true });
+    Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden"], { optional: true });
     Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: function (w) { return w.type() !== "time"; }, optional: true });
     Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
 

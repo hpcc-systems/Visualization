@@ -93,6 +93,17 @@
         return retVal;
     };
 
+    Table.prototype.isHidden = function (colIdx) {
+        if (this.pivot()) {
+            return false;
+        }
+        var fields = this.fields();
+        if (fields && fields[colIdx] && fields[colIdx].type() === "hidden") {
+            return true;
+        }
+        return false;
+    };
+
     Table.prototype.tableColumns = function (_) {
         var retVal = Table.prototype.columns.apply(this, arguments);
         if (!arguments.length && this.pivot()) {
@@ -168,7 +179,9 @@
         this.fixedHead.style("display", this.fixedHeader() ? "table-row" : "none");
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
-        var th = this.thead.selectAll("th").data(this.showHeader() ? columns : []);
+        var th = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
+            return !context.isHidden(idx);
+        }) : []);
         th
             .enter()
             .append("th")
@@ -356,7 +369,9 @@
         this.applyStyleToRows(rows);
 
         var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
-            return _d.row.filter(function (cell, idx) { return idx < columns.length; }).map(function (cell, idx) {
+            return _d.row.filter(function (cell, idx) {
+                return idx < columns.length && !context.isHidden(idx);
+            }).map(function (cell, idx) {
                 return {
                     trIdx: _trIdx,
                     rowIdx: _d.rowIdx,

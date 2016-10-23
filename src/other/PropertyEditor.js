@@ -118,6 +118,12 @@
                         if(context.label()){
                             spanText += context.label();
                         }
+                        if (d && d.classID) {
+                            if (spanText) {
+                                spanText += " - ";
+                            }
+                            spanText += d.classID();
+                        }
                         return spanText;
                     })
                 ;

@@ -102,6 +102,9 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
+            .on("dblclick", function (d) {
+                context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
+            })
             .each(function (d) {
                 var element = d3.select(this);
                 element.append("path")

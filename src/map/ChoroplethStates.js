@@ -50,6 +50,9 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
+            .on("click", function (d) {
+                context.dblclick(context.rowToObj(d), "weight", context._selection.selected(this));
+            })
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
         ;

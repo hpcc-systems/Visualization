@@ -171,10 +171,13 @@
         var rows = this.tbody.selectAll("tr").data(tData);
         var context = this;
         rows
-            .on("click",function(d,i){
-                context.onClick(d,i);
+            .on("click", function (d, i) {
+                context.onClick(d, i);
             })
-            .on("mouseover",function(d,i){
+            .on("dblclick", function (d, i) {
+                context.onDblClick(d, i);
+            })
+            .on("mouseover", function (d, i) {
                 context.onMouseOver(d,i);
             })
         ;
@@ -193,7 +196,14 @@
         console.log("rowData: "+rowData);
         console.log("rowIdx: "+rowIdx);
     };
-    Legend.prototype.onMouseOver = function (rowData,rowIdx) {
+
+    Legend.prototype.onDblClick = function (rowData, rowIdx) {
+        console.log("Legend onDblClick method");
+        console.log("rowData: " + rowData);
+        console.log("rowIdx: " + rowIdx);
+    };
+
+    Legend.prototype.onMouseOver = function (rowData, rowIdx) {
         console.log("Legend onMouseOver method"); 
         console.log("rowData: "+rowData);
         console.log("rowIdx: "+rowIdx);

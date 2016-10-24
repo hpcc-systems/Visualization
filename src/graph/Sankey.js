@@ -157,6 +157,9 @@
             .on("click", function (d, idx) {
                 context.click(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
             })
+            .on("dblclick", function (d, idx) {
+                context.dblclick(context.rowToObj(d.origRow[0]), "", context._selection.selected(this));
+            })
             .each(function (d) {
                 var gElement = d3.select(this);
                 gElement.append("rect");
@@ -233,6 +236,10 @@
     //  Events  ---
     Sankey.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    };
+
+    Sankey.prototype.dblclick = function (row, column, selected) {
+        console.log("Double Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     };
 
     return Sankey;

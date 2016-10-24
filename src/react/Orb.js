@@ -122,7 +122,7 @@
         }
 
         this.newField().forEach(function(row,idx){
-            var eachField = row.addField()
+            var eachField = row.addField();
             if (this.savedField.indexOf(eachField) === -1){
 
                 var fieldIndex = columns.indexOf(eachField);
@@ -224,7 +224,7 @@
 
             }
 
-        },this)
+        },this);
 
 
 

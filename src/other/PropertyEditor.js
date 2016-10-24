@@ -118,6 +118,12 @@
                         if(context.label()){
                             spanText += context.label();
                         }
+                        if (d && d.classID) {
+                            if (spanText) {
+                                spanText += " - ";
+                            }
+                            spanText += d.classID();
+                        }
                         return spanText;
                     })
                 ;
@@ -447,6 +453,9 @@
     PropertyEditor.prototype.enterInputs = function (widget, cell, param) {
         cell.classed(param.type+"-cell",true);
         var context = this;
+        if(typeof(param.ext.editor_input) === "function") {
+            param.ext.editor_input(this,widget,cell,param);
+        }
         switch (param.type) {
             case "boolean":
                 cell.append("input")

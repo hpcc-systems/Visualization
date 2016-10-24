@@ -35,26 +35,24 @@
 
     MegaChart.prototype.publishReset();
 
-    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
-    MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
-    
-    MegaChart.prototype.publish("legendPosition","none","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
-    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
-    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
-
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
-    MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
-    MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
-    MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
-
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
-
-    //TODO:  Proxy + themes not working...
     MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
+
+    MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
+
+    MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
+    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
+    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
+
+    MegaChart.prototype.publishProxy("domainAxisTitle", "_domainTitle", "text");
+    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
 
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("chart", "_chart", "chart");
@@ -107,6 +105,7 @@
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
 
         this._csvButton = new Button()
+            .classed({ "composite_MegaChart-CSV": true })
             .id(this.id() + "_csv")
             .value("CSV")
         ;
@@ -115,6 +114,7 @@
         };
 
         this._legendButton = new Input()
+            .classed({ "composite_MegaChart-legend": true })
             .id(this.id() + "_legend")
             .type("checkbox")
             .inlineLabel("Legend:  ")
@@ -124,6 +124,7 @@
         };
 
         this._chartTypeSelect = new Select()
+            .classed({ "composite_MegaChart-chartType": true })
             .id(this.id() + "_chartType")
             .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
             .value(this.chartType())

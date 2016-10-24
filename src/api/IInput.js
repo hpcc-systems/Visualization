@@ -53,6 +53,8 @@
     };
     IInput.prototype.click = function (w) {
     };
+    IInput.prototype.dblclick = function (w) {
+    };
     IInput.prototype.change = function (w) {
     };
 

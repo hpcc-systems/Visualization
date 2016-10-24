@@ -88,6 +88,9 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d.origRow), "geohash", context._selection.selected(this));
             })
+            .on("dblclick", function (d) {
+                context.dblclick(context.rowToObj(d[2].origRow), "geohash", context._selection.selected(this));
+            })
             .on('mouseover', function (d) {
                 if (!context.isIE) {
                     this.parentNode.appendChild(this);
@@ -248,6 +251,10 @@
     //  Events  ---
     Pins.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    Pins.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return Pins;

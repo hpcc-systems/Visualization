@@ -49,6 +49,11 @@
                     context.click(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(this));
                 }
             })
+            .on("dblclick", function (d) {
+                if (context._dataMap[d[0]]) {
+                    context.dblclick(context.rowToObj(context._dataMap[d[0]]), "weight", context._selection.selected(this));
+                }
+            })
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
         ;

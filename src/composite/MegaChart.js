@@ -13,7 +13,10 @@
         this._chart = new MultiChart();
         var context = this;
         this._chart.click = function () {
-            context.click.apply(this, arguments);
+            context.click.apply(context, arguments);
+        };
+        this._chart.dblclick = function () {
+            context.dblclick.apply(context, arguments);
         };
 
         this._toolbar = new Toolbar();
@@ -280,6 +283,10 @@
     //  Events  ---
     MegaChart.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    MegaChart.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return MegaChart;

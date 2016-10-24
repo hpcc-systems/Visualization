@@ -68,6 +68,9 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
             })
+            .on("dblclick", function (d) {
+                context.dblclick(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
+            })
             .each(function (d) {
                 var element = d3.select(this);
                 var bulletBar = element.append("g")
@@ -128,6 +131,10 @@
     //  Events ---
     Bullet.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    };
+
+    Bullet.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     };
 
     return Bullet;

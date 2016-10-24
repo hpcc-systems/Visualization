@@ -108,11 +108,17 @@
             .on("click", function (d) {
                 context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
             })
+            .on("dblclick", function (d) {
+                context.dblclick(context.data()[context._playIntervalIdx], context.columns()[1], true);
+            })
         ;
         this._textDiv = this._mainDiv.append("div")
             .attr("class", "text")
             .on("click", function (d) {
                 context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
+            })
+            .on("dblclick", function (d) {
+                context.dblclick(context.data()[context._playIntervalIdx], context.columns()[1], true);
             })
         ;
     };

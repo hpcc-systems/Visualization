@@ -120,6 +120,17 @@
                     context.click(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
                 }
             })
+            .on("dblclick", function (d) {
+                if (d && d.origRows) {
+                    var columnLabel = "";
+                    context.mappings().forEach(function (mapping) {
+                        if (mapping.column()) {
+                            columnLabel = mapping.column();
+                        }
+                    });
+                    context.dblclick(context.rowToObj(d.origRows[0]), columnLabel, context._selection.selected(this));
+                }
+            })
             .call(enterPosition)
         ;
         node

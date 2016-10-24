@@ -23,7 +23,7 @@
     }
 }(this, function (d3) {
     //  Do not touch - updated by gulp bump  ---
-    var version = "1.14.2-dev";
+    var version = "1.14.6";
 
     function Platform() {
     }

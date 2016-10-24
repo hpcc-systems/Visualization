@@ -40,6 +40,9 @@
                     .on("click", function (d) {
                         context.click(d.text());
                     })
+                    .on("dblclick", function (d) {
+                        context.dblclick(d.text());
+                    })
                 ;
                 context._listWidgets[d] = newTextBox;
             })

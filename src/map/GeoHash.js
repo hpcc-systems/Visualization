@@ -69,6 +69,9 @@
             .on("click", function (d) {
                 context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
+            .on("dblclick", function (d) {
+                context.dblclick(context.rowToObj(d), "weight", context._selection.selected(this));
+            })
         ;
         this.geoHashPaths
             .attr("d", function (d) {
@@ -103,6 +106,10 @@
     //  Events  ---
     GeoHash.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    GeoHash.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return GeoHash;

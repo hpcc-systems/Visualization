@@ -15,5 +15,9 @@
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
+    I1DChart.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
     return I1DChart;
 }));

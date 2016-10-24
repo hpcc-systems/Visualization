@@ -91,6 +91,9 @@
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(context.data()[d.rowIdx]), context.columns()[d.colIdx], context._selection.selected(this));
                     })
+                    .on("dblclick", function (d, idx) {
+                        context.dblclick(context.rowToObj(context.data()[d.rowIdx]), context.columns()[d.colIdx], context._selection.selected(this));
+                    })
                 ;
                 element
                     .append(d.shape)

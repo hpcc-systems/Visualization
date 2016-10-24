@@ -16,5 +16,9 @@
         console.log("Click:  " + d);
     };
 
+    IList.prototype.dblclick = function (d) {
+        console.log("Double click:  " + d);
+    };
+
     return IList;
 }));

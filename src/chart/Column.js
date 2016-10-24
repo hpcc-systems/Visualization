@@ -111,6 +111,9 @@
                     .on("click", function (d, idx) {
                         context.click(context.rowToObj(d.row), d.column, context._selection.selected(this));
                     })
+                    .on("dblclick", function (d, idx) {
+                        context.dblclick(context.rowToObj(d.row), d.column, context._selection.selected(this));
+                    })
                 ;
 
                 if (isHorizontal) {

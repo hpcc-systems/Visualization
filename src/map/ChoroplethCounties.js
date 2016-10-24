@@ -45,15 +45,24 @@
         Choropleth.prototype.layerUpdate.apply(this, arguments);
         this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         var context = this;
+
+        function eventRow(d) {
+            return context.onClickFormatFIPS() ? context._dataMap[d[0]].map(function (cell, idx) {
+                return context.onClickFormatFIPS() && idx === 0 ? fipsFormatter(cell) : cell;
+            }) : context._dataMap[d[0]];
+        }
+
         this.choroPaths.enter().append("path")
             .attr("class", "data")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 if (context._dataMap[d[0]]) {
-                    var row = context.onClickFormatFIPS() ? context._dataMap[d[0]].map(function (cell, idx) {
-                        return context.onClickFormatFIPS() && idx === 0 ? fipsFormatter(cell) : cell;
-                    }) : context._dataMap[d[0]];
-                    context.click(context.rowToObj(row), "weight", context._selection.selected(this));
+                    context.click(context.rowToObj(eventRow(d)), "weight", context._selection.selected(this));
+                }
+            })
+            .on("dblclick", function (d) {
+                if (context._dataMap[d[0]]) {
+                    context.dblclick(context.rowToObj(eventRow(d)), "weight", context._selection.selected(this));
                 }
             })
             .on("mouseout.tooltip", this.tooltip.hide)

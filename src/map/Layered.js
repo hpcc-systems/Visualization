@@ -24,7 +24,7 @@
     Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
     Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
     Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
-    Layered.prototype.publish("layers", [], "widgetArray", "Layers");
+    Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
 
     Layered.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);

@@ -33,9 +33,7 @@
    Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color", null, { tags: ["Advanced"] });
    Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)", null, { tags: ["Advanced"] });
 
-   Surface.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"] });
-
-   Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array", null, { tags: ["Private"] });
+   Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array",null,{tags:["Private"]});
 
    Surface.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"] });
 

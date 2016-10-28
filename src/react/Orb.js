@@ -28,8 +28,15 @@
         this.rowFields = [];
         this.dataFields = [];
         this.columnFields = [];
+        this.allColumns = this.columns().map(function (column, idx) {
+                return {
+                    name: "" + idx,
+                    caption: column
+                };
+            })
 
     }
+
 
 
     Orb.prototype._OrbTypes = [{id:"PIVOT", display:"Pivot Table",widgetClass: "react_Orb"}];
@@ -98,7 +105,7 @@
     };
 
     Orb.prototype.enter = function (domNode, element) {
-            
+        
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._div = element.append("div").attr("id", this.id() + "_orb");
         this._orb = new orb.pgridwidget(this.orbConfig());
@@ -113,6 +120,13 @@
 
         var ds = this.data();
         var columns = this.columns();
+
+        var allColumns = this.columns().map(function (column, idx) {
+                return {
+                    name: "" + idx,
+                    caption: column
+                };
+            });
                    
         for (var i=0;i<this.orbFields.length;i++){
         if (this.savedField.indexOf(this.orbFields[i].caption) === -1){
@@ -204,17 +218,16 @@
             };
         }
 
-
         this.newField().forEach(function(row,idx){
 
             var eachField = row.addField();
 
-            for (var n=0;n<this.orbFields.length;n++){
+            for (var n=0;n<allColumns.length;n++){
 
-                if (this.orbFields[n].caption === eachField){
+                if (allColumns[n].caption === eachField){
                     var ft = row.formatFunction();
 
-                    this.orbFields[n].dataSettings={
+                    allColumns[n].dataSettings={
                     aggregateFunc:row.aggregateFunc(),
                     formatFunc: createFormatFunction(ft)
                     };
@@ -226,13 +239,11 @@
 
         },this);
 
-
-
-     var react = React;
-     react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
-     this._div = element.append("div").attr("id", this.id() + "_orb");
-     this._orb = new orb.pgridwidget(this.orbConfig(ds,this.orbFields,this.rowFields,this.columnFields,this.dataFields));
-     this._orb.render(document.getElementById(this.id() + "_orb"));
+        var react = React;
+        react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
+        this._div = element.append("div").attr("id", this.id() + "_orb");
+        this._orb = new orb.pgridwidget(this.orbConfig(ds,allColumns,this.rowFields,this.columnFields,this.dataFields));
+        this._orb.render(document.getElementById(this.id() + "_orb"));
 
     };
 

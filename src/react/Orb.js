@@ -28,12 +28,6 @@
         this.rowFields = [];
         this.dataFields = [];
         this.columnFields = [];
-        this.allColumns = this.columns().map(function (column, idx) {
-                return {
-                    name: "" + idx,
-                    caption: column
-                };
-            })
 
     }
 

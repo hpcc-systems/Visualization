@@ -28,6 +28,7 @@
         this.rowFields = [];
         this.dataFields = [];
         this.columnFields = [];
+        this.prevOrbConfig = '';
 
     }
 
@@ -233,10 +234,15 @@
 
         },this);
 
-        var react = React;
-        react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
+        var orbCurrentConfig = this.orbConfig(ds,allColumns,this.rowFields,this.columnFields,this.dataFields);
+        if (this.prevOrbConfig !== JSON.stringify(orbCurrentConfig)){
+            var react = React;
+            react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));
+            this.prevOrbConfig = orbCurrentConfig;
+        }
+        
         this._div = element.append("div").attr("id", this.id() + "_orb");
-        this._orb = new orb.pgridwidget(this.orbConfig(ds,allColumns,this.rowFields,this.columnFields,this.dataFields));
+        this._orb = new orb.pgridwidget(orbCurrentConfig);
         this._orb.render(document.getElementById(this.id() + "_orb"));
 
     };

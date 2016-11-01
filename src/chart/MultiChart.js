@@ -83,6 +83,8 @@
         { id: "TABLE_BULLET", display: "Table driven bullet chart", widgetClass: "chart_Bullet" },
         { id: "TABLE_SELECT", display: "Table driven select", widgetClass: "other_Select" },
         { id: "TABLE_AUTOCOMPLETE", display: "Table driven auto complete", widgetClass: "other_AutoCompleteText" },
+        { id: "TABLE_HANDSON", display: "Table driven handson", widgetClass: "handson_Table" },
+        { id: "TABLE_OPPORTUNITY", display: "Table driven opportunity widget", widgetClass: "graph_Opportunity" },
         { id: "TABLE_TREE", display: "Table driven tree", widgetClass: "tree_Dendrogram" },
         { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
         { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },

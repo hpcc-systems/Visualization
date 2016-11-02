@@ -320,7 +320,7 @@
                     drawMap.data(DataFactory.GMap.heat.data);
                     callback(drawMap);
                     
-                    drawMap.getDrawingTools({
+                    drawMap.initDrawingTools({
                         drawingMode: google.maps.drawing.OverlayType.MARKER,
                         drawingControl: true,
                         drawingControlOptions: {

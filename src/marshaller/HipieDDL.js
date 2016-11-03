@@ -769,7 +769,7 @@
                             break;
                     }
                 } else {
-                    chartType = chartType || "CHORO_USSTATES";
+                    chartType = chartType || "CHORO";
                     if (chartType === "CHORO") {
                         if (this.source.mappings.contains("state")) {
                             chartType = "CHORO_USSTATES";

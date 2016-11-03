@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -258,6 +258,33 @@
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
                     );
+                });
+            },
+            streetView: function (callback) {
+                require(["test/DataFactory", "src/map/GMap"], function (DataFactory, GMap) {
+                    callback(new GMap()
+                        .columns(DataFactory.GMap.simple.columns)
+                        .data(DataFactory.GMap.simple.data)
+                        .streetViewStreetAddress('6601 Park of Commerce, Boca Raton, FL')
+                    );
+                });
+            },
+            splitStreetView: function (callback) {
+                require(["src/map/GMap", "src/layout/Grid", "src/other/Html"], function (GMap, Grid, Html) {
+                    var _map = new GMap();
+                    
+                    callback(new Grid()
+                        .setContent(0, 0, _map)
+                        .setContent(0, 1, new Html().html('<div id="my_other_target" style="height:500px;width:500px;"></div>'))
+                    );
+            
+                    setTimeout(function(){
+                        _map
+                            .streetViewTargetSelector('#my_other_target')
+                            .streetViewStreetAddress('6601 Park of Commerce, Boca Raton, FL')
+                            .render()
+                        ;
+                    },500);
                 });
             },
             pins: function (callback) {

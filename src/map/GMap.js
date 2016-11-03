@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
         var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey, "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey  + "&libraries=drawing,geometry", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -163,11 +163,16 @@
     GMap.prototype.publish("zoom", 4, "number", "Zoom Level", null, { tags: ["Basic"] });
 
     GMap.prototype.publish("panControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("zoomControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("mapTypeControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("scaleControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("zoomControl", true, "boolean", "Zoom Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("fullscreenControl", true, "boolean", "Fullscreen Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("mapTypeControl", false, "boolean", "Map Type Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("scaleControl", true, "boolean", "Scale Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
+    
+    GMap.prototype.publish("streetViewStreetAddress", '', "string", "Address to display via StreetView API", null, { tags: ["Basic"] });
+    
+    GMap.prototype.publish("streetViewTargetSelector", '', "string", "CSS selector for streetview target (defaults to widget target)", null, { tags: ["Basic"] });
 
     GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
 
@@ -195,6 +200,7 @@
         return {
             panControl: this.panControl(),
             zoomControl: this.zoomControl(),
+            fullscreenControl: this.fullscreenControl(),
             mapTypeControl: this.mapTypeControl(),
             scaleControl: this.scaleControl(),
             streetViewControl: this.streetViewControl(),
@@ -241,6 +247,10 @@
     };
 
     GMap.prototype.update = function (domNode, element) {
+        if(this.streetViewStreetAddress()){
+            this.showStreetView();
+            return;
+        }
         this._googleMap.setMapTypeId(this.getMapType());
         this._googleMap.setOptions(this.getMapOptions());
 
@@ -257,6 +267,30 @@
         }
         this.updateCircles();
         this.updatePins();
+    };
+    
+    GMap.prototype.showStreetView = function () {
+        var map;
+        if(this.streetViewTargetSelector()){
+            map = new google.maps.Map(document.querySelector(this.streetViewTargetSelector()),{zoom: 5,mapTypeId: google.maps.MapTypeId.ROADMAP});
+        } else {
+            map = this._googleMap;
+        }
+        new google.maps.Geocoder().geocode({'address': this.streetViewStreetAddress()}, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                map.streetView.setPosition(results[0].geometry.viewport.getCenter());
+                map.streetView.setPov({
+                    heading: google.maps.geometry.spherical.computeHeading(
+                        results[0].geometry.viewport.getCenter(),
+                        results[0].geometry.location
+                    ),
+                    pitch: 0
+                });
+                map.streetView.setVisible(true);
+            } else {
+                console.error("Geocode was not successful for the following reason: " + status);
+            }
+        });
     };
 
     GMap.prototype.updateCircles = function () {

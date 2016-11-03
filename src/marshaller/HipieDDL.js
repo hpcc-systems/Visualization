@@ -577,7 +577,7 @@
         if (this.event.visualization.hasSelection()) {
             return this.mapData(this.event.visualization._widgetState.row);
         }
-        return {};
+        return this.mapData({});
     };
 
     EventUpdate.prototype.calcRequestFor = function (visualization) {

@@ -27,21 +27,25 @@
      */
     GMapDrawing.prototype.handleDrawingComplete = function(event) {
         
-        // Optionally, a listener can be added to the overlay
-        // to respond to click or other events.
-        google.maps.event.addListener(
-            event.overlay,
-            'click',
-            GMapDrawing.prototype.clearAllDrawings);
-        
         // Add the overlay to the array to allow for managing the overlays.
         _mapOverlays.push(event.overlay);
+        
+        // Publish the overlays on the prototype if it has not previously been
+        // published.
+        if (typeof GMapDrawing.prototype.overlays_exists === 'undefined') {
+            GMapDrawing.prototype.publish("overlays",
+                _mapOverlays,
+                "array",
+                "Map Overlays",
+                null,
+                { tags: ['Drawing'] });
+        }
     };
     
     /**
      * Clears all overlays drawn on the map.
      */
-    GMapDrawing.prototype.clearAllDrawings = function() {
+    GMapDrawing.prototype.clearAllOverlays = function() {
         _mapOverlays.forEach(function(item) {
             item.setMap(null);
         });
@@ -51,7 +55,7 @@
     /**
      * Clears the last drawn overlay.
      */
-    GMapDrawing.prototype.clearLastDrawn = function() {
+    GMapDrawing.prototype.clearLastDrawnOverlay = function() {
         var overlay = _mapOverlays.pop();
         overlay.setMap(null);
     };
@@ -68,31 +72,19 @@
         
         // Add drawing tools to prototype in case
         // further changes to config are needed.
-        GMapDrawing.prototype.publish("drawingManager", drawingToolManager, "object", "Drawing Tools Manager", null, { tags: ['Drawing'] });
+        GMapDrawing.prototype.publish("drawingManager",
+            drawingToolManager,
+            "object",
+            "Drawing Tools Manager",
+            null,
+            { tags: ['Drawing'] });
         
-        // Add event listener for when drawings are completed.
+        // Add event listener for when drawings are completed
+        // to maintain the running array of all overlays.
         google.maps.event.addListener(
             drawingToolManager,
             'overlaycomplete',
             this.handleDrawingComplete);
-    };
-    
-    /**
-     * Get the drawing overlays.
-     * 
-     * @returns Array | _mapOverlays | overlayArray
-     */
-    GMapDrawing.prototype.getMapOverlays = function() {
-        return _mapOverlays;
-    };
-    
-    /**
-     * Set the drawing overlays.
-     * 
-     * @param Array overlayArray
-     */
-    GMapDrawing.prototype.setMapOverlays = function(overlayArray) {
-        _mapOverlays  = overlayArray;
     };
     
     return GMapDrawing;

@@ -26,9 +26,11 @@
     Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: function (w) { return w.iconColumn(); } });
     Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null);
+    Summary.prototype.publish("hideLabelColumn", false, "boolean", "Hide label column", null);
     Summary.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
     Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
+    Summary.prototype.publish("hideTextColumn", false, "boolean", "Hide text HTML", null);
     Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: function (w) { return w.moreTextColumn(); } });
     Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML");
     Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class");
@@ -146,11 +148,8 @@
         this._headerDiv
             .transition()
             .style("color", row.stroke)
-            [this.valueHTML() ? HTML : TEXT](row.value)
-        ;
-        this._textDiv
-            [this.valueHTML() ? HTML : TEXT](row.label)
-        ;
+            [this.valueHTML() ? HTML : TEXT](row.value);
+
         var context = this;
         var moreDivs = this._mainDiv.selectAll(".more").data([row.more]);
         moreDivs.enter()
@@ -171,12 +170,21 @@
             .transition()
             .style("background-color", d3.rgb(row.fill).darker(0.75))
         ;
-        moreDivs.select("i")
-            .attr("class", "fa " + this.moreIcon())
-        ;
-        moreDivs.select("span")
-            [this.moreTextHTML() ? HTML : TEXT](function (d) { return d; })
-        ;
+        if(this.hideLabelColumn()){
+            this._textDiv[this.valueHTML() ? HTML : TEXT]('');
+        }else{
+            this._textDiv[this.valueHTML() ? HTML : TEXT](row.label);
+        }
+
+        if(this.hideTextColumn()){
+            moreDivs.select("i")
+                .attr("class", "");
+            moreDivs.select("span")[this.moreTextHTML() ? HTML : TEXT]('');
+        }else{
+            moreDivs.select("i")
+                .attr("class", "fa " + this.moreIcon());
+            moreDivs.select("span")[this.moreTextHTML() ? HTML : TEXT](function (d) { return d; });
+        }
         moreDivs.exit().remove();
     };
 

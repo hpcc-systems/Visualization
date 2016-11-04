@@ -312,6 +312,29 @@
             },
             layered: function (callback) {
                 createMap(true, [], null, callback);
+            },
+            drawing: function(callback) {
+                require(["test/DataFactory", "src/map/GMapDrawing"], function(DataFactory, GMapDrawing) {
+                    var drawMap = new GMapDrawing();
+                    drawMap.columns(DataFactory.GMap.heat.columns);
+                    drawMap.data(DataFactory.GMap.heat.data);
+                    callback(drawMap);
+                    
+                    drawMap.initDrawingTools({
+                        drawingMode: google.maps.drawing.OverlayType.MARKER,
+                        drawingControl: true,
+                        drawingControlOptions: {
+                            position: google.maps.ControlPosition.TOP_CENTER,
+                            drawingModes: ['polygon', 'rectangle', 'circle']
+                        },
+                        polygonOptions: {
+                            fillColor: 'gray',
+                        },
+                        circleOptions: {
+                            fillColor: 'red'
+                        }
+                    });
+                });
             }
         },
         Layered: {

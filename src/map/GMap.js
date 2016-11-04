@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
         var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey, "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -168,6 +168,7 @@
     GMap.prototype.publish("scaleControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("mapDrawingTools", false, "boolean", "Drawing Tools", null, { tags: ["Basic"] });
 
     GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
 
@@ -238,6 +239,25 @@
         this._prevCenterLat = this.centerLat();
         this._prevCenterLong = this.centerLong();
         this._prevZoom = this.zoom();
+        
+        if (this.mapDrawingTools()) {
+            // Default drawing options.
+            this._drawingTools = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: ["polygon", "rectangle", "circle"]
+                },
+                polygonOptions: {
+                    fillColor: "gray"
+                },
+                circleOptions: {
+                    fillColor: "red"
+                }
+            });
+            this._drawingTools.setMap(this._googleMap);
+        }
     };
 
     GMap.prototype.update = function (domNode, element) {
@@ -382,6 +402,15 @@
     GMap.prototype.zoomToFit = function () {
         return this.zoomTo(this.data());
     };
+    
+    GMap.prototype.drawingOptions = function(_) {
+        if(typeof(_) === "object") {
+            if (typeof(this._drawingTools) === "object") {
+                this._drawingTools.setOptions(_);
+            }
+        }
+        return this._drawingTools;
+    }
 
     return GMap;
 }));

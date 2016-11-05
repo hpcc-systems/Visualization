@@ -1540,6 +1540,10 @@
         return Promise.all(promises);
     };
 
+    DataSource.prototype.isRoxie = function () {
+        return !this.WUID && !this.databomb;
+    };
+
     DataSource.prototype.serializeState = function () {
         return {
         };
@@ -1637,14 +1641,15 @@
         });
         this.getVisualizationArray().forEach(function (visualization) {
             var inputVisualizations = visualization.getInputVisualizations();
-            if (inputVisualizations.length === 0) {
-                fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
+            var datasource = visualization.source.getDatasource();
+            if ((datasource && datasource.isRoxie()) || inputVisualizations.length === 0) {
+                fetchDataOptimizer.appendRequest(datasource, { refresh: true }, visualization);
             } else {
                 inputVisualizations.forEach(function (inViz) {
                     if (inViz.hasSelection()) {
                         var request = inViz.calcRequestFor(visualization);
                         request.refresh = true;
-                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), request, visualization);
+                        fetchDataOptimizer.appendRequest(datasource, request, visualization);
                     }
                 });
             }

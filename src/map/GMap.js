@@ -410,7 +410,7 @@
             }
         }
         return this._drawingTools;
-    }
+    };
 
     return GMap;
 }));

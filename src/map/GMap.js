@@ -9,6 +9,8 @@
     }
 }(this, function (d3, HTMLWidget, AbsoluteSurface) {
 
+    var _mapDrawings = [];
+
     function Overlay(map, worldSurface, viewportSurface) {
         google.maps.OverlayView.call(this);
         this._div = null;
@@ -169,6 +171,7 @@
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("mapDrawingTools", false, "boolean", "Drawing Tools", null, { tags: ["Basic"] });
+    GMap.prototype.publish("drawings", _mapDrawings, "Array", "Map Drawings", null, { tags: ["Basic"] });
 
     GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
 
@@ -240,27 +243,25 @@
         this._prevCenterLong = this.centerLong();
         this._prevZoom = this.zoom();
         
-        if (this.mapDrawingTools()) {
-            // Default drawing options.
-            this._drawingTools = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.MARKER,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: ["polygon", "rectangle", "circle"]
-                },
-                polygonOptions: {
-                    fillColor: "gray"
-                },
-                circleOptions: {
-                    fillColor: "red"
-                }
-            });
-            this._drawingTools.setMap(this._googleMap);
-        }
+        // Init drawing tools with default options.
+        this._drawingTools = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: ["polygon", "rectangle", "circle"]
+            },
+            polygonOptions: {
+                fillColor: "gray"
+            },
+            circleOptions: {
+                fillColor: "red"
+            }
+        });
     };
 
     GMap.prototype.update = function (domNode, element) {
+        var context = this;
         this._googleMap.setMapTypeId(this.getMapType());
         this._googleMap.setOptions(this.getMapOptions());
 
@@ -277,7 +278,23 @@
         }
         this.updateCircles();
         this.updatePins();
+        
+        // Enable or disable drawing tools.
+        if (this.mapDrawingTools()) {
+            this._drawingTools.setMap(this._googleMap);
+            
+            // Add drawing complete listener to maintain array of drawings.
+            google.maps.event.addListener(
+                this._drawingTools,
+                "overlaycomplete",
+                function(){
+                    GMap.prototype.onDrawingComplete.apply(context, arguments);
+                });
+        } else {
+            this._drawingTools.setMap(null);
+        }
     };
+    
 
     GMap.prototype.updateCircles = function () {
         function rowID(row) {
@@ -410,6 +427,10 @@
             }
         }
         return this._drawingTools;
+    };
+    
+    GMap.prototype.onDrawingComplete = function(event) {
+        this.drawings().push(event.overlay);
     };
 
     return GMap;

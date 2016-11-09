@@ -3,12 +3,15 @@
     if (typeof define === "function" && define.amd) {
         var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
         var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey, "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
 }(this, function (d3, HTMLWidget, AbsoluteSurface) {
 
+    var _mapDrawings = [];
+
+    //  =======================================================================
     function Overlay(map, worldSurface, viewportSurface) {
         google.maps.OverlayView.call(this);
         this._div = null;
@@ -119,6 +122,48 @@
         this._div = null;
     };
 
+    //  =======================================================================
+    function UserShapeSelectionBag() {
+        this._userShapes = [];
+    }
+
+    UserShapeSelectionBag.prototype.add = function (_) {
+        this._userShapes.push(_);
+    }
+
+    UserShapeSelectionBag.prototype.remove = function (_) {
+        var idx = this._userShapes.indexOf(_);
+        if (idx >= 0) {
+            this._userShapes.splice(idx, 1);
+        }
+        _.setMap(null);
+    }
+
+    UserShapeSelectionBag.prototype.save = function () {
+        return this._userShapes.map(function (shape) {
+            var retVal = {
+                type: shape.__hpcc_type
+            };
+            switch (shape.__hpcc_type) {
+                case "circle":
+                    retVal.pos = {
+                        lat: shape.center.lat(),
+                        lng: shape.center.lng()
+                    };
+                    retVal.radius = shape.radius;
+                    break;
+                case "rectangle":
+                    retVal.bounds = {
+                        nw: shape.bounds.getNorthEast(),
+                        se: shape.bounds.getSouthWest()
+                    };
+                    break;
+            }
+            return retVal;
+        });
+    }
+
+    //  =======================================================================
     function GMap() {
         HTMLWidget.call(this);
 
@@ -152,6 +197,13 @@
         this._viewportSurface.project = function (lat, long) {
             return calcProjection(this, lat, long);
         };
+
+        this._userShapes = new UserShapeSelectionBag();
+        //  Testing Only  ---
+        var context = this;
+        setInterval(function () {
+            context.drawingState(JSON.stringify(context._userShapes.save()));
+        }, 500);
     }
     GMap.prototype = Object.create(HTMLWidget.prototype);
     GMap.prototype.constructor = GMap;
@@ -168,6 +220,8 @@
     GMap.prototype.publish("scaleControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("drawingTools", false, "boolean", "Drawing Tools", null, { tags: ["Basic"] });
+    GMap.prototype.publish("drawingState", "", "string", "Map Drawings", null, { disabel: function (w) { return w.drawingTools() === false; } });
 
     GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
 
@@ -238,9 +292,29 @@
         this._prevCenterLat = this.centerLat();
         this._prevCenterLong = this.centerLong();
         this._prevZoom = this.zoom();
+        
+        // Init drawing tools with default options.
+        var defOptions = {
+            strokeWeight: 0,
+            fillOpacity: 0.45,
+            fillColor: "#1f77b4",
+            editable: true
+        };
+        this._drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: ["polygon", "rectangle", "circle"]
+            },
+            rectangleOptions: defOptions,
+            circleOptions: defOptions,
+            polygonOptions: defOptions
+        });
     };
 
     GMap.prototype.update = function (domNode, element) {
+        var context = this;
         this._googleMap.setMapTypeId(this.getMapType());
         this._googleMap.setOptions(this.getMapOptions());
 
@@ -257,7 +331,23 @@
         }
         this.updateCircles();
         this.updatePins();
+        
+        // Enable or disable drawing tools.
+        if (this.drawingTools()) {
+            this._drawingManager.setMap(this._googleMap);
+            
+            // Add drawing complete listener to maintain array of drawingState.
+            google.maps.event.addListener(
+                this._drawingManager,
+                "overlaycomplete",
+                function(){
+                    GMap.prototype.onDrawingComplete.apply(context, arguments);
+                });
+        } else {
+            this._drawingManager.setMap(null);
+        }
     };
+    
 
     GMap.prototype.updateCircles = function () {
         function rowID(row) {
@@ -381,6 +471,51 @@
 
     GMap.prototype.zoomToFit = function () {
         return this.zoomTo(this.data());
+    };
+    
+    GMap.prototype.drawingOptions = function(_) {
+        if(typeof(_) === "object") {
+            if (typeof(this._drawingManager) === "object") {
+                this._drawingManager.setOptions(_);
+            }
+        }
+        return this._drawingManager;
+    };
+
+    GMap.prototype.userShapeSelection = function (_) {
+        if (!arguments.length) return this._userShapeSelection;
+        if (this._userShapeSelection) {
+            this._userShapeSelection.setEditable(false);
+        }
+        this._userShapeSelection = _;
+        if (this._userShapeSelection) {
+            this._userShapeSelection.setEditable(true);
+        }
+    };
+
+    GMap.prototype.deleteUserShape = function (_) {
+        if (this._userShapeSelection === _) {
+            this.userShapeSelection(null);
+        }
+        this._userShapes.remove(_);
+    }
+    
+    GMap.prototype.onDrawingComplete = function(event) {
+        if (event.type != google.maps.drawing.OverlayType.MARKER) {
+            this._drawingManager.setDrawingMode(null);
+            var newShape = event.overlay;
+            newShape.__hpcc_type = event.type;
+            this._userShapes.add(newShape);
+            var context = this;
+            google.maps.event.addListener(newShape, 'click', function (ev) {
+                context.userShapeSelection(newShape);
+                if (ev && ev.xa && ev.xa.ctrlKey) {
+                    context.deleteUserShape(newShape);
+                }
+                return false;
+            });
+            this.userShapeSelection(newShape);
+        }
     };
 
     return GMap;

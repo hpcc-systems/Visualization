@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -257,6 +257,33 @@
                     callback(new GMap()
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
+                    );
+                });
+            },
+            streetView: function (callback) {
+                require(["test/DataFactory", "src/map/GMap"], function (DataFactory, GMap) {
+                    callback(new GMap()
+                        .columns(DataFactory.GMap.simple.columns)
+                        .data(DataFactory.GMap.simple.data)
+                        .centerAddress('6601 Park of Commerce Blvd, Boca Raton, FL')
+                        .streetViewControl(true)
+                        .streetView(true)
+                    );
+                });
+            },
+            splitStreetView: function (callback) {
+                require(["src/map/GMap", "src/layout/Grid"], function (GMap, Grid) {
+                    var _map = new GMap()
+                        .centerAddress('Boca Raton, FL')
+                    ;
+                    var _streetViewMap = new GMap()
+                        .centerAddress('6601 Park of Commerce Blvd, Boca Raton, FL')
+                        .streetViewControl(true)
+                        .streetView(true)
+                    ;
+                    callback(new Grid()
+                        .setContent(0, 0, _map)
+                        .setContent(0, 1, _streetViewMap)
                     );
                 });
             },

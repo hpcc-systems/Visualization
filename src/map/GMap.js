@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
         var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey, "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey  + "&libraries=drawing,geometry", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -152,6 +152,8 @@
         this._viewportSurface.project = function (lat, long) {
             return calcProjection(this, lat, long);
         };
+
+        this._googleGeocoder = new google.maps.Geocoder();
     }
     GMap.prototype = Object.create(HTMLWidget.prototype);
     GMap.prototype.constructor = GMap;
@@ -160,15 +162,16 @@
     GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
     GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });
     GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longtitude", null, { tags: ["Basic"] });
+    GMap.prototype.publish("centerAddress", null, "string", "Address to center map on", null, { tags: ["Basic"], optional: true });
     GMap.prototype.publish("zoom", 4, "number", "Zoom Level", null, { tags: ["Basic"] });
-
     GMap.prototype.publish("panControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("zoomControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("mapTypeControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("scaleControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("streetViewControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-    GMap.prototype.publish("overviewMapControl", false, "boolean", "Pan Controls", null, { tags: ["Basic"] });
-
+    GMap.prototype.publish("zoomControl", true, "boolean", "Zoom Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("scaleControl", true, "boolean", "Scale Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("mapTypeControl", false, "boolean", "Map Type Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("fullscreenControl", false, "boolean", "Fullscreen Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("streetViewControl", false, "boolean", "StreetView Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("overviewMapControl", false, "boolean", "OverviewMap Controls", null, { tags: ["Basic"] });
+    GMap.prototype.publish("streetView", false, "boolean", "Streetview", null, { tags: ["Basic"] });
     GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });
 
     GMap.prototype.data = function (_) {
@@ -195,6 +198,7 @@
         return {
             panControl: this.panControl(),
             zoomControl: this.zoomControl(),
+            fullscreenControl: this.fullscreenControl(),
             mapTypeControl: this.mapTypeControl(),
             scaleControl: this.scaleControl(),
             streetViewControl: this.streetViewControl(),
@@ -218,6 +222,7 @@
 
     GMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
+        var context = this;
         this._googleMapNode = element.append("div")
             .style({
                 width: this.width() + "px",
@@ -231,6 +236,24 @@
             disableDefaultUI: true
         });
         this._overlay = new Overlay(this._googleMap, this._worldSurface, this._viewportSurface);
+        this._googleMap.addListener("center_changed", function () {
+            context.centerLat(context._googleMap.center.lat());
+            context._prevCenterLat = context.centerLat();
+            context.centerLong(context._googleMap.center.lng());
+            context._prevCenterLong = context.centerLong();
+            context._googleMapPanorama.setPosition({ lat: context.centerLat(), lng: context.centerLong() });
+            context.zoom(context._googleMap.getZoom());
+            context._prevZoom = context.zoom();
+        });
+        this._googleMap.addListener("zoom_changed", function () {
+            context.zoom(context._googleMap.zoom);
+            context._prevZoom = context.zoom();
+        });
+        this._googleMapPanorama = this._googleMap.getStreetView();
+        this._googleMapPanorama.addListener("visible_changed", function () {
+            context.streetView(context._googleMapPanorama.getVisible());
+            context._prevStreetView = context.streetView();
+        });
 
         this._circleMap = d3.map([]);
         this._pinMap = d3.map([]);
@@ -241,9 +264,20 @@
     };
 
     GMap.prototype.update = function (domNode, element) {
+        var context = this;
         this._googleMap.setMapTypeId(this.getMapType());
         this._googleMap.setOptions(this.getMapOptions());
 
+        if (this.centerAddress_exists() && this._prevCenterAddress !== this.centerAddress()) {
+            this._prevCenterAddress = this.centerAddress();
+            this._googleGeocoder.geocode({ 'address': this.centerAddress() }, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    context._googleMap.fitBounds(results[0].geometry.bounds);
+                } else {
+                    console.error("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
         if (this._prevCenterLat !== this.centerLat() || this._prevCenterLong !== this.centerLong()) {
             this._googleMap.setCenter(new google.maps.LatLng(this.centerLat(), this.centerLong()));
 
@@ -257,8 +291,21 @@
         }
         this.updateCircles();
         this.updatePins();
+        if (this._prevStreetView !== this.streetView()) {
+            if (this.streetView()) {
+                this._googleMapPanorama.setPosition({ lat: this.centerLat(), lng: this.centerLong() });
+                this._googleMapPanorama.setPov({
+                    heading: 0,
+                    pitch: 0
+                });
+                this._googleMapPanorama.setVisible(true);
+            } else {
+                this._googleMapPanorama.setVisible(false);
+            }
+            this._prevStreetView = this.streetView();
+        }
     };
-
+    
     GMap.prototype.updateCircles = function () {
         function rowID(row) {
             return row[0] + "_" + row[1];

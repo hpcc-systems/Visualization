@@ -316,7 +316,7 @@
             drawing: function(callback) {
                 require(["test/DataFactory", "src/map/GMap"], function(DataFactory, GMap) {
                     var map = new GMap();
-                    map.mapDrawingTools(true);
+                    map.drawingTools(true);
                     callback(map);
 
                     // Set options for drawing tools.
@@ -332,14 +332,12 @@
                           fillColor: "#ffff00",
                           fillOpacity: 1,
                           strokeWeight: 5,
-                          clickable: false,
                           editable: true,
                           zIndex: 1
                         },
                         polygonOptions: {
                           fillColor: "#0c84e4",
                           editable: true,
-                          clickable: false,
                           zIndex: 1
                         }
                     });

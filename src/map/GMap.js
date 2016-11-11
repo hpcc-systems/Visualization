@@ -9,8 +9,6 @@
     }
 }(this, function (d3, HTMLWidget, AbsoluteSurface) {
 
-    var _mapDrawings = [];
-
     //  =======================================================================
     function Overlay(map, worldSurface, viewportSurface) {
         google.maps.OverlayView.call(this);
@@ -42,8 +40,7 @@
 
         this._viewportSurface
             .target(this.div)
-            .units("pixels")
-        ;
+            .units("pixels");
 
         var panes = this.getPanes();
         panes.overlayMouseTarget.appendChild(this.div);
@@ -51,8 +48,7 @@
 
     Overlay.prototype.draw = function () {
         var projection = this.getProjection();
-        if (!projection)
-            return;
+        if (!projection) return;
 
         var bounds = this._map.getBounds();
         var center = projection.fromLatLngToDivPixel(bounds.getCenter());
@@ -129,7 +125,7 @@
 
     UserShapeSelectionBag.prototype.add = function (_) {
         this._userShapes.push(_);
-    }
+    };
 
     UserShapeSelectionBag.prototype.remove = function (_) {
         var idx = this._userShapes.indexOf(_);
@@ -137,32 +133,59 @@
             this._userShapes.splice(idx, 1);
         }
         _.setMap(null);
-    }
+    };
 
     UserShapeSelectionBag.prototype.save = function () {
         return this._userShapes.map(function (shape) {
-            var retVal = {
-                type: shape.__hpcc_type
-            };
-            switch (shape.__hpcc_type) {
-                case "circle":
-                    retVal.pos = {
-                        lat: shape.center.lat(),
-                        lng: shape.center.lng()
-                    };
-                    retVal.radius = shape.radius;
-                    break;
-                case "rectangle":
-                    retVal.bounds = {
-                        nw: shape.bounds.getNorthEast(),
-                        se: shape.bounds.getSouthWest()
-                    };
-                    break;
-            }
-            return retVal;
+            return UserShapeSelectionBag.prototype.serializeShape(shape);
         });
-    }
+    };
+    
+    UserShapeSelectionBag.prototype.serializeShape = function(_) {
+        var retVal = {};
+        
+        var createShapes = {
+            "circle": function(_) {
+                retVal.type = "circle";
+                retVal.pos = {
+                    lat: _.center.lat(),
+                    lng: _.center.lng()
+                };
+                retVal.radius = _.radius;
+            },
+            "rectangle": function(_) {
+                retVal.type = "rectangle";
+                retVal.bounds = {
+                    ne: _.bounds.getNorthEast(),
+                    sw: _.bounds.getSouthWest()
+                };
+            },
+            "polygon": function(_) {
+                retVal.type = _.__hpcc_type;
+                
+                var vertices = _.getPath();
+                    
+                retVal.vertices = [];
 
+                for (var i = 0; i < vertices.length; i++) {
+                    retVal.vertices.push(vertices.getAt(i));
+                }
+            },
+            "polyline": function(_) {
+                 createShapes.polygon(_);
+            }
+        };
+        
+        createShapes[_.__hpcc_type](_);
+        retVal.strokeWeight = _.strokeWeight;
+        retVal.fillColor = _.fillColor;
+        retVal.fillOpacity = _.fillOpacity;
+        retVal.editable = _.editable;
+        retVal.clickable = _.clickable || true;
+        
+        return retVal;
+    };
+    
     //  =======================================================================
     function GMap() {
         HTMLWidget.call(this);
@@ -298,7 +321,8 @@
             strokeWeight: 0,
             fillOpacity: 0.45,
             fillColor: "#1f77b4",
-            editable: true
+            editable: true,
+            clickable: true
         };
         this._drawingManager = new google.maps.drawing.DrawingManager({
             drawingMode: google.maps.drawing.OverlayType.MARKER,
@@ -436,7 +460,7 @@
             animation: google.maps.Animation.DROP,
             title: pinObj.title || "",
             icon: this.createIcon(pinObj),
-            map: this._googleMap,
+            map: this._googleMap
         });
     };
 
@@ -498,7 +522,7 @@
             this.userShapeSelection(null);
         }
         this._userShapes.remove(_);
-    }
+    };
     
     GMap.prototype.onDrawingComplete = function(event) {
         if (event.type != google.maps.drawing.OverlayType.MARKER) {
@@ -517,6 +541,80 @@
             this.userShapeSelection(newShape);
         }
     };
-
+    
+    GMap.prototype.loadDrawings = function(_) {
+        
+        var shapes = JSON.parse(_);
+        
+        var defOptions = {
+            strokeWeight: 0,
+            fillOpacity: 0.45,
+            fillColor: "#1f77b4",
+            editable: true,
+            clickable: true
+        };
+        var createShapes = {
+            "circle": function(_, map) {
+                var shape = new google.maps.Circle({
+                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                    fillColor: _.fillColor || defOptions.fillColor,
+                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                    editable: _.editable || defOptions.editable,
+                    clickable: _.clickable || defOptions.clickable,
+                    map: map,
+                    center: _.pos,
+                    radius: _.radius
+                });
+                return shape;
+            },
+            "rectangle": function(_, map) {
+                    var shape = new google.maps.Rectangle({
+                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                        fillColor: _.fillColor || defOptions.fillColor,
+                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                        editable: _.editable || defOptions.editable,
+                        clickable: _.clickable || defOptions.clickable,
+                        map: map,
+                        bounds: {
+                            north: _.bounds.ne.lat,
+                            west: _.bounds.sw.lng,
+                            south: _.bounds.sw.lat,
+                            east: _.bounds.ne.lng
+                        }
+                    });
+                    return shape;
+                },
+                "polygon": function(_, map) {
+                    var shape = new google.maps.Polygon({
+                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                        fillColor: _.fillColor || defOptions.fillColor,
+                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                        editable: _.editable || defOptions.editable,
+                        clickable: _.clickable || defOptions.clickable,
+                        map: map,                        
+                        paths: _.vertices
+                    });
+                    return shape;
+                },
+                "polyline": function(_, map) {
+                    var shape = new google.maps.Polyline({
+                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                        fillColor: _.fillColor || defOptions.fillColor,
+                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                        editable: _.editable || defOptions.editable,
+                        clickable: _.clickable || defOptions.clickable,
+                        map: map,
+                        path: _.vertices
+                    });
+                    return shape;
+                }
+            };
+        
+        for (var i = 0; i < shapes.length; i++) {
+            var shape = createShapes[shapes[i].type](shapes[i], this._googleMap);
+            this.onDrawingComplete({ type: shapes[i].type, overlay: shape });
+        }
+    };
+    
     return GMap;
 }));

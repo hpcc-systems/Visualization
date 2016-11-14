@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
         var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing", "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing,geometry", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
@@ -119,8 +119,9 @@
     };
 
     //  =======================================================================
-    function UserShapeSelectionBag() {
+    function UserShapeSelectionBag(mapObj) {
         this._userShapes = [];
+        this.mapContext = mapObj;
     }
 
     UserShapeSelectionBag.prototype.add = function (_) {
@@ -137,11 +138,16 @@
 
     UserShapeSelectionBag.prototype.save = function () {
         return this._userShapes.map(function (shape) {
-            return UserShapeSelectionBag.prototype.serializeShape(shape);
+            return JSON.stringify(
+                    UserShapeSelectionBag.prototype._saveShape(shape));
         });
     };
     
-    UserShapeSelectionBag.prototype.serializeShape = function(_) {
+    UserShapeSelectionBag.prototype.load = function(_) {
+        this._deserializeShapes(_);       
+    };
+    
+    UserShapeSelectionBag.prototype._saveShape = function(_) {
         var retVal = {};
         
         var createShapes = {
@@ -186,6 +192,81 @@
         return retVal;
     };
     
+    UserShapeSelectionBag.prototype._deserializeShapes = function(_) {
+        
+        var shapes = JSON.parse(_);
+        
+        var defOptions = {
+            strokeWeight: 0,
+            fillOpacity: 0.45,
+            fillColor: "#1f77b4",
+            editable: true,
+            clickable: true
+        };
+        
+        var createShapes = {
+            "circle": function(_, map) {
+                var shape = new google.maps.Circle({
+                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                    fillColor: _.fillColor || defOptions.fillColor,
+                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                    editable: _.editable || defOptions.editable,
+                    clickable: _.clickable || defOptions.clickable,
+                    map: map,
+                    center: _.pos,
+                    radius: _.radius
+                });
+                return shape;
+            },
+            "rectangle": function(_, map) {
+                    var shape = new google.maps.Rectangle({
+                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                        fillColor: _.fillColor || defOptions.fillColor,
+                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                        editable: _.editable || defOptions.editable,
+                        clickable: _.clickable || defOptions.clickable,
+                        map: map,
+                        bounds: {
+                            north: _.bounds.ne.lat,
+                            west: _.bounds.sw.lng,
+                            south: _.bounds.sw.lat,
+                            east: _.bounds.ne.lng
+                        }
+                    });
+                    return shape;
+                },
+            "polygon": function(_, map) {
+                var shape = new google.maps.Polygon({
+                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                    fillColor: _.fillColor || defOptions.fillColor,
+                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                    editable: _.editable || defOptions.editable,
+                    clickable: _.clickable || defOptions.clickable,
+                    map: map,                        
+                    paths: _.vertices
+                });
+                return shape;
+            },
+            "polyline": function(_, map) {
+                var shape = new google.maps.Polyline({
+                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                    fillColor: _.fillColor || defOptions.fillColor,
+                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                    editable: _.editable || defOptions.editable,
+                    clickable: _.clickable || defOptions.clickable,
+                    map: map,
+                    path: _.vertices
+                });
+                return shape;
+            }
+        };
+        
+        for (var i = 0; i < shapes.length; i++) {
+            var shape = createShapes[shapes[i].type](shapes[i], this.mapContext._googleMap);
+            this.mapContext.onDrawingComplete({ type: shapes[i].type, overlay: shape });
+        }
+    };
+    
     //  =======================================================================
     function GMap() {
         HTMLWidget.call(this);
@@ -221,13 +302,9 @@
             return calcProjection(this, lat, long);
         };
 
-        this._userShapes = new UserShapeSelectionBag();
-        //  Testing Only  ---
-        var context = this;
-        setInterval(function () {
-            context.drawingState(JSON.stringify(context._userShapes.save()));
-        }, 500);
+        this._userShapes = new UserShapeSelectionBag(this);
     }
+    
     GMap.prototype = Object.create(HTMLWidget.prototype);
     GMap.prototype.constructor = GMap;
     GMap.prototype._class += " map_GMap";
@@ -535,84 +612,12 @@
                 context.userShapeSelection(newShape);
                 if (ev && ev.xa && ev.xa.ctrlKey) {
                     context.deleteUserShape(newShape);
+                    context.drawingState(context._userShapes.save());
                 }
                 return false;
             });
             this.userShapeSelection(newShape);
-        }
-    };
-    
-    GMap.prototype.loadDrawings = function(_) {
-        
-        var shapes = JSON.parse(_);
-        
-        var defOptions = {
-            strokeWeight: 0,
-            fillOpacity: 0.45,
-            fillColor: "#1f77b4",
-            editable: true,
-            clickable: true
-        };
-        var createShapes = {
-            "circle": function(_, map) {
-                var shape = new google.maps.Circle({
-                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
-                    fillColor: _.fillColor || defOptions.fillColor,
-                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
-                    editable: _.editable || defOptions.editable,
-                    clickable: _.clickable || defOptions.clickable,
-                    map: map,
-                    center: _.pos,
-                    radius: _.radius
-                });
-                return shape;
-            },
-            "rectangle": function(_, map) {
-                    var shape = new google.maps.Rectangle({
-                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
-                        fillColor: _.fillColor || defOptions.fillColor,
-                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
-                        editable: _.editable || defOptions.editable,
-                        clickable: _.clickable || defOptions.clickable,
-                        map: map,
-                        bounds: {
-                            north: _.bounds.ne.lat,
-                            west: _.bounds.sw.lng,
-                            south: _.bounds.sw.lat,
-                            east: _.bounds.ne.lng
-                        }
-                    });
-                    return shape;
-                },
-                "polygon": function(_, map) {
-                    var shape = new google.maps.Polygon({
-                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
-                        fillColor: _.fillColor || defOptions.fillColor,
-                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
-                        editable: _.editable || defOptions.editable,
-                        clickable: _.clickable || defOptions.clickable,
-                        map: map,                        
-                        paths: _.vertices
-                    });
-                    return shape;
-                },
-                "polyline": function(_, map) {
-                    var shape = new google.maps.Polyline({
-                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
-                        fillColor: _.fillColor || defOptions.fillColor,
-                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
-                        editable: _.editable || defOptions.editable,
-                        clickable: _.clickable || defOptions.clickable,
-                        map: map,
-                        path: _.vertices
-                    });
-                    return shape;
-                }
-            };
-        
-        for (var i = 0; i < shapes.length; i++) {
-            var shape = createShapes[shapes[i].type](shapes[i], this._googleMap);
-            this.onDrawingComplete({ type: shapes[i].type, overlay: shape });
+            this.drawingState(this._userShapes.save());
         }
     };
     

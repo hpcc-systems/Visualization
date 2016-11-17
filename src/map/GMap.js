@@ -125,6 +125,10 @@
     }
 
     UserShapeSelectionBag.prototype.add = function (_) {
+        var idx = this._userShapes.indexOf(_);
+        if (idx >= 0) {
+            return;
+        }
         this._userShapes.push(_);
     };
 
@@ -138,8 +142,7 @@
 
     UserShapeSelectionBag.prototype.save = function () {
         return this._userShapes.map(function (shape) {
-            return JSON.stringify(
-                    UserShapeSelectionBag.prototype._saveShape(shape));
+            return UserShapeSelectionBag.prototype._saveShape(shape);
         });
     };
     
@@ -219,22 +222,22 @@
                 return shape;
             },
             "rectangle": function(_, map) {
-                    var shape = new google.maps.Rectangle({
-                        strokeWeight: _.strokeWeight || defOptions.strokeWeight,
-                        fillColor: _.fillColor || defOptions.fillColor,
-                        fillOpacity: _.fillOpacity || defOptions.fillOpacity,
-                        editable: _.editable || defOptions.editable,
-                        clickable: _.clickable || defOptions.clickable,
-                        map: map,
-                        bounds: {
-                            north: _.bounds.ne.lat,
-                            west: _.bounds.sw.lng,
-                            south: _.bounds.sw.lat,
-                            east: _.bounds.ne.lng
-                        }
-                    });
-                    return shape;
-                },
+                var shape = new google.maps.Rectangle({
+                    strokeWeight: _.strokeWeight || defOptions.strokeWeight,
+                    fillColor: _.fillColor || defOptions.fillColor,
+                    fillOpacity: _.fillOpacity || defOptions.fillOpacity,
+                    editable: _.editable || defOptions.editable,
+                    clickable: _.clickable || defOptions.clickable,
+                    map: map,
+                    bounds: {
+                        north: _.bounds.ne.lat,
+                        west: _.bounds.sw.lng,
+                        south: _.bounds.sw.lat,
+                        east: _.bounds.ne.lng
+                    }
+                });
+                return shape;
+            },
             "polygon": function(_, map) {
                 var shape = new google.maps.Polygon({
                     strokeWeight: _.strokeWeight || defOptions.strokeWeight,
@@ -412,6 +415,10 @@
             circleOptions: defOptions,
             polygonOptions: defOptions
         });
+        
+        if (this.drawingState()) {
+            this._userShapes.load(this.drawingState());
+        }
     };
 
     GMap.prototype.update = function (domNode, element) {
@@ -608,16 +615,29 @@
             newShape.__hpcc_type = event.type;
             this._userShapes.add(newShape);
             var context = this;
+            var ctrl = false;
+            window.addEventListener('keydown', function(e) {
+                if (e.keyIdentifier === "Control" || e.ctrlKey === true) {
+                    ctrl = true;
+                }
+            });
+            window.addEventListener('keyup', function(e) {
+                if (e.ctrlKey === false) {
+                    ctrl = false;
+                }
+            });
             google.maps.event.addListener(newShape, 'click', function (ev) {
                 context.userShapeSelection(newShape);
-                if (ev && ev.xa && ev.xa.ctrlKey) {
+                if (ev && ctrl === true) {
                     context.deleteUserShape(newShape);
-                    context.drawingState(context._userShapes.save());
+                    context.drawingState(
+                            JSON.stringify(context._userShapes.save()));
                 }
                 return false;
             });
             this.userShapeSelection(newShape);
-            this.drawingState(this._userShapes.save());
+            this.drawingState(
+                    JSON.stringify(this._userShapes.save()));
         }
     };
     

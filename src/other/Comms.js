@@ -96,6 +96,10 @@
         return this;
     };
 
+    ESPUrl.prototype.param = function (key) {
+        return this._params[key];
+    };
+
     ESPUrl.prototype.isWsWorkunits = function () {
         return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0 || this._params["Wuid"];
     };
@@ -115,9 +119,9 @@
     ESPUrl.prototype.getUrl = function (overrides) {
         overrides = overrides || {};
         return (overrides.protocol !== undefined ? overrides.protocol : this._protocol) + "//" +
-                (overrides.hostname !== undefined ? overrides.hostname : this._hostname) + ":" +
-                (overrides.port !== undefined ? overrides.port : this._port) + "/" +
-                (overrides.pathname !== undefined ? overrides.pathname : this._pathname);
+            (overrides.hostname !== undefined ? overrides.hostname : this._hostname) + ":" +
+            (overrides.port !== undefined ? overrides.port : this._port) + "/" +
+            (overrides.pathname !== undefined ? overrides.pathname : this._pathname);
     };
 
     function ESPMappings(mappings) {
@@ -192,7 +196,7 @@
             var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
             window[callbackName] = function (response) {
                 respondedTimeout = 0;
-                doCallback(response);
+                doCallback();
                 resolve(response);
             };
             var script = document.createElement("script");
@@ -214,7 +218,7 @@
                 }
             }, respondedTick);
 
-            function doCallback(response) {
+            function doCallback() {
                 delete window[callbackName];
                 document.body.removeChild(script);
             }
@@ -230,8 +234,8 @@
                     .url(url)
                 ;
                 url = newUrl + this._proxyMappings[key];
-                request.IP = espUrl._hostname;
-                request.PORT = espUrl._port;
+                request.IP = espUrl.hostname();
+                request.PORT = espUrl.port();
                 if (newUrlParts.length > 0) {
                     request.PATH = newUrlParts[1];
                 }
@@ -440,7 +444,7 @@
         var url = this.getUrl({
             pathname: "WsEcl/submit/query/" + target.target + "/" + target.query + "/json"
         });
-        return this.jsonp(url, request).then(function(response) {
+        return this.jsonp(url, request).then(function (response) {
             var _response = locateRoxieResponse(response);
             if(!_response){
                 _response = locateRoxieException(response);
@@ -472,7 +476,7 @@
     };
 
     WsECL.prototype.send = function (request, callback) {
-        return this.call({target: this._target, query: this._query}, request, callback);
+        return this.call({ target: this._target, query: this._query }, request, callback);
     };
 
     function WsWorkunits() {
@@ -852,6 +856,12 @@
     }
     HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
+    function hasFilter(hipieResult, fieldid) {
+        return hipieResult.filters.filter(function(filter) {
+            return filter.fieldid === fieldid;
+        }).length > 0;
+    }
+
     HIPIEWorkunit.prototype.hipieResults = function (_) {
         if (!arguments.length) return this._hipieResults;
         this._hipieResultsLength = 0;
@@ -916,7 +926,7 @@
                 var item = context._hipieResults[hipieKey];
                 var matchedResult = true;
                 for (var key2 in changedFilter) {
-                    if (item.filter.indexOf(key2) < 0) {
+                    if (!hasFilter(item, key2)) {
                         matchedResult = false;
                         break;
                     }

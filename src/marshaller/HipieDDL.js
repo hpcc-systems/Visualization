@@ -16,41 +16,6 @@
         return faChar;
     }
 
-    //  Mappings ---
-    function SourceMappings(visualization, mappings) {
-        this.visualization = visualization;
-        var newMappings = {};
-        for (var key in mappings) {
-            if (mappings[key] instanceof Array) {
-                mappings[key].forEach(function (mapingItem, idx) {
-                    newMappings[idx === 0 ? key : key + "_" + idx] = mapingItem;
-                });
-            } else {
-                newMappings[key] = mappings[key];
-            }
-        }
-        this.mappings = newMappings;
-        this.hasMappings = false;
-        this.reverseMappings = {};
-        this.columns = [];
-        this.columnsIdx = {};
-        this.columnsRHS = [];
-        this.columnsRHSIdx = {};
-    }
-
-    SourceMappings.prototype.init = function() {
-        for (var key in this.mappings) {
-            this.reverseMappings[this.mappings[key]] = key;
-            if (this.columnsIdx[key] === undefined) {
-                this.columns.push(key);
-                this.columnsIdx[key] = this.columns.length - 1;
-            }
-            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
-            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
-            this.hasMappings = true;
-        }
-    };
-
     function hipieType2DBType(hipieType) {
         switch (hipieType) {
             case "bool":
@@ -87,6 +52,41 @@
         }
         return "string";
     }
+
+    //  Mappings ---
+    function SourceMappings(visualization, mappings) {
+        this.visualization = visualization;
+        var newMappings = {};
+        for (var key in mappings) {
+            if (mappings[key] instanceof Array) {
+                mappings[key].forEach(function (mapingItem, idx) {
+                    newMappings[idx === 0 ? key : key + "_" + idx] = mapingItem;
+                });
+            } else {
+                newMappings[key] = mappings[key];
+            }
+        }
+        this.mappings = newMappings;
+        this.hasMappings = false;
+        this.reverseMappings = {};
+        this.columns = [];
+        this.columnsIdx = {};
+        this.columnsRHS = [];
+        this.columnsRHSIdx = {};
+    }
+
+    SourceMappings.prototype.init = function() {
+        for (var key in this.mappings) {
+            this.reverseMappings[this.mappings[key]] = key;
+            if (this.columnsIdx[key] === undefined) {
+                this.columns.push(key);
+                this.columnsIdx[key] = this.columns.length - 1;
+            }
+            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
+            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
+            this.hasMappings = true;
+        }
+    };
 
     SourceMappings.prototype.getFields = function () {
         if (this.visualization.fields) {
@@ -321,7 +321,7 @@
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
-    GraphMappings.prototype.calcIconInfo = function (field, origItem, forAnnotation) {
+    GraphMappings.prototype.calcIconInfo = function (flag, origItem, forAnnotation) {
         var retVal = {};
         function mapStruct(struct, retVal) {
             if (struct) {
@@ -341,8 +341,8 @@
                 }
             }
         }
-        if (origItem && origItem[field.fieldid] && field.valuemappings) {
-            var annotationInfo = field.valuemappings[origItem[field.fieldid]];
+        if (origItem && origItem[flag.fieldid] && flag.valuemappings) {
+            var annotationInfo = flag.valuemappings[origItem[flag.fieldid]];
             mapStruct(annotationInfo, retVal);
         }
 
@@ -383,8 +383,8 @@
 
                 // Annotations  ---
                 var annotations = [];
-                context.visualization.flag.forEach(function (field) {
-                    var iconInfo = context.calcIconInfo(field, origItem, true);
+                context.visualization.flags.forEach(function (flag) {
+                    var iconInfo = context.calcIconInfo(flag, origItem, true);
                     if (iconInfo) {
                         annotations.push(iconInfo);
                     }
@@ -444,16 +444,16 @@
                 break;
             case "CHORO":
                 if (source.mappings.weight instanceof Array && source.mappings.weight.length) {
-                    this.mappings = new ChoroMappings2(this.visualization, source.mappings, source.link);
+                    this.mappings = new ChoroMappings2(this.visualization, source.mappings);
                     if (source.mappings.weight.length > 1) {
                         this.visualization.type = "LINE";
                     }
                 } else {
-                    this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                    this.mappings = new ChoroMappings(this.visualization, source.mappings);
                 }
                 break;
             case "HEAT_MAP":
-                this.mappings = new HeatMapMappings(this.visualization, source.mappings, source.link);
+                this.mappings = new HeatMapMappings(this.visualization, source.mappings);
                 break;
             default:
                 this.mappings = new ChartMappings(this.visualization, source.mappings);
@@ -462,6 +462,7 @@
             this.first = source.first;
             this.reverse = source.reverse;
             this.sort = source.sort;
+            this.properties = source.properties;
         }
     }
 
@@ -474,13 +475,13 @@
     };
 
     Source.prototype.getDatasource = function () {
-        return this.visualization.dashboard.datasources[this._id];
+        return this.visualization.dashboard.getDatasource(this._id);
     };
 
     Source.prototype.getOutput = function () {
         var datasource = this.getDatasource();
-        if (datasource && datasource.outputs) {
-            return datasource.outputs[this._output];
+        if (datasource && datasource._outputs) {
+            return datasource._outputs[this._output];
         }
         return null;
     };
@@ -613,6 +614,7 @@
         this.visualization = visualization;
         this.eventID = eventID;
         this._updates = [];
+        this._mappings = event.mappings;
         if (event) {
             this._updates = event.updates.map(function (updateInfo) {
                 return new EventUpdate(this, updateInfo, event.mappings);
@@ -722,6 +724,7 @@
 
         this.dashboard = dashboard;
         this.parentVisualization = parentVisualization;
+        this.type = visualization.type;
         this.id = visualization.id;
 
         this.label = visualization.label;
@@ -1044,7 +1047,7 @@
 
         var context = this;
         require(widgetPaths, function (Widget) {
-            var existingWidget = context.dashboard.marshaller._widgetMappings.get(context.id);
+            var existingWidget = context.dashboard.marshaller.getWidget(context.id);
             if (existingWidget) {
                 if (Widget.prototype._class !== existingWidget._class) {
                     console.log("Unexpected persisted widget type (old persist string?)");
@@ -1290,22 +1293,29 @@
     };
 
     //  Output  ---
-    function Output(dataSource, output) {
-        this.dataSource = dataSource;
+    function Output(datasource, output) {
+        this.datasource = datasource;
         this.id = output.id;
         this.from = output.from;
         this.notify = output.notify || [];
-        this.filter = output.filter || [];
+        this.filter = (output.filter || []).map(function (filter) {
+            if (typeof filter === "string") {
+                return {
+                    fieldid: filter
+                };
+            }
+            return filter;
+        });
     }
 
     Output.prototype.getQualifiedID = function () {
-        return this.dataSource.getQualifiedID() + "." + this.id;
+        return this.datasource.getQualifiedID() + "." + this.id;
     };
 
     Output.prototype.getUpdatesVisualizations = function () {
         var retVal = [];
         this.notify.forEach(function (item) {
-            retVal.push(this.dataSource.dashboard.getVisualization(item));
+            retVal.push(this.datasource.marshaller.getVisualization(item));
         }, this);
         return retVal;
     };
@@ -1319,7 +1329,7 @@
         this.notify.filter(function (item) {
             return !updates || updates.indexOf(item) >= 0;
         }).forEach(function (item) {
-            var viz = this.dataSource.dashboard.getVisualization(item);
+            var viz = this.datasource.marshaller.getVisualization(item);
             promises.push(viz.notify());
         }, this);
         return Promise.all(promises);
@@ -1398,25 +1408,34 @@
         return datasourceRequestOptimizer.fetchData();
     };
 
-    //  DataSource  ---
-    function DataSource(dashboard, dataSource, proxyMappings, timeout) {
-        this.dashboard = dashboard;
-        this.id = dataSource.id;
-        this.filter = dataSource.filter || [];
-        this.WUID = dataSource.WUID;
-        this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
-        this.databomb = dataSource.databomb;
+    //  Datasource  ---
+    function Datasource(marshaller, datasource, proxyMappings, timeout) {
+        this.marshaller = marshaller;
+        this.id = datasource.id;
+        this.filter = (datasource.filter || []).map(function (filter) {
+            if (typeof filter === "string") {
+                return {
+                    fieldid: filter
+                };
+            }
+            return filter;
+        });
+        this.WUID = datasource.WUID;
+        this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
+        this.databomb = datasource.databomb;
         this._loadedCount = 0;
 
         var context = this;
-        this.outputs = {};
+        this._outputs = {};
+        this._outputArray = [];
         var hipieResults = [];
-        dataSource.outputs.forEach(function (item) {
-            context.outputs[item.id] = new Output(context, item);
+        datasource.outputs.forEach(function (item) {
+            context._outputs[item.id] = new Output(context, item);
+            context._outputArray.push(context._outputs[item.id]);
             hipieResults.push({
                 id: item.id,
                 from: item.from,
-                filter: item.filter || this.filter
+                filters: item.filter || this.filter
             });
         }, this);
 
@@ -1433,46 +1452,50 @@
             ;
         } else {
             this.comms = new Comms.HIPIERoxie()
-                .url(dataSource.URL)
+                .url(datasource.URL)
                 .proxyMappings(proxyMappings)
                 .timeout(timeout)
             ;
         }
     }
 
-    DataSource.prototype.getQualifiedID = function () {
-        return this.dashboard.getQualifiedID() + "." + this.id;
+    Datasource.prototype.getQualifiedID = function () {
+        return this.id;
     };
 
-    DataSource.prototype.getUpdatesVisualizations = function () {
+    Datasource.prototype.getOutputs = function () {
+        return this._outputs;
+    };
+
+    Datasource.prototype.getUpdatesVisualizations = function () {
         var retVal = [];
-        for (var key in this.outputs) {
-            this.outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
+        for (var key in this._outputs) {
+            this._outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
                 retVal.push(visualization);
             });
         }
         return retVal;
     };
 
-    DataSource.prototype.accept = function (visitor) {
+    Datasource.prototype.accept = function (visitor) {
         visitor.visit(this);
-        for (var key in this.outputs) {
-            this.outputs[key].accept(visitor);
+        for (var key in this._outputs) {
+            this._outputs[key].accept(visitor);
         }
     };
 
     var transactionID = 0;
     var transactionQueue = [];
-    DataSource.prototype.fetchData = function (request, updates) {
+    Datasource.prototype.fetchData = function (request, updates) {
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
         var dsRequest = {};
         this.filter.forEach(function (item) {
-            dsRequest[item + _CHANGED] = request[item + _CHANGED] || false;
-            var value = request[item] === undefined ? null : request[item];
-            if (dsRequest[item] !== value) {
-                dsRequest[item] = value;
+            dsRequest[item.fieldid + _CHANGED] = request[item.fieldid + _CHANGED] || false;
+            var value = request[item.fieldid] === undefined ? null : request[item.fieldid];
+            if (dsRequest[item.fieldid] !== value) {
+                dsRequest[item.fieldid] = value;
             }
         });
         dsRequest.refresh = request.refresh || false;
@@ -1485,7 +1508,7 @@
             }
         }
         var now = Date.now();
-        this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
+        this.marshaller.commsEvent(this, "request", dsRequest);
         var context = this;
         return new Promise(function (resolve, reject) {
             context.comms.call(dsRequest).then(function (_response) {
@@ -1496,44 +1519,44 @@
                         context.processResponse(response, request, updates).then(function () {
                             transactionQueue.shift();
                             resolve(response);
-                            context.dashboard.marshaller.commsEvent(context, "response", dsRequest, response);
+                            context.marshaller.commsEvent(context, "response", dsRequest, response);
                             ++context._loadedCount;
                         });
                     }
                 }, 100);
             }).catch(function (e) {
-                context.dashboard.marshaller.commsEvent(context, "error", dsRequest, e);
+                context.marshaller.commsEvent(context, "error", dsRequest, e);
                 reject(e);
             });
         });
     };
 
-    DataSource.prototype.processResponse = function (response, request, updates) {
+    Datasource.prototype.processResponse = function (response, request, updates) {
         var lowerResponse = {};
         for (var responseKey in response) {
             lowerResponse[responseKey.toLowerCase()] = response[responseKey];
         }
         var promises = [];
-        for (var key in this.outputs) {
-            var from = this.outputs[key].from;
+        for (var key in this._outputs) {
+            var from = this._outputs[key].from;
             if (!from) {
                 //  Temp workaround for older services  ---
-                from = this.outputs[key].id.toLowerCase();
+                from = this._outputs[key].id.toLowerCase();
             }
             if (Utility.exists(from, response)) {
                 if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(response[from], updates));
+                    promises.push(this._outputs[key].setData(response[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    promises.push(this.outputs[key].vizNotify(updates));
+                    promises.push(this._outputs[key].vizNotify(updates));
                 }
             } else if (Utility.exists(from, lowerResponse)) {
-                console.log("DDL 'DataSource.From' case is Incorrect");
+                console.log("DDL 'Datasource.From' case is Incorrect");
                 if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(lowerResponse[from], updates));
+                    promises.push(this._outputs[key].setData(lowerResponse[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    promises.push(this.outputs[key].vizNotify(updates));
+                    promises.push(this._outputs[key].vizNotify(updates));
                 }
             } else {
                 var responseItems = [];
@@ -1546,16 +1569,20 @@
         return Promise.all(promises);
     };
 
-    DataSource.prototype.isRoxie = function () {
+    Datasource.prototype.isLoaded = function(){
+        return this._loadedCount > 0;
+    };
+
+    Datasource.prototype.isRoxie = function () {
         return !this.WUID && !this.databomb;
     };
 
-    DataSource.prototype.serializeState = function () {
+    Datasource.prototype.serializeState = function () {
         return {
         };
     };
 
-    DataSource.prototype.deserializeState = function (state) {
+    Datasource.prototype.deserializeState = function (state) {
         if (!state) return;
     };
 
@@ -1565,13 +1592,12 @@
         this.id = dashboard.id;
         this.title = dashboard.title;
 
-        var context = this;
-        this.datasources = {};
-        this.datasourceTotal = 0;
+        this._datasources = {};
+        this._datasourceArray = [];
+        this._datasourceTotal = 0;
         dashboard.datasources.forEach(function (item) {
-            context.datasources[item.id] = new DataSource(context, item, proxyMappings, timeout);
-            ++context.datasourceTotal;
-        });
+            this.createDatasource(item);
+        }, this);
 
         this._visualizations = {};
         this._visualizationArray = [];
@@ -1581,12 +1607,22 @@
         this._visualizationTotal = this._visualizationArray.length;
     }
 
+    Dashboard.prototype.createDatasource = function(ddlDatasouce) {
+        var retVal = this._datasources[ddlDatasouce.id];
+        if (!retVal) {
+            retVal = this.marshaller.createDatasource(ddlDatasouce);
+            this._datasources[ddlDatasouce.id] = retVal;
+            this._datasourceArray.push(retVal);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
+        return retVal;
+    };
+
     Dashboard.prototype.createVisualization = function (ddlVisualization, parentVisualization) {
         var retVal = new Visualization(this, ddlVisualization, parentVisualization);
         this._visualizations[ddlVisualization.id] = retVal;
         this._visualizationArray.push(retVal);
-        this.marshaller._visualizations[ddlVisualization.id] = retVal;
-        this.marshaller._visualizationArray.push(retVal);
+        this.marshaller.appendVisualization(retVal);
         return retVal;
     };
 
@@ -1598,8 +1634,16 @@
         return this.id;
     };
 
+    Dashboard.prototype.getDatasources = function() {
+        return this._datasources;
+    };
+
+    Dashboard.prototype.getDatasourceArray = function () {
+        return this._datasourceArray;
+    };
+
     Dashboard.prototype.getDatasource = function (id) {
-        return this.datasources[id];
+        return this._datasources[id] || this.marshaller.getDatasource(id);
     };
 
     Dashboard.prototype.getVisualization = function (id) {
@@ -1620,8 +1664,8 @@
 
     Dashboard.prototype.accept = function (visitor) {
         visitor.visit(this);
-        for (var key in this.datasources) {
-            this.datasources[key].accept(visitor);
+        for (var key in this._datasources) {
+            this._datasources[key].accept(visitor);
         }
         this._visualizationArray.forEach(function (item) {
             item.accept(visitor);
@@ -1669,8 +1713,8 @@
             datasources: {},
             visualizations: {}
         };
-        for (var key in this.datasources) {
-            retVal.datasources[key] = this.datasources[key].serializeState();
+        for (var key in this._datasources) {
+            retVal.datasources[key] = this._datasources[key].serializeState();
         }
         for (var vizKey in this._visualizations) {
             retVal.visualizations[vizKey] = this._visualizations[vizKey].serializeState();
@@ -1680,9 +1724,9 @@
 
     Dashboard.prototype.deserializeState = function (state) {
         if (!state) return;
-        for (var key in this.datasources) {
+        for (var key in this._datasources) {
             if (state.datasources[key]) {
-                this.datasources[key].deserializeState(state.datasources[key]);
+                this._datasources[key].deserializeState(state.datasources[key]);
             }
         }
         for (var vizKey in this._visualizations) {
@@ -1708,17 +1752,13 @@
 
     Marshaller.prototype.commsDataLoaded = function () {
         for (var i = 0; i < this.dashboardArray.length; i++) {
-            for (var ds in this.dashboardArray[i].datasources) {
-                if (this.dashboardArray[i].datasources[ds]._loadedCount === 0) {
+            for (var ds in this.dashboardArray[i].getDatasources()) {
+                if (!this.dashboardArray[i].getDatasource(ds).isLoaded()) {
                     return false;
                 }
             }
         }
         return true;
-    };
-
-    Marshaller.prototype.getVisualization = function (id) {
-        return this._visualizations[id];
     };
 
     Marshaller.prototype.accept = function (visitor) {
@@ -1737,7 +1777,7 @@
         var transport = null;
         var hipieResultName = "HIPIE_DDL";
         if (this.espUrl.isWorkunitResult()) {
-            hipieResultName = this.espUrl._params["ResultName"];
+            hipieResultName = this.espUrl.param("ResultName");
             transport = new Comms.HIPIEWorkunit()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
@@ -1808,12 +1848,23 @@
         var context = this;
         this._json = json;
         this._jsonParsed = JSON.parse(this._json);
+
+        //  Global Datasources  --- 
+        this._datasources = {};
+        this._datasourceArray = [];
+        if (this._jsonParsed.datasources) {
+            this._jsonParsed.datasources.forEach(function (item) {
+                context.createDatasource(item);
+            });
+        }
+
         this.dashboards = {};
         this.dashboardArray = [];
         this._visualizations = {};
         this._visualizationArray = [];
-        this._jsonParsed.forEach(function (item) {
-            var newDashboard = new Dashboard(context, item, context._proxyMappings);
+        var dashboards = this._jsonParsed.dashboards || this._jsonParsed;
+        dashboards.forEach(function (item) {
+            var newDashboard = new Dashboard(context, item, context._proxyMappings, context._timeout);
             context.dashboards[item.id] = newDashboard;
             context.dashboardArray.push(newDashboard);
         });
@@ -1823,12 +1874,46 @@
                 context.vizEvent(ddlViz.widget, eventID, row, col, selected);
             });
         });
+        this._datasourceTotal = this._datasourceArray.length;
+
         this.ready(callback);
         return this;
     };
 
     Marshaller.prototype.dashboardsLoaded = function () {
         return Promise.all(this.dashboardArray.map(function (dashboard) { return dashboard.loadedPromise(); }));
+    };
+
+    Marshaller.prototype.createDatasource = function (ddlDatasouce) {
+        var retVal = this._datasources[ddlDatasouce.id];
+        if (!retVal) {
+            retVal = new Datasource(this, ddlDatasouce, this._proxyMappings, this._timeout);
+            this._datasources[ddlDatasouce.id] = retVal;
+            this._datasourceArray.push(retVal);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
+        return retVal;
+    };
+
+    Marshaller.prototype.getDatasource = function (id) {
+        return this._datasources[id];
+    };
+
+    Marshaller.prototype.getDatasources = function () {
+        return this._datasources;
+    };
+
+    Marshaller.prototype.getDatasourceArray = function () {
+        return this._datasourceArray;
+    };
+
+    Marshaller.prototype.appendVisualization = function(visualization) {
+        this._visualizations[visualization.id] = visualization;
+        this._visualizationArray.push(visualization);
+    };
+
+    Marshaller.prototype.getVisualization = function (id) {
+        return this._visualizations[id];
     };
 
     Marshaller.prototype.getVisualizations = function () {
@@ -1839,6 +1924,10 @@
         return this._visualizationArray;
     };
 
+    Marshaller.prototype.getWidget = function(id) {
+        return this._widgetMappings[id];
+    };
+    
     Marshaller.prototype.on = function (eventID, func) {
         var context = this;
         this.overrideMethod(eventID, function (origFunc, args) {
@@ -1886,8 +1975,8 @@
     Marshaller.prototype.createDatabomb = function () {
         var retVal = {};
         this.dashboardArray.forEach(function (dashboard) {
-            for (var key in dashboard.datasources) {
-                var comms = dashboard.datasources[key].comms;
+            for (var key in dashboard.getDatasources()) {
+                var comms = dashboard.getDatasource(key).comms;
                 retVal[key] = {};
                 for (var key2 in comms._hipieResults) {
                     var hipieResult = comms._hipieResults[key2];
@@ -1924,7 +2013,7 @@
     return {
         Marshaller: Marshaller,
         Dashboard: Dashboard,
-        DataSource: DataSource,
+        Datasource: Datasource,
         Output: Output,
         Visualization: Visualization
     };

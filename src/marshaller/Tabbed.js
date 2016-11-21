@@ -1,151 +1,88 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../layout/Tabbed", "../layout/Grid", "./HipieDDL", "../layout/Surface", "../layout/Cell"], factory);
+        define(["d3", "../layout/Tabbed", "../layout/Grid", "./HipieDDLMixin"], factory);
     } else {
-        root.marshaller_Tabbed = factory(root.d3, root.layout_Tabbed, root.layout_Grid, root.marshaller_HipieDDL, root.layout_Surface, root.layout_Cell);
+        root.marshaller_Tabbed = factory(root.d3, root.layout_Tabbed, root.layout_Grid, root.marshaller_HipieDDLMixin);
     }
-}(this, function (d3, TabbedLayout, Grid, HipieDDL, Surface, Cell) {
+}(this, function (d3, TabbedLayout, Grid, HipieDDLMixin) {
     function Tabbed() {
         TabbedLayout.call(this);
+        HipieDDLMixin.call(this);
+
+        this.surfacePadding_default(0);
     }
     Tabbed.prototype = Object.create(TabbedLayout.prototype);
     Tabbed.prototype.constructor = Tabbed;
+    Tabbed.prototype.mixin(HipieDDLMixin);
     Tabbed.prototype._class += " marshaller_Tabbed";
 
-    Tabbed.prototype.publish("ddlUrl", "", "string", "DDL URL",null,{tags:["Private"]});
-    Tabbed.prototype.publish("databomb", "", "string", "Data Bomb",null,{tags:["Private"]});
-    Tabbed.prototype.publish("proxyMappings", {}, "object", "Proxy Mappings",null,{tags:["Private"]});
-
-    Tabbed.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
-
-    Tabbed.prototype.testData2 = function () {
-        this.ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_testrelavator3.ins002_service/json");
-        //this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150617-115910&ResultName=leeddx_issue_780_formwidget_Comp_Ins002_DDL");
-        //this.ddlUrl("http://10.173.147.1:8010/wsWorkunits/WUResult?Wuid=W20150617-120745&ResultName=leeddx_issue_780_formtablewidget_Comp_Ins002_DDL");
-        //this.ddlUrl("http://10.241.100.159:8002/WsEcl/submit/query/roxie/hipie_testrelavator2.ins002_service/json");
-        return this;
-    };
-
-    Tabbed.prototype._origDesignMode = Tabbed.prototype.designMode;
-    Tabbed.prototype.designMode = function (_) {
-        var retVal = Tabbed.prototype._origDesignMode.apply(this, arguments);
-        if (arguments.length) {
-            this.widgets().forEach(function (gridSurface) {
-                gridSurface.widget().designMode(_);
+    Tabbed.prototype.content = function () {
+        var retVal = [];
+        this.widgets().forEach(function (surface) {
+            var grid = surface.widget();
+            grid.content().forEach(function (widget) {
+                retVal.push(widget);
             });
-        }
+        });
         return retVal;
     };
 
-    function walkDashboards(marshaller, databomb) {
-        if (databomb instanceof Object) {
-        } else if (databomb){
-            databomb = JSON.parse(databomb);
-        }
-        var curr = null;
-        var dashboards = {};
-        marshaller.accept({
-            visit: function (item) {
-                if (item instanceof HipieDDL.Dashboard) {
-                    curr = {
-                        dashboard: item,
-                        visualizations: []
-                    };
-                    dashboards[item.getQualifiedID()] = curr;
-                } else if (item instanceof HipieDDL.DataSource) {
-                    if (item.databomb && databomb[item.id]) {
-                        item.comms.databomb(databomb[item.id]);
-                    }
-                } else if (item instanceof HipieDDL.Output) {
-                    if (item.dataSource.databomb) {
-                        item.dataSource.comms.databombOutput(item.from, item.id);
-                    }
-                } else if (item instanceof HipieDDL.Visualization) {
-                    if (item.widget) {
-                        curr.visualizations.push(item);
-                    }
-                }
-            }
-        });
-        return dashboards;
-    }
-
-    Tabbed.prototype.render = function (callback) {
-        if (this.ddlUrl() === "" || (this.ddlUrl() === this._prev_ddlUrl && this.databomb() === this._prev_databomb)) {
-            return TabbedLayout.prototype.render.apply(this, arguments);
-        } else if (this._prev_ddlUrl && this._prev_ddlUrl !== this.ddlUrl()) {
-            //  DDL has actually changed (not just a deserialization)
-            this
-                .clearTabs()
-            ;
-        }
-        this._prev_ddlUrl = this.ddlUrl();
-        this._prev_databomb = this.databomb();
-
-        //  Gather existing widgets for reuse  ---
-        var tabContent = [];
-        this.widgets().forEach(function (d) {
-            tabContent = tabContent.concat(d.widget().content());
-        });
-        var context = this;
-        this.marshaller = new HipieDDL.Marshaller()
-            .proxyMappings(this.proxyMappings())
-            .widgetMappings(d3.map(tabContent.map(function (d) {
-                return d.widget();
-            }), function (d) {
-                return d.id();
-            }))
-            .on("commsError", function (source, error) {
-                context.commsError(source, error);
-            })
-        ;
-
-        //  Parse DDL  ---
-        if (this.ddlUrl()[0] === "[" || this.ddlUrl()[0] === "{") {
-            this.marshaller.parse(this.ddlUrl(), function () {
-                populateContent();
-            });
-        } else {
-            this.marshaller.url(this.ddlUrl(), function () {
-                populateContent();
-            });
-        }
-
-        function populateContent() {
-            var dashboards = walkDashboards(context.marshaller, context.databomb());
-            if (!tabContent.length) {
-                if (context.marshaller.dashboardTotal <= 1) {
-                    context.showTabs(false);
-                }
-                for (var key in dashboards) {
-                    var grid = new Grid();
-                    context.addTab(grid, dashboards[key].dashboard.title);
-                    var cellRow = 0;
-                    var cellCol = 0;
-                    var maxCol = Math.floor(Math.sqrt(dashboards[key].visualizations.length));
-                    dashboards[key].visualizations.forEach(function (viz, idx) {
-                        if (idx && (idx % maxCol === 0)) {
+    Tabbed.prototype.populateContent = function () {
+        var cellDensity = 3;
+        this._ddlDashboards.forEach(function (dashboard) {
+            var grid = new Grid().surfacePadding(0);
+            this.addTab(grid, dashboard.dashboard.title);
+            var cellRow = 0;
+            var cellCol = 0;
+            var maxCol = Math.floor(Math.sqrt(dashboard.visualizations.length));
+            dashboard.visualizations.forEach(function (viz) {
+                if (viz.newWidgetSurface) {
+                    while (grid.getCell(cellRow * cellDensity, cellCol * cellDensity) !== null) {
+                        cellCol++;
+                        if (cellCol % maxCol === 0) {
                             cellRow++;
                             cellCol = 0;
                         }
-                        viz.widget.size({ width: 0, height: 0 });
-                        grid.setContent(cellRow, cellCol, viz.widget, viz.title);
-                        cellCol++;
-                    });
+                    }
+                    grid.setContent(cellRow * cellDensity, cellCol * cellDensity, viz.newWidgetSurface, "", cellDensity, cellDensity);
                 }
+            }, this);
+        }, this);
+
+        var vizCellMap = {};
+        this.content().forEach(function (cell) {
+            var widget = cell.widget();
+            if (widget && widget.classID() === "layout_Surface") {
+                widget = widget.widget();
             }
-            for (var dashKey in dashboards) {
-                for (var dsKey in dashboards[dashKey].dashboard.datasources) {
-                    dashboards[dashKey].dashboard.datasources[dsKey].fetchData({}, true);
-                }
+            if (widget) {
+                vizCellMap[widget.id()] = cell;
             }
-            TabbedLayout.prototype.render.call(context, function (widget) {
-                if (callback) {
-                    callback(widget);
+        });
+
+        this._ddlDashboards.forEach(function (dashboard) {
+            dashboard.visualizations.forEach(function (viz, idx) {
+                if (viz.properties.flyout || viz.parentVisualization) {
+                    return;
                 }
+                var targetVizs = viz.events.getUpdatesVisualizations();
+                var targetIDs = targetVizs.filter(function (targetViz) {
+                    return vizCellMap[targetViz.id];
+                }).map(function (targetViz) {
+                    return vizCellMap[targetViz.id].id();
+                });
+                vizCellMap[viz.id].indicateTheseIds(targetIDs);
             });
-        }
+        }, this);
+    };
+
+    Tabbed.prototype.enter = function (domNode, element) {
+        TabbedLayout.prototype.enter.apply(this, arguments);
+    };
+
+    Tabbed.prototype.render = function (callback) {
+        this._marshallerRender(TabbedLayout.prototype, callback);
         return this;
     };
 

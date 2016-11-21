@@ -186,6 +186,7 @@
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
+                            case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
                                 it("Roxie Call");
@@ -229,6 +230,7 @@
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
+                            case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
                                 it("Roxie Call");

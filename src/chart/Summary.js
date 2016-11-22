@@ -22,20 +22,28 @@
     Summary.prototype.implements(I2DChart.prototype);
     Summary.prototype._class += " chart_Summary";
 
-    Summary.prototype.publish("iconColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
+    Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: function (w) { return w.iconColumn(); } });
-    Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
-    Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null);
+
+    Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
+    Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideLabel(); } });
+    Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: function (w) { return w.hideLabel(); } });
+
     Summary.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
-    Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
-    Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: function (w) { return w.moreTextColumn(); } });
-    Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML");
-    Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class");
+
+    Summary.prototype.publish("hideMore", false, "boolean", "Hide More Information");
+    Summary.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideMore(); } });
+    Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: function (w) { return w.hideMore() || w.moreIconColumn(); } });
+    Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideMore(); } });
+    Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: function (w) { return w.hideMore() || w.moreTextColumn(); } });
+    Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML", null, { disable: function (w) { return w.hideMore(); }});
+
     Summary.prototype.publish("colorFillColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null, { disable: function (w) { return w.colorFillColumn(); } });
     Summary.prototype.publish("colorStrokeColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null, { disable: function (w) { return w.colorStrokeColumn(); } });
+
     Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
     Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");
     Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
@@ -62,9 +70,12 @@
     };
 
     Summary.prototype.summaryData = function () {
-        var labelFieldIdx = 0;
-        if (this.labelColumn_exists()) {
-            labelFieldIdx = this.columns().indexOf(this.labelColumn());
+        var labelFieldIdx;  //  undefined
+        if (!this.hideLabel()) {
+            labelFieldIdx = 0;
+            if (this.labelColumn_exists()) {
+                labelFieldIdx = this.columns().indexOf(this.labelColumn());
+            }
         }
         var iconFieldIdx;  //  undefined
         if (this.iconColumn_exists()) {
@@ -74,9 +85,15 @@
         if (this.valueColumn_exists()) {
             valueFieldIdx = this.columns().indexOf(this.valueColumn());
         }
+        var moreIconIdx;  //  undefined
         var moreTextIdx;  //  undefined
-        if (this.moreTextColumn_exists()) {
-            moreTextIdx = this.columns().indexOf(this.moreTextColumn());
+        if (!this.hideMore()) {
+            if (this.moreIconColumn_exists()) {
+                moreIconIdx = this.columns().indexOf(this.moreIconColumn());
+            }
+            if (this.moreTextColumn_exists()) {
+                moreTextIdx = this.columns().indexOf(this.moreTextColumn());
+            }
         }
         var colorFillIdx;  //  undefined
         if (this.colorFillColumn_exists()) {
@@ -89,9 +106,10 @@
         return this.formattedData().map(function (row) {
             return {
                 icon: iconFieldIdx === undefined ? this.icon() : row[iconFieldIdx],
-                label: row[labelFieldIdx],
+                label: labelFieldIdx === undefined ? "" : row[labelFieldIdx],
                 value: row[valueFieldIdx],
-                more: moreTextIdx === undefined ? this.moreText() : row[moreTextIdx],
+                moreIcon: moreIconIdx === undefined ? (this.hideMore() ? "" : this.moreIcon()) : row[moreIconIdx],
+                moreText: moreTextIdx === undefined ? (this.hideMore() ? "" : this.moreText()) : row[moreTextIdx],
                 fill: colorFillIdx === undefined ? this.colorFill() : row[colorFillIdx],
                 stroke: colorStrokeIdx === undefined ? this.colorStroke() : row[colorStrokeIdx]
             };
@@ -155,10 +173,10 @@
             [this.valueHTML() ? HTML : TEXT](row.value)
         ;
         this._textDiv
-            [this.valueHTML() ? HTML : TEXT](row.label)
+            [this.labelHTML() ? HTML : TEXT](row.label)
         ;
         var context = this;
-        var moreDivs = this._mainDiv.selectAll(".more").data([row.more]);
+        var moreDivs = this._mainDiv.selectAll(".more").data([row]);
         moreDivs.enter()
             .append("div")
             .attr("class", "more")
@@ -178,10 +196,10 @@
             .style("background-color", d3.rgb(row.fill).darker(0.75))
         ;
         moreDivs.select("i")
-            .attr("class", "fa " + this.moreIcon())
+            .attr("class", function (d) { return "fa " + d.moreIcon; })
         ;
         moreDivs.select("span")
-            [this.moreTextHTML() ? HTML : TEXT](function (d) { return d; })
+            [this.moreTextHTML() ? HTML : TEXT](function (d) { return d.moreText; })
         ;
         moreDivs.exit().remove();
     };

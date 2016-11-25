@@ -124,9 +124,9 @@
             });
                    
         for (var i=0;i<this.orbFields.length;i++){
-        if (this.savedField.indexOf(this.orbFields[i].caption) === -1){
-            this.savedField.push(this.orbFields[i].caption);
-            }
+            if (this.savedField.indexOf(this.orbFields[i].caption) === -1){
+                this.savedField.push(this.orbFields[i].caption);
+                }
 
         }
 
@@ -217,12 +217,12 @@
 
             var eachField = row.addField();
 
-            for (var n=0;n<allColumns.length;n++){
+            for (var n=0;n<this.orbFields.length;n++){
 
-                if (allColumns[n].caption === eachField){
+                if (this.orbFields[n].caption === eachField){
                     var ft = row.formatFunction();
 
-                    allColumns[n].dataSettings={
+                    this.orbFields[n].dataSettings={
                     aggregateFunc:row.aggregateFunc(),
                     formatFunc: createFormatFunction(ft)
                     };
@@ -234,7 +234,8 @@
 
         },this);
 
-        var orbCurrentConfig = this.orbConfig(ds,allColumns,this.rowFields,this.columnFields,this.dataFields);
+
+        var orbCurrentConfig = this.orbConfig(ds,this.orbFields,this.rowFields,this.columnFields,this.dataFields);
         if (this.prevOrbConfig !== JSON.stringify(orbCurrentConfig)){
             var react = React;
             react.unmountComponentAtNode(document.getElementById(this.id() + "_orb"));

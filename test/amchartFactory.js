@@ -1,15 +1,15 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_amchartFactory = factory();
+        root.test_commonFactory = factory(root.es6Require);
     }
-}(this, function (callback) {
+} (this, function (es6Require) {
     var amchartFactory = {
         Gantt: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Gantt"], function (DataFactory, Gantt) {
+                es6Require(["test/DataFactory", "src/amchart/Gantt"], function (DataFactory, Gantt) {
                     callback(new Gantt()
                         .columns(DataFactory.ganttDateRanges.default.columns)
                         .data(DataFactory.ganttDateRanges.default.data)
@@ -37,11 +37,11 @@
         },
         Combo: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Combo"], function (DataFactory, Combo) {
+                es6Require(["test/DataFactory", "src/amchart/Combo"], function (DataFactory, Combo) {
                     callback(new Combo()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-                        .types(["column","column","line"])
+                        .types(["column", "column", "line"])
                         // .yAxisType("linear")
                         // .xAxisType("ordinal")
                     );
@@ -50,11 +50,11 @@
         },
         Bar: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
+                es6Require(["test/DataFactory", "src/amchart/Bar"], function (DataFactory, Bar) {
                     var bar = new Bar()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-                    ;
+                        ;
                     bar.yAxis(0).axisType("linear");
                     bar.xAxis(0).axisType("ordinal");
                     callback(bar);
@@ -63,11 +63,11 @@
         },
         Column: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
-                    ;
+                        ;
                     col.backwardsCompatible(false);
                     col.yAxis(0)
                         .axisType("linear")
@@ -77,16 +77,16 @@
                 });
             },
             multiY: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                         .y2([2, 4])
-                    ;
+                        ;
                     col.xAxis(0).axisType("ordinal");
                     col.yAxis(0).axisType("linear");
                     col.yAxis(1).axisType("linear");
-                    col.yAxis(1).position("right")  ; 
+                    col.yAxis(1).position("right");
                     callback(col);
                 });
             },
@@ -96,74 +96,74 @@
                 });
             },
             ordinalRange: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
-                    ;
+                        ;
                     col.xAxis(0).axisType("ordinal");
                     col.yAxis(0).axisType("linear");
                     callback(col);
                 });
             },
             ordinalCandleOHLC: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.ordinalCandleOHLC.default.columns)
                         .data(DataFactory.ordinalCandleOHLC.default.data)
-                    ;
+                        ;
                     col.yAxis(0)
                         .axisType("linear")
                         .axisType("ordinal")
-                    ;
+                        ;
                     callback(col);
                 });
             },
             linear: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
-                    ;
+                        ;
                     col.xAxis(0).axisType("linear");
                     col.yAxis(0).axisType("linear");
                     callback(col);
                 });
             },
             timeX: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
                         .axisMinPeriod("MM")
-                    ;
+                        ;
                     col.xAxis(0)
                         .axisType("time")
                         .axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                    ;
+                        ;
                     col.yAxis(0).axisType("linear");
                     callback(col);
                 });
             },
             timeY: function (callback) {
-                require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
+                es6Require(["test/DataFactory", "src/amchart/Column"], function (DataFactory, Column) {
                     var col = new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
                         .axisMinPeriod("DD")
-                    ;
+                        ;
                     col.xAxis(0).axisType("ordinal");
                     col.yAxis(0)
                         .axisType("time")
                         .axisTypeTimePattern("%Y-%m-%d")
-                    ;
+                        ;
                     callback(col);
                 });
             },
         },
         Scatter: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
+                es6Require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
                     callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -171,7 +171,7 @@
                 });
             },
             Bubble: function (callback) {
-                require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
+                es6Require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
                     callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -180,11 +180,11 @@
                 });
             },
             linear: function (callback) {
-                require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
+                es6Require(["test/DataFactory", "src/amchart/Scatter"], function (DataFactory, Scatter) {
                     var scatter = new Scatter()
                         .columns(DataFactory.scatterLinear.default.columns)
                         .data(DataFactory.scatterLinear.default.data)
-                    ;
+                        ;
                     scatter.xAxis(0).axisType("linear");
                     callback(scatter);
                 });
@@ -192,7 +192,7 @@
         },
         Line: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Line"], function (DataFactory, Line) {
+                es6Require(["test/DataFactory", "src/amchart/Line"], function (DataFactory, Line) {
                     callback(new Line()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -200,15 +200,15 @@
                 });
             },
             timeX: function (callback) {
-                require(["test/DataFactory", "src/amchart/Line"], function (DataFactory, Line) {
+                es6Require(["test/DataFactory", "src/amchart/Line"], function (DataFactory, Line) {
                     var line = new Line()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                    ;
+                        ;
                     line.xAxis(0)
                         .axisType("time")
                         .axisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
-                    ;
+                        ;
                     line.yAxis(0).axisType("linear");
                     callback(line);
                 });
@@ -216,7 +216,7 @@
         },
         Area: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Area"], function (DataFactory, Area) {
+                es6Require(["test/DataFactory", "src/amchart/Area"], function (DataFactory, Area) {
                     callback(new Area()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -226,7 +226,7 @@
         },
         Pie: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Pie"], function (DataFactory, Pie) {
+                es6Require(["test/DataFactory", "src/amchart/Pie"], function (DataFactory, Pie) {
                     callback(new Pie()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -236,7 +236,7 @@
         },
         Gauge: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
+                es6Require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
                     callback(new Gauge()
                         .low(DataFactory.OneD.amgauge.low)
                         .high(DataFactory.OneD.amgauge.high)
@@ -245,7 +245,7 @@
                 });
             },
             sample: function (callback) {
-                require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
+                es6Require(["test/DataFactory", "src/amchart/Gauge"], function (DataFactory, Gauge) {
                     callback(new Gauge()
                         .numBands(DataFactory.OneD.amgauge.numBands)
                         .bandsColor(DataFactory.OneD.amgauge.bandsColor)
@@ -266,7 +266,7 @@
         },
         Pyramid: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Pyramid"], function (DataFactory, Pyramid) {
+                es6Require(["test/DataFactory", "src/amchart/Pyramid"], function (DataFactory, Pyramid) {
                     callback(new Pyramid()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -276,7 +276,7 @@
         },
         Polar: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Polar"], function (DataFactory, Polar) {
+                es6Require(["test/DataFactory", "src/amchart/Polar"], function (DataFactory, Polar) {
                     callback(new Polar()
                         .columns(DataFactory.ND.ampolar.columns)
                         .data(DataFactory.ND.ampolar.data)
@@ -286,7 +286,7 @@
         },
         Funnel: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/amchart/Funnel"], function (DataFactory, Funnel) {
+                es6Require(["test/DataFactory", "src/amchart/Funnel"], function (DataFactory, Funnel) {
                     callback(new Funnel()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)

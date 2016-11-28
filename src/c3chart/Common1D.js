@@ -1,40 +1,32 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["./Common", "../api/I1DChart"], factory);
-    } else {
-        root.c3chart_Common1D = factory(root.c3chart_Common, root.api_I1DChart);
-    }
-}(this, function (Common, I1DChart) {
-    function Common1D(target) {
-        Common.call(this);
-        I1DChart.call(this);
+import { Common } from "./Common";
+import { I1DChart } from "../api/I1DChart";
 
-        var context = this;
-        this._config.color = {
-            pattern: this._palette.colors()
-        };
+export function Common1D(target) {
+    Common.call(this);
+    I1DChart.call(this);
 
-        this._config.data.color = function (color, d) {
-            return context._palette(d.id ? d.id : d);
-        };
-    }
-    Common1D.prototype = Object.create(Common.prototype);
-    Common1D.prototype.constructor = Common1D;
-    Common1D.prototype._class += " c3chart_Common1D";
-    Common1D.prototype.implements(I1DChart.prototype);
-
-    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), {tags:["Basic","Shared"]});
-    Common1D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
-
-    Common1D.prototype.update = function (domNode, element) {
-        this._palette = this._palette.switch(this.paletteID());
-        if (this.useClonedPalette()) {
-            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
-        }
-
-        Common.prototype.update.apply(this, arguments);
+    var context = this;
+    this._config.color = {
+        pattern: this._palette.colors()
     };
 
-    return Common1D;
-}));
+    this._config.data.color = function (color, d) {
+        return context._palette(d.id ? d.id : d);
+    };
+}
+Common1D.prototype = Object.create(Common.prototype);
+Common1D.prototype.constructor = Common1D;
+Common1D.prototype._class += " c3chart_Common1D";
+Common1D.prototype.implements(I1DChart.prototype);
+
+Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Common1D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
+
+Common1D.prototype.update = function (domNode, element) {
+    this._palette = this._palette.switch(this.paletteID());
+    if (this.useClonedPalette()) {
+        this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+    }
+
+    Common.prototype.update.apply(this, arguments);
+};

@@ -80,7 +80,7 @@ require.config({
                 AmCharts.isReady = true;
             }
         },
-        'amcharts.gantt': {
+        'amcharts-gantt': {
             deps: [ 'amcharts', 'amcharts-serial' ],
             exports: 'AmCharts',
             init: function() {

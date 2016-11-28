@@ -1,95 +1,90 @@
-﻿"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["../layout/Border", "../layout/Toolbar", "../layout/Grid", "../form/OnOff", "../form/Button", "../common/Icon", "../other/PropertyEditor", "css!./Dermatology"], factory);
-    } else {
-        root.composite_Dermatology = factory(root.layout_Border, root.layout_Toolbar, root.layout_Grid, root.form_OnOff, root.form_Button, root.common_Icon, root.other_PropertyEditor);
+﻿import { Border } from "../layout/Border";
+import { Toolbar } from "../layout/Toolbar";
+import { OnOff } from "../form/OnOff";
+import { PropertyEditor } from "../other/PropertyEditor";
+import "css!./Dermatology";
+
+export function Dermatology() {
+    Border.call(this);
+
+    this._toolbar = new Toolbar()
+        .title("Dermatology")
+        ;
+    this._propEditor = new PropertyEditor()
+        .show_settings(true)
+        ;
+}
+Dermatology.prototype = Object.create(Border.prototype);
+Dermatology.prototype.constructor = Dermatology;
+Dermatology.prototype._class += " composite_Dermatology";
+
+Dermatology.prototype.publish("showToolbar", true, "boolean", "Show Toolbar");
+Dermatology.prototype.publish("widget", null, "widget", "Widget");
+
+Dermatology.prototype.showProperties = function (_) {
+    if (!arguments.length) return this._showProperties;
+    this._showProperties = _;
+    this
+        .rightPercentage(0)
+        .rightSize(this._showProperties ? 360 : 0)
+        .setContent("right", this._showProperties ? this._propEditor : null)
+        ;
+    var widget = this.widget();
+    if (widget && widget.designMode) {
+        widget.designMode(this._showProperties);
     }
-}(this, function (Border, Toolbar, Grid, OnOff, Button, Icon, PropertyEditor) {
-    function Dermatology() {
-        Border.call(this);
+    return this;
+};
 
-        this._toolbar = new Toolbar()
-            .title("Dermatology")
+Dermatology.prototype.toggleProperties = function () {
+    return this.showProperties(!this.showProperties());
+};
+
+Dermatology.prototype.enter = function (domNode, element) {
+    Border.prototype.enter.apply(this, arguments);
+
+    this
+        .topPercentage(0)
+        .topSize(0)
+        .setContent("top", this._toolbar)
         ;
-        this._propEditor = new PropertyEditor()
-            .show_settings(true)
-        ;
-    }
-    Dermatology.prototype = Object.create(Border.prototype);
-    Dermatology.prototype.constructor = Dermatology;
-    Dermatology.prototype._class += " composite_Dermatology";
+    this.getCell("top").surfaceShadow(true);
 
-    Dermatology.prototype.publish("showToolbar", true, "boolean", "Show Toolbar");
-    Dermatology.prototype.publish("widget", null, "widget", "Widget");
-
-    Dermatology.prototype.showProperties = function (_) {
-        if (!arguments.length) return this._showProperties;
-        this._showProperties = _;
-        this
-            .rightPercentage(0)
-            .rightSize(this._showProperties ? 360 : 0)
-            .setContent("right", this._showProperties ? this._propEditor : null)
-        ;
-        var widget = this.widget();
-        if (widget && widget.designMode) {
-            widget.designMode(this._showProperties);
-        }
-        return this;
-    };
-
-    Dermatology.prototype.toggleProperties = function () {
-        return this.showProperties(!this.showProperties());
-    };
-
-    Dermatology.prototype.enter = function (domNode, element) {
-        Border.prototype.enter.apply(this, arguments);
-
-        this
-            .topPercentage(0)
-            .topSize(0)
-            .setContent("top", this._toolbar)
-        ;
-        this.getCell("top").surfaceShadow(true);
-
-        var context = this;
-        this._propsButton = new OnOff()
-            .id(this.id() + "_props")
-            .value("Properties")
-            .on("click", function () {
-                context
-                    .toggleProperties()
-                    .render()
+    var context = this;
+    this._propsButton = new OnOff()
+        .id(this.id() + "_props")
+        .value("Properties")
+        .on("click", function () {
+            context
+                .toggleProperties()
+                .render()
                 ;
-            })
+        })
         ;
-        this._toolbar.widgets([this._propsButton]);
-    };
+    this._toolbar.widgets([this._propsButton]);
+};
 
-    Dermatology.prototype.update = function (domNode, element) {
-        Border.prototype.update.apply(this, arguments);
+Dermatology.prototype.update = function (domNode, element) {
+    Border.prototype.update.apply(this, arguments);
 
-        var widget = this.widget();
-        element.style("background-color", widget && widget.surfaceShadow ? null : "white");
+    var widget = this.widget();
+    element.style("background-color", widget && widget.surfaceShadow ? null : "white");
 
-        this
-            .topPercentage(0)
-            .topSize(this.showToolbar() ? 32 : 0)
+    this
+        .topPercentage(0)
+        .topSize(this.showToolbar() ? 32 : 0)
         ;
-    };
+};
 
-    Dermatology.prototype.render = function (callback) {
-        var widget = this.widget();
-        if (widget !== this._prevWidget) {
-            if (widget && widget.surfaceShadow) {
-                widget.surfaceBackgroundColor_default("white");
-            }
-            this.setContent("center", widget);
-            this._propEditor.widget(widget);
-            this._prevWidget = widget;
+Dermatology.prototype.render = function (callback) {
+    var widget = this.widget();
+    if (widget !== this._prevWidget) {
+        if (widget && widget.surfaceShadow) {
+            widget.surfaceBackgroundColor_default("white");
         }
-        return Border.prototype.render.apply(this, arguments);
-    };
-
-    return Dermatology;
-}));
+        this.setContent("center", widget);
+        this._propEditor.widget(widget);
+        this._prevWidget = widget;
+    }
+    return Border.prototype.render.apply(this, arguments);
+};

@@ -1,28 +1,23 @@
-﻿"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["d3", "./GMapLayered", "./Pins"], factory);
-    } else {
-        root.map_GMapPin = factory(root.d3, root.map_GMapLayered, root.map_Pins);
-    }
-}(this, function (d3, GMapLayered, Pins) {
-    function GMapPin(target) {
-        GMapLayered.call(this);
+﻿import { GMapLayered } from './GMapLayered';
+import { Pins } from './Pins';
 
-        var context = this;
-        this._pins = new Pins()
-            .columns(["lat", "long", "ext"])
-            .on("click", function (row, col, sel) {
-                context.click(context.rowToObj(row.ext.origRow), "", sel);
-            })
-            .on("dblclick", function (row, col, sel) {
-                context.dblclick(context.rowToObj(row.ext.origRow), "", sel);
-            })
+export function GMapPin(target) {
+    GMapLayered.call(this);
+
+    var context = this;
+    this._pins = new Pins()
+        .columns(["lat", "long", "ext"])
+        .on("click", function (row, col, sel) {
+            context.click(context.rowToObj(row.ext.origRow), "", sel);
+        })
+        .on("dblclick", function (row, col, sel) {
+            context.dblclick(context.rowToObj(row.ext.origRow), "", sel);
+        })
         ;
-    }
-    GMapPin.prototype = Object.create(GMapLayered.prototype);
-    GMapPin.prototype.constructor = GMapPin;
-    GMapPin.prototype._class += " map_GMapPin";
+}
+GMapPin.prototype = Object.create(GMapLayered.prototype);
+GMapPin.prototype.constructor = GMapPin;
+GMapPin.prototype._class += " map_GMapPin";
 
     GMapPin.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 
@@ -38,59 +33,56 @@
     GMapPin.prototype.publishProxy("strokeWidth", "_pins", "strokeWidth");
     GMapPin.prototype.publishProxy("omitNullLatLong", "_pins", "omitNullLatLong");
 
-    GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function () { return this.columns(); }, { optional: true });
-    GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });
-    GMapPin.prototype.publish("colorColumn", null, "set", "Color", function () { return this.columns(); }, { optional: true });
-    GMapPin.prototype.publish("tooltipColumn", null, "set", "Tooltip", function () { return this.columns(); }, { optional: true });
+GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function () { return this.columns(); }, { optional: true });
+GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });
+GMapPin.prototype.publish("colorColumn", null, "set", "Color", function () { return this.columns(); }, { optional: true });
+GMapPin.prototype.publish("tooltipColumn", null, "set", "Tooltip", function () { return this.columns(); }, { optional: true });
     GMapPin.prototype.publish("streetViewOnClick", false, "boolean", "Switch to street view when pin clicked");
 
-    GMapPin.prototype.pinsData = function () {
-        var columns = this.columns();
-        this._view = this._db.rollupView([this.latitudeColumn(), this.longtitudeColumn()]);
-        return this._view.entries().map(function (row) {
-            var firstRow = row.values[0].values[0];
-            return [row.key, row.values[0].key, {
-                fillColor: firstRow[columns.indexOf(this.colorColumn())],
-                tooltip: firstRow[columns.indexOf(this.tooltipColumn())],
-                origRow: firstRow
-            }];
-        }, this);
-    };
+GMapPin.prototype.pinsData = function () {
+    var columns = this.columns();
+    this._view = this._db.rollupView([this.latitudeColumn(), this.longtitudeColumn()]);
+    return this._view.entries().map(function (row) {
+        var firstRow = row.values[0].values[0];
+        return [row.key, row.values[0].key, {
+            fillColor: firstRow[columns.indexOf(this.colorColumn())],
+            tooltip: firstRow[columns.indexOf(this.tooltipColumn())],
+            origRow: firstRow
+        }];
+    }, this);
+};
 
-    GMapPin.prototype.enter = function (domNode, element) {
-        GMapLayered.prototype.enter.apply(this, arguments);
-        this
-            .layers([
-                this._pins
-            ])
+GMapPin.prototype.enter = function (domNode, element) {
+    GMapLayered.prototype.enter.apply(this, arguments);
+    this
+        .layers([
+            this._pins
+        ])
         ;
-    };
+};
 
-    GMapPin.prototype.update = function (domNode, element) {
-        GMapLayered.prototype.update.apply(this, arguments);
-        this._pins.data(this.pinsData());
+GMapPin.prototype.update = function (domNode, element) {
+    GMapLayered.prototype.update.apply(this, arguments);
+    this._pins.data(this.pinsData());
         if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
             this._prevChecksum = this._db.checksum();
             this.zoomTo(this._pins.pinsData().map(function (row) { return [row.lat, row.long]; }));
         }
     };
 
-    GMapPin.prototype.exit = function (domNode, element) {
-        GMapLayered.prototype.exit.apply(this, arguments);
-    };
+GMapPin.prototype.exit = function (domNode, element) {
+    GMapLayered.prototype.exit.apply(this, arguments);
+};
 
-    GMapPin.prototype.click = function (row, column, selected) {
+GMapPin.prototype.click = function (row, column, selected) {
         if (this.streetViewOnClick()) {
             this.streetViewAt({
                 lat: +row[this.latitudeColumn()],
                 lng: +row[this.longtitudeColumn()]
             });
         }
-    };
+};
 
-    GMapPin.prototype.dblclick = function (row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
-    };
-
-    return GMapPin;
-}));
+GMapPin.prototype.dblclick = function (row, column, selected) {
+    console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+};

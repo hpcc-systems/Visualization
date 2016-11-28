@@ -1,15 +1,15 @@
 "use strict";
-(function(root, factory) {
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_handsonFactory = factory();
+        root.test_commonFactory = factory(root.es6Require);
     }
-}(this, function() {
+}(this, function (es6Require) {
     var handsonFactory = {
         HandsOnTable: {
             simple: function(callback) {
-                require(["src/handson/Table"], function(Table) {
+                es6Require(["src/handson/Table"], function(Table) {
                     var table = new Table()
                         .columns(["Lat", "Long", "Pin"])
                         .data([
@@ -28,7 +28,7 @@
                 });
             },
             widget: function(callback) {
-                require(["src/handson/Table", "src/form/CheckBox", "src/chart/Column"], function (Table, CheckBox, Column) {
+                es6Require(["src/handson/Table", "src/form/CheckBox", "src/chart/Column"], function (Table, CheckBox, Column) {
                     callback(new Table()
                         .columns(["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"])
                         .data([
@@ -268,7 +268,7 @@
                 });
             },
             large: function(callback) {
-                require(["test/DataFactory", "src/handson/Table"], function(DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/handson/Table"], function(DataFactory, Table) {
                     callback(new Table()
                         .columns(DataFactory.Table.large.columns)
                         .data(DataFactory.Table.large.data)
@@ -276,7 +276,7 @@
                 });
             },
             formatted: function(callback) {
-                require(["test/DataFactory", "src/handson/Table"], function(DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/handson/Table"], function(DataFactory, Table) {
                     var table = new Table()
                         .columns(DataFactory.Table.formatted.columns)
                         .data(DataFactory.Table.formatted.data);

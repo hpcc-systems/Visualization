@@ -3,7 +3,7 @@
     if (typeof define === "function" && define.amd) {
         define(["d3", "src/common/Utility", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "test/Factory"], factory);
     }
-}(this, function (d3, Utility, Surface, Grid, Persist, PropertyEditor, testFactory) {
+} (this, function (d3, Utility, Surface, Grid, Persist, PropertyEditor, testFactory) {
     function Main() {
         this.showSpinner();
         this.urlParams = Utility.urlParams();
@@ -27,16 +27,16 @@
     Main.prototype.initGrid = function () {
         d3.select("#switch-design").property("checked", this.urlParams["designMode"] === "true");
 
-        this._propEditor = new PropertyEditor()
+        this._propEditor = new PropertyEditor.PropertyEditor()
             .target("properties")
             .show_settings(true);
         ;
 
         this._main = null;
 
-        this._cloneSurface = new Surface()
+        this._cloneSurface = new Surface.Surface()
             .target("clone")
-        ;
+            ;
     };
 
     Main.prototype.initPropertiesSwitch = function (id) {
@@ -45,7 +45,7 @@
             .on("click", function () {
                 context.showProperties();
             })
-        ;
+            ;
         this.showProperties();
     };
 
@@ -90,7 +90,7 @@
         this._propEditor
             .widget(null)
             .render()
-        ;
+            ;
         this._currWidget = widget;
         if (this._monitorHandle) {
             this._monitorHandle.remove();
@@ -107,10 +107,10 @@
         }
         d3.select("#cellSurface")
             .classed("supress", widget.surfaceShadow !== undefined)
-        ;
+            ;
         d3.select("#surface")
             .classed("supress", widget.surfaceShadow !== undefined)
-        ;
+            ;
         if (widget.surfaceShadow) {
             widget.surfaceBackgroundColor_default("white")
         }
@@ -120,14 +120,14 @@
                 context.showClone();
                 context.showSpinner(false);
             })
-        ;
+            ;
         if (widget && widget.designMode) {
             widget.designMode(this.propertiesVisible());
         }
         this._propEditor
             .widget(widget)
             .render()
-        ;
+            ;
     };
 
     Main.prototype.cloneWidget = function (func) {
@@ -144,7 +144,7 @@
             this._propEditor
                 .resize()
                 .render()
-            ;
+                ;
         }
         if (this._currWidget && this._currWidget.designMode) {
             this._currWidget.designMode(show);
@@ -153,7 +153,7 @@
             this._main
                 .resize()
                 .lazyRender()
-            ;
+                ;
         }
     };
 
@@ -172,14 +172,14 @@
                         .surfacePadding(0)
                         .widget(widget)
                         .render()
-                    ;
+                        ;
                 });
             } else {
                 this._cloneSurface
                     .surfacePadding(0)
                     .widget(null)
                     .render()
-                ;
+                    ;
             }
             this._prevShowClone = show;
         }
@@ -223,16 +223,16 @@
             this._main
                 .resize()
                 .lazyRender()
-            ;
+                ;
         }
         this._propEditor
             .resize()
             .lazyRender()
-        ;
+            ;
         this._cloneSurface
             .resize()
             .lazyRender()
-        ;
+            ;
     };
 
     return Main;

@@ -1,15 +1,15 @@
 ﻿"use strict";
-(function (root, factory) {
+(function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
         root.test_commonFactory = factory();
     }
-}(this, function () {
+} (this, function(es6Require) {
     var commonFactory = {
         Text: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/Text"], function (DataFactory, Text) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Text"], function(DataFactory, Text) {
                     callback(new Text()
                         .text(DataFactory.Text.simple.text)
                     );
@@ -17,16 +17,16 @@
             }
         },
         Shape: {
-            simple: function (callback) {
-                require(["src/common/Shape"], function (Shape) {
+            simple: function(callback) {
+                es6Require(["src/common/Shape"], function(Shape) {
                     callback(new Shape()
                     );
                 });
             }
         },
         FAChar: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/FAChar"], function (DataFactory, FAChar) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/FAChar"], function(DataFactory, FAChar) {
                     callback(new FAChar()
                         .char(DataFactory.FAChar.simple.char)
                     );
@@ -34,8 +34,8 @@
             }
         },
         TextBox: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/TextBox"], function (DataFactory, TextBox) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/TextBox"], function(DataFactory, TextBox) {
                     callback(new TextBox()
                         .text(DataFactory.Text.simple.text)
                     );
@@ -43,47 +43,47 @@
             }
         },
         Image: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/Image"], function (DataFactory, Image) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Image"], function(DataFactory, Image) {
                     callback(new Image().source(DataFactory.Image.floorplan));
                 });
             },
-            layered: function (callback) {
-                require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/common/Image", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, Image, HeatMap) {
+            layered: function(callback) {
+                es6Require(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/common/Image", "src/other/HeatMap"], function(DataFactory, Layered, AbsoluteSurface, Image, HeatMap) {
                     var retVal = new Layered()
                         .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).widget(
-                                new Image()
-                                    .source(DataFactory.Image.floorplan)
-                                    .alignment("origin")
-                            )
+                            new Image()
+                                .source(DataFactory.Image.floorplan)
+                                .alignment("origin")
+                        )
                         )
                         .addLayer(new AbsoluteSurface().widgetX(0).widgetY(0).widgetWidth(100).widgetHeight(100).opacity(0.66).widget(
-                                new HeatMap()
-                                    .columns(DataFactory.HeatMap.floorplan.columns)
-                                    .data(DataFactory.HeatMap.floorplan.data)
-                            )
+                            new HeatMap()
+                                .columns(DataFactory.HeatMap.floorplan.columns)
+                                .data(DataFactory.HeatMap.floorplan.data)
                         )
-                    ;
+                        )
+                        ;
                     callback(retVal);
                 });
             },
-            url: function (callback) {
-                require(["test/DataFactory", "src/common/Image"], function (DataFactory, Image) {
+            url: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Image"], function(DataFactory, Image) {
                     callback(new Image().source("http://scoop.previewsworld.com/Image/NewsImage/4/41615/88069/1"));
                 });
             }
-            
+
         },
         Icon: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/Icon"], function (DataFactory, Icon) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Icon"], function(DataFactory, Icon) {
                     callback(new Icon()
                         .faChar(DataFactory.FAChar.simple.char)
                     );
                 });
             },
-            image: function (callback) {
-                require(["test/DataFactory", "src/common/Icon"], function (DataFactory, Icon) {
+            image: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Icon"], function(DataFactory, Icon) {
                     callback(new Icon()
                         .faChar("")
                         .diameter(64)
@@ -93,8 +93,8 @@
             }
         },
         List: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/List"], function (DataFactory, List) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/List"], function(DataFactory, List) {
                     callback(new List()
                         .data(DataFactory.List.simple.data)
                     );
@@ -102,8 +102,8 @@
             }
         },
         Menu: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/Menu"], function (DataFactory, Menu) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Menu"], function(DataFactory, Menu) {
                     callback(new Menu()
                         .data(DataFactory.List.simple.data)
                     );
@@ -111,8 +111,8 @@
             }
         },
         Surface: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/Surface", "src/common/Text"], function (DataFactory, Surface, Text) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/Surface", "src/common/Text"], function(DataFactory, Surface, Text) {
                     callback(new Surface()
                         .title("Surface")
                         .menu(DataFactory.Surface.simple.menu)
@@ -125,8 +125,8 @@
             }
         },
         ResizeSurface: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/common/ResizeSurface", "src/common/Text"], function (DataFactory, ResizeSurface, Text) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/common/ResizeSurface", "src/common/Text"], function(DataFactory, ResizeSurface, Text) {
                     callback(new ResizeSurface()
                         .title("Resize")
                         .menu(DataFactory.Surface.simple.menu)
@@ -139,18 +139,18 @@
             }
         },
         Composition: {
-            simple: function (callback) {
-                require(["test/DataFactory",
+            simple: function(callback) {
+                es6Require(["test/DataFactory",
                     "src/common/Utility", "src/common/Surface", "src/common/ResizeSurface", "src/common/Text", "src/common/TextBox", "src/common/Shape", "src/common/FAChar", "src/common/Icon", "src/common/List", "src/common/Menu", "src/common/Palette",
                     "src/graph/Graph", "src/graph/Edge", "src/graph/Vertex",
                     "src/tree/SunburstPartition", "src/tree/CirclePacking",
                     "test/chartFactory", "test/otherFactory",
-                    "src/other/MorphText", "src/form/Slider", "src/other/Table"], function (DataFactory,
+                    "src/other/MorphText", "src/form/Slider", "src/other/Table"], function(DataFactory,
                         Utility, Surface, ResizeSurface, Text, TextBox, Shape, FAChar, Icon, List, Menu, Palette,
-                    Graph, Edge, Vertex,
-                    SunburstPartition, CirclePacking,
-                    chartFactory, otherFactory,
-                    MorphText, Slider, Table) {
+                        Graph, Edge, Vertex,
+                        SunburstPartition, CirclePacking,
+                        chartFactory, otherFactory,
+                        MorphText, Slider, Table) {
                         function createEdge(source, target, label) {
                             return new Edge()
                                 .sourceVertex(source)
@@ -158,10 +158,10 @@
                                 .sourceMarker("circle")
                                 .targetMarker("arrow")
                                 .text(label || "")
-                            ;
+                                ;
                         }
-                        chartFactory.Column.simple(function (column) {
-                            otherFactory.Table.simple(function (table) {
+                        chartFactory.Column.simple(function(column) {
+                            otherFactory.Table.simple(function(table) {
                                 var vertices = [
                                     new Shape().shape("circle").size({ width: 32, height: 32 }),
                                     new FAChar().char("\uf080"),
@@ -194,13 +194,13 @@
             }
         },
         Exporter: {
-            Simple: function (callback) {
-                require(["test/DataFactory", "src/layout/Surface", "src/chart/Line", "src/common/Utility"], function (DataFactory, Surface, Line, Utility) {
+            Simple: function(callback) {
+                es6Require(["test/DataFactory", "src/layout/Surface", "src/chart/Line", "src/common/Utility"], function(DataFactory, Surface, Line, Utility) {
                     var retVal = new Surface()
                         .title(DataFactory.Surface.simple.title)
-                        .buttonAnnotations([{id:"export_CSV",label:"CSV",width:"50px", height:"18px",padding:"0px 5px", format:"CSV"},
-                            {id:"export_TSV",label:"TSV",width:"50px", height:"18px",padding:"0px 5px", format:"TSV"},
-                            {id:"export_CSV",label:"JSON",width:"50px", height:"18px",padding:"0px 5px", format:"JSON"}])
+                        .buttonAnnotations([{ id: "export_CSV", label: "CSV", width: "50px", height: "18px", padding: "0px 5px", format: "CSV" },
+                        { id: "export_TSV", label: "TSV", width: "50px", height: "18px", padding: "0px 5px", format: "TSV" },
+                        { id: "export_CSV", label: "JSON", width: "50px", height: "18px", padding: "0px 5px", format: "JSON" }])
                         .widget(new Line()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
@@ -212,7 +212,7 @@
                                 Utility.downloadData(d.format, formattedData, classID);
                             }
                         })
-                    ;
+                        ;
                     callback(retVal);
                 });
             }

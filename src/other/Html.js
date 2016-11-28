@@ -1,44 +1,36 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["../common/HTMLWidget","css!./Html"], factory);
-    } else {
-        root.other_Html = factory(root.common_HTMLWidget);
-    }
-}(this, function (HTMLWidget) {
-    function HTML() {
-        HTMLWidget.call(this);
-        this._tag = "div";
-    }
-    HTML.prototype = Object.create(HTMLWidget.prototype);
-    HTML.prototype.constructor = HTML;
-    HTML.prototype._class += " other_Html";
-    
-    HTML.prototype.publish("html", "", "string", "Html to render", null, { tags: ["Basic"] });
-    HTML.prototype.publish("overflowX", null, "set", "CSS overflow-x", ["","visible","hidden","scroll","auto","initial","inherit"], { tags: ["Basic"], optional:true });
-    HTML.prototype.publish("overflowY", null, "set", "CSS overflow-y", ["","visible","hidden","scroll","auto","initial","inherit"], { tags: ["Basic"], optional:true });
+import { HTMLWidget } from "../common/HTMLWidget";
+import "css!./Html";
 
-    HTML.prototype.enter = function (domNode, element) {
-        HTMLWidget.prototype.enter.apply(this, arguments);
-    };
+export function Html() {
+    HTMLWidget.call(this);
+    this._tag = "div";
+}
+Html.prototype = Object.create(HTMLWidget.prototype);
+Html.prototype.constructor = Html;
+Html.prototype._class += " other_Html";
 
-    HTML.prototype.update = function (domNode, element) {
-        HTMLWidget.prototype.update.apply(this, arguments);
-        
-        element.style({
-            "overflow-x":this.overflowX_exists() ? this.overflowX() : "",
-            "overflow-y":this.overflowY_exists() ? this.overflowY() : "",
-        });
-            
-        var html = element.selectAll(".htmlWrapper").data(this.data().length > 0 ? this.data() : [this.html()]);
-        html.enter().append("div")
-            .attr("class", "htmlWrapper")
+Html.prototype.publish("html", "", "string", "Html to render", null, { tags: ["Basic"] });
+Html.prototype.publish("overflowX", null, "set", "CSS overflow-x", ["", "visible", "hidden", "scroll", "auto", "initial", "inherit"], { tags: ["Basic"], optional: true });
+Html.prototype.publish("overflowY", null, "set", "CSS overflow-y", ["", "visible", "hidden", "scroll", "auto", "initial", "inherit"], { tags: ["Basic"], optional: true });
+
+Html.prototype.enter = function (domNode, element) {
+    HTMLWidget.prototype.enter.apply(this, arguments);
+};
+
+Html.prototype.update = function (domNode, element) {
+    HTMLWidget.prototype.update.apply(this, arguments);
+
+    element.style({
+        "overflow-x": this.overflowX_exists() ? this.overflowX() : "",
+        "overflow-y": this.overflowY_exists() ? this.overflowY() : "",
+    });
+
+    var html = element.selectAll(".htmlWrapper").data(this.data().length > 0 ? this.data() : [this.html()]);
+    html.enter().append("div")
+        .attr("class", "htmlWrapper")
         ;
-        html
-            .html(function (d) { return d; })
+    html
+        .html(function (d) { return d; })
         ;
-        html.exit().remove();
-    };
-
-    return HTML;
-}));
+    html.exit().remove();
+};

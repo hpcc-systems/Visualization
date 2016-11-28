@@ -1,91 +1,84 @@
-"use strict";
-(function(root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "amcharts-serial", "../api/INDChart", "css!./Combo"], factory);
+import { CommonSerial } from "./CommonSerial";
+import { INDChart } from "../api/INDChart";
+import "css!./Combo";
+
+export function Combo() {
+    CommonSerial.call(this);
+    this._tag = "div";
+    //this._gType = "";
+}
+Combo.prototype = Object.create(CommonSerial.prototype);
+Combo.prototype.constructor = Combo;
+Combo.prototype._class += " amchart_Combo";
+Combo.prototype.implements(INDChart.prototype);
+
+Combo.prototype.publish("paletteID", "default", "set", "Palette ID", Combo.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Combo.prototype.publish("stacked", false, "boolean", "Stack Chart", null, { tags: ["Basic", "Shared"] });
+Combo.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color", null, { min: 0, max: 1, step: 0.001, inputType: "range", tags: ["Intermediate", "Shared"] });
+Combo.prototype.publish("stackType", "regular", "set", "Stack Type", ["none", "regular", "100%"], { tags: ["Basic"] });
+
+Combo.prototype.publish("bulletSize", 6, "number", "Bullet Size", null, { tags: ["Intermediate"] });
+Combo.prototype.publish("bulletType", "round", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"], { tags: ["Basic"] });
+
+Combo.prototype.publish("defaultType", "column", "set", "Default chart type", ["column", "line", "spline", "area", "area-spline", "step", "area-step", "scatter"], { tags: ["Basic"] });
+Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)", null, { tags: ["Basic"] });
+
+Combo.prototype.publish("charts", [], "widgetArray", "widgets", null, { tags: ["Basic"] }); // perhaps we want to load up the params on a chart and pass in the chart and just read the params there?
+
+Combo.prototype.enter = function (domNode, element) {
+    CommonSerial.prototype.enter.apply(this, arguments);
+};
+
+Combo.prototype.updateChartOptions = function () {
+    CommonSerial.prototype.updateChartOptions.apply(this, arguments);
+
+    // Stacked
+    if (this.stacked()) {
+        this._chart.valueAxes[0].stackType = this.stackType();
     } else {
-        root.amchart_Combo = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
+        this._chart.valueAxes[0].stackType = "none";
     }
-}(this, function(d3, CommonSerial, AmCharts, INDChart) {
-    function Combo() {
-        CommonSerial.call(this);
-        this._tag = "div";
-        //this._gType = "";
+
+    this.buildGraphs(this._gType);
+
+    this._chart.categoryAxis.startOnAxis = false;
+
+    return this._chart;
+};
+
+Combo.prototype.buildGraphs = function () {
+    this._chart.graphs = [];
+
+    for (var i = 0; i < this.columns().length - 1; i++) {
+        var gType = this.types()[i] || this.defaultType();
+        var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
+        var gObj = buildGraphObj.call(this, gRetVal, i);
+
+        this._chart.addGraph(gObj);
     }
-    Combo.prototype = Object.create(CommonSerial.prototype);
-    Combo.prototype.constructor = Combo;
-    Combo.prototype._class += " amchart_Combo";
-    Combo.prototype.implements(INDChart.prototype);
 
-    Combo.prototype.publish("paletteID", "default", "set", "Palette ID", Combo.prototype._palette.switch(),{tags:["Basic","Shared"]});
-    Combo.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
-    Combo.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color", null, {min:0,max:1,step:0.001,inputType:"range",tags:["Intermediate","Shared"]});
-    Combo.prototype.publish("stackType", "regular", "set", "Stack Type",["none","regular","100%"],{tags:["Basic"]});
-
-    Combo.prototype.publish("bulletSize", 6, "number", "Bullet Size",null,{tags:["Intermediate"]});
-    Combo.prototype.publish("bulletType", "round", "set", "Bullet Type", ["none", "round", "square", "triangleUp", "triangleDown", "triangleLeft", "triangleRight", "bubble", "diamond"],{tags:["Basic"]});
-
-    Combo.prototype.publish("defaultType", "column", "set", "Default chart type", ["column","line","spline","area","area-spline","step","area-step","scatter"],{tags:["Basic"]});
-    Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
-    
-    Combo.prototype.publish("charts", [], "widgetArray", "widgets", null, { tags: ["Basic"] }); // perhaps we want to load up the params on a chart and pass in the chart and just read the params there?
-
-    Combo.prototype.enter = function(domNode, element) {
-        CommonSerial.prototype.enter.apply(this, arguments);
-    };
-
-    Combo.prototype.updateChartOptions = function() {
-        CommonSerial.prototype.updateChartOptions.apply(this, arguments);
-
-        // Stacked
-        if(this.stacked()){
-            this._chart.valueAxes[0].stackType = this.stackType();
-        } else {
-            this._chart.valueAxes[0].stackType = "none";
+    function buildGraphObj(gObj, i) {
+        // Combo Specific Options
+        if (gType !== "line") {
+            gObj.fillAlphas = this.fillOpacity();
+        }
+        if (gType !== "column") {
+            gObj.bullet = this.bulletType();
+            gObj.bulletSize = this.bulletSize();
         }
 
-        this.buildGraphs(this._gType);
+        gObj.valueField = this.columns()[i + 1];
 
-        this._chart.categoryAxis.startOnAxis = false;
+        gObj.type = gObj.type === "area" ? "line" : gObj.type; // an area chart is a line chart with fillOpacity set
+        return gObj;
+    }
+};
 
-        return this._chart;
-    };
+Combo.prototype.update = function (domNode, element) {
+    CommonSerial.prototype.update.apply(this, arguments);
 
-    Combo.prototype.buildGraphs = function() {
-        this._chart.graphs = [];
+    this.updateChartOptions();
 
-        for (var i = 0; i < this.columns().length - 1; i++) {
-            var gType = this.types()[i] || this.defaultType();
-            var gRetVal = CommonSerial.prototype.buildGraphObj.call(this, gType, i);
-            var gObj = buildGraphObj.call(this, gRetVal, i);
-
-            this._chart.addGraph(gObj);
-        }
-
-        function buildGraphObj(gObj, i) {
-            // Combo Specific Options
-            if (gType !== "line") {
-                gObj.fillAlphas = this.fillOpacity();
-            }
-            if (gType !== "column") {
-                gObj.bullet = this.bulletType();
-                gObj.bulletSize = this.bulletSize();
-            }
-
-            gObj.valueField = this.columns()[i + 1];
-            
-            gObj.type = gObj.type === "area" ? "line" : gObj.type; // an area chart is a line chart with fillOpacity set
-            return gObj;
-        }
-    };
-
-    Combo.prototype.update = function(domNode, element) {
-        CommonSerial.prototype.update.apply(this, arguments);
-
-        this.updateChartOptions();
-
-        this._chart.validateNow();
-        this._chart.validateData();
-    };
-
-    return Combo;
-}));
+    this._chart.validateNow();
+    this._chart.validateData();
+};

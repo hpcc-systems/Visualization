@@ -1,15 +1,15 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_graphFactory = factory();
+        root.test_commonFactory = factory(root.es6Require);
     }
-}(this, function () {
+} (this, function (es6Require) {
     return {
         Vertex: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/graph/Vertex"], function (DataFactory, Vertex) {
+                es6Require(["test/DataFactory", "src/graph/Vertex"], function (DataFactory, Vertex) {
                     callback(new Vertex()
                         .faChar(DataFactory.FAChar.simple.char)
                         .text(DataFactory.Text.simple.text)
@@ -20,7 +20,7 @@
         },
         Edge: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                es6Require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
                     var vertices = [];
                     var edges = [];
@@ -42,8 +42,8 @@
                                 .textbox_text_colorFill("#333333")
                                 .iconAnchor("middle")
                                 .faChar(node.icon)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -57,8 +57,8 @@
                                 .strokeDasharray(idx === 0 ? "15, 10, 5, 10, 15" : null)
                                 .strokeColor(idx === 0 ? "cyan" : null)
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -68,7 +68,7 @@
         },
         Graph: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                es6Require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
                     var vertices = [];
                     var edges = [];
@@ -85,8 +85,8 @@
                                 .icon_shape_colorStroke(palette(node.group))
                                 .icon_shape_colorFill(palette(node.group))
                                 .faChar(node.icon)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -98,8 +98,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -107,7 +107,7 @@
                 });
             },
             restyle: function (callback) {
-                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                es6Require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
                     var vertices = [];
                     var edges = [];
@@ -129,8 +129,8 @@
                                 .textbox_text_colorFill("#333333")
                                 .iconAnchor("middle")
                                 .faChar(node.icon)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -142,8 +142,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -151,7 +151,7 @@
                 });
             },
             les_miz: function (callback) {
-                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                es6Require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
                     var vertices = [];
                     var edges = [];
@@ -168,8 +168,8 @@
                                 .icon_shape_colorStroke(palette(node.group))
                                 .icon_shape_colorFill(palette(node.group))
                                 .faChar(node.name[0])
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -181,8 +181,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -190,7 +190,7 @@
                 });
             },
             annotations: function (callback) {
-                require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
+                es6Require(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();
 
                     var vertices = [];
@@ -245,7 +245,7 @@
                             .sourceMarker("circle")
                             .targetMarker("arrow")
                             .text(label || "")
-                        ;
+                            ;
                     }
                     rawData.links.forEach(function (link, idx) {
                         edges.push(createEdge(vertices[link.source], vertices[link.target]).weight(link.value));
@@ -258,12 +258,12 @@
         },
         Sankey: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/graph/Sankey"], function (DataFactory, Sankey) {
+                es6Require(["test/DataFactory", "src/graph/Sankey"], function (DataFactory, Sankey) {
                     var widget = new Sankey()
                         .columns(DataFactory.Sample.DataBreach.columns)
                         .data(DataFactory.Sample.DataBreach.data)
                         .mappings([new Sankey.prototype.Column().column("Covered Entity Type"), new Sankey.prototype.Column().column("Type of Breach")])
-                    ;
+                        ;
                     callback(widget);
                 });
             }

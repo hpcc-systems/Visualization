@@ -1,24 +1,23 @@
-﻿"use strict";
-(function (root, factory) {
+﻿(function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_chartFactory = factory();
+        root.test_commonFactory = factory();
     }
-}(this, function () {
+} (this, function(es6Require) {
     var chartFactory = {
         Column: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
             },
-            longLabels: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
-                    callback(new Column()                        
+            longLabels: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
+                    callback(new Column()
                         .columns(DataFactory.ND.subjects.columns)
                         .data([
                             ["Geography Geography Geography\nGeography Geography", 75, 68, 65],
@@ -31,52 +30,52 @@
                     );
                 });
             },
-            bar: function (callback) {
-                chartFactory.Column.simple(function (widget) {
+            bar: function(callback) {
+                chartFactory.Column.simple(function(widget) {
                     widget.orientation("vertical");
                     callback(widget);
                 });
             },
-            ordinalRange: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+            ordinalRange: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.ordinalRange.default.columns)
                         .data(DataFactory.ordinalRange.default.data)
-                        
+
                         .yAxisType("linear")
                         .xAxisType("ordinal")
                     );
                 });
             },
-            linear: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+            linear: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.linear.default.columns)
                         .data(DataFactory.linear.default.data)
-                        
+
                         .xAxisType("linear")
                         .yAxisType("linear")
                     );
                 });
             },
-            timeX: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+            timeX: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                        
+
                         .xAxisType("time")
                         .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
                         .yAxisType("linear")
                     );
                 });
             },
-            timeY: function (callback) {
-                require(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+            timeY: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Column"], function(DataFactory, Column) {
                     callback(new Column()
                         .columns(DataFactory.timeY.default.columns)
                         .data(DataFactory.timeY.default.data)
-                      
+
                         .xAxisType("ordinal")
                         .yAxisType("time")
                         .yAxisTypeTimePattern("%Y-%m-%d")
@@ -85,8 +84,8 @@
             },
         },
         Bar: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Bar"], function (DataFactory, Bar) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Bar"], function(DataFactory, Bar) {
                     callback(new Bar()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -95,8 +94,8 @@
             },
         },
         Gantt: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Gantt"], function (DataFactory, Gantt) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Gantt"], function(DataFactory, Gantt) {
                     callback(new Gantt()
                         .yAxisTypeTimePattern("%Y-%m-%d")
                         .columns(["Project", "Date Range"])
@@ -110,8 +109,8 @@
             }
         },
         Bubble: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Bubble"], function (DataFactory, Bubble) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Bubble"], function(DataFactory, Bubble) {
                     callback(new Bubble()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data)
@@ -120,8 +119,8 @@
             }
         },
         Scatter: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Scatter"], function (DataFactory, Scatter) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Scatter"], function(DataFactory, Scatter) {
                     callback(new Scatter()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -130,11 +129,11 @@
             }
         },
         HexBin: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/HexBin"], function (DataFactory, HexBin) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/HexBin"], function(DataFactory, HexBin) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function() { return [randomX(), randomY()]; });
 
                     callback(new HexBin()
                         .xAxisType("linear")
@@ -146,28 +145,28 @@
             }
         },
         Line: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Line"], function(DataFactory, Line) {
                     callback(new Line()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
             },
-            timeX: function (callback) {
-                require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
+            timeX: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Line"], function(DataFactory, Line) {
                     callback(new Line()
                         .columns(DataFactory.timeX.default.columns)
                         .data(DataFactory.timeX.default.data)
-                        
+
                         .xAxisType("time")
                         .xAxisTypeTimePattern("%Y-%m-%dT%H:%M:%S")
                         .yAxisType("linear")
                     );
                 });
             },
-            cardinal_interpolation: function (callback) {
-                require(["test/DataFactory", "src/chart/Line"], function (DataFactory, Line) {
+            cardinal_interpolation: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Line"], function(DataFactory, Line) {
                     callback(new Line()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -177,8 +176,8 @@
             }
         },
         Area: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Area"], function (DataFactory, Area) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Area"], function(DataFactory, Area) {
                     callback(new Area()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -187,8 +186,8 @@
             }
         },
         Pie: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Pie"], function (DataFactory, Pie) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Pie"], function(DataFactory, Pie) {
                     callback(new Pie()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data)
@@ -208,8 +207,8 @@
             }
         },
         Step: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Step"], function (DataFactory, Step) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Step"], function(DataFactory, Step) {
                     callback(new Step()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -218,8 +217,8 @@
             }
         },
         Summary: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Summary"], function (DataFactory, Summary) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Summary"], function(DataFactory, Summary) {
                     callback(new Summary()
                         .columns(["Summary", "Score", "Details", "Status", "Icon"])
                         .data([
@@ -240,16 +239,16 @@
             }
         },
         MultiChart: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/MultiChart"], function(DataFactory, MultiChart) {
                     callback(new MultiChart()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
             },
-            dataBreach: function (callback) {
-                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+            dataBreach: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/MultiChart"], function(DataFactory, MultiChart) {
                     callback(new MultiChart()
                         .chartType("TABLE")
                         .chartTypeDefaults({
@@ -260,8 +259,8 @@
                     );
                 });
             },
-            flightPath: function (callback) {
-                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+            flightPath: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/MultiChart"], function(DataFactory, MultiChart) {
                     callback(new MultiChart()
                         .chartType("TABLE")
                         .chartTypeDefaults({
@@ -272,8 +271,8 @@
                     );
                 });
             },
-            stockMarket: function (callback) {
-                require(["test/DataFactory", "src/chart/MultiChart"], function (DataFactory, MultiChart) {
+            stockMarket: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/MultiChart"], function(DataFactory, MultiChart) {
                     callback(new MultiChart()
                         .chartType("TABLE")
                         .chartTypeDefaults({
@@ -286,8 +285,8 @@
             }
         },
         MultiChartSurface: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/MultiChartSurface"], function (DataFactory, MultiChartSurface) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/MultiChartSurface"], function(DataFactory, MultiChartSurface) {
                     callback(new MultiChartSurface()
                         .columns(DataFactory.ND.subjects.columns)
                         .data(DataFactory.ND.subjects.data)
@@ -296,24 +295,24 @@
             }
         },
         Axis: {
-            ordinal: function (callback) {
-                require(["src/chart/Axis"], function (Axis) {
+            ordinal: function(callback) {
+                es6Require(["src/chart/Axis"], function(Axis) {
                     callback(new Axis()
                         .type("ordinal")
                         .ordinals(["Year 1", "Year 2", "Year 3", "Year 4"])
                     );
                 });
             },
-            longLabels: function (callback) {
-                require(["src/chart/Axis"], function (Axis) {
+            longLabels: function(callback) {
+                es6Require(["src/chart/Axis"], function(Axis) {
                     callback(new Axis()
                         .type("ordinal")
                         .ordinals(["Geography-Geography-Geography-Geography-Geography", "English-English-English-English-English-English", "Math-Math-Math-Math-Math-Math-Math-Math-Math-Math", "Science-Science-Science-Science-Science-Science"])
                     );
                 });
             },
-            linear: function (callback) {
-                require(["src/chart/Axis"], function (Axis) {
+            linear: function(callback) {
+                es6Require(["src/chart/Axis"], function(Axis) {
                     callback(new Axis()
                         .type("linear")
                         .low(0)
@@ -321,8 +320,8 @@
                     );
                 });
             },
-            time: function (callback) {
-                require(["src/chart/Axis"], function (Axis) {
+            time: function(callback) {
+                es6Require(["src/chart/Axis"], function(Axis) {
                     callback(new Axis()
                         .type("time")
                         .low("2010-03-15")
@@ -332,16 +331,16 @@
             }
         },
         Bullet: {
-            simple: function (callback) {
-                require(["test/DataFactory", "src/chart/Bullet"], function (DataFactory, Bullet) {
+            simple: function(callback) {
+                es6Require(["test/DataFactory", "src/chart/Bullet"], function(DataFactory, Bullet) {
                     callback(new Bullet()
-                        .columns(["title",      "subtitle",             "ranges",           "measures",     "markers"])
+                        .columns(["title", "subtitle", "ranges", "measures", "markers"])
                         .data([
-                              ["Revenue",       "US$, in thousands",    [150,225,300],      [220,270],      [250, 25]],
-                              ["Profit  ",      "%",                    [20,25,30],         [21,23],        [26]],
-                              ["Order Size",    "US$, average",         [350,500,600],      [100,320],      [550]],
-                              ["New Customers", "count",      [1400,2000,2500],   [1000,1650],    2100],
-                              ["Satisfaction",  "out of 5",             [3.5,4.25,5],       [3.2,4.7],      [4.4]]
+                            ["Revenue", "US$, in thousands", [150, 225, 300], [220, 270], [250, 25]],
+                            ["Profit  ", "%", [20, 25, 30], [21, 23], [26]],
+                            ["Order Size", "US$, average", [350, 500, 600], [100, 320], [550]],
+                            ["New Customers", "count", [1400, 2000, 2500], [1000, 1650], 2100],
+                            ["Satisfaction", "out of 5", [3.5, 4.25, 5], [3.2, 4.7], [4.4]]
                         ])
                         .titleColumn("title")
                         .subtitleColumn("subtitle")

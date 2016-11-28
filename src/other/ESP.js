@@ -1,11 +1,6 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["./Comms", "../common/Utility"], factory);
-    } else {
-        root.other_ESP = factory(root.other_Comms, root.common_Utility);
-    }
-}(this, function (Comms, Utility) {
+import * as Comms from "./Comms";
+import * as Utility from "../common/Utility";
+
     function nestedRowFix(row) {
         if (row.Row && row.Row instanceof Array) {
             return row.Row.map(nestedRowFix);
@@ -389,24 +384,20 @@
         return null;
     }
 
-    return {
-        enableCache: function (_) {
+export function enableCache(_) {
             if (!arguments.length) return enableBasicCommsCache;
             enableBasicCommsCache = _;
             if (!_) {
                 basicCommsCache = {};
             }
             return this;
-        },
-        cache: function (_) {
+}
+export function cache(_) {
             if (!arguments.length) return basicCommsCache;
             basicCommsCache = _;
             return this;
-        },
-        WsWorkunits: WsWorkunits,
-        Workunit: Workunit,
-        WUResult: WUResult,
-        createConnection: function (url) {
+}
+export function createConnection(url) {
             url = url || document.URL;
             var testURL = new Comms.ESPUrl()
                 .url(url)
@@ -420,9 +411,8 @@
                 }
             }
             return null;
-        },
-        createResult: createResult,
-        flattenResult: function (result, mappings) {
+}
+export function flattenResult(result, mappings) {
             var retVal = {
                 columns: [],
                 data: []
@@ -453,5 +443,3 @@
             }
             return retVal;
         }
-    };
-}));

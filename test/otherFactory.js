@@ -1,15 +1,15 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_otherFactory = factory();
+        root.test_commonFactory = factory(root.es6Require);
     }
-}(this, function (DataFactory, HeatMap, WordCloud, Table) {
+}(this, function (es6Require) {
     return {
         HeatMap: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
+                es6Require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
                     callback(new HeatMap()
                         .columns(DataFactory.HeatMap.simple.columns)
                         .data(DataFactory.HeatMap.simple.data)
@@ -17,7 +17,7 @@
                 });
             },
             skew: function (callback) {
-                require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
+                es6Require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
                     callback(new HeatMap()
                         .columns(DataFactory.HeatMap.skew.columns)
                         .data(DataFactory.HeatMap.skew.data)
@@ -27,21 +27,21 @@
                 });
             },
             rapidInterval: function (callback) {
-                require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
+                es6Require(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {
                     var heat = new HeatMap().columns(DataFactory.HeatMap.center.columns).data(DataFactory.HeatMap.center.data)
                         .topLeftX(-10000).topLeftY(-10000)
                         .bottomRightX(10000).bottomRightY(10000)
                         .radius(13).blur(5)
-                    ;
+                        ;
                     var step = 400;
                     var renderTimeLimit = 2000;
-                    var mitosisLoop = setInterval(function(){
+                    var mitosisLoop = setInterval(function () {
                         var prevRenderTime = new Date().getTime();
                         var newData = [];
-                        heat.data().forEach(function(n){
-                            var splitChance = 1/(heat.data().length/20);
+                        heat.data().forEach(function (n) {
+                            var splitChance = 1 / (heat.data().length / 20);
                             var rand = Math.random();
-                            if(rand <= splitChance * n[2] * 5){
+                            if (rand <= splitChance * n[2] * 5) {
                                 _split(n);
                             } else if (rand <= splitChance * 100) {
                                 _move(n);
@@ -51,28 +51,28 @@
                             }
                         });
                         heat.data(newData).render();
-                        if(new Date().getTime() - prevRenderTime > renderTimeLimit){
+                        if (new Date().getTime() - prevRenderTime > renderTimeLimit) {
                             clearInterval(mitosisLoop);
                         }
-                        function _split(c){
-                            var o = step + (Math.random()*step);
+                        function _split(c) {
+                            var o = step + (Math.random() * step);
                             newData.push(c);
-                            newData.push([[c[0],c[1]-o,c[2]],[c[0]+o,c[1],c[2]],[c[0],c[1]+o,c[2]],[c[0]-o,c[1],c[2]]][Math.floor(Math.random()*4)]);
+                            newData.push([[c[0], c[1] - o, c[2]], [c[0] + o, c[1], c[2]], [c[0], c[1] + o, c[2]], [c[0] - o, c[1], c[2]]][Math.floor(Math.random() * 4)]);
                         }
-                        function _move(cell){
-                            var movedCell = [cell[0] + (step*Math.random()*[-1,1][Math.floor(Math.random()*2)]),cell[1] + (step*Math.random()*[-1,1][Math.floor(Math.random()*2)]),cell[2] * 0.99];
-                            if(movedCell[2] > 0.01){
+                        function _move(cell) {
+                            var movedCell = [cell[0] + (step * Math.random() * [-1, 1][Math.floor(Math.random() * 2)]), cell[1] + (step * Math.random() * [-1, 1][Math.floor(Math.random() * 2)]), cell[2] * 0.99];
+                            if (movedCell[2] > 0.01) {
                                 newData.push(movedCell);
                             }
                         }
-                    },100);
+                    }, 100);
                     callback(heat);
                 });
             }
         },
         WordCloud: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
+                es6Require(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
                     var words = DataFactory.WordCloud.simple.words.map(function (d) {
                         return [d, 1 + Math.random() * 100];
                     });
@@ -85,7 +85,7 @@
         },
         Table: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
                         .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
                         .data([
@@ -102,12 +102,12 @@
                             ["Math II", 76, 30, 34, 6],
                             ["Math III", 80, 30, 27, 8]
                         ])
-                    ;
+                        ;
                     callback(table);
                 });
             },
             widget: function (callback) {
-                require(["test/DataFactory", "src/other/Table", "src/form/CheckBox", "src/chart/Column"], function (DataFactory, Table, CheckBox, Column) {
+                es6Require(["test/DataFactory", "src/other/Table", "src/form/CheckBox", "src/chart/Column"], function (DataFactory, Table, CheckBox, Column) {
                     callback(new Table()
                         .columns(["Label", "Lat", "Long", "Pin", "Forth Column", "Fifth Column", "sixth Column", "Seventh Column", "eighth Column", "Nineth Column", "Tenth Column"])
                         .data([
@@ -158,31 +158,31 @@
                 });
             },
             large: function (callback) {
-                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     callback(new Table()
-                    .columns(DataFactory.Table.large.columns)
-                    .data(DataFactory.Table.large.data)
-                    .fixedHeader(true)
+                        .columns(DataFactory.Table.large.columns)
+                        .data(DataFactory.Table.large.data)
+                        .fixedHeader(true)
                     );
                 });
             },
             totalled: function (callback) {
-                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
                         .columns(DataFactory.Table.large.columns)
                         .data(DataFactory.Table.large.data)
                         .totalledColumns([1, 2, 5, 6, 7])
                         .totalledLabel("Total")
-                    ;
+                        ;
                     callback(table);
                 });
             },
             formatted: function (callback) {
-                require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
+                es6Require(["test/DataFactory", "src/other/Table"], function (DataFactory, Table) {
                     var table = new Table()
                         .columns(DataFactory.Table.formatted.columns)
                         .data(DataFactory.Table.formatted.data)
-                    ;
+                        ;
                     table.fields()[0].format(".2f");
                     table.fields()[2].format(".6r");
                     table.fields()[4].type("time").mask("%Y-%_m-%_d").format("%d %b '%y");
@@ -192,41 +192,41 @@
         },
         NestedTable: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
+                es6Require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
                     callback(new NestedTable()
                         .columns(["Subject", "Year 1", { label: "Year2", columns: ["Subject", "Year 1", "Year 2", "Year 3"] }, "Year 3"])
                         .data([
-                                ["Geography", 75, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 65],
-                                ["English", 45, [], 52],
-                                ["Math", 98, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Science", 66, 60, 72]], 90],
-                                ["Science", 66, [["Geography", 75, 68, 65],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 72]
+                            ["Geography", 75, [["Geography", 75, 68, 65],
+                            ["English", 45, 55, 52],
+                            ["Math", 98, 92, 90],
+                            ["Science", 66, 60, 72]], 65],
+                            ["English", 45, [], 52],
+                            ["Math", 98, [["Geography", 75, 68, 65],
+                            ["English", 45, 55, 52],
+                            ["Science", 66, 60, 72]], 90],
+                            ["Science", 66, [["Geography", 75, 68, 65],
+                            ["Math", 98, 92, 90],
+                            ["Science", 66, 60, 72]], 72]
                         ])
                     );
                 });
             },
             regularColumns: function (callback) {
-                require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
+                es6Require(["test/DataFactory", "src/other/NestedTable"], function (DataFactory, NestedTable) {
                     callback(new NestedTable()
                         .columns(["Subject", "Year 1", "Children", "Year 3"])
                         .data([
-                                ["Geography", 75, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 65],
-                                ["English", 45, [], 52],
-                                ["Math", 98, [["Geography", 75, 68, 65],
-                                                ["English", 45, 55, 52],
-                                                ["Science", 66, 60, 72]], 90],
-                                ["Science", 66, [["Geography", 75, 68, 65],
-                                                ["Math", 98, 92, 90],
-                                                ["Science", 66, 60, 72]], 72]
+                            ["Geography", 75, [["Geography", 75, 68, 65],
+                            ["English", 45, 55, 52],
+                            ["Math", 98, 92, 90],
+                            ["Science", 66, 60, 72]], 65],
+                            ["English", 45, [], 52],
+                            ["Math", 98, [["Geography", 75, 68, 65],
+                            ["English", 45, 55, 52],
+                            ["Science", 66, 60, 72]], 90],
+                            ["Science", 66, [["Geography", 75, 68, 65],
+                            ["Math", 98, 92, 90],
+                            ["Science", 66, 60, 72]], 72]
                         ])
                     );
                 });
@@ -234,7 +234,7 @@
         },
         Toolbar: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/composite/MegaChart", "src/form/Select"], function (DataFactory, MegaChart, Select) {
+                es6Require(["test/DataFactory", "src/composite/MegaChart", "src/form/Select"], function (DataFactory, MegaChart, Select) {
                     callback(new MegaChart()
                         .chartType("LINE")
                         .title("Simple Toolbar")
@@ -243,7 +243,7 @@
                 });
             },
             megaChart: function (callback) {
-                require(["test/DataFactory", "src/layout/Border", "src/chart/Pie", "src/chart/MultiChartSurface", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Border, Pie, MultiChartSurface, Line, Column, Step) {
+                es6Require(["test/DataFactory", "src/layout/Border", "src/chart/Pie", "src/chart/MultiChartSurface", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Border, Pie, MultiChartSurface, Line, Column, Step) {
                     callback(new Border()
                         .setContent("top", new Pie()
                             .columns(DataFactory.ND.subjects.columns)
@@ -271,7 +271,7 @@
         },
         Legend: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/layout/Border", "src/chart/Line", "src/other/Legend"], function (DataFactory, Border, Line, Legend) {
+                es6Require(["test/DataFactory", "src/layout/Border", "src/chart/Line", "src/other/Legend"], function (DataFactory, Border, Line, Legend) {
                     var line = new Line()
                         .columns(DataFactory.ND.ampolar.columns)
                         .data(DataFactory.ND.ampolar.data)
@@ -285,19 +285,19 @@
         },
         Html: {
             simple: function (callback) {
-                require(["src/other/Html"], function (Html) {
+                es6Require(["src/other/Html"], function (Html) {
                     var w = new Html();
                     w.html('<div style="border:1px solid red;padding:10px;margin:20px;font-size:24px;">Text in a div!</div>');
                     callback(w);
                 });
             },
             array: function (callback) {
-                require(["src/other/Html"], function (Html) {
+                es6Require(["src/other/Html"], function (Html) {
                     var w = new Html();
                     var arr = [];
                     var testCellCount = 300;
-                    for(var i = 0;i<testCellCount;i++){
-                        arr.push('<div style="border:1px solid red;float:left;margin:10px;padding:10px;font-size:20px;">Test '+i+'</div>');
+                    for (var i = 0; i < testCellCount; i++) {
+                        arr.push('<div style="border:1px solid red;float:left;margin:10px;padding:10px;font-size:20px;">Test ' + i + '</div>');
                     }
                     w.data(arr);
                     callback(w);
@@ -306,7 +306,7 @@
         },
         AutoCompleteText: {
             simple: function (callback) {
-                require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
+                es6Require(["src/other/AutoCompleteText", "test/DataFactory"], function (AutoCompleteText, DataFactory) {
                     callback(new AutoCompleteText()
                         .columns(["Col Label", "Col Value"])
                         .data([
@@ -327,9 +327,9 @@
             },
         },
         Select: {
-             simple: function (callback) {
-                 require(["src/other/Select"], function (Select) {
-                     callback(new Select()
+            simple: function (callback) {
+                es6Require(["src/other/Select"], function (Select) {
+                    callback(new Select()
                         .columns(["Col Label", "Col Value"])
                         .data([
                             ["Math", 0],
@@ -345,34 +345,34 @@
                         .valueColumn("Col Value")
                         .textColumn("Col Label")
                     );
-                 });
-             }
+                });
+            }
         },
         RadioCheckbox: {
             simple: function (callback) {
-                require(["src/other/RadioCheckbox"], function (RadioCheckbox) {
+                es6Require(["src/other/RadioCheckbox"], function (RadioCheckbox) {
                     callback(new RadioCheckbox()
-                            .columns(["Col Label", "Col Value"])
-                            .data([
-                                ["Math", 0],
-                                ["Science", 1],
-                                ["Geography", 3],
-                                ["Irish", 5],
-                                ["English", 7],
-                                ["Spanish", 2],
-                                ["Physics", 4],
-                                ["Astrology", 6]
-                            ])
-                            .label("Label:  ")
-                            .valueColumn("Col Value")
-                            .textColumn("Col Label")
+                        .columns(["Col Label", "Col Value"])
+                        .data([
+                            ["Math", 0],
+                            ["Science", 1],
+                            ["Geography", 3],
+                            ["Irish", 5],
+                            ["English", 7],
+                            ["Spanish", 2],
+                            ["Physics", 4],
+                            ["Astrology", 6]
+                        ])
+                        .label("Label:  ")
+                        .valueColumn("Col Value")
+                        .textColumn("Col Label")
                     );
                 });
             }
         },
         CalendarHeatMap: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
+                es6Require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
                     //DataFactory.Sample.StockMarket.data.length = 1500;
                     callback(new CalendarHeatMap()
                         .columns(DataFactory.Sample.StockMarket.columns)
@@ -386,7 +386,7 @@
         },
         Opportunity: {
             simple: function (callback) {
-                require(["test/DataFactory","src/other/Opportunity"], function (DataFactory,Opportunity) {
+                es6Require(["test/DataFactory", "src/other/Opportunity"], function (DataFactory, Opportunity) {
                     callback(new Opportunity()
                         .columns(DataFactory.OpportunityData.Sample.dropdownList)
                         .data(DataFactory.OpportunityData.Sample.data)

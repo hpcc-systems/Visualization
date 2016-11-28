@@ -1,34 +1,26 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["./GMap", "../other/HeatMap"], factory);
-    } else {
-        root.map_GMapHeat = factory(root.map_GMap, root.other_HeatMap);
-    }
-}(this, function (GMap, HeatMap) {
-    function GMapHeat() {
-        GMap.call(this);
-    }
-    GMapHeat.prototype = Object.create(GMap.prototype);
-    GMapHeat.prototype.constructor = GMapHeat;
-    GMapHeat.prototype._class += " map_GMapHeat";
+import { GMap } from './GMap';
+import { HeatMap } from '../other/HeatMap';
 
-    GMapHeat.prototype.enter = function () {
-        GMap.prototype.enter.apply(this, arguments);
-        var heat = new HeatMap();
+export function GMapHeat() {
+    GMap.call(this);
+}
+GMapHeat.prototype = Object.create(GMap.prototype);
+GMapHeat.prototype.constructor = GMapHeat;
+GMapHeat.prototype._class += " map_GMapHeat";
 
-        var origRender = heat.render;
-        var context = this;
-        heat.render = function () {
-            this.data(context.data().map(function (row) {
-                var pos = context._viewportSurface.project(row[0], row[1]);
-                return [pos.x, pos.y, row[4]];
-            }));
-            origRender.apply(this, arguments);
-        };
+GMapHeat.prototype.enter = function () {
+    GMap.prototype.enter.apply(this, arguments);
+    var heat = new HeatMap();
 
-        this._viewportSurface.widget(heat);
+    var origRender = heat.render;
+    var context = this;
+    heat.render = function () {
+        this.data(context.data().map(function (row) {
+            var pos = context._viewportSurface.project(row[0], row[1]);
+            return [pos.x, pos.y, row[4]];
+        }));
+        origRender.apply(this, arguments);
     };
 
-    return GMapHeat;
-}));
+    this._viewportSurface.widget(heat);
+};

@@ -9,6 +9,7 @@ test/**/yarn.lock
 *.log
 Web.config
 nbproject
+out
 .project
 lib-es6/
 lib-test/

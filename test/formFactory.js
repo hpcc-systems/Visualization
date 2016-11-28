@@ -1,11 +1,11 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], factory);
+        define(["./es6Require"], factory);
     } else {
-        root.test_formFactory = factory();
+        root.test_commonFactory = factory(root.es6Require);
     }
-}(this, function () {
+} (this, function (es6Require) {
     return {
         Form: {
             simple: function (callback) {
@@ -65,7 +65,7 @@
                             new Slider()
                                 .columns(DataFactory.Slider.simple.columns)
                                 .data(DataFactory.Slider.simple.data)
-                            ]
+                        ]
                         )
                     );
                 });
@@ -73,7 +73,7 @@
         },
         Slider: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
+                es6Require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .columns(DataFactory.Slider.simple.columns)
                         .data(DataFactory.Slider.simple.data)
@@ -81,7 +81,7 @@
                 });
             },
             range: function (callback) {
-                require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
+                es6Require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .allowRange(true)
                         .columns(DataFactory.Slider.simple.columns)
@@ -90,7 +90,7 @@
                 });
             },
             dateRange: function (callback) {
-                require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
+                es6Require(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .allowRange(true)
                         .type("time")

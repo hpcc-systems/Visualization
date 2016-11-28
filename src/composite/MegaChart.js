@@ -1,23 +1,28 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["d3","../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility", "../other/Html", "css!./MegaChart"], factory);
-    } else {
-        root.composite_MegaChart = factory(root.d3, root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility, root.other_Html);
-    }
-}(this, function (d3, Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility, Html) {
-    function MegaChart() {
-        Border.call(this);
+import { Border } from "../layout/Border";
+import { MultiChart } from "../chart/MultiChart";
+import { Text } from "../common/Text";
+import { Legend } from "../other/Legend";
+import { Toolbar } from "../layout/Toolbar";
+import { Button } from "../form/Button";
+import { Select } from "../form/Select";
+import { Input } from "../form/Input";
+import * as Utility from "../common/Utility";
+import { Html } from "../other/Html";
 
-        this._tag = "div";
-        this._chart = new MultiChart();
-        var context = this;
-        this._chart.click = function () {
-            context.click.apply(context, arguments);
-        };
-        this._chart.dblclick = function () {
-            context.dblclick.apply(context, arguments);
-        };
+import "./MegaChart.css";
+
+export function MegaChart() {
+    Border.call(this);
+
+    this._tag = "div";
+    this._chart = new MultiChart();
+    var context = this;
+    this._chart.click = function () {
+        context.click.apply(context, arguments);
+    };
+    this._chart.dblclick = function () {
+        context.dblclick.apply(context, arguments);
+    };
         this._chart.vertex_click = function () {
             context.vertex_click.apply(context, arguments);
         };
@@ -31,24 +36,24 @@
             context.edge_dblclick.apply(context, arguments);
         };
 
-        this._toolbar = new Toolbar();
-        
-        this._valueTitle = new Text();
-        this._domainTitle = new Text();
+    this._toolbar = new Toolbar();
 
-        this._legend = new Legend();
-    }
-    MegaChart.prototype = Object.create(Border.prototype);
-    MegaChart.prototype.constructor = MegaChart;
-    MegaChart.prototype._class += " composite_MegaChart";
+    this._valueTitle = new Text();
+    this._domainTitle = new Text();
 
-    MegaChart.prototype._1DChartTypes = MultiChart.prototype._1DChartTypes;
-    MegaChart.prototype._2DChartTypes = MultiChart.prototype._2DChartTypes;
-    MegaChart.prototype._NDChartTypes = MultiChart.prototype._NDChartTypes;
-    MegaChart.prototype._anyChartTypes = MultiChart.prototype._anyChartTypes;
-    MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
+    this._legend = new Legend();
+}
+MegaChart.prototype = Object.create(Border.prototype);
+MegaChart.prototype.constructor = MegaChart;
+MegaChart.prototype._class += " composite_MegaChart";
 
-    MegaChart.prototype.publishReset();
+MegaChart.prototype._1DChartTypes = MultiChart.prototype._1DChartTypes;
+MegaChart.prototype._2DChartTypes = MultiChart.prototype._2DChartTypes;
+MegaChart.prototype._NDChartTypes = MultiChart.prototype._NDChartTypes;
+MegaChart.prototype._anyChartTypes = MultiChart.prototype._anyChartTypes;
+MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
+
+MegaChart.prototype.publishReset();
 
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
@@ -68,62 +73,62 @@
     MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("infoIcon", "\uf05a", "string", "Help Icon", null, { tags: ["Basic"] });
 
-    MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
-    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
-    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
+MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
+MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
+MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
 
-    MegaChart.prototype.publishProxy("domainAxisTitle", "_domainTitle", "text");
-    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
+MegaChart.prototype.publishProxy("domainAxisTitle", "_domainTitle", "text");
+MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
 
-    MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
-    MegaChart.prototype.publishProxy("chart", "_chart", "chart");
+MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
+MegaChart.prototype.publishProxy("chart", "_chart", "chart");
 
-    MegaChart.prototype.toolbarWidgets = function (_) {
-        if (!arguments.length) return this._toolbar.widgets();
-        this._toolbar.widgets(_);
-        return this;
-    };
+MegaChart.prototype.toolbarWidgets = function (_) {
+    if (!arguments.length) return this._toolbar.widgets();
+    this._toolbar.widgets(_);
+    return this;
+};
 
-    MegaChart.prototype.chartTypeDefaults = function (_) {
-        if (!arguments.length) return this._chart.chartTypeDefaults();
-        this._chart.chartTypeDefaults(_);
-        return this;
-    };
+MegaChart.prototype.chartTypeDefaults = function (_) {
+    if (!arguments.length) return this._chart.chartTypeDefaults();
+    this._chart.chartTypeDefaults(_);
+    return this;
+};
 
-    MegaChart.prototype.chartTypeProperties = function (_) {
-        if (!arguments.length) return this._chart.chartTypeProperties();
-        this._chart.chartTypeProperties(_);
-        return this;
-    };
+MegaChart.prototype.chartTypeProperties = function (_) {
+    if (!arguments.length) return this._chart.chartTypeProperties();
+    this._chart.chartTypeProperties(_);
+    return this;
+};
 
-    MegaChart.prototype.fields = function (_) {
-        if (!arguments.length) return this._chart.fields();
-        this._chart.fields(_);
-        return this;
-    };
+MegaChart.prototype.fields = function (_) {
+    if (!arguments.length) return this._chart.fields();
+    this._chart.fields(_);
+    return this;
+};
 
     MegaChart.prototype.columns = function (_, asDefault) {
-        if (!arguments.length) return this._chart.columns();
+    if (!arguments.length) return this._chart.columns();
         this._chart.columns(_, asDefault);
-        return this;
-    };
+    return this;
+};
 
-    MegaChart.prototype.data = function (_) {
-        if (!arguments.length) return this._chart.data();
-        this._chart.data(_);
-        return this;
-    };
+MegaChart.prototype.data = function (_) {
+    if (!arguments.length) return this._chart.data();
+    this._chart.data(_);
+    return this;
+};
 
-    MegaChart.prototype.downloadCSV = function () {
-        Utility.downloadBlob("CSV", this._chart.export("CSV"));
-        return this;
-    };
+MegaChart.prototype.downloadCSV = function () {
+    Utility.downloadBlob("CSV", this._chart.export("CSV"));
+    return this;
+};
 
-    MegaChart.prototype.enter = function (domNode, element) {
-        Border.prototype.enter.apply(this, arguments);
-        var context = this;
-        
-        this.topShrinkWrap(false).topPercentage(0).topSize(30);
+MegaChart.prototype.enter = function (domNode, element) {
+    Border.prototype.enter.apply(this, arguments);
+    var context = this;
+
+    this.topShrinkWrap(false).topPercentage(0).topSize(30);
 
         this._dataCount = new Html()
             .classed({ "composite_MegaChart-dataCount": true })
@@ -133,14 +138,14 @@
             .overflowY('visible')
         ;
 
-        this._csvButton = new Button()
-            .classed({ "composite_MegaChart-CSV": true })
-            .id(this.id() + "_csv")
-            .value("CSV")
+    this._csvButton = new Button()
+        .classed({ "composite_MegaChart-CSV": true })
+        .id(this.id() + "_csv")
+        .value("CSV")
         ;
-        this._csvButton.click = function (a) {
-            context.downloadCSV();
-        };
+    this._csvButton.click = function (a) {
+        context.downloadCSV();
+    };
         
         this._infoButton = new Button()
             .classed({ "composite_MegaChart-Info": true })
@@ -247,182 +252,182 @@
             d3.select(target).classed('__hpccisMaximized',!isMaximized);
         };
 
-        this._legendButton = new Input()
-            .classed({ "composite_MegaChart-legend": true })
-            .id(this.id() + "_legend")
-            .type("checkbox")
-            .inlineLabel("Legend:  ")
+    this._legendButton = new Input()
+        .classed({ "composite_MegaChart-legend": true })
+        .id(this.id() + "_legend")
+        .type("checkbox")
+        .inlineLabel("Legend:  ")
         ;
-        this._legendButton.click = function (a) {
-            context.render();
-        };
-
-        this._chartTypeSelect = new Select()
-            .classed({ "composite_MegaChart-chartType": true })
-            .id(this.id() + "_chartType")
-            .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
-            .value(this.chartType())
-        ;
-        this._chartTypeSelect.change = function (a) {
-            context.chartType(a.value()).render();
-        };
-
-        this.setContent("center", this._chart);
-        
-        this._legend
-            .fixedSize(true)
-            .targetWidget(this._chart)
-            .orientation(["top", "bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical")
-        ;
-        
-        this._prevLegendPosition = this.legendPosition();
-        
-        if(this.valueAxisTitle()){
-            this.setContent("left", this._valueTitle.rotation(-90)).leftShrinkWrap(true);
-        }
-        if(this.domainAxisTitle()){
-            this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
-        }
-
-        if (this.legendPosition() !== "none") {
-            this.setContent(this.legendPosition(), this._legend)[this.legendPosition()+"ShrinkWrap"](true);
-        }
+    this._legendButton.click = function (a) {
+        context.render();
     };
-    
-    MegaChart.prototype.update = function (domNode, element) {
-        function showHideButton(twArr, button, show) {
-            if (show && twArr.indexOf(button) === -1) {
-                twArr.push(button);
-            } else if (!show) {
-                var idx = twArr.indexOf(button);
-                if (idx >= 0) {
-                    twArr.splice(idx, 1);
-                }
+
+    this._chartTypeSelect = new Select()
+        .classed({ "composite_MegaChart-chartType": true })
+        .id(this.id() + "_chartType")
+        .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
+        .value(this.chartType())
+        ;
+    this._chartTypeSelect.change = function (a) {
+        context.chartType(a.value()).render();
+    };
+
+    this.setContent("center", this._chart);
+
+    this._legend
+        .fixedSize(true)
+        .targetWidget(this._chart)
+        .orientation(["top", "bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical")
+        ;
+
+    this._prevLegendPosition = this.legendPosition();
+
+    if (this.valueAxisTitle()) {
+        this.setContent("left", this._valueTitle.rotation(-90)).leftShrinkWrap(true);
+    }
+    if (this.domainAxisTitle()) {
+        this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
+    }
+
+    if (this.legendPosition() !== "none") {
+        this.setContent(this.legendPosition(), this._legend)[this.legendPosition() + "ShrinkWrap"](true);
+    }
+};
+
+MegaChart.prototype.update = function (domNode, element) {
+    function showHideButton(twArr, button, show) {
+        if (show && twArr.indexOf(button) === -1) {
+            twArr.push(button);
+        } else if (!show) {
+            var idx = twArr.indexOf(button);
+            if (idx >= 0) {
+                twArr.splice(idx, 1);
             }
         }
+    }
 
         this._dataCount.html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">'+(this.data() ? this.data().length : "0")+'</span>');
 
-        this._chartTypeSelect.value(this.chartType());
-        var twArr = this.toolbarWidgets();
-        showHideButton(twArr, this._csvButton, this.showCSV());
+    this._chartTypeSelect.value(this.chartType());
+    var twArr = this.toolbarWidgets();
+    showHideButton(twArr, this._csvButton, this.showCSV());
         showHideButton(twArr, this._maximizeButton, this.showMaximize());
-        showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
-        showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
+    showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
+    showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         showHideButton(twArr, this._infoButton, this.showInfoButton());
         showHideButton(twArr, this._dataCount, this.showCount());
-        this.toolbarWidgets(twArr);
+    this.toolbarWidgets(twArr);
 
-        if (this._prevShowToolbar !== this.showToolbar()) {
-            this.setContent("top", this.showToolbar() ? this._toolbar : null);
-            this._prevShowToolbar = this.showToolbar();
-        }
+    if (this._prevShowToolbar !== this.showToolbar()) {
+        this.setContent("top", this.showToolbar() ? this._toolbar : null);
+        this._prevShowToolbar = this.showToolbar();
+    }
 
-        //TODO:  Proxy + themes not working...
-        this._toolbar
-            .fontSize(this.titleFontSize())
-            .fontColor(this.titleFontColor())
-            .fontFamily(this.titleFontFamily())
-            .fontBold(this.titleFontBold())
-            .backgroundColor(this.titleBackgroundColor())
+    // TODO:  Proxy + themes not working...
+    this._toolbar
+        .fontSize(this.titleFontSize())
+        .fontColor(this.titleFontColor())
+        .fontFamily(this.titleFontFamily())
+        .fontBold(this.titleFontBold())
+        .backgroundColor(this.titleBackgroundColor())
         ;
 
-        this._chart
-                .data(this.data());
+    this._chart
+        .data(this.data());
 
-        if(this._chart.chartType() !== this.chartType()){
-            this._chart.chartType(this.chartType());
-        }
+    if (this._chart.chartType() !== this.chartType()) {
+        this._chart.chartType(this.chartType());
+    }
 
 
-        var legendPosition = this.legendPosition();
-        if (this.toolbarShowLegend() && !this._legendButton.checked()) {
-            legendPosition = "none";
+    var legendPosition = this.legendPosition();
+    if (this.toolbarShowLegend() && !this._legendButton.checked()) {
+        legendPosition = "none";
+    }
+    if (this._prevLegendPosition !== legendPosition) {
+        if (this._prevLegendPosition !== "none") {
+            this.clearContent(this._prevLegendPosition);
         }
-        if (this._prevLegendPosition !== legendPosition) {
-            if(this._prevLegendPosition !== "none"){
-                this.clearContent(this._prevLegendPosition);
-            } 
-            this._prevLegendPosition = legendPosition;
-            if (legendPosition !== "none") {
-                this._legend = new Legend().fixedSize(true).targetWidget(this.getContent("center"));
-                this.setContent(legendPosition, this._legend);
-                this._legend.orientation(["top", "bottom"].indexOf(legendPosition) !== -1 ? "horizontal" : "vertical");
-            }
+        this._prevLegendPosition = legendPosition;
+        if (legendPosition !== "none") {
+            this._legend = new Legend().fixedSize(true).targetWidget(this.getContent("center"));
+            this.setContent(legendPosition, this._legend);
+            this._legend.orientation(["top", "bottom"].indexOf(legendPosition) !== -1 ? "horizontal" : "vertical");
         }
-        this._contentClasses = this.getContentClasses();
-        
-        if(this.valueAxisTitle() && this._contentClasses.left !== "common_Text"){
-            if(legendPosition !== "left"){
-                this.setContent("left", this._valueTitle.rotation(-90));
-            }
-        }
-        if(this.domainAxisTitle() && this._contentClasses.bottom !== "common_Text"){
-            if(legendPosition !== "bottom"){
-                this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
-            }
-        }
+    }
+    this._contentClasses = this.getContentClasses();
 
-        this._legend.dataFamily(this._chart.getChartDataFamily());
+    if (this.valueAxisTitle() && this._contentClasses.left !== "common_Text") {
+        if (legendPosition !== "left") {
+            this.setContent("left", this._valueTitle.rotation(-90));
+        }
+    }
+    if (this.domainAxisTitle() && this._contentClasses.bottom !== "common_Text") {
+        if (legendPosition !== "bottom") {
+            this.setContent("bottom", this._domainTitle).bottomShrinkWrap(true);
+        }
+    }
 
-        Border.prototype.update.apply(this, arguments);
+    this._legend.dataFamily(this._chart.getChartDataFamily());
+
+    Border.prototype.update.apply(this, arguments);
+};
+
+MegaChart.prototype.exit = function (domNode, element) {
+    Border.prototype.exit.apply(this, arguments);
+};
+
+MegaChart.prototype.getContentClasses = function () {
+    var obj = {};
+    var t = this.getContent("top");
+    var r = this.getContent("right");
+    var b = this.getContent("bottom");
+    var l = this.getContent("left");
+    obj.top = t !== null ? t.classID() : undefined;
+    obj.right = r !== null ? r.classID() : undefined;
+    obj.bottom = b !== null ? b.classID() : undefined;
+    obj.left = l !== null ? l.classID() : undefined;
+    return obj;
+};
+
+MegaChart.prototype.serializeState = function () {
+    var state = {
+        title: this.title(),
+        data: this.data()
     };
-    
-    MegaChart.prototype.exit = function (domNode, element) {
-        Border.prototype.exit.apply(this, arguments);
-    };
-    
-    MegaChart.prototype.getContentClasses = function () {
-        var obj = {};
-        var t = this.getContent("top");
-        var r = this.getContent("right");
-        var b = this.getContent("bottom");
-        var l = this.getContent("left");
-        obj.top = t !== null ? t.classID() : undefined;
-        obj.right = r !== null ? r.classID() : undefined;
-        obj.bottom = b !== null ? b.classID() : undefined;
-        obj.left = l !== null ? l.classID() : undefined;
-        return obj;
-    };
-
-    MegaChart.prototype.serializeState = function () {
-        var state = {
-            title: this.title(),
-            data: this.data()
-        };
-        var chart = this.chart();
-        if (chart) {
-            if (chart.serializeState) {
-                state.chart = chart.serializeState();
-                delete state.chart.data;
-            }
+    var chart = this.chart();
+    if (chart) {
+        if (chart.serializeState) {
+            state.chart = chart.serializeState();
+            delete state.chart.data;
         }
-        return state;
-    };
+    }
+    return state;
+};
 
-    MegaChart.prototype.deserializeState = function (state) {
-        if (state) {
-            this
-                .title(state.title)
-                .data(state.data)
+MegaChart.prototype.deserializeState = function (state) {
+    if (state) {
+        this
+            .title(state.title)
+            .data(state.data)
             ;
-            var chart = this.chart();
-            if (chart && state.chart) {
-                if (chart.serializeState) {
-                    chart.deserializeState(state.chart);
-                }
+        var chart = this.chart();
+        if (chart && state.chart) {
+            if (chart.serializeState) {
+                chart.deserializeState(state.chart);
             }
         }
-        return this;
-    };
+    }
+    return this;
+};
 
-    //  Events  ---
-    MegaChart.prototype.click = function (row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
-    };
+//  Events  ---
+MegaChart.prototype.click = function (row, column, selected) {
+    console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+};
 
-    MegaChart.prototype.dblclick = function (row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+MegaChart.prototype.dblclick = function (row, column, selected) {
+    console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     MegaChart.prototype.vertex_click = function (row, col, sel, more) {

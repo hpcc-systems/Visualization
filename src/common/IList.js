@@ -1,24 +1,13 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define([], factory);
-    } else {
-        root.common_IList = factory();
-    }
-}(this, function () {
-    function IList() {
-    }
-    
-    //  Properties  ---
+export function IList() {
+}
 
-    //  Events  ---
-    IList.prototype.click = function (d) {
-        console.log("Click:  " + d);
-    };
+//  Properties  ---
 
-    IList.prototype.dblclick = function (d) {
-        console.log("Double click:  " + d);
-    };
+//  Events  ---
+IList.prototype.click = function (d) {
+    console.log("Click:  " + d);
+};
 
-    return IList;
-}));
+IList.prototype.dblclick = function (d) {
+    console.log("Double click:  " + d);
+};

@@ -1,13 +1,10 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["d3", "../layout/Tabbed", "../layout/Grid", "./HipieDDLMixin"], factory);
-    } else {
-        root.marshaller_Tabbed = factory(root.d3, root.layout_Tabbed, root.layout_Grid, root.marshaller_HipieDDLMixin);
-    }
-}(this, function (d3, TabbedLayout, Grid, HipieDDLMixin) {
-    function Tabbed() {
-        TabbedLayout.call(this);
+import * as d3 from "d3";
+import { Tabbed as TabbedLayout } from '../layout/Tabbed';
+import { Grid } from '../layout/Grid';
+import * as HipieDDLMixin from './HipieDDLMixin';
+
+export function Tabbed() {
+    TabbedLayout.call(this);
         HipieDDLMixin.call(this);
 
         this.surfacePadding_default(0);
@@ -23,10 +20,10 @@
             var grid = surface.widget();
             grid.content().forEach(function (widget) {
                 retVal.push(widget);
-            });
         });
-        return retVal;
-    };
+        });
+    return retVal;
+};
 
     Tabbed.prototype.populateContent = function () {
         var cellDensity = 3;
@@ -44,7 +41,7 @@
                             cellRow++;
                             cellCol = 0;
                         }
-                    }
+                }
                     grid.setContent(cellRow * cellDensity, cellCol * cellDensity, viz.newWidgetSurface, "", cellDensity, cellDensity);
                 }
             }, this);
@@ -59,7 +56,7 @@
             if (widget) {
                 vizCellMap[widget.id()] = cell;
             }
-        });
+    });
 
         this._ddlDashboards.forEach(function (dashboard) {
             dashboard.visualizations.forEach(function (viz, idx) {
@@ -73,7 +70,7 @@
                     return vizCellMap[targetViz.id].id();
                 });
                 vizCellMap[viz.id].indicateTheseIds(targetIDs);
-            });
+        });
         }, this);
     };
 
@@ -83,12 +80,10 @@
 
     Tabbed.prototype.render = function (callback) {
         this._marshallerRender(TabbedLayout.prototype, callback);
-        return this;
-    };
+    return this;
+};
 
-    Tabbed.prototype.commsError = function (source, error) {
-        alert("Comms Error:\n" + source + "\n" + error);
-    };
+Tabbed.prototype.commsError = function (source, error) {
+    alert("Comms Error:\n" + source + "\n" + error);
+};
 
-    return Tabbed;
-}));

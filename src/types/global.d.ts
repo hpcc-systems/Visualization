@@ -11,6 +11,7 @@ declare module "autoComplete";
 declare module "dagre";
 declare module "grid-list";
 declare module "c3";
+declare module "handsontable";
 declare module "amcharts-serial";
 declare module "amcharts-funnel";
 declare module "amcharts-radar";
@@ -18,6 +19,7 @@ declare module "amcharts-xy";
 declare module "amcharts-gantt";
 declare module "amcharts-gauge";
 declare module "amcharts-pie";
+declare module "React";
 
 /*
 declare const clearInterval;
@@ -41,3 +43,5 @@ declare const google;
 
 declare const AmCharts;
 declare const simpleheat;
+declare const Promise;
+declare const React;

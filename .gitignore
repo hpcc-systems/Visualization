@@ -1,7 +1,6 @@
 node_modules
 bower_components
-dist
-dist-amd
+dist*
 lib
 build
 packages/**/yarn.lock
@@ -14,4 +13,4 @@ out
 lib-es6/
 lib-test/
 lib-umd/
-tmp/
+tmp/.vs*

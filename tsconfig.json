@@ -1,23 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "amd",
-		"target": "es6",
-		"rootDir": "./src",
-		"outDir": "out",
-		"sourceMap": true,
-		"allowJs": true
-	},
-	"compileOnSave": true,
-	"exclude": [
-		"./*.*",
-		"apps",
-		"bower_components",
-		"demos",
-		"dist",
-		"dist-amd",
-		"node_modules",
-		"templates",
-		"test",
-		"util"
-	]
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "out",
+        "target": "es5",
+        "module": "amd",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": false,
+        "sourceMap": true,
+        "allowJs": false,
+        "lib": [
+            "es5",
+            "dom"
+        ]
+    },
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "compileOnSave": true
 }

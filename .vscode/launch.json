@@ -2,12 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Chrome File",
+            "name": "Debug Chrome",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/demos/tmp.html",
+            "url": "http://localhost:8000/demos/dermatology.html?src/chart/Column",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}/demos"
+            "webRoot": "${workspaceRoot}/demos",
+            "pathMapping": {
+                "/": "${workspaceRoot}"
+            }
         },
         {
             "name": "Launch Chrome against localhost, with sourcemaps",

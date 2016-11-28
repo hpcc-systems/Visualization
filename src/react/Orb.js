@@ -116,12 +116,12 @@
         var ds = this.data();
         var columns = this.columns();
 
-        var allColumns = this.columns().map(function (column, idx) {
-                return {
-                    name: "" + idx,
-                    caption: column
-                };
-            });
+        // var allColumns = this.columns().map(function (column, idx) {
+        //         return {
+        //             name: "" + idx,
+        //             caption: column
+        //         };
+        //     });
                    
         for (var i=0;i<this.orbFields.length;i++){
             if (this.savedField.indexOf(this.orbFields[i].caption) === -1){

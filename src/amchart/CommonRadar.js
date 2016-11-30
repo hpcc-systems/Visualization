@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.radar", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-radar", "require"], factory);
     } else {
         root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
     }
@@ -194,7 +194,7 @@
             chartScrollbar: {}
         };
         if (typeof define === "function" && define.amd) {
-            initObj.pathToImages = require.toUrl("amchartsImg");
+            initObj.pathToImages = require.toUrl("amcharts-images");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {

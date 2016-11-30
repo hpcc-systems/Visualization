@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonRadar", "amcharts.radar", "../api/INDChart"], factory);
+        define(["d3", "./CommonRadar", "amcharts-radar", "../api/INDChart"], factory);
     } else {
         root.amchart_Polar = factory(root.d3, root.amchart_CommonRadar, root.amcharts, root.api_INDChart);
     }

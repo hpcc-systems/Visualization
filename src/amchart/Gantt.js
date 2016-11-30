@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.gantt", "../api/INDChart", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-gantt", "../api/INDChart", "require"], factory);
     } else {
         root.amchart_Gantt = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_INDChart, root.require);
     }
@@ -143,7 +143,7 @@
         };
 
         if (typeof define === "function" && define.amd) {
-            initObj.pathToImages = require.toUrl("amchartsImg");
+            initObj.pathToImages = require.toUrl("amcharts-images");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);  
          

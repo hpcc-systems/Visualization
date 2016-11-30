@@ -22,15 +22,15 @@ require.config({
         "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
 
         "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
-        "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
-        "amcharts.gauge": "../bower_components/amcharts3/amcharts/gauge",
-        "amcharts.pie": "../bower_components/amcharts3/amcharts/pie",
-        "amcharts.radar": "../bower_components/amcharts3/amcharts/radar",
-        "amcharts.serial": "../bower_components/amcharts3/amcharts/serial",
-        "amcharts.xy": "../bower_components/amcharts3/amcharts/xy",
-        "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
-        "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
-        "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
+        "amcharts-funnel": "../bower_components/amcharts3/amcharts/funnel",
+        "amcharts-gauge": "../bower_components/amcharts3/amcharts/gauge",
+        "amcharts-pie": "../bower_components/amcharts3/amcharts/pie",
+        "amcharts-radar": "../bower_components/amcharts3/amcharts/radar",
+        "amcharts-serial": "../bower_components/amcharts3/amcharts/serial",
+        "amcharts-xy": "../bower_components/amcharts3/amcharts/xy",
+        "amcharts-gantt": "../bower_components/amcharts3/amcharts/gantt",
+        "amcharts-plugins-responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
+        "amcharts-images": "../bower_components/amcharts3/amcharts/images/",
 
         "simpleheat": "../bower_components/simpleheat/index",
         "autoComplete": "../bower_components/javascript-auto-complete/auto-complete",
@@ -38,42 +38,42 @@ require.config({
         "src": "../src"
     },
     shim: {
-        "amcharts.funnel": {
+        "amcharts-funnel": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.gauge": {
+        "amcharts-gauge": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.pie": {
+        "amcharts-pie": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.radar": {
+        "amcharts-radar": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.serial": {
+        "amcharts-serial": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
                 AmCharts.isReady = true;
             }
         },
-        "amcharts.xy": {
+        "amcharts-xy": {
             deps: ["amcharts"],
             exports: "AmCharts",
             init: function() {
@@ -81,7 +81,7 @@ require.config({
             }
         },
         'amcharts.gantt': {
-            deps: [ 'amcharts', 'amcharts.serial' ],
+            deps: [ 'amcharts', 'amcharts-serial' ],
             exports: 'AmCharts',
             init: function() {
                 AmCharts.isReady = true;
@@ -120,16 +120,16 @@ case "cdn.rawgit.com":
             "d3-bullet": "//" + window.location.hostname + "/d3/d3-plugins/master/bullet/bullet",
 
             "amcharts": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
-            "amcharts.funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
-            "amcharts.gauge": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
-            "amcharts.pie": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/pie",
-            "amcharts.radar": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/radar",
-            "amcharts.serial": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/serial",
-            "amcharts.xy": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/xy",
-            "amcharts.gantt": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
-            "amcharts.plugins.responsive": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
-            "amcharts.plugins.dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
-            "amchartsImg": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/images/",
+            "amcharts-funnel": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
+            "amcharts-gauge": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
+            "amcharts-pie": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/pie",
+            "amcharts-radar": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/radar",
+            "amcharts-serial": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/serial",
+            "amcharts-xy": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/xy",
+            "amcharts-gantt": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
+            "amcharts-plugins-responsive": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
+            "amcharts-plugins-dataloader": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
+            "amcharts-images": "//" + window.location.hostname + "/amcharts/amcharts3/3.18.0/amcharts/images/",
 
             "simpleheat": "//" + window.location.hostname + "/mourner/simpleheat/v0.3.0/simpleheat",
             "autoComplete": "//" + window.location.hostname + "/Pixabay/JavaScript-autoComplete/1.0.4/auto-complete",

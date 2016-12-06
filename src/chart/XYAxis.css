@@ -7,6 +7,10 @@
   font: 10px sans-serif;
 }
 
+.chart_XYAxis .focus .chart_Axis.value .tick {
+  visibility:hidden;
+}
+
 .chart_XYAxis .axis path,
 .chart_XYAxis .axis line {
   fill: none;

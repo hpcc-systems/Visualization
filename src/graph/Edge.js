@@ -124,8 +124,8 @@
         }
         pathElements
             .attr("opacity", this._hidden ? 0 : 1)
-            .attr("marker-start", this.sourceMarker_exists() ? "url(#" + this._graphID + "_" + this.sourceMarker() + "Foot)" : null)
-            .attr("marker-end", this.targetMarker_exists() ? "url(#" + this._graphID + "_" + this.targetMarker() + "Head)" : null)
+            .attr("marker-start", !(this.svgMarkerGlitch && skipPushMarkers) && this.sourceMarker_exists() ? "url(#" + this._graphID + "_" + this.sourceMarker() + "Foot)" : null)
+            .attr("marker-end", !(this.svgMarkerGlitch && skipPushMarkers) && this.targetMarker_exists() ? "url(#" + this._graphID + "_" + this.targetMarker() + "Head)" : null)
             .attr("stroke", this.strokeColor_exists() ? this.strokeColor() : null)
             .attr("stroke-dasharray", this.strokeDasharray_exists() ? this.strokeDasharray() : null)
             .attr("d", line)

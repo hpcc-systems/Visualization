@@ -34,15 +34,15 @@
                 "grid-list": "../bower_components/grid-list/src/gridList",
 
                 "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
-                "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
-                "amcharts.gauge": "../bower_components/amcharts3/amcharts/gauge",
-                "amcharts.pie": "../bower_components/amcharts3/amcharts/pie",
-                "amcharts.radar": "../bower_components/amcharts3/amcharts/radar",
-                "amcharts.serial": "../bower_components/amcharts3/amcharts/serial",
-                "amcharts.xy": "../bower_components/amcharts3/amcharts/xy",
-                "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
-                "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
-                "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
+                "amcharts-funnel": "../bower_components/amcharts3/amcharts/funnel",
+                "amcharts-gauge": "../bower_components/amcharts3/amcharts/gauge",
+                "amcharts-pie": "../bower_components/amcharts3/amcharts/pie",
+                "amcharts-radar": "../bower_components/amcharts3/amcharts/radar",
+                "amcharts-serial": "../bower_components/amcharts3/amcharts/serial",
+                "amcharts-xy": "../bower_components/amcharts3/amcharts/xy",
+                "amcharts-gantt": "../bower_components/amcharts3/amcharts/gantt",
+                "amcharts-plugins-responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
+                "amcharts-images": "../bower_components/amcharts3/amcharts/images/",
 
                 "simpleheat": "../bower_components/simpleheat/index",
                 "autoComplete": "../bower_components/javascript-auto-complete/auto-complete",
@@ -50,50 +50,50 @@
                 "src": "../src"
             },
             shim: {
-                "amcharts.funnel": {
+                "amcharts-funnel": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.gauge": {
+                "amcharts-gauge": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.pie": {
+                "amcharts-pie": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.radar": {
+                "amcharts-radar": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.serial": {
+                "amcharts-serial": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.xy": {
+                "amcharts-xy": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                'amcharts.gantt': {
-                    deps: ['amcharts', 'amcharts.serial'],
+                'amcharts-gantt': {
+                    deps: ['amcharts', 'amcharts-serial'],
                     exports: 'AmCharts',
                     init: function () {
                         AmCharts.isReady = true;
@@ -136,16 +136,16 @@
             "grid-list": rawgitBaseUrl + "/hootsuite/grid/v0.3.4/src/gridList",
 
             "amcharts": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
-            "amcharts.funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
-            "amcharts.gauge": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
-            "amcharts.pie": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/pie",
-            "amcharts.radar": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/radar",
-            "amcharts.serial": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/serial",
-            "amcharts.xy": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/xy",
-            "amcharts.gantt": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
-            "amcharts.plugins.responsive": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
-            "amcharts.plugins.dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
-            "amchartsImg": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
+            "amcharts-funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
+            "amcharts-gauge": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
+            "amcharts-pie": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/pie",
+            "amcharts-radar": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/radar",
+            "amcharts-serial": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/serial",
+            "amcharts-xy": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/xy",
+            "amcharts-gantt": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
+            "amcharts-plugins-responsive": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
+            "amcharts-plugins-dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
+            "amcharts-images": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
 
             "simpleheat": rawgitBaseUrl + "/mourner/simpleheat/v0.3.0/simpleheat",
             "autoComplete": rawgitBaseUrl + "/Pixabay/JavaScript-autoComplete/1.0.4/auto-complete",
@@ -174,7 +174,7 @@
             paths: {
                 "src": srcUrl,
                 "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
-                "amchartsImg": srcUrl + "/img/amcharts/"
+                "amcharts-images": srcUrl + "/img/amcharts/"
             }
         });
     }
@@ -217,7 +217,7 @@
                 paths: {
                     "src": srcUrl,
                     "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
-                    "amchartsImg": srcUrl + "/img/amcharts/"
+                    "amcharts-images": srcUrl + "/img/amcharts/"
                 }
             });
             retVal([srcUrl + "/hpcc-viz.js"], function () {

@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.gauge", "../api/I1DChart", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-gauge", "../api/I1DChart", "require"], factory);
     } else {
         root.amchart_Gauge = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I1DChart, root.require);
     }
@@ -149,7 +149,7 @@
             arrows:[{}],
         };
         if (typeof define === "function" && define.amd) {
-            initObj.pathToImages = require.toUrl("amchartsImg");
+            initObj.pathToImages = require.toUrl("amcharts-images");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
     };

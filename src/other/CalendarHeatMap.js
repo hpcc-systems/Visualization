@@ -103,7 +103,7 @@
             return d.values.aggregate;
         });
         if (this.aggrDeltaColumn()) {
-            var max = Math.max(Math.abs(dataExtent[0], dataExtent[1]));
+            var max = Math.max(Math.abs(dataExtent[0]), Math.abs(dataExtent[1]));
             dataExtent = [-max, max];
         }
         var dayRect = svg.select(".days").selectAll(".day").data(function (d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });

@@ -26,6 +26,7 @@
    Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color", null, { tags: ["Advanced"], disable: function (w) { return !w.title(); } });
    Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left", "right", "center"], { tags: ["Basic"], disable: function (w) { return !w.title(); } });
 
+   Surface.prototype.publish("surfaceShadow", false, "boolean", "3D Shadow");
    Surface.prototype.publish("surfacePadding", null, "string", "Surface Padding (px)", null, { tags: ["Intermediate"] });
    Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color", null, { tags: ["Advanced"] });
    Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)", null, { tags: ["Advanced"] });
@@ -56,10 +57,11 @@
         var context = this;
 
         element
-            .style("border-width",this.surfaceBorderWidth_exists() ? this.surfaceBorderWidth() + "px" : null)
-            .style("border-color",this.surfaceBorderColor())
-            .style("border-radius",this.surfaceBorderRadius_exists() ? this.surfaceBorderRadius() + "px" : null)
-            .style("background-color",this.surfaceBackgroundColor())
+            .classed("shadow2", this.surfaceShadow())
+            .style("border-width", this.surfaceBorderWidth_exists() ? this.surfaceBorderWidth() + "px" : null)
+            .style("border-color", this.surfaceBorderColor())
+            .style("border-radius", this.surfaceBorderRadius_exists() ? this.surfaceBorderRadius() + "px" : null)
+            .style("background-color", this.surfaceBackgroundColor())
         ;
 
         var titles = element.selectAll(".surfaceTitle").data(this.title() ? [this.title()] : []);

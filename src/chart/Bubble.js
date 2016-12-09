@@ -142,7 +142,7 @@
     };
 
     Bubble.prototype.exit = function (domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        SVGWidget.prototype.exit.apply(this, arguments);
     };
 
     return Bubble;

@@ -57,7 +57,7 @@
                 var context = this;
                 _.postSelectionChange = function () {
                     context._selectedItems = _._selectionBag.get().map(function (item) { return item.widget; });
-                    context.render();
+                    context.lazyRender();
                 };
             }
         }

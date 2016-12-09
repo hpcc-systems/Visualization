@@ -112,10 +112,10 @@
 
     ESPUrl.prototype.getUrl = function (overrides) {
         overrides = overrides || {};
-        return (overrides.protocol ? overrides.protocol : this._protocol) + "//" +
-                (overrides.hostname ? overrides.hostname : this._hostname) + ":" +
-                (overrides.port ? overrides.port : this._port) + "/" +
-                (overrides.pathname ? overrides.pathname : this._pathname);
+        return (overrides.protocol !== undefined ? overrides.protocol : this._protocol) + "//" +
+                (overrides.hostname !== undefined ? overrides.hostname : this._hostname) + ":" +
+                (overrides.port !== undefined ? overrides.port : this._port) + "/" +
+                (overrides.pathname !== undefined ? overrides.pathname : this._pathname);
     };
 
     function ESPMappings(mappings) {
@@ -258,7 +258,7 @@
     Comms.prototype.ajax = function (method, url, request) {
         return new Promise(function (resolve, reject) {
             var uri = url;
-            if (request) {
+            if (method === "GET" && request) {
                 uri += "?" + serialize(request);
             }
             var xhr = new XMLHttpRequest();
@@ -275,7 +275,12 @@
             };
             xhr.open(method, uri);
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.send();
+            if (method === "GET") {
+                xhr.send();
+            } else {
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(serialize(request));
+            }
         });
     };
 

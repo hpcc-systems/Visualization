@@ -542,10 +542,19 @@
         return this.mappings.columns.filter(function(d, i) {return i > 0;}).join(" / ");
     };
 
+    Source.prototype.getMap = function (col) {
+        return (this.mappings && this.mappings.hasMappings) ? this.mappings.getMap(col) : col;
+    };
+
+    Source.prototype.getReverseMap = function (col) {
+        return (this.mappings && this.mappings.hasMappings) ? this.mappings.getReverseMap(col) : col;
+    };
+
     //  Viz Events ---
     function EventUpdate(event, update, defMappings) {
         this.event = event;
         this.dashboard = event.visualization.dashboard;
+        this._col = update.col;
         this._visualization = update.visualization;
         this._instance = update.instance;
         this._datasource = update.datasource;
@@ -564,15 +573,22 @@
     EventUpdate.prototype.mapData = function (row) {
         var retVal = {};
         if (row) {
-            var vizSource = this.event.visualization.source;
             for (var key in this._mappings) {
-                var origKey = (vizSource.mappings && vizSource.mappings.hasMappings) ? vizSource.mappings.getReverseMap(key) : key;
+                var origKey = this.getReverseMap(key);
                 retVal[this._mappings[key]] = row[origKey];
             }
         }
         return retVal;
     };
 
+    EventUpdate.prototype.getMap = function (col) {
+        return this.event.visualization.source.getMap(col);
+    };
+
+    EventUpdate.prototype.getReverseMap = function (col) {
+        return this.event.visualization.source.getReverseMap(col);
+    };
+    
     EventUpdate.prototype.mapSelected = function () {
         if (this.event.visualization.hasSelection()) {
             return this.mapData(this.event.visualization._widgetState.row);
@@ -622,7 +638,10 @@
     };
 
     Event.prototype.getUpdates = function () {
-        return this._updates;
+        return this._updates.filter(function (updateInfo) {
+            if (!updateInfo._col) return true;
+            return updateInfo._col === updateInfo.getMap(this.visualization._widgetState.col);
+        }, this);
     };
 
     Event.prototype.getUpdatesDatasources = function () {
@@ -1231,7 +1250,7 @@
 
     Visualization.prototype.selection = function () {
         if (this.hasSelection()) {
-            return this._wdigetState.row;
+            return this._widgetState.row;
         }
         return null;
     };

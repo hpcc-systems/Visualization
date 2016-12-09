@@ -183,81 +183,87 @@
             return JSON.stringify(this.serializeToObject(widget, filter, includeData, includeState));
         },
 
-        deserializeFromObject: function(widget, state, callback) {
-            var createCount = 0;
+        deserializeFromObject: function (widget, state, callback) {
             var context = this;
-            widgetPropertyWalker(widget, null, function (widget, item) {
-                widget[item.id + "_reset"]();
-                if (state.__properties[item.id] !== undefined) {
-                    switch (item.type) {
-                        case "widget":
-                            ++createCount;
-                            var widgetKey = item.id;
-                            context.create(state.__properties[item.id], function (widgetItem) {
-                                widget[widgetKey](widgetItem);
-                                --createCount;
-                            });
-                            break;
-                        case "widgetArray":
-                        case "propertyArray":
-                            var widgetArrayKey = item.id;
-                            var widgetStateArray = state.__properties[item.id];
-                            if (widgetStateArray.length) {
+            return new Promise(function (resolve, reject) {
+                var createCount = 0;
+                widgetPropertyWalker(widget, null, function (widget, item) {
+                    widget[item.id + "_reset"]();
+                    if (state.__properties[item.id] !== undefined) {
+                        switch (item.type) {
+                            case "widget":
                                 ++createCount;
-                                var widgetArray = [];
-                                widgetArray.length = widgetStateArray.length;
-                                var arrayCreateCount = 0;
-                                widgetStateArray.forEach(function (widgetState, idx) {
-                                    ++arrayCreateCount;
-                                    context.create(widgetState, function (widgetItem) {
-                                        widgetItem._owner = widget;
-                                        widgetArray[idx] = widgetItem;
-                                        --arrayCreateCount;
-                                    });
-                                    var arrayIntervalHandler = setInterval(function () {
-                                        if (arrayCreateCount <= 0) {
-                                            clearInterval(arrayIntervalHandler);
-                                            arrayCreateCount = undefined;
-                                            widget[widgetArrayKey](widgetArray);
-                                            --createCount;
-                                        }
-                                    }, 20);
+                                var widgetKey = item.id;
+                                context.create(state.__properties[item.id], function (widgetItem) {
+                                    widget[widgetKey](widgetItem);
+                                    --createCount;
                                 });
-                            }
-                            break;
-                        default:
-                            widget[item.id](state.__properties[item.id]);
-                            break;
+                                break;
+                            case "widgetArray":
+                            case "propertyArray":
+                                var widgetArrayKey = item.id;
+                                var widgetStateArray = state.__properties[item.id];
+                                if (widgetStateArray.length) {
+                                    ++createCount;
+                                    var widgetArray = [];
+                                    widgetArray.length = widgetStateArray.length;
+                                    var arrayCreateCount = 0;
+                                    widgetStateArray.forEach(function (widgetState, idx) {
+                                        ++arrayCreateCount;
+                                        context.create(widgetState, function (widgetItem) {
+                                            widgetItem._owner = widget;
+                                            widgetArray[idx] = widgetItem;
+                                            --arrayCreateCount;
+                                        });
+                                        var arrayIntervalHandler = setInterval(function () {
+                                            if (arrayCreateCount <= 0) {
+                                                clearInterval(arrayIntervalHandler);
+                                                arrayCreateCount = undefined;
+                                                widget[widgetArrayKey](widgetArray);
+                                                --createCount;
+                                            }
+                                        }, 20);
+                                    });
+                                }
+                                break;
+                            default:
+                                widget[item.id](state.__properties[item.id]);
+                                break;
+                        }
                     }
-                }
+                });
+                var intervalHandler = setInterval(function () {
+                    if (createCount <= 0) {
+                        clearInterval(intervalHandler);
+                        createCount = undefined;
+                        if (state.__data) {
+                            for (var key in state.__data) {
+                                switch (key) {
+                                    case "data":
+                                        widget.data(state.__data[key]);
+                                        break;
+                                    default:
+                                        console.log("Unexpected __data item:  " + key);
+                                        widget[key](state.__data[key]);
+                                        break;
+                                }
+                            }
+                        }
+                        if (state.__state) {
+                            if (widget.deserializeState) {
+                                widget.deserializeState(state.__state);
+                            } else if (state.__state.data && widget.data) {
+                                widget.data(state.__state.data);
+                            }
+                        }
+                        if (callback) {
+                            console.log("Deprecated:  callback, use promise (Persist.deserializeFromObject)");
+                            callback(widget);
+                        }
+                        resolve(widget);
+                    }
+                }, 20);
             });
-            var intervalHandler = setInterval(function () {
-                if (createCount <= 0) {
-                    clearInterval(intervalHandler);
-                    createCount = undefined;
-                    if (state.__data) {
-                        for (var key in state.__data) {
-                            switch (key) {
-                                case "data":
-                                    widget.data(state.__data[key]);
-                                    break;
-                                default:
-                                    console.log("Unexpected __data item:  " + key);
-                                    widget[key](state.__data[key]);
-                                    break;
-                            }
-                        }
-                    }
-                    if (state.__state) {
-                        if (widget.deserializeState) {
-                            widget.deserializeState(state.__state);
-                        } else if (state.__state.data && widget.data) {
-                            widget.data(state.__state.data);
-                        }
-                    }
-                    callback(widget);
-                }
-            }, 20);
         },
 
         deserialize: function (widget, state, callback) {
@@ -275,16 +281,19 @@
                 state = JSON.parse(state);
             }
             var context = this;
-            Utility.requireWidget(state.__class).then(function (Widget) {
+            return Utility.requireWidget(state.__class).then(function (Widget) {
                 var widget = new Widget();
                 if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && state.__id.indexOf("_pe") !== 0) {
                     widget._id = state.__id;
                 }
-                context.deserializeFromObject(widget, state, callback);
+                return context.deserializeFromObject(widget, state, callback);
             }).catch(function (e) {
                 console.log("Persist.create:  ***exception***");
                 console.log(e);
-                callback(null);
+                if (callback) {
+                    console.log("Deprecated:  callback, use promise (Persist.create)");
+                    callback(null);
+                }
             });
         },
 

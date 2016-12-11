@@ -4,6 +4,9 @@
 
 .layout_Grid > .laneBackground {
     position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    background: whitesmoke;
 }
 
 .layout_Grid > .lane {
@@ -55,7 +58,6 @@
     border-style: solid;
     border-width: 1px;
     border-color: gray;
-    background-color: gray;
     border-radius: 0px;
     position: absolute;
     background: repeating-linear-gradient( -45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 4px, rgba(100, 100, 100, 0.1) 4px, rgba(100, 100, 100, 0.1) 8px );

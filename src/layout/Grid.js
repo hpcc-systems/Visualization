@@ -21,8 +21,9 @@
 
     Grid.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
     Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Basic"] });
-    Grid.prototype.publish("snapping", "vertical", "set", "Snapping Strategy", ["vertical", "horizontal"]);
-    Grid.prototype.publish("snappingLanes", 12, "number", "Snapping Lanes");
+    Grid.prototype.publish("snapping", "vertical", "set", "Snapping Strategy", ["vertical", "horizontal", "none"]);
+    Grid.prototype.publish("snappingColumns", 12, "number", "Snapping Columns");
+    Grid.prototype.publish("snappingRows", 16, "number", "Snapping Rows");
 
     Grid.prototype.publish("gutter", 6, "number", "Gap Between Widgets", null, { tags: ["Basic"] });
 
@@ -155,6 +156,14 @@
         ;
     };
 
+    Grid.prototype.resetItemsPos = function () {
+        this.origItems.forEach(function (origItem) {
+            var item = this.itemsMap[origItem.id];
+            item.x = origItem.x;
+            item.y = origItem.y;
+        }, this);
+    };
+
     Grid.prototype.initGridList = function () {
         this.itemsMap = {};
         this.items = this.content().map(function (cell) {
@@ -162,9 +171,10 @@
             this.itemsMap[retVal.id] = retVal;
             return retVal;
         }, this);
+        this.origItems = this.content().map(this.cellToGridItem);
         this.gridList = new GridList(this.items, {
             direction: this.snapping(),
-            lanes: this.snappingLanes()
+            lanes: this.snapping() === "horizontal" ? this.snappingRows() : this.snappingColumns()
         });
     };
 
@@ -202,17 +212,31 @@
                 if (!context.designMode()) return;
                 d3.event.sourceEvent.stopPropagation();
                 var d = context.itemsMap[_d.id()];
+                if (d3.event.x < 0) {
+                    d3.event.x = 0;
+                }
+                if (d3.event.x + d.w * context.cellWidth > context.snappingColumns() * context.cellWidth) {
+                    d3.event.x = context.snappingColumns() * context.cellWidth - d.w * context.cellWidth;
+                }
+                if (d3.event.y < 0) {
+                    d3.event.y = 0;
+                }
+                if (d3.event.y + d.h * context.cellWidth > context.snappingRows() * context.cellWidth) {
+                    d3.event.y = context.snappingRows() * context.cellWidth - d.h * context.cellWidth;
+                }
                 var pos = [Math.max(0, Math.floor((d3.event.x + context.cellWidth / 2) / context.cellWidth)), Math.max(0, Math.floor((d3.event.y + context.cellHeight / 2) / context.cellHeight))];
-                if (pos[0] + d.w > context.snappingLanes()) {
-                    pos[0] = d.w - context.snappingLanes();
-                }
-                if (pos[1] + d.h > context.snappingLanes()) {
-                    pos[1] = d.h - context.snappingLanes();
-                }
                 if (d.x !== pos[0] || d.y !== pos[1]) {
-                    context.gridList.moveItemToPosition(d, pos);
-                    context.items.forEach(context.gridItemToCell);
-                    context.updateGrid(false, 100);
+                    if (context.snapping() !== "none") {
+                        context.resetItemsPos();
+                        context.gridList.moveItemToPosition(d, pos);
+                    } else {
+                        d.x = pos[0];
+                        d.y = pos[1];
+                    }
+                    if (_d.gridCol() !== d.x || _d.gridRow() !== d.y) {
+                        context.items.forEach(context.gridItemToCell);
+                        context.updateGrid(false, 100);
+                    }
                 }
                 context.dragItem
                     .style("transform", function () { return "translate(" + d3.event.x + "px, " + d3.event.y + "px)"; })
@@ -257,9 +281,17 @@
                     h: Math.max(1, pos[1] - d.y + 1)
                 };
                 if (d.w !== size.w || d.h !== size.h) {
-                    context.gridList.resizeItem(d, size);
-                    context.items.forEach(context.gridItemToCell);
-                    context.updateGrid(d.id, 100);
+                    if (context.snapping() !== "none") {
+                        context.resetItemsPos();
+                        context.gridList.resizeItem(d, size);
+                    } else {
+                        d.w = size.w;
+                        d.h = size.h;
+                    }
+                    if (_d.gridColSpan() !== d.w || _d.gridRowSpan() !== d.h) {
+                        context.items.forEach(context.gridItemToCell);
+                        context.updateGrid(d.id, 100);
+                    }
                 }
                 context.dragItem
                     .style("width", function () { return (-d.x + 1) * context.cellWidth + d3.event.x - context.gutter() + "px"; })
@@ -307,13 +339,15 @@
     Grid.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
+        this._parentElement.style("overflow-x", this.fitTo() === "width" ? "hidden" : null);
+        this._parentElement.style("overflow-y", this.fitTo() === "width" ? "scroll" : null);
         var dimensions = this.getDimensions();
         var clientWidth = this.width() - (this.fitTo() === "width" ? this._scrollBarWidth : 0);
         this.cellWidth = clientWidth / dimensions.width;
         this.cellHeight = this.fitTo() === "all" ? this.height() / dimensions.height : this.cellWidth;
         if (this.designMode()) {
-            var cellLaneRatio = dimensions.width / this.snappingLanes();
-            var laneWidth = Math.floor(this.cellWidth * cellLaneRatio);
+            var cellLaneRatio = Math.min(this.width() / this.snappingColumns(), this.height() / this.snappingRows());
+            var laneWidth = Math.floor(cellLaneRatio);
             this.cellWidth = laneWidth;
             this.cellHeight = this.cellWidth;
         }
@@ -327,11 +361,13 @@
             .each(function (d) {
                 d.target(this);
                 d.__grid_watch = d.monitor(function (key, newVal, oldVal) {
-                    if (context._renderCount && key.indexOf("grid") === 0 && newVal !== oldVal) {
+                    if (context._renderCount && (key === "snapping" || key.indexOf("grid") === 0) && newVal !== oldVal) {
                         if (!context.gridList) {
                             //  API Call  (only needed when not dragging) ---
                             context.initGridList();
-                            context.gridList.resizeGrid(context.snappingLanes());
+                            if (context.snapping() !== "none") {
+                                context.gridList.resizeGrid(context.snapping() === "horizontal" ? context.snappingRows() : context.snappingColumns());
+                            }
                             context.items.forEach(context.gridItemToCell);
                             context.updateGrid(d.id(), 100);
                             context.killGridList();
@@ -373,8 +409,8 @@
             })
         ;
         lanesBackground
-            .style("width", (clientWidth + 10) + "px")
-            .style("height", this.height() + "px")
+            .style("width", (this.snappingColumns() * this.cellWidth) + "px")
+            .style("height", (this.snappingRows() * this.cellWidth) + "px")
         ;
         lanesBackground.exit()
             .each(function (d) {
@@ -390,8 +426,8 @@
             .style("top", "1px")
         ;
         lanes
-            .style("width", (clientWidth + 10) + "px")
-            .style("height", this.height() + "px")
+            .style("width", (this.snappingColumns() * this.cellWidth) + "px")
+            .style("height", (this.snappingRows() * this.cellWidth) + "px")
             .style("background-image", "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)")
             .style("background-size", this.cellWidth + "px " + this.cellHeight + "px")
         ;

@@ -339,6 +339,36 @@
             },
             layered: function (callback) {
                 createMap(true, [], null, callback);
+            },
+            drawing: function(callback) {
+                require(["test/DataFactory", "src/map/GMap"], function(DataFactory, GMap) {
+                    var map = new GMap();
+                    map.drawingTools(true);
+                    callback(map);
+
+                    // Set options for drawing tools.
+                    map.drawingOptions({
+                        drawingMode: google.maps.drawing.OverlayType.MARKER,
+                        drawingControl: true,
+                        drawingControlOptions: {
+                          position: google.maps.ControlPosition.TOP_CENTER,
+                          drawingModes: ["marker", "circle", "polygon", "polyline", "rectangle"]
+                        },
+                        markerOptions: {icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"},
+                        circleOptions: {
+                          fillColor: "#ffff00",
+                          fillOpacity: 1,
+                          strokeWeight: 5,
+                          editable: true,
+                          zIndex: 1
+                        },
+                        polygonOptions: {
+                          fillColor: "#0c84e4",
+                          editable: true,
+                          zIndex: 1
+                        }
+                    });
+                });
             }
         },
         Layered: {

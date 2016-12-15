@@ -382,7 +382,14 @@
         this.adjustText(tmpSvg, retVal.tickOverlapModulus);
 
         var bbox = tmpSvg.node().getBBox();
-        retVal.depth = isHorizontal ? bbox.height : bbox.width;
+
+        if(this._parentWidget && !this._parentWidget.alignment){
+            bbox.height = bbox.height;
+        }else{
+            bbox.height = bbox.height+40;
+        }
+
+	    retVal.depth = isHorizontal ? bbox.height : bbox.width;
         switch (this.shrinkToFit()) {
             case "low":
             case "both":

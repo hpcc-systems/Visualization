@@ -44,6 +44,19 @@
         Layered.prototype.exit.apply(this, arguments);
     };
 
+    Layer.prototype.layerPreRender = function (callback) {
+        return Promise.resolve();
+    };
+
+    Layer.prototype.render = function (callback) {
+        var context = this;
+        var args = arguments;
+        this.layerPreRender().then(function () {
+            Layered.prototype.render.apply(context, args);
+        });
+        return this;
+    };
+
     Layer.prototype.layerZoomed = function (base) {
     };
 

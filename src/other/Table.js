@@ -321,14 +321,6 @@
                     context.selectionBagClick(d, i);
                     context.applyRowStyles(context.getBodyRow(i));
                     context.applyFirstColRowStyles(context.getFixedRow(i));
-                    context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
-                }
-            })
-            .on("dblclick", function (_d) {
-                if (_d.row) {
-                    var d = _d.row;
-                    var i = _d.rowIdx;
-                    context.dblclick(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
                 }
             })
             .on("mouseover", function (_d) {
@@ -373,8 +365,7 @@
                 return idx < columns.length && !context.isHidden(idx);
             }).map(function (cell, idx) {
                 return {
-                    trIdx: _trIdx,
-                    rowIdx: _d.rowIdx,
+                    rowInfo: _d,
                     colIdx: idx,
                     cell: cell
                 };
@@ -383,8 +374,18 @@
         cells.enter()
             .append("td")
             .attr("class", "td_" + this.id())
+            .on("click", function (tdContents) {
+                if (tdContents.rowInfo) {
+                    context.click(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
+                }
+            })
+            .on("dblclick", function (tdContents, idx) {
+                if (tdContents.rowInfo) {
+                    context.dblclick(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
+                }
+            })
             .each(function (tdContents, tdIdx) {
-                var alignment = context.getColumnAlignment(tdContents.rowIdx, tdContents.colIdx, tdContents.cell);
+                var alignment = context.getColumnAlignment(tdContents.rowInfo.rowIdx, tdContents.colIdx, tdContents.cell);
                 var el = d3.select(this);
                 el
                     .style({
@@ -392,7 +393,7 @@
                         "text-align": alignment,
                         "vertical-align": context.verticalAlign()
                     })
-                    .classed("tr-" + tdContents.trIdx + "-td-" + tdIdx, true)
+                    .classed("tr-" + tdContents.rowInfo.rowIdx + "-td-" + tdIdx, true)
                 ;
             })
         ;
@@ -438,7 +439,7 @@
                 } else {
                     el.selectAll(".div_" + context.id()).remove();
                     el[context.renderHtmlDataCells() ? "html" : "text"](
-                        context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell)
+                        context.field(tdContents.rowInfo.rowIdx, tdContents.colIdx).transform(tdContents.cell)
                     );
                 }
             })

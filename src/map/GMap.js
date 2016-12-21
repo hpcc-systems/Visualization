@@ -1,123 +1,125 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
-        var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
-        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey  + "&libraries=drawing,geometry", "css!./GMap"], factory);
+        define(["d3", "../common/HTMLWidget", "../layout/AbsoluteSurface", "css!./GMap"], factory);
     } else {
         root.map_GMap = factory(root.d3, root.common_HTMLWidget, root.layout_AbsoluteSurface);
     }
 }(this, function (d3, HTMLWidget, AbsoluteSurface) {
 
-    function Overlay(map, worldSurface, viewportSurface) {
-        google.maps.OverlayView.call(this);
-        this._div = null;
+    function createOverlay(map, worldSurface, viewportSurface) {
+        function Overlay(map, worldSurface, viewportSurface) {
+            google.maps.OverlayView.call(this);
+            this._div = null;
 
-        this._worldSurface = worldSurface;
-        this._viewportSurface = viewportSurface;
+            this._worldSurface = worldSurface;
+            this._viewportSurface = viewportSurface;
 
-        this._map = map;
-        this.setMap(map);
+            this._map = map;
+            this.setMap(map);
 
-        var context = this;
-        google.maps.event.addListener(map, "bounds_changed", function () {
-            context.draw();
-        });
-        google.maps.event.addListener(map, "projection_changed", function () {
-            context.draw();
-        });
+            var context = this;
+            google.maps.event.addListener(map, "bounds_changed", function () {
+                context.draw();
+            });
+            google.maps.event.addListener(map, "projection_changed", function () {
+                context.draw();
+            });
 
-        this._prevWorldMin = { x: 0, y: 0 };
-        this._prevWorldMax = { x: 0, y: 0 };
-        this._prevMin = { x: 0, y: 0 };
-        this._prevMax = { x: 0, y: 0 };
-    }
-    Overlay.prototype = google.maps.OverlayView.prototype;
-
-    Overlay.prototype.onAdd = function () {
-        this.div = document.createElement("div");
-
-        this._viewportSurface
-            .target(this.div)
-            .units("pixels")
-        ;
-
-        var panes = this.getPanes();
-        panes.overlayMouseTarget.appendChild(this.div);
-    };
-
-    Overlay.prototype.draw = function () {
-        var projection = this.getProjection();
-        if (!projection)
-            return;
-
-        var bounds = this._map.getBounds();
-        var center = projection.fromLatLngToDivPixel(bounds.getCenter());
-        var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());
-        var ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
-
-        var min = {
-            x: sw.x,
-            y: ne.y
-        };
-        var max = {
-            x: ne.x,
-            y: sw.y
-        };
-
-        var worldWidth = projection.getWorldWidth();
-        while (max.x < min.x + 100) {  //  Ignoe dateline from being the rect.
-            max.x += worldWidth;
+            this._prevWorldMin = { x: 0, y: 0 };
+            this._prevWorldMax = { x: 0, y: 0 };
+            this._prevMin = { x: 0, y: 0 };
+            this._prevMax = { x: 0, y: 0 };
         }
-        while (min.x > center.x) {
-            min.x -= worldWidth;
-            max.x -= worldWidth;
-        }
+        Overlay.prototype = google.maps.OverlayView.prototype;
 
-        if (min.x !== this._prevMin.x || min.y !== this._prevMin.y || max.x !== this._prevMax.x || max.y !== this._prevMax.y) {
+        Overlay.prototype.onAdd = function () {
+            this.div = document.createElement("div");
+
             this._viewportSurface
-                .widgetX(min.x)
-                .widgetY(min.y)
-                .widgetWidth(max.x - min.x)
-                .widgetHeight(max.y - min.y)
+                .target(this.div)
+                .units("pixels")
             ;
-            //  FF Issue on initial render (GH-1855) ---
-            if (this._viewportSurface._renderCount) {
-                this._viewportSurface.render();
-                this._prevMin = min;
-                this._prevMax = max;
-            } else {
-                this._viewportSurface.lazyRender();
+
+            var panes = this.getPanes();
+            panes.overlayMouseTarget.appendChild(this.div);
+        };
+
+        Overlay.prototype.draw = function () {
+            var projection = this.getProjection();
+            if (!projection)
+                return;
+
+            var bounds = this._map.getBounds();
+            var center = projection.fromLatLngToDivPixel(bounds.getCenter());
+            var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest());
+            var ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
+
+            var min = {
+                x: sw.x,
+                y: ne.y
+            };
+            var max = {
+                x: ne.x,
+                y: sw.y
+            };
+
+            var worldWidth = projection.getWorldWidth();
+            while (max.x < min.x + 100) {  //  Ignoe dateline from being the rect.
+                max.x += worldWidth;
             }
-        }
+            while (min.x > center.x) {
+                min.x -= worldWidth;
+                max.x -= worldWidth;
+            }
 
-        var worldMin = projection.fromLatLngToDivPixel(new google.maps.LatLng(85, -179.9));
-        var worldMax = projection.fromLatLngToDivPixel(new google.maps.LatLng(-85, 179.9));
-        while (worldMax.x < worldMin.x + 100) {  //  Ignoe dateline from being the rect.
-            worldMax.x += worldWidth;
-        }
-        while (worldMin.x > center.x) {
-            worldMin.x -= worldWidth;
-            worldMax.x -= worldWidth;
-        }
-        if (worldMin.x !== this._prevWorldMin.x || worldMin.y !== this._prevWorldMin.y || worldMax.x !== this._prevWorldMax.x || worldMax.y !== this._prevWorldMax.y) {
-            this._worldSurface
-                .widgetX(worldMin.x)
-                .widgetY(worldMin.y)
-                .widgetWidth(worldMax.x - worldMin.x)
-                .widgetHeight(worldMax.y - worldMin.y)
-                .render()
-            ;
-            this._prevWorldMin = worldMax;
-            this._prevWorldMax = worldMax;
-        }
-    };
+            if (min.x !== this._prevMin.x || min.y !== this._prevMin.y || max.x !== this._prevMax.x || max.y !== this._prevMax.y) {
+                this._viewportSurface
+                    .widgetX(min.x)
+                    .widgetY(min.y)
+                    .widgetWidth(max.x - min.x)
+                    .widgetHeight(max.y - min.y)
+                ;
+                //  FF Issue on initial render (GH-1855) ---
+                if (this._viewportSurface._renderCount) {
+                    this._viewportSurface.render();
+                    this._prevMin = min;
+                    this._prevMax = max;
+                } else {
+                    this._viewportSurface.lazyRender();
+                }
+            }
 
-    Overlay.prototype.onRemove = function () {
-        this._viewportSurface.target(null);
-        this._div.parentNode.removeChild(this._div);
-        this._div = null;
-    };
+            var worldMin = projection.fromLatLngToDivPixel(new google.maps.LatLng(85, -179.9));
+            var worldMax = projection.fromLatLngToDivPixel(new google.maps.LatLng(-85, 179.9));
+            while (worldMax.x < worldMin.x + 100) {  //  Ignoe dateline from being the rect.
+                worldMax.x += worldWidth;
+            }
+            while (worldMin.x > center.x) {
+                worldMin.x -= worldWidth;
+                worldMax.x -= worldWidth;
+            }
+            if (worldMin.x !== this._prevWorldMin.x || worldMin.y !== this._prevWorldMin.y || worldMax.x !== this._prevWorldMax.x || worldMax.y !== this._prevWorldMax.y) {
+                this._worldSurface
+                    .widgetX(worldMin.x)
+                    .widgetY(worldMin.y)
+                    .widgetWidth(worldMax.x - worldMin.x)
+                    .widgetHeight(worldMax.y - worldMin.y)
+                    .render()
+                ;
+                this._prevWorldMin = worldMax;
+                this._prevWorldMax = worldMax;
+            }
+        };
+
+        Overlay.prototype.onRemove = function () {
+            this._viewportSurface.target(null);
+            this._div.parentNode.removeChild(this._div);
+            this._div = null;
+        };
+
+        return new Overlay(map, worldSurface, viewportSurface);
+    }
 
     function GMap() {
         HTMLWidget.call(this);
@@ -152,8 +154,6 @@
         this._viewportSurface.project = function (lat, long) {
             return calcProjection(this, lat, long);
         };
-
-        this._googleGeocoder = new google.maps.Geocoder();
     }
     GMap.prototype = Object.create(HTMLWidget.prototype);
     GMap.prototype.constructor = GMap;
@@ -223,6 +223,7 @@
     GMap.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         var context = this;
+        this._googleGeocoder = new google.maps.Geocoder();
         this._googleMapNode = element.append("div")
             .style({
                 width: this.width() + "px",
@@ -235,7 +236,7 @@
             mapTypeId: this.getMapType(),
             disableDefaultUI: true
         });
-        this._overlay = new Overlay(this._googleMap, this._worldSurface, this._viewportSurface);
+        this._overlay = createOverlay(this._googleMap, this._worldSurface, this._viewportSurface);
         this._googleMap.addListener("center_changed", function () {
             context.centerLat(context._googleMap.center.lat());
             context._prevCenterLat = context.centerLat();
@@ -305,7 +306,32 @@
             this._prevStreetView = this.streetView();
         }
     };
+
+    GMap.prototype.requireGoogleMap = function () {
+        if (!this._googleMapPromise) {
+            this._googleMapPromise = new Promise(function (resolve, reject) {
+                if (window.google && window.google.maps) {
+                    resolve();
+                }
+                var protocol = window.location.protocol === "https:" ? "https:" : "http:";  //  Could be "file:"
+                var __hpcc_gmap_apikey = __hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
+                require(["async!" + protocol + "//maps.google.com/maps/api/js?key=" + __hpcc_gmap_apikey + "&libraries=drawing,geometry"], function () {
+                    resolve();
+                });
+            });
+        }
+        return this._googleMapPromise;
+    };
     
+    GMap.prototype.render = function (callback) {
+        var context = this;
+        var args = arguments;
+        this.requireGoogleMap().then(function () {
+            HTMLWidget.prototype.render.apply(context, args);
+        });
+        return this;
+    };
+
     GMap.prototype.updateCircles = function () {
         function rowID(row) {
             return row[0] + "_" + row[1];

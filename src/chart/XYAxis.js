@@ -13,6 +13,7 @@
         this._drawStartPos = "origin";
 
         this.domainAxis = new Axis()
+            .classed({"domain": true})
             .orientation_default("bottom")
             .type_default("ordinal")
             .overlapMode_default("stagger")
@@ -20,6 +21,7 @@
             .extend_default(0)
         ;
         this.valueAxis = new Axis()
+            .classed({ "value": true })
             .orientation_default("left")
             .type_default("linear")
             .shrinkToFit_default("high")
@@ -301,6 +303,7 @@
         this.yAxis = isHorizontal ? this.valueAxis : this.domainAxis;
         var xBrush = isHorizontal ? this.xBrush : this.yBrush;
         var yBrush = isHorizontal ? this.yBrush : this.xBrush;
+        var xBrushExtent = xBrush.extent();
         var yBrushExtent = yBrush.extent();
 
         //  Update Domain  ---
@@ -393,6 +396,25 @@
                         xBrush.extent(yBrushExtent);
                         break;
                 }
+            } else {
+                switch (this.xAxisType()) {
+                    case "ordinal":
+                        if (this._prevBrush) {
+                            var ratio = maxCurrExtent / this._prevBrush.maxCurrExtent;
+                            xBrush.extent([xBrushExtent[0] * ratio, xBrushExtent[1] * ratio]);
+                        }
+                        break;
+                    default:
+                        var domain = this.domainAxis.d3Scale.domain();
+                        if (xBrushExtent[0] < domain[0] || xBrushExtent[0] > domain[1]) {
+                            xBrushExtent[0] = domain[0];
+                        }
+                        if (xBrushExtent[1] < domain[0] || xBrushExtent[1] > domain[1]) {
+                            xBrushExtent[1] = domain[1];
+                        }
+                        xBrush.extent(xBrushExtent);
+                        break;
+                }
             }
             this._prevBrush = {
                 orientation: this.orientation(),
@@ -429,6 +451,7 @@
         var focusChart = this.svgFocus.selectAll("#" + this.id() + "_focusChart").data(this.xAxisFocus() ? [true] : []);
         focusChart.enter().append("g")
             .attr("id", this.id() + "_focusChart")
+            .attr("class", "focus")
             .each(function (d) {
                 context.focusChart = new context.constructor()
                     .target(this)

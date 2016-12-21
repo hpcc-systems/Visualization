@@ -150,7 +150,7 @@
         },
         ChoroplethCountries: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/map/ChoroplethCountries", "src/map/countries"], function (DataFactory, ChoroplethCountries, countries) {
+                require(["test/DataFactory", "src/map/ChoroplethCountries"], function (DataFactory, ChoroplethCountries) {
                     callback(new ChoroplethCountries()
                         .columns(DataFactory.Countries.simple.columns)
                         .data(DataFactory.Countries.simple.rawData)
@@ -160,7 +160,7 @@
         },
         ChoroplethContinents: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/map/ChoroplethContinents", "src/map/countries"], function (DataFactory, ChoroplethContinents, countries) {
+                require(["test/DataFactory", "src/map/ChoroplethContinents"], function (DataFactory, ChoroplethContinents) {
                     callback(new ChoroplethContinents());
                 });
             }

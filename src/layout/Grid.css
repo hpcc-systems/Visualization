@@ -1,12 +1,15 @@
-.layout_Grid .ddCell {
+.layout_Grid > .ddCell {
     position: absolute;
 }
 
-.layout_Grid .laneBackground {
+.layout_Grid > .laneBackground {
     position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    background: whitesmoke;
 }
 
-.layout_Grid .lane {
+.layout_Grid > .lane {
     position: absolute;
     border-style: none;
     opacity: 0.25;
@@ -14,7 +17,7 @@
     pointer-events: none;
 }
 
-.layout_Grid .draggable {
+.layout_Grid > .ddCell.draggable {
     border-style: solid;
     border-width: 1px;
     background-color: ghostwhite;
@@ -22,7 +25,7 @@
     cursor:move;
 }
 
-.layout_Grid .resizeHandle {
+.layout_Grid > .ddCell.draggable > .resizeHandle {
     bottom: 0px;
     right: 0px;
     width: 8px;
@@ -32,7 +35,7 @@
     cursor:nwse-resize;
 }
 
-.layout_Grid .resizeHandleDisplay {
+.layout_Grid > .ddCell.draggable .resizeHandleDisplay {
     bottom: 2px;
     right: 2px;
     width: 4px;
@@ -47,21 +50,20 @@
     position: absolute;
 }
 
-.layout_Grid .resizeHandleDisplay:hover {
+.layout_Grid > .ddCell.draggable .resizeHandleDisplay:hover {
     border-color: orange;
 }
 
-.layout_Grid .dragging {
+.layout_Grid > .dragging {
     border-style: solid;
     border-width: 1px;
     border-color: gray;
-    background-color: gray;
     border-radius: 0px;
     position: absolute;
     background: repeating-linear-gradient( -45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 4px, rgba(100, 100, 100, 0.1) 4px, rgba(100, 100, 100, 0.1) 8px );
 }
 
-.layout_Grid .resizing {
+.layout_Grid > .resizing {
     border-style: solid;
     border-width: 1px;
     border-color: gray;
@@ -72,7 +74,7 @@
     background: repeating-linear-gradient( -45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 4px, orange 4px, orange 8px );
 }
 
-.layout_Grid .selected {
+.layout_Grid > .ddCell.draggable .common_Widget.selected {
     border-style: solid;
     border-width: 1px;
     border-color: red;

@@ -1,13 +1,5 @@
-"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define([], factory);
-    } else {
-        root.map_usCounties = factory();
-    }
-}(this, function () {
-    return {
-        stateNames: {
+{
+    "stateNames": {
             "1": {
                 "name": "Alabama",
                 "code": "AL"
@@ -233,7 +225,7 @@
                 "code": "VI"
             }
         },
-        countyNames: {
+        "countyNames": {
             "1001": "AUTAUGA",
             "1003": "BALDWIN",
             "1005": "BARBOUR",
@@ -3469,10 +3461,10 @@
             "78020": "ST. JOHN",
             "78030": "ST. THOMAS"
         },
-        topology: {
-            type: "Topology",
-            objects: {
-                counties: {
+        "topology": {
+            "type": "Topology",
+            "objects": {
+                "counties": {
                     "type": "GeometryCollection",
                     "geometries": [{
                         "type": "Polygon",
@@ -16328,7 +16320,7 @@
                         "arcs": [[-9839, -9811, -9757, 9868]]
                     }]
                 },
-                states: {
+                "states": {
                     "type": "GeometryCollection",
                     "geometries": [{
                         "type": "MultiPolygon",
@@ -16555,5 +16547,4 @@
                 "translate": [-179.1473400003406, 17.67439566600018]
             }
         }
-    };
-}));
+    }

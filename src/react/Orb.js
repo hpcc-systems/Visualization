@@ -140,7 +140,7 @@
 
     	});
 
-    }
+    };
 
 
     Orb.prototype.update = function (domNode, element) { 

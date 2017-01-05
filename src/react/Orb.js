@@ -16,7 +16,7 @@
     Mapping.prototype.constructor = Mapping;
     Mapping.prototype._class += " react_Orb.Mapping";
     Mapping.prototype.publish("addField", "", "set", "Show Toolbox or not",function() { return this._owner ? this._owner.columns() : [];}, {optional: true} );
-    Mapping.prototype.publish("location", true, "set", "Data Location",['row','column','data'], { tags: ["basic"] });
+    Mapping.prototype.publish("location", true, "set", "Data Location",['row','column','data','remove'], { tags: ["basic"] });
     Mapping.prototype.publish("aggregateFunc", "", "set", "Aggregate Function type",['sum','count','min','max','avg','prod','var','varp','stdev','stdevp'], {optional: true} );
     Mapping.prototype.publish("formatFunction","","string","Format function");
 
@@ -28,6 +28,7 @@
         this.rowFields = [];
         this.dataFields = [];
         this.columnFields = [];
+        this.removeFields = [];
         this.prevOrbConfig = '';
 
     }
@@ -50,7 +51,7 @@
 
     Orb.prototype.publish("columnGrandTotal", true, "boolean", "Show Grand total or not");
     Orb.prototype.publish("rowGrandTotal", true, "boolean", "Show Grand total or not");
-    Orb.prototype.publish("movable", true, "boolean", "Fields can be moved or not");
+    // Orb.prototype.publish("movable", true, "boolean", "Fields can be moved or not");
 
         
     Orb.prototype.orbConfig = function (ds,fs,rowFields,columnFields,dataFields) {
@@ -58,7 +59,7 @@
         var config = {
 
             dataSource:ds,
-            canMoveFields: this.movable(), 
+            canMoveFields: false, 
             dataHeadersLocation: 'columns',
             width: 2000,
             height: 711,
@@ -102,17 +103,44 @@
     Orb.prototype.enter = function (domNode, element) {
         
         HTMLWidget.prototype.enter.apply(this, arguments);
-        // this._div = element.append("div").attr("id", this.id() + "_orb");
-        // this._orb = new orb.pgridwidget(this.orbConfig());
-        // this._orb.render(document.getElementById(this.id() + "_orb"));
         this._orbDiv = element.append("div");
         this._orb = new ReactOrb.pgridwidget(this.orbConfig());
         this._orb.render(this._orbDiv.node());
-        var context = this;
+        // var context = this;
         // setInterval(function () {
         //     context.saveOrbConfig();
         // }, 1000);      
     };
+
+    Orb.prototype.deleteField =  function(field){
+    	var fieldIndex =  this.savedField.indexOf(field);
+    	if (fieldIndex > -1){
+    		this.savedField.splice(fieldIndex);
+    	}
+
+    	fieldIndex = this.rowFields.indexOf(field);
+    	if (fieldIndex > -1){
+    		this.rowFields.splice(fieldIndex);
+    	}
+
+    	fieldIndex = this.columnFields.indexOf(field);
+    	if (fieldIndex > -1){
+    		this.columnFields.splice(fieldIndex);
+    	}
+
+    	fieldIndex = this.dataFields.indexOf(field);
+    	if (fieldIndex > -1){
+    		this.dataFields.splice(fieldIndex);
+    	}
+
+    	this.orbFields.forEach(function(item,index,object){
+    		if (item.caption === field){
+    			object.splice(index,1);
+    		}
+
+    	});
+
+    }
 
 
     Orb.prototype.update = function (domNode, element) { 
@@ -121,13 +149,6 @@
 
         var ds = this.data();
         var columns = this.columns();
-
-        // var allColumns = this.columns().map(function (column, idx) {
-        //         return {
-        //             name: "" + idx,
-        //             caption: column
-        //         };
-        //     });
                    
         for (var i=0;i<this.orbFields.length;i++){
             if (this.savedField.indexOf(this.orbFields[i].caption) === -1){
@@ -159,6 +180,7 @@
             var columnIndex = this.columnFields.indexOf(eachField);
             var dataIndex = this.dataFields.indexOf(eachField);
             var rowIndex = this.rowFields.indexOf(eachField);
+            var removeIndex =  this.removeFields.indexOf(eachField);
 
 
             if (eachField !== null){
@@ -175,6 +197,9 @@
                             if (dataIndex > -1){
                                 this.dataFields.splice(dataIndex,1);
                             }
+                            if (removeIndex > -1){
+                                this.removeFields.splice(removeIndex,1);
+                            }
                         }
 
                         break;
@@ -183,12 +208,15 @@
                         if (columnIndex === -1){
                             this.columnFields.push(eachField);
 
-                        if (rowIndex > -1){
-                            this.rowFields.splice(columnIndex,1);
-                            }
-                        if (dataIndex > -1){
-                            this.dataFields.splice(dataIndex,1);
-                            }
+	                        if (rowIndex > -1){
+	                            this.rowFields.splice(columnIndex,1);
+	                            }
+	                        if (dataIndex > -1){
+	                            this.dataFields.splice(dataIndex,1);
+	                            }
+	                        if (removeIndex > -1){
+	                            this.removeFields.splice(removeIndex,1);
+	                        }                            
 
                         }
                         break;
@@ -203,9 +231,22 @@
                         if (columnIndex > -1){
                             this.columnFields.splice(dataIndex,1);
                             }
+                        if (removeIndex > -1){
+                            this.removeFields.splice(removeIndex,1);
+                            }
 
                         }
+
                         break;
+
+                    case 'remove':
+                    	if (removeIndex === -1){
+                    		this.removeFields.push(eachField);
+                    		this.deleteField(eachField);
+ 
+                    	}
+                    	break;
+
                     }
             }
 

@@ -43,11 +43,13 @@
 
     Orb.prototype.Mapping = Mapping;
     Orb.prototype.publish("stringProp", "defaultValue", "string", "Sample Property");
+    Orb.prototype.publish("width","2000","string","Table width",null, { tags: ["basic"] });
+    Orb.prototype.publish("height","711","string","Table height",null, { tags: ["basic"] });
 
     Orb.prototype.publish("toolbar", true, "boolean", "Show Toolbox or not", null, { tags: ["basic"] });
     Orb.prototype.publish("themeColor", "blue", "set", "Theme color", ['blue','red','black','green'], { tags: ["basic"] });
     Orb.prototype.publish("newField" ,[], "propertyArray", "Source Columns", null, { autoExpand : Mapping});
-    // Orb.prototype.publish("removeField", "", "set", "Show Toolbox or not", Orb.prototype.columns,{ tags: ["basic"] },{optional: true});
+    
 
     Orb.prototype.publish("columnGrandTotal", true, "boolean", "Show Grand total or not");
     Orb.prototype.publish("rowGrandTotal", true, "boolean", "Show Grand total or not");
@@ -61,8 +63,8 @@
             dataSource:ds,
             canMoveFields: false, 
             dataHeadersLocation: 'columns',
-            width: 2000,
-            height: 711,
+            width: this.width(),
+            height: this.height(),
             theme: this.themeColor(),
             toolbar: {
                 visible: this.toolbar()

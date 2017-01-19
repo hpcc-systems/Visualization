@@ -31,6 +31,8 @@
                 "d3-tip": "../bower_components/d3-tip/index",
                 "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
                 "handsontable": "../bower_components/handsontable/dist/handsontable.full",
+                "orb-react": "../bower_components/orb/deps/react-0.12.2",
+                "orb": "../bower_components/orb/dist/orb",
 
                 "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
                 "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
@@ -132,6 +134,8 @@
             "d3-tip": rawgitBaseUrl + "/Caged/d3-tip/v0.6.7/index",
             "d3-bullet": rawgitBaseUrl + "/d3/d3-plugins/master/bullet/bullet",
             "handsontable": rawgitBaseUrl + "/handsontable/handsontable/0.24.3/dist/handsontable.full.min",
+            "orb-react": rawgitBaseUrl + "/nnajm/orb/v1.0.9/deps/react-0.12.2.min",
+            "orb": rawgitBaseUrl + "/nnajm/orb/v1.0.9/dist/orb.min",
 
             "amcharts": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
             "amcharts.funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",

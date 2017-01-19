@@ -28,7 +28,7 @@
     "mocha": "~2.4.5",
     "chai": "~3.5.0",
     "gulp-jscs": "~3.0.2",
-    "requirejs-plugins": "git://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
+    "requirejs-plugins": "https://github.com/GordonSmith/requirejs-plugins.git#v1.0.3",
     "require-css": "~0.1.8",
     "requirejs-text": "~2.0.12"
   },

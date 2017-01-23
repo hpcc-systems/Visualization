@@ -25,10 +25,13 @@
 
     Funnel.prototype.updateChartOptions = function() {
         CommonFunnel.prototype.updateChartOptions.apply(this, arguments);
-
+        var context = this;
         this._chart.balloonFunction = function(d) {
-            var balloonText = d.title + ", " + d.value;
-            return balloonText;
+            if(context && context.tooltipValueFormat){
+                return d.title + ", " + d3.format(context.tooltipValueFormat())(d.value);
+            }else{
+              return d.title + ", " + d.value;  
+            } 
         };
         this._chart.neckHeight = this.neckHeightPercent()+"%";
         this._chart.neckWidth = this.neckWidthPercent()+"%";

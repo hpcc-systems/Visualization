@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "css!./Combo"], factory);
+        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "../api/ITooltip", "css!./Combo"], factory);
     } else {
-        root.amchart_Combo = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_Combo = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonSerial, AmCharts, INDChart) {
+}(this, function(d3, CommonSerial, AmCharts, INDChart, ITooltip) {
     function Combo() {
         CommonSerial.call(this);
         this._tag = "div";
@@ -15,6 +15,7 @@
     Combo.prototype.constructor = Combo;
     Combo.prototype._class += " amchart_Combo";
     Combo.prototype.implements(INDChart.prototype);
+    Combo.prototype.implements(ITooltip.prototype);
 
     Combo.prototype.publish("paletteID", "default", "set", "Palette ID", Combo.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Combo.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});

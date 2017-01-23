@@ -16,6 +16,5 @@
     Bar.prototype = Object.create(Column.prototype);
     Bar.prototype.constructor = Bar;
     Bar.prototype._class += " amchart_Bar";
-
     return Bar;
 }));

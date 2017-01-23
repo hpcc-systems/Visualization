@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonRadar", "amcharts.radar", "../api/INDChart"], factory);
+        define(["d3", "./CommonRadar", "amcharts.radar", "../api/INDChart", "../api/ITooltip"], factory);
     } else {
-        root.amchart_Polar = factory(root.d3, root.amchart_CommonRadar, root.amcharts, root.api_INDChart);
+        root.amchart_Polar = factory(root.d3, root.amchart_CommonRadar, root.amcharts, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonRadar, AmCharts, INDChart) {
+}(this, function(d3, CommonRadar, AmCharts, INDChart, ITooltip) {
     function Polar() {
         CommonRadar.call(this);
         this._tag = "div";
@@ -15,6 +15,7 @@
     Polar.prototype.constructor = Polar;
     Polar.prototype._class += " amchart_Polar";
     Polar.prototype.implements(INDChart.prototype);
+    Polar.prototype.implements(ITooltip.prototype);
 
     Polar.prototype.publish("paletteID", "default", "set", "Palette ID", Polar.prototype._palette.switch(), {tags:["Basic","Shared"]});
 

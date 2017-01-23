@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts.pie", "../api/I2DChart", "../api/ITooltip", "require"], factory);
     } else {
-        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.require);
+        root.amchart_Pie = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.api_I2DChart, root.api_ITooltip, root.require);
     }
-}(this, function(d3, HTMLWidget, AmCharts, I2DChart, require) {
+}(this, function(d3, HTMLWidget, AmCharts, I2DChart, ITooltip, require) {
     function Pie() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -23,6 +23,7 @@
     Pie.prototype.constructor = Pie;
     Pie.prototype._class += " amchart_Pie";
     Pie.prototype.implements(I2DChart.prototype);
+    Pie.prototype.implements(ITooltip.prototype);
 
     Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), {tags:["Basic","Shared"]});
     Pie.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
@@ -55,8 +56,8 @@
     };
 
     Pie.prototype.updateChartOptions = function() {
+        var context = this;
         this._chart.type = "pie";
-        
         this._chart.labelsEnabled = true;
         if (this.labelPosition()==="inside") {
             this._chart.radius = "50%";
@@ -115,6 +116,13 @@
             }
             this._chart.chartData[i].alpha = d;
         },this);
+
+
+        this._chart.balloonFunction = function(d) {
+            if(context && context.tooltipValueFormat){
+                return d.title +": " + d3.format(',.2%')(d.percents/100)+"  "+ d3.format(context.tooltipValueFormat())(d.value);
+            }
+        };
 
         return this._chart;
     };

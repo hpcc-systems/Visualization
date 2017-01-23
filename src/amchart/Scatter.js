@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonXY", "amcharts.xy", "../api/INDChart"], factory);
+        define(["d3", "./CommonXY", "amcharts.xy", "../api/INDChart", "../api/ITooltip"], factory);
     } else {
-        root.amchart_Scatter = factory(root.d3, root.amchart_CommonXY, root.amcharts, root.api_INDChart);
+        root.amchart_Scatter = factory(root.d3, root.amchart_CommonXY, root.amcharts, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonXY, AmCharts, INDChart) {
+}(this, function(d3, CommonXY, AmCharts, INDChart, ITooltip) {
     function Scatter() {
         CommonXY.call(this);
         this._tag = "div";
@@ -17,7 +17,8 @@
     Scatter.prototype.constructor = Scatter;
     Scatter.prototype._class += " amchart_Scatter";
     Scatter.prototype.implements(INDChart.prototype);
-
+    Scatter.prototype.implements(ITooltip.prototype);
+    
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), {tags:["Basic","Shared"]});
 
     Scatter.prototype.publish("scatterType", "scatter", "set", "Bullet Type", ["scatter", "bubble"],{tags:["Basic"]});

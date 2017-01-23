@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "css!./Area"], factory);
+        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart", "../api/ITooltip", "css!./Area"], factory);
     } else {
-        root.amchart_Area = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_Area = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonSerial, AmCharts, INDChart) {
+}(this, function(d3, CommonSerial, AmCharts, INDChart, ITooltip) {
     function Area() {
         CommonSerial.call(this);
         this._tag = "div";
@@ -15,6 +15,7 @@
     Area.prototype.constructor = Area;
     Area.prototype._class += " amchart_Area";
     Area.prototype.implements(INDChart.prototype);
+    Area.prototype.implements(ITooltip.prototype);
 
     Area.prototype.publish("paletteID", "default", "set", "Palette ID", Area.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Area.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});

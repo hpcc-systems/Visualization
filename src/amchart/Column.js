@@ -1,23 +1,22 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "amcharts.serial", "../api/INDChart"], factory);
+        define(["d3", "./XYAxis", "./CommonSerial", "amcharts.serial", "../api/INDChart", "../api/ITooltip"], factory);
     } else {
-        root.amchart_Column = factory(root.d3, root.amchart_CommonSerial, root.amcharts, root.api_INDChart);
+        root.amchart_Column = factory(root.d3, root.chart_XYAxis, root.amchart_CommonSerial, root.amcharts, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonSerial, AmCharts, INDChart) {
+}(this, function(d3, XYAxis, CommonSerial, AmCharts, INDChart, ITooltip) {
     function Column() {
         CommonSerial.call(this);
-
         this._tag = "div";
         this._gType = "column";
-
         this.orientation("horizontal");
     }
     Column.prototype = Object.create(CommonSerial.prototype);
     Column.prototype.constructor = Column;
     Column.prototype._class += " amchart_Column";
     Column.prototype.implements(INDChart.prototype);
+    Column.prototype.implements(ITooltip.prototype);
 
     Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Column.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
@@ -62,27 +61,27 @@
             this._chart.valueAxes[0].stackType = "none";
         }
 
-        if(this.yAxisDomainLow_exists()){
-            this._chart.valueAxes[0].minimum = this.yAxisDomainLow();
+        if(this.yAxisDomainLow_exists()){      
+            this._chart.valueAxes[0].minimum = this.yAxisDomainLow();     
+        }     
+       
+        if(this.yAxisDomainHigh_exists()){        
+            this._chart.valueAxes[0].maximum = this.yAxisDomainHigh();        
+        }     
+        this._chart.valueAxes[0].strictMinMax = false;        
+       
+        if(this.yAxisLabelFrequency_exists()) {       
+            this._chart.valueAxes[0].labelFrequency = this.yAxisLabelFrequency();  
+        }     
+       
+        if(this.yAxisBaseValue_exists()) {        
+            this._chart.valueAxes[0].baseValue = this.yAxisBaseValue();        
+        }     
+       
+        if (this.yAxisTickCount_exists()) {       
+             this._chart.valueAxes[0].gridCount = this.yAxisTickCount();       
         }
-
-        if(this.yAxisDomainHigh_exists()){
-            this._chart.valueAxes[0].maximum = this.yAxisDomainHigh();
-        }
-        this._chart.valueAxes[0].strictMinMax = false;
-
-        if(this.yAxisLabelFrequency_exists()) {
-            this._chart.valueAxes[0].labelFrequency = this.yAxisLabelFrequency();
-            }
-
-        if(this.yAxisBaseValue_exists()) {
-            this._chart.valueAxes[0].baseValue = this.yAxisBaseValue();
-            }
-
-        if (this.yAxisTickCount_exists()) {
-            this._chart.valueAxes[0].gridCount = this.yAxisTickCount();
-        }
-
+        
         this._chart.depth3D = this.Depth3D();
         this._chart.angle = this.Angle3D();
         this._chart.categoryAxis.startOnAxis = false;
@@ -130,9 +129,7 @@
 
     Column.prototype.update = function(domNode, element) {
         CommonSerial.prototype.update.apply(this, arguments);
-
         this.updateChartOptions();
-
         this._chart.validateNow();
         this._chart.validateData();
     };

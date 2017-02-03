@@ -339,6 +339,13 @@
             },
             layered: function (callback) {
                 createMap(true, [], null, callback);
+            },
+            drawing: function(callback) {
+                require(["test/DataFactory", "src/map/GMap"], function(DataFactory, GMap) {
+                    var map = new GMap();
+                    map.drawingTools(true);
+                    callback(map);
+                });
             }
         },
         Layered: {

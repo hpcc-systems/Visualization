@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts.serial", "require", "../common/Utility", "./SerialAxis"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-serial", "require", "../common/Utility", "./SerialAxis"], factory);
     } else {
         root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility, root.amchart_SerialAxis);
     }
@@ -595,7 +595,7 @@
             }
         };
         if (typeof define === "function" && define.amd) {
-            initObj.pathToImages = require.toUrl("amchartsImg");
+            initObj.pathToImages = require.toUrl("amcharts-images");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {

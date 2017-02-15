@@ -9,19 +9,6 @@
     var LOADING = "...loading...";
     var _CHANGED = "_changed";
 
-    function exists(prop, scope) {
-        var propParts = prop.split(".");
-        var testScope = scope;
-        for (var i = 0; i < propParts.length; ++i) {
-            var item = propParts[i];
-            if (!testScope || testScope[item] === undefined) {
-                return false;
-            }
-            testScope = testScope[item];
-        }
-        return true;
-    }
-
     function faCharFix(faChar) {
         if (faChar) {
             return String.fromCharCode(parseInt(faChar));
@@ -301,7 +288,6 @@
                                     var widget = viz.widget;
                                     var newWidget = new widget.constructor()
                                         .showToolbar(false)
-                                        .legendPosition("none")
                                         .chartType(widget.chartType())
                                         .chartTypeDefaults(widget.chartTypeDefaults())
                                         .columns(viz.source.getColumns())
@@ -379,7 +365,7 @@
                 retVal = new graph.Vertex()
                     .faChar((context.icon && context.icon.faChar ? faCharFix(context.icon.faChar) : "\uf128"))
                     .text(item[1] ? item[1] : "")
-                    .data(origItem)
+                    .data(item)
                 ;
                 retVal.__hpcc_uid = item[0];
                 vertexMap[id] = retVal;
@@ -426,7 +412,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
-                            .data(childItem)
+                            .data(childMappedItem)
                         ;
                         edges.push(edge);
                     }
@@ -543,10 +529,19 @@
         return this.mappings.columns.filter(function(d, i) {return i > 0;}).join(" / ");
     };
 
+    Source.prototype.getMap = function (col) {
+        return (this.mappings && this.mappings.hasMappings) ? this.mappings.getMap(col) : col;
+    };
+
+    Source.prototype.getReverseMap = function (col) {
+        return (this.mappings && this.mappings.hasMappings) ? this.mappings.getReverseMap(col) : col;
+    };
+
     //  Viz Events ---
     function EventUpdate(event, update, defMappings) {
         this.event = event;
         this.dashboard = event.visualization.dashboard;
+        this._col = update.col;
         this._visualization = update.visualization;
         this._instance = update.instance;
         this._datasource = update.datasource;
@@ -566,17 +561,26 @@
         var retVal = {};
         if (row) {
             for (var key in this._mappings) {
-                retVal[this._mappings[key]] = row[key];
+                var origKey = this.getReverseMap(key);
+                retVal[this._mappings[key]] = row[origKey];
             }
         }
         return retVal;
     };
 
+    EventUpdate.prototype.getMap = function (col) {
+        return this.event.visualization.source.getMap(col);
+    };
+
+    EventUpdate.prototype.getReverseMap = function (col) {
+        return this.event.visualization.source.getReverseMap(col);
+    };
+    
     EventUpdate.prototype.mapSelected = function () {
         if (this.event.visualization.hasSelection()) {
             return this.mapData(this.event.visualization._widgetState.row);
         }
-        return {};
+        return this.mapData({});
     };
 
     EventUpdate.prototype.calcRequestFor = function (visualization) {
@@ -621,7 +625,10 @@
     };
 
     Event.prototype.getUpdates = function () {
-        return this._updates;
+        return this._updates.filter(function (updateInfo) {
+            if (!updateInfo._col) return true;
+            return updateInfo._col === updateInfo.getMap(this.visualization._widgetState.col);
+        }, this);
     };
 
     Event.prototype.getUpdatesDatasources = function () {
@@ -670,8 +677,8 @@
         var context = this;
         for (var key in this.events) {
             if (widget["vertex_" + key]) {
-                widget["vertex_" + key] = function (row) {
-                    context.visualization.processEvent(key, context.events[key], row);
+                widget["vertex_" + key] = function (row, col, selected) {
+                    context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
             } else if (widget[key]) {
                 widget[key] = function (row, col, selected) {
@@ -736,11 +743,11 @@
         this.vizDeclarations = {};
         if (this.type === "CHORO") {
             this.layers = (visualization.visualizations || []).map(function (innerViz) { 
-                return new Visualization(dashboard, innerViz, this); 
+                return dashboard.createVisualization(innerViz, this); 
             }, this);
         } else {
             (visualization.visualizations || []).forEach(function (innerViz) {
-                this.vizDeclarations[innerViz.id] = new Visualization(dashboard, innerViz, this);
+                this.vizDeclarations[innerViz.id] = dashboard.createVisualization(innerViz, this);
                 this.hasVizDeclarations = true;
             }, this);
         }
@@ -748,25 +755,28 @@
         switch (this.type) {
             case "CHORO":
                 var chartType = visualization.properties && visualization.properties.charttype ? visualization.properties.charttype : "";
-                switch (chartType) {
-                    case "MAP_PINS":
-                        this.loadWidget("../map/Pins", function (widget) {
-                            try {
-                                widget
-                                    .id(visualization.id)
-                                    .columns(context.source.getColumns())
-                                    .geohashColumn("geohash")
-                                    .tooltipColumn("label")
-                                    .fillColor(visualization.color ? visualization.color : null)
-                                    .projection("albersUsaPr")
-                                ;
-                            } catch (e) {
-                                console.log("Unexpected widget type:  " + widget.classID());
-                            }
-                        });
-                        break;
-                    default:
-                        chartType = "CHORO_USSTATES";
+                if (parentVisualization) {
+                    switch (chartType) {
+                        case "MAP_PINS":
+                            this.loadWidget("../map/Pins", function (widget) {
+                                try {
+                                    widget
+                                        .id(visualization.id)
+                                        .columns(context.source.getColumns())
+                                        .geohashColumn("geohash")
+                                        .tooltipColumn("label")
+                                        .fillColor(visualization.color ? visualization.color : null)
+                                        .projection("albersUsaPr")
+                                    ;
+                                } catch (e) {
+                                    console.log("Unexpected widget type:  " + widget.classID());
+                                }
+                            });
+                            break;
+                    }
+                } else {
+                    chartType = chartType || "CHORO";
+                    if (chartType === "CHORO") {
                         if (this.source.mappings.contains("state")) {
                             chartType = "CHORO_USSTATES";
                         } else if (this.source.mappings.contains("county")) {
@@ -774,39 +784,38 @@
                         } else if (this.source.mappings.contains("country")) {
                             chartType = "CHORO_COUNTRIES";
                         }
-                        Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
-                            context.loadWidget("../composite/MegaChart", function (widget) {
-                                var layers = context.layers.map(function (layer) { return layer.widget; });
-                                try {
-                                    switch (widget.classID()) {
-                                        case "composite_MegaChart":
-                                            widget
-                                                .id(visualization.id)
-                                                .legendPosition_default("none")
-                                                .showChartSelect_default(false)
-                                                .chartType_default(chartType)
-                                                .chartTypeDefaults({
-                                                    autoScaleMode: layers.length ? "data" : "mesh"
-                                                })
-                                                .chartTypeProperties({
-                                                    layers: layers
-                                                })
-                                            ;
-                                            break;
-                                        default:
-                                            widget
-                                                .id(visualization.id)
-                                                .autoScaleMode(layers.length ? "data" : "mesh")
-                                                .layers(layers)
-                                            ;
-                                            break;
-                                    }
-                                } catch (e) {
-                                    console.log("Unexpected widget type:  " + widget.classID());
+                    }
+                    Promise.all(context.layers.map(function (layer) { return layer.loadedPromise(); })).then(function () {
+                        context.loadWidget("../composite/MegaChart", function (widget) {
+                            var layers = context.layers.map(function (layer) { return layer.widget; });
+                            try {
+                                switch (widget.classID()) {
+                                    case "composite_MegaChart":
+                                        widget
+                                            .id(visualization.id)
+                                            .showChartSelect_default(false)
+                                            .chartType_default(chartType)
+                                            .chartTypeDefaults({
+                                                autoScaleMode: layers.length ? "data" : "mesh"
+                                            })
+                                            .chartTypeProperties({
+                                                layers: layers
+                                            })
+                                        ;
+                                        break;
+                                    default:
+                                        widget
+                                            .id(visualization.id)
+                                            .autoScaleMode(layers.length ? "data" : "mesh")
+                                            .layers(layers)
+                                        ;
+                                        break;
                                 }
-                            });
+                            } catch (e) {
+                                console.log("Unexpected widget type:  " + widget.classID());
+                            }
                         });
-                        break;
+                    });
                 }
                 break;
             case "2DCHART":
@@ -818,7 +827,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     } catch (e) {
@@ -831,9 +839,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
-                            //.domainAxisTitle(context.source.getXTitle())
-                            //.valueAxisTitle(context.source.getYTitle())
                             .chartType_default(context.properties.chartType || context.properties.charttype || context.type)
                         ;
                     } catch (e) {
@@ -846,7 +851,6 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .legendPosition_default("none")
                             .showChartSelect_default(false)
                             .chartType_default("TABLE")
                         ;
@@ -1066,6 +1070,9 @@
             switch (widget.classID()) {
                 case "chart_MultiChart":
                 case "composite_MegaChart":
+                    if (widget[key + "_default"]) {
+                        widget[key + "_default"](this.properties[key]);
+                    }
                     widget.chartTypeDefaults()[key] = this.properties[key];
                     break;
                 default:
@@ -1144,7 +1151,11 @@
                     })
                 ;
             } else {
-                context.widget.render(function () {
+                var ddlViz = context;
+                while (ddlViz.parentVisualization) {
+                    ddlViz = ddlViz.parentVisualization;
+                }
+                ddlViz.widget.render(function () {
                     resolve();
                 });
             }
@@ -1226,14 +1237,14 @@
 
     Visualization.prototype.selection = function () {
         if (this.hasSelection()) {
-            return this._wdigetState.row;
+            return this._widgetState.row;
         }
         return null;
     };
 
     Visualization.prototype.reverseMappedSelection = function () {
         if (this.hasSelection()) {
-            return this.source.mappings.doReverseMap(this._widgetState.row);
+            return this.source.mappings ? this.source.mappings.doReverseMap(this._widgetState.row) : this._widgetState.row;
         }
         return null;
     };
@@ -1464,7 +1475,7 @@
                 dsRequest[item] = value;
             }
         });
-        dsRequest.refresh = request.refresh;
+        dsRequest.refresh = request.refresh || false;
         if (window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
@@ -1477,7 +1488,8 @@
         this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
         var context = this;
         return new Promise(function (resolve, reject) {
-            context.comms.call(dsRequest).then(function (response) {
+            context.comms.call(dsRequest).then(function (_response) {
+                var response = JSON.parse(JSON.stringify(_response));
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);
@@ -1508,16 +1520,16 @@
                 //  Temp workaround for older services  ---
                 from = this.outputs[key].id.toLowerCase();
             }
-            if (exists(from, response)) {
-                if (!exists(from + _CHANGED, response) || (exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
+            if (Utility.exists(from, response)) {
+                if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     promises.push(this.outputs[key].setData(response[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
                     promises.push(this.outputs[key].vizNotify(updates));
                 }
-            } else if (exists(from, lowerResponse)) {
+            } else if (Utility.exists(from, lowerResponse)) {
                 console.log("DDL 'DataSource.From' case is Incorrect");
-                if (!exists(from + _CHANGED, lowerResponse) || (exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
+                if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
                     promises.push(this.outputs[key].setData(lowerResponse[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
@@ -1532,6 +1544,10 @@
             }
         }
         return Promise.all(promises);
+    };
+
+    DataSource.prototype.isRoxie = function () {
+        return !this.WUID && !this.databomb;
     };
 
     DataSource.prototype.serializeState = function () {
@@ -1560,14 +1576,19 @@
         this._visualizations = {};
         this._visualizationArray = [];
         dashboard.visualizations.forEach(function (item) {
-            var newItem = new Visualization(this, item);
-            this._visualizations[item.id] = newItem;
-            this._visualizationArray.push(newItem);
-            this.marshaller._visualizations[item.id] = newItem;
-            this.marshaller._visualizationArray.push(newItem);
+            this.createVisualization(item);
         }, this);
         this._visualizationTotal = this._visualizationArray.length;
     }
+
+    Dashboard.prototype.createVisualization = function (ddlVisualization, parentVisualization) {
+        var retVal = new Visualization(this, ddlVisualization, parentVisualization);
+        this._visualizations[ddlVisualization.id] = retVal;
+        this._visualizationArray.push(retVal);
+        this.marshaller._visualizations[ddlVisualization.id] = retVal;
+        this.marshaller._visualizationArray.push(retVal);
+        return retVal;
+    };
 
     Dashboard.prototype.loadedPromise = function () {
         return Promise.all(this._visualizationArray.map(function (visualization) { return visualization.loadedPromise(); }));
@@ -1614,22 +1635,27 @@
             visualization.clear();
             visualization.update();
             if (state && state[visualization.id]) {
-                for (var key in visualization.source.mappings.mappings) {
-                    if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
-                        visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
-                        visualization._widgetState.selected = true;
+                if (Utility.exists("source.mappings.mappings", visualization)) {
+                    for (var key in visualization.source.mappings.mappings) {
+                        if (state[visualization.id][visualization.source.mappings.mappings[key]]) {
+                            visualization._widgetState.row[key] = state[visualization.id][visualization.source.mappings.mappings[key]];
+                            visualization._widgetState.selected = true;
+                        }
                     }
                 }
             }
         });
         this.getVisualizationArray().forEach(function (visualization) {
             var inputVisualizations = visualization.getInputVisualizations();
-            if (inputVisualizations.length === 0) {
-                fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), { refresh: true }, visualization);
+            var datasource = visualization.source.getDatasource();
+            if ((datasource && datasource.isRoxie()) || inputVisualizations.length === 0) {
+                fetchDataOptimizer.appendRequest(datasource, { refresh: true }, visualization);
             } else {
                 inputVisualizations.forEach(function (inViz) {
                     if (inViz.hasSelection()) {
-                        fetchDataOptimizer.appendRequest(visualization.source.getDatasource(), inViz.calcRequestFor(visualization), visualization);
+                        var request = inViz.calcRequestFor(visualization);
+                        request.refresh = true;
+                        fetchDataOptimizer.appendRequest(datasource, request, visualization);
                     }
                 });
             }
@@ -1726,7 +1752,7 @@
 
         var context = this;
         transport.fetchResults().then(function (response) {
-            if (exists(hipieResultName, response)) {
+            if (Utility.exists(hipieResultName, response)) {
                 return transport.fetchResult(hipieResultName).then(function (ddlResponse) {
                     var json = ddlResponse[0][hipieResultName];
                     context.parse(json, function () {
@@ -1895,7 +1921,6 @@
     };
 
     return {
-        exists: exists,
         Marshaller: Marshaller,
         Dashboard: Dashboard,
         DataSource: DataSource,

@@ -6,6 +6,7 @@
 }(this, function (d3, Utility, Surface, Grid, Persist, PropertyEditor, testFactory) {
     function Main() {
         this.showSpinner();
+        this.urlParams = Utility.urlParams();
         this.urlParts = window.location.search.split("?");
 
         this._testFactory = testFactory;
@@ -24,16 +25,14 @@
     Main.prototype.constructor = Main;
 
     Main.prototype.initGrid = function () {
+        d3.select("#switch-design").property("checked", this.urlParams["designMode"] === "true");
+
         this._propEditor = new PropertyEditor()
             .target("properties")
             .show_settings(true);
         ;
 
-        this._main = new Grid()
-            .target("surface")
-            .surfacePadding(0)
-            .surfaceBorderWidth(0)
-        ;
+        this._main = null;
 
         this._cloneSurface = new Surface()
             .target("clone")
@@ -104,8 +103,19 @@
             context.showClone();
         });
         var context = this;
-        this._main
-            .setContent(0, 0, widget, "", 2, 2)
+        if (this._main) {
+            this._main.target(null);
+        }
+        d3.select("#cellSurface")
+            .classed("supress", widget.surfaceShadow !== undefined)
+        ;
+        d3.select("#surface")
+            .classed("supress", widget.surfaceShadow !== undefined)
+        ;
+        if (widget.surfaceShadow) {
+            widget.surfaceBackgroundColor_default("white")
+        }
+        this._main = widget.target("surface")
             .render(function (mainWidget) {
                 context.showSpinner(false);
             })
@@ -138,10 +148,12 @@
         if (this._currWidget && this._currWidget.designMode) {
             this._currWidget.designMode(show);
         }
-        this._main
-            .resize()
-            .render()
-        ;
+        if (this._main) {
+            this._main
+                .resize()
+                .lazyRender()
+            ;
+        }
     };
 
     Main.prototype.cloneVisible = function () {
@@ -206,10 +218,12 @@
     };
 
     Main.prototype.doResize = function () {
-        this._main
-            .resize()
-            .lazyRender()
-        ;
+        if (this._main) {
+            this._main
+                .resize()
+                .lazyRender()
+            ;
+        }
         this._propEditor
             .resize()
             .lazyRender()

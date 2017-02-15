@@ -30,7 +30,7 @@ const cfg = {
   prefix: "hpcc-viz"
 };
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts.funnel", "amcharts.gauge", "amcharts.pie", "amcharts.radar", "amcharts.serial", "amcharts.xy", "amcharts.gantt", "amcharts.plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete", "handsontable"];
+const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts-funnel", "amcharts-gauge", "amcharts-pie", "amcharts-radar", "amcharts-serial", "amcharts-xy", "amcharts-gantt", "amcharts-plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete", "handsontable", "grid-list"];
 const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "handson", "composite", "marshaller"];  //  Order is important ---
 const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
 
@@ -156,7 +156,7 @@ const amd_modules = bundles.map(function (bundle, idx) {
     var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
     switch (bundle) {
         case "common":
-            include = ["d3", "d3-bullet", "d3-sankey", "d3-cloud", "es6-promise"].concat(include);
+            include = ["d3", "d3-bullet", "d3-sankey", "d3-cloud", "d3-hexbin", "es6-promise"].concat(include);
             break;
     }
     amd_bundles["src/" + name] = include;

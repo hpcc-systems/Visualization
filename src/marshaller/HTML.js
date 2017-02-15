@@ -10,7 +10,7 @@
         Grid.call(this);
         HipieDDLMixin.call(this);
 
-        this.surfacePadding(0);
+        this.surfacePadding_default(0);
     }
     HTML.prototype = Object.create(Grid.prototype);
     HTML.prototype.constructor = HTML;
@@ -20,7 +20,7 @@
     HTML.prototype.populateContent = function () {
         var cellRow = 0;
         var cellCol = 0;
-        var cellDensity = this.cellDensity();
+        var cellDensity = 3;
         this._ddlDashboards.forEach(function (dashboard) {
             var maxCol = Math.floor(Math.sqrt(dashboard.visualizations.length));
             dashboard.visualizations.forEach(function (viz) {
@@ -32,7 +32,7 @@
                             cellCol = 0;
                         }
                     }
-                    this.setContent(cellRow, cellCol, viz.newWidgetSurface);
+                    this.setContent(cellRow * cellDensity, cellCol * cellDensity, viz.newWidgetSurface, "", cellDensity, cellDensity);
                 }
             }, this);
         }, this);

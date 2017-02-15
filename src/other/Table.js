@@ -93,6 +93,17 @@
         return retVal;
     };
 
+    Table.prototype.isHidden = function (colIdx) {
+        if (this.pivot()) {
+            return false;
+        }
+        var fields = this.fields();
+        if (fields && fields[colIdx] && fields[colIdx].type() === "hidden") {
+            return true;
+        }
+        return false;
+    };
+
     Table.prototype.tableColumns = function (_) {
         var retVal = Table.prototype.columns.apply(this, arguments);
         if (!arguments.length && this.pivot()) {
@@ -168,7 +179,9 @@
         this.fixedHead.style("display", this.fixedHeader() ? "table-row" : "none");
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
-        var th = this.thead.selectAll("th").data(this.showHeader() ? columns : []);
+        var th = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
+            return !context.isHidden(idx);
+        }) : []);
         th
             .enter()
             .append("th")
@@ -308,14 +321,6 @@
                     context.selectionBagClick(d, i);
                     context.applyRowStyles(context.getBodyRow(i));
                     context.applyFirstColRowStyles(context.getFixedRow(i));
-                    context.click(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
-                }
-            })
-            .on("dblclick", function (_d) {
-                if (_d.row) {
-                    var d = _d.row;
-                    var i = _d.rowIdx;
-                    context.dblclick(context.rowToObj(d), i, context._selectionBag.isSelected(context._createSelectionObject(d)));
                 }
             })
             .on("mouseover", function (_d) {
@@ -356,10 +361,11 @@
         this.applyStyleToRows(rows);
 
         var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
-            return _d.row.filter(function (cell, idx) { return idx < columns.length; }).map(function (cell, idx) {
+            return _d.row.filter(function (cell, idx) {
+                return idx < columns.length && !context.isHidden(idx);
+            }).map(function (cell, idx) {
                 return {
-                    trIdx: _trIdx,
-                    rowIdx: _d.rowIdx,
+                    rowInfo: _d,
                     colIdx: idx,
                     cell: cell
                 };
@@ -368,8 +374,18 @@
         cells.enter()
             .append("td")
             .attr("class", "td_" + this.id())
+            .on("click", function (tdContents) {
+                if (tdContents.rowInfo) {
+                    context.click(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
+                }
+            })
+            .on("dblclick", function (tdContents, idx) {
+                if (tdContents.rowInfo) {
+                    context.dblclick(context.rowToObj(tdContents.rowInfo.row), context.columns()[tdContents.colIdx], context._selectionBag.isSelected(context._createSelectionObject(tdContents.rowInfo.row)));
+                }
+            })
             .each(function (tdContents, tdIdx) {
-                var alignment = context.getColumnAlignment(tdContents.rowIdx, tdContents.colIdx, tdContents.cell);
+                var alignment = context.getColumnAlignment(tdContents.rowInfo.rowIdx, tdContents.colIdx, tdContents.cell);
                 var el = d3.select(this);
                 el
                     .style({
@@ -377,7 +393,7 @@
                         "text-align": alignment,
                         "vertical-align": context.verticalAlign()
                     })
-                    .classed("tr-" + tdContents.trIdx + "-td-" + tdIdx, true)
+                    .classed("tr-" + tdContents.rowInfo.rowIdx + "-td-" + tdIdx, true)
                 ;
             })
         ;
@@ -423,7 +439,7 @@
                 } else {
                     el.selectAll(".div_" + context.id()).remove();
                     el[context.renderHtmlDataCells() ? "html" : "text"](
-                        context.field(tdContents.rowIdx, tdContents.colIdx).transform(tdContents.cell)
+                        context.field(tdContents.rowInfo.rowIdx, tdContents.colIdx).transform(tdContents.cell)
                     );
                 }
             })
@@ -586,14 +602,6 @@
             .style("width", this.width() - fixedColWidth + "px")
         ;
 
-        this._paginator.render();
-        
-        this._paginator
-            .right((this.hasVScroll(this.tableDiv) ? this.getScrollbarWidth() : 0 ) + this._paginatorTableSpacing)
-            .bottom((this.hasHScroll(this.tableDiv) ? this.getScrollbarWidth() : 0) + this._paginatorTableSpacing)
-            .render()
-        ;
-
         if (!rows.empty()) this.setColumnWidths(rows);
 
         if (this.fixedSize()) {
@@ -652,6 +660,15 @@
             newTableHeight = context.tbody.property("offsetHeight") + tableMarginHeight;
             newTableHeight = newTableHeight;
         }
+
+        this._paginator.render();
+        setTimeout(function () {
+            context._paginator
+                .right((context.hasVScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .bottom((context.hasHScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
+                .render()
+            ;
+        }, 0);
     };
 
     Table.prototype.exit = function (domNode, element) {
@@ -771,7 +788,10 @@
         var tcellHeight = tmpRow.node().clientHeight;
         tmpRow.remove();
         var paginatorHeight = this.calcHeight(this._paginator.element());
-        var ipp = Math.floor((this.height() - thHeight - tfootHeight- paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        var ipp = Math.floor((this.height() - thHeight - tfootHeight - paginatorHeight - (this.table.style("width") >= this.table.style("width") ? this.getScrollbarWidth() : 0) - this._paginatorTableSpacing * 2) / tcellHeight) || 1;
+        if (this.totalledColumns().length !== 0) {
+            ipp -= 1;
+        }
         return ipp;
     };
 

@@ -14,6 +14,7 @@
         this._prevOffsetX = this.offsetX();
         this._prevOffsetY = this.offsetY();
         this._prevZoom = this.zoom();
+        this._vizData = [];
     }
     WordCloud.prototype = Object.create(SVGWidget.prototype);
     WordCloud.prototype.constructor = WordCloud;
@@ -116,6 +117,9 @@
                 .text(function (d) { return d.__viz_0; })
                 .on("click", function (d) {
                     context.click({ label: d.__viz_0, weight: d.__viz_1 });
+                })
+                .on("dblclick", function (d) {
+                    context.dblclick({ label: d.__viz_0, weight: d.__viz_1 });
                 })
                 .on("mouseout.tooltip", context.tooltip.hide)
                 .on("mousemove.tooltip", context.tooltip.show)

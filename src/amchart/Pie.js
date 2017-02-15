@@ -149,7 +149,7 @@
             theme: "none"
         };
         if (typeof define === "function" && define.amd) {
-            initObj.pathToImages = require.toUrl("amchartsImg");
+            initObj.pathToImages = require.toUrl("amcharts-images");
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickSlice", function(e) {

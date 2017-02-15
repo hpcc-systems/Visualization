@@ -103,7 +103,7 @@
             return d.values.aggregate;
         });
         if (this.aggrDeltaColumn()) {
-            var max = Math.max(Math.abs(dataExtent[0], dataExtent[1]));
+            var max = Math.max(Math.abs(dataExtent[0]), Math.abs(dataExtent[1]));
             dataExtent = [-max, max];
         }
         var dayRect = svg.select(".days").selectAll(".day").data(function (d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
@@ -114,6 +114,12 @@
                 var data = mappedData.get(d);
                 if (data && data.values && data.values && data.values.length) {
                     context.click(context.rowToObj(data.values[0]), context.dateColumn(), context._selection.selected(this));
+                }
+            })
+            .on("dblclick", function (d) {
+                var data = mappedData.get(d);
+                if (data && data.values && data.values && data.values.length) {
+                    context.dblclick(context.rowToObj(data.values[0]), context.dateColumn(), context._selection.selected(this));
                 }
             })
             .append("title")
@@ -171,6 +177,10 @@
     //  Events  ---
     CalendarHeatMap.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    CalendarHeatMap.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return CalendarHeatMap;

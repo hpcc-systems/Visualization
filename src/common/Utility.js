@@ -420,6 +420,34 @@
                 }
                 return dest;
             }
+        },
+        exists: function (prop, scope) {
+            if (!prop || !scope) {
+                return false;
+            }
+            var propParts = prop.split(".");
+            var testScope = scope;
+            for (var i = 0; i < propParts.length; ++i) {
+                var item = propParts[i];
+                if (testScope[item] === undefined) {
+                    return false;
+                }
+                testScope = testScope[item];
+            }
+            return true;
+        },
+        logStringify: function (obj) {
+            var cache = [];
+            return JSON.stringify(obj, function (key, value) {
+                if (typeof value === 'object' && value !== null) {
+                    if (cache.indexOf(value) !== -1) {
+                        return;
+                    }
+
+                    cache.push(value);
+                }
+                return value;
+            });
         }
     };
 }));

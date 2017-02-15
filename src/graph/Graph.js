@@ -501,10 +501,24 @@
                 context._selection.click(d, d3.event);
             })
             .on("click", function (d) {
-                context.vertex_click(d, d3.event);
+                var vertexElement = d3.select(this).select(".graph_Vertex");
+                var selected = false;
+                if (!vertexElement.empty()) {
+                    selected = vertexElement.classed("selected");
+                }
+                context.vertex_click(context.rowToObj(d.data()), "", selected, {
+                    vertex:  d
+                });
             })
             .on("dblclick", function (d) {
-                context.vertex_dblclick(d, d3.event);
+                var vertexElement = d3.select(this).select(".graph_Vertex");
+                var selected = false;
+                if (!vertexElement.empty()) {
+                    selected = vertexElement.classed("selected");
+                }
+                context.vertex_dblclick(context.rowToObj(d.data()), "", selected, {
+                    vertex:  d
+                });
             })
             .on("mouseover", function (d) {
                 if (context._dragging)
@@ -562,7 +576,24 @@
                 context._selection.click(d, d3.event);
             })
             .on("click", function (d) {
-                context.edge_click(d);
+                var edgeElement = d3.select(this).select(".graph_Edge");
+                var selected = false;
+                if (!edgeElement.empty()) {
+                    selected = edgeElement.classed("selected");
+                }
+                context.edge_click(context.rowToObj(d.data()), "", selected, {
+                    edge: d
+                });
+            })
+            .on("dblclick", function (d) {
+                var edgeElement = d3.select(this).select(".graph_Edge");
+                var selected = false;
+                if (!edgeElement.empty()) {
+                    selected = edgeElement.classed("selected");
+                }
+                context.edge_dblclick(context.rowToObj(d.data()), "", selected, {
+                    edge: d
+                });
             })
             .on("mouseover", function (d) {
                 if (context._dragging)
@@ -772,8 +803,10 @@
     Graph.prototype.graph_selection = function (selection) {
     };
 
-    Graph.prototype.vertex_click = function (d) {
-        d._parentElement.node().parentNode.appendChild(d._parentElement.node());
+    Graph.prototype.vertex_click = function (row, col, sel, more) {
+        if (more && more.vertex) {
+            more.vertex._parentElement.node().parentNode.appendChild(more.vertex._parentElement.node());
+        }
         IGraph.prototype.vertex_click.apply(this, arguments);
     };
 

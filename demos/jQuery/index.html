@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HPCC Systems - VIZ jQuery plugin POC</title>
+
+    <script src="https://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+    <script src="../../src/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    
+    <link rel="stylesheet" href="css/default.css">
+    
+    <script src="js/viz.jQuery.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <style>
+        #main{
+            margin: 4px;
+            float: left;
+            background-color: #DDD;
+            border: 2px solid #002B36;
+        }
+        .code-sample{
+            margin: 4px;
+            float: left;
+            background-color: #002B36;
+            border: 2px solid #002B36;
+            padding: 8px;
+            cursor: pointer;
+        }
+        .code-sample.active{
+            background-color: #002B36;
+            border: 2px solid #b58900;
+        }
+        #main{
+            height: 340px;
+            width: 288px;
+        }
+    </style>
+    <script>
+        require.config({
+            paths: {
+                "test": "../../test"
+            }
+        });
+//        var exclude_sections = [];
+//        var exclude_items = [];
+        var exclude_sections = ["common","form","layout","graph","other","tree","map","marshaller",""];
+        var exclude_items = ["Gantt","Axis","TreeMap","MaterialGantt","Timeline","Gauge","Bullet"];
+        var _show_these = {
+//            "chart_Pie":{
+//                columns:['Category','Value'],
+//                data:[['A',10],['B',16],['C',32]]
+//            },
+//            "chart_Bar":{
+//                columns:['Category','V1','V2'],
+//                data:[['A',10],['B',20],['C',30]]
+//            },
+//            "amchart_Column":{
+//                columns:['Category','V1','V2'],
+//                data:[['A',10,20],['B',16,15],['C',32,8]]
+//            }
+        };
+        require(["test/Factory"], function (testFactory) {
+            Object.keys(testFactory.widgets).forEach(function (widgetPath) {
+                var _sp = widgetPath.split('/');
+                if(exclude_sections.indexOf(_sp[1]) === -1 && exclude_items.indexOf(_sp[2]) === -1){
+                    _show_these[_sp[1] + "_" + _sp[2]] = {
+                        columns:['Category','V1'],
+                        data:[['A',10],['B',20],['C',30]]
+                    };
+                }
+            });
+            $(function(){
+                for(var _method_name in _show_these){
+                    var _code_lines = [];
+                    _code_lines.push('$(\'#main\').'+_method_name+'({');
+                    var _code_lines2 = [];
+                    for(var _param_name in _show_these[_method_name]){
+                        var _k = "    "+_param_name+": ";
+                        var _v = _show_these[_method_name][_param_name];
+                        if(typeof(_v) === "object"){
+                            _code_lines2.push(_k + JSON.stringify(_v));
+                        } else {
+                            _code_lines2.push(_k + "'"+_v+"'");
+                        }
+                    }
+                    _code_lines.push(_code_lines2.join(',\n'));
+                    _code_lines.push('});');
+                    var _code_sample = '<pre class="code-sample javascript">'+_code_lines.join('\n')+'</pre>';
+                    $('body').append(_code_sample);
+                }
+                $('.javascript').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                })
+                .click(function(){
+                    $('#main').html('');
+                    $('.active').removeClass('active');
+                    $(this).addClass('active');
+                    var _code = $(this).text();
+                    eval(_code);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+</html>

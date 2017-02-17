@@ -19,7 +19,9 @@
         }
         var retVal = val.trim();
         if (retVal !== "" && !isNaN(retVal)) {
-            return Number(retVal);
+            if (retVal.length <= 1 || retVal[0] !== "0" || retVal[1] === ".") {
+                return Number(retVal);
+            }
         }
         return retVal;
     }

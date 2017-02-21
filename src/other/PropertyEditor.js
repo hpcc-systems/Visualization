@@ -40,6 +40,21 @@
     PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)",null, {});
 
     PropertyEditor.prototype.publish("widget", null, "widget", "Widget",null,{tags:["Basic"], render:false});
+    /*
+    * Start:- Border radius functionality for surface area
+     */
+    PropertyEditor.prototype.publish("borderRadiusAll", null, "string", "All corners are affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusTop", null, "string", "Top 2 corners are affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusTopRight", null, "string", "Top right corner is affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusTopLeft", null, "string", "Top left Corner is affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusBottom", null, "string", "Bottom 2 corners are affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusBottomLeft", null, "string", "Bottom left corner is affected",null,{tags:["Basic"]});
+    PropertyEditor.prototype.publish("borderRadiusBottomRight", null, "string", "Bottom right corner is affected",null,{tags:["Basic"]});
+
+    /*
+     * End:- Border radius functionality for surface area
+     */
+
 
     PropertyEditor.prototype.parentPropertyEditor = function (_) {
         if (!arguments.length) return this._parentPropertyEditor;
@@ -78,6 +93,49 @@
         }
         return this.show_settings() ? [this] : this.widget() ? [this.widget()] : [];
     };
+    PropertyEditor.prototype.rootBoderRadius = function () {
+        var radiusStyleObj = null;
+        var radiusValExist = false;
+        if(this.borderRadiusAll_exists() && this.borderRadiusAll()){
+             radiusStyleObj = {};
+             radiusStyleObj['border-radius'] = this.borderRadiusAll()+'em';
+             radiusValExist = true;
+         }
+         if(this.borderRadiusTop_exists() && this.borderRadiusTop() ){
+             radiusStyleObj = {};
+             radiusStyleObj['border-top-left-radius'] = this.borderRadiusTop()+'em';
+             radiusStyleObj['border-top-right-radius'] = this.borderRadiusTop()+'em';
+             radiusValExist = true;
+         }
+        if(this.borderRadiusTopLeft_exists() && this.borderRadiusTopLeft()){
+            radiusStyleObj = {};
+            radiusStyleObj['border-top-left-radius'] = this.borderRadiusTopLeft()+'em';
+            radiusValExist = true;
+        }
+
+        if(this.borderRadiusTopRight_exists() && this.borderRadiusTopRight()){
+            radiusStyleObj = {};
+            radiusStyleObj['border-top-right-radius'] = this.borderRadiusTopRight()+'em';
+            radiusValExist = true;
+        }
+        if(this.borderRadiusBottom_exists() && this.borderRadiusBottom()){
+            radiusStyleObj = {};
+            radiusStyleObj['border-bottom-right-radius'] = this.borderRadiusBottom()+'em';
+            radiusStyleObj['border-bottom-left-radius'] = this.borderRadiusBottom()+'em';
+        }
+        if(this.borderRadiusBottomRight_exists() && this.borderRadiusBottomRight()){
+            radiusStyleObj = {};
+            radiusStyleObj['border-bottom-right-radius'] = this.borderRadiusBottomRight()+'em';
+            radiusValExist = true;
+        }
+        if(this.borderRadiusBottomLeft_exists() && this.borderRadiusBottomLeft()){
+            radiusStyleObj = {};
+            radiusStyleObj['border-bottom-left-radius'] = this.borderRadiusBottomLeft()+'em';
+            radiusValExist = true;
+        }
+        return radiusStyleObj;
+    };
+
 
     PropertyEditor.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
@@ -92,6 +150,8 @@
             }
             return true;
         });
+
+
 
         var table = element.selectAll(".table" + this.id()).data(rootWidgets, function (d) { return d.id(); });
         table.enter().append("table")
@@ -127,6 +187,15 @@
                 context.renderInputs(element.select("tbody"), d);
             })
         ;
+
+        var borderRadiusObj = this.rootBoderRadius();
+        if(borderRadiusObj !== null){
+            d3.select('#cellSurface').attr('style',null);
+            d3.select('#cellSurface')
+                .style(borderRadiusObj);
+        }else{
+            d3.select('#cellSurface').attr('style',null);
+        }
         table.exit()
             .each(function (d) {
                 context.renderInputs(element.select("tbody"), null);

@@ -96,7 +96,6 @@
             this._monitorHandle.remove();
         }
         this.updateUrl();
-        this.showClone();
         var context = this;
         this._monitorHandle = widget.monitor(function () {
             context.updateUrl();
@@ -117,6 +116,8 @@
         }
         this._main = widget.target("surface")
             .render(function (mainWidget) {
+                context._prevShowClone = false;
+                context.showClone();
                 context.showSpinner(false);
             })
         ;

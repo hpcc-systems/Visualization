@@ -84,9 +84,9 @@
         return this;
     };
 
-    MegaChart.prototype.columns = function (_) {
+    MegaChart.prototype.columns = function (_, asDefault) {
         if (!arguments.length) return this._chart.columns();
-        this._chart.columns(_);
+        this._chart.columns(_, asDefault);
         return this;
     };
 

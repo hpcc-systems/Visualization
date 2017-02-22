@@ -1,0 +1,7 @@
+.other_RadioCheckbox input {
+}
+
+.other_RadioCheckbox span,
+.other_RadioCheckbox label {
+    vertical-align: top;
+}

@@ -151,9 +151,9 @@
         }));
     };
 
-    Grid.prototype.legacyColumns = function (_) {
+    Grid.prototype.legacyColumns = function (_, asDefault) {
         if (!arguments.length) return this.row(0);
-        this.row(0, _);
+        this.row(0, _, asDefault);
         return this;
     };
 
@@ -226,12 +226,16 @@
         return this;
     };
 
-    Grid.prototype.row = function (row, _) {
+    Grid.prototype.row = function (row, _, asDefault) {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
             var fieldsArr = this.fields();
             this.fields(_.map(function (label, idx) {
-                return (fieldsArr[idx] || new Field()).label_default(label);
+                if (asDefault) {
+                    return (fieldsArr[idx] || new Field()).label_default(label);
+                } else {
+                    return (fieldsArr[idx] || new Field()).label(label);
+                }
             }, this));
         } else {
             this._data[row - 1] = _;

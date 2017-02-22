@@ -123,11 +123,11 @@
         return retVal;
     };
 
-    MultiChart.prototype.columns = function (_) {
+    MultiChart.prototype.columns = function (_, asDefault) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
         if (this.chart()) {
             if (!arguments.length) return this.chart().columns();
-            this.chart().columns(_);
+            this.chart().columns(_, asDefault);
         }
         return retVal;
     };

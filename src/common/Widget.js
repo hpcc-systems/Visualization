@@ -109,9 +109,9 @@
         return this;
     };
 
-    Widget.prototype.columns = function (_) {
+    Widget.prototype.columns = function (_, asDefault) {
         if (!arguments.length) return this._db.legacyColumns();
-        this._db.legacyColumns(_);
+        this._db.legacyColumns(_, asDefault);
         return this;
     };
 

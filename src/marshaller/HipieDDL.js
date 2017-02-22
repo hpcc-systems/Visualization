@@ -1058,7 +1058,7 @@
         this.events.setWidget(widget);
         if (this.widget.columns) {
             var columns = this.source.getColumns();
-            this.widget.columns(columns);
+            this.widget.columns(columns, true);
         }
         for (var key in this.properties) {
             switch (widget.classID()) {

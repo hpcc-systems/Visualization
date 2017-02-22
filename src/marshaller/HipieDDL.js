@@ -1642,16 +1642,17 @@
         this.getVisualizationArray().forEach(function (visualization) {
             var inputVisualizations = visualization.getInputVisualizations();
             var datasource = visualization.source.getDatasource();
-            if ((datasource && datasource.isRoxie()) || inputVisualizations.length === 0) {
+            var hasInputSelection = false;
+            inputVisualizations.forEach(function (inViz) {
+                if (inViz.hasSelection()) {
+                    var request = inViz.calcRequestFor(visualization);
+                    request.refresh = true;
+                    fetchDataOptimizer.appendRequest(datasource, request, visualization);
+                    hasInputSelection = true;
+                }
+            });
+            if (!hasInputSelection && ((datasource && datasource.isRoxie()) || inputVisualizations.length === 0)) {
                 fetchDataOptimizer.appendRequest(datasource, { refresh: true }, visualization);
-            } else {
-                inputVisualizations.forEach(function (inViz) {
-                    if (inViz.hasSelection()) {
-                        var request = inViz.calcRequestFor(visualization);
-                        request.refresh = true;
-                        fetchDataOptimizer.appendRequest(datasource, request, visualization);
-                    }
-                });
             }
         });
         return fetchDataOptimizer.fetchData();

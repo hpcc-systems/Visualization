@@ -88,6 +88,19 @@
         }
     };
 
+    SourceMappings.prototype.init = function() {
+        for (var key in this.mappings) {
+            this.reverseMappings[this.mappings[key]] = key;
+            if (this.columnsIdx[key] === undefined) {
+                this.columns.push(key);
+                this.columnsIdx[key] = this.columns.length - 1;
+            }
+            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
+            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
+            this.hasMappings = true;
+        }
+    };
+
     SourceMappings.prototype.getFields = function () {
         if (this.visualization.fields) {
             return Object.keys(this.mappings).map(function(key) {
@@ -191,10 +204,12 @@
             this.columnsIdx = { geohash: 0, label: 1 };
         }
         var weightOffset = this.columns.length;
-        mappings.weight.forEach(function (w, i) {
-            this.columns.push(w);
-            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
-        }, this);
+        if (mappings.weight instanceof Array) {
+          mappings.weight.forEach(function (w, i) {
+              this.columns.push(w);
+              this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
+          }, this);
+        }
         this.init();
     }
     ChoroMappings2.prototype = Object.create(SourceMappings.prototype);
@@ -202,7 +217,7 @@
     function HeatMapMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
         this.columns = ["x", "y", "weight"];
-        this.columnsIdx = { x: 0, y:1, weight: 2 };
+        this.columnsIdx = { x: 0, y: 1, weight: 2 };
         this.init();
     }
     HeatMapMappings.prototype = Object.create(SourceMappings.prototype);
@@ -469,7 +484,7 @@
     }
 
     Source.prototype.getQualifiedID = function () {
-        return this.visualization.getQualifiedID() + "." + this.id;
+        return this.visualization.getQualifiedID() + "." + this._id;
     };
 
     Source.prototype.exists = function () {
@@ -729,11 +744,17 @@
         this.type = visualization.type;
         this.id = visualization.id;
 
-        this.label = visualization.label;
+        switch (this.type) {
+            case "TABLE":
+                this.label = (visualization).label;
+                break;
+            case "GRAPH":
+                this.label = (visualization).label;
+                this.icon = (visualization).icon || { faChar: "\uf128" };
+                this.flags = (visualization).flag || [];
+                break;
+        }
         this.title = visualization.title || visualization.id;
-        this.type = visualization.type;
-        this.icon = visualization.icon || {};
-        this.flag = visualization.flag || [];
         this.fields = visualization.fields || [];
         this.fieldsMap = {};
         this.fields.forEach(function (d) {
@@ -906,12 +927,13 @@
                 });
                 break;
             case "FORM":
-                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea"], function (widget, widgetClasses) {
+                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea", "../form/InputRange"], function (widget, widgetClasses) {
                     var Input = widgetClasses[1];
                     var CheckBox = widgetClasses[3];
                     var Radio = widgetClasses[5];
                     var Select = widgetClasses[7];
                     var TextArea = widgetClasses[9];
+                    var InputRange = widgetClasses[10];
 
                     try {
                         widget
@@ -921,6 +943,10 @@
                                 var selectOptions = [];
                                 var options = [];
                                 var inp;
+                                if (!field.properties.charttype && field.properties.type === "range") {
+                                    //  TODO - Verify with @DL
+                                    field.properties.charttype = "RANGE";
+                                }
                                 switch (field.properties.charttype) {
                                     case "TEXT":
                                         inp = new Input()
@@ -939,7 +965,10 @@
                                     case "HIDDEN":
                                         inp = new Input()
                                             .type_default("hidden")
-                                        ;
+                                            ;
+                                        break;
+                                    case "RANGE":
+                                        inp = new InputRange();
                                         break;
                                     default:
                                         if (field.properties.enumvals) {
@@ -1055,7 +1084,7 @@
         require(widgetPaths, function (Widget) {
             var existingWidget = context.dashboard.marshaller.getWidget(context.id);
             if (existingWidget) {
-                if (Widget.prototype._class !== existingWidget._class) {
+                if (Widget.prototype._class !== existingWidget.classID()) {
                     console.log("Unexpected persisted widget type (old persist string?)");
                 }
                 context.setWidget(existingWidget);
@@ -1299,18 +1328,101 @@
     };
 
     //  Output  ---
+    function Filter(ddlFilter) {
+        if (typeof ddlFilter === "string") {
+            ddlFilter = {
+                fieldid: ddlFilter,
+                nullable: true,
+                rule: "=="
+            };
+        }
+        this.fieldid = ddlFilter.fieldid;
+        this.nullable = ddlFilter.nullable;
+        this.rule = ddlFilter.rule || "==";
+        this.minid = ddlFilter.minid;
+        this.maxid = ddlFilter.maxid;
+    }
+
+    Filter.prototype.tidyFieldID = function () {
+        switch (this.rule) {
+            case "<":
+            case "<=":
+                return this.fieldid.substring(0, this.fieldid.length - 4); //  Remove "_min";
+            case ">":
+            case ">=":
+                return this.fieldid.substring(0, this.fieldid.length - 4); //  Remove "_max";
+        }
+        return this.fieldid;
+    };
+
+    Filter.prototype.isRange = function () {
+        return this.rule === "range";
+    };
+
+    Filter.prototype._calcRequest = function (filteredRequest, request, fieldid, value) {
+        filteredRequest[fieldid + _CHANGED] = request[fieldid + _CHANGED] || false;
+        if (filteredRequest[fieldid] !== value) {
+            filteredRequest[fieldid] = value;
+        }
+    };
+
+    Filter.prototype.calcRequest = function (filteredRequest, request) {
+        var value = request[this.fieldid] === undefined ? null : request[this.fieldid];
+        if (this.isRange()) {
+            if (value instanceof Array && value.length === 2) {
+                this._calcRequest(filteredRequest, request, this.minid, value[0]);
+                this._calcRequest(filteredRequest, request, this.maxid, value[1]);
+            }
+        } else {
+            this._calcRequest(filteredRequest, request, this.fieldid, value);
+        }
+    };
+
+    Filter.prototype.matches = function (row, value) {
+        if (value === undefined || value === null) {
+            return this.nullable;
+        }
+        var rowValue = row[this.tidyFieldID()];
+        if (rowValue === undefined) {
+            rowValue = row[this.tidyFieldID().toLowerCase()];
+        }
+        switch (this.rule) {
+            case "<":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) < 0;
+                }
+                return rowValue < value;
+            case ">":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) > 0;
+                }
+                return rowValue > value;
+            case "<=":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) <= 0;
+                }
+                return rowValue <= value;
+            case ">=":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) >= 0;
+                }
+                return rowValue >= value;
+            case "==":
+                /* falls through */
+            default:
+                return value == rowValue;    // jshint ignore:line
+        }
+        console.log("Unknown filter rule:  '" + this.rule + "'");
+        return false;
+    };
+    
     function Output(datasource, output) {
         this.datasource = datasource;
         this.id = output.id;
         this.from = output.from;
         this.notify = output.notify || [];
-        this.filter = (output.filter || []).map(function (filter) {
-            if (typeof filter === "string") {
-                return {
-                    fieldid: filter
-                };
-            }
-            return filter;
+        this.filters = (output.filter || []).map(function (filter) {
+            return new Filter(filter);
         });
     }
 
@@ -1418,13 +1530,8 @@
     function Datasource(marshaller, datasource, proxyMappings, timeout) {
         this.marshaller = marshaller;
         this.id = datasource.id;
-        this.filter = (datasource.filter || []).map(function (filter) {
-            if (typeof filter === "string") {
-                return {
-                    fieldid: filter
-                };
-            }
-            return filter;
+        this.filters = (datasource.filter || []).map(function (filter) {
+            return new Filter(filter);
         });
         this.WUID = datasource.WUID;
         this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
@@ -1436,12 +1543,13 @@
         this._outputArray = [];
         var hipieResults = [];
         datasource.outputs.forEach(function (item) {
-            context._outputs[item.id] = new Output(context, item);
-            context._outputArray.push(context._outputs[item.id]);
+            var output = new Output(context, item);
+            context._outputs[item.id] = output;
+            context._outputArray.push(output);
             hipieResults.push({
                 id: item.id,
                 from: item.from,
-                filters: item.filter || this.filter
+                filters: output.filters || this.filters
             });
         }, this);
 
@@ -1497,19 +1605,15 @@
         transactionQueue.push(myTransactionID);
 
         var dsRequest = {};
-        this.filter.forEach(function (item) {
-            dsRequest[item.fieldid + _CHANGED] = request[item.fieldid + _CHANGED] || false;
-            var value = request[item.fieldid] === undefined ? null : request[item.fieldid];
-            if (dsRequest[item.fieldid] !== value) {
-                dsRequest[item.fieldid] = value;
-            }
+        this.filters.forEach(function (item) {
+            item.calcRequest(dsRequest, request);
         });
         dsRequest.refresh = request.refresh || false;
-        if (window.__hpcc_debug) {
+        if (true || window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
         for (var key in dsRequest) {
-            if (dsRequest[key] === null) {
+            if (dsRequest[key] === undefined) {
                 delete dsRequest[key];
             }
         }
@@ -1522,7 +1626,7 @@
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);
-                        context.processResponse(response, request, updates).then(function () {
+                        context.processResponse(response, dsRequest, updates).then(function () {
                             transactionQueue.shift();
                             resolve(response);
                             context.marshaller.commsEvent(context, "response", dsRequest, response);
@@ -1601,9 +1705,12 @@
         this._datasources = {};
         this._datasourceArray = [];
         this._datasourceTotal = 0;
-        dashboard.datasources.forEach(function (item) {
-            this.createDatasource(item);
-        }, this);
+        if (dashboard.datasources) {
+            dashboard.datasources.forEach(function (item) {
+                this.createDatasource(item, proxyMappings, timeout);
+            }, this);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
 
         this._visualizations = {};
         this._visualizationArray = [];
@@ -1650,6 +1757,10 @@
 
     Dashboard.prototype.getDatasource = function (id) {
         return this._datasources[id] || this.marshaller.getDatasource(id);
+    };
+
+    Dashboard.prototype.getDataSourceArray = function () {
+        return this._datasourceArray;
     };
 
     Dashboard.prototype.getVisualization = function (id) {
@@ -1752,6 +1863,13 @@
         this._propogateClear = false;
         this.id = "Marshaller";
         this._missingDataString = "";
+        this.dashboards = {};
+        this.dashboardArray = [];
+
+        this._datasources = {};
+        this._datasourceArray = [];
+        this._visualizations = {};
+        this._visualizationArray = [];
     }
     Marshaller.prototype = Object.create(Class.prototype);
     Marshaller.prototype.constructor = Marshaller;
@@ -1922,6 +2040,11 @@
         return this._visualizations[id];
     };
 
+    Marshaller.prototype.appendDataSource = function (datasource) {
+        this._datasources[datasource.id] = datasource;
+        this._datasourceArray.push(datasource);
+    };
+
     Marshaller.prototype.getVisualizations = function () {
         return this._visualizations;
     };
@@ -1930,10 +2053,10 @@
         return this._visualizationArray;
     };
 
-    Marshaller.prototype.getWidget = function(id) {
+    Marshaller.prototype.getWidget = function (id) {
         return this._widgetMappings[id];
     };
-    
+
     Marshaller.prototype.on = function (eventID, func) {
         var context = this;
         this.overrideMethod(eventID, function (origFunc, args) {

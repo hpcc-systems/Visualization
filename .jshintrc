@@ -1,5 +1,5 @@
 {
-    "predef": [ "define", "colorbrewer", "google", "Promise", "AmCharts", "simpleheat", "require" ],
+    "predef": [ "define", "colorbrewer", "google", "Promise", "AmCharts", "simpleheat", "require", "React" ],
 
     // JSHint Default Configuration File (as on JSHint website)
     // See http://jshint.com/docs/ for more details

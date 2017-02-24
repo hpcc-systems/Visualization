@@ -50,7 +50,8 @@
     "javascript-auto-complete": "~1.0.4",
     "d3-tip": "~0.6.7",
     "handsontable": "~0.24.3",
-    "grid-list": "~0.3.4"
+    "grid-list": "~0.3.4",
+    "orb": "~1.0.9"
   },
   "resolutions": {
     "d3": "~3.5.17"

@@ -1,4 +1,4 @@
-﻿"use strict";
+﻿﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -210,12 +210,12 @@
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Summary"], function (DataFactory, Summary) {
                     callback(new Summary()
-                        .columns(["Summary", "Score", "Details", "Status", "Icon"])
+                        .columns(["Summary", "Score", "Details", "Status", "Icon", "ImageURL"])
                         .data([
-                            ["Elephants", 22, "<a href='http://www.google.com#q=Elephants'>Big an grey</a>", "grey", "fa-info-circle"],
-                            ["Mice", 87, "<a href='http://www.google.com#q=Elephants'>Squeaky</a>", "red", "fa-briefcase"],
-                            ["Sheep", 50, "<a href='http://www.google.com#q=Elephants'>Tasty</a>", "green", "fa-info-circle"],
-                            ["People", 42, "<a href='http://www.google.com#q=Elephants'>Two Legs</a>", "orange", "fa-briefcase"]
+                            ["Elephants", 22, "<a href='http://www.google.com#q=Elephants'>Big an grey</a>", "grey", "fa-info-circle", "http://cliparts.co/cliparts/kiK/B8R/kiKB8ReRT.png"],
+                            ["Mice", 87, "<a href='http://www.google.com#q=Elephants'>Squeaky</a>", "red", "fa-briefcase", "http://www.clipartkid.com/images/387/cute-cartoon-mice-cliparts-co-29lnyz-clipart.png"],
+                            ["Sheep", 50, "<a href='http://www.google.com#q=Elephants'>Tasty</a>", "green", "fa-info-circle", "https://openclipart.org/download/17637/lemmling-Cartoon-sheep.svg"],
+                            ["People", 42, "<a href='http://www.google.com#q=Elephants'>Two Legs</a>", "orange", "fa-briefcase", "https://www.colourbox.com/preview/8007739-cute-cartoon-people-man-and-woman-in-jaidee-family-style.jpg"]
                         ])
                         .iconColumn("Icon")
                         .labelColumn("Summary")

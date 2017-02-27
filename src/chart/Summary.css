@@ -1,5 +1,5 @@
 /* imports */
-@import url(http://fonts.googleapis.com/css?family=Lato:400);
+@import url(https://fonts.googleapis.com/css?family=Lato:400);
 
 .chart_Summary {
     width: 225px;
@@ -20,13 +20,14 @@
     font-family: FontAwesome;
     font-size: 5.5em;
     opacity: 0.4;
+    top: 0.5em;
     right: 15px;
 }
 
 .chart_Summary .bgIcon {
     position: relative;
 }
-    
+
 .chart_Summary .content {
     float: left;
     width: 100%;
@@ -35,7 +36,6 @@
 }
 
 .chart_Summary .content div {
-    margin-top: -1.1em;
     font-size: 1.1em;
     opacity: 0.8;
 }

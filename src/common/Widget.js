@@ -329,6 +329,17 @@
         return null;
     };
 
+    Widget.prototype.locateAncestor = function (classID) {
+        var widget = this.locateParentWidget(this._target);
+        while (widget) {
+            if (widget.classID() === classID) {
+                return widget;
+            }
+            widget = this.locateParentWidget(widget._target.parentNode);
+        }
+        return null;
+    };
+
     Widget.prototype.getAbsolutePos = function (domNode, w, h) {
         var root = this.locateSVGNode(domNode);
         if (!root) {
@@ -497,3 +508,4 @@
 
     return Widget;
 }));
+

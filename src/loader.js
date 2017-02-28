@@ -129,7 +129,7 @@
             "colorbrewer": rawgitBaseUrl + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": rawgitBaseUrl + "/jasondavies/d3-cloud/v1.2.2/build/d3.layout.cloud",
             "d3-sankey": rawgitBaseUrl + "/d3/d3-plugins/master/sankey/sankey",
-            "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.6.3/css/font-awesome.min",
+            "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.7.0/css/font-awesome.min",
             "es6-promise": rawgitBaseUrl + "/jakearchibald/es6-promise/v3.2.2/dist/es6-promise.min",
             "d3-hexbin": rawgitBaseUrl + "/d3/d3-plugins/master/hexbin/hexbin",
             "d3-tip": rawgitBaseUrl + "/Caged/d3-tip/v0.6.7/index",

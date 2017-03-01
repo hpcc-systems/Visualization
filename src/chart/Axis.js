@@ -85,7 +85,7 @@
                 return this.parseInvert(d2);
             }, this);
         }
-        if (this.parser) {
+        if (this.parser && d) {
             return this.parser(d);
         }
         return d;

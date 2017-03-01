@@ -30,17 +30,21 @@
                 "d3-hexbin": "../bower_components/d3-plugins/hexbin/hexbin",
                 "d3-tip": "../bower_components/d3-tip/index",
                 "d3-bullet": "../bower_components/d3-plugins/bullet/bullet",
+                "handsontable": "../bower_components/handsontable/dist/handsontable.full",
+                "grid-list": "../bower_components/grid-list/src/gridList",
+                "orb-react": "../bower_components/orb/deps/react-0.12.2",
+                "orb": "../bower_components/orb/dist/orb",
 
                 "amcharts": "../bower_components/amcharts3/amcharts/amcharts",
-                "amcharts.funnel": "../bower_components/amcharts3/amcharts/funnel",
-                "amcharts.gauge": "../bower_components/amcharts3/amcharts/gauge",
-                "amcharts.pie": "../bower_components/amcharts3/amcharts/pie",
-                "amcharts.radar": "../bower_components/amcharts3/amcharts/radar",
-                "amcharts.serial": "../bower_components/amcharts3/amcharts/serial",
-                "amcharts.xy": "../bower_components/amcharts3/amcharts/xy",
-                "amcharts.gantt": "../bower_components/amcharts3/amcharts/gantt",
-                "amcharts.plugins.responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
-                "amchartsImg": "../bower_components/amcharts3/amcharts/images/",
+                "amcharts-funnel": "../bower_components/amcharts3/amcharts/funnel",
+                "amcharts-gauge": "../bower_components/amcharts3/amcharts/gauge",
+                "amcharts-pie": "../bower_components/amcharts3/amcharts/pie",
+                "amcharts-radar": "../bower_components/amcharts3/amcharts/radar",
+                "amcharts-serial": "../bower_components/amcharts3/amcharts/serial",
+                "amcharts-xy": "../bower_components/amcharts3/amcharts/xy",
+                "amcharts-gantt": "../bower_components/amcharts3/amcharts/gantt",
+                "amcharts-plugins-responsive": "../bower_components/amcharts3/amcharts/plugins/responsive/responsive",
+                "amcharts-images": "../bower_components/amcharts3/amcharts/images/",
 
                 "simpleheat": "../bower_components/simpleheat/index",
                 "autoComplete": "../bower_components/javascript-auto-complete/auto-complete",
@@ -48,50 +52,50 @@
                 "src": "../src"
             },
             shim: {
-                "amcharts.funnel": {
+                "amcharts-funnel": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.gauge": {
+                "amcharts-gauge": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.pie": {
+                "amcharts-pie": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.radar": {
+                "amcharts-radar": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.serial": {
+                "amcharts-serial": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                "amcharts.xy": {
+                "amcharts-xy": {
                     deps: ["amcharts"],
                     exports: "AmCharts",
                     init: function () {
                         AmCharts.isReady = true;
                     }
                 },
-                'amcharts.gantt': {
-                    deps: ['amcharts', 'amcharts.serial'],
+                'amcharts-gantt': {
+                    deps: ['amcharts', 'amcharts-serial'],
                     exports: 'AmCharts',
                     init: function () {
                         AmCharts.isReady = true;
@@ -125,23 +129,27 @@
             "colorbrewer": rawgitBaseUrl + "/jeanlauliac/colorbrewer/v1.0.0/colorbrewer",
             "d3-cloud": rawgitBaseUrl + "/jasondavies/d3-cloud/v1.2.2/build/d3.layout.cloud",
             "d3-sankey": rawgitBaseUrl + "/d3/d3-plugins/master/sankey/sankey",
-            "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.6.3/css/font-awesome.min",
+            "font-awesome": rawgitBaseUrl + "/FortAwesome/Font-Awesome/v4.7.0/css/font-awesome.min",
             "es6-promise": rawgitBaseUrl + "/jakearchibald/es6-promise/v3.2.2/dist/es6-promise.min",
             "d3-hexbin": rawgitBaseUrl + "/d3/d3-plugins/master/hexbin/hexbin",
             "d3-tip": rawgitBaseUrl + "/Caged/d3-tip/v0.6.7/index",
             "d3-bullet": rawgitBaseUrl + "/d3/d3-plugins/master/bullet/bullet",
+            "handsontable": rawgitBaseUrl + "/handsontable/handsontable/0.24.3/dist/handsontable.full.min",
+            "grid-list": rawgitBaseUrl + "/hootsuite/grid/v0.3.4/src/gridList",
+            "orb-react": rawgitBaseUrl + "/nnajm/orb/v1.0.9/deps/react-0.12.2.min",
+            "orb": rawgitBaseUrl + "/nnajm/orb/v1.0.9/dist/orb.min",
 
             "amcharts": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/amcharts",
-            "amcharts.funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
-            "amcharts.gauge": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
-            "amcharts.pie": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/pie",
-            "amcharts.radar": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/radar",
-            "amcharts.serial": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/serial",
-            "amcharts.xy": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/xy",
-            "amcharts.gantt": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
-            "amcharts.plugins.responsive": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
-            "amcharts.plugins.dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
-            "amchartsImg": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
+            "amcharts-funnel": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/funnel",
+            "amcharts-gauge": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gauge",
+            "amcharts-pie": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/pie",
+            "amcharts-radar": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/radar",
+            "amcharts-serial": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/serial",
+            "amcharts-xy": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/xy",
+            "amcharts-gantt": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/gantt",
+            "amcharts-plugins-responsive": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/responsive/responsive",
+            "amcharts-plugins-dataloader": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/plugins/dataloader",
+            "amcharts-images": rawgitBaseUrl + "/amcharts/amcharts3/3.18.0/amcharts/images/",
 
             "simpleheat": rawgitBaseUrl + "/mourner/simpleheat/v0.3.0/simpleheat",
             "autoComplete": rawgitBaseUrl + "/Pixabay/JavaScript-autoComplete/1.0.4/auto-complete",
@@ -170,7 +178,7 @@
             paths: {
                 "src": srcUrl,
                 "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
-                "amchartsImg": srcUrl + "/img/amcharts/"
+                "amcharts-images": srcUrl + "/img/amcharts/"
             }
         });
     }
@@ -213,7 +221,7 @@
                 paths: {
                     "src": srcUrl,
                     "font-awesome": srcUrl + "/font-awesome/css/font-awesome.min",
-                    "amchartsImg": srcUrl + "/img/amcharts/"
+                    "amcharts-images": srcUrl + "/img/amcharts/"
                 }
             });
             retVal([srcUrl + "/hpcc-viz.js"], function () {
@@ -331,19 +339,19 @@
                         case "1":
                         case "2":
                         case "3":
-                            this.cdn("v1.10.0", function (require) {
-                                require(["src/other/Persist"], function (Persist) {
+                            this.cdn("v1.10.0", function (_req) {
+                                _req(["src/other/Persist"], function (Persist) {
                                     Persist.create(state, function (widget) {
-                                        callback(widget, require);
+                                        callback(widget, _req);
                                     });
                                 }, requireErrorHandler);
                             });
                             break;
                         default:
-                            this.cdn("v" + state.__version, function (require) {
-                                require(["src/other/Persist"], function (Persist) {
+                            this.cdn("v" + state.__version, function (_req) {
+                                _req(["src/other/Persist"], function (Persist) {
                                     Persist.create(state, function (widget) {
-                                        callback(widget, require);
+                                        callback(widget, _req);
                                     });
                                 }, requireErrorHandler);
                             });

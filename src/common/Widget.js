@@ -109,9 +109,9 @@
         return this;
     };
 
-    Widget.prototype.columns = function (_) {
+    Widget.prototype.columns = function (_, asDefault) {
         if (!arguments.length) return this._db.legacyColumns();
-        this._db.legacyColumns(_);
+        this._db.legacyColumns(_, asDefault);
         return this;
     };
 
@@ -154,8 +154,8 @@
 
     Widget.prototype.rowToObj = function (row) {
         var retVal = {};
-        this.columns().forEach(function(col, idx) {
-            retVal[col] = row[idx];
+        this.fields().forEach(function (field, idx) {
+            retVal[field.label_default() || field.label()] = row[idx];
         });
         if (row.length === this.columns().length + 1) {
             retVal.__lparam = row[this.columns().length];
@@ -323,6 +323,17 @@
         while (widget) {
             if (widget._parentOverlay) {
                 return widget._parentOverlay;
+            }
+            widget = this.locateParentWidget(widget._target.parentNode);
+        }
+        return null;
+    };
+
+    Widget.prototype.locateAncestor = function (classID) {
+        var widget = this.locateParentWidget(this._target);
+        while (widget) {
+            if (widget.classID() === classID) {
+                return widget;
             }
             widget = this.locateParentWidget(widget._target.parentNode);
         }
@@ -497,3 +508,4 @@
 
     return Widget;
 }));
+

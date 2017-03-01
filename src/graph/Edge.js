@@ -23,6 +23,7 @@
     Edge.prototype._class += " graph_Edge";
 
     Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
+    Edge.prototype.publish("showArc", true, "boolean", "Show/Hide Arc", null, { tags: ["Basic"] });
     Edge.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 
     Edge.prototype.publish("sourceMarker", "circle", "set", "Source Marker", ["circle"], { optional: true });
@@ -124,8 +125,8 @@
         }
         pathElements
             .attr("opacity", this._hidden ? 0 : 1)
-            .attr("marker-start", this.sourceMarker_exists() ? "url(#" + this._graphID + "_" + this.sourceMarker() + "Foot)" : null)
-            .attr("marker-end", this.targetMarker_exists() ? "url(#" + this._graphID + "_" + this.targetMarker() + "Head)" : null)
+            .attr("marker-start", !(this.svgMarkerGlitch && skipPushMarkers) && this.sourceMarker_exists() ? "url(#" + this._graphID + "_" + this.sourceMarker() + "Foot)" : null)
+            .attr("marker-end", !(this.svgMarkerGlitch && skipPushMarkers) && this.targetMarker_exists() ? "url(#" + this._graphID + "_" + this.targetMarker() + "Head)" : null)
             .attr("stroke", this.strokeColor_exists() ? this.strokeColor() : null)
             .attr("stroke-dasharray", this.strokeDasharray_exists() ? this.strokeDasharray() : null)
             .attr("d", line)
@@ -174,9 +175,13 @@
             var dy = points[0].y - points[1].y;
             var dist = Math.sqrt(dx * dx + dy * dy);
             if (dist) {
-                var midX = (points[0].x + points[1].x) / 2 - dy * this.arcDepth() / 100;
-                var midY = (points[0].y + points[1].y) / 2 + dx * this.arcDepth() / 100;
-                points = [{ x: points[0].x, y: points[0].y }, { x: midX, y: midY }, { x: points[1].x, y: points[1].y }];
+                if(this.showArc()){
+                    var midX = (points[0].x + points[1].x) / 2 - dy * this.arcDepth() / 100;
+                    var midY = (points[0].y + points[1].y) / 2 + dx * this.arcDepth() / 100;
+                    points = [{ x: points[0].x, y: points[0].y }, { x: midX, y: midY }, { x: points[1].x, y: points[1].y }];
+                } else {
+                    points = [{ x: points[0].x, y: points[0].y }, { x: points[1].x, y: points[1].y }];
+                }
             }
         }
 

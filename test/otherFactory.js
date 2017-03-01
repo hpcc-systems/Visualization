@@ -231,7 +231,6 @@
                     );
                 });
             }
-           
         },
         Toolbar: {
             simple: function (callback) {
@@ -349,6 +348,28 @@
                  });
              }
         },
+        RadioCheckbox: {
+            simple: function (callback) {
+                require(["src/other/RadioCheckbox"], function (RadioCheckbox) {
+                    callback(new RadioCheckbox()
+                            .columns(["Col Label", "Col Value"])
+                            .data([
+                                ["Math", 0],
+                                ["Science", 1],
+                                ["Geography", 3],
+                                ["Irish", 5],
+                                ["English", 7],
+                                ["Spanish", 2],
+                                ["Physics", 4],
+                                ["Astrology", 6]
+                            ])
+                            .label("Label:  ")
+                            .valueColumn("Col Value")
+                            .textColumn("Col Label")
+                    );
+                });
+            }
+        },
         CalendarHeatMap: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/other/CalendarHeatMap"], function (DataFactory, CalendarHeatMap) {
@@ -359,6 +380,16 @@
                         .dateColumn("Date")
                         .aggrType("mean")
                         .aggrColumn("Close")
+                    );
+                });
+            }
+        },
+        Opportunity: {
+            simple: function (callback) {
+                require(["test/DataFactory","src/other/Opportunity"], function (DataFactory,Opportunity) {
+                    callback(new Opportunity()
+                        .columns(DataFactory.OpportunityData.Sample.dropdownList)
+                        .data(DataFactory.OpportunityData.Sample.data)
                     );
                 });
             }

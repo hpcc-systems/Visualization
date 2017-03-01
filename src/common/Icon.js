@@ -54,11 +54,22 @@
         ;
         this._tooltipElement = element.append("title");
         var context = this;
-        element.on("click", function(el) { context.click(el); });
+        element
+            .on("click", function (el) {
+                context.click(el);
+            })
+            .on("dblclick", function (el) {
+                context.dblclick(el);
+            })
+        ;
     };
 
     Icon.prototype.click = function (domNode) {
         console.log("Clicked the icon");
+    };
+
+    Icon.prototype.dblclick = function (domNode) {
+        console.log("Double clicked the icon");
     };
 
     Icon.prototype.update = function (domNode, element) {

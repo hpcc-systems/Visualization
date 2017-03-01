@@ -111,29 +111,32 @@
                     callback(new Grid()
                         .setContent(0, 0, new Pie()
                             .columns(DataFactory.TwoD.subjects.columns)
-                            .data(DataFactory.TwoD.subjects.data)
+                            .data(DataFactory.TwoD.subjects.data), "", 2, 2
                         )
-                        .setContent(0, 1, new Pie()
+                        .setContent(0, 2, new Pie()
                             .columns(DataFactory.TwoD.subjects.columns)
                             .data(DataFactory.TwoD.subjects.data)
+                            .paletteID("Dark2"), "", 2, 2
                         )
-                        .setContent(1, 0, new Pie()
+                        .setContent(2, 0, new Pie()
                             .columns(DataFactory.TwoD.subjects.columns)
                             .data(DataFactory.TwoD.subjects.data)
+                            .paletteID("Paired"), "", 2, 2
                         )
-                        .setContent(1, 1, new Pie()
+                        .setContent(2, 2, new Pie()
                             .columns(DataFactory.TwoD.subjects.columns)
                             .data(DataFactory.TwoD.subjects.data)
+                            .paletteID("Pastel2"), "", 2, 2
                         )
-                        .setContent(0, 2, new Line()
+                        .setContent(0, 4, new Line()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
-                            , "Title AAA", 2, 2
+                            , "Title AAA", 4, 4
                         )
-                        .setContent(2, 0, new MultiChartSurface()
+                        .setContent(4, 0, new MultiChartSurface()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
-                            , "Title BBB", 2, 4
+                            , "Title BBB", 4, 8
                         )
                     );
                 });
@@ -246,22 +249,12 @@
                                 .data(DataFactory.ND.subjects.data)
                             )
                         )
-                        .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(30).widget(new Column()
+                        .addLayer(new AbsoluteSurface().widgetX(30).widgetY(10).widgetWidth(40).widgetHeight(60).widget(new Column()
                                 .columns(DataFactory.ND.subjects.columns)
                                 .data(DataFactory.ND.subjects.data)
                             )
                         )
                     ;
-                    var context = retVal;
-                    setInterval(function () {
-                        context.widgets().sort(function (l, r) {
-                            if (Math.random() < 0.5) {
-                                return -1;
-                            }
-                            return 1;
-                        });
-                        context.render();
-                    }, 3000);
                     callback(retVal);
                 });
             }

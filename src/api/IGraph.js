@@ -10,12 +10,28 @@
     }
 
     //  Events  ---
-    IGraph.prototype.vertex_click = function (d) {
-        console.log("Vertex Click: " + d.id());
+    IGraph.prototype.vertex_click = function (row, col, sel, more) {
+        if (more && more.vertex) {
+            console.log("Vertex click: " + more.vertex.id());
+        }
     };
 
-    IGraph.prototype.edge_click = function (d) {
-        console.log("Edge Click: " + d.id());
+    IGraph.prototype.vertex_dblclick = function (row, col, sel, more) {
+        if (more && more.vertex) {
+            console.log("Vertex double click: " + more.vertex.id());
+        }
+    };
+
+    IGraph.prototype.edge_click = function (row, col, sel, more) {
+        if (more && more.edge) {
+            console.log("Edge click: " + more.edge.id());
+        }
+    };
+
+    IGraph.prototype.edge_dblclick = function (row, col, sel, more) {
+        if (more && more.edge) {
+            console.log("Edge double click: " + more.edge.id());
+        }
     };
 
     return IGraph;

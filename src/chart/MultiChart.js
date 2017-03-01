@@ -74,7 +74,9 @@
     MultiChart.prototype._mapChartTypes = [
         { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
         { id: "CHORO_USCOUNTIES", display: "US County Choropleth", widgetClass: "map_ChoroplethCounties" },
-        { id: "CHORO_COUNTRIES", display: "Counrty Choropleth", widgetClass: "map_ChoroplethCountries" }
+        { id: "CHORO_COUNTRIES", display: "Country Choropleth", widgetClass: "map_ChoroplethCountries" },
+        { id: "GOOGLE_MAP", display: "Google Map", widgetClass: "map_GMapLayered" },
+        { id: "OPENSTREET", display: "Open Street Map", widgetClass: "map_OpenStreet" }
     ].map(function (item) { item.family = "map"; return item; });
     MultiChart.prototype._anyChartTypes = [
         { id: "TABLE", display: "Table", widgetClass: "other_Table" },
@@ -83,6 +85,8 @@
         { id: "TABLE_BULLET", display: "Table driven bullet chart", widgetClass: "chart_Bullet" },
         { id: "TABLE_SELECT", display: "Table driven select", widgetClass: "other_Select" },
         { id: "TABLE_AUTOCOMPLETE", display: "Table driven auto complete", widgetClass: "other_AutoCompleteText" },
+        { id: "TABLE_HANDSON", display: "Table driven handson", widgetClass: "handson_Table" },
+        { id: "TABLE_OPPORTUNITY", display: "Table driven opportunity widget", widgetClass: "graph_Opportunity" },
         { id: "TABLE_TREE", display: "Table driven tree", widgetClass: "tree_Dendrogram" },
         { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
         { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },
@@ -119,11 +123,11 @@
         return retVal;
     };
 
-    MultiChart.prototype.columns = function (_) {
+    MultiChart.prototype.columns = function (_, asDefault) {
         var retVal = HTMLWidget.prototype.columns.apply(this, arguments);
         if (this.chart()) {
             if (!arguments.length) return this.chart().columns();
-            this.chart().columns(_);
+            this.chart().columns(_, asDefault);
         }
         return retVal;
     };
@@ -142,8 +146,16 @@
         var retVal = MultiChart.prototype._origChart.apply(this, arguments);
         if (arguments.length) {
             var context = this;
+            if (this._allChartTypesByClass[_.classID()]) {
+                this.chartType(this._allChartTypesByClass[_.classID()].id);
+            } else {
+                console.log("Unknown Class ID:  " + _.classID());
+            }
             _.click = function (row, column, selected) {
-                context.click(row, column, selected);
+                context.click.apply(context, arguments);
+            };
+            _.dblclick = function (row, column, selected) {
+                context.dblclick.apply(context, arguments);
             };
             if (this._chartMonitor) {
                 this._chartMonitor.remove();

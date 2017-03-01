@@ -48,7 +48,6 @@
 
     Border.prototype.publish("surfacePadding", 0, "number", "Cell Padding (px)", null, { tags: ["Intermediate"] });
 
-
     Border.prototype.publish("sectionTypes", [], "array", "Section Types sharing an index with 'content' - Used to determine position/size.", null, { tags: ["Private"] });
 
     Border.prototype.watchWidget = function (widget) {
@@ -241,6 +240,14 @@
             this.sectionTypes().push(sectionType);
         }
         return this;
+    };
+
+    Border.prototype.getCell = function (id) {
+        var idx = this.sectionTypes().indexOf(id);
+        if (idx >= 0) {
+            return this.content()[idx];
+        }
+        return null;
     };
 
     Border.prototype.getContent = function (id) {

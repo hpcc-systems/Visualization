@@ -39,7 +39,7 @@
     "c3": "~0.4.11",
     "colorbrewer": "~1.0.0",
     "d3": "~3.5.17",
-    "font-awesome": "~4.6.3",
+    "font-awesome": "~4.7.0",
     "topojson": "~1.6.26",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",
     "d3-cloud": "~1.2.2",
@@ -48,7 +48,10 @@
     "simpleheat": "https://raw.githubusercontent.com/mourner/simpleheat/v0.3.0/simpleheat.js",
     "es6-promise": "~3.2.2",
     "javascript-auto-complete": "~1.0.4",
-    "d3-tip": "~0.6.7"
+    "d3-tip": "~0.6.7",
+    "handsontable": "~0.24.3",
+    "grid-list": "~0.3.4",
+    "orb": "~1.0.9"
   },
   "resolutions": {
     "d3": "~3.5.17"

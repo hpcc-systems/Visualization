@@ -14,6 +14,35 @@
 
         this._drawStartPos = "origin";
         this.projection("mercator");
+
+        var context = this;
+        this._zoom = d3.behavior.zoom()
+            .scaleExtent([0.25 * zoomFactor, 131072 * zoomFactor])
+            .on("zoomstart", function (ev) {
+                context._zoomstart_translate = context._zoom.translate();
+                context._zoomstart_scale = context._zoom.scale();
+            })
+            .on("zoom", function () {
+                if (d3.event && d3.event.sourceEvent && d3.event.sourceEvent.ctrlKey && d3.event.sourceEvent.type === "mousemove") {
+                    context.render();
+                    return;
+                }
+                context.zoomed();
+
+                var x = context.width() / 2;
+                var y = context.height() / 2;
+                var mapCenterLongLat = context.invert(x, y);
+                context.centerLong(mapCenterLongLat[0]);
+                context.centerLat(mapCenterLongLat[1]);
+                context.zoom(context._zoom.scale() / zoomFactor);
+
+                context._prevCenterLong = context.centerLong();
+                context._prevCenterLat = context.centerLat();
+                context._prevZoom = context.zoom();
+            })
+            .on("zoomend", function () {
+            })
+        ;
     }
     Layered.prototype = Object.create(SVGWidget.prototype);
     Layered.prototype.constructor = Layered;
@@ -24,7 +53,7 @@
     Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
     Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
     Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
-    Layered.prototype.publish("layers", [], "widgetArray", "Layers");
+    Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
 
     Layered.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -68,35 +97,6 @@
 
     Layered.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
-
-        var context = this;
-        this._zoom = d3.behavior.zoom()
-            .scaleExtent([0.25 * zoomFactor, 131072 * zoomFactor])
-            .on("zoomstart", function (ev) {
-                context._zoomstart_translate = context._zoom.translate();
-                context._zoomstart_scale = context._zoom.scale();
-            })
-            .on("zoom", function () {
-                if (d3.event && d3.event.sourceEvent && d3.event.sourceEvent.ctrlKey && d3.event.sourceEvent.type === "mousemove") {
-                    context.render();
-                    return;
-                }
-                context.zoomed();
-
-                var x = context.width() / 2;
-                var y = context.height() / 2;
-                var mapCenterLongLat = context.invert(x, y);
-                context.centerLong(mapCenterLongLat[0]);
-                context.centerLat(mapCenterLongLat[1]);
-                context.zoom(context._zoom.scale() / zoomFactor);
-
-                context._prevCenterLong = context.centerLong();
-                context._prevCenterLat = context.centerLat();
-                context._prevZoom = context.zoom();
-            })
-            .on("zoomend", function () {
-            })
-        ;
 
         this._zoomGrab = element.append("rect")
             .attr("class", "background")
@@ -160,7 +160,7 @@
     };
 
     Layered.prototype.exit = function (domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        SVGWidget.prototype.exit.apply(this, arguments);
     };
 
     Layered.prototype.zoomed = function () {
@@ -173,26 +173,36 @@
         ;
     };
 
+    Layered.prototype.preRender = function (callback) {
+        return Promise.all(this.layers().filter(function (layer) {
+            return layer.visible();
+        }).map(function (layer) {
+            return layer.layerPreRender();
+        }));
+    };
+
     Layered.prototype.render = function (callback) {
         var context = this;
-        var retVal = SVGWidget.prototype.render.call(this, function (w) {
-            if (context._layersTarget && ((context._renderCount && context._autoScaleOnNextRender) || context._prevAutoScaleMode !== context.autoScaleMode())) {
-                context._prevAutoScaleMode = context.autoScaleMode();
-                context._autoScaleOnNextRender = false;
-                setTimeout(function () {
-                    context.autoScale();
-                    context.autoScale();  //TODO Fix math in autoScale 
+        this.preRender().then(function () {
+            SVGWidget.prototype.render.call(context, function (w) {
+                if (context._layersTarget && ((context._renderCount && context._autoScaleOnNextRender) || context._prevAutoScaleMode !== context.autoScaleMode())) {
+                    context._prevAutoScaleMode = context.autoScaleMode();
+                    context._autoScaleOnNextRender = false;
+                    setTimeout(function () {
+                        context.autoScale();
+                        context.autoScale();  //TODO Fix math in autoScale 
+                        if (callback) {
+                            callback(w);
+                        }
+                    }, 0);
+                } else {
                     if (callback) {
                         callback(w);
                     }
-                }, 0);
-            } else {
-                if (callback) {
-                    callback(w);
                 }
-            }
+            });
         });
-        return retVal;
+        return this;
     };
 
     Layered.prototype.project = function (lat, long) {

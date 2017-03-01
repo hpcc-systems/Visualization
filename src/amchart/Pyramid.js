@@ -1,7 +1,7 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonFunnel", "amcharts.funnel", "../api/I2DChart"], factory);
+        define(["d3", "./CommonFunnel", "amcharts-funnel", "../api/I2DChart"], factory);
     } else {
         root.amchart_Pyramid = factory(root.d3, root.amchart_CommonFunnel, root.amcharts, root.api_I2DChart);
     }

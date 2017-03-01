@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -150,7 +150,7 @@
         },
         ChoroplethCountries: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/map/ChoroplethCountries", "src/map/countries"], function (DataFactory, ChoroplethCountries, countries) {
+                require(["test/DataFactory", "src/map/ChoroplethCountries"], function (DataFactory, ChoroplethCountries) {
                     callback(new ChoroplethCountries()
                         .columns(DataFactory.Countries.simple.columns)
                         .data(DataFactory.Countries.simple.rawData)
@@ -160,7 +160,7 @@
         },
         ChoroplethContinents: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/map/ChoroplethContinents", "src/map/countries"], function (DataFactory, ChoroplethContinents, countries) {
+                require(["test/DataFactory", "src/map/ChoroplethContinents"], function (DataFactory, ChoroplethContinents) {
                     callback(new ChoroplethContinents());
                 });
             }
@@ -260,6 +260,33 @@
                     );
                 });
             },
+            streetView: function (callback) {
+                require(["test/DataFactory", "src/map/GMap"], function (DataFactory, GMap) {
+                    callback(new GMap()
+                        .columns(DataFactory.GMap.simple.columns)
+                        .data(DataFactory.GMap.simple.data)
+                        .centerAddress('6601 Park of Commerce Blvd, Boca Raton, FL')
+                        .streetViewControl(true)
+                        .streetView(true)
+                    );
+                });
+            },
+            splitStreetView: function (callback) {
+                require(["src/map/GMap", "src/layout/Grid"], function (GMap, Grid) {
+                    var _map = new GMap()
+                        .centerAddress('Boca Raton, FL')
+                    ;
+                    var _streetViewMap = new GMap()
+                        .centerAddress('6601 Park of Commerce Blvd, Boca Raton, FL')
+                        .streetViewControl(true)
+                        .streetView(true)
+                    ;
+                    callback(new Grid()
+                        .setContent(0, 0, _map)
+                        .setContent(0, 1, _streetViewMap)
+                    );
+                });
+            },
             pins: function (callback) {
                 require(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
                     callback(new GMapPin()
@@ -312,6 +339,13 @@
             },
             layered: function (callback) {
                 createMap(true, [], null, callback);
+            },
+            drawing: function(callback) {
+                require(["test/DataFactory", "src/map/GMap"], function(DataFactory, GMap) {
+                    var map = new GMap();
+                    map.drawingTools(true);
+                    callback(map);
+                });
             }
         },
         Layered: {

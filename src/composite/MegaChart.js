@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility"], factory);
+        define(["d3","../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility", "css!./MegaChart"], factory);
     } else {
-        root.composite_MegaChart = factory(root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility);
+        root.composite_MegaChart = factory(root.d3, root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility);
     }
-}(this, function (Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility) {
+}(this, function (d3, Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility) {
     function MegaChart() {
         Border.call(this);
 
@@ -13,7 +13,10 @@
         this._chart = new MultiChart();
         var context = this;
         this._chart.click = function () {
-            context.click.apply(this, arguments);
+            context.click.apply(context, arguments);
+        };
+        this._chart.dblclick = function () {
+            context.dblclick.apply(context, arguments);
         };
 
         this._toolbar = new Toolbar();
@@ -35,26 +38,26 @@
 
     MegaChart.prototype.publishReset();
 
-    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
-    MegaChart.prototype.publishProxy("domainAxisTitle","_domainTitle","text");
-    
-    MegaChart.prototype.publish("legendPosition","right","set","Position of the Legend widget", ["none","top","right","bottom","left"], {tags:["Basic"]});
-    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
-    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
-
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
-    MegaChart.prototype.publish("showChartSelect",true,"boolean","Show/Hide the chartType dropdown in the toolbar", null, {tags:["Basic"]});
-    MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
-    MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
-
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
-
-    //TODO:  Proxy + themes not working...
     MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
+    MegaChart.prototype.publish("maximizedBackgroundColor", '#FFFFFF', "html-color", "Background Color while maximized", null, { tags: ["Intermediate"], optional: true });
+
+    MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showMaximize", true, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
+
+    MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
+    MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
+    MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
+
+    MegaChart.prototype.publishProxy("domainAxisTitle", "_domainTitle", "text");
+    MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
 
     MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
     MegaChart.prototype.publishProxy("chart", "_chart", "chart");
@@ -83,9 +86,9 @@
         return this;
     };
 
-    MegaChart.prototype.columns = function (_) {
+    MegaChart.prototype.columns = function (_, asDefault) {
         if (!arguments.length) return this._chart.columns();
-        this._chart.columns(_);
+        this._chart.columns(_, asDefault);
         return this;
     };
 
@@ -107,14 +110,115 @@
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
 
         this._csvButton = new Button()
+            .classed({ "composite_MegaChart-CSV": true })
             .id(this.id() + "_csv")
             .value("CSV")
         ;
         this._csvButton.click = function (a) {
             context.downloadCSV();
         };
+        
+        this._maximizeButton = new Button()
+            .classed({ "composite_MegaChart-Maximize": true })
+            .id(this.id() + "_maximize")
+            .value("\uf2d0")
+        ;
+        this._maximizeButton.click = function (buttonWidget) {
+            var target = context.target();
+            var node = target;
+            var isMaximized = d3.select(target).classed('__hpccisMaximized');
+            
+            //Find the layout_Grid ancestor
+            var parentGrid = context.locateAncestor("layout_Grid");
+            if(parentGrid){
+                node = parentGrid.element().node();
+            } else {
+                node = document.body;
+            }
+            
+            var targetElement = d3.select(context.target());
+            if(isMaximized){
+                //Restore from maximized to natural size/position
+                var targetParentBox = target.parentElement.getBoundingClientRect();
+                var targetPaddingTop = parseInt(getComputedStyle(target, null).getPropertyValue('padding-top').replace('px',''));
+                var targetPaddingLeft = parseInt(getComputedStyle(target, null).getPropertyValue('padding-left').replace('px',''));
+                var targetPaddingRight = parseInt(getComputedStyle(target, null).getPropertyValue('padding-right').replace('px',''));
+                var targetPaddingBottom = parseInt(getComputedStyle(target, null).getPropertyValue('padding-bottom').replace('px',''));
+                context.contentDiv.style("opacity", 0).transition(100);
+                targetElement.transition()//.duration(3000)
+                    .style({
+                        "top": targetParentBox.top+'px',
+                        "left": targetParentBox.left+'px',
+                        "width": (targetParentBox.width - targetPaddingLeft - targetPaddingRight)+'px',
+                        "height": (targetParentBox.height - targetPaddingTop - targetPaddingBottom)+'px'
+                    }).each("end", function () {
+                        targetElement.style({
+                            "position": target.__old_position,
+                            "z-index": target.__old_zindex,
+                            "background-color": target.__old_backgroundColor,
+                            "box-shadow": target.__old_boxshadow
+                    })
+                ;
+                        context
+                            .resize({
+                                "width": targetParentBox.width - targetPaddingLeft - targetPaddingRight,
+                                "height": targetParentBox.height - targetPaddingTop - targetPaddingBottom
+                            })
+                            .render(function () {
+                                context.contentDiv.transition()
+                                    .style("opacity", 1);
+                            });
+                        buttonWidget.value("\uf2d0").render();
+                    });
+            } else {
+                //Maximize this MegaChart
+                target.__old_position = target.style.position;
+                target.__old_zindex = target.style.zIndex;
+                target.__old_boxshadow = target.style.boxShadow;
+                target.__old_backgroundColor = context.element().style('background-color');
+                var grid = d3.select(node).datum();
+                var gridTarget = grid.target();
+                var gridBox = grid ? gridTarget.getBoundingClientRect() : node.getBoundingClientRect();
+                var gridPaddingTop = parseInt(getComputedStyle(gridTarget, null).getPropertyValue('padding-top').replace('px',''));
+                var gridPaddingLeft = parseInt(getComputedStyle(gridTarget, null).getPropertyValue('padding-left').replace('px',''));
+                var gridPaddingRight = parseInt(getComputedStyle(gridTarget, null).getPropertyValue('padding-right').replace('px',''));
+                var gridPaddingBottom = parseInt(getComputedStyle(gridTarget, null).getPropertyValue('padding-bottom').replace('px',''));
+                context.contentDiv.style("opacity", 0).transition(100);
+                targetElement
+                    .style({
+                        "position":"fixed",
+                        "z-index": 999999,
+                        "box-shadow": "0 8px 8px 0 rgba(0,0,0,.14),0 12px 4px -8px rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.12)",
+                        "background-color": target.__old_backgroundColor
+                    })
+                    .transition()//.duration(3000)
+                    .style({
+                        "top": (gridBox.top + gridPaddingTop)+'px',
+                        "left": (gridBox.left + gridPaddingLeft)+'px',
+                        "width": (gridBox.width - gridPaddingLeft - gridPaddingRight)+'px',
+                        "height": (gridBox.height - gridPaddingTop - gridPaddingBottom)+'px'
+                    }).each("end", function () {
+                        targetElement.style({
+                        "background-color": context.maximizedBackgroundColor()
+                        });
+                        context
+                            .resize({
+                                "width": (gridBox.width - gridPaddingLeft - gridPaddingRight),
+                                "height": (gridBox.height - gridPaddingTop - gridPaddingBottom)
+                            })
+                            .render(function () {
+                                context.contentDiv.transition()
+                                    .style("opacity", 1);
+                            });
+                        buttonWidget.value("\uf2d1").render();
+                    });
+            }
+            
+            d3.select(target).classed('__hpccisMaximized',!isMaximized);
+        };
 
         this._legendButton = new Input()
+            .classed({ "composite_MegaChart-legend": true })
             .id(this.id() + "_legend")
             .type("checkbox")
             .inlineLabel("Legend:  ")
@@ -124,6 +228,7 @@
         };
 
         this._chartTypeSelect = new Select()
+            .classed({ "composite_MegaChart-chartType": true })
             .id(this.id() + "_chartType")
             .selectOptions(this._allChartTypes.map(function (a) { return [a.id, a.display]; }))
             .value(this.chartType())
@@ -169,6 +274,7 @@
         this._chartTypeSelect.value(this.chartType());
         var twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
+        showHideButton(twArr, this._maximizeButton, this.showMaximize());
         showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         this.toolbarWidgets(twArr);
@@ -279,6 +385,10 @@
     //  Events  ---
     MegaChart.prototype.click = function (row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    MegaChart.prototype.dblclick = function (row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     };
 
     return MegaChart;

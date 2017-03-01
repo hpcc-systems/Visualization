@@ -1,15 +1,16 @@
-.map_Layered .data {
-    stroke: none;
+.map_Layered .pin {
+    cursor: pointer;
+    stroke: #000000;
 }
 
-.map_Layered .data.selected {
+.map_Layered .pin.selected {
     stroke: red;
 }
 
-.map_Layered .data.over {
+.map_Layered .pin.over {
     stroke: orange;
 }
 
-.map_Layered .data.selected.over {
+.map_Layered .pin.selected.over {
     stroke: red;
 }

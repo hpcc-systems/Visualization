@@ -1,0 +1,81 @@
+.graph_Opportunity {
+    transform: translate(20px,20px)scale(1) !important;
+}
+
+.graph_Opportunity .group {
+    stroke-width: 1.0;
+    stroke:#555;
+    fill:#FEFEFE;
+}
+
+.graph_Opportunity .group_headings {
+    font-family: "Helvetica","Arial",sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.graph_Opportunity .node_prev_rect {
+    fill:white;
+    stroke-width:2;
+    stroke:#000;
+    stroke-dasharray:3,3;
+      opacity:0.6;
+}
+
+.graph_Opportunity .node_rev_change {
+    fill:white;
+}
+.graph_Opportunity .node_rev_change_text {
+  font-size:18px;
+  font-family:Arial;
+  color: black;
+  font-weight: bold;
+}
+
+.graph_Opportunity .node_date_change {
+    fill:white;
+}
+
+.graph_Opportunity .node_date_change_text {
+  font-size:18px;
+  font-family:Arial;
+  color: black;
+  font-weight: bold;
+}
+
+.graph_Opportunity .node_prev_text {
+    font-size:9px;
+    font-family:Arial;
+    opacity:0.6;
+}
+
+.graph_Opportunity .node_cur_rect {
+    stroke-width:2;
+    stroke:#000;
+}
+
+.graph_Opportunity .node_cur_text {
+    font-size:9px;
+    font-family:Arial;
+    text-decoration: underline;
+}
+
+.graph_Opportunity .arrowhead {
+    refX:6;
+}
+
+.graph_Opportunity-tooltip.tooltip {
+    position: absolute;
+    text-align: left;
+    width:350px;
+    height: 135px;                  
+    padding: 10px;
+    padding-top: 15px;
+    font: 14px arial;
+    background: #BDBDBD;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}

@@ -24,30 +24,29 @@
 
     Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: function (w) { return w.iconColumn(); } });
-
-    Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
-    Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideLabel(); } });
-    Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: function (w) { return w.hideLabel(); } });
-
+    Summary.prototype.publish("iconImage", null, "string", "Add Image", null, { disable: function (w) { return w.iconColumn(); } });
+    Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
+    Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null);
     Summary.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
-
     Summary.prototype.publish("hideMore", false, "boolean", "Hide More Information");
     Summary.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideMore(); } });
     Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: function (w) { return w.hideMore() || w.moreIconColumn(); } });
     Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: function (w) { return w.hideMore(); } });
     Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: function (w) { return w.hideMore() || w.moreTextColumn(); } });
     Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML", null, { disable: function (w) { return w.hideMore(); }});
-
     Summary.prototype.publish("colorFillColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null, { disable: function (w) { return w.colorFillColumn(); } });
     Summary.prototype.publish("colorStrokeColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
     Summary.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null, { disable: function (w) { return w.colorStrokeColumn(); } });
-
     Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
     Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");
     Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
     Summary.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });
+    Summary.prototype.publish("stateText", null, "string", "State Text", null, { optional: true });
+    Summary.prototype.publish("stateTextColor", "#ffffff", "html-color", "State Text Color", null, {});
+    Summary.prototype.publish("textPosition","auto", "set", "Select text position", function () { return ['left','right','center','justify','initial','inherit']; }, { optional: true });
+    Summary.prototype.publish("fontSize", 2, "number", "Font Size");
 
     var playInterval = Summary.prototype.playInterval;
     Summary.prototype.playInterval = function (_) {
@@ -71,12 +70,10 @@
 
     Summary.prototype.summaryData = function () {
         var labelFieldIdx;  //  undefined
-        if (!this.hideLabel()) {
             labelFieldIdx = 0;
             if (this.labelColumn_exists()) {
                 labelFieldIdx = this.columns().indexOf(this.labelColumn());
             }
-        }
         var iconFieldIdx;  //  undefined
         if (this.iconColumn_exists()) {
             iconFieldIdx = this.columns().indexOf(this.iconColumn());
@@ -116,7 +113,6 @@
         }, this);
     };
 
-
     Summary.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._mainDiv = element.append("div")
@@ -143,6 +139,7 @@
 
     Summary.prototype.update = function (domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
+        var context = this;
         if (this.data().length) {
 
         }
@@ -157,8 +154,33 @@
                 height: this.fixedSize() ? this.minHeight_exists() ? this.minHeight() + "px" : null : "100%"
             })
         ;
+        var iconImage = null;
+        this._mainDiv.selectAll('img').remove();
+        if(this.iconImage() && this.iconImage() !== null){
+            iconImage = this.iconImage();
+        }else{
+            iconImage = row.icon;
+        }
+        if((this.iconColumn() === undefined && this.iconImage() && iconImage.indexOf("http") === 0) || this.iconColumn() === 'ImageURL'){
+            this._image = this._mainDiv.append("img");
+            this._image
+                .attr("src", iconImage)
+                .attr("alt", "image url")
+                .attr("width", 63)
+                .attr("height", 62)
+            ;
+
+            this._image.style({
+                "float": "right",
+                "border-radius":"2em",
+                "margin":"-31% 7% 0% 0%",
+            });
+            this._mainDiv.attr("class", "content bgIcon ");
+        }else{
+            this._mainDiv.attr("class", "content bgIcon "+iconImage);
+        }
+
         this._mainDiv
-            .attr("class", "content bgIcon " + row.icon)
             .transition()
             .style({
                 "background-color": row.fill,
@@ -167,16 +189,30 @@
                 "min-height": this.minHeight_exists() ? this.minHeight() + "px" : null
             })
         ;
+
         this._headerDiv
             .transition()
-            .style("color", row.stroke)
+            .style({
+                "color": this.stateTextColor(),
+                "text-align":this.textPosition(),
+                "font-size":this.fontSize()+"em",
+            })
             [this.valueHTML() ? HTML : TEXT](row.value)
         ;
+        var labelText = row.label;
+        if(this && this.stateText && this.stateText() && this.stateText().length>0){
+            labelText = this.stateText();
+        }
         this._textDiv
-            [this.labelHTML() ? HTML : TEXT](row.label)
+
+            .style({
+                "color": this.stateTextColor(),
+                "text-align":this.textPosition(),
+                "font-size":this.fontSize()+"em",
+            })[this.valueHTML() ? HTML : TEXT](labelText)
         ;
-        var context = this;
-        var moreDivs = this._mainDiv.selectAll(".more").data([row]);
+
+        var moreDivs = this._mainDiv.selectAll(".more").data([row.moreText]);
         moreDivs.enter()
             .append("div")
             .attr("class", "more")
@@ -196,10 +232,11 @@
             .style("background-color", d3.rgb(row.fill).darker(0.75))
         ;
         moreDivs.select("i")
-            .attr("class", function (d) { return "fa " + d.moreIcon; })
+            .attr("class",  "fa " + row.moreIcon)
         ;
+
         moreDivs.select("span")
-            [this.moreTextHTML() ? HTML : TEXT](function (d) { return d.moreText; })
+            [this.moreTextHTML() ? HTML : TEXT](row.moreText)
         ;
         moreDivs.exit().remove();
     };

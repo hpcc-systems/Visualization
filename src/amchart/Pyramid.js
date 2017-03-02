@@ -20,14 +20,22 @@
 
     Pyramid.prototype.enter = function(domNode, element) {
         CommonFunnel.prototype.enter.apply(this, arguments);
+
     };
 
     Pyramid.prototype.updateChartOptions = function() {
         CommonFunnel.prototype.updateChartOptions.apply(this, arguments);
+        var context = this;
+        this._chart.balloonFunction = function(d) {
+            if(context && context.tooltipValueFormat){
+                return d.title +": " + d3.format(context.tooltipValueFormat())(d.value);
+            }
+        };
     };
 
     Pyramid.prototype.update = function(domNode, element) {
         CommonFunnel.prototype.update.apply(this, arguments);
+
     };
 
     return Pyramid;

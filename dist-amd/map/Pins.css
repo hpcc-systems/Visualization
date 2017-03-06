@@ -1,0 +1,13 @@
+.map_Layered .pin {
+    cursor: pointer;
+    stroke: #000000;
+}
+.map_Layered .pin.selected {
+    stroke: red;
+}
+.map_Layered .pin.over {
+    stroke: orange;
+}
+.map_Layered .pin.selected.over {
+    stroke: red;
+}

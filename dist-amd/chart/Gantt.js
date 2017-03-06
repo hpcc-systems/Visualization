@@ -1,0 +1,1 @@
+!function(t,e){"function"==typeof define&&define.amd?define(["./Bar"],e):t.chart_Gantt=e(t.chart_Bar)}(this,function(t){function e(e){t.call(this),this.orientation_default("vertical").xAxisType_default("ordinal").yAxisType_default("time")}return e.prototype=Object.create(t.prototype),e.prototype.constructor=e,e.prototype._class+=" chart_Gantt",e});

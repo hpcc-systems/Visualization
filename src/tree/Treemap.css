@@ -1,4 +1,4 @@
-﻿.tree_Treemap .node {
+.tree_Treemap .node {
     border: solid 1px white;
     overflow: hidden;
     text-overflow:ellipsis;

@@ -1,15 +1,11 @@
 import "es6-promise";
 
-export const version = "1.14.2-dev";
-
-export function Platform() {
+const _version = "1.14.2-dev";
+export function version() {
+    return _version;
 }
 
-Platform.prototype.version = function () {
-    return version;
-};
-
-Platform.prototype.ieVersion = (function () {
+export const ieVersion = (function () {
     var ua = navigator.userAgent, tem,
         M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
     if (/trident/i.test(M[1])) {
@@ -21,9 +17,38 @@ Platform.prototype.ieVersion = (function () {
     }
     return null;
 })();
-Platform.prototype.isIE = Platform.prototype.ieVersion !== null;
-Platform.prototype.svgMarkerGlitch = Platform.prototype.isIE && Platform.prototype.ieVersion <= 12;
-Platform.prototype.MutationObserver = (window as any).MutationObserver || (window as any).WebKitMutationObserver || (window as any).MozMutationObserver || function (callback) {
+
+export const isIE = ieVersion !== null;
+export const svgMarkerGlitch = isIE && ieVersion <= 12;
+
+let _scrollBarWidth = null;
+export function getScrollbarWidth() {
+    if (_scrollBarWidth === null) {
+        var outer = document.createElement("div");
+        outer.style.visibility = "hidden";
+        outer.style.width = "100px";
+        outer.style.msOverflowStyle = "scrollbar";
+
+        document.body.appendChild(outer);
+
+        var widthNoScroll = outer.offsetWidth;
+        outer.style.overflow = "scroll";
+
+        var inner = document.createElement("div");
+        inner.style.width = "100%";
+        outer.appendChild(inner);
+
+        var widthWithScroll = inner.offsetWidth;
+
+        outer.parentNode.removeChild(outer);
+
+        _scrollBarWidth = widthNoScroll - widthWithScroll;
+    }
+    return _scrollBarWidth;
+}
+
+//  Polyfills  ---
+(window as any).MutationObserver = (window as any).MutationObserver || (window as any).WebKitMutationObserver || (window as any).MozMutationObserver || function (callback) {
     //  Just enough for HTMLOverlay and C3  ---
     this.callback = callback;
     this.listeners = [];
@@ -34,6 +59,7 @@ Platform.prototype.MutationObserver = (window as any).MutationObserver || (windo
         this.type = type;
     };
     MutationListener.prototype = {
+        // tslint:disable-next-line:object-literal-shorthand
         handleEvent: function (evt) {
             var mutation = {
                 type: this.type,
@@ -88,51 +114,6 @@ Platform.prototype.MutationObserver = (window as any).MutationObserver || (windo
             }
         });
         this.listeners = [];
-    };
-};
-if (!(window as any).MutationObserver) {
-    (window as any).MutationObserver = Platform.prototype.MutationObserver;
-}
-
-Platform.prototype._scrollBarWidth = null;
-Platform.prototype.getScrollbarWidth = function () {
-    if (Platform.prototype._scrollBarWidth === null) {
-        var outer = document.createElement("div");
-        outer.style.visibility = "hidden";
-        outer.style.width = "100px";
-        outer.style.msOverflowStyle = "scrollbar";
-
-        document.body.appendChild(outer);
-
-        var widthNoScroll = outer.offsetWidth;
-        outer.style.overflow = "scroll";
-
-        var inner = document.createElement("div");
-        inner.style.width = "100%";
-        outer.appendChild(inner);
-
-        var widthWithScroll = inner.offsetWidth;
-
-        outer.parentNode.removeChild(outer);
-
-        Platform.prototype._scrollBarWidth = widthNoScroll - widthWithScroll;
-    }
-    return Platform.prototype._scrollBarWidth;
-};
-
-Platform.prototype.debounce = function (func, threshold, execAsap) {
-    return function debounced() {
-        var obj = this || {}, args = arguments;
-        function delayed() {
-            if (!execAsap)
-                func.apply(obj, args);
-            obj.__hpcc_debounce_timeout = null;
-        }
-        if (obj.__hpcc_debounce_timeout)
-            clearTimeout(obj.__hpcc_debounce_timeout);
-        else if (execAsap)
-            func.apply(obj, args);
-        obj.__hpcc_debounce_timeout = setTimeout(delayed, threshold || 100);
     };
 };
 

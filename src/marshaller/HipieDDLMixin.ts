@@ -1,11 +1,11 @@
-import * as d3 from "d3";
-import { Class } from '../common/Class';
-import { PropertyExt } from '../common/PropertyExt';
-import * as Utility from '../common/Utility';
-import * as Persist from '../other/Persist';
-import { Surface } from '../layout/Surface';
-import * as HipieDDL from './HipieDDL';
-import { FlyoutButton } from './FlyoutButton';
+import { map as d3Map } from "d3-collection";
+import { Class } from "../common/Class";
+import { PropertyExt } from "../common/PropertyExt";
+import * as Utility from "../common/Utility";
+import { Surface } from "../layout/Surface";
+import * as Persist from "../other/Persist";
+import { FlyoutButton } from "./FlyoutButton";
+import * as HipieDDL from "./HipieDDL";
 
 export function HipieDDLMixin() {
     Class.call(this);
@@ -34,10 +34,10 @@ HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
     this._ddlVisualizations = [];
     this._ddlPopupVisualizations = [];
     this._ddlLayerVisualizations = [];
-    var context = this;
-    var curr = null;
+    const context = this;
+    let curr = null;
     marshaller.accept({
-        visit: function (item) {
+        visit: (item) => {
             if (item instanceof HipieDDL.Dashboard) {
                 curr = {
                     dashboard: item,
@@ -46,13 +46,13 @@ HipieDDLMixin.prototype._gatherDashboards = function (marshaller, databomb) {
                     popupVisualizations: []
                 };
                 context._ddlDashboards.push(curr);
-                } else if (item instanceof HipieDDL.Datasource) {
+            } else if (item instanceof HipieDDL.Datasource) {
                 if (item.databomb && databomb[item.id]) {
                     item.comms.databomb(databomb[item.id]);
                 }
             } else if (item instanceof HipieDDL.Output) {
-                    if (item.datasource.databomb) {
-                        item.datasource.comms.databombOutput(item.from, item.id);
+                if (item.datasource.databomb) {
+                    item.datasource.comms.databombOutput(item.from, item.id);
                 }
             } else if (item instanceof HipieDDL.Visualization) {
                 if (item.widget) {
@@ -99,18 +99,18 @@ HipieDDLMixin.prototype._marshallerRender = function (BaseClass, callback) {
     this._prev_databomb = this.databomb();
 
     //  Gather existing widgets for reuse  ---
-    var widgetArr = [];
+    const widgetArr = [];
     Persist.widgetArrayWalker(this.content(), function (w) {
         widgetArr.push(w);
     });
-    var widgetMap = d3.map(widgetArr, function (d) {
+    const widgetMap = d3Map(widgetArr, function (d) {
         return d.id();
     });
-    var removedMap = d3.map(widgetArr.filter(function (d) { return d.id().indexOf(d._idSeed) !== 0 && d.id().indexOf("_pe") !== 0; }), function (d) {
+    const removedMap = d3Map(widgetArr.filter(function (d) { return d.id().indexOf(d._idSeed) !== 0 && d.id().indexOf("_pe") !== 0; }), function (d) {
         return d.id();
     });
 
-    var context = this;
+    const context = this;
     this._marshaller = new HipieDDL.Marshaller()
         .proxyMappings(this.proxyMappings())
         .clearDataOnUpdate(this.clearDataOnUpdate())
@@ -135,7 +135,7 @@ HipieDDLMixin.prototype._marshallerRender = function (BaseClass, callback) {
     function postParse() {
         context._gatherDashboards(context._marshaller, context.databomb());
         //  Remove existing widgets not used and prime popups ---
-            context._ddlVisualizations.forEach(function (viz) {
+        context._ddlVisualizations.forEach(function (viz) {
             removedMap.remove(viz.id);
             if (!context._marshaller.widgetMappings().get(viz.id)) {
                 //  New widget  ---
@@ -153,8 +153,8 @@ HipieDDLMixin.prototype._marshallerRender = function (BaseClass, callback) {
         });
         context._ddlPopupVisualizations.forEach(function (viz) {
             removedMap.remove(viz.id);
-            viz.widget.classed({ "flyout": true });
-            var targetVizs = viz.events.getUpdatesVisualizations();
+            viz.widget.classed({ flyout: true });
+            const targetVizs = viz.events.getUpdatesVisualizations();
             targetVizs.forEach(function (targetViz) {
                 switch (targetViz.widget.classID()) {
                     case "composite_MegaChart":
@@ -173,7 +173,7 @@ HipieDDLMixin.prototype._marshallerRender = function (BaseClass, callback) {
                 }
             });
         });
-        removedMap.forEach(function (key, value) {
+        removedMap.each(function (key, value) {
             context.clearContent(value);
         });
         context.populateContent();
@@ -201,8 +201,8 @@ HipieDDLMixin.prototype.primeData = function (state) {
 };
 
 HipieDDLMixin.prototype.dashboards = function () {
-    var retVal = {};
-    for (var key in this._marshaller.dashboards) {
+    const retVal = {};
+    for (const key in this._marshaller.dashboards) {
         retVal[key] = {};
         this._marshaller.dashboards[key].visualizations.forEach(function (ddlViz) {
             retVal[key][ddlViz.id] = ddlViz.widget;
@@ -211,7 +211,6 @@ HipieDDLMixin.prototype.dashboards = function () {
     return retVal;
 };
 
-
 HipieDDLMixin.prototype.visualizations = function () {
     return this._marshaller._visualizationArray.map(function (ddlViz) {
         return ddlViz.newWidgetSurface || ddlViz.widget;
@@ -219,7 +218,7 @@ HipieDDLMixin.prototype.visualizations = function () {
 };
 
 //  ---
-var tpl =
+const tpl =
     "<!doctype html><html><head><meta charset='utf-8'>" +
     "<script src='http://viz.hpccsystems.com/v1.14.0-rc5/dist-amd/hpcc-viz.js'></script>" +
     "<script src='http://viz.hpccsystems.com/v1.14.0-rc5/dist-amd/hpcc-viz-common.js'></script>" +
@@ -239,15 +238,15 @@ var tpl =
 
 HipieDDLMixin.prototype.generateTestPage = function () {
     if (this._marshaller) {
-        var context = this;
-        var state = Persist.serialize(context, function (widget, publishItem) {
+        const context = this;
+        const state = Persist.serialize(context, function (widget, publishItem) {
             if (publishItem.id === "databomb" || publishItem.id === "ddlUrl") {
                 return true;
             }
             return false;
         });
-        var databomb = this._marshaller.createDatabomb();
-        var page = tpl
+        const databomb = this._marshaller.createDatabomb();
+        const page = tpl
             .replace("{VERSION}", context.version())
             .replace("{STATE}", state)
             .replace("{DDL}", context._marshaller._json.replace("WUID", "databomb"))
@@ -287,7 +286,7 @@ HipieDDLMixin.prototype.deserializeState = function (state) {
 };
 
 HipieDDLMixin.prototype.serializeRequests = function () {
-    var retVal = null;
+    let retVal = null;
     this._ddlPopupVisualizations.concat(this._ddlVisualizations).forEach(function (ddlViz) {
         if (ddlViz.hasSelection()) {
             if (!retVal) {

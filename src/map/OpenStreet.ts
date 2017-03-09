@@ -1,6 +1,7 @@
 ﻿import { Layer } from './Layer';
 import * as Utility from './Utility';
-import "css!./OpenStreet";
+
+import "./OpenStreet.css";
 
 export function OpenStreet() {
     Layer.call(this);
@@ -62,23 +63,23 @@ OpenStreet.prototype.layerZoomed = function (base) {
         this._prevTileProvider = this.tileProvider();
     }
     var context = this;
-        var protocol = window.location.protocol === "https:" ? "https:" : "http:";
+    var protocol = window.location.protocol === "https:" ? "https:" : "http:";
     var image = this._openStreet.selectAll("image").data(tiles, function (d) { return d[2] + "/" + d[0] + "/" + d[1]; });
     image.enter().append("image")
         .attr("xlink:href", function (d) {
             switch (context.tileProvider()) {
                 case "OpenStreetMap Hot":
-                        return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.openstreetmap.fr/hot/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.openstreetmap.fr/hot/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
                 case "MapQuest":
-                        return protocol + "//otile" + ["1", "2", "3", "4"][Math.random() * 4 | 0] + ".mqcdn.com/tiles/1.0.0/osm/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//otile" + ["1", "2", "3", "4"][Math.random() * 4 | 0] + ".mqcdn.com/tiles/1.0.0/osm/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
                 case "MapQuest Sat":
-                        return protocol + "//otile" + ["1", "2", "3", "4"][Math.random() * 4 | 0] + ".mqcdn.com/tiles/1.0.0/sat/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//otile" + ["1", "2", "3", "4"][Math.random() * 4 | 0] + ".mqcdn.com/tiles/1.0.0/sat/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
                 case "Stamen Watercolor":
-                        return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.stamen.com/watercolor/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.stamen.com/watercolor/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
                 case "OpenCycleMap":
-                        return protocol + "//" + ["a", "b"][Math.random() * 2 | 0] + ".tile.opencyclemap.org/cycle/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//" + ["a", "b"][Math.random() * 2 | 0] + ".tile.opencyclemap.org/cycle/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
                 default:
-                        return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+                    return protocol + "//" + ["a", "b", "c"][Math.random() * 3 | 0] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
             }
         })
         .attr("width", 1)

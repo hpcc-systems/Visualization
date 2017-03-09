@@ -1,6 +1,7 @@
 import { CommonSerial } from "./CommonSerial";
 import { INDChart } from "../api/INDChart";
-import "css!./Combo";
+
+import "./Combo.css";
 
 export function Combo() {
     CommonSerial.call(this);

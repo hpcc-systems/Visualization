@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 import { HTMLWidget } from "../common/HTMLWidget";
 import { AbsoluteSurface } from "../layout/AbsoluteSurface";
-import "css!./GMap";
+
+import "./GMap.css;
 
 function createOverlay(map, worldSurface, viewportSurface) {
     function Overlay(map, worldSurface, viewportSurface) {

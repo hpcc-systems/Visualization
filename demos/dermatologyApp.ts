@@ -1,19 +1,38 @@
-﻿"use strict";
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["d3", "src/common/Utility", "src/layout/Surface", "src/layout/Grid", "src/other/Persist", "src/other/PropertyEditor", "test/Factory"], factory);
-    }
-} (this, function (d3, Utility, Surface, Grid, Persist, PropertyEditor, testFactory) {
-    function Main() {
-        this.showSpinner();
+﻿import { map as d3Map } from "d3-collection";
+import { select as d3Select } from "d3-selection";
+import * as Utility from "../src/common/Utility";
+import { Surface } from "../src/layout/Surface";
+import * as Persist from "../src/other/Persist";
+import { PropertyEditor } from "../src/other/PropertyEditor";
+import { categories, deserializeFromURL, serializeToURL, widgets } from "../test/Factory";
+
+declare function doResize();
+
+export class Main {
+    urlParams;
+    urlParts;
+    _categories = categories;
+    _currWidget;
+    _currTest;
+    _propEditor;
+    _main;
+    _cloneSurface;
+    _toggleDesign;
+    _monitorHandle;
+    _prevShowClone;
+
+    constructor() {
         this.urlParams = Utility.urlParams();
         this.urlParts = window.location.search.split("?");
 
-        this._testFactory = testFactory;
-
         this.initGrid();
-        var context = this;
-        testFactory.deserializeFromURL(this.urlParts[1], function (widget, currTest) {
+    }
+
+    init() {
+        this.showSpinner();
+
+        const context = this;
+        deserializeFromURL(this.urlParts[1], function (widget, currTest) {
             if (widget) {
                 context._currTest = currTest;
                 context.showWidget(widget);
@@ -22,26 +41,25 @@
             }
         });
     }
-    Main.prototype.constructor = Main;
 
-    Main.prototype.initGrid = function () {
-        d3.select("#switch-design").property("checked", this.urlParams["designMode"] === "true");
+    initGrid() {
+        d3Select("#switch-design").property("checked", this.urlParams["designMode"] === "true");
 
-        this._propEditor = new PropertyEditor.PropertyEditor()
+        this._propEditor = new PropertyEditor()
             .target("properties")
             .show_settings(true);
         ;
 
         this._main = null;
 
-        this._cloneSurface = new Surface.Surface()
+        this._cloneSurface = new Surface()
             .target("clone")
             ;
     };
 
-    Main.prototype.initPropertiesSwitch = function (id) {
-        var context = this;
-        this._toggleDesign = d3.select(id)
+    initPropertiesSwitch(id) {
+        const context = this;
+        this._toggleDesign = d3Select(id)
             .on("click", function () {
                 context.showProperties();
             })
@@ -49,17 +67,17 @@
         this.showProperties();
     };
 
-    Main.prototype.showSpinner = function (show) {
+    showSpinner(_show?) {
     };
 
-    Main.prototype.loadWidget = function (widgetPath, widgetTest, params) {
+    loadWidget(widgetPath, widgetTest?, params?) {
         this.showSpinner();
         this._currTest = widgetPath + (widgetTest ? "." + widgetTest : "");
-        var context = this;
-        var func = widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory;
+        const context = this;
+        const func = widgetTest ? widgets[widgetPath][widgetTest].factory : (<any>d3Map(widgets[widgetPath]).values()[0]).factory;
         func(function (widget) {
             if (params) {
-                for (var key in params) {
+                for (const key in params) {
                     if (widget["__meta_" + key] !== undefined) {
                         if (widget["__meta_" + key].type === "array") {
                             widget[key](params[key].split(","));
@@ -73,19 +91,19 @@
         });
     };
 
-    Main.prototype.openWidget = function (json) {
-        var context = this;
+    openWidget(json) {
+        const context = this;
         Persist.create(json, function (widget) {
             context.showWidget(widget);
         });
     };
 
-    Main.prototype.saveWidget = function (includeState) {
-        var text = JSON.stringify(Persist.serializeToObject(this._currWidget, null, false, includeState), null, "  ");
+    saveWidget(includeState = false) {
+        const text = JSON.stringify(Persist.serializeToObject(this._currWidget, null, false, includeState), null, "  ");
         Utility.downloadBlob("JSON", text, this._currWidget.classID(), "persist");
     };
 
-    Main.prototype.showWidget = function (widget) {
+    showWidget(widget) {
         this.showSpinner();
         this._propEditor
             .widget(null)
@@ -96,26 +114,25 @@
             this._monitorHandle.remove();
         }
         this.updateUrl();
-        var context = this;
+        const context = this;
         this._monitorHandle = widget.monitor(function () {
             context.updateUrl();
             context.showClone();
         });
-        var context = this;
         if (this._main) {
             this._main.target(null);
         }
-        d3.select("#cellSurface")
+        d3Select("#cellSurface")
             .classed("supress", widget.surfaceShadow !== undefined)
             ;
-        d3.select("#surface")
+        d3Select("#surface")
             .classed("supress", widget.surfaceShadow !== undefined)
             ;
         if (widget.surfaceShadow) {
-            widget.surfaceBackgroundColor_default("white")
+            widget.surfaceBackgroundColor_default("white");
         }
         this._main = widget.target("surface")
-            .render(function (mainWidget) {
+            .render(function (_mainWidget) {
                 context._prevShowClone = false;
                 context.showClone();
                 context.showSpinner(false);
@@ -130,16 +147,16 @@
             ;
     };
 
-    Main.prototype.cloneWidget = function (func) {
+    cloneWidget(func) {
         Persist.clone(this._currWidget, func);
     };
 
-    Main.prototype.propertiesVisible = function () {
+    propertiesVisible() {
         return false;
     };
 
-    Main.prototype.showProperties = function () {
-        var show = this.propertiesVisible();
+    showProperties() {
+        const show = this.propertiesVisible();
         if (show) {
             this._propEditor
                 .resize()
@@ -157,16 +174,16 @@
         }
     };
 
-    Main.prototype.cloneVisible = function () {
+    cloneVisible() {
         return false;
     };
 
-    Main.prototype.showClone = function () {
-        var show = this.cloneVisible();
+    showClone() {
+        const show = this.cloneVisible();
         if (this._prevShowClone !== show) {
             doResize();
             if (show) {
-                var context = this;
+                const context = this;
                 this.cloneWidget(function (widget) {
                     context._cloneSurface
                         .surfacePadding(0)
@@ -185,31 +202,31 @@
         }
     };
 
-    Main.prototype.openTheme = function (json) {
-        var context = this;
+    openTheme(json) {
+        const context = this;
         Persist.applyTheme(this._currWidget, json, function () {
-            context._currWidget.render(function (w) {
+            context._currWidget.render(function () {
                 context.showSpinner(false);
             });
         });
     };
 
-    Main.prototype.saveTheme = function () {
-        var text = JSON.stringify(Persist.serializeThemeToObject(this._currWidget), null, "  ");
+    saveTheme() {
+        const text = JSON.stringify(Persist.serializeThemeToObject(this._currWidget), null, "  ");
         Utility.downloadBlob("JSON", text, null, "theme");
     };
 
-    Main.prototype.resetTheme = function () {
-        var context = this;
+    resetTheme() {
+        const context = this;
         Persist.removeTheme(this._currWidget, function () {
-            context._currWidget.render(function (w) { context.showSpinner(false); });
+            context._currWidget.render(function () { context.showSpinner(false); });
         });
     };
 
-    Main.prototype.updateUrl = function () {
-        var params = "";
+    updateUrl() {
+        let params = "";
         if (this._currWidget) {
-            params = testFactory.serializeToURL(this._currTest, this._currWidget);
+            params = serializeToURL(this._currTest, this._currWidget);
         }
         try {
             window.history.pushState("", "", this.urlParts[0] + (params ? "?" + params : ""));
@@ -218,7 +235,7 @@
         }
     };
 
-    Main.prototype.doResize = function () {
+    doResize() {
         if (this._main) {
             this._main
                 .resize()
@@ -234,6 +251,4 @@
             .lazyRender()
             ;
     };
-
-    return Main;
-}));
+}

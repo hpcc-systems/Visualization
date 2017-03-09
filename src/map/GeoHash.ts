@@ -3,7 +3,8 @@ import { Layer } from './Layer';
 import * as Utility from './Utility';
 import * as Palette from '../common/Palette';
 import * as CommonUtility from '../common/Utility';
-import "css!./GeoHash";
+
+import "./GeoHash.css";
 
 export function GeoHash() {
     Layer.call(this);

@@ -1,6 +1,7 @@
 import { CommonSerial } from "./CommonSerial";
 import { INDChart } from "../api/INDChart";
-import "css!./Area";
+
+import "./Area.css";
 
 export function Area() {
     CommonSerial.call(this);

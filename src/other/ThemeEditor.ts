@@ -1,6 +1,7 @@
 import { HTMLWidget } from "../common/HTMLWidget";
 import * as Persist from "./Persist";
-import "css!./ThemeEditor";
+
+import "./ThemeEditor.css";
 
 export function ThemeEditor() {
     HTMLWidget.call(this);

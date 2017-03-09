@@ -1,3 +1,6 @@
+declare const AmCharts: any;
+declare const simpleheat: any;
+declare const require: any;
 (function (root) {
     root.hpccsystems = root.hpccsystems || {};
     root.hpccsystems.cache = root.hpccsystems.cache || {};
@@ -201,7 +204,7 @@
                 context: context,
                 paths: root.hpccsystems.cache[srcUrl].rawgitPaths
             }));
-        }, function (err) {
+        }, function (_err) {
             callback(root.hpccsystems.require.config({
                 waitSeconds: 30,
                 baseUrl: srcUrl,
@@ -277,7 +280,7 @@
                 }
             }
         }
-    } ());
+    }());
 
     if (!root.hpccsystems.redirect) {
         root.hpccsystems.redirect = (function () {
@@ -362,6 +365,6 @@
                     }
                 }
             };
-        } ());
+        }());
     }
-} (this));
+}(this));

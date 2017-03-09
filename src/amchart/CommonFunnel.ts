@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import * as AmCharts from "amcharts-funnel";
 import { HTMLWidget } from "../common/HTMLWidget";
 import { ITooltip } from "../api/ITooltip";

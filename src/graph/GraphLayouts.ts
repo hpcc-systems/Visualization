@@ -1,22 +1,22 @@
-import * as d3 from 'd3';
-import * as dagre from 'dagre';
+import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation, } from "d3-force";
+import * as dagre from "dagre";
 
 export function Circle(graphData?, width?, height?, radius?) {
-    var context = this;
+    const context = this;
     this.pos = {};
 
     //  Initial Positions  ---
-    var padding = 0;
+    const padding = 0;
     radius = radius || (width < height ? width - padding : height - padding) / 2;
-    var order = graphData.nodeCount();
-    var currStep = -Math.PI / 2;
-    var step = 2 * Math.PI / order;
+    const order = graphData.nodeCount();
+    let currStep = -Math.PI / 2;
+    const step = 2 * Math.PI / order;
     graphData.eachNode(function (u, value) {
-        var size = value.getBBox(true);
-        var maxSize = Math.max(size.width, size.height);
+        const size = value.getBBox(true);
+        const maxSize = Math.max(size.width, size.height);
         context.pos[u] = {
-            x: value.fixed ? value.x : Math.cos(currStep) * (radius - maxSize),
-            y: value.fixed ? value.y : Math.sin(currStep) * (radius - maxSize),
+            x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * (radius - maxSize),
+            y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * (radius - maxSize),
             width: size.width,
             height: size.height
         };
@@ -26,12 +26,12 @@ export function Circle(graphData?, width?, height?, radius?) {
 Circle.prototype.nodePos = function (u) {
     return this.pos[u];
 };
-Circle.prototype.edgePoints = function (e) {
+Circle.prototype.edgePoints = function (_e) {
     return [];
 };
 
-export function None(graphData, width, height, radius) {
-    var context = this;
+export function None(graphData, _width, _height, _radius) {
+    const context = this;
     this.pos = {};
 
     graphData.eachNode(function (u, value) {
@@ -46,57 +46,78 @@ export function None(graphData, width, height, radius) {
 None.prototype.nodePos = function (u) {
     return this.pos[u];
 };
-None.prototype.edgePoints = function (e) {
+None.prototype.edgePoints = function (_e) {
     return [];
 };
 
 export function ForceDirected(graphData, width, height, options) {
     options = options || {};
-    var context = this;
+    const context = this;
     this.pos = {};
 
     this.vertices = [];
     this.vertexMap = {};
     graphData.eachNode(function (u) {
-        var value = graphData.node(u);
-        var size = value.getBBox(true);
-        var newItem = {
+        const vertex = graphData.node(u);
+        const size = vertex.getBBox(true);
+        const newItem = {
             id: u,
-            x: value.pos().x,
-            y: value.pos().y,
+            x: vertex.pos().x,
+            y: vertex.pos().y,
             width: size.width,
             height: size.height,
-            value: value
+            value: vertex
         };
         context.vertices.push(newItem);
         context.vertexMap[u] = newItem;
     });
     this.edges = [];
-    graphData.eachEdge(function (e, s, t) {
+    graphData.eachEdge(function (_e, s, t) {
         context.edges.push({
-            source: context.vertexMap[s],
-            target: context.vertexMap[t]
+            source: s,
+            target: t
         });
     });
-    this.force = d3.layout.force()
-        .linkDistance(options.linkDistance)
-        .linkStrength(options.linkStrength)
-        .friction(options.friction)
-        .charge(function (d) {
-            var cs = d.value.getBBox();
+    const forceLink = d3ForceLink()
+        .id(function (d: any) {
+            return d.id;
+        })
+        .distance(options.linkDistance)
+        .strength(options.linkStrength)
+        //        .friction(options.friction)
+        ;
+    const forceManyBody = d3ForceManyBody()
+        .strength(function (d: any) {
+            const cs = d.value.getBBox();
             return options.charge * Math.max(cs.width, cs.height);
         })
-        .chargeDistance(options.chargeDistance)
-        .theta(options.theta)
-        .gravity(options.gravity)
+        ;
+    this.force = d3ForceSimulation()
+        .force("link", forceLink)
+        .force("charge", forceManyBody)
+        .force("center", d3ForceCenter(width / 2, height / 2))
+        // .linkDistance(options.linkDistance)
+        // .linkStrength(options.linkStrength)
+        .velocityDecay(options.friction)
+        // .charge(function (d) {
+        //    const cs = d.value.getBBox();
+        //    return options.charge * Math.max(cs.width, cs.height);
+        // })
+        // .chargeDistance(options.chargeDistance)
+        // .theta(options.theta)
+        // .gravity(options.gravity)
         .nodes(this.vertices)
+        ;
+    forceLink
         .links(this.edges)
         ;
+
+
     if (options.oneShot) {
-        this.force.start();
-        var total = graphData.nodeCount();
+        this.force.restart();
+        let total = graphData.nodeCount();
         total = Math.min(total * total, 500);
-        for (var i = 0; i < total; ++i) {
+        for (let i = 0; i < total; ++i) {
             this.force.tick();
         }
         this.force.stop();
@@ -105,26 +126,26 @@ export function ForceDirected(graphData, width, height, options) {
 ForceDirected.prototype.nodePos = function (u) {
     return this.vertexMap[u];
 };
-ForceDirected.prototype.edgePoints = function (e) {
+ForceDirected.prototype.edgePoints = function (_e) {
     return [];
 };
 
-export function Hierarchy(graphData, width, height, options) {
-    var digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
+export function Hierarchy(graphData, _width, _height, options) {
+    const digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
         .setGraph(options)
         .setDefaultNodeLabel(function () { return {}; })
         .setDefaultEdgeLabel(function () { return {}; })
         ;
     graphData.eachNode(function (u) {
-        var value = graphData.node(u);
-        var clientSize = value.getBBox();
+        const value = graphData.node(u);
+        const clientSize = value.getBBox();
         digraph.setNode(u, {
             width: clientSize.width,
             height: clientSize.height
         });
     });
     graphData.eachEdge(function (e, s, t) {
-        var value = graphData.edge(e);
+        const value = graphData.edge(e);
         digraph.setEdge(s, t, {
             weight: value.weight()
         }, value._id);
@@ -133,16 +154,16 @@ export function Hierarchy(graphData, width, height, options) {
         digraph.setParent(u, graphData.parent(u));
     });
     this.dagreLayout = dagre.layout(digraph);
-    var deltaX = -digraph.graph().width / 2;
-    var deltaY = -digraph.graph().height / 2;
+    const deltaX = -digraph.graph().width / 2;
+    const deltaY = -digraph.graph().height / 2;
     digraph.nodes().forEach(function (u) {
-        var value = digraph.node(u);
+        const value = digraph.node(u);
         value.x += deltaX;
         value.y += deltaY;
     });
     digraph.edges().forEach(function (e) {
-        var value = digraph.edge(e);
-        for (var i = 0; i < value.points.length; ++i) {
+        const value = digraph.edge(e);
+        for (let i = 0; i < value.points.length; ++i) {
             value.points[i].x += deltaX;
             value.points[i].y += deltaY;
         }

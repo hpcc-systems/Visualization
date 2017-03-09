@@ -1,5 +1,5 @@
 import { SVGWidget } from "../common/SVGWidget";
-import "css!./MorphText";
+import "./MorphText";
 
 export function MorphText() {
     SVGWidget.call(this);

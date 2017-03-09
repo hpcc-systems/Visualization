@@ -1,17 +1,140 @@
-import * as d3 from "d3";
-import * as _D3Bullet from "d3-bullet";
+import { bullet as d3Bullet } from "d3-bullet";
+import { select as d3Select } from "d3-selection";
 import { HTMLWidget } from "../common/HTMLWidget";
 import * as Utility from "../common/Utility";
-import "css!./Bullet";
 
-const D3Bullet = _D3Bullet || d3.bullet || (window as any).d3.bullet;
+import "./Bullet.css";
 
-export function Bullet(target) {
-    HTMLWidget.call(this);
-    Utility.SimpleSelectionMixin.call(this, true);
+export class Bullet extends HTMLWidget {
+    constructor() {
+        super();
+        Utility.SimpleSelectionMixin.call(this, true);
+    }
+
+    bulletData() {
+        const columns = this.columns();
+        return this.data().map(function (row) {
+            return {
+                title: valueOf(row, this.titleColumn()),
+                subtitle: valueOf(row, this.subtitleColumn()),
+                ranges: valueOf(row, this.rangesColumn()),
+                measures: valueOf(row, this.measuresColumn()),
+                markers: valueOf(row, this.markersColumn()),
+                origRow: row
+            };
+        }, this);
+
+        function valueOf(row, column) {
+            const colIdx = columns.indexOf(column);
+            if (colIdx >= 0) {
+                if (row[colIdx] instanceof Array) {
+                    return row[colIdx];
+                }
+                return [row[colIdx]];
+            }
+            return [];
+        }
+    };
+
+    enter(domNode, element) {
+        HTMLWidget.prototype.enter.apply(this, arguments);
+        d3Select(domNode.parentNode).style("overflow", "auto");
+        this._selection.widgetElement(element);
+    };
+
+    update(_domNode, element) {
+        HTMLWidget.prototype.update.apply(this, arguments);
+        const context = this;
+
+        const margin = { top: 8, right: 16, bottom: 20, left: 16 };
+        const width = this.width() - margin.left - margin.right;
+        const height = 50 - margin.top - margin.bottom;
+
+        const svg = element.selectAll("svg").data(this.bulletData());
+        svg.enter().append("svg")
+            .attr("class", "bullet")
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                context.click(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
+            })
+            .on("dblclick", function (d) {
+                context.dblclick(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
+            })
+            .each(function () {
+                const element2 = d3Select(this);
+                const bulletBar = element2.append("g")
+                    .attr("class", "bulletBar")
+                    ;
+                const bulletTitle = bulletBar.append("g")
+                    .attr("class", "bulletTitle")
+                    ;
+                bulletTitle.append("text")
+                    .attr("class", "title")
+                    ;
+                bulletTitle.append("text")
+                    .attr("class", "subtitle")
+                    .attr("dy", "1em")
+                    ;
+            })
+            ;
+
+        //  Title ---
+        const title = svg.select(".bulletTitle")
+            .style("text-anchor", "end")
+            .attr("transform", "translate(-6," + height / 2 + ")")
+            ;
+        title.select(".title")
+            .text(function (d) { return d.title; })
+            ;
+        title.select(".subtitle")
+            .text(function (d) { return d.subtitle; })
+            ;
+        let titleWidth = 0;
+        title.each(function () {
+            const bbox = this.getBBox();
+            if (bbox.width > titleWidth) {
+                titleWidth = bbox.width;
+            }
+        });
+
+        //  Bullet Chart ---
+        const chart = new d3Bullet()
+            .width(width - titleWidth)
+            .height(height)
+            ;
+        svg
+            .attr("width", width)
+            .attr("height", height + margin.top + margin.bottom)
+            ;
+        svg.select(".bulletBar")
+            .attr("transform", "translate(" + (titleWidth + margin.left) + "," + margin.top + ")")
+            .call(chart)
+            ;
+        svg.exit().remove();
+    };
+
+    exit(_domNode, _element) {
+        HTMLWidget.prototype.exit.apply(this, arguments);
+    };
+
+    titleColumn: (_?: string) => string | Bullet;
+    subtitleColumn: (_?: string) => string | Bullet;
+    rangesColumn: (_?: string) => string | Bullet;
+    measuresColumn: (_?: string) => string | Bullet;
+    markersColumn: (_?: string) => string | Bullet;
+
+    //  Events ---
+    click(row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    };
+
+    dblclick(row, column, selected) {
+        console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    };
+
+    //  SimpleSelectionMixin
+    _selection;
 }
-Bullet.prototype = Object.create(HTMLWidget.prototype);
-Bullet.prototype.constructor = Bullet;
 Bullet.prototype._class += " chart_Bullet";
 
 Bullet.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
@@ -19,118 +142,3 @@ Bullet.prototype.publish("subtitleColumn", null, "set", "Subtitle Column", funct
 Bullet.prototype.publish("rangesColumn", null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true });
 Bullet.prototype.publish("measuresColumn", null, "set", "Measures Column", function () { return this.columns(); }, { optional: true });
 Bullet.prototype.publish("markersColumn", null, "set", "Markers Column", function () { return this.columns(); }, { optional: true });
-
-Bullet.prototype.bulletData = function () {
-    var columns = this.columns();
-    return this.data().map(function (row) {
-        return {
-            title: valueOf(row, this.titleColumn()),
-            subtitle: valueOf(row, this.subtitleColumn()),
-            ranges: valueOf(row, this.rangesColumn()),
-            measures: valueOf(row, this.measuresColumn()),
-            markers: valueOf(row, this.markersColumn()),
-            origRow: row
-        };
-    }, this);
-
-    function valueOf(row, column) {
-        var colIdx = columns.indexOf(column);
-        if (colIdx >= 0) {
-            if (row[colIdx] instanceof Array) {
-                return row[colIdx];
-            }
-            return [row[colIdx]];
-        }
-        return [];
-    }
-};
-
-Bullet.prototype.enter = function (domNode, element) {
-    HTMLWidget.prototype.enter.apply(this, arguments);
-    d3.select(domNode.parentNode).style("overflow", "auto");
-    this._selection.widgetElement(element);
-};
-
-Bullet.prototype.update = function (domNode, element) {
-    HTMLWidget.prototype.update.apply(this, arguments);
-    var context = this;
-
-    var margin = { top: 8, right: 16, bottom: 20, left: 16 },
-        width = this.width() - margin.left - margin.right,
-        height = 50 - margin.top - margin.bottom;
-
-    var svg = element.selectAll("svg").data(this.bulletData());
-    svg.enter().append("svg")
-        .attr("class", "bullet")
-        .call(this._selection.enter.bind(this._selection))
-        .on("click", function (d) {
-            context.click(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
-        })
-        .on("dblclick", function (d) {
-            context.dblclick(context.rowToObj(d.origRow), context.titleColumn(), context._selection.selected(this));
-        })
-        .each(function (d) {
-            var element = d3.select(this);
-            var bulletBar = element.append("g")
-                .attr("class", "bulletBar")
-                ;
-            var bulletTitle = bulletBar.append("g")
-                .attr("class", "bulletTitle")
-                ;
-            bulletTitle.append("text")
-                .attr("class", "title")
-                ;
-            bulletTitle.append("text")
-                .attr("class", "subtitle")
-                .attr("dy", "1em")
-                ;
-        })
-        ;
-
-    //  Title ---
-    var title = svg.select(".bulletTitle")
-        .style("text-anchor", "end")
-        .attr("transform", "translate(-6," + height / 2 + ")")
-        ;
-    title.select(".title")
-        .text(function (d) { return d.title; })
-        ;
-    title.select(".subtitle")
-        .text(function (d) { return d.subtitle; })
-        ;
-    var titleWidth = 0;
-    title.each(function () {
-        var bbox = this.getBBox();
-        if (bbox.width > titleWidth) {
-            titleWidth = bbox.width;
-        }
-    });
-
-    //  Bullet Chart ---
-    var chart = new D3Bullet()
-        .width(width - titleWidth)
-        .height(height)
-        ;
-    svg
-        .attr("width", width)
-        .attr("height", height + margin.top + margin.bottom)
-        ;
-    svg.select(".bulletBar")
-        .attr("transform", "translate(" + (titleWidth + margin.left) + "," + margin.top + ")")
-        .call(chart)
-        ;
-    svg.exit().remove();
-};
-
-Bullet.prototype.exit = function (domNode, element) {
-    HTMLWidget.prototype.exit.apply(this, arguments);
-};
-
-//  Events ---
-Bullet.prototype.click = function (row, column, selected) {
-    console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
-};
-
-Bullet.prototype.dblclick = function (row, column, selected) {
-    console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
-};

@@ -3,7 +3,8 @@ import * as D3Cloud from 'd3-cloud';
 import { SVGWidget } from "../common/SVGWidget";
 import { I2DChart } from "../api/I2DChart";
 import { ITooltip } from "../api/ITooltip";
-import "css!./WordCloud";
+
+import "./WordCloud.css";
 
 export function WordCloud() {
     SVGWidget.call(this);

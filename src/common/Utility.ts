@@ -1,19 +1,20 @@
-import * as d3 from 'd3';
+import { select as d3Select } from "d3-selection";
+import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
+import { timeFormat as d3TimeFormat } from "d3-time-format";
 
 function _naturalSort(a, b, order, idx, sortCaseSensitive) {
     var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
         sre = /(^[ ]*|[ ]*$)/g,
         dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
-        hre = /^0x[0-9a-f]+$/i,
         ore = /^0/,
         i = function (s) { return !sortCaseSensitive && ("" + s).toLowerCase() || "" + s; },
-        // convert all to strings strip whitespace
+    // convert all to strings strip whitespace
         x = i(idx ? a[idx] : a).replace(sre, "") || "",
         y = i(idx ? b[idx] : b).replace(sre, "") || "",
-        // chunk/tokenize
+    // chunk/tokenize
         xN = x.replace(re, "\0$1\0").replace(/\0$/, "").replace(/^\0/, "").split("\0"),
         yN = y.replace(re, "\0$1\0").replace(/\0$/, "").replace(/^\0/, "").split("\0"),
-        // numeric or date detection
+    // numeric or date detection
         xD = (xN.length !== 1 && x.match(dre) && Date.parse(x)),
         yD = xD && y.match(dre) && Date.parse(y) || null,
         oFxNcL, oFyNcL;
@@ -21,7 +22,7 @@ function _naturalSort(a, b, order, idx, sortCaseSensitive) {
     if (yD) {
         if (xD < yD) { return order === "ascending" ? -1 : 1; }
         else if (xD > yD) { return order === "ascending" ? 1 : -1; }
-    }
+        }
     // natural sorting through split numeric strings and default strings
     for (var cLoc = 0, numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
         // find floats not starting with "0", string or 0 if not defined (Clint Priest)
@@ -41,7 +42,7 @@ function _naturalSort(a, b, order, idx, sortCaseSensitive) {
 }
 
 //  Selection Bag(s)  ---
-function SelectionBag() {
+export function SelectionBag() {
     this.items = {};
 }
 
@@ -53,7 +54,7 @@ SelectionBag.prototype.clear = function () {
 };
 
 SelectionBag.prototype.isEmpty = function () {
-    for (var key in this.items) { // jshint ignore:line
+    for (var _key in this.items) { // jshint ignore:line
         return false;
     }
     return true;
@@ -83,7 +84,7 @@ SelectionBag.prototype.get = function () {
 
 SelectionBag.prototype.set = function (itemArray) {
     this.clear();
-    itemArray.forEach(function (item, idx) {
+    itemArray.forEach(function (item) {
         this.append(item);
     }, this);
 };
@@ -120,16 +121,16 @@ SimpleSelection.prototype.enter = function (elements) {
     elements
         .each(function (d) {
             var selected = context._initialSelection ? context._initialSelection.indexOf(JSON.stringify(d)) >= 0 : false;
-            d3.select(this)
+            d3Select(this)
                 .classed("selected", selected)
                 .classed("deselected", !selected)
                 ;
         })
-        .on("click.SimpleSelection", function (d, idx) {
+        .on("click.SimpleSelection", function () {
             if (!context._skipBringToTop) {
                 this.parentNode.appendChild(this);
             }
-            var element = d3.select(this);
+            var element = d3Select(this);
             var wasSelected = element.classed("selected");
             context._widgetElement.selectAll(".selected")
                 .classed("selected", false)
@@ -142,20 +143,20 @@ SimpleSelection.prototype.enter = function (elements) {
                     ;
             }
         })
-        .on("mouseover.SimpleSelection", function (d, idx) {
-            d3.select(this)
+        .on("mouseover.SimpleSelection", function () {
+            d3Select(this)
                 .classed("over", true)
                 ;
         })
-        .on("mouseout.SimpleSelection", function (d, idx) {
-            d3.select(this)
+        .on("mouseout.SimpleSelection", function () {
+            d3Select(this)
                 .classed("over", null)
                 ;
         })
         ;
 };
 SimpleSelection.prototype.selected = function (domNode) {
-    return d3.select(domNode).classed("selected");
+    return d3Select(domNode).classed("selected");
 };
 SimpleSelection.prototype.selection = function (_) {
     if (!arguments.length) {
@@ -171,7 +172,7 @@ SimpleSelection.prototype.selection = function (_) {
         this._widgetElement.selectAll(".selected,.deselected")
             .each(function (d) {
                 var selected = _.indexOf(JSON.stringify(d)) >= 0;
-                d3.select(this)
+                d3Select(this)
                     .classed("selected", selected)
                     .classed("deselected", !selected)
                     ;
@@ -269,7 +270,7 @@ export function multiSort(data, sortBy) {
                 var lVal = l[sortBy[i].idx];
                 var rVal = r[sortBy[i].idx];
                 if (lVal !== rVal) {
-                    return sortBy[i].reverse ? d3.descending(lVal, rVal) : d3.ascending(lVal, rVal);
+                    return sortBy[i].reverse ? d3Descending(lVal, rVal) : d3Ascending(lVal, rVal);
                 }
             }
             return 0;
@@ -284,7 +285,7 @@ export function urlParams() {
     var def = window.location.search.split("?")[1];
     var retVal = {};
     if (def) {
-        def.split("&").forEach(function (param, idx) {
+        def.split("&").forEach(function (param) {
             var paramParts = param.split("=");
             switch (paramParts.length) {
                 case 1:
@@ -294,7 +295,7 @@ export function urlParams() {
                     retVal[decodeURIComponent(paramParts[0])] = decodeURIComponent(paramParts[1]);
                     break;
                 default:
-                    throw "Invalid URL Param:  " + param;
+                    throw new Error("Invalid URL Param:  " + param);
             }
         });
     }
@@ -314,18 +315,21 @@ export function endsWith(str, searchStr, pos) {
 export function d3ArrayAdapter(array) {
     return {
         ownerDocument: {
-            createElement: function (tagName) {
+            // tslint:disable-next-line:object-literal-shorthand
+            createElement: function (_tagName) {
                 return {
                     get __data__() { return this.row; },
                     set __data__(_) { this.row = array[this.index] = _; }
                 };
             },
-            createElementNS: function (ns, tagName) {
+            // tslint:disable-next-line:object-literal-shorthand
+            createElementNS: function (_ns, tagName) {
                 return this.createElement(tagName);
             }
         },
+        // tslint:disable-next-line:object-literal-shorthand
         querySelectorAll: function (selectors) {
-            if (selectors) throw "unsupported";
+            if (selectors) throw new Error("unsupported");
             var context = this;
             return array.map(function (row, idx) {
                 return {
@@ -336,12 +340,14 @@ export function d3ArrayAdapter(array) {
                 };
             });
         },
+        // tslint:disable-next-line:object-literal-shorthand
         appendChild: function (node) {
             node.parentNode = this;
             node.index = array.length;
             array.push(null);
             return node;
         },
+        // tslint:disable-next-line:object-literal-shorthand
         insertBefore: function (node, referenceNode) {
             var idx = array.indexOf(node.__data__);
             var refIdx = array.indexOf(referenceNode.__data__);
@@ -352,6 +358,7 @@ export function d3ArrayAdapter(array) {
             }
             return node;
         },
+        // tslint:disable-next-line:object-literal-shorthand
         removeChild: function (node) {
             array.splice(array.indexOf(node.__data__), 1);
             return node;
@@ -361,7 +368,7 @@ export function d3ArrayAdapter(array) {
 
 export function downloadBlob(format, blob, id?, ext?) {
     var currentdate = new Date();
-    var timeFormat = d3.time.format("%Y-%m-%dT%H_%M_%S");
+    var timeFormat = d3TimeFormat("%Y-%m-%dT%H_%M_%S");
     var now = timeFormat(currentdate);
     id = id || "data" + "_" + now + "." + format.toLowerCase();
 
@@ -379,13 +386,13 @@ export function downloadBlob(format, blob, id?, ext?) {
             mimeType = "text/csv";
     }
 
-    var a = document.createElement('a');
+    var a = document.createElement("a");
     if (navigator.msSaveBlob) { // IE10+
         a = null;
         return navigator.msSaveBlob(new Blob([blob], { type: mimeType }), filename);
-    } else if ('download' in a) { // html 5
-        a.href = 'data:' + mimeType + ',' + encodeURIComponent(blob);
-        a.setAttribute('download', filename);
+    } else if ("download" in a) { // html 5
+        a.href = "data:" + mimeType + "," + encodeURIComponent(blob);
+        a.setAttribute("download", filename);
         document.body.appendChild(a);
         setTimeout(function () {
             a.click();
@@ -394,9 +401,9 @@ export function downloadBlob(format, blob, id?, ext?) {
         return true;
     } else { // old chrome and FF:
         a = null;
-        var frame = document.createElement('iframe');
+        var frame = document.createElement("iframe");
         document.body.appendChild(frame);
-        frame.src = 'data:' + mimeType + ',' + encodeURIComponent(blob);
+        frame.src = "data:" + mimeType + "," + encodeURIComponent(blob);
 
         setTimeout(function () {
             document.body.removeChild(frame);
@@ -407,8 +414,7 @@ export function downloadBlob(format, blob, id?, ext?) {
 export function widgetPath(classID) {
     return "../" + classID.split("_").join("/");
 }
-export function parseClassID(classID, prefix) {
-    prefix = prefix || "..";
+export function parseClassID(classID, prefix = "..") {
     var parts = classID.split(".");
     var classParts = parts[0].split("_");
     return {
@@ -417,10 +423,10 @@ export function parseClassID(classID, prefix) {
         memberWidgetID: parts.length > 1 ? parts[1] : null
     };
 }
+declare var require: any;
 export function requireWidget(classID) {
-    var context = this;
-    return new Promise(function (resolve, reject) {
-        var parsedClassID = context.parseClassID(classID);
+    return new Promise(function (resolve, _reject) {
+        const parsedClassID = parseClassID(classID);
         require([parsedClassID.path], function (Widget) {
             if (Widget && Widget[parsedClassID.widgetID]) {
                 Widget = Widget[parsedClassID.widgetID];
@@ -446,29 +452,31 @@ export function checksum(s) {
     for (var i = 0, l = s.length; i < l; ++i) {
         chk += (s.charCodeAt(i) * (i + 1));
     }
+    // tslint:disable-next-line:no-bitwise
     return (chk & 0xffffffff).toString(16);
 }
 export function getTime() {
     return (now && now.call(perf)) || (new Date().getTime());
 }
-export function mixin(dest, sources) {
+export function mixin(dest, _sources) {
     dest = dest || {};
     for (var i = 1, l = arguments.length; i < l; i++) {
         _mixin(dest, arguments[i]);
     }
     return dest;
-
-    function _mixin(dest, source) {
-        var s, empty = {};
-        for (var key in source) {
-            s = source[key];
-            if (!(key in dest) || (dest[key] !== s && (!(key in empty) || empty[key] !== s))) {
-                dest[key] = s;
-            }
-        }
-        return dest;
-    }
 }
+
+function _mixin(dest, source) {
+    var s, empty = {};
+    for (var key in source) {
+        s = source[key];
+        if (!(key in dest) || (dest[key] !== s && (!(key in empty) || empty[key] !== s))) {
+            dest[key] = s;
+        }
+    }
+    return dest;
+}
+
 export function exists(prop, scope) {
     if (!prop || !scope) {
         return false;
@@ -484,10 +492,11 @@ export function exists(prop, scope) {
     }
     return true;
 }
+
 export function logStringify(obj) {
     var cache = [];
-    return JSON.stringify(obj, function (key, value) {
-        if (typeof value === 'object' && value !== null) {
+    return JSON.stringify(obj, function (_key, value) {
+        if (typeof value === "object" && value !== null) {
             if (cache.indexOf(value) !== -1) {
                 return;
             }
@@ -496,4 +505,20 @@ export function logStringify(obj) {
         }
         return value;
     });
+}
+
+export function debounce(func, threshold = 100, execAsap = false) {
+    return function debounced(..._dummyArgs) {
+        var obj = this || {}, args = arguments;
+        function delayed() {
+            if (!execAsap)
+                func.apply(obj, args);
+            obj.__hpcc_debounce_timeout = null;
+        }
+        if (obj.__hpcc_debounce_timeout)
+            clearTimeout(obj.__hpcc_debounce_timeout);
+        else if (execAsap)
+            func.apply(obj, args);
+        obj.__hpcc_debounce_timeout = setTimeout(delayed, threshold);
+    };
 }

@@ -1,287 +1,188 @@
 "use strict";
-/// <binding />
+
 const gulp = require('gulp');
-const webserver = require('gulp-webserver');
-
-gulp.task('serve', function () {
-    gulp.src('.')
-        .pipe(webserver({
-            host: "0.0.0.0",
-            livereload: false,
-            directoryListing: true,
-            open: false
-        }));
-});
-
-//  ===========================================================================
-const ts = require('gulp-typescript');
-const sourcemaps = require('gulp-sourcemaps');
-
-var tsDevProject = ts.createProject('tsconfig.json');
-
-var tsProject = ts.createProject({
-    "module": "amd",
-    "target": "es6",
-    "outDir": "out",
-    "lib": [
-        "es6"
-    ]
-});
-
-gulp.task('dev-css', function () {
-    return gulp.src('./src/**/*.css')
-        .pipe(gulp.dest('./out/'));
-});
-
-gulp.task('dev-json', function () {
-    return gulp.src('./src/**/*.json')
-        .pipe(gulp.dest('./out/'));
-});
-
-gulp.task('dev-tsc', function () {
-    return gulp.src('src/**/*.?s')
-        .pipe(sourcemaps.init())
-        .pipe(tsDevProject())
-        .pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: "../src" }))
-        .pipe(gulp.dest('./out'))
-        ;
-});
-
-gulp.task('watch', ['dev-css', 'dev-tsc'], function () {
-    gulp.watch('src/**/*.css', ['dev-css']);
-    gulp.watch('src/**/*.ts', ['dev-tsc']);
-});
-
-gulp.task("build-tsc", ['dev-css', 'dev-json', 'dev-tsc']);
-
-
-//  ================================================================
-
-const fs = require('fs')
-const gutil = require('gulp-util')
-const path = require('path')
-const _ = require('lodash')
-const async = require('async')
-const rjs = require('requirejs')
-const minifyCss = require('gulp-minify-css')
-const concatCss = require('gulp-concat-css')
-const sort = require('gulp-natural-sort')
-const dir = require('node-dir')
-const del = require('del');
-const git = require('gulp-git');
-const bump = require('gulp-bump');
 const argv = require('yargs').argv;
+const shell = require('gulp-shell')
+const runSequence = require('run-sequence');
+const rimraf = require('rimraf'); // rimraf directly
+const cpx = require('cpx');
+
+const rollup = require('rollup');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require("rollup-plugin-commonjs");
+const css = require('rollup-plugin-css-only');
+const alias = require('rollup-plugin-alias');
+const uglify = require('rollup-plugin-uglify');
+const sourcemaps = require('rollup-plugin-sourcemaps');
+const watch = require('gulp-watch');
+
+const bump = require('gulp-bump');
 const filter = require('gulp-filter');
-const tag_version = require('gulp-tag-version');
-const jshint = require('gulp-jshint');
-const jscs = require('gulp-jscs');
-const mochaPhantomJS = require('gulp-mocha-phantomjs');
+const git = require('gulp-git');
 const replace = require('gulp-replace');
+const tag_version = require('gulp-tag-version');
 
-// Consts
-const cfg = {
-    src: 'out',
-    dist: 'dist',
-    distamd: 'dist-amd',
-    test: 'test',
-    prefix: "hpcc-viz"
-};
+const dependencies = require("./package.json").dependencies;
 
-const libs = ["d3", "c3", "colorbrewer", "dagre", "topojson", "d3-cloud", "font-awesome", "amcharts", "es6-promise", "amcharts-funnel", "amcharts-gauge", "amcharts-pie", "amcharts-radar", "amcharts-serial", "amcharts-xy", "amcharts-gantt", "amcharts-plugins.responsive", "simpleheat", "d3-hexbin", "d3-tip", "d3-bullet", "d3-sankey", "autoComplete", "handsontable", "grid-list", "orb", "orb-react"];
-const bundles = ["common", "layout", "api", "other", "chart", "form", "c3chart", "google", "amchart", "tree", "graph", "map", "handson", "react", "composite", "marshaller"];  //  Order is important ---
-const lintFilter = filter(["**", "!config.js", "!map/us-counties.js", "!map/us-states.js", "!map/countries.js", "!map/us-zip5.js"]);
-
-function buildModule(module, cb) {
-    gutil.log('Building ' + module + '...')
-
-    var files = getJSFiles(cfg.src + "/" + module, cfg.src).map(function (file) { return file + ".js"; });
-    const deps = libs.concat(bundles.filter(function (bundle) { return bundle !== module; })).reduce(function (dict, dep) {
-        return (dict[dep] = 'empty:') && dict
-    }, {});
-
-    const plugins = {
-        'async': '../rjs.noop',
-        'css': '../rjs.noop',
-        'goog': '../rjs.noop',
-        'text': '../rjs.noop',
-        'json': '../rjs.noop',
-        'propertyParser': '../rjs.noop',
-    }
-
-    const opts = {
-        baseUrl: cfg.src,
-        paths: _.extend({}, plugins, deps),
-        include: files
-            .map(function (file) {
-                return file.substring((cfg.src + '/').length)
-            })
-            .filter(function (file) {
-                return path.extname(file) === '.js' &&
-                    file.indexOf(module) === 0
-            })
-    }
-
-    async.parallel([
-        optimize.bind(null, _.extend({ out: (cfg.dist + "/" + cfg.prefix + "-" + module + '.min.js') }, opts)),
-        optimize.bind(null, _.extend({ out: (cfg.dist + "/" + cfg.prefix + "-" + module + '.js'), optimize: 'none' }, opts))
-    ], cb)
-}
-
-function css(minify) {
-    return gulp.src(cfg.src + '/**/*.css')
-        .pipe(sort())
-        .pipe(concatCss(cfg.prefix + (minify ? '.min.css' : '.css')))
-        .pipe(minify ? minifyCss({ keepBreaks: true }) : gutil.noop())
-        .pipe(gulp.dest(cfg.dist))
-}
-
-function optimize(opts, cb) {
-    //opts.optimize = "none";
-    rjs.optimize(opts,
-        function (text) { cb(null, text) },
-        cb
-    )
-}
-
-// Tasks
-gulp.task('build-css', css.bind(null, false));
-
-gulp.task('optimize-css', css.bind(null, true));
-
-gulp.task('lint', function () {
-    return gulp.src(cfg.src + '/**/*.js')
-        .pipe(lintFilter)
-        .pipe(jshint('.jshintrc'))
-        .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(jshint.reporter('fail'))
-        ;
-});
-
-gulp.task('jscs', function () {
-    return gulp.src(cfg.src + '/**/*.js')
-        .pipe(lintFilter)
-        .pipe(jscs())
-        ;
-});
-
-gulp.task('unitTest', function () {
-    return gulp.src(cfg.test + '/runner.html')
-        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
-        ;
-});
-
-gulp.task("unitTestBuild", function () {
-    return gulp
-        .src(cfg.test + '/runner_build.html')
-        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
-        ;
-});
-
-gulp.task("unitTestBuildNonAMD", function () {
-    return gulp
-        .src(cfg.test + '/runner_build_nonamd.html')
-        .pipe(mochaPhantomJS({ reporter: 'dot' }))    //  This will fail if any HTML file has a BOM.
-        ;
-});
-
-gulp.task('build-nonamd', ['build-css', 'optimize-css'], function (cb) {
-    async.each(bundles, buildModule, cb);
-});
-
-//  AMD Tasks  ---
-function getJSFolders(dir) {
-    var retVal = fs.readdirSync(dir).filter(function (file) {
-        return fs.statSync(dir + "/" + file).isDirectory();
+//  Util  ---
+function sequentialPromise(/*...*/) {
+    return new Promise((resolve, reject) => {
+        [].push.call(arguments, function (err, data) {
+            resolve();
+        });
+        runSequence.apply(this, arguments);
     });
-    return retVal;
 }
 
-function getJSFiles(dir, folder) {
-    var dirParts = dir.split("/");
-    var retVal = fs.readdirSync(dir).filter(function (file) {
-        return file.indexOf(".js") === file.length - 3 || file.indexOf(".ts") === file.length - 3;
-    }).map(function (fileName) {
-        return folder + "/" + dirParts[dirParts.length - 1] + "/" + fileName.substring(0, fileName.length - 3);
+//  Clean  ---
+function rmdir(dir) {
+    return new Promise(function (resolve, reject) {
+        rimraf(dir, function () {
+            resolve();
+        })
     });
-    return retVal;
 }
 
-const excludeShallow = ["src/map/us-counties", "src/map/us-states", "src/map/countries"];
-var amd_bundles = {};
-const amd_modules = bundles.map(function (bundle, idx) {
-    var name = cfg.prefix + "-" + bundle;
-    var include = getJSFiles("src/" + bundle, "src").filter(function (item) { return excludeShallow.indexOf(item) < 0; });
-    switch (bundle) {
-        case "common":
-            include = ["d3", "d3-bullet", "d3-sankey", "d3-cloud", "d3-hexbin", "es6-promise"].concat(include);
-            break;
-        case "react":
-            include = ["orb-react", "orb"].concat(include);
-            break;
+gulp.task("clean", [], function () {
+    return Promise.all([
+        rmdir("dist"),
+        rmdir("dist-test"),
+        rmdir("lib"),
+        rmdir("lib-umd"),
+        rmdir("lib-test-*"),
+        rmdir("tmp"),
+        rmdir("docx"),
+        rmdir("coverage"),
+        rmdir(".nyc_output")
+    ]);
+});
+
+//  Copy resources   ---
+gulp.task("copy-css", shell.task([
+    cpx.copySync("src/**/*.css", "lib/"),
+    cpx.copySync("src/**/*.css", "lib-umd/"),
+    cpx.copySync("src/**/*.css", "lib-test-es6/src/"),
+    cpx.copySync("test/**/*.css", "lib-test-es6/test/")
+]));
+
+//  Compile  ---
+gulp.task("compile-src", ["copy-css"], shell.task([
+    "tsc -p ./tsconfig.json"
+]));
+
+gulp.task("compile-src-watch", shell.task([
+    "tsc -w -p ./tsconfig.json"
+]));
+
+gulp.task("compile-test-browser", shell.task([
+    "tsc -p ./tsconfig-test-browser.json"
+]));
+
+gulp.task("compile-test-browser-watch", shell.task([
+    "tsc -w -p ./tsconfig-test-browser.json"
+]));
+
+gulp.task("compile-test", ["compile-test-browser"]);
+
+gulp.task("compile-all", ["compile-src", "compile-test"]);
+
+//  Docs  ---
+gulp.task("docs", shell.task([
+    "typedoc --target es6 --ignoreCompilerErrors --out ./docx/ ./src/index-common.ts"
+]));
+
+//  Bundle  ---
+var cache;
+function doRollup(entry, dest, format, min, external) {
+    external = external || [];
+    const plugins = [
+        alias({}),
+        nodeResolve({
+            jsnext: true,
+            main: true
+        }),
+        commonjs({
+            namedExports: {
+                "dagre": ["graphlib", "layout"],
+                "react": ["Component", "createElement"],
+                "react-dom": ["render"],
+                "..\\dgrid\\dist\\dgrid.js": ["Memory", "PagingGrid"]
+            }
+        }),
+        css({}),
+        sourcemaps()
+    ];
+    if (min) {
+        plugins.push(uglify({}));
     }
-    amd_bundles["src/" + name] = include;
-    return {
-        name: name,
-        include: include,
-        exclude: [cfg.prefix, "css!font-awesome"].concat(bundles.filter(function (bundle2, idx2) { return bundle2 !== bundle && idx2 < idx }).map(function (bundle) { return cfg.prefix + "-" + bundle })),
-        excludeShallow: excludeShallow,
-        create: true
-    };
+
+    return rollup.rollup({
+        entry: entry + ".js",
+        external: external,
+        cache: cache,
+        plugins: plugins
+    }).then(function (bundle) {
+        cache = bundle;
+        return bundle.write({
+            format: format,
+            moduleName: "HPCCViz",
+            dest: dest + (min ? ".min" : "") + ".js",
+            sourceMap: true
+        });
+    });
+}
+
+gulp.task("bundle-browser", function () {
+    return Promise.all([
+        //doRollup("lib/index-browser", "dist/viz-browser", "umd", true),
+        doRollup("lib/index-browser", "dist/viz-browser", "umd", false)
+    ]);
 });
 
-gulp.task("build-amd-src", ["build-tsc"], function (done) {
-    var opts = {
-        baseUrl: ".",
-        appDir: "out",
-        dir: cfg.distamd,
-        mainConfigFile: "out/loader.js",
-        modules: [{
-            name: cfg.prefix,
-            include: ["requireLib", "css", "normalize", "async", "goog", "text", "json", "propertyParser", "src/loader"],
-            create: true
-        }].concat(amd_modules)
-    };
-    optimize(opts, done);
+gulp.task("bundle-test-browser", function () {
+    return Promise.all([
+        doRollup("lib-test-es6/test/index", "dist-test/viz-browser", "iife", false, ["chai"])
+    ]);
 });
 
-gulp.task("copy-amchart-images", function () {
-    gulp.src("./bower_components/amcharts3/amcharts/images/**/*.*")
-        .pipe(gulp.dest(cfg.distamd + "/" + "img/amcharts"));
+gulp.task("bundle-test", ["bundle-test-browser"]);
+
+gulp.task("bundle-all", ["bundle-browser"]);
+
+gulp.task("build", function (cb) {
+    return sequentialPromise("clean").then(() => {
+        return Promise.all([
+            sequentialPromise("compile-src", "bundle-all")//,
+            //sequentialPromise("docs")
+        ]);
+    });
 });
 
-gulp.task("build-amd", ["build-amd-src", "copy-amchart-images"], function (done) {
-    var requireConfig = {
-        bundles: amd_bundles
-    };
-    fs.writeFile(cfg.distamd + "/hpcc-bundles.js",
-        "require.config(" + JSON.stringify(requireConfig) + ");",
-        function (error) { if (error) throw error; }
-    );
-    fs.writeFile(cfg.distamd + "/hpcc-bundles-def.js",
-        "(function (root, factory) { define([], factory); } (this, function () { return " + JSON.stringify(amd_bundles) + "; }));",
-        function (error) { if (error) throw error; }
-    );
-    gulp.src(["./dist-amd/hpcc-viz.js"])
-        .pipe(replace("bundles:{replace:\"me\"}", "bundles:" + JSON.stringify(amd_bundles)))
-        .pipe(replace("bundles: { replace: \"me\" }", "bundles:" + JSON.stringify(amd_bundles)))
-        .pipe(gulp.dest("./dist-amd/"))
-        ;
-    return gulp.src([
-        'bower_components/font-awesome/css/font-awesome.min.css',
-        'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
-        'bower_components/font-awesome/fonts/fontawesome-webfont.woff2'
-
-    ], { base: 'bower_components/' })
-        .pipe(gulp.dest(cfg.distamd))
-        ;
+//  Watch for browser ---
+gulp.task('watch-browser', function () {
+    gulp.start("compile-src");
+    return watch('lib/**/*.js', function () {
+        gulp.start("bundle-browser");
+    });
 });
 
-gulp.task("build-all", ["build-nonamd", "build-amd"]);
+gulp.task('watch-test-browser', function () {
+    return Promise.all([
+        sequentialPromise("compile-src", "bundle-all")//,
+        //sequentialPromise("docs")
+    ]);
 
-gulp.task("default", ["build-all"]);
+    gulp.start("copy-css");
+    gulp.start("compile-test-browser");
+    return watch('lib-test-es6/**/*.js', function () {
+        console.log("xxx");
+        gulp.start("bundle-test-browser");
+        console.log("yyy");
+    });
+});
 
-//  Bumping / tagging  ---
-gulp.task("bump-packages", [], function () {
+//  Version Bumping  ---
+gulp.task("bump-package", [], function () {
     var args = {};
     if (argv.version) {
         args.version = argv.version;
@@ -294,27 +195,28 @@ gulp.task("bump-packages", [], function () {
     } else {
         args.type = "patch";
     }
-    return gulp.src(["./package.json", "./bower.json"])
+    return gulp.src(["./package.json"])
         .pipe(bump(args))
         .pipe(gulp.dest("./"))
         ;
 });
 
-gulp.task("bump", ["bump-packages"], function () {
+gulp.task("bump", ["bump-package"], function () {
     const npmPackage = require('./package.json');
-    return gulp.src(["./src/common/Platform.js"])
-        .pipe(replace(/var version = "(.*?)";/, "var version = \"" + npmPackage.version + "\";"))
-        .pipe(gulp.dest("./src/common/"))
+    return gulp.src(["./src/index-common.ts"])
+        .pipe(replace(/export const version = "(.*?)";/, "export const version = \"" + npmPackage.version + "\";"))
+        .pipe(gulp.dest("./src/"))
         ;
 });
 
-const TAG_FILES = ["./package.json", "./bower.json", "./src/common/Platform.js", "./dist", "./dist-amd"];
+//  GIT Tagging  ---
+const TAG_FILES = ["./package.json", "./src/index-common.ts", "./dist", "./lib", "./docx"];
 gulp.task("git-create-branch", function (cb) {
     var version = require("./package.json").version;
     git.checkout("b" + version, { args: "-b" }, cb);
 });
 
-gulp.task("git-add-dist", ["git-create-branch", "build-all"], function (cb) {
+gulp.task("git-add-dist", ["git-create-branch"], function (cb) {
     return gulp.src(TAG_FILES)
         .pipe(git.add({ args: "-f" }))
         ;
@@ -342,3 +244,4 @@ gulp.task("tag-release", ["tag"], function (cb) {
         }
     });
 });
+//  --- --- ---

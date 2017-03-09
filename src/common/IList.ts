@@ -1,13 +1,5 @@
-export function IList() {
+export interface IList {
+    click(d);
+    dblclick(d);
 }
 
-//  Properties  ---
-
-//  Events  ---
-IList.prototype.click = function (d) {
-    console.log("Click:  " + d);
-};
-
-IList.prototype.dblclick = function (d) {
-    console.log("Double click:  " + d);
-};

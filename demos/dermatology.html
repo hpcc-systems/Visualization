@@ -34,15 +34,13 @@
     <script src="../dist-amd/hpcc-viz.js"></script>
     -->
     <link href="./dermatology.css" rel="stylesheet">
+    <link href="../lib/viz-browser-test.css" rel="stylesheet">
 
     <script>
-        require.config({
-            paths: {
-                "test": "../test"
-            }
-        });
+
     </script>
     <script src="pureMenu.js"></script>
+    <script src="../lib/viz-browser-test.js"></script>
 </head>
 
 <body onresize="doResize()">
@@ -121,244 +119,14 @@
         </main>
     </div>
     <script>
-        var app = null;
-        require(["d3", "./dermatology"], function (d3, App) {
-            function MDLApp() {
-                App.call(this);
-
-                this.initWidgetMenu();
-                this.initFileMenu();
-                this.initPropertiesSwitch("#switch-design");
-            }
-            MDLApp.prototype = Object.create(App.prototype);
-            MDLApp.constructor = MDLApp;
-
-            MDLApp.prototype.initWidgetMenu = function () {
-                var context = this;
-                var categories = d3.select("#widgetDropDownUL").selectAll("li").data(d3.map(this._testFactory.categories).entries());
-                var catLI = categories.enter().append("li")
-                    .attr("class", "pure-menu-item pure-menu-has-children pure-menu-allow-hover")
-                ;
-                catLI.append("a")
-                    .attr("href", "#")
-                    .attr("class", "pure-menu-link")
-                    .text(function (d) { return d.key; })
-                ;
-                var catUL = catLI.append("ul")
-                    .attr("class", "pure-menu-children")
-                ;
-                var widgets = catUL.selectAll("li").data(function (d) {
-                    var retVal = [];
-                    for (var key in d.value) {
-                        var value = [];
-                        for (var key2 in d.value[key]) {
-                            value.push({
-                                text: key2,
-                                key: key2,
-                                value: d.value[key][key2]
-                            });
-                        }
-                        retVal.push({
-                            text: key,
-                            key: value.length === 1 ? value[0].key : key,
-                            value: value.length === 1 ? value[0].value : value
-                        });
-                    }
-                    return retVal;
-                });
-                var widgetsLI = widgets.enter().append("li")
-                    .attr("class", "pure-menu-item")
-                    .classed("pure-menu-has-children pure-menu-allow-hover", function (d) { return !d.value.widgetPath; })
-                    .on("click", function (d) {
-                        if (d.value.widgetPath) {
-                            context.loadWidget(d.value.widgetPath, d.key);
-                        }
-                    })
-                ;
-                widgetsLI
-                    .append("a")
-                    .attr("href", "#")
-                    .attr("class", "pure-menu-link")
-                    .text(function (d) { return d.text; })
-                ;
-                var tests = widgetsLI.filter(function (d) { return d.value.length; }).append("ul")
-                    .attr("class", "pure-menu-children")
-                    .selectAll("li").data(function (d) { return d.value; })
-                ;
-                tests.enter().append("li")
-                    .attr("class", "pure-menu-item")
-                    .append("a")
-                    .attr("href", "#")
-                    .attr("class", "pure-menu-link")
-                    .text(function (d) { return d.text; })
-                    .on("click", function (d) {
-                        context.loadWidget(d.value.widgetPath, d.key);
-                    })
-                ;
-            };
-
-            MDLApp.prototype.initFileMenu = function () {
-                var context = this;
-                var fileOpenInput = d3.select("#fileOpenInput")
-                    .on("change", function () {
-                        context.showSpinner();
-                        for (var i = 0, f; f = this.files[i]; i++) {
-                            var reader = new FileReader();
-                            reader.onload = (function (theFile) {
-                                return function (e) {
-                                    console.log('e readAsText = ', e);
-                                    console.log('e readAsText target = ', e.target);
-                                    try {
-                                        var json = JSON.parse(e.target.result);
-                                        switch (context._openMode) {
-                                            case "theme":
-                                                context.openTheme(json);
-                                                break;
-                                            default:
-                                                context.openWidget(json);
-                                        }
-                                    } catch (ex) {
-                                        alert('ex when trying to parse json = ' + ex);
-                                    }
-                                }
-                            })(f);
-                            reader.readAsText(f);
-                        }
-                    })
-                ;
-                d3.select("#fileOpen")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.closeFileMenu();
-                        d3.select("#fileOpenInput").property("accept", ".persist,.json");
-                        context._openMode = "persist";
-                        fileOpenInput.node().click();
-                    })
-                ;
-                d3.select("#fileSave")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.saveWidget()
-                        context.closeFileMenu();
-                    })
-                ;
-                d3.select("#stateSave")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.saveWidget(true)
-                        context.closeFileMenu();
-                    })
-                ;
-                d3.select("#themeOpen")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.closeFileMenu();
-                        d3.select("#fileOpenInput").property("accept", ".theme,.json");
-                        context._openMode = "theme";
-                        fileOpenInput.node().click();
-                    })
-                ;
-                d3.select("#themeSave")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.saveTheme();
-                        context.closeFileMenu();
-                    })
-                ;
-                d3.select("#themeReset")
-                    .on("click", function () {
-                        d3.event.preventDefault();
-                        context.showSpinner();
-                        context.resetTheme();
-                        context.closeFileMenu();
-                    })
-                ;
-                d3.select("#switch-clone")
-                    .on("click", function () {
-                        context.showClone();
-                        context.closeFileMenu();
-                    })
-                ;
-                this.showClone();
-            };
-
-            MDLApp.prototype.closeFileMenu = function () {
-                var layout = document.querySelector('.mdl-layout');
-                layout.MaterialLayout.toggleDrawer();
-            };
-
-            MDLApp.prototype.propertiesVisible = function () {
-                var retVal = d3.select("#switch-design").property("checked");
-                if (retVal) {
-                    d3.select("#cellSurface")
-                        .classed("mdl-cell--12-col", false)
-                        .classed("mdl-cell--8-col", true)
-                    ;
-                    d3.select("#cellProperties")
-                        .style("display", null)
-                    ;
-                } else {
-                    d3.select("#cellSurface")
-                        .classed("mdl-cell--8-col", false)
-                        .classed("mdl-cell--12-col", true)
-                    ;
-                    d3.select("#cellProperties")
-                        .style("display", "none")
-                    ;
-                }
-                return retVal;
-            };
-
-            MDLApp.prototype.cloneVisible = function () {
-                var retVal = d3.select("#switch-clone").property("checked");
-                d3.select("#cellClone")
-                    .style("display", retVal ? null : "none")
-                ;
-                return retVal;
-            };
-
-            MDLApp.prototype.showSpinner = function (show) {
-                show = arguments.length ? arguments[0] : true;
-                d3.select("#surface")
-                    .style("opacity", 0)
-                ;
-                if (!show) {
-                    d3.select("#surface").transition().duration(750)
-                        .style("opacity", 1)
-                    ;
-                }
-                d3.select("#spinner")
-                    .classed("is-active", show)
-                ;
-            };
-
-            MDLApp.prototype.doResize = function () {
-                var showClone = d3.select("#switch-clone").property("checked");
-                var cloneHeight = showClone ? window.innerHeight / 3 : 0;
-                var cloneMargin = showClone ? 16 : 0;
-                d3.selectAll("#surface")
-                    .style("height", window.innerHeight - 48 - 64 - cloneHeight - cloneMargin + "px")
-                ;
-                d3.select("#properties")
-                    .style("height", window.innerHeight - 48 - 64 - cloneHeight + "px")
-                ;
-                d3.select("#clone")
-                    .style("height", cloneHeight + "px")
-                ;
-                App.prototype.doResize.apply(this, arguments);
-                return this;
-            };
-
-            app = new MDLApp()
-                .doResize()
-            ;
-        });
+        var app;
         var doResize = function () {
             if (app) {
                 app.doResize();
             }
-
         };
+
+        app = new HPCCViz.MDLApp();
     </script>
 </body>
 

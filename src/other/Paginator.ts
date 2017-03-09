@@ -1,6 +1,7 @@
-import * as d3 from "d3";
+import { event as d3Event, select as d3Select } from "d3-selection";
 import { HTMLWidget } from "../common/HTMLWidget";
-import "css!./Paginator";
+
+import "./Paginator.css";
 
 export function Paginator() {
     HTMLWidget.call(this);
@@ -27,7 +28,7 @@ Paginator.prototype.postUpdate = function (domNode, element) { };
 
 Paginator.prototype.enter = function (domNode, element) {
     HTMLWidget.prototype.enter.apply(this, arguments);
-    var context = this;
+    const context = this;
 
     this.paginator = element.append("ul").attr("class", "paginator pagination pagination-sm");
     this.side = element.append("div").attr("class", "paginator pagination side");
@@ -55,7 +56,7 @@ Paginator.prototype.enter = function (domNode, element) {
 };
 
 Paginator.prototype.update = function (domNode, element) {
-    var context = this;
+    const context = this;
     element
         .style("bottom", this.bottom() + "px")
         .style("right", this.right() + "px")
@@ -68,7 +69,7 @@ Paginator.prototype.update = function (domNode, element) {
     this._numList = [];
     if (this.numItems()) {
         this._numList.push("first");
-        for (var x = -this.adjacentPages(); x <= this.adjacentPages(); x++) {
+        for (let x = -this.adjacentPages(); x <= this.adjacentPages(); x++) {
             if (this.pageNumber() + x > 0 && this.pageNumber() + x <= this._tNumPages) {
                 this._numList.push(this.pageNumber() + x);
             }
@@ -80,15 +81,15 @@ Paginator.prototype.update = function (domNode, element) {
     this.side.select(".currentPageNumber").property("value", this.pageNumber());
     this.side.select(".currentPageNumber").attr("max", this._tNumPages);
 
-    var page = this.paginator.selectAll("li").data(this._numList, function (d) { return d; });
+    const page = this.paginator.selectAll("li").data(this._numList, function (d) { return d; });
     page
         .enter()
         .append(function (d) {
-            var li = document.createElement("li");
+            const li = document.createElement("li");
 
             if (d !== context.pageNumber()) {
-                var a = document.createElement("a");
-                var linkText = document.createTextNode(d);
+                const a = document.createElement("a");
+                const linkText = document.createTextNode(d);
 
                 a.appendChild(linkText);
                 a.href = "#";
@@ -96,7 +97,7 @@ Paginator.prototype.update = function (domNode, element) {
 
                 return li;
             } else {
-                var span = document.createElement("span");
+                const span = document.createElement("span");
                 span.innerHTML = d;
 
                 li.appendChild(span);
@@ -105,7 +106,7 @@ Paginator.prototype.update = function (domNode, element) {
             }
         })
         .on("click", function (d, i) {
-            d3.event.preventDefault();
+            d3Event.preventDefault();
             context.side.select(".currentPageNumber").property("value", context.pageNumber());
             switch (d) {
                 case "first":
@@ -136,11 +137,10 @@ Paginator.prototype.update = function (domNode, element) {
     page.order();
 
     if (this.numItems() === 0) {
-        d3.select(domNode).remove();
+        d3Select(domNode).remove();
     }
 };
 
 Paginator.prototype.exit = function (domNode, element) {
     HTMLWidget.prototype.exit.apply(this, arguments);
 };
-

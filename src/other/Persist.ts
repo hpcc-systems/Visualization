@@ -17,6 +17,7 @@ export function widgetWalker(widget, visitor) {
             case "propertyArray":
                 widgetArrayWalker(widget[publishItem.id](), visitor);
                 break;
+            default:
         }
     });
 }
@@ -33,32 +34,35 @@ export function propertyWalker(widget, filter, visitor) {
     widget.propertyWalker(filter, visitor);
 }
 
-export function widgetPropertyWalker(widget, filter, visitor) {
-    widgetWalker(widget, function (widget) {
+export function widgetPropertyWalker(widget2, filter, visitor) {
+    widgetWalker(widget2, function (widget) {
         propertyWalker(widget, filter, visitor);
     });
 }
 
 export function serializeTheme(widget, filter) {
-    return JSON.stringify(this.serializeThemeToObject(widget, filter));
+    return JSON.stringify(serializeThemeToObject(widget, filter));
 }
-export function serializeThemeToObject(widget, filter) {
+
+export function serializeThemeToObject(widget2, filter?) {
     filter = filter || ["surface", "Color", "Font", "palette"];
 
-    var propObj = {};
-    widgetPropertyWalker(widget, null, function (widget, item) {
+    const propObj = {};
+    widgetPropertyWalker(widget2, null, function (widget, item) {
         if (widget[item.id + "_modified"]() || widget.publishedProperty(item.id).origDefaultValue !== widget.publishedProperty(item.id).defaultValue) {
             if (_isFilterMatch(item.id, filter)) {
-                var classParts = widget._class.trim().split(" ");
-                for (var i in classParts) {
-                    if (propObj[classParts[i]] === undefined) {
-                        propObj[classParts[i]] = {};
-                    }
-                    if (propObj[classParts[i]][item.id] === undefined) {
-                        propObj[classParts[i]][item.id] = widget[item.id]();
-                        break;
-                    } else if (propObj[classParts[i]][item.id] === widget[item.id]()) {
-                        break;
+                const classParts = widget._class.trim().split(" ");
+                for (const i in classParts) {
+                    if (classParts.HasOwnProperty(i)) {
+                        if (propObj[classParts[i]] === undefined) {
+                            propObj[classParts[i]] = {};
+                        }
+                        if (propObj[classParts[i]][item.id] === undefined) {
+                            propObj[classParts[i]][item.id] = widget[item.id]();
+                            break;
+                        } else if (propObj[classParts[i]][item.id] === widget[item.id]()) {
+                            break;
+                        }
                     }
                 }
             }
@@ -66,8 +70,8 @@ export function serializeThemeToObject(widget, filter) {
     });
 
     function _isFilterMatch(str, arr) {
-        var ret = false;
-        for (var i in arr) {
+        let ret = false;
+        for (const i in arr) {
             if (str.indexOf(arr[i]) !== -1) {
                 ret = true;
                 break;
@@ -77,8 +81,8 @@ export function serializeThemeToObject(widget, filter) {
     }
     return propObj;
 }
-export function removeTheme(widget, callback) {
-    widgetPropertyWalker(widget, null, function (widget, item) {
+export function removeTheme(widget2, callback) {
+    widgetPropertyWalker(widget2, null, function (widget, item) {
         widget.publishedProperty(item.id).defaultValue = widget.publishedProperty(item.id).origDefaultValue;
     });
 
@@ -86,21 +90,21 @@ export function removeTheme(widget, callback) {
         callback.call(this);
     }
 }
-export function applyTheme(widget, themeObj, callback) {
-    var context = this;
-    widgetPropertyWalker(widget, null, function (widget, item) {
+export function applyTheme(widget2, themeObj, callback) {
+    const context = this;
+    widgetPropertyWalker(widget2, null, function (widget3, item) {
         switch (item.type) {
             case "widget":
-                context.applyTheme(widget[item.id](), themeObj);
+                context.applyTheme(widget3[item.id](), themeObj);
                 return true;
             case "widgetArray":
-                var widgetArray = widget[item.id]();
+                const widgetArray = widget3[item.id]();
                 widgetArray.forEach(function (widget) {
                     context.applyTheme(widget, themeObj);
                 }, this);
                 return true;
             default:
-                widget.applyTheme(themeObj);
+                widget3.applyTheme(themeObj);
                 break;
         }
     });
@@ -109,8 +113,8 @@ export function applyTheme(widget, themeObj, callback) {
     }
 }
 
-export function serializeToObject(widget, filter, includeData, includeState) {
-    var retVal: any = {
+export function serializeToObject(widget, filter?, includeData?, includeState?) {
+    const retVal: any = {
         __class: widget.classID(),
     };
     if (widget._id.indexOf(widget._idSeed) !== 0) {
@@ -121,30 +125,29 @@ export function serializeToObject(widget, filter, includeData, includeState) {
     }
     retVal.__properties = {};
 
-    var context = this;
-    propertyWalker(widget, filter, function (childWwidget, item) {
-        if (childWwidget[item.id + "_modified"]()) {
+    propertyWalker(widget, filter, (childWwidget2, item) => {
+        if (childWwidget2[item.id + "_modified"]()) {
             switch (item.type) {
                 case "widget":
-                    retVal.__properties[item.id] = context.serializeToObject(childWwidget[item.id](), null, includeData, includeState && !widget.serializeState);  //  Only include state once
+                    retVal.__properties[item.id] = serializeToObject(childWwidget2[item.id](), null, includeData, includeState && !widget.serializeState);  //  Only include state once
                     return true;
                 case "widgetArray":
                 case "propertyArray":
                     retVal.__properties[item.id] = [];
-                    var widgetArray = childWwidget[item.id]();
-                    widgetArray.forEach(function (childWwidget, idx) {
-                        retVal.__properties[item.id].push(context.serializeToObject(childWwidget, null, includeData, includeState && !widget.serializeState));  //  Only include state once
+                    const widgetArray = childWwidget2[item.id]();
+                    widgetArray.forEach((childWwidget) => {
+                        retVal.__properties[item.id].push(serializeToObject(childWwidget, null, includeData, includeState && !widget.serializeState));  //  Only include state once
                     });
                     return true;
                 default:
-                    retVal.__properties[item.id] = childWwidget[item.id]();
+                    retVal.__properties[item.id] = childWwidget2[item.id]();
                     break;
             }
         }
     });
 
     if (widget.classID() === "marshaller_Graph") {
-        var vertices = widget.data().vertices;
+        const vertices = widget.data().vertices;
         if (vertices) {
             this.__vertices = vertices.map(function (item) {
                 return this.serializeToObject(item, null, includeData, includeState && !widget.serializeState);
@@ -168,20 +171,20 @@ export function serializeToObject(widget, filter, includeData, includeState) {
 }
 
 export function serialize(widget, filter?, includeData?, includeState?) {
-    return JSON.stringify(this.serializeToObject(widget, filter, includeData, includeState));
+    return JSON.stringify(serializeToObject(widget, filter, includeData, includeState));
 }
 
-export function deserializeFromObject(widget, state, callback) {
-    var context = this;
-    return new Promise(function (resolve, reject) {
-        var createCount = 0;
-        widgetPropertyWalker(widget, null, function (widget, item) {
+export function deserializeFromObject(widget2, state, callback) {
+    const context = this;
+    return new Promise(function (resolve, _reject) {
+        let createCount = 0;
+        widgetPropertyWalker(widget2, null, function (widget, item) {
             widget[item.id + "_reset"]();
             if (state.__properties[item.id] !== undefined) {
                 switch (item.type) {
                     case "widget":
                         ++createCount;
-                        var widgetKey = item.id;
+                        const widgetKey = item.id;
                         context.create(state.__properties[item.id], function (widgetItem) {
                             widget[widgetKey](widgetItem);
                             --createCount;
@@ -189,13 +192,13 @@ export function deserializeFromObject(widget, state, callback) {
                         break;
                     case "widgetArray":
                     case "propertyArray":
-                        var widgetArrayKey = item.id;
-                        var widgetStateArray = state.__properties[item.id];
+                        const widgetArrayKey = item.id;
+                        const widgetStateArray = state.__properties[item.id];
                         if (widgetStateArray.length) {
                             ++createCount;
-                            var widgetArray = [];
+                            const widgetArray = [];
                             widgetArray.length = widgetStateArray.length;
-                            var arrayCreateCount = 0;
+                            let arrayCreateCount = 0;
                             widgetStateArray.forEach(function (widgetState, idx) {
                                 ++arrayCreateCount;
                                 context.create(widgetState, function (widgetItem) {
@@ -203,7 +206,7 @@ export function deserializeFromObject(widget, state, callback) {
                                     widgetArray[idx] = widgetItem;
                                     --arrayCreateCount;
                                 });
-                                var arrayIntervalHandler = setInterval(function () {
+                                const arrayIntervalHandler = setInterval(function () {
                                     if (arrayCreateCount <= 0) {
                                         clearInterval(arrayIntervalHandler);
                                         arrayCreateCount = undefined;
@@ -220,35 +223,37 @@ export function deserializeFromObject(widget, state, callback) {
                 }
             }
         });
-        var intervalHandler = setInterval(function () {
+        const intervalHandler = setInterval(function () {
             if (createCount <= 0) {
                 clearInterval(intervalHandler);
                 createCount = undefined;
                 if (state.__data) {
-                    for (var key in state.__data) {
-                        switch (key) {
-                            case "data":
-                                widget.data(state.__data[key]);
-                                break;
-                            default:
-                                console.log("Unexpected __data item:  " + key);
-                                widget[key](state.__data[key]);
-                                break;
+                    for (const key in state.__data) {
+                        if (state.__data.HasOwnProperty(key)) {
+                            switch (key) {
+                                case "data":
+                                    widget2.data(state.__data[key]);
+                                    break;
+                                default:
+                                    console.log("Unexpected __data item:  " + key);
+                                    widget2[key](state.__data[key]);
+                                    break;
+                            }
                         }
                     }
                 }
                 if (state.__state) {
-                    if (widget.deserializeState) {
-                        widget.deserializeState(state.__state);
-                    } else if (state.__state.data && widget.data) {
-                        widget.data(state.__state.data);
+                    if (widget2.deserializeState) {
+                        widget2.deserializeState(state.__state);
+                    } else if (state.__state.data && widget2.data) {
+                        widget2.data(state.__state.data);
                     }
                 }
                 if (callback) {
                     console.log("Deprecated:  callback, use promise (Persist.deserializeFromObject)");
-                    callback(widget);
+                    callback(widget2);
                 }
-                resolve(widget);
+                resolve(widget2);
             }
         }, 20);
     });
@@ -261,16 +266,16 @@ export function deserialize(widget, state, callback) {
     if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && widget._id !== state.__id) {
         console.log("Deserialize:  IDs do not match - " + widget._id);
     }
-    this.deserializeFromObject(widget, state, callback);
+    deserializeFromObject(widget, state, callback);
 }
 
 export function create(state, callback) {
     if (typeof state === "string") {
         state = JSON.parse(state);
     }
-    var context = this;
+    const context = this;
     return Utility.requireWidget(state.__class).then(function (Widget: any) {
-        var widget = new Widget();
+        const widget = new Widget();
         if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && state.__id.indexOf("_pe") !== 0) {
             widget._id = state.__id;
         }
@@ -286,5 +291,5 @@ export function create(state, callback) {
 }
 
 export function clone(widget, callback) {
-    this.create(this.serializeToObject(widget, [], true, true), callback);
+    create(serializeToObject(widget, [], true, true), callback);
 }

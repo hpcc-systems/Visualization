@@ -1,13 +1,13 @@
+import "./Line.css";
 import { Scatter } from "./Scatter";
-import "css!./Line";
 
-export function Line(target) {
-    Scatter.call(this);
+export class Line extends Scatter {
+    constructor() {
+        super();
 
-    this
-        .interpolate_default("linear")
-        ;
+        this
+            .interpolate_default("linear")
+            ;
+    }
 }
-Line.prototype = Object.create(Scatter.prototype);
-Line.prototype.constructor = Line;
 Line.prototype._class += " chart_Line";

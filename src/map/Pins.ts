@@ -4,7 +4,7 @@ import * as MapUtility from './Utility';
 import * as Utility from '../common/Utility';
 import { ITooltip } from '../api/ITooltip';
 
-import "css!./Pins";
+import "./Pins.css";
 
 export function Pins() {
     Layer.call(this);

@@ -1,6 +1,7 @@
 import { HTMLWidget } from "../common/HTMLWidget";
 import { IInput } from "../api/IInput";
-import "css!./Input";
+
+import "./Input.css";
 
 export function Radio() {
     HTMLWidget.call(this);

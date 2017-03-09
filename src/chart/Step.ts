@@ -1,12 +1,12 @@
 import { Scatter } from "./Scatter";
 
-export function Step(target) {
-    Scatter.call(this);
+export class Step extends Scatter {
+    constructor() {
+        super();
 
-    this
-        .interpolate_default("step")
-        ;
+        this
+            .interpolate_default("step")
+            ;
+    }
 }
-Step.prototype = Object.create(Scatter.prototype);
-Step.prototype.constructor = Step;
 Step.prototype._class += " chart_Step";

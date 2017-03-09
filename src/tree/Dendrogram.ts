@@ -1,45 +1,255 @@
-import * as d3 from 'd3';
-import { SVGZoomWidget } from "../common/SVGZoomWidget";
-import { PropertyExt } from "../common/PropertyExt";
+import { cluster as d3Cluster, hierarchy as d3Hierarchy, tree as d3Tree } from "d3-hierarchy";
+import { select as d3Select } from "d3-selection";
 import { ITree } from "../api/ITree";
+import { PropertyExt } from "../common/PropertyExt";
+import { SVGZoomWidget } from "../common/SVGZoomWidget";
 import * as Utility from "../common/Utility";
-import "css!./Dendrogram";
+import "./Dendrogram.css";
 
-function Column(owner) {
-    PropertyExt.call(this);
-    this._owner = owner;
+export class Column extends PropertyExt {
+    _owner;
+
+    constructor(owner) {
+        super();
+        this._owner = owner;
+    }
+
+    column: { (): string; (_: string): Dendrogram; };
 }
-Column.prototype = Object.create(PropertyExt.prototype);
-Column.prototype.constructor = Column;
 Column.prototype._class += " tree_Dendrogram.Column";
 
 Column.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
 
 // ===
-export function Dendrogram(target) {
-    SVGZoomWidget.call(this);
-    ITree.call(this);
-    Utility.SimpleSelectionMixin.call(this);
+export class Dendrogram extends SVGZoomWidget {
+    Column;
+    _d3LayoutCluster;
+    _d3LayoutTree;
+    _d3Layout;
 
-    this._drawStartPos = "origin";
+    constructor() {
+        super();
+        ITree.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
-    var context = this;
+        this._drawStartPos = "origin";
 
-    this._d3LayoutCluster = d3.layout.cluster();
-    this._d3LayoutTree = d3.layout.tree();
-    this._d3Diagonal = d3.svg.diagonal()
-        .projection(function (d) {
-            return context.orientation() === "horizontal" ? [d.y, d.x] : [d.x, d.y];
-        })
-        ;
-    this._d3DiagonalRadial = d3.svg.diagonal.radial()
-        .projection(function (d) {
-            return [d.y, d.x / 180 * Math.PI];
-        })
-        ;
+        this._d3LayoutCluster = d3Cluster();
+        this._d3LayoutTree = d3Tree();
+    }
+
+    dendrogramData() {
+        if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
+            return this.data();
+        }
+        const view = this._db.rollupView(this.mappings().map(function (mapping) { return mapping.column(); }));
+        const retVal = {
+            key: "root",
+            values: view.entries()
+        };
+        return formatData(retVal);
+
+        function formatData(node) {
+            return {
+                label: node.key,
+                children: node.values.filter(function (value) { return !(value instanceof Array); }).map(function (value) { return formatData(value); }),
+                origRows: node.values
+            };
+        }
+    };
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this._renderElement
+            .attr("opacity", 0)
+            .transition().duration(500)
+            .attr("opacity", 1)
+            ;
+        this._selection.widgetElement(this._renderElement);
+    };
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        const context = this;
+        const isVertical = this.orientation() === "vertical";
+
+        this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
+        this._d3Layout = this.dendrogram() ? this._d3LayoutCluster : this._d3LayoutTree;
+
+        if (this.radial()) {
+            this._d3Layout
+                .size([360, this.separation() * 2])
+                ;
+            this._d3Layout.separation(function separation(a, b) {
+                return (a.parent === b.parent ? 1 : 2) / a.depth;
+            });
+        } else {
+            this._d3Layout.nodeSize([14, this.separation()]);
+            this._d3Layout.separation(function separation(a, b) {
+                return a.parent === b.parent ? 1 : 2;
+            });
+        }
+
+        const data = this.dendrogramData();
+        const root = d3Hierarchy(data);
+        this._d3Layout(root);
+
+        const dataNodes = root.descendants();
+        const links = root.descendants().slice(1);
+
+        //  Lines  ---
+        function linkVertical(d) {
+            return "M" + d.parent.x + "," + d.parent.y
+                + "C" + d.parent.x + "," + (d.parent.y + d.y) / 2
+                + " " + d.x + "," + (d.parent.y + d.y) / 2
+                + " " + d.x + "," + d.y;
+        }
+
+        function linkHorizontal(d) {
+            return "M" + d.y + "," + d.x
+                + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+                + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+                + " " + d.parent.y + "," + d.parent.x;
+        }
+        function diagonal(d) {
+            return isVertical ? linkVertical(d) : linkHorizontal(d);
+        }
+
+        function project(x, y) {
+            const angle = (x - 90) / 180 * Math.PI;
+            const radius = y;
+            return [radius * Math.cos(angle), radius * Math.sin(angle)];
+        }
+
+        function radialDiagonal(d) {
+            return "M" + project(d.x, d.y)
+                + "C" + project(d.x, (d.y + d.parent.y) / 2)
+                + " " + project(d.parent.x, (d.y + d.parent.y) / 2)
+                + " " + project(d.parent.x, d.parent.y);
+        }
+
+        const transitionDuration = this._renderCount ? 500 : 0;
+        const lines = this._renderElement.selectAll(".link").data(links);
+        lines.enter().append("path")
+            .attr("class", "link")
+            .attr("d", this.radial() ? radialDiagonal : diagonal)
+            ;
+        lines.transition().duration(transitionDuration)
+            .attr("d", this.radial() ? radialDiagonal : diagonal)
+            ;
+        lines.exit().remove();
+
+        //  Nodes  ---
+        const textOffsetX = this.circleRadius() + 2;
+        function nodeTransform(d) {
+            if (context.radial()) {
+                return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
+            }
+            return context.orientation() === "horizontal" ? "translate(" + d.y + "," + d.x + ")" : "translate(" + d.x + "," + d.y + ")";
+        }
+        const nodes = this._renderElement.selectAll(".node").data(dataNodes);
+        nodes.transition().duration(transitionDuration)
+            .attr("transform", nodeTransform)
+            ;
+        const enterNodes = nodes.enter().append("g")
+            .attr("class", "node")
+            .attr("transform", nodeTransform)
+            .call(this._selection.enter.bind(this._selection))
+            .on("click", function (d) {
+                let tmp = d;
+                while (tmp.children) {
+                    tmp = tmp.children[0];
+                }
+                if (d.depth > 0) {
+                    context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                }
+            })
+            .on("dblclick", function (d) {
+                let tmp = d;
+                while (tmp.children) {
+                    tmp = tmp.children[0];
+                }
+                if (d.depth > 0) {
+                    context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
+                }
+            })
+            .each(function () {
+                const e = d3Select(this);
+                e.append("circle");
+                e.append("text");
+            })
+            ;
+        enterNodes.merge(nodes).select("circle")
+            .attr("r", this.circleRadius())
+            .style("fill", function (d) { return context._palette(d.data.label); })
+            .append("title")
+            .text(function (d) { return d.data.label; })
+            ;
+        enterNodes.merge(nodes).select("text")
+            .attr("dx", function (d) {
+                if (context.radial()) {
+                    if (d.children) {
+                        return d.x < 180 ? -textOffsetX : textOffsetX;
+                    } else {
+                        return d.x < 180 ? textOffsetX : -textOffsetX;
+                    }
+                } else if (isVertical) {
+                    return d.children ? textOffsetX : -textOffsetX;
+                }
+                return d.children ? -textOffsetX : textOffsetX;
+            })
+            .attr("dy", "0.25em")
+            .style("text-anchor", function (d) {
+                if (context.radial()) {
+                    if (d.children) {
+                        return d.x < 180 ? "end" : "start";
+                    } else {
+                        return d.x < 180 ? "start" : "end";
+                    }
+                } else if (isVertical) {
+                    return d.children ? "start" : "end";
+                }
+                return d.children ? "end" : "start";
+            })
+            .attr("transform", function (d) {
+                if (context.radial()) {
+                    return d.x < 180 ? null : "rotate(180)";
+                } else if (isVertical) {
+                    return "rotate(-66)";
+                }
+                return null;
+            })
+            .text(function (d) { return d.data.label; })
+            ;
+        nodes.exit().remove();
+
+        if (!this._renderCount) {
+            context.zoomToFit();
+        }
+    };
+
+    paletteID: { (): string; (_: string): Dendrogram; };
+    useClonedPalette: { (): boolean; (_: boolean): Dendrogram; };
+    mappings: { (): Column[]; (_: Column[]): Dendrogram; };
+
+    circleRadius: { (): number; (_: number): Dendrogram; };
+    separation: { (): number; (_: number): Dendrogram; };
+    dendrogram: { (): boolean; (_: boolean): Dendrogram; };
+    radial: { (): boolean; (_: boolean): Dendrogram; };
+    orientation: { (): string; (_: string): Dendrogram; };
+
+    //  ITree
+    _palette;
+    click: (row, column, selected) => void;
+    dblclick: (row, column, selected) => void;
+
+    //  SimpleSelectionMixin
+    _selection;
 }
-Dendrogram.prototype = Object.create(SVGZoomWidget.prototype);
-Dendrogram.prototype.constructor = Dendrogram;
 Dendrogram.prototype._class += " tree_Dendrogram";
 Dendrogram.prototype.implements(ITree.prototype);
 Dendrogram.prototype.mixin(Utility.SimpleSelectionMixin);
@@ -53,164 +263,4 @@ Dendrogram.prototype.publish("circleRadius", 4.5, "number", "Text offset from ci
 Dendrogram.prototype.publish("separation", 240, "number", "Leaf Separation");
 Dendrogram.prototype.publish("dendrogram", true, "boolean", "Dendrogram");
 Dendrogram.prototype.publish("radial", false, "boolean", "Radial");
-Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal", "vertical"], { tags: ["Private"], disabled: function () { return this.radial(); } });
-
-Dendrogram.prototype.dendrogramData = function () {
-    if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
-        return this.data();
-    }
-    var view = this._db.rollupView(this.mappings().map(function (mapping) { return mapping.column(); }));
-    var retVal = {
-        key: "root",
-        values: view.entries()
-    };
-    return formatData(retVal);
-
-    function formatData(node) {
-        return {
-            label: node.key,
-            children: node.values.filter(function (value) { return !(value instanceof Array); }).map(function (value) { return formatData(value); }),
-            origRows: node.values
-        };
-    }
-};
-
-Dendrogram.prototype.enter = function (domNode, element) {
-    SVGZoomWidget.prototype.enter.apply(this, arguments);
-    this._renderElement
-        .attr("opacity", 0)
-        .transition().duration(500)
-        .attr("opacity", 1)
-        ;
-    this._selection.widgetElement(this._renderElement);
-};
-
-Dendrogram.prototype.update = function (domNode, element, secondPass) {
-    SVGZoomWidget.prototype.update.apply(this, arguments);
-    var context = this;
-
-    this._palette = this._palette.switch(this.paletteID());
-    if (this.useClonedPalette()) {
-        this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
-    }
-
-    this._d3Layout = this.dendrogram() ? this._d3LayoutCluster : this._d3LayoutTree;
-
-    if (this.radial()) {
-        this._d3Layout
-            .size([360, this.separation() * 2])
-            ;
-        this._d3Layout.separation(function separation(a, b) {
-            return (a.parent === b.parent ? 1 : 2) / a.depth;
-        });
-    } else {
-        this._d3Layout.nodeSize([14, this.separation()]);
-        this._d3Layout.separation(function separation(a, b) {
-            return a.parent === b.parent ? 1 : 2;
-        });
-    }
-
-    var data = this.dendrogramData();
-    var dataNodes = this._d3Layout.nodes(data);
-    var links = this._d3Layout.links(dataNodes);
-
-    //  Lines  ---
-    var transitionDuration = this._renderCount ? 500 : 0;
-    var lines = this._renderElement.selectAll(".link").data(links);
-    lines.enter().append("path")
-        .attr("class", "link")
-        .attr("d", this.radial() ? this._d3DiagonalRadial : this._d3Diagonal)
-        ;
-    lines.transition().duration(transitionDuration)
-        .attr("d", this.radial() ? this._d3DiagonalRadial : this._d3Diagonal)
-        ;
-    lines.exit().remove();
-
-    //  Nodes  ---
-    var textOffsetX = this.circleRadius() + 2;
-    function nodeTransform(d) {
-        if (context.radial()) {
-            return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
-        }
-        return context.orientation() === "horizontal" ? "translate(" + d.y + "," + d.x + ")" : "translate(" + d.x + "," + d.y + ")";
-    }
-    var nodes = this._renderElement.selectAll(".node").data(dataNodes);
-    nodes.transition().duration(transitionDuration)
-        .attr("transform", nodeTransform)
-        ;
-    nodes.enter().append("g")
-        .attr("class", "node")
-        .attr("transform", nodeTransform)
-        .call(this._selection.enter.bind(this._selection))
-        .on("click", function (d) {
-            var tmp = d;
-            while (tmp.children) {
-                tmp = tmp.children[0];
-            }
-            if (d.depth > 0) {
-                context.click(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
-            }
-        })
-        .on("dblclick", function (d) {
-            var tmp = d;
-            while (tmp.children) {
-                tmp = tmp.children[0];
-            }
-            if (d.depth > 0) {
-                context.dblclick(context.rowToObj(tmp.origRows[0]), context.mappings()[d.depth - 1].column(), true);
-            }
-        })
-        .each(function (d, i) {
-            var element = d3.select(this);
-            element.append("circle");
-            element.append("text");
-        })
-        ;
-    nodes.select("circle")
-        .attr("r", this.circleRadius())
-        .style("fill", function (d) { return context._palette(d.label); })
-        .append("title")
-        .text(function (d) { return d.label; })
-        ;
-    nodes.select("text")
-        .attr("dx", function (d) {
-            if (context.radial()) {
-                if (d.children) {
-                    return d.x < 180 ? -textOffsetX : textOffsetX;
-                } else {
-                    return d.x < 180 ? textOffsetX : -textOffsetX;
-                }
-            } else if (context.orientation() === "vertical") {
-                return d.children ? textOffsetX : -textOffsetX;
-            }
-            return d.children ? -textOffsetX : textOffsetX;
-        })
-        .attr("dy", "0.25em")
-        .style("text-anchor", function (d) {
-            if (context.radial()) {
-                if (d.children) {
-                    return d.x < 180 ? "end" : "start";
-                } else {
-                    return d.x < 180 ? "start" : "end";
-                }
-            } else if (context.orientation() === "vertical") {
-                return d.children ? "start" : "end";
-            }
-            return d.children ? "end" : "start";
-        })
-        .attr("transform", function (d) {
-            if (context.radial()) {
-                return d.x < 180 ? null : "rotate(180)";
-            } else if (context.orientation() === "vertical") {
-                return "rotate(-66)";
-            }
-            return null;
-        })
-        .text(function (d) { return d.label; })
-        ;
-    nodes.exit().remove();
-
-    if (!this._renderCount) {
-        context.zoomToFit();
-    }
-};
+Dendrogram.prototype.publish("orientation", "horizontal", "set", "Orientation", ["horizontal", "vertical"], { tags: ["Private"], disable: function () { return this.radial(); } });

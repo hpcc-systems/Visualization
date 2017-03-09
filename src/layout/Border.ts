@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 import { HTMLWidget } from "../common/HTMLWidget";
 import { Cell } from "./Cell";
-import "css!./Border";
+
+import "./Border.css";
 
 export function Border() {
     HTMLWidget.call(this);

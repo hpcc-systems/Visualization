@@ -1,314 +1,326 @@
-import * as d3 from 'd3';
-import { Class } from './Class';
-import { PropertyExt } from './PropertyExt';
-import * as Utility from './Utility';
+import { max as d3Max, mean as d3Mean, min as d3Min, sum as d3Sum } from "d3-array";
+import { map as d3Map, nest as d3Nest } from "d3-collection";
+import { csvFormatRows as d3CsvFormatRows, csvParse as d3CsvParse, tsvFormatRows as d3TsvFormatRows, tsvParse as d3TsvParse } from "d3-dsv";
+import { format as d3Format } from "d3-format";
+import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
+import { PropertyExt } from "./PropertyExt";
+import * as Utility from "./Utility";
+
+const d3Aggr = {
+    min: d3Min,
+    max: d3Max,
+    mean: d3Mean,
+    sum: d3Sum
+};
+
+let lastFoundFormat = null;
 
 //  Field  ---
-export function Field(id?) {
-    Class.call(this);
-    PropertyExt.call(this);
+export class Field extends PropertyExt {
+    // _id: string
+    constructor(id?) {
+        super();
+        PropertyExt.call(this);
 
-    this._id = id || this._id;
-}
-Field.prototype = Object.create(Class.prototype);
-Field.prototype.constructor = Field;
-Field.prototype.mixin(PropertyExt);
-Field.prototype._class += " common_Database.Field";
-
-Field.prototype.id = function () {
-    return this._id;
-};
-
-Field.prototype.checksum = function () {
-    return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
-};
-
-Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
-Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden"], { optional: true });
-Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: function (w) { return w.type() !== "time"; }, optional: true });
-Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
-
-Field.prototype.typeTransformer = function (_) {
-    switch (this.type()) {
-        case "number":
-            return Number(_);
-        case "string":
-            return String(_);
-        case "boolean":
-            return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
-        case "time":
-        case "date":
-            return this.maskTransformer(_);
+        this._id = id || this._id;
     }
-    return _;
-};
 
-Field.prototype.maskTransformer = function (_) {
+    // id() {
+    //    return this._id;
+    // };
+
+    checksum() {
+        return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
+    }
+
+    typeTransformer(_) {
+        switch (this.type()) {
+            case "number":
+                return Number(_);
+            case "string":
+                return String(_);
+            case "boolean":
+                return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+            case "time":
+            case "date":
+                return this.maskTransformer(_);
+        }
+        return _;
+    }
+
+    maskTransformer(_) {
         return this.formatter(this.mask()).parse(String(_));
-};
-
-Field.prototype.formatTransformer = function (_) {
-    return this.formatter(this.format())(_);
-};
-
-Field.prototype.parse = function (_) {
-    if (!_) {
-        return _;
     }
-    try {
-        return this.typeTransformer(_);
-    } catch (e) {
-        console.log("Unable to parse:  " + _);
-        return null;
-    }
-};
 
-Field.prototype.transform = function (_) {
-    if (!_) {
-        return _;
+    formatTransformer(_) {
+        return this.formatter(this.format())(_);
     }
-    try {
-        return this.formatTransformer(this.typeTransformer(_));
-    } catch (e) {
-        console.log("Unable to transform:  " + _);
-        return null;
-    }
-};
 
-Field.prototype.clone = function () {
-    var context = this;
-    var retVal = new Field(this._id);
-    cloneProp(retVal, "label");
-    cloneProp(retVal, "type");
-    cloneProp(retVal, "mask");
-    cloneProp(retVal, "format");
-
-    function cloneProp(dest, key) {
-        dest[key + "_default"](context[key + "_default"]());
-        if (context[key + "_exists"]()) {
-            dest[key](context[key]());
+    parse(_) {
+        if (!_) {
+            return _;
+        }
+        try {
+            return this.typeTransformer(_);
+        } catch (e) {
+            console.log("Unable to parse:  " + _);
+            return null;
         }
     }
-    return retVal;
-};
 
-Field.prototype.formatter = function (format) {
-    var retVal;
-    if (!format) {
-        retVal = function (_) {
+    transform(_) {
+        if (!_) {
             return _;
-        };
+        }
+        try {
+            return this.formatTransformer(this.typeTransformer(_));
+        } catch (e) {
+            console.log("Unable to transform:  " + _);
+            return null;
+        }
+    }
+
+    clone() {
+        const context = this;
+        const retVal = new Field(this._id);
+        cloneProp(retVal, "label");
+        cloneProp(retVal, "type");
+        cloneProp(retVal, "mask");
+        cloneProp(retVal, "format");
+
+        function cloneProp(dest, key) {
+            dest[key + "_default"](context[key + "_default"]());
+            if (context[key + "_exists"]()) {
+                dest[key](context[key]());
+            }
+        }
+        return retVal;
+    }
+
+    formatter(format) {
+        let retVal;
+        if (!format) {
+            retVal = function (_) {
+                return _;
+            };
+            retVal.parse = function (_) {
+                return _;
+            };
+            return retVal;
+        }
+        switch (this.type()) {
+            case "time":
+            case "date":
+                return d3TimeFormat(format);
+        }
+        retVal = d3Format(format);
         retVal.parse = function (_) {
             return _;
         };
         return retVal;
     }
-    switch (this.type()) {
-        case "time":
-        case "date":
-            return d3.time.format(format);
-    }
-    retVal = d3.format(format);
-    retVal.parse = function (_) {
-        return _;
-    };
-    return retVal;
-};
+    label_default: { (): string; (x: string): Field; };
+    label: { (): string; (x: string): Field; };
+    type: { (): string; (x: string): Field; };
+    mask: { (): string; (x: string): Field; };
+    format: { (): string; (x: string): Field; };
+}
+Field.prototype._class += " common_Database.Field";
+
+Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
+Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden"], { optional: true });
+Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: (w: any) => w.type() !== "time", optional: true });
+Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
 
 //  Grid  ---
-export function Grid(dataChecksum?) {
-    dataChecksum = dataChecksum || false;
-    Class.call(this);
-    PropertyExt.call(this);
-    this._dataChecksum = dataChecksum;
-    this._dataVersion = 0;
-    this.clear();
-}
-Grid.prototype = Object.create(Class.prototype);
-Grid.prototype.constructor = Grid;
-Grid.prototype.mixin(PropertyExt);
-Grid.prototype._class += " common_Database.Grid";
+export class Grid extends PropertyExt {
+    _dataChecksum: boolean;
+    _dataVersion: number;
 
-Grid.prototype.publish("fields", [], "propertyArray", "Fields");
+    private _data = [];
+    private _dataChecksums = [];
 
-Grid.prototype.clear = function () {
-    this.fields([]);
-    this._data = [];
-    this._dataChecksums = [];
-    ++this._dataVersion;
-    return this;
-};
-
-//  Backward compatability  ---
-Grid.prototype.resetColumns = function (_) {
-    var fields = this.fields();
-    this.legacyColumns([]);
-    this.legacyColumns(fields.map(function (field) {
-        return field.label();
-    }));
-};
-
-    Grid.prototype.legacyColumns = function (_, asDefault) {
-    if (!arguments.length) return this.row(0);
-        this.row(0, _, asDefault);
-    return this;
-};
-
-Grid.prototype.legacyData = function (_, clone) {
-    return Grid.prototype.data.apply(this, arguments);
-};
-
-//  Meta  ---
-Grid.prototype.field = function (idx) {
-    return this.fields()[idx];
-};
-
-var fieldsOrig = Grid.prototype.fields;
-Grid.prototype.fields = function (_, clone) {
-    if (!arguments.length) return fieldsOrig.apply(this, arguments);
-    return fieldsOrig.call(this, clone ? _.map(function (d) { return d.clone(); }) : _);
-};
-
-Grid.prototype.fieldByLabel = function (_, ignoreCase) {
-    return this.fields().filter(function (field, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
-};
-
-Grid.prototype.data = function (_, clone) {
-    if (!arguments.length) return this._data;
-    this._data = clone ? _.map(function (d) { return d.map(function (d2) { return d2; }); }) : _;
-    this._dataCalcChecksum();
-    return this;
-};
-
-Grid.prototype.parsedData = function () {
-    var context = this;
-    return this._data.map(function (row) {
-        return row.map(function (cell, idx) {
-            return context.fields()[idx].parse(cell);
-        });
-    });
-};
-
-Grid.prototype.formattedData = function () {
-    var context = this;
-    return this._data.map(function (row) {
-        return row.map(function (cell, idx) {
-            return context.fields()[idx].transform(cell);
-        });
-    });
-};
-
-Grid.prototype.fieldsChecksum = function () {
-    return Utility.checksum(this.fields().map(function (field) { return field.checksum(); }));
-};
-
-Grid.prototype.dataChecksum = function () {
-    return Utility.checksum(this._dataChecksum ? this._dataChecksums : this._dataVersion);
-};
-
-Grid.prototype.checksum = function () {
-    return Utility.checksum([this.dataChecksum(), this.fieldsChecksum()]);
-};
-
-//  Row Access  ---
-Grid.prototype._dataCalcChecksum = function (idx) {
-    ++this._dataVersion;
-    if (this._dataChecksum) {
-        if (arguments.length) {
-            this._dataChecksums[idx] = Utility.checksum(this._data[idx]);
-        } else {
-            this._dataChecksums = this._data.map(function (row) { return Utility.checksum(row); });
-        }
+    constructor(dataChecksum?) {
+        super();
+        dataChecksum = dataChecksum || false;
+        this._dataChecksum = dataChecksum;
+        this._dataVersion = 0;
+        this.clear();
     }
-    return this;
-};
 
-    Grid.prototype.row = function (row, _, asDefault) {
-    if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
-    if (row === 0) {
-        var fieldsArr = this.fields();
-        this.fields(_.map(function (label, idx) {
+    clear() {
+        this.fields([]);
+        this._data = [];
+        this._dataChecksums = [];
+        ++this._dataVersion;
+        return this;
+    }
+
+    //  Backward compatability  ---
+    resetColumns() {
+        const fields = this.fields();
+        this.legacyColumns([]);
+        this.legacyColumns(fields.map(function (field) {
+            return field.label();
+        }));
+    }
+
+    legacyColumns(_?, asDefault?): any | Grid {
+        if (!arguments.length) return this.row(0);
+        this.row(0, _, asDefault);
+        return this;
+    }
+
+    legacyData(_?, _clone?) {
+        return Grid.prototype.data.apply(this, arguments);
+    }
+
+    //  Meta  ---
+    field(idx) {
+        return this.fields()[idx];
+    }
+
+    fieldByLabel(_, ignoreCase) {
+        return this.fields().filter(function (field: any, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
+    }
+
+    data(_?, clone?): any | Grid {
+        if (!arguments.length) return this._data;
+        this._data = clone ? _.map(function (d) { return d.map(function (d2) { return d2; }); }) : _;
+        this._dataCalcChecksum();
+        return this;
+    }
+
+    parsedData() {
+        const context = this;
+        return this._data.map(function (row) {
+            return row.map(function (cell, idx) {
+                return context.fields()[idx].parse(cell);
+            });
+        });
+    }
+
+    formattedData() {
+        const context = this;
+        return this._data.map(function (row) {
+            return row.map(function (cell, idx) {
+                return context.fields()[idx].transform(cell);
+            });
+        });
+    }
+
+    fieldsChecksum() {
+        return Utility.checksum(this.fields().map(function (field) { return field.checksum(); }));
+    }
+
+    dataChecksum() {
+        return Utility.checksum(this._dataChecksum ? this._dataChecksums : this._dataVersion);
+    }
+
+    checksum() {
+        return Utility.checksum([this.dataChecksum(), this.fieldsChecksum()]);
+    }
+
+    //  Row Access  ---
+    private _dataCalcChecksum(idx?) {
+        ++this._dataVersion;
+        if (this._dataChecksum) {
+            if (arguments.length) {
+                this._dataChecksums[idx] = Utility.checksum(this._data[idx]);
+            } else {
+                this._dataChecksums = this._data.map(function (row) { return Utility.checksum(row); });
+            }
+        }
+        return this;
+    }
+
+    row(row?, _?, asDefault?): any | Grid {
+        if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
+        if (row === 0) {
+            const fieldsArr = this.fields();
+            this.fields(_.map(function (label, idx) {
                 if (asDefault) {
                     return (fieldsArr[idx] || new Field()).label_default(label);
                 } else {
                     return (fieldsArr[idx] || new Field()).label(label);
                 }
-        }, this));
-    } else {
-        this._data[row - 1] = _;
-        this._dataCalcChecksum(row - 1);
-    }
-    return this;
-};
-
-Grid.prototype.rows = function (_) {
-    if (!arguments.length) return [this.row(0)].concat(this._data);
-    this.row(0, _[0]);
-    this._data = _.filter(function (row, idx) { return idx > 0; });
-    this._dataCalcChecksum();
-    return this;
-};
-
-//  Column Access  ---
-Grid.prototype.column = function (col, _) {
-    if (arguments.length < 2) return [this.fields()[col].label()].concat(this._data.map(function (row, idx) { return row[col]; }));
-    _.forEach(function (d, idx) {
-        if (idx === 0) {
-            this.fields()[col] = new Field().label(_[0]);
+            }, this));
         } else {
-            this._data[idx - 1][col] = d;
-            this._dataCalcChecksum(idx - 1);
+            this._data[row - 1] = _;
+            this._dataCalcChecksum(row - 1);
         }
-    }, this);
-    return this;
-};
-
-Grid.prototype.columnData = function (col, _) {
-    if (arguments.length < 2) return this._data.map(function (row, idx) { return row[col]; });
-    _.forEach(function (d, idx) {
-        this._data[idx][col] = d;
-        this._dataCalcChecksum(idx);
-    }, this);
-    return this;
-};
-
-Grid.prototype.columns = function (_) {
-    if (!arguments.length) return this.fields().map(function (col, idx) {
-        return this.column(idx);
-    }, this);
-    _.forEach(function (col, idx) {
-        this.column(idx, _[idx]);
-    }, this);
-    return this;
-};
-
-//  Cell Access  ---
-Grid.prototype.cell = function (row, col, _) {
-    if (arguments.length < 3) return this.row(row)[col];
-    if (row === 0) {
-        this.fields()[col] = new Field().label(_);
-    } else {
-        this._data[row][col] = _;
-        this._dataCalcChecksum(row);
+        return this;
     }
-    return this;
-};
 
-//  Grid Access  ---
-Grid.prototype.grid = function (_) {
-    return Grid.prototype.rows.apply(this, arguments);
-};
+    rows(_?): any | Grid {
+        if (!arguments.length) return [this.row(0)].concat(this._data);
+        this.row(0, _[0]);
+        this._data = _.filter(function (_row, idx) { return idx > 0; });
+        this._dataCalcChecksum();
+        return this;
+    }
+
+    //  Column Access  ---
+    column(col, _?): any | Grid {
+        if (arguments.length < 2) return [this.fields()[col].label()].concat(this._data.map(function (row, _idx) { return row[col]; }));
+        _.forEach(function (d, idx) {
+            if (idx === 0) {
+                this.fields()[col] = new Field().label(_[0]);
+            } else {
+                this._data[idx - 1][col] = d;
+                this._dataCalcChecksum(idx - 1);
+            }
+        }, this);
+        return this;
+    }
+
+    columnData(col, _): any | Grid {
+        if (arguments.length < 2) return this._data.map(function (row, _idx) { return row[col]; });
+        _.forEach(function (d, idx) {
+            this._data[idx][col] = d;
+            this._dataCalcChecksum(idx);
+        }, this);
+        return this;
+    }
+
+    columns(_?): any | Grid {
+        if (!arguments.length) return this.fields().map(function (_col, idx) {
+            return this.column(idx);
+        }, this);
+        _.forEach(function (_col, idx) {
+            this.column(idx, _[idx]);
+        }, this);
+        return this;
+    }
+
+    //  Cell Access  ---
+    cell(row, col, _) {
+        if (arguments.length < 3) return this.row(row)[col];
+        if (row === 0) {
+            this.fields()[col] = new Field().label(_);
+        } else {
+            this._data[row][col] = _;
+            this._dataCalcChecksum(row);
+        }
+        return this;
+    }
+
+    //  Grid Access  ---
+    grid(_?) {
+        return Grid.prototype.rows.apply(this, arguments);
+    }
 
     //  Hipie Helpers  ---
-Grid.prototype.hipieMappings = function (columns, missingDataString) {
-    missingDataString = missingDataString || "";
-    if (!this.fields().length || !this._data.length) {
-        return [];
-    }
-        var mappedColumns = [];
-        var hasRollup = false;
+
+    hipieMappings(columns, missingDataString) {
+        missingDataString = missingDataString || "";
+        if (!this.fields().length || !this._data.length) {
+            return [];
+        }
+        const mappedColumns = [];
+        let hasRollup = false;
         columns.forEach(function (mapping, idx) {
-            var mappedColumn = {
+            const mappedColumn = {
                 groupby: false,
                 func: "",
                 params: []
@@ -317,60 +329,58 @@ Grid.prototype.hipieMappings = function (columns, missingDataString) {
                 mappedColumn.func = mapping.function();
                 if (mappedColumn.func === "SCALE") {
                     mappedColumn.groupby = true;
-                        } else {
+                } else {
                     hasRollup = true;
-                        }
+                }
 
                 mapping.params().forEach(function (param) {
-                    var field = this.fieldByLabel(param, true);
+                    const field = this.fieldByLabel(param, true);
                     mappedColumn.params.push(field ? field.idx : -1);
-                    }, this);
-                        } else {
+                }, this);
+            } else {
                 mappedColumn.groupby = true;
-                var field = this.fieldByLabel(mapping.id(), true);
+                const field = this.fieldByLabel(mapping.id(), true);
                 mappedColumn.params.push(field ? field.idx : -1);
-                        }
+            }
             mappedColumns.push(mappedColumn);
-                    }, this);
+        }, this);
 
         if (hasRollup) {
-            var retVal = [];
+            const retVal = [];
             this.rollup(mappedColumns.filter(function (mappedColumn) {
                 return mappedColumn.groupby === true;
             }).map(function (d) {
                 return d.params[0];
             }), function (leaves) {
-                var row = mappedColumns.map(function (mappedColumn) {
-                    var param1 = mappedColumn.params[0];
-                    var param2 = mappedColumn.params[1];
+                const row = mappedColumns.map(function (mappedColumn) {
+                    const param1 = mappedColumn.params[0];
+                    const param2 = mappedColumn.params[1];
                     switch (mappedColumn.func) {
-                case "SUM":
-                            return d3.sum(leaves, function (d) { return d[param1]; });
-                case "AVE":
-                            return d3.mean(leaves, function (d) { return d[param1] / d[param2]; });
-                case "MIN":
-                            return d3.min(leaves, function (d) { return d[param1]; });
-                case "MAX":
-                            return d3.max(leaves, function (d) { return d[param1]; });
+                        case "SUM":
+                            return d3Sum(leaves, function (d) { return d[param1]; });
+                        case "AVE":
+                            return d3Mean(leaves, function (d) { return d[param1] / d[param2]; });
+                        case "MIN":
+                            return d3Min(leaves, function (d) { return d[param1]; });
+                        case "MAX":
+                            return d3Max(leaves, function (d) { return d[param1]; });
                         case "SCALE":
                             console.log("Unexpected function:  " + mappedColumn.func);
-                            //  All leaves should have the same values, use mean just in case they don't?  
-                            return d3.mean(leaves, function (d) { return d[param1] / +param2; });
-            }
-            console.log("Unsupported Mapping Function:  " + mapping.function);
-            return 0;
+                            //  All leaves should have the same values, use mean just in case they don't?
+                            return d3Mean(leaves, function (d) { return d[param1] / +param2; });
+                    }
                     //  All leaves should have the same value.
                     return leaves[0][param1];
-        });
+                });
                 retVal.push(row);
                 return row;
             });
-        return retVal;
-    } else {
-        return this._data.map(function (row) {
+            return retVal;
+        } else {
+            return this._data.map(function (row) {
                 return mappedColumns.map(function (mappedColumn) {
-                    var param1 = mappedColumn.params[0];
-                    var param2 = mappedColumn.params[1];
+                    const param1 = mappedColumn.params[0];
+                    const param2 = mappedColumn.params[1];
                     switch (mappedColumn.func) {
                         case "SCALE":
                             return row[param1] / +param2;
@@ -381,287 +391,317 @@ Grid.prototype.hipieMappings = function (columns, missingDataString) {
                             console.log("Unexpected function:  " + mappedColumn.func);
                     }
                     return row[param1];
+                });
             });
+        }
+    }
+
+    legacyView() {
+        return new LegacyView(this);
+    }
+
+    nestView(columnIndicies) {
+        return new RollupView(this, columnIndicies);
+    }
+
+    rollupView(columnIndicies, rollupFunc?) {
+        return new RollupView(this, columnIndicies, rollupFunc);
+    }
+
+    aggregateView(columnIndicies, aggrType, aggrColumn, aggrDeltaColumn = "") {
+        const context = this;
+        return new RollupView(this, columnIndicies, function (values) {
+            switch (aggrType) {
+                case null:
+                case undefined:
+                case "":
+                    values.aggregate = values.length;
+                    return values;
+                default:
+                    const columns = context.legacyColumns();
+                    const colIdx = columns.indexOf(aggrColumn);
+                    const deltaIdx = columns.indexOf(aggrDeltaColumn);
+                    values.aggregate = d3Aggr[aggrType](values, function (value) {
+                        return (+value[colIdx] - (deltaIdx >= 0 ? +value[deltaIdx] : 0)) / (deltaIdx >= 0 ? +value[deltaIdx] : 1);
+                    });
+                    return values;
+            }
         });
     }
-};
 
-//  Views  ---
-function LegacyView(grid) {
-    this._grid = grid;
-    d3.rebind(this, this._grid, "checksum", "fields");
-}
-LegacyView.prototype.constructor = LegacyView;
-
-LegacyView.prototype.grid = function () {
-    return this._grid;
-};
-LegacyView.prototype.columns = function (_) {
-    if (!arguments.length) return this._grid.legacyColumns();
-    this._grid.legacyColumns(_);
-    return this;
-};
-LegacyView.prototype.rawData = function (_) {
-    if (!arguments.length) return this._grid.legacyData();
-    this._grid.legacyData(_);
-    return this;
-};
-LegacyView.prototype.formattedData = function () {
-    if (this._formattedDataChecksum !== this._grid.checksum()) {
-        this._formattedDataChecksum = this._grid.checksum();
-        this._formattedData = this._grid.formattedData();
-    }
-    return this._formattedData;
-};
-LegacyView.prototype.parsedData = function () {
-    if (this._parsedDataChecksum !== this._grid.checksum()) {
-        this._parsedDataChecksum = this._grid.checksum();
-        this._parsedData = this._grid.parsedData();
-    }
-    return this._parsedData;
-};
-LegacyView.prototype._whichData = function (opts) {
-    if (opts) {
-        if (opts.parsed) {
-            return this.formattedData();
-        } else if (opts.formatted) {
-            return this.formattedData();
+    //  Nesting  ---
+    private _nest(columnIndicies, _rollup?) {
+        if (!(columnIndicies instanceof Array)) {
+            columnIndicies = [columnIndicies];
         }
-    }
-    return this.rawData();
-};
-LegacyView.prototype.data = function (_) {
-    return LegacyView.prototype.rawData.apply(this, arguments);
-};
-
-function RollupView(grid, columns, rollup?) {
-    LegacyView.call(this, grid);
-    if (!(columns instanceof Array)) {
-        columns = [columns];
-    }
-    this._columnIndicies = columns.filter(function (column) { return column; }).map(function (column) {
-        switch (typeof column) {
-            case "string":
-                return this._grid.fieldByLabel(column).idx;
-        }
-        return column;
-    }, this);
-
-    rollup = rollup || function (d) { return d; };
-    this._rollup = rollup;
-}
-RollupView.prototype = Object.create(LegacyView.prototype);
-RollupView.prototype.constructor = RollupView;
-
-RollupView.prototype.nest = function () {
-    if (this._nestChecksum !== this._grid.checksum()) {
-        this._nestChecksum = this._grid.checksum();
-
-        var nest = d3.nest();
-        this._columnIndicies.forEach(function (idx) {
+        const nest = d3Nest();
+        columnIndicies.forEach(function (idx) {
             nest.key(function (d) {
                 return d[idx];
             });
         });
-        this._nest = nest
-            .rollup(this._rollup)
+        return nest;
+    }
+
+    nest(columnIndicies) {
+        return this._nest(columnIndicies)
+            .entries(this._data)
             ;
     }
-    return this._nest;
-};
-RollupView.prototype.entries = function (opts) {
-    return this.nest().entries(this._whichData(opts));
-};
-RollupView.prototype.map = function (opts) {
-    return this.nest().map(this._whichData(opts));
-};
-RollupView.prototype.d3Map = function (opts) {
-    return this.nest().map(this._whichData(opts), d3.map);
-};
-RollupView.prototype._walkData = function (entries, prevRow) {
-    prevRow = prevRow || [];
-    var retVal = [];
-    entries.forEach(function (entry) {
-        if (entry instanceof Array) {
-            retVal.push(prevRow.concat([entry]));
-        } else {
-            retVal = retVal.concat(this._walkData(entry.values, prevRow.concat([entry.key])));
-        }
-    }, this);
-    return retVal;
-};
-RollupView.prototype.data = function (opts) {
-    return this._walkData(this.entries(opts));
-};
 
-Grid.prototype.legacyView = function () {
-    return new LegacyView(this);
-};
-
-Grid.prototype.nestView = function (columnIndicies) {
-    return new RollupView(this, columnIndicies);
-};
-
-Grid.prototype.rollupView = function (columnIndicies, rollupFunc) {
-    return new RollupView(this, columnIndicies, rollupFunc);
-};
-
-Grid.prototype.aggregateView = function (columnIndicies, aggrType, aggrColumn, aggrDeltaColumn) {
-    var context = this;
-    return new RollupView(this, columnIndicies, function (values) {
-        switch (aggrType) {
-            case null:
-            case undefined:
-            case "":
-                values.aggregate = values.length;
-                return values;
-            default:
-                var columns = context.legacyColumns();
-                var colIdx = columns.indexOf(aggrColumn);
-                var deltaIdx = columns.indexOf(aggrDeltaColumn);
-                values.aggregate = d3[aggrType](values, function (value) {
-                    return (+value[colIdx] - (deltaIdx >= 0 ? +value[deltaIdx] : 0)) / (deltaIdx >= 0 ? +value[deltaIdx] : 1);
-                });
-                return values;
-        }
-    });
-};
-
-//  Nesting  ---
-Grid.prototype._nest = function (columnIndicies, rollup) {
-    if (!(columnIndicies instanceof Array)) {
-        columnIndicies = [columnIndicies];
+    rollup(columnIndicies, rollup) {
+        return this._nest(columnIndicies)
+            .rollup(rollup)
+            .entries(this._data)
+            ;
     }
-    var nest = d3.nest();
-    columnIndicies.forEach(function (idx) {
-        nest.key(function (d) {
-            return d[idx];
-        });
-    });
-    return nest;
-};
 
-Grid.prototype.nest = function (columnIndicies) {
-    return this._nest(columnIndicies)
-        .entries(this._data)
-        ;
-};
-
-Grid.prototype.rollup = function (columnIndicies, rollup) {
-    return this._nest(columnIndicies)
-        .rollup(rollup)
-        .entries(this._data)
-        ;
-};
-
-//  Util  ---
-Grid.prototype.length = function () {
-    return this._data.length + 1;
-};
-
-Grid.prototype.width = function () {
-    return this.fields().length;
-};
-
-Grid.prototype.pivot = function () {
-    this.resetColumns();
-    this.rows(this.columns());
-    return this;
-};
-
-Grid.prototype.clone = function (deep) {
-    return new Grid()
-        .fields(this.fields(), deep)
-        .data(this.data(), deep)
-        ;
-};
-
-Grid.prototype.filter = function (filter) {
-    var filterIdx = {};
-    this.row(0).forEach(function (col, idx) {
-        filterIdx[col] = idx;
-    });
-    return new Grid()
-        .fields(this.fields(), true)
-        .data(this.data().filter(function (row) {
-            for (var key in filter) {
-                if (filter[key] !== row[filterIdx[key]]) {
-                    return false;
-                }
-            }
-            return true;
-        }))
-        ;
-};
-
-var lastFoundFormat = null;
-Grid.prototype.analyse = function (columns) {
-    if (!(columns instanceof Array)) {
-        columns = [columns];
+    //  Util  ---
+    length() {
+        return this._data.length + 1;
     }
-    var retVal = [];
-    columns.forEach(function (col) {
-        var rollup = this.rollup(col, function (leaves) {
-            return leaves.length;
-        });
-        retVal.push(rollup);
-        var keys = rollup.map(function (d) { return d.key; });
-        this.fields()[col].isBoolean = typeTest(keys, isBoolean);
-        this.fields()[col].isNumber = typeTest(keys, isNumber);
-        this.fields()[col].isString = !this.fields()[col].isNumber && typeTest(keys, isString);
-        this.fields()[col].isUSState = this.fields()[col].isString && typeTest(keys, isUSState);
-        this.fields()[col].isDateTime = this.fields()[col].isString && typeTest(keys, isDateTime);
-        this.fields()[col].isDateTimeFormat = lastFoundFormat;
-        this.fields()[col].isDate = !this.fields()[col].isDateTime && typeTest(keys, isDate);
-        this.fields()[col].isDateFormat = lastFoundFormat;
-        this.fields()[col].isTime = this.fields()[col].isString && !this.fields()[col].isDateTime && !this.fields()[col].isDate && typeTest(keys, isTime);
-        this.fields()[col].isTimeFormat = lastFoundFormat;
-    }, this);
-    return retVal;
-};
 
-//  Import/Export  ---
-Grid.prototype.jsonObj = function (_) {
-    if (!arguments.length) return this._data.map(function (row) {
-        var retVal = {};
+    width() {
+        return this.fields().length;
+    }
+
+    pivot() {
+        this.resetColumns();
+        this.rows(this.columns());
+        return this;
+    }
+
+    clone(deep) {
+        return new Grid()
+            .fields(this.fields(), deep)
+            .data(this.data(), deep)
+            ;
+    }
+
+    filter(filter) {
+        const filterIdx = {};
         this.row(0).forEach(function (col, idx) {
-            retVal[col] = row[idx];
+            filterIdx[col] = idx;
         });
-        return retVal;
-    }, this);
-    this.clear();
-    this.data(_.map(function (row, idx) {
-        var retVal = [];
-        for (var key in row) {
-            var colIdx = this.row(0).indexOf(key);
-            if (colIdx < 0) {
-                colIdx = this.fields().length;
-                this.fields().push(new Field().label(key));
-            }
-            retVal[colIdx] = row[key];
+        return new Grid()
+            .fields(this.fields(), true)
+            .data(this.data().filter(function (row) {
+                for (const key in filter) {
+                    if (filter[key] !== row[filterIdx[key]]) {
+                        return false;
+                    }
+                }
+                return true;
+            }))
+            ;
+    }
+
+    analyse(columns) {
+        if (!(columns instanceof Array)) {
+            columns = [columns];
         }
+        const retVal = [];
+        columns.forEach(function (col) {
+            const rollup = this.rollup(col, function (leaves) {
+                return leaves.length;
+            });
+            retVal.push(rollup);
+            const keys = rollup.map(function (d) { return d.key; });
+            this.fields()[col].isBoolean = typeTest(keys, isBoolean);
+            this.fields()[col].isNumber = typeTest(keys, isNumber);
+            this.fields()[col].isString = !this.fields()[col].isNumber && typeTest(keys, isString);
+            this.fields()[col].isUSState = this.fields()[col].isString && typeTest(keys, isUSState);
+            this.fields()[col].isDateTime = this.fields()[col].isString && typeTest(keys, isDateTime);
+            this.fields()[col].isDateTimeFormat = lastFoundFormat;
+            this.fields()[col].isDate = !this.fields()[col].isDateTime && typeTest(keys, isDate);
+            this.fields()[col].isDateFormat = lastFoundFormat;
+            this.fields()[col].isTime = this.fields()[col].isString && !this.fields()[col].isDateTime && !this.fields()[col].isDate && typeTest(keys, isTime);
+            this.fields()[col].isTimeFormat = lastFoundFormat;
+        }, this);
         return retVal;
-    }, this));
-    return this;
+    }
+
+    //  Import/Export  ---
+    jsonObj(_?): any | Grid {
+        if (!arguments.length) return this._data.map(function (row) {
+            const retVal = {};
+            this.row(0).forEach(function (col, idx) {
+                retVal[col] = row[idx];
+            });
+            return retVal;
+        }, this);
+        this.clear();
+        this.data(_.map(function (row) {
+            const retVal = [];
+            for (const key in row) {
+                let colIdx = this.row(0).indexOf(key);
+                if (colIdx < 0) {
+                    colIdx = this.fields().length;
+                    this.fields().push(new Field().label(key));
+                }
+                retVal[colIdx] = row[key];
+            }
+            return retVal;
+        }, this));
+        return this;
+    }
+
+    json(_?): string | Grid {
+        if (!arguments.length) return JSON.stringify(this.jsonObj(), null, "  ");
+        this.jsonObj(JSON.parse(_));
+        return this;
+    }
+
+    csv(_?): string | Grid {
+        if (!arguments.length) return d3CsvFormatRows(this.grid());
+        this.jsonObj(d3CsvParse(_));
+        return this;
+    }
+
+    tsv(_?): string | Grid {
+        if (!arguments.length) return d3TsvFormatRows(this.grid());
+        this.jsonObj(d3TsvParse(_));
+        return this;
+    }
+
+    fields: { (): Field[]; (_, clone?): Grid };
+}
+Grid.prototype._class += " common_Database.Grid";
+
+Grid.prototype.publish("fields", [], "propertyArray", "Fields");
+const fieldsOrig = Grid.prototype.fields;
+Grid.prototype.fields = function (_?, clone?) {
+    if (!arguments.length) return fieldsOrig.apply(this, arguments);
+    return fieldsOrig.call(this, clone ? _.map(function (d) { return d.clone(); }) : _);
 };
 
-Grid.prototype.json = function (_) {
-    if (!arguments.length) return JSON.stringify(this.jsonObj(), null, "  ");
-    this.jsonObj(JSON.parse(_));
-    return this;
-};
+//  Views  ---
+export class LegacyView {
+    _grid;
+    _parsedData;
+    _parsedDataChecksum;
+    _formattedData;
+    _formattedDataChecksum;
 
-Grid.prototype.csv = function (_) {
-    if (!arguments.length) return d3.csv.formatRows(this.grid());
-    this.jsonObj(d3.csv.parse(_));
-    return this;
-};
+    constructor(grid) {
+        this._grid = grid;
+    }
 
-Grid.prototype.tsv = function (_) {
-    if (!arguments.length) return d3.tsv.formatRows(this.grid());
-    this.jsonObj(d3.tsv.parse(_));
-    return this;
-};
+    checksum() {
+        const value = this._grid.on.apply(this._grid, arguments);
+        return value === this._grid ? this : value;
+    }
+
+    fields() {
+        const value = this._grid.on.apply(this._grid, arguments);
+        return value === this._grid ? this : value;
+    }
+
+    grid() {
+        return this._grid;
+    }
+    columns(_?) {
+        if (!arguments.length) return this._grid.legacyColumns();
+        this._grid.legacyColumns(_);
+        return this;
+    }
+    rawData(_?) {
+        if (!arguments.length) return this._grid.legacyData();
+        this._grid.legacyData(_);
+        return this;
+    }
+    formattedData() {
+        if (this._formattedDataChecksum !== this._grid.checksum()) {
+            this._formattedDataChecksum = this._grid.checksum();
+            this._formattedData = this._grid.formattedData();
+        }
+        return this._formattedData;
+    }
+    parsedData() {
+        if (this._parsedDataChecksum !== this._grid.checksum()) {
+            this._parsedDataChecksum = this._grid.checksum();
+            this._parsedData = this._grid.parsedData();
+        }
+        return this._parsedData;
+    }
+    protected _whichData(opts?) {
+        if (opts) {
+            if (opts.parsed) {
+                return this.formattedData();
+            } else if (opts.formatted) {
+                return this.formattedData();
+            }
+        }
+        return this.rawData();
+    }
+    data(_) {
+        return LegacyView.prototype.rawData.apply(this, arguments);
+    }
+}
+
+export class RollupView extends LegacyView {
+    _columnIndicies;
+    _rollup;
+    _nestChecksum;
+    _nest;
+
+    constructor(grid, columns, rollup?) {
+        super(grid);
+        if (!(columns instanceof Array)) {
+            columns = [columns];
+        }
+        this._columnIndicies = columns.filter(function (column) { return column; }).map(function (column) {
+            switch (typeof column) {
+                case "string":
+                    return this._grid.fieldByLabel(column).idx;
+            }
+            return column;
+        }, this);
+
+        rollup = rollup || function (d) { return d; };
+        this._rollup = rollup;
+    }
+
+    nest() {
+        if (this._nestChecksum !== this._grid.checksum()) {
+            this._nestChecksum = this._grid.checksum();
+
+            const nest = d3Nest();
+            this._columnIndicies.forEach(function (idx) {
+                nest.key(function (d) {
+                    return d[idx];
+                });
+            });
+            this._nest = nest
+                .rollup(this._rollup)
+                ;
+        }
+        return this._nest;
+    }
+    entries(opts?) {
+        return this.nest().entries(this._whichData(opts));
+    }
+    map(opts) {
+        return this.nest().map(this._whichData(opts));
+    }
+    d3Map(opts) {
+        return this.nest().map(this._whichData(opts), d3Map);
+    }
+    _walkData(entries, prevRow = []) {
+        let retVal = [];
+        entries.forEach(function (entry) {
+            if (entry instanceof Array) {
+                retVal.push(prevRow.concat([entry]));
+            } else {
+                retVal = retVal.concat(this._walkData(entry.values, prevRow.concat([entry.key])));
+            }
+        }, this);
+        return retVal;
+    }
+    data(opts) {
+        return this._walkData(this.entries(opts));
+    }
+}
 
 //  --- --- ---
 function typeTest(cells, test) {
@@ -679,13 +719,13 @@ function isNumber(cell) {
 function isString(cell) {
     return typeof cell === "string";
 }
-var dateTimeFormats = [
+const dateTimeFormats = [
 ];
-var dateFormats = [
+const dateFormats = [
     "%Y-%m-%d",
     "%Y%m%d",
 ];
-var timeFormats = [
+const timeFormats = [
     "%H:%M:%S.%LZ",
     "%H:%M:%SZ",
     "%H:%M:%S"
@@ -696,8 +736,8 @@ dateFormats.forEach(function (d) {
     });
 });
 function formatPicker(formats, cell) {
-    for (var i = 0; i < formats.length; ++i) {
-        var date = d3.time.format(formats[i]).parse(cell);
+    for (let i = 0; i < formats.length; ++i) {
+        const date = d3TimeParse(formats[i])(cell);
         if (date) {
             lastFoundFormat = formats[i];
             return formats[i];

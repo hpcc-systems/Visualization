@@ -2,8 +2,9 @@
 import { HTMLWidget } from "../common/HTMLWidget";
 import { } from "../common/Utility";
 import { PropertyExt } from "../common/PropertyExt";
-import "css!orb";
-import "css!./Orb";
+import "orb";
+
+import "./Orb.css";
 
 function Mapping(owner) {
     PropertyExt.call(this);

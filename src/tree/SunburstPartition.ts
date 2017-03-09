@@ -1,124 +1,148 @@
-import * as d3 from 'd3';
-import { SVGWidget } from "../common/SVGWidget";
+import { hierarchy as d3Hierarchy, partition as d3Parition } from "d3-hierarchy";
+import { interpolate as d3Interpolate } from "d3-interpolate";
+import { scaleLinear as d3ScaleLinear, scaleSqrt as d3ScaleSqrt } from "d3-scale";
+import { event as d3Event, select as d3Select } from "d3-selection";
+import { arc as d3Arc } from "d3-shape";
 import { ITree } from "../api/ITree";
-import "css!./SunburstPartition";
+import { SVGWidget } from "../common/SVGWidget";
+import "./SunburstPartition.css";
 
-export function SunburstPartition(target) {
-    SVGWidget.call(this);
-    ITree.call(this);
+export class SunburstPartition extends SVGWidget {
+    svg;
+    radius;
+    _xScale;
+    _yScale;
+    partition;
+    arc;
+    _resetRoot;
+
+    constructor() {
+        super();
+        ITree.call(this);
+    }
+
+    data() {
+        const retVal = SVGWidget.prototype.data.apply(this, arguments);
+        if (arguments.length) {
+            this._resetRoot = true;
+        }
+        return retVal;
+    }
+
+    enter(_domNode, element) {
+        const context = this;
+
+        this.radius = Math.min(this.width(), this.height()) / 2;
+
+        this._xScale = d3ScaleLinear()
+            .range([0, 2 * Math.PI])
+            ;
+
+        this._yScale = d3ScaleSqrt()
+            .range([0, this.radius])
+            ;
+
+        this.partition = d3Parition();
+
+        this.arc = d3Arc()
+            .startAngle(function (d: any) {
+                return Math.max(0, Math.min(2 * Math.PI, context._xScale(d.x0)));
+            })
+            .endAngle(function (d: any) {
+                return Math.max(0, Math.min(2 * Math.PI, context._xScale(d.x1)));
+            })
+            .innerRadius(function (d: any) {
+                return Math.max(0, context._yScale(d.y0));
+            })
+            .outerRadius(function (d: any) {
+                return Math.max(0, context._yScale(d.y1));
+            })
+            ;
+
+        this.svg = element.append("g");
+    };
+
+    update(_domNode, _element) {
+        const context = this;
+
+        this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
+        this.radius = Math.min(this.width(), this.height()) / 2;
+        this._yScale.range([0, this.radius]);
+
+        const root = d3Hierarchy(this.data())
+            .sum(function (d) {
+                return d.size !== undefined ? d.size : 1;
+            })
+            ;
+
+        const paths = this.svg.selectAll("path").data(this.partition(root).descendants(), function (d, i) {
+            return d.data.label !== undefined ? d.data.label : i;
+        });
+
+        paths.enter().append("path")
+            .on("click", function (d) { context.click(d.data, null, null); })
+            .on("dblclick", function (d) {
+                if (d3Event) {
+                    d3Event.stopPropagation();
+                }
+                context.zoomTo(d);
+            })
+            .each(function () {
+                const element = d3Select(this);
+                element
+                    .append("title")
+                    ;
+            })
+            .merge(paths)
+            .attr("d", this.arc)
+            .style("fill", function (d) {
+                return d.data.__viz_fill ? d.data.__viz_fill : context._palette(d.data.label);
+            })
+            .style("stroke", function (d) {
+                return d.value > 16 ? "white" : "none";
+            })
+            .select("title")
+            .text(function (d) {
+                return d.data.label;
+            })
+            ;
+
+        paths.exit().remove();
+
+        if (this._resetRoot) {
+            this._resetRoot = false;
+            this.zoomTo(root);
+        }
+    };
+
+    zoomTo(d) {
+        const context = this;
+        this.svg.transition()
+            .duration(750)
+            .tween("scale", function () {
+                const xd = d3Interpolate(context._xScale.domain(), [d.x0, d.x1]);
+                const yd = d3Interpolate(context._yScale.domain(), [d.y0, 1]);
+                const yr = d3Interpolate(context._yScale.range(), [d.y0 ? 20 : 0, context.radius]);
+                return function (t) { context._xScale.domain(xd(t)); context._yScale.domain(yd(t)).range(yr(t)); };
+            })
+            .selectAll("path")
+            .attrTween("d", function (d2) { return function () { return context.arc(d2); }; });
+    }
+
+    paletteID: (_?: string) => string | SunburstPartition;
+    useClonedPalette: (_?: boolean) => boolean | SunburstPartition;
+
+    //  ITree
+    _palette;
+    click: (row, column, selected) => void;
+    dblclick: (row, column, selected) => void;
 }
-SunburstPartition.prototype = Object.create(SVGWidget.prototype);
-SunburstPartition.prototype.constructor = SunburstPartition;
 SunburstPartition.prototype._class += " tree_SunburstPartition";
 SunburstPartition.prototype.implements(ITree.prototype);
 
 SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-
-SunburstPartition.prototype.root = function (_) {
-    if (!arguments.length) return this._root || this.data();
-    this._root = _;
-
-    if (this.svg) {
-        this.svg.selectAll("path").transition()
-            .duration(750)
-            .attrTween("d", this.arcTweenFunc(this._root))
-            ;
-    }
-    return this;
-};
-
-SunburstPartition.prototype.data = function () {
-    var retVal = SVGWidget.prototype.data.apply(this, arguments);
-    if (arguments.length) {
-        this._resetRoot = true;
-    }
-    return retVal;
-};
-
-SunburstPartition.prototype.enter = function (domNode, element) {
-    var context = this;
-
-    this.radius = Math.min(this.width(), this.height()) / 2;
-
-    this._xScale = d3.scale.linear()
-        .range([0, 2 * Math.PI])
-        ;
-
-    this._yScale = d3.scale.sqrt()
-        .range([0, this.radius])
-        ;
-
-    this.partition = d3.layout.partition()
-        .value(function (d) {
-            return d.value !== undefined ? d.value : 1;
-        })
-        ;
-
-    this.arc = d3.svg.arc()
-        .startAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, context._xScale(d.x))); })
-        .endAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, context._xScale(d.x + d.dx))); })
-        .innerRadius(function (d) { return Math.max(0, context._yScale(d.y)); })
-        .outerRadius(function (d) { return Math.max(0, context._yScale(d.y + d.dy)); })
-        ;
-
-    this.svg = element.append("g");
-};
-
-SunburstPartition.prototype.update = function (domNode, element) {
-    var context = this;
-
-    this._palette = this._palette.switch(this.paletteID());
-    if (this.useClonedPalette()) {
-        this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
-    }
-
-    this.radius = Math.min(this.width(), this.height()) / 2;
-    this._xScale.range([0, 2 * Math.PI]);
-    this._yScale.range([0, this.radius]);
-
-    this._dataNodes = this.partition.nodes(this.data());
-    var paths = this.svg.selectAll("path").data(this._dataNodes, function (d, i) { return d.id !== undefined ? d.id : i; });
-    paths.enter().append("path")
-        .on("click", function (d) { context.click(d); })
-        .on("dblclick", dblclick)
-        .append("title")
-        ;
-    paths
-        .attr("d", this.arc)
-        .style("fill", function (d) {
-            return d.__viz_fill ? d.__viz_fill : context._palette(d.label);
-        })
-        .style("stroke", function (d) {
-            return d.value > 16 ? "white" : "none";
-        })
-        .select("title")
-        .text(function (d) { return d.label; })
-        ;
-
-    paths.exit().remove();
-
-    if (this._resetRoot) {
-        this._resetRoot = false;
-        this.root(this._dataNodes[0]);
-    }
-
-    function dblclick(d) {
-        if (d3.event) {
-            d3.event.stopPropagation();
-        }
-        context.root(d);
-    }
-};
-
-SunburstPartition.prototype.arcTweenFunc = function (d) {
-    var xd = d3.interpolate(this._xScale.domain(), [d.x, d.x + d.dx]),
-        yd = d3.interpolate(this._yScale.domain(), [d.y, 1]),
-        yr = d3.interpolate(this._yScale.range(), [d.y ? 20 : 0, this.radius]);
-    var context = this;
-    return function (d, i) {
-        return i ?
-            function (t) { return context.arc(d); } :
-            function (t) { context._xScale.domain(xd(t)); context._yScale.domain(yd(t)).range(yr(t)); return context.arc(d); };
-    };
-};

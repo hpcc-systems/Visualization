@@ -1,9 +1,8 @@
-import * as d3 from "d3";
 import { HTMLWidget } from "../common/HTMLWidget";
 import { ITooltip } from "../api/ITooltip";
 import { SerialAxis as Axis } from "./SerialAxis";
 
-import "amcharts-serial";
+import "amcharts-serial.css";
 
 export function CommonSerial() {
     HTMLWidget.call(this);
@@ -615,37 +614,37 @@ CommonSerial.prototype.enter = function (domNode, element) {
             field = graph.colorField;
         }
             var selected = false;
-            if (field) {
+        if (field) {
                 if (data[field] !== null && data[field] !== undefined) {
                     delete data[field];
                     data[field2] = context._colorObj[e.index][e.target.columnIndex].lineColor;
                     if (context.selectionMode() === "simple") {
-                        if (context._selected !== null) {
-                            delete context._selected.data[context._selected.field];
-                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
-                        }
-                    }
+            if (context._selected !== null) {
+                delete context._selected.data[context._selected.field];
+                    context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
+                }
+            }
                 } else {
                     selected = true;
-                    data[field] = context.selectionColor();
+                data[field] = context.selectionColor();
                     data[field2] = context.selectionColor();
-                    if (context.selectionMode() === "simple") {
-                        if (context._selected !== null) {
-                            delete context._selected.data[context._selected.field];
+                if (context.selectionMode() === "simple") {
+                    if (context._selected !== null) {
+                        delete context._selected.data[context._selected.field];
                             context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
                         }
-                        context._selected = {
-                            field: field,
-                            field2: field2,
-                            data: data,
-                            dIdx: e.index,
-                            cIdx: e.target.columnIndex
-                        };
-                        context._selections.push(context._selected);
-                    }
+                    context._selected = {
+                        field: field,
+                        field2: field2,
+                        data: data,
+                        dIdx: e.index,
+                        cIdx: e.target.columnIndex
+                    };
+                    context._selections.push(context._selected);
                 }
-                e.chart.validateData();
             }
+            e.chart.validateData();
+        }
 
             context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex + 1], selected);
     });

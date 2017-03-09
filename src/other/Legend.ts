@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import * as Palette from "../common/Palette";
 import { Table } from "./Table";
-import "css!./Legend";
+import "./Legend";
 
 export function Legend() {
     Table.call(this);

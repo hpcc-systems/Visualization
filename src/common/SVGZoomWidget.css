@@ -12,3 +12,9 @@
 .common_SVGZoomWidget .background {
     fill: white;
 }
+
+.common_SVGZoomWidget .selection {
+    fill: none;
+    stroke: darkgray;
+    stroke-dasharray: 5, 5
+}

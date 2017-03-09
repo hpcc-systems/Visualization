@@ -1,18 +1,114 @@
-import { SVGWidget } from "./SVGWidget";
 import { Shape } from "./Shape";
+import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
-import "css!./TextBox";
+import { ISize } from "./Widget";
 
-export function TextBox() {
-    SVGWidget.call(this);
+import "./TextBox.css";
 
-    this._shape = new Shape()
-        .shape("rect")
-        ;
-    this._text = new Text();
+export class TextBox extends SVGWidget {
+
+    protected _shape: Shape;
+    protected _text: Text;
+
+    constructor() {
+        super();
+
+        this._shape = new Shape()
+            .shape("rect")
+            .on("click", () => {
+                this.click();
+            })
+            .on("dblclick", () => {
+                this.dblclick();
+            })
+            ;
+        this._text = new Text();
+    }
+
+    padding(_) {
+        this.paddingLeft(_);
+        this.paddingRight(_);
+        this.paddingTop(_);
+        this.paddingBottom(_);
+        return this;
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this._shape
+            .target(domNode)
+            .tooltip(this.tooltip())
+            .render()
+            ;
+        this._text
+            .target(element.append("g").node())
+            .render()
+            ;
+    }
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        this._text
+            .render()
+            ;
+        const textBBox = this._text.getBBox(true);
+        const size = {
+            width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
+            height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
+        };
+        this._shape
+            .width(size.width)
+            .height(size.height)
+            .render()
+            ;
+        if (this.fixedSize()) {
+            switch (this.anchor()) {
+                case "start":
+                    this._text
+                        .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.paddingLeft() + this.paddingRight()) / 2)
+                        .render()
+                        ;
+                    break;
+                case "end":
+                    this._text
+                        .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.paddingLeft() + this.paddingRight()) / 2)
+                        .render()
+                        ;
+                    break;
+            }
+        }
+        const bbox = this._text.getBBox();
+        this._text.visible(bbox.width <= size.width && bbox.height <= size.height);
+    }
+
+    exit(domNode, element) {
+        this._shape
+            .target(null)
+            ;
+        this._text
+            .target(null)
+            ;
+        super.exit(domNode, element);
+    }
+
+    click() {
+    }
+
+    dblclick() {
+    }
+
+    text: { (): string; (_: string): TextBox; };
+    shape_colorFill: { (): string; (_: string): TextBox; };
+    shape_colorStroke: { (): string; (_: string): TextBox; };
+    text_colorFill: { (): string; (_: string): TextBox; };
+    paddingLeft: { (): number; (_: number): TextBox; };
+    paddingRight: { (): number; (_: number): TextBox; };
+    paddingTop: { (): number; (_: number): TextBox; };
+    paddingBottom: { (): number; (_: number): TextBox; };
+    anchor: { (): string; (_: string): TextBox; };
+    fixedSize: { (): ISize; (_: ISize): TextBox; };
+    tooltip: { (): string; (_: string): TextBox; };
 }
-TextBox.prototype = Object.create(SVGWidget.prototype);
-TextBox.prototype.constructor = TextBox;
 TextBox.prototype._class += " common_TextBox";
 
 TextBox.prototype.publishProxy("text", "_text");
@@ -27,68 +123,3 @@ TextBox.prototype.publishProxy("anchor", "_text");
 TextBox.prototype.publish("fixedSize", null);
 
 TextBox.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
-
-TextBox.prototype.padding = function (_) {
-    this.paddingLeft(_);
-    this.paddingRight(_);
-    this.paddingTop(_);
-    this.paddingBottom(_);
-    return this;
-};
-
-TextBox.prototype.enter = function (domNode, element) {
-    SVGWidget.prototype.enter.apply(this, arguments);
-    this._tooltipElement = element.append("title");
-    this._shape
-        .target(domNode)
-        .render()
-        ;
-    this._text
-        .target(domNode)
-        .render()
-        ;
-};
-
-TextBox.prototype.update = function (domNode, element) {
-    SVGWidget.prototype.update.apply(this, arguments);
-    this._tooltipElement.text(this.tooltip());
-    this._text
-        .render()
-        ;
-    var textBBox = this._text.getBBox(true);
-    var size = {
-        width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
-        height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
-    };
-    this._shape
-        .width(size.width)
-        .height(size.height)
-        .render()
-        ;
-    if (this.fixedSize()) {
-        switch (this.anchor()) {
-            case "start":
-                this._text
-                    .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.paddingLeft() + this.paddingRight()) / 2)
-                    .render()
-                    ;
-                break;
-            case "end":
-                this._text
-                    .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.paddingLeft() + this.paddingRight()) / 2)
-                    .render()
-                    ;
-                break;
-        }
-    }
-};
-
-TextBox.prototype.exit = function (domNode, element) {
-    this._shape
-        .target(null)
-        ;
-    this._text
-        .target(null)
-        ;
-    SVGWidget.prototype.exit.apply(this, arguments);
-};

@@ -1,17 +1,14 @@
 import { Widget } from "./Widget";
 
-export function WidgetArray() {
-    Widget.call(this);
+export class WidgetArray extends Widget {
+
+    constructor() {
+        super();
+    }
+
+    content: { (): Widget[]; (_): WidgetArray };
 }
-WidgetArray.prototype = Object.create(Widget.prototype);
-WidgetArray.prototype.constructor = WidgetArray;
 WidgetArray.prototype._class += " common_WidgetArray";
 
 WidgetArray.prototype.publish("content", [], "widgetArray", "Widget Array");
 
-WidgetArray.prototype.target = function (target) {
-    if (!target) {
-        this.content_reset();
-        this.exit();
-    }
-};

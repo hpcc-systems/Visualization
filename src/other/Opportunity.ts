@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { SVGWidget } from "../common/SVGWidget";
 import { PropertyExt } from "../common/PropertyExt";
-import "css!./Opportunity";
+import "./Opportunity";
 
 function Column(owner) {
     PropertyExt.call(this);

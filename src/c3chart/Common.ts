@@ -1,6 +1,6 @@
 import * as c3 from "c3";
 import { HTMLWidget } from "../common/HTMLWidget";
-import "css!c3";
+import "c3";
 
 export function Common(target) {
     HTMLWidget.call(this);

@@ -2,7 +2,8 @@
 import { Toolbar } from "../layout/Toolbar";
 import { OnOff } from "../form/OnOff";
 import { PropertyEditor } from "../other/PropertyEditor";
-import "css!./Dermatology";
+
+import "./Dermatology.css";
 
 export function Dermatology() {
     Border.call(this);

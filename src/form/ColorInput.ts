@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 import { HTMLWidget } from "../common/HTMLWidget";
 import { IInput } from "../api/IInput";
-import "css!./Input";
+
+import "./Input.css";
 
 export function ColorInput() {
     HTMLWidget.call(this);

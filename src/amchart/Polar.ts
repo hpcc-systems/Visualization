@@ -1,7 +1,8 @@
 import "amcharts-radar";
 import { CommonRadar } from "./CommonRadar";
 import { INDChart } from "../api/INDChart";
-import "css!./Area";
+
+import "./Area.css";
 
 export function Polar() {
     CommonRadar.call(this);

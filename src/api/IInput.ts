@@ -13,7 +13,7 @@ IInput.prototype.publish("validate", null, "string", "Input Validation");
 //  Implementation  ---
 IInput.prototype.isValid = function () {
     if (this.validate()) {
-        var re = new RegExp(this.validate());
+        const re = new RegExp(this.validate());
         if (!re.test(this.value())) {
             return false;
         }
@@ -43,13 +43,13 @@ IInput.prototype.hasValue = function () {
 };
 
 //  Events  ---
-IInput.prototype.blur = function (w) {
+IInput.prototype.blur = function (_w) {
 };
-IInput.prototype.click = function (w) {
+IInput.prototype.click = function (_w) {
 };
-IInput.prototype.dblclick = function (w) {
+IInput.prototype.dblclick = function (_w) {
 };
-IInput.prototype.change = function (w) {
+IInput.prototype.change = function (_w) {
 };
 
 IInput.prototype.resetValue = function (w) {

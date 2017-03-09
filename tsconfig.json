@@ -1,20 +1,33 @@
 {
     "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "out",
         "target": "es5",
-        "module": "amd",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": false,
-        "sourceMap": true,
-        "allowJs": false,
+        "module": "es6",
         "lib": [
-            "es5",
+            "es2015",
             "dom"
+        ],
+        "declaration": true, /* Generates corresponding '.d.ts' file. */
+        "sourceMap": true, /* Generates corresponding '.map' file. */
+        "outDir": "./lib", /* Redirect output structure to the directory. */
+        "importHelpers": true, /* Import emit helpers from 'tslib'. */
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "jsxFactory": "JSXWidget.createElement",
+        /* Strict Type-Checking Options */
+        "strict": true, /* Enable all strict type-checking options. */
+        "noImplicitAny": false, /* Raise error on expressions and declarations with an implied 'any' type. */
+        "strictNullChecks": false, /* Enable strict null checks. */
+        "noImplicitThis": false,
+        "moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+        "noUnusedLocals": true,
+        "types": [
+            "mocha",
+            "chai"
         ]
     },
     "include": [
-        "./src/**/*.ts"
+        "./src/index-node.ts",
+        "./src/index-browser.ts"
     ],
     "compileOnSave": true
 }

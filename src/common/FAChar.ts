@@ -1,42 +1,52 @@
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
-import "css!font-awesome";
-import "css!./FAChar";
 
-export function FAChar() {
-    SVGWidget.call(this);
+// import "font-awesome/css/font-awesome.css";
+import "./FAChar.css";
 
-    this._text = new Text()
-        .fontFamily("FontAwesome")
-        ;
+export class FAChar extends SVGWidget {
+
+    protected _text;
+
+    constructor() {
+        super();
+
+        this._text = new Text()
+            .fontFamily("FontAwesome")
+            ;
+    }
+
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        this._text
+            .target(domNode)
+            ;
+    };
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        this._text
+            .text(this.char())
+            .scale((this.fontSize() || 14) / 14) //  Scale rather than fontSize to prevent Chrome glitch  ---
+            .render()
+            ;
+    };
+
+    exit(domNode, element) {
+        this._text
+            .target(null)
+            ;
+
+        super.exit(domNode, element);
+    };
+
+    char: { (): string; (_: string): FAChar; }
+    fontSize: { (): number; (_: number): FAChar; }
+    text_colorFill: { (): string; (_: string): FAChar; }
 }
-FAChar.prototype = Object.create(SVGWidget.prototype);
-FAChar.prototype.constructor = FAChar;
 FAChar.prototype._class += " common_FAChar";
 
 FAChar.prototype.publish("char", "", "string", "Font Awesome Item", null, { tags: ["Private"] });
 FAChar.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Private"] });
 FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");
 
-FAChar.prototype.enter = function (domNode, element) {
-    SVGWidget.prototype.enter.apply(this, arguments);
-    this._text
-        .target(domNode)
-        ;
-};
-
-FAChar.prototype.update = function (domNode, element) {
-    SVGWidget.prototype.update.apply(this, arguments);
-    this._text
-        .text(this.char())
-        .scale((this.fontSize() || 14) / 14) //  Scale rather than fontSize to prevent Chrome glitch  ---
-        .render()
-        ;
-};
-
-FAChar.prototype.exit = function (domNode, element) {
-    this._text
-        .target(null)
-        ;
-    SVGWidget.prototype.exit.apply(this, arguments);
-};

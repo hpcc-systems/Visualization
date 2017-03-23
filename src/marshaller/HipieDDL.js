@@ -329,7 +329,7 @@
         this.link = link;
         this.linkMappings = new SourceMappings(visualization, this.link.mappings);
         this.linkMappings.columns = ["uid"];
-        this.linkMappings.columnsIdx = { uid: 0 };
+        this.linkMappings.columnsIdx = { uid: 0, label: 1 };
         this.visualization = visualization;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
@@ -425,6 +425,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
+                            .text(childMappedItem[1] ? childMappedItem[1] : "")
                             .data(childMappedItem)
                         ;
                         edges.push(edge);

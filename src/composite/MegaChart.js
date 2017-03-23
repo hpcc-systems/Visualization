@@ -51,6 +51,8 @@
     MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showMaximize", true, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("infoIcon", "\uf05a", "string", "Help Icon", null, { tags: ["Basic"] });
 
     MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
     MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
@@ -117,6 +119,12 @@
         this._csvButton.click = function (a) {
             context.downloadCSV();
         };
+        
+        this._infoButton = new Button()
+            .classed({ "composite_MegaChart-Info": true })
+            .id(this.id() + "_info")
+            .value(this.infoIcon())
+        ;
         
         this._maximizeButton = new Button()
             .classed({ "composite_MegaChart-Maximize": true })
@@ -277,6 +285,7 @@
         showHideButton(twArr, this._maximizeButton, this.showMaximize());
         showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
+        showHideButton(twArr, this._infoButton, this.showInfoButton());
         this.toolbarWidgets(twArr);
 
         if (this._prevShowToolbar !== this.showToolbar()) {

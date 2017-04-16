@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    </head>
+    <body>
+        <script>  
+            require(["src/google/Area", "src/common/Palette"], function (GArea, Palette) {
+                var testData = [
+                    ["Geography", 75, 68, 65],
+                    ["English", 45, 55, 52],
+                    ["Math", 98, 92, 90],
+                    ["Science", 66, 60, 66]
+                ];
+                var columns = ["Subject", "Year 1", "Year 2", "Year 3"];
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]); // 3 colors 3 bars
+                var areaWidget = new GArea()
+                    .size({width:300,height:200})
+                    .target("widget-wrapper")
+                    .columns(columns)   
+                    .data(testData)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                areaWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

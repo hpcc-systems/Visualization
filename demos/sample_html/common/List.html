@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/common/List", "src/common/Palette", "src/other/Persist"], function (List, Palette, Persist) {
+                var listWidget = new List()
+                    .size({width:100,height:100})
+                    .testData()
+                    .target("widget-wrapper")
+                    .render()   
+                ;
+                listWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

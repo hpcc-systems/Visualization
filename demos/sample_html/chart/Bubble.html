@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php include('basic_includes.php'); ?>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+    </style>
+    </head>
+    <body>
+        <script>  
+            require(["src/chart/Bubble", "src/common/Palette"], function (Bubble, Palette) {
+                var testData = [
+                    ["Geography", 75],
+                    ["English", 45],
+                    ["Math", 98],
+                    ["Science", 66]
+                ];
+                var columns = ["Subject", "Year 1"];
+                var colorPalette = Palette.ordinal("MyPalette", ["red", "green", "blue"]);
+                var bubbleWidget = new Bubble()
+                    .size({width:300,height:200})
+                    .target("widget-wrapper")
+                    .columns(columns)   
+                    .data(testData)
+                    //.paletteID("MyPalette")
+                    .render()
+                ;
+                bubbleWidget.click = function(d) { console.log('Override Click: ' + JSON.stringify(d)); };
+            });
+        </script>
+        <div id="widget-wrapper"></div>
+    </body>
+</html>

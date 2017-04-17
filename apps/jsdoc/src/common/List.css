@@ -1,0 +1,13 @@
+.common_List .common_TextBox .common_Shape {
+    fill: #dcf1ff;
+    stroke: #dcf1ff;
+}
+
+.common_List .common_TextBox .common_Text {
+    pointer-events: none;
+}
+
+.common_List .common_TextBox .common_Shape:hover {
+    fill: white;
+    stroke: white;
+}

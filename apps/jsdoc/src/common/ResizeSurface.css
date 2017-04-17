@@ -1,0 +1,39 @@
+.resizeN {
+    cursor: ns-resize;
+    opacity: 0;
+}
+
+.resizeNE {
+    cursor: ne-resize;
+    opacity: 0;
+}
+
+.resizeE {
+    cursor: ew-resize;
+    opacity: 0;
+}
+
+.resizeSE {
+    cursor: se-resize;
+    opacity: 0;
+}
+
+.resizeS {
+    cursor: ns-resize;
+    opacity: 0;
+}
+
+.resizeSW {
+    cursor: sw-resize;
+    opacity: 0;
+}
+
+.resizeW {
+    cursor: ew-resize;
+    opacity: 0;
+}
+
+.resizeNW {
+    cursor: nw-resize;
+    opacity: 0;
+}

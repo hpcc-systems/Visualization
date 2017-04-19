@@ -322,7 +322,7 @@
                     context.applyRowStyles(context.getBodyRow(i));
                     context.applyFirstColRowStyles(context.getFixedRow(i));
                 }
-            })
+            }, true)  //  capture=true:  event is caught on the way down the DOM before the cell click.
             .on("mouseover", function (_d) {
                 if (_d.row) {
                     var i = _d.rowIdx;

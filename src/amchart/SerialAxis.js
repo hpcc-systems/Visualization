@@ -39,6 +39,15 @@
     SerialAxis.prototype.publish("axisTickFormat", "", "string", "Y-Axis Tick Format");
     
     SerialAxis.prototype.publish("position", null, "set", "Position of Axis", ["top", "bottom", "left", "right"]);
+    
+    SerialAxis.prototype.publish("axisMinValue", null, "number", "Y axis Minimum value",null,{});
+    SerialAxis.prototype.publish("axisMaxValue", null, "number", "Y axis Maximum value",null,{});
+    
+    SerialAxis.prototype.publish("axisLabelFrequency", null, "number", "Y axis Label Frequency",null,{});
+
+    SerialAxis.prototype.publish("axisBaseValue", null, "number", "Y axis Base Value",null,{});
+
+    SerialAxis.prototype.publish("axisGridCount", null, "number", "Y axis Grid Count",null,{});
 
     var axisTypeTimePattern = SerialAxis.prototype.axisTypeTimePattern;
     SerialAxis.prototype.axisTypeTimePattern = function (_) {

@@ -144,6 +144,13 @@
     CommonSerial.prototype.publishProxy("xAxisTickFormat", "_xAxis", "axisTickFormat");
     CommonSerial.prototype.publishProxy("yAxisTickFormat", "_yAxis", "axisTickFormat");
 
+    CommonSerial.prototype.publishProxy("yAxisMaxValue", "_yAxis", "axisMaxValue");
+    CommonSerial.prototype.publishProxy("yAxisMinValue", "_yAxis", "axisMinValue");
+    CommonSerial.prototype.publishProxy("yAxislabelFrequency", "_yAxis", "axislabelFrequency");
+    CommonSerial.prototype.publishProxy("yAxisBaseValue", "_yAxis", "axisBaseValue");
+    CommonSerial.prototype.publishProxy("yAxisGridCount", "_yAxis", "axisGridCount");
+
+
     CommonSerial.prototype._origBackwardsCompatible = CommonSerial.prototype.backwardsCompatible;
     CommonSerial.prototype.backwardsCompatible = function(_) {
       var retVal = CommonSerial.prototype._origBackwardsCompatible.apply(this, arguments);
@@ -370,6 +377,24 @@
 
             this._chart.valueAxes[i].autoGridCount = yAxis.axisAutoGridCount();
 
+            if (this.yAxisMinValue() && this.yAxisMaxValue()){
+                this._chart.valueAxes[0].minimum = this.yAxisMinValue();
+                this._chart.valueAxes[0].maximum = this.yAxisMaxValue();
+                this._chart.valueAxes[0].strictMinMax = true;
+            } else {
+                this._chart.valueAxes[0].minimum = undefined;
+                this._chart.valueAxes[0].maximum = undefined;
+                this._chart.valueAxes[0].strictMinMax = false;
+            }
+
+            if (this.yAxisLabelFrequency()) {
+                this._chart.valueAxes[0].labelFrequency = this.yAxisLabelFrequency();
+            }
+            
+            if (this.yAxisGridCount()) {
+                this._chart.valueAxes[0].gridCount = this.yAxisGridCount();
+            }
+           
             switch(yAxis.axisType()) {
                 case "time":
                     this._chart.valueAxes[i].type = "date";

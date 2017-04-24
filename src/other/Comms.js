@@ -349,7 +349,23 @@
             if (response[key].Row && response[key].Row instanceof Array) {
                 return response;
             }
-            var retVal = locateRoxieResponse(response[key]);
+            var retVal;
+            if(typeof(response[key]) !== "string"){
+                retVal = locateRoxieResponse(response[key]);
+            }
+            if (retVal) {
+                return retVal;
+            }
+        }
+        return null;
+    }
+    
+    function locateRoxieException(response) {
+        for (var key in response) {
+            if (response[key].Exception && response[key].Exception instanceof Array) {
+                return response[key];
+            }
+            var retVal = locateRoxieException(response[key]);
             if (retVal) {
                 return retVal;
             }
@@ -425,7 +441,11 @@
             pathname: "WsEcl/submit/query/" + target.target + "/" + target.query + "/json"
         });
         return this.jsonp(url, request).then(function(response) {
-            response = locateRoxieResponse(response);
+            var _response = locateRoxieResponse(response);
+            if(!_response){
+                _response = locateRoxieException(response);
+            }
+            response = _response;
 
             // Check for exceptions
             if (response.Exception) {
@@ -779,7 +799,11 @@
         this._resultNameCacheCount = 0;
         var context = this;
         return this.jsonp(url, request).then(function (response) {
-            response = locateRoxieResponse(response);
+            var _response = locateRoxieResponse(response);
+            if(!_response){
+                _response = locateRoxieException(response);
+            }
+            response = _response;
 
             // Check for exceptions
             if (response.Exception) {

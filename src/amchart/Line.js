@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./CommonSerial", "../api/INDChart"], factory);
+        define(["d3", "./CommonSerial", "../api/INDChart", "../api/ITooltip"], factory);
     } else {
-        root.amchart_Line = factory(root.d3, root.amchart_CommonSerial, root.api_INDChart);
+        root.amchart_Line = factory(root.d3, root.amchart_CommonSerial, root.api_INDChart, root.api_ITooltip);
     }
-}(this, function(d3, CommonSerial, INDChart) {
+}(this, function(d3, CommonSerial, INDChart, ITooltip) {
     function Line() {
         CommonSerial.call(this);
         this._tag = "div";
@@ -15,6 +15,7 @@
     Line.prototype.constructor = Line;
     Line.prototype._class += " amchart_Line";
     Line.prototype.implements(INDChart.prototype);
+    Line.prototype.implements(ITooltip.prototype);
 
     Line.prototype.publish("paletteID", "default", "set", "Palette ID", Line.prototype._palette.switch(), {tags:["Basic","Shared"]});
     Line.prototype.publish("smoothLines", false, "boolean", "Causes chart data lines to draw smoothly",null,{tags:["Basic","Shared"]});

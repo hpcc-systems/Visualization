@@ -267,8 +267,11 @@
         gObj.id = "g" + i;
 
         gObj.balloonFunction = function(d) {
-            var balloonText = context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
-            return balloonText;
+            if(context && context.tooltipValueFormat){
+                return context.columns()[d.graph.index]  + ": " + d3.format(context.tooltipValueFormat())(context.data()[d.index][d.graph.index]);
+            }else{
+                return context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
+            }
         };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineThickness = context.lineWidth();

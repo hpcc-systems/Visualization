@@ -39,11 +39,18 @@
     Pins.prototype.publish("pinRadius", 12, "number", "Radius of circle (pixels)", null, { tags: ["Basic"], disable: function(w) { return w.pinType() !== "circle"; } });
     
     Pins.prototype.publish("textBaseline", "central", "set", "Pin text vertical alignment", ["auto","use-script","no-change","reset-size","ideographic","alphabetic","hanging","mathematical","central","middle","text-after-edge","text-before-edge","inherit"], { tags: ["Basic"] });
+    Pins.prototype.publish("omitNullLatLong", false, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });
 
     Pins.prototype.pinsData = function () {
         var geohashField = this._db.fieldByLabel(this.geohashColumn());
         var tooltipField = this._db.fieldByLabel(this.tooltipColumn());
-        return this.data().map(function (row) {
+        var context = this;
+        return this.data().filter(function(row){
+            if(context.omitNullLatLong() && row[0] === 0 && row[1] === 0){
+                return false;
+            }
+            return true;
+        }).map(function (row) {
             var retVal = {
                 lat: row[0],
                 long: row[1],

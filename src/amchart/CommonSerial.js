@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts-serial", "require", "../common/Utility", "./SerialAxis"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-serial", "require", "../common/Utility", "./SerialAxis", "../api/ITooltip"], factory);
     } else {
-        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility, root.amchart_SerialAxis);
+        root.amchart_CommonSerial = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.common_Utility, root.amchart_SerialAxis, root.api_ITooltip);
     }
-}(this, function(d3, HTMLWidget, AmCharts, require, Utility, Axis) {
+}(this, function (d3, HTMLWidget, AmCharts, require, Utility, Axis, ITooltip) {
     function CommonSerial() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -36,7 +36,8 @@
     CommonSerial.prototype = Object.create(HTMLWidget.prototype);
     CommonSerial.prototype.constructor = CommonSerial;
     CommonSerial.prototype._class += " amchart_CommonSerial";
-
+    CommonSerial.prototype.implements(ITooltip.prototype);
+    
     CommonSerial.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
     CommonSerial.prototype.publish("xAxes", [], "propertyArray", "xAxis", null, { max: 1, tags: ["Basic"] }); // max number of xAxes
@@ -506,10 +507,15 @@
             gObj.valueAxis = "v0";
         }
 
-        gObj.balloonFunction = function(item, graph) {
-            var key = graph.valueField;
-            var data = graph.chart.dataProvider;
-            return item.category + ", " + key + ": " + data[item.index][key];
+        gObj.balloonFunction = function(d) {
+            //var balloonText = d.category + ", " + context.columns()[d.graph.columnIndex+1]  + ": " + context.data()[d.index][d.graph.columnIndex+1];
+            if (d.graph.type === "line") {
+                return d.category + ", " + context.columns()[d.graph.index + 1]  + ": " + d3.format(context.tooltipValueFormat())(context.data()[d.index][d.graph.columnIndex + 1]);
+            }else if(context && context.tooltipValueFormat){
+                return d.category + ", " + context.columns()[d.graph.columnIndex + 1]  + ": " + d3.format(context.tooltipValueFormat())(context.data()[d.index][d.graph.columnIndex + 1]);
+            } else {
+                return d.category + ", " + context.columns()[d.graph.columnIndex + 1]  + ": " + context.data()[d.index][d.graph.columnIndex + 1];
+            }
         };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineColor = context.lineColor();
@@ -595,11 +601,10 @@
         this._chart = AmCharts.makeChart(domNode, initObj);
         this._chart.addListener("clickGraphItem", function(e) {
             var graph = e.graph;
-            var column = graph.valueField;
-            var data = e.item.dataContext;
-
+            var data  = e.item.dataContext;
             var field;
             var field2;
+
             if (context._gType === "column") {
                 field = graph.fillColorsField;
                 field2 = graph.lineColorField;
@@ -609,32 +614,28 @@
                 field = graph.colorField;
             }
             if (field) {
-                var deselectMode = context._selected && context._selected.dIdx === e.index && context._selected.column === column;
-                if (context._selected !== null) {
-                    delete context._selected.data[context._selected.field];
-                    if (context._selected.field2) {
-                        context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
-                    }
-                    context._selected = null;
-                }
-                if (!deselectMode) {
-                    data[field] = context.selectionColor();
-                    if (field2) {
-                        data[field2] = context.selectionColor();
-                    }
+                if (data[field] !== null && data[field] !== undefined) {
+                    delete data[field];
+                    data[field2] = context._colorObj[e.index][e.target.columnIndex].lineColor;
                     if (context.selectionMode() === "simple") {
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
-                            if (context._selected.field2) {
-                                context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
-                            }
+                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
+                        }
+                    }
+                } else {
+                    data[field] = context.selectionColor();
+                    data[field2] = context.selectionColor();
+                    if (context.selectionMode() === "simple") {
+                        if (context._selected !== null) {
+                            delete context._selected.data[context._selected.field];
+                            context._selected.data[context._selected.field2] = context._colorObj[context._selected.dIdx][context._selected.cIdx].lineColor;
                         }
                         context._selected = {
                             field: field,
                             field2: field2,
                             data: data,
                             dIdx: e.index,
-                            column: column,
                             cIdx: e.target.columnIndex
                         };
                         context._selections.push(context._selected);
@@ -643,7 +644,7 @@
                 e.chart.validateData();
             }
 
-            context.click(context.rowToObj(context.data()[e.index]), column, context._selected !== null);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex + 1], context._selected !== null);
         });
     };
 

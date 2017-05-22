@@ -1,12 +1,12 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts-funnel", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-funnel", "require", "../api/ITooltip"], factory);
     } else {
-        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
+        root.amchart_CommonFunnel = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.api_ITooltip);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts, require) {
+}(this, function (d3, HTMLWidget, AmCharts, require, ITooltip) {
     function CommonFunnel() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -24,6 +24,7 @@
     CommonFunnel.prototype = Object.create(HTMLWidget.prototype);
     CommonFunnel.prototype.constructor = CommonFunnel;
     CommonFunnel.prototype._class += " amchart_CommonFunnel";
+    CommonFunnel.prototype.implements(ITooltip.prototype);
 
     CommonFunnel.prototype.publish("fontSize", 11, "number", "Font Size",null,{tags:["Basic","Shared"]});
     CommonFunnel.prototype.publish("fontFamily", "Verdana", "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});

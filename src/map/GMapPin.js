@@ -34,6 +34,7 @@
     GMapPin.prototype.publishProxy("arrowHeight", "_pins", "arrowHeight");
     GMapPin.prototype.publishProxy("textBaseline", "_pins", "textBaseline");
     GMapPin.prototype.publishProxy("strokeWidth", "_pins", "strokeWidth");
+    GMapPin.prototype.publishProxy("omitNullLatLong", "_pins", "omitNullLatLong");
 
     GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function () { return this.columns(); }, { optional: true });
     GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });

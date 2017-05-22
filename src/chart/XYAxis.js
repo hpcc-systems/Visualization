@@ -186,7 +186,7 @@
     };
 
     XYAxis.prototype.brushMoved = SVGWidget.prototype.debounce(function brushed() {
-        var selected = this.data().filter(function (d) {
+        var selected = this.parsedData().filter(function (d) {
             var pos = d[0];
             if (this.xAxisType() ==="ordinal") {
                 pos = this.domainAxis.d3Scale(pos) + (this.domainAxis.d3Scale.rangeBand ? this.domainAxis.d3Scale.rangeBand() / 2 : 0);

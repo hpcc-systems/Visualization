@@ -28,6 +28,9 @@
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
 
+    MultiChart.prototype._GraphChartTypes = [
+        { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" }
+    ].map(function (item) { item.family = "GRAPH"; return item; });
     MultiChart.prototype._1DChartTypes = [
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
     ].map(function(item) { item.family = "1D"; return item;});
@@ -94,12 +97,13 @@
         { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
     ].map(function (item) { item.family = "any"; return item; });
     MultiChart.prototype._allChartTypes =
+        MultiChart.prototype._GraphChartTypes.concat(
         MultiChart.prototype._1DChartTypes.concat(
         MultiChart.prototype._2DChartTypes.concat(
         MultiChart.prototype._NDChartTypes.concat(
         MultiChart.prototype._mapChartTypes.concat(
         MultiChart.prototype._anyChartTypes
-    ))));
+    )))));
     MultiChart.prototype._allMap = d3.map(MultiChart.prototype._allChartTypes, function (item) { return item.family; });
     MultiChart.prototype._allFamilies = MultiChart.prototype._allMap.keys();
     MultiChart.prototype._allChartTypesMap = {};

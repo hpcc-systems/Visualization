@@ -357,7 +357,8 @@
         var context = this;
         var vertexMap = {};
         var vertices = [];
-        var graph = this.visualization.widget;
+        var megaChart = this.visualization.widget;
+        var graph = megaChart.chart();
         function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
@@ -887,12 +888,16 @@
                 });
                 break;
             case "GRAPH":
-                this.loadWidgets(["../graph/Graph"], function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     try {
                         widget
                             .id(visualization.id)
-                            .layout_default("ForceDirected2")
-                            .applyScaleOnLayout_default(true)
+                            .showChartSelect_default(false)
+                            .chartType_default("GRAPH")
+                            .chartTypeDefaults({
+                                layout: "ForceDirected2",
+                                applyScaleOnLayout: true
+                            })
                         ;
                     } catch (e) {
                         console.log("Unexpected widget type:  " + widget.classID());

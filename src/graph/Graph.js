@@ -326,22 +326,24 @@
     Graph.prototype.getBounds = function (items, layoutEngine) {
         var vBounds = [[null, null], [null, null]];
         items.forEach(function (item) {
-            var pos = layoutEngine ? layoutEngine.nodePos(item._id) : {x: item.x(), y: item.y(), width: item.width(), height: item.height()};
-            var leftX = pos.x - pos.width / 2;
-            var rightX = pos.x + pos.width / 2;
-            var topY = pos.y - pos.height / 2;
-            var bottomY = pos.y + pos.height / 2;
-            if (vBounds[0][0] === null || vBounds[0][0] > leftX) {
-                vBounds[0][0] = leftX;
-            }
-            if (vBounds[0][1] === null || vBounds[0][1] > topY) {
-                vBounds[0][1] = topY;
-            }
-            if (vBounds[1][0] === null || vBounds[1][0] < rightX) {
-                vBounds[1][0] = rightX;
-            }
-            if (vBounds[1][1] === null || vBounds[1][1] < bottomY) {
-                vBounds[1][1] = bottomY;
+            var pos = layoutEngine ? layoutEngine.nodePos(item._id) : { x: item.x(), y: item.y(), width: item.width(), height: item.height() };
+            if (pos) {
+                var leftX = pos.x - pos.width / 2;
+                var rightX = pos.x + pos.width / 2;
+                var topY = pos.y - pos.height / 2;
+                var bottomY = pos.y + pos.height / 2;
+                if (vBounds[0][0] === null || vBounds[0][0] > leftX) {
+                    vBounds[0][0] = leftX;
+                }
+                if (vBounds[0][1] === null || vBounds[0][1] > topY) {
+                    vBounds[0][1] = topY;
+                }
+                if (vBounds[1][0] === null || vBounds[1][0] < rightX) {
+                    vBounds[1][0] = rightX;
+                }
+                if (vBounds[1][1] === null || vBounds[1][1] < bottomY) {
+                    vBounds[1][1] = bottomY;
+                }
             }
         });
         return vBounds;

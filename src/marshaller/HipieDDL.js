@@ -102,16 +102,14 @@
     };
 
     SourceMappings.prototype.getFields = function () {
-        if (this.visualization.fields) {
-            return Object.keys(this.mappings).map(function(key) {
-                return this.visualization.fields.filter(function(field) {
-                   return field.id === this.mappings[key];
-                }, this).map(function(field) {
-                    return new Database.Field(field.id)
-                        .type(hipieType2DBType(field.properties.type))
-                        .label(this.reverseMappings[field.id])
-                    ;
-                }, this)[0];
+        if (this.visualization.fields()) {
+            return Object.keys(this.mappings).map(function (key) {
+                var field = this.visualization.field(key);
+                if (!field) console.log("Unknown mapping field:  " + key);
+                return new Database.Field(field.id())
+                    .type(field.jsType())
+                    .label(this.reverseMappings[field.id()])
+                ;
             }, this);
         }
         return null;
@@ -156,7 +154,9 @@
     };
 
     SourceMappings.prototype.doMapAll = function (data) {
-        return data.hipieMappings(this.columnsRHS, this.visualization.dashboard.marshaller.missingDataString());
+        return data.hipieMappings(this.columnsRHS.map(function (col) {
+            return this.visualization.field(col);
+        }, this), this.visualization.dashboard.marshaller.missingDataString());
     };
 
     SourceMappings.prototype.getMap = function (key) {
@@ -261,11 +261,11 @@
         var retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
         if (retVal instanceof Array) {
             var columnsRHSIdx = this.visualization.source.getColumnsRHSIdx();
-            this.visualization.fields.forEach(function (field) {
-                var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
-                var colIdx = columnsRHSIdx[field.id];
+            this.visualization.fields().forEach(function (field) {
+                var fieldType = field.jsType();
+                var colIdx = columnsRHSIdx[field.id()];
                 if (colIdx === undefined) {
-                    console.log("Invalid Mapping:  " + field.id);
+                    console.log("Invalid Mapping:  " + field.id());
                 } else {
                     retVal = retVal.map(function (row) {
                         var cell = row[colIdx];
@@ -296,7 +296,7 @@
                                     row[colIdx] = table;
                                     break;
                                 case "widget":
-                                    var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
+                                    var viz = this.visualization.vizDeclarations[field.localVisualizationID()];
                                     var output = viz.source.getOutput();
                                     var db = output.db;
                                     output.setData(cell, []);
@@ -320,11 +320,11 @@
         }
         return retVal;
     };
-    
+
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
         this.icon = visualization.icon || {};
-        this.fields = visualization.fields || [];
+        this.fields = visualization.fields();
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
@@ -735,6 +735,74 @@
         return retVal;
     };
 
+    //  Visualization Field---
+    function Field(ddlField) {
+        this._id = ddlField.id;
+        this._label = ddlField.label;
+        this._properties = ddlField.properties || {};
+    }
+    Field.prototype = Object.create(Class.prototype);
+    Field.prototype.constructor = Field;
+
+    Field.prototype.id = function () {
+        return this._id;
+    };
+
+    Field.prototype.label= function () {
+        return this._properties.label || this._label;
+    };
+
+    Field.prototype.type = function () {
+        return this._properties.type || "";
+    };
+
+    Field.prototype.jsType = function () {
+        return hipieType2DBType(this.type());
+    };
+
+    Field.prototype.charttype = function (_) {
+        if (!arguments.length) return this._properties.charttype || "";
+        this._properties.charttype = _;
+        return this;
+    };
+
+    Field.prototype.localVisualizationID = function () {
+        return this._properties.localVisualizationID || "";
+    };
+
+    Field.prototype.enumvals = function () {
+        return this._properties.enumvals;    //  Return undefined if non existent
+    };
+
+    Field.prototype.hasDefault = function () {
+        return this.default() !== undefined;
+    };
+
+    Field.prototype.default = function () {
+        return this._properties.default || "";
+    };
+
+    Field.prototype.hasFunction = function () {
+        return this.function() !== undefined;
+    };
+
+    Field.prototype.function = function () {
+        return this._properties.function;
+    };
+
+    Field.prototype.params = function () {
+        var retVal = [];
+        var params = this._properties.params || {};
+        for (var key in params) {
+            retVal.push(params[key]);
+        }
+        return retVal;
+    };
+
+    Field.prototype.properties = function () {
+        return this._properties;
+    };
+
     //  Visualization ---
     function Visualization(dashboard, visualization, parentVisualization) {
         Class.call(this);
@@ -755,10 +823,12 @@
                 break;
         }
         this.title = visualization.title || visualization.id;
-        this.fields = visualization.fields || [];
-        this.fieldsMap = {};
-        this.fields.forEach(function (d) {
-            this.fieldsMap[d.id] = d;
+        this._fields = (visualization.fields || []).map(function (field) {
+            return new Field(field);
+        });
+        this._fieldsMap = {};
+        this._fields.forEach(function (field) {
+            this._fieldsMap[field.id()] = field;
         }, this);
 
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
@@ -938,16 +1008,16 @@
                     try {
                         widget
                             .id(visualization.id)
-                            .inputs(visualization.fields.map(function (field) {
+                            .inputs(context.fields().map(function (field) {
 
                                 var selectOptions = [];
                                 var options = [];
                                 var inp;
-                                if (!field.properties.charttype && field.properties.type === "range") {
+                                if (!field.charttype() && field.type() === "range") {
                                     //  TODO - Verify with @DL
-                                    field.properties.charttype = "RANGE";
+                                    field.charttype("RANGE");
                                 }
-                                switch (field.properties.charttype) {
+                                switch (field.charttype()) {
                                     case "TEXT":
                                         inp = new Input()
                                             .type_default("text")
@@ -971,9 +1041,9 @@
                                         inp = new InputRange();
                                         break;
                                     default:
-                                        if (field.properties.enumvals) {
+                                        if (field.enumvals()) {
                                             inp = new Select();
-                                            options = field.properties.enumvals;
+                                            options = field.enumvals();
                                             for (var val in options) {
                                                 selectOptions.push([val, options[val]]);
                                             }
@@ -986,13 +1056,13 @@
                                 }
 
                                 inp
-                                    .name_default(field.id)
-                                    .label_default((field.properties ? field.properties.label : null) || field.label)
-                                    .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
+                                    .name_default(field.id())
+                                    .label_default(field.label())
+                                    .value_default(field.default()) // TODO Hippie support for multiple default values (checkbox only)
                                 ;
 
                                 if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                    var vals = Object.keys(field.properties.enumvals);
+                                    var vals = Object.keys(field.enumvals());
                                     inp.selectOptions_default(vals);
                                 } else if (selectOptions.length) {
                                     inp.selectOptions_default(selectOptions);
@@ -1037,6 +1107,18 @@
 
     Visualization.prototype.getQualifiedID = function () {
         return this.id;
+    };
+
+    Visualization.prototype.fields = function () {
+        return this._fields;
+    };
+
+    Visualization.prototype.hasField = function (id) {
+        return this.field[id] !== undefined;
+    };
+
+    Visualization.prototype.field = function (id) {
+        return this._fieldsMap[id];
     };
 
     Visualization.prototype.loadedPromise = function () {
@@ -1219,9 +1301,9 @@
             row: {},
             selected: false
         };
-        this.fields.forEach(function (field) {
-            if (field.properties && field.properties.default !== undefined) {
-                this._widgetState.row[field.id] = field.properties.default;
+        this.fields().forEach(function (field) {
+            if (field.hasDefault()) {
+                this._widgetState.row[field.id()] = field.default();
                 this._widgetState.selected = true;
             }
         }, this);
@@ -1379,7 +1461,7 @@
     };
 
     Filter.prototype.matches = function (row, value) {
-        if (value === undefined || value === null) {
+        if (value === undefined || value === null || value === "") {
             return this.nullable;
         }
         var rowValue = row[this.tidyFieldID()];
@@ -1972,6 +2054,7 @@
         var context = this;
         this._json = json;
         this._jsonParsed = JSON.parse(this._json);
+        this._jsonParsed.datasources[0].filter[0].nullable = true;
 
         //  Global Datasources  --- 
         this._datasources = {};

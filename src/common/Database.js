@@ -326,125 +326,81 @@
         if (!this.fields().length || !this._data.length) {
             return [];
         }
-        var rollupField = -1;
-        var rollupValueIdx = [];
-        var rollupBy = [];
-        var scaleField = -1;
-        var fieldIndicies = [];
-        columns.forEach(function (mapping, key) {
-            if (mapping instanceof Object) {
-                switch (mapping.function) {
-                    case "SUM":
-                    case "AVE":
-                    case "MIN":
-                    case "MAX":
-                        if (rollupField >= 0) {
-                            console.log("Rollup field already exists - there should only be one?");
-                        }
-                        rollupField = key;
-                        mapping.params.forEach(function (params) {
-                            var field = this.fieldByLabel(params.param1, true);
-                            if (!field) {
-                                console.log("Grid.prototype.hipieMappings:  Invalid rollup field - " + params.param1);
-                            } else {
-                                rollupValueIdx.push(field.idx);
-                            }
-                        }, this);
-                        break;
-                    case "SCALE":
-                        if (scaleField >= 0) {
-                            console.log("Scale field already exists - there should only be one?");
-                        }
-                        scaleField = key;
-                        mapping.params.forEach(function (params) {
-                            var field = this.fieldByLabel(params.param1, true);
-                            if (!field) {
-                                console.log("Grid.prototype.hipieMappings:  Invalid scale field - " + params.param1);
-                            } else {
-                                var idx = field.idx;
-                                var scale = params.param2;
-                                fieldIndicies.push(function (row) {
-                                    return row[idx] / scale;
-                                });
-                            }
-                        }, this);
-                        break;
-                    default:
-                        console.log("Unknown field function - " + mapping.function);
-                }
-            } else if (mapping.indexOf("_AVE") === mapping.length - 4 && this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true) && this.fieldByLabel("base_count", true)) {
-                //  Symposium AVE Hack
-                console.log("Deprecated - Symposium AVE Hack");
-                var sumField = this.fieldByLabel(mapping.substring(0, mapping.length - 4) + "_SUM", true);
-                var baseCountField = this.fieldByLabel("base_count", true);
-                rollupBy.push(sumField.idx);
-                fieldIndicies.push(function (row) {
-                    return row[sumField.idx] / row[baseCountField.idx];
-                });
-            } else {
-                var field = this.fieldByLabel(mapping, true);
-                if (field) {
-                    rollupBy.push(field.idx);
-                    fieldIndicies.push(function (row) {
-                        return row[field.idx] !== undefined && row[field.idx] !== null ? row[field.idx] : missingDataString;
-                    });
+        var mappedColumns = [];
+        var hasRollup = false;
+        columns.forEach(function (mapping, idx) {
+            var mappedColumn = {
+                groupby: false,
+                func: "",
+                params: []
+            };
+            if (mapping.hasFunction()) {
+                mappedColumn.func = mapping.function();
+                if (mappedColumn.func === "SCALE") {
+                    mappedColumn.groupby = true;
                 } else {
-                    console.log("Unable to locate '" + mapping + "' in server response.");
-                    fieldIndicies.push(function (row) {
-                        return missingDataString;
-                    });
-               }
+                    hasRollup = true;
+                }
+
+                mapping.params().forEach(function (param) {
+                    var field = this.fieldByLabel(param, true);
+                    mappedColumn.params.push(field ? field.idx : -1);
+                }, this);
+            } else {
+                mappedColumn.groupby = true;
+                var field = this.fieldByLabel(mapping.id(), true);
+                mappedColumn.params.push(field ? field.idx : -1);
             }
+            mappedColumns.push(mappedColumn);
         }, this);
 
-        function nodeToRow(node, idx, _row, retVal) {
-            var row = _row.map(function (d) { return d; });
-            row[idx] = node.key;
-            if (node.values instanceof Array) {
-                node.values.forEach(function (d) {
-                    nodeToRow(d, idx + 1, row, retVal);
-                });
-            } else {
-                row[idx + 1] = node.values;
-                retVal.push(row);
-            }
-        }
-        if (rollupField >= 0) {
-            var mapping = columns[rollupField];
-            var params = [];
-            for (var param in mapping.params) {
-                params.push(mapping.params[param]);
-            }
-            var nested = this.rollup(rollupBy, function (leaves) {
-                switch (mapping.function) {
-                    case "SUM":
-                        return d3.sum(leaves, function (d) { return d[rollupValueIdx[0]]; });
-                    case "AVE":
-                        return d3.mean(leaves, function (d) { return d[rollupValueIdx[0]]; });
-                    case "MIN":
-                        return d3.min(leaves, function (d) { return d[rollupValueIdx[0]]; });
-                    case "MAX":
-                        return d3.max(leaves, function (d) { return d[rollupValueIdx[0]]; });
-                }
-                console.log("Unsupported Mapping Function:  " + mapping.function);
-                return 0;
-            });
+        if (hasRollup) {
             var retVal = [];
-            if (nested instanceof Array) {
-                nested.forEach(function (d) {
-                    nodeToRow(d, 0, [], retVal);
+            this.rollup(mappedColumns.filter(function (mappedColumn) {
+                return mappedColumn.groupby === true;
+            }).map(function (d) {
+                return d.params[0];
+            }), function (leaves) {
+                var row = mappedColumns.map(function (mappedColumn) {
+                    var param1 = mappedColumn.params[0];
+                    var param2 = mappedColumn.params[1];
+                    switch (mappedColumn.func) {
+                        case "SUM":
+                            return d3.sum(leaves, function (d) { return d[param1]; });
+                        case "AVE":
+                            return d3.mean(leaves, function (d) { return d[param1] / d[param2]; });
+                        case "MIN":
+                            return d3.min(leaves, function (d) { return d[param1]; });
+                        case "MAX":
+                            return d3.max(leaves, function (d) { return d[param1]; });
+                        case "SCALE":
+                            console.log("Unexpected function:  " + mappedColumn.func);
+                            //  All leaves should have the same values, use mean just in case they don't?  
+                            return d3.mean(leaves, function (d) { return d[param1] / +param2; });
+                    }
+                    //  All leaves should have the same value.
+                    return leaves[0][param1];
                 });
-            } else {
-                retVal.push([nested]);
-            }
+                retVal.push(row);
+                return row;
+            });
             return retVal;
         } else {
             return this._data.map(function (row) {
-                var retVal = [];
-                fieldIndicies.forEach(function (func) {
-                    retVal.push(func(row));
+                return mappedColumns.map(function (mappedColumn) {
+                    var param1 = mappedColumn.params[0];
+                    var param2 = mappedColumn.params[1];
+                    switch (mappedColumn.func) {
+                        case "SCALE":
+                            return row[param1] / +param2;
+                        case "SUM":
+                        case "AVE":
+                        case "MIN":
+                        case "MAX":
+                            console.log("Unexpected function:  " + mappedColumn.func);
+                    }
+                    return row[param1];
                 });
-                return retVal;
             });
         }
     };

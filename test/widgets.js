@@ -200,6 +200,13 @@
                             case "src/handson/HandsOnTable-formatted":
                                 it("HandsOn");
                                 break;
+                            case "src/marshaller/HTML-databomb":
+                            case "src/marshaller/HTML-databomb2":
+                            case "src/marshaller/HTML-scale":
+                            case "src/marshaller/HTML-rollups":
+                            case "src/marshaller/Graph-databomb":
+                                it("Old DDL Format");
+                                break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     sample.value.factory(function (testWidget) {
@@ -250,6 +257,13 @@
                             case "src/handson/HandsOnTable-large":
                             case "src/handson/HandsOnTable-formatted":
                                 it("HandsOn");
+                                break;
+                            case "src/marshaller/HTML-databomb":
+                            case "src/marshaller/HTML-databomb2":
+                            case "src/marshaller/HTML-scale":
+                            case "src/marshaller/HTML-rollups":
+                            case "src/marshaller/Graph-databomb":
+                                it("Old DDL Format");
                                 break;
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {

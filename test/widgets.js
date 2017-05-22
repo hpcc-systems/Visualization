@@ -193,6 +193,12 @@
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
                                 break;
+                            case "src/handson/HandsOnTable-simple":
+                            case "src/handson/HandsOnTable-widget":
+                            case "src/handson/HandsOnTable-large":
+                            case "src/handson/HandsOnTable-formatted":
+                                it("HandsOn");
+                                break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
                                     sample.value.factory(function (testWidget) {
@@ -236,6 +242,12 @@
                                 break;
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
+                                break;
+                            case "src/handson/HandsOnTable-simple":
+                            case "src/handson/HandsOnTable-widget":
+                            case "src/handson/HandsOnTable-large":
+                            case "src/handson/HandsOnTable-formatted":
+                                it("HandsOn");
                                 break;
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {

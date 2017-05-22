@@ -183,7 +183,10 @@
         var str = [];
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
-                str.push(encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
+                var val = obj[key];
+                if (val !== undefined && val !== null) {
+                    str.push(encodeURIComponent(key) + "=" + encodeURIComponent(val));
+                }
             }
         }
         return str.join("&");
@@ -857,9 +860,13 @@
     HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
     function hasFilter(hipieResult, fieldid) {
+        return getFilter(hipieResult, fieldid).length > 0;
+    }
+
+    function getFilter(hipieResult, fieldid) {
         return hipieResult.filters.filter(function(filter) {
             return filter.fieldid === fieldid;
-        }).length > 0;
+        });
     }
 
     HIPIEWorkunit.prototype.hipieResults = function (_) {
@@ -918,29 +925,29 @@
             var changedFilter = {};
             for (var key in request) {
                 if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
-                    changedFilter[key] = request[key];
+                    changedFilter[key] = {
+                        value: request[key]
+                    };
                 }
             }
             var retVal = {};
             for (var hipieKey in context._hipieResults) {
                 var item = context._hipieResults[hipieKey];
-                var matchedResult = true;
+                var outputFilter = {};
                 for (var key2 in changedFilter) {
-                    if (!hasFilter(item, key2)) {
-                        matchedResult = false;
-                        break;
+                    if (hasFilter(item, key2)) {
+                        outputFilter[key2] = changedFilter[key2];
+                        outputFilter[key2].filter = getFilter(item, key2)[0];
                     }
                 }
-                if (matchedResult) {
-                    retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
-                        for (var key2 in changedFilter) {
-                            if (row[key2] != changedFilter[key2] && row[key2.toLowerCase()] != changedFilter[key2]) { // jshint ignore:line
-                                return false;
-                            }
+                retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
+                    for (var key2 in outputFilter) {
+                        if (!outputFilter[key2].filter.matches(row, outputFilter[key2].value)) {
+                            return false;
                         }
-                        return true;
-                    });
-                }
+                    }
+                    return true;
+                });
             }
             return retVal;
         }

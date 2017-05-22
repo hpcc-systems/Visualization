@@ -5,3 +5,7 @@ dist-amd
 Web.config
 nbproject
 .project
+lib-es6/
+lib-test/
+lib-umd/
+tmp/

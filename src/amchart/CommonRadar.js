@@ -1,12 +1,12 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts-radar", "require"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-radar", "require", "../api/ITooltip"], factory);
     } else {
-        root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require);
+        root.amchart_CommonRadar = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.api_ITooltip);
     }
 
-}(this, function(d3, HTMLWidget, AmCharts, require) {
+}(this, function (d3, HTMLWidget, AmCharts, require, ITooltip) {
     function CommonRadar() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -24,6 +24,7 @@
     CommonRadar.prototype = Object.create(HTMLWidget.prototype);
     CommonRadar.prototype.constructor = CommonRadar;
     CommonRadar.prototype._class += " amchart_CommonRadar";
+    CommonRadar.prototype.implements(ITooltip.prototype);
 
     // NO X-Axis  !!!
 

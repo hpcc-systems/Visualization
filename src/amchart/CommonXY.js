@@ -1,11 +1,11 @@
 "use strict";
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "amcharts-xy", "require", "./XYAxis"], factory);
+        define(["d3", "../common/HTMLWidget", "amcharts-xy", "require", "./XYAxis", "../api/ITooltip"], factory);
     } else {
-        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_XYAxis);
+        root.amchart_CommonXY = factory(root.d3, root.common_HTMLWidget, root.AmCharts, root.require, root.amchart_XYAxis, root.api_ITooltip);
     }
-}(this, function(d3, HTMLWidget, AmCharts, require, Axis) {
+}(this, function (d3, HTMLWidget, AmCharts, require, Axis, ITooltip) {
     function CommonXY() {
         HTMLWidget.call(this);
         this._tag = "div";
@@ -30,6 +30,7 @@
     CommonXY.prototype = Object.create(HTMLWidget.prototype);
     CommonXY.prototype.constructor = CommonXY;
     CommonXY.prototype._class += " amchart_CommonXY";
+    CommonXY.prototype.implements(ITooltip.prototype);
 
     CommonXY.prototype.publish("backwardsCompatible", true, "boolean", "Allow use of old publish parameters");
 
@@ -267,8 +268,11 @@
         gObj.id = "g" + i;
 
         gObj.balloonFunction = function(d) {
-            var balloonText = context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
-            return balloonText;
+            if(context && context.tooltipValueFormat){
+                return context.columns()[d.graph.index]  + ": " + d3.format(context.tooltipValueFormat())(context.data()[d.index][d.graph.index]);
+            }else{
+                return context.columns()[d.graph.index]  + ": " + context.data()[d.index][d.graph.index];
+            }
         };
         gObj.lineAlpha = context.lineOpacity();
         gObj.lineThickness = context.lineWidth();

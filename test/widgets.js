@@ -186,12 +186,26 @@
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
+                            case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
                                 it("Roxie Call");
                                 break;
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
+                                break;
+                            case "src/handson/HandsOnTable-simple":
+                            case "src/handson/HandsOnTable-widget":
+                            case "src/handson/HandsOnTable-large":
+                            case "src/handson/HandsOnTable-formatted":
+                                it("HandsOn");
+                                break;
+                            case "src/marshaller/HTML-databomb":
+                            case "src/marshaller/HTML-databomb2":
+                            case "src/marshaller/HTML-scale":
+                            case "src/marshaller/HTML-rollups":
+                            case "src/marshaller/Graph-databomb":
+                                it("Old DDL Format");
                                 break;
                             default:
                                 it("DOM Node:  " + widgetPath + "-" + sample.key, function (done) {
@@ -223,6 +237,7 @@
                             case "src/marshaller/HTML-roxie":
                             case "src/marshaller/HTML-wu":
                             case "src/marshaller/HTML-flyout":
+                            case "src/marshaller/Tabbed-wu":
                             case "src/marshaller/Graph-roxie":
                             case "src/marshaller/Graph-wu":
                                 it("Roxie Call");
@@ -236,6 +251,19 @@
                                 break;
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
+                                break;
+                            case "src/handson/HandsOnTable-simple":
+                            case "src/handson/HandsOnTable-widget":
+                            case "src/handson/HandsOnTable-large":
+                            case "src/handson/HandsOnTable-formatted":
+                                it("HandsOn");
+                                break;
+                            case "src/marshaller/HTML-databomb":
+                            case "src/marshaller/HTML-databomb2":
+                            case "src/marshaller/HTML-scale":
+                            case "src/marshaller/HTML-rollups":
+                            case "src/marshaller/Graph-databomb":
+                                it("Old DDL Format");
                                 break;
                             default:
                                 it("Surface Node:  " + widgetPath + "-" + sample.key, function (done) {

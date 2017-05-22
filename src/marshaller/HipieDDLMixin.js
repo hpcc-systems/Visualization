@@ -46,13 +46,13 @@
                         popupVisualizations: []
                     };
                     context._ddlDashboards.push(curr);
-                } else if (item instanceof HipieDDL.DataSource) {
+                } else if (item instanceof HipieDDL.Datasource) {
                     if (item.databomb && databomb[item.id]) {
                         item.comms.databomb(databomb[item.id]);
                     }
                 } else if (item instanceof HipieDDL.Output) {
-                    if (item.dataSource.databomb) {
-                        item.dataSource.comms.databombOutput(item.from, item.id);
+                    if (item.datasource.databomb) {
+                        item.datasource.comms.databombOutput(item.from, item.id);
                     }
                 } else if (item instanceof HipieDDL.Visualization) {
                     if (item.widget) {
@@ -135,7 +135,7 @@
         function postParse() {
             context._gatherDashboards(context._marshaller, context.databomb());
             //  Remove existing widgets not used and prime popups ---
-            context._ddlVisualizations.forEach(function(viz) {
+            context._ddlVisualizations.forEach(function (viz) {
                 removedMap.remove(viz.id);
                 if (!context._marshaller.widgetMappings().get(viz.id)) {
                     //  New widget  ---

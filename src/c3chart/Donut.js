@@ -10,6 +10,20 @@
         Common2D.call(this);
 
         this._type = "donut";
+
+        var context = this;
+        this._config.data.onclick = function (d, element) {
+            var rows = context.data().filter(function (row) {
+                return row[0] === d.name;
+            });
+            if (rows.length === 1) {
+                context.click(context.rowToObj(rows[0]), d.id, context.c3Chart.selected().length > 0);
+            } else if (rows.length > 1) {
+                console.log("C3 sel.name matches too much data.");
+            } else {
+                console.log("C3 sel.name does not match any data.");
+            }
+        };
     }
     Donut.prototype = Object.create(Common2D.prototype);
     Donut.prototype.constructor = Donut;

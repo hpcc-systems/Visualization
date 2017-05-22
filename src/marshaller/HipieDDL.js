@@ -16,41 +16,6 @@
         return faChar;
     }
 
-    //  Mappings ---
-    function SourceMappings(visualization, mappings) {
-        this.visualization = visualization;
-        var newMappings = {};
-        for (var key in mappings) {
-            if (mappings[key] instanceof Array) {
-                mappings[key].forEach(function (mapingItem, idx) {
-                    newMappings[idx === 0 ? key : key + "_" + idx] = mapingItem;
-                });
-            } else {
-                newMappings[key] = mappings[key];
-            }
-        }
-        this.mappings = newMappings;
-        this.hasMappings = false;
-        this.reverseMappings = {};
-        this.columns = [];
-        this.columnsIdx = {};
-        this.columnsRHS = [];
-        this.columnsRHSIdx = {};
-    }
-
-    SourceMappings.prototype.init = function() {
-        for (var key in this.mappings) {
-            this.reverseMappings[this.mappings[key]] = key;
-            if (this.columnsIdx[key] === undefined) {
-                this.columns.push(key);
-                this.columnsIdx[key] = this.columns.length - 1;
-            }
-            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
-            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
-            this.hasMappings = true;
-        }
-    };
-
     function hipieType2DBType(hipieType) {
         switch (hipieType) {
             case "bool":
@@ -88,17 +53,63 @@
         return "string";
     }
 
+    //  Mappings ---
+    function SourceMappings(visualization, mappings) {
+        this.visualization = visualization;
+        var newMappings = {};
+        for (var key in mappings) {
+            if (mappings[key] instanceof Array) {
+                mappings[key].forEach(function (mapingItem, idx) {
+                    newMappings[idx === 0 ? key : key + "_" + idx] = mapingItem;
+                });
+            } else {
+                newMappings[key] = mappings[key];
+            }
+        }
+        this.mappings = newMappings;
+        this.hasMappings = false;
+        this.reverseMappings = {};
+        this.columns = [];
+        this.columnsIdx = {};
+        this.columnsRHS = [];
+        this.columnsRHSIdx = {};
+    }
+
+    SourceMappings.prototype.init = function() {
+        for (var key in this.mappings) {
+            this.reverseMappings[this.mappings[key]] = key;
+            if (this.columnsIdx[key] === undefined) {
+                this.columns.push(key);
+                this.columnsIdx[key] = this.columns.length - 1;
+            }
+            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
+            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
+            this.hasMappings = true;
+        }
+    };
+
+    SourceMappings.prototype.init = function() {
+        for (var key in this.mappings) {
+            this.reverseMappings[this.mappings[key]] = key;
+            if (this.columnsIdx[key] === undefined) {
+                this.columns.push(key);
+                this.columnsIdx[key] = this.columns.length - 1;
+            }
+            this.columnsRHS[this.columnsIdx[key]] = this.mappings[key];
+            this.columnsRHSIdx[this.mappings[key]] = this.columnsIdx[key];
+            this.hasMappings = true;
+        }
+    };
+
     SourceMappings.prototype.getFields = function () {
-        if (this.visualization.fields) {
-            return Object.keys(this.mappings).map(function(key) {
-                return this.visualization.fields.filter(function(field) {
-                   return field.id === this.mappings[key];
-                }, this).map(function(field) {
-                    return new Database.Field(field.id)
-                        .type(hipieType2DBType(field.properties.type))
-                        .label(this.reverseMappings[field.id])
-                    ;
-                }, this)[0];
+        if (this.visualization.fields()) {
+            return Object.keys(this.mappings).map(function (key) {
+                var field = this.visualization.field(key);
+                if (!field) console.log("Unknown mapping field:  " + key);
+                return new Database.Field(field.id())
+                    .type(field.jsType())
+                    .label(this.reverseMappings[field.id()])
+                ;
             }, this);
         }
         return null;
@@ -143,7 +154,9 @@
     };
 
     SourceMappings.prototype.doMapAll = function (data) {
-        return data.hipieMappings(this.columnsRHS, this.visualization.dashboard.marshaller.missingDataString());
+        return data.hipieMappings(this.columnsRHS.map(function (col) {
+            return this.visualization.field(col);
+        }, this), this.visualization.dashboard.marshaller.missingDataString());
     };
 
     SourceMappings.prototype.getMap = function (key) {
@@ -191,10 +204,12 @@
             this.columnsIdx = { geohash: 0, label: 1 };
         }
         var weightOffset = this.columns.length;
-        mappings.weight.forEach(function (w, i) {
-            this.columns.push(w);
-            this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
-        }, this);
+        if (mappings.weight instanceof Array) {
+          mappings.weight.forEach(function (w, i) {
+              this.columns.push(w);
+              this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
+          }, this);
+        }
         this.init();
     }
     ChoroMappings2.prototype = Object.create(SourceMappings.prototype);
@@ -202,7 +217,7 @@
     function HeatMapMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
         this.columns = ["x", "y", "weight"];
-        this.columnsIdx = { x: 0, y:1, weight: 2 };
+        this.columnsIdx = { x: 0, y: 1, weight: 2 };
         this.init();
     }
     HeatMapMappings.prototype = Object.create(SourceMappings.prototype);
@@ -246,11 +261,11 @@
         var retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
         if (retVal instanceof Array) {
             var columnsRHSIdx = this.visualization.source.getColumnsRHSIdx();
-            this.visualization.fields.forEach(function (field) {
-                var fieldType = (!field || !field.properties) ? "unknown" : hipieType2DBType(field.properties.type);
-                var colIdx = columnsRHSIdx[field.id];
+            this.visualization.fields().forEach(function (field) {
+                var fieldType = field.jsType();
+                var colIdx = columnsRHSIdx[field.id()];
                 if (colIdx === undefined) {
-                    console.log("Invalid Mapping:  " + field.id);
+                    console.log("Invalid Mapping:  " + field.id());
                 } else {
                     retVal = retVal.map(function (row) {
                         var cell = row[colIdx];
@@ -281,7 +296,7 @@
                                     row[colIdx] = table;
                                     break;
                                 case "widget":
-                                    var viz = this.visualization.vizDeclarations[field.properties.localVisualizationID];
+                                    var viz = this.visualization.vizDeclarations[field.localVisualizationID()];
                                     var output = viz.source.getOutput();
                                     var db = output.db;
                                     output.setData(cell, []);
@@ -305,23 +320,23 @@
         }
         return retVal;
     };
-    
+
     function GraphMappings(visualization, mappings, link) {
         SourceMappings.call(this, visualization, mappings);
         this.icon = visualization.icon || {};
-        this.fields = visualization.fields || [];
+        this.fields = visualization.fields();
         this.columns = ["uid", "label", "weight", "flags"];
         this.columnsIdx = { uid: 0, label: 1, weight: 2, flags: 3 };
         this.init();
         this.link = link;
         this.linkMappings = new SourceMappings(visualization, this.link.mappings);
         this.linkMappings.columns = ["uid"];
-        this.linkMappings.columnsIdx = { uid: 0 };
+        this.linkMappings.columnsIdx = { uid: 0, label: 1 };
         this.visualization = visualization;
     }
     GraphMappings.prototype = Object.create(SourceMappings.prototype);
 
-    GraphMappings.prototype.calcIconInfo = function (field, origItem, forAnnotation) {
+    GraphMappings.prototype.calcIconInfo = function (flag, origItem, forAnnotation) {
         var retVal = {};
         function mapStruct(struct, retVal) {
             if (struct) {
@@ -341,8 +356,8 @@
                 }
             }
         }
-        if (origItem && origItem[field.fieldid] && field.valuemappings) {
-            var annotationInfo = field.valuemappings[origItem[field.fieldid]];
+        if (origItem && origItem[flag.fieldid] && flag.valuemappings) {
+            var annotationInfo = flag.valuemappings[origItem[flag.fieldid]];
             mapStruct(annotationInfo, retVal);
         }
 
@@ -357,7 +372,8 @@
         var context = this;
         var vertexMap = {};
         var vertices = [];
-        var graph = this.visualization.widget;
+        var megaChart = this.visualization.widget;
+        var graph = megaChart.chart();
         function getVertex(item, origItem) {
             var id = "uid_" + item[0];
             var retVal = vertexMap[id];
@@ -383,8 +399,8 @@
 
                 // Annotations  ---
                 var annotations = [];
-                context.visualization.flag.forEach(function (field) {
-                    var iconInfo = context.calcIconInfo(field, origItem, true);
+                context.visualization.flags.forEach(function (flag) {
+                    var iconInfo = context.calcIconInfo(flag, origItem, true);
                     if (iconInfo) {
                         annotations.push(iconInfo);
                     }
@@ -412,6 +428,7 @@
                             .targetVertex(childVertex)
                             .sourceMarker("circle")
                             .targetMarker("arrow")
+                            .text(childMappedItem[1] ? childMappedItem[1] : "")
                             .data(childMappedItem)
                         ;
                         edges.push(edge);
@@ -444,16 +461,16 @@
                 break;
             case "CHORO":
                 if (source.mappings.weight instanceof Array && source.mappings.weight.length) {
-                    this.mappings = new ChoroMappings2(this.visualization, source.mappings, source.link);
+                    this.mappings = new ChoroMappings2(this.visualization, source.mappings);
                     if (source.mappings.weight.length > 1) {
                         this.visualization.type = "LINE";
                     }
                 } else {
-                    this.mappings = new ChoroMappings(this.visualization, source.mappings, source.link);
+                    this.mappings = new ChoroMappings(this.visualization, source.mappings);
                 }
                 break;
             case "HEAT_MAP":
-                this.mappings = new HeatMapMappings(this.visualization, source.mappings, source.link);
+                this.mappings = new HeatMapMappings(this.visualization, source.mappings);
                 break;
             default:
                 this.mappings = new ChartMappings(this.visualization, source.mappings);
@@ -462,11 +479,12 @@
             this.first = source.first;
             this.reverse = source.reverse;
             this.sort = source.sort;
+            this.properties = source.properties;
         }
     }
 
     Source.prototype.getQualifiedID = function () {
-        return this.visualization.getQualifiedID() + "." + this.id;
+        return this.visualization.getQualifiedID() + "." + this._id;
     };
 
     Source.prototype.exists = function () {
@@ -474,13 +492,13 @@
     };
 
     Source.prototype.getDatasource = function () {
-        return this.visualization.dashboard.datasources[this._id];
+        return this.visualization.dashboard.getDatasource(this._id);
     };
 
     Source.prototype.getOutput = function () {
         var datasource = this.getDatasource();
-        if (datasource && datasource.outputs) {
-            return datasource.outputs[this._output];
+        if (datasource && datasource._outputs) {
+            return datasource._outputs[this._output];
         }
         return null;
     };
@@ -613,6 +631,7 @@
         this.visualization = visualization;
         this.eventID = eventID;
         this._updates = [];
+        this._mappings = event.mappings;
         if (event) {
             this._updates = event.updates.map(function (updateInfo) {
                 return new EventUpdate(this, updateInfo, event.mappings);
@@ -716,23 +735,100 @@
         return retVal;
     };
 
+    //  Visualization Field---
+    function Field(ddlField) {
+        this._id = ddlField.id;
+        this._label = ddlField.label;
+        this._properties = ddlField.properties || {};
+    }
+    Field.prototype = Object.create(Class.prototype);
+    Field.prototype.constructor = Field;
+
+    Field.prototype.id = function () {
+        return this._id;
+    };
+
+    Field.prototype.label= function () {
+        return this._properties.label || this._label;
+    };
+
+    Field.prototype.type = function () {
+        return this._properties.type || "";
+    };
+
+    Field.prototype.jsType = function () {
+        return hipieType2DBType(this.type());
+    };
+
+    Field.prototype.charttype = function (_) {
+        if (!arguments.length) return this._properties.charttype || "";
+        this._properties.charttype = _;
+        return this;
+    };
+
+    Field.prototype.localVisualizationID = function () {
+        return this._properties.localVisualizationID || "";
+    };
+
+    Field.prototype.enumvals = function () {
+        return this._properties.enumvals;    //  Return undefined if non existent
+    };
+
+    Field.prototype.hasDefault = function () {
+        return this.default() !== undefined;
+    };
+
+    Field.prototype.default = function () {
+        return this._properties.default || "";
+    };
+
+    Field.prototype.hasFunction = function () {
+        return this.function() !== undefined;
+    };
+
+    Field.prototype.function = function () {
+        return this._properties.function;
+    };
+
+    Field.prototype.params = function () {
+        var retVal = [];
+        var params = this._properties.params || {};
+        for (var key in params) {
+            retVal.push(params[key]);
+        }
+        return retVal;
+    };
+
+    Field.prototype.properties = function () {
+        return this._properties;
+    };
+
     //  Visualization ---
     function Visualization(dashboard, visualization, parentVisualization) {
         Class.call(this);
 
         this.dashboard = dashboard;
         this.parentVisualization = parentVisualization;
+        this.type = visualization.type;
         this.id = visualization.id;
 
-        this.label = visualization.label;
+        switch (this.type) {
+            case "TABLE":
+                this.label = (visualization).label;
+                break;
+            case "GRAPH":
+                this.label = (visualization).label;
+                this.icon = (visualization).icon || { faChar: "\uf128" };
+                this.flags = (visualization).flag || [];
+                break;
+        }
         this.title = visualization.title || visualization.id;
-        this.type = visualization.type;
-        this.icon = visualization.icon || {};
-        this.flag = visualization.flag || [];
-        this.fields = visualization.fields || [];
-        this.fieldsMap = {};
-        this.fields.forEach(function (d) {
-            this.fieldsMap[d.id] = d;
+        this._fields = (visualization.fields || []).map(function (field) {
+            return new Field(field);
+        });
+        this._fieldsMap = {};
+        this._fields.forEach(function (field) {
+            this._fieldsMap[field.id()] = field;
         }, this);
 
         this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
@@ -884,12 +980,16 @@
                 });
                 break;
             case "GRAPH":
-                this.loadWidgets(["../graph/Graph"], function (widget) {
+                this.loadWidget("../composite/MegaChart", function (widget) {
                     try {
                         widget
                             .id(visualization.id)
-                            .layout_default("ForceDirected2")
-                            .applyScaleOnLayout_default(true)
+                            .showChartSelect_default(false)
+                            .chartType_default("GRAPH")
+                            .chartTypeDefaults({
+                                layout: "ForceDirected2",
+                                applyScaleOnLayout: true
+                            })
                         ;
                     } catch (e) {
                         console.log("Unexpected widget type:  " + widget.classID());
@@ -897,22 +997,27 @@
                 });
                 break;
             case "FORM":
-                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea"], function (widget, widgetClasses) {
+                this.loadWidgets(["../form/Form", "../form/Input", "../form/Button", "../form/CheckBox", "../form/ColorInput", "../form/Radio", "../form/Range", "../form/Select", "../form/Slider", "../form/TextArea", "../form/InputRange"], function (widget, widgetClasses) {
                     var Input = widgetClasses[1];
                     var CheckBox = widgetClasses[3];
                     var Radio = widgetClasses[5];
                     var Select = widgetClasses[7];
                     var TextArea = widgetClasses[9];
+                    var InputRange = widgetClasses[10];
 
                     try {
                         widget
                             .id(visualization.id)
-                            .inputs(visualization.fields.map(function (field) {
+                            .inputs(context.fields().map(function (field) {
 
                                 var selectOptions = [];
                                 var options = [];
                                 var inp;
-                                switch (field.properties.charttype) {
+                                if (!field.charttype() && field.type() === "range") {
+                                    //  TODO - Verify with @DL
+                                    field.charttype("RANGE");
+                                }
+                                switch (field.charttype()) {
                                     case "TEXT":
                                         inp = new Input()
                                             .type_default("text")
@@ -930,12 +1035,15 @@
                                     case "HIDDEN":
                                         inp = new Input()
                                             .type_default("hidden")
-                                        ;
+                                            ;
+                                        break;
+                                    case "RANGE":
+                                        inp = new InputRange();
                                         break;
                                     default:
-                                        if (field.properties.enumvals) {
+                                        if (field.enumvals()) {
                                             inp = new Select();
-                                            options = field.properties.enumvals;
+                                            options = field.enumvals();
                                             for (var val in options) {
                                                 selectOptions.push([val, options[val]]);
                                             }
@@ -948,13 +1056,13 @@
                                 }
 
                                 inp
-                                    .name_default(field.id)
-                                    .label_default((field.properties ? field.properties.label : null) || field.label)
-                                    .value_default(field.properties.default ? field.properties.default : "") // TODO Hippie support for multiple default values (checkbox only)
+                                    .name_default(field.id())
+                                    .label_default(field.label())
+                                    .value_default(field.default()) // TODO Hippie support for multiple default values (checkbox only)
                                 ;
 
                                 if (inp instanceof CheckBox || inp instanceof Radio) { // change this to instanceof?
-                                    var vals = Object.keys(field.properties.enumvals);
+                                    var vals = Object.keys(field.enumvals());
                                     inp.selectOptions_default(vals);
                                 } else if (selectOptions.length) {
                                     inp.selectOptions_default(selectOptions);
@@ -1001,6 +1109,18 @@
         return this.id;
     };
 
+    Visualization.prototype.fields = function () {
+        return this._fields;
+    };
+
+    Visualization.prototype.hasField = function (id) {
+        return this.field[id] !== undefined;
+    };
+
+    Visualization.prototype.field = function (id) {
+        return this._fieldsMap[id];
+    };
+
     Visualization.prototype.loadedPromise = function () {
         var context = this;
         return new Promise(function (resolve, reject) {
@@ -1044,9 +1164,9 @@
 
         var context = this;
         require(widgetPaths, function (Widget) {
-            var existingWidget = context.dashboard.marshaller._widgetMappings.get(context.id);
+            var existingWidget = context.dashboard.marshaller.getWidget(context.id);
             if (existingWidget) {
-                if (Widget.prototype._class !== existingWidget._class) {
+                if (Widget.prototype._class !== existingWidget.classID()) {
                     console.log("Unexpected persisted widget type (old persist string?)");
                 }
                 context.setWidget(existingWidget);
@@ -1181,9 +1301,9 @@
             row: {},
             selected: false
         };
-        this.fields.forEach(function (field) {
-            if (field.properties && field.properties.default !== undefined) {
-                this._widgetState.row[field.id] = field.properties.default;
+        this.fields().forEach(function (field) {
+            if (field.hasDefault()) {
+                this._widgetState.row[field.id()] = field.default();
                 this._widgetState.selected = true;
             }
         }, this);
@@ -1290,22 +1410,112 @@
     };
 
     //  Output  ---
-    function Output(dataSource, output) {
-        this.dataSource = dataSource;
+    function Filter(ddlFilter) {
+        if (typeof ddlFilter === "string") {
+            ddlFilter = {
+                fieldid: ddlFilter,
+                nullable: true,
+                rule: "=="
+            };
+        }
+        this.fieldid = ddlFilter.fieldid;
+        this.nullable = ddlFilter.nullable;
+        this.rule = ddlFilter.rule || "==";
+        this.minid = ddlFilter.minid;
+        this.maxid = ddlFilter.maxid;
+    }
+
+    Filter.prototype.tidyFieldID = function () {
+        switch (this.rule) {
+            case "<":
+            case "<=":
+                return this.fieldid.substring(0, this.fieldid.length - 4); //  Remove "_min";
+            case ">":
+            case ">=":
+                return this.fieldid.substring(0, this.fieldid.length - 4); //  Remove "_max";
+        }
+        return this.fieldid;
+    };
+
+    Filter.prototype.isRange = function () {
+        return this.rule === "range";
+    };
+
+    Filter.prototype._calcRequest = function (filteredRequest, request, fieldid, value) {
+        filteredRequest[fieldid + _CHANGED] = request[fieldid + _CHANGED] || false;
+        if (filteredRequest[fieldid] !== value) {
+            filteredRequest[fieldid] = value;
+        }
+    };
+
+    Filter.prototype.calcRequest = function (filteredRequest, request) {
+        var value = request[this.fieldid] === undefined ? null : request[this.fieldid];
+        if (this.isRange()) {
+            if (value instanceof Array && value.length === 2) {
+                this._calcRequest(filteredRequest, request, this.minid, value[0]);
+                this._calcRequest(filteredRequest, request, this.maxid, value[1]);
+            }
+        } else {
+            this._calcRequest(filteredRequest, request, this.fieldid, value);
+        }
+    };
+
+    Filter.prototype.matches = function (row, value) {
+        if (value === undefined || value === null || value === "") {
+            return this.nullable;
+        }
+        var rowValue = row[this.tidyFieldID()];
+        if (rowValue === undefined) {
+            rowValue = row[this.tidyFieldID().toLowerCase()];
+        }
+        switch (this.rule) {
+            case "<":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) < 0;
+                }
+                return rowValue < value;
+            case ">":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) > 0;
+                }
+                return rowValue > value;
+            case "<=":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) <= 0;
+                }
+                return rowValue <= value;
+            case ">=":
+                if (rowValue.localeCompare) {
+                    return rowValue.localeCompare(value) >= 0;
+                }
+                return rowValue >= value;
+            case "==":
+                /* falls through */
+            default:
+                return value == rowValue;    // jshint ignore:line
+        }
+        console.log("Unknown filter rule:  '" + this.rule + "'");
+        return false;
+    };
+    
+    function Output(datasource, output) {
+        this.datasource = datasource;
         this.id = output.id;
         this.from = output.from;
         this.notify = output.notify || [];
-        this.filter = output.filter || [];
+        this.filters = (output.filter || []).map(function (filter) {
+            return new Filter(filter);
+        });
     }
 
     Output.prototype.getQualifiedID = function () {
-        return this.dataSource.getQualifiedID() + "." + this.id;
+        return this.datasource.getQualifiedID() + "." + this.id;
     };
 
     Output.prototype.getUpdatesVisualizations = function () {
         var retVal = [];
         this.notify.forEach(function (item) {
-            retVal.push(this.dataSource.dashboard.getVisualization(item));
+            retVal.push(this.datasource.marshaller.getVisualization(item));
         }, this);
         return retVal;
     };
@@ -1319,7 +1529,7 @@
         this.notify.filter(function (item) {
             return !updates || updates.indexOf(item) >= 0;
         }).forEach(function (item) {
-            var viz = this.dataSource.dashboard.getVisualization(item);
+            var viz = this.datasource.marshaller.getVisualization(item);
             promises.push(viz.notify());
         }, this);
         return Promise.all(promises);
@@ -1398,25 +1608,30 @@
         return datasourceRequestOptimizer.fetchData();
     };
 
-    //  DataSource  ---
-    function DataSource(dashboard, dataSource, proxyMappings, timeout) {
-        this.dashboard = dashboard;
-        this.id = dataSource.id;
-        this.filter = dataSource.filter || [];
-        this.WUID = dataSource.WUID;
-        this.URL = dashboard.marshaller.espUrl && dashboard.marshaller.espUrl._url ? dashboard.marshaller.espUrl._url : dataSource.URL;
-        this.databomb = dataSource.databomb;
+    //  Datasource  ---
+    function Datasource(marshaller, datasource, proxyMappings, timeout) {
+        this.marshaller = marshaller;
+        this.id = datasource.id;
+        this.filters = (datasource.filter || []).map(function (filter) {
+            return new Filter(filter);
+        });
+        this.WUID = datasource.WUID;
+        this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
+        this.databomb = datasource.databomb;
         this._loadedCount = 0;
 
         var context = this;
-        this.outputs = {};
+        this._outputs = {};
+        this._outputArray = [];
         var hipieResults = [];
-        dataSource.outputs.forEach(function (item) {
-            context.outputs[item.id] = new Output(context, item);
+        datasource.outputs.forEach(function (item) {
+            var output = new Output(context, item);
+            context._outputs[item.id] = output;
+            context._outputArray.push(output);
             hipieResults.push({
                 id: item.id,
                 from: item.from,
-                filter: item.filter || this.filter
+                filters: output.filters || this.filters
             });
         }, this);
 
@@ -1433,59 +1648,59 @@
             ;
         } else {
             this.comms = new Comms.HIPIERoxie()
-                .url(dataSource.URL)
+                .url(datasource.URL)
                 .proxyMappings(proxyMappings)
                 .timeout(timeout)
             ;
         }
     }
 
-    DataSource.prototype.getQualifiedID = function () {
-        return this.dashboard.getQualifiedID() + "." + this.id;
+    Datasource.prototype.getQualifiedID = function () {
+        return this.id;
     };
 
-    DataSource.prototype.getUpdatesVisualizations = function () {
+    Datasource.prototype.getOutputs = function () {
+        return this._outputs;
+    };
+
+    Datasource.prototype.getUpdatesVisualizations = function () {
         var retVal = [];
-        for (var key in this.outputs) {
-            this.outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
+        for (var key in this._outputs) {
+            this._outputs[key].getUpdatesVisualizations().forEach(function (visualization) {
                 retVal.push(visualization);
             });
         }
         return retVal;
     };
 
-    DataSource.prototype.accept = function (visitor) {
+    Datasource.prototype.accept = function (visitor) {
         visitor.visit(this);
-        for (var key in this.outputs) {
-            this.outputs[key].accept(visitor);
+        for (var key in this._outputs) {
+            this._outputs[key].accept(visitor);
         }
     };
 
     var transactionID = 0;
     var transactionQueue = [];
-    DataSource.prototype.fetchData = function (request, updates) {
+    Datasource.prototype.fetchData = function (request, updates) {
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
         var dsRequest = {};
-        this.filter.forEach(function (item) {
-            dsRequest[item + _CHANGED] = request[item + _CHANGED] || false;
-            var value = request[item] === undefined ? null : request[item];
-            if (dsRequest[item] !== value) {
-                dsRequest[item] = value;
-            }
+        this.filters.forEach(function (item) {
+            item.calcRequest(dsRequest, request);
         });
         dsRequest.refresh = request.refresh || false;
-        if (window.__hpcc_debug) {
+        if (true || window.__hpcc_debug) {
             console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
         }
         for (var key in dsRequest) {
-            if (dsRequest[key] === null) {
+            if (dsRequest[key] === undefined) {
                 delete dsRequest[key];
             }
         }
         var now = Date.now();
-        this.dashboard.marshaller.commsEvent(this, "request", dsRequest);
+        this.marshaller.commsEvent(this, "request", dsRequest);
         var context = this;
         return new Promise(function (resolve, reject) {
             context.comms.call(dsRequest).then(function (_response) {
@@ -1493,47 +1708,47 @@
                 var intervalHandle = setInterval(function () {
                     if (transactionQueue[0] === myTransactionID && Date.now() - now >= 500) {  //  500 is to allow for all "clear" transitions to complete...
                         clearTimeout(intervalHandle);
-                        context.processResponse(response, request, updates).then(function () {
+                        context.processResponse(response, dsRequest, updates).then(function () {
                             transactionQueue.shift();
                             resolve(response);
-                            context.dashboard.marshaller.commsEvent(context, "response", dsRequest, response);
+                            context.marshaller.commsEvent(context, "response", dsRequest, response);
                             ++context._loadedCount;
                         });
                     }
                 }, 100);
             }).catch(function (e) {
-                context.dashboard.marshaller.commsEvent(context, "error", dsRequest, e);
+                context.marshaller.commsEvent(context, "error", dsRequest, e);
                 reject(e);
             });
         });
     };
 
-    DataSource.prototype.processResponse = function (response, request, updates) {
+    Datasource.prototype.processResponse = function (response, request, updates) {
         var lowerResponse = {};
         for (var responseKey in response) {
             lowerResponse[responseKey.toLowerCase()] = response[responseKey];
         }
         var promises = [];
-        for (var key in this.outputs) {
-            var from = this.outputs[key].from;
+        for (var key in this._outputs) {
+            var from = this._outputs[key].from;
             if (!from) {
                 //  Temp workaround for older services  ---
-                from = this.outputs[key].id.toLowerCase();
+                from = this._outputs[key].id.toLowerCase();
             }
             if (Utility.exists(from, response)) {
                 if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(response[from], updates));
+                    promises.push(this._outputs[key].setData(response[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    promises.push(this.outputs[key].vizNotify(updates));
+                    promises.push(this._outputs[key].vizNotify(updates));
                 }
             } else if (Utility.exists(from, lowerResponse)) {
-                console.log("DDL 'DataSource.From' case is Incorrect");
+                console.log("DDL 'Datasource.From' case is Incorrect");
                 if (!Utility.exists(from + _CHANGED, lowerResponse) || (Utility.exists(from + _CHANGED, lowerResponse) && response[from + _CHANGED].length && lowerResponse[from + _CHANGED][0][from + _CHANGED])) {
-                    promises.push(this.outputs[key].setData(lowerResponse[from], updates));
+                    promises.push(this._outputs[key].setData(lowerResponse[from], updates));
                 } else {
                     //  TODO - I Suspect there is a HIPIE/Roxie issue here (empty request)
-                    promises.push(this.outputs[key].vizNotify(updates));
+                    promises.push(this._outputs[key].vizNotify(updates));
                 }
             } else {
                 var responseItems = [];
@@ -1546,16 +1761,20 @@
         return Promise.all(promises);
     };
 
-    DataSource.prototype.isRoxie = function () {
+    Datasource.prototype.isLoaded = function(){
+        return this._loadedCount > 0;
+    };
+
+    Datasource.prototype.isRoxie = function () {
         return !this.WUID && !this.databomb;
     };
 
-    DataSource.prototype.serializeState = function () {
+    Datasource.prototype.serializeState = function () {
         return {
         };
     };
 
-    DataSource.prototype.deserializeState = function (state) {
+    Datasource.prototype.deserializeState = function (state) {
         if (!state) return;
     };
 
@@ -1565,13 +1784,15 @@
         this.id = dashboard.id;
         this.title = dashboard.title;
 
-        var context = this;
-        this.datasources = {};
-        this.datasourceTotal = 0;
-        dashboard.datasources.forEach(function (item) {
-            context.datasources[item.id] = new DataSource(context, item, proxyMappings, timeout);
-            ++context.datasourceTotal;
-        });
+        this._datasources = {};
+        this._datasourceArray = [];
+        this._datasourceTotal = 0;
+        if (dashboard.datasources) {
+            dashboard.datasources.forEach(function (item) {
+                this.createDatasource(item, proxyMappings, timeout);
+            }, this);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
 
         this._visualizations = {};
         this._visualizationArray = [];
@@ -1581,12 +1802,22 @@
         this._visualizationTotal = this._visualizationArray.length;
     }
 
+    Dashboard.prototype.createDatasource = function(ddlDatasouce) {
+        var retVal = this._datasources[ddlDatasouce.id];
+        if (!retVal) {
+            retVal = this.marshaller.createDatasource(ddlDatasouce);
+            this._datasources[ddlDatasouce.id] = retVal;
+            this._datasourceArray.push(retVal);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
+        return retVal;
+    };
+
     Dashboard.prototype.createVisualization = function (ddlVisualization, parentVisualization) {
         var retVal = new Visualization(this, ddlVisualization, parentVisualization);
         this._visualizations[ddlVisualization.id] = retVal;
         this._visualizationArray.push(retVal);
-        this.marshaller._visualizations[ddlVisualization.id] = retVal;
-        this.marshaller._visualizationArray.push(retVal);
+        this.marshaller.appendVisualization(retVal);
         return retVal;
     };
 
@@ -1598,8 +1829,20 @@
         return this.id;
     };
 
+    Dashboard.prototype.getDatasources = function() {
+        return this._datasources;
+    };
+
+    Dashboard.prototype.getDatasourceArray = function () {
+        return this._datasourceArray;
+    };
+
     Dashboard.prototype.getDatasource = function (id) {
-        return this.datasources[id];
+        return this._datasources[id] || this.marshaller.getDatasource(id);
+    };
+
+    Dashboard.prototype.getDataSourceArray = function () {
+        return this._datasourceArray;
     };
 
     Dashboard.prototype.getVisualization = function (id) {
@@ -1620,8 +1863,8 @@
 
     Dashboard.prototype.accept = function (visitor) {
         visitor.visit(this);
-        for (var key in this.datasources) {
-            this.datasources[key].accept(visitor);
+        for (var key in this._datasources) {
+            this._datasources[key].accept(visitor);
         }
         this._visualizationArray.forEach(function (item) {
             item.accept(visitor);
@@ -1669,8 +1912,8 @@
             datasources: {},
             visualizations: {}
         };
-        for (var key in this.datasources) {
-            retVal.datasources[key] = this.datasources[key].serializeState();
+        for (var key in this._datasources) {
+            retVal.datasources[key] = this._datasources[key].serializeState();
         }
         for (var vizKey in this._visualizations) {
             retVal.visualizations[vizKey] = this._visualizations[vizKey].serializeState();
@@ -1680,9 +1923,9 @@
 
     Dashboard.prototype.deserializeState = function (state) {
         if (!state) return;
-        for (var key in this.datasources) {
+        for (var key in this._datasources) {
             if (state.datasources[key]) {
-                this.datasources[key].deserializeState(state.datasources[key]);
+                this._datasources[key].deserializeState(state.datasources[key]);
             }
         }
         for (var vizKey in this._visualizations) {
@@ -1702,23 +1945,26 @@
         this._propogateClear = false;
         this.id = "Marshaller";
         this._missingDataString = "";
+        this.dashboards = {};
+        this.dashboardArray = [];
+
+        this._datasources = {};
+        this._datasourceArray = [];
+        this._visualizations = {};
+        this._visualizationArray = [];
     }
     Marshaller.prototype = Object.create(Class.prototype);
     Marshaller.prototype.constructor = Marshaller;
 
     Marshaller.prototype.commsDataLoaded = function () {
         for (var i = 0; i < this.dashboardArray.length; i++) {
-            for (var ds in this.dashboardArray[i].datasources) {
-                if (this.dashboardArray[i].datasources[ds]._loadedCount === 0) {
+            for (var ds in this.dashboardArray[i].getDatasources()) {
+                if (!this.dashboardArray[i].getDatasource(ds).isLoaded()) {
                     return false;
                 }
             }
         }
         return true;
-    };
-
-    Marshaller.prototype.getVisualization = function (id) {
-        return this._visualizations[id];
     };
 
     Marshaller.prototype.accept = function (visitor) {
@@ -1737,7 +1983,7 @@
         var transport = null;
         var hipieResultName = "HIPIE_DDL";
         if (this.espUrl.isWorkunitResult()) {
-            hipieResultName = this.espUrl._params["ResultName"];
+            hipieResultName = this.espUrl.param("ResultName");
             transport = new Comms.HIPIEWorkunit()
                 .url(url)
                 .proxyMappings(this._proxyMappings)
@@ -1808,12 +2054,24 @@
         var context = this;
         this._json = json;
         this._jsonParsed = JSON.parse(this._json);
+        this._jsonParsed.datasources[0].filter[0].nullable = true;
+
+        //  Global Datasources  --- 
+        this._datasources = {};
+        this._datasourceArray = [];
+        if (this._jsonParsed.datasources) {
+            this._jsonParsed.datasources.forEach(function (item) {
+                context.createDatasource(item);
+            });
+        }
+
         this.dashboards = {};
         this.dashboardArray = [];
         this._visualizations = {};
         this._visualizationArray = [];
-        this._jsonParsed.forEach(function (item) {
-            var newDashboard = new Dashboard(context, item, context._proxyMappings);
+        var dashboards = this._jsonParsed.dashboards || this._jsonParsed;
+        dashboards.forEach(function (item) {
+            var newDashboard = new Dashboard(context, item, context._proxyMappings, context._timeout);
             context.dashboards[item.id] = newDashboard;
             context.dashboardArray.push(newDashboard);
         });
@@ -1823,6 +2081,8 @@
                 context.vizEvent(ddlViz.widget, eventID, row, col, selected);
             });
         });
+        this._datasourceTotal = this._datasourceArray.length;
+
         this.ready(callback);
         return this;
     };
@@ -1831,12 +2091,53 @@
         return Promise.all(this.dashboardArray.map(function (dashboard) { return dashboard.loadedPromise(); }));
     };
 
+    Marshaller.prototype.createDatasource = function (ddlDatasouce) {
+        var retVal = this._datasources[ddlDatasouce.id];
+        if (!retVal) {
+            retVal = new Datasource(this, ddlDatasouce, this._proxyMappings, this._timeout);
+            this._datasources[ddlDatasouce.id] = retVal;
+            this._datasourceArray.push(retVal);
+        }
+        this._datasourceTotal = this._datasourceArray.length;
+        return retVal;
+    };
+
+    Marshaller.prototype.getDatasource = function (id) {
+        return this._datasources[id];
+    };
+
+    Marshaller.prototype.getDatasources = function () {
+        return this._datasources;
+    };
+
+    Marshaller.prototype.getDatasourceArray = function () {
+        return this._datasourceArray;
+    };
+
+    Marshaller.prototype.appendVisualization = function(visualization) {
+        this._visualizations[visualization.id] = visualization;
+        this._visualizationArray.push(visualization);
+    };
+
+    Marshaller.prototype.getVisualization = function (id) {
+        return this._visualizations[id];
+    };
+
+    Marshaller.prototype.appendDataSource = function (datasource) {
+        this._datasources[datasource.id] = datasource;
+        this._datasourceArray.push(datasource);
+    };
+
     Marshaller.prototype.getVisualizations = function () {
         return this._visualizations;
     };
 
     Marshaller.prototype.getVisualizationArray = function () {
         return this._visualizationArray;
+    };
+
+    Marshaller.prototype.getWidget = function (id) {
+        return this._widgetMappings[id];
     };
 
     Marshaller.prototype.on = function (eventID, func) {
@@ -1886,8 +2187,8 @@
     Marshaller.prototype.createDatabomb = function () {
         var retVal = {};
         this.dashboardArray.forEach(function (dashboard) {
-            for (var key in dashboard.datasources) {
-                var comms = dashboard.datasources[key].comms;
+            for (var key in dashboard.getDatasources()) {
+                var comms = dashboard.getDatasource(key).comms;
                 retVal[key] = {};
                 for (var key2 in comms._hipieResults) {
                     var hipieResult = comms._hipieResults[key2];
@@ -1924,7 +2225,7 @@
     return {
         Marshaller: Marshaller,
         Dashboard: Dashboard,
-        DataSource: DataSource,
+        Datasource: Datasource,
         Output: Output,
         Visualization: Visualization
     };

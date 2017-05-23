@@ -1,0 +1,16 @@
+.other_Radio input {
+    float: left;
+    margin: 0px 12px 2px 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.other_Radio span,
+.other_Radio label {
+    vertical-align: middle;
+    font-family: open sans-serif;
+    display: block;
+    padding: 8px;
+    margin: 3px 5px 12px 7px;
+    font-size: 20px;
+}

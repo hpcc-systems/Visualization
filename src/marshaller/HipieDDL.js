@@ -2054,7 +2054,6 @@
         var context = this;
         this._json = json;
         this._jsonParsed = JSON.parse(this._json);
-        this._jsonParsed.datasources[0].filter[0].nullable = true;
 
         //  Global Datasources  --- 
         this._datasources = {};

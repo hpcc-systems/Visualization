@@ -1,0 +1,17 @@
+.timeline_MiniGantt .line {
+  fill: none;
+  stroke: lightgrey;
+  opacity: 0.7;
+}
+
+.timeline_MiniGantt .rect {
+  fill: lightskyblue;
+  stroke: blue;
+  opacity: 0.5;
+}
+
+.timeline_MiniGantt .rect text {
+  fill: black;
+  stroke: none;
+}
+

@@ -1,0 +1,13 @@
+.map_Layered .graticule {
+  fill: none;
+  stroke: darkgray;
+  stroke-linejoin: round;
+  stroke-width: 0.25px;
+}
+
+.map_Layered .graticuleOutline {
+  fill: none;
+  stroke: black;
+  stroke-linejoin: round;
+  stroke-width: 0.25px;
+}

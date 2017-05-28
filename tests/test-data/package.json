@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "@hpcc-js/sample-data",
+  "version": "0.0.25",
+  "description": "hpcc-js - Test Data",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*.d.ts",
+    "lib/**/*.js"
+  ],
+  "directories": {
+    "lib": "lib/"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf lib"
+  },
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

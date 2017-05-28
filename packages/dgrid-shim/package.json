@@ -1,0 +1,45 @@
+{
+  "name": "@hpcc-js/dgrid-shim",
+  "version": "0.0.28",
+  "description": "dgrid shim",
+  "main": "dist/dgrid-shim.js",
+  "scripts": {
+    "clean": "rimraf lib* && rimraf dist*",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "dgrid": "^1.1.0",
+    "dijit": "^1.12.2",
+    "dojo": "^1.12.2",
+    "dojo-dstore": "^1.1.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.26.1",
+    "dojo-webpack-loader": "^0.9.2",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "rimraf": "^2.6.1",
+    "style-loader": "^0.18.1",
+    "url-loader": "^0.5.9",
+    "webpack": "^2.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GordonSmith/hpcc-js-drgid.git"
+  },
+  "keywords": [
+    "dojo",
+    "webpack",
+    "dgrid",
+    "dstore"
+  ],
+  "author": "Gordon Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GordonSmith/hpcc-js-dgrid/issues"
+  },
+  "homepage": "https://github.com/GordonSmith/hpcc-js-dgrid#readme"
+}

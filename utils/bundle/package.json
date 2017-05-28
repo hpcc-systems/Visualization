@@ -1,0 +1,41 @@
+{
+  "name": "@hpcc-js/bundle",
+  "version": "0.0.4",
+  "description": "hpcc-js - bundle",
+  "main": "lib/index.js",
+  "module": "lib-es6/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/*",
+    "lib-es6/*",
+    "dist/*"
+  ],
+  "directories": {
+    "lib": "lib/"
+  },
+  "scripts": {
+    "clean": "rimraf lib*",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "d3-request": "^1.0.5",
+    "toposort": "^1.0.3",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.1",
+    "rimraf": "^2.6.1",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@hpcc-js/phosphor-shim",
+  "version": "0.0.28",
+  "description": "hpcc-js - Phosphor shim",
+  "main": "dist/phosphor-shim.js",
+  "module": "dist/phosphor-shim.es6.js",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "build-es6": "rollup -c -f es -o dist/phosphor-shim.es6.js",
+    "clean": "rimraf dist* && rimraf dist && rimraf build"
+  },
+  "dependencies": {
+    "@phosphor/algorithm": "^1.1.0",
+    "@phosphor/messaging": "^1.2.0",
+    "@phosphor/widgets": "^1.2.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.43.0",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

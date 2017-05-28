@@ -1,0 +1,21 @@
+import "amcharts3/amcharts/amcharts";
+
+export * from "./Area";
+export * from "./Axis";
+export * from "./Bar";
+export * from "./Column";
+export * from "./Combo";
+export * from "./CommonFunnel";
+export * from "./CommonRadar";
+export * from "./CommonSerial";
+export * from "./CommonXY";
+export * from "./Funnel";
+export * from "./Gantt";
+export * from "./Gauge";
+export * from "./Line";
+export * from "./Pie";
+export * from "./Polar";
+export * from "./Pyramid";
+export * from "./Scatter";
+export * from "./SerialAxis";
+export * from "./XYAxis";

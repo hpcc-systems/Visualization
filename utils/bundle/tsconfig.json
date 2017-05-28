@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": true,
+        "noImplicitAny": false,
+        "noEmitOnError": false,
+        "noUnusedLocals": true,
+        "strictNullChecks": true,
+        "target": "es6",
+        "outDir": "./lib",
+        "lib": [
+            "es6",
+            "dom",
+            "es2015.promise"
+        ]
+    },
+    "include": [
+        "src/*"
+    ]
+}

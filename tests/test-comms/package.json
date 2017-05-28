@@ -27,7 +27,7 @@
     "build": "tsc && webpack",
     "clean": "rimraf build",
     "test": "npm run test:node",
-    "test:node": "./node_modules/.bin/mocha build/bundle.test.js --reporter spec",
+    "test:node": "./node_modules/.bin/mocha build/index.spec.js --reporter spec",
     "test:chrome": "karma start --browsers=Chrome",
     "test:firefox": "karma start --browsers=Firefox",
     "test:ie": "karma start --browsers=IE"

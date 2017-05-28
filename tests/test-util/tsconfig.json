@@ -7,10 +7,19 @@
     "strictNullChecks": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "ES5",
+    "target": "es5",
     "outDir": "./build",
-    "lib": ["ES5", "ES2015.Promise"],
-    "types": ["chai", "mocha"]
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise"
+    ],
+    "types": [
+      "chai",
+      "mocha"
+    ]
   },
-  "include": ["src/*"]
+  "include": [
+    "src/*"
+  ]
 }

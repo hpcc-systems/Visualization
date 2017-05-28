@@ -1,0 +1,9 @@
+{
+  "lerna": "2.0.0-rc.5",
+  "packages": [
+    "packages/*",
+    "tests/*"
+  ],
+  "version": "independent",
+  "npmClient": "yarn"
+}

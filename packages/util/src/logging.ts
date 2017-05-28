@@ -23,11 +23,28 @@ const colours: { [key: string]: string } = {
     emergency: "magenta"
 };
 
+export interface Writer {
+    write(dateTime: string, level: Level, id: string, msg: string): void;
+}
+
+class ConsoleWriter implements Writer {
+    write(dateTime: string, level: Level, id: string, msg: string) {
+        if (isNode) {
+            // tslint:disable-next-line:no-console
+            console.log(`[${dateTime}] ${Level[level].toUpperCase()} ${id}:  ${msg}`);
+        } else {
+            // tslint:disable-next-line:no-console
+            console.log(`[${dateTime}] %c${Level[level].toUpperCase()}%c ${id}:  ${msg}`, `color:${colours[Level[level]]}`, "");
+        }
+    }
+}
+
 export class Logging {
     private static _instance: Logging;
     private _levelStack = new Stack<Level>();
-    private _level = Level.error;
+    private _level = Level.info;
     private _filter: string = "";
+    private _writer: Writer = new ConsoleWriter();
 
     public static Instance() {
         return this._instance || (this._instance = new this());
@@ -49,22 +66,22 @@ export class Logging {
         }, 2);
     }
 
+    writer(): Writer;
+    writer(_: Writer): Logging;
+    writer(_?: Writer): Writer | Logging {
+        if (_ === void 0) return this._writer;
+        this._writer = _;
+        return this;
+    }
+
     log(level: Level, id: string, msg: string | object) {
         if (level < this._level) return;
         if (this._filter && this._filter !== id) return;
 
-        const d = new Date();
-        const n = d.toISOString();
         if (typeof msg !== "string") {
             msg = this.stringify(msg);
         }
-        if (isNode) {
-            // tslint:disable-next-line:no-console
-            console.log(`[${n}] ${Level[level].toUpperCase()} ${id}:  ${msg}`);
-        } else {
-            // tslint:disable-next-line:no-console
-            console.log(`[${n}] %c${Level[level].toUpperCase()}%c ${id}:  ${msg}`, `color:${colours[Level[level]]}`, "");
-        }
+        this._writer.write(new Date().toISOString(), level, id, msg);
     }
 
     debug(id: string, msg: string | object) {

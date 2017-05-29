@@ -1,0 +1,48 @@
+{
+  "name": "@hpcc-js/common",
+  "version": "0.0.1",
+  "description": "hpcc-js - Viz Common",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*.d.ts",
+    "lib/**/*.js"
+  ],
+  "directories": {
+    "lib": "lib/"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf lib",
+    "docs": "typedoc --options tdoptions.json ."
+  },
+  "dependencies": {
+    "colorbrewer": "^1.0.0",
+    "d3-array": "^1.2.0",
+    "d3-brush": "^1.0.4",
+    "d3-drag": "^1.1.0",
+    "d3-format": "^1.2.0",
+    "d3-interpolate": "^1.1.5",
+    "d3-selection": "^1.1.0",
+    "d3-scale": "^1.0.6",
+    "d3-zoom": "^1.2.0",
+    "font-awesome": "^4.7.0",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

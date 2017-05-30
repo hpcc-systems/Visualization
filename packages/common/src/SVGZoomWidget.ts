@@ -10,10 +10,12 @@ export class SVGZoomWidget extends SVGWidget {
 
     protected _renderElement;
 
-    protected _zoom;
-    protected _zoomElement;
-    protected _zoomGrab;
-    protected _zoomG;
+    private _zoom;
+    protected _zoomScale = 1;
+    protected _zoomTranslate = [0, 0];
+    private _zoomGrab;
+    private _zoomG;
+    private _prevZoomable;
 
     protected _brush;
 
@@ -28,20 +30,38 @@ export class SVGZoomWidget extends SVGWidget {
 
     constructor() {
         super();
+
+        this._zoom = d3Zoom()
+            .scaleExtent([0.05, 20])
+            .on("zoom end", (evt) => {
+                this.onZoomed();
+            })
+            ;
     }
 
-    zoomTo(translate, scale, transitionDuration?) {
+    zoomScale(): number {
+        return this._zoomScale;
+    }
+
+    zoomTranslate(): number[] {
+        return this._zoomTranslate;
+    }
+
+    zoomExtent(range): void {
+        this._zoom.scaleExtent(range);
+    }
+
+    zoomTo(translate, scale, transitionDuration = 250) {
         translate = translate || this._zoom.translate();
         scale = scale || this._zoom.scale();
         transitionDuration = transitionDuration === undefined ? this.zoomDuration() : transitionDuration;
 
-        this._zoomElement.transition().duration(transitionDuration)
+        this.element().transition().duration(transitionDuration)
             .call(this._zoom.transform, d3ZoomIdentity.translate(translate[0], translate[1]).scale(scale))
             ;
     }
 
-    zoomToFit(transitionDuration?) {
-        const bbox = this._renderElement.node().getBBox();
+    zoomToBBox(bbox, transitionDuration?) {
         if (bbox.width && bbox.height) {
             const x = bbox.x + bbox.width / 2;
             const y = bbox.y + bbox.height / 2;
@@ -56,35 +76,38 @@ export class SVGZoomWidget extends SVGWidget {
         }
     }
 
+    zoomToFit(transitionDuration?) {
+        const bbox = this._renderElement.node().getBBox();
+        this.zoomToBBox(bbox);
+    }
+
+    onZoomed() {
+        if (d3Event && d3Event.transform && this._mouseDownMode === "zoom") {
+            this._zoomScale = d3Event.transform.k;
+            this._zoomTranslate = [d3Event.transform.x, d3Event.transform.y];
+            this._zoomG.attr("transform", d3Event.transform);
+        }
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._zoomElement = element.append("g");
-        this._zoomGrab = this._zoomElement.append("rect")
-            .attr("class", "background")
+        this._zoomGrab = element.append("rect")
+            .attr("class", "zoomBackground")
             .attr("width", this.width())
             .attr("height", this.height())
             ;
         this._zoomG = element.append("g");
         this._renderElement = this._zoomG.append("g");
 
-        this._zoom = d3Zoom()
-            .scaleExtent([0.05, 20])
-            .on("zoom end", () => {
-                if (this._mouseDownMode === "zoom") {
-                    this._zoomG.attr("transform", d3Event.transform);
-                }
-            })
-            ;
-
         this._brush = d3Brush()
             .on("start brush", function () {
             })
             .on("end", () => {
-                this._brush.move(this._zoomElement, null);
+                this._brush.move(element, null);
             })
             ;
 
-        this._zoomElement
+        element
             .on("mousein mouseover", () => {
                 this._mouseCapture = true;
             })
@@ -97,29 +120,36 @@ export class SVGZoomWidget extends SVGWidget {
             .on("keydown", () => {
                 if (this._mouseCapture && d3Event.ctrlKey) {
                     this._mouseDownMode = "selection";
-                    this._zoomElement.on(".zoom", null);
-                    this._zoomElement.select(".overlay")
+                    element.on(".zoom", null);
+                    element.select(".overlay")
                         .attr("cursor", "crosshair")
                         ;
-                    this._zoomElement.call(this._brush);
+                    element.call(this._brush);
                 }
             })
             .on("keyup", () => {
                 if (this._mouseDownMode === "selection") {
                     this._mouseDownMode = "zoom";
-                    this._brush.move(this._zoomElement, null);
-                    this._zoomElement.on(".brush", null);
-                    this._zoomElement.select(".overlay")
+                    this._brush.move(element, null);
+                    element.on(".brush", null);
+                    element.select(".overlay")
                         .attr("cursor", null)
                         .remove()
                         ;
-                    this._zoomElement.select(".selection").remove();
-                    this._zoomElement.selectAll(".handle").remove();
-                    this._zoomElement.call(this._zoom);
+                    element.select(".selection").remove();
+                    element.selectAll(".handle").remove();
+                    element.call(this._zoom);
                 }
             })
             ;
-        this._zoomElement.call(this._zoom);
+        if (this._prevZoomable !== this.zoomable()) {
+            if (this.zoomable()) {
+                element.call(this._zoom);
+            } else {
+                element.on(".zoom", null);
+            }
+            this._prevZoomable = this.zoomable();
+        }
     }
 
     update(domNode, element) {
@@ -129,7 +159,7 @@ export class SVGZoomWidget extends SVGWidget {
             .attr("height", this.height())
             ;
         const context = this;
-        const toolbar = element.selectAll(".toolbar").data(this.zoomToolbar() ? ["dummy"] : []);
+        const toolbar = element.selectAll(".toolbar").data((this.zoomable() && this.zoomToolbar()) ? ["dummy"] : []);
         const iconDiameter = 24;
         const faCharHeight = 14;
         toolbar.enter().append("g")
@@ -152,7 +182,7 @@ export class SVGZoomWidget extends SVGWidget {
                     .diameter(iconDiameter)
                     .paddingPercent((1 - faCharHeight / iconDiameter) * 100)
                     .on("click", function () {
-                        context._zoomElement.transition()
+                        context.element().transition()
                             .call(context._zoom.scaleBy, 1.33)
                             ;
                     })
@@ -164,7 +194,7 @@ export class SVGZoomWidget extends SVGWidget {
                     .diameter(iconDiameter)
                     .paddingPercent((1 - faCharHeight / iconDiameter) * 100)
                     .on("click", function () {
-                        context._zoomElement.transition()
+                        context.element().transition()
                             .call(context._zoom.scaleBy, 1 / 1.33)
                             ;
                     })
@@ -172,7 +202,7 @@ export class SVGZoomWidget extends SVGWidget {
                 context._buttonLast = context._buttonMinus;
             })
             ;
-        if (this.zoomToolbar()) {
+        if (this.zoomable() && this.zoomToolbar()) {
             this._buttonToFit
                 .x(this.width() - iconDiameter / 2 - 4)
                 .y(iconDiameter / 2 + 4)
@@ -205,10 +235,12 @@ export class SVGZoomWidget extends SVGWidget {
         super.exit(domNode, element);
     }
 
+    zoomable: { (): boolean; (_: boolean): SVGZoomWidget; };
     zoomToolbar: { (): boolean; (_: boolean): SVGZoomWidget; };
     zoomDuration: { (): number; (_: number): SVGZoomWidget; };
 }
 SVGZoomWidget.prototype._class += " common_SVGZoomWidget";
 
+SVGZoomWidget.prototype.publish("zoomable", true, "boolean", "Enable/Disable Zooming");
 SVGZoomWidget.prototype.publish("zoomToolbar", true, "boolean", "Show Zoom Toolbar");
 SVGZoomWidget.prototype.publish("zoomDuration", 250, "number", "Transition Duration");

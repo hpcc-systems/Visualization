@@ -11,7 +11,7 @@ export class CanvasWidget extends Widget {
     }
 
     resize(size) {
-        var retVal = super.resize(size);
+        const retVal = super.resize(size);
         this._parentElement
             .style("width", this._size.width + "px")
             .style("height", this._size.height + "px")
@@ -19,13 +19,13 @@ export class CanvasWidget extends Widget {
         this._element.attr("width", this._size.width);
         this._element.attr("height", this._size.height);
         return retVal;
-    };
+    }
 
     //  Properties  ---
     target(_) {
         if (!arguments.length) return this._target;
         if (this._target && _) {
-            throw "Target can only be assigned once.";
+            throw new Error("Target can only be assigned once.");
         }
         this._target = _;
 
@@ -37,11 +37,11 @@ export class CanvasWidget extends Widget {
         if (this._target) {
             this._parentElement = d3Select(this._target);
             if (!this._size.width && !this._size.height) {
-                var width = parseFloat(this._parentElement.style("width"));
-                var height = parseFloat(this._parentElement.style("height"));
+                const width = parseFloat(this._parentElement.style("width"));
+                const height = parseFloat(this._parentElement.style("height"));
                 this.size({
-                    width: width,
-                    height: height
+                    width,
+                    height
                 });
                 this.resize(this._size);
             }
@@ -50,14 +50,13 @@ export class CanvasWidget extends Widget {
         }
 
         return this;
-    };
+    }
 
     exit(domeNode?, element?) {
         if (this._parentElement) {
             this._parentElement.remove();
         }
         super.exit(domeNode, element);
-    };
+    }
 }
 CanvasWidget.prototype._class += " common_CanvasWidget";
-

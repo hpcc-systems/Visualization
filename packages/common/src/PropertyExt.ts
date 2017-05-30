@@ -1,5 +1,6 @@
 import { Class } from "./Class";
 
+const GEN_PUB_STUBS: boolean = false;
 const __meta_ = "__meta_";
 const __private_ = "__private_";
 const __prop_ = "__prop_";
@@ -128,12 +129,22 @@ function MetaProxy(id, proxy, method, defaultValue, ext?) {
 
 export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
 export interface IPublishExt {
-    override?: () => boolean;
+    override?: boolean;
     disable?: (w) => boolean;
     optional?: boolean;
     tags?: string[];
     autoExpand?;
     render?: boolean;
+    icons?: string[];
+    editor_input?: (context, widget, cell, param) => void;
+    saveButton?: string;
+    saveButtonID?: string;
+    number?: any;
+    //  Amcharts - really needed?
+    min?: number;
+    max?: number;
+    step?: number;
+    inputType?: string;
 }
 
 let propExtID = 0;
@@ -160,7 +171,9 @@ export class PropertyExt extends Class {
         }, this);
     }
 
-    id(_?): string | PropertyExt {
+    id(): string;
+    id(_: string): this;
+    id(_?): string | this {
         if (!arguments.length) return this._id;
         this._id = _;
         return this;
@@ -209,7 +222,7 @@ export class PropertyExt extends Class {
         }, this);
     }
 
-    publishReset(privateArr, exceptionsArr) {
+    publishReset(privateArr?, exceptionsArr?) {
         privateArr = (privateArr || []).map(function (id) { return __meta_ + id; });
         exceptionsArr = (exceptionsArr || []).map(function (id) { return __meta_ + id; });
         for (const key in this) {
@@ -222,8 +235,27 @@ export class PropertyExt extends Class {
             }
         }
     }
-
+    static prevClassID: string = "";
     publish(id, defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}) {
+        if (GEN_PUB_STUBS) {
+            if (PropertyExt.prevClassID !== (this as any).constructor.name) {
+                PropertyExt.prevClassID = (this as any).constructor.name;
+                console.log(`//  ${PropertyExt.prevClassID}  ---`);
+            }
+            let jsType: string = type;
+            switch (type) {
+                case "set":
+                case "html-color":
+                    jsType = "string";
+                    break;
+                case "array":
+                case "widgetArray":
+                case "propertyArray":
+                    jsType = "any[]";
+                    break;
+            }
+            console.log(`${id}: {(): ${jsType};(_: ${jsType}): ${PropertyExt.prevClassID}};\n${id}_exists: () => boolean;`);
+        }
         if (this[__meta_ + id] !== undefined && !ext.override) {
             throw new Error(id + " is already published.");
         }

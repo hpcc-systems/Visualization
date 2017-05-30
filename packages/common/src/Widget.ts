@@ -211,8 +211,8 @@ export class Widget extends PropertyExt {
     }
 
     size(): ISize;
-    size(_): Widget;
-    size(_?): ISize | Widget {
+    size(_): this;
+    size(_?): ISize | this {
         if (!arguments.length) return this._size;
         this._size = _;
         if (this._overlayElement) {
@@ -329,7 +329,7 @@ export class Widget extends PropertyExt {
         return null;
     }
 
-    locateParentWidget(domNode) {
+    locateParentWidget(domNode?) {
         domNode = domNode || (this._target ? this._target.parentNode : null);
         if (domNode) {
             const widget = this.toWidget(domNode);
@@ -542,7 +542,9 @@ export class Widget extends PropertyExt {
     postUpdate(_domNode, _element) { }
     exit(_domNode, _element) { }
 
-    fields: { (): Field[]; (_: Field[]): Widget };
+    fields(): Field[];
+    fields(_: Field[]): this;
+    fields(_?: Field[]): Field[] | this { return this; }
     classed: (_?) => any | this;
 }
 Widget.prototype._class += " common_Widget";

@@ -1,30 +1,33 @@
 {
   "name": "@hpcc-js/api",
-  "version": "0.0.1",
+  "version": "0.0.31",
   "description": "hpcc-js - Viz api",
   "main": "lib/index.js",
+  "module": "lib-es6/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*.d.ts",
-    "lib/**/*.js"
+    "lib/*",
+    "lib-es6/*",
+    "dist/*"
   ],
-  "directories": {
-    "lib": "lib/"
-  },
   "scripts": {
+    "clean": "rimraf lib* && rimraf dist*",
     "build": "tsc",
-    "clean": "rimraf lib",
+    "build-es6": "tsc --module es6 --outDir ./lib-es6",
+    "bundle": "node ./node_modules/@hpcc-js/bundle/lib/rollup",
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.0.1",
+    "@hpcc-js/common": "^0.0.31",
+    "d3-format": "^1.2.0",
     "d3-tip": "GordonSmith/d3-tip#vJSNEXT",
     "tslib": "^1.7.1"
   },
   "devDependencies": {
+    "@hpcc-js/bundle": "^0.0.4",
     "rimraf": "^2.6.1",
     "typedoc": "^0.7.1",
-    "typescript": "^2.3.3"
+    "typescript": "^2.3.4"
   },
   "repository": {
     "type": "git",

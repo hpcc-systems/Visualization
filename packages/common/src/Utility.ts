@@ -2,6 +2,8 @@ import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
 import { select as d3Select } from "d3-selection";
 import { timeFormat as d3TimeFormat } from "d3-time-format";
 
+declare const require: any;
+
 function _naturalSort(a, b, order, idx, sortCaseSensitive) {
     const re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi;
     const sre = /(^[ ]*|[ ]*$)/g;
@@ -307,7 +309,7 @@ export function urlParams() {
     return retVal;
 }
 
-export function endsWith(str, searchStr, pos) {
+export function endsWith(str: string, searchStr: string, pos?: number) {
     const subjectString = str.toString();
     if (typeof pos !== "number" || !isFinite(pos) || Math.floor(pos) !== pos || pos > subjectString.length) {
         pos = subjectString.length;
@@ -423,21 +425,25 @@ export function parseClassID(classID, prefix = "..") {
     const parts = classID.split(".");
     const classParts = parts[0].split("_");
     return {
+        package: `@hpcc-js/${classParts[0]}`,
         path: prefix + "/" + parts[0].split("_").join("/"),
         widgetID: classParts.length > 1 ? classParts[1] : null,
         memberWidgetID: parts.length > 1 ? parts[1] : null
     };
 }
-declare var require: any;
+
 export function requireWidget(classID) {
     return new Promise(function (resolve, _reject) {
         const parsedClassID = parseClassID(classID);
-        require([parsedClassID.path], function (Widget) {
-            if (Widget && Widget[parsedClassID.widgetID]) {
-                Widget = Widget[parsedClassID.widgetID];
-            }
-            resolve(parsedClassID.memberWidgetID ? (Widget.prototype ? Widget.prototype[parsedClassID.memberWidgetID] : Widget[parsedClassID.memberWidgetID]) : Widget);
-        });
+        if (require) {
+            require([parsedClassID.package], function (Package) {
+                let Widget = null;
+                if (Package && Package[parsedClassID.widgetID]) {
+                    Widget = Package[parsedClassID.widgetID];
+                }
+                resolve(parsedClassID.memberWidgetID ? (Widget.prototype ? Widget.prototype[parsedClassID.memberWidgetID] : Widget[parsedClassID.memberWidgetID]) : Widget);
+            });
+        }
     });
 }
 export function requireWidgets(classIDs) {

@@ -1,0 +1,47 @@
+{
+  "name": "@hpcc-js/graph",
+  "version": "0.0.32",
+  "description": "hpcc-js - Viz Graph",
+  "main": "lib/index.js",
+  "module": "lib-es6/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/*",
+    "lib-es6/*",
+    "dist/*"
+  ],
+  "scripts": {
+    "clean": "rimraf lib* && rimraf dist*",
+    "build": "tsc",
+    "build-es6": "tsc --module es6 --outDir ./lib-es6",
+    "bundle": "node ./node_modules/@hpcc-js/bundle/lib/rollup",
+    "docs": "typedoc --options tdoptions.json ."
+  },
+  "dependencies": {
+    "@hpcc-js/api": "^0.0.31",
+    "@hpcc-js/common": "^0.0.31",
+    "d3-drag": "^1.1.0",
+    "d3-force": "^1.0.6",
+    "d3-sankey": "^0.5.0",
+    "d3-selection": "^1.1.0",
+    "dagre": "^0.7.4",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@hpcc-js/bundle": "^0.0.4",
+    "rimraf": "^2.6.1",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

@@ -2,18 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Chrome",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///C:/Users/gordon/git/hpcc-js/tests/quick/index.html",
-            "trace": true,
-            "sourceMaps": true,
-            "pathMapping": {
-                "/": "${workspaceRoot}"
-            },
-            "sourceMapPathOverrides": {
-                "webpack:///C:/Users/gordon/git/hpcc-js/packages/viz/*": "${workspaceRoot}/*"
-            }
+            "name": "Launch Chrome against localhost",
+            "url": "file:///${workspaceRoot}/demos/Dermatology/dermatology.html",
+            "webRoot": "${workspaceRoot}"
         }
     ]
 }

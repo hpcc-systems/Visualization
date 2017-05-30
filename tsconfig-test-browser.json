@@ -1,9 +1,0 @@
-{
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "outDir": "./lib-test-es6"
-    },
-    "include": [
-        "./test/index.ts"
-    ]
-}

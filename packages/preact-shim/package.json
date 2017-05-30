@@ -1,0 +1,41 @@
+{
+  "name": "@hpcc-js/preact-shim",
+  "version": "0.0.26",
+  "description": "hpcc-js - preact shim",
+  "main": "dist/preact-shim.js",
+  "types": "dist/preact-shim.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "directories": {
+    "lib": "dist/"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rimraf dist*"
+  },
+  "dependencies": {
+    "preact": "^8.1.0"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "rollup": "^0.43.0",
+    "rollup-plugin-alias": "^1.3.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-uglify": "^2.0.1",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

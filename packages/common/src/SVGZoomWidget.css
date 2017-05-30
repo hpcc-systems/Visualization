@@ -9,8 +9,9 @@
     cursor:pointer;
 }
 
-.common_SVGZoomWidget .background {
-    fill: white;
+.common_SVGZoomWidget .zoomBackground {
+    pointer-events: all;
+    fill: none;
 }
 
 .common_SVGZoomWidget .selection {

@@ -4,7 +4,6 @@ import { rgb as d3Rgb } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
 
-// import "font-awesome/css/font-awesome.css";
 import "../src/Summary.css";
 
 const TEXT = "text";

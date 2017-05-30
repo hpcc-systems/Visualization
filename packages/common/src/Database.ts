@@ -17,6 +17,8 @@ let lastFoundFormat = null;
 
 //  Field  ---
 export class Field extends PropertyExt {
+    idx: number;
+
     // _id: string
     constructor(id?) {
         super();
@@ -158,7 +160,7 @@ export class Grid extends PropertyExt {
 
     //  Backward compatability  ---
     resetColumns() {
-        const fields = this.fields();
+        const fields = this.fields() as Field[];
         this.legacyColumns([]);
         this.legacyColumns(fields.map(function (field) {
             return field.label();
@@ -180,8 +182,11 @@ export class Grid extends PropertyExt {
         return this.fields()[idx];
     }
 
-    fieldByLabel(_, ignoreCase) {
-        return this.fields().filter(function (field: any, idx) { field.idx = idx; return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _; })[0];
+    fieldByLabel(_, ignoreCase?) {
+        return this.fields().filter(function (field: Field, idx) {
+            field.idx = idx;
+            return ignoreCase ? field.label().toLowerCase() === _.toLowerCase() : field.label() === _;
+        })[0];
     }
 
     data(_?, clone?): any | Grid {
@@ -564,7 +569,9 @@ export class Grid extends PropertyExt {
         return this;
     }
 
-    fields: { (): Field[]; (_, clone?): Grid };
+    fields(): Field[];
+    fields(_, clone?): this;
+    fields(_?, clone?): Field[] | this { return this; }
 }
 Grid.prototype._class += " common_Database.Grid";
 
@@ -692,8 +699,10 @@ export class RollupView extends LegacyView {
         entries.forEach(function (entry) {
             if (entry instanceof Array) {
                 retVal.push(prevRow.concat([entry]));
-            } else {
+            } else if (entry.values instanceof Array) {
                 retVal = retVal.concat(this._walkData(entry.values, prevRow.concat([entry.key])));
+            } else if (entry.value instanceof Array) {
+                retVal = retVal.concat(this._walkData(entry.value, prevRow.concat([entry.key])));
             }
         }, this);
         return retVal;

@@ -5,12 +5,15 @@ node_modules
 bower_components
 tmp/
 lib/
+lib-amd/
 lib-umd/
 lib-es6/
 lib-test-*/
 dist/
 lib
 build
+packages/amchart/images
+packages/common/font-awesome
 packages/**/yarn.lock
 test/**/yarn.lock
 *.log

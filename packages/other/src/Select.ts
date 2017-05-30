@@ -52,7 +52,7 @@ export class Select extends HTMLWidget {
                 for (let i = 0; i < options_dom_node.length; ++i) {
                     const optionNode = options_dom_node[i];
                     if (optionNode.selected) {
-                        options.push(d3Select(optionNode).datum().origRow);
+                        options.push((d3Select(optionNode).datum() as any).origRow);
                     }
                 }
                 if (options.length) {

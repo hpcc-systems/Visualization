@@ -664,12 +664,12 @@
         Slider: {
             simple: {
                 columns: ["Percent"],
-                data: [40]
+                data: [[40]]
             },
             range: {
                 allowRange: true,
                 columns: ["Percent"],
-                data: [20, 40]
+                data: [[20, 40]]
             }
         },
         FAChar: {

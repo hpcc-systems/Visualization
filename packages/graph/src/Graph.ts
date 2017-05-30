@@ -1,5 +1,5 @@
 ﻿import { IGraph } from "@hpcc-js/api";
-import { Platform, SVGZoomWidget, Utility } from "@hpcc-js/common";
+import { ISize, Platform, SVGZoomWidget, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
 import { Edge } from "./Edge";
@@ -8,6 +8,17 @@ import * as GraphLayouts from "./GraphLayouts";
 import { Vertex } from "./Vertex";
 
 import "../src/Graph.css";
+
+export interface Lineage {
+    parent: Widget;
+    child: Widget;
+}
+export interface IGraphData {
+    vertices: Widget[];
+    edges: Edge[];
+    hierarchy?: Lineage[];
+    merge?: boolean;
+}
 
 export class Graph extends SVGZoomWidget {
     Vertex;
@@ -46,7 +57,9 @@ export class Graph extends SVGZoomWidget {
         return { x: 0, y: 0 };
     }
 
-    size(_) {
+    size(): ISize;
+    size(_): this;
+    size(_?): ISize | this {
         const retVal = super.size.apply(this, arguments);
         return retVal;
     }
@@ -55,19 +68,20 @@ export class Graph extends SVGZoomWidget {
         this.data({ vertices: [], edges: [], hierarchy: [], merge: false });
     }
 
-    data(): any;
-    data(_: any): Graph;
-    data(_?: any): any | Graph {
+    data(): IGraphData;
+    data(_: IGraphData): Graph;
+    data(_?: IGraphData): IGraphData | Graph {
         const retVal = SVGZoomWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
-            if (!this.data().merge) {
+            if (!_.merge) {
                 this.graphData = new GraphData();
                 this._renderCount = 0;
             }
-            const data = this.graphData.setData(this.data().vertices || [], this.data().edges || [], this.data().hierarchy || [], this.data().merge || false);
+            const data = this.graphData.setData(_.vertices || [], _.edges || [], _.hierarchy || [], _.merge || false);
 
             const context = this;
             data.addedVertices.forEach(function (item) {
+                item._graphID = context._id;
                 item.pos({
                     x: +Math.random() * 10 / 2 - 5,
                     y: +Math.random() * 10 / 2 - 5
@@ -226,58 +240,8 @@ export class Graph extends SVGZoomWidget {
     update(domNode, element) {
         super.update(domNode, element);
         const context = this;
-            const layoutEngine = this.getLayoutEngine();
-            if (this.layout() === "ForceDirected2") {
-                this.forceLayout = layoutEngine;
-                this.forceLayout.force.on("tick", function () {
-                    layoutEngine.vertices.forEach(function (item) {
-                        if (item.fixed) {
-                            item.x = item.px;
-                            item.y = item.py;
-                        } else {
-                            item.px = item.x;
-                            item.py = item.y;
 
-                                //  Might have been cleared ---
-                                var vertex = context.graphData.node(item.id);
-                                if (vertex) {
-                            vertex
-                                .move({ x: item.x, y: item.y })
-                                ;
-                        }
-                            }
-                    });
-                    context.graphData.edgeValues().forEach(function (item) {
-                        item
-                            .points([], false, false)
-                            ;
-                    });
-                    if (context.applyScaleOnLayout()) {
-                        const vBounds = context.getVertexBounds(layoutEngine);
-                        context.shrinkToFit(vBounds);
-                    }
-                });
-                this.forceLayout.force.start();
-            } else if (layoutEngine) {
-                this.forceLayout = null;
-                context._dragging = true;
-                context.graphData.nodeValues().forEach(function (item) {
-                    const pos = layoutEngine.nodePos(item._id);
-                    item.move({ x: pos.x, y: pos.y }, transitionDuration);
-                    if (pos.width && pos.height && !item.width() && !item.height()) {
-                        item
-                            .width(pos.width)
-                            .height(pos.height)
-                            .render()
-                            ;
-                    }
-                });
-                context.graphData.edgeValues().forEach(function (item) {
-                    const points = layoutEngine.edgePoints(item);
-                    item
-                        .points(points, transitionDuration)
-                        ;
-                });
+
 
         //  Create  ---
         const vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
@@ -305,6 +269,16 @@ export class Graph extends SVGZoomWidget {
                     selected = vertexElement.classed("selected");
                 }
                 context.vertex_dblclick(context.rowToObj(d.data()), "", selected, {
+                    vertex: d
+                });
+            })
+            .on("contextmenu", function (d) {
+                const vertexElement = d3Select(this).select(".graph_Vertex");
+                let selected = false;
+                if (!vertexElement.empty()) {
+                    selected = vertexElement.classed("selected");
+                }
+                context.vertex_contextmenu(context.rowToObj(d.data()), "", selected, {
                     vertex: d
                 });
             })
@@ -436,7 +410,6 @@ export class Graph extends SVGZoomWidget {
 
         if (!this._renderCount) {
             this._renderCount++;
-            // this.setZoom([0, 0], 1);
             this.layout(this.layout());
         }
     }
@@ -599,7 +572,10 @@ export class Graph extends SVGZoomWidget {
         IGraph.prototype.vertex_click.apply(this, arguments);
     }
 
-    vertex_dblclick(_row, _col, _sel, _more) {
+    vertex_dblclick(_row, _col, _sel, _opts) {
+    }
+
+    vertex_contextmenu(_row, _col, _sel, _opts) {
     }
 
     vertex_mouseover(element, d) {
@@ -623,6 +599,7 @@ export class Graph extends SVGZoomWidget {
             this.defs.select("#" + this._id + "_arrowHead").remove();
             this.defs.select("#" + this._id + "_circleFoot").remove();
             this.defs.select("#" + this._id + "_circleHead").remove();
+            this.defs.select("#" + this._id + "_glow").remove();
         }
         this.defs.append("marker")
             .attr("class", "marker")
@@ -666,6 +643,17 @@ export class Graph extends SVGZoomWidget {
             .attr("cx", 5)
             .attr("cy", 5)
             .attr("r", 4)
+            ;
+        this.defs.append("filter")
+            .attr("id", this._id + "_glow")
+            .attr("width", "130%")
+            .attr("height", "130%")    
+            .html(
+                '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
+                '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
+                '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
+                '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
+            )
             ;
     }
 
@@ -750,16 +738,20 @@ Graph.prototype.layout = function (_?, transitionDuration?) {
                 this.forceLayout = layoutEngine;
                 this.forceLayout.force.on("tick", function () {
                     layoutEngine.vertices.forEach(function (item) {
-                        const vertex = context.graphData.node(item.id);
                         if (item.fixed) {
                             // item.x = item.px;
                             // item.y = item.py;
                         } else {
                             // item.px = item.x;
                             // item.py = item.y;
-                            vertex
-                                .move({ x: item.x, y: item.y })
-                                ;
+
+                            //  Might have been cleared ---
+                            const vertex = context.graphData.node(item.id);
+                            if (vertex) {
+                                vertex
+                                    .move({ x: item.x, y: item.y })
+                                    ;
+                            }
                         }
                     });
                     context.graphData.edgeValues().forEach(function (item) {
@@ -795,7 +787,7 @@ Graph.prototype.layout = function (_?, transitionDuration?) {
                 });
 
                 if (context.applyScaleOnLayout()) {
-                    context.zoomToFit(transitionDuration);
+                    context.zoomToFit();
                 }
                 this._fixIEMarkers();
                 setTimeout(function () {

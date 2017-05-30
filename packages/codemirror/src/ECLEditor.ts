@@ -1,4 +1,3 @@
-import "codemirror/mode/ecl/ecl";
 import { Editor } from "./Editor";
 
 export class ECLEditor extends Editor {

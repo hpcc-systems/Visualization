@@ -2,7 +2,12 @@ import { INDChart, ITooltip } from "@hpcc-js/api";
 import { SVGWidget } from "@hpcc-js/common";
 import { hsl as d3Hsl } from "d3-color";
 import { select as d3Select } from "d3-selection";
-import { area as d3Area, curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveLinear as d3CurveLinear, curveMonotoneX as d3CurveMonotoneX, curveStep as d3CurveStep, curveStepAfter as d3CurveStepAfter, curveStepBefore as d3CurveStepBefore, line as d3Line } from "d3-shape";
+import {
+    area as d3Area,
+    curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3curveCatmullRom, curveLinear as d3CurveLinear,
+    curveMonotoneX as d3CurveMonotoneX, curveNatural as d3CurveNatural, curveStep as d3CurveStep, curveStepAfter as d3CurveStepAfter, curveStepBefore as d3CurveStepBefore,
+    line as d3Line
+} from "d3-shape";
 import { XYAxis } from "./XYAxis";
 
 import "../src/Scatter.css";
@@ -51,6 +56,10 @@ Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disab
                 return d3CurveBundle;
             case "cardinal":
                 return d3CurveCardinal;
+            case "catmullRom":
+                return d3curveCatmullRom;
+            case "natural":
+                return d3CurveNatural;
             case "monotone":
             default:
                 return d3CurveMonotoneX;
@@ -253,7 +262,7 @@ Scatter.prototype.implements(ITooltip.prototype);
 Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
 Scatter.prototype.publish("pointSize", 6, "number", "Point Size");
-Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "monotone"]);
+Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "catmullRom", "natural", "monotone"]);
 Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
 Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity");
 Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

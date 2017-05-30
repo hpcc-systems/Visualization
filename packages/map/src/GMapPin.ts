@@ -42,9 +42,14 @@ export class GMapPin extends GMapLayered {
             ;
     }
 
+    private _prevChecksum;
     update(domNode, element) {
         GMapLayered.prototype.update.apply(this, arguments);
         this._pins.data(this.pinsData());
+        if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
+            this._prevChecksum = this._db.checksum();
+            this.zoomTo(this._pins.pinsData().map(function (row) { return [row.lat, row.long]; }));
+        }
     }
 
     exit(domNode, element) {
@@ -52,13 +57,19 @@ export class GMapPin extends GMapLayered {
     }
 
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+        if (this.streetViewOnClick()) {
+            this.streetViewAt({
+                lat: +row[this.latitudeColumn()],
+                lng: +row[this.longtitudeColumn()]
+            });
+        }
     }
 
     dblclick(row, column, selected) {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
+    autoScale: { (): boolean; (_: boolean): GMapPin };
     latitudeColumn: { (): string; (_: string): GMapPin };
     latitudeColumn_exists: () => boolean;
     longtitudeColumn: { (): string; (_: string): GMapPin };
@@ -67,9 +78,11 @@ export class GMapPin extends GMapLayered {
     colorColumn_exists: () => boolean;
     tooltipColumn: { (): string; (_: string): GMapPin };
     tooltipColumn_exists: () => boolean;
+    streetViewOnClick: { (): boolean; (_: boolean): GMapPin };
 }
 GMapPin.prototype._class += " map_GMapPin";
 
+GMapPin.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 GMapPin.prototype.publishProxy("pinColor", "_pins", "fillColor");
 GMapPin.prototype.publishProxy("pinType", "_pins", "pinType");
 GMapPin.prototype.publishProxy("pinWidth", "_pins", "pinWidth");
@@ -86,3 +99,4 @@ GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function ()
 GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });
 GMapPin.prototype.publish("colorColumn", null, "set", "Color", function () { return this.columns(); }, { optional: true });
 GMapPin.prototype.publish("tooltipColumn", null, "set", "Tooltip", function () { return this.columns(); }, { optional: true });
+GMapPin.prototype.publish("streetViewOnClick", false, "boolean", "Switch to street view when pin clicked");

@@ -3,7 +3,7 @@ import { extent as d3Extent, range as d3Range } from "d3-array";
 import { map as d3Map } from "d3-collection";
 import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
-import { timeDays as d3TimeDays, timeMonths as d3TimeMonths, timeWeek as d3TimeWeek } from "d3-time";
+import { timeDays as d3TimeDays, timeMonths as d3TimeMonths, timeWeek as d3TimeWeek, timeYear as d3TimeYear } from "d3-time";
 import { timeParse as d3TimeParse } from "d3-time-format";
 
 import "../src/CalendarHeatMap.css";
@@ -36,8 +36,8 @@ export class CalendarHeatMap extends HTMLWidget {
         }
         return this._view.entries().map(function (row) {
             row.dateKey = dateParser(row.key);
-            row.formattedValues = valueFormatter(row.values.aggregate);
-            row.origRows = valueFormatter(row.values);
+            row.formattedValues = valueFormatter(row.value.aggregate);
+            row.origRows = valueFormatter(row.value);
             return row;
         });
     }
@@ -61,18 +61,17 @@ export class CalendarHeatMap extends HTMLWidget {
         const height = cellSize * 8;
 
         const data = this.calendarData();
-        const mappedData = d3Map(data, function (d) { return d.dateKey; });
-        const dateExtent = d3Extent(data, function (d) {
+        const mappedData = d3Map(data, function (d: any) { return d.dateKey; });
+        const dateExtent = d3Extent(data, function (d: any) {
             return d.dateKey.getFullYear();
         });
         const context = this;
-        const svg = element.selectAll("svg").data(d3Range(dateExtent[0], dateExtent[1] + 1));
-        svg.enter().append("svg")
+        const svg = element.selectAll("svg").data(d3Range(+dateExtent[0], +dateExtent[1] + 1));
+        const svgUpdate = svg.enter().append("svg")
             .each(function (d) {
-                const svg2 = d3Select(this);
-                const g = svg2.append("g");
-                g
-                    .append("text")
+                const svgElement = d3Select(this);
+                const g = svgElement.append("g");
+                g.append("text")
                     .style("text-anchor", "middle")
                     ;
                 g.append("g")
@@ -82,61 +81,61 @@ export class CalendarHeatMap extends HTMLWidget {
                     .attr("class", "months")
                     ;
             })
-            ;
-        svg
+            .merge(svg)
             .attr("width", width)
             .attr("height", height)
             ;
-        svg.select("g")
+        svgUpdate.select("g")
             .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")")
             ;
-        svg.select("text")
+        svgUpdate.select("text")
             .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-            .text(function (d) { return d; })
+            .text(d => d)
             ;
         svg.exit().remove();
 
-        let dataExtent = d3Extent(data, function (d) {
-            return d.values.aggregate;
+        let dataExtent: [any, any] = d3Extent<number>(data, function (d: any) {
+            return d.value.aggregate;
         });
         if (this.aggrDeltaColumn()) {
-            const max = Math.max(Math.abs(dataExtent[0]), Math.abs(dataExtent[1]));
+            const max = Math.max(Math.abs(+dataExtent[0]), Math.abs(+dataExtent[1]));
             dataExtent = [-max, max];
         }
-        const dayRect = svg.select(".days").selectAll(".day").data(function (d) { return d3TimeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
-        dayRect.enter().append("rect")
+        const dayRect = svgUpdate.select(".days").selectAll(".day").data(function (d) { return d3TimeDays(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
+        const dayRectUpdate = dayRect.enter().append("rect")
             .attr("class", "day")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 const data2 = mappedData.get(d);
-                if (data2 && data2.values && data2.values && data2.values.length) {
-                    context.click(context.rowToObj(data2.values[0]), context.dateColumn(), context._selection.selected(this));
+                if (data2 && data2.value && data2.value && data2.value.length) {
+                    context.click(context.rowToObj(data2.value[0]), context.dateColumn(), context._selection.selected(this));
                 }
             })
             .on("dblclick", function (d) {
                 const data2 = mappedData.get(d);
-                if (data2 && data2.values && data2.values && data2.values.length) {
-                    context.dblclick(context.rowToObj(data2.values[0]), context.dateColumn(), context._selection.selected(this));
+                if (data2 && data2.value && data2.value && data2.value.length) {
+                    context.dblclick(context.rowToObj(data2.value[0]), context.dateColumn(), context._selection.selected(this));
                 }
+            }).each(function (d) {
+                const dayRectElement = d3Select(this);
+                dayRectElement.append("title");
             })
-            .append("title")
-            ;
-        dayRect
-            .attr("x", function (d) { return d3TimeWeek.count(d) * cellSize; })
+            .merge(dayRect)
+            .attr("x", function (d) { return d3TimeWeek.count(d3TimeYear(d), d) * cellSize; })
             .attr("y", function (d) { return d.getDay() * cellSize; })
             .attr("width", cellSize)
             .attr("height", cellSize)
             ;
-        dayRect.select("title")
-            .text(function (d) { return d; })
+        dayRectUpdate.select("title")
+            .text(d => d)
             ;
-        dayRect.filter(function (d) { return mappedData.has(d); })
+        dayRectUpdate.filter(function (d) { return mappedData.has(d); })
             .style("fill", function (d) {
                 const row = mappedData.get(d);
-                if (!row || !row.values || !row.values.aggregate) {
+                if (!row || !row.value || !row.value.aggregate) {
                     return null;
                 }
-                return context._palette(row.values.aggregate, dataExtent[0], dataExtent[1]);
+                return context._palette(row.value.aggregate, dataExtent[0], dataExtent[1]);
             })
             .select("title")
             .text(function (d) {
@@ -149,8 +148,7 @@ export class CalendarHeatMap extends HTMLWidget {
         const monthPath = svg.select(".months").selectAll(".month").data(function (d) { return d3TimeMonths(new Date(d, 0, 1), new Date(d + 1, 0, 1)); });
         monthPath.enter().append("path")
             .attr("class", "month")
-            ;
-        monthPath
+            .merge(monthPath)
             .attr("d", calcMonthPath)
             ;
         monthPath.exit().remove();
@@ -158,9 +156,9 @@ export class CalendarHeatMap extends HTMLWidget {
         function calcMonthPath(t0) {
             const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0);
             const d0 = t0.getDay();
-            const w0 = d3TimeWeek.count(t0);
+            const w0 = d3TimeWeek.count(d3TimeYear(t0), t0);
             const d1 = t1.getDay();
-            const w1 = d3TimeWeek.count(t1);
+            const w1 = d3TimeWeek.count(d3TimeYear(t1), t1);
             return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize +
                 "H" + w0 * cellSize + "V" + 7 * cellSize +
                 "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize +

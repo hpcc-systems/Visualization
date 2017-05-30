@@ -1,9 +1,10 @@
-import { MultiChart } from "@hpcc-js/chart";
 import { Database, Text, Utility } from "@hpcc-js/common";
 import { Button, Input, Select } from "@hpcc-js/form";
-import { Border, Toolbar } from "@hpcc-js/layout";
+import { Border, Grid, Toolbar } from "@hpcc-js/layout";
 import { Legend } from "@hpcc-js/other";
 import { select as d3Select } from "d3-selection";
+import "d3-transition";
+import { MultiChart } from "./MultiChart";
 
 import "../src/MegaChart.css";
 
@@ -142,7 +143,7 @@ export class MegaChart extends Border {
                 node = document.body;
             }
 
-            const targetElement = d3Select(context.target());
+            const targetElement = d3Select(context.target()) as any;
             if (isMaximized) {
                 // Restore from maximized to natural size/position
                 const targetParentBox = target.parentElement.getBoundingClientRect();
@@ -157,13 +158,10 @@ export class MegaChart extends Border {
                     .style("width", (targetParentBox.width - targetPaddingLeft - targetPaddingRight) + "px")
                     .style("height", (targetParentBox.height - targetPaddingTop - targetPaddingBottom) + "px")
                     .each("end", function () {
-                        targetElement.style({
-                            "position": target.__old_position,
-                            "z-index": target.__old_zindex,
-                            "background-color": target.__old_backgroundColor,
-                            "box-shadow": target.__old_boxshadow
-                        })
-                            ;
+                        targetElement.style("position", target.__old_position);
+                        targetElement.style("z-index", target.__old_zindex);
+                        targetElement.style("background-color", target.__old_backgroundColor);
+                        targetElement.style("box-shadow", target.__old_boxshadow);
                         context
                             .resize({
                                 width: targetParentBox.width - targetPaddingLeft - targetPaddingRight,
@@ -181,7 +179,7 @@ export class MegaChart extends Border {
                 target.__old_zindex = target.style.zIndex;
                 target.__old_boxshadow = target.style.boxShadow;
                 target.__old_backgroundColor = context.element().style("background-color");
-                const grid = d3Select(node).datum();
+                const grid = d3Select(node).datum() as Grid;
                 const gridTarget = grid.target();
                 const gridBox = grid ? gridTarget.getBoundingClientRect() : node.getBoundingClientRect();
                 const gridPaddingTop = parseInt(getComputedStyle(gridTarget, null).getPropertyValue("padding-top").replace("px", ""));
@@ -190,22 +188,17 @@ export class MegaChart extends Border {
                 const gridPaddingBottom = parseInt(getComputedStyle(gridTarget, null).getPropertyValue("padding-bottom").replace("px", ""));
                 context.contentDiv.style("opacity", 0).transition(100);
                 targetElement
-                    .style({
-                        "position": "fixed",
-                        "z-index": 999999,
-                        "box-shadow": "0 8px 8px 0 rgba(0,0,0,.14),0 12px 4px -8px rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.12)",
-                        "background-color": target.__old_backgroundColor
-                    })
+                    .style("position", "fixed")
+                    .style("z-index", 999999)
+                    .style("box-shadow", "0 8px 8px 0 rgba(0,0,0,.14),0 12px 4px -8px rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.12)")
+                    .style("background-color", target.__old_backgroundColor)
                     .transition()// .duration(3000)
-                    .style({
-                        top: (gridBox.top + gridPaddingTop) + "px",
-                        left: (gridBox.left + gridPaddingLeft) + "px",
-                        width: (gridBox.width - gridPaddingLeft - gridPaddingRight) + "px",
-                        height: (gridBox.height - gridPaddingTop - gridPaddingBottom) + "px"
-                    }).each("end", function () {
-                        targetElement.style({
-                            "background-color": context.maximizedBackgroundColor()
-                        });
+                    .style("top", (gridBox.top + gridPaddingTop) + "px")
+                    .style("left", (gridBox.left + gridPaddingLeft) + "px")
+                    .style("width", (gridBox.width - gridPaddingLeft - gridPaddingRight) + "px")
+                    .style("height", (gridBox.height - gridPaddingTop - gridPaddingBottom) + "px")
+                    .each("end", function () {
+                        targetElement.style("background-color", context.maximizedBackgroundColor());
                         context
                             .resize({
                                 width: (gridBox.width - gridPaddingLeft - gridPaddingRight),
@@ -245,9 +238,9 @@ export class MegaChart extends Border {
         this.setContent("center", this._chart);
 
         this._legend
-        .fixedSize(true)
             .targetWidget(this._chart)
             .orientation(["top", "bottom"].indexOf(this.legendPosition()) !== -1 ? "horizontal" : "vertical")
+            .fixedSize(true)
             ;
 
         this._prevLegendPosition = this.legendPosition();
@@ -265,13 +258,13 @@ export class MegaChart extends Border {
     }
 
     update(domNode, element) {
-        function showHideButton(twArr, button, show) {
-            if (show && twArr.indexOf(button) === -1) {
-                twArr.push(button);
+        function showHideButton(twArr2, button, show) {
+            if (show && twArr2.indexOf(button) === -1) {
+                twArr2.push(button);
             } else if (!show) {
-                const idx = twArr.indexOf(button);
+                const idx = twArr2.indexOf(button);
                 if (idx >= 0) {
-                    twArr.splice(idx, 1);
+                    twArr2.splice(idx, 1);
                 }
             }
         }
@@ -302,9 +295,9 @@ export class MegaChart extends Border {
         this._chart
             .data(this.data());
 
-    if (this._chart.chartType() !== this.chartType()) {
-        this._chart.chartType(this.chartType());
-    }
+        if (this._chart.chartType() !== this.chartType()) {
+            this._chart.chartType(this.chartType());
+        }
 
         let legendPosition = this.legendPosition();
         if (this.toolbarShowLegend() && !this._legendButton.checked()) {
@@ -316,7 +309,7 @@ export class MegaChart extends Border {
             }
             this._prevLegendPosition = legendPosition;
             if (legendPosition !== "none") {
-            this._legend = new Legend().fixedSize(true).targetWidget(this.getContent("center"));
+                this._legend = new Legend().targetWidget(this.getContent("center").fixedSize(true));
                 this.setContent(legendPosition, this._legend);
                 this._legend.orientation(["top", "bottom"].indexOf(legendPosition) !== -1 ? "horizontal" : "vertical");
             }
@@ -399,25 +392,25 @@ export class MegaChart extends Border {
         if (more && more.vertex) {
             console.log("Vertex click: " + more.vertex.id());
         }
-    };
+    }
 
-    vertex_dblclick (row, col, sel, more) {
+    vertex_dblclick(row, col, sel, more) {
         if (more && more.vertex) {
             console.log("Vertex double click: " + more.vertex.id());
         }
-    };
+    }
 
     edge_click(row, col, sel, more) {
         if (more && more.edge) {
             console.log("Edge click: " + more.edge.id());
         }
-    };
+    }
 
     edge_dblclick(row, col, sel, more) {
         if (more && more.edge) {
             console.log("Edge double click: " + more.edge.id());
         }
-    };
+    }
 
     showToolbar: { (): boolean; (_: boolean): MegaChart };
     showToolbar_exists: () => boolean;
@@ -448,12 +441,12 @@ export class MegaChart extends Border {
     legendPosition: { (): string; (_: string): MegaChart };
     legendPosition_exists: () => boolean;
 
-    title: { (): string; (_: string): Text };
+    title: { (): string; (_: string): MegaChart };
     title_exists: () => boolean;
 
-    domainAxisTitle: { (): string; (_: string): Text };
+    domainAxisTitle: { (): string; (_: string): MegaChart };
     domainAxisTitle_exists: () => boolean;
-    valueAxisTitle: { (): string; (_: string): Text };
+    valueAxisTitle: { (): string; (_: string): MegaChart };
     valueAxisTitle_exists: () => boolean;
 
     chartType: { (): string; (_: string): MegaChart };

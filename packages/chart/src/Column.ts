@@ -1,4 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
+import { publish } from "@hpcc-js/common";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -96,7 +97,7 @@ export class Column extends XYAxis {
                         value: d,
                         idx: i
                     };
-                }).filter(function (d) { return d.value !== null && d.idx > 0; }));
+                }).filter(function (d) { return d.value !== null && d.idx > 0; }), (d: any) => d.column);
 
                 const columnRectEnter = columnRect
                     .enter().append("rect")
@@ -112,27 +113,35 @@ export class Column extends XYAxis {
                     })
                     ;
 
-                if (isHorizontal) {
-                    columnRectEnter.merge(columnRect).transition().duration(duration)
-                        .attr("x", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
-                        .attr("width", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                        .attr("y", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
-                        .attr("height", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
-                        .style("fill", function (d: any) { return context._palette(d.column); })
-                        ;
-                } else {
-                    columnRectEnter.merge(columnRect).transition().duration(duration)
-                        .attr("y", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
-                        .attr("height", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                        .attr("x", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
-                        .attr("width", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
-                        .style("fill", function (d: any) { return context._palette(d.column); })
-                        ;
-                }
+                renderRect(columnRectEnter, true);
+                renderRect(columnRectEnter.merge(columnRect).transition().duration(duration), false);
 
                 columnRect.exit().transition().duration(duration)
+                    .style("opacity", 0)
                     .remove()
                     ;
+
+                function renderRect(selection, enterFlag) {
+                    if (isHorizontal) {
+                        selection
+                            .attr("x", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
+                            .attr("width", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
+                            .attr("y", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
+                            .attr("height", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
+                            .style("fill", function (d: any) { return context._palette(d.column); })
+                            ;
+                    } else {
+                        selection
+                            .attr("y", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
+                            .attr("height", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
+                            .attr("x", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
+                            .attr("width", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
+                            .style("fill", function (d: any) { return context._palette(d.column); })
+                            ;
+                    }
+                    selection.style("opacity", enterFlag ? 0 : 1);
+                }
+
             });
 
         column.exit().transition().duration(duration)
@@ -140,8 +149,15 @@ export class Column extends XYAxis {
             ;
     }
 
-    paletteID: { (): string; (_: string): Column; };
-    useClonedPalette: { (): boolean; (_: boolean): Column; };
+    @publish("default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] })
+    paletteID: publish<this, string>;
+    @publish(false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] })
+    _useClonedPalette: boolean;
+    useClonedPalette(_?: boolean): boolean | this {
+        if (!arguments.length) return this._useClonedPalette;
+        this._useClonedPalette = _;
+        return this;
+    }
 
     //  INDChart  ---
     _palette;
@@ -157,5 +173,3 @@ Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);
 Column.prototype.implements(ITooltip.prototype);
 
-Column.prototype.publish("paletteID", "default", "set", "Palette ID", Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
-Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

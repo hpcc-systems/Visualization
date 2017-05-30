@@ -62,6 +62,10 @@ export class Input extends HTMLWidget {
                 context.value([e.property("value")]);
                 w.change(w);
             });
+            e.on("keyup", function (w) {
+                context.value([e.property("value")]);
+                w.change(w);
+            });
         });
     }
 
@@ -88,6 +92,7 @@ export class Input extends HTMLWidget {
 
     type: { (): string; (_: string): Input };
     type_exists: () => boolean;
+    type_default: { (): string; (_: string): Input };
     inlineLabel: { (): string; (_: string): Input };
     inlineLabel_exists: () => boolean;
 

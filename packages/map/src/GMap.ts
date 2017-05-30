@@ -288,6 +288,7 @@ export class GMap extends HTMLWidget {
     _googleGeocoder;
     _prevCenterLat;
     _prevCenterLong;
+    _googleStreetViewService;
     _googleMapPanorama;
     _prevZoom;
     _prevStreetView;
@@ -409,6 +410,7 @@ export class GMap extends HTMLWidget {
             context.zoom(context._googleMap.zoom);
             context._prevZoom = context.zoom();
         });
+        this._googleStreetViewService = new google.maps.StreetViewService();
         this._googleMapPanorama = this._googleMap.getStreetView();
         this._googleMapPanorama.addListener("visible_changed", function () {
             context.streetView(context._googleMapPanorama.getVisible());
@@ -521,13 +523,40 @@ export class GMap extends HTMLWidget {
         return this._googleMapPromise;
     }
 
-    render(callback) {
+    render(callback?) {
         const context = this;
         const args = arguments;
         this.requireGoogleMap().then(function () {
             HTMLWidget.prototype.render.apply(context, args);
         });
         return this;
+    }
+
+    streetViewAt(pos, radius = 1000) {
+        const context = this;
+        this._googleStreetViewService.getPanorama({ location: pos, radius }, function (data, status) {
+            if (status === "OK") {
+                const marker = new google.maps.Marker({
+                    position: pos,
+                    map: context._googleMap
+                });
+                const heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, new google.maps.LatLng(pos.lat, pos.lng));
+                context._googleMapPanorama.setPano(data.location.pano);
+                context._googleMapPanorama.setPov({
+                    heading,
+                    pitch: 0
+                });
+                context._googleMapPanorama.setVisible(true);
+                const listener = google.maps.event.addListener(context._googleMap.getStreetView(), "visible_changed", function () {
+                    if (!this.getVisible()) {
+                        marker.setMap(null);
+                        google.maps.event.removeListener(listener);
+                    }
+                });
+            } else {
+                console.error("Street View data not found for this location.");
+            }
+        });
     }
 
     updateCircles() {
@@ -537,7 +566,7 @@ export class GMap extends HTMLWidget {
 
         const circle_enter = [];
         const circle_update = [];
-        const circle_exit = d3Map(this._circleMap.keys(), function (d) { return d; });
+        const circle_exit = d3Map(this._circleMap.keys(), function (d: any) { return d; });
         this.data().forEach(function (row) {
             circle_exit.remove(rowID(row));
             if (row[3] && !this._circleMap.has(rowID(row))) {
@@ -572,7 +601,7 @@ export class GMap extends HTMLWidget {
 
         const pin_enter = [];
         const pin_update = [];
-        const pin_exit = d3Map(this._pinMap.keys(), function (d) { return d; });
+        const pin_exit = d3Map(this._pinMap.keys(), function (d: any) { return d; });
         this.data().forEach(function (row) {
             pin_exit.remove(rowID(row));
             if (row[2] && !this._pinMap.has(rowID(row))) {
@@ -633,7 +662,9 @@ export class GMap extends HTMLWidget {
         });
     }
 
-    zoomTo(selection) {
+    zoomTo(selection, singleMaxZoom?) {
+        if (!this._renderCount) return this;
+        singleMaxZoom = singleMaxZoom || this.singleZoomToMaxZoom();
         let foundCount = 0;
         const latlngbounds = new google.maps.LatLngBounds();
         selection.forEach(function (item) {
@@ -641,12 +672,15 @@ export class GMap extends HTMLWidget {
             latlngbounds.extend(gLatLong);
             ++foundCount;
         });
-        if (foundCount) {
-            this._googleMap.setCenter(latlngbounds.getCenter());
-            this._googleMap.fitBounds(latlngbounds);
-            if (this._googleMap.getZoom() > 12) {
-                this._googleMap.setZoom(12);
-            }
+        switch (foundCount) {
+            case 0:
+                break;
+            case 1:
+                this._googleMap.setCenter(latlngbounds.getCenter());
+                this._googleMap.setZoom(singleMaxZoom);
+                break;
+            default:
+                this._googleMap.fitBounds(latlngbounds);
         }
         return this;
     }
@@ -725,6 +759,7 @@ export class GMap extends HTMLWidget {
     centerAddress_exists: () => boolean;
     zoom: { (): number; (_: number): GMap };
     zoom_exists: () => boolean;
+    singleZoomToMaxZoom: { (): number; (_: number): GMap };
     panControl: { (): boolean; (_: boolean): GMap };
     panControl_exists: () => boolean;
     zoomControl: { (): boolean; (_: boolean): GMap };
@@ -755,6 +790,7 @@ GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null
 GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longtitude", null, { tags: ["Basic"] });
 GMap.prototype.publish("centerAddress", null, "string", "Address to center map on", null, { tags: ["Basic"], optional: true });
 GMap.prototype.publish("zoom", 4, "number", "Zoom Level", null, { tags: ["Basic"] });
+GMap.prototype.publish("singleZoomToMaxZoom", 14, "number", "Max zoomTo level with single item");
 GMap.prototype.publish("panControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
 GMap.prototype.publish("zoomControl", true, "boolean", "Zoom Controls", null, { tags: ["Basic"] });
 GMap.prototype.publish("scaleControl", true, "boolean", "Scale Controls", null, { tags: ["Basic"] });

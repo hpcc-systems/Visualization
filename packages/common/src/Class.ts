@@ -1,3 +1,13 @@
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor).forEach(name => {
+            const descriptor = Object.getOwnPropertyDescriptor(baseCtor, name);
+            Object.defineProperty(derivedCtor, name, descriptor);
+            // derivedCtor[name] = baseCtor[name];
+        });
+    });
+}
+
 export class Class {
     _class: string;
 
@@ -14,15 +24,7 @@ export class Class {
     }
 
     implements(source) {
-        for (const prop in source) {
-            if (source.hasOwnProperty(prop)) {
-                if (this[prop] === undefined) {
-                    this[prop] = source[prop];
-                } else if ((window as any).__hpcc_debug) {
-                    console.log("Duplicate member:  " + prop);
-                }
-            }
-        }
+        applyMixins(this, [source]);
     }
 
     mixin(mixinClass) {

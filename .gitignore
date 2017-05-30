@@ -1,8 +1,8 @@
-.vscode
 .nyc_output
 coverage
 node_modules
 bower_components
+demos/itsecl
 tmp/
 lib/
 lib-amd/
@@ -10,12 +10,15 @@ lib-umd/
 lib-es6/
 lib-test-*/
 dist/
-lib
+lib*
 build
+packages/**/.vs*
 packages/amchart/images
 packages/common/font-awesome
 packages/**/yarn.lock
 test/**/yarn.lock
+tests/**/.vs*
+util/**/.vs*
 *.log
 Web.config
 nbproject
@@ -24,6 +27,4 @@ docx
 lib-es6/
 lib-test/
 lib-umd/
-tmp/.vs*
-.vs*
 *.log

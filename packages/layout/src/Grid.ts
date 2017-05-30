@@ -381,7 +381,7 @@ export class Grid extends HTMLWidget {
             }).merge(divItems)
             ;
         this.divItems.each(function (d) {
-            var element = d3.select(this);
+            const element = d3Select(this);
             if (context.designMode()) {
                 element.call(context._d3Drag);
             } else {

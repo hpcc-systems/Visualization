@@ -17,7 +17,7 @@ export class MiniGantt extends SVGWidget {
 
     protected rootExtent;
 
-    @publish(2, "Force new lane if start/end is within X pixels")
+    @publish(2, "number", "Force new lane if start/end is within X pixels")
     overlapTolerence: { (): number; (_: number): MiniGantt; };
 
     constructor() {

@@ -1,320 +1,179 @@
 import { IInput } from "@hpcc-js/api";
-import { Axis } from "@hpcc-js/chart";
 import { SVGWidget } from "@hpcc-js/common";
-import { Icon } from "@hpcc-js/common";
-import { brush as d3Brush } from "d3-brush";
-import { event as d3Event, mouse as d3Mouse, select as d3Select } from "d3-selection";
+import { drag as d3Drag } from "d3-drag";
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
+import { event as d3Event } from "d3-selection";
 
 import "../src/Slider.css";
 
 export class Slider extends SVGWidget {
-    _playing;
-    _loop;
+    xScale;
 
-    axis;
+    moveMode: "both" | "left" | "right";
+    moveStartPos: number;
 
-    _playIcon;
-    _loopIcon;
+    slider;
 
-    brush: d3Brush;
+    handleLeft;
+    handleLeftPos: number = 0;
+    handleLeftStartPos: number;
 
-    _inputElement;
-    intervalHandler;
-    brushg;
-    sliderElement;
-    loopDiameter;
-    playDiameter;
-    handle;
+    handleRight;
+    handleRightPos: number = 0;
+    handleRightStartPos: number;
 
     constructor() {
         super();
         IInput.call(this);
-
-        this.selectionLabel("");
-        this._playing = false;
-        this._loop = false;
-
-        this.axis = new Axis()
-            ;
-
-        const context = this;
-        this._playIcon = new Icon()
-            .faChar("\uf04b")
-            ;
-        this._playIcon.click = function (d) {
-            d3Event.stopPropagation();
-            if (context._playing) {
-                context.pause();
-            } else {
-                context.play();
-            }
-        };
-
-        this._loopIcon = new Icon()
-            .faChar("\uf01e")
-            .image_colorFill(this._loop ? null : "#bbb")
-            .shape_colorFill(this._loop ? null : "white")
-            .paddingPercent(33)
-            ;
-        this._loopIcon.click = function (d) {
-            if (context._loop) {
-                context._loop = false;
-            } else {
-                context._loop = true;
-            }
-            context._loopIcon
-                .image_colorFill(context._loop ? null : "#bbb")
-                .shape_colorFill(context._loop ? null : "white")
-                .render()
-                ;
-        };
-
-        this.brush = d3Brush()
-            .extent([0, 0])
-            .on("start", function (d) { context.brushstart(d, this); })
-            .on("brush", function (d) { context.brushmove(d, this); })
-            .on("end", function (d) { context.brushend(d, this); })
-            ;
-        this.brush.empty = function () {
-            return false;
-        };
-
-        this._inputElement = [];
-    }
-
-    play() {
-        this._playing = true;
-        this._playIcon
-            .faChar("\uf04c")
-            .render()
-            ;
-        let tick = this.data();
-        if (tick < this.low() || tick >= this.high()) {
-            tick = this.low();
-            this
-                .data(tick)
-                .render()
-                ;
-            this._click();
-        }
-        const context = this;
-        this.intervalHandler = setInterval(function () {
-            tick += context.step();
-            if (tick > context.high()) {
-                if (context._loop === true) {
-                    tick = context.low();
-                    context
-                        .data(tick)
-                        .render()
-                        ;
-                    context._click();
-                } else {
-                    context.pause();
-                }
-            } else {
-                context
-                    .data(tick)
-                    .render()
-                    ;
-                context._click();
-            }
-        }, context.playInterval());
-    }
-
-    pause() {
-        this._playing = false;
-        this._playIcon
-            .faChar("\uf04b")
-            .render()
-            ;
-        clearInterval(this.intervalHandler);
-    }
-
-    data(): any;
-    data(_: any): this;
-    data(_?: any): any | this {
-        const retVal = SVGWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            if (this.brushg) {
-                this.brushg
-                    .call(this.brush.extent(this.allowRange() ? this.data() : [this.data(), this.data()]))
-                    ;
-            }
-        }
-        return retVal;
     }
 
     enter(domNode, element) {
-        this.sliderElement = element.append("g");
-        this._inputElement.push(this.sliderElement);
+        super.enter(domNode, element);
+        this.resize({ width: this.width(), height: 50 });
 
-        this.axis
-            .target(this.sliderElement.node())
-            .x(this.width())
-            .y(0)
-            .width(this.width() - this.padding())
-            .low(this.low())
-            .high(this.high())
-            .render()
+        this.xScale = d3ScaleLinear()
+            .clamp(true);
+
+        this.slider = element.append("g")
+            .attr("class", "slider")
             ;
 
-        this.axis.d3Axis
-            // .tickValues(null)
-            .tickSize(0)
-            .tickPadding(12)
+        this.slider.append("line")
+            .attr("class", "track")
+            .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-inset")
+            .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-overlay")
+            .call(d3Drag()
+                .on("start", () => {
+                    this.moveStartPos = d3Event.x;
+                    this.handleLeftStartPos = this.handleLeftPos;
+                    this.handleRightStartPos = this.handleRightPos;
+                    if (this.allowRange() && this.handleLeftPos <= d3Event.x && d3Event.x <= this.handleRightPos) {
+                        this.moveMode = "both";
+                    } else if (Math.abs(d3Event.x - this.handleLeftPos) < Math.abs(d3Event.x - this.handleRightPos)) {
+                        this.moveMode = "left";
+                    } else {
+                        this.moveMode = "right";
+                    }
+                    console.log(this.moveMode);
+                    this.moveHandleTo(d3Event.x);
+                })
+                .on("drag", () => {
+                    this.moveHandleTo(d3Event.x);
+                })
+                .on("end", () => {
+                    this.moveHandleTo(d3Event.x);
+                    this.data([[this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]]);
+                }));
+
+        this.slider.insert("g", ".track-overlay")
+            .attr("class", "ticks")
+            .attr("transform", "translate(0," + 18 + ")")
             ;
 
-        this.brushg = this.sliderElement.append("g")
-            .attr("class", "brush")
-            .call(this.brush)
-            ;
-
-        this.brushg.select(".background")
-            .attr("y", -9)
-            .attr("height", 18)
-            ;
-
-        this.brushg.select(".extent")
-            .attr("y", "-10")
-            .attr("height", "20")
-            ;
-
-        this.brushg.selectAll(".resize").select("rect")
-            .attr("x", function (d) { return d === "e" ? 0 : -8; })
-            .attr("y", "-10")
-            .attr("width", "8")
-            .attr("height", "20")
-            ;
-
-        this.handle = this.brushg.selectAll(".resize").append("path")
+        this.handleRight = this.slider.insert("path", ".track-overlay")
             .attr("class", "handle")
-            .attr("transform", "translate(0,-27)")
             ;
 
-        this._playIcon
-            .target(this.sliderElement.node())
-            .render()
-            ;
-
-        this._loopIcon
-            .target(this.sliderElement.node())
-            .render()
+        this.handleLeft = this.slider.insert("path", ".track-overlay")
+            .attr("class", "handle")
             ;
     }
 
     update(domNode, element) {
-        const context = this;
-        let width = this.width() - this.padding() / 2;
-
-        this._playIcon
-            .pos({ x: width - (this.loopDiameter() + this.loopGutter() + this.playDiameter() / 2), y: 0 })
-            .diameter(this.playDiameter())
-            .display(this.showPlay())
-            .render()
+        super.update(domNode, element);
+        this.xScale
+            .domain([this.low(), this.high()])
+            .range([0, this.width() - this.padding() * 2])
             ;
 
-        this._loopIcon
-            .pos({ x: width - (this.loopDiameter() / 2), y: 0 })
-            .diameter(this.loopDiameter())
-            .display(this.showPlay())
-            .render()
+        this.slider
+            .attr("transform", "translate(" + (-this.width() / 2 + this.padding()) + "," + 0 + ")");
+
+        this.slider.selectAll("line")
+            .attr("x1", this.xScale.range()[0])
+            .attr("x2", this.xScale.range()[1])
             ;
 
-        if ((+this.high() - +this.low()) / this.step() <= 10) {
-            // this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
-        } else {
-            // this.axis.tickValues(null);
-        }
+        const tickText = this.slider.select("g").selectAll("text").data(this.xScale.ticks(10));
+        tickText.enter()
+            .append("text")
+            .merge(tickText)
+            .attr("x", this.xScale)
+            .attr("text-anchor", "middle")
+            .text(d => d);
 
-        const offset = this.showPlay() ? this.loopDiameter() + this.loopGutter() + this.playDiameter() + this.playGutter() : 0;
-        width -= offset;
-        const overlap = this.axis.calcOverflow(element);
-        this.axis
-            .x(this.width() / 2 - offset / 2)
-            .y(overlap.depth)
-            .width(this.width() - this.padding() - offset)
-            .low(this.low())
-            .high(this.high())
-            .render()
+        this.handleLeftPos = this.lowPos();
+        this.handleRightPos = this.highPos();
+        this.updateHandles();
+    }
+
+    updateHandles() {
+        this.handleLeft
+            .attr("transform", "translate(" + this.handleLeftPos + ", -28)")
+            .attr("d", (d) => this.handlePath("l"))
             ;
-
-        this.brushg
-            .attr("transform", "translate(" + this.padding() / 2 + ", 0)")
+        this.handleRight
+            .attr("transform", "translate(" + this.handleRightPos + ", -28)")
+            .attr("d", (d) => this.handlePath("r"))
             ;
+    }
 
-        this.handle
-            .attr("d", function (d) { return context.handlePath(d); })
-            ;
+    lowPos(): number {
+        const data = this.data() || [[this.low(), this.high()]];
+        return this.xScale(data[0][0]);
+    }
 
-        if (this.data().length === 0) {
-            if (this.allowRange()) {
-                this.data([this.low(), this.low()]);
-            } else {
-                this.data(this.low());
+    highPos(): number {
+        const data = this.data() || [[this.low(), this.high()]];
+        return this.xScale(data[0][this.allowRange() ? 1 : 0]);
+    }
+
+    moveHandleTo(pos) {
+        if (this.allowRange()) {
+            switch (this.moveMode) {
+                case "both":
+                    this.handleLeftPos = this.handleLeftStartPos + pos - this.moveStartPos;
+                    this.handleRightPos = this.handleRightStartPos + pos - this.moveStartPos;
+                    break;
+                case "left":
+                    this.handleLeftPos = pos;
+                    if (this.handleLeftPos > this.handleRightPos) {
+                        this.handleRightPos = this.handleLeftPos;
+                    }
+                    break;
+                case "right":
+                    this.handleRightPos = pos;
+                    if (this.handleRightPos < this.handleLeftPos) {
+                        this.handleLeftPos = this.handleRightPos;
+                    }
+                    break;
             }
-        }
-
-        this.axis.d3Scale.clamp(true);
-        this.brush
-            // .x(this.axis.d3Scale)
-            ;
-
-        this.brushg
-            .call(this.brush.extent(this.allowRange() ? this.data() : [this.data(), this.data()]))
-            ;
-
-        const bbox = this.sliderElement.node().getBBox();
-        this.sliderElement.attr("transform", "translate(" + -this.width() / 2 + ", " + -(bbox.y + bbox.height / 2) + ")");
-    }
-
-    brushstart(d, self) {
-        if (!d3Event || !d3Event.sourceEvent) return;
-        d3Event.sourceEvent.stopPropagation();
-    }
-
-    brushmove(d, self) {
-        if (!d3Event || !d3Event.sourceEvent) return;
-        d3Event.sourceEvent.stopPropagation();
-        if (!this.allowRange()) {
-            const mouseX = this.axis.invert(d3Mouse(self)[0]);
-            d3Select(self)
-                .call(this.brush.extent([mouseX, mouseX]))
-                ;
-        }
-    }
-
-    brushend(d, self) {
-        if (!d3Event || !d3Event.sourceEvent) return;
-        d3Event.sourceEvent.stopPropagation();
-        if (!this.allowRange()) {
-            const mouseX = this.nearestStep(this.axis.invert(d3Mouse(self)[0]));
-            d3Select(self)
-                .call(this.brush.extent([mouseX, mouseX]))
-                ;
-            this.value(this.axis.parseInvert(mouseX));
-            this._click();
         } else {
-            const extent = this.brush.extent();
-            extent[0] = this.nearestStep(extent[0]);
-            extent[1] = this.nearestStep(extent[1]);
-            d3Select(self)
-                .call(this.brush.extent(extent))
-                ;
-            this.newSelection(this.axis.parseInvert(extent[0]), this.axis.parseInvert(extent[1]));
+            this.handleLeftPos = this.handleRightPos = pos;
         }
+
+        this.handleLeftPos = this.constrain(this.handleLeftPos);
+        this.handleRightPos = this.constrain(this.handleRightPos);
+        this.value(this.allowRange() ? this.xScale.invert(this.handleLeftPos) : [this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)])
+        this.updateHandles();
     }
 
-    nearestStep(value2) {
-        switch (this.type()) {
-            case "time":
-                return value2;
-            default:
-                return +this.axis.parse(this.low()) + Math.round((value2 - +this.axis.parse(this.low())) / +this.step()) * +this.step();
-        }
+    constrain(pos: number): number {
+        const range = this.xScale.range();
+        if (pos < range[0]) pos = range[0];
+        if (pos > range[1]) pos = range[1];
+        return this.nearestStep(pos);
     }
 
-    handlePath(d) {
-        const e = +(d === "e");
+    nearestStep(pos) {
+        const value = this.xScale.invert(pos);
+        return this.xScale(this.low() + Math.round((value - this.low()) / this.step()) * this.step());
+    }
+
+    handlePath = function (d) {
+        const e = +(d === "r");
         const x = e ? 1 : -1;
         const xOffset = this.allowRange() ? 0.5 : 0.0;
         const y = 18;
@@ -336,24 +195,7 @@ export class Slider extends SVGWidget {
                 ;
         }
         return retVal;
-    }
-
-    _click() {
-        if (this.selectionLabel()) {
-            const clickData = {};
-            clickData[this.selectionLabel()] = this.data();
-            this.click(clickData);
-        } else {
-            this.click(this.data());
-        }
-    }
-
-    click(data) {
-    }
-
-    newSelection(value, value2) {
-        console.log("newSelection:  " + value + ", " + value2);
-    }
+    };
 
     padding: { (): number; (_: number): Slider };
     padding_exists: () => boolean;
@@ -365,7 +207,7 @@ export class Slider extends SVGWidget {
     fontColor_exists: () => boolean;
     allowRange: { (): boolean; (_: boolean): Slider };
     allowRange_exists: () => boolean;
-    low: { (): string; (_: string): Slider };
+    low: { (): number; (_: number): Slider };
     low_exists: () => boolean;
     high: { (): number; (_: number): Slider };
     high_exists: () => boolean;
@@ -373,8 +215,11 @@ export class Slider extends SVGWidget {
     step_exists: () => boolean;
     selectionLabel: { (): string; (_: string): Slider };
     selectionLabel_exists: () => boolean;
+
+    /*
     type: { (): string; (_: string): Axis };
     type_exists: () => boolean; showPlay: { (): boolean; (_: boolean): Slider };
+
     showPlay_exists: () => boolean;
     playInterval: { (): number; (_: number): Slider };
     playInterval_exists: () => boolean;
@@ -382,6 +227,7 @@ export class Slider extends SVGWidget {
     playGutter_exists: () => boolean;
     loopGutter: { (): number; (_: number): Slider };
     loopGutter_exists: () => boolean;
+    */
 
     //  IInput  ---
     name: (_?: string) => string | this;
@@ -402,11 +248,11 @@ Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags
 Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
 
 Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("low", "0", "string", "Low", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("high", "100", "string", "High", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
-
+/*
 Slider.prototype.publishProxy("tickCount", "axis", "tickCount");
 Slider.prototype.publishProxy("tickFormat", "axis", "tickFormat");
 Slider.prototype.publishProxy("type", "axis");
@@ -422,16 +268,28 @@ Slider.prototype.publishProxy("playDiameter", "_playIcon", "diameter", 32);
 Slider.prototype.publish("playGutter", 4, "number", "Play Gutter");
 Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
 Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
+*/
 
+const name = Slider.prototype.name;
 Slider.prototype.name = function (_: any): any {
-    return Slider.prototype.columns.apply(this, arguments);
+    const retVal = name.apply(this, arguments);
+    if (arguments.length) {
+        const val = _ instanceof Array ? _ : [_];
+        SVGWidget.prototype.columns.call(this, val);
+    }
+    return retVal;
 };
 
 const value = Slider.prototype.value;
 Slider.prototype.value = function (_?: any): any {
     const retVal = value.apply(this, arguments);
-    if (arguments.length) {
-        SVGWidget.prototype.data.apply(this, arguments);
+    if (!arguments.length) {
+        if (!this.allowRange()) {
+            return SVGWidget.prototype.data.call(this)[0][0];
+        }
+        return SVGWidget.prototype.data.call(this)[0];
+    } else {
+        SVGWidget.prototype.data.call(this, [this.allowRange() ? _ : [_, _]]);
     }
     return retVal;
 };

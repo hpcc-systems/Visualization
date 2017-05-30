@@ -10,3 +10,4 @@ export class JSXWidget extends HTMLWidget {
         this.rootNode = render(jsx, domNode, this.rootNode);
     }
 }
+JSXWidget.prototype._class += " html_JSXWidget";

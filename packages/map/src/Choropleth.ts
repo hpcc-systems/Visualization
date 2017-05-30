@@ -9,7 +9,7 @@ declare const require: any;
 
 export class Choropleth extends Layer {
     _dataMap = {};
-    _path = d3Select(null);
+    _path: any = d3Select(null);
     _palette;
     _dataMinWeight;
     _dataMaxWeight;

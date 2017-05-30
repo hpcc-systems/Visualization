@@ -10,7 +10,9 @@ export enum RequestType {
 
 export enum ResponseType {
     JSON,
-    TEXT
+    JSON2,
+    TEXT,
+    XSD
 }
 
 export interface IOptions {

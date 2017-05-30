@@ -1,11 +1,10 @@
 const alias = require('rollup-plugin-alias');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require("rollup-plugin-commonjs");
-const uglify = require('rollup-plugin-uglify');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 
 export default {
-    entry: 'src/index.js',
+    entry: 'lib-es6/index.js',
     format: 'umd',
     moduleName: "hpcc-js-preact-shim",
     dest: 'dist/preact-shim.js',
@@ -21,7 +20,6 @@ export default {
                 "..\\..\\node_modules\\preact\\dist\\preact.js": ["Component", "cloneElement", "h", "options", "render"]
             }
         }),
-        sourcemaps(),
-        uglify()
+        sourcemaps()
     ]
 };

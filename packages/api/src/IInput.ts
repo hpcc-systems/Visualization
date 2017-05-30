@@ -1,11 +1,14 @@
 import { Widget } from "@hpcc-js/common";
 
-export class IInput extends Widget {
+export abstract class IInput extends Widget {
     _inputElement;
 
     constructor() {
         super();
     }
+
+    abstract target(): any;
+    abstract target(_: any): this;
 
     //  Implementation  ---
     isValid() {
@@ -57,6 +60,12 @@ export class IInput extends Widget {
         this._inputElement.forEach(function (e, idx) {
             e.attr("disabled", disable ? "disabled" : null);
         });
+    }
+    
+    setFocus() {
+        if (this._inputElement.length) {
+            this._inputElement[0].node().focus();
+        }
     }
 
     name: { (): string; (_: string): IInput };

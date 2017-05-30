@@ -62,7 +62,7 @@ export class ChoroplethCounties extends Choropleth {
             .on("mousemove.tooltip", this.tooltip.show)
             .merge(this.choroPaths)
             .attr("d", function (d) {
-                var retVal = base._d3GeoPath(rFeatures[+d[0]]);  //  Global "fix" for leading zero is not wanted here.  Should really fix in JSON file (id) but file is too big to edit.
+                const retVal = base._d3GeoPath(rFeatures[+d[0]]);  //  Global "fix" for leading zero is not wanted here.  Should really fix in JSON file (id) but file is too big to edit.
                 if (!retVal) {
                     console.log("Unknown US County:  " + d[0]);
                 }

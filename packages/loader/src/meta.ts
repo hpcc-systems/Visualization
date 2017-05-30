@@ -3,6 +3,7 @@ export const thirdParty = {
     "amcharts3": "amcharts3",
     "amchartsImg": "amcharts3/amcharts/images/",
     "colorbrewer": "colorbrewer/colorbrewer",
+    "codemirror": "codemirror/",
     "d3-array": "d3-array/build/d3-array",
     "d3-axis": "d3-axis/build/d3-axis",
     "@hpcc-js/d3-bullet": "@hpcc-js/d3-bullet/build/d3-bullet",
@@ -28,6 +29,7 @@ export const thirdParty = {
     "d3-shape": "d3-shape/build/d3-shape",
     "d3-sankey": "d3-sankey/build/d3-sankey",
     "d3-selection": "d3-selection/build/d3-selection",
+    "d3-svg-legend": "d3-svg-legend/indexRollup",
     "d3-time": "d3-time/build/d3-time",
     "d3-timer": "d3-timer/build/d3-timer",
     "d3-time-format": "d3-time-format/build/d3-time-format",
@@ -41,16 +43,18 @@ export const thirdParty = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "handsontable": "handsontable/dist/handsontable.full",
+    "immutable": "immutable/dist/immutable.min",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "orb": "orb",
     "react": "react/dist/react",
+    "reflect-metadata": "reflect-metadata/Reflect",
     "simpleheat": "simpleheat/simpleheat",
     "topojson": "topojson/build/topojson",
     "tslib": "tslib/tslib"
 };
-export const shims = ["loader", "codemirror-shim", "c3-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
+export const shims = ["loader", "codemirror-shim", "c3-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
-    "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
+    "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
     "c3chart", "google", "amchart", "tree", "graph", "map",
-    "handson", "react", "composite", "marshaller", "ddl", "html", "codemirror"
+    "handson", "react", "composite", "marshaller", "html", "codemirror"
 ];

@@ -1,0 +1,26 @@
+.composite_ChartPanel > .body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: row;
+}
+
+.composite_ChartPanel > .body > article {
+    flex: 3 1 60%;
+    order: 2;
+}
+
+.composite_ChartPanel > .body > nav {
+    flex: 1 6 20%;
+    order: 1;
+}
+
+.composite_ChartPanel > .body > aside {
+    margin-left: 4px;
+    flex: 1 6 20%;
+    order: 3;
+}
+
+header, footer {
+    display: block;
+}

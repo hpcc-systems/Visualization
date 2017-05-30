@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>HPCC Systems - WeCare</title>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic"
+        rel="stylesheet" />
+    <link href="../../../node_modules/impress.js/css/impress-demo.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="../../../node_modules/impress.js/favicon.png" />
+    <link rel="apple-touch-icon" href="../../../node_modules/impress.js/apple-touch-icon.png" />
+
+    <link href="../style/index.css" rel="stylesheet" />
+    <script src="../../../packages/loader/dist/loader.min.js"></script>
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+        var require = hpccLoader.bundle("../../../packages", {
+            "d3-selection": "../../../node_modules/d3-selection/build/d3-selection",
+            "d3-time-format": "../../../node_modules/d3-time-format/build/d3-time-format",
+            "d3-time": "../../../node_modules/d3-time/build/d3-time",
+            "test": "../tests"
+        }, true);
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    <!--  Uncomment to develop
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+        var require = hpccLoader.amd("../node_modules/@hpcc-js", { "test": "../tests" }, "../../../node_modules");
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    -->
+    <!--  Uncomment to test build
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+        var require = hpccLoader.bundle("../../../packages", {
+            "d3-selection": "../../../node_modules/d3-selection/build/d3-selection",
+            "d3-time-format": "../../../node_modules/d3-time-format/build/d3-time-format",
+            "d3-time": "../../../node_modules/d3-time/build/d3-time",
+            "test": "../tests"
+        }, true);
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    -->
+</head>
+
+<body id="body" class="impress-not-supported">
+
+    <div class="fallback-message">
+        <p>Your browser <b>doesn't support the features required</b> by this demo, so you are presented with this simplified
+            version.
+        </p>
+        <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+    </div>
+
+    <div id="impress">
+        <div id="overview" class="step" data-x="0" data-y="525" data-rotate-x="0" data-scale="2">
+        </div>
+
+        <div id="formPage" class="step slide noClick" data-x="0" data-y="0" style="height:350px">
+            <q style="text-align:center"><strong>Search II</strong></q>
+            <div id="form" onclick="noclick(event);" class="widget" style="height:auto"></div>
+        </div>
+
+        <div id="peoplePage" class="step slide" data-x="-885" data-y="525" data-z="115" data-rotate-y="15">
+            <q style="text-align:center"><strong>People</strong></q>
+            <div id="table" onclick="noclick(event);" class="widget" style="overflow:auto"></div>
+        </div>
+
+        <div id="mapPage" class="step slide noClick" data-x="0" data-y="525" data-rotate-y="0">
+            <q style="text-align:center"><strong>Address History</strong></q>
+            <div id="addressChart" onclick="noclick(event);" class="widget" style="height:130px"></div>
+            <div id="addressMap" onclick="noclick(event);" class="widget" style="height:525px"></div>
+        </div>
+
+        <div id="addressPage" class="step slide" data-x="885" data-y="525" data-z="115" data-rotate-y="-15">
+            <q style="text-align:center"><strong>Address History</strong></q>
+            <div id="addressTable" onclick="noclick(event);" class="widget" style="overflow:auto"></div>
+        </div>
+
+        <div id="personDetailsPage" class="step slide noClick" data-z="-142" data-y="1016" data-rotate-x="-45" style="height:400px; visibilityxxx:hidden">
+            <q style="text-align:center"><strong>Debug Table</strong></q>
+            <div id="DebugTable" onclick="noclick(event);" class="widget" style="overflow:auto"></div>
+        </div>
+
+        <script>
+            hpccsystems.require(["../lib/main"], function (main) {
+                var main = new main.Main();
+                main.initSearch("form");
+                main.initPeople("table");
+                main.initAddressMap("addressMap");
+                main.initAddressTable("addressTable");
+                main.initAddressChart("addressChart");
+                main.initDebugTable("DebugTable");
+            });
+        </script>
+    </div>
+    <div class="hint">
+        <p>Use a spacebar or arrow keys to navigate</p>
+    </div>
+    <script>
+            if ("ontouchstart" in document.documentElement) {
+                document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+            }
+    </script>
+    <script src="../../../node_modules/impress.js/js/impress.js"></script>
+    <script>
+        document.addEventListener("click", function (event) {
+            var target = event.target;
+            while (!(target.classList.contains("step")) && (target !== document.documentElement)) {
+                target = target.parentNode;
+            }
+
+            if (!target.id) {
+                if (impress().goto("overview")) {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                }
+            }
+        });
+        impress().init();
+        function goto(id) {
+            //setTimeout(function () {
+            impress().goto(id);
+            //}, 0);
+        };
+        function noclick(evt) {
+            evt.stopImmediatePropagation();
+            evt.preventDefault();
+        }
+    </script>
+    <div class="menu">
+        <ul>
+            <li>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

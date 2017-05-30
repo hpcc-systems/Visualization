@@ -1,0 +1,85 @@
+#wrap
+{
+    width: 100%;
+}
+#left, #right {padding:5px;}
+
+#left {
+    background-color:red;
+    text-align:left;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#right {
+    background-color:orange;
+    float:right;
+    text-align:right;
+    white-space: nowrap;
+}
+
+.html_TitleBar > .main {
+    width: 100%;
+    display: block;
+}
+
+.html_TitleBar .title {
+    padding:4px;
+    text-align:left;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.html_TitleBar .icon-bar {
+    padding:4px;
+    float: right;
+    text-align:right;
+    white-space: nowrap;
+    line-height: 28px;
+}
+
+.html_TitleBar .icon-bar-item {
+    display: inline;    
+}
+
+.html_TitleBar .icon-bar-item > div {
+    display: inline;    
+}
+
+.html_TitleBar .icon-bar a {
+    text-align: center; /* Center-align text */
+    padding-top: 4px;
+    padding-bottom: 4px;
+    transition: all 0.3s ease; /* Add transition for hover effects */
+    color: darkgray; /* White text color */
+}
+
+.html_TitleBar .icon-bar a:hover {
+    background-color: whitesmoke; /* Add a hover color */
+}
+
+.html_TitleBar .icon-bar a.selected {
+    background-color: #efe5e5; /* Add a hover color */
+}
+
+.html_TitleBar .icon-bar a.spacer {
+    text-align: center; /* Center-align text */
+    padding-top: 2px;
+    padding-left: 8px;
+    padding-bottom: 0px;
+    color: none;
+}
+
+.html_TitleBar .icon-bar a.spacer:hover {
+    background-color: transparent;
+}
+
+.html_TitleBar .icon-bar .active {
+    background-color: #4CAF50; /* Add an active/current color */
+}

@@ -33,7 +33,8 @@ export class GMapGraph extends GMap {
                     edges.push(new Edge()
                         .sourceVertex(prevAddr)
                         .targetVertex(newAddr)
-                        .targetMarker("arrowHead")
+                        .sourceMarker("none")
+                        .targetMarker("arrow")
                     );
                 }
                 prevAddr = newAddr;

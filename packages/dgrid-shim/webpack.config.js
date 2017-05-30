@@ -5,7 +5,6 @@ var dwlOptions = require("dojo-webpack-loader/defaultOptions");
 
 dwlOptions.dojoCorePath = path.resolve(__dirname, '../../node_modules/dojo');
 dwlOptions.dojoDijitPath = path.resolve(__dirname, '../../node_modules/dijit');
-dwlOptions.include = path.resolve(__dirname, '../../node_modules/dojo/');
 dwlOptions.includeLanguages = ['en', 'ru', 'fr'];
 
 var entry_list = [
@@ -51,8 +50,8 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin('dgrid-shim.css'),
-        //new webpack.optimize.UglifyJsPlugin({
-        //sourceMap: "source-map"
-        //})
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: "source-map"
+        })
     ]
 };

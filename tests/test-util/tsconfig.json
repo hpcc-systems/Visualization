@@ -1,16 +1,26 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./build",
+    "sourceMap": true,
     "declaration": false,
+    "moduleResolution": "node",
     "noImplicitAny": true,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "ES5",
-    "outDir": "./build",
-    "lib": ["ES5", "ES2015.Promise"],
-    "types": ["chai", "mocha"]
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise"
+    ],
+    "types": [
+      "chai",
+      "mocha"
+    ]
   },
-  "include": ["src/*"]
+  "include": [
+    "src/*"
+  ]
 }

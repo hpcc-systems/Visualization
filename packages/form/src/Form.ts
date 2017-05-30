@@ -102,7 +102,7 @@ export class Form extends HTMLWidget {
         })) {
             return;
         }
-        this.click(isValid ? this.values() : null);
+        this.click(isValid ? this.values() : null, null, isValid);
     }
 
     clear() {
@@ -162,6 +162,7 @@ export class Form extends HTMLWidget {
         const context = this;
         this._controls = [
             new Button()
+                .classed({ default: true })
                 .value("Submit")
                 .on("click", function () {
                     context.submit();
@@ -217,7 +218,7 @@ export class Form extends HTMLWidget {
 
                     if (inputWidget2._inputElement instanceof Array) {
                         inputWidget2._inputElement.forEach(function (e) {
-                            e.on("change.form", function (w) {
+                            e.on("keyup.form", function (w) {
                                 setTimeout(function () {
 
                                     context._controls[0].disable(!context.allowEmptyRequest() && !context.inputs().some(function (w2) {
@@ -235,6 +236,11 @@ export class Form extends HTMLWidget {
                 });
             })
             ;
+        rows.each(function (inputWidget, i) {
+            if (i === 0 && inputWidget.setFocus) {
+                inputWidget.setFocus();
+            }
+        });
         rows.exit().remove();
 
         this.tfoot
@@ -268,7 +274,7 @@ export class Form extends HTMLWidget {
         HTMLWidget.prototype.exit.apply(this, arguments);
     }
 
-    click(row) {
+    click(row, col, sel) {
         console.log("Clicked Submit: " + JSON.stringify(row));
     }
 

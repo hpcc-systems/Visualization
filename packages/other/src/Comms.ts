@@ -1,6 +1,6 @@
 import { Utility } from "@hpcc-js/common";
 
-var TIMEOUT_DEFAULT = 60;
+const TIMEOUT_DEFAULT = 60;
 function espValFix(val) {
     if (val === undefined || val === null) {
         return null;
@@ -11,7 +11,7 @@ function espValFix(val) {
         }
         return val;
     }
-    var retVal = val.trim();
+    const retVal = val.trim();
     if (retVal !== "" && !isNaN(retVal)) {
         if (retVal.length <= 1 || retVal[0] !== "0" || retVal[1] === ".") {
             return Number(retVal);
@@ -21,7 +21,7 @@ function espValFix(val) {
 }
 
 function espRowFix(row) {
-    for (var key in row) {
+    for (const key in row) {
         row[key] = espValFix(row[key]);
     }
     return row;
@@ -46,19 +46,19 @@ export class ESPUrl {
     url(_?): string | this {
         if (!arguments.length) return this._url;
         this._url = _;
-        var parser = document.createElement("a");
+        const parser = document.createElement("a");
         parser.href = this._url;
-        parser.href = parser.href; //This fixes an IE9/IE10 DOM value issue
+        parser.href = parser.href; // This fixes an IE9/IE10 DOM value issue
 
-        var params = {};
+        const params = {};
         if (parser.search.length) {
-            var tmp: any = parser.search;
+            let tmp: any = parser.search;
             if (tmp[0] === "?") {
                 tmp = tmp.substring(1);
             }
             tmp = tmp.split("&");
             tmp.map(function (item) {
-                var tmpItem = item.split("=");
+                const tmpItem = item.split("=");
                 params[decodeURIComponent(tmpItem[0])] = decodeURIComponent(tmpItem[1]);
             });
         }
@@ -75,7 +75,7 @@ export class ESPUrl {
         this._host = parser.host;
 
         return this;
-    };
+    }
 
     protocol(_: string): this;
     protocol(): string;
@@ -83,7 +83,7 @@ export class ESPUrl {
         if (!arguments.length) return this._protocol;
         this._protocol = _;
         return this;
-    };
+    }
 
     hostname(_: string): this;
     hostname(): string;
@@ -91,7 +91,7 @@ export class ESPUrl {
         if (!arguments.length) return this._hostname;
         this._hostname = _;
         return this;
-    };
+    }
 
     port(_: string): this;
     port(): string;
@@ -99,7 +99,7 @@ export class ESPUrl {
         if (!arguments.length) return this._port;
         this._port = _;
         return this;
-    };
+    }
 
     pathname(_: string): this;
     pathname(): string;
@@ -107,7 +107,7 @@ export class ESPUrl {
         if (!arguments.length) return this._pathname;
         this._pathname = _;
         return this;
-    };
+    }
 
     param(key: string) {
         return this._params[key];
@@ -115,19 +115,19 @@ export class ESPUrl {
 
     isWsWorkunits() {
         return this._pathname.toLowerCase().indexOf("wsworkunits") >= 0 || this._params["Wuid"];
-    };
+    }
 
     isWorkunitResult() {
         return this.isWsWorkunits() && (this._params["Sequence"] || this._params["ResultName"]);
-    };
+    }
 
     isWsEcl() {
         return this._pathname.toLowerCase().indexOf("wsecl") >= 0 || (this._params["QuerySetId"] && this._params["Id"]);
-    };
+    }
 
     isWsWorkunits_GetStats() {
         return this._pathname.toLowerCase().indexOf("wsworkunits/wugetstats") >= 0 && this._params["WUID"];
-    };
+    }
 
     getUrl(overrides) {
         overrides = overrides || {};
@@ -135,15 +135,15 @@ export class ESPUrl {
             (overrides.hostname !== undefined ? overrides.hostname : this._hostname) + ":" +
             (overrides.port !== undefined ? overrides.port : this._port) + "/" +
             (overrides.pathname !== undefined ? overrides.pathname : this._pathname);
-    };
+    }
 }
 
 export function ESPMappings(mappings) {
     this._mappings = mappings;
     this._reverseMappings = {};
-    for (var resultName in this._mappings) {
+    for (const resultName in this._mappings) {
         this._reverseMappings[resultName] = {};
-        for (var key in this._mappings[resultName]) {
+        for (const key in this._mappings[resultName]) {
             this._reverseMappings[resultName][this._mappings[resultName][key]] = key;
         }
     }
@@ -154,19 +154,19 @@ ESPMappings.prototype.contains = function (resultName, origField) {
 };
 
 ESPMappings.prototype.mapResult = function (response, resultName) {
-    var mapping = this._mappings[resultName];
+    const mapping = this._mappings[resultName];
     if (mapping) {
         response[resultName] = response[resultName].map(function (item) {
-            var row = [];
+            let row = [];
             if (mapping.x && mapping.x instanceof Array) {
                 //  LINE Mapping  ---
                 row = [];
-                for (var i = 0; i < mapping.x.length; ++i) {
+                for (let i = 0; i < mapping.x.length; ++i) {
                     row.push(item[mapping.y[i]]);
                 }
             } else {
                 //  Regular Mapping  ---
-                for (var key in mapping) {
+                for (const key in mapping) {
                     if (mapping[key] === "label") {
                         row[0] = item[key];
                     } else if (mapping[key] === "weight") {
@@ -180,7 +180,7 @@ ESPMappings.prototype.mapResult = function (response, resultName) {
 };
 
 ESPMappings.prototype.mapResponse = function (response) {
-    for (var key in response) {
+    for (const key in response) {
         this.mapResult(response, key);
     }
 };
@@ -190,27 +190,27 @@ function Comms() {
     this._proxyMappings = {};
     this._mappings = new ESPMappings({});
     this._timeout = TIMEOUT_DEFAULT;
-        this._hipieResults = {};
-    }
-    Comms.prototype = Object.create(ESPUrl.prototype);
+    this._hipieResults = {};
+}
+Comms.prototype = Object.create(ESPUrl.prototype);
 
-    Comms.prototype.hipieResults = function (_) {
-        if (!arguments.length) return this._hipieResults;
-        this._hipieResultsLength = 0;
-        this._hipieResults = {};
-        var context = this;
-        _.forEach(function (item) {
-            context._hipieResultsLength++;
-            context._hipieResults[item.id] = item;
-        });
-        return this;
-    };
+Comms.prototype.hipieResults = function (_) {
+    if (!arguments.length) return this._hipieResults;
+    this._hipieResultsLength = 0;
+    this._hipieResults = {};
+    const context = this;
+    _.forEach(function (item) {
+        context._hipieResultsLength++;
+        context._hipieResults[item.id] = item;
+    });
+    return this;
+};
 
-    var serialize = function (obj) {
-    var str = [];
-    for (var key in obj) {
+const serialize = function (obj) {
+    const str = [];
+    for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
-            var val = obj[key];
+            const val = obj[key];
             if (val !== undefined && val !== null) {
                 str.push(encodeURIComponent(key) + "=" + encodeURIComponent(val));
             }
@@ -219,20 +219,20 @@ function Comms() {
     return str.join("&");
 };
 
-var jsonp = function (url, request, timeout) {
+let jsonp = function (url, request, timeout) {
     return new Promise(function (resolve, reject) {
-        var respondedTimeout = timeout * 1000;
-        var respondedTick = 5000;
-        var callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
+        let respondedTimeout = timeout * 1000;
+        const respondedTick = 5000;
+        const callbackName = "jsonp_callback_" + Math.round(Math.random() * 999999);
         window[callbackName] = function (response) {
             respondedTimeout = 0;
             doCallback();
             resolve(response);
         };
-        var script = document.createElement("script");
+        const script = document.createElement("script");
         script.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "jsonp=" + callbackName + "&" + serialize(request);
         document.body.appendChild(script);
-        var progress = setInterval(function () {
+        const progress = setInterval(function () {
             if (respondedTimeout <= 0) {
                 clearInterval(progress);
             } else {
@@ -256,11 +256,11 @@ var jsonp = function (url, request, timeout) {
 };
 
 Comms.prototype.jsonp = function (url, request, callback) {
-    for (var key in this._proxyMappings) {
-        var newUrlParts = url.split(key);
-        var newUrl = newUrlParts[0];
+    for (const key in this._proxyMappings) {
+        const newUrlParts = url.split(key);
+        const newUrl = newUrlParts[0];
         if (newUrlParts.length > 1) {
-            var espUrl = new ESPUrl()
+            const espUrl = new ESPUrl()
                 .url(url)
                 ;
             url = newUrl + this._proxyMappings[key];
@@ -277,16 +277,15 @@ Comms.prototype.jsonp = function (url, request, callback) {
 
 Comms.prototype.ajax = function (method, url, request) {
     return new Promise(function (resolve, reject) {
-        var uri = url;
+        let uri = url;
         if (method === "GET" && request) {
             uri += "?" + serialize(request);
         }
-        var xhr: any = new XMLHttpRequest();
+        const xhr: any = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (this.status >= 200 && this.status < 300) {
                 resolve(JSON.parse(this.response));
-            }
-            else {
+            } else {
                 reject(Error(this.statusText));
             }
         };
@@ -342,11 +341,11 @@ Basic.prototype.cacheCalls = function (_) {
 };
 
 Basic.prototype.call = function (request, callback) {
-    var url = this._url + (this._url.indexOf("?") >= 0 ? "&" : "?") + serialize(request);
+    const url = this._url + (this._url.indexOf("?") >= 0 ? "&" : "?") + serialize(request);
     if (this._cacheCalls) {
-        var context = this;
+        const context = this;
         return new Promise(function (resolve, reject) {
-            var response = JSON.parse(localStorage.getItem("hpcc.viz." + url));
+            const response = JSON.parse(localStorage.getItem("hpcc.viz." + url));
             if (!response) {
                 throw Error("not cached");
             }
@@ -356,13 +355,13 @@ Basic.prototype.call = function (request, callback) {
             }
             resolve(response);
         }).catch(function (response) {
-            return context.get(url).then(function (response) {
-                localStorage.setItem("hpcc.viz." + url, JSON.stringify(response));
+            return context.get(url).then(function (response2) {
+                localStorage.setItem("hpcc.viz." + url, JSON.stringify(response2));
                 if (callback) {
                     console.log("Deprecated:  callback, use promise (Basic.prototype.call)");
-                    callback(response);
+                    callback(response2);
                 }
-                return response;
+                return response2;
             });
         });
     } else {
@@ -379,11 +378,11 @@ Basic.prototype.call = function (request, callback) {
 
 function locateRoxieResponse(response) {
     // v5 and v6 compatible ---
-    for (var key in response) {
+    for (const key in response) {
         if (response[key].Row && response[key].Row instanceof Array) {
             return response;
         }
-        var retVal;
+        let retVal;
         if (typeof (response[key]) !== "string") {
             retVal = locateRoxieResponse(response[key]);
         }
@@ -395,11 +394,11 @@ function locateRoxieResponse(response) {
 }
 
 function locateRoxieException(response) {
-    for (var key in response) {
+    for (const key in response) {
         if (response[key].Exception && response[key].Exception instanceof Array) {
             return response[key];
         }
-        var retVal = locateRoxieException(response[key]);
+        const retVal = locateRoxieException(response[key]);
         if (retVal) {
             return retVal;
         }
@@ -417,11 +416,11 @@ export function WsECL() {
 WsECL.prototype = Object.create(Comms.prototype);
 
 WsECL.prototype.url = function (_) {
-    var retVal = Comms.prototype.url.apply(this, arguments);
+    const retVal = Comms.prototype.url.apply(this, arguments);
     if (arguments.length) {
         //  http://localhost:8010/esp/files/stub.htm?QuerySetId=roxie&Id=stock.3&Widget=QuerySetDetailsWidget
         this._port = this._port === "8010" ? "8002" : this._port;  //  Need a better way  ---
-        for (var key in this._params) {
+        for (const key in this._params) {
             switch (key) {
                 case "QuerySetId":
                     this.target(this._params[key]);
@@ -432,9 +431,10 @@ WsECL.prototype.url = function (_) {
             }
         }
 
-        var pathParts, queryParts;
+        let pathParts;
+        let queryParts;
         if (!this._target || !this._query) {
-            //http://localhost:8002/WsEcl/forms/default/query/roxie/wecare
+            // http://localhost:8002/WsEcl/forms/default/query/roxie/wecare
             pathParts = this._pathname.split("/query/");
             if (pathParts.length >= 2) {
                 queryParts = pathParts[1].split("/");
@@ -470,12 +470,12 @@ WsECL.prototype.call = function (target, request, callback) {
     target = target || {};
     target.target = target.target || this._target;
     target.query = target.query || this._query;
-    var context = this;
-    var url = this.getUrl({
+    const context = this;
+    const url = this.getUrl({
         pathname: "WsEcl/submit/query/" + target.target + "/" + target.query + "/json"
     });
     return this.jsonp(url, request).then(function (response) {
-        var _response = locateRoxieResponse(response);
+        let _response = locateRoxieResponse(response);
         if (!_response) {
             _response = locateRoxieException(response);
         }
@@ -491,7 +491,7 @@ WsECL.prototype.call = function (target, request, callback) {
             }, ""));
         }
         // Remove "response.result.Row"
-        for (var key in response) {
+        for (const key in response) {
             if (response[key].Row) {
                 response[key] = response[key].Row.map(espRowFix);
             }
@@ -526,10 +526,10 @@ export function WsWorkunits() {
 WsWorkunits.prototype = Object.create(Comms.prototype);
 
 WsWorkunits.prototype.url = function (_) {
-    var retVal = Comms.prototype.url.apply(this, arguments);
+    const retVal = Comms.prototype.url.apply(this, arguments);
     if (arguments.length) {
         //  http://localhost:8010/WsWorkunit/WuResult?Wuid=xxx&ResultName=yyy
-        for (var key in this._params) {
+        for (const key in this._params) {
             switch (key) {
                 case "Wuid":
                     this.wuid(this._params[key]);
@@ -544,9 +544,9 @@ WsWorkunits.prototype.url = function (_) {
         }
         if (!this._wuid) {
             //  http://localhost:8010/WsWorkunits/res/W20140922-213329/c:/temp/index.html
-            var urlParts = this._url.split("/res/");
+            const urlParts = this._url.split("/res/");
             if (urlParts.length >= 2) {
-                var urlParts2 = urlParts[1].split("/");
+                const urlParts2 = urlParts[1].split("/");
                 this.wuid(urlParts2[0]);
             }
         }
@@ -589,10 +589,10 @@ WsWorkunits.prototype.appendParam = function (label, value, params) {
 };
 
 WsWorkunits.prototype.constructUrl = function () {
-    var url = Comms.prototype.getUrl.call(this, {
+    const url = Comms.prototype.getUrl.call(this, {
         pathname: "WsWorkunits/res/" + this._wuid + "/"
     });
-    var params = "";
+    let params = "";
     params = this.appendParam("ResultName", this._resultName, params);
     return url + (params ? "?" + params : "");
 };
@@ -602,10 +602,10 @@ WsWorkunits.prototype._fetchResult = function (target, callback, skipMapping) {
     if (!this._fetchResultPromise[target.resultname]) {
         target._start = target._start || 0;
         target._count = target._count || -1;
-        var url = this.getUrl({
+        const url = this.getUrl({
             pathname: "WsWorkunits/WUResult.json"
         });
-        var request = {
+        const request = {
             Wuid: target.wuid,
             ResultName: target.resultname,
             SuppressXmlSchema: true,
@@ -613,16 +613,16 @@ WsWorkunits.prototype._fetchResult = function (target, callback, skipMapping) {
             Count: target._count
         };
         this._resultNameCache[target.resultname] = {};
-        var context = this;
+        const context = this;
         this._fetchResultPromise[target.resultname] = this.jsonp(url, request).then(function (response) {
             // Remove "xxxResponse.Result"
-            for (var key in response) {
+            for (const key in response) {
                 if (!response[key].Result) {
-                    throw "No result found.";
+                    throw new Error("No result found.");
                 }
                 context._total = response[key].Total;
                 response = response[key].Result;
-                for (var responseKey in response) {
+                for (const responseKey in response) {
                     response = response[responseKey].Row.map(espRowFix);
                     break;
                 }
@@ -646,7 +646,7 @@ WsWorkunits.prototype.fetchResult = function (target, callback, skipMapping) {
     if (target.wuid) {
         return this._fetchResult(target, callback, skipMapping);
     } else if (target.jobname) {
-        var context = this;
+        const context = this;
         return this.WUQuery(target, function (response) {
             target.wuid = response[0].Wuid;
             return context._fetchResult(target, callback, skipMapping);
@@ -655,11 +655,11 @@ WsWorkunits.prototype.fetchResult = function (target, callback, skipMapping) {
 };
 
 WsWorkunits.prototype.WUQuery = function (_request, callback) {
-    var url = this.getUrl({
+    const url = this.getUrl({
         pathname: "WsWorkunits/WUQuery.json",
     });
-    var request = {
-        Jobname: request.jobname,
+    const request = {
+        Jobname: _request.jobname,
         Count: 1
     };
 
@@ -667,7 +667,7 @@ WsWorkunits.prototype.WUQuery = function (_request, callback) {
     this._resultNameCacheCount = 0;
     return this.jsonp(url, request).then(function (response) {
         if (!Utility.exists("WUQueryResponse.Workunits.ECLWorkunit", response)) {
-            throw "No workunit found.";
+            throw Error("No workunit found.");
         }
         response = response.WUQueryResponse.Workunits.ECLWorkunit;
         if (callback) {
@@ -680,10 +680,10 @@ WsWorkunits.prototype.WUQuery = function (_request, callback) {
 
 WsWorkunits.prototype.fetchResultNames = function (callback) {
     if (!this._fetchResultNamesPromise) {
-        var url = this.getUrl({
+        const url = this.getUrl({
             pathname: "WsWorkunits/WUInfo.json",
         });
-        var request = {
+        const request = {
             Wuid: this._wuid,
             TruncateEclTo64k: true,
             IncludeExceptions: false,
@@ -703,11 +703,11 @@ WsWorkunits.prototype.fetchResultNames = function (callback) {
 
         this._resultNameCache = {};
         this._resultNameCacheCount = 0;
-        var context = this;
+        const context = this;
         this._fetchResultNamesPromise = this.jsonp(url, request).then(function (response) {
-                if (Utility.exists("WUInfoResponse.Workunit.Archived", response) && response.WUInfoResponse.Workunit.Archived) {
-                    console.log("WU is archived");
-                }
+            if (Utility.exists("WUInfoResponse.Workunit.Archived", response) && response.WUInfoResponse.Workunit.Archived) {
+                console.log("WU is archived:  " + url + " " + JSON.stringify(request));
+            }
             if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                 response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
                     context._resultNameCache[item.Name] = [];
@@ -725,10 +725,10 @@ WsWorkunits.prototype.fetchResultNames = function (callback) {
 };
 
 WsWorkunits.prototype.fetchResults = function (callback, skipMapping) {
-    var context = this;
+    const context = this;
     return this.fetchResultNames().then(function (response) {
-        var fetchArray = [];
-        for (var key in context._resultNameCache) {
+        const fetchArray = [];
+        for (const key in context._resultNameCache) {
             fetchArray.push(context.fetchResult({ wuid: context._wuid, resultname: key }, null, skipMapping));
         }
         return Promise.all(fetchArray).then(function (responseArray) {
@@ -742,11 +742,12 @@ WsWorkunits.prototype.fetchResults = function (callback, skipMapping) {
 };
 
 WsWorkunits.prototype.postFilter = function (request, response) {
-    var retVal = {};
-    for (var key in response) {
+    const retVal = {};
+    for (const key in response) {
         retVal[key] = response[key].filter(function (row, idx) {
-            for (var request_key in request) {
-                if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] != request[request_key]) { // jshint ignore:line
+            for (const request_key in request) {
+                // tslint:disable-next-line:triple-equals
+                if (row[request_key] !== undefined && request[request_key] !== undefined && row[request_key] != request[request_key]) {
                     return false;
                 }
             }
@@ -758,7 +759,7 @@ WsWorkunits.prototype.postFilter = function (request, response) {
 };
 
 WsWorkunits.prototype.send = function (request, callback) {
-    var context = this;
+    const context = this;
     if (!this._resultNameCacheCount) {
         this.fetchResults(function (response) {
             callback(context.postFilter(request, response));
@@ -777,10 +778,10 @@ function WsWorkunits_GetStats() {
 WsWorkunits_GetStats.prototype = Object.create(Comms.prototype);
 
 WsWorkunits_GetStats.prototype.url = function (_) {
-    var retVal = Comms.prototype.url.apply(this, arguments);
+    const retVal = Comms.prototype.url.apply(this, arguments);
     if (arguments.length) {
         //  http://localhost:8010/WsWorkunits/WUGetStats?WUID="xxx"
-        for (var key in this._params) {
+        for (const key in this._params) {
             switch (key) {
                 case "WUID":
                     this.wuid(this._params[key]);
@@ -804,7 +805,7 @@ WsWorkunits_GetStats.prototype.constructUrl = function () {
 };
 
 WsWorkunits_GetStats.prototype.send = function (request, callback) {
-    var url = this.getUrl({
+    const url = this.getUrl({
         pathname: "WsWorkunits/WUGetStats.json?WUID=" + this._wuid
     });
     return this.jsonp(url, request).then(function (response) {
@@ -831,12 +832,12 @@ export function HIPIERoxie() {
 HIPIERoxie.prototype = Object.create(Comms.prototype);
 
 HIPIERoxie.prototype.fetchResults = function (request, callback) {
-    var url = this.getUrl({});
+    const url = this.getUrl({});
     this._resultNameCache = {};
     this._resultNameCacheCount = 0;
-    var context = this;
+    const context = this;
     return this.jsonp(url, request).then(function (response) {
-        var _response = locateRoxieResponse(response);
+        let _response = locateRoxieResponse(response);
         if (!_response) {
             _response = locateRoxieException(response);
         }
@@ -852,7 +853,7 @@ HIPIERoxie.prototype.fetchResults = function (request, callback) {
             }, ""));
         }
         // Remove "response.result.Row"
-        for (var key in response) {
+        for (const key in response) {
             if (response[key].Row) {
                 context._resultNameCache[key] = response[key].Row.map(espRowFix);
                 ++context._resultNameCacheCount;
@@ -867,7 +868,7 @@ HIPIERoxie.prototype.fetchResults = function (request, callback) {
 };
 
 HIPIERoxie.prototype.fetchResult = function (name, callback) {
-    var context = this;
+    const context = this;
     return new Promise(function (resolve, reject) {
         if (callback) {
             console.log("Deprecated:  callback, use promise (HIPIERoxie.prototype.fetchResult)");
@@ -878,15 +879,15 @@ HIPIERoxie.prototype.fetchResult = function (name, callback) {
 };
 
 HIPIERoxie.prototype.call = function (request, callback) {
-        var context = this;
-        return this.fetchResults(request, callback).then(function (response) {
-            var retVal = {};
-            for (var hipieKey in context._hipieResults) {
-                var item = context._hipieResults[hipieKey];
-                retVal[item.id] = response[item.from];
-            }
-            return retVal;
-        });
+    const context = this;
+    return this.fetchResults(request, callback).then(function (response) {
+        const retVal = {};
+        for (const hipieKey in context._hipieResults) {
+            const item = context._hipieResults[hipieKey];
+            retVal[item.id] = response[item.from];
+        }
+        return retVal;
+    });
 };
 
 //  HIPIEWorkunit  ---
@@ -895,25 +896,15 @@ export function HIPIEWorkunit() {
 }
 HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
-function hasFilter(hipieResult, fieldid) {
-    return getFilter(hipieResult, fieldid).length > 0;
-}
-
-function getFilter(hipieResult, fieldid) {
-    return hipieResult.filters.filter(function (filter) {
-        return filter.fieldid === fieldid;
-    });
-}
-
 HIPIEWorkunit.prototype.fetchResults = function (callback) {
-    var context = this;
+    const context = this;
     return WsWorkunits.prototype.fetchResultNames.call(this).then(function (response) {
-        var fetchArray = [];
-        for (var key in context._hipieResults) {
-            var item = context._hipieResults[key];
+        const fetchArray = [];
+        for (const key in context._hipieResults) {
+            const item = context._hipieResults[key];
             fetchArray.push(context.fetchResult(item.from));
         }
-        return Promise.all(fetchArray).then(function (response) {
+        return Promise.all(fetchArray).then(function (response2) {
             if (callback) {
                 console.log("Deprecated:  callback, use promise (HIPIEWorkunit.prototype.fetchResults)");
                 callback(context._resultNameCache);
@@ -934,7 +925,7 @@ HIPIEWorkunit.prototype.fetchResult = function (name, callback) {
 };
 
 HIPIEWorkunit.prototype.call = function (request, callback) {
-    var context = this;
+    const context = this;
     if (request.refresh || !this._resultNameCache || !this._resultNameCacheCount) {
         return this.fetchResults(callback).then(function (response) {
             return filterResults(request);
@@ -945,27 +936,26 @@ HIPIEWorkunit.prototype.call = function (request, callback) {
         });
     }
 
-    function filterResults(request) {
-        var changedFilter = {};
-        for (var key in request) {
-                if (request[key + "_changed"] !== undefined) {
+    function filterResults(request2) {
+        const changedFilter = {};
+        for (const key in request2) {
+            if (request2[key + "_changed"] !== undefined) {
                 changedFilter[key] = {
-                    value: request[key]
+                    value: request2[key]
                 };
             }
         }
-        var retVal = {};
-        for (var hipieKey in context._hipieResults) {
-            var item = context._hipieResults[hipieKey];
-            var outputFilter = {};
-            for (var key2 in changedFilter) {
-                if (hasFilter(item, key2)) {
-                    outputFilter[key2] = changedFilter[key2];
-                    outputFilter[key2].filter = getFilter(item, key2)[0];
-                }
+        const retVal = {};
+        for (const hipieKey in context._hipieResults) {
+            const hipieResult = context._hipieResults[hipieKey];
+            const outputFilter = {};
+            for (let i = 0; i < hipieResult.filters.length; ++i) {
+                const filter = hipieResult.filters[i];
+                outputFilter[filter.fieldid] = changedFilter[filter.fieldid] || { value: undefined };
+                outputFilter[filter.fieldid].filter = filter;
             }
-                retVal[item.id] = context._resultNameCache[item.from].filter(function (row) {
-                for (var key2 in outputFilter) {
+            retVal[hipieResult.id] = context._resultNameCache[hipieResult.from].filter(function (row) {
+                for (const key2 in outputFilter) {
                     if (!outputFilter[key2].filter.matches(row, outputFilter[key2].value)) {
                         return false;
                     }
@@ -995,13 +985,13 @@ HIPIEDatabomb.prototype.databombOutput = function (from, id) {
     if (this._databomb instanceof Array) {
         this._resultNameCache[from] = this._databomb.map(espRowFix);
     } else {
-            this._resultNameCache[from] = this._databomb[from].map(espRowFix);
+        this._resultNameCache[from] = this._databomb[from].map(espRowFix);
     }
     return this;
 };
 
 HIPIEDatabomb.prototype.fetchResults = function (callback) {
-    var context = this;
+    const context = this;
     return new Promise(function (resolve, reject) {
         if (callback) {
             console.log("Deprecated:  callback, use promise (HIPIEDatabomb.prototype.fetchResults)");
@@ -1013,7 +1003,7 @@ HIPIEDatabomb.prototype.fetchResults = function (callback) {
 
 export function createESPConnection(url) {
     url = url || document.URL;
-    var testURL = new ESPUrl()
+    const testURL = new ESPUrl()
         .url(url)
         ;
     if (testURL.isWsWorkunits_GetStats()) {
@@ -1037,4 +1027,3 @@ export function createESPConnection(url) {
 export function hookJsonp(func) {
     jsonp = func;
 }
-

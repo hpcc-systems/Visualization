@@ -1,11 +1,10 @@
 const resolve = require('rollup-plugin-node-resolve');
 const postcss = require('rollup-plugin-postcss');
 const commonjs = require("rollup-plugin-commonjs");
-const uglify = require('rollup-plugin-uglify');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 
 export default {
-    entry: 'src/index.js',
+    entry: 'lib-es6/index.js',
     format: 'umd',
     moduleName: "hpcc-js-codemirror-shim",
     dest: 'dist/codemirror-shim.js',
@@ -22,7 +21,6 @@ export default {
             namedExports: {
             }
         }),
-        sourcemaps(),
-        uglify()
+        sourcemaps()
     ]
 };

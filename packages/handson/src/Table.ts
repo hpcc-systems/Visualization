@@ -291,10 +291,10 @@ export class Table extends HTMLWidget {
         HTMLWidget.prototype.exit.apply(this, arguments);
     }
 
-    _createSelectionObject(i) {
+    _createSelectionObject(i): { _id: any, element: any } {
         return {
             _id: i,
-            element: () => d3Select()
+            element: () => d3Select(null)
         };
     }
 

@@ -17,22 +17,56 @@
 .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#666;}
 .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor th{background-color:#777;}
 
-.other_PropertyEditor .property-table thead > tr > th{
+.other_PropertyEditor .headerRow{background-color:#eee;}
+.other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#ddd;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#ccc;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#bbb;}
+.other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .other_PropertyEditor .headerRow{background-color:#aaa;}
+
+.other_PropertyEditor .fa {
+    font-size:14px;
+    width:14px
+}
+
+.other_PropertyEditor div.property-table-collapsed {
+    display:none;
+}
+
+.other_PropertyEditor .headerRow > .peInput {
+    padding-top:2px;
+}
+
+.other_PropertyEditor .headerRow > .peInput > span {
+    font-weight: bold;
+    padding-left: 2px;
+}
+
+.other_PropertyEditor .headerRow > .peInput > i {
+    float:right;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.other_PropertyEditor .headerRow > span > i:hover {
+    background-color: #555;
+    cursor:pointer;
+}
+.other_PropertyEditor .property-table thead > tr > th {
     text-align:left;
     background-color:#333;
     color:#fff;
+    padding-top:2px;
     padding-left:4px;
 }
-.other_PropertyEditor .property-table thead > tr > th > i{
+.other_PropertyEditor .property-table thead > tr > th > i {
     float:right;
-    padding: 4px;
+    padding-top: 2px;
+    padding-right: 4px;
+    padding-bottom: 2px;
 }
 .other_PropertyEditor .property-table thead > tr > th > i:hover{
     background-color: #555;
     cursor:pointer;
-}
-.other_PropertyEditor .property-table.property-table-collapsed tbody{
-    display:none;
 }
 .other_PropertyEditor .property-table tbody > tr:nth-child(even){
     background-color: #F9F9F9;
@@ -60,6 +94,7 @@
     text-align:left;
     height:20px;
     padding:1px 0;
+    width:80%
 }
 .other_PropertyEditor .property-input-cell > input,
 .other_PropertyEditor .property-input-cell > textarea{

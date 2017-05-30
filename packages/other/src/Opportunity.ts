@@ -271,7 +271,7 @@ export class Opportunity extends SVGWidget {
                     const element2 = d3Select(this);
                     element2.append("rect")
                         .attr("class", "node_cur_rect")
-                        .attr("fill", function (d2) {
+                        .attr("fill", function (d2: any) {
                             let color;
                             if (d2.delta < 0 || d2.cur_group === 7) {
                                 color = "#F78181";

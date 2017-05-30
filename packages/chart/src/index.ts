@@ -7,8 +7,6 @@ export * from "./Column";
 export * from "./Gantt";
 export * from "./HexBin";
 export * from "./Line";
-export * from "./MultiChart";
-export * from "./MultiChartSurface";
 export * from "./Pie";
 export * from "./Scatter";
 export * from "./Step";

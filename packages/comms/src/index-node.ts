@@ -1,6 +1,6 @@
 // DOM Parser polyfill  ---
-import { DOMParser } from "xmldom";
 import { root } from "@hpcc-js/util";
+import { DOMParser } from "xmldom";
 root.DOMParser = DOMParser;
 
 //  XHR polyfill  ---
@@ -17,3 +17,7 @@ if (typeof root.btoa === "undefined") {
 }
 
 export * from "./index";
+
+//  Client Tools  ---
+export { locateAllClientTools, locateClientTools, IECLError } from "./clienttools/eclcc";
+export { attachWorkspace, qualifiedIDBoundary, ECLScope } from "./clienttools/eclMeta";

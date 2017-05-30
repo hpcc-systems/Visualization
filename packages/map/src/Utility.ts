@@ -1,4 +1,4 @@
-import { geoAlbers, geoConicEqualArea, } from "d3-geo";
+import { geoAlbers, geoConicEqualArea, GeoStream } from "d3-geo";
 
 // const d3Geo = _d3Geo.geo || _d3Geo.default || _d3Geo;
 
@@ -311,7 +311,7 @@ export function albersUsaPr() {
         .parallels([8, 18]);
 
     let point;
-    const pointStream = { point: (x, y) => { point = [x, y]; } };
+    const pointStream = { point: (x, y) => { point = [x, y]; } } as GeoStream;
     let lower48Point;
     let alaskaPoint;
     let hawaiiPoint;

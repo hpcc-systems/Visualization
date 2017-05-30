@@ -1,5 +1,5 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { FAChar, SVGWidget, Text, Utility } from "@hpcc-js/common";
+import { FAChar, ISize, SVGWidget, Text, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -26,7 +26,9 @@ export class Bubble extends SVGWidget {
             ;
     }
 
-    size(_) {
+    size(): ISize;
+    size(_): this;
+    size(_?): ISize | this {
         const retVal = SVGWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
             this.d3Pack
@@ -47,8 +49,8 @@ export class Bubble extends SVGWidget {
             ;
     }
 
-    update(_domNode, element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+    update(domNode, element) {
+        super.update.apply(domNode, element);
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -64,10 +66,7 @@ export class Bubble extends SVGWidget {
             ;
         this.d3Pack(root);
 
-        const node = element.selectAll(".node")
-            .data(root.children, function (d) {
-                return d.data[0];
-            });
+        const node = element.selectAll(".node").data(root.children || [], d => d.data[0]);
 
         //  Enter  ---
         node.enter().append("g")

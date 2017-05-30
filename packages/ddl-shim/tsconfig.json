@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "outDir": "./lib",
+        "target": "es5",
+        "module": "es6",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "declaration": true,
+        "noImplicitAny": true,
+        "noEmitOnError": false,
+        "noUnusedLocals": true,
+        "strictNullChecks": false,
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.promise"
+        ],
+        "types": []
+    },
+    "include": [
+        "src/*"
+    ]
+}

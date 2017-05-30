@@ -3,11 +3,10 @@ const resolve = require('rollup-plugin-node-resolve');
 const postcss = require('rollup-plugin-postcss');
 const commonjs = require("rollup-plugin-commonjs");
 const alias = require('rollup-plugin-alias');
-const uglify = require('rollup-plugin-uglify');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 
 export default {
-    entry: 'src/index.js',
+    entry: 'lib-es6/index.js',
     format: 'umd',
     moduleName: "hpcc-js-phosphor-shim",
     dest: 'dist/phosphor-shim.js',
@@ -22,8 +21,10 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "@phosphor/widgets": ["Widget", "DockPanel"]
-            }
+                "@phosphor/algorithm": ["each"],
+                "@phosphor/widgets": ["BoxPanel", "CommandRegistry", "CommandPalette", "ContextMenu", "DockLayout", "DockPanel", "Message", "Menu", "MenuBar", "SplitPanel", "TabBar", "Widget"]
+            },
+            ignore: ['crypto']
         }),
         sourcemaps()
     ]

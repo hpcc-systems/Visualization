@@ -5,7 +5,6 @@ export class HTMLWidget extends Widget {
 
     private observer;
     protected _drawStartPos;
-    protected _tag;
     protected _boundingBox;
 
     constructor() {

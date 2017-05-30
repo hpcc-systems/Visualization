@@ -1,7 +1,7 @@
-import { HTMLWidget, Platform } from "@hpcc-js/common";
+import { HTMLWidget, Platform, PropertyExt } from "@hpcc-js/common";
 import { Widget } from "@hpcc-js/common";
 import { Grid } from "@hpcc-js/layout";
-import { select as d3Select, selectAll as d3SelectAll } from "d3-selection";
+import { local as d3Local, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
 import * as Persist from "./Persist";
 
 import "../src/PropertyEditor.css";
@@ -24,6 +24,7 @@ export class PropertyEditor extends HTMLWidget {
     _selectedItems;
     __meta_sorting;
     _watch;
+    private _childPE = d3Local<PropertyEditor>();
 
     constructor() {
         super();
@@ -37,6 +38,16 @@ export class PropertyEditor extends HTMLWidget {
         if (!arguments.length) return this._parentPropertyEditor;
         this._parentPropertyEditor = _;
         return this;
+    }
+
+    depth(): number {
+        let retVal = 0;
+        let parent = this.parentPropertyEditor();
+        while (parent) {
+            ++retVal;
+            parent = parent.parentPropertyEditor();
+        }
+        return retVal;
     }
 
     show_settings(): boolean;
@@ -56,8 +67,8 @@ export class PropertyEditor extends HTMLWidget {
         return this.show_settings() ? [this] : this.widget() ? [this.widget()] : [];
     }
 
-    update(domNode, element2) {
-        super.update(domNode, element2);
+    update(domNode, element) {
+        super.update(domNode, element);
 
         const context = this;
 
@@ -70,48 +81,47 @@ export class PropertyEditor extends HTMLWidget {
             return true;
         });
 
-        const table2 = element2.selectAll(".table" + this.id()).data(rootWidgets, function (d) { return d.id(); });
-        table2.enter().append("table")
-            .attr("class", "property-table table" + this.id())
+        const table = element.selectAll(`table.property-table.table-${this.depth()}`).data(rootWidgets, function (d) {
+            //  We reuse the existing DOM Nodes and this node _might_ have been a regular Input previously  ---
+            if (typeof d.id !== "function") {
+                return `meta-${d.id}`;
+            }
+            return d.id();
+        });
+        table.enter().append("table")
+            .attr("class", `property-table table-${this.depth()}`)
             .each(function () {
-                const table = d3Select(this);
-                table.append("thead").append("tr").append("th").datum(table)
-                    .attr("colspan", "2")
-                    .each(function () {
-                        const th = d3Select(this);
-                        th.append("span");
-                        context.thButtons(th);
-                    })
-                    ;
-                table.append("tbody");
+                const tableElement = d3Select(this);
+
+                //  Header  ---
+                if (context.parentPropertyEditor() === null) {
+                    tableElement.append("thead").append("tr").append("th")// .datum(tableElement)
+                        .attr("colspan", "2")
+                        .each(function () {
+                            context.enterHeader(d3Select(this));
+                        })
+                        ;
+                }
+
+                //  Body  ---
+                tableElement.append("tbody");
             })
-            .merge(table2)
-            .each(function (d2) {
-                const element = d3Select(this);
-                element.select("thead > tr > th > span")
-                    .text(function (d: any) {
-                        let spanText = "";
-                        if (context.label()) {
-                            spanText += context.label();
-                        }
-                        if (d && d.classID) {
-                            if (spanText) {
-                                spanText += " - ";
-                            }
-                            spanText += d.classID();
-                        }
-                        return spanText;
-                    })
-                    ;
-                element.selectAll("i")
-                    .classed("fa-eye", !context.hideNonWidgets())
-                    .classed("fa-eye-slash", context.hideNonWidgets());
-                context.renderInputs(element.select("tbody"), d2);
+            .merge(table)
+            .each(function (tableData) {
+                const tableElement = d3Select(this);
+
+                //  Header  ---
+                if (context.parentPropertyEditor() === null) {
+                    context.updateHeader(tableElement.select("thead > tr > th"));
+                }
+
+                //  Body  ---
+                context.renderInputs(tableElement.select("tbody"), tableData);
             })
             ;
-        table2.exit()
+        table.exit()
             .each(function () {
-                context.renderInputs(element2.select("tbody"), null);
+                context.renderInputs(element.select("tbody"), null);
             })
             .remove()
             ;
@@ -136,7 +146,8 @@ export class PropertyEditor extends HTMLWidget {
             const context = this;
             this._watch = widget.monitor(function (_paramId, newVal, oldVal) {
                 if (oldVal !== newVal) {
-                    context.lazyRender();
+                    const propEditor = context.parentPropertyEditor() || context;
+                    propEditor.lazyRender();
                 }
             });
             if ((window as any).__hpcc_debug) {
@@ -146,49 +157,123 @@ export class PropertyEditor extends HTMLWidget {
         }
     }
 
-    thButtons(th) {
+    enterHeader(th) {
         const context = this;
-        const collapseIcon = th.append("i")
-            .attr("class", "fa fa-minus-square-o")
-            .on("click", function (d) {
-                d
-                    .classed("property-table-collapsed", !d.classed("property-table-collapsed"))
-                    ;
-                collapseIcon
-                    .classed("fa-minus-square-o", !d.classed("property-table-collapsed"))
-                    .classed("fa-plus-square-o", d.classed("property-table-collapsed"))
-                    ;
+
+        th.append("span");
+        th.append("i")
+            .attr("class", "expandIcon fa")
+            .on("click", function () {
+                switch (context.peInputIcon()) {
+                    case "fa-caret-up":
+                    case "fa-caret-right":
+                        context.element().selectAll(`.table-${context.depth()} > tbody > tr > .headerRow > .peInput > .property-table-collapsed`)
+                            .classed("property-table-collapsed", false)
+                            ;
+                        context.element().selectAll(`.table-${context.depth()} > tbody > tr > .headerRow > .peInput > i`)
+                            .classed("fa-minus-square-o", true)
+                            .classed("fa-plus-square-o", false)
+                            ;
+                        break;
+                    case "fa-caret-down":
+                        context.element().selectAll(`.table-${context.depth()} > tbody > tr > .headerRow > .peInput > div`)
+                            .classed("property-table-collapsed", true)
+                            ;
+                        context.element().selectAll(`.table-${context.depth()} > tbody > tr > .headerRow > .peInput > i`)
+                            .classed("fa-minus-square-o", false)
+                            .classed("fa-plus-square-o", true)
+                            ;
+                        break;
+                }
+                context.refreshExpandIcon();
             })
             ;
-        if (this.parentPropertyEditor() === null) {
-            const sortIcon = th.append("i")
-                .attr("class", "fa " + context.__meta_sorting.ext.icons[context.sorting_options().indexOf(context.sorting())])
-                .on("click", function () {
-                    const sort = context.sorting();
-                    const types = context.sorting_options();
-                    const icons = context.__meta_sorting.ext.icons;
-                    sortIcon
-                        .classed(icons[types.indexOf(sort)], false)
-                        .classed(icons[(types.indexOf(sort) + 1) % types.length], true)
-                        ;
-                    context.sorting(types[(types.indexOf(sort) + 1) % types.length]).render();
-                })
-                ;
-            const hideParamsIcon = th.append("i")
-                .attr("class", "fa " + (context.hideNonWidgets() ? "fa-eye-slash" : "fa-eye"))
-                .on("click", function () {
-                    hideParamsIcon
-                        .classed("fa-eye", context.hideNonWidgets())
-                        .classed("fa-eye-slash", !context.hideNonWidgets())
-                        ;
-                    context.hideNonWidgets(!context.hideNonWidgets()).render();
-                })
-                ;
-            hideParamsIcon
-                .classed("fa-eye", !context.hideNonWidgets())
-                .classed("fa-eye-slash", context.hideNonWidgets())
+
+        const sortIcon = th.append("i")
+            .attr("class", "sortIcon fa")
+            .on("click", function () {
+                context.refreshSortIcon(sortIcon, true);
+            })
+            ;
+
+        th.append("i")
+            .attr("class", "hideParamsIcon fa")
+            .on("click", function () {
+                context.hideNonWidgets(!context.hideNonWidgets()).render();
+            })
+            ;
+    }
+
+    updateHeader(th) {
+        const widget: any = this.widget();
+        let spanText = "";
+        if (widget) {
+            if (widget.label) {
+                spanText += widget.label();
+            }
+            if (widget.classID) {
+                if (spanText) {
+                    spanText += " - ";
+                }
+                spanText += widget.classID();
+            }
+        }
+        th.select("span")
+            .text(spanText)
+            ;
+        this.refreshExpandIcon();
+        this.refreshSortIcon(th.select(".sortIcon"));
+        this.refreshHideParamsIcon(th.select(".hideParamsIcon"));
+    }
+
+    peInputCount() {
+        return this.element().selectAll(`.table-${this.depth()} > tbody > tr > .headerRow > .peInput > div`).size();
+    }
+
+    peInputCollapsedCount() {
+        return this.element().selectAll(`.table-${this.depth()} > tbody > tr > .headerRow > .peInput > div.property-table-collapsed`).size();
+    }
+
+    peInputIcon(): "fa-caret-down" | "fa-caret-up" | "fa-caret-right" {
+        const collapsed = this.peInputCollapsedCount();
+        if (collapsed === 0) {
+            return "fa-caret-down";
+        } else if (collapsed === this.peInputCount()) {
+            return "fa-caret-up";
+        }
+        return "fa-caret-right";
+    }
+
+    refreshExpandIcon() {
+        const newIcon = this.peInputIcon();
+        this.element().select(`.table-${this.depth()} > thead > tr > th > .expandIcon`)
+            .classed("fa-caret-up", false)
+            .classed("fa-caret-right", false)
+            .classed("fa-caret-down", false)
+            .classed(newIcon, true)
+            ;
+    }
+
+    refreshSortIcon(sortIcon, increment = false) {
+        const sort = this.sorting();
+        const types = this.sorting_options();
+        const icons = this.__meta_sorting.ext.icons;
+        if (increment) {
+            sortIcon.classed(icons[types.indexOf(sort)], false);
+            this.sorting(types[(types.indexOf(sort) + 1) % types.length]).render();
+        } else {
+            sortIcon
+                .classed(icons[(types.indexOf(sort)) % types.length], true)
+                .attr("title", sort)
                 ;
         }
+    }
+
+    refreshHideParamsIcon(hideParamsIcon) {
+        hideParamsIcon
+            .classed("fa-eye", !this.hideNonWidgets())
+            .classed("fa-eye-slash", this.hideNonWidgets())
+            ;
     }
 
     gatherDataTree(widget) {
@@ -339,7 +424,7 @@ export class PropertyEditor extends HTMLWidget {
         rows.order();
     }
 
-    updateWidgetRow(widget, element, param) {
+    updateWidgetRow(widget: PropertyExt, element, param) {
         let tmpWidget = [];
         if (widget && param) {
             tmpWidget = widget[param.id]() || [];
@@ -356,7 +441,11 @@ export class PropertyEditor extends HTMLWidget {
             let changed = !!(widgetArr.length - noEmpties.length);
             if (lastModified) {
                 changed = true;
-                noEmpties.push(new param.ext.autoExpand(widget));
+                const autoExpandWidget = new param.ext.autoExpand(widget);
+                // autoExpandWidget.monitor((id, newVal, oldVal, source) => {
+                // widget.broadcast(param.id, newVal, oldVal, source);
+                // });
+                noEmpties.push(autoExpandWidget);
             }
             if (changed) {
                 widget[param.id](noEmpties);
@@ -365,17 +454,53 @@ export class PropertyEditor extends HTMLWidget {
         }
 
         const context = this;
-        const widgetCell = element.selectAll("div.propEditor" + this.id()).data(widgetArr, function (d) { return d.id(); });
-        widgetCell.enter().append("div")
-            .attr("class", "property-input-cell propEditor" + this.id())
+        element.classed("headerRow", true);
+        const peInput = element.selectAll(`div.peInput-${this.depth()}`).data(widgetArr, function (d) { return d.id(); });
+        peInput.enter().append("div")
+            .attr("class", `peInput peInput-${this.depth()}`)
             .each(function (w) {
-                d3Select(this)
-                    .attr("data-widgetid", w.id())
-                    .property("data-propEditor", new PropertyEditor().label(param.id).target(this))
+                const peInputElement = d3Select(this);
+
+                //  Header  ---
+                peInputElement.append("span");
+                peInputElement.append("i")
+                    .attr("class", "fa")
+                    .on("click", function (d) {
+                        const clickTarget = peInputElement.select("div");
+                        clickTarget
+                            .classed("property-table-collapsed", !clickTarget.classed("property-table-collapsed"))
+                            ;
+                        d3Select(this)
+                            .classed("fa-minus-square-o", !clickTarget.classed("property-table-collapsed"))
+                            .classed("fa-plus-square-o", clickTarget.classed("property-table-collapsed"))
+                            ;
+                        context.refreshExpandIcon();
+                    })
                     ;
-            }).merge(widgetCell)
+
+                //  Body  ---
+                const peDiv = peInputElement.append("div")
+                    // .attr("class", `property- input - cell propEditor-${context.depth() }`)
+                    ;
+                context._childPE.set(this, new PropertyEditor().label(param.id).target(peDiv.node()));
+            })
+            .merge(peInput)
             .each(function (w) {
-                d3Select(this).property("data-propEditor")
+                const peInputElement = d3Select(this);
+                const clickTarget = peInputElement.select("div");
+
+                //  Header  ---
+                d3Select(this).select("span")
+                    .text(`${param.id}`)
+                    ;
+
+                d3Select(this).select("i")
+                    .classed("fa-minus-square-o", !clickTarget.classed("property-table-collapsed"))
+                    .classed("fa-plus-square-o", clickTarget.classed("property-table-collapsed"))
+                    ;
+
+                //  Body  ---
+                context._childPE.get(this)
                     .parentPropertyEditor(context)
                     .showFields(context.showFields())
                     .showData(context.showData())
@@ -389,40 +514,44 @@ export class PropertyEditor extends HTMLWidget {
                     ;
             })
             ;
-        widgetCell.exit()
-            .each(function () {
-                const element2 = d3Select(this);
-                element2.property("data-propEditor")
+        peInput.exit()
+            .each(function (w) {
+                context._childPE.get(this)
                     .widget(null)
                     .render()
                     .target(null)
                     ;
-                element2
-                    .property("data-propEditor", null)
-                    ;
+                context._childPE.remove(this);
             })
             .remove()
             ;
     }
 
     setProperty(widget, id, value) {
-        //  With PropertyExt not all "widgets" have a render, if not use parents render...
+        //  With PropertyExt not all "widgets" have a render, if not use top most render...
+        let topWidget: Widget;
+        let topPropEditor: Widget;
         let propEditor: PropertyEditor = this;
+        let oldValue;
         while (propEditor && widget) {
             if (propEditor === this) {
+                oldValue = widget[id]();
                 widget[id](value);
             }
-
-            if (widget._parentElement) {
-                const tmpPE = propEditor;
-                widget.render(function () {
-                    tmpPE.render();
-                });
-                propEditor = null;
-            } else {
-                propEditor = propEditor.parentPropertyEditor();
-                widget = propEditor.widget();
+            if (propEditor) {
+                topPropEditor = propEditor;
+                const w: PropertyExt = propEditor.widget();
+                if (w instanceof Widget) {
+                    topWidget = w;
+                }
             }
+            propEditor = propEditor.parentPropertyEditor();
+        }
+        if (topWidget) {
+            topWidget.render();
+        }
+        if (topPropEditor) {
+            topPropEditor.broadcast(id, value, oldValue, widget);
         }
     }
 
@@ -450,13 +579,6 @@ export class PropertyEditor extends HTMLWidget {
                     .on("change", function () {
                         context.setProperty(widget, param.id, this.value);
                     })
-                    .each(function () {
-                        const input = d3Select(this);
-                        const set = widget[param.id + "_options"]();
-                        for (const setItem of set) {
-                            input.append("option").attr("value", setItem).text(setItem);
-                        }
-                    })
                     ;
                 break;
             case "array":
@@ -464,6 +586,10 @@ export class PropertyEditor extends HTMLWidget {
                 cell.append("textarea")
                     .attr("id", this.id() + "_" + param.id)
                     .classed("property-input", true)
+                    .attr("autocomplete", "off")
+                    .attr("autocorrect", "off")
+                    .attr("autocapitalize", "off")
+                    .attr("spellcheck", "false")
                     .on("change", function () {
                         context.setProperty(widget, param.id, JSON.parse(this.value));
                     })
@@ -520,6 +646,19 @@ export class PropertyEditor extends HTMLWidget {
         const val = widget ? widget[param.id]() : "";
         element.property("disabled", widget[param.id + "_disabled"] && widget[param.id + "_disabled"]());
         switch (param.type) {
+            case "boolean":
+                element.property("checked", val);
+                break;
+            case "set":
+                const options = element.selectAll("option").data(widget[param.id + "_options"]());
+                options.enter().append("option")
+                    .merge(options)
+                    .attr("value", d => d as any)
+                    .text(d => d as any)
+                    ;
+                options.exit().remove();
+                element.property("value", val);
+                break;
             case "array":
             case "object":
                 element.property("value", JSON.stringify(val, function replacer(_key, value) {
@@ -528,9 +667,6 @@ export class PropertyEditor extends HTMLWidget {
                     }
                     return value;
                 }));
-                break;
-            case "boolean":
-                element.property("checked", val);
                 break;
             default:
                 if(param.ext && param.ext.range){
@@ -554,23 +690,7 @@ export class PropertyEditor extends HTMLWidget {
     excludeTags: { (): string[]; (_: string[]): PropertyEditor; };
     excludeParams: { (): string[]; (_: string[]): PropertyEditor; };
 
-    widget(): Widget;
-    widget(_: Widget): PropertyEditor;
-    widget(_?: Widget): Widget | PropertyEditor {
-        if (arguments.length && this._widgetOrig() === _) return this;
-        const retVal = PropertyEditor.prototype._widgetOrig.apply(this, arguments);
-        if (arguments.length) {
-            this.watchWidget(_);
-            if (_ instanceof Grid) {
-                const context = this;
-                _.postSelectionChange = function () {
-                    context._selectedItems = _._selectionBag.get().map(function (item) { return item.widget; });
-                    context.lazyRender();
-                };
-            }
-        }
-        return retVal;
-    }
+    widget: { (): PropertyExt; (_: PropertyExt): PropertyEditor };
 }
 PropertyEditor.prototype._class += " other_PropertyEditor";
 
@@ -588,4 +708,19 @@ PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this arr
 
 PropertyEditor.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"], render: false });
 
-PropertyEditor.prototype._widgetOrig = PropertyEditor.prototype.widget;
+const _widgetOrig = PropertyEditor.prototype.widget;
+(PropertyEditor.prototype as any).widget = function (_?: Widget): Widget | PropertyEditor {
+    if (arguments.length && _widgetOrig.call(this) === _) return this;
+    const retVal = _widgetOrig.apply(this, arguments);
+    if (arguments.length) {
+        this.watchWidget(_);
+        if (_ instanceof Grid) {
+            const context = this;
+            _.postSelectionChange = function () {
+                context._selectedItems = _._selectionBag.get().map(function (item) { return item.widget; });
+                context.lazyRender();
+            };
+        }
+    }
+    return retVal;
+};

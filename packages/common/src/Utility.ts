@@ -215,54 +215,54 @@ SimpleSelectionMixin.prototype.deserializeState = function (state) {
 const perf: any = window.performance;
 const now = perf && (perf.now || perf.mozNow || perf.msNow || perf.oNow || perf.webkitNow);
 
-    function isArray(obj) {
-        return Object.prototype.toString.call(obj) === "[object Array]";
+export function isArray(obj) {
+    return Object.prototype.toString.call(obj) === "[object Array]";
+}
+
+//  Template   ---
+//  https://github.com/Matt-Esch/string-template (MIT)
+const nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
+export function template(string, _args) {
+    let args;
+
+    if (arguments.length === 2 && typeof arguments[1] === "object") {
+        args = arguments[1];
+    } else {
+        args = new Array(arguments.length - 1);
+        for (let i = 1; i < arguments.length; ++i) {
+            args[i - 1] = arguments[i];
+        }
     }
 
-    //  Template   ---
-    //  https://github.com/Matt-Esch/string-template (MIT)
-    var nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
-    function template(string) {
-        var args;
+    if (!args || !args.hasOwnProperty) {
+        args = {};
+    }
 
-        if (arguments.length === 2 && typeof arguments[1] === "object") {
-            args = arguments[1];
+    //  Array handling
+    for (const key in args) {
+        if (isArray(args[key])) {
+            args[key].forEach(function (row, idx) {
+                args[key + "[" + idx + "]"] = row;
+            });
+        }
+    }
+
+    return string.replace(nargs, function replaceArg(match, i, index) {
+        let result;
+
+        if (string[index - 1] === "{" &&
+            string[index + match.length] === "}") {
+            return i;
         } else {
-            args = new Array(arguments.length - 1);
-            for (var i = 1; i < arguments.length; ++i) {
-                args[i - 1] = arguments[i];
+            result = args.hasOwnProperty(i) ? args[i] : null;
+            if (result === null || result === undefined) {
+                return "";
             }
+
+            return result;
         }
-
-        if (!args || !args.hasOwnProperty) {
-            args = {};
-        }
-
-        //  Array handling
-        for (var key in args) {
-            if (isArray(args[key])) {
-                args[key].forEach(function (row, idx) {
-                    args[key + "[" + idx + "]"] = row;
-                });
-            }
-        }
-
-        return string.replace(nargs, function replaceArg(match, i, index) {
-            var result;
-
-            if (string[index - 1] === "{" &&
-                string[index + match.length] === "}") {
-                return i;
-            } else {
-                result = args.hasOwnProperty(i) ? args[i] : null;
-                if (result === null || result === undefined) {
-                    return "";
-                }
-
-                return result;
-            }
-        });
-    }
+    });
+}
 
 export function naturalSort(data, order, idx, sortCaseSensitive) {
     return data.slice(0).sort(function (a, b) {

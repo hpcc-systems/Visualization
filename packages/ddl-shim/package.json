@@ -1,0 +1,41 @@
+{
+  "name": "@hpcc-js/ddl-shim",
+  "version": "0.0.7",
+  "description": "hpcc-js DDL parser",
+  "main": "dist/ddl-shim.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf ./src/ddl*Schema*.ts && rimraf ./lib* && rimraf ./dist*",
+    "create-schema": "echo /* tslint:disable */ > ./src/ddlSchema.ts && echo export const ddlSchema = >> ./src/ddlSchema.ts && typescript-json-schema --noExtraProps --required ./src/ddl.ts DDLSchema >> ./src/ddlSchema.ts && echo ; >> ./src/ddlSchema.ts",
+    "create-schema2": "echo /* tslint:disable */ > ./src/ddl2Schema.ts && echo export const ddl2Schema = >> ./src/ddl2Schema.ts && typescript-json-schema --noExtraProps --required ./src/ddl2.ts Schema >> ./src/ddl2Schema.ts && echo ; >> ./src/ddl2Schema.ts",
+    "create-schema-test": "typescript-json-schema --noExtraProps --required ./src/ddl2.ts DDL2Schema",
+    "generate": "npm run create-schema && npm run create-schema2",
+    "build": "npm run generate && tsc -p . && webpack"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "ajv": "^4.11.3",
+    "reflect-metadata": "^0.1.10",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "extract-text-webpack-plugin": "^2.1.0",
+    "rimraf": "^2.6.1",
+    "typescript": "^2.5.2",
+    "typescript-json-schema": "^0.14.0",
+    "webpack": "^2.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

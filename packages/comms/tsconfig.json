@@ -1,15 +1,17 @@
 {
     "compilerOptions": {
+        "outDir": "./lib",
+        "target": "es5",
+        "module": "umd",
+        "moduleResolution": "node",
+        "sourceMap": true,
         "declaration": true,
         "noImplicitAny": false,
         "noEmitOnError": false,
         "noUnusedLocals": true,
         "strictNullChecks": true,
-        "module": "umd",
-        "moduleResolution": "node",
         "importHelpers": true,
-        "target": "es5",
-        "outDir": "./lib",
+        "skipLibCheck": true,
         "lib": [
             "dom",
             "es5",
@@ -18,6 +20,6 @@
         "types": []
     },
     "include": [
-        "src/*"
+        "src/**/*"
     ]
 }

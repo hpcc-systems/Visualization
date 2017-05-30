@@ -63,10 +63,15 @@ export class GMapPinLine extends GMapLayered {
             ;
     }
 
+    private _prevChecksum;
     update(domNode, element) {
         GMapLayered.prototype.update.apply(this, arguments);
         this._pins.data(this.pinsData());
         this._lines.data(this.linesData());
+        if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
+            this._prevChecksum = this._db.checksum();
+            this.zoomTo(this._pins.pinsData().map(function (row) { return [row.lat, row.long]; }));
+        }
     }
 
     exit(domNode, element) {
@@ -80,6 +85,8 @@ export class GMapPinLine extends GMapLayered {
     dblclick(row, column, selected) {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
+
+    autoScale: { (): boolean; (_: boolean): GMapPinLine };
     fromPinColor: { (): string; (_: string): GMapPinLine };
     fromPinColor_exists: () => boolean;
     fromLatitudeColumn: { (): string; (_: string): GMapPinLine };
@@ -104,6 +111,7 @@ export class GMapPinLine extends GMapLayered {
 }
 GMapPinLine.prototype._class += " map_GMapPinLine";
 
+GMapPinLine.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 GMapPinLine.prototype.publish("fromPinColor", "green", "html-color", "From Pin Color");
 GMapPinLine.prototype.publish("fromLatitudeColumn", null, "set", "From Latitude", function () { return this.columns(); }, { optional: true });
 GMapPinLine.prototype.publish("fromLongtitudeColumn", null, "set", "From Longtitude", function () { return this.columns(); }, { optional: true });

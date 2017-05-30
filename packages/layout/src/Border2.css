@@ -1,0 +1,26 @@
+.layout_Border2 > .body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: row;
+}
+
+.layout_Border2 > .body > center {
+    flex: 3 1 60%;
+    order: 2;
+}
+
+.layout_Border2 > .body > lhs {
+    flex: 1 6 20%;
+    order: 1;
+}
+
+.layout_Border2 > .body > rhs {
+    margin-left: 4px;
+    flex: 1 6 20%;
+    order: 3;
+}
+
+header, footer {
+    display: block;
+}

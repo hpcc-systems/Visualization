@@ -1,4 +1,4 @@
-import { event as d3Event, select as d3Select } from "d3-selection";
+import { event as d3Event, select as d3Select, Selection as d3Selection } from "d3-selection";
 import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
@@ -6,6 +6,8 @@ import { PropertyExt } from "./PropertyExt";
 import { debounce } from "./Utility";
 
 import "../src/Widget.css";
+
+export type d3SelectionType = d3Selection<SVGElement | HTMLElement, {}, SVGElement | HTMLElement, any>;
 
 export interface IPos {
     x: number;
@@ -17,8 +19,15 @@ export interface ISize {
     height: number;
 }
 
+export interface BBox {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 let widgetID = 0;
-export class Widget extends PropertyExt {
+export abstract class Widget extends PropertyExt {
     _idSeed: string;
 
     protected _tag: string;
@@ -271,7 +280,9 @@ export class Widget extends PropertyExt {
         return this;
     }
 
-    visible(_?): boolean | Widget {
+    visible(): boolean;
+    visible(_): this;
+    visible(_?): boolean | this {
         if (!arguments.length) return this._visible;
         this._visible = _;
         if (this._parentElement) {
@@ -426,6 +437,15 @@ export class Widget extends PropertyExt {
         }
     }
 
+    getBBox(refresh = false, round = false): BBox {
+        return {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+        };
+    }
+
     element() {
         return this._element;
     }
@@ -434,9 +454,12 @@ export class Widget extends PropertyExt {
         return this._element.node();
     }
 
+    abstract target(): any;
+    abstract target(_): this;
+
     //  Render  ---
     private _prevNow = 0;
-    render(callback?) {
+    render(callback?: (w: Widget) => void) {
         if ((window as any).__hpcc_debug) {
             const now = Date.now();
             if (now - this._prevNow < 500) {
@@ -459,29 +482,29 @@ export class Widget extends PropertyExt {
                 .classed(this._class, true)
                 .attr("id", this._id)
                 // .attr("opacity", 0.50)  //  Uncomment to debug position offsets  ---
-                .each(function (context) {
-                    context._element = d3Select(this);
-                    context.enter(this, context._element);
+                .each(function (context2) {
+                    context2._element = d3Select(this);
+                    context2.enter(this, context2._element);
                     if ((window as any).__hpcc_debug) {
-                        context.leakCheck(this);
+                        context2.leakCheck(this);
                     }
                 })
                 .merge(elements)
-                .each(function (context) {
+                .each(function (context2) {
                     const element = d3Select(this);
-                    const classed = context.classed();
+                    const classed = context2.classed();
                     for (const key in classed) {
                         element.classed(key, classed[key]);
                     }
-                    context.preUpdate(this, context._element);
-                    context.update(this, context._element);
-                    context.postUpdate(this, context._element);
+                    context2.preUpdate(this, context2._element);
+                    context2.update(this, context2._element);
+                    context2.postUpdate(this, context2._element);
                 })
                 ;
             elements.exit()
-                .each(function (context) {
+                .each(function (context2) {
                     d3Select(this).datum(null);
-                    context.exit(this, context._element);
+                    context2.exit(this, context2._element);
                 })
                 .remove()
                 ;
@@ -496,7 +519,7 @@ export class Widget extends PropertyExt {
                     case "widget":
                         const widget = this[meta.id]();
                         if (widget) {
-                            widgets.push(this[meta.id]());
+                            widgets.push(widget);
                         }
                         break;
                     case "widgetArray":
@@ -532,15 +555,23 @@ export class Widget extends PropertyExt {
         return this;
     }
 
+    renderPromise(): Promise<Widget> {
+        return new Promise((resolve, reject) => {
+            this.render((w: Widget) => {
+                resolve(w);
+            });
+        });
+    }
+
     lazyRender = debounce(function () {
         this.render();
     }, 100);
 
-    enter(_domNode, _element) { }
-    preUpdate(_domNode, _element) { }
-    update(_domNode, _element) { }
-    postUpdate(_domNode, _element) { }
-    exit(_domNode, _element) { }
+    enter(_domNode: HTMLElement, _element: d3SelectionType) { }
+    preUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
+    update(_domNode: HTMLElement, _element: d3SelectionType) { }
+    postUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
+    exit(_domNode: HTMLElement, _element: d3SelectionType) { }
 
     fields(): Field[];
     fields(_: Field[]): this;

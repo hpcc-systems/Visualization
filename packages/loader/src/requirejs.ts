@@ -49,6 +49,8 @@ requirejs.load = function (context, moduleId, url) {
         const newUrl = url.substring(0, url.length - 3);
         addCssToDoc(newUrl);
         url = hostUrl + "/loader/rjs.noop.js";
+    } else if (url.length >= 26 && url.indexOf("/common/dist/common.min.js") === url.length - 26) {
+        addCssToDoc(url.replace("/common/dist/common.min.js", "/common/font-awesome/css/font-awesome.min.css"));
     } else if (url.length >= 22 && url.indexOf("/common/dist/common.js") === url.length - 22) {
         addCssToDoc(url.replace("/common/dist/common.js", "/common/font-awesome/css/font-awesome.min.css"));
     } else if (url.length >= 20 && url.indexOf("/common/lib/index.js") === url.length - 20) {

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/requirejs-shim",
-  "version": "0.0.27",
+  "version": "0.0.32",
   "description": "hpcc-js - requirejs shim",
   "main": "dist/requirejs-shim.js",
   "types": "types/requirejs-shim.d.ts",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "requirejs": "^2.3.3",
-    "rollup": "^0.43.0"
+    "rollup": "^0.45.2"
   },
   "devDependencies": {
     "rimraf": "^2.6.1"

@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "outDir": "./lib",
+        "target": "es5",
+        "module": "umd",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "declaration": true,
+        "noEmitOnError": false,
+        "strictNullChecks": true,
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.promise",
+            "es2015.iterable"
+        ],
+        "types": []
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

@@ -1,4 +1,4 @@
-import { SVGWidget, Utility } from "@hpcc-js/common";
+import { publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
@@ -180,7 +180,7 @@ export abstract class XYAxis extends SVGWidget {
         if (currSel) {
             selected = this.data().filter(function (d) {
                 let pos = d[0];
-                pos = this.domainAxis.d3Scale(pos) + (this.domainAxis.d3Scale.bandwidth ? this.domainAxis.d3Scale.bandwidth() / 2 : 0);
+                pos = this.dataPos(pos) + (this.domainAxis.d3Scale.bandwidth ? this.domainAxis.d3Scale.bandwidth() / 2 : 0);
                 return pos >= currSel[0] && pos <= currSel[1];
             }, this);
         }
@@ -506,85 +506,79 @@ export abstract class XYAxis extends SVGWidget {
         console.log(_selected);
     }
 
-    orientation: { (): string; (_: string): XYAxis; };
-    orientation_default: { (): string; (_: string): XYAxis; };
-    selectionMode: { (): boolean; (_: boolean): XYAxis; };
-    imageUrl: { (): string; (_: string): XYAxis; };
-    xAxisTickCount: { (): number; (_: number): XYAxis; };
-    xAxisTickFormat: { (): string; (_: string): XYAxis; };
-    xAxisType: { (): string; (_: string): XYAxis; };
-    xAxisType_default: { (): string; (_: string): XYAxis; };
-    xAxisTypeTimePattern: { (): string; (_: string): XYAxis; };
-    xAxisDomainLow: { (): string; (_: string): XYAxis; };
-    xAxisDomainHigh: { (): string; (_: string): XYAxis; };
+    @publish("horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"])
+    orientation: publish<this, string>;
+    orientation_default: publish<this, string>;
 
-    xAxisOverlapMode: { (): string; (_: string): XYAxis; };
-    xAxisLabelRotation: { (): number; (_: number): XYAxis; };
-    xAxisDomainPadding: { (): number; (_: number): XYAxis; };
-    xAxisGuideLines: { (): boolean; (_: boolean): XYAxis; };
-    xAxisGuideLines_default: { (): boolean; (_: boolean): XYAxis; };
-    xAxisFocus: { (): boolean; (_: boolean): XYAxis; };
-    xAxisFocusHeight: { (): number; (_: number): XYAxis; };
-    xAxisHidden: { (): boolean; (_: boolean): XYAxis; };
-    xAxisHidden_default: { (): boolean; (_: boolean): XYAxis; };
+    @publish(false, "boolean", "Range Selector")
+    selectionMode: publish<this, boolean>;
+    @publishProxy("domainAxis", "tickCount")
+    xAxisTickCount: publish<this, number>;
+    @publishProxy("domainAxis", "tickFormat")
+    xAxisTickFormat: publish<this, string>;
+    @publishProxy("domainAxis", "type")
+    xAxisType: publish<this, string>;
+    xAxisType_default: publish<this, string>;
+    @publishProxy("domainAxis", "timePattern")
+    xAxisTypeTimePattern: publish<this, string>;
+    @publish(null, "string", "X-Axis Low", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
+    xAxisDomainLow: publish<this, string>;
+    @publish(null, "string", "X-Axis High", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
+    xAxisDomainHigh: publish<this, string>;
 
-    yAxisTitle: { (): string; (_: string): XYAxis; };
-    yAxisTickCount: { (): number; (_: number): XYAxis; };
-    yAxisTickFormat: { (): string; (_: string): XYAxis; };
-    yAxisType: { (): string; (_: string): XYAxis; };
-    yAxisType_default: { (): string; (_: string): XYAxis; };
-    yAxisTypeTimePattern: { (): string; (_: string): XYAxis; };
-    yAxisTypePowExponent: { (): number; (_: number): XYAxis; };
-    yAxisTypeLogBase: { (): number; (_: number): XYAxis; };
-    yAxisStacked: { (): boolean; (_: boolean): XYAxis; };
-    yAxisDomainLow: { (): string; (_: string): XYAxis; };
-    yAxisDomainHigh: { (): string; (_: string): XYAxis; };
-    yAxisDomainPadding: { (): number; (_: number): XYAxis; };
-    yAxisGuideLines: { (): boolean; (_: boolean): XYAxis; };
-    yAxisGuideLines_default: { (): boolean; (_: boolean): XYAxis; };
-    yAxisHidden: { (): boolean; (_: boolean): XYAxis; };
-    yAxisHidden_default: { (): boolean; (_: boolean): XYAxis; };
+    @publishProxy("domainAxis", "overlapMode")
+    xAxisOverlapMode: publish<this, string>;
+    @publishProxy("domainAxis", "labelRotation")
+    xAxisLabelRotation: publish<this, number>;
+    @publishProxy("domainAxis", "extend")
+    xAxisDomainPadding: publish<this, number>;
+    @publish(false, "boolean", "Y-Axis Guide Lines")
+    xAxisGuideLines: publish<this, boolean>;
+    xAxisGuideLines_default: publish<this, boolean>;
+    @publish(false, "boolean", "X-Axis Focus", null, { disable: (w: any) => w.orientation() !== "horizontal" })
+    xAxisFocus: publish<this, boolean>;
+    @publish(80, "number", "X-Axis Focus Height", null, { disable: (w: any) => !w.xAxisFocus() })
+    xAxisFocusHeight: publish<this, number>;
+    @publishProxy("domainAxis", "hidden")
+    xAxisHidden: publish<this, boolean>;
+    xAxisHidden_default: publish<this, boolean>;
 
-    regions: { (): any[]; (_: string): XYAxis; };
-    sampleData: { (): string; (_: string): XYAxis; };
+    @publishProxy("valueAxis", "title")
+    yAxisTitle: publish<this, string>;
+    @publishProxy("valueAxis", "tickCount")
+    yAxisTickCount: publish<this, number>;
+    @publishProxy("valueAxis", "tickFormat")
+    yAxisTickFormat: publish<this, string>;
+    @publishProxy("valueAxis", "type")
+    yAxisType: publish<this, string>;
+    yAxisType_default: publish<this, string>;
+    @publishProxy("valueAxis", "timePattern")
+    yAxisTypeTimePattern: publish<this, string>;
+    @publishProxy("valueAxis", "powExponent")
+    yAxisTypePowExponent: publish<this, number>;
+    yAxisTypeLogBase: publish<this, number>;
+    @publish(false, "boolean", "Stacked Chart", null, { tags: ["Basic"], disable: (w: any) => w.xAxisType() !== "ordinal" || w._class.indexOf("chart_Column") < 0 })
+    yAxisStacked: publish<this, boolean>;
+    @publish(null, "string", "Y-Axis Low", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" })
+    yAxisDomainLow: publish<this, string>;
+    @publish(null, "string", "Y-Axis High", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" })
+    yAxisDomainHigh: publish<this, string>;
+    @publishProxy("valueAxis", "extend")
+    yAxisDomainPadding: publish<this, number>;
+    @publish(true, "boolean", "Y-Axis Guide Lines")
+    yAxisGuideLines: publish<this, boolean>;
+    yAxisGuideLines_default: publish<this, boolean>;
+    @publishProxy("valueAxis", "hidden")
+    yAxisHidden: publish<this, boolean>;
+    yAxisHidden_default: publish<this, boolean>;
+
+    @publish([], "array", "Regions")
+    regions: publish<this, object[]>;
+    @publish("", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"])
+    sampleData: publish<this, string>;
 
     //  Selection  ---
     protected _selection;
 }
 XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);
-
-XYAxis.prototype.publish("orientation", "horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"]);
-XYAxis.prototype.publish("selectionMode", false, "boolean", "Range Selector");
-
-XYAxis.prototype.publishProxy("xAxisTickCount", "domainAxis", "tickCount");
-XYAxis.prototype.publishProxy("xAxisTickFormat", "domainAxis", "tickFormat");
-XYAxis.prototype.publishProxy("xAxisType", "domainAxis", "type");
-XYAxis.prototype.publishProxy("xAxisTypeTimePattern", "domainAxis", "timePattern");
-XYAxis.prototype.publish("xAxisDomainLow", null, "string", "X-Axis Low", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" });
-XYAxis.prototype.publish("xAxisDomainHigh", null, "string", "X-Axis High", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" });
-XYAxis.prototype.publishProxy("xAxisOverlapMode", "domainAxis", "overlapMode");
-XYAxis.prototype.publishProxy("xAxisLabelRotation", "domainAxis", "labelRotation");
-XYAxis.prototype.publishProxy("xAxisDomainPadding", "domainAxis", "extend");
-XYAxis.prototype.publish("xAxisGuideLines", false, "boolean", "Y-Axis Guide Lines");
-XYAxis.prototype.publish("xAxisFocus", false, "boolean", "X-Axis Focus", null, { disable: (w: any) => w.orientation() !== "horizontal" });
-XYAxis.prototype.publish("xAxisFocusHeight", 80, "number", "X-Axis Focus Height", null, { disable: (w: any) => !w.xAxisFocus() });
-XYAxis.prototype.publishProxy("xAxisHidden", "domainAxis", "hidden");
-
-XYAxis.prototype.publishProxy("yAxisTitle", "valueAxis", "title");
-XYAxis.prototype.publishProxy("yAxisTickCount", "valueAxis", "tickCount");
-XYAxis.prototype.publishProxy("yAxisTickFormat", "valueAxis", "tickFormat");
-XYAxis.prototype.publishProxy("yAxisType", "valueAxis", "type");
-XYAxis.prototype.publishProxy("yAxisTypeTimePattern", "valueAxis", "timePattern");
-XYAxis.prototype.publishProxy("yAxisTypePowExponent", "valueAxis", "powExponent");
-XYAxis.prototype.publishProxy("yAxisTypeLogBase", "valueAxis", "logBase");
-XYAxis.prototype.publish("yAxisStacked", false, "boolean", "Stacked Chart", null, { tags: ["Basic"], disable: (w: any) => w.xAxisType() !== "ordinal" || w._class.indexOf("chart_Column") < 0 });
-XYAxis.prototype.publish("yAxisDomainLow", null, "string", "Y-Axis Low", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" });
-XYAxis.prototype.publish("yAxisDomainHigh", null, "string", "Y-Axis High", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" });
-XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
-XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
-XYAxis.prototype.publishProxy("yAxisHidden", "valueAxis", "hidden");
-
-XYAxis.prototype.publish("regions", [], "array", "Regions");
-
-XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);

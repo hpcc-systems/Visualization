@@ -55,6 +55,10 @@ export class ColorInput extends HTMLWidget {
         this._inputElement[1].attr("type", "color");
         this._inputElement[0].property("value", this.value());
         this._inputElement[1].property("value", d3Rgb(this.value()).toString());
+
+        const bbox = this._inputElement[0].node().getBoundingClientRect();
+        this._inputElement[1].style("height", (bbox.height - 2) + "px");
+
     }
 
     //  IInput  ---

@@ -1,9 +1,55 @@
 import { Class } from "./Class";
 
+function deepEqual(a, b) {
+    if (a === b) return true;
+
+    const arrA = Array.isArray(a);
+    const arrB = Array.isArray(b);
+    let i;
+
+    if (arrA && arrB) {
+        if (a.length !== b.length) return false;
+        for (i = 0; i < a.length; i++)
+            if (!deepEqual(a[i], b[i])) return false;
+        return true;
+    }
+
+    // tslint:disable-next-line:triple-equals
+    if (arrA != arrB) return false;
+
+    if (a && b && typeof a === "object" && typeof b === "object") {
+        const keys = Object.keys(a);
+        if (keys.length !== Object.keys(b).length) return false;
+
+        const dateA = a instanceof Date;
+        const dateB = b instanceof Date;
+        if (dateA && dateB) return a.getTime() === b.getTime();
+        // tslint:disable-next-line:triple-equals
+        if (dateA != dateB) return false;
+
+        const regexpA = a instanceof RegExp;
+        const regexpB = b instanceof RegExp;
+        if (regexpA && regexpB) return a.toString() === b.toString();
+        // tslint:disable-next-line:triple-equals
+        if (regexpA != regexpB) return false;
+
+        for (i = 0; i < keys.length; i++)
+            if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+
+        for (i = 0; i < keys.length; i++)
+            if (!deepEqual(a[keys[i]], b[keys[i]])) return false;
+
+        return true;
+    }
+
+    return false;
+}
+
 const GEN_PUB_STUBS: boolean = false;
 const __meta_ = "__meta_";
 const __private_ = "__private_";
-const __prop_ = "__prop_";
+const __prop_ = "_";
+const __prop_data_ = "__prop_";
 const __default_ = "__default_";
 
 function isMeta(key) {
@@ -12,119 +58,6 @@ function isMeta(key) {
 
 function isPrivate(obj, key) {
     return obj[__private_ + key];
-}
-
-function Meta(id, defaultValue, type, description, set, ext) {
-    ext = ext || {};
-    this.id = id;
-    this.type = type;
-    this.origDefaultValue = defaultValue;
-    this.defaultValue = ext.optional && defaultValue === null ? undefined : defaultValue;
-    this.description = description;
-    this.set = set;
-    this.ext = ext;
-
-    switch (type) {
-        case "any":
-            this.checkedAssign = _ => _;
-            break;
-        case "set":
-            this.checkedAssign = function (_) {
-                const options = typeof set === "function" ? set.call(this) : set;
-                if (!options || options.indexOf(_) < 0) {
-                    console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        case "html-color":
-            this.checkedAssign = function (_) {
-                if ((window as any).__hpcc_debug && _ && _ !== "red") {
-                    const litmus = "red";
-                    const d = document.createElement("div");
-                    d.style.color = litmus;
-                    d.style.color = _;
-                    // Element's style.color will be reverted to litmus or set to "" if an invalid color is given
-                    if (d.style.color === litmus || d.style.color === "") {
-                        console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                    }
-                }
-                return _;
-            };
-            break;
-        case "boolean":
-            this.checkedAssign = function (_) {
-                return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
-            };
-            break;
-        case "number":
-            this.checkedAssign = function (_) {
-                return Number(_);
-            };
-            break;
-        case "string":
-            this.checkedAssign = function (_) {
-                return String(_);
-            };
-            break;
-        case "array":
-            this.checkedAssign = function (_) {
-                if (!(_ instanceof Array)) {
-                    console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        case "object":
-            this.checkedAssign = function (_) {
-                if (!(_ instanceof Object)) {
-                    console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        case "widget":
-            this.checkedAssign = function (_) {
-                if (!_._class || _._class.indexOf("common_PropertyExt") < 0) {
-                    console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        case "widgetArray":
-            this.checkedAssign = function (_) {
-                if (_.some(function (row) { return (!row._class || row._class.indexOf("common_Widget") < 0); })) {
-                    console.error("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        case "propertyArray":
-            this.checkedAssign = function (_) {
-                if (_.some(function (row) { return !row.publishedProperties; })) {
-                    console.log("Invalid value for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-        default:
-            this.checkedAssign = function (_) {
-                if ((window as any).__hpcc_debug) {
-                    console.error("Unchecked property type for '" + id + "':  " + _ + " expected " + type);
-                }
-                return _;
-            };
-            break;
-    }
-}
-
-function MetaProxy(id, proxy, method, defaultValue, ext?) {
-    this.id = id;
-    this.type = "proxy";
-    this.proxy = proxy;
-    this.method = method;
-    this.defaultValue = defaultValue;
-    this.ext = ext || {};
 }
 
 export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
@@ -140,11 +73,150 @@ export interface IPublishExt {
     saveButton?: string;
     saveButtonID?: string;
     number?: any;
+    reset?: boolean;
     //  Amcharts - really needed?
     min?: number;
     max?: number;
     step?: number;
     inputType?: string;
+    internal?: boolean;
+}
+
+export class Meta {
+    id;
+    type;
+    origDefaultValue;
+    defaultValue;
+    description;
+    set;
+    ext: IPublishExt;
+    checkedAssign;
+
+    constructor(id, defaultValue, type, description, set, ext?: IPublishExt) {
+        ext = ext || {};
+        this.id = id;
+        this.type = type;
+        this.origDefaultValue = defaultValue;
+        this.defaultValue = ext.optional && defaultValue === null ? undefined : defaultValue;
+        this.description = description;
+        this.set = set;
+        this.ext = ext;
+
+        switch (type) {
+            case "any":
+                this.checkedAssign = _ => _;
+                break;
+            case "set":
+                this.checkedAssign = function (_) {
+                    const options = typeof set === "function" ? set.call(this) : set;
+                    if (!options || options.indexOf(_) < 0) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "html-color":
+                this.checkedAssign = function (_) {
+                    if ((window as any).__hpcc_debug && _ && _ !== "red") {
+                        const litmus = "red";
+                        const d = document.createElement("div");
+                        d.style.color = litmus;
+                        d.style.color = _;
+                        // Element's style.color will be reverted to litmus or set to "" if an invalid color is given
+                        if (d.style.color === litmus || d.style.color === "") {
+                            console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                        }
+                    }
+                    return _;
+                };
+                break;
+            case "boolean":
+                this.checkedAssign = function (_) {
+                    return typeof (_) === "string" && ["false", "off", "0"].indexOf(_.toLowerCase()) >= 0 ? false : Boolean(_);
+                };
+                break;
+            case "number":
+                this.checkedAssign = function (_) {
+                    return Number(_);
+                };
+                break;
+            case "string":
+                this.checkedAssign = function (_) {
+                    return String(_);
+                };
+                break;
+            case "array":
+                this.checkedAssign = function (_) {
+                    if (!(_ instanceof Array)) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "object":
+                this.checkedAssign = function (_) {
+                    if (!(_ instanceof Object)) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "widget":
+                this.checkedAssign = function (_) {
+                    if (!_._class || _._class.indexOf("common_PropertyExt") < 0) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "widgetArray":
+                this.checkedAssign = function (_) {
+                    if (_.some(function (row) { return (!row._class || row._class.indexOf("common_Widget") < 0); })) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            case "propertyArray":
+                this.checkedAssign = function (_) {
+                    if (_.some(function (row) { return !row.publishedProperties; })) {
+                        console.log("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+            default:
+                this.checkedAssign = function (_) {
+                    if ((window as any).__hpcc_debug) {
+                        console.error("Unchecked property type for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    }
+                    return _;
+                };
+                break;
+        }
+    }
+}
+
+class MetaProxy {
+    id: string;
+    type;
+    proxy;
+    method;
+    defaultValue;
+    ext: IPublishExt;
+
+    constructor(id: string, proxy, method, defaultValue, ext?: IPublishExt) {
+        this.id = id;
+        this.type = "proxy";
+        this.proxy = proxy;
+        this.method = method;
+        this.defaultValue = defaultValue;
+        this.ext = ext || {};
+    }
+}
+
+export interface IMonitorHandle {
+    remove(): void;
 }
 
 let propExtID = 0;
@@ -180,24 +252,37 @@ export class PropertyExt extends Class {
     }
 
     // Publish Properties  ---
-    publishedProperties(includePrivate = false, expandProxies = false) {
+    publishedProperties(includePrivate = false, expandProxies = false): Meta[] {
         const retVal = [];
-        for (const key in this) {
-            if (isMeta(key) && (includePrivate || !isPrivate(this, key))) {
-                let meta: any = this[key];
-                if (expandProxies && meta.type) {
-                    let item = this;
-                    while (meta.type === "proxy") {
-                        item = item[meta.proxy];
-                        meta = item.publishedProperty(meta.method);
-                    }
-                    const selfProp: any = this[key];
-                    if (meta.id !== selfProp.id) {
-                        meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                        meta.id = selfProp.id;
+        const protoStack = [];
+        let __proto__ = Object.getPrototypeOf(this);
+        while (__proto__) {
+            if (__proto__ === PropertyExt.prototype) {
+                break;
+            }
+            protoStack.unshift(__proto__);
+            __proto__ = Object.getPrototypeOf(__proto__);
+        }
+        for (__proto__ of protoStack) {
+            for (const key in __proto__) {
+                if (__proto__.hasOwnProperty(key)) {
+                    if (isMeta(key) && (includePrivate || !isPrivate(this, key))) {
+                        let meta: any = this[key];
+                        if (expandProxies && meta.type) {
+                            let item = this;
+                            while (meta.type === "proxy") {
+                                item = item[meta.proxy];
+                                meta = item.publishedProperty(meta.method);
+                            }
+                            const selfProp: any = this[key];
+                            if (meta.id !== selfProp.id) {
+                                meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                                meta.id = selfProp.id;
+                            }
+                        }
+                        retVal.push(meta);
                     }
                 }
-                retVal.push(meta);
             }
         }
         return retVal;
@@ -227,16 +312,16 @@ export class PropertyExt extends Class {
         exceptionsArr = (exceptionsArr || []).map(function (id) { return __meta_ + id; });
         for (const key in this) {
             if (isMeta(key)) {
-                const isPrivate = !privateArr.length || (privateArr.length && privateArr.indexOf(key) >= 0);
+                const isPrivateItem = !privateArr.length || (privateArr.length && privateArr.indexOf(key) >= 0);
                 const isException = exceptionsArr.indexOf(key) >= 0;
-                if (isPrivate && !isException) {
+                if (isPrivateItem && !isException) {
                     this[__private_ + key] = true;
                 }
             }
         }
     }
     static prevClassID: string = "";
-    publish(id, defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}) {
+    publish(id: string, defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}): void {
         if (GEN_PUB_STUBS) {
             if (PropertyExt.prevClassID !== (this as any).constructor.name) {
                 PropertyExt.prevClassID = (this as any).constructor.name;
@@ -256,6 +341,9 @@ export class PropertyExt extends Class {
             }
             console.log(`${id}: {(): ${jsType};(_: ${jsType}): ${PropertyExt.prevClassID}};\n${id}_exists: () => boolean;`);
         }
+        if (id.indexOf("_") === 0) {
+            id = id.slice(1);
+        }
         if (this[__meta_ + id] !== undefined && !ext.override) {
             throw new Error(id + " is already published.");
         }
@@ -263,34 +351,49 @@ export class PropertyExt extends Class {
         if (meta.ext.internal) {
             this[__private_ + id] = true;
         }
-        this[id] = function (_) {
-            if (!arguments.length) {
+        Object.defineProperty(this, __prop_ + id, {
+            // tslint:disable-next-line:object-literal-shorthand
+            set: function (_) {
+                if (_ === undefined) {
+                    _ = null;
+                } else if (_ === "" && meta.ext.optional) {
+                    _ = null;
+                } else if (_ !== null) {
+                    _ = meta.checkedAssign.call(this, _);
+                }
+                this.broadcast(id, _, this[__prop_data_ + id]);
+                if (_ === null) {
+                    delete this[__prop_data_ + id];
+                } else {
+                    this[__prop_data_ + id] = _;
+                }
+            },
+            // tslint:disable-next-line:object-literal-shorthand
+            get: function () {
                 if (this[id + "_disabled"]()) return this[id + "_default"]();
-                return this[__prop_ + id] !== undefined ? this[__prop_ + id] : this[id + "_default"]();
-            }
-            if (_ === undefined) {
-                _ = null;
-            } else if (_ === "" && meta.ext.optional) {
-                _ = null;
-            } else if (_ !== null) {
-                _ = meta.checkedAssign.call(this, _);
-            }
-            this.broadcast(id, _, this[__prop_ + id]);
-            if (_ === null) {
-                delete this[__prop_ + id];
-            } else {
+                return this[__prop_data_ + id] !== undefined ? this[__prop_data_ + id] : this[id + "_default"]();
+            },
+            configurable: true
+        });
+        if (this[id]) {
+        } else {
+            this[id] = function (_) {
+                if (!arguments.length) return this[__prop_ + id];
                 this[__prop_ + id] = _;
-            }
-            return this;
-        };
+                return this;
+            };
+        }
         this[id + "_disabled"] = function () {
             return ext && ext.disable ? !!ext.disable(this) : false;
         };
         this[id + "_modified"] = function () {
-            return this[__prop_ + id] !== undefined;
+            if (type === "propertyArray") {
+                return this[__prop_data_ + id] && (this[__prop_data_ + id].length > (ext.autoExpand ? 1 : 0));
+            }
+            return this[__prop_data_ + id] !== undefined;
         };
         this[id + "_exists"] = function () {
-            return this[__prop_ + id] !== undefined || this[id + "_default"]() !== undefined;
+            return this[__prop_data_ + id] !== undefined || this[id + "_default"]() !== undefined;
         };
         this[id + "_default"] = function (_) {
             if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;
@@ -307,13 +410,13 @@ export class PropertyExt extends Class {
         this[id + "_reset"] = function () {
             switch (type) {
                 case "widget":
-                    if (this[__prop_ + id]) {
-                        this[__prop_ + id].target(null);
+                    if (this[__prop_data_ + id]) {
+                        this[__prop_data_ + id].target(null);
                     }
                     break;
                 case "widgetArray":
-                    if (this[__prop_ + id]) {
-                        this[__prop_ + id].forEach(function (widget) {
+                    if (this[__prop_data_ + id]) {
+                        this[__prop_data_ + id].forEach(function (widget) {
                             widget.target(null);
                         });
                     }
@@ -327,7 +430,7 @@ export class PropertyExt extends Class {
                     this[__default_ + id] = this[id + "_default"]().map(function (row) { return row; });
                     break;
             }
-            delete this[__prop_ + id];
+            delete this[__prop_data_ + id];
             return this;
         };
         this[id + "_options"] = function () {
@@ -343,12 +446,12 @@ export class PropertyExt extends Class {
         for (const key in WidgetType.prototype) {
             if (key.indexOf("__meta") === 0) {
                 const publishItem = WidgetType.prototype[key];
-                this.publishProxy(prefix + __prop_ + publishItem.id, id, publishItem.method || publishItem.id);
+                this.publishProxy(prefix + __prop_data_ + publishItem.id, id, publishItem.method || publishItem.id);
             }
         }
     }
 
-    publishProxy(id, proxy, method?, defaultValue?) {
+    publishProxy(id: string, proxy, method?, defaultValue?) {
         method = method || id;
         if (this[__meta_ + id] !== undefined) {
             throw new Error(id + " is already published.");
@@ -386,7 +489,7 @@ export class PropertyExt extends Class {
         };
     }
 
-    monitorProperty(propID, func) {
+    monitorProperty(propID: string, func: (id: string, newVal: any, oldVal: any) => void): IMonitorHandle {
         const meta = this.publishedProperty(propID);
         switch (meta.type) {
             case "proxy":
@@ -411,26 +514,23 @@ export class PropertyExt extends Class {
         }
     }
 
-    monitor(func) {
+    monitor(func: (id: string, newVal: any, oldVal: any, source: PropertyExt) => void): { remove: () => void } {
+        const idx = this._watchArrIdx++;
+        this._watchArr[idx] = { propertyID: undefined, callback: func };
         return {
-            _watches: this.publishedProperties().map(function (meta) {
-                return this.monitorProperty(meta.id, func);
-            }, this),
-            // tslint:disable-next-line:object-literal-shorthand
-            remove: function () {
-                this._watches.forEach(function (watch) {
-                    watch.remove();
-                });
+            remove: () => {
+                delete this._watchArr[idx];
             }
         };
     }
 
-    broadcast(key, newVal, oldVal, source) {
+    broadcast(key, newVal, oldVal, source?) {
         source = source || this;
-        if (newVal !== oldVal) {
+        if (!deepEqual(newVal, oldVal)) {
             for (const idx in this._watchArr) {
                 const monitor = this._watchArr[idx];
                 if ((monitor.propertyID === undefined || monitor.propertyID === key) && monitor.callback) {
+                    // console.log(`${this.classID()}->broadcast(${key}, ${newVal}, ${oldVal})`);
                     setTimeout(function (monitor2) {
                         monitor2.callback(key, newVal, oldVal, source);
                     }, 0, monitor);
@@ -475,8 +575,22 @@ export class PropertyExt extends Class {
 }
 PropertyExt.prototype._class += " common_PropertyExt";
 
-export function publish(defaultValue, description?, set?, ext: any = {}) {
+export function publish(defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}) {
     return function (target: any, key: string) {
-        target.publish(key, defaultValue, "any", description, set, ext);
+        if (!key) throw new Error("???");
+        if (ext.reset) {
+            target.publishReset();
+        }
+        target.publish(key, defaultValue, type, description, set, ext);
+    };
+}
+export type publish<T, U> = ((_: U) => T) & (() => U);
+
+export function publishProxy(proxy: string, method?: string, defaultValue?, ext: { reset?: boolean } = {}) {
+    return function (target: any, key: string) {
+        if (ext.reset) {
+            target.publishReset();
+        }
+        target.publishProxy(key, proxy, method, defaultValue);
     };
 }

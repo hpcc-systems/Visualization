@@ -6,7 +6,7 @@ import "../src/Graticule.css";
 
 export class Graticule extends Layer {
     _dataMap = {};
-    _path = d3Select(null);
+    _path: any = d3Select(null);
     _graticule;
     _graticulePath;
     _graticuleOutlinePath;

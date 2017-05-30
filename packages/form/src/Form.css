@@ -8,15 +8,19 @@
 }
 
 .form_Form td.prompt {
-    padding:5px;
-    vertical-align:top;
+    padding:2px;
+    vertical-align:middle;
     background-color:#E5E5E5;
 }
 
 .form_Form td.input {
-    padding:5px;
+    padding:2px;
     width:100%;
     vertical-align:middle;
+}
+
+.form_Form td.input .common_HTMLWidget ul{
+    margin:0px;
 }
 
 .form_Form tfoot button{

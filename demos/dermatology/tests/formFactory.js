@@ -63,8 +63,10 @@
                                 .name("color-input-test")
                                 .label("Color Input Test"),
                             new Slider()
-                                .columns(DataFactory.Slider.simple.columns)
-                                .data(DataFactory.Slider.simple.data)
+                                .label("Slider Test")
+                                .allowRange(false)
+                                .columns(["Percent"])
+                                .data([[40]])
                         ]
                         )
                     );

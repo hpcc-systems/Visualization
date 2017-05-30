@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/c3-shim",
-  "version": "0.0.26",
+  "version": "0.0.32",
   "description": "hpcc-js - c3 shim",
   "main": "dist/c3-shim.js",
   "module": "dist/c3-shim.es6.js",
@@ -16,8 +16,10 @@
     "c3": "^0.4.13"
   },
   "devDependencies": {
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "rimraf": "^2.6.1",
-    "typescript": "^2.3.4",
+    "typescript": "^2.5.2",
     "webpack": "^2.6.1"
   },
   "repository": {

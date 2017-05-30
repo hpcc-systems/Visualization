@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "0.0.28",
+  "version": "0.0.36",
   "description": "hpcc-js - Communications",
   "browser": "lib/index-browser.js",
   "main": "lib/index-node.js",
@@ -13,26 +13,30 @@
   ],
   "scripts": {
     "clean": "rimraf lib* && rimraf dist*",
-    "build": "tsc",
-    "build-es6": "tsc --module es6 --outDir ./lib-es6",
+    "build": "tsc -p .",
+    "build-es6": "tsc --module es6 --outDir ./lib-es6 -p .",
     "bundle": "node ./node_modules/@hpcc-js/bundle/lib/rollup",
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^0.0.28",
+    "@hpcc-js/util": "^0.0.34",
     "d3-request": "^1.0.5",
+    "d3-time-format": "^2.0.5",
+    "es6-promise": "^4.1.1",
+    "request": "^2.81.0",
     "safe-buffer": "^5.0.1",
+    "tmp": "^0.0.33",
     "tslib": "^1.7.1",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.4",
+    "@hpcc-js/bundle": "^0.0.10",
     "@types/d3-request": "^1.0.2",
     "@types/request": "^0.0.41",
     "@types/xmldom": "^0.1.29",
     "rimraf": "^2.6.1",
     "typedoc": "^0.7.1",
-    "typescript": "^2.3.4"
+    "typescript": "^2.5.2"
   },
   "repository": {
     "type": "git",

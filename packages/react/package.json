@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/react",
-  "version": "0.0.31",
+  "version": "0.0.38",
   "description": "hpcc-js - Viz React",
   "main": "lib/index.js",
   "module": "lib-es6/index.js",
@@ -18,16 +18,16 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.0.31",
+    "@hpcc-js/common": "^0.0.38",
     "d3-format": "^1.2.0",
     "orb": "^1.0.9",
     "tslib": "^1.7.1"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.4",
+    "@hpcc-js/bundle": "^0.0.10",
     "rimraf": "^2.6.1",
     "typedoc": "^0.7.1",
-    "typescript": "^2.3.4"
+    "typescript": "^2.5.2"
   },
   "repository": {
     "type": "git",

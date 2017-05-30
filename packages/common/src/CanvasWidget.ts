@@ -22,7 +22,9 @@ export class CanvasWidget extends Widget {
     }
 
     //  Properties  ---
-    target(_) {
+    target(): any;
+    target(_): this;
+    target(_?: any): any | this {
         if (!arguments.length) return this._target;
         if (this._target && _) {
             throw new Error("Target can only be assigned once.");

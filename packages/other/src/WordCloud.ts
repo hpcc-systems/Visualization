@@ -83,7 +83,7 @@ export class WordCloud extends SVGWidget {
         this.zoomed(this, [this.offsetX(), this.offsetY()], this.zoom());
 
         const context = this;
-        const extent = d3Extent(this._vizData, function (d) { return d.__viz_1; });
+        const extent = d3Extent(this._vizData, function (d: any) { return d.__viz_1; });
         let scaler;
         switch (this.scaleMode()) {
             case "log":

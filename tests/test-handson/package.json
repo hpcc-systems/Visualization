@@ -7,7 +7,7 @@
     "@hpcc-js/handson": "^0.0.27",
     "@hpcc-js/sample-data": "^0.0.25",
     "chai": "^4.0.0",
-    "es6-promise": "^4.1.0",
+    "es6-promise": "^4.1.1",
     "mocha": "^3.4.2",
     "simulate-event": "^1.4.0"
   },
@@ -24,7 +24,7 @@
     "karma-mocha-reporter": "^2.2.3",
     "rimraf": "^2.6.1",
     "style-loader": "^0.18.1",
-    "typescript": "^2.3.4",
+    "typescript": "^2.5.2",
     "webpack": "^2.6.1"
   },
   "scripts": {

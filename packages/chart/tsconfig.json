@@ -11,6 +11,7 @@
         "noUnusedLocals": true,
         "strictNullChecks": false,
         "importHelpers": true,
+        "experimentalDecorators": true,
         "lib": [
             "dom",
             "es5",

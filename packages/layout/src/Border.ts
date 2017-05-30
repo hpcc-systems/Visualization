@@ -313,59 +313,43 @@ export class Border extends HTMLWidget {
             const grabbedHandle = d3Select("#" + context.id() + " > div.borderHandle_" + handle2);
 
             if (grabbedHandle.classed("borderHandle_top")) {
-                grabbedHandle.style({
-                    top: (context._handleTop - delta) + "px"
-                });
+                grabbedHandle.style("top", (context._handleTop - delta) + "px");
                 context._cellSizes.topHeight = context._handleTop - delta;
                 context._cellSizes.leftHeight = context._cellSizes.height;
                 context._cellSizes.leftHeight -= context._cellSizes.topHeight;
                 context._cellSizes.leftHeight -= context._cellSizes.bottomHeight;
                 context._cellSizes.rightHeight = context._cellSizes.leftHeight;
             } else if (grabbedHandle.classed("borderHandle_right")) {
-                grabbedHandle.style({
-                    left: (context._handleLeft - delta) + "px"
-                });
+                grabbedHandle.style("left", (context._handleLeft - delta) + "px");
                 context._cellSizes.rightWidth = context._cellSizes.width - context._handleLeft + delta;
             } else if (grabbedHandle.classed("borderHandle_bottom")) {
-                grabbedHandle.style({
-                    top: (context._handleTop - delta) + "px"
-                });
+                grabbedHandle.style("top", (context._handleTop - delta) + "px");
                 context._cellSizes.bottomHeight = context._cellSizes.height - context._handleTop + delta;
                 context._cellSizes.leftHeight = context._cellSizes.height;
                 context._cellSizes.leftHeight -= context._cellSizes.bottomHeight;
                 context._cellSizes.leftHeight -= context._cellSizes.topHeight;
                 context._cellSizes.rightHeight = context._cellSizes.leftHeight;
             } else if (grabbedHandle.classed("borderHandle_left")) {
-                grabbedHandle.style({
-                    left: (context._handleLeft - delta) + "px"
-                });
+                grabbedHandle.style("left", (context._handleLeft - delta) + "px");
                 context._cellSizes.leftWidth = context._handleLeft - delta;
             }
 
             handles.each(function () {
                 const handle3 = d3Select(this);
                 if (handle3.classed("borderHandle_top")) {
-                    handle3.style({
-                        width: context._cellSizes.width + "px",
-                        top: (context._cellSizes.topHeight - 3) + "px"
-                    });
+                    handle3.style("width", context._cellSizes.width + "px");
+                    handle3.style("top", (context._cellSizes.topHeight - 3) + "px");
                 } else if (handle3.classed("borderHandle_right")) {
-                    handle3.style({
-                        left: (context._cellSizes.width - context._cellSizes.rightWidth) + "px",
-                        top: (context._cellSizes.topHeight + 3) + "px",
-                        height: context._cellSizes.rightHeight + "px"
-                    });
+                    handle3.style("left", (context._cellSizes.width - context._cellSizes.rightWidth) + "px");
+                    handle3.style("top", (context._cellSizes.topHeight + 3) + "px");
+                    handle3.style("height", context._cellSizes.rightHeight + "px");
                 } else if (handle3.classed("borderHandle_bottom")) {
-                    handle3.style({
-                        width: context._cellSizes.width + "px",
-                        top: (context._cellSizes.height - context._cellSizes.bottomHeight - 3) + "px"
-                    });
+                    handle3.style("width", context._cellSizes.width + "px");
+                    handle3.style("top", (context._cellSizes.height - context._cellSizes.bottomHeight - 3) + "px");
                 } else if (handle3.classed("borderHandle_left")) {
-                    handle3.style({
-                        left: context._cellSizes.leftWidth + "px",
-                        height: context._cellSizes.leftHeight + "px",
-                        top: (context._cellSizes.topHeight + 3) + "px"
-                    });
+                    handle3.style("left", context._cellSizes.leftWidth + "px");
+                    handle3.style("height", context._cellSizes.leftHeight + "px");
+                    handle3.style("top", (context._cellSizes.topHeight + 3) + "px");
                 }
             });
         }
@@ -515,27 +499,19 @@ export class Border extends HTMLWidget {
             .each(function () {
                 const handle = d3Select(this);
                 if (handle.classed("borderHandle_top")) {
-                    handle.style({
-                        width: context._cellSizes.width + "px",
-                        top: (context._cellSizes.topHeight - 3) + "px"
-                    });
+                    handle.style("width", context._cellSizes.width + "px");
+                    handle.style("top", (context._cellSizes.topHeight - 3) + "px");
                 } else if (handle.classed("borderHandle_right")) {
-                    handle.style({
-                        left: (context._cellSizes.width - context._cellSizes.rightWidth) + "px",
-                        top: (context._cellSizes.topHeight + 3) + "px",
-                        height: context._cellSizes.rightHeight + "px"
-                    });
+                    handle.style("left", (context._cellSizes.width - context._cellSizes.rightWidth) + "px");
+                    handle.style("top", (context._cellSizes.topHeight + 3) + "px");
+                    handle.style("height", context._cellSizes.rightHeight + "px");
                 } else if (handle.classed("borderHandle_bottom")) {
-                    handle.style({
-                        width: context._cellSizes.width + "px",
-                        top: (context._cellSizes.height - context._cellSizes.bottomHeight - 3) + "px"
-                    });
+                    handle.style("width", context._cellSizes.width + "px");
+                    handle.style("top", (context._cellSizes.height - context._cellSizes.bottomHeight - 3) + "px");
                 } else if (handle.classed("borderHandle_left")) {
-                    handle.style({
-                        left: context._cellSizes.leftWidth + "px",
-                        height: context._cellSizes.leftHeight + "px",
-                        top: (context._cellSizes.topHeight + 3) + "px"
-                    });
+                    handle.style("left", context._cellSizes.leftWidth + "px");
+                    handle.style("height", context._cellSizes.leftHeight + "px");
+                    handle.style("top", (context._cellSizes.topHeight + 3) + "px");
                 }
 
             })

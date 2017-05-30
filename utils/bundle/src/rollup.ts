@@ -19,16 +19,20 @@ program
     .option("-m, --min", "Minimize")
     .parse(process.argv);
 
-const aliases: { [key: string]: string } = {};
+const aliases: { [key: string]: string } = {
+    // ajv: "../../node_modules/ajv/dist/ajv.bundle.js"
+};
 const externals: string[] = [];
 const globals: { [key: string]: string } = {};
 const deps: { [key: string]: any } = {};
+
+const webpackShims = ["@hpcc-js/dgrid-shim", "@hpcc-js/ddl-shim", "@hpcc-js/c3-shim"];
 
 function walkDependencies(folder: string, depth: number = 0) {
     const pkg = require(path.join(folder, "package.json"));
     pkg.__folder = folder;
     for (const key in pkg.dependencies) {
-        if (key === "@hpcc-js/dgrid-shim" || (key !== "@hpcc-js/d3-bullet" && key.indexOf("@hpcc-js") === 0 && key.indexOf("-shim") < 0)) {
+        if (webpackShims.indexOf(key) >= 0 || (key !== "@hpcc-js/d3-bullet" && key.indexOf("@hpcc-js") === 0 && key.indexOf("-shim") < 0)) {
             const depPkg = walkDependencies(path.join(folder, "node_modules", key), depth + 1);
             deps[key] = depPkg;
             if (depth === 0) {
@@ -68,12 +72,13 @@ export default function bundle(min: boolean = false) {
     const plugins = [
         alias(aliases),
         resolve({
+            preferBuiltins: true,
             jsnext: true,
             main: true
         }),
         commonjs({
             namedExports: {
-                "../../shims/dgrid-shim/dist/dgrid-shim.js": ["Memory", "PagingGrid", "Grid"]
+                //  "../../packages/preact-shim/dist/preact-shim.js": ["render", "Component", "h"]
             }
         }),
         postcss({
@@ -102,4 +107,4 @@ export default function bundle(min: boolean = false) {
 Promise.all([
     bundle(),
     bundle(true)
-]).catch(console.error);
+]).catch(console.log);

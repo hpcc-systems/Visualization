@@ -6,7 +6,7 @@ const tip = _tip.tip || _tip.default || _tip;
 
 import "../src/ITooltip.css";
 
-export class ITooltip extends Widget {
+export abstract class ITooltip extends Widget {
     protected _valueFormatter;
     layerEnter;
     layerUpdate;
@@ -53,6 +53,9 @@ export class ITooltip extends Widget {
         }
     }
 
+    abstract target(): any;
+    abstract target(_: any): this;
+
     tooltipEnter(element) {
         const context = this;
         this.tooltip = tip()
@@ -71,10 +74,12 @@ export class ITooltip extends Widget {
 
     tooltipUpdate() {
         let classed = this.tooltip.attr("class");
-        classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
-        this.tooltip
-            .attr("class", classed)
-            ;
+        if (classed) {
+            classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");
+            this.tooltip
+                .attr("class", classed)
+                ;
+        }
     }
 
     tooltipExit() {

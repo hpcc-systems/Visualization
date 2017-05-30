@@ -1,0 +1,50 @@
+.html_TitleBar .main {
+    display: flex;
+    flex-flow: row;    
+    justify-content: space-between;    
+}
+
+.html_TitleBar .title {
+    padding:4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.html_TitleBar .icon-bar {
+    display: flex;
+    flex-flow: row;    
+    margin:4px;
+    white-space: nowrap;
+    line-height: 28px;
+}
+
+.html_TitleBar .icon-bar a {
+    text-align: center; /* Center-align text */
+    padding-top: 4px;
+    padding-bottom: 4px;
+    transition: all 0.3s ease; /* Add transition for hover effects */
+    color: darkgray; /* White text color */
+}
+
+.html_TitleBar .icon-bar a:hover {
+    background-color: whitesmoke; /* Add a hover color */
+}
+
+.html_TitleBar .icon-bar a.selected {
+    background-color: #efe5e5; /* Add a hover color */
+}
+
+.html_TitleBar .icon-bar a.spacer {
+    text-align: center; /* Center-align text */
+    padding-top: 2px;
+    padding-left: 8px;
+    padding-bottom: 0px;
+    color: none;
+}
+
+.html_TitleBar .icon-bar a.spacer:hover {
+    background-color: transparent;
+}

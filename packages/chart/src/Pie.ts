@@ -200,7 +200,7 @@ export class Pie extends SVGWidget {
     paletteID: (_?: string) => string | Pie;
     useClonedPalette: (_?: boolean) => boolean | Pie;
     outerText: (_?: boolean) => boolean | Pie;
-    innerRadius: (_?) => number | Pie;
+    innerRadius: { (): number; (_: number): Pie; };
     innerRadius_exists: () => boolean;
 
     //  I2DChart

@@ -76,6 +76,18 @@
                 });
             }
         },
+        ChartPanel: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/ChartPanel"], function (DataFactory, ChartPanel) {
+                    callback(new ChartPanel()
+                        .title("Hello and Welcome!")
+                        // .description("Sample description for the chart being displayed...")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            }
+        }
     };
 
     return compositeFactory;

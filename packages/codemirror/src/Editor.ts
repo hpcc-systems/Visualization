@@ -40,7 +40,7 @@ export class Editor extends HTMLWidget {
 
     update(domNode, Element) {
         super.update(domNode, Element);
-        this._codemirror.setSize(this.width(), this.height() - 3);
+        this._codemirror.setSize(this.width() - 2, this.height() - 2);
         this._codemirror.refresh();
     }
 

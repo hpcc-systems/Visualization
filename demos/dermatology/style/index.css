@@ -1,0 +1,119 @@
+﻿.mdl-switch.is-checked .mdl-switch__thumb {
+    background: rgb(255,64,129);
+}
+
+.mdl-switch.is-checked .mdl-switch__track {
+    background: rgba(0,0,0, 0.26);
+}
+.mdl-layout__content {
+    background-color: ghostwhite;
+    overflow: hidden;
+}
+
+.mdl-cell {
+    background-color: white;
+}
+
+#cellSurface {
+    position: relative;
+}
+
+#cellSurface.mdl-cell.supress {
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0px;
+}
+
+#spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+#surface {
+    padding: 8px;
+}
+
+#surface.supress {
+    background-color: transparent;
+}
+
+#widgetDropDown {
+    background-color: snow;
+    color: rgb(119, 119, 119);
+}
+
+#selectButton {
+    padding: 0 10px;
+    margin: 0 20px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    background-color: snow;
+    color: #111;
+    line-height: 25px;
+    height: 25px;
+    text-shadow: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#selectButton i {
+    padding-left: 5px;
+}
+
+#widgetSelect, .widgetMenu, .sampleMenu {
+    position: absolute;
+    border: 1px solid #A5A5A5;
+    box-shadow: 2px 3px 10px 0px rgba(0,0,0,.5);
+    margin: 0px;
+    padding: 0px;
+    z-index: 999;
+}
+
+.widgetMenu, .sampleMenu {
+}
+
+#widgetSelect {
+    top: 48px;
+    margin-left: -100px;
+}
+
+#widgetSelect.hide {
+    display: none;
+}
+
+.widgetMenu, .sampleMenu {
+    left: 100%;
+    margin-top: -25px;
+    white-space: nowrap;
+    display: none;
+}
+
+#widgetSelect li {
+    float: none;
+    background: snow;
+    color: #000;
+    text-shadow: none;
+    padding: 0 10px;
+    line-height: 25px;
+    list-style-type: none;
+}
+
+#widgetSelect li:hover {
+    cursor: pointer;
+    background-color: #E5E5E5;
+}
+
+#widgetSelect li:hover > ul {
+    display: block;
+}
+
+#drag-me::before {
+    content: "#" attr(id);
+    font-weight: bold;
+}
+
+.common_Widget h3 {
+    font-size: 14px;
+    line-height: 20px;
+}

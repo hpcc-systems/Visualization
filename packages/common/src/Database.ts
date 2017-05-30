@@ -1,4 +1,4 @@
-import { max as d3Max, mean as d3Mean, min as d3Min, sum as d3Sum } from "d3-array";
+import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
 import { map as d3Map, nest as d3Nest } from "d3-collection";
 import { csvFormatRows as d3CsvFormatRows, csvParse as d3CsvParse, tsvFormatRows as d3TsvFormatRows, tsvParse as d3TsvParse } from "d3-dsv";
 import { format as d3Format } from "d3-format";
@@ -10,16 +10,24 @@ const d3Aggr = {
     min: d3Min,
     max: d3Max,
     mean: d3Mean,
+    median: d3Median,
+    variance: d3Variance,
+    deviation: d3Deviation,
     sum: d3Sum
 };
 
 let lastFoundFormat = null;
 
+export interface INestedColumn {
+    label: string;
+    columns: Array<string | INestedColumn>;
+}
+
 //  Field  ---
 export class Field extends PropertyExt {
     idx: number;
+    protected _children: Field[] = [];
 
-    // _id: string
     constructor(id?) {
         super();
         PropertyExt.call(this);
@@ -27,15 +35,11 @@ export class Field extends PropertyExt {
         this._id = id || this._id;
     }
 
-    // id() {
-    //    return this._id;
-    // };
-
-    checksum() {
+    checksum(): string {
         return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
     }
 
-    typeTransformer(_) {
+    typeTransformer(_: any) {
         switch (this.type()) {
             case "number":
                 return Number(_);
@@ -121,6 +125,35 @@ export class Field extends PropertyExt {
         };
         return retVal;
     }
+
+    children(_?: Array<string | INestedColumn>, asDefault?: boolean): Field[] | this {
+        if (_ === void 0) return this._children;
+        this.type("nested");
+        const fieldsArr = this._children;
+        this._children = _.map((field: string | INestedColumn, idx): Field => {
+            if (typeof field === "string") {
+                if (asDefault) {
+                    return (fieldsArr[idx] || new Field()).label_default(field);
+                } else {
+                    return (fieldsArr[idx] || new Field()).label(field);
+                }
+            } else {
+                if (asDefault) {
+                    return (fieldsArr[idx] || new Field())
+                        .label_default(field.label)
+                        .children(field.columns) as Field
+                        ;
+                } else {
+                    return (fieldsArr[idx] || new Field())
+                        .label(field.label)
+                        .children(field.columns) as Field
+                        ;
+                }
+            }
+        }, this);
+        return this;
+    }
+
     label_default: { (): string; (x: string): Field; };
     label: { (): string; (x: string): Field; };
     type: { (): string; (x: string): Field; };
@@ -130,7 +163,7 @@ export class Field extends PropertyExt {
 Field.prototype._class += " common_Database.Field";
 
 Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
-Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden"], { optional: true });
+Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden", "nested"], { optional: true });
 Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: (w: any) => w.type() !== "time", optional: true });
 Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
 
@@ -178,6 +211,9 @@ export class Grid extends PropertyExt {
     }
 
     //  Meta  ---
+    schema() {
+    }
+
     field(idx) {
         return this.fields()[idx];
     }
@@ -243,11 +279,25 @@ export class Grid extends PropertyExt {
         if (arguments.length < 2) return row === 0 ? this.fields().map(function (d) { return d.label(); }) : this._data[row - 1];
         if (row === 0) {
             const fieldsArr = this.fields();
-            this.fields(_.map(function (label, idx) {
-                if (asDefault) {
-                    return (fieldsArr[idx] || new Field()).label_default(label);
+            this.fields(_.map(function (field: string | INestedColumn, idx) {
+                if (typeof field === "string") {
+                    if (asDefault) {
+                        return (fieldsArr[idx] || new Field()).label_default(field);
+                    } else {
+                        return (fieldsArr[idx] || new Field()).label(field);
+                    }
                 } else {
-                    return (fieldsArr[idx] || new Field()).label(label);
+                    if (asDefault) {
+                        return (fieldsArr[idx] || new Field())
+                            .label_default(field.label)
+                            .children(field.columns)
+                            ;
+                    } else {
+                        return (fieldsArr[idx] || new Field())
+                            .label(field.label)
+                            .children(field.columns)
+                            ;
+                    }
                 }
             }, this));
         } else {
@@ -568,12 +618,12 @@ export class Grid extends PropertyExt {
         this.jsonObj(d3TsvParse(_));
         return this;
     }
-
-    fields(): Field[];
-    fields(_, clone?): this;
-    fields(_?, clone?): Field[] | this { return this; }
 }
 Grid.prototype._class += " common_Database.Grid";
+export interface Grid {
+    fields(): Field[];
+    fields(_: Field[], clone?: boolean): this;
+}
 
 Grid.prototype.publish("fields", [], "propertyArray", "Fields");
 const fieldsOrig = Grid.prototype.fields;

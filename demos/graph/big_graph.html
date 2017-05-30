@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Graph Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/graph.css">
+    <script src="http://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+    <script src="../../src/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="graph_data.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a>Graph Test Page</a></h1>
+            <nav>
+                <ul>
+                    <li><label><input type="checkbox" checked onclick="doShowSelected(event)" />Selection</label></li>
+                    <li>
+                        <select onchange="doFilterEntities(event)">
+                            <option value="all">All</option>
+                            <option value="claims">Claims</option>
+                            <option value="people">People</option>
+                            <option value="vehicles">Vehicle</option>
+                            <option value="policies">Policies</option>
+                        </select>
+                    </li>
+                    <li><a title="Data: Randomize" onclick="doRandom()">R</a></li>
+                    <li><a title="Layout: Circle" onclick="window.graph.layout('Circle', transitionDuration)">C</a></li>
+                    <li><a title="Layout: ForceDirected" onclick="window.graph.layout('ForceDirected', transitionDuration)">F</a></li>
+                    <li><a title="Layout: Force Directed (Animated)" onclick="window.graph.layout('ForceDirected2')">F2</a></li>
+                    <li><a title="Layout: Hierarchy" onclick="window.graph.layout('Hierarchy', transitionDuration)">H</a></li>
+                    <li><a title="Zoom: Fit" onclick="window.graph.zoomTo('all')">Z F</a></li>
+                    <li><a title="Zoom: Width" onclick="window.graph.zoomTo('width')">Z W</a></li>
+                    <li><a title="Zoom: Selection" onclick="window.graph.zoomTo('selection')">Z S</a></li>
+                    <li><a title="Zoom: 100%" onclick="window.graph.zoomTo('100%')">Z 100%</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="main" style="width:100%; height:100vh;margin-top:40px;padding:8px;overflow:hidden">
+    </div>
+    <script>
+        window.transitionDuration = 0;
+        window.app = {};
+        $(function(){
+            require(["src/graph/Graph","src/graph/Edge","src/graph/Vertex"],function(Graph,Edge,Vertex){
+                window.graph = new Graph();
+                var vertices = [];
+                var edges = [];
+
+                var rawData = window.graph_data;
+                rawData.nodes.forEach(function (node) {
+                    vertices.push(
+                        new Vertex()
+                            .text(node.name)
+                            .textbox_shape_colorFill("whitesmoke")
+                            .icon_shape_diameter(30)
+                            .faChar(node.icon)
+                        )
+                    ;
+                }, window.graph);
+
+                rawData.links.forEach(function (link, idx) {
+                    edges.push(
+                        new Edge()
+                            .sourceVertex(vertices[link.source])
+                            .targetVertex(vertices[link.target])
+                            .sourceMarker("circle")
+                            .targetMarker("arrow")
+                            .text("")
+                            .weight(link.value)
+                        )
+                    ;
+                }, window.graph);
+                window.graph.data({ vertices: vertices, edges: edges });
+                window.graph
+                        .hierarchyNodeSeparation(10)
+                        .layout('Hierarchy')
+                        .hierarchyRankDirection("RL")
+                        .target($('#main')[0])
+                        .render();
+            })
+        });
+    </script>
+</body>
+</html>

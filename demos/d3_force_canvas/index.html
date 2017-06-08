@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<canvas width="960" height="600"></canvas>
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" property="">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+    var sp = window.location.href.split('?');
+    window.url_params = {};
+    try {
+        if (typeof (sp[1]) !== "undefined") {
+            var _params = sp[1].split('&');
+            _params.forEach(function (param) {
+                var _sp = param.split('=');
+                url_params[_sp[0]] = _sp[1];
+            });
+        }
+    } catch (e) {
+        console.log('Error loading url_params');
+        console.log(e);
+    }
+    url_params.r = url_params.r ? url_params.r : '100';
+    if (url_params.r) {
+        var r = parseInt(url_params.r);
+        window.random_graph_data = {"nodes": [],"links": []};
+        var id_arr = [];
+        for(var i = 0;i < r;i++){
+            var id = i+''+i+''+i+''+i;
+            window.random_graph_data.nodes.push({
+                "id": id,
+                "annotations": [
+                    {"color": "#c0392b", "icon": "Number"},
+//                    {"color": "#27ae60", "icon": "B"},
+//                    {"color": "#d35400", "icon": "C"},
+                ]
+            });
+            if(i > 0){
+                window.random_graph_data.links.push({
+                    "source": id_arr[Math.floor(Math.random() * id_arr.length)], 
+                    "target": id
+                });
+            }
+            id_arr.push(id);
+        }
+//        window.random_graph_data = {
+//                nodes: [
+//                  { "name": "John Doe", "icon":"" },
+//                  { "name": "Jane Doe", "icon":"" },
+//                  { "name": "123 Main Street", "icon":"" },
+//                ],
+//                "links": [
+//                  { "source": 1, "target": 0 },
+//                  { "source": 2, "target": 0 },
+//                ]
+//            }
+//        window.random_graph_data = {
+//            "nodes": [
+//                {"id": "Animal"},
+//                {"id": "Mammal"},
+//                {"id": "Giraffe"},
+//                {"id": "Tiger"}
+//            ],
+//            "links": [
+//                {"source": "Animal", "target": "Mammal"},
+//                {"source": "Mammal", "target": "Giraffe"},
+//                {"source": "Mammal", "target": "Tiger"}
+//            ]
+//        };
+    }
+</script>
+<script src="canvas_graph.js"></script>

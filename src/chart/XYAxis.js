@@ -148,6 +148,13 @@
             .guideTarget(this.svgValueGuide.node())
         ;
 
+        if(this.y2AxisCanShow()){
+           this.valueAxis2
+               .target(this.svg.node())
+               .guideTarget(this.svgValueGuide.node())
+            ;    
+        }
+
         //  Brush  ---
         this.svgBrush = element.append("g")
             .attr("class", "brush")
@@ -231,6 +238,16 @@
             this.yAxis.width(0).height(height - xHeight);
             var yAxisOverlap = this.yAxis.calcOverflow(element);
 
+            if(this.y2AxisCanShow()){
+                if(isHorizontal){
+                    this.yAxis2.width(0).height(height - xHeight);
+                    yAxisOverlap  = this.yAxis2.calcOverflow(element);
+                } else{
+                   this.xAxis.width(width - yWidth).height(0);
+                   xAxisOverlap = this.yAxis2.calcOverflow(element);    
+                }
+            }
+
             var newXHeight = xAxisOverlap.depth;
             var newYWidth = yAxisOverlap.depth;
 
@@ -252,6 +269,21 @@
             .y(height / 2 - xHeight / 2 + margin.top)
             .height(height - xHeight)
         ;
+        if(this.y2AxisCanShow()){
+            if(isHorizontal){
+                this.yAxis2
+                    .x(width + margin.left)
+                    .y(height / 2 - xHeight / 2 + margin.top)
+                    .height(height - xHeight)
+                ;
+            }else{
+                this.yAxis2
+                    .x(width / 2 + yWidth / 2 + margin.left)
+                    .y(margin.top)
+                    .width(width - yWidth)
+                ;
+            }
+        }
         margin.left += yWidth;
         margin.bottom += xHeight;
         return margin;

@@ -2136,7 +2136,7 @@
     };
 
     Marshaller.prototype.getWidget = function (id) {
-        return this._widgetMappings[id];
+        return this._widgetMappings.get(id);
     };
 
     Marshaller.prototype.on = function (eventID, func) {

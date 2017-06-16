@@ -47,7 +47,7 @@
     };
 
     Field.prototype.maskTransformer = function (_) {
-        return this.formatter(this.mask()).parse(_);
+        return this.formatter(this.mask()).parse(String(_));
     };
 
     Field.prototype.formatTransformer = function (_) {

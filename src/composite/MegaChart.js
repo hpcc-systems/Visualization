@@ -49,7 +49,7 @@
 
     MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
-    MegaChart.prototype.publish("showMaximize", true, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showMaximize", false, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("infoIcon", "\uf05a", "string", "Help Icon", null, { tags: ["Basic"] });

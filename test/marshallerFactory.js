@@ -45,14 +45,14 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.241.100.157:8002/WsEcl/submit/query/roxie/carmigjx_healthcaresuspectaddressgraph.ins005_service_1/json")
+                        .ddlUrl_default("http://10.173.147.1:8002/WsEcl/submit/query/roxie/leeddx_issue_670_filterrange_all.Ins002_Service_1/json")
                     );
                 });
             },
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170227-183052&ResultName=issue_2229_multipledash_Comp_Ins002_DDL")
+                        .ddlUrl_default("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170616-095133&ResultName=issue_670_filterrange_all_wuid_Comp_Ins002_DDL")
                     );
                 });
             },

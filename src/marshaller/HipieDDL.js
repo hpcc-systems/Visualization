@@ -525,11 +525,10 @@
 
     Source.prototype.getData = function () {
         var db = this.getOutput().db;
-        var dataRef = db.data();
-        if (dataRef.length && this.sort) {
-            Utility.multiSort(dataRef, db.hipieMapSortArray(this.sort));
-        }
         var retVal = this.mappings.doMapAll(db);
+        if (retVal.length && this.sort) {
+            Utility.multiSort(retVal, db.hipieMapSortArray(this.sort));
+        }
         if (this.reverse) {
             retVal.reverse();
         }

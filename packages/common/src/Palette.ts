@@ -1,0 +1,278 @@
+import * as _colorbrewer from "colorbrewer";
+import { values as d3Values } from "d3-collection";
+import { interpolateLab as d3InterpolateLab } from "d3-interpolate";
+import { scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b, schemeCategory20c as d3SchemeCategory20c } from "d3-scale";
+import { select as d3Select } from "d3-selection";
+const d3Schemes = {
+    category10: d3SchemeCategory10,
+    category20: d3SchemeCategory20,
+    category20b: d3SchemeCategory20b,
+    category20c: d3SchemeCategory20c
+};
+
+const m_colorbrewer = _colorbrewer.default || _colorbrewer;
+
+var d3Ordinal = [
+    "category10", "category20", "category20b", "category20c"
+];
+var brewerOrdinal = [
+    "Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "Set2", "Set3"
+];
+var hpccOrdinal = [
+    "hpcc10", "hpcc20"
+];
+
+var ordinalCache = {};
+
+export function fetchOrdinalItem(id?, colors?) {
+    if (!id) return palette_ordinal();
+    var retVal = ordinalCache[id];
+    if (!retVal) {
+        retVal = palette_ordinal(id, colors);
+        ordinalCache[id] = retVal;
+    }
+    return retVal;
+}
+
+function palette_ordinal(id?, colors?): any {
+    if (!id) return ["default"].concat(d3Ordinal.concat(brewerOrdinal).concat(hpccOrdinal));
+    var scale = null;
+
+    if (colors) {
+        scale = d3ScaleOrdinal().range(colors);
+    } else {
+        if (d3Ordinal.indexOf(id) >= 0) {
+            scale = d3ScaleOrdinal(d3Schemes[id]);
+        } else if (hpccOrdinal.indexOf(id) >= 0) {
+            var newColors = [];
+            switch (id) {
+                case "hpcc10":
+                    var defColors = palette_ordinal("default").colors();
+                    newColors = defColors.filter(function (_item, idx) {
+                        if (idx % 2) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    break;
+                case "hpcc20":
+                    newColors = palette_ordinal("category10").colors().concat(palette_ordinal("hpcc10").colors());
+                    break;
+            }
+            scale = d3ScaleOrdinal().range(newColors);
+        } else if (brewerOrdinal.indexOf(id) > 0) {
+            var largestPalette = 12;
+            while (largestPalette > 0) {
+                if (m_colorbrewer[id][largestPalette]) {
+                    scale = d3ScaleOrdinal().range(m_colorbrewer[id][largestPalette]);
+                    break;
+                }
+                --largestPalette;
+            }
+        }
+        if (!scale) {
+            //  Default to Category20  ---
+            scale = d3ScaleOrdinal(d3SchemeCategory20);
+        }
+        colors = scale.range();
+    }
+    const ordinal: any = function (_) {
+        return scale(_);
+    };
+    ordinal.type = function () {
+        return "ordinal";
+    };
+    ordinal.id = function (_) {
+        if (!arguments.length) return id;
+        id = _;
+        return ordinal;
+    };
+    ordinal.colors = function (_) {
+        if (!arguments.length) return colors;
+        colors = _;
+        return ordinal;
+    };
+    ordinal.clone = function (newID) {
+        ordinalCache[newID] = palette_ordinal(newID, this.colors());
+        return ordinalCache[newID];
+
+    };
+    ordinal.cloneNotExists = function (newID) {
+        if (ordinalCache[newID]) {
+            return ordinalCache[newID];
+        }
+        return this.clone(newID);
+    };
+    ordinal.switch = function (_id, _colors) {
+        if (id === _id) {
+            return this;
+        }
+        return arguments.length ? fetchOrdinalItem(_id, _colors) : fetchOrdinalItem();
+    };
+
+    return ordinal;
+}
+
+var rainbowCache = {};
+export function fetchRainbowItem(id?, colors?, steps?) {
+    if (!id) return palette_rainbow();
+    var retVal = rainbowCache[id];
+    if (!retVal) {
+        retVal = palette_rainbow(id, colors, steps);
+        rainbowCache[id] = retVal;
+    }
+    return retVal;
+}
+
+function palette_rainbow(id?, _colors?, _steps?) {
+    if (!arguments.length) {
+        var retVal = ["default"];
+        for (var key in m_colorbrewer) {
+            if (brewerOrdinal.indexOf(key) === -1) {
+                retVal.push(key);
+            }
+        }
+        return retVal;
+    }
+
+    var scale = null;
+    var colors = _colors;
+
+    var _custom = function (colors, steps?) {
+        steps = steps || 32;
+        var subPaletteSize = Math.ceil(steps / (colors.length - 1));
+        var range = [];
+        var prevColor = null;
+        colors.forEach(function (color) {
+            if (prevColor) {
+                var scale = d3ScaleLinear()
+                    .domain([0, subPaletteSize])
+                    .range([prevColor, color])
+                    .interpolate(d3InterpolateLab as any)
+                    ;
+                for (var i = 0; i < subPaletteSize; ++i) {
+                    range.push(scale(i));
+                }
+            }
+            prevColor = color;
+        });
+        scale = d3ScaleQuantize().domain([0, 100]).range(range);
+        return scale;
+    };
+
+    if (_colors) {
+        scale = _custom(_colors, _steps);
+    } else {
+        if (m_colorbrewer[id]) {
+            var largestPalette = 12;
+            while (largestPalette > 0) {
+                if (m_colorbrewer[id][largestPalette]) {
+                    scale = _custom(m_colorbrewer[id][largestPalette]);
+                    break;
+                }
+                --largestPalette;
+            }
+        }
+        if (!scale) {
+            scale = _custom(m_colorbrewer.RdYlGn[11]);
+        }
+        colors = scale.range();
+
+    }
+    const rainbow: any = function (x, low, high) {
+        if (low === high) {
+            return scale.domain([low - 1, high + 1])(x);
+        }
+        return scale.domain([low, high])(x);
+    };
+    rainbow.type = function () {
+        return "rainbow";
+    };
+    rainbow.id = function (_) {
+        if (!arguments.length) return id;
+        id = _;
+        return rainbow;
+    };
+    rainbow.colors = function (_) {
+        if (!arguments.length) return colors;
+        colors = _;
+        return rainbow;
+    };
+    rainbow.clone = function (newID) {
+        rainbowCache[newID] = palette_rainbow(newID, this.colors());
+        return rainbowCache[newID];
+    };
+    rainbow.cloneNotExists = function (newID) {
+        if (rainbowCache[newID]) {
+            return rainbowCache[newID];
+        }
+        return this.clone(newID);
+    };
+    rainbow.switch = function (_id, _colors) {
+        if (id === _id) {
+            return this;
+        }
+        return arguments.length ? fetchRainbowItem(_id, _colors) : fetchRainbowItem();
+    };
+
+    return rainbow;
+}
+
+export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
+    d3Select(ordinalDivID)
+        .selectAll(".palette")
+        .data(palette_ordinal(), function (d: any) { return d; })
+        .enter().append("span")
+        .attr("class", "palette")
+        .attr("title", function (d) { return d; })
+        .on("click", function (d) {
+            console.log(d3Values(d.value).map(JSON.stringify as any).join("\n"));
+        })
+        .selectAll(".swatch").data(function (d) { return palette_ordinal(d).colors(); })
+        .enter().append("span")
+        .attr("class", "swatch")
+        .style("background-color", function (d: any) { return d; });
+
+    d3Select(brewerDivID)
+        .selectAll(".palette")
+        .data(palette_rainbow(), function (d: any) { return d; })
+        .enter().append("span")
+        .attr("class", "palette")
+        .attr("title", function (d) { return d; })
+        .on("click", function (d) {
+            console.log(d3Values(d.value).map(JSON.stringify as any).join("\n"));
+        })
+        .selectAll(".swatch2").data(function (d) { return palette_rainbow(d).colors(); })
+        .enter().append("span")
+        .attr("class", "swatch2")
+        .style("height", (256 / 32) + "px")
+        .style("background-color", function (d: any) { return d; });
+
+    var palette = { id: customArr.join("_") + steps, scale: palette_rainbow("custom", customArr, steps) };
+    d3Select(customDivID)
+        .selectAll(".palette")
+        .data([palette], function (d: any) { return d.id; })
+        .enter().append("span")
+        .attr("class", "palette")
+        .attr("title", function () { return "aaa"; /*d.from + "->" + d.to;*/ })
+        .on("click", function (d) {
+            console.log(d3Values(d.id).map(JSON.stringify as any).join("\n"));
+        })
+        .selectAll(".swatch2").data(function () {
+            var retVal = [];
+            for (var i = 0; i <= 255; ++i) {
+                retVal.push(palette.scale(i, 0, 255));
+            }
+            return retVal;
+        })
+        .enter().append("span")
+        .attr("class", "swatch2")
+        .style("background-color", function (d) { return d; });
+}
+
+m_colorbrewer.RdWhGr = {
+    3: ["red", "white", "green"]
+};
+
+export const ordinal = fetchOrdinalItem;
+export const rainbow = fetchRainbowItem;

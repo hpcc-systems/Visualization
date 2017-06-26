@@ -1,0 +1,46 @@
+{
+  "name": "@hpcc-js/form",
+  "version": "0.0.31",
+  "description": "hpcc-js - Viz Form",
+  "main": "lib/index.js",
+  "module": "lib-es6/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/*",
+    "lib-es6/*",
+    "dist/*"
+  ],
+  "scripts": {
+    "clean": "rimraf lib* && rimraf dist*",
+    "build": "tsc",
+    "build-es6": "tsc --module es6 --outDir ./lib-es6",
+    "bundle": "node ./node_modules/@hpcc-js/bundle/lib/rollup",
+    "docs": "typedoc --options tdoptions.json ."
+  },
+  "dependencies": {
+    "@hpcc-js/api": "^0.0.31",
+    "@hpcc-js/chart": "^0.0.31",
+    "@hpcc-js/common": "^0.0.31",
+    "d3-brush": "^1.0.4",
+    "d3-color": "^1.0.3",
+    "d3-selection": "^1.1.0",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@hpcc-js/bundle": "^0.0.4",
+    "rimraf": "^2.6.1",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
+  },
+  "author": "Gordon Smith <gordonjsmith@gmail.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
+  },
+  "homepage": "https://github.com/hpcc-systems/Visualization"
+}

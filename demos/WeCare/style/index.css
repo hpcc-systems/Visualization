@@ -1,0 +1,37 @@
+﻿.menu {
+    pointer-events: auto;
+    z-index: 3000;
+    float: right;
+}
+        
+.slide {
+    background-color: ghostwhite;
+    padding-top: 32px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+    padding-right: 8px;
+    border-radius: 8px;
+}
+        
+.slide q {
+    display: block;
+    font-size: 24px;
+    line-height: 32px;
+    margin-top: -32px;
+}
+        
+.widget {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    border: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    background-color: white;
+    border-radius: 8px;
+    line-height:normal;
+}
+        
+.widget table {
+    width: 100%;
+}

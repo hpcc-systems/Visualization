@@ -5,7 +5,7 @@
         "noEmitOnError": false,
         "noUnusedLocals": true,
         "strictNullChecks": true,
-        "module": "commonjs",
+        "module": "umd",
         "moduleResolution": "node",
         "importHelpers": true,
         "target": "es5",
@@ -18,6 +18,6 @@
         "types": []
     },
     "include": [
-        "src/*"
+        "src/**/*"
     ]
 }

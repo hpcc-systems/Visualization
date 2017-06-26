@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "declaration": false,
+    "noImplicitAny": true,
+    "noEmitOnError": false,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "lib": [
+      "dom",
+      "es5"
+    ],
+    "types": [
+      "chai",
+      "mocha"
+    ]
+  },
+  "include": [
+    "src/*"
+  ]
+}

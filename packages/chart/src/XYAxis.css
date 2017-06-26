@@ -1,0 +1,38 @@
+.chart_XYAxis .axis {
+  fill: black;
+  font: 10px sans-serif;
+}
+
+.chart_XYAxis .tick > text {
+  font: 10px sans-serif;
+}
+
+.chart_XYAxis .focus .chart_Axis.value .tick {
+  visibility:hidden;
+}
+
+.chart_XYAxis .axis path,
+.chart_XYAxis .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.chart_XYAxis .region {
+  opacity: 0.33;
+}
+
+.chart_XYAxis .brush rect.background {
+    z-index: -999;
+}
+
+.chart_XYAxis .brush .selection {
+  stroke:none;
+  fill: steelblue;
+  fill-opacity: .125;
+}
+
+.chart_XYAxis .brush path.handle--custom {
+    fill: #eee;
+    stroke: #666;
+}

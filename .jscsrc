@@ -1,4 +1,0 @@
-{
-	"validateQuoteMarks": { "mark": "\"", "escape": true },
-    "excludeFiles": ["node_modules/**"]
-}

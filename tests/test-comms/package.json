@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-comms",
-  "version": "0.0.1",
+  "version": "0.0.25",
   "dependencies": {
-    "@hpcc-js/comms": "^0.0.1",
-    "@hpcc-js/util": "^0.0.1",
+    "@hpcc-js/comms": "^0.0.25",
+    "@hpcc-js/util": "^0.0.25",
     "chai": "^4.0.0",
     "es6-promise": "^4.1.0",
     "mocha": "^3.4.2"
@@ -20,14 +20,14 @@
     "karma-mocha-reporter": "^2.2.3",
     "rimraf": "^2.6.1",
     "source-map-loader": "^0.2.1",
-    "typescript": "^2.3.3",
+    "typescript": "^2.3.4",
     "webpack": "^2.6.1"
   },
   "scripts": {
     "build": "tsc && webpack",
     "clean": "rimraf build",
     "test": "npm run test:node",
-    "test:node": "./node_modules/.bin/mocha build/bundle.test.js --reporter spec",
+    "test:node": "./node_modules/.bin/mocha build/index.spec.js --reporter spec",
     "test:chrome": "karma start --browsers=Chrome",
     "test:firefox": "karma start --browsers=Firefox",
     "test:ie": "karma start --browsers=IE"

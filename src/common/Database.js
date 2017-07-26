@@ -551,11 +551,17 @@
         if (!(columnIndicies instanceof Array)) {
             columnIndicies = [columnIndicies];
         }
+        var stableSort = [];
         var nest = d3.nest();
-        columnIndicies.forEach(function (idx) {
-            nest.key(function (d) {
-                return d[idx];
+        nest.key(function (d) {
+            var retVal = "";
+            columnIndicies.forEach(function (idx) {
+                retVal += d[idx];
             });
+            stableSort.push(retVal);
+            return retVal;
+        }).sortKeys(function (l, r) {
+            return stableSort.indexOf(l) - stableSort.indexOf(r);
         });
         return nest;
     };

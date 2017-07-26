@@ -1751,7 +1751,7 @@
         this.filters.forEach(function (item) {
             item.calcRequest(retVal, request);
         });
-        //  TODO - Workaround HIPIE issue where it omits filters at datasoure level  ---
+        //  TODO - Workaround HIPIE issue where it omits filters at datasource level  ---
         this._outputArray.forEach(function (output) {
             output.filters.forEach(function (item) {
                 item.calcRequest(retVal, request);
@@ -1766,14 +1766,17 @@
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
-        var dsRequest = this.calcRequest(request);
-        dsRequest.refresh = request.refresh || false;
-        if (true || window.__hpcc_debug) {
-            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
-        }
-        for (var key in dsRequest) {
-            if (dsRequest[key] === undefined) {
-                delete dsRequest[key];
+        var dsRequest = request;
+        if (this.isRoxie()) {
+            dsRequest = this.calcRequest(request);
+            dsRequest.refresh = request.refresh || false;
+            if (true || window.__hpcc_debug) {
+                console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+            }
+            for (var key in dsRequest) {
+                if (dsRequest[key] === undefined) {
+                    delete dsRequest[key];
+                }
             }
         }
         var now = Date.now();

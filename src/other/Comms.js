@@ -927,7 +927,7 @@
         function filterResults(request) {
             var changedFilter = {};
             for (var key in request) {
-                if (request[key] !== undefined && request[key + "_changed"] !== undefined) {
+                if (request[key + "_changed"] !== undefined) {
                     changedFilter[key] = {
                         value: request[key]
                     };

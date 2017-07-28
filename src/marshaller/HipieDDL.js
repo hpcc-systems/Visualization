@@ -1723,6 +1723,7 @@
                 .url(datasource.URL)
                 .proxyMappings(proxyMappings)
                 .timeout(timeout)
+                .hipieResults(hipieResults)
             ;
         }
     }
@@ -1828,11 +1829,7 @@
         }
         var promises = [];
         for (var key in this._outputs) {
-            var from = this._outputs[key].from;
-            if (!from) {
-                //  Temp workaround for older services  ---
-                from = this._outputs[key].id.toLowerCase();
-            }
+            var from = this._outputs[key].id;
             if (Utility.exists(from, response)) {
                 if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     promises.push(this._outputs[key].setData(response[from], updates));

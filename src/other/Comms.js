@@ -176,8 +176,21 @@
         this._proxyMappings = {};
         this._mappings = new ESPMappings({});
         this._timeout = TIMEOUT_DEFAULT;
+        this._hipieResults = {};
     }
     Comms.prototype = Object.create(ESPUrl.prototype);
+
+    Comms.prototype.hipieResults = function (_) {
+        if (!arguments.length) return this._hipieResults;
+        this._hipieResultsLength = 0;
+        this._hipieResults = {};
+        var context = this;
+        _.forEach(function (item) {
+            context._hipieResultsLength++;
+            context._hipieResults[item.id] = item;
+        });
+        return this;
+    };
 
     var serialize = function (obj) {
         var str = [];
@@ -851,14 +864,20 @@
     };
 
     HIPIERoxie.prototype.call = function (request, callback) {
-        return this.fetchResults(request, callback);
+        var context = this;
+        return this.fetchResults(request, callback).then(function (response) {
+            var retVal = {};
+            for (var hipieKey in context._hipieResults) {
+                var item = context._hipieResults[hipieKey];
+                retVal[item.id] = response[item.from];
+            }
+            return retVal;
+        });
     };
 
     //  HIPIEWorkunit  ---
     function HIPIEWorkunit() {
         WsWorkunits.call(this);
-
-        this._hipieResults = {};
     }
     HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
@@ -871,18 +890,6 @@
             return filter.fieldid === fieldid;
         });
     }
-
-    HIPIEWorkunit.prototype.hipieResults = function (_) {
-        if (!arguments.length) return this._hipieResults;
-        this._hipieResultsLength = 0;
-        this._hipieResults = {};
-        var context = this;
-        _.forEach(function (item) {
-            context._hipieResultsLength++;
-            context._hipieResults[item.id] = item;
-        });
-        return this;
-    };
 
     HIPIEWorkunit.prototype.fetchResults = function (callback) {
         var context = this;
@@ -943,7 +950,7 @@
                         outputFilter[key2].filter = getFilter(item, key2)[0];
                     }
                 }
-                retVal[item.from] = context._resultNameCache[item.from].filter(function (row) {
+                retVal[item.id] = context._resultNameCache[item.from].filter(function (row) {
                     for (var key2 in outputFilter) {
                         if (!outputFilter[key2].filter.matches(row, outputFilter[key2].value)) {
                             return false;
@@ -974,7 +981,7 @@
         if (this._databomb instanceof Array) {
             this._resultNameCache[from] = this._databomb.map(espRowFix);
         } else {
-            this._resultNameCache[from] = this._databomb[id].map(espRowFix);
+            this._resultNameCache[from] = this._databomb[from].map(espRowFix);
         }
         return this;
     };

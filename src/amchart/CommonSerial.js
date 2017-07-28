@@ -346,7 +346,6 @@
 
         for (var i = 0; i < this.yAxes().length; i++) {
             var yAxis = this.yAxes()[i];
-            //yAxis.type("y");
 
             if (!this._chart.valueAxes[i]) {
                 this._chart.valueAxes.push(new AmCharts.ValueAxis());
@@ -371,7 +370,8 @@
 
             this._chart.valueAxes[i].autoGridCount = yAxis.axisAutoGridCount();
 
-            switch(yAxis.axisType()) {
+            var valueFormatter;
+            switch (yAxis.axisType()) {
                 case "time":
                     this._chart.valueAxes[i].type = "date";
                     this._chart.valueAxes[i].parseDates = true;
@@ -379,18 +379,18 @@
                     this._chart.valueAxes[i].logarithmic = false;
 
                     if (yAxis.axisTickFormat()) {
-                        this.valueFormatter = d3.time.format(yAxis.axisTickFormat());
+                        valueFormatter = d3.time.format(yAxis.axisTickFormat());
                     } else if (yAxis.axisTypeTimePattern()) {
-                        this.valueFormatter = d3.time.format(yAxis.axisTypeTimePattern());
+                        valueFormatter = d3.time.format(yAxis.axisTypeTimePattern());
                     } else {
-                        this.valueFormatter =  function(v) { return v; };
+                        valueFormatter = function(v) { return v; };
                     }
                     break;
                 case "log":
                     this._chart.valueAxes[i].parseDates = false;
                     this._chart.valueAxes[i].logarithmic = true;
                     this._chart.valueAxes[i].type = "numeric";
-                    this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                    valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
                     break;
                 case "linear":
                     /* falls through */
@@ -398,18 +398,20 @@
                     this._chart.valueAxes[i].parseDates = false;
                     this._chart.valueAxes[i].type = "numeric";
                     this._chart.valueAxes[i].logarithmic = false;
-                    this.valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
+                    valueFormatter = yAxis.axisTickFormat() ? d3.format(yAxis.axisTickFormat()) : function(v) { return v; };
                     break;
             }
 
-            this._chart.valueAxes[i].labelFunction = function(v1, v2, v3) {
-                switch (yAxis.axisType()) {
-                    case "time":
-                        return context.valueFormatter(yAxis.axisTickFormat() || yAxis.axisTypeTimePattern() ? new Date(v2) : v2);
-                    default:
-                        return context.valueFormatter(v1);
-                }
-            };
+            this._chart.valueAxes[i].labelFunction = (function(axis, formatter) {
+                return function (v1, v2, v3) {
+                    switch (axis.axisType()) {
+                        case "time":
+                            return formatter(axis.axisTickFormat() || axis.axisTypeTimePattern() ? new Date(v2) : v2);
+                        default:
+                            return formatter(v1);
+                    }
+                };
+            }(yAxis, valueFormatter));
         }
 
         if (this.showScrollbar()) {

@@ -2050,6 +2050,9 @@
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
+        for (var key2 in this._datasources) {
+            this._datasources[key2].accept(visitor);
+        }
         this.dashboardTotal = 0;
         for (var key in this.dashboards) {
             this.dashboards[key].accept(visitor);

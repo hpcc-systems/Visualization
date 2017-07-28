@@ -167,6 +167,24 @@
         return this.reverseMappings[key];
     };
 
+    SourceMappings.prototype.hipieMapSortArray = function (sort) {
+        return sort.map(function (sortField) {
+            var reverse = false;
+            if (sortField.indexOf("-") === 0) {
+                sortField = sortField.substring(1);
+                reverse = true;
+            }
+            var fieldIdx = this.columnsRHS.indexOf(sortField);
+            if (fieldIdx < 0) {
+                console.log("SourceMappings.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
+            }
+            return {
+                idx: fieldIdx,
+                reverse: reverse
+            };
+        }, this).filter(function (d) { return d.idx >= 0; });
+    };
+
     function ChartMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
         this.columns = ["label", "weight"];
@@ -527,7 +545,7 @@
         var db = this.getOutput().db;
         var retVal = this.mappings.doMapAll(db);
         if (retVal.length && this.sort) {
-            Utility.multiSort(retVal, db.hipieMapSortArray(this.sort));
+            Utility.multiSort(retVal, this.mappings.hipieMapSortArray(this.sort));
         }
         if (this.reverse) {
             retVal.reverse();
@@ -1751,7 +1769,7 @@
         this.filters.forEach(function (item) {
             item.calcRequest(retVal, request);
         });
-        //  TODO - Workaround HIPIE issue where it omits filters at datasoure level  ---
+        //  TODO - Workaround HIPIE issue where it omits filters at datasource level  ---
         this._outputArray.forEach(function (output) {
             output.filters.forEach(function (item) {
                 item.calcRequest(retVal, request);
@@ -1766,14 +1784,17 @@
         var myTransactionID = ++transactionID;
         transactionQueue.push(myTransactionID);
 
-        var dsRequest = this.calcRequest(request);
-        dsRequest.refresh = request.refresh || false;
-        if (true || window.__hpcc_debug) {
-            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
-        }
-        for (var key in dsRequest) {
-            if (dsRequest[key] === undefined) {
-                delete dsRequest[key];
+        var dsRequest = request;
+        if (this.isRoxie()) {
+            dsRequest = this.calcRequest(request);
+            dsRequest.refresh = request.refresh || false;
+            if (true || window.__hpcc_debug) {
+                console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+            }
+            for (var key in dsRequest) {
+                if (dsRequest[key] === undefined) {
+                    delete dsRequest[key];
+                }
             }
         }
         var now = Date.now();
@@ -2046,6 +2067,9 @@
 
     Marshaller.prototype.accept = function (visitor) {
         visitor.visit(this);
+        for (var key2 in this._datasources) {
+            this._datasources[key2].accept(visitor);
+        }
         this.dashboardTotal = 0;
         for (var key in this.dashboards) {
             this.dashboards[key].accept(visitor);

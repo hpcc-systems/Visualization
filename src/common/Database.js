@@ -303,24 +303,6 @@
     };
 
     //  Hipie Helpers  ---
-    Grid.prototype.hipieMapSortArray = function (sort) {
-        return sort.map(function (sortField) {
-            var reverse = false;
-            if (sortField.indexOf("-") === 0) {
-                sortField = sortField.substring(1);
-                reverse = true;
-            }
-            var field = this.fieldByLabel(sortField, true);
-            if (!field) {
-                console.log("Grid.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
-            }
-            return {
-                idx: field ? field.idx : -1,
-                reverse: reverse
-            };
-        }, this).filter(function(d) { return d.idx >= 0; });
-    };
-
     Grid.prototype.hipieMappings = function (columns, missingDataString) {
         missingDataString = missingDataString || "";
         if (!this.fields().length || !this._data.length) {

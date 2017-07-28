@@ -167,6 +167,24 @@
         return this.reverseMappings[key];
     };
 
+    SourceMappings.prototype.hipieMapSortArray = function (sort) {
+        return sort.map(function (sortField) {
+            var reverse = false;
+            if (sortField.indexOf("-") === 0) {
+                sortField = sortField.substring(1);
+                reverse = true;
+            }
+            var fieldIdx = this.columnsRHS.indexOf(sortField);
+            if (fieldIdx < 0) {
+                console.log("SourceMappings.prototype.hipieMapSortArray:  Invalid sort array - " + sortField);
+            }
+            return {
+                idx: fieldIdx,
+                reverse: reverse
+            };
+        }, this).filter(function (d) { return d.idx >= 0; });
+    };
+
     function ChartMappings(visualization, mappings) {
         SourceMappings.call(this, visualization, mappings);
         this.columns = ["label", "weight"];
@@ -525,11 +543,10 @@
 
     Source.prototype.getData = function () {
         var db = this.getOutput().db;
-        var dataRef = db.data(); 
-        if (dataRef.length && this.sort) {
-            Utility.multiSort(dataRef, db.hipieMapSortArray(this.sort));
-        }
         var retVal = this.mappings.doMapAll(db);
+        if (retVal.length && this.sort) {
+            Utility.multiSort(retVal, this.mappings.hipieMapSortArray(this.sort));
+        }
         if (this.reverse) {
             retVal.reverse();
         }

@@ -2,6 +2,11 @@ node_modules
 bower_components
 dist
 dist-amd
+lib
+build
+packages/**/yarn.lock
+test/**/yarn.lock
+*.log
 Web.config
 nbproject
 .project

@@ -1,8 +1,9 @@
+.vscode
 node_modules
 bower_components
 dist
 dist-amd
-lib
+lib*
 build
 packages/**/yarn.lock
 test/**/yarn.lock

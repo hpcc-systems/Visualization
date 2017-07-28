@@ -26,6 +26,12 @@
             .type_default("linear")
             .shrinkToFit_default("high")
         ;
+        this.valueAxis2 = new Axis()
+            .classed({ "value": true })
+            .orientation_default("right")
+            .type_default("linear")
+            .shrinkToFit_default("high")
+        ;
         var context = this;
         this.xBrush = d3.svg.brush()
             .on("brush", function () {
@@ -33,6 +39,11 @@
             })
         ;
         this.yBrush = d3.svg.brush()
+            .on("brush", function () {
+                return context.brushMoved();
+            })
+        ;
+        this.yBrush2 = d3.svg.brush()
             .on("brush", function () {
                 return context.brushMoved();
             })
@@ -73,7 +84,6 @@
     XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
 
     XYAxis.prototype.publish("regions", [], "array", "Regions");
-
     XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
 
     XYAxis.prototype.resetSelection = function () {
@@ -186,7 +196,7 @@
     };
 
     XYAxis.prototype.brushMoved = SVGWidget.prototype.debounce(function brushed() {
-        var selected = this.parsedData().filter(function (d) {
+        var selected = this.data().filter(function (d) {
             var pos = d[0];
             if (this.xAxisType() ==="ordinal") {
                 pos = this.domainAxis.d3Scale(pos) + (this.domainAxis.d3Scale.rangeBand ? this.domainAxis.d3Scale.rangeBand() / 2 : 0);
@@ -358,7 +368,6 @@
             .tickLength(this.yAxisGuideLines() ? maxCurrExtent : 0)
             .render()
         ;
-
         this.svgDataClipRect
             .attr("width", width)
             .attr("height", height)

@@ -31,7 +31,7 @@
         var context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: usCounties.countyNames[d[0]], value: context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A" });
+                return context.tooltipFormat({ label: usCounties.countyNames[+d[0]], value: context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A" });
             })
             ;
     };
@@ -65,9 +65,9 @@
             ;
         this.choroPaths
             .attr("d", function (d) {
-                var retVal = base._d3GeoPath(rFeatures[d[0]]);
+                var retVal = base._d3GeoPath(rFeatures[+d[0]]);  //  Global "fix" for leading zero is not wanted here.  Should really fix in JSON file (id) but file is too big to edit.
                 if (!retVal) {
-                    console.log("Unknown US County:  " + d);
+                    console.log("Unknown US County:  " + d[0]);
                 }
                 return retVal;
             })

@@ -94,7 +94,8 @@
         { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
         { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },
         { id: "TABLE_GMAP_PIN", display: "Table driven Google Map (pins)", widgetClass: "map_GMapPin" },
-        { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
+        { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" },
+        { id: "TABLE_ORB", display: "Pivot Table (orb.js)", widgetClass: "react_Orb" }
     ].map(function (item) { item.family = "any"; return item; });
     MultiChart.prototype._allChartTypes =
         MultiChart.prototype._GraphChartTypes.concat(

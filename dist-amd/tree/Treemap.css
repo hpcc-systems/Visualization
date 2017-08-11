@@ -1,0 +1,16 @@
+.tree_Treemap .node {
+    border: solid 1px white;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    position: absolute;
+    text-indent: 2px;
+}
+.tree_Treemap .node.selected {
+    border-color: red;
+}
+.tree_Treemap .node.over {
+    border-color: orange;
+}
+.tree_Treemap .node.selected.over {
+    border-color: red;
+}

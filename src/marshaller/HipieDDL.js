@@ -716,7 +716,8 @@
                 widget["vertex_" + key] = function (row, col, selected) {
                     context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
-            } else if (widget[key]) {
+            }
+            if (widget[key]) {
                 widget[key] = function (row, col, selected) {
                     context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };

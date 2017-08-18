@@ -1,14 +1,15 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/HTMLWidget", "../common/Utility", "../api/INDChart"], factory);
+        define(["d3", "../common/HTMLWidget", "../common/Utility", "../api/INDChart", "../api/IGraph"], factory);
     } else {
-        root.chart_MultiChart = factory(root.d3, root.common_HTMLWidget, root.common_Utility, root.api_INDChart);
+        root.chart_MultiChart = factory(root.d3, root.common_HTMLWidget, root.common_Utility, root.api_INDChart, root.api_IGraph);
     }
-}(this, function (d3, HTMLWidget, Utility, INDChart) {
+}(this, function (d3, HTMLWidget, Utility, INDChart, IGraph) {
     function MultiChart() {
         HTMLWidget.call(this);
         INDChart.call(this);
+        IGraph.call(this);
 
         this._tag = "div";
 
@@ -27,6 +28,7 @@
     MultiChart.prototype.constructor = MultiChart;
     MultiChart.prototype._class += " chart_MultiChart";
     MultiChart.prototype.implements(INDChart.prototype);
+    MultiChart.prototype.implements(IGraph.prototype);
 
     MultiChart.prototype._GraphChartTypes = [
         { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" }
@@ -161,6 +163,18 @@
             };
             _.dblclick = function (row, column, selected) {
                 context.dblclick.apply(context, arguments);
+            };
+            _.vertex_click = function (row, column, selected, more) {
+                context.vertex_click.apply(context, arguments);
+            };
+            _.vertex_dblclick = function (row, column, selected, more) {
+                context.vertex_dblclick.apply(context, arguments);
+            };
+            _.edge_click = function (row, column, selected, more) {
+                context.edge_click.apply(context, arguments);
+            };
+            _.edge_dblclick = function (row, column, selected, more) {
+                context.edge_dblclick.apply(context, arguments);
             };
             if (this._chartMonitor) {
                 this._chartMonitor.remove();
@@ -303,7 +317,6 @@
         }
         HTMLWidget.prototype.exit.apply(this, arguments);
     };
-
 
     MultiChart.prototype.render = function (callback) {
         if (this.chartType() && (!this.chart() || (this.chart().classID() !== this._allCharts[this.chartType()].widgetClass))) {

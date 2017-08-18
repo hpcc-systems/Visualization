@@ -430,16 +430,20 @@
                     this.forceLayout = layoutEngine;
                     this.forceLayout.force.on("tick", function (d) {
                         layoutEngine.vertices.forEach(function (item) {
-                            var vertex = context.graphData.node(item.id);
                             if (item.fixed) {
                                 item.x = item.px;
                                 item.y = item.py;
                             } else {
                                 item.px = item.x;
                                 item.py = item.y;
-                                vertex
-                                    .move({ x: item.x, y: item.y })
-                                ;
+
+                                //  Might have been cleared ---
+                                var vertex = context.graphData.node(item.id);
+                                if (vertex) {
+                                    vertex
+                                        .move({ x: item.x, y: item.y })
+                                    ;
+                                }
                             }
                         });
                         context.graphData.edgeValues().forEach(function (item) {
@@ -812,7 +816,7 @@
         IGraph.prototype.vertex_click.apply(this, arguments);
     };
 
-    Graph.prototype.vertex_dblclick = function (d) {
+    Graph.prototype.vertex_dblclick = function (row, col, sel, more) {
     };
 
     Graph.prototype.vertex_mouseover = function (element, d) {

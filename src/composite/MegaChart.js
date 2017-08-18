@@ -18,6 +18,18 @@
         this._chart.dblclick = function () {
             context.dblclick.apply(context, arguments);
         };
+        this._chart.vertex_click = function () {
+            context.vertex_click.apply(context, arguments);
+        };
+        this._chart.vertex_dblclick = function () {
+            context.vertex_dblclick.apply(context, arguments);
+        };
+        this._chart.edge_click = function () {
+            context.edge_click.apply(context, arguments);
+        };
+        this._chart.edge_dblclick = function () {
+            context.edge_dblclick.apply(context, arguments);
+        };
 
         this._toolbar = new Toolbar();
         
@@ -398,6 +410,30 @@
 
     MegaChart.prototype.dblclick = function (row, column, selected) {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    };
+
+    MegaChart.prototype.vertex_click = function (row, col, sel, more) {
+        if (more && more.vertex) {
+            console.log("Vertex click: " + more.vertex.id());
+        }
+    };
+
+    MegaChart.prototype.vertex_dblclick = function (row, col, sel, more) {
+        if (more && more.vertex) {
+            console.log("Vertex double click: " + more.vertex.id());
+        }
+    };
+
+    MegaChart.prototype.edge_click = function (row, col, sel, more) {
+        if (more && more.edge) {
+            console.log("Edge click: " + more.edge.id());
+        }
+    };
+
+    MegaChart.prototype.edge_dblclick = function (row, col, sel, more) {
+        if (more && more.edge) {
+            console.log("Edge double click: " + more.edge.id());
+        }
     };
 
     return MegaChart;

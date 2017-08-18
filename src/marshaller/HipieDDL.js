@@ -716,7 +716,8 @@
                 widget["vertex_" + key] = function (row, col, selected) {
                     context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
-            } else if (widget[key]) {
+            }
+            if (widget[key]) {
                 widget[key] = function (row, col, selected) {
                     context.visualization.processEvent(key, context.events[key], row, col, selected);
                 };
@@ -1503,7 +1504,10 @@
         }
     };
 
-    Filter.prototype.calcRequest = function (filteredRequest, request) {
+    Filter.prototype.calcRequest = function (filteredRequest, request, fillInMissing) {
+        if (!fillInMissing && request[this.fieldid] === undefined) {
+            return;
+        }
         var value = request[this.fieldid] === undefined ? null : request[this.fieldid];
         if (this.isRange()) {
             if (value instanceof Array && value.length === 2) {
@@ -1723,6 +1727,7 @@
                 .url(datasource.URL)
                 .proxyMappings(proxyMappings)
                 .timeout(timeout)
+                .hipieResults(hipieResults)
             ;
         }
     }
@@ -1764,15 +1769,15 @@
         }
     };
 
-    Datasource.prototype.calcRequest = function (request) {
+    Datasource.prototype.calcRequest = function (request, fillInMissing) {
         var retVal = {};
         this.filters.forEach(function (item) {
-            item.calcRequest(retVal, request);
+            item.calcRequest(retVal, request, fillInMissing);
         });
         //  TODO - Workaround HIPIE issue where it omits filters at datasource level  ---
         this._outputArray.forEach(function (output) {
             output.filters.forEach(function (item) {
-                item.calcRequest(retVal, request);
+                item.calcRequest(retVal, request, fillInMissing);
             });
         });
         return retVal;
@@ -1785,16 +1790,14 @@
         transactionQueue.push(myTransactionID);
 
         var dsRequest = request;
-        if (this.isRoxie()) {
-            dsRequest = this.calcRequest(request);
-            dsRequest.refresh = request.refresh || false;
-            if (true || window.__hpcc_debug) {
-                console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
-            }
-            for (var key in dsRequest) {
-                if (dsRequest[key] === undefined) {
-                    delete dsRequest[key];
-                }
+        dsRequest = this.calcRequest(request, this.isRoxie());
+        dsRequest.refresh = request.refresh || false;
+        if (window.__hpcc_debug) {
+            console.log("fetchData:  " + JSON.stringify(updates) + "(" + JSON.stringify(request) + ")");
+        }
+        for (var key in dsRequest) {
+            if (dsRequest[key] === undefined) {
+                delete dsRequest[key];
             }
         }
         var now = Date.now();
@@ -1828,11 +1831,7 @@
         }
         var promises = [];
         for (var key in this._outputs) {
-            var from = this._outputs[key].from;
-            if (!from) {
-                //  Temp workaround for older services  ---
-                from = this._outputs[key].id.toLowerCase();
-            }
+            var from = this._outputs[key].id;
             if (Utility.exists(from, response)) {
                 if (!Utility.exists(from + _CHANGED, response) || (Utility.exists(from + _CHANGED, response) && response[from + _CHANGED].length && response[from + _CHANGED][0][from + _CHANGED])) {
                     promises.push(this._outputs[key].setData(response[from], updates));

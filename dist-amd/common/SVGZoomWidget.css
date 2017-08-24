@@ -1,0 +1,12 @@
+.common_SVGZoomWidget .common_Icon .common_Shape {
+    fill: white;
+    stroke: darkgray;
+    cursor:pointer;
+}
+.common_SVGZoomWidget .common_Icon .common_FAChar .common_Text {
+    fill: darkgray;
+    cursor:pointer;
+}
+.common_SVGZoomWidget .background {
+    fill: white;
+}

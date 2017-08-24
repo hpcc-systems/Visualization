@@ -1,0 +1,21 @@
+.other_CalendarHeatMap {
+    shape-rendering: crispEdges;
+}
+.other_CalendarHeatMap .day {
+    fill: #fff;
+    stroke: #ccc;
+}
+.other_CalendarHeatMap .day.selected {
+    stroke: red;
+}
+.other_CalendarHeatMap .day.over {
+    stroke: orange;
+}
+.other_CalendarHeatMap .day.selected.over {
+    stroke: red;
+}
+.other_CalendarHeatMap .month {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+}

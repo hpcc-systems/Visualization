@@ -692,7 +692,7 @@
             var context = this;
             this._fetchResultNamesPromise = this.jsonp(url, request).then(function (response) {
                 if (Utility.exists("WUInfoResponse.Workunit.Archived", response) && response.WUInfoResponse.Workunit.Archived) {
-                    console.log("WU is archived");
+                    console.log("WU is archived:  " + url + " " + JSON.stringify(request));
                 }
                 if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                     response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {

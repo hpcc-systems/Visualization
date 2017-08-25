@@ -611,11 +611,15 @@
         return this.event.visualization.source.getReverseMap(col);
     };
     
-    EventUpdate.prototype.mapSelected = function () {
+    EventUpdate.prototype.selectedRow = function () {
         if (this.event.visualization.hasSelection()) {
-            return this.mapData(this.event.visualization._widgetState.row);
+            return this.event.visualization._widgetState.row;
         }
-        return this.mapData({});
+        return {};
+    };
+
+    EventUpdate.prototype.mapSelected = function () {
+        return this.mapData(this.selectedRow());
     };
 
     EventUpdate.prototype.calcRequestFor = function (visualization) {
@@ -1253,28 +1257,6 @@
     };
 
     Visualization.prototype.update = function (params) {
-        if (!params) {
-            var paramsArr = [];
-            var dedupParams = {};
-            var updatedBy = this.getInputVisualizations();
-            updatedBy.forEach(function (viz) {
-                if (viz.hasSelection()) {
-                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
-                        var mappedData = updateObj.mapSelected();
-                        for (var key in mappedData) {
-                            if (mappedData[key]) {
-                                if (!dedupParams[key]) {
-                                    dedupParams[key] = true;
-                                    paramsArr.push(mappedData[key]);
-                                }
-                            }
-                        }
-                    });
-                }
-            }, this);
-            params = paramsArr.join(", ");
-        }
-
         var titleWidget = null;
         if (!this.parentVisualization) {
             titleWidget = this.widget;
@@ -1283,13 +1265,45 @@
             }
         }
 
+        if (!params) {
+            params = "";
+            var titleFormatStr = "";
+            if (titleWidget && titleWidget.ddlParamsFormat) {
+                titleFormatStr = titleWidget.ddlParamsFormat();
+            }
+
+            var dedupParams = {};
+            var updatedBy = this.getInputVisualizations();
+            updatedBy.forEach(function (viz) {
+                if (viz.hasSelection()) {
+                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                        if (titleFormatStr) {
+                            params = Utility.template(titleFormatStr, updateObj.selectedRow());
+                        } else {
+                            var paramsArr = [];
+                            var mappedData = updateObj.mapSelected();
+                            for (var key in mappedData) {
+                                if (mappedData[key]) {
+                                    if (!dedupParams[key]) {
+                                        dedupParams[key] = true;
+                                        paramsArr.push(mappedData[key]);
+                                    }
+                                }
+                            }
+                            params = paramsArr.join(", ");
+                        }
+                    });
+                }
+            }, this);
+        }
+
         var context = this;
         return new Promise(function (resolve, reject) {
             if (titleWidget) {
                 var title = titleWidget.title();
                 var titleParts = title.split(" (");
                 titleWidget
-                    .title(titleParts[0] + (params ? " (" + params + ")" : ""))
+                    .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
                     .render(function () {
                         resolve();
                     })

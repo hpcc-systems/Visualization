@@ -24,7 +24,9 @@
     GMapPinLine.prototype = Object.create(GMapLayered.prototype);
     GMapPinLine.prototype.constructor = GMapPinLine;
     GMapPinLine.prototype._class += " map_GMapPinLine";
-
+    
+    GMapPinLine.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
+       
     GMapPinLine.prototype.publish("fromPinColor", "green", "color", "From Pin Color");
     GMapPinLine.prototype.publish("fromLatitudeColumn", null, "set", "From Latitude", function () { return this.columns(); }, { optional: true });
     GMapPinLine.prototype.publish("fromLongtitudeColumn", null, "set", "From Longtitude", function () { return this.columns(); }, { optional: true });
@@ -79,6 +81,10 @@
         GMapLayered.prototype.update.apply(this, arguments);
         this._pins.data(this.pinsData());
         this._lines.data(this.linesData());
+        if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
+            this._prevChecksum = this._db.checksum();
+            this.zoomTo(this._pins.pinsData().map(function (row) { return [row.lat, row.long]; }));
+        }
     };
 
     GMapPinLine.prototype.exit = function (domNode, element) {

@@ -24,6 +24,8 @@
     GMapPin.prototype.constructor = GMapPin;
     GMapPin.prototype._class += " map_GMapPin";
 
+    GMapPin.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
+
     GMapPin.prototype.publishProxy("pinColor", "_pins", "fillColor");
     GMapPin.prototype.publishProxy("pinType", "_pins", "pinType");
     GMapPin.prototype.publishProxy("pinWidth", "_pins", "pinWidth");
@@ -66,6 +68,10 @@
     GMapPin.prototype.update = function (domNode, element) {
         GMapLayered.prototype.update.apply(this, arguments);
         this._pins.data(this.pinsData());
+        if (this.autoScale() && this._prevChecksum !== this._db.checksum()) {
+            this._prevChecksum = this._db.checksum();
+            this.zoomTo(this._pins.pinsData().map(function (row) { return [row.lat, row.long]; }));
+        }
     };
 
     GMapPin.prototype.exit = function (domNode, element) {

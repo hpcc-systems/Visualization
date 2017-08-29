@@ -148,7 +148,8 @@
                 if (callback) {
                     callback(w);
                 }
-            });        });
+            });
+        });
         return retVal;
     };
 

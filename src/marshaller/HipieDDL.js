@@ -1256,6 +1256,22 @@
         });
     };
 
+    Visualization.prototype.getInputFields = function (mapped) {
+        var retVal = {};
+        var updatedBy = this.getInputVisualizations();
+        updatedBy.forEach(function (viz) {
+            if (viz.hasSelection()) {
+                viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                    var sel = mapped ? updateObj.mapSelected() : updateObj.selectedRow();
+                    for (var key in sel) {
+                        retVal[key] = sel[key];
+                    }
+                });
+            }
+        }, this);
+        return retVal;
+    };
+
     Visualization.prototype.update = function (params) {
         var titleWidget = null;
         if (!this.parentVisualization) {
@@ -1273,28 +1289,21 @@
             }
 
             var dedupParams = {};
-            var updatedBy = this.getInputVisualizations();
-            updatedBy.forEach(function (viz) {
-                if (viz.hasSelection()) {
-                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
-                        if (titleFormatStr) {
-                            params = Utility.template(titleFormatStr, updateObj.selectedRow());
-                        } else {
-                            var paramsArr = [];
-                            var mappedData = updateObj.mapSelected();
-                            for (var key in mappedData) {
-                                if (mappedData[key]) {
-                                    if (!dedupParams[key]) {
-                                        dedupParams[key] = true;
-                                        paramsArr.push(mappedData[key]);
-                                    }
-                                }
-                            }
-                            params = paramsArr.join(", ");
+            if (titleFormatStr) {
+                params = Utility.template(titleFormatStr, this.getInputFields());
+            } else {
+                var paramsArr = [];
+                var mappedData = this.getInputFields(true);
+                for (var key in mappedData) {
+                    if (mappedData[key]) {
+                        if (!dedupParams[key]) {
+                            dedupParams[key] = true;
+                            paramsArr.push(mappedData[key]);
                         }
-                    });
+                    }
                 }
-            }, this);
+                params = paramsArr.join(", ");
+            }
         }
 
         var context = this;
@@ -1329,6 +1338,14 @@
         if (this.widget) {
             var data = this.source.hasData() ? this.source.getData() : [];
             this.widget.data(data);
+            if (this.type === "GRAPH" && data.vertices) {
+                var ipFields = this.getInputFields(true);
+                data.vertices.filter(function (v) {
+                    return v.__hpcc_uid === ipFields.treeuid;
+                }).forEach(function (v) {
+                    v.centroid(true);
+                });
+            }
             return this.update();
         }
         return Promise.resolve();

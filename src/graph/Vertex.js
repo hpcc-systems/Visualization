@@ -23,6 +23,7 @@
     Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
     Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
     Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
+    Vertex.prototype.publish("centroid", false, "boolean", "Centroid Vertex");
 
     Vertex.prototype.publishProxy("text", "_textBox");
     Vertex.prototype.publishProxy("anchor", "_textBox");
@@ -34,7 +35,7 @@
     
     Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 
-    Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter",null,{tags:["Private"]});
+    Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter", null, { tags: ["Private"] });
     Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:["Private"]});
     Vertex.prototype.publish("annotationIcons", [], "array", "Annotations",null,{tags:["Private"]});
 
@@ -53,6 +54,8 @@
 
     Vertex.prototype.update = function (domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
+        element.classed("centroid", this.centroid());
+        element.style("filter", this.centroid() ? "url(#" + this._graphID +"_glow)" : null);
         this._icon
             .tooltip(this.tooltip())
             .render()

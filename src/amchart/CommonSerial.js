@@ -615,6 +615,7 @@
             } else if (context._gType === "area") {
                 field = graph.colorField;
             }
+            var selected = false;
             if (field) {
                 if (data[field] !== null && data[field] !== undefined) {
                     delete data[field];
@@ -626,6 +627,7 @@
                         }
                     }
                 } else {
+                    selected = true;
                     data[field] = context.selectionColor();
                     data[field2] = context.selectionColor();
                     if (context.selectionMode() === "simple") {
@@ -646,7 +648,7 @@
                 e.chart.validateData();
             }
 
-            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex + 1], context._selected !== null);
+            context.click(context.rowToObj(context.data()[e.index]), context.columns()[e.target.columnIndex + 1], selected);
         });
     };
 

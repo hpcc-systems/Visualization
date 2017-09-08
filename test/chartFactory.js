@@ -84,6 +84,22 @@
                 });
             },
         },
+        DotColumn: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/DotColumn"], function (DataFactory, DotColumn) {
+                    callback(new DotColumn()
+                        .columns(["Category", "Year 1", "Year 2", "Year 3", "Year 4"])
+                        .data([
+                            ["Sales", 401, 419, 468, 585],
+                            ["Eng.", 150, 299, 440, 459],
+                            ["HR", 0, 90, 97, 100],
+                            ["Services", 144, 141, 95, 99],
+                            ["Security", 48, 80, 48, 104]
+                        ])
+                    );
+                });
+            }
+        },
         Bar: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/chart/Bar"], function (DataFactory, Bar) {

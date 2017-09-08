@@ -160,6 +160,7 @@
         var context = this;
         this._controls = [
                 new Button()
+                    .classed({"default": true})
                     .value("Submit")
                     .on("click", function () {
                         context.submit(context.values());
@@ -214,10 +215,9 @@
                     }
 
                     if (inputWidget._inputElement instanceof Array) {
-                        inputWidget._inputElement.forEach(function(e) {
-                            e.on("change.form", function(w) {
+                        inputWidget._inputElement.forEach(function (e) {
+                            e.on("keyup.form", function(w) {
                                 setTimeout(function() {
-
                                     context._controls[0].disable(!context.allowEmptyRequest() && !context.inputs().some(function(w) { 
                                         if (w._class.indexOf("WidgetArray") !== -1) {
                                             return w.content().some(function(wa) {
@@ -233,6 +233,11 @@
                 });
             })
         ;
+        rows.each(function (inputWidget, i) {
+            if (i === 0 && inputWidget.setFocus) {
+                inputWidget.setFocus();
+            }
+        });
         rows.exit().remove();
 
         this.tfoot

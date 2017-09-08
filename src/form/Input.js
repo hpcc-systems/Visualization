@@ -70,6 +70,10 @@
                 context.value([e.property("value")]);
                 w.change(w);
             });
+            e.on("keyup", function (w) {
+                context.value([e.property("value")]);
+                w.change(w);
+            });
         });
     };
 

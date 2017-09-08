@@ -68,5 +68,11 @@
         });
     };
 
+    IInput.prototype.setFocus = function () {
+        if (this._inputElement.length) {
+            this._inputElement[0].node().focus();
+        }
+    };
+
     return IInput;
 }));

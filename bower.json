@@ -1,6 +1,6 @@
 {
   "name": "hpcc-viz",
-  "version": "1.14.2-dev",
+  "version": "1.18.0-rc1",
   "description": "HPCC Visualization Framework",
   "keywords": [
     "Visualization",

@@ -692,7 +692,7 @@
             var context = this;
             this._fetchResultNamesPromise = this.jsonp(url, request).then(function (response) {
                 if (Utility.exists("WUInfoResponse.Workunit.Archived", response) && response.WUInfoResponse.Workunit.Archived) {
-                    console.log("WU is archived");
+                    console.log("WU is archived:  " + url + " " + JSON.stringify(request));
                 }
                 if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
                     response.WUInfoResponse.Workunit.Results.ECLResult.map(function (item) {
@@ -881,16 +881,6 @@
     }
     HIPIEWorkunit.prototype = Object.create(WsWorkunits.prototype);
 
-    function hasFilter(hipieResult, fieldid) {
-        return getFilter(hipieResult, fieldid).length > 0;
-    }
-
-    function getFilter(hipieResult, fieldid) {
-        return hipieResult.filters.filter(function(filter) {
-            return filter.fieldid === fieldid;
-        });
-    }
-
     HIPIEWorkunit.prototype.fetchResults = function (callback) {
         var context = this;
         return WsWorkunits.prototype.fetchResultNames.call(this).then(function (response) {
@@ -942,15 +932,14 @@
             }
             var retVal = {};
             for (var hipieKey in context._hipieResults) {
-                var item = context._hipieResults[hipieKey];
+                var hipieResult = context._hipieResults[hipieKey];
                 var outputFilter = {};
-                for (var key2 in changedFilter) {
-                    if (hasFilter(item, key2)) {
-                        outputFilter[key2] = changedFilter[key2];
-                        outputFilter[key2].filter = getFilter(item, key2)[0];
-                    }
+                for (var i = 0; i < hipieResult.filters.length; ++i) {
+                    var filter = hipieResult.filters[i];
+                    outputFilter[filter.fieldid] = changedFilter[filter.fieldid] || { value: undefined };
+                    outputFilter[filter.fieldid].filter = filter;
                 }
-                retVal[item.id] = context._resultNameCache[item.from].filter(function (row) {
+                retVal[hipieResult.id] = context._resultNameCache[hipieResult.from].filter(function (row) {
                     for (var key2 in outputFilter) {
                         if (!outputFilter[key2].filter.matches(row, outputFilter[key2].value)) {
                             return false;

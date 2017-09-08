@@ -611,11 +611,15 @@
         return this.event.visualization.source.getReverseMap(col);
     };
     
-    EventUpdate.prototype.mapSelected = function () {
+    EventUpdate.prototype.selectedRow = function () {
         if (this.event.visualization.hasSelection()) {
-            return this.mapData(this.event.visualization._widgetState.row);
+            return this.event.visualization._widgetState.row;
         }
-        return this.mapData({});
+        return {};
+    };
+
+    EventUpdate.prototype.mapSelected = function () {
+        return this.mapData(this.selectedRow());
     };
 
     EventUpdate.prototype.calcRequestFor = function (visualization) {
@@ -1252,34 +1256,53 @@
         });
     };
 
-    Visualization.prototype.update = function (params) {
-        if (!params) {
-            var paramsArr = [];
-            var dedupParams = {};
-            var updatedBy = this.getInputVisualizations();
-            updatedBy.forEach(function (viz) {
-                if (viz.hasSelection()) {
-                    viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
-                        var mappedData = updateObj.mapSelected();
-                        for (var key in mappedData) {
-                            if (mappedData[key]) {
-                                if (!dedupParams[key]) {
-                                    dedupParams[key] = true;
-                                    paramsArr.push(mappedData[key]);
-                                }
-                            }
-                        }
-                    });
-                }
-            }, this);
-            params = paramsArr.join(", ");
-        }
+    Visualization.prototype.getInputFields = function (mapped) {
+        var retVal = {};
+        var updatedBy = this.getInputVisualizations();
+        updatedBy.forEach(function (viz) {
+            if (viz.hasSelection()) {
+                viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
+                    var sel = mapped ? updateObj.mapSelected() : updateObj.selectedRow();
+                    for (var key in sel) {
+                        retVal[key] = sel[key];
+                    }
+                });
+            }
+        }, this);
+        return retVal;
+    };
 
+    Visualization.prototype.update = function (params) {
         var titleWidget = null;
         if (!this.parentVisualization) {
             titleWidget = this.widget;
             while (titleWidget && !titleWidget.title) {
                 titleWidget = titleWidget.locateParentWidget();
+            }
+        }
+
+        if (!params) {
+            params = "";
+            var titleFormatStr = "";
+            if (titleWidget && titleWidget.ddlParamsFormat) {
+                titleFormatStr = titleWidget.ddlParamsFormat();
+            }
+
+            var dedupParams = {};
+            if (titleFormatStr) {
+                params = Utility.template(titleFormatStr, this.getInputFields());
+            } else {
+                var paramsArr = [];
+                var mappedData = this.getInputFields(true);
+                for (var key in mappedData) {
+                    if (mappedData[key]) {
+                        if (!dedupParams[key]) {
+                            dedupParams[key] = true;
+                            paramsArr.push(mappedData[key]);
+                        }
+                    }
+                }
+                params = paramsArr.join(", ");
             }
         }
 
@@ -1289,7 +1312,7 @@
                 var title = titleWidget.title();
                 var titleParts = title.split(" (");
                 titleWidget
-                    .title(titleParts[0] + (params ? " (" + params + ")" : ""))
+                    .title(titleParts[0] + (params.trim() ? " (" + params + ")" : ""))
                     .render(function () {
                         resolve();
                     })
@@ -1315,6 +1338,14 @@
         if (this.widget) {
             var data = this.source.hasData() ? this.source.getData() : [];
             this.widget.data(data);
+            if (this.type === "GRAPH" && data.vertices) {
+                var ipFields = this.getInputFields(true);
+                data.vertices.filter(function (v) {
+                    return v.__hpcc_uid === ipFields.treeuid;
+                }).forEach(function (v) {
+                    v.centroid(true);
+                });
+            }
             return this.update();
         }
         return Promise.resolve();

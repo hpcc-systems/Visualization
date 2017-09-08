@@ -158,9 +158,10 @@
                     var palette = Palette.ordinal("dark2");
 
                     var rawData = DataFactory.Graph.les_miz;
-                    rawData.nodes.forEach(function (node) {
+                    rawData.nodes.forEach(function (node, idx) {
                         vertices.push(
                             new Vertex()
+                                .centroid(idx === 0)
                                 .text(node.name)
                                 .textbox_shape_colorStroke(palette(node.group))
                                 .textbox_shape_colorFill("whitesmoke")

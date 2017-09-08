@@ -82,6 +82,7 @@
 
             var context = this;
             data.addedVertices.forEach(function (item) {
+                item._graphID = context._id;
                 item.pos({
                     x: +Math.random() * 10 / 2 - 5,
                     y: +Math.random() * 10 / 2 - 5
@@ -840,6 +841,7 @@
             this.defs.select("#" + this._id + "_arrowHead").remove();
             this.defs.select("#" + this._id + "_circleFoot").remove();
             this.defs.select("#" + this._id + "_circleHead").remove();
+            this.defs.select("#" + this._id + "_glow").remove();
         }
         this.defs.append("marker")
             .attr("class", "marker")
@@ -883,7 +885,18 @@
                 .attr("cx", 5)
                 .attr("cy", 5)
                 .attr("r", 4)
-        ;
+            ;
+        this.defs.append("filter")
+            .attr("id", this._id + "_glow")
+            .attr("width", "130%")
+            .attr("height", "130%")    
+            .html(
+                '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
+                '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
+                '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
+                '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
+            )
+            ;
     };
 
     return Graph;

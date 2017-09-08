@@ -357,7 +357,6 @@
         this.divItems = element.selectAll("#" + this.id() + " > .ddCell").data(this.content(), function (d) { return d.id(); });
         this.divItems.enter().append("div")
             .attr("class", "ddCell")
-            .call(this._d3Drag)
             .each(function (d) {
                 d.target(this);
                 d.__grid_watch = d.monitor(function (key, newVal, oldVal) {
@@ -383,6 +382,17 @@
                 ;
             })
         ;
+        this.divItems.each(function (d) {
+            var element = d3.select(this);
+            if (context.designMode()) {
+                element.call(context._d3Drag);
+            } else {
+                element
+                    .on("mousedown.drag", null)
+                    .on("touchstart.drag", null)
+                    ;
+            }
+        });
         this.divItems.select(".resizeHandle")
             .style("display", this.designMode() ? null : "none")
         ;

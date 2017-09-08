@@ -18,9 +18,7 @@
     border-style: solid;
     border-color: #a9c6c9;
     color:white;
-    white-space: nowrap;
     cursor : pointer;
-    box-sizing: border-box;
 }
 .other_Table thead > tr, .cols-wrapper tr {
     background-color:#1f77b4;
@@ -81,7 +79,6 @@
     padding:2px 5px;
     border-style: solid;
     border-color: #a9c6c9;
-    white-space: nowrap;
     box-sizing:border-box;
     vertical-align: middle;
 }

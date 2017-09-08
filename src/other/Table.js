@@ -74,6 +74,7 @@
     Table.prototype.publish("sortByFieldIndex", null, "number", "Index for the field/column to sort the data", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("descending", false, "boolean", "Direction for sorting the data: ascending (true) or descending (false)", null, { tags: ["Basic"], optional: true });
 
+
     Table.prototype.size = function (_) {
         var retVal = HTMLWidget.prototype.size.apply(this, arguments);
         if (arguments.length) {
@@ -688,20 +689,36 @@
         var tableMarginHeight = this.fixedHeader() ? this.thead.property("offsetHeight") : 0;
         var totalWidth = 1;
         var tdWidths = {};
+        if(!context.fixedHeader()){
+            tds.each(function(d, i) {
+                tdWidths[i] = this.offsetWidth;
+            });
+        }else{
+            tds.each(function(d, i) {
+                tdWidths[i] = "100px";
+            });
+        }
 
-        tds.each(function(d, i) {
-            tdWidths[i] = this.offsetWidth;
-        });
 
         var th = this.thead.selectAll("th");
         th.each(function(d, i) {
             var thwidth = this.offsetWidth;
             var tdwidth = tds.empty() ? 0 : tdWidths[i];
             var usewidth = thwidth >= tdwidth ? thwidth : tdwidth;
-            this.style.width = usewidth + "px";
-            if (!tds.empty() &&  tds[0][i]) {
-                tds[0][i].style.width = usewidth + "px";
+            if(!context.fixedHeader()){
+                this.style.width = usewidth + "px";
+                if (!tds.empty() &&  tds[0][i]) {
+                    tds[0][i].style.width = usewidth + "px";
+                }
+            }else{
+                this.style.width = "100px";
+                this.style['word-break'] = "break-word";
+                if (!tds.empty() &&  tds[0][i]) {
+                    tds[0][i].style.width = "120px";
+                    tds[0][i].style['word-break'] = "break-word";
+                }
             }
+
             totalWidth += usewidth;
         });
         this.thead
@@ -712,9 +729,19 @@
         this.table
             .style("width", totalWidth + "px" )
         ;
-        this.tableDiv
-            .style("margin-top", (context.fixedHeader() ? tableMarginHeight : 0) + "px" )
-        ;
+        if(context.fixedHeader()){
+            if(this.thead && this.thead[0] && this.thead[0][0] && this.thead[0][0].clientHeight){
+                this.tableDiv
+                    .style("margin-top", (this.thead[0][0].clientHeight) + "px" )
+                ;
+            }
+
+        }else{
+            this.tableDiv
+                .style("margin-top", (context.fixedHeader() ? tableMarginHeight : 0) + "px" )
+            ;
+        }
+
         this.tbody
             .style("width", totalWidth + "px" )
         ;

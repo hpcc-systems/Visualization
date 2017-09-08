@@ -52,6 +52,7 @@
 
     MegaChart.prototype.publish("showToolbar",true,"boolean","Enable/Disable Toolbar widget", null, {tags:["Basic"]});
     MegaChart.prototype.publishProxy("title", "_toolbar", "title");
+    MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
     MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });

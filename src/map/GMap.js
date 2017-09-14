@@ -316,6 +316,7 @@
     GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longtitude", null, { tags: ["Basic"] });
     GMap.prototype.publish("centerAddress", null, "string", "Address to center map on", null, { tags: ["Basic"], optional: true });
     GMap.prototype.publish("zoom", 4, "number", "Zoom Level", null, { tags: ["Basic"] });
+    GMap.prototype.publish("singleZoomToMaxZoom", 14, "number", "Max zoomTo level with single item");
     GMap.prototype.publish("panControl", true, "boolean", "Pan Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("zoomControl", true, "boolean", "Zoom Controls", null, { tags: ["Basic"] });
     GMap.prototype.publish("scaleControl", true, "boolean", "Scale Controls", null, { tags: ["Basic"] });
@@ -405,6 +406,7 @@
             context.zoom(context._googleMap.zoom);
             context._prevZoom = context.zoom();
         });
+        this._googleStreetViewService = new google.maps.StreetViewService();
         this._googleMapPanorama = this._googleMap.getStreetView();
         this._googleMapPanorama.addListener("visible_changed", function () {
             context.streetView(context._googleMapPanorama.getVisible());
@@ -526,6 +528,34 @@
         });
         return this;
     };
+    
+    GMap.prototype.streetViewAt = function (pos, radius) {
+        radius = radius || 1000;
+        var context = this;
+        this._googleStreetViewService.getPanorama({ location: pos, radius: radius }, function (data, status) {
+            if (status === 'OK') {
+                var marker = new google.maps.Marker({
+                    position: pos,
+                    map: context._googleMap
+                });
+                var heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, new google.maps.LatLng(pos.lat, pos.lng));
+                context._googleMapPanorama.setPano(data.location.pano);
+                context._googleMapPanorama.setPov({
+                    heading: heading,
+                    pitch: 0
+                });
+                context._googleMapPanorama.setVisible(true);
+                var listener = google.maps.event.addListener(context._googleMap.getStreetView(), 'visible_changed', function () {
+                    if (!this.getVisible()) {
+                        marker.setMap(null);
+                        google.maps.event.removeListener(listener);
+                    }
+                });
+            } else {
+                console.error('Street View data not found for this location.');
+            }
+        });
+    };
 
     GMap.prototype.updateCircles = function () {
         function rowID(row) {
@@ -629,7 +659,8 @@
         });
     };
 
-    GMap.prototype.zoomTo = function (selection) {
+    GMap.prototype.zoomTo = function (selection, singleMaxZoom) {
+        singleMaxZoom = singleMaxZoom || this.singleZoomToMaxZoom();
         var foundCount = 0;
         var latlngbounds = new google.maps.LatLngBounds();
         selection.forEach(function (item) {
@@ -637,12 +668,15 @@
             latlngbounds.extend(gLatLong);
             ++foundCount;
         });
-        if (foundCount) {
-            this._googleMap.setCenter(latlngbounds.getCenter());
-            this._googleMap.fitBounds(latlngbounds);
-            if (this._googleMap.getZoom() > 12) {
-                this._googleMap.setZoom(12);
-            }
+        switch (foundCount) {
+            case 0:
+                break;
+            case 1:
+                this._googleMap.setCenter(latlngbounds.getCenter());
+                this._googleMap.setZoom(singleMaxZoom);
+                break;
+            default:
+                this._googleMap.fitBounds(latlngbounds);
         }
         return this;
     };

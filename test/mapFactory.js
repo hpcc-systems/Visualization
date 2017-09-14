@@ -297,6 +297,19 @@
                     );
                 });
             },
+            pin: function (callback) {
+                require(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
+                    callback(new GMapPin()
+                        .autoScale(true)    
+                        .latitudeColumn("dest_lat")
+                        .longtitudeColumn("dest_long")
+                        .columns(DataFactory.Sample.FlightPath.columns)
+                        .data(DataFactory.Sample.FlightPath.data.filter(function (row, idx) {
+                            return idx === 0;
+                        }))
+                    );
+                });
+            },
             pinLines: function (callback) {
                 require(["test/DataFactory", "src/map/GMapPinLine"], function (DataFactory, GMapPinLine) {
                     callback(new GMapPinLine()

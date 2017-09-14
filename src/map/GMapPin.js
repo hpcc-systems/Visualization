@@ -42,6 +42,7 @@
     GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });
     GMapPin.prototype.publish("colorColumn", null, "set", "Color", function () { return this.columns(); }, { optional: true });
     GMapPin.prototype.publish("tooltipColumn", null, "set", "Tooltip", function () { return this.columns(); }, { optional: true });
+    GMapPin.prototype.publish("streetViewOnClick", false, "boolean", "Switch to street view when pin clicked");
 
     GMapPin.prototype.pinsData = function () {
         var columns = this.columns();
@@ -79,7 +80,12 @@
     };
 
     GMapPin.prototype.click = function (row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+        if (this.streetViewOnClick()) {
+            this.streetViewAt({
+                lat: +row[this.latitudeColumn()],
+                lng: +row[this.longtitudeColumn()]
+            });
+        }
     };
 
     GMapPin.prototype.dblclick = function (row, column, selected) {

@@ -71,7 +71,7 @@
     XYAxis.prototype.publish("yAxisDomainHigh", null, "string", "Y-Axis High", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
     XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
     XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
-
+    XYAxis.prototype.publish("y2AxisCanShow", true, "boolean", "isY2AxisEnabled", null);
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
     XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);

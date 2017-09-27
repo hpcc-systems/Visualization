@@ -26,6 +26,12 @@
             .type_default("linear")
             .shrinkToFit_default("high")
         ;
+        this.valueAxis2 = new Axis()
+            .classed({ "value": true })
+            .orientation_default("right")
+            .type_default("linear")
+            .shrinkToFit_default("high")
+        ;
         var context = this;
         this.xBrush = d3.svg.brush()
             .on("brush", function () {
@@ -34,6 +40,11 @@
         ;
         this.yBrush = d3.svg.brush()
             .on("brush", function () {
+                return context.brushMoved();
+            })
+        ;
+        this.yBrush2 = d3.svg.brush()
+            .on("brush.y2", function () {
                 return context.brushMoved();
             })
         ;
@@ -72,8 +83,20 @@
     XYAxis.prototype.publishProxy("yAxisDomainPadding", "valueAxis", "extend");
     XYAxis.prototype.publish("yAxisGuideLines", true, "boolean", "Y-Axis Guide Lines");
 
+    XYAxis.prototype.publish("yAxis2CanShow", true, "boolean", "YAxis2Enabled", null);
+    XYAxis.prototype.publishProxy("yAxis2Title", "valueAxis2", "title");
+    XYAxis.prototype.publishProxy("yAxis2TickCount", "valueAxis2", "tickCount");
+    XYAxis.prototype.publishProxy("yAxis2TickFormat", "valueAxis2", "tickFormat");
+    XYAxis.prototype.publishProxy("yAxis2Type", "valueAxis2", "type");
+    XYAxis.prototype.publishProxy("yAxis2TypeTimePattern", "valueAxis2", "timePattern");
+    XYAxis.prototype.publishProxy("yAxis2TypePowExponent", "valueAxis2", "powExponent");
+    XYAxis.prototype.publishProxy("yAxis2TypeLogBase", "valueAxis2", "logBase");
+    XYAxis.prototype.publish("yAxis2Stacked", false, "boolean", "Stacked Chart", null, { tags: ["Basic"], disable: function (w) { return w.xAxisType() !== "ordinal" || w._class.indexOf("chart_Column") < 0; } });
+    XYAxis.prototype.publish("yAxis2DomainLow", null, "string", "Y-Axis Low", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
+    XYAxis.prototype.publish("yAxis2DomainHigh", null, "string", "Y-Axis High", null, { optional: true, disable: function (w) { return w.yAxisType() === "ordinal"; } });
+    XYAxis.prototype.publishProxy("yAxis2DomainPadding", "valueAxis2", "extend");
+    XYAxis.prototype.publish("yAxis2GuideLines", true, "boolean", "Y-Axis Guide Lines");
     XYAxis.prototype.publish("regions", [], "array", "Regions");
-
     XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
 
     XYAxis.prototype.resetSelection = function () {
@@ -147,6 +170,12 @@
             .target(this.svg.node())
             .guideTarget(this.svgValueGuide.node())
         ;
+        if(this.yAxis2CanShow()){
+           this.valueAxis2
+               .target(this.svg.node())
+               .guideTarget(this.svgValueGuide.node())
+            ;    
+        }
 
         //  Brush  ---
         this.svgBrush = element.append("g")
@@ -231,6 +260,16 @@
             this.yAxis.width(0).height(height - xHeight);
             var yAxisOverlap = this.yAxis.calcOverflow(element);
 
+            if(this.yAxis2CanShow()){
+                if(isHorizontal){
+                    this.yAxis2.width(0).height(height - xHeight);
+                    yAxisOverlap  = this.yAxis2.calcOverflow(element);
+                } else{
+                   this.xAxis.width(width - yWidth).height(0);
+                   xAxisOverlap = this.yAxis2.calcOverflow(element);    
+                }
+            }
+
             var newXHeight = xAxisOverlap.depth;
             var newYWidth = yAxisOverlap.depth;
 
@@ -252,6 +291,21 @@
             .y(height / 2 - xHeight / 2 + margin.top)
             .height(height - xHeight)
         ;
+        if(this.yAxis2CanShow()){
+            if(isHorizontal){
+                this.yAxis2
+                    .x(width + margin.left)
+                    .y(height / 2 - xHeight / 2 + margin.top)
+                    .height(height - xHeight)
+                ;
+            }else{
+                this.yAxis2
+                    .x(width / 2 + yWidth / 2 + margin.left)
+                    .y(margin.top)
+                    .width(width - yWidth)
+                ;
+            }
+        }
         margin.left += yWidth;
         margin.bottom += xHeight;
         return margin;
@@ -286,7 +340,7 @@
         regions.exit().remove();
     };
 
-    XYAxis.prototype.update = function (domNode, element) {
+      XYAxis.prototype.update = function (domNode, element) {
         var context = this;
 
         var isHorizontal = this.orientation() === "horizontal";
@@ -299,8 +353,15 @@
         this.valueAxis
             .orientation(isHorizontal ? "left" : "bottom")
         ;
+
         this.xAxis = isHorizontal ? this.domainAxis : this.valueAxis;
         this.yAxis = isHorizontal ? this.valueAxis : this.domainAxis;
+        if(this.yAxis2CanShow()){
+            this.valueAxis2
+                .orientation(isHorizontal ? "right" : "top")
+            ;
+            this.yAxis2 = this.valueAxis2;
+        }
         var xBrush = isHorizontal ? this.xBrush : this.yBrush;
         var yBrush = isHorizontal ? this.yBrush : this.xBrush;
         var xBrushExtent = xBrush.extent();
@@ -333,10 +394,23 @@
         var max = this.yAxisDomainHigh() ? this.yAxisDomainHigh() : this.valueAxis.parseInvert(d3.max(this.parsedData(), function (data) {
             return d3.max(data.filter(function (cell, i) { return i > 0 && context.columns()[i] && context.columns()[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[1] : d; });
         }));
+
+        var min2 = this.yAxis2DomainLow() ? this.yAxis2DomainLow() : this.valueAxis.parseInvert(d3.min(this.parsedData(), function (data) {
+            return d3.min(data.filter(function (cell, i) { return i > 0 && context.columns()[i] && context.columns()[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[0] : d; });
+        }));
+        var max2 = this.yAxis2DomainHigh() ? this.yAxis2DomainHigh() : this.valueAxis.parseInvert(d3.max(this.parsedData(), function (data) {
+            return d3.max(data.filter(function (cell, i) { return i > 0 && context.columns()[i] && context.columns()[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? d[1] : d; });
+        }));
         this.valueAxis
             .low(min)
             .high(max)
         ;
+        if(this.yAxis2CanShow()){
+            this.valueAxis2
+                .low(min2)
+                .high(max2)
+            ;
+        }
 
         //  Calculate Margins  ---
         this.margin = this.calcMargin(domNode, element, isHorizontal);
@@ -358,7 +432,12 @@
             .tickLength(this.yAxisGuideLines() ? maxCurrExtent : 0)
             .render()
         ;
-
+        if(this.yAxis2CanShow()){
+            this.valueAxis2
+                .tickLength(this.yAxis2GuideLines() ? maxCurrExtent : 0)
+                .render()
+            ;
+        }
         this.svgDataClipRect
             .attr("width", width)
             .attr("height", height)
@@ -372,6 +451,8 @@
         ;
         this.yBrush
             .y(this.domainAxis.d3Scale)
+        ;
+        this.yBrush2 .y(this.domainAxis.d3Scale)
         ;
         if (this.selectionMode()) {
             if (this._prevXAxisType !== this.xAxisType()) {

@@ -51,7 +51,7 @@ export class ToggleButton extends Button {
         super.enter(domNode, element);
     }
 
-    update(domNode: HTMLElement, element) {
+    update(domNode: HTMLElement, element: d3SelectionType) {
         super.update(domNode, element);
         this._element.classed("selected", this.selected());
     }
@@ -64,7 +64,7 @@ ToggleButton.prototype.publish("selected", false, "boolean");
 
 export class Spacer extends Item {
 
-    enter(domNode: HTMLElement, element) {
+    enter(domNode: HTMLElement, element: d3SelectionType) {
         super.enter(domNode, element);
         element
             .attr("class", "spacer")
@@ -83,9 +83,9 @@ export class TitleBar extends JSXWidget {
         super();
     }
 
-    enter(domNode, element) {
+    enter(domNode, element: d3SelectionType) {
         super.enter(domNode, element);
-        this._divMain = element.append("div")
+        this._divMain = element.append<HTMLElement>("div")
             .attr("class", "main")
             ;
         this._divIconBar = this._divMain.append<HTMLElement>("div")
@@ -95,6 +95,7 @@ export class TitleBar extends JSXWidget {
             .attr("class", "title")
             ;
     }
+
     update(domNode, element) {
         super.update(domNode, element);
 
@@ -103,7 +104,7 @@ export class TitleBar extends JSXWidget {
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
-            .each(function (d: Item) {
+            .each(function (this: HTMLElement, d: Item) {
                 d.target(this);
             })
             .merge(icons)

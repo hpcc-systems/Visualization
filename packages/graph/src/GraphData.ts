@@ -1,8 +1,6 @@
-import * as _dagre from "dagre";
+import { graphlib } from "dagre";
 
-export const dagre: _dagre = _dagre.dagre || _dagre.default || _dagre;
-
-export class GraphData extends dagre.graphlib.Graph {
+export class GraphData extends graphlib.Graph {
     superGraphData: any;  //  Shut the compiler up  ---
     constructor() {
         super({ multigraph: true, compound: true });
@@ -121,7 +119,7 @@ export class GraphData extends dagre.graphlib.Graph {
     }
 
     getJSON() {
-        const graphObj = dagre.graphlib.json.write(this);
+        const graphObj = graphlib.json.write(this);
         return JSON.stringify(graphObj, function (key, value) {
             if (key === "value") {
                 if (value._text && value._text._text) {

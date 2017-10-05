@@ -45,3 +45,25 @@ export class Dictionary<T> {
         return retVal;
     }
 }
+
+export class DictionaryNoCase<T> extends Dictionary<T> {
+    constructor(attrs?: StringAnyMap) {
+        super(attrs);
+    }
+
+    set(key: string, value: T): T {
+        return super.set(key.toLowerCase(), value);
+    }
+
+    get(key: string): T {
+        return super.get(key.toLowerCase());
+    }
+
+    has(key: string) {
+        return super.has(key.toLowerCase());
+    }
+
+    remove(key: string) {
+        return super.remove(key.toLowerCase());
+    }
+}

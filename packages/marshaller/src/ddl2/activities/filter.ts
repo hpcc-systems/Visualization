@@ -7,7 +7,7 @@ import { Activity, ReferencedFields } from "./activity";
 import { View } from "./view";
 
 export class ColumnMapping extends PropertyExt {
-    _owner: Filter;
+    private _owner: Filter;
 
     @publish(null, "set", "Filter Fields", function (this: ColumnMapping) { return this.sourceOutFields(); }, { optional: true })
     remoteField: publish<this, string>;
@@ -65,7 +65,6 @@ export class ColumnMapping extends PropertyExt {
 ColumnMapping.prototype._class += " ColumnMapping";
 
 export class Filter extends PropertyExt {
-    private _view: View;
     private _owner: Filters;
 
     @publish(null, "set", "Datasource", function (this: Filter) { return this.visualizationIDs(); }, { optional: true })
@@ -77,12 +76,11 @@ export class Filter extends PropertyExt {
 
     constructor(owner: Filters) {
         super();
-        this._view = owner._owner;
         this._owner = owner;
     }
 
     visualizationIDs() {
-        return this._view._dashboard.visualizationIDs();
+        return this._owner.visualizationIDs();
     }
 
     hash(): string {
@@ -112,7 +110,7 @@ export class Filter extends PropertyExt {
     }
 
     sourceViz(): Viz {
-        return this._view._dashboard.visualization(this.source());
+        return this._owner.visualization(this.source());
     }
 
     sourceOutFields(): IField[] {
@@ -139,7 +137,7 @@ export class Filter extends PropertyExt {
 Filter.prototype._class += " Filter";
 
 export class Filters extends Activity {
-    _owner: View;
+    private _owner: View;
 
     @publish([], "propertyArray", "Filter", null, { autoExpand: Filter })
     filter: publish<this, Filter[]>;
@@ -147,6 +145,14 @@ export class Filters extends Activity {
     constructor(owner: View) {
         super();
         this._owner = owner;
+    }
+
+    visualizationIDs(): string[] {
+        return this._owner._dashboard.visualizationIDs();
+    }
+
+    visualization(sourceID: string | PropertyExt): Viz {
+        return this._owner._dashboard.visualization(sourceID);
     }
 
     //  Activity overrides  ---

@@ -1,5 +1,3 @@
-import "es6-promise/auto";
-
 const _version = "1.14.2-dev";
 export function version() {
     return _version;

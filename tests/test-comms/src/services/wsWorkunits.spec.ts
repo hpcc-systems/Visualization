@@ -39,6 +39,7 @@ function doTest(wsWorkunits: WorkunitsService) {
         });
     });
     if (!isTravis()) {
+        /*
         it.skip("WUDetails", function () {
             return wsWorkunits.WUDetails({ WUID: wu.Wuid }).then((response) => {
                 expect(response).exist;
@@ -46,5 +47,6 @@ function doTest(wsWorkunits: WorkunitsService) {
                 return response;
             });
         });
+        */
     }
 }

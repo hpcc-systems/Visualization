@@ -156,7 +156,7 @@ export class Slider extends SVGWidget {
 
         this.handleLeftPos = this.constrain(this.handleLeftPos);
         this.handleRightPos = this.constrain(this.handleRightPos);
-        this.value(this.allowRange() ? this.xScale.invert(this.handleLeftPos) : [this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)])
+        this.value(this.allowRange() ? this.xScale.invert(this.handleLeftPos) : [this.xScale.invert(this.handleLeftPos), this.xScale.invert(this.handleRightPos)]);
         this.updateHandles();
     }
 

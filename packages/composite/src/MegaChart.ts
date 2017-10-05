@@ -1,7 +1,7 @@
 import { Database, Text, Utility } from "@hpcc-js/common";
 import { Button, Input, Select } from "@hpcc-js/form";
 import { Border, Grid, Toolbar } from "@hpcc-js/layout";
-import { Legend } from "@hpcc-js/other";
+import { Html, Legend } from "@hpcc-js/other";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
 import { MultiChart } from "./MultiChart";
@@ -27,6 +27,7 @@ export class MegaChart extends Border {
     _anyChartTypes;
     _allChartTypes;
     _contentClasses;
+    _dataCount;
 
     constructor() {
         super();
@@ -105,10 +106,10 @@ export class MegaChart extends Border {
         this._dataCount = new Html()
             .classed({ "composite_MegaChart-dataCount": true })
             .id(this.id() + "_dataCount")
-            .html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">'+(this.data() ? this.data().length : "0")+'</span>')
-            .overflowX('visible')
-            .overflowY('visible')
-        ;
+            .html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">' + (this.data() ? this.data().length : "0") + "</span>")
+            .overflowX("visible")
+            .overflowY("visible")
+            ;
 
         this._csvButton = new Button()
             .classed({ "composite_MegaChart-CSV": true })
@@ -131,7 +132,7 @@ export class MegaChart extends Border {
             .value("\uf2d0")
             ;
         this._maximizeButton.click = function (buttonWidget) {
-            const target = context.target();
+            const target = context.target() as any;
             let node = target;
             const isMaximized = d3Select(target).classed("__hpccisMaximized");
 
@@ -466,7 +467,7 @@ MegaChart.prototype.publishReset();
 
 MegaChart.prototype.publish("showToolbar", true, "boolean", "Enable/Disable Toolbar widget", null, { tags: ["Basic"] });
 MegaChart.prototype.publishProxy("title", "_toolbar", "title");
-    MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
 MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
 MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
 MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });

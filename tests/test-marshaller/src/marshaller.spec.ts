@@ -7,7 +7,7 @@ import { classDef } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/marshaller", () => {
+describe.skip("@hpcc-js/marshaller", () => {
     for (const key in marshaller) {
         const item = (marshaller as any)[key];
         if (item && item.prototype instanceof Class) {

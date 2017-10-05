@@ -1137,8 +1137,8 @@ export namespace WUUpdate {
         XmlParams?: string;
         ThorSlaveIP?: string;
         QueryMainDefinition?: string;
-        DebugValues?: any[];
-        ApplicationValues?: any[];
+        DebugValues?: DebugValues;
+        ApplicationValues?: ApplicationValues;
     }
 
     export interface Exception {
@@ -2202,78 +2202,158 @@ export namespace WUCDebug {
     }
 }
 
+export namespace WUDetailsMeta {
+
+    export interface Request {
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface Attributes {
+        Attribute: string[];
+    }
+
+    export interface ScopeTypes {
+        ScopeType: string[];
+    }
+
+    export interface Measures {
+        Measure: string[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        Attributes: Attributes;
+        ScopeTypes: ScopeTypes;
+        Measures: Measures;
+    }
+}
+
 export namespace WUDetails {
-    export interface AttributeFilter {
-        Name?: string;
-        ExactValue?: string;
-        MinValue?: string;
-        MaxValue?: string;
-    }
+    export namespace RequestNS {
 
-    // Filter.AttributeFilters.WUAttributeFilter.0.Name=WhenGraphStarted
-    // Filter.AttributeFilters.WUAttributeFilter.itemcount=1
-    export interface Filter {
-        MaxDepth?: number;
-        Scopes?: string[];
-        Ids?: string[];
-        ScopeTypes?: string[];
-        AttributeFilters?: {
-            WUAttributeFilter: AttributeFilter[];
-        };
-    }
+        // tslint:disable-next-line:no-shadowed-variable
+        export interface Scopes {
+            Scope: string[];
+        }
 
-    export interface Nested {
-        Depth?: number;
-        ScopeTypes?: string[];
-    }
+        export interface Ids {
+            id: string[];
+        }
 
-    export interface ScopeOverride {
-        scopeType: string;
-        Attributes: string[];
-    }
+        export interface ScopeTypes {
+            ScopeType: string[];
+        }
 
-    export interface AttributeToReturn {
-        OnlyDynamic?: boolean;
-        MinVersion?: string;
-        Measure?: string;
-        Attributes?: string[];
-        ScopeOverrides?: {
-            WUScopeOverride: ScopeOverride[]
-        };
-    }
+        export interface AttributeFilter {
+            Name?: string;
+            ExactValue?: string;
+            MinValue?: string;
+            MaxValue?: string;
+        }
 
-    export interface ScopeOptions {
-        IncludeMatchedScopesInResults?: boolean;
-        IncludeScope?: boolean;
-        IncludeId?: boolean;
-        IncludeScopeType?: boolean;
-    }
+        export interface AttributeFilters {
+            AttributeFilter: AttributeFilter[];
+        }
 
-    export interface AttributeOptions {
-        IncludeName?: boolean;
-        IncludeRawValue?: boolean;
-        IncludeFormatted?: boolean;
-        IncludeMeasure?: boolean;
-        IncludeCreator?: boolean;
-        IncludeCreatorType?: boolean;
+        export interface Filter {
+            MaxDepth?: number;
+            Scopes?: Scopes;
+            Ids?: Ids;
+            ScopeTypes?: ScopeTypes;
+            AttributeFilters?: AttributeFilters;
+        }
+
+        export interface ScopeTypes2 {
+            ScopeType: string[];
+        }
+
+        export interface Nested {
+            Depth?: number;
+            ScopeTypes: ScopeTypes2;
+        }
+
+        // tslint:disable-next-line:no-shadowed-variable
+        export interface Attributes {
+            Attribute: string[];
+        }
+
+        export interface Attributes2 {
+            Attribute: string[];
+        }
+
+        export interface ScopeOverride {
+            scopeType: string;
+            Attributes: Attributes2;
+        }
+
+        export interface ScopeOverrides {
+            ScopeOverride: ScopeOverride[];
+        }
+
+        export interface AttributeToReturn {
+            OnlyDynamic?: boolean;
+            MinVersion?: string;
+            Measure: string;
+            Attributes: Attributes;
+            ScopeOverrides?: ScopeOverrides;
+        }
+
+        export interface ScopeOptions {
+            IncludeMatchedScopesInResults: boolean;
+            IncludeScope: boolean;
+            IncludeId: boolean;
+            IncludeScopeType: boolean;
+        }
+
+        export interface AttributeOptions {
+            IncludeName: boolean;
+            IncludeRawValue: boolean;
+            IncludeFormatted: boolean;
+            IncludeMeasure: boolean;
+            IncludeCreator: boolean;
+            IncludeCreatorType: boolean;
+        }
     }
 
     export interface Request {
         WUID: string;
-        Filter?: Filter;
-        Nested?: Nested;
-        AttributeToReturn?: AttributeToReturn;
-        ScopeOptions?: ScopeOptions;
-        AttributeOptions?: AttributeOptions;
+        Filter?: RequestNS.Filter;
+        Nested?: RequestNS.Nested;
+        AttributeToReturn: RequestNS.AttributeToReturn;
+        ScopeOptions: RequestNS.ScopeOptions;
+        AttributeOptions: RequestNS.AttributeOptions;
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
     }
 
     export interface Attribute {
         Name: string;
-        RawValue?: any;
-        Formatted: any;
-        Measure?: any;
-        Creator?: any;
-        CreatorType?: any;
+        RawValue: string;
+        Formatted: string;
+        Measure: string;
+        Creator: string;
+        CreatorType: string;
     }
 
     export interface Attributes {
@@ -2282,8 +2362,8 @@ export namespace WUDetails {
 
     export interface Scope {
         Scope: string;
-        Id?: any;
-        ScopeType?: any;
+        Id: string;
+        ScopeType: string;
         Attributes: Attributes;
     }
 
@@ -2292,7 +2372,8 @@ export namespace WUDetails {
     }
 
     export interface Response {
-        maxVersion: number;
+        Exceptions: Exceptions;
+        MaxVersion: string;
         WUID: string;
         Scopes: Scopes;
     }
@@ -2353,21 +2434,7 @@ export class WorkunitsService {
         return this._connection.send("WUCreate");
     }
 
-    private objToESPArray(id: string, obj: any, request: any) {
-        let count = 0;
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                request[`${id}s.${id}.${count}.Name`] = key;
-                request[`${id}s.${id}.${count}.Value`] = obj[key];
-                ++count;
-            }
-        }
-        request[`${id}s.${id}.itemcount`] = count;
-    }
-
-    WUUpdate(request: WUUpdate.Request, appValues: { [key: string]: string | number | boolean } = {}, debugValues: { [key: string]: string | number | boolean } = {}): Promise<WUUpdate.Response> {
-        this.objToESPArray("ApplicationValue", appValues, request);
-        this.objToESPArray("DebugValue", debugValues, request);
+    WUUpdate(request: WUUpdate.Request): Promise<WUUpdate.Response> {
         return this._connection.send("WUUpdate", request);
     }
 

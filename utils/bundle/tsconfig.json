@@ -9,7 +9,7 @@
         "strictNullChecks": true,
         "skipLibCheck": true,
         "target": "es6",
-        "outDir": "./lib",
+        "outDir": "./lib-umd",
         "lib": [
             "es6",
             "dom",

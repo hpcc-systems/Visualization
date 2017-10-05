@@ -3,10 +3,10 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require("path");
 
 module.exports = {
-    entry: "./lib/index.js",
+    entry: "./lib-es6/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist/'),
-        publicPath: "dist/",
+        path: path.resolve(__dirname, 'build/'),
+        publicPath: "build/",
         filename: "ddl-shim.js",
         libraryTarget: "umd",
         library: "@hpcc-js/ddl-shim"

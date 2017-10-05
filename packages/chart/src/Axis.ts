@@ -1,4 +1,4 @@
-import { SVGWidget } from "@hpcc-js/common";
+import { publish, SVGWidget } from "@hpcc-js/common";
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft, axisRight as d3AxisRight, axisTop as d3AxisTop } from "d3-axis";
 import { format as d3Format } from "d3-format";
 import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleTime as d3ScaleTime } from "d3-scale";
@@ -28,6 +28,32 @@ export class Axis extends SVGWidget {
     protected svgAxis;
     protected svgText;
     protected svgGuides;
+
+    @publish("linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"])
+    _type: string;
+    type(): string;
+    type(_: string): this;
+    type(_?: string): string | this {
+        if (!arguments.length) return this._type;
+        this._type = _;
+        this.updateScale();
+        return this;
+    }
+
+    @publish("%Y-%m-%d", "string", "Time Series Pattern", null, { disable: (w: any) => w.type() !== "time" })
+    _timePattern: string;
+    timePattern(): string;
+    timePattern(_: string): this;
+    timePattern(_?: string): string | this {
+        if (!arguments.length) return this._timePattern;
+        this._timePattern = _;
+        this.updateScale();
+        return this;
+    }
+    timePattern_exists: () => boolean;
+
+    @publish(false, "boolean", "Reverse")
+    reverse: publish<this, boolean>;
 
     constructor() {
         super();
@@ -83,6 +109,10 @@ export class Axis extends SVGWidget {
             return this.formatter(d);
         }
         return d;
+    }
+
+    parseFormat(d) {
+        return this.format(this.parse(d));
     }
 
     scalePos(d) {
@@ -150,7 +180,7 @@ export class Axis extends SVGWidget {
     }
 
     protected _prevOrientation;
-    updateScale() {
+    updateScale(): this {
         switch (this.type()) {
             case "ordinal":
                 this.d3Scale = d3ScaleBand().padding(0.1);
@@ -193,8 +223,8 @@ export class Axis extends SVGWidget {
                 if (this.low_exists() && this.high_exists()) {
                     this.d3Scale.domain([this.lowValue(), this.highValue()]);
                 }
-                this.parser = this.timePattern_exists() ? d3TimeParse(this.timePattern() as string) : null;
-                this.parserInvert = this.timePattern_exists() ? d3TimeFormat(this.timePattern() as string) : null;
+                this.parser = this.timePattern_exists() ? d3TimeParse(this.timePattern()) : null;
+                this.parserInvert = this.timePattern_exists() ? d3TimeFormat(this.timePattern()) : null;
                 this.formatter = this.tickFormat_exists() ? d3TimeFormat(this.tickFormat()) : null;
                 break;
             default:
@@ -287,6 +317,7 @@ export class Axis extends SVGWidget {
             this.d3Guides
                 .tickValues(customTicks.map(d => this.parse(d.value)));
         }
+        return this;
     }
 
     adjustText(svg, tickOverlapModulus) {
@@ -499,7 +530,9 @@ export class Axis extends SVGWidget {
 
         const overlap = this.calcOverflow(_element);
 
-        this.range(this.isHorizontal() ? [overlap.left, this.width() - overlap.right] : [this.height() - overlap.top - overlap.bottom, 0]);
+        const lowerPos: number = this.isHorizontal() ? overlap.left : this.height() - overlap.top - overlap.bottom;
+        const upperPos: number = this.isHorizontal() ? this.width() - overlap.right : 0;
+        this.range(this.reverse() ? [upperPos, lowerPos] : [lowerPos, upperPos]);
 
         const context = this;
         function doPosition(element) {
@@ -600,9 +633,6 @@ export class Axis extends SVGWidget {
 
     title: { (): string; (_: string): Axis; };
     orientation: { (): string; (_: string): Axis; };
-    type: { (): string; (_: string): Axis; };
-    timePattern: { (): string; (_: string): Axis; };
-    timePattern_exists: () => boolean;
     powExponent: { (): number; (_: number): Axis; };
     logBase: { (): number; (_: number): Axis; };
     ordinals: { (): string[]; (_: string[]): Axis; };
@@ -628,8 +658,6 @@ Axis.prototype._class += " chart_Axis";
 
 Axis.prototype.publish("title", "", "string", "Title");
 Axis.prototype.publish("orientation", "bottom", "set", "Orientation", ["left", "top", "right", "bottom"]);
-Axis.prototype.publish("type", "linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"]);
-Axis.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, { disable: (w: any) => w.type() !== "time" });
 Axis.prototype.publish("powExponent", 2, "number", "Exponent for Pow on Value Axis", null, { disable: (w: any) => w.type() !== "pow" });
 Axis.prototype.publish("logBase", 10, "number", "Base for log on Value Axis", null, { disable: (w: any) => w.type() !== "log" });
 Axis.prototype.publish("ordinals", [], "array", "Ordinal Values", null, { disable: (w: any) => w.type() !== "ordinal" });
@@ -644,21 +672,3 @@ Axis.prototype.publish("labelRotation", 33, "number", "Label Rotation", null, { 
 Axis.prototype.publish("shrinkToFit", "both", "set", "Size to fit", ["none", "low", "high", "both"]);
 Axis.prototype.publish("extend", 5, "number", "Extend axis %", null, { optional: true, disable: (w: any) => w.type() === "ordinal" });
 Axis.prototype.publish("hidden", false, "boolean", "Hide Axis");
-
-const type = Axis.prototype.type;
-(Axis.prototype as any).type = function (_?: string): string | Axis {
-    const retVal = type.apply(this, arguments);
-    if (arguments.length) {
-        this.updateScale();
-    }
-    return retVal;
-};
-
-const timePattern = Axis.prototype.timePattern;
-(Axis.prototype as any).timePattern = function (_) {
-    const retVal = timePattern.apply(this, arguments);
-    if (arguments.length) {
-        this.updateScale();
-    }
-    return retVal;
-};

@@ -17,27 +17,31 @@ export class MiniGantt extends SVGWidget {
 
     protected rootExtent;
 
+    @publish("%Y-%m-%d", "string", "Time Series Pattern")
+    timePattern: publish<this, string>;
+    @publish("%Y-%m-%d", "string", "Tick Format", null, { optional: true })
+    tickFormat: publish<this, string>;
     @publish(2, "number", "Force new lane if start/end is within X pixels")
-    overlapTolerence: { (): number; (_: number): MiniGantt; };
+    overlapTolerence: publish<this, number>;
+    @publish("horizontal", "set", "Orientation", ["horizontal", "vertical"])
+    orientation: publish<this, string>;
 
     constructor() {
         super();
         this.topAxis = new Axis()
-            .orientation("top")
             .type("time")
-            .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-            .tickFormat("%H:%M:%S")
             ;
         this.bottomAxis = new Axis()
-            .orientation("bottom")
             .type("time")
-            .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-            .tickFormat("%H:%M:%S")
             ;
         this.verticalBands = d3ScaleBand()
             .paddingOuter(0.2)
             .paddingInner(0.2)
             ;
+    }
+
+    isHorizontal(): boolean {
+        return this.orientation() === "horizontal";
     }
 
     fullExtent() {
@@ -104,7 +108,36 @@ export class MiniGantt extends SVGWidget {
         const width = this.width();
         const height = this.height();
         const extent = this.extent();
-        const data = this.data();
+
+        this.topAxis
+            .orientation(this.isHorizontal() ? "top" : "left")
+            .reverse(!this.isHorizontal())
+            .timePattern(this.timePattern())    //  "%Y-%m-%dT%H:%M:%S.%LZ"
+            .tickFormat(this.tickFormat())      //  "%H:%M:%S"
+            .width(width - 1)
+            .height(height)
+            .low(extent[0])
+            .high(extent[1])
+            .updateScale()
+            ;
+
+        this.bottomAxis
+            .orientation(this.isHorizontal() ? "bottom" : "right")
+            .reverse(!this.isHorizontal())
+            .timePattern(this.timePattern())    //  "%Y-%m-%dT%H:%M:%S.%LZ"
+            .tickFormat(this.tickFormat())      //  "%H:%M:%S"
+            .width(width - 1)
+            .height(height)
+            .low(extent[0])
+            .high(extent[1])
+            .updateScale()
+            ;
+
+        const data = this.data().sort(this.isHorizontal() ? (l, r) => {
+            return this.bottomAxis.scalePos(l[1]) - this.bottomAxis.scalePos(r[1]);
+        } : (l, r) => {
+            return this.bottomAxis.scalePos(r[1]) - this.bottomAxis.scalePos(l[1]);
+        });
         const events = data.filter(d => !d[2]);
         const ranges = data.filter(d => !!d[2]);
         const eventTicks = events.map((d) => {
@@ -115,20 +148,12 @@ export class MiniGantt extends SVGWidget {
         });
 
         this.topAxis
-            .width(width - 1)
-            .height(height)
-            .low(extent[0])
-            .high(extent[1])
             .ticks(eventTicks)
             .render()
             ;
         const topAxisBBox = this.topAxis.getBBox();
 
         this.bottomAxis
-            .width(width - 1)
-            .height(height)
-            .low(extent[0])
-            .high(extent[1])
             .render()
             ;
         const bottomAxisBBox = this.bottomAxis.getBBox();
@@ -138,58 +163,65 @@ export class MiniGantt extends SVGWidget {
         }
         const bucketData: BucketInfo[] = [];
         const bucketIndex = {};
-        ranges.forEach(d => {
+        for (const range of ranges) {
             for (let i = 0; i < bucketData.length; ++i) {
                 const bucket = bucketData[i];
-                if (bucket.endPos + this.overlapTolerence() <= this.dataStartPos(d)) {
-                    bucketIndex[d] = i;
-                    bucket.endPos = this.dataEndPos(d);
+                if (bucket.endPos + this.overlapTolerence() <= this.dataStartPos(range)) {
+                    bucketIndex[range] = i;
+                    bucket.endPos = this.dataEndPos(range);
                     break;
                 }
             }
 
-            if (bucketIndex[d] === undefined) {
-                bucketIndex[d] = bucketData.length;
+            if (bucketIndex[range] === undefined) {
+                bucketIndex[range] = bucketData.length;
                 bucketData.push({
-                    endPos: this.dataEndPos(d)
+                    endPos: this.dataEndPos(range)
                 });
             }
-        });
+        }
+
+        const vbLower = this.isHorizontal() ? -height / 2 + topAxisBBox.height : -width / 2 + topAxisBBox.width;
+        const vbHigher = this.isHorizontal() ? height / 2 - bottomAxisBBox.height : width / 2 - bottomAxisBBox.width;
 
         this.verticalBands
-            .range([-height / 2 + topAxisBBox.height, height / 2 - bottomAxisBBox.height])
+            .range([vbLower, vbHigher])
             .domain(bucketData.map((_d, i) => i))
             ;
 
         const context = this;
         const buckets = this.svgEvents.selectAll(".buckets").data(ranges, d => d[0]);
-        const enterBuckets = buckets.enter().append("g")
+        buckets.enter().append("g")
             .attr("class", "buckets")
             .each(function (d) {
                 const text = new TextBox()
                     .target(this)
-                    .anchor("start")
+                    .anchor("center")
                     .on("dblclick", () => {
                         context.rootExtent = d;
                         context.lazyRender();
                     }, true)
                     ;
                 context.localText.set(this, text);
-            });
-        enterBuckets
+            })
             .merge(buckets)
-            .attr("transform", d => `translate(${this.dataStartPos(d) - width / 2}, ${this.verticalBands(bucketIndex[d])})`)
+            .attr("transform", d => context.isHorizontal() ?
+                `translate(${this.dataStartPos(d) - width / 2}, ${this.verticalBands(bucketIndex[d])})` :
+                `translate(${this.verticalBands(bucketIndex[d])}, ${this.dataStartPos(d) - height / 2})`)
             .each(function (d) {
-                const text = context.localText.get(this);
-                text
-                    .pos({ x: context.dataWidth(d) / 2, y: context.verticalBands.bandwidth() / 2 })
-                    .fixedSize({ width: context.dataWidth(d), height: context.verticalBands.bandwidth() })
+                const textBox = context.localText.get(this);
+                const x = context.dataWidth(d) / 2;
+                const y = context.verticalBands.bandwidth() / 2;
+                const textBoxWidth = context.dataWidth(d);
+                const textBoxHeight = context.verticalBands.bandwidth();
+                textBox
+                    .pos(context.isHorizontal() ? { x, y } : { x: y, y: x })
+                    .fixedSize(context.isHorizontal() ? { width: textBoxWidth, height: textBoxHeight } : { width: textBoxHeight, height: textBoxWidth })
                     .text(d[0])
-                    .tooltip(d[0])
+                    .tooltip(`${d[0]} [${context.bottomAxis.parseFormat(d[1])}->${context.bottomAxis.parseFormat(d[2])}]`)
                     .render()
                     ;
             });
-
         buckets.exit().remove();
 
         const lines = this.svgEvents.selectAll(".line").data(events, d => {

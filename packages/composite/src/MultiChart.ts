@@ -2,6 +2,7 @@ import { IGraph, INDChart } from "@hpcc-js/api";
 import { Database, HTMLWidget, Utility, Widget } from "@hpcc-js/common";
 import { map as d3Map } from "d3-collection";
 
+declare const require: any;
 export class MultiChart extends HTMLWidget {
     _allCharts = {};
     _chartTypeDefaults;
@@ -94,9 +95,23 @@ export class MultiChart extends HTMLWidget {
     }
 
     requireContent(chartType, callback) {
-        Utility.requireWidget(this._allCharts[chartType].widgetClass).then(function (WidgetClass: any) {
-            callback(new WidgetClass());
-        });
+        const classInfo = Utility.parseClassID(this._allCharts[chartType].widgetClass);
+        switch (classInfo.package) {
+            case "@hpcc-js/chart":
+                require(["@hpcc-js/chart"], mod => {
+                    callback(new mod[classInfo.widgetID]());
+                });
+                break;
+            case "@hpcc-js/dgrid":
+                require(["@hpcc-js/dgrid"], mod => {
+                    callback(new mod[classInfo.widgetID]());
+                });
+                break;
+            default:
+                Utility.requireWidget(this._allCharts[chartType].widgetClass).then(function (WidgetClass: any) {
+                    callback(new WidgetClass());
+                });
+        }
     }
 
     switchChart(callback) {

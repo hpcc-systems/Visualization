@@ -96,6 +96,9 @@ export interface IFilter extends IActivity {
     type: "filter";
     conditions: IFilterCondition[];
 }
+export function isFilterActivity(activity: IActivity): activity is IFilter {
+    return activity.type === "filter";
+}
 
 //  Project  ==================================================================
 export interface IScale {
@@ -118,6 +121,9 @@ export interface IProject extends IActivity {
     type: "project";
     transformations: TransformationType[];
 }
+export function isProjectActivity(activity: IActivity): activity is IProject {
+    return activity.type === "project";
+}
 
 //  GroupBy  ==================================================================
 export interface IAggregate {
@@ -138,6 +144,9 @@ export interface IGroupBy extends IActivity {
     groupByIDs: string[];
     aggregates: AggregateType[];
 }
+export function isGroupByActivity(activity: IActivity): activity is IGroupBy {
+    return activity.type === "groupby";
+}
 
 //  Sort  =====================================================================
 export interface ISortCondition {
@@ -149,23 +158,24 @@ export interface ISort extends IActivity {
     type: "sort";
     conditions: ISortCondition[];
 }
+export function isSortActivity(activity: IActivity): activity is ISort {
+    return activity.type === "sort";
+}
 
 //  Limit  ====================================================================
 export interface ILimit extends IActivity {
     type: "limit";
     limit: number;
 }
+export function isLimitActivity(activity: IActivity): activity is ILimit {
+    return activity.type === "limit";
+}
 
 //  View  =====================================================================
 export interface IView {
     id: string;
     datasource: IDatasourceRef | IRoxieServiceRef;
-    filter?: IFilter;
-    computed?: IProject;
-    groupBy?: IGroupBy;
-    sort?: ISort;
-    limit?: ILimit;
-    mappings?: IProject;
+    activities: IActivity[];
 }
 
 //  DDL  ======================================================================

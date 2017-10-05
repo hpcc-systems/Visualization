@@ -9,7 +9,7 @@ export function MultiChartSurface() {
     this._title = "MultiChartSurface";
 
     this._content = new MultiChart();
-    var context = this;
+    const context = this;
     this._content.click = function (row, column) {
         context.click(row, column);
     };
@@ -41,7 +41,7 @@ MultiChartSurface.prototype.data = function (_) {
 
 MultiChartSurface.prototype._origMode = MultiChartSurface.prototype.mode;
 MultiChartSurface.prototype.mode = function (_) {
-    var retVal = MultiChartSurface.prototype._origMode.apply(this, arguments);
+    const retVal = MultiChartSurface.prototype._origMode.apply(this, arguments);
     if (arguments.length) {
         this._mode = _;
         switch (this._mode) {

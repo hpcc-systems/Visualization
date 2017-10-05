@@ -1,11 +1,11 @@
-import * as Comms from "./Comms";
 import { Utility } from "@hpcc-js/common";
+import * as Comms from "./Comms";
 
 function nestedRowFix(row) {
     if (row.Row && row.Row instanceof Array) {
         return row.Row.map(nestedRowFix);
     } else if (row instanceof Object) {
-        for (var key in row) {
+        for (const key in row) {
             row[key] = nestedRowFix(row[key]);
         }
     }
@@ -13,15 +13,15 @@ function nestedRowFix(row) {
 }
 
 //  Basic Comms  ---
-var enableBasicCommsCache = false;
-var basicCommsCache = {};
+let enableBasicCommsCache = false;
+let basicCommsCache = {};
 function BasicComms() {
     Comms.Basic.call(this);
 }
 BasicComms.prototype = Object.create(Comms.Basic.prototype);
 
 BasicComms.prototype.jsonp = function (url, request) {
-    var requestStr = JSON.stringify(request);
+    const requestStr = JSON.stringify(request);
     if (enableBasicCommsCache && basicCommsCache[url] && basicCommsCache[url][requestStr]) {
         return Promise.resolve(basicCommsCache[url][requestStr]);
     }
@@ -45,10 +45,10 @@ function WsWorkunits(baseUrl) {
 WsWorkunits.prototype = Object.create(BasicComms.prototype);
 
 WsWorkunits.prototype.wuQuery = function (options) {
-    var url = this.getUrl({
+    const url = this.getUrl({
         pathname: "WsWorkunits/WUQuery.json",
     });
-    var request = {
+    const request = {
         Wuid: "",
         Type: "",
         Cluster: "",
@@ -81,7 +81,7 @@ WsWorkunits.prototype.wuQuery = function (options) {
         Descending: 0,
         CacheHint: ""
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
     return this.jsonp(url, request).then(function (response) {
@@ -102,10 +102,10 @@ function Workunit(baseUrl, wuid) {
 Workunit.prototype = Object.create(BasicComms.prototype);
 
 Workunit.prototype.wuInfo = function (options) {
-    var url = this.getUrl({
+    const url = this.getUrl({
         pathname: "WsWorkunits/WUInfo.json",
     });
-    var request = {
+    const request = {
         Wuid: this._wuid,
         TruncateEclTo64k: true,
         IncludeExceptions: false,
@@ -122,14 +122,14 @@ Workunit.prototype.wuInfo = function (options) {
         IncludeXmlSchemas: false,
         SuppressResultSchemas: true
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
     return this.jsonp(url, request).then(function (response) {
         if (enableBasicCommsCache) {
-            var retVal = { WUInfoResponse: { Workunit: {} } };
-            for (var key in options) {
-                var includeKey = key.substring(7);
+            const retVal = { WUInfoResponse: { Workunit: {} } };
+            for (const key in options) {
+                const includeKey = key.substring(7);
                 retVal.WUInfoResponse.Workunit[includeKey] = response.WUInfoResponse.Workunit[includeKey];
             }
             basicCommsCache[url][JSON.stringify(request)] = retVal;
@@ -139,13 +139,13 @@ Workunit.prototype.wuInfo = function (options) {
 };
 
 Workunit.prototype.wuUpdate = function (options) {
-    var url = this.getUrl({
+    const url = this.getUrl({
         pathname: "WsWorkunits/WUUpdate.json"
     });
-    var request = {
+    const request = {
         Wuid: this._wuid
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
     return this.post(url, request);
@@ -156,7 +156,7 @@ Workunit.prototype.appData = function (appID, key, _) {
         return this.wuInfo({
             IncludeApplicationValues: true
         }).then(function (response) {
-            var persistString;
+            let persistString;
             if (response.WUInfoResponse && response.WUInfoResponse.Workunit && response.WUInfoResponse.Workunit.ApplicationValues && response.WUInfoResponse.Workunit.ApplicationValues.ApplicationValue) {
                 response.WUInfoResponse.Workunit.ApplicationValues.ApplicationValue.filter(function (row) {
                     return row.Application === appID && row.Name === key;
@@ -177,11 +177,11 @@ Workunit.prototype.appData = function (appID, key, _) {
 };
 
 Workunit.prototype.results = function () {
-    var context = this;
+    const context = this;
     return this.wuInfo({
         IncludeResults: true
     }).then(function (response) {
-        var retVal = [];
+        let retVal = [];
         if (Utility.exists("WUInfoResponse.Workunit.Results.ECLResult", response)) {
             retVal = response.WUInfoResponse.Workunit.Results.ECLResult.map(function (result) {
                 return new WUResult(context.getUrl({ pathname: "WsWorkunits/" }), context._wuid, result.Name);
@@ -221,18 +221,18 @@ WUResult.prototype.name = function (_) {
 WUResult.prototype.query = function (options, filter) {
     options = options || {};
     filter = filter || {};
-    var request = {
+    const request = {
         Wuid: this._wuid,
         ResultName: this._name,
         SuppressXmlSchema: true,
         Start: 0,
         Count: -1
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
-    var filterIdx = 0;
-    for (var fKey in filter) {
+    let filterIdx = 0;
+    for (const fKey in filter) {
         request["FilterBy.NamedValue." + filterIdx + ".Name"] = fKey;
         request["FilterBy.NamedValue." + filterIdx + ".Value"] = filter[fKey];
         ++filterIdx;
@@ -240,7 +240,7 @@ WUResult.prototype.query = function (options, filter) {
     if (filterIdx) {
         request["FilterBy.NamedValue.itemcount"] = filterIdx;
     }
-    var context = this;
+    const context = this;
     return this.jsonp(this.url(), request).then(function (response) {
         if (response.WUResultResponse &&
             response.WUResultResponse.Result &&
@@ -271,18 +271,18 @@ LogicalFile.prototype = Object.create(BasicComms.prototype);
 LogicalFile.prototype.query = function (options, filter) {
     options = options || {};
     filter = filter || {};
-    var request = {
+    const request = {
         Cluster: "hthor",  //  TODO:  Should not be needed  ---
         LogicalName: this._logicalName,
         SuppressXmlSchema: this._xmlSchema !== null,
         Start: 0,
         Count: -1
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
-    var filterIdx = 0;
-    for (var fKey in filter) {
+    let filterIdx = 0;
+    for (const fKey in filter) {
         request["FilterBy.NamedValue." + filterIdx + ".Name"] = fKey;
         request["FilterBy.NamedValue." + filterIdx + ".Value"] = filter[fKey];
         ++filterIdx;
@@ -290,7 +290,7 @@ LogicalFile.prototype.query = function (options, filter) {
     if (filterIdx) {
         request["FilterBy.NamedValue.itemcount"] = filterIdx;
     }
-    var context = this;
+    const context = this;
     return this.jsonp(this.url(), request).then(function (response) {
         if (response.WUResultResponse &&
             response.WUResultResponse.Result &&
@@ -305,8 +305,8 @@ LogicalFile.prototype.query = function (options, filter) {
 //  Roxie Query  ---
 function RoxieQuery(baseUrl, resultName) {
     BasicComms.call(this);
-    var urlParts = baseUrl.split("/");
-    var queryName = urlParts.pop();
+    const urlParts = baseUrl.split("/");
+    let queryName = urlParts.pop();
     if (queryName.toLowerCase() === "json") {
         queryName = urlParts.pop();
     }
@@ -318,14 +318,14 @@ RoxieQuery.prototype = Object.create(BasicComms.prototype);
 
 function trimRight(str) {
     if (str && str.replace) {
-        return str.replace(/ +$/, '');
+        return str.replace(/ +$/, "");
     }
     return str;
 }
 
 function postFilter(results, filter) {
     return results.filter(function (row) {
-        for (var key in filter) {
+        for (const key in filter) {
             if (row[key] !== undefined && trimRight(filter[key]) !== trimRight(row[key])) {
                 return false;
             }
@@ -336,11 +336,11 @@ function postFilter(results, filter) {
 
 function locateRoxieResponse(response) {
     // v5 and v6 compatible ---
-    for (var key in response) {
+    for (const key in response) {
         if (response[key].Row && response[key].Row instanceof Array) {
             return response;
         }
-        var retVal = locateRoxieResponse(response[key]);
+        const retVal = locateRoxieResponse(response[key]);
         if (retVal) {
             return retVal;
         }
@@ -351,15 +351,15 @@ function locateRoxieResponse(response) {
 RoxieQuery.prototype.query = function (options, filter) {
     options = options || {};
     filter = filter || {};
-    var request = {
+    const request = {
     };
-    for (var key in options) {
+    for (const key in options) {
         request[key] = options[key];
     }
-    for (var fKey in filter) {
+    for (const fKey in filter) {
         request[fKey] = filter[fKey];
     }
-    var context = this;
+    const context = this;
     return this.jsonp(this.url(), request).then(function (response) {
         response = locateRoxieResponse(response);
         if (response) {
@@ -368,7 +368,7 @@ RoxieQuery.prototype.query = function (options, filter) {
                     return nestedRowFix(postFilter(response[context._resultName].Row, filter));
                 }
             } else {
-                for (var key in response) {
+                for (const key in response) {
                     if (response[key].Row) {
                         return nestedRowFix(postFilter(response[key].Row, filter));
                     }
@@ -380,7 +380,7 @@ RoxieQuery.prototype.query = function (options, filter) {
 };
 
 function createResult(_espUrl, dataSource, resultName?) {
-    var espUrl = new Comms.ESPUrl()
+    const espUrl = new Comms.ESPUrl()
         .url(_espUrl)
         ;
     if (dataSource.indexOf("http") === 0) {
@@ -408,11 +408,11 @@ export function cache(_) {
 }
 export function createConnection(url) {
     url = url || document.URL;
-    var testURL = new Comms.ESPUrl()
+    const testURL = new Comms.ESPUrl()
         .url(url)
         ;
     if (testURL.isWsWorkunits()) {
-        var espConnection = Comms.createESPConnection(url);
+        const espConnection = Comms.createESPConnection(url);
         if (espConnection instanceof Comms.WsWorkunits && espConnection.wuid()) {
             return new Workunit(espConnection.getUrl({ pathname: "" }), espConnection.wuid())
                 .url(url)
@@ -422,26 +422,26 @@ export function createConnection(url) {
     return null;
 }
 export function flattenResult(result, mappings) {
-    var retVal = {
+    const retVal = {
         columns: [],
         data: []
     };
     if (result && result.length) {
-        var colIdx = {};
+        const colIdx = {};
         if (mappings && mappings.length) {
             mappings.forEach(function (mapping) {
                 colIdx[mapping.value.toLowerCase()] = retVal.columns.length;
                 retVal.columns.push(mapping.key);
             });
         } else {
-            for (var key in result[0]) {
+            for (const key in result[0]) {
                 colIdx[key.toLowerCase()] = retVal.columns.length;
                 retVal.columns.push(key);
             }
         }
         result.forEach(function (row, rowIdx) {
-            var rowArr = [];
-            for (var key in row) {
+            const rowArr = [];
+            for (const key in row) {
                 if (colIdx[key.toLowerCase()] !== undefined) {
                     rowArr[colIdx[key.toLowerCase()]] = row[key];
                 }

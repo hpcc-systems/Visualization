@@ -83,7 +83,7 @@ export class Legend extends SVGWidget {
     getWidget() {
         if (this._targetWidget) {
             switch (this._targetWidget.classID()) {
-                case "chart_MultiChart":
+                case "composite_MultiChart":
                     return (this._targetWidget as any).chart();
             }
         }

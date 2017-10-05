@@ -1,14 +1,16 @@
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { Class, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/layout";
-import { AbsoluteSurface, Accordion, Border, Cell, Grid, Layered, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
+import { AbsoluteSurface, Accordion, Border, Border2, Cell, Grid, Layered, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/layout", () => {
+describe("@hpcc-js/layout", function () {
+    this.timeout(10000);
+
     for (const key in layout) {
         const item = (layout as any)[key];
         if (item) {
@@ -83,6 +85,25 @@ describe("@hpcc-js/layout", () => {
                                         .data(data.ND.subjects.data)
                                     )
                                     .setContent("center", new Pie()
+                                        .columns(data.ND.subjects.columns)
+                                        .data(data.ND.subjects.data)
+                                    ));
+                                break;
+                            case Border2:
+                                render(new Border2()
+                                    .top(new Pie()
+                                        .columns(data.ND.subjects.columns)
+                                        .data(data.ND.subjects.data)
+                                    ).right(new Line()
+                                        .columns(data.ND.subjects.columns)
+                                        .data(data.ND.subjects.data)
+                                    ).bottom(new Column()
+                                        .columns(data.ND.subjects.columns)
+                                        .data(data.ND.subjects.data)
+                                    ).left(new Step()
+                                        .columns(data.ND.subjects.columns)
+                                        .data(data.ND.subjects.data)
+                                    ).center(new Pie()
                                         .columns(data.ND.subjects.columns)
                                         .data(data.ND.subjects.data)
                                     ));
@@ -218,7 +239,7 @@ describe("@hpcc-js/layout", () => {
                             case Toolbar:
                                 break;
                             default:
-                                it("Has render test", () => {
+                                it("Missing tests", () => {
                                     expect(false).to.be.true;
                                 });
                         }

@@ -1,10 +1,10 @@
-import { utcFormat, utcParse } from "d3-time-format";
 import { StateObject } from "@hpcc-js/util";
+// import { utcFormat, utcParse } from "d3-time-format";
 import { WUDetails } from "../services/wsWorkunits";
 import { Workunit } from "./workunit";
 
-const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
-const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
+// const formatter = utcFormat("%Y-%m-%dT%H:%M:%S.%LZ");
+// const parser = utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
 export interface AttributeEx extends WUDetails.Attribute {
     FormattedEnd?: string;
@@ -50,28 +50,29 @@ export class Scope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx {
     get CAttributes(): Attribute[] {
         //  Match "started" and time elapsed
         const retVal: Attribute[] = [];
-        const timeElapsed: { start: AttributeEx | null, elapsed: AttributeEx | null } = {
+        const timeElapsed: { start: AttributeEx | null, end: AttributeEx | null } = {
             start: null,
-            elapsed: null
+            end: null
         };
         this.Attributes.Attribute.forEach((scopeAttr) => {
-            if (scopeAttr.Name === "TimeElapsed") {
-                timeElapsed.elapsed = scopeAttr;
-            } else if (scopeAttr.Measure === "ts" && scopeAttr.Name.indexOf("Started") >= 0) {
+            if (scopeAttr.Measure === "ts" && scopeAttr.Name.indexOf("Started") >= 0) {
                 timeElapsed.start = scopeAttr;
+            } else if (this.Scope && scopeAttr.Measure === "ts" && scopeAttr.Name.indexOf("Finished") >= 0) {
+                timeElapsed.end = scopeAttr;
             } else {
                 retVal.push(new Attribute(this, scopeAttr));
             }
         });
-        if (timeElapsed.start && timeElapsed.elapsed) {
-            const endTime = parser(timeElapsed.start.Formatted);
-            endTime!.setMilliseconds(endTime!.getMilliseconds() + timeElapsed.elapsed.RawValue / 1000000);
-            timeElapsed.start.FormattedEnd = formatter(endTime!);
+        if (timeElapsed.start && timeElapsed.end) {
+            // const endTime = parser(timeElapsed.start.Formatted);
+            // endTime!.setMilliseconds(endTime!.getMilliseconds() + (+timeElapsed.elapsed.RawValue) / 1000000);
+            // timeElapsed.start.FormattedEnd = formatter(endTime!);
+            timeElapsed.start.FormattedEnd = timeElapsed.end.Formatted;
             retVal.push(new Attribute(this, timeElapsed.start));
         } else if (timeElapsed.start) {
             retVal.push(new Attribute(this, timeElapsed.start));
-        } else if (timeElapsed.elapsed) {
-            retVal.push(new Attribute(this, timeElapsed.elapsed));
+        } else if (timeElapsed.end) {
+            retVal.push(new Attribute(this, timeElapsed.end));  //  Should not happen?
         }
         return retVal;
     }

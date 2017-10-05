@@ -169,6 +169,22 @@ export class ClientTools {
         return this._version;
     }
 
+    _paths = {};
+    paths() {
+        return this.execFile(this.eclccPath, this.cwd, this.args(["-showpaths"]), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile) => {
+            if (response && response.stdout && response.stdout.length) {
+                const paths = response.stdout.split(/\r?\n/);
+                for (const path of paths) {
+                    const parts = path.split("=");
+                    if (parts.length === 2) {
+                        this._paths[parts[0]] = parts[1];
+                    }
+                }
+            }
+            return this._paths;
+        });
+    }
+
     private loadXMLDoc(filePath: any, removeOnRead?: boolean): Promise<XMLNode> {
         return new Promise((resolve, _reject) => {
             const fileData = fs.readFileSync(filePath, "ascii");
@@ -224,8 +240,9 @@ export class ClientTools {
         });
     }
 
-    parseECLErrors(err?: string): IECLError[] {
+    parseECLErrors(err?: string): [IECLError[], string[]] {
         const retVal: IECLError[] = [];
+        const retVal2: string[] = [];
         if (err && err.length) {
             for (const errLine of err.split(os.EOL)) {
                 const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): (error|warning|info) C(\d*): (.*)/.exec(errLine);
@@ -235,10 +252,16 @@ export class ClientTools {
                     const col: number = +_col;
                     const msg = code + ":  " + _msg;
                     retVal.push({ filePath, line, col, msg, severity });
+                } else {
+                    const match = /\d error(s?), \d warning(s?)/.exec(errLine);
+                    if (!match) {
+                        logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
+                        retVal2.push(errLine);
+                    }
                 }
             }
         }
-        return retVal;
+        return [retVal, retVal2];
     }
 
     attachWorkspace(): Workspace {
@@ -246,26 +269,28 @@ export class ClientTools {
     }
 
     fetchMeta(filePath: string): Promise<Workspace> {
-        const args = ["-M"].concat([filePath]);
-        return this.execFile(this.eclccPath, this.cwd, this.args(args), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile) => {
-            const metaWorkspace = attachWorkspace(this.cwd);
-            if (response && response.stdout && response.stdout.length) {
-                metaWorkspace.parseMetaXML(response.stdout);
+        return Promise.all([
+            attachWorkspace(this.cwd),
+            this.execFile(this.eclccPath, this.cwd, this.args(["-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
+        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
+                metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
             return metaWorkspace;
         });
     }
 
-    syntaxCheck(filePath: string): Promise<IECLError[]> {
-        const args = ["-syntax", "-M"].concat([filePath]);
-        return this.execFile(this.eclccPath, this.cwd, this.args(args), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile) => {
-            let retVal: IECLError[] = [];
-            if (response) {
-                retVal = this.parseECLErrors(response.stderr);
+    syntaxCheck(filePath: string): Promise<[IECLError[], string[]]> {
+        return Promise.all([
+            attachWorkspace(this.cwd),
+            this.execFile(this.eclccPath, this.cwd, this.args(["-syntax", "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
+        ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            let retVal: [IECLError[], string[]] = [[], []];
+            if (execFileResponse) {
+                retVal = this.parseECLErrors(execFileResponse.stderr);
             }
-            if (response && response.stdout && response.stdout.length) {
-                const metaWorkspace = attachWorkspace(this.cwd);
-                metaWorkspace.parseMetaXML(response.stdout);
+            if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
+                metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
             return retVal;
         });

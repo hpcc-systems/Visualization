@@ -1,5 +1,5 @@
 import * as chart from "@hpcc-js/chart";
-import { Area, Axis, Bar, Bubble, Bullet, Column, Gantt, HexBin, Line, MultiChart, MultiChartSurface, Pie, Scatter, Step, Summary, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, Bullet, Column, Gantt, HexBin, Line, Pie, Scatter, Step, Summary, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderMedium, renderShort, renderWide } from "./coreTests";
@@ -24,7 +24,7 @@ const simple = {
         ]
     }
 };
-describe("@hpcc-js/common", () => {
+describe("@hpcc-js/chart", () => {
     for (const key in chart) {
         const item = (chart as any)[key];
         if (item) {
@@ -104,10 +104,6 @@ describe("@hpcc-js/common", () => {
                                     ])
                                 );
 
-                                break;
-                            case MultiChart:
-                                break;
-                            case MultiChartSurface:
                                 break;
                             case XYAxis:
                                 break;

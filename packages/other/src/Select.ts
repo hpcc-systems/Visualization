@@ -5,7 +5,7 @@ import "../src/Select.css";
 
 export class Select extends HTMLWidget {
     _span;
-    _label;
+    _prompt;
     _select;
 
     constructor() {
@@ -39,7 +39,7 @@ export class Select extends HTMLWidget {
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._span = element.append("span");
-        this._label = this._span.append("label")
+        this._prompt = this._span.append("label")
             .attr("for", this.id() + "_select")
             ;
 
@@ -67,7 +67,7 @@ export class Select extends HTMLWidget {
     update(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
-        this._label
+        this._prompt
             .text(this.label())
             ;
         this._select

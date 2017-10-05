@@ -3,10 +3,8 @@ import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
 import { Activity, ReferencedFields } from "./activity";
-import { View } from "./view";
 
 export class SortColumn extends PropertyExt {
-    private _view: View;
     private _owner: Sort;
 
     @publish(null, "set", "Sort Field", function (this: SortColumn) { return this.fieldIDs(); }, { optional: true })
@@ -16,7 +14,6 @@ export class SortColumn extends PropertyExt {
 
     constructor(owner: Sort) {
         super();
-        this._view = owner._owner;
         this._owner = owner;
     }
 
@@ -32,7 +29,7 @@ export class SortColumn extends PropertyExt {
     }
 
     field(id: string): IField | undefined {
-        return this._view.inFields().filter(field =>
+        return this._owner.inFields().filter(field =>
             field.id === id
         )[0];
     }
@@ -41,14 +38,12 @@ SortColumn.prototype._class += " SortColumn";
 
 //  ===========================================================================
 export class Sort extends Activity {
-    _owner: View;
 
     @publish([], "propertyArray", "Source Columns", null, { autoExpand: SortColumn })
     column: publish<this, SortColumn[]>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
-        this._owner = owner;
     }
 
     hash(): string {

@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "outDir": "./lib",
+        "outDir": "./lib-umd",
         "target": "es5",
-        "module": "umd",
+        "module": "es6",
         "moduleResolution": "node",
         "strict": true,
         "sourceMap": true,

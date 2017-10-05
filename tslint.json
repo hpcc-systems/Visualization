@@ -10,6 +10,7 @@
         /*
      * Any rules specified here will override those from the base config we are extending.
      */
+        "member-ordering": false,
         "prefer-for-of": false,
         "no-console": [
             false
@@ -18,6 +19,10 @@
         "interface-over-type-literal": false,
         "no-empty-interface": false,
         "no-unused-expression": false,
+        "no-shadowed-variable": [
+            false,
+            {}
+        ],
         "space-before-function-paren": false,
         "arrow-parens": false,
         "forin": false,

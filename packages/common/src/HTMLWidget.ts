@@ -85,16 +85,16 @@ export class HTMLWidget extends Widget {
             };
         }
         return {
-            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._scale,
-            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._scale,
-            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._scale,
-            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._scale
+            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._widgetScale,
+            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._widgetScale,
+            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._widgetScale,
+            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._widgetScale
         };
     }
 
     resize(size?) {
         const retVal = super.resize(size);
-        this._parentElement
+        this._placeholderElement
             .style("width", this._size.width + "px")
             .style("height", this._size.height + "px")
             ;
@@ -102,57 +102,46 @@ export class HTMLWidget extends Widget {
     }
 
     //  Properties  ---
-    target(): any;
-    target(_): this;
-    target(_?: any): any | this {
-        if (!arguments.length) return this._target;
-        if (this._target && _) {
-            throw new Error("Target can only be assigned once.");
-        }
-        this._target = _;
+    target(): null | HTMLElement | SVGElement;
+    target(_: null | string | HTMLElement | SVGElement): this;
+    target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
+        const retVal = super.target.apply(this, arguments);
+        if (arguments.length) {
+            if (this._target instanceof SVGElement) {
+                //  Target is a SVG Node, so create an item in the Overlay and force it "over" the overlay element (cough)  ---
+                const overlay = this.locateOverlayNode();
+                this._placeholderElement = overlay.append("div")
+                    .style("position", "absolute")
+                    .style("top", 0)
+                    .style("left", 0)
+                    .style("overflow", "hidden")
+                    ;
+                this._overlayElement = d3Select(this._target);
 
-        //  Target is a DOM Node ID ---
-        if (typeof (this._target) === "string") {
-            this._target = document.getElementById(this._target);
-        }
-
-        if (this._target instanceof SVGElement) {
-            //  Target is a SVG Node, so create an item in the Overlay and force it "over" the overlay element (cough)  ---
-            const overlay = this.locateOverlayNode();
-            this._parentElement = overlay.append("div")
-                .style("position", "absolute")
-                .style("top", 0)
-                .style("left", 0)
-                .style("overflow", "hidden")
-                ;
-            this._overlayElement = d3Select(this._target);
-
-            const context = this;
-            this._prevPos = null;
-            this.observer = new MutationObserver(function (_mutation) {
-                context.syncOverlay();
-            });
-
-            let domNode = this._overlayElement.node();
-            while (domNode) {
-                this.observer.observe(domNode, { attributes: true });
-                domNode = domNode.parentNode;
-            }
-        } else if (this._target) {
-            this._parentElement = d3Select(this._target);
-            if (!this._size.width && !this._size.height) {
-                const width = parseFloat(this._parentElement.style("width"));
-                const height = parseFloat(this._parentElement.style("height"));
-                this.size({
-                    width,
-                    height
+                this._prevPos = null;
+                this.observer = new MutationObserver(_mutation => {
+                    this.syncOverlay();
                 });
+
+                let domNode = this._overlayElement.node();
+                while (domNode) {
+                    this.observer.observe(domNode, { attributes: true });
+                    domNode = domNode.parentNode;
+                }
+            } else if (this._target) {  //  HTMLElement
+                this._placeholderElement = d3Select(this._target);
+                if (!this._size.width && !this._size.height) {
+                    const width = parseFloat(this._placeholderElement.style("width"));
+                    const height = parseFloat(this._placeholderElement.style("height"));
+                    this.size({
+                        width,
+                        height
+                    });
+                }
+                this._placeholderElement = d3Select(this._target).append("div");
             }
-            this._parentElement = d3Select(this._target).append("div");
-        } else {
-            this.exit();
         }
-        return this;
+        return retVal;
     }
 
     postUpdate(domNode, element) {
@@ -179,8 +168,8 @@ export class HTMLWidget extends Widget {
             this.observer.disconnect();
         }
         this._prevPos = null;
-        if (this._parentElement) {
-            this._parentElement.remove();
+        if (this._placeholderElement) {
+            this._placeholderElement.remove();
         }
         super.exit(domNode, element);
     }

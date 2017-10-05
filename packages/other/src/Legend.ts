@@ -126,7 +126,7 @@ export class Legend extends Table {
 
         const table = element.select(".tableDiv > table");
         const tableRect = table.node().getBoundingClientRect();
-        const elementRect = this._parentElement.node().getBoundingClientRect();
+        const elementRect = this._placeholderElement.node().getBoundingClientRect();
 
         element.select(".tableDiv").style({ overflow: "visible" });
 
@@ -210,8 +210,8 @@ Legend.prototype.getBBox = function (refresh, round) {
     const table = this.element().select(".tableDiv > table");
     if (!table.empty()) {
         const tableRect = table.node().getBoundingClientRect();
-        const width = tableRect.width + 8 + (this.hasVScroll(this._parentElement) ? Platform.getScrollbarWidth() : 0);
-        const height = tableRect.height + 8 + (this.hasHScroll(this._parentElement) ? Platform.getScrollbarWidth() : 0);
+        const width = tableRect.width + 8 + (this.hasVScroll(this._placeholderElement) ? Platform.getScrollbarWidth() : 0);
+        const height = tableRect.height + 8 + (this.hasHScroll(this._placeholderElement) ? Platform.getScrollbarWidth() : 0);
         return {
             x: retVal.x,
             y: retVal.y,

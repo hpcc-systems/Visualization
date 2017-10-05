@@ -7,7 +7,7 @@ import { ESPConnection } from "../espConnection";
     * http://json2ts.com/
 */
 
-export namespace Activity {
+export namespace SMCActivity {
     export interface Request {
         ChatURL?: string;
         BannerContent?: string;
@@ -160,7 +160,18 @@ export class SMCService {
         this._connection = new ESPConnection(optsConnection, "WsSMC", "1.19");
     }
 
-    Activity(request: Activity.Request): Promise<Activity.Response> {
-        return this._connection.send("Activity", request);
+    connectionOptions(): IOptions {
+        return this._connection.opts();
+    }
+
+    Activity(request: SMCActivity.Request): Promise<SMCActivity.Response> {
+        return this._connection.send("Activity", request).then(response => {
+            return {
+                Running: {
+                    ActiveWorkunit: []
+                },
+                ...response
+            };
+        });
     }
 }

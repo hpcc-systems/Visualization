@@ -149,7 +149,7 @@ export class Form extends HTMLWidget {
             d3Event.preventDefault();
         });
 
-        this._parentElement.style("overflow", "auto");
+        this._placeholderElement.style("overflow", "auto");
         const table = element
             .append("table")
             ;

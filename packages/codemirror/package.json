@@ -1,37 +1,48 @@
 {
   "name": "@hpcc-js/codemirror",
-  "version": "0.0.39",
+  "version": "0.0.64",
   "description": "hpcc-js - Viz Code Mirror",
-  "main": "lib/index.js",
-  "module": "lib-es6/index.js",
-  "types": "lib/index.d.ts",
+  "main": "build/index.js",
+  "module": "build/index.es6",
+  "unpkg": "build/index.min.js",
+  "types": "lib-es6/index.d.ts",
   "files": [
+    "build/*",
     "lib/*",
-    "lib-es6/*",
-    "dist/*"
+    "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* && rimraf dist*",
-    "build": "tsc",
-    "build-es6": "tsc --module es6 --outDir ./lib-es6",
-    "bundle": "node ./node_modules/@hpcc-js/bundle/lib/rollup",
+    "clean": "rimraf lib* && rimraf build",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "bundle-es6": "rollup -c -f es -o build/index.es6.js",
+    "bundle-umd": "rollup -c -f umd -o build/index.js",
+    "bundle-watch": "npm run bundle-es6 -- -w",
+    "minimize": "uglifyjs build/index.js -c -m --source-map  -o build/index.min.js",
+    "build": "npm run compile-es6 && npm run bundle-es6 && npm run bundle-umd",
+    "watch": "concurrently --kill-others \"npm run compile-watch\" \"npm run bundle-watch\"",
+    "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/codemirror-shim": "^0.0.32",
-    "@hpcc-js/common": "^0.0.38",
-    "@hpcc-js/ddl-shim": "^0.0.7",
-    "@hpcc-js/dgrid": "^0.0.39",
-    "@hpcc-js/html": "^0.0.38",
-    "@hpcc-js/phosphor": "^0.0.38",
-    "@hpcc-js/util": "^0.0.34",
-    "tslib": "^1.7.1"
+    "@hpcc-js/codemirror-shim": "^0.0.45",
+    "@hpcc-js/common": "^0.0.52",
+    "@hpcc-js/ddl-shim": "^0.0.19",
+    "@hpcc-js/dgrid": "^0.0.62",
+    "@hpcc-js/html": "^0.0.52",
+    "@hpcc-js/phosphor": "^0.0.54",
+    "@hpcc-js/util": "^0.0.50",
+    "tslib": "1.8.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.10",
-    "rimraf": "^2.6.1",
-    "typedoc": "^0.7.1",
-    "typescript": "^2.5.2"
+    "concurrently": "3.5.0",
+    "rimraf": "2.6.2",
+    "rollup": "0.52.1",
+    "rollup-plugin-postcss": "0.5.5",
+    "tslint": "5.8.0",
+    "typedoc": "0.7.1",
+    "typescript": "2.6.1",
+    "uglify-es": "3.2.0"
   },
   "repository": {
     "type": "git",

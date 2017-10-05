@@ -1,38 +1,32 @@
 {
   "private": true,
   "name": "@hpcc-js/test-handson",
-  "version": "0.0.27",
+  "version": "0.0.36",
   "dependencies": {
-    "@hpcc-js/common": "^0.0.27",
-    "@hpcc-js/handson": "^0.0.27",
-    "@hpcc-js/sample-data": "^0.0.25",
-    "chai": "^4.0.0",
-    "es6-promise": "^4.1.1",
-    "mocha": "^3.4.2",
-    "simulate-event": "^1.4.0"
+    "@hpcc-js/common": "^0.0.52",
+    "@hpcc-js/handson": "^0.0.52",
+    "@hpcc-js/sample-data": "^0.0.28",
+    "chai": "4.0.0",
+    "es6-promise": "4.1.1",
+    "mocha": "3.4.2",
+    "simulate-event": "1.4.0"
   },
   "devDependencies": {
-    "@types/chai": "^3.5.2",
-    "@types/mocha": "^2.2.41",
-    "css-loader": "^0.26.1",
-    "file-loader": "^0.11.1",
-    "karma": "^1.7.0",
-    "karma-chrome-launcher": "^2.1.1",
-    "karma-firefox-launcher": "^1.0.1",
-    "karma-ie-launcher": "^1.0.0",
-    "karma-mocha": "^1.3.0",
-    "karma-mocha-reporter": "^2.2.3",
-    "rimraf": "^2.6.1",
-    "style-loader": "^0.18.1",
-    "typescript": "^2.5.2",
-    "webpack": "^2.6.1"
+    "@types/chai": "3.5.2",
+    "@types/mocha": "2.2.41",
+    "css-loader": "0.26.1",
+    "file-loader": "1.1.5",
+    "mocha-chrome": "1.0.1",
+    "rimraf": "2.6.2",
+    "style-loader": "0.19.0",
+    "typescript": "2.6.1",
+    "webpack": "3.10.0"
   },
   "scripts": {
-    "build": "tsc && webpack",
-    "clean": "rimraf build && rimraf 0../",
-    "test": "npm run test:firefox",
-    "test:chrome": "karma start --browsers=Chrome",
-    "test:firefox": "karma start --browsers=Firefox",
-    "test:ie": "karma start --browsers=IE"
+    "clean": "rimraf lib* && rimraf build",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "bundle-umd": "webpack",
+    "build": "npm run compile-es6 && npm run bundle-umd",
+    "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"
   }
 }

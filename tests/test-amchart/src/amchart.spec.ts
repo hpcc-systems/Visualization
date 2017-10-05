@@ -7,7 +7,7 @@ import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/layout", () => {
+describe.skip("@hpcc-js/amchart", () => {
     for (const key in amchart) {
         const item = (amchart as any)[key];
         if (item) {

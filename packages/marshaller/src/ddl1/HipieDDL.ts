@@ -54,7 +54,7 @@ function hipieType2DBType(hipieType) {
 }
 
 //  Mappings ---
-function SourceMappings(visualization, mappings) {
+function SourceMappings(this: any, visualization, mappings) {
     this.visualization = visualization;
     const newMappings = {};
     for (const key in mappings) {
@@ -103,14 +103,14 @@ SourceMappings.prototype.init = function () {
 
 SourceMappings.prototype.getFields = function () {
     if (this.visualization.fields()) {
-        return Object.keys(this.mappings).map(function (key) {
+        return Object.keys(this.mappings).map(key => {
             const field = this.visualization.field(key);
             if (!field) console.log("Unknown mapping field:  " + key);
             return new Database.Field(field.id())
                 .type(field.jsType())
                 .label(this.reverseMappings[field.id()])
                 ;
-        }, this);
+        });
     }
     return null;
 };
@@ -154,9 +154,9 @@ SourceMappings.prototype.doReverseMap = function (item) {
 };
 
 SourceMappings.prototype.doMapAll = function (data) {
-    return data.hipieMappings(this.columnsRHS.map(function (col) {
+    return data.hipieMappings(this.columnsRHS.map(col => {
         return this.visualization.field(col);
-    }, this), this.visualization.dashboard.marshaller.missingDataString());
+    }), this.visualization.dashboard.marshaller.missingDataString());
 };
 
 SourceMappings.prototype.getMap = function (key) {
@@ -168,7 +168,7 @@ SourceMappings.prototype.getReverseMap = function (key) {
 };
 
 SourceMappings.prototype.hipieMapSortArray = function (sort) {
-    return sort.map(function (sortField) {
+    return sort.map(sortField => {
         let reverse = false;
         if (sortField.indexOf("-") === 0) {
             sortField = sortField.substring(1);
@@ -182,10 +182,10 @@ SourceMappings.prototype.hipieMapSortArray = function (sort) {
             idx: fieldIdx,
             reverse
         };
-    }, this).filter(function (d) { return d.idx >= 0; });
+    }).filter(function (d) { return d.idx >= 0; });
 };
 
-function ChartMappings(visualization, mappings) {
+function ChartMappings(this: any, visualization, mappings) {
     SourceMappings.call(this, visualization, mappings);
     this.columns = ["label", "weight"];
     this.columnsIdx = { label: 0, weight: 1 };
@@ -193,7 +193,7 @@ function ChartMappings(visualization, mappings) {
 }
 ChartMappings.prototype = Object.create(SourceMappings.prototype);
 
-function ChoroMappings(visualization, mappings) {
+function ChoroMappings(this: any, visualization, mappings) {
     SourceMappings.call(this, visualization, mappings);
     if (mappings.state) {
         this.columns = ["state", "weight"];
@@ -209,7 +209,7 @@ function ChoroMappings(visualization, mappings) {
 }
 ChoroMappings.prototype = Object.create(SourceMappings.prototype);
 
-function ChoroMappings2(visualization, mappings) {
+function ChoroMappings2(this: any, visualization, mappings) {
     SourceMappings.call(this, visualization, mappings);
     if (mappings.state) {
         this.columns = ["state"];
@@ -223,16 +223,16 @@ function ChoroMappings2(visualization, mappings) {
     }
     const weightOffset = this.columns.length;
     if (mappings.weight instanceof Array) {
-        mappings.weight.forEach(function (w, i) {
+        mappings.weight.forEach((w, i) => {
             this.columns.push(w);
             this.columnsIdx[i === 0 ? "weight" : "weight_" + i] = i + weightOffset;
-        }, this);
+        });
     }
     this.init();
 }
 ChoroMappings2.prototype = Object.create(SourceMappings.prototype);
 
-function HeatMapMappings(visualization, mappings) {
+function HeatMapMappings(this: any, visualization, mappings) {
     SourceMappings.call(this, visualization, mappings);
     this.columns = ["x", "y", "weight"];
     this.columnsIdx = { x: 0, y: 1, weight: 2 };
@@ -240,7 +240,7 @@ function HeatMapMappings(visualization, mappings) {
 }
 HeatMapMappings.prototype = Object.create(SourceMappings.prototype);
 
-function LineMappings(visualization, mappings) {
+function LineMappings(this: any, visualization, mappings) {
     const newMappings = {
         label: mappings.x[0]
     };
@@ -252,7 +252,7 @@ function LineMappings(visualization, mappings) {
 }
 LineMappings.prototype = Object.create(SourceMappings.prototype);
 
-function TableMappings(visualization, mappings) {
+function TableMappings(this: any, visualization, mappings) {
     const newMappings = {};
     for (const key in mappings) {
         mappings[key].forEach(function (mapingItem, idx) {
@@ -265,27 +265,27 @@ function TableMappings(visualization, mappings) {
 TableMappings.prototype = Object.create(SourceMappings.prototype);
 
 TableMappings.prototype.init = function () {
-    this.visualization.label.forEach(function (label, idx) {
+    this.visualization.label.forEach((label, idx) => {
         this.reverseMappings[this.mappings[label]] = label;
         this.columns.push(label);
         this.columnsIdx[label] = idx;
         this.columnsRHS[idx] = this.mappings[label];
         this.columnsRHSIdx[this.mappings[label]] = idx;
         this.hasMappings = true;
-    }, this);
+    });
 };
 
 TableMappings.prototype.doMapAll = function (data) {
     let retVal = SourceMappings.prototype.doMapAll.apply(this, arguments);
     if (retVal instanceof Array) {
         const columnsRHSIdx = this.visualization.source.getColumnsRHSIdx();
-        this.visualization.fields().forEach(function (field) {
+        this.visualization.fields().forEach(field => {
             const fieldType = field.jsType();
             const colIdx = columnsRHSIdx[field.id()];
             if (colIdx === undefined) {
                 console.log("Invalid Mapping:  " + field.id());
             } else {
-                retVal = retVal.map(function (row) {
+                retVal = retVal.map((row) => {
                     let cell = row[colIdx];
                     if (cell && cell.Row) {
                         cell = cell.Row;
@@ -332,14 +332,14 @@ TableMappings.prototype.doMapAll = function (data) {
                         }
                     }
                     return row;
-                }, this);
+                });
             }
-        }, this);
+        });
     }
     return retVal;
 };
 
-function GraphMappings(visualization, mappings, link) {
+function GraphMappings(this: any, visualization, mappings, link) {
     SourceMappings.call(this, visualization, mappings);
     this.icon = visualization.icon || {};
     this.fields = visualization.fields();
@@ -458,7 +458,7 @@ GraphMappings.prototype.doMapAll = function (db) {
 };
 
 //  Viz Source ---
-function Source(visualization, source) {
+function Source(this: any, visualization, source) {
     this.visualization = visualization;
     if (source) {
         this._id = source.id;
@@ -573,7 +573,7 @@ Source.prototype.getReverseMap = function (col) {
 };
 
 //  Viz Events ---
-function EventUpdate(event, update, defMappings) {
+function EventUpdate(this: any, event, update, defMappings) {
     this.event = event;
     this.dashboard = event.visualization.dashboard;
     this._col = update.col;
@@ -648,15 +648,15 @@ EventUpdate.prototype.calcRequestFor = function (visualization) {
     return retVal;
 };
 
-function Event(visualization, eventID, event) {
+function Event(this: any, visualization, eventID, event) {
     this.visualization = visualization;
     this.eventID = eventID;
     this._updates = [];
     this._mappings = event.mappings;
     if (event) {
-        this._updates = event.updates.map(function (updateInfo) {
+        this._updates = event.updates.map(updateInfo => {
             return new EventUpdate(this, updateInfo, event.mappings);
-        }, this);
+        });
     }
 }
 
@@ -665,10 +665,10 @@ Event.prototype.exists = function () {
 };
 
 Event.prototype.getUpdates = function () {
-    return this._updates.filter(function (updateInfo) {
+    return this._updates.filter(updateInfo => {
         if (!updateInfo._col) return true;
         return updateInfo._col === updateInfo.getMap(this.visualization._widgetState.col);
-    }, this);
+    });
 };
 
 Event.prototype.getUpdatesDatasources = function () {
@@ -699,13 +699,13 @@ Event.prototype.getUpdatesVisualizations = function () {
 
 Event.prototype.fetchData = function () {
     const fetchDataOptimizer = new VisualizationRequestOptimizer();
-    this.getUpdates().forEach(function (updateObj) {
+    this.getUpdates().forEach(updateObj => {
         fetchDataOptimizer.appendRequest(updateObj.getDatasource(), updateObj.calcRequestFor(this.visualization), updateObj.getVisualization());
-    }, this);
+    });
     return fetchDataOptimizer.fetchData();
 };
 
-function Events(visualization, events) {
+function Events(this: any, visualization, events) {
     this.visualization = visualization;
     this.events = {};
     for (const key in events) {
@@ -758,7 +758,7 @@ Events.prototype.getUpdatesVisualizations = function () {
 };
 
 //  Visualization Field---
-function Field(ddlField) {
+function Field(this: any, ddlField) {
     this._id = ddlField.id;
     this._label = ddlField.label;
     this._properties = ddlField.properties || {};
@@ -832,7 +832,7 @@ Field.prototype.properties = function () {
 };
 
 //  Visualization ---
-export function Visualization(dashboard, visualization, parentVisualization) {
+export function Visualization(this: any, dashboard, visualization, parentVisualization) {
     Class.call(this);
 
     this.dashboard = dashboard;
@@ -855,9 +855,9 @@ export function Visualization(dashboard, visualization, parentVisualization) {
         return new Field(field);
     });
     this._fieldsMap = {};
-    this._fields.forEach(function (field) {
+    this._fields.forEach(field => {
         this._fieldsMap[field.id()] = field;
-    }, this);
+    });
 
     this.properties = visualization.properties || (visualization.source ? visualization.source.properties : null) || {};
     this.source = new Source(this, visualization.source);
@@ -866,14 +866,14 @@ export function Visualization(dashboard, visualization, parentVisualization) {
     this.hasVizDeclarations = false;
     this.vizDeclarations = {};
     if (this.type === "CHORO") {
-        this.layers = (visualization.visualizations || []).map(function (innerViz) {
+        this.layers = (visualization.visualizations || []).map(innerViz => {
             return dashboard.createVisualization(innerViz, this);
-        }, this);
+        });
     } else {
-        (visualization.visualizations || []).forEach(function (innerViz) {
+        (visualization.visualizations || []).forEach(innerViz => {
             this.vizDeclarations[innerViz.id] = dashboard.createVisualization(innerViz, this);
             this.hasVizDeclarations = true;
-        }, this);
+        });
     }
     const context = this;
     switch (this.type) {
@@ -1186,10 +1186,10 @@ Visualization.prototype.loadWidget = function (widgetPath, callback) {
     this.loadWidgets([widgetPath], callback);
 };
 
-function requirePromise(packageID) {
-    return new Promise(function (resolve, reject) {
+function requirePromise(this: any, packageID) {
+    return new Promise((resolve, reject) => {
         if (require) {
-            require([packageID], function (Package) {
+            require([packageID], Package => {
                 resolve.call(this, Package);
             });
         } else {
@@ -1198,7 +1198,7 @@ function requirePromise(packageID) {
     });
 }
 
-function legacyRequire(packageArr, callback) {
+function legacyRequire(this: any, packageArr, callback) {
     const promises = packageArr.map(function (packageID) {
         if (packageID.indexOf("../") === 0) {
             const parts = packageID.split("/");
@@ -1208,7 +1208,7 @@ function legacyRequire(packageArr, callback) {
         }
         return requirePromise(packageID);
     });
-    Promise.all(promises).then(function (packages) {
+    Promise.all(promises).then(packages => {
         callback.apply(this, packages);
     });
 }
@@ -1285,7 +1285,7 @@ Visualization.prototype.getUpdatesForVisualization = function (otherViz) {
 Visualization.prototype.getInputFields = function (mapped) {
     const retVal = {};
     const updatedBy = this.getInputVisualizations();
-    updatedBy.forEach(function (viz) {
+    updatedBy.forEach(viz => {
         if (viz.hasSelection()) {
             viz.getUpdatesForVisualization(this).forEach(function (updateObj) {
                 const sel = mapped ? updateObj.mapSelected() : updateObj.selectedRow();
@@ -1294,7 +1294,7 @@ Visualization.prototype.getInputFields = function (mapped) {
                 }
             });
         }
-    }, this);
+    });
     return retVal;
 };
 
@@ -1382,12 +1382,12 @@ Visualization.prototype.clear = function () {
         row: {},
         selected: false
     };
-    this.fields().forEach(function (field) {
+    this.fields().forEach(field => {
         if (field.hasDefault()) {
             this._widgetState.row[field.id()] = field.default();
             this._widgetState.selected = true;
         }
-    }, this);
+    });
     if (this.widget && this.dashboard.marshaller.clearDataOnUpdate()) {
         this.widget.data([]);
     }
@@ -1451,13 +1451,13 @@ Visualization.prototype.reverseMappedSelection = function () {
 };
 
 Visualization.prototype.getInputVisualizations = function () {
-    return this.dashboard.marshaller.getVisualizationArray().filter(function (viz) {
+    return this.dashboard.marshaller.getVisualizationArray().filter(viz => {
         const updates = viz.events.getUpdatesVisualizations();
         if (updates.indexOf(this) >= 0) {
             return true;
         }
         return false;
-    }, this);
+    });
 };
 
 Visualization.prototype.serializeState = function () {
@@ -1491,7 +1491,7 @@ Visualization.prototype.deserializeState = function (state) {
 };
 
 //  Output  ---
-function Filter(datasource, ddlFilter: string | IFilter) {
+function Filter(this: any, datasource, ddlFilter: string | IFilter) {
     this.datasource = datasource;
     if (typeof ddlFilter === "string") {
         ddlFilter = {
@@ -1634,14 +1634,14 @@ Filter.prototype.matches = function (row, value): boolean {
     }
 };
 
-export function Output(datasource, output) {
+export function Output(this: any, datasource, output) {
     this.datasource = datasource;
     this.id = output.id;
     this.from = output.from;
     this.notify = output.notify || [];
-    this.filters = (output.filter || []).map(function (filter) {
+    this.filters = (output.filter || []).map(filter => {
         return new Filter(this.datasource, filter);
-    }, this);
+    });
 }
 
 Output.prototype.getQualifiedID = function () {
@@ -1650,9 +1650,9 @@ Output.prototype.getQualifiedID = function () {
 
 Output.prototype.getUpdatesVisualizations = function () {
     const retVal = [];
-    this.notify.forEach(function (item) {
+    this.notify.forEach(item => {
         retVal.push(this.datasource.marshaller.getVisualization(item));
-    }, this);
+    });
     return retVal;
 };
 
@@ -1664,10 +1664,10 @@ Output.prototype.vizNotify = function (updates) {
     const promises = [];
     this.notify.filter(function (item) {
         return !updates || updates.indexOf(item) >= 0;
-    }).forEach(function (item) {
+    }).forEach(item => {
         const viz = this.datasource.marshaller.getVisualization(item);
         promises.push(viz.notify());
-    }, this);
+    });
     return Promise.all(promises);
 };
 
@@ -1677,7 +1677,7 @@ Output.prototype.setData = function (data, updates) {
 };
 
 //  FetchData Optimizers  ---
-function DatasourceRequestOptimizer() {
+function DatasourceRequestOptimizer(this: any) {
     this.datasourceRequests = {
     };
 }
@@ -1708,7 +1708,7 @@ DatasourceRequestOptimizer.prototype.fetchData = function () {
     return Promise.all(promises);
 };
 
-function VisualizationRequestOptimizer(skipClear?) {
+function VisualizationRequestOptimizer(this: any, skipClear?) {
     this.skipClear = skipClear;
     this.visualizationRequests = {
     };
@@ -1745,22 +1745,22 @@ VisualizationRequestOptimizer.prototype.fetchData = function () {
 };
 
 //  Datasource  ---
-export function Datasource(marshaller, datasource: IDatasource, proxyMappings, timeout) {
+export function Datasource(this: any, marshaller, datasource: IDatasource, proxyMappings, timeout) {
     this.marshaller = marshaller;
     this.id = datasource.id;
     this.WUID = datasource.WUID;
     this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
     this.databomb = datasource.databomb;
-    this.filters = (datasource.filter || []).map(function (filter) {
+    this.filters = (datasource.filter || []).map(filter => {
         return new Filter(this, filter);
-    }, this);
+    });
     this._loadedCount = 0;
 
     const context = this;
     this._outputs = {};
     this._outputArray = [];
     const hipieResults = [];
-    datasource.outputs.forEach(function (item) {
+    datasource.outputs.forEach(item => {
         const output = new Output(context, item);
         context._outputs[item.id] = output;
         context._outputArray.push(output);
@@ -1769,7 +1769,7 @@ export function Datasource(marshaller, datasource: IDatasource, proxyMappings, t
             from: item.from,
             filters: output.filters || this.filters
         });
-    }, this);
+    });
 
     if (this.WUID) {
         this.comms = new Comms.HIPIEWorkunit()
@@ -1936,7 +1936,7 @@ Datasource.prototype.deserializeState = function (state) {
 };
 
 //  Dashboard  ---
-export function Dashboard(marshaller, dashboard, proxyMappings, timeout?) {
+export function Dashboard(this: any, marshaller, dashboard, proxyMappings, timeout?) {
     this.marshaller = marshaller;
     this.id = dashboard.id;
     this.title = dashboard.title;
@@ -1945,17 +1945,17 @@ export function Dashboard(marshaller, dashboard, proxyMappings, timeout?) {
     this._datasourceArray = [];
     this._datasourceTotal = 0;
     if (dashboard.datasources) {
-        dashboard.datasources.forEach(function (item) {
+        dashboard.datasources.forEach(item => {
             this.createDatasource(item, proxyMappings, timeout);
-        }, this);
+        });
     }
     this._datasourceTotal = this._datasourceArray.length;
 
     this._visualizations = {};
     this._visualizationArray = [];
-    dashboard.visualizations.forEach(function (item) {
+    dashboard.visualizations.forEach(item => {
         this.createVisualization(item);
-    }, this);
+    });
     this._visualizationTotal = this._visualizationArray.length;
 }
 
@@ -2093,7 +2093,7 @@ Dashboard.prototype.deserializeState = function (state) {
 };
 
 //  Marshaller  ---
-export function Marshaller() {
+export function Marshaller(this: any) {
     Class.call(this);
 
     this._proxyMappings = {};

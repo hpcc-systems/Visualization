@@ -547,11 +547,230 @@ export namespace TpServiceQuery {
     }
 }
 
+export namespace TpTargetClusterQuery {
+
+    export interface Request {
+        Type?: string;
+        Name?: string;
+        ShowDetails?: boolean;
+    }
+
+    export interface Exception {
+        Code: string;
+        Audience: string;
+        Source: string;
+        Message: string;
+    }
+
+    export interface Exceptions {
+        Source: string;
+        Exception: Exception[];
+    }
+
+    export interface TpMachine {
+        Name: string;
+        Netaddress: string;
+        ConfigNetaddress: string;
+        Domain: string;
+        Directory: string;
+        Type: string;
+        Available: string;
+        OS: number;
+        Path: string;
+        Port: number;
+        ProcessNumber: number;
+    }
+
+    export interface TpMachines {
+        TpMachine: TpMachine[];
+    }
+
+    export interface TpCluster {
+        Type: string;
+        Name: string;
+        QueueName: string;
+        Build: string;
+        Directory: string;
+        LogDirectory: string;
+        Desc: string;
+        Path: string;
+        DataModel: string;
+        OS: number;
+        HasThorSpareProcess: boolean;
+        TpMachines: TpMachines;
+    }
+
+    export interface TpClusters {
+        TpCluster: TpCluster[];
+    }
+
+    export interface TpMachine2 {
+        Name: string;
+        Netaddress: string;
+        ConfigNetaddress: string;
+        Domain: string;
+        Directory: string;
+        Type: string;
+        Available: string;
+        OS: number;
+        Path: string;
+        Port: number;
+        ProcessNumber: number;
+    }
+
+    export interface TpMachines2 {
+        TpMachine: TpMachine2[];
+    }
+
+    export interface TpEclServer {
+        Name: string;
+        Description: string;
+        Build: string;
+        LogDirectory: string;
+        Type: string;
+        Path: string;
+        TpMachines: TpMachines2;
+    }
+
+    export interface TpEclCCServers {
+        TpEclServer: TpEclServer[];
+    }
+
+    export interface TpMachine3 {
+        Name: string;
+        Netaddress: string;
+        ConfigNetaddress: string;
+        Domain: string;
+        Directory: string;
+        Type: string;
+        Available: string;
+        OS: number;
+        Path: string;
+        Port: number;
+        ProcessNumber: number;
+    }
+
+    export interface TpMachines3 {
+        TpMachine: TpMachine3[];
+    }
+
+    export interface TpEclServer2 {
+        Name: string;
+        Description: string;
+        Build: string;
+        LogDirectory: string;
+        Type: string;
+        Path: string;
+        TpMachines: TpMachines3;
+    }
+
+    export interface TpEclServers {
+        TpEclServer: TpEclServer2[];
+    }
+
+    export interface TpMachine4 {
+        Name: string;
+        Netaddress: string;
+        ConfigNetaddress: string;
+        Domain: string;
+        Directory: string;
+        Type: string;
+        Available: string;
+        OS: number;
+        Path: string;
+        Port: number;
+        ProcessNumber: number;
+    }
+
+    export interface TpMachines4 {
+        TpMachine: TpMachine4[];
+    }
+
+    export interface TpEclAgent {
+        Name: string;
+        Description: string;
+        Build: string;
+        Type: string;
+        Path: string;
+        DaliServer: string;
+        LogDir: string;
+        TpMachines: TpMachines4;
+    }
+
+    export interface TpEclAgents {
+        TpEclAgent: TpEclAgent[];
+    }
+
+    export interface TpMachine5 {
+        Name: string;
+        Netaddress: string;
+        ConfigNetaddress: string;
+        Domain: string;
+        Directory: string;
+        Type: string;
+        Available: string;
+        OS: number;
+        Path: string;
+        Port: number;
+        ProcessNumber: number;
+    }
+
+    export interface TpMachines5 {
+        TpMachine: TpMachine5[];
+    }
+
+    export interface TpEclScheduler {
+        Name: string;
+        Description: string;
+        Build: string;
+        LogDirectory: string;
+        Type: string;
+        Path: string;
+        TpMachines: TpMachines5;
+    }
+
+    export interface TpEclSchedulers {
+        TpEclScheduler: TpEclScheduler[];
+    }
+
+    export interface TpTargetCluster {
+        Name: string;
+        Prefix: string;
+        Type: string;
+        TpClusters: TpClusters;
+        TpEclCCServers: TpEclCCServers;
+        TpEclServers: TpEclServers;
+        TpEclAgents: TpEclAgents;
+        TpEclSchedulers: TpEclSchedulers;
+    }
+
+    export interface TpTargetClusters {
+        TpTargetCluster: TpTargetCluster[];
+    }
+
+    export interface Response {
+        Exceptions: Exceptions;
+        ShowDetails: boolean;
+        MemThreshold: number;
+        DiskThreshold: number;
+        CpuThreshold: number;
+        MemThresholdType: string;
+        DiskThresholdType: string;
+        PreflightProcessFilter: string;
+        AcceptLanguage: string;
+        TpTargetClusters: TpTargetClusters;
+    }
+}
+
 export class TopologyService {
     private _connection: ESPConnection;
 
     constructor(optsConnection: IOptions | IConnection) {
         this._connection = new ESPConnection(optsConnection, "WsTopology", "1.25");
+    }
+
+    connectionOptions(): IOptions {
+        return this._connection.opts();
     }
 
     protocol(): string {
@@ -592,5 +811,9 @@ export class TopologyService {
 
     TpServiceQuery(request: TpServiceQuery.Request): Promise<TpServiceQuery.Response> {
         return this._connection.send("TpServiceQuery", request);
+    }
+
+    TpTargetClusterQuery(request: TpTargetClusterQuery.Request): Promise<TpTargetClusterQuery.Response> {
+        return this._connection.send("TpTargetClusterQuery", request);
     }
 }

@@ -7,7 +7,7 @@ import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/handson", () => {
+describe.skip("@hpcc-js/handson", () => {
     for (const key in handson) {
         const item = (handson as any)[key];
         if (item) {
@@ -25,7 +25,7 @@ describe("@hpcc-js/handson", () => {
                                 );
                                 break;
                             default:
-                                it("Has render test", () => {
+                                it("Missing test", () => {
                                     expect(false).to.be.true;
                                 });
                         }

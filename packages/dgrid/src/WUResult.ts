@@ -1,6 +1,6 @@
 import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
-import { Common } from "./common";
+import { Common } from "./Common";
 import { Store } from "./WUResultStore";
 
 export class WUResult extends Common {

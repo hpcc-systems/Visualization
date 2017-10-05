@@ -3,11 +3,33 @@ import { Pins } from "./Pins";
 import "../src/Graph.css";
 
 export class Graph extends Pins {
-    dataEdges;
+    dataEdges = [];
     _edgesTransform;
 
     constructor() {
         super();
+    }
+
+    importJSON(_) {
+        const retVal = Pins.prototype.importJSON.apply(this, arguments);
+        if (arguments.length) {
+            this.dataEdges = [];
+            let prevPin = null;
+            _.forEach(function (row) {
+                if (prevPin) {
+                    this.dataEdges.push({
+                        type: "LineString",
+                        coordinates: [[prevPin.long, prevPin.lat], [row.long, row.lat]]
+                    });
+                }
+                if (row.eol) {
+                    prevPin = null;
+                } else {
+                    prevPin = row;
+                }
+            }, this);
+        }
+        return retVal;
     }
 
     data(_) {

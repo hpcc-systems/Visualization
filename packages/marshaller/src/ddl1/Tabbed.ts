@@ -24,7 +24,7 @@ export class Tabbed extends TabbedLayout {
 
     populateContent() {
         const cellDensity = 3;
-        this._ddlDashboards.forEach(function (dashboard) {
+        this._ddlDashboards.forEach(dashboard => {
             const grid = new Grid().surfacePadding("0px");
             this.addTab(grid, dashboard.dashboard.title);
             let cellRow = 0;
@@ -42,7 +42,7 @@ export class Tabbed extends TabbedLayout {
                     grid.setContent(cellRow * cellDensity, cellCol * cellDensity, viz.newWidgetSurface, "", cellDensity, cellDensity);
                 }
             }, this);
-        }, this);
+        });
 
         const vizCellMap = {};
         this.content().forEach(function (cell) {

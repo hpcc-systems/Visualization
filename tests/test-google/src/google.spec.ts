@@ -6,7 +6,9 @@ import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
-describe("@hpcc-js/common", () => {
+describe("@hpcc-js/google", function () {
+    this.timeout(4000);
+
     for (const key in chart) {
         const item = (chart as any)[key];
         if (item) {

@@ -9,7 +9,7 @@ const menuList = ["List item 1", "This is Item 2", "List item 3", "This is list 
 describe("@hpcc-js/common", () => {
     for (const key in common) {
         const item = (common as any)[key];
-        if (item) {
+        if (item && item.prototype && item.prototype.constructor && item.prototype.constructor.name) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
                 describe(`${item.prototype.constructor.name}`, () => {
                     if (item.prototype instanceof Class) {

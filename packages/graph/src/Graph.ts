@@ -241,8 +241,6 @@ export class Graph extends SVGZoomWidget {
         super.update(domNode, element);
         const context = this;
 
-
-
         //  Create  ---
         const vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
         vertexElements.enter().append("g")
@@ -484,8 +482,8 @@ export class Graph extends SVGZoomWidget {
             .transition().duration(this.transitionDuration())
             .each("end", function (d) {
                 if (vertexMap && vertexMap[d.id()]) {
-                    if (d._parentElement.node() && d._parentElement.node().parentNode) {
-                        d._parentElement.node().parentNode.appendChild(d._parentElement.node());
+                    if (d._placeholderElement.node() && d._placeholderElement.node().parentNode) {
+                        d._placeholderElement.node().parentNode.appendChild(d._placeholderElement.node());
                     }
                 }
             })
@@ -567,7 +565,7 @@ export class Graph extends SVGZoomWidget {
 
     vertex_click(_row, _col, _sel, more) {
         if (more && more.vertex) {
-            more.vertex._parentElement.node().parentNode.appendChild(more.vertex._parentElement.node());
+            more.vertex._placeholderElement.node().parentNode.appendChild(more.vertex._placeholderElement.node());
         }
         IGraph.prototype.vertex_click.apply(this, arguments);
     }
@@ -647,12 +645,12 @@ export class Graph extends SVGZoomWidget {
         this.defs.append("filter")
             .attr("id", this._id + "_glow")
             .attr("width", "130%")
-            .attr("height", "130%")    
+            .attr("height", "130%")
             .html(
-                '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
-                '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
-                '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
-                '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
+            '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
+            '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
+            '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
+            '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
             )
             ;
     }

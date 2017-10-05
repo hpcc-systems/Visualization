@@ -478,7 +478,7 @@ export class Border extends HTMLWidget {
             .style("width", function (d) { return d._fixedWidth - context.gutter() + "px"; })
             .style("height", function (d) { return d._fixedHeight - context.gutter() + "px"; })
             .each(function (d) {
-                d._parentElement
+                d._placeholderElement
                     .attr("draggable", context.designMode())
                     .selectAll(".dragHandle")
                     .attr("draggable", context.designMode())

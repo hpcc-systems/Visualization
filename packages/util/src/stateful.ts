@@ -11,9 +11,11 @@ export type StatePropCallback = (changes: IEvent) => void;
 export type StateCallback = (changes: IEvent[]) => void;
 export type StateEvents = "propChanged" | "changed";
 export class StateObject<U, I> {
-    private _espState: U = {} as U;
+    private _espState: Partial<U> = {} as U;
     private _espStateCache: { [key: string]: string } = {};
     private _events = new Observable<StateEvents>();
+    private _monitorHandle: number;
+    protected _monitorTickCount: number = 0;
 
     protected clear(newVals?: Partial<I>) {
         this._espState = {} as U;
@@ -21,11 +23,12 @@ export class StateObject<U, I> {
         if (newVals !== void 0) {
             this.set(newVals as I);
         }
+        this._monitorTickCount = 0;
     }
 
     protected get(): U;
     protected get<K extends keyof U>(key: K, defValue?: U[K]): U[K];
-    protected get<K extends keyof U>(key?: K, defValue?: U[K]): U | U[K] | undefined {
+    protected get<K extends keyof U>(key?: K, defValue?: U[K]): Partial<U> | U[K] | undefined {
         if (key === void 0) {
             return this._espState;
         }
@@ -41,7 +44,7 @@ export class StateObject<U, I> {
         return this.setAll(keyOrNewVals as Partial<U>);
     }
 
-    private setSingle<K extends keyof U>(key: K, newVal: U[K], batchMode: boolean): IEvent | null {
+    private setSingle<K extends keyof U>(key: K, newVal: U[K] | undefined, batchMode: boolean): IEvent | null {
         const oldCacheVal = this._espStateCache[(key as string)];
         const newCacheVal = hashSum(newVal);
         if (oldCacheVal !== newCacheVal) {
@@ -62,7 +65,7 @@ export class StateObject<U, I> {
         const changed: IEvent[] = [];
         for (const key in _) {
             if (_.hasOwnProperty(key)) {
-                const changedInfo = this.setSingle(key, _[key]!, true);
+                const changedInfo = this.setSingle(key, _[key], true);
                 if (changedInfo) {
                     changed.push(changedInfo);
                 }
@@ -126,5 +129,55 @@ export class StateObject<U, I> {
 
     protected hasEventListener(): boolean {
         return this._events.hasObserver();
+    }
+
+    //  Monitoring  ---
+    protected async refresh(full: boolean = false): Promise<this> {
+        await Promise.resolve();
+        return this;
+    }
+
+    protected _monitor(): void {
+        if (this._monitorHandle) {
+            this._monitorTickCount = 0;
+            return;
+        }
+
+        this._monitorHandle = setTimeout(() => {
+            const refreshPromise: Promise<any> = this.hasEventListener() ? this.refresh(true) : Promise.resolve();
+            refreshPromise.then(() => {
+                this._monitor();
+            });
+            delete this._monitorHandle;
+        }, this._monitorTimeoutDuraction());
+    }
+
+    protected _monitorTimeoutDuraction(): number {
+        ++this._monitorTickCount;
+        if (this._monitorTickCount <= 1) {          //  Once
+            return 0;
+        }
+        return 30000;
+    }
+
+    watch(callback: StateCallback, triggerChange: boolean = true): IObserverHandle {
+        if (typeof callback !== "function") {
+            throw new Error("Invalid Callback");
+        }
+        if (triggerChange) {
+            setTimeout(() => {
+                const props: any = this.get();
+                const changes: IEvent[] = [];
+                for (const key in props) {
+                    if (props.hasOwnProperty(props)) {
+                        changes.push({ id: key, newValue: props[key], oldValue: undefined });
+                    }
+                }
+                callback(changes);
+            }, 0);
+        }
+        const retVal = this.addObserver("changed", callback);
+        this._monitor();
+        return retVal;
     }
 }

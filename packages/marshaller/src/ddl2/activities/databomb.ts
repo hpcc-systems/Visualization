@@ -1,17 +1,14 @@
 import { publish } from "@hpcc-js/common";
 import { IField } from "@hpcc-js/dgrid";
 import { Activity } from "./activity";
-import { View } from "./view";
 
 export class Databomb extends Activity {
-    private _owner: View;
 
     @publish([], "array", "Databomb array")
     payload: publish<this, object[]>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
-        this._owner = owner;
     }
 
     hash(more: object): string {
@@ -63,14 +60,11 @@ export class Databomb extends Activity {
 Databomb.prototype._class += " Filters";
 
 export class Form extends Activity {
-    private _owner: View;
-
     @publish([], "object", "Form object")
     payload: publish<this, object>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
-        this._owner = owner;
     }
 
     hash(more: object): string {

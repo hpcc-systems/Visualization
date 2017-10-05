@@ -56,7 +56,6 @@ export class MaterialGantt extends CommonND {
     }
 
     formatData() {
-        let data = null;
         if (this.data().length) {
             this._data_google = createDataTable();
 
@@ -71,7 +70,7 @@ export class MaterialGantt extends CommonND {
 
             const parseDate = d3TimeParse(this.datePattern());
 
-            data = this.data().map(function (d) {
+            this.data().forEach(function (d) {
                 const label = d[0];
                 const start = parseDate(d[1][0]);
                 const end = parseDate(d[1][1]);
@@ -102,11 +101,6 @@ export class MaterialGantt extends CommonND {
 
                 this._data_google.addRows([[id, label, resource, start, end, duration, completeness, dependency]]);
             }, this);
-        } else {
-            data = [
-                ["", { role: "annotation" }],
-                ["", ""]
-            ];
         }
         return this._data_google;
     }

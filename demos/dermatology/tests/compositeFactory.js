@@ -86,6 +86,18 @@
                         .data(DataFactory.ND.subjects.data)
                     );
                 });
+            },
+            choro: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/ChartPanel"], function (DataFactory, ChartPanel) {
+                    var mc = new ChartPanel()
+                        .chartType("CHORO_USSTATES")
+                        // .legendPosition("bottom")
+                        .title("US States Choropleth")
+                        .columns(DataFactory.States.simple.columns)
+                        .data(DataFactory.States.simple.data)
+                        ;
+                    callback(mc);
+                });
             }
         }
     };

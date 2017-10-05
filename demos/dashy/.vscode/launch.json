@@ -8,7 +8,7 @@
             "name": "Chrome Debug",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/www/index.html",
+            "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

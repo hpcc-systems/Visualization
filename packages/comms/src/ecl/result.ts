@@ -86,8 +86,9 @@ export class Result extends StateObject<ECLResultEx & DFUQuery.DFULogicalFile, E
         });
     }
 
-    refresh(): Promise<Result> {
-        return this.fetchRows(0, 1, true).then(response => this);
+    async refresh(): Promise<this> {
+        await this.fetchRows(0, 1, true);
+        return this;
     }
 
     fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false): Promise<any[]> {

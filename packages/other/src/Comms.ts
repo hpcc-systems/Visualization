@@ -101,11 +101,35 @@ export class ESPUrl {
         return this;
     }
 
+    search(_: string): this;
+    search(): string;
+    search(_?: string) {
+        if (!arguments.length) return this._search;
+        this._search = _;
+        return this;
+    }
+
     pathname(_: string): this;
     pathname(): string;
     pathname(_?: string) {
         if (!arguments.length) return this._pathname;
         this._pathname = _;
+        return this;
+    }
+
+    hash(_: string): this;
+    hash(): string;
+    hash(_?: string) {
+        if (!arguments.length) return this._hash;
+        this._hash = _;
+        return this;
+    }
+
+    host(_: string): this;
+    host(): string;
+    host(_?: string) {
+        if (!arguments.length) return this._host;
+        this._host = _;
         return this;
     }
 

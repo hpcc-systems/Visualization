@@ -1,26 +1,24 @@
 {
   "name": "@hpcc-js/c3-shim",
-  "version": "0.0.32",
+  "version": "0.0.40",
   "description": "hpcc-js - c3 shim",
-  "main": "dist/c3-shim.js",
-  "module": "dist/c3-shim.es6.js",
-  "types": "dist/index.d.ts",
+  "main": "build/c3-shim.js",
   "files": [
-    "dist/**/*"
+    "build/**/*"
   ],
   "scripts": {
-    "build": "webpack",
-    "clean": "rimraf dist* && rimraf tmp"
+    "clean": "rimraf build",
+    "build": "webpack"
   },
   "dependencies": {
-    "c3": "^0.4.13"
+    "c3": "0.4.13"
   },
   "devDependencies": {
-    "css-loader": "^0.26.1",
-    "extract-text-webpack-plugin": "^2.1.0",
-    "rimraf": "^2.6.1",
-    "typescript": "^2.5.2",
-    "webpack": "^2.6.1"
+    "css-loader": "0.26.1",
+    "extract-text-webpack-plugin": "2.1.0",
+    "rimraf": "2.6.2",
+    "typescript": "2.6.1",
+    "webpack": "3.10.0"
   },
   "repository": {
     "type": "git",

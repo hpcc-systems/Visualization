@@ -55,5 +55,16 @@ export class GMapLayered extends GMap {
         this.layered.layers(_);
         return this;
     }
+
+    render(callback?) {
+        return super.render(w => {
+            this.layered.preRender().then(() => {
+                this.layered.render();
+                if (callback) {
+                    callback(w);
+                }
+            });
+        });
+    }
 }
 GMapLayered.prototype._class += " map_GMapLayered";

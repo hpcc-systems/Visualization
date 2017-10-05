@@ -170,4 +170,4 @@ export class WUResult extends ESPResult {
         return this;
     }
 }
-WUResult.prototype._class += " Filters";
+WUResult.prototype._class += " WUResult";

@@ -1,32 +1,40 @@
 {
   "name": "@hpcc-js/phosphor-shim",
-  "version": "0.0.34",
+  "version": "0.0.47",
   "description": "hpcc-js - Phosphor shim",
-  "main": "dist/phosphor-shim.js",
-  "module": "dist/phosphor-shim.es6.js",
-  "types": "lib/index.d.ts",
+  "module": "build/phosphor-shim.es6",
+  "types": "lib-es6/index.d.ts",
   "files": [
-    "dist/*"
+    "build/*",
+    "lib/*",
+    "src/*.css"
   ],
   "scripts": {
-    "build": "tsc && tsc --module es6 --outDir ./lib-es6 && rollup -c && rollup -c -f es -o dist/phosphor-shim.es6.js",
-    "clean": "rimraf lib* && rimraf dist*"
+    "clean": "rimraf lib* && rimraf build",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "bundle-es6": "rollup -c -f es -o build/phosphor-shim.es6.js",
+    "bundle-umd": "rollup -c -f umd -o build/phosphor-shim.js",
+    "bundle-watch": "npm run bundle-es6 -- -w",
+    "build": "npm run compile-es6 && npm run bundle-es6 && npm run bundle-umd",
+    "watch": "concurrently --kill-others \"npm run compile-watch\" \"npm run bundle-watch\"",
+    "lint": "tslint --project . src/**/*.ts",
+    "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@phosphor/algorithm": "^1.1.2",
-    "@phosphor/messaging": "^1.2.2",
-    "@phosphor/widgets": "^1.5.0"
+    "@phosphor/algorithm": "1.1.2",
+    "@phosphor/messaging": "1.2.2",
+    "@phosphor/widgets": "1.5.0"
   },
   "devDependencies": {
-    "cross-env": "^5.0.1",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.45.2",
-    "rollup-plugin-alias": "^1.3.1",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-postcss": "^0.5.4",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "typescript": "^2.5.2"
+    "rimraf": "2.6.2",
+    "rollup": "0.52.1",
+    "rollup-plugin-alias": "1.4.0",
+    "rollup-plugin-commonjs": "8.2.6",
+    "rollup-plugin-node-resolve": "3.0.0",
+    "rollup-plugin-postcss": "0.5.5",
+    "rollup-plugin-sourcemaps": "0.4.2",
+    "typescript": "2.6.1"
   },
   "repository": {
     "type": "git",

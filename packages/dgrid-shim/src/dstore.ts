@@ -1,0 +1,10 @@
+import * as _Cache from "dojo-dstore/Cache";
+import * as _Memory from "dojo-dstore/Memory";
+import * as _QueryResults from "dojo-dstore/QueryResults";
+import * as _SimpleQuery from "dojo-dstore/SimpleQuery";
+import * as _Store from "dojo-dstore/Store";
+export const Cache = _Cache;
+export const Memory = _Memory;
+export const QueryResults = _QueryResults;
+export const SimpleQuery = _SimpleQuery;
+export const Store = _Store;

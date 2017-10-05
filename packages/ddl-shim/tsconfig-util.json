@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./lib-util",
+        "module": "commonjs"
+    },
+    "include": [
+        "util/*"
+    ]
+}

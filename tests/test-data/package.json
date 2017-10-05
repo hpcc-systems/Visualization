@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/sample-data",
-  "version": "0.0.25",
+  "version": "0.0.28",
   "description": "hpcc-js - Test Data",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib-umd/index.js",
+  "types": "lib-umd/index.d.ts",
   "files": [
     "lib/**/*.d.ts",
     "lib/**/*.js"
@@ -17,11 +17,11 @@
     "clean": "rimraf lib"
   },
   "dependencies": {
-    "tslib": "^1.7.1"
+    "tslib": "1.8.0"
   },
   "devDependencies": {
-    "rimraf": "^2.6.1",
-    "typescript": "^2.5.2"
+    "rimraf": "2.6.2",
+    "typescript": "2.6.1"
   },
   "repository": {
     "type": "git",

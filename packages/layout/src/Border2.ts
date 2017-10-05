@@ -81,6 +81,10 @@ export class Border2 extends HTMLWidget {
         const rightBBox: BBox = this._rightWA.widget(this.right()).render(true) as BBox;
         const bottomBBox: BBox = this._bottomWA.widget(this.bottom()).render(true) as BBox;
 
+        this._topWA
+            .resize({ width: this.width(), height: topBBox.height })
+            .render()
+            ;
         this._leftWA
             .resize({ width: leftBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
             .render()

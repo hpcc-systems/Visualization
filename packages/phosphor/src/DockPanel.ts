@@ -1,4 +1,5 @@
-import { HTMLWidget, Widget } from "@hpcc-js/common";
+import { HTMLWidget } from "@hpcc-js/common";
+import { Widget } from "@hpcc-js/common";
 import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
 import { PDockPanel } from "./PDockPanel";
 import { Msg, WidgetAdapter } from "./WidgetAdapter";

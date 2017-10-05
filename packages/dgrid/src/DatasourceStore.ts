@@ -1,4 +1,5 @@
-import { Deferred, QueryResults } from "@hpcc-js/dgrid-shim";
+import { Deferred } from "@hpcc-js/dgrid-shim";
+import { QueryResults } from "@hpcc-js/dgrid-shim";
 
 import "../src/WUResultStore.css";
 
@@ -81,7 +82,6 @@ class RowFormatter {
     private _flattenedColumns = [];
     private _columnIdx = {};
     private _formattedRow = {};
-    private _grid = {};
 
     constructor(columns) {
         this._columns = columns;
@@ -105,7 +105,6 @@ class RowFormatter {
 
     format(row) {
         this._formattedRow = {};
-        this._grid = {};
         this.formatRow(this._columns, row);
         return this.row();
     }

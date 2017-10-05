@@ -29,7 +29,7 @@ describe("Cache", function () {
     });
 });
 
-describe.only("AsyncCache", function () {
+describe("AsyncCache", function () {
     it("basic", async function () {
         class MyClass {
             id: string;

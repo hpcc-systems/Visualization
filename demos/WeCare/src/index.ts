@@ -318,11 +318,12 @@ export class Main {
                 context.mainRequest.bestfitmax = 10;
                 const tmp = JSON.stringify(context.mainRequest);
                 console.log(tmp);
+                // @ts-ignore
                 const newRequestXXX = {
-                    bestfitmax: 10,
-                    Date1: "19900613", Address1: "1740 Maryland Ave", City1: "Charlotte", State1: "NC", Zip1: "28209", Zip1LowYYYYMM: "199002", Zip1HighYYYYMM: "199101", Date2: "19910829", Address2: "1512 Turnstone Ct", City2: "Rock Hill", State2: "SC", Zip2: "29732", Zip2LowYYYYMM: "199104", Zip2HighYYYYMM: "199204", Date3: "19990109", Address3: "6147 Garamond Ct", City3: "Charlotte", State3: "NC", Zip3: "28270", Zip3LowYYYYMM: "199809", Zip3HighYYYYMM: "199908", GeoDistanceThreshold: "5", demomode: true
+                    "zip1": "19146", "date1": "19980101", "zip1lowyyyymm": "199703", "zip1highyyyymm": "199811", "zip2": "80528", "date2": "20020101",
+                    "zip2lowyyyymm": "200103", "zip2highyyyymm": "200211", "radius": 10, "agelow": 40, "agehigh": 55, "demomode": false, "bestfitmax": 10
                 };
-                context.connWeCare.send("wecares.serialoffenderfinderservice/json", context.mainRequest).then(function (response) {
+                context.connWeCare.send("wecares.serialoffenderfinderservice/json", newRequestXXX/*context.mainRequest*/).then(function (response) {
                     const bestFit = response["wecares.serialoffenderfinderserviceResponse"].Results.BestFit.Row;
                     context.loadDebugTable(bestFit);
                     context.individuals = [];
@@ -389,7 +390,6 @@ export class Main {
     loadAddressMap(_addresses) {
         this.addressMap
             .data(_addresses.map(function (row) {
-                const d = row;
                 return [+row.geo_lat, +row.geo_long];
             }))
             .zoomToFit()

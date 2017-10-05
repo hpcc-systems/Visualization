@@ -2,8 +2,6 @@ import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
 import { select as d3Select } from "d3-selection";
 import { timeFormat as d3TimeFormat } from "d3-time-format";
 
-declare const require: any;
-
 function _naturalSort(a, b, order, idx, sortCaseSensitive) {
     const re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi;
     const sre = /(^[ ]*|[ ]*$)/g;
@@ -432,6 +430,7 @@ export function parseClassID(classID, prefix = "..") {
     };
 }
 
+declare const require: any;
 export function requireWidget(classID) {
     return new Promise(function (resolve, _reject) {
         const parsedClassID = parseClassID(classID);
@@ -449,6 +448,7 @@ export function requireWidget(classID) {
 export function requireWidgets(classIDs) {
     return Promise.all(classIDs.map(requireWidget));
 }
+
 export function checksum(s) {
     if (s instanceof Array) {
         s = s.join("") + s.length;

@@ -1,6 +1,6 @@
 import { HTMLWidget, PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-import * as _Handsontable from "handsontable";
+import _Handsontable from "handsontable";
 const Handsontable: any = _Handsontable;
 
 import "handsontable/dist/handsontable.css";

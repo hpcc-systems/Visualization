@@ -3,17 +3,24 @@ import * as Persist from "./Persist";
 
 import "../src/ThemeEditor.css";
 
+//  Polyfill for IE in file:// mode  ----
+const _localStorage = localStorage || {
+    getItem(id: string): any {
+        return undefined;
+    }
+};
+
 const getThemes = function (idx?) {
     if (typeof ((window as any).g_defaultThemes) === "function") {
         (window as any).g_defaultThemes(idx);
     }
-    return JSON.parse(localStorage.getItem("themeEditorThemes") || "{}");
+    return JSON.parse(_localStorage.getItem("themeEditorThemes") || "{}");
 };
 const getSerials = function (idx?) {
     if (typeof ((window as any).g_defaultSerials) === "function") {
         (window as any).g_defaultSerials(idx);
     }
-    return JSON.parse(localStorage.getItem("themeEditorSerials") || "{}");
+    return JSON.parse(_localStorage.getItem("themeEditorSerials") || "{}");
 };
 const getThemeNames = function (idx?) {
     const loadedThemes = getThemes();
@@ -177,7 +184,7 @@ export class ThemeEditor extends HTMLWidget {
 
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-        this._parentElement.style("overflow", "auto");
+        this._placeholderElement.style("overflow", "auto");
     }
 
     widgetProperty(widget, propID, _?) {
@@ -355,7 +362,6 @@ export class ThemeEditor extends HTMLWidget {
                         const loadSelect = document.getElementById("te-load-theme");
                         const loadOptions = loadSelect.getElementsByTagName("option");
                         let saveExists = false;
-                        let saveStr;
                         for (const i in loadOptions) {
                             const val = loadOptions[i].value;
                             if (val === themeName) {
@@ -363,13 +369,7 @@ export class ThemeEditor extends HTMLWidget {
                             }
                         }
                         if (!saveExists) {
-                            saveStr = context.save(themeName);
                             loadSelect.innerHTML += "<option value='" + themeName + "'>" + themeName + "</option>";
-                        } else {
-                            const overwrite = confirm("'" + themeName + "' already exists. Do you want to overwrite the existing save? ");
-                            if (overwrite) {
-                                saveStr = context.save(themeName);
-                            }
                         }
                         clickedElm.previousSibling.value = "";
                         (loadSelect as any).value = themeName;

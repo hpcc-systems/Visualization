@@ -6,13 +6,13 @@ var entry_list = [
     "index"
 ];
 var entry = {};
-entry_list.forEach(function(e) { entry[e] = path.resolve(__dirname, "./src/" + e) });
+entry_list.forEach(function (e) { entry[e] = path.resolve(__dirname, "./src/" + e) });
 
 module.exports = {
     entry: entry,
     output: {
-        path: path.resolve(__dirname, 'dist/'),
-        publicPath: "dist/",
+        path: path.resolve(__dirname, 'build/'),
+        publicPath: "build/",
         filename: "c3-shim.js",
         libraryTarget: "umd",
         library: "@hpcc-js/c3-shim"

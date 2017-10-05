@@ -22,10 +22,10 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     protected connection: WorkunitsService;
     protected _topology: Topology;
     protected _wsEcl: EclService;
-    protected _resultNames: {};
     protected _wu: Workunit;
     protected _requestSchema: XSDSchema;
-    protected _resultSchemas: { [key: string]: XSDSchema } = {};
+    protected _resultNames: string[] = [];
+    protected _resultSchemas: { [resultName: string]: XSDSchema } = {};
 
     get properties(): WUQueryDetails.Response { return this.get(); }
     get Exceptions(): WUQueryDetails.Exceptions { return this.get("Exceptions"); }
@@ -85,9 +85,10 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         this._wsEcl = new EclService({ baseUrl });
     }
 
-    async fetchResultNames(): Promise<string[]> {
+    private async fetchResultNames(): Promise<string[]> {
         const results = await this._wu.fetchResults();
-        return results.map(result => result.Name);
+        this._resultNames = results.map(result => result.Name);
+        return this._resultNames;
     }
 
     private async fetchRequestSchema(): Promise<void> {
@@ -126,6 +127,10 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     requestFields(): XSDXMLNode[] {
         if (!this._requestSchema) return [];
         return this._requestSchema.root.children();
+    }
+
+    resultNames(): string[] {
+        return this._resultNames;
     }
 
     fields(resultName: string): XSDXMLNode[] {

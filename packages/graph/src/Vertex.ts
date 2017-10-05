@@ -20,7 +20,7 @@ export class Vertex extends SVGWidget {
     }
 
     enter(domNode, _element) {
-       SVGWidget.prototype.enter.apply(this, arguments);
+        SVGWidget.prototype.enter.apply(this, arguments);
         this._icon
             .target(domNode)
             .render()
@@ -34,7 +34,7 @@ export class Vertex extends SVGWidget {
     update(_domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
         element.classed("centroid", this.centroid());
-        element.style("filter", this.centroid() ? "url(#" + this._graphID +"_glow)" : null);
+        element.style("filter", this.centroid() ? "url(#" + this._graphID + "_glow)" : null);
         this._icon
             .tooltip(this.tooltip())
             .render()

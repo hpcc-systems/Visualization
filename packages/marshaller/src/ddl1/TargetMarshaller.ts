@@ -1,7 +1,7 @@
-import { HTMLWidget } from '@hpcc-js/common';
-import { HipieDDLMixin } from './HipieDDLMixin';
+import { HTMLWidget } from "@hpcc-js/common";
+import { HipieDDLMixin } from "./HipieDDLMixin";
 
-export function TargetMarshaller() {
+export function TargetMarshaller(this: any) {
     HTMLWidget.call(this);
     HipieDDLMixin.call(this);
     this._tag = "div";
@@ -13,16 +13,15 @@ TargetMarshaller.prototype._class += " marshaller_TargetMarshaller";
 
 TargetMarshaller.prototype.publish("configObject", {}, "object", "TargetMarshaller setup object", null, { tags: ["Basic"] });
 
-
 TargetMarshaller.prototype.content = function () {
     return [];
 };
 
 TargetMarshaller.prototype.populateContent = function () {
-    var _configObject = this.configObject();
-    for (var key in this._ddlDashboards) {
+    const _configObject = this.configObject();
+    for (const key in this._ddlDashboards) {
         this._ddlDashboards[key].visualizations.forEach(function (viz, idx) {
-            var widget_config = _configObject[viz.id];
+            const widget_config = _configObject[viz.id];
             if (widget_config !== undefined) {
                 if (widget_config.target !== undefined) {
                     viz.newWidgetSurface.target(widget_config.target);

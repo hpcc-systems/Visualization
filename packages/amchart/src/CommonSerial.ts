@@ -530,7 +530,7 @@ export class CommonSerial extends HTMLWidget {
             } else if (context._gType === "area") {
                 field = graph.colorField;
             }
-            var selected = false;
+            let selected = false;
             if (field) {
                 if (data[field] !== null && data[field] !== undefined) {
                     delete data[field];

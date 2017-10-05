@@ -1,7 +1,7 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson";
-import { Choropleth } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth";
 
 let countries = null;
 let features = null;
@@ -76,7 +76,7 @@ export class ChoroplethCountries extends Choropleth {
                 if (countries) {
                     resolve();
                 }
-                d3Json(`${this._topoJsonFolder}/countries.json`, function (_countries) {
+                d3Json(`${topoJsonFolder()}/countries.json`, function (_countries) {
                     countries = _countries;
                     features = topojson.feature(countries.topology, countries.topology.objects.countries).features;
                     rFeatures = {};

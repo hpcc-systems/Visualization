@@ -1,6 +1,6 @@
 module.exports = function (config) {
   config.set({
-    basePath: '.',
+    basePath: './',
     frameworks: ['mocha'],
     reporters: ['mocha'],
     files: ['build/bundle.test.js'],
@@ -9,6 +9,6 @@ module.exports = function (config) {
     singleRun: true,
     browserNoActivityTimeout: 30000,
     failOnEmptyTestSuite: false,
-    logLevel: config.LOG_INFO
+    logLevel: config.LOG_DEBUG
   });
 };

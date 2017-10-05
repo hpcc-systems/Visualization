@@ -12,11 +12,11 @@ export class Surface extends SVGWidget {
     _origMenuParam;
     _origShowContent;
 
-    protected _icon;
-    protected _container;
-    protected _titleRect;
-    protected _text;
-    protected _menu;
+    protected _iconWidget;
+    protected _containerWidget;
+    protected _titleRectWidget;
+    protected _textWidget;
+    _menuWidget;
     protected _surfaceButtons;
 
     protected _clipRect;
@@ -25,31 +25,31 @@ export class Surface extends SVGWidget {
     constructor() {
         super();
 
-        this._icon = new Icon()
+        this._iconWidget = new Icon()
             .faChar("\uf07b")
             .paddingPercent(50)
             ;
-        this._container = new Shape()
+        this._containerWidget = new Shape()
             .class("container")
             .shape("rect")
             ;
-        this._titleRect = new Shape()
+        this._titleRectWidget = new Shape()
             .class("title")
             .shape("rect")
             ;
-        this._text = new Text()
+        this._textWidget = new Text()
             .class("title")
             ;
-        this._menu = new Menu()
+        this._menuWidget = new Menu()
             .paddingPercent(0)
             ;
         const context = this;
-        this._menu.preShowMenu = function () {
+        this._menuWidget.preShowMenu = function () {
             if (context.content() && context.content().hasOverlay()) {
                 context.content().visible(false);
             }
         };
-        this._menu.postHideMenu = function () {
+        this._menuWidget.postHideMenu = function () {
             if (context.content() && context.content().hasOverlay()) {
                 context.content().visible(true);
             }
@@ -70,22 +70,22 @@ export class Surface extends SVGWidget {
             .attr("width", this._size.width)
             .attr("height", this._size.height)
             ;
-        this._titleRect
+        this._titleRectWidget
             .target(domNode)
             .render()
             .display(this.showTitle() && this.showIcon())
             ;
-        this._icon
+        this._iconWidget
             .target(domNode)
             .render()
             ;
-        this._menu
+        this._menuWidget
             .target(_domNode)
             ;
-        this._text
+        this._textWidget
             .target(domNode)
             ;
-        this._container
+        this._containerWidget
             .target(domNode)
             ;
         this.buttonContainer = d3Select(this._target).append("div").attr("class", "svg-button-container");
@@ -98,15 +98,15 @@ export class Surface extends SVGWidget {
         const width = this.width() - 1;
         const height = this.height() - 1;
 
-        this._icon
+        this._iconWidget
             .display(this.showTitle() && this.showIcon())
             .shape(this.icon_shape())
             .render()
             ;
-        this._menu
+        this._menuWidget
             .render()
             ;
-        this._text
+        this._textWidget
             .text(this.title())
             .display(this.showTitle())
             .render()
@@ -143,9 +143,9 @@ export class Surface extends SVGWidget {
             ;
 
         const buttonClientHeight = this.showTitle() ? Math.max.apply(null, this._surfaceButtons.map(function (d) { return d.node().offsetHeight; })) : 0;
-        const iconClientSize = this.showTitle() && this.showIcon() ? this._icon.getBBox(true) : { width: 0, height: 0 };
-        const textClientSize = this._text.getBBox(true);
-        const menuClientSize = this._menu.getBBox(true);
+        const iconClientSize = this.showTitle() && this.showIcon() ? this._iconWidget.getBBox(true) : { width: 0, height: 0 };
+        const textClientSize = this._textWidget.getBBox(true);
+        const menuClientSize = this._menuWidget.getBBox(true);
         const _titleRegionHeight = Math.max(iconClientSize.height, textClientSize.height, menuClientSize.height, buttonClientHeight);
         const titleRegionHeight = this.showTitle() ? _titleRegionHeight : 0;
         const yTitle = (-height + _titleRegionHeight) / 2;
@@ -155,25 +155,25 @@ export class Surface extends SVGWidget {
         const topMargin = titleRegionHeight <= titleTextHeight ? 0 : (titleRegionHeight - titleTextHeight) / 2;
         const leftMargin = topMargin;
 
-        this._titleRect
+        this._titleRectWidget
             .pos({ x: leftMargin, y: yTitle })
             .width(width - leftMargin * 2)
             .height(titleTextHeight)
             .display(this.showTitle())
             .render()
             ;
-        this._icon
+        this._iconWidget
             .move({ x: -width / 2 + iconClientSize.width / 2, y: yTitle })
             ;
-        this._menu
+        this._menuWidget
             .move({ x: width / 2 - menuClientSize.width / 2 - this.menuPadding(), y: yTitle })
             ;
-        this._text
+        this._textWidget
             .move({ x: (iconClientSize.width / 2 - menuClientSize.width / 2) / 2, y: yTitle })
             ;
 
-        const xPos = context._titleRect.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - this.buttonContainer.node().offsetWidth;
-        const yPos = context._titleRect.node().getBoundingClientRect().top + ((titleTextHeight - this.buttonContainer.node().offsetHeight) / 2);
+        const xPos = context._titleRectWidget.node().getBoundingClientRect().left + (context._size.width - leftMargin * 2) - context.buttonGutter() - this.buttonContainer.node().offsetWidth;
+        const yPos = context._titleRectWidget.node().getBoundingClientRect().top + ((titleTextHeight - this.buttonContainer.node().offsetHeight) / 2);
         if (!isNaN(xPos)) {
             this.buttonContainer.style("left", xPos + "px");
         }
@@ -182,14 +182,14 @@ export class Surface extends SVGWidget {
         }
 
         if (this.showTitle()) {
-            this._container
+            this._containerWidget
                 .pos({ x: leftMargin / 2, y: titleRegionHeight / 2 - topMargin / 2 })
                 .width(width - leftMargin)
                 .height(height - titleRegionHeight + topMargin)
                 .render()
                 ;
         } else {
-            this._container
+            this._containerWidget
                 .pos({ x: 0, y: 0 })
                 .width(width)
                 .height(height)
@@ -239,25 +239,25 @@ export class Surface extends SVGWidget {
                 ;
         }
 
-        if (this._menu.element() && this._menu.element().node() && this._menu.element().node().parentNode) {
-            this._menu.element().node().parentNode.appendChild(this._menu.element().node()); // Make sure menu is on top (Z-Order POV)
+        if (this._menuWidget.element() && this._menuWidget.element().node() && this._menuWidget.element().node().parentNode) {
+            this._menuWidget.element().node().parentNode.appendChild(this._menuWidget.element().node()); // Make sure menu is on top (Z-Order POV)
         }
     }
 
     exit(_domNode, _element) {
-        this._titleRect
+        this._titleRectWidget
             .target(null)
             ;
-        this._icon
+        this._iconWidget
             .target(null)
             ;
-        this._menu
+        this._menuWidget
             .target(null)
             ;
-        this._text
+        this._textWidget
             .target(null)
             ;
-        this._container
+        this._containerWidget
             .target(null)
             ;
         if (this.content()) {
@@ -268,15 +268,15 @@ export class Surface extends SVGWidget {
 
     intersection(pointA, pointB) {
         const hits = [];
-        const i1 = this._icon.intersection(pointA, pointB, this._pos);
+        const i1 = this._iconWidget.intersection(pointA, pointB, this._pos);
         if (i1) {
             hits.push({ i: i1, d: this.distance(i1, pointB) });
         }
-        const i2 = this._titleRect.intersection(pointA, pointB);
+        const i2 = this._titleRectWidget.intersection(pointA, pointB);
         if (i2) {
             hits.push({ i: i2, d: this.distance(i2, pointB) });
         }
-        const i3 = this._container.intersection(pointA, pointB);
+        const i3 = this._containerWidget.intersection(pointA, pointB);
         if (i3) {
             hits.push({ i: i3, d: this.distance(i3, pointB) });
         }
@@ -310,10 +310,10 @@ Surface.prototype._class += " common_Surface";
 
 Surface.prototype.publish("showTitle", true, "boolean", "Show Title", null, { tags: ["Basic"] });
 Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Basic"] });
-Surface.prototype.publishProxy("titleFontSize", "_text", "fontSize");
+Surface.prototype.publishProxy("titleFontSize", "_textWidget", "fontSize");
 Surface.prototype.publish("showIcon", true, "boolean", "Show Title", null, { tags: ["Advanced"] });
-Surface.prototype.publishProxy("icon_faChar", "_icon", "faChar");
-Surface.prototype.publishProxy("icon_shape", "_icon", "shape");
+Surface.prototype.publishProxy("icon_faChar", "_iconWidget", "faChar");
+Surface.prototype.publishProxy("icon_shape", "_iconWidget", "shape");
 
 Surface.prototype.publish("content", null, "widget", "Content", null, { tags: ["Private"] });
 
@@ -325,13 +325,13 @@ Surface.prototype.publish("menu", [], "array", "Menu List Data", null, { tags: [
 Surface.prototype.publish("menuPadding", 2, "number", "Menu Padding", null, { tags: ["Advanced"] });
 
 Surface.prototype._origMenuParam = Surface.prototype.menu;
-Surface.prototype.menu = function (_?) {
+Surface.prototype.menu = function (this: Surface, _?) {
     Surface.prototype._origMenuParam.apply(this, arguments);
     if (arguments.length) {
-        this._menu.data(_);
+        this._menuWidget.data(_);
         return this;
     }
-    return this._menu.data();
+    return this._menuWidget.data();
 };
 
 Surface.prototype._origShowContent = Surface.prototype.showContent;

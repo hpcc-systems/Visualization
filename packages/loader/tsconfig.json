@@ -1,24 +1,25 @@
 {
     "compilerOptions": {
+        "outDir": "./lib-umd",
+        "target": "es5",
+        "module": "umd",
+        "moduleResolution": "node",
+        "sourceMap": true,
         "declaration": true,
         "noImplicitAny": false,
         "noEmitOnError": false,
         "noUnusedLocals": true,
-        "strictNullChecks": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "strictNullChecks": false,
         "importHelpers": true,
-        "skipLibCheck": true,
-        "target": "es5",
-        "outDir": "./lib",
+        "experimentalDecorators": true,
         "lib": [
-            "es5",
             "dom",
+            "es5",
             "es2015.promise"
         ],
         "types": []
     },
     "include": [
-        "src/*"
+        "src/**/*"
     ]
 }

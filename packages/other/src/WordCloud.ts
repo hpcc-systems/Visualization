@@ -9,14 +9,14 @@ import { zoom as d3Zoom } from "d3-zoom";
 import "../src/WordCloud.css";
 
 export class WordCloud extends SVGWidget {
-    _prevOffsetX;
-    _prevOffsetY;
-    _prevZoom;
-    _vizData;
-    _root;
-    _canvas;
-    _cloud;
-    _zoom;
+    private _prevOffsetX;
+    private _prevOffsetY;
+    private _prevZoom;
+    private _vizData;
+    private _root;
+    private _canvas;
+    private _d3Cloud;
+    private _d3Zoom;
 
     constructor() {
         super();
@@ -49,17 +49,19 @@ export class WordCloud extends SVGWidget {
         this._canvas = document.createElement("canvas");
 
         const context = this;
-        this._zoom = d3Zoom()
+        this._d3Zoom = d3Zoom()
             .scaleExtent([0.1, 10])
+            ;
+        this._d3Zoom
             .on("zoom", function (evt) {
                 if (d3Event && d3Event.transform) {
-                    context.zoomed(context._zoom, [d3Event.transform.x, d3Event.transform.y], d3Event.transform.k);
+                    context.zoomed(context._d3Zoom, [d3Event.transform.x, d3Event.transform.y], d3Event.transform.k);
                 }
             })
             ;
-        element.call(this._zoom);
+        element.call(this._d3Zoom);
 
-        this._cloud = new D3Cloud()
+        this._d3Cloud = new D3Cloud()
             .canvas(this._canvas)
             ;
 
@@ -103,14 +105,18 @@ export class WordCloud extends SVGWidget {
         const scale = scaler().domain(extent).range([this.fontSizeFrom(), this.fontSizeTo()]);
         const angleDomain = d3ScaleLinear().domain([0, context.angleCount() - 1]).range([context.angleFrom(), context.angleTo()]);
 
-        this._cloud.stop()
+        this._d3Cloud.stop()
             .size([this.width(), this.height()])
             .words(this._vizData)
             .font(this.fontFamily())
             .padding(this.padding())
             .spiral(this.spiral())
-            .text(function (d) { return d.__viz_0; })
-            .fontSize(function (d) { return scale(d.__viz_1); })
+            .text(function (d) {
+                return d.__viz_0;
+            })
+            .fontSize(function (d) {
+                return scale(d.__viz_1);
+            })
             // tslint:disable-next-line:no-bitwise
             .rotate(function () { return angleDomain(~~(Math.random() * context.angleCount())); })
             .on("end", draw)
@@ -150,15 +156,17 @@ export class WordCloud extends SVGWidget {
 
     zoomed(source, translate, scale) {
         if (translate[0] !== this._prevOffsetX || translate[1] !== this._prevOffsetY || scale !== this._prevZoom) {
-            this._root.attr("transform", d3Event.transform);
+            this._root.attr("transform", translate);
             switch (source) {
                 case this:
-                    this._zoom
-                        .scale(scale)
-                        .translate(translate)
-                        ;
+                    /*
+                        this._d3Zoom
+                            .scale(scale)
+                            .translate(translate)
+                            ;
+                    */
                     break;
-                case this._zoom:
+                case this._d3Zoom:
                     this.offsetX(translate[0]);
                     this.offsetY(translate[1]);
                     this.zoom(scale);

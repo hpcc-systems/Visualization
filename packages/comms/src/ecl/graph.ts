@@ -1,4 +1,4 @@
-import { Cache, Graph as Digraph, ISubgraph, Stack, StateObject, scopedLogger, StringAnyMap, XMLNode } from "@hpcc-js/util";
+import { Cache, Graph as Digraph, ISubgraph, scopedLogger, Stack, StateObject, StringAnyMap, XMLNode } from "@hpcc-js/util";
 import { WUInfo } from "../services/wsWorkunits";
 import { Scope } from "./scope";
 import { Timer } from "./timer";
@@ -39,7 +39,18 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
     }
 
     fetchDetails(): Promise<Digraph> {
-        return this.wu.fetchDetailsHierarchy({ Filter: { Scopes: [this.Name] }, Nested: { ScopeTypes: ["graph", "subgraph", "activity", "edge"] } }).then((scopes) => {
+        return this.wu.fetchDetailsHierarchy({
+            Filter: {
+                Scopes: {
+                    Scope: [this.Name]
+                }
+            },
+            Nested: {
+                ScopeTypes: {
+                    ScopeType: ["graph", "subgraph", "activity", "edge"]
+                }
+            }
+        }).then((scopes) => {
             const retVal = scopes.map((scope) => createGraph(scope));
             return retVal[0];
         });

@@ -35,11 +35,11 @@ export class View extends ActivitySequence {
             this.broadcast(id, newVal, oldVal, this.dataSource());
         });
         this.filters(new Filters(this));
-        this.project(new Project(this));
+        this.project(new Project());
         this.groupBy(new GroupBy(this));
-        this.sort(new Sort(this));
-        this.limit(new Limit(this));
-        this.mappings(new Project(this));
+        this.sort(new Sort());
+        this.limit(new Limit());
+        this.mappings(new Project());
         this.activities([
             this.dataSource(),
             this.filters(),

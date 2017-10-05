@@ -48,20 +48,20 @@ export class Graph extends GraphWidget {
                 }
                 vertices.push(newSurface);
             }
-            viz.getInputVisualizations().forEach(function () {
-            }, this);
+            viz.getInputVisualizations().forEach(() => {
+            });
         }, this);
-        this._ddlDashboards.forEach(function (dashboard) {
-            dashboard.visualizations.forEach(function (viz) {
-                viz.getInputVisualizations().forEach(function (inViz) {
+        this._ddlDashboards.forEach(dashboard => {
+            dashboard.visualizations.forEach(viz => {
+                viz.getInputVisualizations().forEach(inViz => {
                     edges.push(new Edge()
                         .sourceVertex(inViz.newWidgetSurface)
                         .targetVertex(viz.newWidgetSurface)
                         .targetMarker("arrowHead")
                     );
-                }, this);
-            }, this);
-        }, this);
+                });
+            });
+        });
         this.content(vertices);
         this.data({ vertices, edges });
     }

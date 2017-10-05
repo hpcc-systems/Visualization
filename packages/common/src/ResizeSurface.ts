@@ -44,8 +44,8 @@ export class ResizeSurface extends Surface {
                         width: context._dragStartSize.width,
                         height: context._dragStartSize.height
                     };
-                    context._textPosSize = context._text.getBBox(true);
-                    context._iconPosSize = context._icon.getBBox(true);
+                    context._textPosSize = context._textWidget.getBBox(true);
+                    context._iconPosSize = context._iconWidget.getBBox(true);
                     context.showContent(false);
                 }
             })
@@ -120,8 +120,8 @@ export class ResizeSurface extends Surface {
                         .showContent(true)
                         .render()
                         ;
-                    context._container.getBBox(true);
-                    context._titleRect.getBBox(true);
+                    context._containerWidget.getBBox(true);
+                    context._titleRectWidget.getBBox(true);
                     context.dispatch.call("sizeend", context, d.loc);
                 }
             })
@@ -140,16 +140,16 @@ export class ResizeSurface extends Surface {
     }
 
     updateHandles(_domNode, _element) {
-        const sizeHandles = this._parentElement.selectAll("rect").data(this.handles, function (d) { return d.loc; });
+        const sizeHandles = this._placeholderElement.selectAll("rect").data(this.handles, function (d) { return d.loc; });
         const sizeHandlesEnter = sizeHandles.enter().append("rect")
             .attr("class", function (d) { return "resize" + d.loc; })
             .call(this.drag)
             ;
 
-        const l = this._pos.x + this._container._pos.x - this._container.width() / 2;
-        const t = this._pos.y + this._titleRect._pos.y - this._titleRect.height() / 2;
-        const r = this._pos.x + this._container._pos.x + this._container.width() / 2;
-        const b = this._pos.y + this._container._pos.y + this._container.height() / 2;
+        const l = this._pos.x + this._containerWidget._pos.x - this._containerWidget.width() / 2;
+        const t = this._pos.y + this._titleRectWidget._pos.y - this._titleRectWidget.height() / 2;
+        const r = this._pos.x + this._containerWidget._pos.x + this._containerWidget.width() / 2;
+        const b = this._pos.y + this._containerWidget._pos.y + this._containerWidget.height() / 2;
         const w = r - l;
         const h = b - t;
         const context = this;

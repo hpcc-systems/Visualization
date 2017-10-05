@@ -4,9 +4,9 @@ import * as React from "react";
 if (!(window as any).React) {
     (window as any).React = React;
 }
-import * as ReactOrb from "orb/dist/orb";
+import * as ReactOrb from "orb-fix";
 
-import "orb/dist/orb.css";
+import "orb-fix.css";
 import "../src/Orb.css";
 
 class Mapping extends PropertyExt {

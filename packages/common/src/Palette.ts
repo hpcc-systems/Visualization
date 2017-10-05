@@ -12,21 +12,21 @@ const d3Schemes = {
 
 const m_colorbrewer = _colorbrewer.default || _colorbrewer;
 
-var d3Ordinal = [
+const d3Ordinal = [
     "category10", "category20", "category20b", "category20c"
 ];
-var brewerOrdinal = [
+const brewerOrdinal = [
     "Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "Set2", "Set3"
 ];
-var hpccOrdinal = [
+const hpccOrdinal = [
     "hpcc10", "hpcc20"
 ];
 
-var ordinalCache = {};
+const ordinalCache = {};
 
 export function fetchOrdinalItem(id?, colors?) {
     if (!id) return palette_ordinal();
-    var retVal = ordinalCache[id];
+    let retVal = ordinalCache[id];
     if (!retVal) {
         retVal = palette_ordinal(id, colors);
         ordinalCache[id] = retVal;
@@ -36,7 +36,7 @@ export function fetchOrdinalItem(id?, colors?) {
 
 function palette_ordinal(id?, colors?): any {
     if (!id) return ["default"].concat(d3Ordinal.concat(brewerOrdinal).concat(hpccOrdinal));
-    var scale = null;
+    let scale = null;
 
     if (colors) {
         scale = d3ScaleOrdinal().range(colors);
@@ -44,10 +44,10 @@ function palette_ordinal(id?, colors?): any {
         if (d3Ordinal.indexOf(id) >= 0) {
             scale = d3ScaleOrdinal(d3Schemes[id]);
         } else if (hpccOrdinal.indexOf(id) >= 0) {
-            var newColors = [];
+            let newColors = [];
             switch (id) {
                 case "hpcc10":
-                    var defColors = palette_ordinal("default").colors();
+                    const defColors = palette_ordinal("default").colors();
                     newColors = defColors.filter(function (_item, idx) {
                         if (idx % 2) {
                             return true;
@@ -61,7 +61,7 @@ function palette_ordinal(id?, colors?): any {
             }
             scale = d3ScaleOrdinal().range(newColors);
         } else if (brewerOrdinal.indexOf(id) > 0) {
-            var largestPalette = 12;
+            let largestPalette = 12;
             while (largestPalette > 0) {
                 if (m_colorbrewer[id][largestPalette]) {
                     scale = d3ScaleOrdinal().range(m_colorbrewer[id][largestPalette]);
@@ -113,10 +113,10 @@ function palette_ordinal(id?, colors?): any {
     return ordinal;
 }
 
-var rainbowCache = {};
+const rainbowCache = {};
 export function fetchRainbowItem(id?, colors?, steps?) {
     if (!id) return palette_rainbow();
-    var retVal = rainbowCache[id];
+    let retVal = rainbowCache[id];
     if (!retVal) {
         retVal = palette_rainbow(id, colors, steps);
         rainbowCache[id] = retVal;
@@ -126,8 +126,8 @@ export function fetchRainbowItem(id?, colors?, steps?) {
 
 function palette_rainbow(id?, _colors?, _steps?) {
     if (!arguments.length) {
-        var retVal = ["default"];
-        for (var key in m_colorbrewer) {
+        const retVal = ["default"];
+        for (const key in m_colorbrewer) {
             if (brewerOrdinal.indexOf(key) === -1) {
                 retVal.push(key);
             }
@@ -135,22 +135,22 @@ function palette_rainbow(id?, _colors?, _steps?) {
         return retVal;
     }
 
-    var scale = null;
-    var colors = _colors;
+    let scale = null;
+    let colors = _colors;
 
-    var _custom = function (colors, steps?) {
+    const _custom = function (colors, steps?) {
         steps = steps || 32;
-        var subPaletteSize = Math.ceil(steps / (colors.length - 1));
-        var range = [];
-        var prevColor = null;
+        const subPaletteSize = Math.ceil(steps / (colors.length - 1));
+        const range = [];
+        let prevColor = null;
         colors.forEach(function (color) {
             if (prevColor) {
-                var scale = d3ScaleLinear()
+                const scale = d3ScaleLinear()
                     .domain([0, subPaletteSize])
                     .range([prevColor, color])
                     .interpolate(d3InterpolateLab as any)
                     ;
-                for (var i = 0; i < subPaletteSize; ++i) {
+                for (let i = 0; i < subPaletteSize; ++i) {
                     range.push(scale(i));
                 }
             }
@@ -164,7 +164,7 @@ function palette_rainbow(id?, _colors?, _steps?) {
         scale = _custom(_colors, _steps);
     } else {
         if (m_colorbrewer[id]) {
-            var largestPalette = 12;
+            let largestPalette = 12;
             while (largestPalette > 0) {
                 if (m_colorbrewer[id][largestPalette]) {
                     scale = _custom(m_colorbrewer[id][largestPalette]);
@@ -248,7 +248,7 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
         .style("height", (256 / 32) + "px")
         .style("background-color", function (d: any) { return d; });
 
-    var palette = { id: customArr.join("_") + steps, scale: palette_rainbow("custom", customArr, steps) };
+    const palette = { id: customArr.join("_") + steps, scale: palette_rainbow("custom", customArr, steps) };
     d3Select(customDivID)
         .selectAll(".palette")
         .data([palette], function (d: any) { return d.id; })
@@ -259,8 +259,8 @@ export function test(ordinalDivID, brewerDivID, customDivID, customArr, steps) {
             console.log(d3Values(d.id).map(JSON.stringify as any).join("\n"));
         })
         .selectAll(".swatch2").data(function () {
-            var retVal = [];
-            for (var i = 0; i <= 255; ++i) {
+            const retVal = [];
+            for (let i = 0; i <= 255; ++i) {
                 retVal.push(palette.scale(i, 0, 255));
             }
             return retVal;

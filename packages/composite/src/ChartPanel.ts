@@ -1,7 +1,7 @@
 import { HTMLWidget, publish, publishProxy, Utility } from "@hpcc-js/common";
 import { Border2 } from "@hpcc-js/layout";
 import { Legend } from "./Legend";
-import { MultiChart } from "./multiChart";
+import { MultiChart } from "./MultiChart";
 import { Button, IClickHandler, Item, Spacer, TitleBar, ToggleButton } from "./TitleBar";
 
 import "../src/ChartPanel.css";

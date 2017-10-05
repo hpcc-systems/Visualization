@@ -18,9 +18,9 @@ export class HTML extends Grid {
         let cellRow = 0;
         let cellCol = 0;
         const cellDensity = 3;
-        this._ddlDashboards.forEach(function (dashboard) {
+        this._ddlDashboards.forEach(dashboard => {
             const maxCol = Math.floor(Math.sqrt(dashboard.visualizations.length));
-            dashboard.visualizations.forEach(function (viz) {
+            dashboard.visualizations.forEach(viz => {
                 if (viz.newWidgetSurface) {
                     while (this.getCell(cellRow * cellDensity, cellCol * cellDensity) !== null) {
                         cellCol++;
@@ -31,8 +31,8 @@ export class HTML extends Grid {
                     }
                     this.setContent(cellRow * cellDensity, cellCol * cellDensity, viz.newWidgetSurface, "", cellDensity, cellDensity);
                 }
-            }, this);
-        }, this);
+            });
+        });
 
         const vizCellMap = {};
         this.content().forEach(function (cell) {

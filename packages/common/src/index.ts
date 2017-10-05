@@ -22,20 +22,15 @@ export * from "./SVGWidget";
 export * from "./SVGZoomWidget";
 export * from "./Text";
 export * from "./TextBox";
-export * from "./Transition";
 import * as Utility from "./Utility";
 export { Utility };
 export * from "./Widget";
 export * from "./WidgetArray";
 
 //  Third Party  ---
-export * from "d3-array";
-export * from "d3-brush";
-export * from "d3-collection";
+export * from "d3-color";
 export * from "d3-drag";
 export * from "d3-format";
-export * from "d3-interpolate";
-export * from "d3-scale";
 export * from "d3-selection";
-export * from "d3-zoom";
-export * from "tslib";
+export * from "d3-time-format";
+export * from "d3-transition";

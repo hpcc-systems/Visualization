@@ -1,7 +1,7 @@
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson";
-import { Choropleth } from "./Choropleth";
+import { Choropleth, topoJsonFolder } from "./Choropleth";
 
 export function TopoJSONChoropleth() {
     Choropleth.call(this);
@@ -92,12 +92,12 @@ TopoJSONChoropleth.prototype.layerPreRender = function () {
     if (!this._topoJsonPromise) {
         const context = this;
         this._topoJsonPromise = new Promise(function (resolve, reject) {
-            d3Json(`${context._topoJsonFolder}/${context.region()}.json`, function (region) {
+            d3Json(`${topoJsonFolder()}/${context.region()}.json`, function (region) {
                 context._choroTopology = region;
                 context._choroTopologyObjects = region.objects.PolbndA;
                 context._choroTopologyFeatures = topojson.feature(context._choroTopology, context._choroTopologyObjects).features;
 
-                d3Json(`${context._topoJsonFolder}/${context.region()}_idx.json`, indexLoad)
+                d3Json(`${topoJsonFolder()}/${context.region()}_idx.json`, indexLoad)
                     .on("error", function (err) {
                         indexLoad({});
                     })

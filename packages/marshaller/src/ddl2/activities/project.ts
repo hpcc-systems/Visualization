@@ -2,7 +2,6 @@ import { PropertyExt, publish } from "@hpcc-js/common";
 import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { Activity, ReferencedFields } from "./activity";
-import { View } from "./view";
 
 export type ComputedType = "=" | "*" | "/" | "+" | "-" | "scale";
 export class ComputedField extends PropertyExt {
@@ -59,16 +58,14 @@ export class ComputedField extends PropertyExt {
 ComputedField.prototype._class += " AggregateField";
 //  ===========================================================================
 export class Project extends Activity {
-    private _owner: View;
 
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
     computedFields: publish<this, ComputedField[]>;
     @publish(false, "boolean", "trim", null, { autoExpand: ComputedField })
     trim: publish<this, boolean>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
-        this._owner = owner;
     }
 
     hash(): string {

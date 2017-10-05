@@ -42,7 +42,7 @@ describe("connection", function () {
         });
     });
 
-    it("JSONP", function () {
+    it.skip("JSONP", function () {
         if (!isTravis() && isBrowser()) {
             const transport = new Connection({ baseUrl: "http://10.241.100.159:800./wsEcl/submit/query/roxie", type: RequestType.JSONP });
             const request = {

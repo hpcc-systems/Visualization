@@ -45,14 +45,12 @@ export class List extends SVGWidget implements IList {
 
         let listHeight = 0;
         let listWidth = 0;
-        let listCount = 0;
         for (const key in this._listWidgets) {
             if (!this._listWidgets.hasOwnProperty(key)) continue;
             const bbox = this._listWidgets[key].getBBox();
             listHeight += bbox.height;
             if (listWidth < bbox.width)
                 listWidth = bbox.width;
-            ++listCount;
         }
 
         let yPos = -listHeight / 2; // + lineHeight / 2;

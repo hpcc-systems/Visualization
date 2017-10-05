@@ -5,7 +5,7 @@ import "../src/AutoCompleteText.css";
 
 export class AutoCompleteText extends HTMLWidget {
     _span;
-    _label;
+    _prompt;
     _input;
     _prevMinCharsText;
     _autoComplete;
@@ -30,7 +30,7 @@ export class AutoCompleteText extends HTMLWidget {
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._span = element.append("span");
-        this._label = this._span.append("label")
+        this._prompt = this._span.append("label")
             .attr("for", this.id() + "_input")
             ;
         this._input = this._span.append("input")
@@ -44,7 +44,7 @@ export class AutoCompleteText extends HTMLWidget {
     update(domNode, element) {
         HTMLWidget.prototype.update.apply(this, arguments);
 
-        this._label.text(this.label());
+        this._prompt.text(this.label());
         this._input.style("width", this.textboxWidth_exists() ? this.textboxWidth() + "px" : null);
 
         if (this._prevMinCharsText !== this.minCharsText()) {

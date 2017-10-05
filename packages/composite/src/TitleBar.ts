@@ -82,9 +82,9 @@ export class TitleBar extends HTMLWidget {
         super();
     }
 
-    enter(domNode, element) {
+    enter(domNode, element: d3SelectionType) {
         super.enter(domNode, element);
-        this._divMain = element.append("div")
+        this._divMain = element.append<HTMLElement>("div")
             .attr("class", "main")
             ;
         this._divTitle = this._divMain.append<HTMLElement>("div")
@@ -103,7 +103,7 @@ export class TitleBar extends HTMLWidget {
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
-            .each(function (d: Item) {
+            .each(function (this: HTMLElement, d: Item) {
                 d.target(this);
             })
             .merge(icons)

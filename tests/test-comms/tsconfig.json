@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "lib",
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
+    "skipLibCheck": true,
     "declaration": false,
     "noImplicitAny": true,
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,
-    "importHelpers": true,
-    "skipLibCheck": true,
     "lib": [
       "dom",
       "es5",

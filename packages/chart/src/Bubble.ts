@@ -50,7 +50,7 @@ export class Bubble extends SVGWidget {
     }
 
     update(domNode, element) {
-        super.update.apply(domNode, element);
+        super.update(domNode, element);
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());

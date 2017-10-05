@@ -20,16 +20,22 @@ export class Pins extends Layer {
     pinsData() {
         const geohashField = this._db.fieldByLabel(this.geohashColumn());
         const tooltipField = this._db.fieldByLabel(this.tooltipColumn());
+        const latField = this._db.fieldByLabel(this.latColumn());
+        const longField = this._db.fieldByLabel(this.longColumn());
         const context = this;
         return this.data().filter(function (row) {
-            if (context.omitNullLatLong() && row[0] === 0 && row[1] === 0) {
+            const lat = latField ? row[latField.idx] : row[0];
+            const long = longField ? row[longField.idx] : row[1];
+            if (context.omitNullLatLong() && lat === 0 && long === 0) {
                 return false;
             }
             return true;
         }).map(function (row) {
+            const lat = latField ? row[latField.idx] : row[0];
+            const long = longField ? row[longField.idx] : row[1];
             const retVal = {
-                lat: row[0],
-                long: row[1],
+                lat,
+                long,
                 ext: row[2] instanceof Object ? row[2] : {},
                 origRow: row
             };
@@ -77,19 +83,19 @@ export class Pins extends Layer {
             .on("dblclick", function (d) {
                 context.dblclick(context.rowToObj(d.origRow), "geohash", context._selection.selected(this));
             })
-            on("mouseover", function (d) {
+            .on("mouseover", function (d) {
                 if (!Platform.isIE) {
                     this.parentNode.appendChild(this);
                 }
             })
-            on("mouseout.tooltip", function(d){
-                if(d.ext && d.ext.tooltip){
-                    context.tooltip.hide.apply(this,arguments);
+            .on("mouseout.tooltip", function (d) {
+                if (d.ext && d.ext.tooltip) {
+                    context.tooltip.hide.apply(this, arguments);
                 }
             })
-            on("mousemove.tooltip", function(d){
-                if(d.ext && d.ext.tooltip){
-                    context.tooltip.show.apply(this,arguments);
+            .on("mousemove.tooltip", function (d) {
+                if (d.ext && d.ext.tooltip) {
+                    context.tooltip.show.apply(this, arguments);
                 }
             })
             .each(function (d) {
@@ -248,6 +254,10 @@ export class Pins extends Layer {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
+    latColumn: { (): string; (_: string): Pins };
+    latColumn_exists: () => boolean;
+    longColumn: { (): string; (_: string): Pins };
+    longColumn_exists: () => boolean;
     geohashColumn: { (): string; (_: string): Pins };
     geohashColumn_exists: () => boolean;
     tooltipColumn: { (): string; (_: string): Pins };
@@ -287,10 +297,11 @@ export class Pins extends Layer {
 }
 Pins.prototype._class += " map_Pins";
 Pins.prototype.mixin(Utility.SimpleSelectionMixin);
-Pins.prototype.implements(ITooltip.prototype);
 
 Pins.prototype.publish("geohashColumn", null, "set", "Geohash column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
+Pins.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
+Pins.prototype.publish("longColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 Pins.prototype.publish("fillColor", "#00FFDD", "html-color", "Pin Color", null, { optional: true });
 Pins.prototype.publish("omitNullLatLong", false, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });

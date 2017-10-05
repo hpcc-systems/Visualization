@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./lib",
+        "outDir": "./lib-umd",
         "target": "es5",
         "module": "umd",
         "moduleResolution": "node",
@@ -13,6 +13,7 @@
         "noUnusedLocals": true,
         "strictNullChecks": false,
         "importHelpers": true,
+        "experimentalDecorators": true,
         "lib": [
             "dom",
             "es5",
@@ -21,6 +22,6 @@
         "types": []
     },
     "include": [
-        "src/*"
+        "src/**/*"
     ]
 }

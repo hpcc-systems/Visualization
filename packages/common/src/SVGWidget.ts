@@ -152,54 +152,44 @@ export class SVGWidget extends Widget {
                     break;
             }
         }
-        this._parentElement
+        this._placeholderElement
             .attr("width", this._size.width)
             .attr("height", this._size.height)
             ;
         return retVal;
     }
 
-    target(): any;
-    target(_): this;
-    target(_?: any): any | this {
-        if (!arguments.length) return this._target;
-        if (this._target && _ && (this._target.__data__.id !== _.__data__.id)) {
-            throw new Error("Target can only be assigned once.");
-        }
-        this._target = _;
-
-        //  Target is a DOM Node ID ---
-        if (typeof (this._target) === "string") {
-            this._target = document.getElementById(this._target);
-        }
-
-        if (this._target instanceof SVGElement) {
-            this._parentElement = d3Select(this._target);
-            this._parentWidget = this._parentElement.datum();
-            if (!this._parentWidget || this._parentWidget._id === this._id) {
-                this._parentWidget = this.locateParentWidget(this._target.parentNode);
+    target(): null | HTMLElement | SVGElement;
+    target(_: null | string | HTMLElement | SVGElement): this;
+    target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
+        const retVal = super.target.apply(this, arguments);
+        if (arguments.length) {
+            if (this._target instanceof SVGElement) {
+                this._placeholderElement = d3Select(this._target);
+                this._parentWidget = this._placeholderElement.datum();
+                if (!this._parentWidget || this._parentWidget._id === this._id) {
+                    this._parentWidget = this.locateParentWidget(this._target.parentNode);
+                }
+                this._parentOverlay = this.locateOverlayNode();
+            } else if (this._target) {
+                //  Target is a DOM Node, so create a SVG Element  ---
+                this._parentRelativeDiv = d3Select(this._target).append("div")
+                    .style("position", "relative")
+                    ;
+                this._placeholderElement = this._parentRelativeDiv.append("svg")
+                    .style("position", "absolute")
+                    .style("top", 0)
+                    .style("left", 0)
+                    ;
+                this._parentOverlay = this._parentRelativeDiv.append("div")
+                    .style("position", "absolute")
+                    .style("top", 0)
+                    .style("left", 0)
+                    ;
+                this.resize(this._size);
             }
-            this._parentOverlay = this.locateOverlayNode();
-        } else if (this._target) {
-            //  Target is a DOM Node, so create a SVG Element  ---
-            this._parentRelativeDiv = d3Select(this._target).append("div")
-                .style("position", "relative")
-                ;
-            this._parentElement = this._parentRelativeDiv.append("svg")
-                .style("position", "absolute")
-                .style("top", 0)
-                .style("left", 0)
-                ;
-            this._parentOverlay = this._parentRelativeDiv.append("div")
-                .style("position", "absolute")
-                .style("top", 0)
-                .style("left", 0)
-                ;
-            this.resize(this._size);
-        } else {
-            this.exit();
         }
-        return this;
+        return retVal;
     }
 
     enter(domNode, element) {
@@ -213,16 +203,16 @@ export class SVGWidget extends Widget {
     postUpdate(domNode, element) {
         super.postUpdate(domNode, element);
         if (this._drawStartPos === "origin" && this._target instanceof SVGElement) {
-            this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._scale + ")");
+            this._element.attr("transform", "translate(" + (this._pos.x - this._size.width / 2) + "," + (this._pos.y - this._size.height / 2) + ")scale(" + this._widgetScale + ")");
         } else {
-            this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._scale + ")");
+            this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._widgetScale + ")");
         }
     }
 
     exit(domNode?, element?) {
         if (this._parentRelativeDiv) {
             this._parentOverlay.remove();
-            this._parentElement.remove();
+            this._placeholderElement.remove();
             this._parentRelativeDiv.remove();
         }
         super.exit(domNode, element);
@@ -255,10 +245,10 @@ export class SVGWidget extends Widget {
             };
         }
         return {
-            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._scale,
-            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._scale,
-            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._scale,
-            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._scale
+            x: (round ? Math.round(this._boundingBox.x) : this._boundingBox.x) * this._widgetScale,
+            y: (round ? Math.round(this._boundingBox.y) : this._boundingBox.y) * this._widgetScale,
+            width: (round ? Math.round(this._boundingBox.width) : this._boundingBox.width) * this._widgetScale,
+            height: (round ? Math.round(this._boundingBox.height) : this._boundingBox.height) * this._widgetScale
         };
     }
 

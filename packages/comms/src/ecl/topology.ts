@@ -1,11 +1,23 @@
-import { exists } from "@hpcc-js/util";
+import { exists, StateCallback, StateEvents, StateObject, StatePropCallback } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { TopologyService } from "../services/wsTopology";
+import { TopologyService, TpTargetClusterQuery } from "../services/wsTopology";
+import { TargetCluster } from "./targetCluster";
 
-export class Topology {
+export interface TopologyStateEx {
+    TargetClusters: TpTargetClusterQuery.TpTargetCluster[];
+}
+export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> implements TopologyStateEx {
     protected connection: TopologyService;
 
+    //  Accessors  ---
+    get properties(): TopologyStateEx { return this.get(); }
+    get TargetClusters(): TpTargetClusterQuery.TpTargetCluster[] { return this.get("TargetClusters"); }
+    get CTargetClusters(): TargetCluster[] {
+        return this.TargetClusters.map(tc => TargetCluster.attach(this.connection, tc.Name, tc));
+    }
+
     constructor(optsConnection: IOptions | IConnection | TopologyService) {
+        super();
         if (optsConnection instanceof TopologyService) {
             this.connection = optsConnection;
         } else {
@@ -31,5 +43,42 @@ export class Topology {
             }
             return `${rootProtocol}//${ip}:${port}/`;
         });
+    }
+
+    fetchTargetClusters(): Promise<TargetCluster[]> {
+        return this.connection.TpTargetClusterQuery({ Type: "ROOT" }).then(response => {
+            this.set({
+                TargetClusters: response.TpTargetClusters.TpTargetCluster
+            });
+            return this.CTargetClusters;
+        });
+    }
+
+    async refresh(): Promise<this> {
+        await this.fetchTargetClusters();
+        return this;
+    }
+
+    //  Monitoring  ---
+
+    //  Events  ---
+    on(eventID: StateEvents, propIDorCallback: StateCallback | keyof TopologyStateEx, callback?: StatePropCallback): this {
+        if (this.isCallback(propIDorCallback)) {
+            switch (eventID) {
+                case "changed":
+                    super.on(eventID, propIDorCallback);
+                    break;
+                default:
+            }
+        } else {
+            switch (eventID) {
+                case "changed":
+                    super.on(eventID, propIDorCallback, callback!);
+                    break;
+                default:
+            }
+        }
+        this._monitor();
+        return this;
     }
 }

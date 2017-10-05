@@ -30,11 +30,9 @@ class ObserverHandle<T extends string> implements IObserverHandle {
 
 export type EventID = string;
 export class Observable<T extends EventID> {
-    private _knownEvents: EventID[];
     private _eventObservers: { [eventID: string]: CallbackFunction[] } = {};
 
     constructor(...events: T[]) {
-        this._knownEvents = events;
     }
 
     addObserver(eventID: T, callback: CallbackFunction): IObserverHandle {

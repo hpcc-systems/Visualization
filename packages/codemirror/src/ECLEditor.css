@@ -1,0 +1,12 @@
+.codemirror_ECLEditor .cm-s-default span.cm-comment { color: #008000; }
+.codemirror_ECLEditor .cm-s-default span.cm-keyword { color: #0000ff; }
+.codemirror_ECLEditor .cm-s-default span.cm-variable { font-weight: bold; color: #000080; }
+.codemirror_ECLEditor .cm-s-default span.cm-variable-2 { color: #800000; }
+.codemirror_ECLEditor .cm-s-default span.cm-variable-3 { color: #800000; }
+.codemirror_ECLEditor .cm-s-default span.cm-builtin { color: #800080; }
+.codemirror_ECLEditor .cm-s-default span.cm-string { color: #808080; }
+.codemirror_ECLEditor .cm-s-default span.cm-number, .cm-s-default span.cm-atom { color: #000000; }
+.codemirror_ECLEditor .cm-s-default span.cm-meta {color: #004080;}
+.codemirror_ECLEditor .ErrorLine {background: #cc0000 !important;color:white!important;}
+.codemirror_ECLEditor .WarningLine {background: #ffff99 !important;}
+.codemirror_ECLEditor .highlightline { background: #e8f2ff !important; }

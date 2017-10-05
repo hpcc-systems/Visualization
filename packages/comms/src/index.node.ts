@@ -16,7 +16,7 @@ if (typeof root.btoa === "undefined") {
     };
 }
 
-export * from "./index";
+export * from "./index-common";
 
 //  Client Tools  ---
 export { locateAllClientTools, locateClientTools, IECLError } from "./clienttools/eclcc";

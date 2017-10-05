@@ -1,5 +1,5 @@
 import { CanvasWidget, Palette } from "@hpcc-js/common";
-import * as _simpleheat from "simpleheat";
+import _simpleheat from "simpleheat";
 
 const simpleheat = (window as any).simpleheat || _simpleheat.default || _simpleheat;
 

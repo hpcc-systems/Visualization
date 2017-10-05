@@ -7,7 +7,7 @@ import { classDef, render } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 
-describe("@hpcc-js/common", () => {
+describe("@hpcc-js/form", () => {
     for (const key in form) {
         const item = (form as any)[key];
         if (item) {

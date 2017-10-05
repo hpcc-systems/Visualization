@@ -28,7 +28,7 @@ export class WidgetAdapter extends PWidget {
     protected _owner;
     protected _element;
     private _widget: Widget;
-    get widget() { return this._widget; }
+    get widget(): Widget { return this._widget; }
     private _widgetLayout: object;
     lparam: any = {};
     padding: number = 0;

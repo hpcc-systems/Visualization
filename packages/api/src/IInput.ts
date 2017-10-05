@@ -61,7 +61,7 @@ export abstract class IInput extends Widget {
             e.attr("disabled", disable ? "disabled" : null);
         });
     }
-    
+
     setFocus() {
         if (this._inputElement.length) {
             this._inputElement[0].node().focus();

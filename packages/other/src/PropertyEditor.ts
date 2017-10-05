@@ -337,11 +337,9 @@ export class PropertyEditor extends HTMLWidget {
                 for (const excludeParamItem of context.excludeParams()) {
                     const arr = excludeParamItem.split(".");
                     let widgetName;
-                    let obj;
                     let excludeParam;
                     if (arr.length > 2) {
                         widgetName = arr[0];
-                        obj = arr[1];
                         excludeParam = arr[2];
                     } else {
                         widgetName = arr[0];
@@ -482,7 +480,7 @@ export class PropertyEditor extends HTMLWidget {
                 const peDiv = peInputElement.append("div")
                     // .attr("class", `property- input - cell propEditor-${context.depth() }`)
                     ;
-                context._childPE.set(this, new PropertyEditor().label(param.id).target(peDiv.node()));
+                context._childPE.set(this, new PropertyEditor().label(param.id).target(peDiv.node() as HTMLElement));
             })
             .merge(peInput)
             .each(function (w) {
@@ -596,47 +594,47 @@ export class PropertyEditor extends HTMLWidget {
                     ;
                 break;
             default:
-            if(param.ext && param.ext.range){
-                cell.append("span")
-                    .classed("property-input-span", true)
-                    .attr("id", this.id() + "_" + param.id + "_currentVal")
-                    .text(param.defaultValue)
-                ;
-                cell.append("input")
-                    .attr("type", "range")
-                    .attr("step", param.ext.range.step)
-                    .attr("min", param.ext.range.min)
-                    .attr("max", param.ext.range.max)
-                    .attr("id", this.id() + "_" + param.id)
-                    .classed("property-input", true)
-                    .on("input", function () {
-                        context.setProperty(widget, param.id, this.value);
-                        d3.select('#'+this.id+"_currentVal").text('Current Value: '+this.value);
-                    })
-                    .on("change", function () {
-                        context.setProperty(widget, param.id, this.value);
-                        d3.select('#'+this.id+"_currentVal").text('Current Value: '+this.value);
-                    })
-                    ;
-            } else {
+                if (param.ext && param.ext.range) {
+                    cell.append("span")
+                        .classed("property-input-span", true)
+                        .attr("id", this.id() + "_" + param.id + "_currentVal")
+                        .text(param.defaultValue)
+                        ;
                     cell.append("input")
-                    .attr("id", this.id() + "_" + param.id)
-                    .classed("property-input", true)
-                    .on("change", function () {
-                        context.setProperty(widget, param.id, this.value);
-                    })
-                ;
-                if (param.type === "html-color" && !this.isIE) {
-                    cell.append("input")
-                        .attr("id", this.id() + "_" + param.id + "_2")
+                        .attr("type", "range")
+                        .attr("step", param.ext.range.step)
+                        .attr("min", param.ext.range.min)
+                        .attr("max", param.ext.range.max)
+                        .attr("id", this.id() + "_" + param.id)
                         .classed("property-input", true)
-                        .attr("type", "color")
+                        .on("input", function () {
+                            context.setProperty(widget, param.id, this.value);
+                            d3Select("#" + this.id + "_currentVal").text("Current Value: " + this.value);
+                        })
+                        .on("change", function () {
+                            context.setProperty(widget, param.id, this.value);
+                            d3Select("#" + this.id + "_currentVal").text("Current Value: " + this.value);
+                        })
+                        ;
+                } else {
+                    cell.append("input")
+                        .attr("id", this.id() + "_" + param.id)
+                        .classed("property-input", true)
                         .on("change", function () {
                             context.setProperty(widget, param.id, this.value);
                         })
                         ;
+                    if (param.type === "html-color" && !Platform.isIE) {
+                        cell.append("input")
+                            .attr("id", this.id() + "_" + param.id + "_2")
+                            .classed("property-input", true)
+                            .attr("type", "color")
+                            .on("change", function () {
+                                context.setProperty(widget, param.id, this.value);
+                            })
+                            ;
+                    }
                 }
-            }
                 break;
         }
     }
@@ -669,8 +667,8 @@ export class PropertyEditor extends HTMLWidget {
                 }));
                 break;
             default:
-                if(param.ext && param.ext.range){
-                    d3.select("#" + this.id() + "_" + param.id + "_currentVal").text('Current Value: '+val);
+                if (param.ext && param.ext.range) {
+                    d3Select("#" + this.id() + "_" + param.id + "_currentVal").text("Current Value: " + val);
                 }
                 element.property("value", val);
                 break;

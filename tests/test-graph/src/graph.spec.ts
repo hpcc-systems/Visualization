@@ -20,10 +20,10 @@ const data = {
     }
 };
 
-describe("@hpcc-js/common", () => {
+describe("@hpcc-js/graph", () => {
     for (const key in graph) {
         const item = (graph as any)[key];
-        if (item) {
+        if (item && item.prototype && item.prototype.constructor) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
                 describe(`${item.prototype.constructor.name}`, () => {
                     if (item.prototype instanceof Class) {

@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "@hpcc-js/test-unpkg",
+  "version": "0.0.14",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@hpcc-js/api": "^0.0.52",
+    "@hpcc-js/chart": "^0.0.54",
+    "@hpcc-js/common": "^0.0.52",
+    "@hpcc-js/dgrid": "^0.0.62",
+    "@hpcc-js/dgrid-shim": "^0.0.47",
+    "@hpcc-js/map": "^0.0.57",
+    "@hpcc-js/other": "^0.0.52",
+    "@hpcc-js/phosphor": "^0.0.54",
+    "d3-array": "1.2.1",
+    "d3-random": "1.1.0"
+  },
+  "scripts": {},
+  "author": "",
+  "license": "Apache-2.0"
+}

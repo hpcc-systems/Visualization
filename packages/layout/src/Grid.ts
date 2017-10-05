@@ -337,8 +337,8 @@ export class Grid extends HTMLWidget {
     update(domNode, element2) {
         super.update(domNode, element2);
 
-        this._parentElement.style("overflow-x", this.fitTo() === "width" ? "hidden" : null);
-        this._parentElement.style("overflow-y", this.fitTo() === "width" ? "scroll" : null);
+        this._placeholderElement.style("overflow-x", this.fitTo() === "width" ? "hidden" : null);
+        this._placeholderElement.style("overflow-y", this.fitTo() === "width" ? "scroll" : null);
         const dimensions = this.getDimensions();
         const clientWidth = this.width() - (this.fitTo() === "width" ? this._scrollBarWidth : 0);
         this.cellWidth = clientWidth / dimensions.width;

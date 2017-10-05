@@ -41,9 +41,9 @@ export class Popup extends HTMLWidget {
         let top;
         switch (this.centerPopup()) {
             case "container":
-                if (this._parentElement) {
-                    left = parseInt(this._parentElement.style("width")) / 2 - this.widget().width() / 2;
-                    top = parseInt(this._parentElement.style("height")) / 2 - this.widget().height() / 2;
+                if (this._placeholderElement) {
+                    left = parseInt(this._placeholderElement.style("width")) / 2 - this.widget().width() / 2;
+                    top = parseInt(this._placeholderElement.style("height")) / 2 - this.widget().height() / 2;
                 }
                 this.position("absolute");
                 break;

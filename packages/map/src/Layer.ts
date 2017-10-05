@@ -49,7 +49,7 @@ export class Layer extends Layered {
         return Promise.resolve();
     }
 
-    render(callback) {
+    render(callback?: (w: this) => void): this {
         const context = this;
         const args = arguments;
         this.layerPreRender().then(function () {

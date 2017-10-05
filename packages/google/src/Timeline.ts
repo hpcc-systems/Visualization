@@ -36,7 +36,6 @@ export class Timeline extends CommonND {
     }
 
     formatData() {
-        let data = null;
         if (this.data().length) {
             this._data_google = createDataTable();
 
@@ -49,7 +48,7 @@ export class Timeline extends CommonND {
             let end;
             const parseDate = d3TimeParse(this.timePattern());
 
-            data = this.data().map(function (d) {
+            this.data().forEach(function (d) {
                 start = parseDate(d[2]);
                 end = parseDate(d[3]);
                 this._data_google.addRows([[d[0], d[1], start, end]]);

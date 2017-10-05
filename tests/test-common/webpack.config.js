@@ -1,10 +1,10 @@
 var path = require('path');
 
 module.exports = {
-    entry: './build/index.spec.js',
+    entry: './lib-es6/index.spec.js',
     output: {
-        path: __dirname + "/build",
-        filename: "bundle.test.js"
+        path: path.join(__dirname, "build"),
+        filename: 'bundle.test.js'
     },
     devtool: "source-map",
     module: {
@@ -20,7 +20,7 @@ module.exports = {
             use: [{
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]'
+                    publicPath: "build/"
                 }
             }]
         }]

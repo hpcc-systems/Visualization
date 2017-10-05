@@ -1,5 +1,5 @@
-import { Stack } from "./stack";
 import { isNode } from "./platform";
+import { Stack } from "./stack";
 
 export enum Level {
     debug,

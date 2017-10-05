@@ -1,7 +1,5 @@
 import { forceCenter as d3ForceCenter, forceLink as d3ForceLink, forceManyBody as d3ForceManyBody, forceSimulation as d3ForceSimulation, } from "d3-force";
-import * as _dagre from "dagre";
-
-const dagre: _dagre = _dagre.dagre || _dagre.default || _dagre;
+import { graphlib, layout } from "dagre";
 
 export function Circle(graphData?, width?, height?, radius?) {
     const context = this;
@@ -132,7 +130,7 @@ ForceDirected.prototype.edgePoints = function (_e) {
 };
 
 export function Hierarchy(graphData, _width, _height, options) {
-    const digraph = new dagre.graphlib.Graph({ multigraph: true, compound: true })
+    const digraph = new graphlib.Graph({ multigraph: true, compound: true })
         .setGraph(options)
         .setDefaultNodeLabel(function () { return {}; })
         .setDefaultEdgeLabel(function () { return {}; })
@@ -154,7 +152,7 @@ export function Hierarchy(graphData, _width, _height, options) {
     graphData.eachNode(function (u) {
         digraph.setParent(u, graphData.parent(u));
     });
-    this.dagreLayout = dagre.layout(digraph);
+    this.dagreLayout = layout(digraph);
     const deltaX = -digraph.graph().width / 2;
     const deltaY = -digraph.graph().height / 2;
     digraph.nodes().forEach(function (u) {

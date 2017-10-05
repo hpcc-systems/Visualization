@@ -172,4 +172,3 @@ export class Column extends XYAxis {
 Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);
 Column.prototype.implements(ITooltip.prototype);
-

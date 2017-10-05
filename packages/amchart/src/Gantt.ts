@@ -10,7 +10,9 @@ declare const require: any;
 const AmCharts = (window as any).AmCharts;
 
 export class Gantt extends HTMLWidget {
-    _chart: any = {};
+    _chart: any = {
+        valueAxes: []
+    };
 
     _selected = null;
     _selections = [];
@@ -117,6 +119,7 @@ export class Gantt extends HTMLWidget {
             initObj.pathToImages = require && require.toUrl ? require.toUrl("amchartsImg") : ".";
         }
         this._chart = AmCharts.makeChart(domNode, initObj);
+        this._chart.valueAxes = this._chart.valueAxes || [];
 
         this._chart.addListener("clickGraphItem", function (e) {
             const data = e.graph.segmentData;
@@ -153,6 +156,7 @@ export class Gantt extends HTMLWidget {
     }
 
     update(domNode, element) {
+        HTMLWidget.prototype.enter.apply(this, arguments);
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());

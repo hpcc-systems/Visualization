@@ -9,7 +9,8 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/lib/rollup",
-            "cwd": "${workspaceRoot}/../../packages/codemirror",
+            "args": [],
+            "cwd": "${workspaceRoot}/../../packages/util",
             "outFiles": [
                 "${workspaceRoot}/lib/**/*.js"
             ]

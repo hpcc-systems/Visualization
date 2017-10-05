@@ -131,7 +131,7 @@ export class ActivitySequence extends ActivityArray {
         return retVal[0];
     }
 
-    last(): Activity {
+    last(): Activity | null {
         const retVal = this.activities();
         return retVal[retVal.length - 1];
     }

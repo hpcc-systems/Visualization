@@ -601,9 +601,12 @@ export class Grid extends PropertyExt {
         return this;
     }
 
-    json(_?): string | Grid {
+    json(_?: string | object): string | Grid {
         if (!arguments.length) return JSON.stringify(this.jsonObj(), null, "  ");
-        this.jsonObj(JSON.parse(_));
+        if (typeof (_) === "string") {
+            _ = JSON.parse(_);
+        }
+        this.jsonObj(_);
         return this;
     }
 

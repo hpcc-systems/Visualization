@@ -7,7 +7,7 @@ import { Activity, ReferencedFields } from "./activity";
 import { View } from "./view";
 
 export class GroupByColumn extends PropertyExt {
-    _owner: GroupBy;
+    private _owner: GroupBy;
 
     @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, { optional: true })
     label: publish<this, string>;
@@ -47,7 +47,7 @@ const d3Aggr: { [key: string]: AggrFunc } = {
 
 export type AggregateType = "count" | "min" | "max" | "sum" | "mean" | "median" | "variance" | "deviation";
 export class AggregateField extends PropertyExt {
-    _owner: GroupBy;
+    private _owner: GroupBy;
 
     @publish(null, "string", "Label", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() })
     label: publish<this, string>;
@@ -85,7 +85,6 @@ AggregateField.prototype._class += " AggregateField";
 
 //  ===========================================================================
 export class GroupBy extends Activity {
-    _owner: View;
 
     @publish([], "propertyArray", "Source Columns", null, { autoExpand: GroupByColumn })
     column: publish<this, GroupByColumn[]>;
@@ -98,7 +97,6 @@ export class GroupBy extends Activity {
 
     constructor(owner: View) {
         super();
-        this._owner = owner;
     }
 
     hash(): string {

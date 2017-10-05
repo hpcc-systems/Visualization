@@ -1,31 +1,38 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "0.0.7",
+  "version": "0.0.19",
   "description": "hpcc-js DDL parser",
-  "main": "dist/ddl-shim.js",
-  "types": "lib/index.d.ts",
-  "scripts": {
-    "clean": "rimraf ./src/ddl*Schema*.ts && rimraf ./lib* && rimraf ./dist*",
-    "create-schema": "echo /* tslint:disable */ > ./src/ddlSchema.ts && echo export const ddlSchema = >> ./src/ddlSchema.ts && typescript-json-schema --noExtraProps --required ./src/ddl.ts DDLSchema >> ./src/ddlSchema.ts && echo ; >> ./src/ddlSchema.ts",
-    "create-schema2": "echo /* tslint:disable */ > ./src/ddl2Schema.ts && echo export const ddl2Schema = >> ./src/ddl2Schema.ts && typescript-json-schema --noExtraProps --required ./src/ddl2.ts Schema >> ./src/ddl2Schema.ts && echo ; >> ./src/ddl2Schema.ts",
-    "create-schema-test": "typescript-json-schema --noExtraProps --required ./src/ddl2.ts DDL2Schema",
-    "generate": "npm run create-schema && npm run create-schema2",
-    "build": "npm run generate && tsc -p . && webpack"
-  },
+  "main": "build/ddl-shim.js",
+  "unpkg": "build/ddl-shim.min.js",
+  "types": "lib-es6/index.d.ts",
   "files": [
-    "dist/**/*"
+    "build/*",
+    "lib/*",
+    "src/*.css"
   ],
+  "scripts": {
+    "clean": "rimraf ./src/ddl*Schema*.ts && rimraf lib* && rimraf build",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-util": "tsc -p ./tsconfig-util.json",
+    "generate": "node ./lib-util/createSchema.js",
+    "bundle": "webpack",
+    "bundle-watch": "webpack -w",
+    "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run bundle",
+    "watch": "concurrently --kill-others \"npm run compile-watch\" \"npm run bundle-watch\"",
+    "lint": "tslint --project . src/**/*.ts",
+    "docs": "typedoc --options tdoptions.json ."
+  },
   "dependencies": {
-    "ajv": "^4.11.3",
-    "reflect-metadata": "^0.1.10",
-    "tslib": "^1.7.1"
+    "ajv": "4.11.3",
+    "reflect-metadata": "0.1.10",
+    "tslib": "1.8.0"
   },
   "devDependencies": {
-    "extract-text-webpack-plugin": "^2.1.0",
-    "rimraf": "^2.6.1",
-    "typescript": "^2.5.2",
-    "typescript-json-schema": "^0.14.0",
-    "webpack": "^2.6.1"
+    "@types/node": "8.0.51",
+    "extract-text-webpack-plugin": "2.1.0",
+    "rimraf": "2.6.2",
+    "typescript-json-schema": "0.18.0",
+    "webpack": "3.10.0"
   },
   "repository": {
     "type": "git",

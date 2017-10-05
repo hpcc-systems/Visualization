@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./build",
+    "outDir": "./lib-umd",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

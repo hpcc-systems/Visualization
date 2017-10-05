@@ -1,6 +1,7 @@
-import { publish } from "@hpcc-js/common";
 import { HTMLWidget } from "@hpcc-js/common";
-import { Grid, Memory, PagingGrid } from "@hpcc-js/dgrid-shim";
+import { publish } from "@hpcc-js/common";
+import { Grid, PagingGrid } from "@hpcc-js/dgrid-shim";
+import { Memory } from "@hpcc-js/dgrid-shim";
 
 import "../src/Common.css";
 
@@ -15,7 +16,7 @@ export class Common extends HTMLWidget {
     }
 
     @publish(true, "boolean", "Enable paging")
-    paging: { (): boolean, (_: boolean): Common };
+    pagination: { (): boolean, (_: boolean): Common };
 
     enter(domNode, element) {
         super.enter(domNode, element);
@@ -24,8 +25,8 @@ export class Common extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        if (this._prevPaging !== this.paging()) {
-            this._prevPaging = this.paging();
+        if (this._prevPaging !== this.pagination()) {
+            this._prevPaging = this.pagination();
             let columns;
             let collection;
             if (this._dgrid) {

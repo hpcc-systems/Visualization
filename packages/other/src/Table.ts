@@ -108,7 +108,7 @@ export class Table extends HTMLWidget {
 
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-        this._parentElement.style("overflow", "hidden");
+        this._placeholderElement.style("overflow", "hidden");
 
         this.tableDiv = element.append("div").attr("class", "tableDiv");
         this.table = this.tableDiv.append("table");
@@ -591,7 +591,7 @@ export class Table extends HTMLWidget {
                     }
                 }
                 if (element.classed("childWidget")) {
-                    context._parentElement
+                    context._placeholderElement
                         .style("width", finalWidth + "px")
                         .style("height", newTableHeight + "px")
                         ;

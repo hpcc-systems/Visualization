@@ -1,11 +1,11 @@
-import { CodeMirror as cm } from "@hpcc-js/codemirror-shim";
+import { CodeMirror } from "@hpcc-js/codemirror-shim";
 import { HTMLWidget } from "@hpcc-js/common";
 
-import "codemirror/lib/codemirror.css";
+import "@hpcc-js/codemirror-shim/build/codemirror-shim.css";
 import "../src/Editor.css";
 
 export class Editor extends HTMLWidget {
-    protected _codemirror: cm.EditorFromTextArea;
+    protected _codemirror: CodeMirror.EditorFromTextArea;
     protected _initialText: string = "";
 
     options(): any {
@@ -31,7 +31,7 @@ export class Editor extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._codemirror = cm.fromTextArea(element.append("textarea").node(), this.options());
+        this._codemirror = CodeMirror.fromTextArea(element.append("textarea").node(), this.options());
         this._codemirror.on("changes", (changes: object[]) => {
             this.changes(changes);
         });

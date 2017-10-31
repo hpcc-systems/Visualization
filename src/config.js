@@ -11,6 +11,7 @@ require.config({
         "goog": "../node_modules/requirejs-plugins/src/goog",
 
         "d3": "../bower_components/d3/d3",
+        "d3v4": "../bower_components/d3v4/index",
         "c3": "../bower_components/c3/c3",
         "dagre": "../bower_components/dagre/index",
         "topojson": "../bower_components/topojson/topojson",
@@ -109,6 +110,7 @@ case "cdn.rawgit.com":
             "goog": "//" + window.location.hostname + "/millermedeiros/requirejs-plugins/v1.0.3/src/goog",
 
             "d3": "//" + window.location.hostname + "/mbostock/d3/v3.5.5/d3.min",
+            "d3v4": "https://d3js.org/d3.v4.min",
             "c3": "//" + window.location.hostname + "/masayuki0812/c3/0.4.10/c3.min",
             "dagre": "//" + window.location.hostname + "/cpettitt/dagre/v0.7.3/dist/dagre.min",
             "topojson": "//" + window.location.hostname + "/mbostock/topojson/v1.6.19/topojson",

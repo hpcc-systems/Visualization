@@ -1,0 +1,719 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>HPCC Systems - Dermatology Test</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="shortcut icon" href="">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+        <script src="../src/loader.js"></script>
+
+        <script>
+            require.config({
+                paths: {
+                    "test": "../test"
+                }
+            });
+
+        </script>
+        <style>
+            #main{
+                float: left;
+                width: 1000px;
+                height: 618px;
+                border: 1px solid black;
+            }
+            #controls{
+                float: left;
+                width: 500px;
+                height: 618px;
+                /*border: 1px solid black;*/
+                margin-left: 8px;
+            }
+            #controls button{
+                float: right;
+            }
+            #controls label{
+                margin: 4px;
+            }
+            #controls fieldset{
+                padding: 0px;
+                min-width: 484px;
+                border: 0;
+            }
+            #controls textarea{
+                display: block;
+                width: calc( 100% - 8px );
+                margin-left: 8px;
+                min-height: 60px;
+            }
+            #controls2{
+                border: 1px solid black;
+                position: fixed;
+                bottom: 8px;
+                left: 8px;
+                height: 300px;
+                width: 1000px;
+            }
+            #save-button{
+                float: right;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="main"></div>
+        <div id="controls">
+            <fieldset>
+                <legend>Forces</legend>
+                <button onclick="view_with_avcc_forces()">Preview AVCC Forces</button>
+                <button onclick="apply_forces()">Apply Forces</button>
+                <fieldset>
+                    <legend>XY</legend>
+                    <fieldset>
+                        <legend>"x": function(d)</legend>
+                        <textarea id="xy-x"></textarea>
+                    </fieldset>
+                    <fieldset>
+                        <legend>"y": function(d)</legend>
+                        <textarea id="xy-y"></textarea>
+                    </fieldset>
+                    <fieldset>
+                        <legend>"strength": function(d)</legend>
+                        <textarea id="xy-strength"></textarea>
+                    </fieldset>
+                </fieldset>
+                <fieldset>
+                    <legend>Link</legend>
+                    <fieldset>
+                        <legend>"distance": function(d)</legend>
+                        <textarea id="link-distance"></textarea>
+                    </fieldset>
+                    <fieldset>
+                        <legend>"strength": function(d)</legend>
+                        <textarea id="link-strength"></textarea>
+                    </fieldset>
+                </fieldset>
+                <fieldset>
+                    <legend>manyBodyForce</legend>
+                    <fieldset>
+                        <legend>"strength": function(d)</legend>
+                        <textarea id="manyBodyForce-strength"></textarea>
+                    </fieldset>
+                </fieldset>
+            </fieldset>
+        </div>
+        <div id="controls2">
+            <fieldset>
+                <legend>Layout Modes</legend>
+                <button onclick="apply_layout_mode('ForceDirected')">ForceDirected</button>
+                <button onclick="apply_layout_mode('ForceDirected2')">ForceDirected2</button>
+                <button onclick="apply_layout_mode('Hierarchy')">Hierarchy</button>
+                <button onclick="apply_layout_mode('Circle')">Circle</button>
+                <button onclick="apply_layout_mode('CircleHierarchy')">Circle Hierarchy</button>
+            </fieldset>
+            <fieldset>
+                <legend>Debug Controls</legend>
+                <button onclick="toggle_singletons()">Toggle Singletons</button>
+                <button onclick="zoom_all_to_fit()">Zoom To Fit</button>
+                <button onclick="clear_fixed_positions()">Clear Fixed Positions</button>
+                <button onclick="draw_geocache_grid()">Draw Grid</button>
+            </fieldset>
+            <fieldset style="display: none;">
+                <legend>Load Preset Data</legend>
+                <select id="data-set" onchange="load_preset_data(this)"></select>
+            </fieldset>
+            <fieldset>
+                <legend>Load Configuration</legend>
+                <select id="configs" onchange="load_config()">
+                    <option value="Default">Default</option>
+                </select>
+                <button onclick="set_default_config()">Set Current As Default</button>
+                <button onclick="save_config()" id="save-button">Save Current Configuration</button>
+            </fieldset>
+        </div>
+        <script>
+            window.g_data = [];
+            function draw_geocache_grid() {
+                var w_arr = get_all_graphs();
+                w_arr.forEach(function (n) {
+                    //n.render();
+                    n.draw_geocache_grid();
+                });
+            }
+            function clear_fixed_positions() {
+                var w_arr = get_all_graphs();
+                w_arr.forEach(function (n) {
+                    n._fixed_positions = {};
+                    n.render();
+                });
+            }
+            function toggle_singletons() {
+                var w_arr = get_all_graphs();
+                w_arr.forEach(function (n) {
+                    n.singletons_showing(!n.singletons_showing()).render();
+                });
+            }
+            function zoom_all_to_fit() {
+                var w_arr = get_all_graphs();
+                w_arr.forEach(function (n) {
+                    n.zoom_to_fit();
+                });
+            }
+            function apply_layout_mode(mode_str) {
+                var w_arr = get_all_graphs();
+                w_arr.forEach(function (n) {
+                    n.layout(mode_str).render();
+                });
+            }
+            function get_all_graphs() {
+                var ret = [
+                ];
+                $('.graph_CanvasGraph').each(function () {
+                    ret.push(d3.select(this).datum());
+                });
+                return ret;
+            }
+            function to_xml(data) {
+                return XML_top_info() + Chart_element();
+
+                function XML_top_info() {
+                    return '<?xml version="1.0" encoding="utf-8"?>';
+                }
+                function Chart_element() {
+                    return '<Chart IdReferenceLinking="false" Rigorous="true">' + EntityTypeCollection_element() + LinkTypeCollection_element() + ChartItemCollection_element() + '</Chart>';
+                    function EntityTypeCollection_element() {
+                        return '<EntityTypeCollection><EntityType Name="brpt" IconFile="SqrRed" /><EntityType Name="foreignId" IconFile="document" /><EntityType Name="corp" IconFile="organ" /><EntityType Name="passport" IconFile="passport" /><EntityType Name="tattoo" IconFile="SqrBlack" /><EntityType Name="ccw" IconFile="gun" /><EntityType Name="finanicaltrans" IconFile="cheque" /><EntityType Name="prof" IconFile="bcase" /><EntityType Name="did" IconFile="anon" /><EntityType Name="mail" IconFile="mailbox1" /><EntityType Name="agencyReport" IconFile="SqrBlue" /><EntityType Name="crimrec" IconFile="SqrBlack" /><EntityType Name="mcycle" IconFile="mcycle" /><EntityType Name="creditcard" IconFile="creditcard" /><EntityType Name="ssn" IconFile="document" /><EntityType Name="debitcard" IconFile="creditcard" /><EntityType Name="truck" IconFile="vanpikup" /><EntityType Name="narc" IconFile="drugs" /><EntityType Name="edgeweap" IconFile="knife" /><EntityType Name="handgun" IconFile="gun" /><EntityType Name="addr" IconFile="house" /><EntityType Name="neigh" IconFile="SqrYell" /><EntityType Name="cellphone" IconFile="cellfone" /><EntityType Name="veh" IconFile="car" /><EntityType Name="miscdoc" IconFile="document" /><EntityType Name="pilot" IconFile="claim" /><EntityType Name="sexoff" IconFile="SqrBlack" /><EntityType Name="fininst" IconFile="bankbldg" /><EntityType Name="alcohol" IconFile="SqrBlue" /><EntityType Name="tel" IconFile="phone" /><EntityType Name="cigs" IconFile="SqrBlue" /><EntityType Name="membershipcard" IconFile="" /><EntityType Name="rifle" IconFile="rifle" /><EntityType Name="vessel" IconFile="ship" /><EntityType Name="explosivemat" IconFile="bomb" /><EntityType Name="airplane" IconFile="airplane" /><EntityType Name="businesscard" IconFile="" /><EntityType Name="dl" IconFile="id" /><EntityType Name="currency" IconFile="cash" /><EntityType Name="mcycle" IconFile="mcycle" /></EntityTypeCollection>';
+                    }
+                    function LinkTypeCollection_element() {
+                        return '<LinkTypeCollection><LinkType Name="addr" Colour="13882323" /><LinkType Name="veh" Colour="9234160" /><LinkType Name="link" Colour="8388608" /><LinkType Name="ssn" Colour="12903679" /><LinkType Name="ccw" Colour="8034025" /><LinkType Name="dl" Colour="9221330" /><LinkType Name="sexoff" Colour="2139610" /><LinkType Name="satn" Colour="42495" /><LinkType Name="wcft" Colour="32896" /><LinkType Name="assoc" Colour="16757706" /><LinkType Name="rel" Colour="14794387" /><LinkType Name="corp" Colour="11128960" /><LinkType Name="prop" Colour="13685664" /><LinkType Name="acft" Colour="15453831" /><LinkType Name="brcy" Colour="17919" /><LinkType Name="crimrec" Colour="5275647" /><LinkType Name="tel" Colour="10025880" /></LinkTypeCollection>';
+                    }
+                    function ChartItemCollection_element() {
+                        return '<ChartItemCollection>' + ChartItem_element_arr().join('') + '</ChartItemCollection>';
+                        function ChartItem_element_arr() {
+                            var chart_item_arr = [
+                            ];
+                            data.nodes.forEach(function (n) {
+                                chart_item_arr.push(ChartItem_element('node', n));
+                            });
+                            data.links.forEach(function (n) {
+                                chart_item_arr.push(ChartItem_element('link', n));
+                            });
+                            return chart_item_arr;
+                            function ChartItem_element(CI_type, n) {
+                                switch (CI_type) {
+                                    case 'node':
+                                        return '<ChartItem Label="' + n.label + '">' + End_element(n) + '</ChartItem>';
+                                    case 'link':
+                                        return '<ChartItem Label="' + n.label + '">' + Link_element(n) + '</ChartItem>';
+                                }
+                                function Link_element(n) {
+                                    return '<Link End1Id="' + n.source.id + '" End2Id="' + n.target.id + '">' + LinkStyle_element(n) + '</Link>';
+                                    function LinkStyle_element(n) {
+                                        return '<LinkStyle Type="' + n.source.type + '" ArrowStyle="ArrowOnHead" />';
+                                    }
+                                }
+                                function End_element(n) {
+                                    return '<End X="' + n.x + '" Y="' + n.y + '">' + Entity_element(n) + '</End>';
+                                    function Entity_element(n) {
+                                        return '<Entity EntityId="' + n.id + '" Identity="' + n.id + '">' + Icon_element(n) + CardCollection_element(n) + '</Entity>';
+                                        function Icon_element(n) {
+                                            return '<Icon>' + IconStyle_element(n) + '</Icon>';
+                                            function IconStyle_element(n) {
+                                                return '<IconStyle Type="' + n.type + '" />';
+                                            }
+                                        }
+                                        function CardCollection_element(n) {
+                                            return '<CardCollection>' + Card_element_arr(n).join('') + '</CardCollection>';
+                                            function Card_element_arr(n) {
+                                                function Card_element(num, param_name, val) {
+                                                    return '<Card SourceReference="' + num + ':' + param_name + '" Summary="' + val + '" />';
+                                                }
+                                                switch (n.type) {
+                                                    case 'address':
+                                                        return [
+                                                            Card_element(1, 'Address', ''),
+                                                            Card_element(2, 'City', ''),
+                                                            Card_element(3, 'State', ''),
+                                                            Card_element(4, 'Zip', ''),
+                                                            Card_element(5, 'Comments', ''),
+                                                        ];
+                                                        break;
+                                                    case 'vehicle':
+                                                        return [
+                                                            Card_element(1, 'Make', ''),
+                                                            Card_element(2, 'Model', ''),
+                                                            Card_element(3, 'Body Code', ''),
+                                                            Card_element(4, 'VIN', ''),
+                                                            Card_element(5, 'State', ''),
+                                                            Card_element(6, 'Tag', ''),
+                                                            Card_element(7, 'VID', ''),
+                                                            Card_element(8, 'Comments', ''),
+                                                        ];
+                                                        break;
+                                                    case 'person':
+                                                        return [
+                                                            Card_element(1, 'First Name', ''),
+                                                            Card_element(2, 'Date First Seen', ''),
+                                                            Card_element(3, 'Date Last Seen', ''),
+                                                            Card_element(4, 'SSN', ''),
+                                                            Card_element(5, 'DOB', ''),
+                                                            Card_element(6, 'Sexual Offense', ''),
+                                                            Card_element(7, 'Department Of Corrections', ''),
+                                                            Card_element(9, 'AKA', ''),
+                                                            Card_element(10, 'Height', ''),
+                                                            Card_element(11, 'Weight', ''),
+                                                            Card_element(12, 'Race', ''),
+                                                            Card_element(13, 'Hair Color', ''),
+                                                            Card_element(14, 'Eye Color', ''),
+                                                            Card_element(15, 'Birth Place', ''),
+                                                            Card_element(16, 'Comments', ''),
+                                                        ];
+                                                        break;
+                                                    case 'phone':
+                                                        return [
+                                                            Card_element(1, 'Phone', ''),
+                                                            Card_element(2, 'Registered To', ''),
+                                                            Card_element(3, 'Provider Of Info', ''),
+                                                            Card_element(4, 'Comments', ''),
+                                                        ];
+                                                        break;
+                                                    default:
+                                                        return [
+                                                            Card_element(1, 'Comments', ''),
+                                                        ];
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                get_all_graphs()[0].data().nodes.map(function (n) {
+                    return end_of_initial + End_element(n);
+
+
+                }).join('</ChartItem><ChartItem Label="')
+            }
+            $(() => {
+                fill_configs_select();
+                fill_data_set_select();
+                require([
+                    'src/graph/CanvasGraph',
+                    'src/graph/CanvasGraphLayouts',
+                    'src/layout/Grid'
+                ], (CanvasGraph, Layouts, Grid) => {
+                    window.g_grid = new Grid();
+                    g_grid.target('main');
+                    var _data_count = g_data.length;
+                    var _sqr = Math.ceil(Math.sqrt(_data_count));
+                    g_data.forEach(function (_data, i) {
+                        var _w = new CanvasGraph()
+                                .data(g_data[i].data)
+                                .layout('ForceDirected')
+                                .unique_identifier('uid')
+                                .charge_max_distance(200)
+                                .charge_min_distance(10)
+                                .link_text_size(6)
+                                //.icon_font("NextGen")
+                                .auto_primary_threshold(0)
+                                ;
+                        g_grid.setContent(Math.floor(i / _sqr), i % _sqr, _w);
+                    });
+                    g_grid.render();
+                    window.g_w = new CanvasGraph();
+                    window.g_layouts = Layouts.layouts;
+    //                debugger;
+    //                fill_textareas(Layouts.layouts['ForceDirected']);
+                    var default_config = localStorage.Default;
+                    try {
+                        directly_fill_textareas(JSON.parse(default_config));
+                    } catch (e) {
+                        fill_textareas({
+                            "xy": {
+                                "x": function (d) {
+                                    return d.group_x;
+                                },
+                                "y": function (d) {
+                                    return d.group_y;
+                                },
+                                "strength": function (d) {
+                                    if (d.is_leaf && !d.is_primary)
+                                        return 0.2;
+                                    if (d.icon_color === '#0461ac' && !d.is_primary)
+                                        return 0.3;
+                                    return 0.6;
+                                }
+                            },
+                            "link": {
+                                "distance": function (d) {
+                                    if (d.target.icon_color === '#0461ac')
+                                        return 20;
+                                    if (d.target.icon_color !== '#0461ac' && d.target.is_leaf)
+                                        return 20;
+                                    if (d.target.icon_color === '#0461ac' && d.source.icon_color === '#0461ac')
+                                        return 20;
+                                    if (d.target.is_leaf)
+                                        return 60;
+                                    if (d.target.parent_arr.length > 1 && d.target.child_arr.length === 0)
+                                        return 50;
+                                    return 180;
+                                },
+                                "strength": function (d) {
+                                    if (d.target.icon_color === '#0461ac' && d.source.icon_color === '#0461ac')
+                                        return 1;
+                                    if (d.target.is_leaf)
+                                        return 0.9;
+                                    if (d.target.parent_arr.length > 1 && d.target.child_arr.length === 0)
+                                        return 0.7;
+                                    return 0.8;
+                                }
+                            },
+                            "manyBodyForce": {
+                                "strength": function (d) {
+                                    if (d.is_leaf)
+                                        return -350;
+                                    if (d.parent_arr.length > 1 && d.child_arr.length === 0)
+                                        return -600;
+                                    if (d.is_primary)
+                                        return -700;
+                                    return -450;
+                                }
+                            }
+                        });
+                    }
+                    g_grid.render((n) => {
+                        init_config();
+                        keyup_element();
+                    });
+                });
+                $('textarea').on('blur', function (evt) {
+                    keyup_element(evt.target);
+                });
+            });
+            function init_config() {
+                var sel = 'Default';
+                var _default = localStorage.getItem(sel);
+                if (!_default) {
+                    save_config('Default');
+                }
+                fill_configs_select();
+                if (sel !== 'Default') {
+                    $('#config').val(sel);
+                    load_config();
+                }
+            }
+    //        function load_default_config(){
+    //            var _default_config = localStorage.getItem('default_config');
+    //            load_config(_default_config);
+    //        }
+            function set_default_config() {
+                save_config('Default');
+            }
+            function save_config(name) {
+                var _name = name ? name : 'config_' + new Date().getTime();
+                var _config = $('#controls textarea').map(function () {
+                    return {'id': this.id, 'val': this.value};
+                });
+                localStorage.setItem(_name, JSON.stringify(_config));
+            }
+            function load_config(name) {
+                var _name = name ? name : $('#configs').val();
+                $('#configs').val(_name);
+                var config_str = localStorage.getItem(_name);
+                var config_obj = JSON.parse(config_str);
+                for (var i in config_obj) {
+                    if (config_obj[i]) {
+                        $('#' + config_obj[i].id).val(config_obj[i].val);
+                    }
+                }
+                keyup_element();
+            }
+            function fill_configs_select() {
+                Object.keys(localStorage).forEach(function (n) {
+                    if (n.indexOf('config_') === 0) {
+                        $('#configs').append('<option value="' + n + '">' + n + '</option>');
+                    }
+                });
+            }
+            function fill_data_set_select() {
+                var _options = '';
+
+                g_data.forEach(function (n, i) {
+                    _options += '<option value="' + i + '">' + n.name + '</option>';
+                })
+
+                $('#data-set').html(_options);
+            }
+
+            function load_preset_data(elm) {
+    //            var _idx = $(elm).val();
+    //            g_w.data(g_data[_idx].data).render();
+            }
+            function keyup_element() {
+                try {
+                    eval('window.g_xy = {"x":' + _func($('#xy-x').val()) + ',"y":' + _func($('#xy-y').val()) + ',"strength":' + _func($('#xy-strength').val()) + ',"post":false}');
+                    eval('window.g_link = {"distance":' + _func($('#link-distance').val()) + ',"strength":' + _func($('#link-strength').val()) + '}');
+                    eval('window.g_manyBodyForce = {"distance":' + _func($('#manyBodyForce-distance').val()) + ',"strength":' + _func($('#manyBodyForce-strength').val()) + '}');
+                    g_grid.content().forEach(function (_w) {
+                        _w.widget()
+                                .xy_force([
+                                    {
+                                        "layout": "ForceDirected",
+                                        "obj": g_xy
+                                    },
+                                    {
+                                        "layout": "ForceDirected2",
+                                        "obj": g_xy
+                                    },
+                                ])
+                                .link_force([
+                                    {
+                                        "layout": "ForceDirected",
+                                        "obj": g_link
+                                    },
+                                    {
+                                        "layout": "ForceDirected2",
+                                        "obj": g_link
+                                    }
+                                ])
+                                .manybody_force([
+                                    {
+                                        "layout": "ForceDirected",
+                                        "obj": g_manyBodyForce
+                                    },
+                                    {
+                                        "layout": "ForceDirected2",
+                                        "obj": g_manyBodyForce
+                                    }
+                                ])
+                                ;
+                        _w.render();
+                    })
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            function _func(_str) {
+                return 'function(d){' + _str + '}';
+            }
+            function directly_fill_textareas(obj) {
+                for (var i in obj) {
+                    $('#' + obj[i].id).val(obj[i].val);
+                }
+            }
+            function fill_textareas(obj) {
+                var line_height = 20;
+                for (var i in obj.xy) {
+                    var $xy = $('#xy-' + i);
+                    if (typeof obj.xy[i] === "function") {
+                        var _val = obj.xy[i].toString().split('{').slice(1).join('{');
+                        _val = _val.split('}').slice(0, -1).join('}');
+                        _val = _val.split('  ').join('');
+                        var line_count = _val.split('\n').length;
+                        $xy.css('height', line_count * line_height).val(_val);
+                    } else {
+                        var _val = obj.xy[i];
+                        $xy.val('return ' + _val + ';');
+                    }
+                }
+                for (var i in obj.link) {
+                    if (typeof obj.link[i] === "function") {
+                        var _val = '';
+                        _val = obj.link[i].toString().split('{').slice(1).join('{');
+                        _val = _val.split('}').slice(0, -1).join('}');
+                        _val = _val.split('  ').join('');
+    //                    debugger;
+                        _val = _val.split("\n").filter(n => n !== '').join('\n');
+                        var line_count = _val.split('\n').length;
+                        $('#link-' + i).css('height', line_count * line_height).val(_val);
+                    } else {
+                        var _val = obj.link[i];
+                        $('#link-' + i).val('return ' + _val + ';');
+                    }
+                }
+                for (var i in obj.manyBodyForce) {
+                    if (typeof obj.manyBodyForce[i] === "function") {
+                        var _val = '';
+                        _val = obj.manyBodyForce[i].toString().split('{').slice(1).join('{');
+                        _val = _val.split('}').slice(0, -1).join('}');
+                        _val = _val.split('  ').join('');
+                        _val = _val.split("\n").filter(n => n !== '').join('\n');
+                        var line_count = _val.split('\n').length;
+                        console.info("line_count * line_height:", line_count * line_height);
+                        $('#manyBodyForce-' + i).css('height', line_count * line_height).val(_val);
+                    } else {
+                        var _val = obj.manyBodyForce[i];
+                        $('#manyBodyForce-' + i).val('return ' + _val + ';');
+                    }
+                }
+            }
+            function JSON_stringify(_obj) {
+                var ret = [
+                    '{'
+                ];
+                for (var i in _obj) {
+                    var _val = _obj[i];
+                    if (typeof _val === "function")
+                        _val = _val.toString().split('                ').join('        ');
+                    ret.push('    "' + i + '": ' + _val + ',');
+                }
+                ret.push('}');
+                return ret.join('\n');
+            }
+            function make_sample_data(num) {
+                var ret = {
+                    "nodes": [
+                    ],
+                    "links": [
+                    ],
+                };
+                for (var i = 0; i < num; i++) {
+                    ret.nodes.push({
+                        "is_primary": i === 0,
+                        "label": "foobar-" + i,
+                        "type": "person",
+                        "uid": i,
+                        "icon": ""
+                    });
+                }
+                ret.nodes.forEach(function (n, i) {
+                    if (i !== 0) {
+                        var _source = Math[Math.random() > 0.5 ? 'floor' : 'ceil'](Math.sqrt(n.uid));
+                        if (Math.random() > 0.5) {
+                            _source = Math.random() > 0.2 ? 0 : Math.floor(Math.random() * Math.sqrt(num));
+                        }
+                        ret.links.push({
+                            "source": _source === i ? 0 : _source,
+                            "target": i
+                        });
+                    }
+                });
+                return ret;
+            }
+            window.g_rand_data = [
+            ];
+            var url_sp = window.location.href.split('?');
+            var params = {};
+            if (url_sp.length > 1) {
+                url_sp[1].split('&').forEach(function (n) {
+                    try {
+                        var _sp = n.split('=');
+                        params[_sp[0]] = _sp[1];
+                    } catch (e) {
+
+                    }
+                });
+                console.info("params:", params);
+            }
+            var rand_data_set_count = params.c ? params.c : 4;
+            for (var i = 1; i <= rand_data_set_count; i++) {
+                var _rand_data = {
+                    "name": "Random " + i,
+                    "data": make_sample_data(params.n ? params.n : 50)
+                };
+                window.g_rand_data.push(JSON.stringify(_rand_data));
+                window.g_data.push(_rand_data);
+            }
+            function apply_forces() {
+                $('#xy-x').blur();
+            }
+            function view_with_avcc_forces() {
+                var _xy_force_obj = {
+                    "x": function (d) {
+                        return d.group_x;
+                    },
+                    "y": function (d) {
+                        return d.group_y;
+                    },
+                    "strength": function (d) {
+                        if (d.is_leaf && !d.is_primary)
+                            return 0.2;
+                        if (d.icon_color === '#0461ac' && !d.is_primary)
+                            return 0.3;
+                        return 0.6;
+                    }
+                };
+                var _link_force_obj = {
+                    "distance": function (d) {
+                        if (d.target.icon_color === '#0461ac')
+                            return 20;
+                        if (d.target.icon_color !== '#0461ac' && d.target.is_leaf)
+                            return 20;
+                        if (d.target.icon_color === '#0461ac' && d.source.icon_color === '#0461ac')
+                            return 20;
+                        if (d.target.is_leaf)
+                            return 60;
+                        if (d.target.parent_arr.length > 1 && d.target.child_arr.length === 0)
+                            return 50;
+                        return 180;
+                    },
+                    "strength": function (d) {
+                        if (d.target.icon_color === '#0461ac' && d.source.icon_color === '#0461ac')
+                            return 1;
+                        if (d.target.is_leaf)
+                            return 0.9;
+                        if (d.target.parent_arr.length > 1 && d.target.child_arr.length === 0)
+                            return 0.7;
+                        return 0.8;
+                    }
+                };
+                var _mbf_force_obj = {
+                    "strength": function (d) {
+                        if (d.is_leaf)
+                            return -350;
+                        if (d.parent_arr.length > 1 && d.child_arr.length === 0)
+                            return -600;
+                        if (d.is_primary)
+                            return -700;
+                        return -450;
+                    }
+                };
+                get_all_graphs().forEach(function (d) {
+                    d
+                            .link_force([
+                                {
+                                    "layout": 'ForceDirected',
+                                    "obj": _link_force_obj
+                                },
+                                {
+                                    "layout": 'ForceDirected2',
+                                    "obj": _link_force_obj
+                                }
+                            ])
+                            .xy_force([
+                                {
+                                    "layout": 'ForceDirected',
+                                    "obj": _xy_force_obj
+                                },
+                                {
+                                    "layout": 'ForceDirected2',
+                                    "obj": _xy_force_obj
+                                }
+                            ])
+                            .manybody_force([
+                                {
+                                    "layout": 'ForceDirected',
+                                    "obj": _mbf_force_obj
+                                },
+                                {
+                                    "layout": 'ForceDirected2',
+                                    "obj": _mbf_force_obj
+                                }
+                            ])
+                            .render()
+                            ;
+                });
+            }
+        </script>
+    </body>
+
+</html>

@@ -19,6 +19,7 @@
                 "json": "../node_modules/requirejs-plugins/src/json",
 
                 "d3": "../bower_components/d3/d3",
+                "d3v4": "../bower_components/d3v4/index",
                 "c3": "../bower_components/c3/c3",
                 "dagre": "../bower_components/dagre/index",
                 "topojson": "../bower_components/topojson/topojson",
@@ -123,6 +124,7 @@
             "json": rawgitBaseUrl + "/millermedeiros/requirejs-plugins/v1.0.3/src/json",
 
             "d3": rawgitBaseUrl + "/mbostock/d3/v3.5.17/d3.min",
+            "d3v4": "https://d3js.org/d3.v4.min",
             "c3": rawgitBaseUrl + "/masayuki0812/c3/0.4.11/c3.min",
             "dagre": rawgitBaseUrl + "/cpettitt/dagre/v0.7.3/dist/dagre.min",
             "topojson": rawgitBaseUrl + "/mbostock-bower/topojson-bower/v1.6.26/topojson.min",

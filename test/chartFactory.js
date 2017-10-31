@@ -340,6 +340,16 @@
                     );
                 });
             }
+        },
+        Guage: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/chart/LiquidFillGauge"], function (DataFactory, LiquidFillGauge) {
+                    callback(new LiquidFillGauge()
+                    .columns(DataFactory.LiquidGuage.columns)
+                    .data(DataFactory.LiquidGuage.gaugedata)
+                );
+                });
+            },
         }
     };
 

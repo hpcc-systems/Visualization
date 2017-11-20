@@ -69,40 +69,46 @@
         return retVal;
     };
 
+    Summary.prototype.lookupFieldIdx = function (propID, defaultIdx) {
+        var retVal = defaultIdx;
+        if (this[propID + "_exists"]()) {
+            retVal = this.columns().indexOf(this[propID]());
+            if (retVal < 0) {
+                return undefined;
+            }
+        }
+        return retVal;
+    };
+
+    Summary.prototype.lookupFieldText = function (propID, defaultIdx) {
+        if (this[propID + "_exists"]()) {
+            return this[propID]();
+        }
+        if (defaultIdx !== undefined) {
+            return this.columns()[defaultIdx] || "";
+        }
+        return "";
+    };
+
+    Summary.prototype.currentRow = function () {
+        return this.data()[this._playIntervalIdx];
+    };
+
     Summary.prototype.summaryData = function () {
         var labelFieldIdx;  //  undefined
         if (!this.hideLabel()) {
-            labelFieldIdx = 0;
-            if (this.labelColumn_exists()) {
-                labelFieldIdx = this.columns().indexOf(this.labelColumn());
-            }
+            labelFieldIdx = this.lookupFieldIdx("labelColumn", 0);
         }
-        var iconFieldIdx;  //  undefined
-        if (this.iconColumn_exists()) {
-            iconFieldIdx = this.columns().indexOf(this.iconColumn());
-        }
-        var valueFieldIdx = 1;
-        if (this.valueColumn_exists()) {
-            valueFieldIdx = this.columns().indexOf(this.valueColumn());
-        }
+        var iconFieldIdx = this.lookupFieldIdx("iconColumn");
+        var valueFieldIdx = this.lookupFieldIdx("valueColumn", 1);
         var moreIconIdx;  //  undefined
         var moreTextIdx;  //  undefined
         if (!this.hideMore()) {
-            if (this.moreIconColumn_exists()) {
-                moreIconIdx = this.columns().indexOf(this.moreIconColumn());
-            }
-            if (this.moreTextColumn_exists()) {
-                moreTextIdx = this.columns().indexOf(this.moreTextColumn());
-            }
+            moreIconIdx = this.lookupFieldIdx("moreIconColumn");
+            moreTextIdx = this.lookupFieldIdx("moreTextColumn");
         }
-        var colorFillIdx;  //  undefined
-        if (this.colorFillColumn_exists()) {
-            colorFillIdx = this.columns().indexOf(this.colorFillColumn());
-        }
-        var colorStrokeIdx;  //  undefined
-        if (this.colorStrokeColumn_exists()) {
-            colorStrokeIdx = this.columns().indexOf(this.colorStrokeColumn());
-        }
+        var colorFillIdx = this.lookupFieldIdx("colorFillColumn");
+        var colorStrokeIdx = this.lookupFieldIdx("colorStrokeColumn");
         return this.formattedData().map(function (row) {
             return {
                 icon: iconFieldIdx === undefined ? this.icon() : row[iconFieldIdx],
@@ -124,19 +130,19 @@
         var context = this;
         this._headerDiv = this._mainDiv.append("h2")
             .on("click", function (d) {
-                context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
+                context.click(context.rowToObj(context.currentRow()), context.lookupFieldText("valueColumn", 1), true);
             })
             .on("dblclick", function (d) {
-                context.dblclick(context.data()[context._playIntervalIdx], context.columns()[1], true);
+                context.dblclick(context.rowToObj(context.currentRow()), context.lookupFieldText("valueColumn", 1), true);
             })
         ;
         this._textDiv = this._mainDiv.append("div")
             .attr("class", "text")
             .on("click", function (d) {
-                context.click(context.data()[context._playIntervalIdx], context.columns()[1], true);
+                context.click(context.rowToObj(context.currentRow()), context.lookupFieldText("labelColumn", 0), true);
             })
             .on("dblclick", function (d) {
-                context.dblclick(context.data()[context._playIntervalIdx], context.columns()[1], true);
+                context.dblclick(context.rowToObj(context.currentRow()), context.lookupFieldText("labelColumn", 0), true);
             })
         ;
     };
@@ -181,9 +187,7 @@
             .append("div")
             .attr("class", "more")
             .on("click", function (d) {
-                var clickEvent = {};
-                clickEvent[context.columns()] = context.data();
-                context.click(clickEvent, "more");
+                context.click(context.rowToObj(context.currentRow()), context.lookupFieldText("moreTextColumn") || "more", true);
             })
             .each(function (d) {
                 var element = d3.select(this);

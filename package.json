@@ -2,8 +2,15 @@
   "name": "hpcc-viz",
   "version": "1.14.2-dev",
   "description": "HPCC Visualization Framework",
+  "scripts": {
+    "install": "bower install",
+    "bump": "gulp bump",
+    "tag-release": "gulp tag-release",
+    "test": "gulp lint && gulp jscs && gulp unitTest && gulp build-all && gulp unitTestBuild && gulp unitTestBuildNonAMD"
+  },
   "devDependencies": {
     "async": "~1.5.0",
+    "bower": "1.7.8",
     "gulp": "~3.9.1",
     "gulp-concat-css": "~2.2.0",
     "gulp-minify-css": "~1.2.4",
@@ -15,7 +22,7 @@
     "requirejs": "~2.2.0",
     "del": "~2.2.0",
     "csso": "~1.7.1",
-    "gulp-git": "~1.7.0",
+    "gulp-git": "2.4.2",
     "gulp-bump": "~2.0.1",
     "gulp-filter": "~3.0.1",
     "gulp-tag-version": "~1.3.0",
@@ -37,9 +44,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/hpcc-systems/Visualization"
-  },
-  "scripts": {
-    "test": "gulp lint && gulp jscs && gulp unitTest && gulp build-all && gulp unitTestBuild && gulp unitTestBuildNonAMD"
   },
   "author": "HPCC Systems",
   "license": "Apache-2.0",

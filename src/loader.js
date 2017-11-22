@@ -348,6 +348,9 @@
                             });
                             break;
                         default:
+                            if(parseInt(state.__version.split('.')[1]) === 14){
+                                state = retrofit_114_to_118(state);
+                            }
                             this.cdn("v" + state.__version, function (_req) {
                                 _req(["src/other/Persist"], function (Persist) {
                                     Persist.create(state, function (widget) {
@@ -360,7 +363,28 @@
                     function requireErrorHandler(err) {
                         console.log("Loader 'create' Error:\n" + err.message);
                     }
-                }
+                    function retrofit_114_to_118(state){
+                        var replacement_version = '1.18.0';
+                        var _json_str = JSON.stringify(state);
+                        _json_str = _json_str.split('"'+state.__version).join('"'+replacement_version);
+                        var ret_obj = JSON.parse(_json_str);
+                        ret_obj.__properties.content.forEach(function(n){//FOR EACH top tier layout_Cell
+                            if(JSON.stringify(n).split('graph_Graph').length > 1 && parseInt(replacement_version.split('.')[1]) >= 16){
+                                n.__properties.widget.__id = n.__properties.widget.__properties.widget.__id;
+                                n.__properties.widget.__class = 'composite_MegaChart';
+                                n.__properties.widget.__properties.showCSV = false;
+                                n.__properties.widget.__properties.chartType = 'GRAPH';
+                                n.__properties.widget.__properties.chart = n.__properties.widget.__properties.widget;
+                                delete n.__properties.widget.__properties.chart.__id;
+                                delete n.__properties.widget.__properties.widget;
+                            }
+                            if("undefined" === typeof n.__properties.fields){
+                                n.__properties.fields = [];
+                            }
+                        });
+                        return ret_obj;
+                    }
+                },
             };
         }());
     }

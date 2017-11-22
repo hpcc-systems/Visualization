@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["../common/Utility"], factory);
+        define(["../common/Utility","../common/Platform"], factory);
     } else {
-        root.other_Persist = factory(root.common_Utility);
+        root.other_Persist = factory(root.common_Utility,root.common_Platform);
     }
-}(this, function (Utility) {
+}(this, function (Utility,Platform) {
     function discover(widget) {
         return widget.publishedProperties(false, true);
     }
@@ -43,6 +43,39 @@
         widgetWalker(widget, function (widget) {
             propertyWalker(widget, filter, visitor);
         });
+    }
+
+    function retrofit_114_serialization(state,replacement_version) {
+        replacement_version = !replacement_version || replacement_version === '1.14.2-dev' ? '1.18.0' : replacement_version;
+        if(!state.__version)return state;
+        var state_version_obj = Utility.parseVersionString(state.__version);
+        var target_version_obj = Utility.parseVersionString(replacement_version);
+        if(state_version_obj.major === 1 && state_version_obj.minor === 14){
+            console.log("Upgrading old persist from "+state.__version+" to "+replacement_version);
+            var _json_str = JSON.stringify(state);
+            _json_str = _json_str.split('"'+state.__version).join('"'+replacement_version);
+
+            var ret_obj = JSON.parse(_json_str);
+            if(ret_obj.__properties && ret_obj.__properties.content){
+                ret_obj.__properties.content.forEach(function(n){//FOR EACH top tier layout_Cell
+                    if(JSON.stringify(n).split('graph_Graph').length > 1 && target_version_obj.minor >= 16){
+                        n.__properties.widget.__id = n.__properties.widget.__properties.widget.__id;
+                        n.__properties.widget.__class = 'composite_MegaChart';
+                        n.__properties.widget.__properties.showCSV = false;
+                        n.__properties.widget.__properties.chartType = 'GRAPH';
+                        n.__properties.widget.__properties.chart = n.__properties.widget.__properties.widget;
+                        delete n.__properties.widget.__properties.chart.__id;
+                        delete n.__properties.widget.__properties.widget;
+                    }
+                    if("undefined" === typeof n.__properties.fields){
+                        n.__properties.fields = [];
+                    }
+                });
+            }
+            return ret_obj;
+        } else {
+            return state;
+        }
     }
 
     return {
@@ -280,6 +313,7 @@
             if (typeof state === "string") {
                 state = JSON.parse(state);
             }
+            state = retrofit_114_serialization(state,new Platform().version());
             var context = this;
             return Utility.requireWidget(state.__class).then(function (Widget) {
                 var widget = new Widget();

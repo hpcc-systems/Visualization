@@ -292,8 +292,16 @@
                     callback(new GMapPin()
                         .latitudeColumn("dest_lat")
                         .longtitudeColumn("dest_long")
+                        .tooltipColumn("dest_airport")
                         .columns(DataFactory.Sample.FlightPath.columns)
-                        .data(DataFactory.Sample.FlightPath.data)
+                        .data(DataFactory.Sample.FlightPath.data.map(function(n){
+                            var dest_airport_idx = DataFactory.Sample.FlightPath.columns.indexOf('dest_airport');
+                            var dest_iata_idx = DataFactory.Sample.FlightPath.columns.indexOf('dest_iata');
+                            var dest_airport = n[dest_airport_idx];
+                            var dest_iata = n[dest_iata_idx];
+                            n[dest_airport_idx] = '<b style="font-size: 20px">'+dest_iata+'</b><br/><i>'+dest_airport+'</i>';
+                            return n;
+                        }))
                     );
                 });
             },
@@ -303,6 +311,7 @@
                         .autoScale(true)    
                         .latitudeColumn("dest_lat")
                         .longtitudeColumn("dest_long")
+                        .tooltipColumn("dest_iata")
                         .columns(DataFactory.Sample.FlightPath.columns)
                         .data(DataFactory.Sample.FlightPath.data.filter(function (row, idx) {
                             return idx === 0;

@@ -499,6 +499,14 @@
             });
         },
         isArray: isArray,
-        template: template
+        template: template,
+        parseVersionString: function(versionString){
+            var _sp = versionString.split('.');
+            return {
+                major: parseInt(_sp[0].replace('v','')),
+                minor: parseInt(_sp[1]),
+                patch: parseInt(_sp[2].split('-')[0]),
+            };
+        }
     };
 }));

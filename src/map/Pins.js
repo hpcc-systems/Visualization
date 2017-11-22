@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "./Layer", "./Utility", "../common/Palette", "../common/Utility", "css!./Pins"], factory);
+        define(["d3", "./Layer", "./Utility", "../common/Palette", "../common/Utility", "../api/ITooltip", "css!./Pins"], factory);
     } else {
-        root.map_Pins = factory(root.d3, root.map_Layer, root.map_Utility, root.common_Palette, root.common_Utility);
+        root.map_Pins = factory(root.d3, root.map_Layer, root.map_Utility, root.common_Palette, root.common_Utility, root.api_ITooltip);
     }
-}(this, function (d3, Layer, MapUtility, Palette, Utility) {
+}(this, function (d3, Layer, MapUtility, Palette, Utility, ITooltip) {
     function Pins() {
         Layer.call(this);
         Utility.SimpleSelectionMixin.call(this);
@@ -15,6 +15,7 @@
     Pins.prototype.constructor = Pins;
     Pins.prototype._class += " map_Pins";
     Pins.prototype.mixin(Utility.SimpleSelectionMixin);
+    Pins.prototype.implements(ITooltip.prototype);
 
     Pins.prototype.publish("geohashColumn", null, "set", "Geohash column", function () { return this.columns(); }, { optional: true });
     Pins.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
@@ -78,6 +79,11 @@
         this._pinsTransform = svgElement;
         this._selection.widgetElement(this._pinsTransform);
         this.pinsPaths = d3.select(null);
+        this
+            .tooltipHTML(function (d) {
+                return d.ext.tooltip === undefined ? "" : d.ext.tooltip;
+            })
+        ;
     };
 
     Pins.prototype.layerUpdate = function (base) {
@@ -101,6 +107,16 @@
             .on('mouseover', function (d) {
                 if (!context.isIE) {
                     this.parentNode.appendChild(this);
+                }
+            })
+            .on("mouseout.tooltip", function(d){
+                if(d.ext && d.ext.tooltip){
+                    context.tooltip.hide.apply(this,arguments);
+                }
+            })
+            .on("mousemove.tooltip", function(d){
+                if(d.ext && d.ext.tooltip){
+                    context.tooltip.show.apply(this,arguments);
                 }
             })
         ;
@@ -140,11 +156,6 @@
             })
             .style("fill", function (d) {
                 return d.ext && d.ext.fillColor ? d.ext.fillColor : context.fillColor();
-            })
-        ;
-        this.pinsPaths.select("title")
-            .text(function (d) {
-                return d.ext && d.ext.tooltip ? d.ext.tooltip : "";
             })
         ;
         this.pinsPaths.exit().remove();

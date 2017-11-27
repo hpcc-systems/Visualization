@@ -24,10 +24,10 @@
 
     Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(),{tags:["Basic","Shared"]});
     Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
-    Scatter.prototype.publish("pointSize", 6, "number", "Point Size");
+    Scatter.prototype.publish("pointSize", 6, "number", "Point Size", null, {range:{min:1,step:1,max:200}});
     Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "monotone"]);
     Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
-    Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity");
+    Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity", null, {range:{min:0,step:0.01,max:1}});
     Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
 
     Scatter.prototype.xPos = function (d) {

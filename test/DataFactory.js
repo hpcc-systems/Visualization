@@ -7967,7 +7967,8 @@
                         ["1990-01-03", "2810.15", "2834.04", "2786.26", "2809.73", "192330000", "2809.73"],
                         ["1990-01-02", "2753.20", "2811.65", "2732.51", "2810.15", "162070000", "2810.15"]]
             }
-        }
+        },
+        Lorem_ipsum: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     };
     return DataFactory;
 }));

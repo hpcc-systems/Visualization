@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3","../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility", "css!./MegaChart"], factory);
+        define(["d3","../layout/Border", "../chart/MultiChart", "../common/Text", "../other/Legend", "../layout/Toolbar", "../form/Select", "../form/Button", "../form/Input", "../common/Utility", "../other/Html", "css!./MegaChart"], factory);
     } else {
-        root.composite_MegaChart = factory(root.d3, root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility);
+        root.composite_MegaChart = factory(root.d3, root.layout_Border, root.chart_MultiChart, root.common_Text, root.other_Legend, root.layout_Toolbar, root.form_Select, root.form_Button, root.form_Input, root.common_Utility, root.other_Html);
     }
-}(this, function (d3, Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility) {
+}(this, function (d3, Border, MultiChart, Text, Legend, Toolbar, Select, Button, Input, Utility, Html) {
     function MegaChart() {
         Border.call(this);
 
@@ -62,6 +62,7 @@
 
     MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
+    MegaChart.prototype.publish("showCount", false, "boolean", "Show/Hide Data Count", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showMaximize", false, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
     MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
@@ -123,6 +124,14 @@
         var context = this;
         
         this.topShrinkWrap(false).topPercentage(0).topSize(30);
+
+        this._dataCount = new Html()
+            .classed({ "composite_MegaChart-dataCount": true })
+            .id(this.id() + "_dataCount")
+            .html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">'+(this.data() ? this.data().length : "0")+'</span>')
+            .overflowX('visible')
+            .overflowY('visible')
+        ;
 
         this._csvButton = new Button()
             .classed({ "composite_MegaChart-CSV": true })
@@ -292,6 +301,8 @@
             }
         }
 
+        this._dataCount.html('<span class="MegaChart-dataCount-label">Count:</span>&nbsp;<span class="MegaChart-dataCount-value">'+(this.data() ? this.data().length : "0")+'</span>');
+
         this._chartTypeSelect.value(this.chartType());
         var twArr = this.toolbarWidgets();
         showHideButton(twArr, this._csvButton, this.showCSV());
@@ -299,6 +310,7 @@
         showHideButton(twArr, this._legendButton, this.toolbarShowLegend());
         showHideButton(twArr, this._chartTypeSelect, this.showChartSelect());
         showHideButton(twArr, this._infoButton, this.showInfoButton());
+        showHideButton(twArr, this._dataCount, this.showCount());
         this.toolbarWidgets(twArr);
 
         if (this._prevShowToolbar !== this.showToolbar()) {

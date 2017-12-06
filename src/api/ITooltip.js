@@ -104,7 +104,7 @@
 
     ITooltip.prototype.tooltipFormat = function (opts) {
         opts = opts || {};
-        opts.label = opts.label || "";
+        opts.label = opts.label === undefined ? "" : opts.label;
         opts.series = opts.series || "";
         if (opts.value instanceof Date) {
             opts.value = opts.value || "";

@@ -194,6 +194,17 @@
                         .data(DataFactory.TwoD.subjects.data)
                     );
                 });
+            },
+            true_false: function (callback) {
+                require(["test/DataFactory", "src/chart/Pie"], function (DataFactory, Pie) {
+                    callback(new Pie()
+                        .columns(["True/False","Value"])
+                        .data([
+                            [true,100],
+                            [false,62],
+                        ])
+                    );
+                });
             }
         },
         Step: {

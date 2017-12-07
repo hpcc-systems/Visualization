@@ -259,6 +259,17 @@
                 });
             }
         },
+        Modal: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/layout/Modal"], function (DataFactory, Modal) {
+                    callback(new Modal()
+                        .relativeTargetId("cellSurface")
+                        .title('A Simple Modal')
+                        .html("<p>"+DataFactory.Lorem_ipsum+"</p>")
+                    );
+                });
+            }
+        },
         Popup: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/layout/Popup", "src/layout/Surface", "src/common/Icon"], function (DataFactory, Popup, Surface, Icon) {

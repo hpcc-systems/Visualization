@@ -16,6 +16,7 @@ export class AutoCompleteText extends HTMLWidget {
     }
 
     autoCompleteTextData() {
+        if (this.data().length === 0) return [];
         const view = this._db.rollupView([this.textColumn(), this.valueColumn()]);
         return view.entries().map(function (row, idx) {
             return {

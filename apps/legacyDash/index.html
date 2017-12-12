@@ -1,0 +1,23 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style/index.css">
+    <script src="./node_modules/@hpcc-js/loader/build/index.js"></script>
+    <script>
+        const hpccRequire = window["@hpcc-js/loader"].bundle("./node_modules/@hpcc-js", {}, false);
+    </script>
+</head>
+
+<body>
+    <div id="placeholder">
+    </div>
+    <script>
+        hpccRequire(["./lib-umd/index"], function (index) {
+            index.init("placeholder");
+        });
+    </script>
+</body>
+
+</html>

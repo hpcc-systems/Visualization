@@ -13,6 +13,7 @@ export class Select extends HTMLWidget {
     }
 
     selectData() {
+        if (this.data().length === 0) return [];
         const view = this._db.rollupView([this.textColumn(), this.valueColumn()]);
         let retVal = [];
         retVal = retVal.concat(view.entries().map(function (row) {

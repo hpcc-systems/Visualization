@@ -38,6 +38,7 @@ export class Dendrogram extends SVGZoomWidget {
     }
 
     dendrogramData() {
+        if (this.data().length === 0) return [];
         if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
             return this.data();
         }

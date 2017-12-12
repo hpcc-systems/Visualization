@@ -280,10 +280,10 @@ export class ClientTools {
         });
     }
 
-    syntaxCheck(filePath: string): Promise<[IECLError[], string[]]> {
+    syntaxCheck(filePath: string, args: string[] = ["-syntax"]): Promise<[IECLError[], string[]]> {
         return Promise.all([
             attachWorkspace(this.cwd),
-            this.execFile(this.eclccPath, this.cwd, this.args(["-syntax", "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
+            this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
         ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
             let retVal: [IECLError[], string[]] = [[], []];
             if (execFileResponse) {
@@ -374,13 +374,17 @@ export function locateAllClientTools() {
 }
 
 let eclccPathMsg = "";
+function logEclccPath(eclccPath: string) {
+    const msg = `Using eclccPath setting:  ${eclccPath}`;
+    if (eclccPathMsg !== msg) {
+        logger.info(msg);
+        eclccPathMsg = msg;
+    }
+}
+
 export function locateClientTools(overridePath: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
     if (overridePath && fs.existsSync(overridePath)) {
-        const msg = `Using eclccPath setting:  ${overridePath}`;
-        if (eclccPathMsg !== msg) {
-            logger.info(msg);
-            eclccPathMsg = msg;
-        }
+        logEclccPath(overridePath);
         return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode));
     }
     return locateAllClientTools().then((allClientToolsCache2) => {
@@ -388,11 +392,7 @@ export function locateClientTools(overridePath: string = "", cwd: string = ".", 
         if (!allClientToolsCache2.length) {
             throw new Error("Unable to locate ECL Client Tools.");
         }
-        const msg = `eclcc path found:  ${allClientToolsCache2[0].eclccPath}`;
-        if (eclccPathMsg !== msg) {
-            logger.info(msg);
-            eclccPathMsg = msg;
-        }
+        logEclccPath(allClientToolsCache2[0].eclccPath);
         return allClientToolsCache2[0].clone(cwd, includeFolders, legacyMode);
     });
 }

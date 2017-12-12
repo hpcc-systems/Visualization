@@ -1,5 +1,5 @@
 import { Widget as Widget } from "@hpcc-js/common";
-import { Persist } from "@hpcc-js/other";
+// import { Persist } from "@hpcc-js/other";
 import { ConflatableMessage, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
 import { select as d3Select } from "d3-selection";
 
@@ -84,6 +84,7 @@ export class WidgetAdapter extends PWidget {
                     .lazyRender()
                     ;
             } else if (this._widgetLayout) {
+                /*
                 Persist.create(this._widgetLayout).then((widget: Widget) => {
                     delete this._widgetLayout;
                     this._widget = widget;
@@ -96,6 +97,7 @@ export class WidgetAdapter extends PWidget {
                         this.title.label = this._widget["title"]();
                     }
                 });
+                */
             }
         }
     }

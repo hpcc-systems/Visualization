@@ -451,6 +451,11 @@ export class GMap extends HTMLWidget {
 
     update(domNode, element) {
         const context = this;
+        this._googleMapNode
+            .style("width", this.width() + "px")
+            .style("height", this.height() + "px")
+            ;
+
         this._googleMap.setMapTypeId(this.getMapType());
         this._googleMap.setOptions(this.getMapOptions());
 

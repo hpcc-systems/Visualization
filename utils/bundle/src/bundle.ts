@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as path from "path";
+import * as process from "process";
 import * as rollup from "rollup";
 import * as alias from "rollup-plugin-alias";
 import * as commonjs from "rollup-plugin-commonjs";
@@ -5,9 +8,6 @@ import * as resolve from "rollup-plugin-node-resolve";
 import * as postcss from "rollup-plugin-postcss";
 import * as sourcemaps from "rollup-plugin-sourcemaps";
 import * as uglify from "rollup-plugin-uglify";
-import * as fs from "fs";
-import * as path from "path";
-import * as process from "process";
 
 // tslint:disable:no-var-requires
 // declare const require: any;
@@ -89,7 +89,7 @@ export function inOptions(inFile: string, min: boolean = false) {
     };
 }
 
-export function outOptions(min: boolean = false) {
+export function outOptions(min: boolean = false): rollup.OutputOptions {
     return {
         file: `dist/${leafID}${min ? ".min" : ""}.js`,
         format: "umd",

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { Connection, RequestType } from "@hpcc-js/comms";
+import { Connection } from "@hpcc-js/comms";
 import { isBrowser, isTravis } from "@hpcc-js/util";
 
 export const ESP_URL = isTravis() ? "http://52.51.90.23:8010/" : "http://192.168.3.22:8010/";
@@ -11,7 +11,7 @@ describe.skip("Old Server", function () {
             baseUrl: "http://10.240.32.125:8010/",
             userID: "gosmith",
             password: "ch@ng3m3",
-            type: RequestType.POST
+            type: "post"
         });
         return transport.send("WsWorkunits/WUQuery.json", {}).then((response) => {
             expect(true).to.be.true;
@@ -44,7 +44,7 @@ describe("connection", function () {
 
     it.skip("JSONP", function () {
         if (!isTravis() && isBrowser()) {
-            const transport = new Connection({ baseUrl: "http://10.241.100.159:800./wsEcl/submit/query/roxie", type: RequestType.JSONP });
+            const transport = new Connection({ baseUrl: "http://10.241.100.159:800./wsEcl/submit/query/roxie", type: "jsonp" });
             const request = {
                 bestfitmax: 1,
                 Date1: "19900613",

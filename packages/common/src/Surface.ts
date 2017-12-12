@@ -95,7 +95,7 @@ export class Surface extends SVGWidget {
         super.update(domNode, element);
         const context = this;
 
-        const width = this.width() - 1;
+        let width = this.width() - 1;
         const height = this.height() - 1;
 
         this._iconWidget
@@ -151,6 +151,10 @@ export class Surface extends SVGWidget {
         const yTitle = (-height + _titleRegionHeight) / 2;
 
         const titleTextHeight = this.showTitle() ? Math.max(textClientSize.height, menuClientSize.height, buttonClientHeight) : 0;
+        const titleTextWidth = this.showTitle() ? textClientSize.width + menuClientSize.width : 0;
+        if (titleTextWidth > width) {
+            width = titleTextWidth;
+        }
 
         const topMargin = titleRegionHeight <= titleTextHeight ? 0 : (titleRegionHeight - titleTextHeight) / 2;
         const leftMargin = topMargin;

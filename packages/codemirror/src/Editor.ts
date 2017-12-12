@@ -1,7 +1,6 @@
 import { CodeMirror } from "@hpcc-js/codemirror-shim";
 import { HTMLWidget } from "@hpcc-js/common";
 
-import "@hpcc-js/codemirror-shim/build/codemirror-shim.css";
 import "../src/Editor.css";
 
 export class Editor extends HTMLWidget {

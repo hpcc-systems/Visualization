@@ -68,9 +68,9 @@ export class Graph extends SVGZoomWidget {
         this.data({ vertices: [], edges: [], hierarchy: [], merge: false });
     }
 
-    data(): IGraphData;
-    data(_: IGraphData): Graph;
-    data(_?: IGraphData): IGraphData | Graph {
+    data(): any;
+    data(_: any): Graph;
+    data(_?: any): any | Graph {
         const retVal = SVGZoomWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
             if (!_.merge) {

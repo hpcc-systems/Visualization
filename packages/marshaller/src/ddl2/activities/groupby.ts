@@ -1,10 +1,10 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
 import { nest as d3Nest } from "d3-collection";
 import { Activity, ReferencedFields } from "./activity";
-import { View } from "./view";
 
 export class GroupByColumn extends PropertyExt {
     private _owner: GroupBy;
@@ -17,19 +17,29 @@ export class GroupByColumn extends PropertyExt {
         this._owner = owner;
     }
 
+    toDDL(): string {
+        return this.label();
+    }
+
+    static fromDDL(owner: GroupBy, label: string): GroupByColumn {
+        return new GroupByColumn(owner)
+            .label(label)
+            ;
+    }
+
     hash(): string {
         return hashSum(this.label());
     }
 
     columns() {
-        return this._owner.fieldIDs();
+        return this._owner.inFieldIDs();
     }
 }
 GroupByColumn.prototype._class += " GroupByColumn";
 
 //  ===========================================================================
-type AggrFuncCallback = (item: any) => number;
-type AggrFunc = (leaves: any[], callback: AggrFuncCallback) => number;
+export type AggrFuncCallback = (item: any) => number;
+export type AggrFunc = (leaves: any[], callback: AggrFuncCallback) => number;
 function localCount(leaves: any[], callback: AggrFuncCallback): number {
     return leaves.length;
 }
@@ -49,11 +59,11 @@ export type AggregateType = "count" | "min" | "max" | "sum" | "mean" | "median" 
 export class AggregateField extends PropertyExt {
     private _owner: GroupBy;
 
-    @publish(null, "string", "Label", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() })
-    label: publish<this, string>;
-    @publish("count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: w => !w.label() })
+    @publish(null, "string", "new Field ID", null, { optional: true, disable: (w: AggregateField) => !w.hasColumn() })
+    fieldID: publish<this, string>;
+    @publish("count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() })
     aggrType: publish<this, AggregateType>;
-    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: w => !w.label() || !w.aggrType() || w.aggrType() === "count" })
+    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => !w.fieldID() || !w.aggrType() || w.aggrType() === "count" })
     aggrColumn: publish<this, string>;
 
     constructor(owner: GroupBy) {
@@ -61,16 +71,41 @@ export class AggregateField extends PropertyExt {
         this._owner = owner;
     }
 
+    toDDL(): DDL2.IAggregate | DDL2.ICount {
+        if (this.aggrType() === "count") {
+            return {
+                fieldID: this.fieldID(),
+                type: "count"
+            };
+        }
+        return {
+            fieldID: this.fieldID(),
+            type: this.aggrType() as DDL2.IAggregateType,
+            inFieldID: this.aggrColumn()
+        };
+    }
+
+    static fromDDL(owner: GroupBy, ddl: DDL2.IAggregate | DDL2.ICount): AggregateField {
+        const retVal = new AggregateField(owner)
+            .fieldID(ddl.fieldID)
+            .aggrType(ddl.type)
+            ;
+        if (ddl.type !== "count") {
+            retVal.aggrColumn(ddl.inFieldID);
+        }
+        return retVal;
+    }
+
     hash(): string {
         return hashSum({
-            label: this.label(),
+            label: this.fieldID(),
             aggrType: this.aggrType(),
             aggrColumn: this.aggrColumn()
         });
     }
 
     columns() {
-        return this._owner.fieldIDs();
+        return this._owner.inFieldIDs();
     }
 
     hasColumn() {
@@ -79,6 +114,14 @@ export class AggregateField extends PropertyExt {
 
     aggregate(values: Array<{ [key: string]: any }>) {
         return d3Aggr[this.aggrType() as string](values, leaf => +leaf[this.aggrColumn()]);
+    }
+
+    aggrFunc(): (leaves: any[]) => number {
+        const aggrFunc = d3Aggr[this.aggrType() as string];
+        const aggrColumn = this.aggrColumn();
+        return (values: any[]) => {
+            return aggrFunc(values, leaf => +leaf[aggrColumn]);
+        };
     }
 }
 AggregateField.prototype._class += " AggregateField";
@@ -95,10 +138,42 @@ export class GroupBy extends Activity {
     @publish(false, "boolean", "Show groupBy fileds in details")
     fullDetails: publish<this, boolean>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
     }
 
+    toDDL(): DDL2.IGroupBy {
+        return {
+            type: "groupby",
+            groupByIDs: this.fieldIDs(),
+            aggregates: this.aggregates()
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IGroupBy): GroupBy {
+        return new GroupBy()
+            .fieldIDs(ddl.groupByIDs)
+            .aggregates(ddl.aggregates)
+            ;
+    }
+
+    fieldIDs(): string[];
+    fieldIDs(_: string[]): this;
+    fieldIDs(_?: string[]): string[] | this {
+        if (!arguments.length) return this.validGroupBy().map(gb => gb.toDDL());
+        this.column(_.map(fieldID => GroupByColumn.fromDDL(this, fieldID)));
+        return this;
+    }
+
+    aggregates(): DDL2.AggregateType[];
+    aggregates(_: DDL2.AggregateType[]): this;
+    aggregates(_?: DDL2.AggregateType[]): DDL2.AggregateType[] | this {
+        if (!arguments.length) return this.validComputedFields().map(cf => cf.toDDL());
+        this.computedFields(_.map(aggrType => AggregateField.fromDDL(this, aggrType)));
+        return this;
+    }
+
+    //  Activity
     hash(): string {
         return hashSum({
             groupBy: this.column().map(gb => gb.hash()),
@@ -115,7 +190,7 @@ export class GroupBy extends Activity {
         return this;
     }
 
-    validGroupBy() {
+    validGroupBy(): GroupByColumn[] {
         return this.column().filter(groupBy => !!groupBy.label());
     }
 
@@ -123,7 +198,7 @@ export class GroupBy extends Activity {
         return this.validGroupBy().length > 0;
     }
 
-    fieldIDs(): string[] {
+    inFieldIDs(): string[] {
         return this.inFields().map(field => field.id);
     }
 
@@ -139,7 +214,7 @@ export class GroupBy extends Activity {
     appendComputedFields(aggregateFields: [{ label: string, type: AggregateType, column?: string }]): this {
         for (const aggregateField of aggregateFields) {
             const aggrField = new AggregateField(this)
-                .label(aggregateField.label)
+                .fieldID(aggregateField.label)
                 .aggrType(aggregateField.type)
                 ;
             if (aggregateField.column !== void 0) {
@@ -151,7 +226,7 @@ export class GroupBy extends Activity {
     }
 
     validComputedFields() {
-        return this.computedFields().filter(computedField => computedField.label());
+        return this.computedFields().filter(computedField => computedField.fieldID());
     }
 
     hasComputedFields() {
@@ -168,16 +243,18 @@ export class GroupBy extends Activity {
                 id: groupBy.label(),
                 label: groupBy.label(),
                 type: groupByField ? groupByField.type : undefined,
+                default: undefined,
                 children: null
             };
             retVal.push(field);
         }
         for (const cf of this.computedFields()) {
-            if (cf.label()) {
+            if (cf.fieldID()) {
                 const computedField: IField = {
-                    id: cf.label(),
-                    label: cf.label(),
+                    id: cf.fieldID(),
+                    label: cf.fieldID(),
                     type: "number",
+                    default: undefined,
                     children: null
                 };
                 retVal.push(computedField);
@@ -190,6 +267,7 @@ export class GroupBy extends Activity {
                     id: "values",
                     label: "details",
                     type: "object",
+                    default: undefined,
                     children: []
                 };
                 retVal.push(rows);
@@ -220,29 +298,28 @@ export class GroupBy extends Activity {
     pullData(): object[] {
         const data = super.pullData();
         if (data.length === 0) return data;
+        const columnLabels: string[] = this.validGroupBy().map(gb => gb.label());
+        const computedFields = this.validComputedFields().map(cf => {
+            return { label: cf.fieldID(), aggrFunc: cf.aggrFunc() };
+        });
         const retVal = d3Nest()
             .key((row: { [key: string]: any }) => {
                 let key = "";
-                for (const groupBy of this.column()) {
-                    if (groupBy.label()) {
-                        if (key) {
-                            key += ":";
-                        }
-                        key += row[groupBy.label()];
-                    }
+                for (const groupByLabel of columnLabels) {
+                    key += ":" + row[groupByLabel];
                 }
                 return key;
             })
             .entries(data).map(_row => {
-                const row: { [key: string]: any } = _row;
+                const row: {
+                    [key: string]: any
+                } = _row;
                 delete row.key;
-                for (const groupBy of this.validGroupBy()) {
-                    row[groupBy.label()] = row.values[0][groupBy.label()];
+                for (const groupByLabel of columnLabels) {
+                    row[groupByLabel] = row.values[0][groupByLabel];
                 }
-                for (const cf of this.computedFields()) {
-                    if (cf.label()) {
-                        row[cf.label()] = cf.aggregate(row.values);
-                    }
+                for (const cf of computedFields) {
+                    row[cf.label] = cf.aggrFunc(row.values);
                 }
                 return row;
             })

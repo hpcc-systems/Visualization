@@ -1,8 +1,9 @@
 export type RowType = { [key: string]: any; };
 
 //  Datasources  ==============================================================
-export type IDatasourceType = "wuresult" | "logicalfile" | "form" | "databomb" | "roxieservice" | "hipieservice";
-export type DatasourceType = IWUResult | ILogicalFile | IForm | IDatabomb | IRoxieService | IHipieService;
+export type IServiceType = "wuresult" | "hipie" | "roxie";
+export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb";
+export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
 
 export interface IField {
     id: string;
@@ -19,17 +20,28 @@ export interface IDatasource {
 
 export interface IDatasourceRef {
     id: string;
-    fields: IField[];
 }
 
 export interface IESPService extends IDatasource {
     url: string;
 }
 
-export interface IWUResult extends IESPService {
+export interface IService {
+    type: IServiceType;
+    id: string;
+    url: string;
+}
+
+export interface IOutput {
+    fields: IField[];
+}
+
+export type OutputDict = { [key: string]: IOutput };
+
+export interface IWUResult extends IService {
     type: "wuresult";
     wuid: string;
-    resultName: string;
+    outputs: OutputDict;
 }
 
 export interface ILogicalFile extends IESPService {
@@ -37,11 +49,20 @@ export interface ILogicalFile extends IESPService {
     logicalFile: string;
 }
 
-export interface IRoxieService extends IESPService {
-    type: "roxieservice";
+export interface IRoxieService extends IService {
+    type: "roxie";
     querySet: string;
     queryID: string;
-    resultName: string;
+    inputs: IField[];
+    outputs: OutputDict;
+}
+
+export interface IHipieService extends IService {
+    type: "hipie";
+    querySet: string;
+    queryID: string;
+    inputs: IField[];
+    outputs: OutputDict;
 }
 
 export interface IRequestField {
@@ -50,11 +71,20 @@ export interface IRequestField {
     localFieldID: string;
 }
 
-export interface IRoxieServiceRef extends IDatasourceRef {
-    request: IRequestField[];
+export interface IWUResultRef extends IDatasourceRef {
+    output: string;
 }
 
-export function isIRoxieServiceRef(ref: IDatasourceRef | IRoxieServiceRef): ref is IRoxieServiceRef {
+export function isIWUResultRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IWUResultRef {
+    return (ref as IWUResultRef).output !== undefined && (ref as IRoxieServiceRef).request === undefined;
+}
+
+export interface IRoxieServiceRef extends IDatasourceRef {
+    request: IRequestField[];
+    output: string;
+}
+
+export function isIRoxieServiceRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IRoxieServiceRef {
     return (ref as IRoxieServiceRef).request !== undefined;
 }
 
@@ -66,10 +96,6 @@ export interface IDatabomb extends IDatasource {
     type: "databomb";
 }
 
-export interface IHipieService extends IDatasource {
-    type: "hipieservice";
-}
-
 //  Activities  ===============================================================
 export type IActivityType = "filter" | "project" | "groupby" | "sort" | "limit";
 export type ActivityType = IFilter | IProject | IGroupBy | ISort | ILimit;
@@ -79,16 +105,16 @@ export interface IActivity {
 }
 
 //  Filter  ===================================================================
-export type IMappingConditionType = "==" | "!=" | ">" | ">=" | "<" | "<=" | "contains";
+export type IMappingConditionType = "==" | "!=" | ">" | ">=" | "<" | "<=" | "in";
 export interface IMapping {
     remoteFieldID: string;
     localFieldID: string;
     condition: IMappingConditionType;
+    nullable: boolean;
 }
 
 export interface IFilterCondition {
     viewID: string;
-    nullable: boolean;
     mappings: IMapping[];
 }
 
@@ -101,6 +127,14 @@ export function isFilterActivity(activity: IActivity): activity is IFilter {
 }
 
 //  Project  ==================================================================
+export type ICalculatedType = "=" | "+" | "-" | "*" | "/";
+export interface ICalculated {
+    fieldID: string;
+    type: ICalculatedType;
+    param1: string;
+    param2: string | undefined;
+}
+
 export interface IScale {
     fieldID: string;
     type: "scale";
@@ -108,14 +142,13 @@ export interface IScale {
     factor: number;
 }
 
-export interface ICalculated {
+export interface ITemplate {
     fieldID: string;
-    type: "=" | "+" | "-" | "*" | "/";
-    param1: string;
-    param2: string;
+    type: "template";
+    template: string;
 }
 
-export type TransformationType = IScale | ICalculated;
+export type TransformationType = ICalculated | IScale | ITemplate;
 
 export interface IProject extends IActivity {
     type: "project";
@@ -126,14 +159,15 @@ export function isProjectActivity(activity: IActivity): activity is IProject {
 }
 
 //  GroupBy  ==================================================================
+export type IAggregateType = "min" | "max" | "sum" | "mean" | "variance" | "deviation";
 export interface IAggregate {
-    label: string;
-    type: "min" | "max" | "sum" | "mean" | "variance" | "deviation";
     fieldID: string;
+    type: IAggregateType;
+    inFieldID: string;
 }
 
 export interface ICount {
-    label: string;
+    fieldID: string;
     type: "count";
 }
 
@@ -175,11 +209,12 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 export interface IView {
     id: string;
     datasource: IDatasourceRef | IRoxieServiceRef;
-    activities: IActivity[];
+    activities: ActivityType[];
 }
 
 //  DDL  ======================================================================
 export interface Schema {
+    version: "0.0.18";
     datasources: DatasourceType[];
     dataviews: IView[];
 }

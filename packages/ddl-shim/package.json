@@ -1,13 +1,13 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "0.0.19",
+  "version": "0.0.29",
   "description": "hpcc-js DDL parser",
-  "main": "build/ddl-shim.js",
-  "unpkg": "build/ddl-shim.min.js",
-  "types": "lib-es6/index.d.ts",
+  "main": "build/index.js",
+  "unpkg": "build/index.min.js",
+  "types": "types/index.d.ts",
   "files": [
     "build/*",
-    "lib/*",
+    "types/*",
     "src/*.css"
   ],
   "scripts": {
@@ -22,15 +22,13 @@
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
-  "dependencies": {
-    "ajv": "4.11.3",
-    "reflect-metadata": "0.1.10",
-    "tslib": "1.8.0"
-  },
   "devDependencies": {
     "@types/node": "8.0.51",
+    "ajv": "4.11.3",
     "extract-text-webpack-plugin": "2.1.0",
+    "reflect-metadata": "0.1.10",
     "rimraf": "2.6.2",
+    "tslib": "1.8.0",
     "typescript-json-schema": "0.18.0",
     "webpack": "3.10.0"
   },

@@ -65,11 +65,12 @@ export class Sankey extends SVGWidget {
     }
 
     sankeyData() {
-        const vertexIndex = {};
         const retVal = {
             vertices: [],
             edges: []
         };
+        if (this.data().length === 0) return retVal;
+        const vertexIndex = {};
         const mappings = this.mappings().filter(function (mapping) { return mapping.column(); });
         mappings.forEach(function (mapping, idx) {
             const view = this._db.rollupView([mapping.column()]);

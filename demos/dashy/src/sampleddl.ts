@@ -1,4 +1,6 @@
-export const ddl = {
+import { IDDL } from "@hpcc-js/ddl-shim";
+
+export const ddl: IDDL = {
     dashboards: [
         {
             id: "Ins122_pro2dashboard",

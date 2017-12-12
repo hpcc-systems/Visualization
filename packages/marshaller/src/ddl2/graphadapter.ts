@@ -1,15 +1,14 @@
 import { Surface, Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Vertex } from "@hpcc-js/graph";
 import { Activity } from "./activities/activity";
-import { DSPicker } from "./activities/dspicker";
+import { DSPicker, isDatasource } from "./activities/dspicker";
+import { HipiePipeline } from "./activities/hipiepipeline";
 import { RoxieRequest } from "./activities/roxie";
-import { View } from "./activities/view";
 import { WUResult } from "./activities/wuresult";
-import { Dashboard } from "./dashboard";
-import { Viz } from "./viz";
+import { Element, ElementContainer } from "./model";
 
 export class GraphAdapter {
-    private _dashboard: Dashboard;
+    private _elementContainer: ElementContainer;
     private subgraphMap: { [key: string]: Surface } = {};
     private vertexMap: { [key: string]: Vertex } = {};
     private edgeMap: { [key: string]: Edge } = {};
@@ -17,8 +16,8 @@ export class GraphAdapter {
     private vertices: Widget[] = [];
     private edges: Edge[] = [];
 
-    constructor(dashboard: Dashboard) {
-        this._dashboard = dashboard;
+    constructor(dashboard: ElementContainer) {
+        this._elementContainer = dashboard;
     }
 
     clear() {
@@ -80,35 +79,25 @@ export class GraphAdapter {
         return retVal;
     }
 
-    roxieServiceID(dsDetails: RoxieRequest) {
-        return `${dsDetails.url()}/${dsDetails.querySet()}/${dsDetails.queryID()}`;
-    }
-
-    createDatasource(sourceID: string, viz: Viz, view: View, data: any): string {
+    createDatasource(viz: Element, view: HipiePipeline, data: any): string {
         const ds = view.dataSource();
-        const dsDetails = ds.details();
+        const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof WUResult) {
             const surfaceID = `${dsDetails.url()}/${dsDetails.wuid()}`;
             const surface: Surface = this.createSurface(surfaceID, `${dsDetails.wuid()}`, { viz, view });
 
             const id = `${surfaceID}/${dsDetails.resultName()}`;
             const vertex: Vertex = this.createVertex(id, dsDetails.resultName(), data);
-            if (sourceID) {
-                this.createEdge(sourceID, id);
-            }
             this.hierarchy.push({ parent: surface, child: vertex });
             return id;
         } else if (dsDetails instanceof RoxieRequest) {
-            const surfaceID = `${dsDetails.url()}/${dsDetails.querySet()}`;
+            const surfaceID = dsDetails.roxieServiceID(); // `${dsDetails.url()}/${dsDetails.querySet()}`;
             const surface: Surface = this.createSurface(surfaceID, dsDetails.querySet(), { viz, view });
-            const roxieID = this.roxieServiceID(dsDetails);
+            const roxieID = surfaceID;
             this.hierarchy.push({
                 parent: surface,
                 child: this.createVertex(roxieID, dsDetails.queryID(), data)
             });
-            if (sourceID) {
-                this.createEdge(sourceID, roxieID);
-            }
             const roxieResultID = `${surfaceID}/${dsDetails.resultName()}`;
             this.hierarchy.push({
                 parent: surface,
@@ -119,14 +108,11 @@ export class GraphAdapter {
         } else {
             const id = ds.hash();
             this.createVertex(id, ds.label(), data);
-            if (sourceID) {
-                this.createEdge(sourceID, id);
-            }
             return id;
         }
     }
 
-    createActivity(sourceID: string, viz: Viz, view: View, activity: Activity): string {
+    createActivity(sourceID: string, viz: Element, view: HipiePipeline, activity: Activity): string {
         const surface: Surface = this.createSurface(view.id(), `${view.label()} [${viz.id()}]`, { viz, view });
         const vertex: Vertex = this.createVertex(activity.id(), `${activity.classID()}`, { viz, view, activity }, activity.exists() ? null : "lightgray");
         if (sourceID) {
@@ -140,12 +126,12 @@ export class GraphAdapter {
         this.clear();
 
         const lastID: { [key: string]: string } = {};
-        for (const viz of this._dashboard.visualizations()) {
+        for (const viz of this._elementContainer.elements()) {
             const view = viz.view();
             let prevID = "";
             for (const activity of view.activities()) {
-                if (activity instanceof DSPicker) {
-                    prevID = this.createDatasource(prevID, viz, view, { viz: undefined, activity });
+                if (isDatasource(activity)) {
+                    prevID = this.createDatasource(viz, view, { viz: undefined, activity });
                 } else {
                     prevID = this.createActivity(prevID, viz, view, activity);
                 }
@@ -153,10 +139,13 @@ export class GraphAdapter {
             lastID[view.id()] = prevID;
         }
 
-        for (const viz of this._dashboard.visualizations()) {
+        for (const viz of this._elementContainer.elements()) {
             const view = viz.view();
             for (const updateInfo of view.updatedByGraph()) {
-                this.createEdge(lastID[this._dashboard.visualization(updateInfo.from).view().id()], updateInfo.to instanceof DSPicker ? this.roxieServiceID(updateInfo.to.details() as RoxieRequest) : updateInfo.to.id())
+                if (updateInfo.to instanceof DSPicker) {
+                    updateInfo.to = updateInfo.to.details();
+                }
+                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).view().id()], updateInfo.to instanceof RoxieRequest ? `${updateInfo.to.roxieServiceID()}/${updateInfo.to.resultName()}` : updateInfo.to.id())
                     .weight(10)
                     .strokeDasharray("1,5")
                     .text("updates")

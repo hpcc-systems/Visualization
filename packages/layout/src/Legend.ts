@@ -42,10 +42,15 @@ export class Legend extends SVGWidget {
 
     filteredData(): any[][] {
         const disabledCols: { [key: number]: boolean } = {};
+        let anyDisabled: boolean = false;
         this.columns().forEach((col, idx) => {
-            disabledCols[idx] = this.isDisabled(col);
+            const disabled = this.isDisabled(col);
+            disabledCols[idx] = disabled;
+            if (disabled) {
+                anyDisabled = true;
+            }
         });
-        return this.data().map(row => {
+        return !anyDisabled ? this.data() : this.data().map(row => {
             return row.filter((cell, idx) => !disabledCols[idx]);
         });
     }

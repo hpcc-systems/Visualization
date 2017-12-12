@@ -1,4 +1,35 @@
-var hpccLoader = window["@hpcc-js/loader"];
+import { App } from "./app";
+
+let app: App;
+export function init(divID: string) {
+    app = new App().target(divID);
+    doResize();
+    window.addEventListener("resize", doResize);
+}
+
+function doResize() {
+    let myWidth;
+    let myHeight;
+    if (typeof window.innerWidth === "number") {
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+    } else {
+        if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            myWidth = document.documentElement.clientWidth;
+            myHeight = document.documentElement.clientHeight;
+        } else {
+            if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+                myWidth = document.body.clientWidth;
+                myHeight = document.body.clientHeight;
+            }
+        }
+    }
+    app
+        .resize({ width: myWidth - 16, height: myHeight - 16 })
+        .render();
+}
+
+/*
 //var require = hpccLoader.amd("./node_modules/@hpcc-js", { "test": "../test" }, "../../node_modules");
 var require = window["@hpcc-js/loader"].bundle("../packages");
 require(["@hpcc-js/other", "@hpcc-js/marshaller"], function (hpccOther, hpccMarshaller) {
@@ -34,4 +65,4 @@ require(["@hpcc-js/other", "@hpcc-js/marshaller"], function (hpccOther, hpccMars
             ;
     }
 });
-
+*/

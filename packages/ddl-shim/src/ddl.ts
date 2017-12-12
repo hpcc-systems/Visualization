@@ -131,16 +131,16 @@ export interface IChoroSource extends ISource {
 
 //  Visualization  ============================================================
 export type VisualizationType = "PIE" | "LINE" | "BAR" | "TABLE" | "CHORO" | "GRAPH" | "HEAT_MAP" | "SLIDER" | "FORM" | "2DCHART" | "WORD_CLOUD" | "BUBBLE";
-export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "unsigned" | "float" | "double" | "date" | "time" | "geohash" | "dataset" | "visualization";
+export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "unsigned" | "float" | "double" | "real" | "string" | "date" | "time" | "geohash" | "dataset" | "visualization";
 export type VisualizationFieldType = VisualizationFieldDataType | "range";
 export type VisualizationFieldFuncitonType = "SUM" | "AVE" | "MIN" | "MAX" | "SCALE";
 
 export interface IVisualizationField {
-    id: any;
+    id: string;
     properties: {
-        label: string;
+        label?: string;
         datatype: VisualizationFieldDataType;
-        default: any[];
+        default?: any[];
         function?: VisualizationFieldFuncitonType;
         params?: {
             param1: string;
@@ -154,16 +154,15 @@ export interface IVisualization {
     id: string;
     title: string;
     type: VisualizationType;
+    fields?: IVisualizationField[];
     properties?: {
-        charttype: string,
+        charttype?: string,
 
         //  TODO Split Known Properties  ---
-        [key: string]: string
+        [key: string]: any
     };
     events?: { [key: string]: IEvent };
     onSelect?: any;  // legacy
-
-    fields?: IVisualizationField[];
     color?: any; // legacy
 }
 
@@ -212,6 +211,9 @@ export interface IHeatMapVisualization extends IVisualization {
     source: IHeatMapSource;
 }
 
+export interface IFormVisualization extends IVisualization {
+}
+
 //  Dashboard  ================================================================
 export interface IDashboard {
     id?: string;
@@ -225,6 +227,8 @@ export interface IDashboard {
 export interface IDDL {
     dashboards: IDashboard[];
     datasources: IDatasource[];
+    hipieversion: string;
+    visualizationversion: string;
 }
 
 //  DDL  ======================================================================
@@ -243,4 +247,4 @@ export function isGeohashMapping(mappings: IAnyChoroMapping) {
 }
 export type IAnyMapping = IPieMapping | ILineMapping | IGraphMapping | IAnyChoroMapping | ITableMapping | IHeatMapMapping;
 export type IAnySource = IPieSource | ILineSource | ITableSource | IChoroSource | IGraphSource | IHeatMapSource;
-export type IAnyVisualization = IPieVisualization | ILineVisualization | ITableVisualization | IChoroVisualization | IGraphVisualization | IHeatMapVisualization;
+export type IAnyVisualization = IPieVisualization | ILineVisualization | ITableVisualization | IChoroVisualization | IGraphVisualization | IHeatMapVisualization | IFormVisualization;

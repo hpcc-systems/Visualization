@@ -153,7 +153,7 @@ export class Layered extends SVGZoomWidget {
         }
     }
 
-    projection: (_?: string) => string | Layered;
+    projection: (_?: string) => string | this;
     projection_exists: () => boolean;
     centerLat: { (): number; (_: number): Layered };
     centerLat_exists: () => boolean;

@@ -10,22 +10,17 @@ function guessScriptURL() {
     const scripts = document.getElementsByTagName("script");
     return scripts[scripts.length - 1].src;
 }
+const scriptUrl = guessScriptURL();
 
-function parseScriptUrl() {
-    const scriptUrl = guessScriptURL();
+function parseScriptUrl(forceLocal: boolean) {
     const scriptUrlParts = scriptUrl.split("/loader/build/index.js");
-    const isLocal = scriptUrl.indexOf("file://") === 0;
+    const isLocal = forceLocal || scriptUrl.indexOf("file://") === 0;
     return {
         isLocal,
         libUrl: isLocal ? scriptUrlParts[0] : "https://unpkg.com/@hpcc-js",
         node_modulesUrl: isLocal ? scriptUrlParts[0] + "/../node_modules" : "https://unpkg.com"
     };
 }
-
-const config = parseScriptUrl();
-config;
-
-//  Calculate hosting url
 
 function getElementAttrVal(tagName: string = "script", attr: string = "src", val: string) {
     const scripts = document.getElementsByTagName(tagName);
@@ -107,16 +102,13 @@ export function bundle(url: string, additionalPaths: { [key: string]: string } =
     });
 }
 
-export function npm(additionalPaths: { [key: string]: string } = {}, min: boolean = true): any {
-    return bundle("https://unpkg.com/@hpcc-js", additionalPaths, min);
-}
-
 export function cdn(version?: string, additionalPaths: { [key: string]: string } = {}, min: boolean = true): any {
     const url = version === void 0 ? hostUrl : `https://viz.hpccsystems.com/${version}`;
     return bundle(url, additionalPaths, min);
 }
 
-function local(devMode: boolean, additionalPaths: { [key: string]: string }): any {
+function local(devMode: boolean, additionalPaths: { [key: string]: string }, min: boolean = false): any {
+    const config = parseScriptUrl(devMode);
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
         thirdPartyPaths[key] = `${config.node_modulesUrl}/${npmPackages[key]}`;
@@ -131,12 +123,14 @@ function local(devMode: boolean, additionalPaths: { [key: string]: string }): an
         ...additionalPaths
     };
     const rjsPackages: any = [];
-    shims.forEach(shim => { paths[`@hpcc-js/${shim}`] = `${config.libUrl}/${shim}/build/${shim}`; });
+    shims.forEach(shim => {
+        paths[`@hpcc-js/${shim}`] = `${config.libUrl}/${shim}/build/index`;
+    });
     packages.forEach(pckg => {
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
         rjsPackages.push({
             name: `@hpcc-js/${pckg}`,
-            main: devMode && config.isLocal ? `lib-umd/index` : `build/index`
+            main: devMode && config.isLocal ? `lib-umd/index` : `build/index.min`
         });
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
     });
@@ -147,10 +141,14 @@ function local(devMode: boolean, additionalPaths: { [key: string]: string }): an
     });
 }
 
+export function dev(additionalPaths: { [key: string]: string } = {}): any {
+    return local(true, additionalPaths);
+}
+
 export function amd(additionalPaths: { [key: string]: string } = {}): any {
     return local(false, additionalPaths);
 }
 
-export function dev(additionalPaths: { [key: string]: string } = {}): any {
-    return local(true, additionalPaths);
+export function npm(additionalPaths: { [key: string]: string } = {}): any {
+    return local(false, additionalPaths);
 }

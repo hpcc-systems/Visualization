@@ -12,7 +12,7 @@
     },
     namespace: "hpcc_js",
     modules: [{
-        name: "requirejs-shim",
+        name: "index",
         include: ["requireLib"],
         create: true
     }]

@@ -1,4 +1,4 @@
-import { Persist } from "@hpcc-js/other";
+// import { Persist } from "@hpcc-js/other";
 import { DockLayout, DockPanel, each, TabBar, Widget } from "@hpcc-js/phosphor-shim";
 import { WidgetAdapter } from "./WidgetAdapter";
 
@@ -52,7 +52,9 @@ export class PDockPanel extends DockPanel {
     serializeWidget(widget: Widget): object {
         if (widget instanceof WidgetAdapter) {
             try {
-                return Persist.serializeToObject(widget.widget);
+                return {
+                    __id: widget.widget.id()
+                };
             } catch (e) {
                 return {
                     exception: {
@@ -68,7 +70,7 @@ export class PDockPanel extends DockPanel {
     deserializeWidget(layout: any): WidgetAdapter {
         let wa: WidgetAdapter = this._contentMap[layout.__id];
         if (wa) {
-            Persist.deserializeFromObject(wa.widget, layout);
+            // Persist.deserializeFromObject(wa.widget, layout);
         } else {
             wa = new WidgetAdapter(undefined, layout);
         }

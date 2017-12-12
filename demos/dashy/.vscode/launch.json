@@ -5,10 +5,40 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Chrome Debug",
+            "name": "Dashy",
             "type": "chrome",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/*",
+                "webpack:///*": "/*"
+            }
+        },
+        {
+            "name": "DASH2",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://127.0.0.1:8080/brundajx/DASH2/demos/dashy/index_1.php",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--allow-cross-origin-auth-prompt",
+                "--allow-insecure-localhost",
+                "--allow-running-insecure-content"
+            ],
+            "webRoot": "${workspaceRoot}/../../",
+            "sourceMapPathOverrides": {
+                "http://127.0.0.1:8080/brundajx/DASH2/*": "${webRoot}/*"
+            }
+        },
+        {
+            "name": "Dash POC",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/dashPOC.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

@@ -1,4 +1,4 @@
-import { event as d3Event, select as d3Select, Selection as d3Selection } from "d3-selection";
+import { select as d3Select, Selection as d3Selection } from "d3-selection";
 import "d3-transition";
 import { Field, Grid } from "./Database";
 import { } from "./Platform";
@@ -123,23 +123,6 @@ export abstract class Widget extends PropertyExt {
         }
     }
 
-    //  Events  ---
-    on(eventID, func, stopPropagation = false): this {
-        const context = this;
-        this.overrideMethod(eventID, function (origFunc, args) {
-            let retVal;
-            if (stopPropagation) {
-                if (d3Event) {
-                    d3Event.stopPropagation();
-                }
-            } else {
-                retVal = origFunc.apply(context, args);
-            }
-            return func.apply(context, args) || retVal;
-        });
-        return this;
-    }
-
     //  Implementation  ---
     columns(): string[];
     columns(_: string[], asDefault?: boolean): this;
@@ -157,7 +140,9 @@ export abstract class Widget extends PropertyExt {
         return this._db.formattedData();
     }
 
-    data(_?) {
+    data(): any;
+    data(_: any): this;
+    data(_?: any): any | this {
         if (!arguments.length) return this._db.legacyData();
         this._db.legacyData(_);
         return this;
@@ -604,6 +589,7 @@ export abstract class Widget extends PropertyExt {
     postUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
     exit(_domNode?: HTMLElement, _element?: d3SelectionType) { }
 
+    //  Proxy stub  ---
     fields(): Field[];
     fields(_: Field[]): this;
     fields(_?: Field[]): Field[] | this { return this; }

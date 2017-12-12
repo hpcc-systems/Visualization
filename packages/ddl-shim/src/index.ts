@@ -1,9 +1,9 @@
 import * as Ajv from "ajv";
 export * from "./ddl";
-import * as  DDL2 from "./ddl2";
-export { DDL2 };
+import * as DDL2 from "./ddl2";
 import { ddl2Schema } from "./ddl2Schema";
 import { ddlSchema } from "./ddlSchema";
+export { DDL2, ddlSchema, ddl2Schema };
 
 export interface Response {
     success: boolean;

@@ -2,17 +2,27 @@ import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity, ActivitySelection } from "./activity";
 import { Databomb, Form } from "./databomb";
+import { HipiePipeline } from "./hipiepipeline";
 import { LogicalFile } from "./logicalfile";
 import { HipieRequest, RoxieRequest } from "./roxie";
 import { sampleData } from "./sampledata";
-import { View } from "./view";
 import { WUResult } from "./wuresult";
+
+export function isDatasource(activity: Activity) {
+    return activity instanceof DSPicker ||
+        activity instanceof Databomb ||
+        activity instanceof Form ||
+        activity instanceof LogicalFile ||
+        activity instanceof RoxieRequest ||
+        activity instanceof HipieRequest ||
+        activity instanceof WUResult;
+}
 
 let dsPickerID = 0;
 export class DSPicker extends ActivitySelection {
-    private _view: View;
+    private _view: HipiePipeline;
 
-    @publish("wuresult", "set", "Type", ["wuresult", "logicalfile", "form", "databomb", "roxieservice", "hipieservice"])
+    @publish("wuresult", "set", "Type", ["wuresult", "logicalfile", "form", "databomb", "hipie", "roxie"])
     _type: DDL2.IDatasourceType;
     type(_?: DDL2.IDatasourceType): DDL2.IDatasourceType | this {
         if (!arguments.length) return this._type;
@@ -24,16 +34,16 @@ export class DSPicker extends ActivitySelection {
             case "logicalfile":
                 this.selection(this.activities()[1]);
                 break;
-            case "form":
-                this.selection(this.activities()[4]);
-                break;
-            case "databomb":
-                this.selection(this.activities()[3]);
-                break;
-            case "roxieservice":
+            case "hipie":
                 this.selection(this.activities()[2]);
                 break;
-            case "hipieservice":
+            case "roxie":
+                this.selection(this.activities()[3]);
+                break;
+            case "databomb":
+                this.selection(this.activities()[4]);
+                break;
+            case "form":
                 this.selection(this.activities()[5]);
                 break;
         }
@@ -43,32 +53,43 @@ export class DSPicker extends ActivitySelection {
     @publish(null, "widget", "Data Source")
     details: publish<this, Activity>;
 
-    constructor(view: View) {
+    constructor(view: HipiePipeline) {
         super();
-        this._id = `ds-${++dsPickerID}`;
+        this._id = `ds_${++dsPickerID}`;
         this._view = view;
         this.activities([
-            new WUResult(this._view)
-                .url("http://192.168.3.22:8010")
-                .wuid("W20170424-070701")
+            new WUResult()
+                .url("http://52.51.90.23:8010")
+                .wuid("W20171220-053645")
                 .resultName("Result 1")
             ,
-            new LogicalFile(this._view)
-                .url("http://192.168.3.22:8010")
+            new LogicalFile()
+                .url("http://52.51.90.23:8010")
                 .logicalFile("progguide::exampledata::peopleaccts")
             ,
-            new RoxieRequest(this._view)
-                .url("http://192.168.3.22:8010")
+            new HipieRequest(this._view._elementContainer)
+            ,
+            new RoxieRequest(this._view._elementContainer)
+                .url("http://52.51.90.23:8010")
                 .querySet("roxie")
-                .queryID("peopleaccounts.3")
+                .queryID("peopleaccounts")
                 .resultName("Accounts"),
             new Databomb()
                 .payload(sampleData)
             ,
             new Form()
-                .payload({})
-            ,
-            new HipieRequest(this._view)
+                .payload({
+                    id: 770,
+                    fname: "TIMTOHY",
+                    lname: "SALEEMI",
+                    minitial: "",
+                    gender: "M",
+                    street: "1734 NOSTRAND AVE # 3",
+                    city: "DRACUT",
+                    st: "MA",
+                    zip: "01826"
+                }),
+            new HipieRequest(this._view._elementContainer)
         ]);
         this.type("form");
     }

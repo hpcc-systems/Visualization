@@ -4,6 +4,15 @@ import { DFUQuery } from "../services/wsDFU";
 import { WorkunitsService, WUInfo, WUResult } from "../services/wsWorkunits";
 import { parseXSD, XSDSchema, XSDXMLNode } from "./xsdParser";
 
+export class GlobalResultCache extends Cache<{ Wuid: string, ResultName: string }, Result> {
+    constructor() {
+        super((obj) => {
+            return `${obj.Wuid}/${obj.ResultName}`;
+        });
+    }
+}
+const _results = new GlobalResultCache();
+
 export interface ECLResultEx extends WUInfo.ECLResult {
     Wuid: string;
     ResultName?: string;
@@ -12,7 +21,9 @@ export interface ECLResultEx extends WUInfo.ECLResult {
     ResultViews: any[];
 }
 
-export class Result extends StateObject<ECLResultEx & DFUQuery.DFULogicalFile, ECLResultEx | DFUQuery.DFULogicalFile> implements ECLResultEx {
+export type UResulState = ECLResultEx & DFUQuery.DFULogicalFile;
+export type IResulState = ECLResultEx | DFUQuery.DFULogicalFile;
+export class Result extends StateObject<UResulState, IResulState> implements ECLResultEx {
     protected connection: WorkunitsService;
     protected xsdSchema: XSDSchema;
 
@@ -34,6 +45,17 @@ export class Result extends StateObject<ECLResultEx & DFUQuery.DFULogicalFile, E
     get ResultViews(): any[] { return this.get("ResultViews"); }
     get XmlSchema(): string { return this.get("XmlSchema"); }
 
+    static attach(optsConnection: IOptions | IConnection, wuid: string, resultName: string, state?: IResulState): Result {
+        const retVal: Result = _results.get({ Wuid: wuid, ResultName: resultName }, () => {
+            return new Result(optsConnection, wuid, resultName);
+        });
+        if (state) {
+            retVal.set(state);
+        }
+        return retVal;
+    }
+
+    //  TODO:  Make protected and add additional attach methodes.
     constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, resultName?: string | number);
     constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuid: string, eclResult: WUInfo.ECLResult, resultViews: any[]);
     constructor(optsConnection: IOptions | IConnection | WorkunitsService, wuidOrLogicalFile: string, eclResultOrResultName?: WUInfo.ECLResult | string | number, resultViews: any[] = []) {
@@ -93,16 +115,18 @@ export class Result extends StateObject<ECLResultEx & DFUQuery.DFULogicalFile, E
 
     fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false): Promise<any[]> {
         return this.WUResult(from, count, !includeSchema).then((response) => {
+            const result = response.Result;
+            delete response.Result; //  Do not want it in "set"
             this.set({
                 ...response
             } as any);
-            if (exists("Result.XmlSchema.xml", response)) {
-                this.xsdSchema = parseXSD(response.Result.XmlSchema.xml);
+            if (exists("XmlSchema.xml", result)) {
+                this.xsdSchema = parseXSD(result.XmlSchema.xml);
             }
-            if (exists("Result.Row", response)) {
-                return response.Result.Row;
-            } else if (this.ResultName && exists(`Result.${this.ResultName}`, response)) {
-                return response.Result[this.ResultName].Row;
+            if (exists("Row", result)) {
+                return result.Row;
+            } else if (this.ResultName && exists(this.ResultName, result)) {
+                return result[this.ResultName].Row;
             }
             return [];
         });

@@ -619,7 +619,9 @@ export class Axis extends SVGWidget {
         }
         this.svgGuides
             .call(this.d3Guides)
+            .selectAll(".tick").classed("guide-0", d => d === 0 && this.low() < 0)
             ;
+
     }
 
     postUpdate(_domNode, _element) {

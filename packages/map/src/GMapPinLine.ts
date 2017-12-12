@@ -26,6 +26,7 @@ export class GMapPinLine extends GMapLayered {
     }
 
     pinsData() {
+        if (this.data().length === 0) return [];
         const columns = this.columns();
         this._fromView = this._db.rollupView([this.fromLatitudeColumn(), this.fromLongtitudeColumn()]);
         this._toView = this._db.rollupView([this.toLatitudeColumn(), this.toLongtitudeColumn()]);
@@ -49,6 +50,7 @@ export class GMapPinLine extends GMapLayered {
     }
 
     linesData() {
+        if (this.data().length === 0) return [];
         this._linesView = this._db.rollupView([this.fromLatitudeColumn(), this.fromLongtitudeColumn(), this.toLatitudeColumn(), this.toLongtitudeColumn()]);
         return this._linesView.data();
     }

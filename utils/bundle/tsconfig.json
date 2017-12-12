@@ -3,11 +3,13 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
+        "declarationDir": "./types",
         "noImplicitAny": false,
         "noEmitOnError": false,
         "noUnusedLocals": true,
         "strictNullChecks": true,
         "skipLibCheck": true,
+        "noImplicitThis": true,
         "target": "es6",
         "outDir": "./lib-umd",
         "lib": [

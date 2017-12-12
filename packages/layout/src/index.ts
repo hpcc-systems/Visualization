@@ -3,6 +3,7 @@ export * from "./Accordion";
 export * from "./Border";
 export * from "./Border2";
 export * from "./Cell";
+export * from "./ChartPanel";
 export * from "./Grid";
 export * from "./Layered";
 export * from "./Popup";

@@ -1,4 +1,115 @@
-﻿.dgrid {
+﻿
+.dijitTooltip {
+	position: absolute;
+	z-index: 2000;
+	display: block;
+	
+	left: 0;
+	top: -10000px;
+	overflow: visible;
+
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+}
+.dijitTooltipContainer {
+	border: solid black 2px;
+	background: #b8b5b5;
+	color: black;
+	font-size: small;
+}
+.dijitTooltipFocusNode {
+	padding: 2px 2px 2px 2px;
+}
+.dijitTooltipConnector {
+	position: absolute;
+}
+.dj_a11y .dijitTooltipConnector {
+	display: none;	
+}
+.dijitTooltipData {
+	display:none;
+}
+
+.dijitTooltip {
+/* the outermost dom node, holding the connector and container */
+  background: transparent; /* make the area on the sides of the arrow transparent */
+}
+.dijitTooltipContainer {
+  background-color: #424242;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+.dijitTooltip .dijitTooltipContainer {
+  color: #fff;
+  border: 0 none;
+}
+.dijitTooltipConnector {
+/* the arrow */
+  z-index: 2;
+  width: auto;
+  height: auto;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.dijitTooltipABRight .dijitTooltipConnector {
+/* above or below tooltip, but the arrow appears on the right,
+			and the right edges of target and tooltip are aligned rather than the left */
+  left: auto !important;
+  right: 8px;
+}
+.dijitTooltipBelow {
+/* leave room for arrow above content */
+  padding-top: 4px;
+}
+.dijitTooltipBelow .dijitTooltipConnector {
+/* the arrow piece for tooltips below an element */
+  top: 0;
+  left: 8px;
+  border-bottom: 4px solid #424242;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 0;
+}
+.dijitTooltipAbove {
+/* leave room for arrow below content */
+  padding-bottom: 4px;
+}
+.dijitTooltipAbove .dijitTooltipConnector {
+/* the arrow piece for tooltips above an element */
+  bottom: 0;
+  left: 8px;
+  border-top: 4px solid #424242;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 0;
+}
+.dijitTooltipLeft {
+  padding-right: 4px;
+}
+.dijitTooltipLeft .dijitTooltipConnector {
+/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
+  right: 0;
+  border-left: 4px solid #424242;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-right: 0;
+}
+.dijitTooltipRight {
+  padding-left: 4px;
+}
+.dijitTooltipRight .dijitTooltipConnector {
+/* the arrow piece for tooltips to the right of an element, bottom borders aligned */
+  left: 0;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-right: 4px solid #424242;
+}
+
+.dgrid {
   position: relative;
   overflow: hidden;
   border: 1px solid #ddd;

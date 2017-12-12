@@ -1,6 +1,6 @@
 ﻿import { Scatter } from "@hpcc-js/chart";
 import { Utility, WidgetArray, } from "@hpcc-js/common";
-import { Connection, RequestType } from "@hpcc-js/comms";
+import { Connection } from "@hpcc-js/comms";
 import { Table } from "@hpcc-js/dgrid";
 import { Form, Input, Slider } from "@hpcc-js/form";
 import { GMapGraph } from "@hpcc-js/map";
@@ -13,10 +13,10 @@ const detailsCache = {};
 
 export class Main {
     baseUrlXXX = "http://10.239.190.101:8002/WsEcl/forms/default/query/myroxie_dataland";
-    connWeCare = new Connection({ baseUrl: "http://10.241.100.159:8002/WsEcl/submit/query/roxie", type: RequestType.JSONP });
+    connWeCare = new Connection({ baseUrl: "http://10.241.100.159:8002/WsEcl/submit/query/roxie", type: "jsonp" });
     // this.connPersonAddresses = Comms.createESPConnection(baseUrl + "/personaddresses");
     // this.connPersonToLocations = Comms.createESPConnection(baseUrl + "/personstolocations")
-    googleMaps = new Connection({ baseUrl: "https://maps.googleapis.com/maps/api", type: RequestType.GET });
+    googleMaps = new Connection({ baseUrl: "https://maps.googleapis.com/maps/api", type: "get" });
     dateFormatterYm = d3TimeFormat("%Y%m");
     dateFormatterYmd = d3TimeFormat("%Y%m%d");
     dateParser = d3TimeParse("%Y-%m-%d");

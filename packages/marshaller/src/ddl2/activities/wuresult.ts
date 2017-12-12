@@ -1,12 +1,10 @@
 import { publish } from "@hpcc-js/common";
 import { Result, XSDXMLNode } from "@hpcc-js/comms";
 import { IField } from "@hpcc-js/dgrid";
-import { hashSum } from "@hpcc-js/util";
+import { debounce, hashSum } from "@hpcc-js/util";
 import { Activity, schemaRow2IField } from "./activity";
-import { View } from "./view";
 
 export abstract class ESPResult extends Activity {
-    _owner: View;
     protected _result: Result;
     protected _schema: XSDXMLNode[] = [];
     protected _total: number;
@@ -19,9 +17,8 @@ export abstract class ESPResult extends Activity {
     @publish(100, "number", "Sample size")
     sampleSize: publish<this, number>;
 
-    constructor(owner: View) {
+    constructor() {
         super();
-        this._owner = owner;
     }
 
     hash(more: object = {}): string {
@@ -65,8 +62,12 @@ export abstract class ESPResult extends Activity {
         return [];
     }
 
-    private _prevExecHash: string;
     exec(): Promise<void> {
+        return this._exec();
+    }
+
+    private _prevExecHash: string;
+    private _exec = debounce((): Promise<void> => {
         if (this._prevExecHash !== this.hash()) {
             this._prevExecHash = this.hash();
             return super.exec().then(() => {
@@ -79,7 +80,7 @@ export abstract class ESPResult extends Activity {
         } else {
             return Promise.resolve();
         }
-    }
+    });
 
     pullData(): object[] {
         return this._data;
@@ -97,15 +98,15 @@ export abstract class ESPResult extends Activity {
         return this._fetch(from, count);
     }
 
-    private _fetch(from: number, count: number): Promise<any[]> {
+    private _fetch = debounce((from: number, count: number): Promise<any[]> => {
         return this._result
             .fetchRows(from, count)
             .catch(e => {
                 return [];
             });
-    }
+    });
 
-    private sample(samples: number = this.samples(), sampleSize: number = this.sampleSize()): Promise<any[]> {
+    private sample = debounce((samples: number = this.samples(), sampleSize: number = this.sampleSize()): Promise<any[]> => {
         const pages: Array<Promise<any[]>> = [];
         const lastPage = this.total() - sampleSize;
         for (let i = 0; i < samples; ++i) {
@@ -118,7 +119,7 @@ export abstract class ESPResult extends Activity {
             }
             return retVal2;
         });
-    }
+    });
 }
 ESPResult.prototype._class += " Filters";
 
@@ -129,12 +130,18 @@ export class WUResult extends ESPResult {
     @publish("", "string", "Result Name")
     resultName: publish<this, string>;
 
-    constructor(owner: View) {
-        super(owner);
+    constructor() {
+        super();
     }
 
     _createResult(): Result {
         return new Result({ baseUrl: this.url() }, this.wuid(), this.resultName());
+    }
+
+    sourceHash(): string {
+        return super.hash({
+            wuid: this.wuid()
+        });
     }
 
     hash(more: object): string {

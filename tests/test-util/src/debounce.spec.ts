@@ -26,30 +26,61 @@ describe("debounce", function () {
         expect(funcCallCount).to.equal(99);
     });
 
-    let func1SecCallCount = 0;
-    const func1Sec = debounce(async (): Promise<number> => {
-        console.log("aaa");
-        ++func1SecCallCount;
+    let funcHalfSecCallCount = 0;
+    const funcHalfSec = debounce(async (): Promise<number> => {
+        ++funcHalfSecCallCount;
+        console.log(`funcHalfSec - ${funcHalfSecCallCount}`);
         return 42;
-    }, 1000);
+    }, 500);
 
-    it("1 sec timeout", async function (): Promise<void> {
+    it("0.5 sec timeout", async function (): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const startTime = Date.now();
-            func1Sec();
+            funcHalfSec();
             const interval = setInterval(() => {
-                console.log("bbb");
-                func1Sec();
-                if (Date.now() - startTime > 1000) {
-                    console.log("ddd");
+                funcHalfSec();
+                const elapsed = Date.now() - startTime;
+                console.log(`elapsed - ${elapsed}`);
+                if (elapsed > 1500) {
+                    expect(funcHalfSecCallCount).to.equal(4);
                     clearInterval(interval);
-                    expect(func1SecCallCount).to.be.greaterThan(1);
                     resolve();
+                } else if (elapsed > 1000) {
+                    expect(funcHalfSecCallCount).to.equal(3);
+                } else if (elapsed > 500) {
+                    expect(funcHalfSecCallCount).to.equal(2);
                 } else {
-                    console.log("ccc");
-                    expect(func1SecCallCount).to.equal(1);
+                    expect(funcHalfSecCallCount).to.equal(1);
                 }
-            }, 101);
+            }, 175);
+        });
+    });
+
+    let funcNoTimeoutCount = 0;
+    const funcNoTimeout = debounce((): Promise<number> => {
+        return new Promise<number>((resolve, reject) => {
+            ++funcNoTimeoutCount;
+            resolve(42);
+        });
+    });
+
+    it("no timeout", async function (): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            funcNoTimeout();
+            expect(funcNoTimeoutCount).to.equal(1);
+            funcNoTimeout();
+            expect(funcNoTimeoutCount).to.equal(1);
+            funcNoTimeout();
+            expect(funcNoTimeoutCount).to.equal(1);
+            funcNoTimeout();
+            expect(funcNoTimeoutCount).to.equal(1);
+            funcNoTimeout();
+            expect(funcNoTimeoutCount).to.equal(1);
+            setTimeout(() => {
+                funcNoTimeout();
+                expect(funcNoTimeoutCount).to.equal(2);
+                resolve();
+            }, 0);
         });
     });
 });

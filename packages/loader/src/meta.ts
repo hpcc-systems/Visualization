@@ -51,6 +51,7 @@ export const npmPackages = {
     "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",
     "simpleheat": "simpleheat/simpleheat",
+    "tooltip.js": "tooltip.js/dist/umd/tooltip",
     "topojson": "topojson/dist/topojson",
     "tslib": "tslib/tslib"
 };

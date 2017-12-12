@@ -1,6 +1,8 @@
 import { join } from "@hpcc-js/util";
 import { createConnection, IConnection, IOptions, ResponseType } from "./connection";
 
+export type ESPResponseType = ResponseType | "json2" | "xsd";
+
 export function isArray(arg: any) {
     return Object.prototype.toString.call(arg) === "[object Array]";
 }
@@ -81,16 +83,18 @@ export class ESPConnection implements IConnection {
         return this;
     }
 
-    send(action: string, _request: any = {}, responseType: ResponseType = ResponseType.JSON): Promise<any> {
+    send(action: string, _request: any = {}, espResponseType: ESPResponseType = "json"): Promise<any> {
         const request = { ..._request, ...{ ver_: this._version } };
-        let serviceAction;
-        switch (responseType) {
-            case ResponseType.XSD:
+        let serviceAction: string;
+        let responseType: ResponseType = "json";
+        switch (espResponseType) {
+            case "xsd":
                 serviceAction = join(this._service, action + ".xsd");
+                responseType = "text";
                 break;
-            case ResponseType.JSON2:
+            case "json2":
                 serviceAction = join(this._service, action + "/json");
-                responseType = ResponseType.JSON;
+                espResponseType = "json";
                 const actionParts = action.split("/");
                 action = actionParts.pop()!;
                 break;
@@ -98,7 +102,7 @@ export class ESPConnection implements IConnection {
                 serviceAction = join(this._service, action + ".json");
         }
         return this._connection.send(serviceAction, request, responseType).then((response) => {
-            if (responseType === ResponseType.JSON) {
+            if (espResponseType === "json") {
                 if (response.Exceptions) {
                     throw new ESPExceptions(action, request, response.Exceptions);
                 }
@@ -119,3 +123,17 @@ export class ESPConnection implements IConnection {
         return new ESPConnection(this._connection.clone(), this._service, this._version);
     }
 }
+/*
+export class WsECLConnection extends ESPConnection {
+    send(action: string, _request: any = {}, responseType: ResponseType = "json"): Promise<any> {
+        if (responseType === "json") {
+            serviceAction = join(this._service, action + "/json");
+            responseType = "json";
+            const actionParts = action.split("/");
+            action = actionParts.pop()!;
+
+        }
+        return super.send(action, _request, responseType);
+    }
+}
+*/

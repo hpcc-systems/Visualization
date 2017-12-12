@@ -1,97 +1,85 @@
-
-import { d3SelectionType, PropertyExt, publish, Widget } from "@hpcc-js/common";
+import { d3SelectionType, Widget } from "@hpcc-js/common";
+import { MultiChartPanel } from "@hpcc-js/composite";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { DockPanel } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
-import { View } from "./activities/view";
-import { DDL2, DDLAdapter } from "./ddl";
-import { DDLImport } from "./ddlimport";
-import { Viz } from "./viz";
+import { DDLAdapter } from "./ddl";
+import { createProps, JavaScriptAdapter } from "./javascriptadapter";
+import { Element, ElementContainer } from "./model";
 
-export interface IPersist {
-    ddl: DDL2.Schema;
-    layout: any;
+export interface ICPPersist {
+    id: string;
+    type: string;
+    props: object;
 }
 
-export class Test extends PropertyExt {
-    @publish([], "widgetArray")
-    visualizations: publish<this, Viz[]>;
+export interface IDashboardPersist {
+    ddl: DDL2.Schema;
+    widgets: ICPPersist[];
+    layout: object;
 }
 
 export class Dashboard extends DockPanel {
-    private _visualizations: Viz[] = [];
-    private _nullVisualization = new Viz(this);
+    private _ec: ElementContainer;
 
-    test(): Test {
-        return new Test().visualizations(this.visualizations());
+    constructor(ec: ElementContainer) {
+        super();
+        this._ec = ec;
+        this._ec.on("vizStateChanged", this.vizStateChanged);
     }
 
-    clear() {
-        this._visualizations = [];
-        this.render();
+    elementContainer(): ElementContainer {
+        return this._ec;
     }
 
-    visualizations() {
-        return [...this._visualizations];
+    save(): IDashboardPersist {
+        const ddlAdapter = new DDLAdapter(this._ec);
+        return {
+            ddl: ddlAdapter.write(),
+            widgets: this.widgets().map(_cp => {
+                const cp: MultiChartPanel = _cp as MultiChartPanel;
+                return {
+                    id: cp.id(),
+                    type: cp.chartType(),
+                    props: createProps((cp as MultiChartPanel).chart())
+                };
+            }),
+            layout: this.layout()
+        };
     }
 
-    visualization(w: string | PropertyExt): Viz {
-        let retVal: Viz[];
-        if (typeof w === "string") {
-            retVal = this._visualizations.filter(viz => viz.id() === w);
-        } else {
-            retVal = this._visualizations.filter(v => v.vizProps() === w);
+    restore(_: IDashboardPersist): this {
+        const ddlAdapter = new DDLAdapter(this._ec);
+        ddlAdapter.read(_.ddl);
+        this.syncWidgets();
+        for (const w of _.widgets) {
+            this._ec.element(w.id).multiChartPanel()
+                .chartType(w.type)
+                .chartTypeProperties(w.props)
+                ;
         }
-        if (retVal.length) {
-            return retVal[0];
-        }
-        return this._nullVisualization;
-    }
-
-    visualizationIDs() {
-        return this._visualizations.map(viz => viz.id());
-    }
-
-    addVisualization(viz: Viz): this {
-        this._visualizations.push(viz);
-        viz.state().monitorProperty("selection", (id, newVal, oldVal) => {
-            const promises: Array<Promise<void>> = [];
-            for (const filteredViz of this.filteredBy(viz)) {
-                promises.push(filteredViz.refresh());
-            }
-            Promise.all(promises).then(() => {
-                this.vizStateChanged(viz);
-            });
-        });
+        // this.layout(_.layout);
         return this;
     }
 
-    filteredBy(viz: Viz): Viz[] {
-        return this._visualizations.filter(otherViz => {
-            const filterIDs = otherViz.view().updatedBy();
-            return filterIDs.indexOf(viz.id()) >= 0;
-        });
-    }
-
-    views(): View[] {
-        return this._visualizations.map(viz => viz.view());
-    }
-
-    view(id: string): View | undefined {
-        return this.views().filter(view => view.id() === id)[0];
+    javascript(): string {
+        const jsAdapter = new JavaScriptAdapter(this);
+        return jsAdapter.createJavaScript();
     }
 
     syncWidgets() {
         const previous = this.widgets();
-        const diff = compare(previous, this.visualizations().map(viz => viz.widget()));
+        const diff = compare(previous, this._ec.elements().map(viz => viz.chartPanel()));
         for (const w of diff.removed) {
             this.removeWidget(w);
         }
         for (const w of diff.added) {
-            this.addWidget(w, this.visualization(w).title(), "split-bottom");
+            const element: Element = this._ec.element(w);
+            this.addWidget(w, element.title(), "split-bottom");
         }
         for (const w of diff.unchanged) {
             const wa: any = this.getWidgetAdapter(w);
-            wa.title.label = this.visualization(w).title();
+            wa.title.label = this._ec.element(w).title();
         }
     }
 
@@ -100,55 +88,16 @@ export class Dashboard extends DockPanel {
         super.update(domNode, element);
     }
 
-    ddl(): DDL2.Schema;
-    ddl(_: DDL2.Schema): this;
-    ddl(_?: DDL2.Schema): DDL2.Schema | this {
-        const ddlAdapter = new DDLAdapter(this);
-        if (!arguments.length) return ddlAdapter.write();
-        ddlAdapter.read(_);
-        return this;
-    }
-
-    /*
-    layout(): object;
-    layout(_: object): this;
-    layout(_?: object): object | this {
-        if (!arguments.length) return super.layout();
-        super.layout(_);
-        return this;
-    }
-    */
-
-    save(): IPersist {
-        return {
-            ddl: this.ddl(),
-            layout: this.layout()
-        };
-    }
-
-    async restore(obj: IPersist): Promise<this> {
-        this.clear();
-        this.ddl(obj.ddl);
-        this.layout(obj.layout);
-        await Promise.all(this.visualizations().map(viz => viz.refresh()));
-        return this;
-    }
-
+    //  Events  ---
     childActivation(w: Widget) {
         super.childActivation(w);
-        this.vizActivation(this.visualization(w));
+        this.vizActivation(this._ec.element(w));
     }
 
-    vizActivation(viz: Viz) {
+    vizActivation(viz: Element) {
     }
 
-    restoreDDL(url: string, ddlObj: any) {
-        const ddl = new DDLImport(this, url, ddlObj);
-        ddl;
-    }
-
-    //  Events  ---
-    vizStateChanged(viz: Viz) {
+    vizStateChanged(viz: Element) {
     }
 }
 Dashboard.prototype._class += " dashboard_dashboard";

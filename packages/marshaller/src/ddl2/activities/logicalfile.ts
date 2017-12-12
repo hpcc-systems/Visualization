@@ -1,11 +1,14 @@
+import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
-import { View } from "./view";
 import { ESPResult } from "./wuresult";
 
 export class LogicalFile extends ESPResult {
 
-    constructor(owner: View) {
-        super(owner);
+    @publish("", "string", "Logical File Name")
+    logicalFile: publish<this, string>;
+
+    constructor() {
+        super();
     }
 
     _createResult(): Result {
@@ -23,8 +26,3 @@ export class LogicalFile extends ESPResult {
     }
 }
 LogicalFile.prototype._class += " LogicalFile";
-export interface LogicalFile {
-    logicalFile(): string;
-    logicalFile(_: string): this;
-}
-LogicalFile.prototype.publish("logicalFile", "", "string", "Logical File Name");

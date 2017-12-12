@@ -1,11 +1,21 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { Utility } from "@hpcc-js/common";
-import { bullet as d3Bullet } from "@hpcc-js/d3-bullet";
+import { HTMLWidget, publish, Utility } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
+import { bullet as d3Bullet } from "d3v4-bullet";
 
 import "../src/Bullet.css";
 
 export class Bullet extends HTMLWidget {
+    @publish(null, "set", "Title Column", function () { return this.columns(); }, { optional: true })
+    titleColumn: publish<this, string>;
+    @publish(null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true })
+    subtitleColumn: publish<this, string>;
+    @publish(null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true })
+    rangesColumn: publish<this, string>;
+    @publish(null, "set", "Measures Column", function () { return this.columns(); }, { optional: true })
+    measuresColumn: publish<this, string>;
+    @publish(null, "set", "Markers Column", function () { return this.columns(); }, { optional: true })
+    markersColumn: publish<this, string>;
+
     constructor() {
         super();
         Utility.SimpleSelectionMixin.call(this, true);
@@ -123,12 +133,6 @@ export class Bullet extends HTMLWidget {
         HTMLWidget.prototype.exit.apply(this, arguments);
     }
 
-    titleColumn: (_?: string) => string | Bullet;
-    subtitleColumn: (_?: string) => string | Bullet;
-    rangesColumn: (_?: string) => string | Bullet;
-    measuresColumn: (_?: string) => string | Bullet;
-    markersColumn: (_?: string) => string | Bullet;
-
     //  Events ---
     click(row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
@@ -142,9 +146,3 @@ export class Bullet extends HTMLWidget {
     _selection;
 }
 Bullet.prototype._class += " chart_Bullet";
-
-Bullet.prototype.publish("titleColumn", null, "set", "Title Column", function () { return this.columns(); }, { optional: true });
-Bullet.prototype.publish("subtitleColumn", null, "set", "Subtitle Column", function () { return this.columns(); }, { optional: true });
-Bullet.prototype.publish("rangesColumn", null, "set", "Ranges Column", function () { return this.columns(); }, { optional: true });
-Bullet.prototype.publish("measuresColumn", null, "set", "Measures Column", function () { return this.columns(); }, { optional: true });
-Bullet.prototype.publish("markersColumn", null, "set", "Markers Column", function () { return this.columns(); }, { optional: true });

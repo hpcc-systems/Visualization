@@ -28,7 +28,10 @@ export class WordCloud extends SVGWidget {
         this._prevZoom = this.zoom();
         this._vizData = [];
     }
-    data(_) {
+
+    data(): any;
+    data(_: any): this;
+    data(_?: any): this | any {
         const retVal = SVGWidget.prototype.data.apply(this, arguments);
         if (arguments.length) {
             this._vizData = _.map(function (row) {

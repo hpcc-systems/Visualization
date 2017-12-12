@@ -23,3 +23,9 @@
   stroke: lightgrey;
   opacity: 0.7;
 }
+.chart_Axis .guide .tick.guide-0 line {
+  stroke: black;
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+  

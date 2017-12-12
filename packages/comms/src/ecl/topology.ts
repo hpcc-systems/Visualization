@@ -29,7 +29,7 @@ export class Topology extends StateObject<TopologyStateEx, TopologyStateEx> impl
         return this.connection.TpServiceQuery({}).then(response => {
             const rootProtocol = this.connection.protocol();
             const ip = this.connection.ip();
-            let port = rootProtocol === "https:" ? "18002xxx" : "8002xxx";
+            let port = rootProtocol === "https:" ? "18002" : "8002";
             if (exists("ServiceList.TpEspServers.TpEspServer", response)) {
                 for (const item of response.ServiceList.TpEspServers.TpEspServer) {
                     if (exists("TpBindings.TpBinding", item)) {

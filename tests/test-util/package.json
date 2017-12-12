@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "@hpcc-js/test-util",
-  "version": "0.0.34",
+  "version": "0.0.50",
   "dependencies": {
-    "@hpcc-js/util": "^0.0.50",
+    "@hpcc-js/util": "^0.0.66",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
     "mocha": "3.4.2"
@@ -20,7 +20,7 @@
     "webpack": "3.10.0"
   },
   "scripts": {
-    "clean": "rimraf lib* && rimraf build",
+    "clean": "rimraf lib* && rimraf types && rimraf build",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle-umd": "webpack",

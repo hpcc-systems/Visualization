@@ -1,7 +1,5 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { publish } from "@hpcc-js/common";
-import { Grid, PagingGrid } from "@hpcc-js/dgrid-shim";
-import { Memory } from "@hpcc-js/dgrid-shim";
+import { HTMLWidget, publish } from "@hpcc-js/common";
+import { Grid, Memory, PagingGrid } from "@hpcc-js/dgrid-shim";
 
 import "../src/Common.css";
 
@@ -20,7 +18,9 @@ export class Common extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._dgridDiv = element.append("div");
+        this._dgridDiv = element.append("div")
+            .attr("class", "flat")
+            ;
     }
 
     update(domNode, element) {
@@ -48,8 +48,13 @@ export class Common extends HTMLWidget {
                 pageSizeOptions: [1, 10, 25, 100, 1000]
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
-                if (evt.rows && evt.rows.length) {
+                if (evt.rows && evt.rows.length && evt.rows[0].data) {
                     this.click(this.rowToObj(evt.rows[0].data.__hpcc_orig), "", true);
+                }
+            });
+            this._dgrid.on("dgrid-deselect", (evt) => {
+                if (evt.rows && evt.rows.length && evt.rows[0].data) {
+                    this.click(this.rowToObj(evt.rows[0].data.__hpcc_orig), "", false);
                 }
             });
         }

@@ -1,6 +1,6 @@
 import { deepMixin } from "@hpcc-js/util";
 import { xml2json, XMLNode } from "@hpcc-js/util";
-import { IConnection, IOptions, ResponseType } from "../connection";
+import { IConnection, IOptions } from "../connection";
 import { ESPConnection } from "../espConnection";
 
 /*
@@ -2497,7 +2497,7 @@ export class WorkunitsService {
     }
 
     WUFile(request: WUFileRequest): Promise<string> {
-        return this._connection.send("WUFile", request, ResponseType.TEXT);
+        return this._connection.send("WUFile", request, "text");
     }
 
     WUGetStats(request: WUGetStats.Request): Promise<WUGetStats.Response> {

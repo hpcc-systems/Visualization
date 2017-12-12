@@ -1,5 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { ChartPanel, Dermatology, MegaChart, MultiChart } from "@hpcc-js/composite";
+import { Dermatology, MegaChart, MultiChart, MultiChartPanel } from "@hpcc-js/composite";
 import * as composite from "@hpcc-js/composite";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
@@ -26,7 +26,7 @@ describe("@hpcc-js/composite", () => {
                                 );
                             case Dermatology:
                             case MegaChart:
-                            case ChartPanel:
+                            case MultiChartPanel:
                                 break;
                             default:
                                 it("Missing test", () => {

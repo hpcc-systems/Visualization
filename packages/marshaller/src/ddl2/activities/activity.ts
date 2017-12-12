@@ -1,18 +1,39 @@
 import { IMonitorHandle, PropertyExt } from "@hpcc-js/common";
-import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IDatasource, IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
+
+export function stringify(obj_from_json) {
+    if (Array.isArray(obj_from_json)) {
+        // not an object, stringify using native function
+        return "[" + obj_from_json.map(stringify).join(", ") + "]";
+    }
+    if (typeof obj_from_json !== "object" || obj_from_json === null || obj_from_json === undefined) {
+        // not an object, stringify using native function
+        return JSON.stringify(obj_from_json);
+    }
+    // Implements recursive object serialization according to JSON spec
+    // but without quotes around the keys.
+    const props = Object
+        .keys(obj_from_json)
+        .map(key => `${key}: ${stringify(obj_from_json[key])}`)
+        .join(", ");
+    return `{ ${props} }`;
+}
 
 export function schemaRow2IField(row: any): IField {
     return {
         id: row.name,
         label: row.name,
         type: row.type,
+        default: undefined,
         children: (row._children && row._children.length) ? row._children.map(schemaRow2IField) : null
     };
 }
 
-export type ReferencedFields = { [activityID: string]: string[] };
+export type ReferencedFields = {
+    inputs: { [activityID: string]: string[] },
+    outputs: { [activityID: string]: string[] }
+};
 
 export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
@@ -22,13 +43,6 @@ export abstract class Activity extends PropertyExt {
     sourceActivity(_?: Activity): Activity | this {
         if (!arguments.length) return this._sourceActivity;
         this._sourceActivity = _;
-        return this;
-    }
-
-    datasource(): DDL2.IDatasource | null;
-    datasource(_?: DDL2.IDatasource): this;
-    datasource(_?: DDL2.IDatasource): DDL2.IDatasource | null | this {
-        if (!arguments.length) return null;
         return this;
     }
 
@@ -80,11 +94,11 @@ export abstract class Activity extends PropertyExt {
         for (const fieldID of fieldIDs) {
             const fieldOrigin = this.fieldOrigin(fieldID);
             if (fieldOrigin) {
-                if (!refs[fieldOrigin.id()]) {
-                    refs[fieldOrigin.id()] = [];
+                if (!refs.outputs[fieldOrigin.id()]) {
+                    refs.outputs[fieldOrigin.id()] = [];
                 }
-                if (refs[fieldOrigin.id()].indexOf(fieldID) < 0) {
-                    refs[fieldOrigin.id()].push(fieldID);
+                if (refs.outputs[fieldOrigin.id()].indexOf(fieldID) < 0) {
+                    refs.outputs[fieldOrigin.id()].push(fieldID);
                 }
             }
         }
@@ -117,14 +131,27 @@ export class ActivityArray extends Activity {
     activities(): Activity[];
     activities(_: Activity[]): this;
     activities(_?: Activity[]): Activity[] | this {
-        if (_ === undefined) return this._activities;
+        if (!arguments.length) return this._activities;
         this._activities = _;
         return this;
     }
 }
 ActivityArray.prototype._class += " ActivityArray";
 
-export class ActivitySequence extends ActivityArray {
+export class ActivityPipeline extends ActivityArray {
+
+    activities(): Activity[];
+    activities(_: Activity[]): this;
+    activities(_?: Activity[]): Activity[] | this {
+        if (!arguments.length) return super.activities();
+        super.activities(_);
+        let prevActivity: Activity;
+        for (const activity of _) {
+            activity.sourceActivity(prevActivity);
+            prevActivity = activity;
+        }
+        return this;
+    }
 
     first(): Activity {
         const retVal = this.activities();
@@ -134,6 +161,36 @@ export class ActivitySequence extends ActivityArray {
     last(): Activity | null {
         const retVal = this.activities();
         return retVal[retVal.length - 1];
+    }
+
+    private calcUpdatedGraph(activity: Activity): Array<{ from: string, to: Activity }> {
+        return activity.updatedBy().map(source => {
+            return {
+                from: source,
+                to: activity
+            };
+        });
+    }
+
+    updatedByGraph(): Array<{ from: string, to: Activity }> {
+        let retVal: Array<{ from: string, to: Activity }> = [];
+        for (const activity of this.activities()) {
+            retVal = retVal.concat(this.calcUpdatedGraph(activity));
+        }
+        return retVal;
+    }
+
+    fetch(from: number = 0, count: number = Number.MAX_VALUE): Promise<any[]> {
+        return this.last().exec().then(() => {
+            const data = this.last().pullData();
+            if (from === 0 && data.length <= count) {
+                return data;
+            } else if (from === 0) {
+                data.length = count;
+                return data;
+            }
+            return data.slice(from, from + count);
+        });
     }
 
     //  Activity overrides ---
@@ -183,8 +240,16 @@ export class ActivitySequence extends ActivityArray {
     resolveFields(refs: ReferencedFields, fieldIDs: string[]) {
         this.last().resolveFields(refs, fieldIDs);
     }
+
+    exec(): Promise<void> {
+        return this.last().exec();
+    }
+
+    pullData(): object[] {
+        return this.last().pullData();
+    }
 }
-ActivitySequence.prototype._class += " ActivitySequence";
+ActivityPipeline.prototype._class += " ActivitySequence";
 
 export class ActivitySelection extends ActivityArray {
     private _selection: Activity;
@@ -289,6 +354,13 @@ export class DatasourceAdapt implements IDatasource {
         return this._activity.pullData().length;
     }
     fetch(from: number, count: number): Promise<any[]> {
-        return Promise.resolve(this._activity.pullData().slice(from, from + count));
+        const data = this._activity.pullData();
+        if (from === 0 && data.length <= count) {
+            return Promise.resolve(data);
+        } else if (from === 0) {
+            data.length = count;
+            return Promise.resolve(data);
+        }
+        return Promise.resolve(data.slice(from, from + count));
     }
 }

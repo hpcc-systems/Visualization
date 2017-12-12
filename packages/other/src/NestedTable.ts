@@ -24,7 +24,7 @@ NestedTable.prototype.columns = function (_?) {
 };
 
 const origData = NestedTable.prototype.data;
-NestedTable.prototype.data = function (_) {
+NestedTable.prototype.data = function (_?: any): NestedTable | any {
     if (arguments.length) {
         const context = this;
         return origData.call(this, _.map(function (row) {

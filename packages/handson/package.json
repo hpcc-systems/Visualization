@@ -1,40 +1,39 @@
 {
   "name": "@hpcc-js/handson",
-  "version": "0.0.52",
+  "version": "0.0.68",
   "description": "hpcc-js - Viz Handson Grid",
   "main": "build/index.js",
   "module": "build/index.es6",
   "unpkg": "build/index.min.js",
-  "types": "lib-es6/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "build/*",
-    "lib/*",
+    "types/*",
     "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* && rimraf build",
+    "clean": "rimraf lib* && rimraf types && rimraf build",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
-    "bundle-es6": "rollup -c -f es -o build/index.es6.js",
-    "bundle-umd": "rollup -c -f umd -o build/index.js",
-    "bundle-watch": "npm run bundle-es6 -- -w",
+    "bundle": "rollup -c",
+    "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs build/index.js -c -m --source-map  -o build/index.min.js",
-    "build": "npm run compile-es6 && npm run bundle-es6 && npm run bundle-umd",
+    "build": "npm run compile-es6 && npm run bundle",
     "watch": "concurrently --kill-others \"npm run compile-watch\" \"npm run bundle-watch\"",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.0.52",
-    "d3-selection": "1.1.0",
-    "handsontable": "GordonSmith/handsontable#next_release",
-    "tslib": "1.8.0"
+    "@hpcc-js/common": "^0.0.68"
   },
   "devDependencies": {
     "concurrently": "3.5.0",
+    "d3-selection": "1.1.0",
+    "handsontable": "GordonSmith/handsontable#next_release",
     "rimraf": "2.6.2",
-    "rollup": "0.52.1",
+    "rollup": "0.54.0",
     "rollup-plugin-postcss": "0.5.5",
+    "tslib": "1.8.0",
     "tslint": "5.8.0",
     "typedoc": "0.7.1",
     "typescript": "2.6.1",

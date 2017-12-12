@@ -1,7 +1,7 @@
 import { IField } from "@hpcc-js/dgrid";
-import { View } from "./view";
+import { HipiePipeline } from "./hipiepipeline";
 
-export class NullView extends View {
+export class NullView extends HipiePipeline {
     hash(): string {
         return super.hash();
     }

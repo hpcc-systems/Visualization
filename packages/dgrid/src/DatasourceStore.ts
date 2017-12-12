@@ -7,6 +7,7 @@ export interface IField {
     id: string;
     label: string;
     type: "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function";
+    default: any;
     children: IField[] | null;
 }
 

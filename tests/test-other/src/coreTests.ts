@@ -1,9 +1,9 @@
-import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
+import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 
 import "../src/coreTest.css";
 
-export function classDef<T extends Class>(module: string, WidgetClass: { new (): T }) {
+export function classDef<T extends Class>(module: string, WidgetClass: { new(): T }) {
     describe("#constructor()", function () {
         it("new", function () {
             const widget = new WidgetClass();
@@ -22,7 +22,7 @@ export function classDef<T extends Class>(module: string, WidgetClass: { new ():
     });
 }
 
-export function render<T extends HTMLWidget | SVGWidget>(widget: T, width: number = 640, height: number = 480, scale: number = 0.5) {
+export function render<T extends HTMLWidget | SVGWidget | CanvasWidget>(widget: T, width: number = 640, height: number = 480, scale: number = 0.5) {
     scale = 1;
     describe("#render()", function () {
         it("Basic render", function (done) {

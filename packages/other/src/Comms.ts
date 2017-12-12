@@ -133,6 +133,14 @@ export class ESPUrl {
         return this;
     }
 
+    params(_: string): this;
+    params(): string;
+    params(_?: string) {
+        if (!arguments.length) return this._params;
+        this._params = _;
+        return this;
+    }
+
     param(key: string) {
         return this._params[key];
     }

@@ -21,6 +21,7 @@ export class GMapPin extends GMapLayered {
     }
 
     pinsData() {
+        if (this.data().length === 0) return [];
         const columns = this.columns();
         this._view = this._db.rollupView([this.latitudeColumn(), this.longtitudeColumn()]);
         return this._view.entries().map(function (row) {

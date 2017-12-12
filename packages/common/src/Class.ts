@@ -9,6 +9,12 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
     });
 }
 
+export interface ClassMeta {
+    moduleName: string;
+    className: string;
+    memberName: string;
+}
+
 export class Class {
     _class: string;
 
@@ -22,6 +28,16 @@ export class Class {
 
     classID() {
         return this._class.split(" ").pop();
+    }
+
+    classMeta(): ClassMeta {
+        const info = this.classID().split("_");
+        const classInfo = info[1].split(".");
+        return {
+            moduleName: `@hpcc-js/${info[0]}`,
+            className: classInfo[0],
+            memberName: classInfo[1]
+        };
     }
 
     implements(source) {

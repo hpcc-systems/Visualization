@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/sample-data",
-  "version": "0.0.28",
+  "version": "0.0.31",
   "description": "hpcc-js - Test Data",
   "main": "lib-umd/index.js",
-  "types": "lib-umd/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "lib/**/*.d.ts",
     "lib/**/*.js"

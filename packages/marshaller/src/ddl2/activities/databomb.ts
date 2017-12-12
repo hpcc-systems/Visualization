@@ -36,6 +36,7 @@ export class Databomb extends Activity {
                         id: key,
                         label: key,
                         type: typeof row0[key],
+                        default: undefined,
                         children: null
                     });
             }
@@ -57,10 +58,10 @@ export class Databomb extends Activity {
         return this.payload().length;
     }
 }
-Databomb.prototype._class += " Filters";
+Databomb.prototype._class += " Databomb";
 
 export class Form extends Activity {
-    @publish([], "object", "Form object")
+    @publish({}, "object", "Form object")
     payload: publish<this, object>;
 
     constructor() {
@@ -91,6 +92,7 @@ export class Form extends Activity {
                     id: key,
                     label: key,
                     type: typeof row0[key],
+                    default: row0[key],
                     children: null
                 });
         }
@@ -110,4 +112,4 @@ export class Form extends Activity {
         return 1;
     }
 }
-Form.prototype._class += " Filters";
+Form.prototype._class += " Form";

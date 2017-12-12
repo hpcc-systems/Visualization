@@ -1,4 +1,5 @@
 import { publish } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
 import { Activity } from "./activity";
 
@@ -10,6 +11,19 @@ export class Limit extends Activity {
 
     constructor() {
         super();
+    }
+
+    toDDL(): DDL2.ILimit {
+        return {
+            type: "limit",
+            limit: this.rows()
+        };
+    }
+
+    static fromDDL(ddl: DDL2.ILimit): Limit {
+        return new Limit()
+            .rows(ddl.limit)
+            ;
     }
 
     hash(): string {

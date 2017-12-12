@@ -13,7 +13,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build/'),
         publicPath: "build/",
-        filename: "c3-shim.js",
+        filename: "index.js",
         libraryTarget: "umd",
         library: "@hpcc-js/c3-shim"
     },

@@ -1,21 +1,21 @@
 import { expect } from "chai";
 
-import { Connection, RequestType, WorkunitsService, WUQuery } from "@hpcc-js/comms";
+import { Connection, WorkunitsService, WUQuery } from "@hpcc-js/comms";
 
 import { ESP_URL, isBrowser, isTravis } from "../testLib";
 
 describe("WsWorkunits", function () {
     describe("POST", function () {
-        const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: RequestType.POST }));
+        const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: "post" }));
         doTest(wsWorkunits);
     });
     describe("GET", function () {
-        const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: RequestType.GET }));
+        const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: "get" }));
         doTest(wsWorkunits);
     });
     if (isBrowser()) {
         describe("JSONP", function () {
-            const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: RequestType.JSONP }));
+            const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: "jsonp" }));
             doTest(wsWorkunits);
         });
     }

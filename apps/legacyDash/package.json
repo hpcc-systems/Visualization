@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "@hpcc-js/legacydash",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hpcc-js/codemirror": "0.0.74",
+    "@hpcc-js/common": "0.0.61",
+    "@hpcc-js/comms": "0.0.65",
+    "@hpcc-js/composite": "0.0.66",
+    "@hpcc-js/ddl-shim": "0.0.29",
+    "@hpcc-js/loader": "0.0.69",
+    "@hpcc-js/marshaller": "0.0.74",
+    "@hpcc-js/other": "0.0.61",
+    "@hpcc-js/phosphor": "0.0.64",
+    "@hpcc-js/util": "0.0.59"
+  }
+}

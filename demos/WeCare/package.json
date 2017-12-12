@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-wecare",
-  "version": "0.0.33",
+  "version": "0.0.50",
   "scripts": {
     "clean": "rimraf lib* && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
@@ -11,12 +11,12 @@
     "build": "npm run compile-es6 && npm run bundle-es6 && npm run bundle2"
   },
   "dependencies": {
-    "@hpcc-js/chart": "^0.0.54",
-    "@hpcc-js/common": "^0.0.52",
-    "@hpcc-js/comms": "^0.0.56",
-    "@hpcc-js/dgrid": "^0.0.62",
-    "@hpcc-js/form": "^0.0.54",
-    "@hpcc-js/map": "^0.0.57",
+    "@hpcc-js/chart": "^0.0.70",
+    "@hpcc-js/common": "^0.0.68",
+    "@hpcc-js/comms": "^0.0.73",
+    "@hpcc-js/dgrid": "^0.0.79",
+    "@hpcc-js/form": "^0.0.70",
+    "@hpcc-js/map": "^0.0.73",
     "d3-selection": "1.1.0",
     "d3-time-format": "2.1.0",
     "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI"
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/d3": "4.9.0",
     "rimraf": "2.6.2",
-    "rollup": "0.52.1",
+    "rollup": "0.54.0",
     "source-map-loader": "0.2.1",
     "typescript": "2.6.1",
     "webpack": "3.10.0"

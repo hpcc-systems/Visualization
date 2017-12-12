@@ -7,7 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build/'),
         publicPath: "build/",
-        filename: "ddl-shim.js",
+        filename: "index.js",
         libraryTarget: "umd",
         library: "@hpcc-js/ddl-shim"
     },

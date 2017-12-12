@@ -1,12 +1,39 @@
 ﻿import { DDLEditor, JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Widget } from "@hpcc-js/common";
+import { Connection, hookSend, IOptions, ResponseType, SendFunc, serializeRequest } from "@hpcc-js/comms";
+import { IDDL } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
-import { Activity, Dashboard, DatasourceAdapt, GraphAdapter, JavaScriptAdapter, Viz } from "@hpcc-js/marshaller";
+import { Activity, Dashboard, DatasourceAdapt, Element, ElementContainer, GraphAdapter, JavaScriptAdapter, upgrade } from "@hpcc-js/marshaller";
 import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel, SplitPanel } from "@hpcc-js/phosphor";
 import { CommandPalette, CommandRegistry, ContextMenu } from "@hpcc-js/phosphor-shim";
 import { ddl } from "./sampleddl";
+
+export function doHook() {
+    const origSend = hookSend((opts: IOptions, action: string, request: any, responseType: ResponseType): Promise<any> => {
+        if (opts.baseUrl === "https://webmiscdev.risk.regn.net") {
+            return origSend(opts, action, request, responseType);
+        }
+        let newUrl = "";
+        if (opts.baseUrl.split("").reverse()[0] === "/" || action[0] === "/") {
+            newUrl = btoa(`${opts.baseUrl}${action}?${serializeRequest(request)}`);
+        } else {
+            newUrl = btoa(`${opts.baseUrl}/${action}?${serializeRequest(request)}`);
+        }
+        const connection = new Connection({ baseUrl: "https://webmiscdev.risk.regn.net", type: "get" });
+        return connection.send("brundajx/DASH2/demos/dashy/bis_proxy.php", { encoded: newUrl }, responseType).then(response => {
+            return response;
+        }).catch(e => {
+            throw e;
+        });
+    });
+}
+if (window.location.origin.indexOf("http") === 0) {
+    doHook();
+}
+
+// const test = upgrade("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170905-105711&ResultName=pro2_Comp_Ins122_DDL", JSON.stringify(ddl));
 
 class Mutex {
     private _locking: Promise<any>;
@@ -45,19 +72,21 @@ async function scopedLock(m: Mutex, func: (...params: any[]) => Promise<void>) {
 export class App {
     private _dockPanel = new DockPanel();
     private _dataSplit = new SplitPanel();
-    private _dashboard: Dashboard = new Dashboard()
-        .on("vizActivation", (viz: Viz) => {
+    private _elementContainer: ElementContainer = new ElementContainer();
+
+    private _dashboard: Dashboard = new Dashboard(this._elementContainer)
+        .on("vizActivation", (viz: Element) => {
             this.selectionChanged(viz);
         })
-        .on("vizStateChanged", (viz: Viz) => {
-            for (const filteredViz of this._dashboard.filteredBy(viz)) {
+        .on("vizStateChanged", (viz: Element) => {
+            for (const filteredViz of this._elementContainer.filteredBy(viz)) {
                 if (this._currViz === filteredViz) {
                     this.refreshPreview();
                 }
             }
         })
         ;
-    private _graphAdapter = new GraphAdapter(this._dashboard);
+    private _graphAdapter = new GraphAdapter(this._elementContainer);
     private _javaScripAdapter = new JavaScriptAdapter(this._dashboard);
     private _graph: Graph = new Graph()
         .allowDragging(false)
@@ -84,7 +113,8 @@ export class App {
     private _ddlEditor = new DDLEditor();
     private _layoutEditor = new JSONEditor();
     private _jsEditor = new JSEditor();
-    private _clone: Dashboard = new Dashboard();
+    private _cloneEC: ElementContainer = new ElementContainer();
+    private _clone: Dashboard = new Dashboard(this._cloneEC);
     private _preview = new DatasourceTable();
 
     constructor(placeholder: string) {
@@ -101,7 +131,8 @@ export class App {
             .addWidget(this._stateProperties, "State", "tab-after", this._vizProperties)
             .addWidget(this._graph as any, "Pipeline", "tab-after", this._dashboard)    //  TODO Fix Graph Declaration  ---
             .addWidget(this._ddlEditor, "DDL", "tab-after", this._graph as any)         //  TODO Fix Graph Declaration  ---
-            .addWidget(this._layoutEditor, "Layout", "tab-after", this._ddlEditor)
+            .addWidget(this._jsEditor, "TS", "tab-after", this._ddlEditor)
+            .addWidget(this._layoutEditor, "Layout", "tab-after", this._jsEditor)
             .addWidget(this._clone, "Clone", "tab-after", this._layoutEditor)
             .on("childActivation", (w: Widget) => {
                 switch (w) {
@@ -114,12 +145,15 @@ export class App {
                     case this._ddlEditor:
                         this.loadDDL(true);
                         break;
+                    case this._jsEditor:
+                        this.loadJavaScript(true);
+                        break;
                     case this._layoutEditor:
                         this.loadLayout(true);
                         break;
                     case this._clone:
                         this.loadClone();
-                        this.loadDataProps(this._clone.test());
+                        //  this.loadDataProps(this._clone.test());
                         break;
                 }
             })
@@ -150,6 +184,18 @@ export class App {
         });
     }
 
+    clear() {
+        this._elementContainer.clear();
+        this.loadDashboard();
+        this._elementContainer.refresh();
+    }
+
+    importV1DDL(target: string, ddl: IDDL, seri: object) {
+        this._elementContainer.importV1DDL(target, ddl, seri);
+        this.loadDashboard();
+        this._elementContainer.refresh();
+    }
+
     refreshPreview() {
         const ds = this._preview.datasource() as DatasourceAdapt;
         if (ds) {
@@ -162,15 +208,15 @@ export class App {
         }
     }
 
-    private _currViz: Viz | undefined;
+    private _currViz: Element | undefined;
     private _currActivity: Activity | undefined;
-    selectionChanged(viz?: Viz, activity?: Activity) {
+    selectionChanged(viz?: Element, activity?: Activity) {
         if (activity && (this._currActivity !== activity)) {
             this.loadDataProps(activity);
             this.loadPreview(activity);
         } else if (viz && (this._currViz !== viz || this._currActivity !== activity)) {
             this.loadDataProps(viz.view());
-            this.loadWidgetProps(viz.widget());
+            this.loadWidgetProps(viz.multiChartPanel());
             this.loadStateProps(viz.state());
             this.loadPreview(viz.view()!.last()!);
         }
@@ -219,20 +265,33 @@ export class App {
 
     loadGraph(refresh: boolean = false) {
         this._graph
-            .layout("Hierarchy")
             .data({ ...this._graphAdapter.createGraph(), merge: false })
             ;
         if (refresh && this._dockPanel.isVisible(this._graph as any)) {
-            this._graph.lazyRender();
+            this._graph
+                .layout("Hierarchy")
+                .lazyRender()
+                ;
         }
     }
 
     loadDDL(refresh: boolean = false) {
         this._ddlEditor
-            .ddl(this._dashboard.ddl())
+            .ddl(this._elementContainer.ddl())
             ;
         if (refresh && this._dockPanel.isVisible(this._ddlEditor as any)) {
             this._ddlEditor
+                .lazyRender()
+                ;
+        }
+    }
+
+    loadJavaScript(refresh: boolean = false) {
+        this._jsEditor
+            .javascript(this._dashboard.javascript())
+            ;
+        if (refresh && this._dockPanel.isVisible(this._jsEditor as any)) {
+            this._jsEditor
                 .lazyRender()
                 ;
         }
@@ -249,9 +308,12 @@ export class App {
         }
     }
 
-    async loadClone() {
-        await this._clone.restore(this._dashboard.save());
-        this._clone.lazyRender();
+    loadClone() {
+        this._cloneEC.clear();
+        this._clone.restore(this._dashboard.save());
+        this._clone.render(w => {
+            this._cloneEC.refresh();
+        });
     }
 
     initMenu() {
@@ -259,10 +321,10 @@ export class App {
 
         //  Dashboard  Commands  ---
         commands.addCommand("dash_add", {
-            label: "Add Viz",
+            label: "Add Element",
             execute: () => {
-                const viz = new Viz(this._dashboard);
-                this._dashboard.addVisualization(viz);
+                const viz = new Element(this._elementContainer);
+                this._elementContainer.append(viz);
                 this.loadDashboard();
                 viz.refresh().then(() => {
                     this.selectionChanged(viz);
@@ -273,20 +335,32 @@ export class App {
         commands.addCommand("dash_add_ddl", {
             label: "Add DDL",
             execute: () => {
-                this._dashboard.restoreDDL("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170905-105711&ResultName=pro2_Comp_Ins122_DDL", ddl);
-                this.loadDashboard();
-                for (const viz of this._dashboard.visualizations()) {
-                    viz.refresh();
-                }
+                this.importV1DDL("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170905-105711&ResultName=pro2_Comp_Ins122_DDL", ddl, {});
             }
         });
 
         commands.addCommand("dash_clear", {
             label: "Clear",
             execute: () => {
-                this._dashboard.clear();
+                this.clear();
             }
         });
+
+        /*
+        commands.addCommand("dash_save", {
+            label: "Save",
+            execute: () => {
+                this._elementContainer.save();
+            }
+        });
+
+        commands.addCommand("dash_load", {
+            label: "Load",
+            execute: () => {
+                this._elementContainer.load();
+            }
+        });
+        */
 
         //  Model Commands  ---
         const palette = new CommandPalette({ commands });

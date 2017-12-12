@@ -195,7 +195,7 @@ export class ScopedLogging {
     }
 }
 
-export function scopedLogger(scopeID: string, filter: boolean = true) {
+export function scopedLogger(scopeID: string, filter: boolean = false) {
     if (filter) {
         logger.filter(scopeID);
     }

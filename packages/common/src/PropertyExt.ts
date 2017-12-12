@@ -1,3 +1,4 @@
+import { event as d3Event } from "d3-selection";
 import { Class } from "./Class";
 
 function deepEqual(a, b) {
@@ -572,6 +573,23 @@ export class PropertyExt extends Class {
                 other[meta.id + "_reset"]();
             }
         }, this);
+    }
+
+    //  Events  ---
+    on(eventID, func, stopPropagation = false): this {
+        const context = this;
+        this.overrideMethod(eventID, function (origFunc, args) {
+            let retVal;
+            if (stopPropagation) {
+                if (d3Event) {
+                    d3Event.stopPropagation();
+                }
+            } else {
+                retVal = origFunc.apply(context, args);
+            }
+            return func.apply(context, args) || retVal;
+        });
+        return this;
     }
 }
 PropertyExt.prototype._class += " common_PropertyExt";

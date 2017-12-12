@@ -8,6 +8,7 @@
         "jsxFactory": "JSXWidget.createElement",
         "sourceMap": true,
         "declaration": true,
+        "declarationDir": "./types",
         "noImplicitAny": false,
         "noEmitOnError": false,
         "noUnusedLocals": true,

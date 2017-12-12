@@ -126,16 +126,32 @@ export class Column extends XYAxis {
                         selection
                             .attr("x", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
                             .attr("width", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                            .attr("y", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) : context.valuePos(d.value); })
-                            .attr("height", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) - context.valuePos(d.value[1]) : height - context.valuePos(d.value); })
+                            .attr("y", function (d) {
+                                const _val = d.value instanceof Array ? d.value[1] : d.value;
+                                return _val < 0 ? context.valuePos(0) - 0.5 : context.valuePos(_val) + 0.5;
+                            })
+                            .attr("height", function (d) {
+                                const _val = d.value instanceof Array ? d.value[1] : d.value;
+                                const _val_pos = context.valuePos(_val);
+                                const _zero_pos = context.valuePos(0);
+                                return _val_pos > _zero_pos ? _val_pos - _zero_pos - 1 : _zero_pos - _val_pos;
+                            })
                             .style("fill", function (d: any) { return context._palette(d.column); })
                             ;
                     } else {
                         selection
                             .attr("y", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
                             .attr("height", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                            .attr("x", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[0]) : 0; })
-                            .attr("width", function (d: any) { return d.value instanceof Array ? context.valuePos(d.value[1]) - context.valuePos(d.value[0]) : context.valuePos(d.value); })
+                            .attr("x", function (d: any) {
+                                const _val = d.value instanceof Array ? d.value[1] : d.value;
+                                return _val > 0 ? context.valuePos(0) - 0.5 : context.valuePos(_val) + 0.5;
+                            })
+                            .attr("width", function (d: any) {
+                                const _val = d.value instanceof Array ? d.value[1] : d.value;
+                                const _val_pos = context.valuePos(_val);
+                                const _zero_pos = context.valuePos(0);
+                                return _val_pos > _zero_pos ? _val_pos - _zero_pos : _zero_pos - _val_pos;
+                            })
                             .style("fill", function (d: any) { return context._palette(d.column); })
                             ;
                     }

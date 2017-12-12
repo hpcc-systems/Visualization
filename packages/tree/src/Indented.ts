@@ -56,6 +56,7 @@ export class Indented extends SVGZoomWidget {
     }
 
     IndentedData() {
+        if (this.data().length === 0) return [];
         if (this.xmlColumn_exists()) {
             const cellIdx = this.columns().indexOf(this.xmlColumn());
             const retVal = {

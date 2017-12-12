@@ -1,24 +1,43 @@
 import { scopedLogger } from "./logging";
+import { root } from "./platform";
 
 const logger = scopedLogger("loader");
 
 //  Shim to simplify dynamic import until rollupjs supports it (esnext)
-declare function require(packages: string[], callback: (...packages: any[]) => void): void;
+declare const module: any;
+declare const require: any;
 
-export function dynamicImport(packageStr: string): Promise<any> {
-    return new Promise<any[]>((resolve, reject) => {
-        if (require) {
-            try {
-                require([packageStr], (...packages: any[]) => {
-                    resolve(packages[0]);
-                });
-            } catch {
-                logger.error(`require([${packageStr}], ...) failed`);
-                reject(`require([${packageStr}], ...) failed`);
-            }
+const moduleMode = ((): "amd" | "cjs" | "iife" => {
+    if (typeof require === "function") {
+        if (typeof module === "object" && typeof module.exports === "object") {
+            return "cjs";
         } else {
-            logger.error(`"require" is needed for dynamic loader.`);
-            reject(`"require" is needed for dynamic loader.`);
+            return "amd";
         }
+    }
+    return "iife";
+})();
+
+export function dynamicImport(pkg: string, altGlobalName?: string): Promise<any> {
+    let promise: Promise<any>;
+    switch (moduleMode) {
+        case "amd":
+            promise = new Promise(function (resolve_1, reject_1) {
+                require([pkg], resolve_1, reject_1);
+            });
+        case "cjs":
+            promise = Promise.resolve().then(function () {
+                return require(pkg);
+            });
+        case "iife":
+        default:
+            promise = new Promise((resolve, reject) => {
+                const globalPkg = root[altGlobalName || pkg];
+                globalPkg ? resolve(globalPkg) : reject();
+            });
+    }
+    return promise.catch(e => {
+        logger.error(`dynamicImport([${pkg}], ...) failed`);
+        return null;
     });
 }

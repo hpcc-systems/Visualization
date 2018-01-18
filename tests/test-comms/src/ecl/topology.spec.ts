@@ -4,6 +4,7 @@ import { Topology } from "@hpcc-js/comms";
 import { ESP_URL } from "../testLib";
 
 describe("@hpcc-js/comms-Topology", function () {
+    this.timeout(5000);
     const topology = new Topology({ baseUrl: ESP_URL });
 
     it("Basic", function () {

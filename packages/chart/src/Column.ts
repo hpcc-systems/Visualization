@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { publish } from "@hpcc-js/common";
+import { d3SelectionType, publish } from "@hpcc-js/common";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -18,8 +18,8 @@ export class Column extends XYAxis {
         this._linearGap = 25.0;
     }
 
-    enter(_domNode, _element) {
-        XYAxis.prototype.enter.apply(this, arguments);
+    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+        super.layerEnter(host, element, duration);
         const context = this;
         this
             .tooltipHTML(function (d) {
@@ -27,22 +27,22 @@ export class Column extends XYAxis {
                 if (value instanceof Array) {
                     value = value[1] - value[0];
                 }
-                return context.tooltipFormat({ label: d.row[0], series: context.columns()[d.idx], value });
+                return context.tooltipFormat({ label: d.row[0], series: context.layerColumns(host)[d.idx], value });
             })
             ;
     }
 
-    adjustedData() {
-        const retVal = this.data().map(function (row) {
+    adjustedData(host: XYAxis) {
+        const retVal = this.layerData(host).map(row => {
             let prevValue = 0;
-            return row.map(function (cell, idx) {
+            return row.map((cell, idx) => {
                 if (idx === 0) {
                     return cell;
                 }
-                if (idx >= this.columns().length) {
+                if (idx >= this.layerColumns(host).length) {
                     return cell;
                 }
-                const retVal2 = this.yAxisStacked() ? [prevValue, prevValue + cell] : cell;
+                const retVal2 = host.yAxisStacked() ? [prevValue, prevValue + cell] : cell;
                 prevValue += cell;
                 return retVal2;
             }, this);
@@ -50,7 +50,9 @@ export class Column extends XYAxis {
         return retVal;
     }
 
-    updateChart(_domNode, _element, _margin, _width, height, isHorizontal, duration) {
+    layerUpdate(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+        super.layerUpdate(host, element, duration);
+        const isHorizontal = host.orientation() === "horizontal";
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -60,14 +62,14 @@ export class Column extends XYAxis {
 
         let dataLen = 10;
         let offset = 0;
-        switch (this.xAxisType()) {
+        switch (host.xAxisType()) {
             case "ordinal":
-                dataLen = this.domainAxis.d3Scale.bandwidth();
+                dataLen = host.bandwidth();
                 offset = -dataLen / 2;
                 break;
             case "linear":
             case "time":
-                dataLen = Math.max(Math.abs(this.dataPos(2) - this.dataPos(1)) * (100 - this._linearGap) / 100, dataLen);
+                dataLen = Math.max(Math.abs(host.dataPos(2) - host.dataPos(1)) * (100 - this._linearGap) / 100, dataLen);
                 offset = -dataLen / 2;
                 break;
             default:
@@ -76,24 +78,25 @@ export class Column extends XYAxis {
         this.tooltip.direction(isHorizontal ? "n" : "e");
 
         const columnScale = d3ScaleBand()
-            .domain(context.columns().filter(function (_d, idx) { return idx > 0; }))
+            .domain(context.layerColumns(host).filter(function (_d, idx) { return idx > 0; }))
             .rangeRound(isHorizontal ? [0, dataLen] : [dataLen, 0])
             ;
 
-        const column = this.svgData.selectAll(".dataRow")
-            .data(this.adjustedData())
+        const column = element.selectAll(".dataRow")
+            .data(this.adjustedData(host))
             ;
-
+        const hostData = host.data();
         column.enter().append("g")
             .attr("class", "dataRow")
             .merge(column)
-            .each(function (dataRow) {
+            .each(function (dataRow, dataRowIdx) {
                 const element = d3Select(this);
 
-                const columnRect = element.selectAll("rect").data(dataRow.filter(function (_d, i) { return i < context.columns().length; }).map(function (d, i) {
+                const columnRect = element.selectAll("rect").data(dataRow.filter(function (_d, i) { return i < context.layerColumns(host).length; }).map(function (d, i) {
                     return {
-                        column: context.columns()[i],
+                        column: context.layerColumns(host)[i],
                         row: dataRow,
+                        origRow: hostData[dataRowIdx],
                         value: d,
                         idx: i
                     };
@@ -102,17 +105,18 @@ export class Column extends XYAxis {
                 const columnRectEnter = columnRect
                     .enter().append("rect")
                     .attr("class", "columnRect")
-                    .call(context._selection.enter.bind(context._selection))
+                    .call(host._selection.enter.bind(host._selection))
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
                     .on("click", function (d: any) {
-                        context.click(context.rowToObj(d.row), d.column, context._selection.selected(this));
+                        context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                     })
                     .on("dblclick", function (d: any) {
-                        context.dblclick(context.rowToObj(d.row), d.column, context._selection.selected(this));
+                        context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                     })
                     ;
 
+                const domainLength = host.yAxisStacked() ? dataLen : columnScale.bandwidth();
                 renderRect(columnRectEnter, true);
                 renderRect(columnRectEnter.merge(columnRect).transition().duration(duration), false);
 
@@ -122,40 +126,22 @@ export class Column extends XYAxis {
                     ;
 
                 function renderRect(selection, enterFlag) {
-                    if (isHorizontal) {
-                        selection
-                            .attr("x", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
-                            .attr("width", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                            .attr("y", function (d) {
-                                const _val = d.value instanceof Array ? d.value[1] : d.value;
-                                return _val < 0 ? context.valuePos(0) - 0.5 : context.valuePos(_val) + 0.5;
-                            })
-                            .attr("height", function (d) {
-                                const _val = d.value instanceof Array ? d.value[1] : d.value;
-                                const _val_pos = context.valuePos(_val);
-                                const _zero_pos = context.valuePos(0);
-                                return _val_pos > _zero_pos ? _val_pos - _zero_pos - 1 : _zero_pos - _val_pos;
-                            })
-                            .style("fill", function (d: any) { return context._palette(d.column); })
-                            ;
-                    } else {
-                        selection
-                            .attr("y", function (d: any) { return context.dataPos(dataRow[0]) + (context.yAxisStacked() ? 0 : columnScale(d.column)) + offset; })
-                            .attr("height", context.yAxisStacked() ? dataLen : columnScale.bandwidth())
-                            .attr("x", function (d: any) {
-                                const _val = d.value instanceof Array ? d.value[1] : d.value;
-                                return _val > 0 ? context.valuePos(0) - 0.5 : context.valuePos(_val) + 0.5;
-                            })
-                            .attr("width", function (d: any) {
-                                const _val = d.value instanceof Array ? d.value[1] : d.value;
-                                const _val_pos = context.valuePos(_val);
-                                const _zero_pos = context.valuePos(0);
-                                return _val_pos > _zero_pos ? _val_pos - _zero_pos : _zero_pos - _val_pos;
-                            })
-                            .style("fill", function (d: any) { return context._palette(d.column); })
-                            ;
-                    }
-                    selection.style("opacity", enterFlag ? 0 : 1);
+                    selection
+                        .each(function (d) {
+                            const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
+                            const upperValuePos = host.valuePos(d.value instanceof Array ? d.value[1] : d.value);
+                            const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
+                            const valuePos = Math.min(lowerValuePos, upperValuePos);
+                            const valueLength = Math.abs(upperValuePos - lowerValuePos);
+                            d3Select(this)
+                                .attr(isHorizontal ? "x" : "y", domainPos)
+                                .attr(isHorizontal ? "y" : "x", valuePos)
+                                .attr(isHorizontal ? "width" : "height", domainLength)
+                                .attr(isHorizontal ? "height" : "width", valueLength)
+                                .style("fill", (d: any) => context._palette(d.column))
+                                .style("opacity", enterFlag ? 0 : 1)
+                                ;
+                        });
                 }
 
             });

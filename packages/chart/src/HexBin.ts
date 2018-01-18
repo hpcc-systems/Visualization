@@ -20,15 +20,16 @@ export class HexBin extends XYAxis {
             ;
     }
 
-    xPos(d) {
-        return this.orientation() === "horizontal" ? this.dataPos(d.label) : this.valuePos(d.value);
+    xPos(host: XYAxis, d) {
+        return host.orientation() === "horizontal" ? host.dataPos(d.label) : host.valuePos(d.value);
     }
 
-    yPos(d) {
-        return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
+    yPos(host: XYAxis, d) {
+        return host.orientation() === "horizontal" ? host.valuePos(d.value) : host.dataPos(d.label);
     }
 
-    updateChart(_domNode, _element, _margin, width, height, _isHorizontal, duration) {
+    layerUpdate(host: XYAxis, element, duration: number = 250) {
+        super.layerUpdate(host, element, duration);
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -37,16 +38,16 @@ export class HexBin extends XYAxis {
         }
 
         this._hexbin
-            .extent([0, 0], [width, height])
+            .extent([0, 0], [this.width(), this.height()])
             .radius(this.binSize())
             ;
 
         const data = this.flattenData();
-        const dataPoints = data.map(function (d) { return [context.xPos(d), context.yPos(d)]; });
+        const dataPoints = data.map(function (d) { return [context.xPos(host, d), context.yPos(host, d)]; });
         const hexBinPoints = this._hexbin(dataPoints);
         const maxBinPoints = d3Max(hexBinPoints, function (d: any) { return d.length; });
 
-        const points = this.svgData.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
+        const points = element.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
         points.enter().append("path")
             .attr("class", "hexagon")
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })

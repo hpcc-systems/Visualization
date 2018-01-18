@@ -152,10 +152,10 @@ export abstract class Widget extends PropertyExt {
         return this.data().map(function (row) { return row.slice(0); });
     }
 
-    flattenData() {
+    flattenData(columns: string[] = this.columns(), data: any = this.data()) {
         const retVal = [];
-        this.data().forEach(function (row, rowIdx) {
-            this.columns().filter(function (_col, idx) { return idx > 0; }).forEach(function (_col, idx) {
+        data.forEach(function (row, rowIdx) {
+            columns.filter(function (_col, idx) { return idx > 0; }).forEach(function (_col, idx) {
                 const val = row[idx + 1];
                 if (val) {
                     const newItem = {

@@ -6,7 +6,7 @@ export const npmPackages = {
     "codemirror": "codemirror/",
     "d3-array": "d3-array/build/d3-array",
     "d3-axis": "d3-axis/build/d3-axis",
-    "@hpcc-js/d3-bullet": "@hpcc-js/d3-bullet/build/d3-bullet",
+    "d3v4-bullet": "d3v4-bullet/build/d3-bullet",
     "d3-brush": "d3-brush/build/d3-brush",
     "d3-cloud": "d3-cloud/build/d3.layout.cloud",
     "d3-dsv": "d3-dsv/build/d3-dsv",

@@ -35,7 +35,7 @@ module.exports = {
     plugins: [
         new DojoWebpackPlugin({
             loaderConfig: require.resolve("./src/loaderConfig"),
-            environment: { dojoRoot: "release" },	// used at run time for non-packed resources (e.g. blank.gif)
+            environment: { dojoRoot: "./build" },	// used at run time for non-packed resources (e.g. blank.gif)
             buildEnvironment: { dojoRoot: "../../node_modules" }, // used at build time
             locales: ["en"]
         }),

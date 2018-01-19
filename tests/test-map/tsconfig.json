@@ -11,7 +11,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "noImplicitThis": true,
+    "noImplicitThis": false,
     "lib": [
       "dom",
       "es5",

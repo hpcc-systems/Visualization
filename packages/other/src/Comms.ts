@@ -983,8 +983,10 @@ HIPIEWorkunit.prototype.call = function (request, callback) {
             const outputFilter = {};
             for (let i = 0; i < hipieResult.filters.length; ++i) {
                 const filter = hipieResult.filters[i];
-                outputFilter[filter.fieldid] = changedFilter[filter.fieldid] || { value: undefined };
-                outputFilter[filter.fieldid].filter = filter;
+                if (!filter.isRange()) {
+                    outputFilter[filter.fieldid] = changedFilter[filter.fieldid] || { value: undefined };
+                    outputFilter[filter.fieldid].filter = filter;
+                }
             }
             retVal[hipieResult.id] = context._resultNameCache[hipieResult.from].filter(function (row) {
                 for (const key2 in outputFilter) {

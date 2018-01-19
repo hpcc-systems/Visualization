@@ -535,3 +535,12 @@ export function debounce(func, threshold = 100, execAsap = false) {
         obj.__hpcc_debounce_timeout = setTimeout(delayed, threshold);
     };
 }
+
+export function parseVersionString(versionString) {
+    const _sp = versionString.split(".");
+    return {
+        major: parseInt(_sp[0].replace("v", "")),
+        minor: parseInt(_sp[1]),
+        patch: parseInt(_sp[2].split("-")[0]),
+    };
+}

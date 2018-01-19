@@ -3,7 +3,7 @@ import { expect } from "chai";
 
 import "../src/coreTest.css";
 
-export function classDef<T extends Class>(module: string, WidgetClass: { new (): T }) {
+export function classDef<T extends Class>(module: string, WidgetClass: { new(): T }) {
     describe("#constructor()", function () {
         it("new", function () {
             const widget = new WidgetClass();
@@ -12,11 +12,12 @@ export function classDef<T extends Class>(module: string, WidgetClass: { new ():
         it("classID", function () {
             const widget = new WidgetClass();
             const classID = widget.classID();
+            const constructorName = WidgetClass.prototype.constructor.name.split("$")[0];   //  Webpack mangled name.
             if (classID.indexOf(".") >= 0) {
                 expect(classID.indexOf(`${module}_`)).to.equal(0);
-                expect(classID.indexOf(`.${WidgetClass.prototype.constructor.name}`)).to.equal(classID.length - WidgetClass.prototype.constructor.name.length - 1);
+                expect(classID.indexOf(`.${constructorName}`)).to.equal(classID.length - constructorName.length - 1);
             } else {
-                expect(classID).to.equal(`${module}_${WidgetClass.prototype.constructor.name}`);
+                expect(classID).to.equal(`${module}_${constructorName}`);
             }
         });
     });

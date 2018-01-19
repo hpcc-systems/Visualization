@@ -5,6 +5,7 @@
   "dependencies": {
     "@hpcc-js/common": "^0.0.68",
     "@hpcc-js/dgrid": "^0.0.79",
+    "@hpcc-js/dgrid-shim": "^0.0.55",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
     "mocha": "3.4.2",
@@ -13,6 +14,7 @@
   "devDependencies": {
     "@types/chai": "3.5.2",
     "@types/mocha": "2.2.41",
+    "cpx": "1.5.0",
     "css-loader": "0.26.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.1",
@@ -25,7 +27,8 @@
     "clean": "rimraf build && rimraf lib*",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "bundle-umd": "webpack",
-    "build": "npm run compile-es6 && npm run bundle-umd",
+    "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/build/dojo/resources/* ./build/dojo/resources",
+    "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",
     "test": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"
   }
 }

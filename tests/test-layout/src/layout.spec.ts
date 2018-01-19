@@ -1,7 +1,7 @@
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { Class, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/layout";
-import { AbsoluteSurface, Accordion, Border, Border2, Cell, Grid, Layered, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
+import { AbsoluteSurface, Accordion, Border, Border2, Cell, ChartPanel, Grid, Layered, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -237,6 +237,7 @@ describe("@hpcc-js/layout", function () {
                                 break;
                             case Surface:
                             case Toolbar:
+                            case ChartPanel:
                                 break;
                             default:
                                 it("Missing tests", () => {

@@ -1,4 +1,4 @@
-import { Utility, Widget } from "@hpcc-js/common";
+import { Platform, Utility, Widget } from "@hpcc-js/common";
 
 export function discover(widget) {
     return widget.publishedProperties(false, true);
@@ -38,6 +38,39 @@ export function widgetPropertyWalker(widget2, filter, visitor) {
     widgetWalker(widget2, function (widget) {
         propertyWalker(widget, filter, visitor);
     });
+}
+
+export function retrofit_114_serialization(state, replacement_version) {
+    replacement_version = !replacement_version || replacement_version === "1.14.2-dev" ? "1.18.0" : replacement_version;
+    if (!state.__version) return state;
+    const state_version_obj = Utility.parseVersionString(state.__version);
+    const target_version_obj = Utility.parseVersionString(replacement_version);
+    if (state_version_obj.major === 1 && state_version_obj.minor === 14) {
+        console.log("Upgrading old persist from " + state.__version + " to " + replacement_version);
+        let _json_str = JSON.stringify(state);
+        _json_str = _json_str.split('"' + state.__version).join('"' + replacement_version);
+
+        const ret_obj = JSON.parse(_json_str);
+        if (ret_obj.__properties && ret_obj.__properties.content) {
+            ret_obj.__properties.content.forEach(function (n) {// FOR EACH top tier layout_Cell
+                if (JSON.stringify(n).split("graph_Graph").length > 1 && target_version_obj.minor >= 16) {
+                    n.__properties.widget.__id = n.__properties.widget.__properties.widget.__id;
+                    n.__properties.widget.__class = "composite_MegaChart";
+                    n.__properties.widget.__properties.showCSV = false;
+                    n.__properties.widget.__properties.chartType = "GRAPH";
+                    n.__properties.widget.__properties.chart = n.__properties.widget.__properties.widget;
+                    delete n.__properties.widget.__properties.chart.__id;
+                    delete n.__properties.widget.__properties.widget;
+                }
+                if ("undefined" === typeof n.__properties.fields) {
+                    n.__properties.fields = [];
+                }
+            });
+        }
+        return ret_obj;
+    } else {
+        return state;
+    }
 }
 
 export function serializeTheme(widget, filter) {
@@ -252,6 +285,7 @@ export function create(state: any): Promise<Widget> {
     if (typeof state === "string") {
         state = JSON.parse(state);
     }
+    state = retrofit_114_serialization(state, Platform.version());
     return Utility.requireWidget(state.__class).then((WidgetClass: any) => {
         const widget = new WidgetClass();
         if (state.__id && state.__id.indexOf(widget._idSeed) !== 0 && state.__id.indexOf("_pe") !== 0) {

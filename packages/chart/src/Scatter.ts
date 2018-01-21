@@ -179,13 +179,13 @@ export class Scatter extends XYAxis {
         if (isHorizontal) {
             area
                 .x(function (d) { return context.xPos(d); })
-                .y0(function () { return height; })
+                .y0(Math.min(height, this.yPos({ value: 0 })))
                 .y1(function (d) { return context.yPos(d); })
                 ;
         } else {
             area
                 .y(function (d) { return context.yPos(d); })
-                .x0(function () { return 0; })
+                .x0(Math.max(0, this.xPos({ value: 0 })))
                 .x1(function (d) { return context.xPos(d); })
                 ;
         }

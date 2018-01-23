@@ -141,23 +141,30 @@ export class Paginator extends HTMLWidget {
         HTMLWidget.prototype.exit.apply(this, arguments);
     }
 
-    itemsPerPage: { (): number; (_: number): Paginator };
     itemsPerPage_exists: () => boolean;
-    numItems: { (): number; (_: number): Paginator };
     numItems_exists: () => boolean;
-    pageNumber: { (): number; (_: number): Paginator };
     pageNumber_exists: () => boolean;
-    adjacentPages: { (): number; (_: number): Paginator };
     adjacentPages_exists: () => boolean;
-    bottom: { (): number; (_: number): Paginator };
     bottom_exists: () => boolean;
-    right: { (): number; (_: number): Paginator };
     right_exists: () => boolean;
 }
 Paginator.prototype._class += " other_Paginator";
 
+export interface Paginator {
+    itemsPerPage(): number;
+    itemsPerPage(_: number): this;
+    numItems(): number;
+    numItems(_: number): this;
+    pageNumber(): number;
+    pageNumber(_: number): this;
+    adjacentPages(): number;
+    adjacentPages(_: number): this;
+    bottom(): number;
+    bottom(_: number): this;
+    right(): number;
+    right(_: number): this;
+}
 Paginator.prototype.publish("itemsPerPage", 2, "number", "Pagination items per page", null, { tags: ["Private"] });
-
 Paginator.prototype.publish("numItems", 10, "number", "Pagination total number of items", null, { tags: ["Private"] });
 Paginator.prototype.publish("pageNumber", 1, "number", "Pagination set or get the page number", null, { tags: ["Private"] });
 Paginator.prototype.publish("adjacentPages", 2, "number", "Number of page indexes either side of current one", null, { tags: ["Private"] });

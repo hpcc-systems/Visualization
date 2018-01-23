@@ -77,16 +77,23 @@ export class Image extends HTMLWidget {
     exit(domNode, element) {
         super.exit(domNode, element);
     }
-
-    source: { (): string; (_: string): Image; };
-    sizing: { (): string; (_: string): Image; };
-    customWidth: { (): string; (_: string): Image; };
-    customHeight: { (): string; (_: string): Image; };
-    lockAspectRatio: { (): boolean; (_: boolean): Image; };
-    alignment: { (): string; (_: string): Image; };
 }
 Image.prototype._class += " common_Image";
 
+export interface Image {
+    source(): string;
+    source(_: string): this;
+    sizing(): string;
+    sizing(_: string): this;
+    customWidth(): string;
+    customWidth(_: string): this;
+    customHeight(): string;
+    customHeight(_: string): this;
+    lockAspectRatio(): boolean;
+    lockAspectRatio(_: boolean): this;
+    alignment(): string;
+    alignment(_: string): this;
+}
 Image.prototype.publish("source", null, "string", "Image Source", null, { tags: ["Basic"] });
 Image.prototype.publish("sizing", "actual", "set", "Controls sizing mode", ["actual", "fit", "custom"], { tags: ["Basic"] });
 Image.prototype.publish("customWidth", "50%", "string", "Applies this width to IMG element if 'sizing' is set to 'custom' (user should set 'px' or 'em' etc.)", null, { tags: ["Basic"], disable: (w) => w.sizing() !== "custom" });

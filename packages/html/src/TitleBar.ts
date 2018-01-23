@@ -60,7 +60,6 @@ export interface ToggleButton {
     selected(): boolean;
     selected(_: boolean): this;
 }
-ToggleButton.prototype.publish("selected", false, "boolean");
 
 export class Spacer extends Item {
 
@@ -129,5 +128,15 @@ export interface TitleBar {
     buttons(): Item[];
     buttons(items: Item[]): this;
 }
+
+export interface TitleBar {
+    selected(): boolean;
+    selected(_: boolean): this;
+    title(): string;
+    title(_: string): this;
+    buttons(): any[];
+    buttons(_: any[]): this;
+}
+ToggleButton.prototype.publish("selected", false, "boolean");
 TitleBar.prototype.publish("title", "", "string");
 TitleBar.prototype.publish("buttons", [], "widgetArray");

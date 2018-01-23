@@ -97,28 +97,34 @@ export class GeoHash extends Layer {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
-    paletteID: { (): string; (_: string): GeoHash };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): GeoHash };
     useClonedPalette_exists: () => boolean;
-    opacity: { (): number; (_: number): GeoHash };
     opacity_exists: () => boolean;
-    meshVisible: { (): boolean; (_: boolean): GeoHash };
     meshVisible_exists: () => boolean;
-    meshColor: { (): string; (_: string): GeoHash };
     meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): GeoHash };
     meshStrokeWidth_exists: () => boolean;
 }
 GeoHash.prototype._class += " map_GeoHash";
 
 GeoHash.prototype._palette = Palette.rainbow("default");
 
+export interface GeoHash {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    opacity(): number;
+    opacity(_: number): this;
+    meshVisible(): boolean;
+    meshVisible(_: boolean): this;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+}
 GeoHash.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", GeoHash.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 GeoHash.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-
 GeoHash.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
-
 GeoHash.prototype.publish("meshVisible", true, "boolean", "Mesh Visibility");
 GeoHash.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });
 GeoHash.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");

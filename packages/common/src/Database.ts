@@ -162,11 +162,6 @@ export class Field extends PropertyExt {
 }
 Field.prototype._class += " common_Database.Field";
 
-Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
-Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden", "nested"], { optional: true });
-Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: (w: any) => w.type() !== "time", optional: true });
-Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
-
 //  Grid  ---
 export class Grid extends PropertyExt {
     _dataChecksum: boolean;
@@ -628,7 +623,6 @@ export interface Grid {
     fields(_: Field[], clone?: boolean): this;
 }
 
-Grid.prototype.publish("fields", [], "propertyArray", "Fields");
 const fieldsOrig = Grid.prototype.fields;
 Grid.prototype.fields = function (_?, clone?) {
     if (!arguments.length) return fieldsOrig.apply(this, arguments);
@@ -819,3 +813,21 @@ function isTime(cell) {
 function isUSState(cell) {
     return ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"].indexOf(String(cell).toUpperCase()) >= 0;
 }
+
+export interface Database {
+    label(): string;
+    label(_: string): this;
+    type(): string;
+    type(_: string): this;
+    mask(): string;
+    mask(_: string): this;
+    format(): string;
+    format(_: string): this;
+    fields(): any[];
+    fields(_: any[]): this;
+}
+Field.prototype.publish("label", "", "string", "Label", null, { optional: true });
+Field.prototype.publish("type", "", "set", "Type", ["", "string", "number", "boolean", "time", "hidden", "nested"], { optional: true });
+Field.prototype.publish("mask", "", "string", "Time Mask", null, { disable: (w: any) => w.type() !== "time", optional: true });
+Field.prototype.publish("format", "", "string", "Format", null, { optional: true });
+Grid.prototype.publish("fields", [], "propertyArray", "Fields");

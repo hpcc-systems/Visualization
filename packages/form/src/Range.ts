@@ -73,15 +73,10 @@ export class Range extends HTMLWidget {
         this._inputElement[0].html(optionHTML);
     }
 
-    type: { (): string; (_: string): Range };
     type_exists: () => boolean;
-    selectOptions: { (): any[]; (_: any[]): Range };
     selectOptions_exists: () => boolean;
-    low: { (): number; (_: number): Range };
     low_exists: () => boolean;
-    high: { (): number; (_: number): Range };
     high_exists: () => boolean;
-    step: { (): number; (_: number): Range };
     step_exists: () => boolean;
 
     //  IInput  ---
@@ -97,6 +92,18 @@ export class Range extends HTMLWidget {
 Range.prototype._class += " form_Range";
 Range.prototype.implements(IInput.prototype);
 
+export interface Range {
+    type(): string;
+    type(_: string): this;
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+    low(): number;
+    low(_: number): this;
+    high(): number;
+    high(_: number): this;
+    step(): number;
+    step(_: number): this;
+}
 Range.prototype.publish("type", "text", "set", "Input type", ["html-color", "number", "checkbox", "button", "select", "textarea", "date", "text", "range", "search", "email", "time", "datetime"]);
 Range.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 Range.prototype.publish("low", null, "number", "Minimum value for Range input");

@@ -230,15 +230,7 @@ export class Scatter extends XYAxis {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
 
-    paletteID: { (): string; (_: string): Scatter; };
-    useClonedPalette: { (): boolean; (_: boolean): Scatter; };
-    pointShape: { (): string; (_: string): Scatter; };
-    pointSize: { (): number; (_: number): Scatter; };
-    interpolate: { (): string; (_: string): Scatter; };
     interpolate_default: { (): string; (_: string): Scatter; };
-    interpolateFill: { (): boolean; (_: boolean): Scatter; };
-    interpolateFill_default: { (): boolean; (_: boolean): Scatter; };
-    interpolateFillOpacity: { (): number; (_: number): Scatter; };
 
     //  INDChart
     _palette;
@@ -254,6 +246,24 @@ Scatter.prototype._class += " chart_Scatter";
 Scatter.prototype.implements(INDChart.prototype);
 Scatter.prototype.implements(ITooltip.prototype);
 
+export interface Scatter {
+    paletteID(): string;
+    paletteID(_: string): this;
+    pointShape(): string;
+    pointShape(_: string): this;
+    pointSize(): number;
+    pointSize(_: number): this;
+    interpolate(): string;
+    interpolate(_: string): this;
+    interpolateFill(): boolean;
+    interpolateFill(_: boolean): this;
+    interpolateFill_default(): boolean;
+    interpolateFill_default(_: boolean): this;
+    interpolateFillOpacity(): number;
+    interpolateFillOpacity(_: number): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
 Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
 Scatter.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });

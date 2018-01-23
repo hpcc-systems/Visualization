@@ -102,21 +102,29 @@ export class AutoCompleteText extends HTMLWidget {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
-    label: { (): string; (_: string): AutoCompleteText };
     label_exists: () => boolean;
-    textboxWidth: { (): number; (_: number): AutoCompleteText };
     textboxWidth_exists: () => boolean;
-    placeholder: { (): string; (_: string): AutoCompleteText };
     placeholder_exists: () => boolean;
-    valueColumn: { (): string; (_: string): AutoCompleteText };
     valueColumn_exists: () => boolean;
-    textColumn: { (): string; (_: string): AutoCompleteText };
     textColumn_exists: () => boolean;
-    minCharsText: { (): number; (_: number): AutoCompleteText };
     minCharsText_exists: () => boolean;
 }
 AutoCompleteText.prototype._class += " other_AutoCompleteText";
 
+export interface AutoCompleteText {
+    label(): string;
+    label(_: string): this;
+    textboxWidth(): number;
+    textboxWidth(_: number): this;
+    placeholder(): string;
+    placeholder(_: string): this;
+    valueColumn(): string;
+    valueColumn(_: string): this;
+    textColumn(): string;
+    textColumn(_: string): this;
+    minCharsText(): number;
+    minCharsText(_: number): this;
+}
 AutoCompleteText.prototype.publish("label", "Label: ", "string", "Label for AutoCompleteText");
 AutoCompleteText.prototype.publish("textboxWidth", null, "number", "width of textbox", null, { optional: true });
 AutoCompleteText.prototype.publish("placeholder", "Search...", "string", "Placeholder for AutoCompleteText");

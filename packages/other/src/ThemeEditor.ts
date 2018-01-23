@@ -687,33 +687,52 @@ export class ThemeEditor extends HTMLWidget {
         }
     }
 
-    themeMode: { (): boolean; (_: boolean): ThemeEditor };
     themeMode_exists: () => boolean;
-    saveTheme: { (): string; (_: string): ThemeEditor };
     saveTheme_exists: () => boolean;
-    loadedTheme: { (): string; (_: string): ThemeEditor };
     loadedTheme_exists: () => boolean;
-    saveSerial: { (): string; (_: string): ThemeEditor };
     saveSerial_exists: () => boolean;
-    loadedSerial: { (): string; (_: string): ThemeEditor };
     loadedSerial_exists: () => boolean;
-    showColumns: { (): boolean; (_: boolean): ThemeEditor };
     showColumns_exists: () => boolean;
-    showData: { (): boolean; (_: boolean): ThemeEditor };
     showData_exists: () => boolean;
-    shareCountMin: { (): number; (_: number): ThemeEditor };
     shareCountMin_exists: () => boolean;
-    paramGrouping: { (): string; (_: string): ThemeEditor };
     paramGrouping_exists: () => boolean;
-    editorComplexity: { (): string; (_: string): ThemeEditor };
     editorComplexity_exists: () => boolean;
-    sectionTitle: { (): string; (_: string): ThemeEditor };
     sectionTitle_exists: () => boolean;
-    collapsibleSections: { (): boolean; (_: boolean): ThemeEditor };
     collapsibleSections_exists: () => boolean;
 }
 ThemeEditor.prototype._class += " other_ThemeEditor";
 
+ThemeEditor.prototype.getThemes = getThemes;
+ThemeEditor.prototype.getSerials = getSerials;
+ThemeEditor.prototype.getDefaultThemes = getThemeNames;
+ThemeEditor.prototype.getDefaultSerials = getSerialNames;
+
+export interface ThemeEditor {
+    themeMode(): boolean;
+    themeMode(_: boolean): this;
+    saveTheme(): string;
+    saveTheme(_: string): this;
+    loadedTheme(): string;
+    loadedTheme(_: string): this;
+    saveSerial(): string;
+    saveSerial(_: string): this;
+    loadedSerial(): string;
+    loadedSerial(_: string): this;
+    showColumns(): boolean;
+    showColumns(_: boolean): this;
+    showData(): boolean;
+    showData(_: boolean): this;
+    shareCountMin(): number;
+    shareCountMin(_: number): this;
+    paramGrouping(): string;
+    paramGrouping(_: string): this;
+    editorComplexity(): string;
+    editorComplexity(_: string): this;
+    sectionTitle(): string;
+    sectionTitle(_: string): this;
+    collapsibleSections(): boolean;
+    collapsibleSections(_: boolean): this;
+}
 ThemeEditor.prototype.publish("themeMode", true, "boolean", "Edit default values", null, { tags: ["Basic"] });
 ThemeEditor.prototype.publish("saveTheme", "", "string", "Save Theme", null, { tags: ["Basic", "Theme"], saveButton: "Save", saveButtonID: "te-save-button" });
 ThemeEditor.prototype.publish("loadedTheme", getThemeNames(1), "set", "Loaded Theme", getThemeNames(), { tags: ["Basic", "Theme"] });
@@ -726,8 +745,3 @@ ThemeEditor.prototype.publish("paramGrouping", "By Param", "set", "Param Groupin
 ThemeEditor.prototype.publish("editorComplexity", "Basic", "set", "Choose what publish properties to display within the editor.", ["Basic", "Intermediate", "Advanced", "Private"], { tags: ["Private"] });
 ThemeEditor.prototype.publish("sectionTitle", "", "string", "Section Title", null, { tags: ["Private"] });
 ThemeEditor.prototype.publish("collapsibleSections", true, "boolean", "Collapsible Sections", null, { tags: ["Intermediate"] });
-
-ThemeEditor.prototype.getThemes = getThemes;
-ThemeEditor.prototype.getSerials = getSerials;
-ThemeEditor.prototype.getDefaultThemes = getThemeNames;
-ThemeEditor.prototype.getDefaultSerials = getSerialNames;

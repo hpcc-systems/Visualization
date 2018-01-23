@@ -95,23 +95,32 @@ export class Select extends HTMLWidget {
     click(row, column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
-    label: { (): string; (_: string): Select };
     label_exists: () => boolean;
-    valueColumn: { (): string; (_: string): Select };
     valueColumn_exists: () => boolean;
-    textColumn: { (): string; (_: string): Select };
     textColumn_exists: () => boolean;
-    optional: { (): boolean; (_: boolean): Select };
     optional_exists: () => boolean;
-    sort: { (): string; (_: string): Select };
     sort_exists: () => boolean;
-    multiple: { (): boolean; (_: boolean): Select };
     multiple_exists: () => boolean;
-    selectSize: { (): number; (_: number): Select };
     selectSize_exists: () => boolean;
 }
 Select.prototype._class += " other_Select";
 
+export interface Select {
+    label(): string;
+    label(_: string): this;
+    valueColumn(): string;
+    valueColumn(_: string): this;
+    textColumn(): string;
+    textColumn(_: string): this;
+    optional(): boolean;
+    optional(_: boolean): this;
+    sort(): string;
+    sort(_: string): this;
+    multiple(): boolean;
+    multiple(_: boolean): this;
+    selectSize(): number;
+    selectSize(_: number): this;
+}
 Select.prototype.publish("label", null, "string", "Label for select");
 Select.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
 Select.prototype.publish("textColumn", null, "set", "Select value(s)", function () { return this.columns(); }, { optional: true });

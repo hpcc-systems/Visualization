@@ -115,15 +115,33 @@ export abstract class ITooltip extends Widget {
                 return "<span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
         }
     }
+}
 
-    tooltipStyle: { (): string; (_: string): ITooltip; };
-    tooltipValueFormat: (_?) => string | ITooltip;
-    tooltipSeriesColor: { (): string; (_: string): ITooltip; };
-    tooltipLabelColor: { (): string; (_: string): ITooltip; };
-    tooltipValueColor: { (): string; (_: string): ITooltip; };
-    tooltipTick: { (): boolean; (_: boolean): ITooltip; };
-    tooltipOffset: { (): number; (_: number): ITooltip; };
-    tooltipOffset_default: { (): number; (_: number): ITooltip; };
+const tooltipValueFormat = ITooltip.prototype.tooltipValueFormat;
+ITooltip.prototype.tooltipValueFormat = function (_?: string) {
+    const retVal = tooltipValueFormat.apply(this, arguments);
+    if (arguments.length) {
+        this._valueFormatter = d3Format(_);
+        return this;
+    }
+    return retVal;
+};
+
+export interface ITooltip {
+    tooltipStyle(): string;
+    tooltipStyle(_: string): this;
+    tooltipValueFormat(): string;
+    tooltipValueFormat(_: string): this;
+    tooltipSeriesColor(): string;
+    tooltipSeriesColor(_: string): this;
+    tooltipLabelColor(): string;
+    tooltipLabelColor(_: string): this;
+    tooltipValueColor(): string;
+    tooltipValueColor(_: string): this;
+    tooltipTick(): boolean;
+    tooltipTick(_: boolean): this;
+    tooltipOffset(): number;
+    tooltipOffset(_: number): this;
 }
 ITooltip.prototype.publish("tooltipStyle", "default", "set", "Style", ["default", "none"], {});
 ITooltip.prototype.publish("tooltipValueFormat", ",.2f", "string", "Value Format", null, {});
@@ -132,12 +150,3 @@ ITooltip.prototype.publish("tooltipLabelColor", "#CCFFFF", "html-color", "Label 
 ITooltip.prototype.publish("tooltipValueColor", "white", "html-color", "Value Color", null, {});
 ITooltip.prototype.publish("tooltipTick", true, "boolean", "Show tooltip tick", null, {});
 ITooltip.prototype.publish("tooltipOffset", 8, "number", "Offset from the cursor", null, {});
-
-const tooltipValueFormat = ITooltip.prototype.tooltipValueFormat;
-ITooltip.prototype.tooltipValueFormat = function (_?): string | ITooltip {
-    const retVal = tooltipValueFormat.apply(this, arguments);
-    if (arguments.length) {
-        this._valueFormatter = d3Format(_);
-    }
-    return retVal;
-};

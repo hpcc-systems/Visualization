@@ -197,10 +197,6 @@ export class Pie extends SVGWidget {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
 
-    paletteID: (_?: string) => string | Pie;
-    useClonedPalette: (_?: boolean) => boolean | Pie;
-    outerText: (_?: boolean) => boolean | Pie;
-    innerRadius: { (): number; (_: number): Pie; };
     innerRadius_exists: () => boolean;
 
     //  I2DChart
@@ -226,6 +222,16 @@ Pie.prototype.implements(I2DChart.prototype);
 Pie.prototype.implements(ITooltip.prototype);
 Pie.prototype.mixin(Utility.SimpleSelectionMixin);
 
+export interface Pie {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    outerText(): boolean;
+    outerText(_: boolean): this;
+    innerRadius(): number;
+    innerRadius(_: number): this;
+}
 Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("outerText", false, "boolean", "Sets label position inside or outside chart", null, { tags: ["Basic"] });

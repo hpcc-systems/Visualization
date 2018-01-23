@@ -76,7 +76,6 @@ export class CheckBox extends HTMLWidget {
         this._inputElement[0].html(optionHTML);
     }
 
-    selectOptions: { (): any[]; (_: any[]): CheckBox };
     selectOptions_exists: () => boolean;
 
     //  IInput  ---
@@ -92,4 +91,8 @@ export class CheckBox extends HTMLWidget {
 CheckBox.prototype._class += " form_CheckBox";
 CheckBox.prototype.implements(IInput.prototype);
 
+export interface CheckBox {
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+}
 CheckBox.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");

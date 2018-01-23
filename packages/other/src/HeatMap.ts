@@ -89,46 +89,56 @@ export class HeatMap extends CanvasWidget {
         return retArr;
     }
 
-    radius: { (): number; (_: number): HeatMap };
     radius_exists: () => boolean;
-    blur: { (): number; (_: number): HeatMap };
     blur_exists: () => boolean;
-    max: { (): number; (_: number): HeatMap };
     max_exists: () => boolean;
-    gradient: { (): object; (_: object): HeatMap };
     gradient_exists: () => boolean;
-    usePalette: { (): boolean; (_: boolean): HeatMap };
     usePalette_exists: () => boolean;
-    colorCount: { (): number; (_: number): HeatMap };
     colorCount_exists: () => boolean;
-    paletteID: { (): string; (_: string): HeatMap };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): HeatMap };
     useClonedPalette_exists: () => boolean;
-    topLeftX: { (): number; (_: number): HeatMap };
     topLeftX_exists: () => boolean;
-    topLeftY: { (): number; (_: number): HeatMap };
     topLeftY_exists: () => boolean;
-    bottomRightX: { (): number; (_: number): HeatMap };
     bottomRightX_exists: () => boolean;
-    bottomRightY: { (): number; (_: number): HeatMap };
     bottomRightY_exists: () => boolean;
 }
 HeatMap.prototype._class += " other_HeatMap";
 HeatMap.prototype._palette = Palette.rainbow("default");
 
+export interface HeatMap {
+    radius(): number;
+    radius(_: number): this;
+    blur(): number;
+    blur(_: number): this;
+    max(): number;
+    max(_: number): this;
+    gradient(): object;
+    gradient(_: object): this;
+    usePalette(): boolean;
+    usePalette(_: boolean): this;
+    colorCount(): number;
+    colorCount(_: number): this;
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    topLeftX(): number;
+    topLeftX(_: number): this;
+    topLeftY(): number;
+    topLeftY(_: number): this;
+    bottomRightX(): number;
+    bottomRightX(_: number): this;
+    bottomRightY(): number;
+    bottomRightY(_: number): this;
+}
 HeatMap.prototype.publish("radius", 15, "number", "Set point radius", null, { tags: ["Basic"] });
 HeatMap.prototype.publish("blur", 15, "number", "Set point blur", null, { tags: ["Basic"] });
 HeatMap.prototype.publish("max", 1, "number", "Set max data value", null, { tags: ["Basic"] });
-
 HeatMap.prototype.publish("gradient", { 0.4: "blue", 0.6: "cyan", 0.7: "lime", 0.8: "yellow", 1.0: "red" }, "object", "Set gradient colors", null, { tags: ["Basic"] });
-
 HeatMap.prototype.publish("usePalette", false, "boolean", "If true, uses paletteID and colorCount to determine gradient", null, { tags: ["Basic"] });
-
 HeatMap.prototype.publish("colorCount", 10, "number", "Top left x-value", null, { tags: ["Basic"] });
 HeatMap.prototype.publish("paletteID", "default", "set", "Palette ID", HeatMap.prototype._palette.switch(), { tags: ["Basic"] });
 HeatMap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-
 HeatMap.prototype.publish("topLeftX", null, "number", "Top left x-value", null, { tags: ["Basic"], optional: true });
 HeatMap.prototype.publish("topLeftY", null, "number", "Top left y-value", null, { tags: ["Basic"], optional: true });
 HeatMap.prototype.publish("bottomRightX", null, "number", "Bottom right x-value", null, { tags: ["Basic"], optional: true });

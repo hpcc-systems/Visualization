@@ -101,13 +101,7 @@ export class TextBox extends SVGWidget {
     shape_colorFill: { (): string; (_: string): TextBox; };
     shape_colorStroke: { (): string; (_: string): TextBox; };
     text_colorFill: { (): string; (_: string): TextBox; };
-    paddingLeft: { (): number; (_: number): TextBox; };
-    paddingRight: { (): number; (_: number): TextBox; };
-    paddingTop: { (): number; (_: number): TextBox; };
-    paddingBottom: { (): number; (_: number): TextBox; };
     anchor: { (): string; (_: string): TextBox; };
-    fixedSize: { (): ISize; (_: ISize): TextBox; };
-    tooltip: { (): string; (_: string): TextBox; };
 }
 TextBox.prototype._class += " common_TextBox";
 
@@ -115,11 +109,25 @@ TextBox.prototype.publishProxy("text", "_text");
 TextBox.prototype.publishProxy("shape_colorStroke", "_shape", "colorStroke");
 TextBox.prototype.publishProxy("shape_colorFill", "_shape", "colorFill");
 TextBox.prototype.publishProxy("text_colorFill", "_text", "colorFill");
+TextBox.prototype.publishProxy("anchor", "_text");
+
+export interface TextBox {
+    paddingLeft(): number;
+    paddingLeft(_: number): this;
+    paddingRight(): number;
+    paddingRight(_: number): this;
+    paddingTop(): number;
+    paddingTop(_: number): this;
+    paddingBottom(): number;
+    paddingBottom(_: number): this;
+    fixedSize(): ISize;
+    fixedSize(_: ISize): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+}
 TextBox.prototype.publish("paddingLeft", 4, "number", "Padding:  Left", null, { tags: ["Private"] });
 TextBox.prototype.publish("paddingRight", 4, "number", "Padding:  Right", null, { tags: ["Private"] });
 TextBox.prototype.publish("paddingTop", 4, "number", "Padding:  Top", null, { tags: ["Private"] });
 TextBox.prototype.publish("paddingBottom", 4, "number", "Padding:  Bottom", null, { tags: ["Private"] });
-TextBox.prototype.publishProxy("anchor", "_text");
-TextBox.prototype.publish("fixedSize", null);
-
+TextBox.prototype.publish("fixedSize", null, "boolean");
 TextBox.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });

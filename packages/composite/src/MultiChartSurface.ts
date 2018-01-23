@@ -24,7 +24,6 @@ MultiChartSurface.prototype.constructor = MultiChartSurface;
 MultiChartSurface.prototype._class += " chart_MultiChartSurface";
 MultiChartSurface.prototype.implements(INDChart.prototype);
 
-MultiChartSurface.prototype.publish("mode", "2D", "set", "Chart Type", ["1D", "2D", "ND", "all"]);
 MultiChartSurface.prototype.publishProxy("chartType", "_content");
 
 MultiChartSurface.prototype.columns = function (_) {
@@ -66,3 +65,9 @@ MultiChartSurface.prototype.mode = function (_) {
     }
     return retVal;
 };
+
+export interface MultiChartSurface {
+    mode(): string;
+    mode(_: string): this;
+}
+MultiChartSurface.prototype.publish("mode", "2D", "set", "Chart Type", ["1D", "2D", "ND", "all"]);

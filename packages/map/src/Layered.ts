@@ -153,30 +153,17 @@ export class Layered extends SVGZoomWidget {
         }
     }
 
-    projection: (_?: string) => string | this;
     projection_exists: () => boolean;
-    centerLat: { (): number; (_: number): Layered };
     centerLat_exists: () => boolean;
-    centerLong: { (): number; (_: number): Layered };
     centerLong_exists: () => boolean;
-    zoom: { (): number; (_: number): Layered };
     zoom_exists: () => boolean;
-    autoScaleMode: { (): string; (_: string): Layered };
     autoScaleMode_exists: () => boolean;
-    layers: { (): any[]; (_: any[]): Layered };
     layers_exists: () => boolean;
 }
 Layered.prototype._class += " map_Layered";
 
-Layered.prototype.publish("projection", null, "set", "Map projection type", projectionTypes);
-Layered.prototype.publish("centerLat", 0, "number", "Center Latitude", null, { tags: ["Basic"] });
-Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
-Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
-Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
-Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
-
 const projection_orig = Layered.prototype.projection;
-Layered.prototype.projection = function (_) {
+Layered.prototype.projection = function (_?: string) {
     const retVal = projection_orig.apply(this, arguments);
     if (arguments.length) {
         this._d3GeoProjection = resolve(_)
@@ -194,6 +181,28 @@ Layered.prototype.projection = function (_) {
             .projection(this._d3GeoProjection)
             ;
         this._autoScaleOnNextRender = true;
+        return this;
     }
     return retVal;
 };
+
+export interface Layered {
+    projection(): string;
+    projection(_: string): this;
+    centerLat(): number;
+    centerLat(_: number): this;
+    centerLong(): number;
+    centerLong(_: number): this;
+    zoom(): number;
+    zoom(_: number): this;
+    autoScaleMode(): string;
+    autoScaleMode(_: string): this;
+    layers(): any[];
+    layers(_: any[]): this;
+}
+Layered.prototype.publish("projection", null, "set", "Map projection type", projectionTypes);
+Layered.prototype.publish("centerLat", 0, "number", "Center Latitude", null, { tags: ["Basic"] });
+Layered.prototype.publish("centerLong", 0, "number", "Center Longtitude", null, { tags: ["Basic"] });
+Layered.prototype.publish("zoom", 1, "number", "Zoom Level", null, { tags: ["Basic"] });
+Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", "all"], { tags: ["Basic"] });
+Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });

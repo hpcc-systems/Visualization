@@ -61,20 +61,26 @@ export class Text extends SVGWidget {
             .attr("transform", function (_d) { return "translate(" + xOffset + "," + yOffset + ")rotate(" + context.rotation() + ")"; })
             ;
     }
-
-    text: { (): string; (_: string): Text; };
-    fontFamily: { (): string; (_: string): Text; };
-    fontSize: { (): number; (_: number): Text; };
-    anchor: { (): string; (_: string): Text; };
-    colorFill: { (): string; (_: string): Text; };
-    rotation: { (): number; (_: number): Text; };
 }
 Text.prototype._class += " common_Text";
 
+export interface Text {
+    text(): string;
+    text(_: string): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    anchor(): string;
+    anchor(_: string): this;
+    colorFill(): string;
+    colorFill(_: string): this;
+    rotation(): number;
+    rotation(_: number): this;
+}
 Text.prototype.publish("text", "", "string", "Display Text", null, { tags: ["Basic"] });
 Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags: ["Intermediate"], optional: true });
 Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
 Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
 Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
-
 Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });

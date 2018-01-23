@@ -12,14 +12,9 @@ export class IndentedColumn extends PropertyExt {
         super();
         this._owner = owner;
     }
-
-    column: (_?: string) => string | IndentedColumn;
 }
 IndentedColumn.prototype._class += " tree_Dendrogram.IndentedColumn";
 
-IndentedColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-
-// ===
 export class Indented extends SVGZoomWidget {
     Column;
     _d3Tree;
@@ -220,10 +215,7 @@ export class Indented extends SVGZoomWidget {
         }
     }
 
-    xmlColumn: { (_: string): Indented; (): string; };
     xmlColumn_exists: () => boolean;
-    mappings: { (_: IndentedColumn[]): Indented; (): IndentedColumn[]; };
-    barHeight: { (_: number): Indented; (): number; };
 
     //  ITree
     _palette;
@@ -237,10 +229,6 @@ Indented.prototype._class += " tree_Indented";
 Indented.prototype.implements(ITree.prototype);
 Indented.prototype.mixin(Utility.SimpleSelectionMixin);
 Indented.prototype.Column = IndentedColumn;
-
-Indented.prototype.publish("xmlColumn", null, "set", "Field", function () { return this.columns(); }, { optional: true });
-Indented.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: IndentedColumn, disable: (w) => w.xmlColumn_exists() });
-Indented.prototype.publish("barHeight", 16, "number", "Bar height");
 
 function xmlToJson(xml, id = "") {
     const retVal = {
@@ -271,3 +259,21 @@ function xmlToJson(xml, id = "") {
     }
     return retVal;
 }
+
+export interface IndentedColumn {
+    column(): string;
+    column(_: string): this;
+}
+IndentedColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+
+export interface Indented {
+    xmlColumn(): string;
+    xmlColumn(_: string): this;
+    mappings(): IndentedColumn[];
+    mappings(_: IndentedColumn[]): this;
+    barHeight(): number;
+    barHeight(_: number): this;
+}
+Indented.prototype.publish("xmlColumn", null, "set", "Field", function () { return this.columns(); }, { optional: true });
+Indented.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: IndentedColumn, disable: (w) => w.xmlColumn_exists() });
+Indented.prototype.publish("barHeight", 16, "number", "Bar height");

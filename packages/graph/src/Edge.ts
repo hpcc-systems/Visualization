@@ -184,25 +184,32 @@ export class Edge extends SVGWidget {
         return points;
     }
 
-    arcDepth: { (): number; (_: number): Edge; };
-    showArc: { (): boolean; (_: boolean): Edge; };
-    tooltip: { (): string; (_: string): Edge; };
-
-    sourceMarker: { (): string; (_: string): Edge; };
     sourceMarker_exists: () => boolean;
-    targetMarker: { (): string; (_: string): Edge; };
     targetMarker_exists: () => boolean;
-    strokeDasharray: { (): string; (_: string): Edge; };
     strokeDasharray_exists: () => boolean;
-    strokeColor: { (): string; (_: string): Edge; };
     strokeColor_exists: () => boolean;
 }
 Edge.prototype._class += " graph_Edge";
 
+export interface Edge {
+    arcDepth(): number;
+    arcDepth(_: number): this;
+    showArc(): boolean;
+    showArc(_: boolean): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+    sourceMarker(): string;
+    sourceMarker(_: string): this;
+    targetMarker(): string;
+    targetMarker(_: string): this;
+    strokeDasharray(): string;
+    strokeDasharray(_: string): this;
+    strokeColor(): string;
+    strokeColor(_: string): this;
+}
 Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
 Edge.prototype.publish("showArc", true, "boolean", "Show/Hide Arc", null, { tags: ["Basic"] });
 Edge.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
-
 Edge.prototype.publish("sourceMarker", "circle", "set", "Source Marker", ["none", "circle"], { optional: true });
 Edge.prototype.publish("targetMarker", "arrow", "set", "Source Marker", ["none", "arrow", "circle"], { optional: true });
 Edge.prototype.publish("strokeDasharray", null, "string", "Stroke Dash Array", null, { optional: true });

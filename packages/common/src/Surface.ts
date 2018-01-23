@@ -5,6 +5,7 @@ import { Menu } from "./Menu";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
+import { Widget } from "./Widget";
 
 import "../src/Surface.css";
 
@@ -297,36 +298,15 @@ export class Surface extends SVGWidget {
         console.log("Clicked: " + d.id);
     }
 
-    showTitle: { (): boolean; (_: boolean): Surface; };
-    title: { (): string; (_: string): Surface; };
     titleFontSize: { (): string; (_: string): Surface; };
-    showIcon: { (): boolean; (_: boolean): Surface; };
     icon_faChar: { (): string; (_: string): Surface; };
     icon_shape: { (): string; (_: string): Surface; };
-    content: { (): any; (_: any): Surface; };
-    buttonAnnotations: { (): any[]; (_: any[]): Surface; };
-    buttonGutter: { (): number; (_: number): Surface; };
-    showContent: { (): boolean; (_: boolean): Surface; };
-    menu: { (): any[]; (_: any[]): Surface; };
-    menuPadding: { (): number; (_: number): Surface; };
 }
 Surface.prototype._class += " common_Surface";
 
-Surface.prototype.publish("showTitle", true, "boolean", "Show Title", null, { tags: ["Basic"] });
-Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Basic"] });
 Surface.prototype.publishProxy("titleFontSize", "_textWidget", "fontSize");
-Surface.prototype.publish("showIcon", true, "boolean", "Show Title", null, { tags: ["Advanced"] });
 Surface.prototype.publishProxy("icon_faChar", "_iconWidget", "faChar");
 Surface.prototype.publishProxy("icon_shape", "_iconWidget", "shape");
-
-Surface.prototype.publish("content", null, "widget", "Content", null, { tags: ["Private"] });
-
-Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array", null, { tags: ["Intermediate"] });
-Surface.prototype.publish("buttonGutter", 25, "number", "Space Between Menu and Buttons", null, { tags: ["Intermediate"] });
-
-Surface.prototype.publish("showContent", true, "boolean", "Show Content", null, { tags: ["Intermediate"] });
-Surface.prototype.publish("menu", [], "array", "Menu List Data", null, { tags: ["Intermediate"] });
-Surface.prototype.publish("menuPadding", 2, "number", "Menu Padding", null, { tags: ["Advanced"] });
 
 Surface.prototype._origMenuParam = Surface.prototype.menu;
 Surface.prototype.menu = function (this: Surface, _?) {
@@ -348,3 +328,33 @@ Surface.prototype.showContent = function (_?) {
     }
     return retVal;
 };
+
+export interface Surface {
+    showTitle(): boolean;
+    showTitle(_: boolean): this;
+    title(): string;
+    title(_: string): this;
+    showIcon(): boolean;
+    showIcon(_: boolean): this;
+    content(): Widget;
+    content(_: Widget): this;
+    buttonAnnotations(): any[];
+    buttonAnnotations(_: any[]): this;
+    buttonGutter(): number;
+    buttonGutter(_: number): this;
+    showContent(): boolean;
+    showContent(_: boolean): this;
+    menu(): any[];
+    menu(_: any[]): this;
+    menuPadding(): number;
+    menuPadding(_: number): this;
+}
+Surface.prototype.publish("showTitle", true, "boolean", "Show Title", null, { tags: ["Basic"] });
+Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Basic"] });
+Surface.prototype.publish("showIcon", true, "boolean", "Show Title", null, { tags: ["Advanced"] });
+Surface.prototype.publish("content", null, "widget", "Content", null, { tags: ["Private"] });
+Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array", null, { tags: ["Intermediate"] });
+Surface.prototype.publish("buttonGutter", 25, "number", "Space Between Menu and Buttons", null, { tags: ["Intermediate"] });
+Surface.prototype.publish("showContent", true, "boolean", "Show Content", null, { tags: ["Intermediate"] });
+Surface.prototype.publish("menu", [], "array", "Menu List Data", null, { tags: ["Intermediate"] });
+Surface.prototype.publish("menuPadding", 2, "number", "Menu Padding", null, { tags: ["Advanced"] });

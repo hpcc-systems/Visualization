@@ -181,33 +181,19 @@ export class WordCloud extends SVGWidget {
         }
     }
 
-    paletteID: { (): string; (_: string): WordCloud };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): WordCloud };
     useClonedPalette_exists: () => boolean;
-    fontFamily: { (): string; (_: string): WordCloud };
     fontFamily_exists: () => boolean;
-    fontSizeFrom: { (): number; (_: number): WordCloud };
     fontSizeFrom_exists: () => boolean;
-    fontSizeTo: { (): number; (_: number): WordCloud };
     fontSizeTo_exists: () => boolean;
-    angleFrom: { (): number; (_: number): WordCloud };
     angleFrom_exists: () => boolean;
-    angleTo: { (): number; (_: number): WordCloud };
     angleTo_exists: () => boolean;
-    angleCount: { (): number; (_: number): WordCloud };
     angleCount_exists: () => boolean;
-    padding: { (): number; (_: number): WordCloud };
     padding_exists: () => boolean;
-    scaleMode: { (): string; (_: string): WordCloud };
     scaleMode_exists: () => boolean;
-    spiral: { (): string; (_: string): WordCloud };
     spiral_exists: () => boolean;
-    offsetX: { (): number; (_: number): WordCloud };
     offsetX_exists: () => boolean;
-    offsetY: { (): number; (_: number): WordCloud };
     offsetY_exists: () => boolean;
-    zoom: { (): number; (_: number): WordCloud };
     zoom_exists: () => boolean;
 
     //  I2DChart
@@ -239,9 +225,38 @@ WordCloud.prototype._class += " other_WordCloud";
 WordCloud.prototype.implements(I2DChart.prototype);
 WordCloud.prototype.implements(ITooltip.prototype);
 
+export interface WordCloud {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontSizeFrom(): number;
+    fontSizeFrom(_: number): this;
+    fontSizeTo(): number;
+    fontSizeTo(_: number): this;
+    angleFrom(): number;
+    angleFrom(_: number): this;
+    angleTo(): number;
+    angleTo(_: number): this;
+    angleCount(): number;
+    angleCount(_: number): this;
+    padding(): number;
+    padding(_: number): this;
+    scaleMode(): string;
+    scaleMode(_: string): this;
+    spiral(): string;
+    spiral(_: string): this;
+    offsetX(): number;
+    offsetX(_: number): this;
+    offsetY(): number;
+    offsetY(_: number): this;
+    zoom(): number;
+    zoom(_: number): this;
+}
 WordCloud.prototype.publish("paletteID", "default", "set", "Palette ID", WordCloud.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 WordCloud.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-
 WordCloud.prototype.publish("fontFamily", "Impact", "string", "Font Name", null, { tags: ["Basic"] });
 WordCloud.prototype.publish("fontSizeFrom", 6, "number", "Font Size From", null, { tags: ["Basic"] });
 WordCloud.prototype.publish("fontSizeTo", 48, "number", "Font Size To", null, { tags: ["Basic"] });

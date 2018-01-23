@@ -30,15 +30,20 @@ export class Html extends HTMLWidget {
         html.exit().remove();
     }
 
-    html: { (): string; (_: string): Html };
     html_exists: () => boolean;
-    overflowX: { (): string; (_: string): Html };
     overflowX_exists: () => boolean;
-    overflowY: { (): string; (_: string): Html };
     overflowY_exists: () => boolean;
 }
 Html.prototype._class += " other_Html";
 
+export interface Html {
+    html(): string;
+    html(_: string): this;
+    overflowX(): string;
+    overflowX(_: string): this;
+    overflowY(): string;
+    overflowY(_: string): this;
+}
 Html.prototype.publish("html", "", "string", "Html to render", null, { tags: ["Basic"] });
 Html.prototype.publish("overflowX", null, "set", "CSS overflow-x", ["", "visible", "hidden", "scroll", "auto", "initial", "inherit"], { tags: ["Basic"], optional: true });
 Html.prototype.publish("overflowY", null, "set", "CSS overflow-y", ["", "visible", "hidden", "scroll", "auto", "initial", "inherit"], { tags: ["Basic"], optional: true });

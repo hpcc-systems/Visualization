@@ -68,14 +68,21 @@ export abstract class IInput extends Widget {
         }
     }
 
-    name: { (): string; (_: string): IInput };
     name_exists: () => boolean;
-    label: { (): string; (_: string): IInput };
     label_exists: () => boolean;
-    value: { (): any; (_: any): IInput };
     value_exists: () => boolean;
-    validate: { (): string; (_: string): IInput };
     validate_exists: () => boolean;
+}
+
+export interface IInput {
+    name(): string;
+    name(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): string;
+    value(_: string): this;
+    validate(): string;
+    validate(_: string): this;
 }
 IInput.prototype.publish("name", "", "string", "HTML name for the input");
 IInput.prototype.publish("label", "", "string", "Descriptive label");

@@ -754,42 +754,61 @@ export class GMap extends HTMLWidget {
         }
     }
 
-    type: { (): string; (_: string): GMap };
     type_exists: () => boolean;
-    centerLat: { (): number; (_: number): GMap };
     centerLat_exists: () => boolean;
-    centerLong: { (): number; (_: number): GMap };
     centerLong_exists: () => boolean;
-    centerAddress: { (): string; (_: string): GMap };
     centerAddress_exists: () => boolean;
-    zoom: { (): number; (_: number): GMap };
     zoom_exists: () => boolean;
-    singleZoomToMaxZoom: { (): number; (_: number): GMap };
-    panControl: { (): boolean; (_: boolean): GMap };
     panControl_exists: () => boolean;
-    zoomControl: { (): boolean; (_: boolean): GMap };
     zoomControl_exists: () => boolean;
-    scaleControl: { (): boolean; (_: boolean): GMap };
     scaleControl_exists: () => boolean;
-    mapTypeControl: { (): boolean; (_: boolean): GMap };
     mapTypeControl_exists: () => boolean;
-    fullscreenControl: { (): boolean; (_: boolean): GMap };
     fullscreenControl_exists: () => boolean;
-    streetViewControl: { (): boolean; (_: boolean): GMap };
     streetViewControl_exists: () => boolean;
-    overviewMapControl: { (): boolean; (_: boolean): GMap };
     overviewMapControl_exists: () => boolean;
-    streetView: { (): boolean; (_: boolean): GMap };
     streetView_exists: () => boolean;
-    drawingTools: { (): boolean; (_: boolean): GMap };
     drawingTools_exists: () => boolean;
-    drawingState: { (): string; (_: string): GMap };
     drawingState_exists: () => boolean;
-    googleMapStyles: { (): object; (_: object): GMap };
     googleMapStyles_exists: () => boolean;
 }
 GMap.prototype._class += " map_GMap";
 
+export interface GMap {
+    type(): string;
+    type(_: string): this;
+    centerLat(): number;
+    centerLat(_: number): this;
+    centerLong(): number;
+    centerLong(_: number): this;
+    centerAddress(): string;
+    centerAddress(_: string): this;
+    zoom(): number;
+    zoom(_: number): this;
+    singleZoomToMaxZoom(): number;
+    singleZoomToMaxZoom(_: number): this;
+    panControl(): boolean;
+    panControl(_: boolean): this;
+    zoomControl(): boolean;
+    zoomControl(_: boolean): this;
+    scaleControl(): boolean;
+    scaleControl(_: boolean): this;
+    mapTypeControl(): boolean;
+    mapTypeControl(_: boolean): this;
+    fullscreenControl(): boolean;
+    fullscreenControl(_: boolean): this;
+    streetViewControl(): boolean;
+    streetViewControl(_: boolean): this;
+    overviewMapControl(): boolean;
+    overviewMapControl(_: boolean): this;
+    streetView(): boolean;
+    streetView(_: boolean): this;
+    drawingTools(): boolean;
+    drawingTools(_: boolean): this;
+    drawingState(): string;
+    drawingState(_: string): this;
+    googleMapStyles(): object;
+    googleMapStyles(_: object): this;
+}
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
 GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });
 GMap.prototype.publish("centerLong", -97.380979, "number", "Center Longtitude", null, { tags: ["Basic"] });
@@ -806,5 +825,4 @@ GMap.prototype.publish("overviewMapControl", false, "boolean", "OverviewMap Cont
 GMap.prototype.publish("streetView", false, "boolean", "Streetview", null, { tags: ["Basic"] });
 GMap.prototype.publish("drawingTools", false, "boolean", "Drawing Tools", null, { tags: ["Basic"] });
 GMap.prototype.publish("drawingState", "", "string", "Map Drawings", null, { disable: w => w.drawingTools() === false });
-
 GMap.prototype.publish("googleMapStyles", {}, "object", "Styling for map colors etc", null, { tags: ["Basic"] });

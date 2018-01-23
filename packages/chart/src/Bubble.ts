@@ -147,9 +147,6 @@ export class Bubble extends SVGWidget {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
 
-    paletteID: { (): string; (_: string): Bubble; };
-    useClonedPalette: { (): boolean; (_: boolean): Bubble; };
-
     //  I2DChart
     _palette;
     click: (row, column, selected) => void;
@@ -168,5 +165,11 @@ Bubble.prototype.implements(I2DChart.prototype);
 Bubble.prototype.implements(ITooltip.prototype);
 Bubble.prototype.mixin(Utility.SimpleSelectionMixin);
 
+export interface Bubble {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
 Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Bubble.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

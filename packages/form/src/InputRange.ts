@@ -63,11 +63,8 @@ export class InputRange extends HTMLWidget {
         }, this);
     }
 
-    type: { (): string; (_: string): InputRange };
     type_exists: () => boolean;
-    inlineLabel: { (): string; (_: string): InputRange };
     inlineLabel_exists: () => boolean;
-    value: { (): any[]; (_: any[]): InputRange };
     value_exists: () => boolean;
 
     //  IInput  ---
@@ -81,6 +78,14 @@ export class InputRange extends HTMLWidget {
 InputRange.prototype._class += " form_InputRange";
 InputRange.prototype.implements(IInput.prototype);
 
+export interface InputRange {
+    type(): string;
+    type(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+    value(): any[];
+    value(_: any[]): this;
+}
 InputRange.prototype.publish("type", "text", "set", "InputRange type", ["number", "date", "text", "time", "datetime", "hidden"]);
 InputRange.prototype.publish("inlineLabel", null, "string", "InputRange Label", null, { optional: true });
 InputRange.prototype.publish("value", ["", ""], "array", "Input Current Value", null, { override: true });

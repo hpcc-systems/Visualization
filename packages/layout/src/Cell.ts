@@ -63,27 +63,33 @@ export class Cell extends Surface {
             d3SelectAll("#" + arr[i] + " > div.update-indicator").remove();
         }
     }
-
-    title: { (): string; (_: string): Cell; };
-    widget: { (): Widget; (_: Widget): Cell; };
-
-    gridRow: { (): number; (_: number): Cell; };
-    gridCol: { (): number; (_: number): Cell; };
-    gridRowSpan: { (): number; (_: number): Cell; };
-    gridColSpan: { (): number; (_: number): Cell; };
-
-    indicatorGlowColor: { (): string; (_: string): Cell; };
-    indicatorBorderColor: { (): string; (_: string): Cell; };
-    indicatorOpacity: { (): number; (_: number): Cell; };
-
 }
 Cell.prototype._class += " layout_Cell";
 
+export interface Cell {
+    title(): string;
+    title(_: string): this;
+    gridRow(): number;
+    gridRow(_: number): this;
+    gridCol(): number;
+    gridCol(_: number): this;
+    gridRowSpan(): number;
+    gridRowSpan(_: number): this;
+    gridColSpan(): number;
+    gridColSpan(_: number): this;
+    indicatorGlowColor(): string;
+    indicatorGlowColor(_: string): this;
+    indicatorBorderColor(): string;
+    indicatorBorderColor(_: string): this;
+    indicatorOpacity(): number;
+    indicatorOpacity(_: number): this;
+    widget(): Widget;
+    widget(_: Widget): this;
+}
 Cell.prototype.publish("gridRow", 0, "number", "Grid Row Position", null, { tags: ["Private"] });
 Cell.prototype.publish("gridCol", 0, "number", "Grid Column Position", null, { tags: ["Private"] });
 Cell.prototype.publish("gridRowSpan", 1, "number", "Grid Row Span", null, { tags: ["Private"] });
 Cell.prototype.publish("gridColSpan", 1, "number", "Grid Column Span", null, { tags: ["Private"] });
-
 Cell.prototype.publish("indicatorGlowColor", "#EEEE11", "html-color", "Glow color of update-indicator", null, { tags: ["Basic"] });
 Cell.prototype.publish("indicatorBorderColor", "#F48A00", "html-color", "Border color of update-indicator", null, { tags: ["Basic"] });
 Cell.prototype.publish("indicatorOpacity", 0.8, "number", "Opacity of update-indicator", null, { tags: ["Basic"] });

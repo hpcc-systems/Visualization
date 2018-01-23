@@ -642,31 +642,58 @@ export class Axis extends SVGWidget {
         }
     }
 
-    title: { (): string; (_: string): Axis; };
-    orientation: { (): string; (_: string): Axis; };
-    powExponent: { (): number; (_: number): Axis; };
-    logBase: { (): number; (_: number): Axis; };
-    ordinals: { (): string[]; (_: string[]): Axis; };
     ordinals_exists: () => boolean;
-    tickCount: { (): number; (_: number): Axis; };
-    tickFormat: { (): string; (_: string): Axis; };
     tickFormat_exists: () => boolean;
-    tickLength: { (): number; (_: number): Axis; };
     ticks: { (): Array<{ value: string, label: string }>; (_: Array<{ value: string, label: string }>): Axis; };
     xAxisDomainLow: { (): string; (_: string): Axis; };
     xAxisDomainHigh: { (): string; (_: string): Axis; };
-    low: { (): any; (_: any): Axis; };
     low_exists: () => boolean;
-    high: { (): any; (_: any): Axis; };
     high_exists: () => boolean;
-    overlapMode: { (): string; (_: string): Axis; };
-    labelRotation: { (): number; (_: number): Axis; };
-    shrinkToFit: { (): string; (_: string): Axis; };
-    extend: { (): number; (_: number): Axis; };
-    hidden: { (): boolean; (_: boolean): Axis; };
 }
 Axis.prototype._class += " chart_Axis";
 
+export interface Axis {
+    title(): string;
+    title(_: string): this;
+    orientation(): string;
+    orientation(_: string): this;
+    orientation_default(): string;
+    orientation_default(_: string): this;
+    powExponent(): number;
+    powExponent(_: number): this;
+    logBase(): number;
+    logBase(_: number): this;
+    ordinals(): any[];
+    ordinals(_: any[]): this;
+    tickCount(): number;
+    tickCount(_: number): this;
+    tickFormat(): string;
+    tickFormat(_: string): this;
+    tickLength(): number;
+    tickLength(_: number): this;
+    low(): any;
+    low(_: any): this;
+    high(): any;
+    high(_: any): this;
+    overlapMode(): string;
+    overlapMode(_: string): this;
+    overlapMode_default(): string;
+    overlapMode_default(_: string): this;
+    labelRotation(): number;
+    labelRotation(_: number): this;
+    shrinkToFit(): string;
+    shrinkToFit(_: string): this;
+    shrinkToFit_default(): string;
+    shrinkToFit_default(_: string): this;
+    extend(): number;
+    extend(_: number): this;
+    extend_default(): number;
+    extend_default(_: number): this;
+    hidden(): boolean;
+    hidden(_: boolean): this;
+    type_default(): string;
+    type_default(_: string): this;
+}
 Axis.prototype.publish("title", "", "string", "Title");
 Axis.prototype.publish("orientation", "bottom", "set", "Orientation", ["left", "top", "right", "bottom"]);
 Axis.prototype.publish("powExponent", 2, "number", "Exponent for Pow on Value Axis", null, { disable: (w: any) => w.type() !== "pow" });

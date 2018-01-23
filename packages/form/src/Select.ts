@@ -58,9 +58,7 @@ export class Select extends HTMLWidget {
         this._inputElement[0].html(optionHTML);
     }
 
-    selectOptions: { (): any[]; (_: any[]): Select };
     selectOptions_exists: () => boolean;
-    maxWidth: { (): number; (_: number): Select };
     maxWidth_exists: () => boolean;
 
     //  IInput  ---
@@ -76,5 +74,11 @@ export class Select extends HTMLWidget {
 Select.prototype._class += " form_Select";
 Select.prototype.implements(IInput.prototype);
 
+export interface Select {
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+    maxWidth(): number;
+    maxWidth(_: number): this;
+}
 Select.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
 Select.prototype.publish("maxWidth", 120, "number", "Width", null, { optional: true });

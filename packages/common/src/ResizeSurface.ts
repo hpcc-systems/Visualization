@@ -214,8 +214,11 @@ export class ResizeSurface extends Surface {
             })
             ;
     }
-    allowResize: { (): boolean; (_: boolean): ResizeSurface; };
 }
 ResizeSurface.prototype._class += " common_ResizeSurface";
 
+export interface ResizeSurface {
+    allowResize(): boolean;
+    allowResize(_: boolean): this;
+}
 ResizeSurface.prototype.publish("allowResize", true, "boolean", "Sets if surface can be resized", null, { tags: ["Private", "Shared"] });

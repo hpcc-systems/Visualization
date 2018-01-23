@@ -75,16 +75,20 @@ export class Graticule extends Layer {
                 ;
         }
     */
-    opacity: { (): number; (_: number): Graticule };
     opacity_exists: () => boolean;
-    meshColor: { (): string; (_: string): Graticule };
     meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): Graticule };
     meshStrokeWidth_exists: () => boolean;
 }
 Graticule.prototype._class += " map_Graticule";
 
+export interface Graticule {
+    opacity(): number;
+    opacity(_: number): this;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+}
 Graticule.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
-
 Graticule.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });
 Graticule.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");

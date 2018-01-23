@@ -65,18 +65,26 @@ export class Heat extends Layer {
             ;
     }
 
-    latColumn: { (): string; (_: string): Heat };
     latColumn_exists: () => boolean;
-    longColumn: { (): string; (_: string): Heat };
     longColumn_exists: () => boolean;
-    opacity: { (): number; (_: number): Heat };
     opacity_exists: () => boolean;
 }
 Heat.prototype._class += " map_Heat";
 
+export interface Heat {
+    latColumn(): string;
+    latColumn(_: string): this;
+    longColumn(): string;
+    longColumn(_: string): this;
+    opacity(): number;
+    opacity(_: number): this;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+}
 Heat.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
 Heat.prototype.publish("longColumn", null, "set", "Longtitude column", function () { return this.columns(); }, { optional: true });
 Heat.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
-
 // Heat.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });
 // Heat.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");

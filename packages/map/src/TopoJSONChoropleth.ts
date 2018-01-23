@@ -12,8 +12,6 @@ TopoJSONChoropleth.prototype = Object.create(Choropleth.prototype);
 TopoJSONChoropleth.prototype.constructor = TopoJSONChoropleth;
 TopoJSONChoropleth.prototype._class += " map_TopoJSONChoropleth";
 
-TopoJSONChoropleth.prototype.publish("region", "GB", "set", "Region Data", ["AT", "BE", "BG", "CHLI", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GE", "GR", "HR", "HU", "IE", "IS", "IT", "KS", "LT", "LU", "LV", "MD", "MK", "MT", "ND", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK", "UA"]);
-
 TopoJSONChoropleth.prototype.layerEnter = function (base, svgElement, domElement) {
     Choropleth.prototype.layerEnter.apply(this, arguments);
 
@@ -112,3 +110,9 @@ TopoJSONChoropleth.prototype.layerPreRender = function () {
     }
     return this._topoJsonPromise;
 };
+
+export interface TopoJSONChoropleth {
+    region(): string;
+    region(_: string): this;
+}
+TopoJSONChoropleth.prototype.publish("region", "GB", "set", "Region Data", ["AT", "BE", "BG", "CHLI", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GE", "GR", "HR", "HU", "IE", "IS", "IT", "KS", "LT", "LU", "LV", "MD", "MK", "MT", "ND", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK", "UA"]);

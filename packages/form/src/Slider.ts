@@ -197,23 +197,14 @@ export class Slider extends SVGWidget {
         return retVal;
     };
 
-    padding: { (): number; (_: number): Slider };
     padding_exists: () => boolean;
-    fontSize: { (): number; (_: number): Slider };
     fontSize_exists: () => boolean;
-    fontFamily: { (): string; (_: string): Slider };
     fontFamily_exists: () => boolean;
-    fontColor: { (): string; (_: string): Slider };
     fontColor_exists: () => boolean;
-    allowRange: { (): boolean; (_: boolean): Slider };
     allowRange_exists: () => boolean;
-    low: { (): number; (_: number): Slider };
     low_exists: () => boolean;
-    high: { (): number; (_: number): Slider };
     high_exists: () => boolean;
-    step: { (): number; (_: number): Slider };
     step_exists: () => boolean;
-    selectionLabel: { (): string; (_: string): Slider };
     selectionLabel_exists: () => boolean;
 
     /*
@@ -242,16 +233,6 @@ export class Slider extends SVGWidget {
 Slider.prototype._class += " form_Slider";
 Slider.prototype.implements(IInput.prototype);
 
-Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
-Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
-Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags: ["Basic"] });
-Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
-
-Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
-Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
 /*
 Slider.prototype.publishProxy("tickCount", "axis", "tickCount");
 Slider.prototype.publishProxy("tickFormat", "axis", "tickFormat");
@@ -262,12 +243,8 @@ Slider.prototype.publishProxy("logBase", "axis", "logBase");
 Slider.prototype.publishProxy("overlapMode", "axis");
 Slider.prototype.publishProxy("labelRotation", "axis");
 
-Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
-Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
 Slider.prototype.publishProxy("playDiameter", "_playIcon", "diameter", 32);
-Slider.prototype.publish("playGutter", 4, "number", "Play Gutter");
 Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
-Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
 */
 
 const name = Slider.prototype.name;
@@ -293,3 +270,45 @@ Slider.prototype.value = function (_?: any): any {
     }
     return retVal;
 };
+
+export interface Slider {
+    padding(): number;
+    padding(_: number): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontColor(): string;
+    fontColor(_: string): this;
+    allowRange(): boolean;
+    allowRange(_: boolean): this;
+    low(): number;
+    low(_: number): this;
+    high(): number;
+    high(_: number): this;
+    step(): number;
+    step(_: number): this;
+    selectionLabel(): string;
+    selectionLabel(_: string): this;
+    showPlay(): boolean;
+    showPlay(_: boolean): this;
+    playInterval(): number;
+    playInterval(_: number): this;
+    playGutter(): number;
+    playGutter(_: number): this;
+    loopGutter(): number;
+    loopGutter(_: number): this;
+}
+Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
+Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
+Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags: ["Basic"] });
+Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
+Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
+Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
+Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
+Slider.prototype.publish("playGutter", 4, "number", "Play Gutter");
+Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");

@@ -1,4 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, Widget } from "@hpcc-js/common";
 
 export class Popup extends HTMLWidget {
     _surfaceButtons;
@@ -85,20 +85,29 @@ export class Popup extends HTMLWidget {
     click(obj) {
         console.log("Clicked: " + obj.id);
     }
-
-    popupState: { (): boolean; (_: boolean): Popup; };
-    shrinkWrap: { (): boolean; (_: boolean): Popup; };
-    centerPopup: { (): string; (_: string): Popup; };
-    top: { (): number; (_: number): Popup; };
-    bottom: { (): number; (_: number): Popup; };
-    left: { (): number; (_: number): Popup; };
-    right: { (): number; (_: number): Popup; };
-    position: { (): string; (_: string): Popup; };
-
-    widget: { (): any; (_: any): Popup; };
 }
 Popup.prototype._class += " layout_Popup";
 
+export interface Popup {
+    popupState(): boolean;
+    popupState(_: boolean): this;
+    shrinkWrap(): boolean;
+    shrinkWrap(_: boolean): this;
+    centerPopup(): string;
+    centerPopup(_: string): this;
+    top(): number;
+    top(_: number): this;
+    bottom(): number;
+    bottom(_: number): this;
+    left(): number;
+    left(_: number): this;
+    right(): number;
+    right(_: number): this;
+    position(): string;
+    position(_: string): this;
+    widget(): Widget;
+    widget(_: Widget): this;
+}
 Popup.prototype.publish("popupState", false, "boolean", "State of the popup, visible (true) or hidden (false)", null, {});
 Popup.prototype.publish("shrinkWrap", false, "boolean", "The popup parent container either shrinks to the size of its contents (true) or expands to fit thge popup's parentDiv (false)", null, {});
 Popup.prototype.publish("centerPopup", "none", "set", "Center the widget in its container element (target) or in the window", ["none", "container", "window"], {});
@@ -107,5 +116,4 @@ Popup.prototype.publish("bottom", null, "number", "Bottom position property of p
 Popup.prototype.publish("left", null, "number", "Left position property of popup", null, {});
 Popup.prototype.publish("right", null, "number", "Right position property of popup", null, {});
 Popup.prototype.publish("position", "relative", "set", "Value of the 'position' property", ["absolute", "relative", "fixed", "static", "initial", "inherit"], { tags: ["Private"] });
-
 Popup.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Private"] });

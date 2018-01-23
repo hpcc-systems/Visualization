@@ -40,14 +40,20 @@ export class FAChar extends SVGWidget {
         super.exit(domNode, element);
     }
 
-    char: { (): string; (_: string): FAChar; };
-    fachar: { (): string; (_: string): FAChar; };
-    fontSize: { (): number; (_: number): FAChar; };
     text_colorFill: { (): string; (_: string): FAChar; };
 }
 FAChar.prototype._class += " common_FAChar";
 
+FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");
+
+export interface FAChar {
+    char(): string;
+    char(_: string): this;
+    fachar(): string;
+    fachar(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+}
 FAChar.prototype.publish("char", "", "string", "Font Awesome Item", null, { tags: ["Private"] });
 FAChar.prototype.publish("fachar", "", "string", "Font Awesome Item", null, { tags: ["Private"] });
 FAChar.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Private"] });
-FAChar.prototype.publishProxy("text_colorFill", "_text", "colorFill");

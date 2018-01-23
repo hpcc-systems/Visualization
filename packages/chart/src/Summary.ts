@@ -22,33 +22,6 @@ Summary.prototype.constructor = Summary;
 Summary.prototype.implements(I2DChart.prototype);
 Summary.prototype._class += " chart_Summary";
 
-Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
-Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: (w) => w.iconColumn() });
-
-Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
-Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideLabel() });
-Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideLabel() });
-
-Summary.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
-Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
-
-Summary.prototype.publish("hideMore", false, "boolean", "Hide More Information");
-Summary.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
-Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: (w) => w.hideMore() || w.moreIconColumn() });
-Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
-Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: (w) => w.hideMore() || w.moreTextColumn() });
-Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideMore() });
-
-Summary.prototype.publish("colorFillColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
-Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null, { disable: (w) => w.colorFillColumn() });
-Summary.prototype.publish("colorStrokeColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
-Summary.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null, { disable: (w) => w.colorStrokeColumn() });
-
-Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
-Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");
-Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
-Summary.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });
-
 const playInterval = Summary.prototype.playInterval;
 Summary.prototype.playInterval = function (_) {
     const retVal = playInterval.apply(this, arguments);
@@ -205,3 +178,69 @@ Summary.prototype.update = function (_domNode, element) {
 Summary.prototype.exit = function (_domNode, _element) {
     HTMLWidget.prototype.exit.apply(this, arguments);
 };
+
+export interface Summary {
+    iconColumn(): string;
+    iconColumn(_: string): this;
+    icon(): string;
+    icon(_: string): this;
+    hideLabel(): boolean;
+    hideLabel(_: boolean): this;
+    labelColumn(): string;
+    labelColumn(_: string): this;
+    labelHTML(): boolean;
+    labelHTML(_: boolean): this;
+    valueColumn(): string;
+    valueColumn(_: string): this;
+    valueHTML(): boolean;
+    valueHTML(_: boolean): this;
+    hideMore(): boolean;
+    hideMore(_: boolean): this;
+    moreIconColumn(): string;
+    moreIconColumn(_: string): this;
+    moreIcon(): string;
+    moreIcon(_: string): this;
+    moreTextColumn(): string;
+    moreTextColumn(_: string): this;
+    moreText(): string;
+    moreText(_: string): this;
+    moreTextHTML(): boolean;
+    moreTextHTML(_: boolean): this;
+    colorFillColumn(): string;
+    colorFillColumn(_: string): this;
+    colorFill(): string;
+    colorFill(_: string): this;
+    colorStrokeColumn(): string;
+    colorStrokeColumn(_: string): this;
+    colorStroke(): string;
+    colorStroke(_: string): this;
+    fixedSize(): boolean;
+    fixedSize(_: boolean): this;
+    minWidth(): number;
+    minWidth(_: number): this;
+    minHeight(): number;
+    minHeight(_: number): this;
+    playInterval(): number;
+    playInterval(_: number): this;
+}
+Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
+Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: (w) => w.iconColumn() });
+Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
+Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideLabel() });
+Summary.prototype.publish("labelHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideLabel() });
+Summary.prototype.publish("valueColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true });
+Summary.prototype.publish("valueHTML", false, "boolean", "Allow HTML");
+Summary.prototype.publish("hideMore", false, "boolean", "Hide More Information");
+Summary.prototype.publish("moreIconColumn", null, "set", "Select More Icon Column", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
+Summary.prototype.publish("moreIcon", "fa-info-circle", "string", "FA Char icon class", null, { disable: (w) => w.hideMore() || w.moreIconColumn() });
+Summary.prototype.publish("moreTextColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideMore() });
+Summary.prototype.publish("moreText", "More Info", "string", "More text", null, { disable: (w) => w.hideMore() || w.moreTextColumn() });
+Summary.prototype.publish("moreTextHTML", false, "boolean", "Allow HTML", null, { disable: (w) => w.hideMore() });
+Summary.prototype.publish("colorFillColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
+Summary.prototype.publish("colorFill", "#3498db", "html-color", "Fill Color", null, { disable: (w) => w.colorFillColumn() });
+Summary.prototype.publish("colorStrokeColumn", null, "set", "Column for color", function () { return this.columns(); }, { optional: true });
+Summary.prototype.publish("colorStroke", "#ffffff", "html-color", "Fill Color", null, { disable: (w) => w.colorStrokeColumn() });
+Summary.prototype.publish("fixedSize", true, "boolean", "Fix Size to Min Width/Height");
+Summary.prototype.publish("minWidth", 225, "number", "Minimum Width");
+Summary.prototype.publish("minHeight", 150, "number", "Minimum Height");
+Summary.prototype.publish("playInterval", null, "number", "Play Interval", null, { optional: true });

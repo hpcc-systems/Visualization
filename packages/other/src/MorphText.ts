@@ -67,25 +67,16 @@ export class MorphText extends SVGWidget {
             .remove()
             ;
     }
-    anchor: { (): string; (_: string): MorphText };
     anchor_exists: () => boolean;
-    fontSize: { (): number; (_: number): MorphText };
     fontSize_exists: () => boolean;
-    reverse: { (): boolean; (_: boolean): MorphText };
     reverse_exists: () => boolean;
-    text: (_?: string) => MorphText | this;
     text_exists: () => boolean;
 }
 MorphText.prototype._class += " other_MorphText";
 
-MorphText.prototype.publish("anchor", "middle", "set", "Sets anchor point", ["middle"], { tags: ["Basic"] });
-MorphText.prototype.publish("fontSize", 14, "number", "Sets fontsize", null, { tags: ["Basic"] });
-MorphText.prototype.publish("reverse", false, "boolean", "Reverse Animation", null, { tags: ["Basic"] });
-MorphText.prototype.publish("text", "", "string", "Sets text/data of widget", null, { tags: ["Basic"] });
-
 const _origText = MorphText.prototype.text;
-MorphText.prototype.text = function (_) {
-    const retVal = _origText.apply(this, arguments);
+MorphText.prototype.text = function (_?: string) {
+    const retVal: string = _origText.apply(this, arguments);
     if (arguments.length) {
         const usedChars = {};
         const chars = _.split("");
@@ -97,6 +88,22 @@ MorphText.prototype.text = function (_) {
             usedChars[id]++;
             return { text: d, id: d.charCodeAt(0) + (1024 * usedChars[id]) };
         }));
+        return this;
     }
     return retVal;
 };
+
+export interface MorphText {
+    anchor(): string;
+    anchor(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    reverse(): boolean;
+    reverse(_: boolean): this;
+    text(): string;
+    text(_: string): MorphText | this;
+}
+MorphText.prototype.publish("anchor", "middle", "set", "Sets anchor point", ["middle"], { tags: ["Basic"] });
+MorphText.prototype.publish("fontSize", 14, "number", "Sets fontsize", null, { tags: ["Basic"] });
+MorphText.prototype.publish("reverse", false, "boolean", "Reverse Animation", null, { tags: ["Basic"] });
+MorphText.prototype.publish("text", "", "string", "Sets text/data of widget", null, { tags: ["Basic"] });

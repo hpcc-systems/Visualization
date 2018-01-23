@@ -181,17 +181,11 @@ export class CalendarHeatMap extends HTMLWidget {
     }
 
     _palette;
-    paletteID: { (): string; (_: string): CalendarHeatMap };
     paletteID_exists: () => boolean;
-    dateColumn: { (): string; (_: string): CalendarHeatMap };
     dateColumn_exists: () => boolean;
-    datePattern: { (): string; (_: string): CalendarHeatMap };
     datePattern_exists: () => boolean;
-    aggrType: { (): string; (_: string): CalendarHeatMap };
     aggrType_exists: () => boolean;
-    aggrColumn: { (): string; (_: string): CalendarHeatMap };
     aggrColumn_exists: () => boolean;
-    aggrDeltaColumn: { (): string; (_: string): CalendarHeatMap };
     aggrDeltaColumn_exists: () => boolean;
 
     //  SimpleSelectionMixin
@@ -201,8 +195,22 @@ CalendarHeatMap.prototype._class += " other_CalendarHeatMap";
 CalendarHeatMap.prototype.mixin(Utility.SimpleSelectionMixin);
 
 CalendarHeatMap.prototype._palette = Palette.rainbow("default");
-CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 
+export interface CalendarHeatMap {
+    paletteID(): string;
+    paletteID(_: string): this;
+    dateColumn(): string;
+    dateColumn(_: string): this;
+    datePattern(): string;
+    datePattern(_: string): this;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+    aggrDeltaColumn(): string;
+    aggrDeltaColumn(_: string): this;
+}
+CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CalendarHeatMap.prototype.publish("dateColumn", null, "set", "Date Column", function () { return this.columns(); }, { optional: true });
 CalendarHeatMap.prototype.publish("datePattern", "%Y-%m-%d", "string", "Date Pattern");
 CalendarHeatMap.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true });

@@ -14,7 +14,7 @@
     "@types/mocha": "2.2.41",
     "css-loader": "0.26.1",
     "file-loader": "1.1.5",
-    "mocha-chrome": "1.0.1",
+    "mocha-chrome": "1.0.3",
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
     "typescript": "2.6.1",

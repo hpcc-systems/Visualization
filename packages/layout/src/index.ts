@@ -10,3 +10,4 @@ export * from "./Popup";
 export * from "./Surface";
 export * from "./Tabbed";
 export * from "./Toolbar";
+export * from "./Modal";

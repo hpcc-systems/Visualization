@@ -261,11 +261,18 @@
         },
         Modal: {
             simple: function (callback) {
-                require(["test/DataFactory", "src/layout/Modal"], function (DataFactory, Modal) {
+                legacyRequire(["test/DataFactory", "src/layout/Modal", "src/chart/Line"], function (DataFactory, Modal, Line) {
                     callback(new Modal()
                         .relativeTargetId("cellSurface")
                         .title('A Simple Modal')
-                        .html("<p>"+DataFactory.Lorem_ipsum+"</p>")
+                        .widget(new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                            .size({ width: 500, height: 400 })
+                        )
+                        .on("closeModal", function () {
+                            console.log("closeModal hook");
+                        })
                     );
                 });
             }

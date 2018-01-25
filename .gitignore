@@ -29,4 +29,5 @@ lib-es6/
 lib-test/
 lib-umd/
 *.log
-**/**/package-lock.json
+packages/**/package-lock.json
+tests/**/package-lock.json

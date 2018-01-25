@@ -1,3 +1,4 @@
+import { Widget } from "@hpcc-js/common";
 import { Button } from "@hpcc-js/form";
 import { Popup } from "@hpcc-js/layout";
 import { Surface } from "@hpcc-js/layout";
@@ -71,7 +72,7 @@ export class FlyoutButton extends Button {
 
     enter(domNode, element) {
         Button.prototype.enter.apply(this, arguments);
-        let parentWidget = this;
+        let parentWidget: Widget = this;
         while (parentWidget && ["marshaller_HTML", "marshaller_Graph", "composite_MegaChart"].indexOf(parentWidget.classID()) === -1) {
             parentWidget = parentWidget.locateParentWidget();
         }

@@ -34,7 +34,7 @@ export class Modal extends HTMLWidget {
             }
         }
         relativeTarget = this.locateAncestor("layout_Grid");
-        if (relativeTarget && relativeTarget.element) {
+        if (relativeTarget) {
             return relativeTarget.element().node();
         }
         return document.body;
@@ -79,7 +79,6 @@ export class Modal extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        const context = this;
         this._fade = element.append("div")
             .classed("layout_Modal-fade", true)
             .classed("layout_Modal-fadeClickable", this.enableClickFadeToClose())
@@ -89,13 +88,13 @@ export class Modal extends HTMLWidget {
         this._modal = element.append("div")
             .classed("layout_Modal-content", true)
             ;
-        this._modalHeader = this._modal.append("div")
+        this._modalHeader = this._modal.append<HTMLElement>("div")
             .classed("layout_Modal-header", true)
             .style("color", this.titleFontColor())
             .style("font-size", this.titleFontSize() + "px")
             .style("height", header_h + "px")
             ;
-        this._modalBody = this._modal.append("div")
+        this._modalBody = this._modal.append<HTMLElement>("div")
             .classed("layout_Modal-body", true)
             .style("height", `calc( 100% - ${header_h}px )`)
             ;
@@ -107,10 +106,10 @@ export class Modal extends HTMLWidget {
             .text(this.title())
             ;
 
-        this._modalHeaderAnnotations = this._modalHeader.append("div")
+        this._modalHeaderAnnotations = this._modalHeader.append<HTMLElement>("div")
             .classed("layout_Modal-annotations", true)
             ;
-        this._modalHeaderCloseButton = this._modalHeaderAnnotations.append("div")
+        this._modalHeaderCloseButton = this._modalHeaderAnnotations.append<HTMLElement>("div")
             .classed("layout_Modal-closeButton", true)
             .html("<i class=\"fa fa-close\"></i>")
             ;
@@ -120,8 +119,8 @@ export class Modal extends HTMLWidget {
             .style("right", (this.titleFontSize() / 2) + "px")
             .style("top", (this.titleFontSize() / 2) + "px")
             ;
-        this._modalHeaderCloseButton.on("click", function () {
-            context.closeModal();
+        this._modalHeaderCloseButton.on("click", () => {
+            this.closeModal();
         });
         this._fade.on("click", n => {
             if (this.enableClickFadeToClose()) {
@@ -139,8 +138,8 @@ export class Modal extends HTMLWidget {
                 this._widget.target(this._modalBody.node());
             }
             this._widget
-                .render(n => {
-                    n.resize().render();
+                .render(w => {
+                    w.resize().render();
                 })
                 ;
         } else {
@@ -155,14 +154,13 @@ export class Modal extends HTMLWidget {
 
         this.setModalSizeLimits();
 
-        this._widget.render(n => {
+        this._widget.render(() => {
             const rect = this._relativeTarget.getBoundingClientRect();
             this.setFadePosition(rect);
             this.setModalPosition(rect);
         });
     }
 }
-
 Modal.prototype._class += " layout_Modal";
 
 export interface Modal {

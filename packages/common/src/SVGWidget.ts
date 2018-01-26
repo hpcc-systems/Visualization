@@ -2,7 +2,7 @@ import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
 import { debounce } from "./Utility";
-import { ISize, Widget } from "./Widget";
+import { d3SelectionType, ISize, Widget } from "./Widget";
 
 const lerp = function (point, that, t) {
     //  From https://github.com/thelonious/js-intersections
@@ -190,6 +190,10 @@ export class SVGWidget extends Widget {
             }
         }
         return retVal;
+    }
+
+    parentOverlay(): d3SelectionType | null {
+        return this._parentOverlay;
     }
 
     enter(domNode, element) {

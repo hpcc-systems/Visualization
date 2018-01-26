@@ -327,7 +327,7 @@ export abstract class Widget extends PropertyExt {
     }
 
     //  DOM/SVG Node Helpers  ---
-    toWidget(domNode) {
+    toWidget(domNode): Widget | null {
         if (!domNode) {
             return null;
         }
@@ -341,7 +341,11 @@ export abstract class Widget extends PropertyExt {
         return null;
     }
 
-    locateParentWidget(domNode?) {
+    parentOverlay(): d3SelectionType | null {
+        return null;
+    }
+
+    locateParentWidget(domNode?): Widget | null {
         domNode = domNode || (this._target ? this._target.parentNode : null);
         if (domNode) {
             const widget = this.toWidget(domNode);
@@ -354,7 +358,7 @@ export abstract class Widget extends PropertyExt {
         return null;
     }
 
-    locateSVGNode(domNode) {
+    locateSVGNode(domNode): SVGSVGElement | null {
         if (!domNode) {
             return null;
         }
@@ -364,18 +368,19 @@ export abstract class Widget extends PropertyExt {
         return this.locateSVGNode(domNode.parentNode);
     }
 
-    locateOverlayNode() {
+    locateOverlayNode(): d3SelectionType | null {
         let widget = this.locateParentWidget(this._target);
         while (widget) {
-            if (widget._parentOverlay) {
-                return widget._parentOverlay;
+            const retVal = widget.parentOverlay();
+            if (retVal) {
+                return retVal;
             }
             widget = this.locateParentWidget(widget._target.parentNode);
         }
         return null;
     }
 
-    locateAncestor(classID) {
+    locateAncestor(classID): Widget | null {
         let widget = this.locateParentWidget(this._target);
         while (widget) {
             if (widget.classID() === classID) {

@@ -1,0 +1,8 @@
+.layout_ChartPanel .series.highlight {
+    stroke-width: 2px;
+    opacity: 1;
+}
+
+.layout_ChartPanel .series.lowlight {
+    opacity: 0.3!important;
+}

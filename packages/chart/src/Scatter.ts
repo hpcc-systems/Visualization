@@ -63,7 +63,7 @@ export class Scatter extends XYAxis {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.label, series: context.layerColumns(host)[d.colIdx], value: d.value });
+                return context.tooltipFormat({ label: d.label, series: d.column, value: d.value });
             })
             ;
     }
@@ -97,14 +97,15 @@ export class Scatter extends XYAxis {
             }
         }
 
-        const data = this.flattenData(this.layerColumns(host), this.layerData(host)).map(function (d) {
+        const layerColumns = this.layerColumns(host);
+        const data = this.flattenData(layerColumns, this.layerData(host)).map(function (d) {
             d.shape = mapShape(context.pointShape());
+            d.column = layerColumns[d.colIdx];
             return d;
         });
 
         const points = element.selectAll(".point").data(data, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .attr("class", "point")
             .each(function (d2) {
                 const element = d3Select(this);
                 element
@@ -114,10 +115,10 @@ export class Scatter extends XYAxis {
                     .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))
                     .on("click", function (d: any, _idx) {
-                        context.click(host.rowToObj(host.data()[d.rowIdx]), context.layerColumns(host)[d.colIdx], host._selection.selected(this));
+                        context.click(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
                     .on("dblclick", function (d: any, _idx) {
-                        context.dblclick(host.rowToObj(host.data()[d.rowIdx]), context.layerColumns(host)[d.colIdx], host._selection.selected(this));
+                        context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
                     ;
                 element
@@ -126,6 +127,7 @@ export class Scatter extends XYAxis {
                     ;
             })
             .merge(points)
+            .attr("class", d => "point series series-" + this.cssTag(d.column))
             .each(function (d2) {
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
@@ -142,7 +144,7 @@ export class Scatter extends XYAxis {
                             .attr("y", function (d) { return context.yPos(host, d) - context.pointSize() / 2; })
                             .attr("width", context.pointSize())
                             .attr("height", context.pointSize())
-                            .style("fill", function (d: any, _idx) { return context._palette(context.layerColumns(host)[d.colIdx]); })
+                            .style("fill", function (d: any, _idx) { return context._palette(d.column); })
                             ;
                         break;
                     case "circle":
@@ -150,7 +152,7 @@ export class Scatter extends XYAxis {
                             .attr("cx", function (d) { return context.xPos(host, d); })
                             .attr("cy", function (d) { return context.yPos(host, d); })
                             .attr("r", context.pointSize() / 2)
-                            .style("fill", function (d: any, _idx) { return context._palette(context.layerColumns(host)[d.colIdx]); })
+                            .style("fill", function (d: any, _idx) { return context._palette(d.column); })
                             ;
                         break;
                     case "path":
@@ -161,7 +163,7 @@ export class Scatter extends XYAxis {
                                     "M" + (context.xPos(host, d) - context.pointSize() / 2) + " " + (context.yPos(host, d) + context.pointSize() / 2) + " " +
                                     "L" + (context.xPos(host, d) + context.pointSize() / 2) + " " + (context.yPos(host, d) - context.pointSize() / 2);
                             })
-                            .style("stroke", function (d: any) { return context._palette(context.layerColumns(host)[d.colIdx]); })
+                            .style("stroke", function (d: any) { return context._palette(d.column); })
                             ;
                         break;
                     default:
@@ -172,10 +174,8 @@ export class Scatter extends XYAxis {
             .remove()
             ;
 
-        const areas = element.selectAll(".area").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
-        const areasEnter = areas.enter().append("path")
-            .attr("class", "area")
-            ;
+        const areas = element.selectAll(".area").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
+        const areasEnter = areas.enter().append("path");
         const area = d3Area()
             .curve(this.curve())
             ;
@@ -193,33 +193,33 @@ export class Scatter extends XYAxis {
                 ;
         }
         areasEnter.merge(areas)
+            .attr("class", d => "area series series-" + this.cssTag(d))
             .each(function (_d, idx) {
                 const element = d3Select(this);
                 element
                     .attr("d", area(data.filter(function (d2) { return d2.colIdx === idx + 1; })))
                     .style("opacity", context.interpolateFillOpacity())
                     .style("stroke", "none")
-                    .style("fill", function () { return d3Hsl(context._palette(context.layerColumns(host)[idx + 1])).brighter().toString(); })
+                    .style("fill", d3Hsl(context._palette(_d)).brighter().toString())
                     ;
             });
         areas.exit().remove();
 
-        const lines = element.selectAll(".line").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
-        const linesEnter = lines.enter().append("path")
-            .attr("class", "line")
-            ;
+        const lines = element.selectAll(".line").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
+        const linesEnter = lines.enter().append("path");
         const line = d3Line()
             .x(function (d) { return context.xPos(host, d); })
             .y(function (d) { return context.yPos(host, d); })
             .curve(this.curve())
             ;
         linesEnter.merge(lines)
+            .attr("class", d => "line series series-" + this.cssTag(d))
             .each(function (_d, idx) {
                 const element = d3Select(this);
                 const data2 = data.filter(function (d2) { return d2.colIdx === idx + 1; });
                 element
                     .attr("d", line(data2))
-                    .style("stroke", function () { return context._palette(context.layerColumns(host)[idx + 1]); })
+                    .style("stroke", function () { return context._palette(_d); })
                     .style("fill", "none")
                     ;
             });

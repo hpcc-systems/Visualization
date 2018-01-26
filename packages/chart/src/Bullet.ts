@@ -73,7 +73,7 @@ export class Bullet extends HTMLWidget {
             .each(function () {
                 const element2 = d3Select(this);
                 const bulletBar = element2.append("g")
-                    .attr("class", "bulletBar")
+                    .attr("class", (d, i) => "bulletBar series series-" + context.cssTag(context.titleColumn()))
                     ;
                 const bulletTitle = bulletBar.append("g")
                     .attr("class", "bulletTitle")

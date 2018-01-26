@@ -2,12 +2,20 @@ import { BBox, d3SelectionType, HTMLWidget, Widget } from "@hpcc-js/common";
 
 import "../src/Border2.css";
 
-class WidgetDiv {
+export class WidgetDiv {
     private _div: d3SelectionType;
     private _widget: Widget;
 
     constructor(div: d3SelectionType) {
         this._div = div;
+    }
+
+    element(): d3SelectionType {
+        return this._div;
+    }
+
+    node(): SVGElement | HTMLElement {
+        return this._div.node();
     }
 
     widget(): Widget;
@@ -52,11 +60,11 @@ class WidgetDiv {
 
 export class Border2 extends HTMLWidget {
 
-    private _topWA: WidgetDiv;
-    private _leftWA: WidgetDiv;
-    private _centerWA: WidgetDiv;
-    private _rightWA: WidgetDiv;
-    private _bottomWA: WidgetDiv;
+    protected _topWA: WidgetDiv;
+    protected _leftWA: WidgetDiv;
+    protected _centerWA: WidgetDiv;
+    protected _rightWA: WidgetDiv;
+    protected _bottomWA: WidgetDiv;
 
     constructor() {
         super();

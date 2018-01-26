@@ -4,6 +4,8 @@ import "../src/TitleBar.css";
 
 export interface IClickHandler {
     titleBarClick(src: Item, d, idx: number, groups): void;
+    titleBarMouseEnter(src: Item, d, idx: number, groups): void;
+    titleBarMouseLeave(src: Item, d, idx: number, groups): void;
 }
 
 export class Item extends HTMLWidget {
@@ -37,6 +39,12 @@ export class Button extends Item {
             .append("i")
             .attr("class", `fa ${this._icon} fa-lg fa-fw`)
             ;
+        if (this._owner.titleBarMouseEnter) {
+            element.on("mouseenter", (d, idx, groups) => this._owner.titleBarMouseEnter(this, d, idx, groups));
+        }
+        if (this._owner.titleBarMouseLeave) {
+            element.on("mouseleave", (d, idx, groups) => this._owner.titleBarMouseLeave(this, d, idx, groups));
+        }
     }
 }
 

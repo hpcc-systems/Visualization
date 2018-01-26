@@ -197,11 +197,13 @@ describe("@hpcc-js/layout", function () {
                                     ));
                                 break;
                             case Modal:
-                                render(new Modal()
-                                    .widget(new Pie()
-                                        .columns(data.TwoD.subjects.columns)
-                                        .data(data.TwoD.subjects.data)
-                                    )
+                                render(
+                                    new Modal()
+                                        .widget(
+                                        new Pie()
+                                            .columns(data.TwoD.subjects.columns)
+                                            .data(data.TwoD.subjects.data)
+                                        )
                                 );
                                 break;
                             case Popup:

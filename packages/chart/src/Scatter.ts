@@ -104,7 +104,9 @@ export class Scatter extends XYAxis {
 
         const points = element.selectAll(".point").data(data, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .attr("class", "point")
+            .attr("class", function (d, i) {
+                return "point series series-" + i;
+            })
             .each(function (d2) {
                 const element = d3Select(this);
                 element
@@ -174,7 +176,9 @@ export class Scatter extends XYAxis {
 
         const areas = element.selectAll(".area").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         const areasEnter = areas.enter().append("path")
-            .attr("class", "area")
+            .attr("class", function (d, i) {
+                return "area series series-" + i;
+            })
             ;
         const area = d3Area()
             .curve(this.curve())
@@ -206,7 +210,9 @@ export class Scatter extends XYAxis {
 
         const lines = element.selectAll(".line").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
         const linesEnter = lines.enter().append("path")
-            .attr("class", "line")
+            .attr("class", function (d, i) {
+                return "line series series-" + i;
+            })
             ;
         const line = d3Line()
             .x(function (d) { return context.xPos(host, d); })

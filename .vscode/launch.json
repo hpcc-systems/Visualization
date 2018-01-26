@@ -5,7 +5,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "file:///${workspaceRoot}/demos/Dermatology/dermatology.html",
+            "url": "file:///${workspaceRoot}/demos/dermatology/www/index-dev.html",
             "webRoot": "${workspaceRoot}"
         }
     ]

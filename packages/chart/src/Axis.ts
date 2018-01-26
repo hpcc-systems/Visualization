@@ -20,7 +20,7 @@ export class Axis extends SVGWidget {
     protected parser;
     protected parserInvert;
     protected formatter;
-    d3Scale;
+    protected d3Scale;
     protected d3Axis;
     protected d3Guides;
     protected _guideElement;
@@ -118,9 +118,13 @@ export class Axis extends SVGWidget {
     scalePos(d) {
         let retVal = this.d3Scale(this.parse(d));
         if (this.type() === "ordinal") {
-            retVal += this.d3Scale.bandwidth() / 2;
+            retVal += this.bandwidth() / 2;
         }
         return retVal;
+    }
+
+    bandwidth() {
+        return this.d3Scale.bandwidth ? this.d3Scale.bandwidth() : 0;
     }
 
     isHorizontal() {
@@ -330,7 +334,7 @@ export class Axis extends SVGWidget {
                 svg.selectAll(".tick > text")
                     .call(function () {
                         return context.linebreak.apply(context, arguments);
-                    }, this.d3Scale.bandwidth())
+                    }, this.bandwidth())
                     ;
             }
         } else if (this.overlapMode() === "wrap") {
@@ -338,7 +342,7 @@ export class Axis extends SVGWidget {
                 svg.selectAll(".tick > text")
                     .call(function () {
                         return context.wrap.apply(context, arguments);
-                    }, this.d3Scale.bandwidth())
+                    }, this.bandwidth())
                     ;
             }
         } else {
@@ -622,6 +626,11 @@ export class Axis extends SVGWidget {
             .selectAll(".tick").classed("guide-0", d => d === 0 && this.low() < 0)
             ;
 
+    }
+
+    rerender() {
+        this.svgAxis.call(this.d3Axis);
+        this.svgGuides.call(this.d3Guides);
     }
 
     postUpdate(_domNode, _element) {

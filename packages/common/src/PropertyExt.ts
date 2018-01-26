@@ -565,14 +565,15 @@ export class PropertyExt extends Class {
         }
     }
 
-    copyPropsTo(other) {
-        this.publishedProperties(false).forEach(function (meta) {
+    copyPropsTo(other: PropertyExt, ignore: string[] = []): this {
+        this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 other[meta.id](this[meta.id]());
             } else {
                 other[meta.id + "_reset"]();
             }
-        }, this);
+        });
+        return this;
     }
 
     //  Events  ---

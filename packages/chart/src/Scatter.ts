@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { SVGWidget } from "@hpcc-js/common";
+import { d3SelectionType, SVGWidget } from "@hpcc-js/common";
 import { hsl as d3Hsl } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import {
@@ -13,23 +13,23 @@ import { XYAxis } from "./XYAxis";
 import "../src/Scatter.css";
 
 export class Scatter extends XYAxis {
+
     constructor() {
         super();
         INDChart.call(this);
         ITooltip.call(this);
-
         this
             .xAxisGuideLines_default(true)
             .yAxisGuideLines_default(true)
             ;
     }
 
-    xPos(d) {
-        return this.orientation() === "horizontal" ? this.dataPos(d.label) : this.valuePos(d.value);
+    xPos(host: XYAxis, d) {
+        return host.orientation() === "horizontal" ? host.dataPos(d.label) : host.valuePos(d.value);
     }
 
-    yPos(d) {
-        return this.orientation() === "horizontal" ? this.valuePos(d.value) : this.dataPos(d.label);
+    yPos(host: XYAxis, d) {
+        return host.orientation() === "horizontal" ? host.valuePos(d.value) : host.dataPos(d.label);
     }
 
     private curve(): any {
@@ -58,18 +58,21 @@ export class Scatter extends XYAxis {
         }
     }
 
-    enter(_domNode, _element) {
-        XYAxis.prototype.enter.apply(this, arguments);
+    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+        super.layerEnter(host, element, duration);
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: d.label, series: context.columns()[d.colIdx], value: d.value });
+                return context.tooltipFormat({ label: d.label, series: context.layerColumns(host)[d.colIdx], value: d.value });
             })
             ;
     }
 
     protected _prevPointShape;
-    updateChart(_domNode, _element, _margin, _width, height, isHorizontal) {
+    layerUpdate(host: XYAxis, element, duration: number = 250) {
+        super.layerUpdate(host, element);
+        const isHorizontal = host.orientation() === "horizontal";
+        const height = isHorizontal ? this.height() : this.width();
         const context = this;
 
         this._palette = this._palette.switch(this.paletteID());
@@ -78,7 +81,7 @@ export class Scatter extends XYAxis {
         }
 
         if (this._prevPointShape !== this.pointShape()) {
-            this.svgData.selectAll(".data").remove();
+            element.selectAll(".data").remove();
             this._prevPointShape = this.pointShape();
         }
 
@@ -94,12 +97,12 @@ export class Scatter extends XYAxis {
             }
         }
 
-        const data = this.flattenData().map(function (d) {
+        const data = this.flattenData(this.layerColumns(host), this.layerData(host)).map(function (d) {
             d.shape = mapShape(context.pointShape());
             return d;
         });
 
-        const points = this.svgData.selectAll(".point").data(data, function (d, idx) { return d.shape + "_" + idx; });
+        const points = element.selectAll(".point").data(data, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
             .attr("class", "point")
             .each(function (d2) {
@@ -109,12 +112,12 @@ export class Scatter extends XYAxis {
                     .attr("class", "pointSelection")
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
-                    .call(context._selection.enter.bind(context._selection))
+                    .call(host._selection.enter.bind(host._selection))
                     .on("click", function (d: any, _idx) {
-                        context.click(context.rowToObj(context.data()[d.rowIdx]), context.columns()[d.colIdx], context._selection.selected(this));
+                        context.click(host.rowToObj(host.data()[d.rowIdx]), context.layerColumns(host)[d.colIdx], host._selection.selected(this));
                     })
                     .on("dblclick", function (d: any, _idx) {
-                        context.dblclick(context.rowToObj(context.data()[d.rowIdx]), context.columns()[d.colIdx], context._selection.selected(this));
+                        context.dblclick(host.rowToObj(host.data()[d.rowIdx]), context.layerColumns(host)[d.colIdx], host._selection.selected(this));
                     })
                     ;
                 element
@@ -126,8 +129,8 @@ export class Scatter extends XYAxis {
             .each(function (d2) {
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
-                    .attr("cx", function (d) { return context.xPos(d); })
-                    .attr("cy", function (d) { return context.yPos(d); })
+                    .attr("cx", function (d) { return context.xPos(host, d); })
+                    .attr("cy", function (d) { return context.yPos(host, d); })
                     .attr("r", context.pointSize())
                     ;
 
@@ -135,30 +138,30 @@ export class Scatter extends XYAxis {
                 switch (d2.shape) {
                     case "rect":
                         element
-                            .attr("x", function (d) { return context.xPos(d) - context.pointSize() / 2; })
-                            .attr("y", function (d) { return context.yPos(d) - context.pointSize() / 2; })
+                            .attr("x", function (d) { return context.xPos(host, d) - context.pointSize() / 2; })
+                            .attr("y", function (d) { return context.yPos(host, d) - context.pointSize() / 2; })
                             .attr("width", context.pointSize())
                             .attr("height", context.pointSize())
-                            .style("fill", function (d: any, _idx) { return context._palette(context.columns()[d.colIdx]); })
+                            .style("fill", function (d: any, _idx) { return context._palette(context.layerColumns(host)[d.colIdx]); })
                             ;
                         break;
                     case "circle":
                         element
-                            .attr("cx", function (d) { return context.xPos(d); })
-                            .attr("cy", function (d) { return context.yPos(d); })
+                            .attr("cx", function (d) { return context.xPos(host, d); })
+                            .attr("cy", function (d) { return context.yPos(host, d); })
                             .attr("r", context.pointSize() / 2)
-                            .style("fill", function (d: any, _idx) { return context._palette(context.columns()[d.colIdx]); })
+                            .style("fill", function (d: any, _idx) { return context._palette(context.layerColumns(host)[d.colIdx]); })
                             ;
                         break;
                     case "path":
                         element
                             .attr("d", function (d: any) {
-                                return "M" + (context.xPos(d) - context.pointSize() / 2) + " " + (context.yPos(d) - context.pointSize() / 2) + " " +
-                                    "L" + (context.xPos(d) + context.pointSize() / 2) + " " + (context.yPos(d) + context.pointSize() / 2) + " " +
-                                    "M" + (context.xPos(d) - context.pointSize() / 2) + " " + (context.yPos(d) + context.pointSize() / 2) + " " +
-                                    "L" + (context.xPos(d) + context.pointSize() / 2) + " " + (context.yPos(d) - context.pointSize() / 2);
+                                return "M" + (context.xPos(host, d) - context.pointSize() / 2) + " " + (context.yPos(host, d) - context.pointSize() / 2) + " " +
+                                    "L" + (context.xPos(host, d) + context.pointSize() / 2) + " " + (context.yPos(host, d) + context.pointSize() / 2) + " " +
+                                    "M" + (context.xPos(host, d) - context.pointSize() / 2) + " " + (context.yPos(host, d) + context.pointSize() / 2) + " " +
+                                    "L" + (context.xPos(host, d) + context.pointSize() / 2) + " " + (context.yPos(host, d) - context.pointSize() / 2);
                             })
-                            .style("stroke", function (d: any) { return context._palette(context.columns()[d.colIdx]); })
+                            .style("stroke", function (d: any) { return context._palette(context.layerColumns(host)[d.colIdx]); })
                             ;
                         break;
                     default:
@@ -169,7 +172,7 @@ export class Scatter extends XYAxis {
             .remove()
             ;
 
-        const areas = this.svgData.selectAll(".area").data(this.columns().filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
+        const areas = element.selectAll(".area").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         const areasEnter = areas.enter().append("path")
             .attr("class", "area")
             ;
@@ -178,15 +181,15 @@ export class Scatter extends XYAxis {
             ;
         if (isHorizontal) {
             area
-                .x(function (d) { return context.xPos(d); })
-                .y0(Math.min(height, this.yPos({ value: 0 })))
-                .y1(function (d) { return context.yPos(d); })
+                .x(function (d) { return context.xPos(host, d); })
+                .y0(Math.min(height, this.yPos(host, { value: 0 })))
+                .y1(function (d) { return context.yPos(host, d); })
                 ;
         } else {
             area
-                .y(function (d) { return context.yPos(d); })
-                .x0(Math.max(0, this.xPos({ value: 0 })))
-                .x1(function (d) { return context.xPos(d); })
+                .y(function (d) { return context.yPos(host, d); })
+                .x0(Math.max(0, this.xPos(host, { value: 0 })))
+                .x1(function (d) { return context.xPos(host, d); })
                 ;
         }
         areasEnter.merge(areas)
@@ -196,18 +199,18 @@ export class Scatter extends XYAxis {
                     .attr("d", area(data.filter(function (d2) { return d2.colIdx === idx + 1; })))
                     .style("opacity", context.interpolateFillOpacity())
                     .style("stroke", "none")
-                    .style("fill", function () { return d3Hsl(context._palette(context.columns()[idx + 1])).brighter().toString(); })
+                    .style("fill", function () { return d3Hsl(context._palette(context.layerColumns(host)[idx + 1])).brighter().toString(); })
                     ;
             });
         areas.exit().remove();
 
-        const lines = this.svgData.selectAll(".line").data(this.columns().filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
+        const lines = element.selectAll(".line").data(this.layerColumns(host).filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
         const linesEnter = lines.enter().append("path")
             .attr("class", "line")
             ;
         const line = d3Line()
-            .x(function (d) { return context.xPos(d); })
-            .y(function (d) { return context.yPos(d); })
+            .x(function (d) { return context.xPos(host, d); })
+            .y(function (d) { return context.yPos(host, d); })
             .curve(this.curve())
             ;
         linesEnter.merge(lines)
@@ -216,7 +219,7 @@ export class Scatter extends XYAxis {
                 const data2 = data.filter(function (d2) { return d2.colIdx === idx + 1; });
                 element
                     .attr("d", line(data2))
-                    .style("stroke", function () { return context._palette(context.columns()[idx + 1]); })
+                    .style("stroke", function () { return context._palette(context.layerColumns(host)[idx + 1]); })
                     .style("fill", "none")
                     ;
             });

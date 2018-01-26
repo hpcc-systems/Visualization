@@ -20,6 +20,19 @@
                     );
                 });
             },
+            lineOverlay: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Column", "src/chart/Area", "src/chart/Line"], function (DataFactory, XYAxis, Column, Area, Line) {
+                    const columns = DataFactory.ND.subjects.columns;
+                    const column = new XYAxis()
+                        .columns(columns)
+                        .data(DataFactory.ND.subjects.data)
+                        ;
+                    column._layers.push(new Column().columns([columns[1]]));
+                    column._layers.push(new Area().columns([columns[2]]));
+                    column._layers.push(new Line().columns([columns[3]]));
+                    callback(column);
+                });
+            },
             longLabels: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
                     callback(new Column()

@@ -1,4 +1,4 @@
-import { publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
+import { d3SelectionType, publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
 import { brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
@@ -7,7 +7,7 @@ import { Axis } from "./Axis";
 
 import "../src/XYAxis.css";
 
-export abstract class XYAxis extends SVGWidget {
+export class XYAxis extends SVGWidget {
     protected domainAxis: Axis;
     protected valueAxis: Axis;
     protected xAxis: Axis;
@@ -15,7 +15,7 @@ export abstract class XYAxis extends SVGWidget {
     protected xBrush;
     protected yBrush;
     protected margin;
-    protected focusChart;
+    protected focusChart: XYAxis;
     _palette;
 
     constructor() {
@@ -97,6 +97,10 @@ export abstract class XYAxis extends SVGWidget {
         return retVal;
     }
 
+    bandwidth() {
+        return this.domainAxis.bandwidth();
+    }
+
     protected svg;
     protected svgRegions;
     protected svgDomainGuide;
@@ -139,6 +143,7 @@ export abstract class XYAxis extends SVGWidget {
         this.svgBrush = element.append("g")
             .attr("class", "brush")
             ;
+        this.chartsEnter(this, this.svgData, 250);
     }
 
     resizeBrushHandle(d, width, height) {
@@ -180,7 +185,7 @@ export abstract class XYAxis extends SVGWidget {
         if (currSel) {
             selected = this.data().filter(function (d) {
                 let pos = d[0];
-                pos = this.dataPos(pos) + (this.domainAxis.d3Scale.bandwidth ? this.domainAxis.d3Scale.bandwidth() / 2 : 0);
+                pos = this.dataPos(pos) + this.domainAxis.bandwidth() / 2;
                 return pos >= currSel[0] && pos <= currSel[1];
             }, this);
         }
@@ -367,7 +372,7 @@ export abstract class XYAxis extends SVGWidget {
 
         this.updateBrush(width, height, maxCurrExtent, isHorizontal);
         this.updateFocusChart(domNode, element, this.margin, width, height, isHorizontal);
-        this.updateChart(domNode, element, this.margin, width, height, isHorizontal, 250);
+        this.chartsUpdate(width, height, 250);
     }
 
     updateBrush(width, height, maxCurrExtent, isHorizontal) {
@@ -407,7 +412,7 @@ export abstract class XYAxis extends SVGWidget {
                                 currBrush.on("end", null);
                             })
                             .call(currBrush.move, [prevBrushSel[0] * ratio, prevBrushSel[1] * ratio])
-                            .on("end", function () {
+                            .on("end", () => {
                                 currBrush.on("end", () => {
                                     return this.brushMoved();
                                 });
@@ -428,29 +433,36 @@ export abstract class XYAxis extends SVGWidget {
     }
 
     updateFocusChart(domNode, element, margin, width, height, isHorizontal) {
-        const context: any = this;
+        const context: XYAxis = this;
         const focusChart = this.svgFocus.selectAll("#" + this.id() + "_focusChart").data(this.xAxisFocus() ? [true] : []);
         focusChart.enter().append("g")
             .attr("id", this.id() + "_focusChart")
             .attr("class", "focus")
             .each(function () {
-                context.focusChart = new context.constructor()
+                context.focusChart = new (context.constructor as any)()
                     .target(this)
                     ;
                 context.focusChart.xBrush
                     .on("brush.focus", function () {
-                        syncAxis();
-                        context.updateChart(domNode, element, margin, width, height, isHorizontal, 0);
+                        context.syncAxis(width);
+                        context.chartsUpdate(width, height, 0);
                     })
+                    ;
+                context.focusChart
+                    .layers(context.layers().map((w: any) => new w.constructor()))
                     ;
             })
             .merge(focusChart)
-            .each(function () {
-                context.copyPropsTo(context.focusChart);
+            .each(function (this: SVGElement) {
+                context.copyPropsTo(context.focusChart, ["layers"]);
+                let layerIdx = 0;
+                for (const layer of context.layers()) {
+                    layer.copyPropsTo(context.focusChart.layers()[layerIdx]);
+                    layerIdx++;
+                }
                 context.focusChart
                     .xAxisFocus(false)
                     .selectionMode(true)
-                    .tooltipStyle("none")
                     .orientation("horizontal")
                     .xAxisGuideLines(false)
                     .xAxisDomainLow(null)
@@ -464,7 +476,7 @@ export abstract class XYAxis extends SVGWidget {
                     .data(context.data())
                     .render()
                     ;
-                syncAxis();
+                context.syncAxis(width);
             })
             ;
         focusChart.exit()
@@ -478,25 +490,83 @@ export abstract class XYAxis extends SVGWidget {
             })
             .remove()
             ;
+    }
 
-        function syncAxis() {
-            const currSel = d3BrushSelection(context.focusChart.svgBrush.node()) as [number, number];
-            if (currSel) {
-                if (context.focusChart.xAxisType() !== "ordinal") {
-                    console.log(JSON.stringify([context.focusChart.xAxis.invert(currSel[0]), context.focusChart.xAxis.invert(currSel[1])]));
-                    context.xAxis.domain([context.focusChart.xAxis.invert(currSel[0]), context.focusChart.xAxis.invert(currSel[1])]);
-                } else {
-                    const brushWidth = currSel[1] - currSel[0];
-                    const scale = brushWidth / width;
-                    context.xAxis.range([-currSel[0] / scale, (width - currSel[0]) / scale]);
-                }
-                context.xAxis.svgAxis.call(context.xAxis.d3Axis);
-                context.xAxis.svgGuides.call(context.xAxis.d3Guides);
+    syncAxis(width: number) {
+        const currSel = d3BrushSelection(this.focusChart.svgBrush.node()) as [number, number];
+        if (currSel) {
+            if (this.focusChart.xAxisType() !== "ordinal") {
+                console.log(JSON.stringify([this.focusChart.xAxis.invert(currSel[0]), this.focusChart.xAxis.invert(currSel[1])]));
+                this.xAxis.domain([this.focusChart.xAxis.invert(currSel[0]), this.focusChart.xAxis.invert(currSel[1])]);
+            } else {
+                const brushWidth = currSel[1] - currSel[0];
+                const scale = brushWidth / width;
+                this.xAxis.range([-currSel[0] / scale, (width - currSel[0]) / scale]);
             }
+            this.xAxis.rerender();
         }
     }
 
-    abstract updateChart(_domNode, _element, _margin, _width, _height, _isHorizontal, _duration): void;
+    //  Layers  ---
+    layerColumns(host: XYAxis): string[] {
+        const masterColumns = host.columns();
+        const retVal = super.columns().filter(col => col !== masterColumns[0]);
+        if (!retVal.length) {
+            return masterColumns;
+        }
+        return [masterColumns[0], ...retVal];
+    }
+
+    layerColumnIndices(host: XYAxis): number[] {
+        const masterColumns = host.columns();
+        const layerColumns = this.layerColumns(host);
+        return layerColumns.map(col => masterColumns.indexOf(col));
+    }
+
+    layerColumnIndex(host: XYAxis, column: string): number {
+        const masterColumns = host.columns();
+        return masterColumns.indexOf(column);
+    }
+
+    layerData(host: XYAxis): any[][] {
+        if (arguments.length === 1) {
+            const indices = this.layerColumnIndices(host);
+            return host.data().map(row => indices.map(idx => row[idx]));
+        }
+        throw new Error("Setting data on XYAxisLayer is not supported.");
+    }
+
+    layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    }
+
+    layerUpdate(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    }
+
+    layerExit(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+    }
+
+    chartsEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
+        this.layerEnter(this, element, duration);
+        for (const w of this.layers()) {
+            w["__xyAxisElement"] = element.append("g")
+                .attr("class", w.class())
+                ;
+            w
+                .target(w["__xyAxisElement"].node() as SVGElement)
+                .layerEnter(this, element, duration)
+                ;
+        }
+    }
+
+    chartsUpdate(width, height, duration): void {
+        this.layerUpdate(this, this.svgData, duration);
+        for (const w of this.layers()) {
+            w
+                .resize({ width, height })
+                .layerUpdate(this, w["__xyAxisElement"], duration)
+                ;
+        }
+    }
 
     exit(_domNode, _element) {
         SVGWidget.prototype.exit.apply(this, arguments);
@@ -577,8 +647,11 @@ export abstract class XYAxis extends SVGWidget {
     @publish("", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"])
     sampleData: publish<this, string>;
 
+    @publish([], "widgetArray", "Layers", null, { render: false })
+    layers: publish<this, XYAxis[]>;
+
     //  Selection  ---
-    protected _selection;
+    _selection;
 }
 XYAxis.prototype._class += " chart_XYAxis";
 XYAxis.prototype.mixin(Utility.SimpleSelectionMixin);

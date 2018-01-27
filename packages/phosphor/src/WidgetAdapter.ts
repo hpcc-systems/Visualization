@@ -32,6 +32,8 @@ export class WidgetAdapter extends PWidget {
     private _widgetLayout: object;
     lparam: any = {};
     padding: number = 0;
+    _width: number = 0;
+    _height: number = 0;
 
     constructor(owner?: Widget, widget?: Widget | object, lparam: object = {}) {
         super();
@@ -58,12 +60,24 @@ export class WidgetAdapter extends PWidget {
         return this.node.getElementsByTagName("input")[0] as HTMLInputElement;
     }
 
+    resizeAndRender() {
+        if (this._widget) {
+            d3Select(this.node)
+                .style("padding", this.padding + "px")
+                .style("width", this._width + "px")
+                .style("height", this._height + "px")
+                ;
+            this._widget
+                .resize({ width: this._width - this.padding * 2 - 2, height: this._height - this.padding * 2 - 2 })
+                .lazyRender()
+                ;
+        }
+    }
+
     protected onActivateRequest(msg: Message): void {
         super.onActivateRequest(msg);
         if (this._widget) {
-            this._widget
-                .lazyRender()
-                ;
+            this.resizeAndRender();
         }
         if (this._owner) {
             MessageLoop.postMessage(this._owner, new Msg.WAActivateRequest(this));
@@ -72,33 +86,25 @@ export class WidgetAdapter extends PWidget {
 
     protected onResize(msg: PWidget.ResizeMessage): void {
         super.onResize(msg);
-        if (msg.width >= 0 && msg.height >= 0) {
-            d3Select(this.node)
-                .style("padding", this.padding + "px")
-                .style("width", msg.width + "px")
-                .style("height", msg.height + "px")
-                ;
-            if (this._widget) {
+        if (this.node && this.node.offsetParent !== null && msg.width >= 0 && msg.height >= 0) {
+            this._width = msg.width;
+            this._height = msg.height;
+            this.resizeAndRender();
+        } else if (this._widgetLayout) {
+            /*
+            Persist.create(this._widgetLayout).then((widget: Widget) => {
+                delete this._widgetLayout;
+                this._widget = widget;
                 this._widget
+                    .target(this.node)
                     .resize({ width: msg.width - this.padding * 2 - 2, height: msg.height - this.padding * 2 - 2 })
                     .lazyRender()
                     ;
-            } else if (this._widgetLayout) {
-                /*
-                Persist.create(this._widgetLayout).then((widget: Widget) => {
-                    delete this._widgetLayout;
-                    this._widget = widget;
-                    this._widget
-                        .target(this.node)
-                        .resize({ width: msg.width - this.padding * 2 - 2, height: msg.height - this.padding * 2 - 2 })
-                        .lazyRender()
-                        ;
-                    if (this._widget["title"]) {
-                        this.title.label = this._widget["title"]();
-                    }
-                });
-                */
-            }
+                if (this._widget["title"]) {
+                    this.title.label = this._widget["title"]();
+                }
+            });
+            */
         }
     }
 }

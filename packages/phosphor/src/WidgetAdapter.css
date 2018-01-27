@@ -1,5 +1,7 @@
 .phosphor_WidgetAdapter {
-  border: 1px solid #C0C0C0;
+  border-left: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
+  border-bottom: 1px solid #C0C0C0;
   background: white;
   min-width: 64px;
   min-height: 64px;

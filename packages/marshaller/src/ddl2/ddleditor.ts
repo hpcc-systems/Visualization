@@ -1,9 +1,9 @@
+import { JSONEditor } from "@hpcc-js/codemirror";
 import { Response, validate2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { SplitPanel } from "@hpcc-js/phosphor";
-import { JSONEditor } from "./JSONEditor";
 
-import "../src/DDLEditor.css";
+import "../../src/ddl2/ddleditor.css";
 
 export class DDLEditor extends SplitPanel {
     summary: string = "0 Errors";
@@ -12,7 +12,7 @@ export class DDLEditor extends SplitPanel {
     });
     _errorTable = new Table()
         .columns(["dataPath", "keyword", "message", "params"])
-    ;
+        ;
 
     ddl(): object;
     ddl(_: object): this;

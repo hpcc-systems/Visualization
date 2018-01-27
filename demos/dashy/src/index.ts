@@ -1,10 +1,10 @@
-﻿import { DDLEditor, JSEditor, JSONEditor } from "@hpcc-js/codemirror";
+﻿import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Widget } from "@hpcc-js/common";
 import { Connection, hookSend, IOptions, ResponseType, SendFunc, serializeRequest } from "@hpcc-js/comms";
 import { DDL1 } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
-import { Activity, Dashboard, DatasourceAdapt, Element, ElementContainer, GraphAdapter, JavaScriptAdapter, upgrade } from "@hpcc-js/marshaller";
+import { Activity, Dashboard, DatasourceAdapt, DDLEditor, Element, ElementContainer, GraphAdapter, JavaScriptAdapter, upgrade } from "@hpcc-js/marshaller";
 import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel, SplitPanel } from "@hpcc-js/phosphor";
 import { CommandPalette, CommandRegistry, ContextMenu } from "@hpcc-js/phosphor-shim";

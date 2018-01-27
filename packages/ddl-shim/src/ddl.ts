@@ -19,13 +19,32 @@ export interface IOutput {
 
 export interface IDatasource {
     id: string;
-    databomb?: boolean;
-    WUID?: boolean;
-    URL?: string;
     filter?: IFilter[];
     outputs: IOutput[];
 }
 
+export interface IWorkunitDatasource extends IDatasource {
+    WUID: boolean;
+}
+export function isWorkunitDatasource(ref: IAnyDatasource): ref is IWorkunitDatasource {
+    return (ref as IWorkunitDatasource).WUID !== undefined;
+}
+
+export interface IDatabombDatasource extends IDatasource {
+    databomb: true;
+}
+export function isDatabombDatasource(ref: IAnyDatasource): ref is IDatabombDatasource {
+    return (ref as IDatabombDatasource).databomb === true;
+}
+
+export interface IHipieDatasource extends IDatasource {
+    URL: string;
+}
+export function isHipieDatasource(ref: IAnyDatasource): ref is IHipieDatasource {
+    return (ref as IHipieDatasource).URL !== undefined;
+}
+
+export type IAnyDatasource = IWorkunitDatasource | IDatabombDatasource | IHipieDatasource;
 //  Event  ====================================================================
 export interface IEventUpdate {
     visualization: string;
@@ -166,31 +185,49 @@ export interface IVisualization {
     color?: any; // legacy
 }
 
-export type PieType = "PIE";
 export interface IPieVisualization extends IVisualization {
-    type: PieType;
+    type: "PIE" | "BAR";
     source: IPieSource;
+}
+export function isPieVisualization(viz: IAnyVisualization): viz is IPieVisualization {
+    return (viz as IPieVisualization).type === "PIE" || (viz as IPieVisualization).type === "BAR";
 }
 
 export interface ILineVisualization extends IVisualization {
+    type: "LINE";
     source: ILineSource;
+}
+export function isLineVisualization(viz: IAnyVisualization): viz is ILineVisualization {
+    return (viz as ILineVisualization).type === "LINE";
 }
 
 export type ChoroColor = "default" | "YlGn" | "YlGnBu" | "GnBu" | "BuGn" | "PuBuGn" | "PuBu" | "BuPu" | "RdPu" | "PuRd" | "OrRd" | "YlOrRd" | "YlOrBr" | "Purples" | "Blues" | "Greens" | "Oranges" | "Reds" | "Greys" | "PuOr" | "BrBG" | "PRGn" | "PiYG" | "RdBu" | "RdGy" | "RdYlBu" | "Spectral" | "RdYlGn" | "RdWhGr";
 export interface IChoroVisualization extends IVisualization {
+    type: "CHORO";
     source: IChoroSource;
 
     visualizations?: IChoroVisualization[];
     color?: ChoroColor;
 }
+export function isChoroVisualization(viz: IAnyVisualization): viz is IChoroVisualization {
+    return (viz as IChoroVisualization).type === "CHORO";
+}
 
 export interface ITableVisualization extends IVisualization {
+    type: "TABLE";
     label: string[];
     source: ITableSource;
 }
+export function isTableVisualization(viz: IAnyVisualization): viz is ITableVisualization {
+    return (viz as ITableVisualization).type === "TABLE";
+}
 
 export interface ISliderVisualization extends IVisualization {
+    type: "SLIDER";
     range?: number[];
+}
+export function isSliderVisualization(viz: IAnyVisualization): viz is ISliderVisualization {
+    return (viz as ISliderVisualization).type === "SLIDER";
 }
 
 export interface IVisualizationIcon {
@@ -200,18 +237,30 @@ export interface IVisualizationIcon {
 }
 
 export interface IGraphVisualization extends IVisualization {
+    type: "GRAPH";
     source: IGraphSource;
 
     label: string[];
     icon: IVisualizationIcon;
     flag: IVisualizationIcon[];
 }
+export function isGraphVisualization(viz: IAnyVisualization): viz is IGraphVisualization {
+    return (viz as IGraphVisualization).type === "GRAPH";
+}
 
 export interface IHeatMapVisualization extends IVisualization {
+    type: "HEAT_MAP";
     source: IHeatMapSource;
+}
+export function isHeatMapVisualization(viz: IAnyVisualization): viz is IHeatMapVisualization {
+    return (viz as IHeatMapVisualization).type === "HEAT_MAP";
 }
 
 export interface IFormVisualization extends IVisualization {
+    type: "FORM";
+}
+export function isFormVisualization(viz: IAnyVisualization): viz is IFormVisualization {
+    return (viz as IFormVisualization).type === "FORM";
 }
 
 //  Dashboard  ================================================================
@@ -226,7 +275,7 @@ export interface IDashboard {
 
 export interface IDDL {
     dashboards: IDashboard[];
-    datasources: IDatasource[];
+    datasources: IAnyDatasource[];
     hipieversion: string;
     visualizationversion: string;
 }
@@ -247,4 +296,4 @@ export function isGeohashMapping(mappings: IAnyChoroMapping) {
 }
 export type IAnyMapping = IPieMapping | ILineMapping | IGraphMapping | IAnyChoroMapping | ITableMapping | IHeatMapMapping;
 export type IAnySource = IPieSource | ILineSource | ITableSource | IChoroSource | IGraphSource | IHeatMapSource;
-export type IAnyVisualization = IPieVisualization | ILineVisualization | ITableVisualization | IChoroVisualization | IGraphVisualization | IHeatMapVisualization | IFormVisualization;
+export type IAnyVisualization = IPieVisualization | ILineVisualization | ITableVisualization | IChoroVisualization | IGraphVisualization | IHeatMapVisualization | ISliderVisualization | IFormVisualization;

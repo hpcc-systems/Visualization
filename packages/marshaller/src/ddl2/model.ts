@@ -1,6 +1,6 @@
 import { PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
 import { MultiChartPanel } from "@hpcc-js/composite";
-import { IDDL } from "@hpcc-js/ddl-shim";
+import { DDL1 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
 import { Activity } from "./activities/activity";
@@ -47,7 +47,7 @@ export class Element extends PropertyExt {
     @publishProxy("_MultiChartPanel")
     title: publish<this, string>;
     @publish(null, "widget", "Data View")
-    view: publish<this, HipiePipeline>;
+    hipiePipeline: publish<this, HipiePipeline>;
     @publish(null, "widget", "Visualization")
     _widget: ChartPanel;
     chartPanel(): ChartPanel;
@@ -83,7 +83,7 @@ export class Element extends PropertyExt {
         vizID++;
         this._id = `element_${vizID}`;
         const view = new HipiePipeline(ec, `pipeline_${vizID}`);
-        this.view(view);
+        this.hipiePipeline(view);
         this._MultiChartPanel
             .id(`viz_${vizID}`)
             .title(this.id())
@@ -104,12 +104,12 @@ export class Element extends PropertyExt {
     }
 
     pipeline(activities: Activity[]): this {
-        this.view().activities(activities);
+        this.hipiePipeline().activities(activities);
         return this;
     }
 
     dataProps(): PropertyExt {
-        return this.view();
+        return this.hipiePipeline();
     }
 
     vizProps(): Widget {
@@ -121,12 +121,13 @@ export class Element extends PropertyExt {
     }
 
     async refresh() {
-        const view = this.view();
+        const view = this.hipiePipeline();
         await view.refreshMeta();
-        const columns = view.outFields().map(field => field.label);
+        const columns = view.mappings().outFields().map(field => field.label);
         // const fields = view.outFields().map(field => new Field());
-        const data = await view.fetch();
-        const mappedData = data.map(row => {
+        await view.mappings().exec();
+        const data = view.mappings().pullData();
+        const mappedData = data.map((row: any) => {
             const retVal = [];
             for (const column of columns) {
                 retVal.push(row[column]);
@@ -156,7 +157,7 @@ export class Element extends PropertyExt {
     }
 
     monitor(func: (id: string, newVal: any, oldVal: any, source: PropertyExt) => void): { remove: () => void; } {
-        return this.view().monitor(func);
+        return this.hipiePipeline().monitor(func);
     }
 }
 Element.prototype._class += " Viz";
@@ -205,13 +206,13 @@ export class ElementContainer extends PropertyExt {
 
     filteredBy(viz: Element): Element[] {
         return this._elements.filter(otherViz => {
-            const filterIDs = otherViz.view().updatedBy();
+            const filterIDs = otherViz.hipiePipeline().updatedBy();
             return filterIDs.indexOf(viz.id()) >= 0;
         });
     }
 
     views(): HipiePipeline[] {
-        return this._elements.map(viz => viz.view());
+        return this._elements.map(viz => viz.hipiePipeline());
     }
 
     view(id: string): HipiePipeline | undefined {
@@ -228,7 +229,7 @@ export class ElementContainer extends PropertyExt {
         return this;
     }
 
-    importV1DDL(url: string, ddlObj: IDDL, seri?: object) {
+    importV1DDL(url: string, ddlObj: DDL1.DDLSchema, seri?: object) {
         const ddl = new DDLImport(this, url, ddlObj);
         if (seri) {
             // try {

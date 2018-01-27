@@ -76,7 +76,7 @@ export class Param extends PropertyExt {
     }
 
     sourceOutFields(): IField[] {
-        return this.sourceViz().view().outFields();
+        return this.sourceViz().hipiePipeline().outFields();
     }
 
     sourceSelection(): any[] {
@@ -232,7 +232,7 @@ export class RoxieRequest extends Activity {
         super.referencedFields(refs);
         const localFieldIDs: string[] = [];
         for (const param of this.validParams()) {
-            const filterSource = param.sourceViz().view();
+            const filterSource = param.sourceViz().hipiePipeline();
             if (!refs.inputs[this.id()]) {
                 refs.inputs[this.id()] = [];
             }
@@ -289,7 +289,7 @@ export class RoxieRequest extends Activity {
         return super.exec().then(() => {
             return this._roxieService.submit(this.formatRequest());
         }).then((response: { [key: string]: any }) => {
-            this._data = response[this.resultName()];
+            this._data = this.fixInt64(response[this.resultName()]);
         });
     }
 

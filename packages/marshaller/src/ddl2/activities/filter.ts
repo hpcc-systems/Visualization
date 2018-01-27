@@ -3,7 +3,7 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model";
-import { Activity, ReferencedFields } from "./activity";
+import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class ColumnMapping extends PropertyExt {
     private _owner: Filter;
@@ -12,10 +12,27 @@ export class ColumnMapping extends PropertyExt {
     remoteField: publish<this, string>;
     @publish(null, "set", "Local Fields", function (this: ColumnMapping) { return this.localFields(); }, { optional: true })
     localField: publish<this, string>;
-    @publish("==", "set", "Filter Fields", ["==", "!=", ">", ">=", "<", "<=", "in"])
+    @publish("==", "set", "Filter Fields", ["==", "!=", ">", ">=", "<", "<=", "range", "in"])
     condition: publish<this, DDL2.IMappingConditionType>;
     @publish(false, "boolean", "Ignore null filters")
     nullable: publish<this, boolean>;
+
+    validate(): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (this.sourceOutFields().indexOf(this.remoteField()) < 0) {
+            retVal.push({
+                source: `ColumnMapping:  ${this.id()}`,
+                msg: `Invalid remoteField:  ${this.remoteField()}`
+            });
+        }
+        if (this.localFields().indexOf(this.localField()) < 0) {
+            retVal.push({
+                source: `ColumnMapping:  ${this.id()}`,
+                msg: `Invalid localField:  ${this.localField()}`
+            });
+        }
+        return retVal;
+    }
 
     constructor(owner: Filter) {
         super();
@@ -81,8 +98,12 @@ export class ColumnMapping extends PropertyExt {
                 return (localRow) => localRow[lf] > fs;
             case ">=":
                 return (localRow) => localRow[lf] >= fs;
+            case "range":
+                return (localRow) => localRow[lf] >= fs[0] && localRow[lf] <= fs[1];
             case "in":
                 return (localRow) => filterSelection.some(fsRow => typeof localRow[lf] === "string" && typeof fsRow[rf] === "string" ? localRow[lf].trim() === fsRow[rf].trim() : localRow[lf] === fsRow[rf]);
+            default:
+                throw new Error(`Unknown filter condition:  ${this.condition()}`);
         }
     }
 }
@@ -95,6 +116,20 @@ export class Filter extends PropertyExt {
     source: publish<this, string>;
     @publish([], "propertyArray", "Mappings", null, { autoExpand: ColumnMapping })
     mappings: publish<this, ColumnMapping[]>;
+
+    validate(): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        if (this.visualizationIDs().indexOf(this.source()) < 0) {
+            retVal.push({
+                source: `Filter:  ${this.id()}`,
+                msg: `Invalid source:  ${this.source()}`
+            });
+        }
+        for (const mapping of this.validMappings()) {
+            retVal = retVal.concat(mapping.validate());
+        }
+        return retVal;
+    }
 
     constructor(owner: Filters) {
         super();
@@ -138,11 +173,12 @@ export class Filter extends PropertyExt {
         return this.mappings().filter(mapping => !!mapping.localField() && !!mapping.remoteField());
     }
 
-    appendMappings(mappings: Array<{ remoteField: string, localField: string }>): this {
+    appendMappings(mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {
         for (const mapping of mappings) {
             this.mappings().push(new ColumnMapping(this)
                 .remoteField(mapping.remoteField)
                 .localField(mapping.localField)
+                .condition(mapping.condition)
             );
         }
         return this;
@@ -157,7 +193,7 @@ export class Filter extends PropertyExt {
     }
 
     sourceOutFields(): IField[] {
-        return this.sourceViz().view().outFields();
+        return this.sourceViz().hipiePipeline().outFields();
     }
 
     sourceSelection(): any[] {
@@ -177,6 +213,14 @@ export class Filters extends Activity {
 
     @publish([], "propertyArray", "Filter", null, { autoExpand: Filter })
     filter: publish<this, Filter[]>;
+
+    validate(): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        for (const filter of this.validFilters()) {
+            retVal = retVal.concat(filter.validate());
+        }
+        return retVal;
+    }
 
     constructor(elementContainer: ElementContainer) {
         super();
@@ -229,7 +273,7 @@ export class Filters extends Activity {
         super.referencedFields(refs);
         const localFieldIDs: string[] = [];
         for (const filter of this.validFilters()) {
-            const filterSource = filter.sourceViz().view();
+            const filterSource = filter.sourceViz().hipiePipeline();
             const remoteFieldIDs: string[] = [];
             for (const mapping of filter.validMappings()) {
                 localFieldIDs.push(mapping.localField());
@@ -257,7 +301,7 @@ export class Filters extends Activity {
         return this.filter().filter(filter => filter.source());
     }
 
-    appendFilter(source: Element, mappings: Array<{ remoteField: string, localField: string }>): this {
+    appendFilter(source: Element, mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {
         this.filter().push(new Filter(this)
             .source(source.id())
             .appendMappings(mappings));

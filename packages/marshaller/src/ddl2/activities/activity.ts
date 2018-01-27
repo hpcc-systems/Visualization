@@ -35,8 +35,33 @@ export type ReferencedFields = {
     outputs: { [activityID: string]: string[] }
 };
 
+export interface IActivityError {
+    source: string;
+    msg: string;
+}
+
 export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
+
+    fixInt64(data) {
+        const int64Fields = this.outFields().filter(field => {
+            switch (field.type) {
+                case "xs:integer":
+                case "xs:integer8":
+                    return true;
+            }
+            return false;
+        });
+        if (int64Fields.length) {
+            return data.map(row => {
+                for (const int64Field of int64Fields) {
+                    row[int64Field.id] = +row[int64Field.id];
+                }
+                return row;
+            });
+        }
+        return data;
+    }
 
     sourceActivity(): Activity;
     sourceActivity(_: Activity): this;
@@ -58,6 +83,10 @@ export abstract class Activity extends PropertyExt {
 
     exists(): boolean {
         return true;
+    }
+
+    validate(): IActivityError[] {
+        return [];
     }
 
     label(): string {
@@ -181,8 +210,8 @@ export class ActivityPipeline extends ActivityArray {
     }
 
     fetch(from: number = 0, count: number = Number.MAX_VALUE): Promise<any[]> {
-        return this.last().exec().then(() => {
-            const data = this.last().pullData();
+        return this.exec().then(() => {
+            const data = this.pullData();
             if (from === 0 && data.length <= count) {
                 return data;
             } else if (from === 0) {

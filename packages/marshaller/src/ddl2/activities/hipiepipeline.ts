@@ -55,24 +55,13 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Source Columns")
+    @publish(null, "widget", "Sort")
     _sort: Sort;
     sort(): Sort;
     sort(_: Sort): this;
     sort(_?: Sort): Sort | this {
         if (!arguments.length) return this._sort;
         this._sort = _;
-        this.updateSequence();
-        return this;
-    }
-
-    @publish(null, "widget", "Mappings")
-    _mappings: Project;
-    mappings(): Project;
-    mappings(_: Project): this;
-    mappings(_?: Project): Project | this {
-        if (!arguments.length) return this._mappings;
-        this._mappings = _;
         this.updateSequence();
         return this;
     }
@@ -88,6 +77,17 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
+    @publish(null, "widget", "Mappings")
+    _mappings: Project;
+    mappings(): Project;
+    mappings(_: Project): this;
+    mappings(_?: Project): Project | this {
+        if (!arguments.length) return this._mappings;
+        this._mappings = _;
+        this.updateSequence();
+        return this;
+    }
+
     constructor(model: ElementContainer, viewID: string) {
         super();
         this._elementContainer = model;
@@ -97,10 +97,10 @@ export class HipiePipeline extends ActivityPipeline {
             this.broadcast(id, newVal, oldVal, this.dataSource());
         });
         this._filters = new Filters(model);
-        this._project = new Project();
+        this._project = new Project(false);
         this._groupBy = new GroupBy();
         this._sort = new Sort();
-        this._mappings = new Project();
+        this._mappings = new Project(true);
         this._limit = new Limit();
         this.updateSequence();
     }
@@ -115,5 +115,10 @@ export class HipiePipeline extends ActivityPipeline {
             this.limit(),
             this.mappings()
         ]);
+    }
+
+    //  Mappings is only for the visualization and not the data flow.
+    last(): Activity | null {
+        return this.limit();
     }
 }

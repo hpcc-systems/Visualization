@@ -11,6 +11,7 @@ export * from "./ddl2/ddl";
 export * from "./ddl2/ddlimport";
 export * from "./ddl2/graphadapter";
 export * from "./ddl2/javascriptadapter";
+export * from "./ddl2/ddleditor";
 export * from "./ddl2/model";
 export * from "./ddl2/activities/activity";
 export * from "./ddl2/activities/databomb";

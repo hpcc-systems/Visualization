@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@hpcc-js/codemirror-shim": "^0.0.55",
-    "@hpcc-js/ddl-shim": "^0.0.29",
     "concurrently": "3.5.0",
     "rimraf": "2.6.2",
     "rollup": "0.54.0",

@@ -4,6 +4,7 @@
   "version": "0.0.61",
   "dependencies": {
     "@hpcc-js/common": "^0.0.68",
+    "@hpcc-js/dgrid-shim": "^0.0.55",
     "@hpcc-js/marshaller": "^0.0.82",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
@@ -13,6 +14,7 @@
   "devDependencies": {
     "@types/chai": "3.5.2",
     "@types/mocha": "2.2.41",
+    "cpx": "1.5.0",
     "css-loader": "0.26.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.3",

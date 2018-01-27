@@ -39,7 +39,6 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../ddl-shim/dist/index.js": ["validate2"]
             }
         }),
         alias({

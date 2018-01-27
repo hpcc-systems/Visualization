@@ -1,5 +1,6 @@
 var DojoWebpackPlugin = require("dojo-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
+var ScopedDojoRequire = require("./util/ScopedDojoRequire")
 
 var path = require("path");
 var webpack = require("webpack");
@@ -39,6 +40,7 @@ module.exports = {
             buildEnvironment: { dojoRoot: "../../node_modules" }, // used at build time
             locales: ["en"]
         }),
+        new ScopedDojoRequire(),
         // Copy non-packed resources needed by the app to the release directory
         new CopyWebpackPlugin([{
             context: "../../node_modules",

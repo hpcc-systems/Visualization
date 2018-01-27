@@ -194,6 +194,15 @@ export class DBStore {
         });
     }
 
+    fetchAll(): any[] {
+        return this._db.data().map((row, idx) => {
+            const formattedRow: any = this.rowFormatter.format(row);
+            formattedRow.__hpcc_id = idx;
+            formattedRow.__hpcc_orig = row;
+            return formattedRow;
+        });
+    }
+
     fetchRange(options): Promise<any[]> {
         const retVal = new Deferred();
         const totalLength = new Deferred();

@@ -1,8 +1,10 @@
-﻿import { Common } from "./Common";
+﻿import { hashSum } from "@hpcc-js/util";
+import { Common } from "./Common";
 import { DBStore } from "./DBStore";
 
 export class Table extends Common {
     _prevChecksum;
+    _prevColsHash;
 
     constructor() {
         super();
@@ -14,11 +16,24 @@ export class Table extends Common {
 
     update(domNode, element) {
         super.update(domNode, element);
-        if (this._prevChecksum !== this._db.checksum()) {
-            this._prevChecksum = this._db.checksum();
-            const store = new DBStore(this._db);
-            this._dgrid.set("columns", store.columns());
-            this._dgrid.set("collection", store);
+        const store = new DBStore(this._db);
+        this._columns = store.columns();
+        const colsHash = hashSum(this._columns);
+        const data = store.fetchAll();
+        const dataHash = hashSum(data.map(d => d));
+        let changed = false;
+        if (this._prevColsHash !== colsHash) {
+            this._prevColsHash = colsHash;
+            this._dgrid.set("columns", this._columns);
+            changed = true;
+        }
+        if (this._prevChecksum !== dataHash) {
+            this._prevChecksum = dataHash;
+            this._store.setData(store.fetchAll());
+            changed = true;
+        }
+        if (changed) {
+            this._dgrid.refresh();
         }
     }
 

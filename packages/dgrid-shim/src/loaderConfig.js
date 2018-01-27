@@ -63,6 +63,8 @@ function getConfig(env) {
 
 		async: true,
 
+		has: { 'dojo-config-api': false },
+
 		fixupUrl: function (url) {
 			// Load the uncompressed versions of dojo/dijit/dojox javascript files when using the dojo loader.
 			// When using a webpack build, the dojo loader is not used for loading javascript files so this
@@ -83,5 +85,5 @@ if (typeof module !== 'undefined' && module) {
 	module.exports = getConfig;
 } else {
 	// No webpack.  This script was loaded by page via script tag, so load Dojo from CDN
-	getConfig({ dojoRoot: '//ajax.googleapis.com/ajax/libs/dojo/1.12.2' });
+	getConfig({ dojoRoot: '//ajax.googleapis.com/ajax/libs/dojo/1.13.0' });
 }

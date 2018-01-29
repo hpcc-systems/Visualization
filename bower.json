@@ -39,6 +39,7 @@
     "c3": "~0.4.11",
     "colorbrewer": "~1.0.0",
     "d3": "~3.5.17",
+    "d3v4": "https://d3js.org/d3.v4.min.js",
     "font-awesome": "~4.7.0",
     "topojson": "~1.6.26",
     "dagre": "https://raw.githubusercontent.com/cpettitt/dagre/v0.7.3/dist/dagre.js",

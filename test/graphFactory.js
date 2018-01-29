@@ -256,6 +256,15 @@
                 });
             }
         },
+        CanvasGraph: {
+            simple: function (callback) {
+                require(["test/DataFactory", "src/graph/CanvasGraph"], function (DataFactory, CanvasGraph) {
+                    window.g_w = new CanvasGraph();
+                    g_w.data({ "nodes": [{ "label": "James Rogers", "type": "Property", "icon": "", "annotations": [{ "color": "#1abc9c", "icon": "D" }] }, { "label": "John Johnson", "type": "Business", "icon": "", "annotations": [{ "color": "#1abc9c", "icon": "D" }, { "color": "#9b59b6", "icon": "F" }, { "color": "#2ecc71", "icon": "A" }] }, { "label": "David Smith", "type": "Business", "icon": "", "annotations": [{ "color": "#2ecc71", "icon": "A" }, { "color": "#95a5a6", "icon": "G" }] }, { "label": "Robert Johnson", "type": "Associate", "icon": "", "annotations": [{ "color": "#95a5a6", "icon": "G" }, { "color": "#1abc9c", "icon": "D" }, { "color": "#9b59b6", "icon": "F" }] }, { "label": "Robert Smith", "type": "Relative", "icon": "", "annotations": [] }, { "label": "William Anderson", "type": "Property", "icon": "", "annotations": [{ "color": "#2ecc71", "icon": "A" }, { "color": "#9b59b6", "icon": "E" }] }, { "label": "Nancy Rogers", "type": "Property", "icon": "", "annotations": [{ "color": "#9b59b6", "icon": "E" }] }, { "label": "Mary Johnson", "type": "Relative", "icon": "", "annotations": [{ "color": "#95a5a6", "icon": "G" }, { "color": "#2ecc71", "icon": "B" }] }, { "label": "Sharon Smith", "type": "Relative", "icon": "", "annotations": [{ "color": "#1abc9c", "icon": "D" }, { "color": "#1abc9c", "icon": "C" }, { "color": "#9b59b6", "icon": "F" }] }, { "label": "James Smith", "type": "Associate", "icon": "", "annotations": [{ "color": "#95a5a6", "icon": "G" }, { "color": "#9b59b6", "icon": "F" }] }], "links": [{ "source": 0, "target": 1 }, { "source": 1, "target": 2 }, { "source": 1, "target": 3 }, { "source": 1, "target": 4 }, { "source": 2, "target": 5 }, { "source": 2, "target": 6 }, { "source": 2, "target": 7 }, { "source": 2, "target": 8 }, { "source": 2, "target": 9 }] });
+                    callback(g_w);
+                });
+            }
+        },
         Sankey: {
             simple: function (callback) {
                 require(["test/DataFactory", "src/graph/Sankey"], function (DataFactory, Sankey) {

@@ -63,5 +63,13 @@
         Widget.prototype.exit.apply(this, arguments);
     };
 
+    CanvasWidget.prototype.click = function(d,c) {
+        console.log(d);
+    };
+    
+    CanvasWidget.prototype.lazyRender = CanvasWidget.prototype.debounce(function () {
+        this.render();
+    }, 100);
+
     return CanvasWidget;
 }));

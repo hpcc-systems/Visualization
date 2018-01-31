@@ -6,7 +6,7 @@ import "../src/WUResultStore.css";
 export interface IField {
     id: string;
     label: string;
-    type: "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function";
+    type: "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function" | "xs:integer" | "xs:integer8";
     default: any;
     children: IField[] | null;
 }

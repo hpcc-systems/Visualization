@@ -15,17 +15,22 @@ import { Element, ElementContainer } from "./model";
 
 export { DDL2 };
 
-function writeFields(fields: IField[]): DDL2.IField[] {
+function writeFields(fields: IField[]): DDL2.FieldType[] {
     return fields.map(field => {
-        const retVal: DDL2.IField = {
-            id: field.id,
-            type: field.type as any,  //  TODO Align DGrid field type and DDL2 field type
-            default: undefined
-        };
         if (field.children && field.children.length) {
-            retVal.children = this.writeFields(field.children);
+            return {
+                id: field.id,
+                type: "dataset",
+                default: [],
+                children: this.writeFields(field.children)
+            } as DDL2.IDatasetField;
+        } else {
+            return {
+                id: field.id,
+                type: field.type as any,  //  TODO Align DGrid field type and DDL2 field type
+                default: undefined
+            } as DDL2.IPrimativeField;
         }
-        return retVal;
     });
 }
 
@@ -68,7 +73,7 @@ class DDLDatasourceAdapter {
             const ddl: DDL2.IForm = {
                 type: "form",
                 id: ds.id(),
-                fields: dsDetails.outFields().map((field): DDL2.IField => {
+                fields: dsDetails.outFields().map((field): DDL2.FieldType => {
                     return {
                         id: field.id,
                         type: field.type as any,
@@ -204,7 +209,7 @@ export class DDLAdapter {
 
     writeDatasources(): DDL2.DatasourceType[] {
         for (const viz of this._elementContainer.elements()) {
-            const ds = viz.view().dataSource();
+            const ds = viz.hipiePipeline().dataSource();
 
             //  Prime ds;
             this._dsDedup.get(ds);
@@ -221,12 +226,12 @@ export class DDLAdapter {
         return Filters.fromDDL(ec, ddlFilter);
     }
 
-    writeProject(project: Project): DDL2.IProject {
+    writeProject(project: Project): DDL2.IProject | DDL2.IMappings {
         if (!project.exists()) return undefined;
         return project.toDDL();
     }
 
-    readProject(ddlProject: DDL2.IProject): Project {
+    readProject(ddlProject: DDL2.IProject | DDL2.IMappings): Project {
         return Project.fromDDL(ddlProject);
     }
 
@@ -262,7 +267,7 @@ export class DDLAdapter {
         if (dsDetails instanceof RoxieRequest) {
             const retVal: DDL2.IRoxieServiceRef = {
                 id: this._dsDedup.get(ds).id,
-                request: dsDetails.request().map((rf): DDL2.IRequestField => {
+                request: dsDetails.request().filter(rf => rf.source()).map((rf): DDL2.IRequestField => {
                     return {
                         source: rf.source(),
                         remoteFieldID: rf.remoteField(),
@@ -273,11 +278,10 @@ export class DDLAdapter {
             };
             return retVal;
         } else if (dsDetails instanceof WUResult) {
-            const retVal: DDL2.IWUResultRef = {
+            return {
                 id: this._dsDedup.get(ds).id,
                 output: dsDetails.resultName()
-            };
-            return retVal;
+            } as DDL2.IWUResultRef;
         }
         const retVal: DDL2.IDatasourceRef = {
             id: this._dsDedup.get(ds).id
@@ -289,9 +293,9 @@ export class DDLAdapter {
         const ddlDS = this._dsDedup.getByID(ddlDSRef.id);
         this.readDatasource(ddlDS, ds);
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
-        if (dsDetails instanceof WUResult && DDL2.isIWUResultRef(ddlDSRef)) {
+        if (dsDetails instanceof WUResult && DDL2.isWUResultRef(ddlDSRef)) {
             dsDetails.resultName(ddlDSRef.output);
-        } else if (dsDetails instanceof RoxieRequest && DDL2.isIRoxieServiceRef(ddlDSRef)) {
+        } else if (dsDetails instanceof RoxieRequest && DDL2.isRoxieServiceRef(ddlDSRef)) {
             dsDetails.resultName(ddlDSRef.output);
             dsDetails.request(ddlDSRef.request.map(rf => {
                 return new Param(this._elementContainer)
@@ -316,11 +320,13 @@ export class DDLAdapter {
                 return this.writeSort(activity);
             } else if (activity instanceof Limit) {
                 return this.writeLimit(activity);
+            } else {
+                console.log(`Unknown activity type:  ${activity.classID()}`);
             }
         }).filter(activity => !!activity);
     }
 
-    mergeFieldArray(targetArr: DDL2.IField[], sourceArr: DDL2.IField[]): DDL2.IField[] {
+    mergeFieldArray(targetArr: DDL2.FieldType[], sourceArr: DDL2.FieldType[]): DDL2.FieldType[] {
         const existing: string[] = targetArr.map(f => f.id);
         return targetArr.concat(sourceArr.filter(f => existing.indexOf(f.id) < 0));
     }
@@ -345,10 +351,10 @@ export class DDLAdapter {
     writeDDLViews(): DDL2.IView[] {
         const refs: ReferencedFields = { inputs: {}, outputs: {} };
         for (const viz of this._elementContainer.elements()) {
-            viz.view().referencedFields(refs);
+            viz.hipiePipeline().referencedFields(refs);
         }
         return this._elementContainer.elements().map(viz => {
-            const view = viz.view();
+            const view = viz.hipiePipeline();
             const ds = view.dataSource();
             const retVal = {
                 id: viz.id(),
@@ -362,27 +368,37 @@ export class DDLAdapter {
 
     readDDLViews(ddlViews: DDL2.IView[]) {
         for (const ddlView of ddlViews) {
-            const viz = new Element(this._elementContainer).id(ddlView.id).title(ddlView.id);
-            this._elementContainer.append(viz);
-            const view = viz.view();
+            const element = new Element(this._elementContainer).id(ddlView.id).title(ddlView.id);
+            this._elementContainer.append(element);
+            const view = element.hipiePipeline();
             this.readDatasourceRef(ddlView.datasource, view.dataSource(), this._elementContainer);
-            const activities: Activity[] = [
-                view.dataSource(),
-                ...ddlView.activities.map(activity => {
-                    if (DDL2.isFilterActivity(activity)) {
-                        return this.readFilters(activity, this._elementContainer);
-                    } else if (DDL2.isProjectActivity(activity)) {
-                        return this.readProject(activity);
-                    } else if (DDL2.isGroupByActivity(activity)) {
-                        return this.readGroupBy(activity);
-                    } else if (DDL2.isSortActivity(activity)) {
-                        return this.readSort(activity);
-                    } else if (DDL2.isLimitActivity(activity)) {
-                        return this.readLimit(activity);
-                    }
-                })
-            ];
-            view.activities(activities);
+            for (const activity of ddlView.activities) {
+                if (DDL2.isProjectActivity(activity)) {
+                    const project = this.readProject(activity);
+                    view.project(project);
+                }
+                if (DDL2.isFilterActivity(activity)) {
+                    const filters = this.readFilters(activity, this._elementContainer);
+                    view.filters(filters);
+                }
+                if (DDL2.isGroupByActivity(activity)) {
+                    const groupBy = this.readGroupBy(activity);
+                    view.groupBy(groupBy);
+                }
+                if (DDL2.isSortActivity(activity)) {
+                    const sort = this.readSort(activity);
+                    view.sort(sort);
+                }
+                if (DDL2.isLimitActivity(activity)) {
+                    const limit = this.readLimit(activity);
+                    view.limit(limit);
+                }
+                if (DDL2.isMappingsActivity(activity)) {
+                    const project = this.readProject(activity);
+                    project.trim(true);
+                    view.mappings(project);
+                }
+            }
         }
         // this._dashboard.syncWidgets();
     }
@@ -390,7 +406,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.18",
+            version: "0.0.19",
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews()
         };

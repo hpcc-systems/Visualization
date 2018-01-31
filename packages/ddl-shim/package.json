@@ -13,18 +13,20 @@
   "scripts": {
     "clean": "rimraf ./src/ddl*Schema*.ts && rimraf lib* && rimraf build",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-util": "tsc -p ./tsconfig-util.json",
     "generate": "node ./lib-util/createSchema.js",
     "bundle": "webpack",
-    "bundle-watch": "webpack -w",
+    "bundle-watch": "npm run bundle -- --watch",
     "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run bundle",
-    "watch": "concurrently --kill-others \"npm run compile-watch\" \"npm run bundle-watch\"",
+    "watch": "concurrently --kill-others \"npm run compile-es6-watch\" \"npm run bundle-watch\"",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
   "devDependencies": {
     "@types/node": "8.0.51",
     "ajv": "4.11.3",
+    "concurrently": "3.5.0",
     "extract-text-webpack-plugin": "2.1.0",
     "reflect-metadata": "0.1.10",
     "rimraf": "2.6.2",

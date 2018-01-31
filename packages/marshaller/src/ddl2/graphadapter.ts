@@ -47,7 +47,7 @@ export class GraphAdapter {
         return retVal;
     }
 
-    createVertex(id: string, label: string, data: any, fillColor: string = "#dcf1ff"): Vertex {
+    createVertex(id: string, label: string, data: any, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
         let retVal: Vertex = this.vertexMap[id];
         if (!retVal) {
             retVal = new Vertex()
@@ -55,12 +55,13 @@ export class GraphAdapter {
                 .data([[data]])
                 .icon_shape_diameter(0)
                 .textbox_shape_colorFill(fillColor)
+                .tooltip(tooltip)
                 ;
             this.vertexMap[id] = retVal;
             this.vertices.push(retVal);
         }
         // retVal.text(`${label} - ${id}`);
-        retVal.text(`${label}`);
+        retVal.text(tooltip ? `${label}\n${tooltip}` : `${label}`);
         retVal.getBBox(true);
         return retVal;
     }
@@ -112,9 +113,20 @@ export class GraphAdapter {
         }
     }
 
-    createActivity(sourceID: string, viz: Element, view: HipiePipeline, activity: Activity): string {
-        const surface: Surface = this.createSurface(view.id(), `${view.label()} [${viz.id()}]`, { viz, view });
-        const vertex: Vertex = this.createVertex(activity.id(), `${activity.classID()}`, { viz, view, activity }, activity.exists() ? null : "lightgray");
+    createActivity(sourceID: string, viz: Element, view: HipiePipeline, activity: Activity, label?: string): string {
+        const surface: Surface = this.createSurface(view.id(), `${viz.id()}`, { viz, view });
+        let fillColor = null;
+        let tooltip = "";
+        if (activity.exists()) {
+            const errors = activity.validate();
+            if (errors.length) {
+                fillColor = "pink";
+                tooltip = errors.map(error => `${error.msg}`).join("\n");
+            }
+        } else {
+            fillColor = "lightgrey";
+        }
+        const vertex: Vertex = this.createVertex(activity.id(), label || `${activity.classID()}`, { viz, view, activity }, tooltip, fillColor);
         if (sourceID) {
             this.createEdge(sourceID, activity.id());
         }
@@ -127,25 +139,57 @@ export class GraphAdapter {
 
         const lastID: { [key: string]: string } = {};
         for (const viz of this._elementContainer.elements()) {
-            const view = viz.view();
+            const view = viz.hipiePipeline();
             let prevID = "";
             for (const activity of view.activities()) {
                 if (isDatasource(activity)) {
                     prevID = this.createDatasource(viz, view, { viz: undefined, activity });
+                } else if (activity === view.mappings()) {
+                    this.createActivity(prevID, viz, view, activity, "Mappings");
+                    const surface: Surface = this.createSurface(`${view.mappings().id()}`, `Visualization`, { viz, view });
+                    this.hierarchy.push({
+                        parent: this.subgraphMap[view.id()],
+                        child: surface
+                    });
+                    this.hierarchy.push({
+                        parent: surface,
+                        child: this.vertexMap[view.mappings().id()]
+                    });
+                    const vizVertexID = `${activity.id()}-viz`;
+                    const widgetVertex: Vertex = this.createVertex(vizVertexID, viz.multiChartPanel().chart().classID(), { viz, view, activity: viz.multiChartPanel() });
+                    this.createEdge(activity.id(), vizVertexID);
+                    this.hierarchy.push({
+                        parent: surface,
+                        child: widgetVertex
+                    });
+                    const stateVertexID = `${activity.id()}-state`;
+                    const stateVertex: Vertex = this.createVertex(stateVertexID, "Selection", { viz, view, activity: viz.state() });
+                    this.createEdge(vizVertexID, stateVertexID)
+                        .weight(10)
+                        .strokeDasharray("1,5")
+                        .text("updates")
+                        ;
+                    this.createEdge(prevID, stateVertexID);
+                    this.hierarchy.push({
+                        parent: surface,
+                        child: stateVertex
+                    });
+                    prevID = stateVertexID;
                 } else {
                     prevID = this.createActivity(prevID, viz, view, activity);
                 }
             }
+
             lastID[view.id()] = prevID;
         }
 
         for (const viz of this._elementContainer.elements()) {
-            const view = viz.view();
+            const view = viz.hipiePipeline();
             for (const updateInfo of view.updatedByGraph()) {
                 if (updateInfo.to instanceof DSPicker) {
                     updateInfo.to = updateInfo.to.details();
                 }
-                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).view().id()], updateInfo.to instanceof RoxieRequest ? `${updateInfo.to.roxieServiceID()}/${updateInfo.to.resultName()}` : updateInfo.to.id())
+                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).hipiePipeline().id()], updateInfo.to instanceof RoxieRequest ? `${updateInfo.to.roxieServiceID()}/${updateInfo.to.resultName()}` : updateInfo.to.id())
                     .weight(10)
                     .strokeDasharray("1,5")
                     .text("updates")

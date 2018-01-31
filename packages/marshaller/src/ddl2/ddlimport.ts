@@ -1,6 +1,6 @@
 import { MultiChartPanel } from "@hpcc-js/composite";
-import * as DDL from "@hpcc-js/ddl-shim";
-import { Form, Input } from "@hpcc-js/form";
+import { DDL1, DDL2 } from "@hpcc-js/ddl-shim";
+// import { Form, Input, InputRange } from "@hpcc-js/form";
 import { Databomb, Form as DBForm } from "./activities/databomb";
 import { AggregateField, GroupByColumn } from "./activities/groupby";
 import { ComputedField } from "./activities/project";
@@ -11,12 +11,12 @@ import { Element, ElementContainer } from "./model";
 export class DDLImport {
     _owner: ElementContainer;
     _url: string;
-    _datasources: { [key: string]: DDL.IDatasource } = {};
-    _dashboards: { [key: string]: DDL.IDashboard } = {};
-    _visualizations: { [key: string]: DDL.IAnyVisualization } = {};
+    _datasources: { [key: string]: DDL1.IDatasource } = {};
+    _dashboards: { [key: string]: DDL1.IDashboard } = {};
+    _visualizations: { [key: string]: DDL1.IAnyVisualization } = {};
     _vizzies: { [key: string]: Element } = {};
 
-    constructor(dashboard: ElementContainer, url: string, ddl: DDL.IDDL) {
+    constructor(dashboard: ElementContainer, url: string, ddl: DDL1.IDDL) {
         this._owner = dashboard;
         this._url = url;
 
@@ -33,39 +33,56 @@ export class DDLImport {
         }
     }
 
-    form(ddlVisualization: DDL.IVisualization, viz: Element) {
+    form(ddlVisualization: DDL1.IVisualization, viz: Element) {
         const dbForm = new DBForm();
         const payload: any = {};
-        const inputs: Input[] = [];
+        // const inputs: Array<Input | InputRange> = [];
         for (const field of ddlVisualization.fields) {
-            const defaultVal: any = field.properties.default[0];
-            payload[field.id] = defaultVal || "";
-
-            inputs.push(new Input()
-                .type("text")
-                .name(field.id)
-                .label(field.properties.label)
-                .value(defaultVal) // TODO Hippie support for multiple default values (checkbox only)
-            );
+            const defaultVal: any = field.properties.default;
+            switch (field.properties.type) {
+                case "range":
+                    payload[`${field.id}-range`] = defaultVal || ["", ""];
+                    /*
+                    inputs.push(new InputRange()
+                        .type(field.properties.datatype)
+                        .name(field.id)
+                        .label(field.properties.label)
+                        .value(defaultVal)
+                    );
+                    */
+                    break;
+                default:
+                    payload[field.id] = defaultVal[0] || "";
+                    /*
+                    inputs.push(new Input()
+                        .type("text")
+                        .name(field.id)
+                        .label(field.properties.label)
+                        .value(defaultVal)
+                    );
+                    */
+                    break;
+            }
         }
         dbForm.payload(payload);
 
+        /*
         const form = new Form()
             .inputs(inputs)
             .on("click", function (row: object) {
                 viz.state().selection([row]);
             })
             ;
-
-        viz.view().dataSource(dbForm);
-        viz.multiChartPanel().multiChart().chart(form);
+        */
+        viz.hipiePipeline().dataSource(dbForm);
+        //  viz.multiChartPanel().multiChart().chart(form);
     }
 
-    line(ddlVisualization: DDL.ILineVisualization, viz: Element) {
+    line(ddlVisualization: DDL1.ILineVisualization, viz: Element) {
         const mappingFields: ComputedField[] = [];
         try {
             for (const id of ddlVisualization.source.mappings.x.concat(ddlVisualization.source.mappings.y)) {
-                mappingFields.push(new ComputedField(viz.view().project())
+                mappingFields.push(new ComputedField(viz.hipiePipeline().project())
                     .label(id.toLocaleLowerCase())
                     .type("=")
                     .column1(id.toLocaleLowerCase())
@@ -73,31 +90,31 @@ export class DDLImport {
             }
         } catch (e) {
         }
-        viz.view().mappings()
+        viz.hipiePipeline().mappings()
             .trim(mappingFields.length > 0)
             .computedFields(mappingFields)
             ;
         (viz.chartPanel() as MultiChartPanel).chartType(ddlVisualization.properties.charttype || "COLUMN");
     }
 
-    table(ddlVisualization: DDL.ITableVisualization, viz: Element) {
+    table(ddlVisualization: DDL1.ITableVisualization, viz: Element) {
         const mappingFields: ComputedField[] = [];
         ddlVisualization.source.mappings.value.forEach((value, idx) => {
-            mappingFields.push(new ComputedField(viz.view().project())
+            mappingFields.push(new ComputedField(viz.hipiePipeline().project())
                 .label(ddlVisualization.label[idx])
                 .type("=")
                 .column1(value.toLowerCase())
             );
         });
 
-        viz.view().mappings()
+        viz.hipiePipeline().mappings()
             .trim(mappingFields.length > 0)
             .computedFields(mappingFields)
             ;
         (viz.chartPanel() as MultiChartPanel).chartType((ddlVisualization.properties && ddlVisualization.properties.charttype) ? ddlVisualization.properties.charttype : "TABLE");
     }
 
-    visualizationPre(ddlVisualization: DDL.IAnyVisualization) {
+    visualizationPre(ddlVisualization: DDL1.IAnyVisualization) {
         this._visualizations[ddlVisualization.id] = ddlVisualization;
         const viz = new Element(this._owner)
             .id(ddlVisualization.id)
@@ -126,7 +143,7 @@ export class DDLImport {
                     case "SUM":
                         break;
                     case "AVE":
-                        projectFields.push(new ComputedField(viz.view().project())
+                        projectFields.push(new ComputedField(viz.hipiePipeline().project())
                             .label(field.id.toLowerCase())
                             .type("/")
                             .column1(field.properties.params.param1.toLowerCase())
@@ -137,7 +154,7 @@ export class DDLImport {
                             .label(field.id.toLowerCase())
                         );
                         */
-                        groupByFields.push(new AggregateField(viz.view().groupBy())
+                        groupByFields.push(new AggregateField(viz.hipiePipeline().groupBy())
                             .fieldID(field.id.toLowerCase())
                             .aggrType("mean")
                             .aggrColumn(field.id.toLowerCase())
@@ -149,16 +166,16 @@ export class DDLImport {
                         break;
                     case undefined:
                     default:
-                        groupByColumns.push(new GroupByColumn(viz.view().groupBy())
+                        groupByColumns.push(new GroupByColumn(viz.hipiePipeline().groupBy())
                             .label(field.id.toLowerCase())
                         );
                         break;
                 }
             }
         }
-        viz.view().project().computedFields(projectFields);
+        viz.hipiePipeline().project().computedFields(projectFields);
         if (groupByColumns.length && groupByFields.length) {
-            viz.view().groupBy()
+            viz.hipiePipeline().groupBy()
                 .column(groupByColumns)
                 .computedFields(groupByFields)
                 ;
@@ -168,19 +185,19 @@ export class DDLImport {
                 this.form(ddlVisualization, viz);
                 break;
             case "CHORO":
-            case "2DCHART":
+            // case "2DCHART":
             case "PIE":
-            case "BUBBLE":
-            case "BAR":
-            case "WORD_CLOUD":
+            // case "BUBBLE":
+            // case "BAR":
+            // case "WORD_CLOUD":
             case "LINE":
-                this.line(ddlVisualization as DDL.ILineVisualization, viz);
+                this.line(ddlVisualization as DDL1.ILineVisualization, viz);
                 break;
             case "GRAPH":
                 //                this.graph(ddlVisualization as DDL.IGraphVisualization, viz);
                 break;
             case "TABLE":
-                this.table(ddlVisualization as DDL.ITableVisualization, viz);
+                this.table(ddlVisualization as DDL1.ITableVisualization, viz);
                 break;
             default:
                 break;
@@ -188,19 +205,20 @@ export class DDLImport {
         this._owner.append(this._vizzies[ddlVisualization.id]);
     }
 
-    visualizationPost(ddlVisualization: DDL.IAnyVisualization) {
+    visualizationPost(ddlVisualization: DDL1.IAnyVisualization) {
         const viz = this._vizzies[ddlVisualization.id];
         for (const eventType in ddlVisualization.events) {
             for (const update of ddlVisualization.events[eventType].updates) {
                 const otherViz = this._vizzies[update.visualization];
-                const mappings: Array<{ remoteField: string, localField: string }> = [];
+                const mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }> = [];
                 for (const key in update.mappings) {
                     mappings.push({
                         remoteField: update.mappings[key],
-                        localField: key
+                        localField: key,
+                        condition: "=="
                     });
                 }
-                const otherView = otherViz.view();
+                const otherView = otherViz.hipiePipeline();
                 const otherDataSource = otherView.dataSource();
                 if (otherDataSource instanceof RoxieRequest) {
                     otherDataSource.appendParam(viz, mappings);
@@ -211,30 +229,30 @@ export class DDLImport {
         }
     }
 
-    dashboardPre(ddlDashboard: DDL.IDashboard) {
+    dashboardPre(ddlDashboard: DDL1.IDashboard) {
         this._dashboards[ddlDashboard.id] = ddlDashboard;
         for (const ddlVisualization of ddlDashboard.visualizations) {
             this.visualizationPre(ddlVisualization);
         }
     }
 
-    dashboardPost(ddlDashboard: DDL.IDashboard) {
+    dashboardPost(ddlDashboard: DDL1.IDashboard) {
         for (const ddlVisualization of ddlDashboard.visualizations) {
             this.visualizationPost(ddlVisualization);
         }
     }
 
-    datasource(ddlDS: DDL.IDatasource) {
+    datasource(ddlDS: DDL1.IAnyDatasource) {
         for (const ddlOP of ddlDS.outputs) {
             for (const ddlNotify of ddlOP.notify) {
-                const view = this._vizzies[ddlNotify].view();
-                if (ddlDS.WUID) {
+                const view = this._vizzies[ddlNotify].hipiePipeline();
+                if (DDL1.isWorkunitDatasource(ddlDS)) {
                     const wuResult = new WUResult()
                         .fullUrl(this._url)
                         .resultName(ddlOP.from)
                         ;
                     view.dataSource(wuResult);
-                } else if (ddlDS.databomb) {
+                } else if (DDL1.isDatabombDatasource(ddlDS)) {
                     const databomb = new Databomb()
                         ;
                     view.dataSource(databomb);

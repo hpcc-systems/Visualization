@@ -1,6 +1,6 @@
 import { Class, Database, Utility, Widget } from "@hpcc-js/common";
 import { MultiChart } from "@hpcc-js/composite";
-import { IDatasource, IFilter } from "@hpcc-js/ddl-shim";
+import { DDL1 } from "@hpcc-js/ddl-shim";
 import { Comms, Table } from "@hpcc-js/other";
 import { map as d3Map } from "d3-collection";
 
@@ -1491,7 +1491,7 @@ Visualization.prototype.deserializeState = function (state) {
 };
 
 //  Output  ---
-function Filter(this: any, datasource, ddlFilter: string | IFilter) {
+function Filter(this: any, datasource, ddlFilter: string | DDL1.IFilter) {
     this.datasource = datasource;
     if (typeof ddlFilter === "string") {
         ddlFilter = {
@@ -1745,12 +1745,16 @@ VisualizationRequestOptimizer.prototype.fetchData = function () {
 };
 
 //  Datasource  ---
-export function Datasource(this: any, marshaller, datasource: IDatasource, proxyMappings, timeout) {
+export function Datasource(this: any, marshaller, datasource: DDL1.IAnyDatasource, proxyMappings, timeout) {
     this.marshaller = marshaller;
     this.id = datasource.id;
-    this.WUID = datasource.WUID;
-    this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
-    this.databomb = datasource.databomb;
+    if (DDL1.isWorkunitDatasource(datasource)) {
+        this.WUID = datasource.WUID;
+    } else if (DDL1.isHipieDatasource(datasource)) {
+        this.URL = (marshaller.espUrl && marshaller.espUrl.url()) ? marshaller.espUrl.url() : datasource.URL;
+    } else if (DDL1.isDatabombDatasource(datasource)) {
+        this.databomb = datasource.databomb;
+    }
     this.filters = (datasource.filter || []).map(filter => {
         return new Filter(this, filter);
     });
@@ -1782,7 +1786,7 @@ export function Datasource(this: any, marshaller, datasource: IDatasource, proxy
         this.comms = new Comms.HIPIEDatabomb()
             .hipieResults(hipieResults)
             ;
-    } else {
+    } else if (DDL1.isHipieDatasource(datasource)) {
         this.comms = new Comms.HIPIERoxie()
             .url(datasource.URL)
             .proxyMappings(proxyMappings)
@@ -2250,7 +2254,7 @@ Marshaller.prototype.dashboardsLoaded = function () {
     return Promise.all(this.dashboardArray.map(function (dashboard) { return dashboard.loadedPromise(); }));
 };
 
-Marshaller.prototype.createDatasource = function (ddlDatasouce: IDatasource) {
+Marshaller.prototype.createDatasource = function (ddlDatasouce: DDL1.IAnyDatasource) {
     let retVal = this._datasources[ddlDatasouce.id];
     if (!retVal) {
         retVal = new Datasource(this, ddlDatasouce, this._proxyMappings, this._timeout);

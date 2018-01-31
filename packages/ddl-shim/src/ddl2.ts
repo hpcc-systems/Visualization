@@ -4,18 +4,30 @@ export type RowType = { [key: string]: any; };
 export type IServiceType = "wuresult" | "hipie" | "roxie";
 export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb";
 export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
+export type FieldType = IPrimativeField | IRangeField | IDatasetField;
 
-export interface IField {
+export interface IPrimativeField {
     id: string;
-    type: string;
-    default: any;
-    children?: IField[];
+    type: "string" | "number" | "boolean";
+    default: string | number | boolean;
+}
+
+export interface IRangeField {
+    id: string;
+    type: "range";
+    default: [any, any];
+}
+
+export interface IDatasetField {
+    id: string;
+    type: "dataset";
+    default: FieldType[];
 }
 
 export interface IDatasource {
     type: IDatasourceType;
     id: string;
-    fields: IField[];
+    fields: FieldType[];
 }
 
 export interface IDatasourceRef {
@@ -33,7 +45,7 @@ export interface IService {
 }
 
 export interface IOutput {
-    fields: IField[];
+    fields: FieldType[];
 }
 
 export type OutputDict = { [key: string]: IOutput };
@@ -53,7 +65,7 @@ export interface IRoxieService extends IService {
     type: "roxie";
     querySet: string;
     queryID: string;
-    inputs: IField[];
+    inputs: FieldType[];
     outputs: OutputDict;
 }
 
@@ -61,7 +73,7 @@ export interface IHipieService extends IService {
     type: "hipie";
     querySet: string;
     queryID: string;
-    inputs: IField[];
+    inputs: FieldType[];
     outputs: OutputDict;
 }
 
@@ -75,7 +87,7 @@ export interface IWUResultRef extends IDatasourceRef {
     output: string;
 }
 
-export function isIWUResultRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IWUResultRef {
+export function isWUResultRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IWUResultRef {
     return (ref as IWUResultRef).output !== undefined && (ref as IRoxieServiceRef).request === undefined;
 }
 
@@ -84,7 +96,7 @@ export interface IRoxieServiceRef extends IDatasourceRef {
     output: string;
 }
 
-export function isIRoxieServiceRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IRoxieServiceRef {
+export function isRoxieServiceRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IRoxieServiceRef {
     return (ref as IRoxieServiceRef).request !== undefined;
 }
 
@@ -97,15 +109,15 @@ export interface IDatabomb extends IDatasource {
 }
 
 //  Activities  ===============================================================
-export type IActivityType = "filter" | "project" | "groupby" | "sort" | "limit";
-export type ActivityType = IFilter | IProject | IGroupBy | ISort | ILimit;
+export type IActivityType = "filter" | "project" | "groupby" | "sort" | "limit" | "mappings";
+export type ActivityType = IFilter | IProject | IGroupBy | ISort | ILimit | IMappings;
 
 export interface IActivity {
     type: IActivityType;
 }
 
 //  Filter  ===================================================================
-export type IMappingConditionType = "==" | "!=" | ">" | ">=" | "<" | "<=" | "in";
+export type IMappingConditionType = "==" | "!=" | ">" | ">=" | "<" | "<=" | "range" | "in";
 export interface IMapping {
     remoteFieldID: string;
     localFieldID: string;
@@ -157,13 +169,20 @@ export interface IProject extends IActivity {
 export function isProjectActivity(activity: IActivity): activity is IProject {
     return activity.type === "project";
 }
-
+export interface IMappings extends IActivity {
+    type: "mappings";
+    transformations: TransformationType[];
+}
+export function isMappingsActivity(activity: IActivity): activity is IMappings {
+    return activity.type === "mappings";
+}
 //  GroupBy  ==================================================================
 export type IAggregateType = "min" | "max" | "sum" | "mean" | "variance" | "deviation";
 export interface IAggregate {
     fieldID: string;
     type: IAggregateType;
     inFieldID: string;
+    baseCountFieldID: string;
 }
 
 export interface ICount {
@@ -214,7 +233,7 @@ export interface IView {
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.18";
+    version: "0.0.19";
     datasources: DatasourceType[];
     dataviews: IView[];
 }

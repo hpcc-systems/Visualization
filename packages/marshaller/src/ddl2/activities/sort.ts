@@ -3,7 +3,7 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
-import { Activity, ReferencedFields } from "./activity";
+import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class SortColumn extends PropertyExt {
     private _owner: Sort;
@@ -12,6 +12,17 @@ export class SortColumn extends PropertyExt {
     fieldID: publish<this, string>;
     @publish(false, "boolean", "Sort Field")
     descending: publish<this, boolean>;
+
+    validate(): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (this.fieldIDs().indexOf(this.fieldID()) < 0) {
+            retVal.push({
+                source: `SortColumn:  ${this.id()}`,
+                msg: `Invalid fieldID:  ${this.fieldID()}`
+            });
+        }
+        return retVal;
+    }
 
     constructor(owner: Sort) {
         super();
@@ -56,6 +67,14 @@ export class Sort extends Activity {
 
     @publish([], "propertyArray", "Source Columns", null, { autoExpand: SortColumn })
     column: publish<this, SortColumn[]>;
+
+    validate(): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        for (const sb of this.validSortBy()) {
+            retVal = retVal.concat(sb.validate());
+        }
+        return retVal;
+    }
 
     constructor() {
         super();

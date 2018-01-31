@@ -4,13 +4,24 @@ import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
 import { nest as d3Nest } from "d3-collection";
-import { Activity, ReferencedFields } from "./activity";
+import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class GroupByColumn extends PropertyExt {
     private _owner: GroupBy;
 
     @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, { optional: true })
     label: publish<this, string>;
+
+    validate(): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (this.columns().indexOf(this.label()) < 0) {
+            retVal.push({
+                source: `GroupByColumn:  ${this.id()}`,
+                msg: `Invalid label:  ${this.label()}`
+            });
+        }
+        return retVal;
+    }
 
     constructor(owner: GroupBy) {
         super();
@@ -63,8 +74,35 @@ export class AggregateField extends PropertyExt {
     fieldID: publish<this, string>;
     @publish("count", "set", "Aggregation Type", ["count", "min", "max", "sum", "mean", "median", "variance", "deviation"], { optional: true, disable: (w: AggregateField) => !w.fieldID() })
     aggrType: publish<this, AggregateType>;
-    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => !w.fieldID() || !w.aggrType() || w.aggrType() === "count" })
+    @publish(null, "set", "Aggregation Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => w.disableAggrColumn() })
     aggrColumn: publish<this, string>;
+    @publish(null, "set", "Base Count Field", function (this: AggregateField) { return this.columns(); }, { optional: true, disable: (w: AggregateField) => w.disableBaseCountColumn() })
+    baseCountColumn: publish<this, string>;
+
+    disableAggrColumn(): boolean {
+        return !this.fieldID() || !this.aggrType() || this.aggrType() === "count";
+    }
+
+    disableBaseCountColumn(): boolean {
+        return !this.fieldID() || !this.aggrType() || this.aggrType() !== "mean";
+    }
+
+    validate(): IActivityError[] {
+        const retVal: IActivityError[] = [];
+        if (!this.disableAggrColumn() && this.columns().indexOf(this.aggrColumn()) < 0) {
+            retVal.push({
+                source: `AggregateField:  ${this.id()}`,
+                msg: `Invalid aggrColumn:  ${this.aggrColumn()}`
+            });
+        }
+        if (!this.disableBaseCountColumn() && this.baseCountColumn() !== undefined && this.columns().indexOf(this.baseCountColumn()) < 0) {
+            retVal.push({
+                source: `AggregateField:  ${this.id()}`,
+                msg: `Invalid baseCountColumn:  ${this.baseCountColumn()}`
+            });
+        }
+        return retVal;
+    }
 
     constructor(owner: GroupBy) {
         super();
@@ -81,7 +119,8 @@ export class AggregateField extends PropertyExt {
         return {
             fieldID: this.fieldID(),
             type: this.aggrType() as DDL2.IAggregateType,
-            inFieldID: this.aggrColumn()
+            inFieldID: this.aggrColumn(),
+            baseCountFieldID: this.baseCountColumn()
         };
     }
 
@@ -92,6 +131,7 @@ export class AggregateField extends PropertyExt {
             ;
         if (ddl.type !== "count") {
             retVal.aggrColumn(ddl.inFieldID);
+            retVal.baseCountColumn(ddl.baseCountFieldID);
         }
         return retVal;
     }
@@ -119,9 +159,16 @@ export class AggregateField extends PropertyExt {
     aggrFunc(): (leaves: any[]) => number {
         const aggrFunc = d3Aggr[this.aggrType() as string];
         const aggrColumn = this.aggrColumn();
-        return (values: any[]) => {
-            return aggrFunc(values, leaf => +leaf[aggrColumn]);
-        };
+        const baseCountColumn = this.baseCountColumn();
+        if (baseCountColumn) {
+            return (values: any[]) => {
+                return aggrFunc(values, leaf => +leaf[aggrColumn] / +leaf[baseCountColumn]);
+            };
+        } else {
+            return (values: any[]) => {
+                return aggrFunc(values, leaf => +leaf[aggrColumn]);
+            };
+        }
     }
 }
 AggregateField.prototype._class += " AggregateField";
@@ -137,6 +184,17 @@ export class GroupBy extends Activity {
     details: publish<this, boolean>;
     @publish(false, "boolean", "Show groupBy fileds in details")
     fullDetails: publish<this, boolean>;
+
+    validate(): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        for (const gbColumn of this.validGroupBy()) {
+            retVal = retVal.concat(gbColumn.validate());
+        }
+        for (const cfs of this.validComputedFields()) {
+            retVal = retVal.concat(cfs.validate());
+        }
+        return retVal;
+    }
 
     constructor() {
         super();

@@ -73,7 +73,7 @@ export abstract class ESPResult extends Activity {
             return super.exec().then(() => {
                 return this.sample();
             }).then(response => {
-                this._data = response;
+                this._data = this.fixInt64(response);
             }).catch(e => {
                 this._data = [];
             });
@@ -108,9 +108,13 @@ export abstract class ESPResult extends Activity {
 
     private sample = debounce((samples: number = this.samples(), sampleSize: number = this.sampleSize()): Promise<any[]> => {
         const pages: Array<Promise<any[]>> = [];
-        const lastPage = this.total() - sampleSize;
-        for (let i = 0; i < samples; ++i) {
-            pages.push(this._fetch(Math.floor(i * lastPage / sampleSize), sampleSize));
+        if (samples * sampleSize >= this.total()) {
+            pages.push(this._fetch(0, this.total()));
+        } else {
+            const lastPage = this.total() - sampleSize;
+            for (let i = 0; i < samples; ++i) {
+                pages.push(this._fetch(Math.floor(i * lastPage / sampleSize), sampleSize));
+            }
         }
         return Promise.all(pages).then(responses => {
             let retVal2: any[] = [];

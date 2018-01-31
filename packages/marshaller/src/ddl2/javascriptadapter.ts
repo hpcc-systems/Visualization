@@ -126,7 +126,7 @@ const ds_${ds.id()} = TODO-writeDSActivity: ${dsDetails.classID()}
 
     writeDatasource(element: Element): string[] {
         const dataSources: string[] = [];
-        const ds = element.view().dataSource();
+        const ds = element.hipiePipeline().dataSource();
         if (!this._dsDedup[ds.hash()]) {
             this._dsDedup[ds.hash()] = ds;
             dataSources.push(this.writeDSActivity(ds));
@@ -179,7 +179,7 @@ const cp_${vizID} = new ChartPanel()
 
     writeElement(element: Element) {
         const activities: string[] = [];
-        for (const activity of element.view().activities()) {
+        for (const activity of element.hipiePipeline().activities()) {
             if (activity.exists()) {
                 if (isDatasource(activity)) {
                     activities.push(`ds_${this._dsDedup[activity.hash()].id()}`);

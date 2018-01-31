@@ -1,24 +1,22 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { Widget } from "@hpcc-js/common";
-import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
-import { PDockPanel } from "./PDockPanel";
+import { HTMLWidget, SVGWidget, Widget } from "@hpcc-js/common";
+import { IMessageHandler, Message, TabPanel as PTabPanel, Widget as PWidget } from "@hpcc-js/phosphor-shim";
 import { Msg, WidgetAdapter } from "./WidgetAdapter";
 
 import "../src/DockPanel.css";
 
-export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHook {
-    private _dock = new PDockPanel({ mode: "multiple-document" });
+export class TabPanel extends HTMLWidget {
+    private _tab = new PTabPanel({ tabPlacement: "top" });
+    protected content: WidgetAdapter[] = [];
 
     constructor() {
         super();
         this._tag = "div";
-        this._dock.id = "p" + this.id();
-        MessageLoop.installMessageHook(this, this);
+        this._tab.id = "p" + this.id();
     }
 
     protected getWidgetAdapter(widget: Widget): WidgetAdapter | null {
         let retVal = null;
-        this._dock.content().some(wa => {
+        this.content.some(wa => {
             if (wa.widget === widget) {
                 retVal = wa;
                 return true;
@@ -28,44 +26,21 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return retVal;
     }
 
-    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget) {
-        const addMode: PhosphorDockPanel.IAddOptions = { mode: location, ref: this.getWidgetAdapter(refWidget) };
+    addWidget(widget: SVGWidget | HTMLWidget, title: string) {
+        if (!this._prevActive) {
+            this._prevActive = widget;
+        }
         const wa = new WidgetAdapter(this, widget);
         wa.title.label = title;
         wa.padding = 8;
-        this._dock.addWidget(wa, addMode);
-        this._dock.appendContent(wa);
-        this._dock.tabsMovable = false;
-        return this;
-    }
-
-    removeWidget(widget: Widget) {
-        const wa = this.getWidgetAdapter(widget);
-        if (wa) {
-            wa.dispose();
-        }
-        return this;
-    }
-
-    isVisible(widget: Widget) {
-        return this.getWidgetAdapter(widget).isVisible;
-    }
-
-    widgets(): Widget[] {
-        return this._dock.content().map(wa => wa.widget);
-    }
-
-    layout(): object;
-    layout(_: object): this;
-    layout(_?: object): object | this {
-        if (!arguments.length) return this._dock.saveLayout();
-        this._dock.restoreLayout(_ as any);
+        this._tab.addWidget(wa);
+        this.content.push(wa);
         return this;
     }
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        PWidget.attach(this._dock, domNode);
+        PWidget.attach(this._tab, domNode);
     }
 
     update(domNode, element) {
@@ -74,7 +49,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;
-        this._dock.update();
+        this._tab.update();
     }
 
     exit(domNode, element) {
@@ -109,4 +84,4 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return this._prevActive;
     }
 }
-DockPanel.prototype._class += " phosphor_DockPanel";
+TabPanel.prototype._class += " phosphor_TabPanel";

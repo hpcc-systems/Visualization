@@ -4,6 +4,8 @@ import { Grid, Memory, PagingGrid } from "@hpcc-js/dgrid-shim";
 import "../src/Common.css";
 
 export class Common extends HTMLWidget {
+    protected _columns = [];
+    protected _store = new Memory();
     protected _dgridDiv;
     protected _dgrid;
     protected _prevPaging;
@@ -11,6 +13,7 @@ export class Common extends HTMLWidget {
     constructor() {
         super();
         this._tag = "div";
+        this._store.idProperty = "__hpcc_id";
     }
 
     @publish(true, "boolean", "Enable paging")
@@ -27,18 +30,15 @@ export class Common extends HTMLWidget {
         super.update(domNode, element);
         if (this._prevPaging !== this.pagination()) {
             this._prevPaging = this.pagination();
-            let columns;
-            let collection;
             if (this._dgrid) {
-                columns = this._dgrid.get("columns");
-                collection = this._dgrid.get("collection");
                 this._dgrid.destroy();
                 this._dgridDiv = element.append("div");
             }
             this._dgrid = new (this._prevPaging ? PagingGrid : Grid)({
-                columns: columns || [],
-                collection: collection || new Memory(),
+                columns: this._columns,
+                collection: this._store,
                 selectionMode: "single",
+                deselectOnRefresh: true,
                 cellNavigation: false,
                 pagingLinks: 1,
                 pagingTextBox: true,

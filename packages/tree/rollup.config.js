@@ -34,12 +34,14 @@ export default {
         name: pkg.name
     }],
     plugins: [
+        alias({
+            "d3-drag": "@hpcc-js/common",
+            "d3-selection": "@hpcc-js/common"
+        }),
         nodeResolve({
             preferBuiltins: true
         }),
         commonjs({
-        }),
-        alias({
         }),
         postcss({
             extensions: [".css"]

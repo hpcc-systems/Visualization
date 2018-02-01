@@ -1,6 +1,4 @@
-import { Icon } from "@hpcc-js/common";
-import { SVGWidget } from "@hpcc-js/common";
-import { TextBox } from "@hpcc-js/common";
+import { Icon, SVGWidget, TextBox } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 
 import "../src/Vertex.css";

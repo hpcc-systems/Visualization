@@ -43,6 +43,10 @@ export default {
     },
     */
     plugins: [
+        alias({
+            "d3-drag": "@hpcc-js/common",
+            "d3-selection": "@hpcc-js/common"
+        }),
         nodeResolve({
             preferBuiltins: true
         }),
@@ -50,8 +54,6 @@ export default {
             namedExports: {
                 // "../dgrid-shim/build/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
             }
-        }),
-        alias({
         }),
         postcss({
             extensions: [".css"]

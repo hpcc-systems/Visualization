@@ -7,6 +7,7 @@ import * as DDL2 from "./ddl2";
 import { ddl2Schema } from "./ddl2Schema";
 
 export { DDL1, DDL2, ddlSchema, ddl2Schema };
+export * from "./upgrade";
 
 export interface Response {
     success: boolean;

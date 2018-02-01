@@ -1,7 +1,7 @@
 ({
     baseUrl: ".",
     appDir: "../nullDir",
-    dir: "build",
+    dir: "dist",
     paths: {
         "requireLib": "../../node_modules/requirejs/require"
     },

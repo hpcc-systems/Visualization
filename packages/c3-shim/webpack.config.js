@@ -11,8 +11,8 @@ entry_list.forEach(function (e) { entry[e] = path.resolve(__dirname, "./src/" + 
 module.exports = {
     entry: entry,
     output: {
-        path: path.resolve(__dirname, 'build/'),
-        publicPath: "build/",
+        path: path.resolve(__dirname, 'dist/'),
+        publicPath: "dist/",
         filename: "index.js",
         libraryTarget: "umd",
         library: "@hpcc-js/c3-shim"

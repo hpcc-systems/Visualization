@@ -2,15 +2,15 @@
   "name": "@hpcc-js/requirejs-shim",
   "version": "0.0.53",
   "description": "hpcc-js - requirejs shim",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "types": "types/index.d.ts",
   "files": [
-    "build/*",
+    "dist/*",
     "types/*",
     "types/*"
   ],
   "scripts": {
-    "clean": "rimraf build && rimraf lib* && rimraf tmp",
+    "clean": "rimraf dist && rimraf lib* && rimraf tmp",
     "build": "r_js -o ./requirejs.config.js"
   },
   "devDependencies": {

@@ -41,7 +41,7 @@ export default [{
         globals: globals,
         name: pkg.name
     }, {
-        file: pkg.module,
+        file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
         globals: globals

@@ -27,7 +27,7 @@ export default {
         globals: globals,
         name: pkg.name
     }, {
-        file: pkg.module,
+        file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
         globals: globals,
@@ -48,7 +48,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                // "../dgrid-shim/build/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
+                // "../dgrid-shim/dist/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
             }
         }),
         alias({

@@ -14,7 +14,7 @@ export default {
     input: "lib-es6/index",
     external: ["@hpcc-js/dgrid-shim"],
     output: {
-        file: `build/vizLib.js`,
+        file: `dist/vizLib.js`,
         globals: function (id) {
             console.log(id);
             if (id.indexOf("@hpcc-js/dgrid-shim") === 0) {
@@ -33,7 +33,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                // "../../packages/dgrid-shim/build/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
+                // "../../packages/dgrid-shim/dist/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
                 // "../../node_modules/dagre/index.js": ["graphlib", "layout"]
             }
         }),

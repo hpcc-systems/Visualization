@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
     entry: './lib-es6/index.spec.js',
     output: {
-        path: path.join(__dirname, "build"),
+        path: path.join(__dirname, "dist"),
         filename: "bundle.test.js"
     },
     target: "web",
@@ -21,7 +21,7 @@ module.exports = {
             use: [{
                 loader: 'file-loader',
                 options: {
-                    name: './build/[name].[ext]'
+                    name: './dist/[name].[ext]'
                 }
             }]
         }]

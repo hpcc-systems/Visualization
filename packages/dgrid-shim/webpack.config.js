@@ -9,8 +9,8 @@ module.exports = {
     context: __dirname,
     entry: "./lib-cjs/index",
     output: {
-        path: path.join(__dirname, "build"),
-        publicPath: "build/",
+        path: path.join(__dirname, "dist"),
+        publicPath: "dist/",
         libraryTarget: "umd",
         library: "@hpcc-js/dgrid-shim",
         pathinfo: true,
@@ -28,7 +28,7 @@ module.exports = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: './build/[name].[ext]'
+                        name: './dist/[name].[ext]'
                     }
                 }]
             }]
@@ -36,7 +36,7 @@ module.exports = {
     plugins: [
         new DojoWebpackPlugin({
             loaderConfig: require.resolve("./src/loaderConfig"),
-            environment: { dojoRoot: "./build" },	// used at run time for non-packed resources (e.g. blank.gif)
+            environment: { dojoRoot: "./dist" },	// used at run time for non-packed resources (e.g. blank.gif)
             buildEnvironment: { dojoRoot: "../../node_modules" }, // used at build time
             locales: ["en"]
         }),

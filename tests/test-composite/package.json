@@ -23,7 +23,7 @@
     "webpack": "3.10.0"
   },
   "scripts": {
-    "clean": "rimraf build && rimraf lib*",
+    "clean": "rimraf dist && rimraf lib*",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "bundle-umd": "webpack",
     "build": "npm run compile-es6 && npm run bundle-umd",

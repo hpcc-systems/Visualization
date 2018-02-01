@@ -2,12 +2,12 @@
   "name": "@hpcc-js/c3-shim",
   "version": "0.0.45",
   "description": "hpcc-js - c3 shim",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "files": [
-    "build/**/*"
+    "dist/**/*"
   ],
   "scripts": {
-    "clean": "rimraf build",
+    "clean": "rimraf dist",
     "build": "webpack"
   },
   "devDependencies": {

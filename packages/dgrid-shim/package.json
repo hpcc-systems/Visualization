@@ -2,10 +2,10 @@
   "name": "@hpcc-js/dgrid-shim",
   "version": "0.0.55",
   "description": "dgrid shim",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "clean": "rimraf lib* && rimraf types && rimraf build",
+    "clean": "rimraf lib* && rimraf types && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-amd": "tsc --module amd --outDir ./lib-amd",
     "compile-cjs": "tsc --module commonjs --outDir ./lib-cjs",
@@ -15,7 +15,7 @@
     "lint": "tslint --project . src/**/*.ts"
   },
   "files": [
-    "build/**/*"
+    "dist/**/*"
   ],
   "devDependencies": {
     "@types/dojo": "1.9.40",

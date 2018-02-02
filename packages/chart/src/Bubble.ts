@@ -70,7 +70,9 @@ export class Bubble extends SVGWidget {
 
         //  Enter  ---
         node.enter().append("g")
-            .attr("class", "node")
+            .attr("class", function (d, i) {
+                return "node series series-" + i;
+            })
             .attr("opacity", 0)
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {

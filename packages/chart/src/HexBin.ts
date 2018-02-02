@@ -49,7 +49,9 @@ export class HexBin extends XYAxis {
 
         const points = element.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
         points.enter().append("path")
-            .attr("class", "hexagon")
+            .attr("class", function (d, i) {
+                return "hexagon series series-" + i;
+            })
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
             .merge(points).transition().duration(duration)
             .attr("d", this._hexbin.hexagon())

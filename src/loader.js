@@ -19,6 +19,7 @@
                 "json": "../node_modules/requirejs-plugins/src/json",
 
                 "d3": "../bower_components/d3/d3",
+                "d3v4": "../bower_components/d3v4/index",
                 "c3": "../bower_components/c3/c3",
                 "dagre": "../bower_components/dagre/index",
                 "topojson": "../bower_components/topojson/topojson",

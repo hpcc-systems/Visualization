@@ -2,16 +2,16 @@
   "name": "@hpcc-js/phosphor-shim",
   "version": "0.0.57",
   "description": "hpcc-js - Phosphor shim",
-  "main": "build/index.js",
-  "module": "build/index.es6",
+  "main": "dist/index.js",
+  "module": "dist/index.es6",
   "types": "types/index.d.ts",
   "files": [
-    "build/*",
+    "dist/*",
     "types/*",
     "src/*.css"
   ],
   "scripts": {
-    "clean": "rimraf lib* && rimraf types && rimraf build",
+    "clean": "rimraf lib* && rimraf types && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "rollup -c",

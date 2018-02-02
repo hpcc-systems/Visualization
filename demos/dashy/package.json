@@ -3,7 +3,7 @@
   "name": "@hpcc-js/demo-dashy",
   "version": "0.0.52",
   "scripts": {
-    "clean": "rimraf lib* && rimraf dist && rimraf build",
+    "clean": "rimraf lib* && rimraf dist && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
     "bundle": "webpack",

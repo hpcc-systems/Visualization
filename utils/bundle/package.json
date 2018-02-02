@@ -9,7 +9,7 @@
     "types/*",
     "lib-es6/*",
     "src/*.css",
-    "build/*"
+    "dist/*"
   ],
   "directories": {
     "lib": "lib/"

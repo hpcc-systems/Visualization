@@ -27,7 +27,7 @@ export default {
         globals: globals,
         name: pkg.name
     }, {
-        file: pkg.module,
+        file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
         globals: globals,
@@ -39,7 +39,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../c3-shim/build/index.js": ["generate"]
+                "../c3-shim/dist/index.js": ["generate"]
             }
         }),
         alias({

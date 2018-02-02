@@ -27,7 +27,7 @@ export default {
         globals: globals,
         name: pkg.name
     }, {
-        file: pkg.module,
+        file: pkg.module + ".js",
         format: "es",
         sourcemap: true,
         globals: globals,
@@ -39,7 +39,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../ddl-shim/build/index.js": ["validate2"]
+                "../ddl-shim/dist/index.js": ["validate2"]
             }
         }),
         alias({

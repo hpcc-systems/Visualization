@@ -13,7 +13,7 @@ function guessScriptURL() {
 const scriptUrl = guessScriptURL();
 
 function parseScriptUrl(forceLocal: boolean) {
-    const scriptUrlParts = scriptUrl.split("/loader/build/index.js");
+    const scriptUrlParts = scriptUrl.split("/loader/dist/index.js");
     const isLocal = forceLocal || scriptUrl.indexOf("file://") === 0;
     return {
         isLocal,
@@ -38,11 +38,11 @@ const hostUrl = (function () {
     if (document && document.currentScript) {
         retVal = (document.currentScript as any).src;
     } else {
-        retVal = getElementAttrVal("script", "src", "/loader/build/index.js");
+        retVal = getElementAttrVal("script", "src", "/loader/dist/index.js");
     }
     const retValParts = retVal.split("/");
     retValParts.pop();  //  loader.js
-    retValParts.pop();  //  build/
+    retValParts.pop();  //  dist/
     retValParts.pop();  //  loader/
     return retValParts.join("/");
 })();
@@ -68,14 +68,14 @@ requirejs.load = function (context, moduleId, url) {
         const newUrl = url.substring(0, url.length - 3);
         addCssToDoc(newUrl);
         url = hostUrl + "/loader/rjs.noop.js";
-    } else if (url.length >= 26 && url.indexOf("/common/build/common.min.js") === url.length - 26) {
-        addCssToDoc(url.replace("/common/build/common.min.js", "/common/font-awesome/css/font-awesome.min.css"));
-    } else if (url.length >= 22 && url.indexOf("/common/build/common.js") === url.length - 22) {
-        addCssToDoc(url.replace("/common/build/common.js", "/common/font-awesome/css/font-awesome.min.css"));
+    } else if (url.length >= 26 && url.indexOf("/common/dist/common.min.js") === url.length - 26) {
+        addCssToDoc(url.replace("/common/dist/common.min.js", "/common/font-awesome/css/font-awesome.min.css"));
+    } else if (url.length >= 22 && url.indexOf("/common/dist/common.js") === url.length - 22) {
+        addCssToDoc(url.replace("/common/dist/common.js", "/common/font-awesome/css/font-awesome.min.css"));
     } else if (url.length >= 20 && url.indexOf("/common/lib/index.js") === url.length - 20) {
         addCssToDoc(url.replace("/common/lib/index.js", "/common/font-awesome/css/font-awesome.min.css"));
     }
-    if (moduleId.indexOf("@hpcc-js/") === 0 && moduleId.indexOf("/build/") > 0) {
+    if (moduleId.indexOf("@hpcc-js/") === 0 && moduleId.indexOf("/dist/") > 0) {
         // addCssToDoc(url.replace(".js", ".css"));
     }
     return load(context, moduleId, url);
@@ -92,9 +92,9 @@ export function bundle(url: string, additionalPaths: { [key: string]: string } =
         ...additionalPaths
     };
     const minStr = min ? ".min" : "";
-    shims.forEach(shim => { paths[`@hpcc-js/${shim}`] = `${url}/${shim}/build/index`; });
+    shims.forEach(shim => { paths[`@hpcc-js/${shim}`] = `${url}/${shim}/dist/index`; });
     packages.forEach(pckg => {
-        paths[`@hpcc-js/${pckg}`] = `${url}/${pckg}/build/index${minStr}`;
+        paths[`@hpcc-js/${pckg}`] = `${url}/${pckg}/dist/index${minStr}`;
     });
     return requirejs.config({
         context: url,
@@ -124,13 +124,13 @@ function local(devMode: boolean, additionalPaths: { [key: string]: string }, min
     };
     const rjsPackages: any = [];
     shims.forEach(shim => {
-        paths[`@hpcc-js/${shim}`] = `${config.libUrl}/${shim}/build/index`;
+        paths[`@hpcc-js/${shim}`] = `${config.libUrl}/${shim}/dist/index`;
     });
     packages.forEach(pckg => {
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
         rjsPackages.push({
             name: `@hpcc-js/${pckg}`,
-            main: devMode && config.isLocal ? `lib-umd/index` : `build/index.min`
+            main: devMode && config.isLocal ? `lib-umd/index` : `dist/index.min`
         });
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
     });

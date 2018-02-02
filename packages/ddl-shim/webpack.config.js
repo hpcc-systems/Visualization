@@ -5,8 +5,8 @@ var path = require("path");
 module.exports = {
     entry: "./lib-es6/index.js",
     output: {
-        path: path.resolve(__dirname, 'build/'),
-        publicPath: "build/",
+        path: path.resolve(__dirname, 'dist/'),
+        publicPath: "dist/",
         filename: "index.js",
         libraryTarget: "umd",
         library: "@hpcc-js/ddl-shim"

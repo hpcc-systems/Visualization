@@ -112,6 +112,65 @@
                     );
                 });
             },
+            with_form_button: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/form/Form", "src/form/Input"], function (DataFactory, MultiChartPanel, Form, Input) {
+                    callback(new MultiChartPanel()
+                        .title("Hello and Welcome!")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                        .buttons([
+                            {
+                                icon: "fa-filter",
+                                type: "ToggleButton",
+                                selected: false,
+                                init(btn) {
+                                    this._modal
+                                        .title("Form Filtering")
+                                        .show(true)
+                                        .maxWidth("400px")
+                                        .maxHeight("400px")
+                                        .widget(new Form()
+                                            .inputs([
+                                                new Input()
+                                                    .name("textbox-test")
+                                                    .label("Alphanumeric")
+                                                    .type("text"),
+                                                new Input()
+                                                    .name("textbox-test")
+                                                    .label("Alphanumeric2")
+                                                    .type("text")
+                                            ])
+                                        )
+                                        .render(n => {
+                                            n.resize().render();
+                                        });
+                                    this._modal._close = function () {
+                                        btn.selected(false).render();
+                                    };
+                                },
+                                on(btn) {
+                                    this._modal.show(true).showPreview(false).render(n => {
+                                        n.resize().render();
+                                    });
+                                },
+                                off(btn) {
+                                    this._modal.show(false).render();
+                                },
+                                mouseenter(btn) {
+                                    this._modal.showPreview(true).render(n => {
+                                        n.resize().render();
+                                    });
+                                },
+                                mouseleave(btn) {
+                                    if (this._modal.showPreview()) {
+                                        this._modal.show(false).showPreview(false).render();
+                                    }
+                                },
+                            }
+                        ])
+                    );
+                });
+            },
             choro: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel"], function (DataFactory, MultiChartPanel) {
                     var mc = new MultiChartPanel()

@@ -265,14 +265,12 @@
                     callback(new Modal()
                         .relativeTargetId("cellSurface")
                         .title('A Simple Modal')
-                        .widget(new Line()
+                        .widget(
+                        new Line()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
                             .size({ width: 500, height: 400 })
                         )
-                        .on("closeModal", function () {
-                            console.log("closeModal hook");
-                        })
                     );
                 });
             }

@@ -104,7 +104,7 @@ export class Column extends XYAxis {
 
                 const columnRectEnter = columnRect
                     .enter().append("rect")
-                    .attr("class", "columnRect")
+                    .attr("class", (d, i) => "columnRect series series-" + context.cssTag(d.column))
                     .call(host._selection.enter.bind(host._selection))
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)

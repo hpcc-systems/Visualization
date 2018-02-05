@@ -70,5 +70,10 @@ export class MultiChartPanel extends ChartPanel {
         this._widget.chartTypeProperties(_);
         return this;
     }
+
+    update(domNode, element) {
+        this._legend.dataFamily(this._widget.getChartDataFamily());
+        super.update(domNode, element);
+    }
 }
 MultiChartPanel.prototype._class += " composite_MultiChartPanel";

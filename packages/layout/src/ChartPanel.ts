@@ -1,16 +1,20 @@
+import { IHighlight } from "@hpcc-js/api";
 import { publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
+import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
 import { Button, IClickHandler, Item, Spacer, TitleBar, ToggleButton } from "./TitleBar";
 
-export class ChartPanel extends Border2 implements IClickHandler {
+import "../src/ChartPanel.css";
+
+export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
 
     private _toggleLegend: ToggleButton = new ToggleButton(this, "fa-info").selected(false);
     private _buttonDownload: Button = new Button(this, "fa-download");
 
-    private _titleBar = new TitleBar();
+    protected _titleBar = new TitleBar();
 
-    private _legend = new Legend(this);
+    protected _legend = new Legend(this);
 
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     title: publish<this, string>;
@@ -70,6 +74,28 @@ export class ChartPanel extends Border2 implements IClickHandler {
         return this;
     }
 
+    highlightColumn(column?: string): this {
+        if (column) {
+            const cssTag = `series-${this.cssTag(column)}`;
+            this._centerWA.element().selectAll(".series")
+                .each(function () {
+                    const element = d3Select(this);
+                    const highlight = element.classed(cssTag);
+                    element
+                        .classed("highlight", highlight)
+                        .classed("lowlight", !highlight)
+                        ;
+                })
+                ;
+        } else {
+            this._centerWA.element().selectAll(".series")
+                .classed("highlight", false)
+                .classed("lowlight", false)
+                ;
+        }
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
 
@@ -91,8 +117,8 @@ export class ChartPanel extends Border2 implements IClickHandler {
             .columns(this._legend.filteredColumns())
             .data(this._legend.filteredData())
             ;
-        if (this._prevChartDataFamily !== "ND") { // this._widget.getChartDataFamily()) {
-            this._prevChartDataFamily = "ND"; // this._widget.getChartDataFamily();
+        if (this._prevChartDataFamily !== this._legend.dataFamily()) {
+            this._prevChartDataFamily = this._legend.dataFamily();
             switch (this._prevChartDataFamily) {
                 case "any":
                     this._toggleLegend.selected(false);
@@ -100,7 +126,6 @@ export class ChartPanel extends Border2 implements IClickHandler {
                     break;
             }
         }
-        this._legend.dataFamily("ND"); // this._widget.getChartDataFamily());
         super.update(domNode, element);
     }
 

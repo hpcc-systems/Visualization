@@ -1,3 +1,4 @@
+import { instanceOfIHighlight } from "@hpcc-js/api";
 import { Palette, SVGWidget, Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleOrdinal as d3ScaleOrdinal } from "d3-scale";
@@ -26,8 +27,10 @@ export class Legend extends SVGWidget {
                 context.onClick(d, this);
             })
             .on("cellover", (d) => {
+                context.onOver(d, this);
             })
             .on("cellout", (d) => {
+                context.onOut(d, this);
             })
             ;
     }
@@ -37,22 +40,34 @@ export class Legend extends SVGWidget {
     }
 
     filteredColumns(): string[] {
-        return this.columns().filter(d => !this.isDisabled(d));
+        switch (this.dataFamily()) {
+            case "2D":
+                return this.columns();
+            case "ND":
+                return this.columns().filter(d => !this.isDisabled(d));
+        }
+        return this.columns();
     }
 
     filteredData(): any[][] {
-        const disabledCols: { [key: number]: boolean } = {};
-        let anyDisabled: boolean = false;
-        this.columns().forEach((col, idx) => {
-            const disabled = this.isDisabled(col);
-            disabledCols[idx] = disabled;
-            if (disabled) {
-                anyDisabled = true;
-            }
-        });
-        return !anyDisabled ? this.data() : this.data().map(row => {
-            return row.filter((cell, idx) => !disabledCols[idx]);
-        });
+        switch (this.dataFamily()) {
+            case "2D":
+                return this.data().filter(row => !this.isDisabled(row[0]));
+            case "ND":
+                const disabledCols: { [key: number]: boolean } = {};
+                let anyDisabled: boolean = false;
+                this.columns().forEach((col, idx) => {
+                    const disabled = this.isDisabled(col);
+                    disabledCols[idx] = disabled;
+                    if (disabled) {
+                        anyDisabled = true;
+                    }
+                });
+                return !anyDisabled ? this.data() : this.data().map(row => {
+                    return row.filter((cell, idx) => !disabledCols[idx]);
+                });
+        }
+        return this.data();
     }
 
     isRainbow() {
@@ -182,7 +197,9 @@ export class Legend extends SVGWidget {
             .style("cursor", "pointer")
             .selectAll("path.swatch").filter((d, i) => i < dataArr.length)
             .style("stroke", (d, i) => dataArr[i][0])
-            .style("fill", (d, i) => this._disabled.indexOf(d) < 0 ? dataArr[i][0] : "white")
+            .style("fill", (d, i) =>
+                this._disabled.indexOf(d) < 0 ? dataArr[i][0] : "white"
+            )
             ;
     }
 
@@ -196,7 +213,6 @@ export class Legend extends SVGWidget {
             case "ordinal":
                 switch (this.dataFamily()) {
                     case "2D":
-                        break;
                     case "ND":
                         const disabledIdx = this._disabled.indexOf(d);
                         if (disabledIdx < 0) {
@@ -210,6 +226,42 @@ export class Legend extends SVGWidget {
                 break;
         }
         console.log("Legend onClick method");
+        console.log("d: " + d);
+    }
+
+    onOver(d, domNode) {
+        if (instanceOfIHighlight(this._owner)) {
+            const palette = this.getPalette();
+            switch (palette.type()) {
+                case "ordinal":
+                    switch (this.dataFamily()) {
+                        case "2D":
+                        case "ND":
+                            this._owner.highlightColumn(d);
+                            break;
+                    }
+                    break;
+            }
+        }
+        console.log("Legend onOver method");
+        console.log("d: " + d);
+    }
+
+    onOut(d, domNode) {
+        if (instanceOfIHighlight(this._owner)) {
+            const palette = this.getPalette();
+            switch (palette.type()) {
+                case "ordinal":
+                    switch (this.dataFamily()) {
+                        case "2D":
+                        case "ND":
+                            this._owner.highlightColumn();
+                            break;
+                    }
+                    break;
+            }
+        }
+        console.log("Legend onOut method");
         console.log("d: " + d);
     }
 

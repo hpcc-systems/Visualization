@@ -23,6 +23,31 @@
                 });
             }
         },
+        ChartPanel: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/chart/Column"], function (DataFactory, ChartPanel, Column) {
+                    callback(new ChartPanel()
+                        .widget(new Column())
+                        .title("Hello and Welcome!")
+                        // .description("Sample description for the chart being displayed...")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                    );
+                });
+            },
+            choro: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/map/ChoroplethStates"], function (DataFactory, ChartPanel, ChoroplethStates) {
+                    var mc = new ChartPanel()
+                        .widget(new ChoroplethStates())
+                        // .legendPosition("bottom")
+                        .title("US States Choropleth")
+                        .columns(DataFactory.States.simple.columns)
+                        .data(DataFactory.States.simple.data)
+                        ;
+                    callback(mc);
+                });
+            }
+        },
         Accordion: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/Accordion", "src/other/Table", "src/layout/Surface", "src/chart/MultiChart", "src/chart/Line", "src/chart/Column"], function (DataFactory, Accordion, Table, Surface, MultiChart, Line, Column) {

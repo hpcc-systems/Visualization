@@ -12,6 +12,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
     private _modal = new Modal();
+    private _highlight: boolean;
 
     private _toggleInfo = new ToggleButton("fa-info-circle", ".Description")
         .selected(false)
@@ -121,6 +122,14 @@ export class ChartPanel extends Border2 implements IHighlight {
         return this;
     }
 
+    highlight(): boolean;
+    highlight(_: boolean): this;
+    highlight(_?: boolean): boolean | this {
+        if (!arguments.length) return this._highlight;
+        this._highlight = _;
+        return this;
+    }
+
     buttons(): Widget[];
     buttons(_: Widget[]): this;
     buttons(_?: Widget[]): this | Widget[] {
@@ -190,6 +199,7 @@ export class ChartPanel extends Border2 implements IHighlight {
                     break;
             }
         }
+        element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
         super.update(domNode, element);
     }
 
@@ -232,3 +242,13 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 }
 ChartPanel.prototype._class += " layout_ChartPanel";
+
+export interface ChartPanel {
+    highlightSize(): number;
+    highlightSize(_: number): this;
+    highlightColor(): string;
+    highlightColor(_: string): this;
+}
+
+ChartPanel.prototype.publish("highlightSize", 4, "number");
+ChartPanel.prototype.publish("highlightColor", "#e67e22", "html-color");

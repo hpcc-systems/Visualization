@@ -1,19 +1,9 @@
 import * as _colorbrewer from "colorbrewer";
 import { values as d3Values } from "d3-collection";
 import { interpolateLab as d3InterpolateLab } from "d3-interpolate";
-import {
-    interpolateInferno as d3InterpolateInferno,
-    interpolateMagma as d3InterpolateMagma,
-    interpolatePlasma as d3InterpolatePlasma,
-    interpolateViridis as d3InterpolateViridis,
-    scaleLinear as d3ScaleLinear,
-    scaleOrdinal as d3ScaleOrdinal,
-    scaleQuantize as d3ScaleQuantize,
-    scaleSequential as d3ScaleSequential,
-    schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b,
-    schemeCategory20c as d3SchemeCategory20c
-} from "d3-scale";
+import { interpolateInferno as d3InterpolateInferno, interpolateMagma as d3InterpolateMagma, interpolatePlasma as d3InterpolatePlasma, interpolateViridis as d3InterpolateViridis, scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, scaleSequential as d3ScaleSequential, schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b, schemeCategory20c as d3SchemeCategory20c } from "d3-scale";
 import { select as d3Select } from "d3-selection";
+
 const d3Schemes = {
     category10: d3SchemeCategory10,
     category20: d3SchemeCategory20,
@@ -22,6 +12,7 @@ const d3Schemes = {
 };
 
 const m_colorbrewer = _colorbrewer.default || _colorbrewer;
+
 const m_d3 = {
     Viridis: d3InterpolateViridis,
     Magma: d3InterpolateMagma,
@@ -32,9 +23,11 @@ const m_d3 = {
 const d3Ordinal = [
     "category10", "category20", "category20b", "category20c"
 ];
+
 const brewerOrdinal = [
     "Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "Set2", "Set3"
 ];
+
 const hpccOrdinal = [
     "hpcc10", "hpcc20"
 ];

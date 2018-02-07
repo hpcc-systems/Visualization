@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-coupon",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,10 @@
     "build": "npm run compile-es6 && npm run bundle-es6 && npm run bundle2"
   },
   "dependencies": {
-    "@hpcc-js/comms": "^0.0.73",
-    "@hpcc-js/dgrid": "^0.0.79",
-    "@hpcc-js/map": "^0.0.73",
-    "@hpcc-js/phosphor": "^0.0.71"
+    "@hpcc-js/comms": "^0.0.74",
+    "@hpcc-js/dgrid": "^0.0.80",
+    "@hpcc-js/map": "^0.0.74",
+    "@hpcc-js/phosphor": "^0.0.72"
   },
   "devDependencies": {
     "rimraf": "2.6.2",

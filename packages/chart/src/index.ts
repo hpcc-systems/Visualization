@@ -4,7 +4,6 @@ export * from "./Bar";
 export * from "./Bubble";
 export * from "./Bullet";
 export * from "./Column";
-export * from "./Contour";
 export * from "./Gantt";
 export * from "./HexBin";
 export * from "./Line";

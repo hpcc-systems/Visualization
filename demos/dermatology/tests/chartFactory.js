@@ -146,46 +146,6 @@
                 });
             }
         },
-        Contour: {
-            simple: function (callback) {
-                legacyRequire(["test/DataFactory", "src/chart/Contour"], function (DataFactory, Contour) {
-                    var randomX = d3.random.normal(200, 80),
-                        randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
-
-                    callback(new Contour()
-                        .xAxisType("linear")
-                        .yAxisType("linear")
-                        .contourBandwidth(8)
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(points)
-                    );
-                });
-            },
-            layered: function (callback) {
-                legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Contour", "src/chart/Scatter"], function (DataFactory, XYAxis, Contour, Scatter) {
-                    var randomX = d3.random.normal(200, 80),
-                        randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
-                    const xy = new XYAxis()
-                        .xAxisType("linear")
-                        .yAxisType("linear")
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(points)
-                        ;
-                    xy._layers.push(new Contour()
-                        .contourStrokeColor("#777")
-                        .contourBandwidth(15)
-                    );
-                    xy._layers.push(new Scatter()
-                        .paletteID('Dark2')
-                        .pointSize(3)
-                        .pointShape("rectangle")
-                    );
-                    callback(xy);
-                });
-            }
-        },
         HexBin: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/HexBin"], function (DataFactory, HexBin) {

@@ -1,10 +1,10 @@
-.html_TitleBar .main {
+.layout_TitleBar {
     display: flex;
     flex-flow: row;    
     justify-content: space-between;    
 }
 
-.html_TitleBar .title {
+.layout_TitleBar .title {
     padding:4px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -13,7 +13,7 @@
     font-weight: bold;
 }
 
-.html_TitleBar .icon-bar {
+.layout_TitleBar .icon-bar {
     display: flex;
     flex-flow: row;    
     margin:4px;
@@ -21,30 +21,43 @@
     line-height: 28px;
 }
 
-.html_TitleBar .icon-bar a {
+.layout_TitleBar .icon-bar a {
     text-align: center; /* Center-align text */
     padding-top: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
     padding-bottom: 4px;
     transition: all 0.3s ease; /* Add transition for hover effects */
     color: darkgray; /* White text color */
 }
 
-.html_TitleBar .icon-bar a:hover {
+.layout_TitleBar .icon-bar a.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    color: darkgray; 
+}
+
+.layout_TitleBar .icon-bar a:hover {
     background-color: whitesmoke; /* Add a hover color */
 }
 
-.html_TitleBar .icon-bar a.selected {
+.layout_TitleBar .icon-bar a.selected {
     background-color: #efe5e5; /* Add a hover color */
 }
 
-.html_TitleBar .icon-bar a.spacer {
+.layout_TitleBar .icon-bar div.spacer {
     text-align: center; /* Center-align text */
-    padding-top: 2px;
-    padding-left: 8px;
+    height:28px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    padding-top: 0px;
+    padding-left: 4px;  
+    margin-left: 4px;  
     padding-bottom: 0px;
     color: none;
 }
 
-.html_TitleBar .icon-bar a.spacer:hover {
+.layout_TitleBar .icon-bar a.spacer:hover {
     background-color: transparent;
 }

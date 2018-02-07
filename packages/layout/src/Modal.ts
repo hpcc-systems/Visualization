@@ -14,7 +14,7 @@ export class Modal extends HTMLWidget {
     protected _modalBody: d3SelectionType;
     protected _modalHeaderAnnotations: d3SelectionType;
     protected _modalHeaderCloseButton: d3SelectionType;
-    protected _close: () => void;
+    _close: () => void;
 
     constructor() {
         super();
@@ -23,6 +23,7 @@ export class Modal extends HTMLWidget {
 
     closeModal() {
         this.show(false).render();
+        if (this._close) this._close();
     }
 
     getRelativeTarget() {
@@ -133,32 +134,26 @@ export class Modal extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+        element.style("display", this.show() ? null : "none");
+        this._fade.classed("layout_Modal-fade-hidden", !this.showFade());
+        this._relativeTarget = this.getRelativeTarget();
+
+        this.setModalSizeLimits();
+        const rect = this._relativeTarget.getBoundingClientRect();
+        this.setFadePosition(rect);
+        this.setModalPosition(rect);
+
         if (this.show()) {
             if (!this._widget.target()) {
                 this._widget.target(this._modalBody.node());
             }
-            this._widget
-                .render(w => {
-                    w.resize().render();
-                })
-                ;
+            this._widget.render();
         } else {
             this._widget
                 .target(null)
                 .render()
                 ;
         }
-        element.style("display", this.show() ? null : "none");
-        this._fade.classed("layout_Modal-fade-hidden", !this.showFade());
-        this._relativeTarget = this.getRelativeTarget();
-
-        this.setModalSizeLimits();
-
-        this._widget.render(() => {
-            const rect = this._relativeTarget.getBoundingClientRect();
-            this.setFadePosition(rect);
-            this.setModalPosition(rect);
-        });
     }
 }
 Modal.prototype._class += " layout_Modal";

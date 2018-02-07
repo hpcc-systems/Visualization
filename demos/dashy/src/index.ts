@@ -1,7 +1,7 @@
 ﻿import { DDLEditor, JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Widget } from "@hpcc-js/common";
 import { Connection, hookSend, IOptions, ResponseType, SendFunc, serializeRequest } from "@hpcc-js/comms";
-import { IDDL } from "@hpcc-js/ddl-shim";
+import { DDL1 } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
 import { Activity, Dashboard, DatasourceAdapt, Element, ElementContainer, GraphAdapter, JavaScriptAdapter, upgrade } from "@hpcc-js/marshaller";
@@ -190,7 +190,7 @@ export class App {
         this._elementContainer.refresh();
     }
 
-    importV1DDL(target: string, ddl: IDDL, seri: object) {
+    importV1DDL(target: string, ddl: DDL1.DDLSchema, seri: object) {
         this._elementContainer.importV1DDL(target, ddl, seri);
         this.loadDashboard();
         this._elementContainer.refresh();
@@ -215,10 +215,10 @@ export class App {
             this.loadDataProps(activity);
             this.loadPreview(activity);
         } else if (viz && (this._currViz !== viz || this._currActivity !== activity)) {
-            this.loadDataProps(viz.view());
+            this.loadDataProps(viz.hipiePipeline());
             this.loadWidgetProps(viz.multiChartPanel());
             this.loadStateProps(viz.state());
-            this.loadPreview(viz.view()!.last()!);
+            this.loadPreview(viz.hipiePipeline()!.last()!);
         }
         this._currViz = viz;
         this._currActivity = activity;

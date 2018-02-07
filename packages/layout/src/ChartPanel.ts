@@ -1,23 +1,76 @@
 import { IHighlight } from "@hpcc-js/api";
-import { publish, publishProxy, Utility, Widget } from "@hpcc-js/common";
+import { publish, publishProxy, Text, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
+
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
-import { Button, IClickHandler, Item, Spacer, TitleBar, ToggleButton } from "./TitleBar";
+import { Modal } from "./Modal";
+import { Button, Spacer, TitleBar, ToggleButton } from "./TitleBar";
 
 import "../src/ChartPanel.css";
-
-export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
-
-    private _toggleLegend: ToggleButton = new ToggleButton(this, "fa-info").selected(false);
-    private _buttonDownload: Button = new Button(this, "fa-download");
-
-    protected _titleBar = new TitleBar();
+export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
+    private _modal = new Modal();
+
+    private _toggleInfo = new ToggleButton("fa-info-circle", ".Description")
+        .selected(false)
+        .on("enabled", () => {
+            return this.description() !== "";
+        })
+        .on("click", () => {
+            if (this._toggleInfo.selected()) {
+                this._modal
+                    .title(this.title())
+                    .widget(new Text().text(this.description()))
+                    .show(true)
+                    .render()
+                    ;
+
+                const origCloseFunc = this._modal._close;
+                this._modal._close = () => {
+                    this._toggleInfo
+                        .selected(false)
+                        .render()
+                        ;
+                    this._modal._close = origCloseFunc;
+                };
+            }
+        })
+        .on("mouseMove", () => {
+            /*
+            this._modal.showPreview(true).render(n => {
+                n.resize().render();
+            });
+            */
+        })
+        .on("mouseOut", () => {
+            /*
+            if (this._modal.showPreview()) {
+                this._modal.show(false).showPreview(false).render();
+            }
+            */
+        });
+    private _toggleLegend = new ToggleButton("fa-list-ul", "Legend")
+        .selected(false)
+        .on("click", () => {
+            if (this._toggleLegend.selected()) {
+                this._legend.visible(true);
+            } else {
+                this._legend.visible(false);
+            }
+            this.render();
+        });
+    private _buttonDownload = new Button("fa-download", "Download")
+        .on("click", () => {
+            this.downloadCSV();
+        });
+    private _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
 
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     title: publish<this, string>;
+    @publish("")
+    description: publish<this, string>;
     @publish(null, "widget", "Multi Chart")
     _widget: Widget;
     widget(): Widget;
@@ -52,7 +105,6 @@ export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
     constructor() {
         super();
         this._tag = "div";
-        this._titleBar.buttons([this._buttonDownload, new Spacer(this), this._toggleLegend]);
     }
 
     columns(): string[];
@@ -66,6 +118,14 @@ export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
     data(_?) {
         if (!arguments.length) return this._widget.data();
         this._legend.data(_);
+        return this;
+    }
+
+    buttons(): Widget[];
+    buttons(_: Widget[]): this;
+    buttons(_?: Widget[]): this | Widget[] {
+        if (!arguments.length) return this._titleBar.buttons();
+        this._titleBar.buttons(_);
         return this;
     }
 
@@ -98,6 +158,10 @@ export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        this._modal
+            .target(this.target())
+            .relativeTargetId(this.id())
+            ;
 
         this.top(this._titleBar);
         this.center(this._widget);
@@ -131,23 +195,6 @@ export class ChartPanel extends Border2 implements IClickHandler, IHighlight {
 
     exit(domNode, element) {
         super.exit(domNode, element);
-    }
-
-    // IClickHandler  ---
-    titleBarClick(src: Item, d, idx: number, groups): void {
-        switch (src) {
-            case this._buttonDownload:
-                this.downloadCSV();
-                break;
-            case this._toggleLegend:
-                if (this._toggleLegend.selected()) {
-                    this._legend.visible(true);
-                } else {
-                    this._legend.visible(false);
-                }
-                this.render();
-                break;
-        }
     }
 
     //  Event Handlers  ---

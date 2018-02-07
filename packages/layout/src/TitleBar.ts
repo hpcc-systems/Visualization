@@ -1,28 +1,17 @@
-import { d3SelectionType, HTMLWidget } from "@hpcc-js/common";
+import { d3SelectionType, HTMLWidget, Widget } from "@hpcc-js/common";
 
 import "../src/TitleBar.css";
 
-export interface IClickHandler {
-    titleBarClick(src: Item, d, idx: number, groups): void;
-}
-
-export class Item extends HTMLWidget {
-    protected _owner: IClickHandler;
-    protected _element: d3SelectionType;
-
-    constructor(owner: IClickHandler) {
-        super();
-        this._owner = owner;
-        this._tag = "a";
-    }
-}
-
-export class Button extends Item {
+//  Lite button for titlebar  ---
+export class Button extends HTMLWidget {
     private _icon: string;
+    private _tooltip: string;
 
-    constructor(owner: IClickHandler, icon: string) {
-        super(owner);
+    constructor(icon: string, tooltip?: string) {
+        super();
+        this._tag = "a";
         this._icon = icon;
+        this._tooltip = tooltip;
     }
 
     icon() {
@@ -33,13 +22,37 @@ export class Button extends Item {
         super.enter(domNode, element);
         element
             .attr("href", "#")
-            .on("click", (d, idx, groups) => this._owner.titleBarClick(this, d, idx, groups))
+            .attr("title", this._tooltip)
+            .on("click", this.click)
+            .on("mousemove", this.mouseMove)
+            .on("mouseout", this.mouseOut)
             .append("i")
             .attr("class", `fa ${this._icon} fa-lg fa-fw`)
             ;
     }
-}
 
+    update(domNode: HTMLElement, element) {
+        super.update(domNode, element);
+        element.classed("disabled", !this.enabled());
+    }
+
+    //  Events  ---
+    click(d, idx, groups) {
+    }
+
+    mouseMove(d, idx, groups) {
+    }
+
+    mouseOut(d, idx, groups) {
+    }
+
+    enabled() {
+        return true;
+    }
+}
+Button.prototype._class += " layout_Button";
+
+//  Toggle button  ---
 export class ToggleButton extends Button {
 
     enter(domNode: HTMLElement, element) {
@@ -52,16 +65,18 @@ export class ToggleButton extends Button {
 
     update(domNode: HTMLElement, element) {
         super.update(domNode, element);
-        this._element.classed("selected", this.selected());
+        element.classed("selected", this.selected());
     }
 }
+ToggleButton.prototype._class += " layout_ToggleButton";
 export interface ToggleButton {
     selected(): boolean;
     selected(_: boolean): this;
 }
 ToggleButton.prototype.publish("selected", false, "boolean");
 
-export class Spacer extends Item {
+//  Spacer  ---
+export class Spacer extends HTMLWidget {
 
     enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
@@ -72,11 +87,14 @@ export class Spacer extends Item {
             ;
     }
 }
+Spacer.prototype._class += " layout_Spacer";
 
+//  Titlebar  ---
 export class TitleBar extends HTMLWidget {
     _divMain: d3SelectionType;
     _divIconBar: d3SelectionType;
     _divTitle: d3SelectionType;
+    _buttons: Widget[] = [];
 
     constructor() {
         super();
@@ -84,15 +102,20 @@ export class TitleBar extends HTMLWidget {
 
     enter(domNode, element: d3SelectionType) {
         super.enter(domNode, element);
-        this._divMain = element.append<HTMLElement>("div")
-            .attr("class", "main")
-            ;
-        this._divTitle = this._divMain.append<HTMLElement>("div")
+        this._divTitle = element.append<HTMLElement>("div")
             .attr("class", "title")
             ;
-        this._divIconBar = this._divMain.append<HTMLElement>("div")
+        this._divIconBar = element.append<HTMLElement>("div")
             .attr("class", "icon-bar")
             ;
+    }
+
+    buttons(): Widget[];
+    buttons(_: Widget[]): this;
+    buttons(_?: Widget[]): this | Widget[] {
+        if (!arguments.length) return this._buttons;
+        this._buttons = _;
+        return this;
     }
 
     update(domNode, element) {
@@ -103,16 +126,16 @@ export class TitleBar extends HTMLWidget {
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
-            .each(function (this: HTMLElement, d: Item) {
+            .each(function (this: HTMLElement, d: Widget) {
                 d.target(this);
             })
             .merge(icons)
-            .each(function (d: Item) {
+            .each(function (d: Widget) {
                 d.render();
             })
             ;
         icons.exit()
-            .each(function (d: Item) {
+            .each(function (d: Widget) {
                 d.target(null);
             })
             .remove()
@@ -120,13 +143,11 @@ export class TitleBar extends HTMLWidget {
         icons.order();
     }
 }
-TitleBar.prototype._class += " html_TitleBar";
+TitleBar.prototype._class += " layout_TitleBar";
 
 export interface TitleBar {
     title(): string;
     title(_: string): this;
-    buttons(): Item[];
-    buttons(items: Item[]): this;
 }
 TitleBar.prototype.publish("title", "", "string");
-TitleBar.prototype.publish("buttons", [], "widgetArray");
+TitleBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });

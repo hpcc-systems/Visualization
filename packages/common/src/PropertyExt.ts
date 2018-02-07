@@ -588,7 +588,8 @@ export class PropertyExt extends Class {
             } else {
                 retVal = origFunc.apply(context, args);
             }
-            return func.apply(context, args) || retVal;
+            const retVal2 = func.apply(context, args);
+            return retVal2 !== undefined ? retVal2 : retVal;
         });
         return this;
     }

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/requirejs-shim",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "description": "hpcc-js - requirejs shim",
   "main": "dist/index.js",
   "types": "types/index.d.ts",

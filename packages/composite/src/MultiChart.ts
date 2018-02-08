@@ -261,7 +261,7 @@ export interface MultiChart {
 }
 
 MultiChart.prototype._otherChartTypes = [
-    { id: "FORM", display: "Form", widgetClass: "form_Form" }
+    { id: "FORM", display: "Form", widgetClass: "form_FieldForm" }
 ].map(function (item: any) { item.family = "other"; return item; });
 MultiChart.prototype._graphChartTypes = [
     { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" },

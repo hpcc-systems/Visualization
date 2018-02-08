@@ -2,6 +2,7 @@ export * from "./Button";
 export * from "./CheckBox";
 export * from "./ColorInput";
 export * from "./Form";
+export * from "./FieldForm";
 export * from "./Input";
 export * from "./InputRange";
 export * from "./OnOff";

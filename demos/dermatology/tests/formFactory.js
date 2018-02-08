@@ -73,6 +73,20 @@
                 });
             }
         },
+        FieldForm: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/form/FieldForm", "src/common/Database"], function (DataFactory, FieldForm, Database) {
+                    callback(new FieldForm()
+                        .fields([
+                            new Database.Field().id("fname").label("First Name"),
+                            new Database.Field().id("lname").label("Last Name"),
+                            new Database.Field().id("age").label("Age")
+                        ])
+                        .data([["Joe", "Bloggs", 42]])
+                    );
+                });
+            }
+        },
         Slider: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {

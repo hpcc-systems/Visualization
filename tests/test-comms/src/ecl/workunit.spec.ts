@@ -56,7 +56,7 @@ describe("test/esp/ecl/Workunit", function () {
 
     describe("Syntax Error", function () {
         it("eclSubmit", function () {
-            return Workunit.submit({ baseUrl: ESP_URL, userID: "userID", password: "pw" }, "hthor", "'Hello and Welcome!';\nSome Error;\n123;").then((wu) => {
+            return Workunit.submit({ baseUrl: ESP_URL }, "hthor", "'Hello and Welcome!';\nSome Error;\n123;").then((wu) => {
                 return wu.watchUntilComplete();
             }).then((wu) => {
                 expect(wu.isFailed()).to.be.true;
@@ -174,7 +174,7 @@ describe("test/esp/ecl/Workunit", function () {
 
     describe("Readme quick start", function () {
         it("eclSubmit", function () {
-            return Workunit.submit({ baseUrl: ESP_URL, userID: "userID", password: "pw" }, "hthor", "'Hello and Welcome!';").then((wu) => {
+            return Workunit.submit({ baseUrl: ESP_URL }, "hthor", "'Hello and Welcome!';").then((wu) => {
                 return wu.watchUntilComplete();
             }).then((wu) => {
                 return wu.fetchResults().then((results) => {
@@ -189,7 +189,7 @@ describe("test/esp/ecl/Workunit", function () {
         });
 
         it("query", function () {
-            return Workunit.query({ baseUrl: ESP_URL, userID: "userID", password: "pw" }, { State: "completed", LastNDays: 7, Count: 3 }).then((wus) => {
+            return Workunit.query({ baseUrl: ESP_URL }, { State: "completed", LastNDays: 7, Count: 3 }).then((wus) => {
                 wus.forEach((wu) => {
                     logger.debug(`${wu.Wuid} Total Cluster Time:  ${wu.TotalClusterTime}`);
                 });
@@ -197,7 +197,7 @@ describe("test/esp/ecl/Workunit", function () {
         });
 
         it("resubmit", function () {
-            const eclWorkunit = Workunit.attach({ baseUrl: ESP_URL, userID: "userID", password: "pw" }, WUID);
+            const eclWorkunit = Workunit.attach({ baseUrl: ESP_URL }, WUID);
             return eclWorkunit.resubmit()
                 .then((wu) => {
                     return wu.watchUntilComplete()

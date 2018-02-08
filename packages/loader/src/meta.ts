@@ -45,7 +45,6 @@ export const npmPackages = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "handsontable": "handsontable/dist/handsontable.full",
-    "immutable": "immutable/dist/immutable.min",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
     "orb-fix": "orb-fix/dist/orb",
     "orb-fix.css": "orb-fix/dist/orb.css",
@@ -55,7 +54,8 @@ export const npmPackages = {
     "simpleheat": "simpleheat/simpleheat",
     "tooltip.js": "tooltip.js/dist/umd/tooltip",
     "topojson": "topojson/dist/topojson",
-    "tslib": "tslib/tslib"
+    "tslib": "tslib/tslib",
+    "whatwg-fetch": "whatwg-fetch/fetch"
 };
 export const rawgitPackages = {
     "d3-tip": "GordonSmith/d3-tip/vJSNEXT/lib-browser/index.min"

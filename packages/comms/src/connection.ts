@@ -1,4 +1,4 @@
-import { join, scopedLogger } from "@hpcc-js/util";
+import { join, promiseTimeout, scopedLogger } from "@hpcc-js/util";
 
 const logger = scopedLogger("comms/connection.ts");
 
@@ -30,17 +30,6 @@ export interface IConnection {
 
     send(action: string, request: any, responseType?: ResponseType): Promise<any>;
     clone(): IConnection;
-}
-
-//  Polyfill helpers  ---
-let _nodeRequest: any = null;
-export function initNodeRequest(nodeRequest: any) {
-    _nodeRequest = nodeRequest;
-}
-
-let _d3Request: any = null;
-export function initD3Request(d3Request: any) {
-    _d3Request = d3Request;
 }
 
 //  comms  ---
@@ -126,118 +115,52 @@ export function jsonp(opts: IOptions, action: string, request: any = {}, respons
     });
 }
 
-function nodeRequestSend(opts: IOptions, verb: "POST" | "GET", action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-        const options: any = {
-            method: verb,
-            uri: join(opts.baseUrl, action),
-            auth: {
-                user: opts.userID,
-                pass: opts.password,
-                sendImmediately: true
-            },
-            username: opts.userID,
-            password: opts.password,
-            timeout: opts.timeoutSecs! * 1000
-        };
-        //  Older ESP versions were not case insensitive  ---
-        const oldESPAuth = `Basic ${btoa(opts.userID + ":" + opts.password)}`;
-        switch (verb) {
-            case "GET":
-                options.headers = {
-                    Authorization: oldESPAuth
-                };
-                options.uri += "?" + serializeRequest(request);
-                break;
-            case "POST":
-                options.headers = {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Authorization": oldESPAuth
-                };
-                options.rejectUnauthorized = opts.rejectUnauthorized;
-                options.body = serializeRequest(request);
-                break;
-            default:
-        }
-        _nodeRequest(options, (err: any, resp: any, body: any) => {
-            if (err) {
-                reject(new Error(err));
-            } else if (resp && resp.statusCode === 200) {
-                resolve(responseType === "json" ? deserializeResponse(body) : body);
-            } else {
-                reject(new Error(body));
-            }
-        });
-    });
+function authHeader(opts: IOptions): object {
+    return opts.userID ? { Authorization: `Basic ${btoa(`${opts.userID}:${opts.password}`)}` } : {};
 }
 
-function d3Send(opts: IOptions, verb: "POST" | "GET", action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
-    return new Promise((resolve, reject) => {
-        const options: any = {
-            method: verb,
-            uri: join(opts.baseUrl, action),
-            auth: {
-                user: opts.userID,
-                pass: opts.password,
-                sendImmediately: true
-            },
-            username: opts.userID,
-            password: opts.password
-        };
-        switch (verb) {
-            case "GET":
-                options.uri += "?" + serializeRequest(request);
-                break;
-            case "POST":
-                options.headers = {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "Content-Type": "application/x-www-form-urlencoded"
-                };
-                options.rejectUnauthorized = opts.rejectUnauthorized;
-                options.body = serializeRequest(request);
-                break;
-            default:
+function doFetch(opts: IOptions, action: string, requestInit: RequestInit, headersInit: HeadersInit, responseType: string) {
+    headersInit = {
+        ...authHeader(opts),
+        ...headersInit
+    };
+
+    requestInit = {
+        credentials: opts.userID ? "include" : "omit",
+        ...requestInit,
+        headers: headersInit
+    };
+
+    function handleResponse(response: Response) {
+        if (response.ok) {
+            return responseType === "json" ? response.json() : response.text();
         }
-        const xhr = _d3Request(options.uri)
-            .timeout(opts.timeoutSecs! * 1000)
-            ;
-        if (verb === "POST") {
-            xhr
-                .header("X-Requested-With", "XMLHttpRequest")
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .header("Origin", null)
-                ;
-        }
-        xhr
-            .send(verb, options.body, (err: any, resp: any) => {
-                if (err) {
-                    reject(new Error(err));
-                } else if (resp && resp.status === 200) {
-                    resolve(responseType === "json" ? deserializeResponse(resp.responseText) : resp.responseText);
-                } else {
-                    reject(new Error(resp.responseText));
-                }
-            });
-    });
+        throw new Error(response.statusText);
+    }
+
+    return promiseTimeout(opts.timeoutSecs! * 1000, fetch(join(opts.baseUrl, action), requestInit)
+        .then(handleResponse).catch(e => {
+            //  Try again with included credentials  ---
+            requestInit.credentials = "include";
+            return fetch(join(opts.baseUrl, action), requestInit).then(handleResponse);
+        })
+    );
 }
 
 export function post(opts: IOptions, action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
-    if (_nodeRequest) {
-        return nodeRequestSend(opts, "POST", action, request, responseType);
-    } else if (_d3Request) {
-        return d3Send(opts, "POST", action, request, responseType);
-    }
-    throw new Error("No transport");
+    return doFetch(opts, action, {
+        method: "post",
+        body: serializeRequest(request)
+    }, {
+        "Content-Type": "application/x-www-form-urlencoded",
+    } as any, responseType);
 }
 
 export function get(opts: IOptions, action: string, request: any, responseType: ResponseType = "json"): Promise<any> {
-    if (_nodeRequest) {
-        return nodeRequestSend(opts, "GET", action, request, responseType);
-    } else if (_d3Request) {
-        return d3Send(opts, "GET", action, request, responseType);
-    }
-    throw new Error("No transport");
+    return doFetch(opts, `${action}?${serializeRequest(request)}`, {
+        method: "get"
+    }, {
+    } as any, responseType);
 }
 
 export type SendFunc = (opts: IOptions, action: string, request: any, responseType: ResponseType) => Promise<any>;

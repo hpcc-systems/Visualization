@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@hpcc-js/util": "^0.0.67",
-    "request": "2.81.0",
+    "node-fetch": "2.0.0",
     "safe-buffer": "5.1.1",
     "semver": "5.5.0",
     "tmp": "0.0.33",
@@ -42,7 +42,6 @@
     "@types/request": "0.0.41",
     "@types/xmldom": "0.1.29",
     "concurrently": "3.5.0",
-    "d3-request": "1.0.5",
     "d3-time-format": "2.1.0",
     "rimraf": "2.6.2",
     "rollup": "0.54.0",
@@ -54,6 +53,7 @@
     "typedoc": "0.7.1",
     "typescript": "2.6.1",
     "uglify-es": "3.2.0",
+    "whatwg-fetch": "2.0.3",
     "xmldom": "0.1.27"
   },
   "repository": {

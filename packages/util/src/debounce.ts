@@ -31,3 +31,21 @@ export function debounce<TParam, R extends Promise<any>>(fn: (...params: TParam[
         return promises[hash]!.promise;
     };
 }
+
+export function promiseTimeout<T>(ms: number, promise: Promise<T>) {
+    let id: number;
+    const timeout = new Promise((resolve, reject) => {
+        id = setTimeout(() => {
+            clearTimeout(id);
+            reject("Timed out in " + ms + "ms.");
+        }, ms);
+    });
+
+    return Promise.race([
+        promise,
+        timeout
+    ]).then(response => {
+        clearTimeout(id);
+        return response;
+    });
+}

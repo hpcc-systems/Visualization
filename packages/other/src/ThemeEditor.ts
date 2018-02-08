@@ -3,8 +3,19 @@ import * as Persist from "./Persist";
 
 import "../src/ThemeEditor.css";
 
+function hasLocalStorage(): boolean {
+    const mod = "@hpcc-js/other";
+    try {
+        localStorage.setItem(mod, mod);
+        localStorage.removeItem(mod);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 //  Polyfill for IE in file:// mode  ----
-const _localStorage = localStorage || {
+const _localStorage: { getItem: (id: string) => any; } = hasLocalStorage() ? localStorage : {
     getItem(id: string): any {
         return undefined;
     }

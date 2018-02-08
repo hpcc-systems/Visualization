@@ -35,7 +35,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         wa.padding = 8;
         this._dock.addWidget(wa, addMode);
         this._dock.appendContent(wa);
-        this._dock.tabsMovable = false;
+        this._dock.tabsMovable = true;
         return this;
     }
 

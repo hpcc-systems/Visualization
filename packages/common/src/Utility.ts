@@ -220,7 +220,8 @@ export function isArray(obj) {
 //  Template   ---
 //  https://github.com/Matt-Esch/string-template (MIT)
 const nargs = /\{([0-9a-zA-Z_\[\]]+)\}/g;
-export function template(string, _args) {
+export function template(tpl: string, _args) {
+    if (!tpl) return "";
     let args;
 
     if (arguments.length === 2 && typeof arguments[1] === "object") {
@@ -245,11 +246,11 @@ export function template(string, _args) {
         }
     }
 
-    return string.replace(nargs, function replaceArg(match, i, index) {
+    return tpl.replace(nargs, function replaceArg(match, i, index) {
         let result;
 
-        if (string[index - 1] === "{" &&
-            string[index + match.length] === "}") {
+        if (tpl[index - 1] === "{" &&
+            tpl[index + match.length] === "}") {
             return i;
         } else {
             result = args.hasOwnProperty(i) ? args[i] : null;

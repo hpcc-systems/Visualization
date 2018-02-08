@@ -94,10 +94,10 @@ export class Border2 extends HTMLWidget {
 
         this._topWA = new WidgetDiv(element.append("header"));
         const body = element.append("div").attr("class", "body");
-        this._centerWA = new WidgetDiv(body.append("center"));
-        this._leftWA = new WidgetDiv(body.append("lhs"));
-        this._rightWA = new WidgetDiv(body.append("rhs"));
-        this._bottomWA = new WidgetDiv(element.append("footer"));
+        this._centerWA = new WidgetDiv(body.append("div").attr("class", "center"));
+        this._leftWA = new WidgetDiv(body.append("div").attr("class", "lhs"));
+        this._rightWA = new WidgetDiv(body.append("div").attr("class", "rhs"));
+        this._bottomWA = new WidgetDiv(element.append("div").attr("class", "footer"));
     }
 
     update(domNode, element) {

@@ -9,6 +9,13 @@
             "type": "chrome",
             "request": "launch",
             "url": "file:///${workspaceRoot}/index.html",
+            "url1": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180109-010415&ResultName=qwer7_Comp_Ins015_DDL",
+            "url2": "file:///${workspaceRoot}/index.html?Hostname=127.0.0.1&Port=8080&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
+            "url2": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
+            "url3": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-080259&ResultName=hcwidrugsocializationhighriskproviders_Comp_Ins4638351_DDL",
+            "url4": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins144312_DDL",
+            "url5": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
+            "url6": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180130-120353&ResultName=issue_1396_wuidavg_Comp_Ins006_DDL",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

@@ -422,8 +422,35 @@ class DDLUpgrade {
                 groupBy,
                 limit,
                 mappings
-            ]
+            ],
+            visualization: {
+                title: viz.title,
+                description: "",
+                chartType: this.type2chartType(viz.type),
+                properties: viz.properties as DDL2.IWidgetProperties
+            }
         };
+    }
+
+    type2chartType(chartType: DDL1.VisualizationType): string {
+        switch (chartType) {
+            case "BUBBLE":
+            case "PIE":
+            case "LINE":
+            case "BAR":
+            case "FORM":
+            case "WORD_CLOUD":
+                return chartType;
+            case "CHORO":
+                return "CHORO_USSTATES";
+            case "SLIDER":
+            case "TABLE":
+            case "HEAT_MAP":
+            case "2DCHART":
+            case "GRAPH":
+            default:
+                return "TABLE";
+        }
     }
 
     vizFields2field2(fields?: DDL1.IVisualizationField[]): DDL2.FieldType[] {
@@ -516,7 +543,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.19",
+            version: "0.0.20",
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews()
         };

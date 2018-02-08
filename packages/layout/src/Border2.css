@@ -5,26 +5,26 @@
     flex-flow: row;
 }
 
-.layout_Border2 > .body > center {
+.layout_Border2 > .body > .center {
     flex: 3 1 60%;
     order: 2;
 }
 
-.layout_Border2 > .body > lhs {
+.layout_Border2 > .body > .lhs {
     flex: 1 6 20%;
     order: 1;
 }
 
-.layout_Border2 > .body > rhs {
+.layout_Border2 > .body > .rhs {
     margin-left: 4px;
     flex: 1 6 20%;
     order: 3;
 }
 
-.layout_Border2 > header {
+.layout_Border2 > .header {
     display: block;
 }
 
-.layout_Border2 > footer {
+.layout_Border2 > .footer {
     display: block;
 }

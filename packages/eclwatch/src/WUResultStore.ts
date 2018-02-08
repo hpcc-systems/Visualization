@@ -1,8 +1,6 @@
 import { Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
 import { Deferred, domConstruct, IColumn, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
 
-import "../src/WUResultStore.css";
-
 function entitiesEncode(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }

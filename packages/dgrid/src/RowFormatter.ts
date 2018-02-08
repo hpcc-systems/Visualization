@@ -76,10 +76,10 @@ export class RowFormatter {
             }
         } else {
             if (this._formattedRow[column.field] === undefined) {
-                this._formattedRow[column.field] = "" + cell;
+                this._formattedRow[column.field] = "" + cell === undefined ? "" : cell;
             } else {
                 this._formattedRow[column.field] += LINE_SPLITTER;
-                this._formattedRow[column.field] += "" + cell;
+                this._formattedRow[column.field] += "" + cell === undefined ? "" : cell;
             }
             if (maxChildDepth > 1) {
                 const paddingArr = [];

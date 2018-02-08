@@ -174,6 +174,8 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
 }
 .dgrid-content {
   position: relative;
@@ -478,3 +480,12 @@ html.has-touch .dgrid-column-resizer {
     overflow:hidden;
 }
 
+.dgrid_Table .dgrid-fakeline {
+  border: 0px;
+  border-bottom: 1px solid rgb(221, 221, 221);
+  margin: 0px;
+  margin-left:-3px;
+  margin-top:2px;
+  margin-right:-3px;
+  margin-bottom:2px;
+}

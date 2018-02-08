@@ -1,6 +1,7 @@
-import * as DDL1 from "./ddl";
-import * as DDL2 from "./ddl2";
+import { DDL1, DDL2, upgrade } from "@hpcc-js/ddl-shim";
+export { upgrade };
 
+//  Copy of upgrade from ddl-shim, for easier debugging  ---
 interface IDatasourceOutput {
     datasource: DDL1.IAnyDatasource;
     output: DDL1.IOutput;
@@ -126,12 +127,11 @@ class DDLUpgrade {
             } else if (DDL1.isDatabombDatasource(ds)) {
             } else {
                 const urlParts = ds.URL!.split("/WsEcl/submit/query/");
-                const hostParts = urlParts[0].replace(":18002", ":18010").replace(":8002", ":8010");
                 const roxieParts = urlParts[1].split("/");
                 const ddl2DS: DDL2.IHipieService = {
                     type: "hipie",
                     id: ds.id,
-                    url: hostParts,
+                    url: this._baseUrl,
                     querySet: roxieParts[0],
                     queryID: roxieParts[1],
                     inputs: [],
@@ -551,7 +551,7 @@ class DDLUpgrade {
     }
 }
 
-export function upgrade(ddl: DDL1.IDDL, baseUrl: string, wuid?: string): DDL2.Schema {
+export function debugUpgrade(ddl: DDL1.IDDL, baseUrl: string, wuid?: string): DDL2.Schema {
     const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid);
     return ddlUp.write();
 }

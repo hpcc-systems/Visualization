@@ -10,18 +10,20 @@
 
     <!--  Dev Loader  
     -->
-    <script src="../../packages/loader/build/index.js"></script>
+    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
+    <script src="../../packages/loader/dist/index.js"></script>
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
         var require = hpccLoader.dev("../../../packages", { "test": "../tests" }, "../../../node_modules");
     </script>
 
-    <!--  Rollup
-    <script src="build/vizLib.js"></script>
-    -->
-
-    <!--  WebPack 
-    <script src="dist/vizLib.js"></script>
+    <!--  Bundle Loader
+    <link rel="stylesheet" href="./node_modules/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+    <script src="./node_modules/@hpcc-js/loader/dist/index.min.js"></script>
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+        var require = hpccLoader.bundle("./node_modules/@hpcc-js", {}, true);
+    </script>
      -->
 
 </head>

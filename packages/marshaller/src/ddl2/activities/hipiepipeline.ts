@@ -105,6 +105,13 @@ export class HipiePipeline extends ActivityPipeline {
         this.updateSequence();
     }
 
+    activities(): Activity[];
+    activities(_: Activity[]): this;
+    activities(_?: Activity[]): Activity[] | this {
+        const retVal = super.activities.apply(this, arguments);
+        return retVal;
+    }
+
     private updateSequence() {
         this.activities([
             this.dataSource(),
@@ -118,7 +125,14 @@ export class HipiePipeline extends ActivityPipeline {
     }
 
     //  Mappings is only for the visualization and not the data flow.
-    last(): Activity | null {
-        return this.limit();
+    last(skipMappings: boolean = false): Activity | undefined {
+        const activities = this.activities();
+        for (let i = activities.length - 1; i >= 0; --i) {
+            const activity = activities[i];
+            if (skipMappings && activity instanceof Project && activity._isMappings) {
+                continue;
+            }
+            return activity;
+        }
     }
 }

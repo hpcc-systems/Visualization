@@ -40,9 +40,9 @@ export interface IActivityError {
     msg: string;
 }
 
-const ROW_ID = "__##__";  //  TODO:  Should be Symbol
+export const ROW_ID = "__##__";  //  TODO:  Should be Symbol
 export function rowID(row: Readonly<object>): number {
-    return row[ROW_ID];
+    return row[ROW_ID] || row["__lparam"];
 }
 
 export abstract class Activity extends PropertyExt {
@@ -174,23 +174,27 @@ export abstract class Activity extends PropertyExt {
     inData(): ReadonlyArray<object> {
         return this._sourceActivity ? this._sourceActivity.outData() || [] : [];
     }
+
     computeData(): ReadonlyArray<object> {
         return this.inData();
     }
+
     outData(): ReadonlyArray<object> {
         if (this._calcRowNum) {
             return this.computeData().map((row, idx) => {
                 return {
                     ...row,
-                    ROW_ID: idx
+                    [ROW_ID]: idx
                 };
             });
         }
         return this.computeData();
     }
+
     inRow(idx: number) {
         return this.inData().filter(row => row[ROW_ID] === idx)[0];
     }
+
     outRow(idx: number) {
         return this.outData().filter(row => row[ROW_ID] === idx)[0];
     }

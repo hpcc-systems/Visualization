@@ -20,7 +20,9 @@ describe("test/esp/ecl/Workunit", function () {
             });
         });
         it("update", function () {
-            return wu1.update({ QueryText: "'Hello and Welcome!';" });
+            return wu1.update({
+                QueryText: "'Hello and Welcome!';"
+            });
         });
         it("submit", function () {
             return wu1.submit("hthor");

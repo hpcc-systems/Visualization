@@ -1,5 +1,5 @@
 // Based on:  https://tc39.github.io/ecma262/#sec-array.prototype.find
-export function find<T>(o: T[], predicate: (value: T, index: number) => boolean) {
+export function find<T>(o: ReadonlyArray<T>, predicate: (value: T, index: number) => boolean) {
     // 1. Let O be ? ToObject(this value).
     if (o == null) {
         throw new TypeError('"o" is null or not defined');

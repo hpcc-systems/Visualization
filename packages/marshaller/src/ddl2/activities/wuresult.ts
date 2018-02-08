@@ -54,7 +54,7 @@ export abstract class ESPResult extends Activity {
         return this.refreshMetaPromise;
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         if (this._result) {
             const responseSchema = this._result.fields();
             return responseSchema.map(schemaRow2IField);
@@ -82,7 +82,7 @@ export abstract class ESPResult extends Activity {
         }
     });
 
-    pullData(): object[] {
+    computeData(): ReadonlyArray<object> {
         return this._data;
     }
 
@@ -125,7 +125,7 @@ export abstract class ESPResult extends Activity {
         });
     });
 }
-ESPResult.prototype._class += " Filters";
+ESPResult.prototype._class += " ESPResult";
 
 export class WUResult extends ESPResult {
 

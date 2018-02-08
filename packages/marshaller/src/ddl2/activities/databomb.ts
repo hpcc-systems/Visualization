@@ -26,7 +26,7 @@ export class Databomb extends Activity {
         return `Databomb`;
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         let row0: any;
         for (row0 of this.payload()) {
             const retVal: IField[] = [];
@@ -49,7 +49,7 @@ export class Databomb extends Activity {
         return Promise.resolve();
     }
 
-    pullData(): object[] {
+    computeData(): ReadonlyArray<object> {
         return this.payload();
     }
 
@@ -83,7 +83,7 @@ export class Form extends Activity {
         return "Form";
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         const retVal: IField[] = [];
         const row0: any = this.payload();
         for (const key in row0) {
@@ -103,7 +103,7 @@ export class Form extends Activity {
         return Promise.resolve();
     }
 
-    pullData(): object[] {
+    computeData(): ReadonlyArray<object> {
         return [this.payload()];
     }
 

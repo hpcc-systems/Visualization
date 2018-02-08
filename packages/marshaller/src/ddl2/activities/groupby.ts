@@ -291,8 +291,8 @@ export class GroupBy extends Activity {
         return this.validComputedFields().length;
     }
 
-    outFields(): IField[] {
-        if (!this.exists()) return super.outFields();
+    computeFields(): IField[] {
+        if (!this.exists()) return super.computeFields();
         const retVal: IField[] = [];
         const groups: GroupByColumn[] = this.validGroupBy();
         for (const groupBy of groups) {
@@ -353,9 +353,9 @@ export class GroupBy extends Activity {
         super.resolveInFields(refs, fieldIDs);
     }
 
-    pullData(): object[] {
-        const data = super.pullData();
-        if (data.length === 0) return data;
+    computeData(): ReadonlyArray<object> {
+        const data = super.computeData();
+        if (data.length === 0 || !this.exists()) return data;
         const columnLabels: string[] = this.validGroupBy().map(gb => gb.label());
         const computedFields = this.validComputedFields().map(cf => {
             return { label: cf.fieldID(), aggrFunc: cf.aggrFunc() };
@@ -368,7 +368,7 @@ export class GroupBy extends Activity {
                 }
                 return key;
             })
-            .entries(data).map(_row => {
+            .entries(data as object[]).map(_row => {
                 const row: {
                     [key: string]: any
                 } = _row;
@@ -382,7 +382,14 @@ export class GroupBy extends Activity {
                 return row;
             })
             ;
-        return this.exists() ? retVal : retVal[0].values;
+        const outFields = this.outFields();
+        return retVal.map(row => {
+            const retVal = {};
+            for (const field of outFields) {
+                retVal[field.id] = row[field.id];
+            }
+            return retVal;
+        });
     }
 }
 GroupBy.prototype._class += " GroupBy";

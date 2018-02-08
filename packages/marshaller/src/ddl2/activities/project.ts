@@ -111,23 +111,41 @@ export class ComputedField extends PropertyExt {
         return this._owner.fieldIDs();
     }
 
-    compute(row: any): any {
+    computeFunc(): (row: any) => any {
+        const column1 = this.column1();
+        const column2 = this.column2();
         switch (this.type()) {
             case "*":
-                return +row[this.column1()] * +row[this.column2()];
+                return (row: any) => {
+                    return +row[column1] * +row[column2];
+                };
             case "/":
-                return +row[this.column1()] / +row[this.column2()];
+                return (row: any) => {
+                    return +row[column1] / +row[column2];
+                };
             case "+":
-                return +row[this.column1()] + +row[this.column2()];
+                return (row: any) => {
+                    return +row[column1] + +row[column2];
+                };
             case "-":
-                return +row[this.column1()] - +row[this.column2()];
+                return (row: any) => {
+                    return +row[column1] - +row[column2];
+                };
             case "scale":
-                return +row[this.column1()] * this.constValue();
+                const constValue = this.constValue();
+                return (row: any) => {
+                    return +row[column1] * constValue;
+                };
             case "template":
-                return Utility.template(this.template(), row);
+                const template = this.template();
+                return (row: any) => {
+                    return Utility.template(template, row);
+                };
             case "=":
             default:
-                return row[this.column1()];
+                return (row: any) => {
+                    return row[column1];
+                };
         }
     }
 }
@@ -226,8 +244,8 @@ export class Project extends Activity {
         return this.validComputedFields().length;
     }
 
-    outFields(): IField[] {
-        if (!this.exists()) return super.outFields();
+    computeFields(): IField[] {
+        if (!this.exists()) return super.computeFields();
         const retVal: IField[] = [];
         const retValMap: { [key: string]: boolean } = {};
         for (const cf of this.computedFields()) {
@@ -243,7 +261,7 @@ export class Project extends Activity {
                 retValMap[computedField.id] = true;
             }
         }
-        return this.trim() && this.hasComputedFields() ? retVal : retVal.concat(super.outFields().filter(field => !retValMap[field.id]));
+        return this.trim() && this.hasComputedFields() ? retVal : retVal.concat(super.computeFields().filter(field => !retValMap[field.id]));
     }
 
     referencedFields(refs: ReferencedFields): void {
@@ -258,23 +276,28 @@ export class Project extends Activity {
         super.resolveInFields(refs, fieldIDs);
     }
 
-    projectRow(row: any): any {
-        const retVal = this.trim() && this.hasComputedFields() ? {} : { ...row };
-        for (const cf of this.computedFields()) {
-            if (cf.label()) {
-                retVal[cf.label()] = cf.compute(row);
+    projection(): (row: object) => object {
+        const trim = this.trim();
+        const hasComputedFields = this.hasComputedFields();
+        const computedFields = this.validComputedFields().map(cf => {
+            return {
+                label: cf.label(),
+                func: cf.computeFunc()
+            };
+        });
+        return (row: object) => {
+            const retVal = trim && hasComputedFields ? {} : { ...row };
+            for (const cf of computedFields) {
+                retVal[cf.label] = cf.func(row);
             }
-        }
-        return retVal;
+            return retVal;
+        };
     }
 
-    pullData(): object[] {
-        const data = super.pullData();
-        return data.map((row, idx) => {
-            const retVal = this.projectRow(row);
-            retVal.__lparam = row;
-            return retVal;
-        });
+    computeData(): ReadonlyArray<object> {
+        const data = super.computeData();
+        if (data.length === 0 || !this.exists()) return data;
+        return data.map(this.projection());
     }
 }
 Project.prototype._class += " Project";

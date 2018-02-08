@@ -270,7 +270,7 @@ export class RoxieRequest extends Activity {
         return this.validParams().map(param => param.source());
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         return this._roxieService.outFields(this.resultName());
     }
 
@@ -293,7 +293,7 @@ export class RoxieRequest extends Activity {
         });
     }
 
-    pullData(): object[] {
+    computeData(): ReadonlyArray<object> {
         return this._data;
     }
 }

@@ -125,8 +125,8 @@ export class Sort extends Activity {
         return this.inFields().map(field => field.id);
     }
 
-    pullData(): object[] {
-        const data = super.pullData();
+    computeData(): ReadonlyArray<object> {
+        const data = super.computeData();
         const sortByArr: Array<{ compare: (l, r) => number, id: string }> = [];
         for (const sortBy of this.validSortBy()) {
             sortByArr.push({
@@ -137,7 +137,7 @@ export class Sort extends Activity {
 
         if (sortByArr.length) {
             console.log("Sort Len:  " + data.length);
-            return data.sort((l: any, r: any) => {
+            return [...data].sort((l: any, r: any) => {
                 for (const item of sortByArr) {
                     const retVal2 = item.compare(l[item.id], r[item.id]);
                     if (retVal2 !== 0) {

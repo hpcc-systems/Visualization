@@ -22,6 +22,9 @@ export class CalendarHeatMap extends HTMLWidget {
     }
 
     calendarData() {
+        if (this.fields().length === 0 || this.data().length === 0) {
+            return [];
+        }
         const dateParser = d3TimeParse(this.datePattern());
         const valueFormatter = this.aggrDeltaColumn() ? d3Format(".1%") : d3Format("s");
         if (this._prevDateColumn !== this.dateColumn() ||
@@ -37,7 +40,7 @@ export class CalendarHeatMap extends HTMLWidget {
         return this._view.entries().map(function (row) {
             row.dateKey = dateParser(row.key);
             row.formattedValues = valueFormatter(row.value.aggregate);
-            row.origRows = valueFormatter(row.value);
+            row.origRows = row.value;
             return row;
         });
     }

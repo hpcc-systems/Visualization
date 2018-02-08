@@ -69,5 +69,5 @@ export const shims = ["loader", "codemirror-shim", "c3-shim", "ddl-shim", "dgrid
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
     "c3chart", "google", "amchart", "tree", "graph", "map",
-    "handson", "react", "composite", "marshaller", "html", "timeline", "codemirror"
+    "handson", "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];

@@ -1,11 +1,12 @@
 import { HTMLWidget, publish } from "@hpcc-js/common";
-import { Grid, Memory, PagingGrid } from "@hpcc-js/dgrid-shim";
+import { Grid, PagingGrid } from "@hpcc-js/dgrid-shim";
+import { DBStore } from "./DBStore";
 
 import "../src/Common.css";
 
 export class Common extends HTMLWidget {
     protected _columns = [];
-    protected _store = new Memory();
+    protected _store = new DBStore(this._db);
     protected _dgridDiv;
     protected _dgrid;
     protected _prevPaging;
@@ -13,7 +14,6 @@ export class Common extends HTMLWidget {
     constructor() {
         super();
         this._tag = "div";
-        this._store.idProperty = "__hpcc_id";
     }
 
     @publish(true, "boolean", "Enable paging")
@@ -32,13 +32,15 @@ export class Common extends HTMLWidget {
             this._prevPaging = this.pagination();
             if (this._dgrid) {
                 this._dgrid.destroy();
-                this._dgridDiv = element.append("div");
+                this._dgridDiv = element.append("div")
+                    .attr("class", "flat")
+                    ;
             }
             this._dgrid = new (this._prevPaging ? PagingGrid : Grid)({
                 columns: this._columns,
                 collection: this._store,
                 selectionMode: "single",
-                deselectOnRefresh: true,
+                deselectOnRefresh: false,
                 cellNavigation: false,
                 pagingLinks: 1,
                 pagingTextBox: true,
@@ -49,12 +51,12 @@ export class Common extends HTMLWidget {
             }, this._dgridDiv.node());
             this._dgrid.on("dgrid-select", (evt) => {
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__hpcc_orig), "", true);
+                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", true);
                 }
             });
             this._dgrid.on("dgrid-deselect", (evt) => {
                 if (evt.rows && evt.rows.length && evt.rows[0].data) {
-                    this.click(this.rowToObj(evt.rows[0].data.__hpcc_orig), "", false);
+                    this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false);
                 }
             });
         }

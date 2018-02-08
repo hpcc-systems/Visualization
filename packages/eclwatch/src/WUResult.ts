@@ -1,10 +1,11 @@
 import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
-import { Common } from "./Common";
+import { Common } from "@hpcc-js/dgrid";
+import { hashSum } from "@hpcc-js/util";
 import { Store } from "./WUResultStore";
 
 export class WUResult extends Common {
-    protected _prevResultID: string;
+    protected _prevHash: string;
 
     constructor() {
         super();
@@ -32,22 +33,17 @@ export class WUResult extends Common {
         return null;
     }
 
-    calcResultID(): string {
-        let retVal = this.wsWorkunitsUrl() + "->";
-        if (this.wuid() && this.resultName()) {
-            retVal += this.wuid() + "->" + this.resultName();
-        } else if (this.wuid() && this.sequence() !== undefined) {
-            retVal += this.wuid() + "->" + this.sequence();
-        } else if (this.logicalFile()) {
-            retVal += this.logicalFile();
-        }
-        return retVal;
-    }
-
     update(domNode, element) {
         super.update(domNode, element);
-        if (this._prevResultID !== this.calcResultID()) {
-            this._prevResultID = this.calcResultID();
+        const hash = hashSum({
+            wsWorkunitsUrl: this.wsWorkunitsUrl(),
+            wuid: this.wuid(),
+            resultName: this.resultName(),
+            sequence: this.sequence(),
+            logicalFile: this.logicalFile()
+        });
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
             const result = this.calcResult();
             if (result) {
                 result.fetchXMLSchema().then((schema) => {

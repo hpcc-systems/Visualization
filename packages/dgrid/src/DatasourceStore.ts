@@ -1,7 +1,6 @@
 import { Deferred } from "@hpcc-js/dgrid-shim";
 import { QueryResults } from "@hpcc-js/dgrid-shim";
-
-import "../src/WUResultStore.css";
+import { IColumn, RowFormatter } from "./RowFormatter";
 
 export interface IField {
     id: string;
@@ -75,103 +74,6 @@ function safeEncode(item) {
     return item;
 }
 */
-const LINE_SPLITTER = `<br><hr class='dgrid-fakeline'>`;
-const LINE_SPLITTER2 = `<br><hr class='dgrid-fakeline' style='visibility: hidden'>`;
-
-class RowFormatter {
-    private _columns;
-    private _flattenedColumns = [];
-    private _columnIdx = {};
-    private _formattedRow = {};
-
-    constructor(columns) {
-        this._columns = columns;
-        this.flattenColumns(columns);
-    }
-
-    flattenColumns(columns) {
-        for (const column of columns) {
-            this.flattenColumn(column);
-        }
-    }
-
-    flattenColumn(column) {
-        if (column.children) {
-            for (const childColumn of column.children) this.flattenColumn(childColumn);
-        } else {
-            this._columnIdx[column.field] = this._flattenedColumns.length;
-            this._flattenedColumns.push(column.field);
-        }
-    }
-
-    format(row) {
-        this._formattedRow = {};
-        this.formatRow(this._columns, row);
-        return this.row();
-    }
-
-    calcDepth(columns, row) {
-        let maxChildDepth = 1;
-        for (const column of columns) {
-            if (column.children) {
-                let childDepth = 0;
-                for (const childRow of row[column.leafID]) {
-                    if (childRow instanceof Array) {
-                    }
-                    childDepth += this.calcDepth(column.children, childRow);
-                }
-                maxChildDepth = Math.max(maxChildDepth, childDepth);
-            }
-        }
-        return maxChildDepth;
-    }
-
-    formatCell(column, cell, maxChildDepth) {
-        if (column.children) {
-            let childDepth = 0;
-            if (!(cell instanceof Array)) {
-                if (cell instanceof Object && cell.Row instanceof Array) {  //  Push fix in comms?
-                    cell = cell.Row;
-                } else {
-                    cell = [cell];
-                }
-            }
-            for (const row of cell) {
-                childDepth = Math.max(childDepth, this.formatRow(column.children, row));
-            }
-        } else {
-            if (this._formattedRow[column.field] === undefined) {
-                this._formattedRow[column.field] = "" + cell;
-            } else {
-                this._formattedRow[column.field] += LINE_SPLITTER;
-                this._formattedRow[column.field] += "" + cell;
-            }
-            if (maxChildDepth > 1) {
-                const paddingArr = [];
-                paddingArr.length = maxChildDepth;
-                const padding = paddingArr.join(LINE_SPLITTER2);
-                this._formattedRow[column.field] += padding;
-            }
-        }
-    }
-
-    formatRow(columns, row: { [key: string]: any } = [], rowIdx: number = 0) {
-        const maxChildDepth = this.calcDepth(columns, row);
-        for (const column of columns) {
-            this.formatCell(column, row[column.leafID], maxChildDepth);
-        }
-        return maxChildDepth;
-    }
-
-    row() {
-        const retVal = {};
-        for (const column of this._flattenedColumns) {
-            retVal[column] = this._formattedRow[column];
-        }
-        return retVal;
-    }
-}
-
 export class DatasourceStore {
     _datasource: DatasourceCache;
     _columnsIdx: { [key: string]: number } = {};
@@ -194,13 +96,13 @@ export class DatasourceStore {
         return this._columns;
     }
 
-    db2Columns(fields: IField[], prefix = ""): any[] {
+    db2Columns(fields: IField[], prefix = ""): IColumn[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
-            const column: any = {
-                label: field.label,
-                leafID: field.id,
+            const column: IColumn = {
                 field: prefix + field.id,
+                leafID: field.id,
+                label: field.label,
                 idx,
                 className: "resultGridCell",
                 sortable: true

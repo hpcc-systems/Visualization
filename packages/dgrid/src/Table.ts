@@ -1,13 +1,39 @@
 ﻿import { hashSum } from "@hpcc-js/util";
 import { Common } from "./Common";
-import { DBStore } from "./DBStore";
 
 export class Table extends Common {
-    _prevChecksum;
-    _prevColsHash;
+    private _prevColsHash;
+    private _prevDataHash;
+    _colsRefresh = false;
+    _forceRefresh = false;
 
     constructor() {
         super();
+    }
+
+    columns(_?: any): any | this {
+        const retVal = super.columns.apply(this, arguments);
+        if (arguments.length) {
+            const hash = hashSum(_); // TODO - Should be a more efficent way.
+            if (this._prevColsHash !== hash) {
+                this._prevColsHash = hash;
+                this._colsRefresh = true;
+                this._forceRefresh = true;
+            }
+        }
+        return retVal;
+    }
+
+    data(_?: any): any | this {
+        const retVal = super.data.apply(this, arguments);
+        if (arguments.length) {
+            const hash = hashSum(_); // TODO - Should be a more efficent way.
+            if (this._prevDataHash !== hash) {
+                this._prevDataHash = hash;
+                this._forceRefresh = true;
+            }
+        }
+        return retVal;
     }
 
     enter(domNode, element) {
@@ -16,24 +42,14 @@ export class Table extends Common {
 
     update(domNode, element) {
         super.update(domNode, element);
-        const store = new DBStore(this._db);
-        this._columns = store.columns();
-        const colsHash = hashSum(this._columns);
-        const data = store.fetchAll();
-        const dataHash = hashSum(data.map(d => d));
-        let changed = false;
-        if (this._prevColsHash !== colsHash) {
-            this._prevColsHash = colsHash;
+        this._columns = this._store.columns();
+        if (this._colsRefresh) {
             this._dgrid.set("columns", this._columns);
-            changed = true;
+            this._colsRefresh = false;
         }
-        if (this._prevChecksum !== dataHash) {
-            this._prevChecksum = dataHash;
-            this._store.setData(data);
-            changed = true;
-        }
-        if (changed) {
+        if (this._forceRefresh) {
             this._dgrid.refresh();
+            this._forceRefresh = false;
         }
     }
 

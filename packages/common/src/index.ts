@@ -14,6 +14,7 @@ import * as Palette from "./Palette";
 export { Palette };
 import * as Platform from "./Platform";
 export { Platform };
+export * from "./ProgressBar";
 export * from "./PropertyExt";
 export * from "./ResizeSurface";
 export * from "./Shape";

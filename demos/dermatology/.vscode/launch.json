@@ -8,7 +8,7 @@
             "name": "Chrome Debug Dev",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/www/index-dev.html?src/composite/MultiChartPanel",
+            "url": "file:///${workspaceRoot}/www/index-dev.html?src/composite/MultiChartPanel.progress_bar",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

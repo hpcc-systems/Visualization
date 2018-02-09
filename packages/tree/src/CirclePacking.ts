@@ -110,9 +110,6 @@ export class CirclePacking extends SVGWidget {
         this.circle.attr("r", function (d) { return d.r * k; });
     }
 
-    paletteID: (_?: string) => string | CirclePacking;
-    useClonedPalette: (_?: boolean) => boolean | CirclePacking;
-
     //  I2DChart
     _palette;
     click: (row, column, selected) => void;
@@ -121,5 +118,11 @@ export class CirclePacking extends SVGWidget {
 CirclePacking.prototype._class += " tree_CirclePacking";
 CirclePacking.prototype.implements(ITree.prototype);
 
+export interface CirclePacking {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
 CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

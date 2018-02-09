@@ -188,21 +188,12 @@ export class Legend extends Table {
         console.log("rowIdx: " + rowIdx);
     }
 
-    dataFamily: { (): string; (_: string): Legend };
     dataFamily_exists: () => boolean;
-    orientation: { (): string; (_: string): Legend };
     orientation_exists: () => boolean;
-    rainbowFormat: { (): string; (_: string): Legend };
     rainbowFormat_exists: () => boolean;
-    rainbowBins: { (): number; (_: number): Legend };
     rainbowBins_exists: () => boolean;
 }
 Legend.prototype._class += " other_Legend";
-
-Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "any", "other"], { tags: ["Private"] });
-Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
-Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });
-Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: w => !w.isRainbow() });
 
 const origGetBBox = Table.prototype.getBBox;
 Legend.prototype.getBBox = function (refresh, round) {
@@ -221,3 +212,18 @@ Legend.prototype.getBBox = function (refresh, round) {
     }
     return retVal;
 };
+
+export interface Legend {
+    dataFamily(): string;
+    dataFamily(_: string): this;
+    orientation(): string;
+    orientation(_: string): this;
+    rainbowFormat(): string;
+    rainbowFormat(_: string): this;
+    rainbowBins(): number;
+    rainbowBins(_: number): this;
+}
+Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "any", "other"], { tags: ["Private"] });
+Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
+Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });
+Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: w => !w.isRainbow() });

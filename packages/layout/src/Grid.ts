@@ -493,35 +493,41 @@ export class Grid extends HTMLWidget {
 
     postSelectionChange() {
     }
-
-    designMode: { (): boolean; (_: boolean): Grid; };
-    fitTo: { (): string; (_: string): Grid; };
-    snapping: { (): string; (_: string): Grid; };
-    snappingColumns: { (): number; (_: number): Grid; };
-    snappingRows: { (): number; (_: number): Grid; };
-
-    gutter: { (): number; (_: number): Grid; };
-
-    surfaceShadow: { (): boolean; (_: boolean): Grid; };
-    surfacePadding: { (): string; (_: string): Grid; };
-    surfaceBorderWidth: { (): number; (_: number): Grid; };
-    surfaceBackgroundColor: { (): string; (_: string): Grid; };
-
-    content: { (): Cell[]; (_: Cell[]): Grid; };
 }
 Grid.prototype._class += " layout_Grid";
 
+export interface Grid {
+    designMode(): boolean;
+    designMode(_: boolean): this;
+    fitTo(): string;
+    fitTo(_: string): this;
+    snapping(): string;
+    snapping(_: string): this;
+    snappingColumns(): number;
+    snappingColumns(_: number): this;
+    snappingRows(): number;
+    snappingRows(_: number): this;
+    gutter(): number;
+    gutter(_: number): this;
+    surfaceShadow(): boolean;
+    surfaceShadow(_: boolean): this;
+    surfacePadding(): string;
+    surfacePadding(_: string): this;
+    surfaceBorderWidth(): number;
+    surfaceBorderWidth(_: number): this;
+    surfaceBackgroundColor(): string;
+    surfaceBackgroundColor(_: string): this;
+    content(): Cell[];
+    content(_: Cell[]): this;
+}
 Grid.prototype.publish("designMode", false, "boolean", "Design Mode", null, { tags: ["Basic"] });
 Grid.prototype.publish("fitTo", "all", "set", "Sizing Strategy", ["all", "width"], { tags: ["Basic"] });
 Grid.prototype.publish("snapping", "vertical", "set", "Snapping Strategy", ["vertical", "horizontal", "none"]);
 Grid.prototype.publish("snappingColumns", 12, "number", "Snapping Columns");
 Grid.prototype.publish("snappingRows", 16, "number", "Snapping Rows");
-
 Grid.prototype.publish("gutter", 6, "number", "Gap Between Widgets", null, { tags: ["Basic"] });
-
 Grid.prototype.publish("surfaceShadow", true, "boolean", "3D Shadow");
 Grid.prototype.publish("surfacePadding", null, "string", "Cell Padding (px)", null, { tags: ["Intermediate"] });
 Grid.prototype.publish("surfaceBorderWidth", 1, "number", "Width (px) of Cell Border", null, { tags: ["Intermediate"] });
 Grid.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color", null, { tags: ["Advanced"] });
-
 Grid.prototype.publish("content", [], "widgetArray", "widgets", null, { tags: ["Basic"], render: false });

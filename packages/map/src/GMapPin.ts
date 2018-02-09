@@ -70,20 +70,13 @@ export class GMapPin extends GMapLayered {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + "," + selected);
     }
 
-    autoScale: { (): boolean; (_: boolean): GMapPin };
-    latitudeColumn: { (): string; (_: string): GMapPin };
     latitudeColumn_exists: () => boolean;
-    longtitudeColumn: { (): string; (_: string): GMapPin };
     longtitudeColumn_exists: () => boolean;
-    colorColumn: { (): string; (_: string): GMapPin };
     colorColumn_exists: () => boolean;
-    tooltipColumn: { (): string; (_: string): GMapPin };
     tooltipColumn_exists: () => boolean;
-    streetViewOnClick: { (): boolean; (_: boolean): GMapPin };
 }
 GMapPin.prototype._class += " map_GMapPin";
 
-GMapPin.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 GMapPin.prototype.publishProxy("pinColor", "_pins", "fillColor");
 GMapPin.prototype.publishProxy("pinType", "_pins", "pinType");
 GMapPin.prototype.publishProxy("pinWidth", "_pins", "pinWidth");
@@ -96,6 +89,21 @@ GMapPin.prototype.publishProxy("textBaseline", "_pins", "textBaseline");
 GMapPin.prototype.publishProxy("strokeWidth", "_pins", "strokeWidth");
 GMapPin.prototype.publishProxy("omitNullLatLong", "_pins", "omitNullLatLong");
 
+export interface GMapPin {
+    autoScale(): boolean;
+    autoScale(_: boolean): this;
+    latitudeColumn(): string;
+    latitudeColumn(_: string): this;
+    longtitudeColumn(): string;
+    longtitudeColumn(_: string): this;
+    colorColumn(): string;
+    colorColumn(_: string): this;
+    tooltipColumn(): string;
+    tooltipColumn(_: string): this;
+    streetViewOnClick(): boolean;
+    streetViewOnClick(_: boolean): this;
+}
+GMapPin.prototype.publish("autoScale", false, "boolean", "Auto scale to data");
 GMapPin.prototype.publish("latitudeColumn", null, "set", "Latitude", function () { return this.columns(); }, { optional: true });
 GMapPin.prototype.publish("longtitudeColumn", null, "set", "Longtitude", function () { return this.columns(); }, { optional: true });
 GMapPin.prototype.publish("colorColumn", null, "set", "Color", function () { return this.columns(); }, { optional: true });

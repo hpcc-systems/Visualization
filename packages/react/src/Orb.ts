@@ -28,11 +28,6 @@ class Mapping extends PropertyExt {
 }
 Mapping.prototype._class += " react_Orb.Mapping";
 
-Mapping.prototype.publish("addField", "", "set", "Show Toolbox or not", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-Mapping.prototype.publish("location", true, "set", "Data Location", ["row", "column", "data", "remove"], { tags: ["basic"] });
-Mapping.prototype.publish("aggregateFunc", "", "set", "Aggregate Function type", ["sum", "count", "min", "max", "avg", "prod", "var", "varp", "stdev", "stdevp"], { optional: true });
-Mapping.prototype.publish("formatFunction", "", "string", "Format function");
-
 export class Orb extends HTMLWidget {
     Mapping;
     _OrbTypes;
@@ -310,21 +305,13 @@ export class Orb extends HTMLWidget {
             }
         }
     */
-    stringProp: { (): string; (_: string): Orb };
     stringProp_exists: () => boolean;
-    tableWidth: { (): number; (_: number): Orb };
     tableWidth_exists: () => boolean;
-    tableHeight: { (): number; (_: number): Orb };
     tableHeight_exists: () => boolean;
-    toolbar: { (): boolean; (_: boolean): Orb };
     toolbar_exists: () => boolean;
-    themeColor: { (): string; (_: string): Orb };
     themeColor_exists: () => boolean;
-    newField: { (): any[]; (_: any[]): Orb };
     newField_exists: () => boolean;
-    columnGrandTotal: { (): boolean; (_: boolean): Orb };
     columnGrandTotal_exists: () => boolean;
-    rowGrandTotal: { (): boolean; (_: boolean): Orb };
     rowGrandTotal_exists: () => boolean;
 }
 Orb.prototype._class += " react_Orb";
@@ -332,14 +319,44 @@ Orb.prototype._class += " react_Orb";
 Orb.prototype.Mapping = Mapping;
 Orb.prototype._OrbTypes = [{ id: "PIVOT", display: "Pivot Table", widgetClass: "react_Orb" }];
 
+export interface Orb {
+    addField(): string;
+    addField(_: string): this;
+    location(): string;
+    location(_: string): this;
+    aggregateFunc(): string;
+    aggregateFunc(_: string): this;
+    formatFunction(): string;
+    formatFunction(_: string): this;
+    stringProp(): string;
+    stringProp(_: string): this;
+    tableWidth(): number;
+    tableWidth(_: number): this;
+    tableHeight(): number;
+    tableHeight(_: number): this;
+    toolbar(): boolean;
+    toolbar(_: boolean): this;
+    themeColor(): string;
+    themeColor(_: string): this;
+    newField(): any[];
+    newField(_: any[]): this;
+    columnGrandTotal(): boolean;
+    columnGrandTotal(_: boolean): this;
+    rowGrandTotal(): boolean;
+    rowGrandTotal(_: boolean): this;
+    movable(): boolean;
+    movable(_: boolean): this;
+}
+Mapping.prototype.publish("addField", "", "set", "Show Toolbox or not", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+Mapping.prototype.publish("location", true, "set", "Data Location", ["row", "column", "data", "remove"], { tags: ["basic"] });
+Mapping.prototype.publish("aggregateFunc", "", "set", "Aggregate Function type", ["sum", "count", "min", "max", "avg", "prod", "var", "varp", "stdev", "stdevp"], { optional: true });
+Mapping.prototype.publish("formatFunction", "", "string", "Format function");
 Orb.prototype.publish("stringProp", "defaultValue", "string", "Sample Property");
 Orb.prototype.publish("tableWidth", 2000, "number", "Table width", null, { tags: ["basic"] });
 Orb.prototype.publish("tableHeight", 711, "number", "Table height", null, { tags: ["basic"] });
-
 Orb.prototype.publish("toolbar", true, "boolean", "Show Toolbox or not", null, { tags: ["basic"] });
 Orb.prototype.publish("themeColor", "blue", "set", "Theme color", ["blue", "red", "black", "green"], { tags: ["basic"] });
 Orb.prototype.publish("newField", [], "propertyArray", "Source Columns", null, { autoExpand: Mapping });
-
 Orb.prototype.publish("columnGrandTotal", true, "boolean", "Show Grand total or not");
 Orb.prototype.publish("rowGrandTotal", true, "boolean", "Show Grand total or not");
 // Orb.prototype.publish("movable", true, "boolean", "Fields can be moved or not");

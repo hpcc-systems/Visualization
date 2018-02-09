@@ -56,7 +56,6 @@ export class Radio extends HTMLWidget {
         });
     }
 
-    selectOptions: { (): any[]; (_: any[]): Radio };
     selectOptions_exists: () => boolean;
 
     //  IInput  ---
@@ -72,4 +71,8 @@ export class Radio extends HTMLWidget {
 Radio.prototype._class += " form_Radio";
 Radio.prototype.implements(IInput.prototype);
 
+export interface Radio {
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+}
 Radio.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");

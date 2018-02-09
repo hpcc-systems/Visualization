@@ -116,24 +116,32 @@ export class Icon extends SVGWidget {
             ;
     }
 
-    shape: { (): string; (_: string): Icon; };
     faChar: { (): string; (_: string): Icon; };
-    imageUrl: { (): string; (_: string): Icon; };
     image_colorFill: { (): string; (_: string): Icon; };
-    tooltip: { (): string; (_: string): Icon; };
-    diameter: { (): number; (_: number): Icon; };
-    paddingPercent: { (): number; (_: number): Icon; };
     shape_colorFill: { (): string; (_: string): Icon; };
     shape_colorStroke: { (): string; (_: string): Icon; };
 }
 Icon.prototype._class += " common_Icon";
 
-Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"], { tags: ["Private"] });
 Icon.prototype.publishProxy("faChar", "_faChar", "char");
-Icon.prototype.publish("imageUrl", null, "string", "Image URL", null, { optional: true });
 Icon.prototype.publishProxy("image_colorFill", "_faChar", "text_colorFill");
+Icon.prototype.publishProxy("shape_colorFill", "_shapeWidget", "colorFill");
+Icon.prototype.publishProxy("shape_colorStroke", "_shapeWidget", "colorStroke");
+
+export interface Icon {
+    shape(): string;
+    shape(_: string): this;
+    imageUrl(): string;
+    imageUrl(_: string): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+    diameter(): number;
+    diameter(_: number): this;
+    paddingPercent(): number;
+    paddingPercent(_: number): this;
+}
+Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"], { tags: ["Private"] });
+Icon.prototype.publish("imageUrl", null, "string", "Image URL", null, { optional: true });
 Icon.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 Icon.prototype.publish("diameter", 24, "number", "Diameter", null, { tags: ["Private"] });
 Icon.prototype.publish("paddingPercent", 45, "number", "Padding Percent", null, { tags: ["Private"] });
-Icon.prototype.publishProxy("shape_colorFill", "_shapeWidget", "colorFill");
-Icon.prototype.publishProxy("shape_colorStroke", "_shapeWidget", "colorStroke");

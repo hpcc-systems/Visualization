@@ -1,4 +1,5 @@
-﻿import { OnOff } from "@hpcc-js/form";
+﻿import { Widget } from "@hpcc-js/common";
+import { OnOff } from "@hpcc-js/form";
 import { Border, Toolbar } from "@hpcc-js/layout";
 import { PropertyEditor } from "@hpcc-js/other";
 
@@ -90,12 +91,25 @@ export class Dermatology extends Border {
         return super.render(callback);
     }
 
-    showToolbar: { (): boolean; (_: boolean): Dermatology };
     showToolbar_exists: () => boolean;
-    widget: { (): any; (_: any): Dermatology };
     widget_exists: () => boolean;
 }
 Dermatology.prototype._class += " composite_Dermatology";
 
+export interface Dermatology {
+    setContent(_: string, _2: Widget): this;
+    rightPercentage(): number;
+    rightPercentage(_: number): this;
+    rightSize(): number;
+    rightSize(_: number): this;
+    topPercentage(): number;
+    topPercentage(_: number): this;
+    topSize(): number;
+    topSize(_: number): this;
+    showToolbar(): boolean;
+    showToolbar(_: boolean): this;
+    widget(): any;
+    widget(_: any): this;
+}
 Dermatology.prototype.publish("showToolbar", true, "boolean", "Show Toolbar");
 Dermatology.prototype.publish("widget", null, "widget", "Widget");

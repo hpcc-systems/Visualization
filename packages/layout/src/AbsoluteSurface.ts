@@ -1,4 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, Widget } from "@hpcc-js/common";
 
 import "../src/AbsoluteSurface.css";
 
@@ -65,17 +65,25 @@ export class AbsoluteSurface extends HTMLWidget {
         }
         HTMLWidget.prototype.exit.apply(this, arguments);
     }
-
-    units: { (): string; (_: string): AbsoluteSurface; };
-    widgetX: { (): number; (_: number): AbsoluteSurface; };
-    widgetY: { (): number; (_: number): AbsoluteSurface; };
-    widgetWidth: { (): string; (_: string): AbsoluteSurface; };
-    widgetHeight: { (): string; (_: string): AbsoluteSurface; };
-    widget: { (): any; (_: any): AbsoluteSurface; };
-    opacity: { (): number; (_: number): AbsoluteSurface; };
 }
 AbsoluteSurface.prototype._class += " layout_AbsoluteSurface";
 
+export interface AbsoluteSurface {
+    units(): string;
+    units(_: string): this;
+    widgetX(): number;
+    widgetX(_: number): this;
+    widgetY(): number;
+    widgetY(_: number): this;
+    widgetWidth(): string;
+    widgetWidth(_: string): this;
+    widgetHeight(): string;
+    widgetHeight(_: string): this;
+    widget(): Widget;
+    widget(_: Widget): this;
+    opacity(): number;
+    opacity(_: number): this;
+}
 AbsoluteSurface.prototype.publish("units", "percent", "set", "Units", ["pixels", "percent"]);
 AbsoluteSurface.prototype.publish("widgetX", 0, "number", "Widget XPos");
 AbsoluteSurface.prototype.publish("widgetY", 0, "number", "Widget YPos");

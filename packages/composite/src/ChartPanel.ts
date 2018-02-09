@@ -77,3 +77,8 @@ export class MultiChartPanel extends ChartPanel {
     }
 }
 MultiChartPanel.prototype._class += " composite_MultiChartPanel";
+
+export interface MultiChartPanel {
+    widget(): Widget;
+    widget(_: Widget): this;
+}

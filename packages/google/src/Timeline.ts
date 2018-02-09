@@ -61,33 +61,44 @@ export class Timeline extends CommonND {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
-    tooltipIsHtml: { (): boolean; (_: boolean): Timeline };
     tooltipIsHtml_exists: () => boolean;
-    tooltipTrigger: { (): string; (_: string): Timeline };
     tooltipTrigger_exists: () => boolean;
-    backgroundColor: { (): string; (_: string): Timeline };
     backgroundColor_exists: () => boolean;
-    avoidOverlappingGridLines: { (): boolean; (_: boolean): Timeline };
     avoidOverlappingGridLines_exists: () => boolean;
-    timelineColorByRowLabel: { (): boolean; (_: boolean): Timeline };
     timelineColorByRowLabel_exists: () => boolean;
-    timelineGroupByRowLabel: { (): boolean; (_: boolean): Timeline };
     timelineGroupByRowLabel_exists: () => boolean;
-    timelineShowBarLabels: { (): boolean; (_: boolean): Timeline };
     timelineShowBarLabels_exists: () => boolean;
-    timelineShowRowLabels: { (): boolean; (_: boolean): Timeline };
     timelineShowRowLabels_exists: () => boolean;
-    timelineSingleColor: { (): string; (_: string): Timeline };
     timelineSingleColor_exists: () => boolean;
-    timePattern: { (): string; (_: string): Timeline };
     timePattern_exists: () => boolean;
 }
 Timeline.prototype._class += " google_Timeline";
 
+export interface Timeline {
+    tooltipIsHtml(): boolean;
+    tooltipIsHtml(_: boolean): this;
+    tooltipTrigger(): string;
+    tooltipTrigger(_: string): this;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
+    avoidOverlappingGridLines(): boolean;
+    avoidOverlappingGridLines(_: boolean): this;
+    timelineColorByRowLabel(): boolean;
+    timelineColorByRowLabel(_: boolean): this;
+    timelineGroupByRowLabel(): boolean;
+    timelineGroupByRowLabel(_: boolean): this;
+    timelineShowBarLabels(): boolean;
+    timelineShowBarLabels(_: boolean): this;
+    timelineShowRowLabels(): boolean;
+    timelineShowRowLabels(_: boolean): this;
+    timelineSingleColor(): string;
+    timelineSingleColor(_: string): this;
+    timePattern(): string;
+    timePattern(_: string): this;
+}
 Timeline.prototype.publish("tooltipIsHtml", true, "boolean", "Set to false to use SVG-rendered (rather than HTML-rendered) tooltips. See Customizing Tooltip Content for more details.", null, { tags: ["Advanced"] });
 Timeline.prototype.publish("tooltipTrigger", "focus", "set", "The user interaction that causes the tooltip to be displayed: focus - The tooltip will be displayed when the user hovers over the element; none - The tooltip will not be displayed.", ["none", "focus"], { tags: ["Basic"] });
 Timeline.prototype.publish("backgroundColor", null, "html-color", "The background color for the main area of the chart. Can be either a simple HTML color string, for example:  or '#00cc00'.", null, { tags: ["Basic"] });
-
 Timeline.prototype.publish("avoidOverlappingGridLines", true, "boolean", "Whether display elements (e.g., the bars in a timeline) should obscure grid lines. If false, grid lines may be covered completely by display elements. If true, display elements may be altered to keep grid lines visible.", null, { tags: ["Basic"] });
 Timeline.prototype.publish("timelineColorByRowLabel", false, "boolean", "If set to true, colors every bar on the row the same. The default is to use one color per bar label.", null, { tags: ["Basic"] });
 Timeline.prototype.publish("timelineGroupByRowLabel", true, "boolean", "If set to false, creates one row for every dataTable entry. The default is to collect bars with the same row label into one row.", null, { tags: ["Basic"] });

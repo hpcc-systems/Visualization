@@ -121,30 +121,11 @@ export class Surface extends HTMLWidget {
         super.exit(domNode, element);
     }
 
-    title: { (): string; (_: string): Surface; };
-    surfaceTitlePadding: { (): number; (_: number): Surface; };
     surfaceTitlePadding_exists: () => boolean;
-    surfaceTitleFontSize: { (): number; (_: number): Surface; };
     surfaceTitleFontSize_exists: () => boolean;
-    surfaceTitleFontColor: { (): string; (_: string): Surface; };
-    surfaceTitleFontFamily: { (): string; (_: string): Surface; };
-    surfaceTitleFontBold: { (): boolean; (_: boolean): Surface; };
-    surfaceTitleBackgroundColor: { (): string; (_: string): Surface; };
-    surfaceTitleAlignment: { (): string; (_: string): Surface; };
-
-    surfaceShadow: { (): boolean; (_: boolean): Surface; };
-    surfacePadding: { (): string; (_: string): Surface; };
     surfacePadding_exists: () => boolean;
-    surfaceBackgroundColor: { (): string; (_: string): Surface; };
-    surfaceBorderWidth: { (): number; (_: number): Surface; };
     surfaceBorderWidth_exists: () => boolean;
-    surfaceBorderColor: { (): string; (_: string): Surface; };
-    surfaceBorderRadius: { (): number; (_: number): Surface; };
     surfaceBorderRadius_exists: () => boolean;
-
-    buttonAnnotations: { (): any[]; (_: any[]): Surface; };
-
-    widget: { (): Widget; (_: Widget): Surface; };
 
     //  Events  ---
     click(obj) {
@@ -153,6 +134,40 @@ export class Surface extends HTMLWidget {
 }
 Surface.prototype._class += " layout_Surface";
 
+export interface Surface {
+    title(): string;
+    title(_: string): this;
+    surfaceTitlePadding(): number;
+    surfaceTitlePadding(_: number): this;
+    surfaceTitleFontSize(): number;
+    surfaceTitleFontSize(_: number): this;
+    surfaceTitleFontColor(): string;
+    surfaceTitleFontColor(_: string): this;
+    surfaceTitleFontFamily(): string;
+    surfaceTitleFontFamily(_: string): this;
+    surfaceTitleFontBold(): boolean;
+    surfaceTitleFontBold(_: boolean): this;
+    surfaceTitleBackgroundColor(): string;
+    surfaceTitleBackgroundColor(_: string): this;
+    surfaceTitleAlignment(): string;
+    surfaceTitleAlignment(_: string): this;
+    surfaceShadow(): boolean;
+    surfaceShadow(_: boolean): this;
+    surfacePadding(): string;
+    surfacePadding(_: string): this;
+    surfaceBackgroundColor(): string;
+    surfaceBackgroundColor(_: string): this;
+    surfaceBorderWidth(): number;
+    surfaceBorderWidth(_: number): this;
+    surfaceBorderColor(): string;
+    surfaceBorderColor(_: string): this;
+    surfaceBorderRadius(): number;
+    surfaceBorderRadius(_: number): this;
+    buttonAnnotations(): any[];
+    buttonAnnotations(_: any[]): this;
+    widget(): Widget;
+    widget(_: Widget): this;
+}
 Surface.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
 Surface.prototype.publish("surfaceTitlePadding", null, "number", "Title Padding (px)", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
 Surface.prototype.publish("surfaceTitleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
@@ -161,14 +176,11 @@ Surface.prototype.publish("surfaceTitleFontFamily", null, "string", "Title Font 
 Surface.prototype.publish("surfaceTitleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
 Surface.prototype.publish("surfaceTitleBackgroundColor", null, "html-color", "Title Background Color", null, { tags: ["Advanced"], disable: (w: any) => !w.title() });
 Surface.prototype.publish("surfaceTitleAlignment", "center", "set", "Title Alignment", ["left", "right", "center"], { tags: ["Basic"], disable: (w: any) => !w.title() });
-
 Surface.prototype.publish("surfaceShadow", false, "boolean", "3D Shadow");
 Surface.prototype.publish("surfacePadding", null, "string", "Surface Padding (px)", null, { tags: ["Intermediate"] });
 Surface.prototype.publish("surfaceBackgroundColor", null, "html-color", "Surface Background Color", null, { tags: ["Advanced"] });
 Surface.prototype.publish("surfaceBorderWidth", null, "number", "Surface Border Width (px)", null, { tags: ["Advanced"] });
 Surface.prototype.publish("surfaceBorderColor", null, "html-color", "Surface Border Color", null, { tags: ["Advanced"] });
 Surface.prototype.publish("surfaceBorderRadius", null, "number", "Surface Border Radius (px)", null, { tags: ["Advanced"] });
-
 Surface.prototype.publish("buttonAnnotations", [], "array", "Button Array", null, { tags: ["Private"] });
-
 Surface.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"] });

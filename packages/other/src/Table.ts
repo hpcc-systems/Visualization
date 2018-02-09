@@ -200,7 +200,7 @@ export class Table extends HTMLWidget {
         thUpdate.order();
 
         if (this.paginationLimit()) {
-            this.pagination(data.length >= parseInt(this.paginationLimit()) ? true : false);
+            this.pagination(data.length >= Math.floor(this.paginationLimit()) ? true : false);
         }
         if (this.pagination()) {
             if (this._paginator.target() === null) {
@@ -895,80 +895,113 @@ export class Table extends HTMLWidget {
             .render()
             ;
     }
-    renderHtmlDataCells: { (): boolean; (_: boolean): Table; };
-    pagination: { (): boolean; (_: boolean): Table; };
-    paginationLimit: { (): any; (_: any): Table; };
     itemsPerPage: { (): any; (_: any): Table; };
     pageNumber: { (): number; (_: number): Table; };
     adjacentPages: { (): number; (_: number): Table; };
-    topN: { (): number; (_: number): Table; };
-    pivot: { (): boolean; (_: boolean): Table; };
-    showHeader: { (): boolean; (_: boolean): Table; };
-    fixedHeader: { (): boolean; (_: boolean): Table; };
-    fixedColumn: { (): boolean; (_: boolean): Table; };
-    multiSelect: { (): boolean; (_: boolean): Table; };
 
-    fixedSize: { (): boolean; (_: boolean): Table; };
-
-    theadFontSize: { (): string; (_: string): Table; };
-    tbodyFontSize: { (): string; (_: string): Table; };
-    tfootFontSize: { (): string; (_: string): Table; };
-    theadFontColor: { (): string; (_: string): Table; };
-    tbodyFontColor: { (): string; (_: string): Table; };
-    tfootFontColor: { (): string; (_: string): Table; };
-    theadFontFamily: { (): string; (_: string): Table; };
-    tbodyFontFamily: { (): string; (_: string): Table; };
-    tfootFontFamily: { (): string; (_: string): Table; };
-
-    theadCellBorderColor: { (): string; (_: string): Table; };
-    tfootCellBorderColor: { (): string; (_: string): Table; };
-    theadRowBackgroundColor: { (): string; (_: string): Table; };
-    tfootRowBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodyCellBorderColor: { (): string; (_: string): Table; };
-
-    tbodyRowBackgroundColor: { (): string; (_: string): Table; };
-    tbodyFirstColFontColor: { (): string; (_: string): Table; };
-    tbodyFirstColBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodyHoverRowFontColor: { (): string; (_: string): Table; };
-    tbodyHoverRowBackgroundColor: { (): string; (_: string): Table; };
-
-    tbodySelectedRowFontColor: { (): string; (_: string): Table; };
-    tbodySelectedRowBackgroundColor: { (): string; (_: string): Table; };
-    tableZebraColor: { (): string; (_: string): Table; };
     tableZebraColor_exists: () => boolean;
-    totalledColumns: { (): any[]; (_: any[]): Table; };
-    totalledLabel: { (): string; (_: string): Table; };
-
-    stringAlign: { (): string; (_: string): Table; };
-    numberAlign: { (): string; (_: string): Table; };
-    verticalAlign: { (): string; (_: string): Table; };
-
-    minWidgetWidth: { (): number; (_: number): Table; };
-    minWidgetHeight: { (): number; (_: number): Table; };
-
-    sortByFieldIndex: { (): number; (_: number): Table; };
     sortByFieldIndex_exists: () => boolean;
-    descending: { (): boolean; (_: boolean): Table; };
 }
 Table.prototype._class += " other_Table";
 
-Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells", null, { tags: ["Private"] });
-Table.prototype.publish("pagination", true, "boolean", "Enable or disable pagination", null, { tags: ["Private"] });
-Table.prototype.publish("paginationLimit", null, "number", "Maximum number of rows allowed before pagination defaults to on", null, { tags: ["Private"] });
 Table.prototype.publishProxy("itemsPerPage", "_paginator");
 Table.prototype.publishProxy("pageNumber", "_paginator", "pageNumber", 1);
 Table.prototype.publishProxy("adjacentPages", "_paginator");
+
+export interface Table {
+    renderHtmlDataCells(): boolean;
+    renderHtmlDataCells(_: boolean): this;
+    pagination(): boolean;
+    pagination(_: boolean): this;
+    paginationLimit(): number;
+    paginationLimit(_: number): this;
+    topN(): number;
+    topN(_: number): this;
+    pivot(): boolean;
+    pivot(_: boolean): this;
+    showHeader(): boolean;
+    showHeader(_: boolean): this;
+    fixedHeader(): boolean;
+    fixedHeader(_: boolean): this;
+    fixedColumn(): boolean;
+    fixedColumn(_: boolean): this;
+    multiSelect(): boolean;
+    multiSelect(_: boolean): this;
+    fixedSize(): boolean;
+    fixedSize(_: boolean): this;
+    theadFontSize(): string;
+    theadFontSize(_: string): this;
+    tbodyFontSize(): string;
+    tbodyFontSize(_: string): this;
+    tfootFontSize(): string;
+    tfootFontSize(_: string): this;
+    theadFontColor(): string;
+    theadFontColor(_: string): this;
+    tbodyFontColor(): string;
+    tbodyFontColor(_: string): this;
+    tfootFontColor(): string;
+    tfootFontColor(_: string): this;
+    theadFontFamily(): string;
+    theadFontFamily(_: string): this;
+    tbodyFontFamily(): string;
+    tbodyFontFamily(_: string): this;
+    tfootFontFamily(): string;
+    tfootFontFamily(_: string): this;
+    theadCellBorderColor(): string;
+    theadCellBorderColor(_: string): this;
+    tfootCellBorderColor(): string;
+    tfootCellBorderColor(_: string): this;
+    theadRowBackgroundColor(): string;
+    theadRowBackgroundColor(_: string): this;
+    tfootRowBackgroundColor(): string;
+    tfootRowBackgroundColor(_: string): this;
+    tbodyCellBorderColor(): string;
+    tbodyCellBorderColor(_: string): this;
+    tbodyRowBackgroundColor(): string;
+    tbodyRowBackgroundColor(_: string): this;
+    tbodyFirstColFontColor(): string;
+    tbodyFirstColFontColor(_: string): this;
+    tbodyFirstColBackgroundColor(): string;
+    tbodyFirstColBackgroundColor(_: string): this;
+    tbodyHoverRowFontColor(): string;
+    tbodyHoverRowFontColor(_: string): this;
+    tbodyHoverRowBackgroundColor(): string;
+    tbodyHoverRowBackgroundColor(_: string): this;
+    tbodySelectedRowFontColor(): string;
+    tbodySelectedRowFontColor(_: string): this;
+    tbodySelectedRowBackgroundColor(): string;
+    tbodySelectedRowBackgroundColor(_: string): this;
+    tableZebraColor(): string;
+    tableZebraColor(_: string): this;
+    totalledColumns(): any[];
+    totalledColumns(_: any[]): this;
+    totalledLabel(): string;
+    totalledLabel(_: string): this;
+    stringAlign(): string;
+    stringAlign(_: string): this;
+    numberAlign(): string;
+    numberAlign(_: string): this;
+    verticalAlign(): string;
+    verticalAlign(_: string): this;
+    minWidgetWidth(): number;
+    minWidgetWidth(_: number): this;
+    minWidgetHeight(): number;
+    minWidgetHeight(_: number): this;
+    sortByFieldIndex(): number;
+    sortByFieldIndex(_: number): this;
+    descending(): boolean;
+    descending(_: boolean): this;
+}
+Table.prototype.publish("renderHtmlDataCells", false, "boolean", "enable or disable HTML within cells", null, { tags: ["Private"] });
+Table.prototype.publish("pagination", true, "boolean", "Enable or disable pagination", null, { tags: ["Private"] });
+Table.prototype.publish("paginationLimit", null, "number", "Maximum number of rows allowed before pagination defaults to on", null, { tags: ["Private"] });
 Table.prototype.publish("topN", null, "number", "Total number or rows of data to be displayed in the table", null, { tags: ["Private"] });
 Table.prototype.publish("pivot", false, "boolean", "Pivot Table");
 Table.prototype.publish("showHeader", true, "boolean", "Show or hide the table header", null, { tags: ["Private"] });
 Table.prototype.publish("fixedHeader", true, "boolean", "Enable or disable fixed table header", null, { tags: ["Private"] });
 Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixed first column", null, { tags: ["Private"] });
 Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection", null, { tags: ["Basic"] });
-
 Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
-
 Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tfootFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
@@ -978,33 +1011,25 @@ Table.prototype.publish("tfootFontColor", null, "html-color", "Table body font c
 Table.prototype.publish("theadFontFamily", null, "string", "Table head font family", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyFontFamily", null, "string", "Table body font family", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tfootFontFamily", null, "string", "Table body font family", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("theadCellBorderColor", null, "html-color", "Table head cell border color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tfootCellBorderColor", null, "html-color", "Table head cell border color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("theadRowBackgroundColor", null, "html-color", "Table head row color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tfootRowBackgroundColor", null, "html-color", "Table head row color", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("tbodyCellBorderColor", null, "html-color", "Table body cell border color", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("tbodyRowBackgroundColor", null, "html-color", "Table body row color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyFirstColFontColor", null, "html-color", "Table body first column font color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyFirstColBackgroundColor", null, "html-color", "Table body first column background color", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("tbodyHoverRowFontColor", null, "html-color", "Table body hover row font color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyHoverRowBackgroundColor", null, "html-color", "Table body hover row background color", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("tbodySelectedRowFontColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodySelectedRowBackgroundColor", null, "html-color", "Table body selected row color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true, disable: (w: any) => w.pivot() });
 Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true, disable: (w: any) => w.pivot() });
-
 Table.prototype.publish("stringAlign", "left", "set", "Cell alignment for strings", ["left", "right", "center"], { tags: ["Basic"], optional: true });
 Table.prototype.publish("numberAlign", "right", "set", "Cell alignment for numbers", ["left", "right", "center"], { tags: ["Basic"], optional: true });
 Table.prototype.publish("verticalAlign", null, "set", "Cell vertical alignment", [null, "middle", "top", "bottom"], { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("minWidgetWidth", 320, "number", "Minimum width of a child widget", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("minWidgetHeight", 240, "number", "Minimum height of a child widget", null, { tags: ["Basic"], optional: true });
-
 Table.prototype.publish("sortByFieldIndex", null, "number", "Index for the field/column to sort the data", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("descending", false, "boolean", "Direction for sorting the data: ascending (true) or descending (false)", null, { tags: ["Basic"], optional: true });

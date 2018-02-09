@@ -126,9 +126,9 @@ axisGridAlpha_exists: () => boolean;
 PropertyExt.ts:234 ***  ***  CommonXY ***  ***
     backwardsCompatible: { (): boolean;(_: boolean): CommonXY};
 backwardsCompatible_exists: () => boolean;
-xAxes: { (): propertyArray;(_: propertyArray): CommonXY};
+xAxes: { (): any[];(_: any[]): CommonXY};
 xAxes_exists: () => boolean;
-yAxes: { (): propertyArray;(_: propertyArray): CommonXY};
+yAxes: { (): any[];(_: any[]): CommonXY};
 yAxes_exists: () => boolean;
 fontSize: { (): number;(_: number): CommonXY};
 fontSize_exists: () => boolean;

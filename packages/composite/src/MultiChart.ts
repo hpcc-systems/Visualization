@@ -348,8 +348,6 @@ MultiChart.prototype._allChartTypes.forEach(function (item) {
 });
 
 MultiChart.prototype.publishReset();
-MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }), { tags: ["Basic"] });
-MultiChart.prototype.publish("chart", null, "widget", "Chart", null, { tags: ["Basic"] });
 
 const _origChart = MultiChart.prototype.chart;
 MultiChart.prototype.chart = function (_?) {
@@ -389,3 +387,12 @@ MultiChart.prototype.chart = function (_?) {
     }
     return retVal;
 };
+
+export interface MultiChart {
+    chartType(): string;
+    chartType(_: string): this;
+    chart(): Widget;
+    chart(_: Widget): this;
+}
+MultiChart.prototype.publish("chartType", "BUBBLE", "set", "Chart Type", MultiChart.prototype._allChartTypes.map(function (item) { return item.id; }), { tags: ["Basic"] });
+MultiChart.prototype.publish("chart", null, "widget", "Chart", null, { tags: ["Basic"] });

@@ -598,11 +598,15 @@ export abstract class Widget extends PropertyExt {
     fields(): Field[];
     fields(_: Field[]): this;
     fields(_?: Field[]): Field[] | this { return this; }
-    classed: (_?) => any | this;
 }
 Widget.prototype._class += " common_Widget";
 
 Widget.prototype._idSeed = "_w";
 
 Widget.prototype.publishProxy("fields", "_db", "fields");
+
+export interface Widget {
+    classed(): any;
+    classed(_: any): this;
+}
 Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });

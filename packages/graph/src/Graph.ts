@@ -655,30 +655,6 @@ export class Graph extends SVGZoomWidget {
             ;
     }
 
-    allowDragging: { (): boolean; (_: boolean): Graph; };
-    layout: { (): string; (_: string): Graph; };
-    // scale: { (): string; (_: string): Graph; };
-    applyScaleOnLayout: { (): boolean; (_: boolean): Graph; };
-    highlightOnMouseOverVertex: { (): boolean; (_: boolean): Graph; };
-    highlightOnMouseOverEdge: { (): boolean; (_: boolean): Graph; };
-    transitionDuration: { (): number; (_: number): Graph; };
-    showEdges: { (): boolean; (_: boolean): Graph; };
-    snapToGrid: { (): number; (_: number): Graph; };
-
-    hierarchyRankDirection: { (): string; (_: string): Graph; };
-    hierarchyNodeSeparation: { (): number; (_: number): Graph; };
-    hierarchyEdgeSeparation: { (): number; (_: number): Graph; };
-    hierarchyRankSeparation: { (): number; (_: number): Graph; };
-
-    forceDirectedLinkDistance: { (): number; (_: number): Graph; };
-    forceDirectedLinkStrength: { (): number; (_: number): Graph; };
-    forceDirectedFriction: { (): number; (_: number): Graph; };
-    forceDirectedCharge: { (): number; (_: number): Graph; };
-    forceDirectedChargeDistance: { (): number; (_: number): Graph; };
-    forceDirectedTheta: { (): number; (_: number): Graph; };
-    forceDirectedGravity: { (): number; (_: number): Graph; };
-
-    //  IGraph  ---
     edge_click: (_row, _col, _sel, _more) => void;
     edge_dblclick: (_row, _col, _sel, _more) => void;
 }
@@ -687,29 +663,6 @@ Graph.prototype.implements(IGraph.prototype);
 
 Graph.prototype.Vertex = Vertex;
 Graph.prototype.Edge = Edge;
-
-Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
-Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });
-Graph.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
-Graph.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
-Graph.prototype.publish("highlightOnMouseOverVertex", false, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
-Graph.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
-Graph.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
-Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
-Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
-
-Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
-Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });
-Graph.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { tags: ["Advanced"] });
-Graph.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { tags: ["Advanced"] });
-
-Graph.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedFriction", 0.9, "number", "Friction coefficient", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedCharge", -25, "number", "Charge strength ", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedChargeDistance", 10000, "number", "Maximum distance over which charge forces are applied", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedTheta", 0.8, "number", "Barnes–Hut approximation criterion", null, { tags: ["Advanced"] });
-Graph.prototype.publish("forceDirectedGravity", 0.1, "number", "Gravitational strength", null, { tags: ["Advanced"] });
 
 const _origScale = Graph.prototype.scale;
 Graph.prototype.scale = function (_?, transitionDuration?) {
@@ -796,3 +749,66 @@ Graph.prototype.layout = function (_?, transitionDuration?) {
     }
     return retVal;
 };
+
+export interface Graph {
+    allowDragging(): boolean;
+    allowDragging(_: boolean): this;
+    layout(): string;
+    layout(_: string): this;
+    scale(): number;
+    scale(_: number): this;
+    applyScaleOnLayout(): boolean;
+    applyScaleOnLayout(_: boolean): this;
+    highlightOnMouseOverVertex(): boolean;
+    highlightOnMouseOverVertex(_: boolean): this;
+    highlightOnMouseOverEdge(): boolean;
+    highlightOnMouseOverEdge(_: boolean): this;
+    transitionDuration(): number;
+    transitionDuration(_: number): this;
+    showEdges(): boolean;
+    showEdges(_: boolean): this;
+    snapToGrid(): number;
+    snapToGrid(_: number): this;
+    hierarchyRankDirection(): string;
+    hierarchyRankDirection(_: string): this;
+    hierarchyNodeSeparation(): number;
+    hierarchyNodeSeparation(_: number): this;
+    hierarchyEdgeSeparation(): number;
+    hierarchyEdgeSeparation(_: number): this;
+    hierarchyRankSeparation(): number;
+    hierarchyRankSeparation(_: number): this;
+    forceDirectedLinkDistance(): number;
+    forceDirectedLinkDistance(_: number): this;
+    forceDirectedLinkStrength(): number;
+    forceDirectedLinkStrength(_: number): this;
+    forceDirectedFriction(): number;
+    forceDirectedFriction(_: number): this;
+    forceDirectedCharge(): number;
+    forceDirectedCharge(_: number): this;
+    forceDirectedChargeDistance(): number;
+    forceDirectedChargeDistance(_: number): this;
+    forceDirectedTheta(): number;
+    forceDirectedTheta(_: number): this;
+    forceDirectedGravity(): number;
+    forceDirectedGravity(_: number): this;
+}
+Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
+Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });
+Graph.prototype.publish("scale", "100%", "set", "Zoom Level", ["all", "width", "selection", "100%", "90%", "75%", "50%", "25%", "10%"], { tags: ["Basic"] });
+Graph.prototype.publish("applyScaleOnLayout", false, "boolean", "Shrink to fit on Layout", null, { tags: ["Basic"] });
+Graph.prototype.publish("highlightOnMouseOverVertex", false, "boolean", "Highlight Vertex on Mouse Over", null, { tags: ["Basic"] });
+Graph.prototype.publish("highlightOnMouseOverEdge", false, "boolean", "Highlight Edge on Mouse Over", null, { tags: ["Basic"] });
+Graph.prototype.publish("transitionDuration", 250, "number", "Transition Duration", null, { tags: ["Intermediate"] });
+Graph.prototype.publish("showEdges", true, "boolean", "Show Edges", null, { tags: ["Intermediate"] });
+Graph.prototype.publish("snapToGrid", 0, "number", "Snap to Grid", null, { tags: ["Private"] });
+Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Rank Nodes", ["TB", "BT", "LR", "RL"], { tags: ["Advanced"] });
+Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });
+Graph.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { tags: ["Advanced"] });
+Graph.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedFriction", 0.9, "number", "Friction coefficient", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedCharge", -25, "number", "Charge strength ", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedChargeDistance", 10000, "number", "Maximum distance over which charge forces are applied", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedTheta", 0.8, "number", "Barnes–Hut approximation criterion", null, { tags: ["Advanced"] });
+Graph.prototype.publish("forceDirectedGravity", 0.1, "number", "Gravitational strength", null, { tags: ["Advanced"] });

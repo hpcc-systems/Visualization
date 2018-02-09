@@ -234,13 +234,17 @@ export class SVGZoomWidget extends SVGWidget {
     exit(domNode, element) {
         super.exit(domNode, element);
     }
-
-    zoomable: { (): boolean; (_: boolean): SVGZoomWidget; };
-    zoomToolbar: { (): boolean; (_: boolean): SVGZoomWidget; };
-    zoomDuration: { (): number; (_: number): SVGZoomWidget; };
 }
 SVGZoomWidget.prototype._class += " common_SVGZoomWidget";
 
+export interface SVGZoomWidget {
+    zoomable(): boolean;
+    zoomable(_: boolean): this;
+    zoomToolbar(): boolean;
+    zoomToolbar(_: boolean): this;
+    zoomDuration(): number;
+    zoomDuration(_: number): this;
+}
 SVGZoomWidget.prototype.publish("zoomable", true, "boolean", "Enable/Disable Zooming");
 SVGZoomWidget.prototype.publish("zoomToolbar", true, "boolean", "Show Zoom Toolbar");
 SVGZoomWidget.prototype.publish("zoomDuration", 250, "number", "Transition Duration");

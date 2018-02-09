@@ -90,10 +90,8 @@ export class Input extends HTMLWidget {
         }
     }
 
-    type: { (): string; (_: string): Input };
     type_exists: () => boolean;
     type_default: { (): string; (_: string): Input };
-    inlineLabel: { (): string; (_: string): Input };
     inlineLabel_exists: () => boolean;
 
     //  IInput  ---
@@ -109,5 +107,11 @@ export class Input extends HTMLWidget {
 Input.prototype._class += " form_Input";
 Input.prototype.implements(IInput.prototype);
 
+export interface Input {
+    type(): string;
+    type(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+}
 Input.prototype.publish("type", "text", "set", "Input type", ["number", "button", "checkbox", "date", "text", "textarea", "search", "email", "time", "datetime", "hidden"]);
 Input.prototype.publish("inlineLabel", null, "string", "Input Label", null, { optional: true });

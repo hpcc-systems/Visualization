@@ -139,21 +139,13 @@ export class Choropleth extends Layer {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
-    paletteID: { (): string; (_: string): Choropleth };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): Choropleth };
     useClonedPalette_exists: () => boolean;
-    opacity: { (): number; (_: number): Choropleth };
     opacity_exists: () => boolean;
-    meshVisible: { (): boolean; (_: boolean): Choropleth };
     meshVisible_exists: () => boolean;
-    meshColor: { (): string; (_: string): Choropleth };
     meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): Choropleth };
     meshStrokeWidth_exists: () => boolean;
-    internalOnly: { (): boolean; (_: boolean): Choropleth };
     internalOnly_exists: () => boolean;
-    autoScaleMode: { (): string; (_: string): Choropleth };
     autoScaleMode_exists: () => boolean;
 }
 Choropleth.prototype._class += " map_Choropleth";
@@ -161,11 +153,27 @@ Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Choropleth.prototype._palette = Palette.rainbow("default");
 
+export interface Choropleth {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    opacity(): number;
+    opacity(_: number): this;
+    meshVisible(): boolean;
+    meshVisible(_: boolean): this;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+    internalOnly(): boolean;
+    internalOnly(_: boolean): this;
+    autoScaleMode(): string;
+    autoScaleMode(_: string): this;
+}
 Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Choropleth.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
-
 Choropleth.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
-
 Choropleth.prototype.publish("meshVisible", true, "boolean", "Mesh Visibility");
 Choropleth.prototype.publish("meshColor", null, "html-color", "Stroke Color", null, { optional: true });
 Choropleth.prototype.publish("meshStrokeWidth", 0.25, "number", "Stroke Width");

@@ -413,33 +413,19 @@ export class MegaChart extends Border {
         }
     }
 
-    showToolbar: { (): boolean; (_: boolean): MegaChart };
     showToolbar_exists: () => boolean;
-    titleFontSize: { (): number; (_: number): MegaChart };
     titleFontSize_exists: () => boolean;
-    titleFontColor: { (): string; (_: string): MegaChart };
     titleFontColor_exists: () => boolean;
-    titleFontFamily: { (): string; (_: string): MegaChart };
     titleFontFamily_exists: () => boolean;
-    titleFontBold: { (): boolean; (_: boolean): MegaChart };
     titleFontBold_exists: () => boolean;
-    titleBackgroundColor: { (): string; (_: string): MegaChart };
     titleBackgroundColor_exists: () => boolean;
-    maximizedBackgroundColor: { (): string; (_: string): MegaChart };
     maximizedBackgroundColor_exists: () => boolean;
-    showChartSelect: { (): boolean; (_: boolean): MegaChart };
     showChartSelect_exists: () => boolean;
-    showCSV: { (): boolean; (_: boolean): MegaChart };
     showCSV_exists: () => boolean;
-    showMaximize: { (): boolean; (_: boolean): MegaChart };
     showMaximize_exists: () => boolean;
-    toolbarShowLegend: { (): boolean; (_: boolean): MegaChart };
     toolbarShowLegend_exists: () => boolean;
-    showInfoButton: { (): boolean; (_: boolean): MegaChart };
     showInfoButton_exists: () => boolean;
-    infoIcon: { (): string; (_: string): MegaChart };
     infoIcon_exists: () => boolean;
-    legendPosition: { (): string; (_: string): MegaChart };
     legendPosition_exists: () => boolean;
 
     title: { (): string; (_: string): MegaChart };
@@ -465,25 +451,8 @@ MegaChart.prototype._allChartTypes = MultiChart.prototype._allChartTypes;
 
 MegaChart.prototype.publishReset();
 
-MegaChart.prototype.publish("showToolbar", true, "boolean", "Enable/Disable Toolbar widget", null, { tags: ["Basic"] });
 MegaChart.prototype.publishProxy("title", "_toolbar", "title");
-MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
-MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
-MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
-MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
-MegaChart.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
-MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
-MegaChart.prototype.publish("maximizedBackgroundColor", "#FFFFFF", "html-color", "Background Color while maximized", null, { tags: ["Intermediate"], optional: true });
 
-MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("showCount", false, "boolean", "Show/Hide Data Count", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("showMaximize", false, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
-MegaChart.prototype.publish("infoIcon", "\uf05a", "string", "Help Icon", null, { tags: ["Basic"] });
-
-MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });
 MegaChart.prototype.publishProxy("legendFormat", "_legend", "rainbowFormat");
 MegaChart.prototype.publishProxy("legendBins", "_legend", "rainbowBins");
 
@@ -492,3 +461,54 @@ MegaChart.prototype.publishProxy("valueAxisTitle", "_valueTitle", "text");
 
 MegaChart.prototype.publishProxy("chartType", "_chart", "chartType");
 MegaChart.prototype.publishProxy("chart", "_chart", "chart");
+
+export interface MegaChart {
+    showToolbar(): boolean;
+    showToolbar(_: boolean): this;
+    ddlParamsFormat(): string;
+    ddlParamsFormat(_: string): this;
+    titleFontSize(): number;
+    titleFontSize(_: number): this;
+    titleFontColor(): string;
+    titleFontColor(_: string): this;
+    titleFontFamily(): string;
+    titleFontFamily(_: string): this;
+    titleFontBold(): boolean;
+    titleFontBold(_: boolean): this;
+    titleBackgroundColor(): string;
+    titleBackgroundColor(_: string): this;
+    maximizedBackgroundColor(): string;
+    maximizedBackgroundColor(_: string): this;
+    showChartSelect(): boolean;
+    showChartSelect(_: boolean): this;
+    showCSV(): boolean;
+    showCSV(_: boolean): this;
+    showCount(): boolean;
+    showCount(_: boolean): this;
+    showMaximize(): boolean;
+    showMaximize(_: boolean): this;
+    toolbarShowLegend(): boolean;
+    toolbarShowLegend(_: boolean): this;
+    showInfoButton(): boolean;
+    showInfoButton(_: boolean): this;
+    infoIcon(): string;
+    infoIcon(_: string): this;
+    legendPosition(): string;
+    legendPosition(_: string): this;
+}
+MegaChart.prototype.publish("showToolbar", true, "boolean", "Enable/Disable Toolbar widget", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("ddlParamsFormat", "", "string", "DDL Param Format '{fname}, {lname}'", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("titleFontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("titleFontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("titleFontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("titleFontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
+MegaChart.prototype.publish("titleBackgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
+MegaChart.prototype.publish("maximizedBackgroundColor", "#FFFFFF", "html-color", "Background Color while maximized", null, { tags: ["Intermediate"], optional: true });
+MegaChart.prototype.publish("showChartSelect", true, "boolean", "Show/Hide the chartType dropdown in the toolbar", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("showCSV", true, "boolean", "Show/Hide CSV button", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("showCount", false, "boolean", "Show/Hide Data Count", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("showMaximize", false, "boolean", "Show/Hide Maximize button", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("toolbarShowLegend", false, "boolean", "Show/Hide Legend button", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("showInfoButton", false, "boolean", "Show/Hide Info button in toolbar", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("infoIcon", "\uf05a", "string", "Help Icon", null, { tags: ["Basic"] });
+MegaChart.prototype.publish("legendPosition", "none", "set", "Position of the Legend widget", ["none", "top", "right", "bottom", "left"], { tags: ["Basic"] });

@@ -137,22 +137,28 @@ export class Tabbed extends HTMLWidget {
     click(widget, column, idx) {
     }
 
-    showTabs: { (): boolean; (_: boolean): Tabbed; };
-    surfacePadding: { (): number; (_: number): Tabbed; };
     surfacePadding_default: { (): number; (_: number): Tabbed; };
     surfacePadding_exists: () => boolean;
-    activeTabIdx: { (): number; (_: number): Tabbed; };
-
-    labels: { (): string[]; (_: string[]): Tabbed; };
-    tabLocation: { (): string; (_: string): Tabbed; };
-    widgets: { (): any[]; (_: any[]): Tabbed; };
 }
 Tabbed.prototype._class += " layout_Tabbed";
 
+export interface Tabbed {
+    showTabs(): boolean;
+    showTabs(_: boolean): this;
+    surfacePadding(): number;
+    surfacePadding(_: number): this;
+    activeTabIdx(): number;
+    activeTabIdx(_: number): this;
+    labels(): any[];
+    labels(_: any[]): this;
+    tabLocation(): string;
+    tabLocation(_: string): this;
+    widgets(): any[];
+    widgets(_: any[]): this;
+}
 Tabbed.prototype.publish("showTabs", true, "boolean", "Show Tabs", null, {});
 Tabbed.prototype.publish("surfacePadding", 4, "number", "Padding");
 Tabbed.prototype.publish("activeTabIdx", 0, "number", "Index of active tab", null, {});
-
 Tabbed.prototype.publish("labels", [], "array", "Array of tab labels sharing an index with ", null, { tags: ["Private"] });
 Tabbed.prototype.publish("tabLocation", "top", "set", "Position the tabs at the bottom of the widget", ["top", "bottom"], { tags: ["Private"] });
 Tabbed.prototype.publish("widgets", [], "widgetArray", "widgets", null, { tags: ["Private"] });

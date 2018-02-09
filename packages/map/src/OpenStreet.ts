@@ -116,15 +116,17 @@ export class OpenStreet extends Layer {
             .style("opacity", 1)
             ;
     }
-
-    tileProvider: { (): string; (_: string): OpenStreet };
     tileProvider_exists: () => boolean;
 }
 OpenStreet.prototype._class += " map_OpenStreet";
-
-OpenStreet.prototype.publish("tileProvider", "OpenStreetMap", "set", "Tile Provider", ["OpenStreetMap", "OpenStreetMap Hot", "MapQuest", "MapQuest Sat", "Stamen Watercolor", "OpenCycleMap"], { tags: ["Basic", "Shared"] });
 
 function stringify(scale, translate) {
     const k = scale / 256;
     return "translate(" + -constScale / 2 + "," + -constScale / 2 + ") scale(" + k + ")";
 }
+
+export interface OpenStreet {
+    tileProvider(): string;
+    tileProvider(_: string): this;
+}
+OpenStreet.prototype.publish("tileProvider", "OpenStreetMap", "set", "Tile Provider", ["OpenStreetMap", "OpenStreetMap Hot", "MapQuest", "MapQuest Sat", "Stamen Watercolor", "OpenCycleMap"], { tags: ["Basic", "Shared"] });

@@ -120,194 +120,223 @@ export class Area extends CommonND {
         CommonND.prototype.update.apply(this, arguments);
     }
 
-    stacked: { (): boolean; (_: boolean): Area };
     stacked_exists: () => boolean;
-    fillOpacity: { (): number; (_: number): Area };
     fillOpacity_exists: () => boolean;
-    axisFontSize: { (): number; (_: number): Area };
     axisFontSize_exists: () => boolean;
-    axisFontFamily: { (): string; (_: string): Area };
     axisFontFamily_exists: () => boolean;
-    xAxisFontColor: { (): string; (_: string): Area };
     xAxisFontColor_exists: () => boolean;
-    yAxisFontColor: { (): string; (_: string): Area };
     yAxisFontColor_exists: () => boolean;
-    xAxisBaselineColor: { (): string; (_: string): Area };
     xAxisBaselineColor_exists: () => boolean;
-    yAxisBaselineColor: { (): string; (_: string): Area };
     yAxisBaselineColor_exists: () => boolean;
-    xAxisTitle: { (): string; (_: string): Area };
     xAxisTitle_exists: () => boolean;
-    yAxisTitle: { (): string; (_: string): Area };
     yAxisTitle_exists: () => boolean;
-    xAxisTitleFontColor: { (): string; (_: string): Area };
     xAxisTitleFontColor_exists: () => boolean;
-    yAxisTitleFontColor: { (): string; (_: string): Area };
     yAxisTitleFontColor_exists: () => boolean;
-    xAxisTitleFontSize: { (): number; (_: number): Area };
     xAxisTitleFontSize_exists: () => boolean;
-    yAxisTitleFontSize: { (): number; (_: number): Area };
     yAxisTitleFontSize_exists: () => boolean;
-    xAxisTitleFontFamily: { (): string; (_: string): Area };
     xAxisTitleFontFamily_exists: () => boolean;
-    yAxisTitleFontFamily: { (): string; (_: string): Area };
     yAxisTitleFontFamily_exists: () => boolean;
-    xAxisLabelRotation: { (): number; (_: number): Area };
     xAxisLabelRotation_exists: () => boolean;
-    smoothLines: { (): boolean; (_: boolean): Area };
     smoothLines_exists: () => boolean;
-    dataOpacity: { (): number; (_: number): Area };
     dataOpacity_exists: () => boolean;
-    selectionMode: { (): string; (_: string): Area };
     selectionMode_exists: () => boolean;
-    xAxisBaseline: { (): number; (_: number): Area };
     xAxisBaseline_exists: () => boolean;
-    yAxisBaseline: { (): number; (_: number): Area };
     yAxisBaseline_exists: () => boolean;
-    xAxisInversed: { (): boolean; (_: boolean): Area };
     xAxisInversed_exists: () => boolean;
-    yAxisInversed: { (): boolean; (_: boolean): Area };
     yAxisInversed_exists: () => boolean;
-    xAxisFormatType: { (): string; (_: string): Area };
     xAxisFormatType_exists: () => boolean;
-    yAxisFormatType: { (): string; (_: string): Area };
     yAxisFormatType_exists: () => boolean;
-    xAxisGridlinesCount: { (): number; (_: number): Area };
     xAxisGridlinesCount_exists: () => boolean;
-    yAxisGridlinesCount: { (): number; (_: number): Area };
     yAxisGridlinesCount_exists: () => boolean;
-    xAxisGridlinesColor: { (): string; (_: string): Area };
     xAxisGridlinesColor_exists: () => boolean;
-    yAxisGridlinesColor: { (): string; (_: string): Area };
     yAxisGridlinesColor_exists: () => boolean;
-    xAxisMinorGridlinesCount: { (): number; (_: number): Area };
     xAxisMinorGridlinesCount_exists: () => boolean;
-    yAxisMinorGridlinesCount: { (): number; (_: number): Area };
     yAxisMinorGridlinesCount_exists: () => boolean;
-    xAxisMinorGridlinesColor: { (): string; (_: string): Area };
     xAxisMinorGridlinesColor_exists: () => boolean;
-    yAxisMinorGridlinesColor: { (): string; (_: string): Area };
     yAxisMinorGridlinesColor_exists: () => boolean;
-    xAxisLogScale: { (): boolean; (_: boolean): Area };
     xAxisLogScale_exists: () => boolean;
-    yAxisLogScale: { (): boolean; (_: boolean): Area };
     yAxisLogScale_exists: () => boolean;
-    xAxisTextPosition: { (): string; (_: string): Area };
     xAxisTextPosition_exists: () => boolean;
-    yAxisTextPosition: { (): string; (_: string): Area };
     yAxisTextPosition_exists: () => boolean;
-    xAxisTicks: { (): any[]; (_: any[]): Area };
     xAxisTicks_exists: () => boolean;
-    yAxisTicks: { (): any[]; (_: any[]): Area };
     yAxisTicks_exists: () => boolean;
-    yAxisMaxValue: { (): number; (_: number): Area };
     yAxisMaxValue_exists: () => boolean;
-    xAxisMaxValue: { (): number; (_: number): Area };
     xAxisMaxValue_exists: () => boolean;
-    xAxisMinValue: { (): number; (_: number): Area };
     xAxisMinValue_exists: () => boolean;
-    yAxisMinValue: { (): number; (_: number): Area };
     yAxisMinValue_exists: () => boolean;
-    xAxisViewWindowMode: { (): string; (_: string): Area };
     xAxisViewWindowMode_exists: () => boolean;
-    yAxisViewWindowMode: { (): string; (_: string): Area };
     yAxisViewWindowMode_exists: () => boolean;
-    xAxisViewWindowMax: { (): number; (_: number): Area };
     xAxisViewWindowMax_exists: () => boolean;
-    yAxisViewWindowMax: { (): number; (_: number): Area };
     yAxisViewWindowMax_exists: () => boolean;
-    xAxisViewWindowMin: { (): number; (_: number): Area };
     xAxisViewWindowMin_exists: () => boolean;
-    yAxisViewWindowMin: { (): number; (_: number): Area };
     yAxisViewWindowMin_exists: () => boolean;
-    xAxisMaxAlternation: { (): number; (_: number): Area };
     xAxisMaxAlternation_exists: () => boolean;
-    xAxisMaxTextLines: { (): number; (_: number): Area };
     xAxisMaxTextLines_exists: () => boolean;
-    xAxisMinTextSpacing: { (): number; (_: number): Area };
     xAxisMinTextSpacing_exists: () => boolean;
 }
 Area.prototype._class += " google_Area";
 
+export interface Area {
+    stacked(): boolean;
+    stacked(_: boolean): this;
+    fillOpacity(): number;
+    fillOpacity(_: number): this;
+    axisFontSize(): number;
+    axisFontSize(_: number): this;
+    axisFontFamily(): string;
+    axisFontFamily(_: string): this;
+    xAxisFontColor(): string;
+    xAxisFontColor(_: string): this;
+    yAxisFontColor(): string;
+    yAxisFontColor(_: string): this;
+    xAxisBaselineColor(): string;
+    xAxisBaselineColor(_: string): this;
+    yAxisBaselineColor(): string;
+    yAxisBaselineColor(_: string): this;
+    xAxisTitle(): string;
+    xAxisTitle(_: string): this;
+    yAxisTitle(): string;
+    yAxisTitle(_: string): this;
+    xAxisTitleFontColor(): string;
+    xAxisTitleFontColor(_: string): this;
+    yAxisTitleFontColor(): string;
+    yAxisTitleFontColor(_: string): this;
+    xAxisTitleFontSize(): number;
+    xAxisTitleFontSize(_: number): this;
+    yAxisTitleFontSize(): number;
+    yAxisTitleFontSize(_: number): this;
+    xAxisTitleFontFamily(): string;
+    xAxisTitleFontFamily(_: string): this;
+    yAxisTitleFontFamily(): string;
+    yAxisTitleFontFamily(_: string): this;
+    xAxisLabelRotation(): number;
+    xAxisLabelRotation(_: number): this;
+    smoothLines(): boolean;
+    smoothLines(_: boolean): this;
+    dataOpacity(): number;
+    dataOpacity(_: number): this;
+    selectionMode(): string;
+    selectionMode(_: string): this;
+    xAxisBaseline(): number;
+    xAxisBaseline(_: number): this;
+    yAxisBaseline(): number;
+    yAxisBaseline(_: number): this;
+    xAxisInversed(): boolean;
+    xAxisInversed(_: boolean): this;
+    yAxisInversed(): boolean;
+    yAxisInversed(_: boolean): this;
+    xAxisFormatType(): string;
+    xAxisFormatType(_: string): this;
+    yAxisFormatType(): string;
+    yAxisFormatType(_: string): this;
+    xAxisGridlinesCount(): number;
+    xAxisGridlinesCount(_: number): this;
+    yAxisGridlinesCount(): number;
+    yAxisGridlinesCount(_: number): this;
+    xAxisGridlinesColor(): string;
+    xAxisGridlinesColor(_: string): this;
+    yAxisGridlinesColor(): string;
+    yAxisGridlinesColor(_: string): this;
+    xAxisMinorGridlinesCount(): number;
+    xAxisMinorGridlinesCount(_: number): this;
+    yAxisMinorGridlinesCount(): number;
+    yAxisMinorGridlinesCount(_: number): this;
+    xAxisMinorGridlinesColor(): string;
+    xAxisMinorGridlinesColor(_: string): this;
+    yAxisMinorGridlinesColor(): string;
+    yAxisMinorGridlinesColor(_: string): this;
+    xAxisLogScale(): boolean;
+    xAxisLogScale(_: boolean): this;
+    yAxisLogScale(): boolean;
+    yAxisLogScale(_: boolean): this;
+    xAxisTextPosition(): string;
+    xAxisTextPosition(_: string): this;
+    yAxisTextPosition(): string;
+    yAxisTextPosition(_: string): this;
+    xAxisTicks(): any[];
+    xAxisTicks(_: any[]): this;
+    yAxisTicks(): any[];
+    yAxisTicks(_: any[]): this;
+    yAxisMaxValue(): number;
+    yAxisMaxValue(_: number): this;
+    xAxisMaxValue(): number;
+    xAxisMaxValue(_: number): this;
+    xAxisMinValue(): number;
+    xAxisMinValue(_: number): this;
+    yAxisMinValue(): number;
+    yAxisMinValue(_: number): this;
+    xAxisViewWindowMode(): string;
+    xAxisViewWindowMode(_: string): this;
+    yAxisViewWindowMode(): string;
+    yAxisViewWindowMode(_: string): this;
+    xAxisViewWindowMax(): number;
+    xAxisViewWindowMax(_: number): this;
+    yAxisViewWindowMax(): number;
+    yAxisViewWindowMax(_: number): this;
+    xAxisViewWindowMin(): number;
+    xAxisViewWindowMin(_: number): this;
+    yAxisViewWindowMin(): number;
+    yAxisViewWindowMin(_: number): this;
+    xAxisAllowContainerBoundaryTextCutoff(): boolean;
+    xAxisAllowContainerBoundaryTextCutoff(_: boolean): this;
+    xAxisMaxAlternation(): number;
+    xAxisMaxAlternation(_: number): this;
+    xAxisMaxTextLines(): number;
+    xAxisMaxTextLines(_: number): this;
+    xAxisMinTextSpacing(): number;
+    xAxisMinTextSpacing(_: number): this;
+}
 Area.prototype.publish("stacked", false, "boolean", "Stacks The Elements In A Series", null, { tags: ["Advanced", "Shared"] });
 Area.prototype.publish("fillOpacity", null, "number", "Opacity of The Fill Color", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("axisFontSize", null, "number", "X/Y Axis Label Font Size", null, { tags: ["Basic", "Shared"] });
 Area.prototype.publish("axisFontFamily", null, "string", "X/Y Axis Label Font Name", null, { tags: ["Basic", "Shared"] });
-
 Area.prototype.publish("xAxisFontColor", null, "html-color", "X Axis Text Font Color", null, { tags: ["Basic", "Shared"] });
 Area.prototype.publish("yAxisFontColor", null, "html-color", "X Axis Text Font Color", null, { tags: ["Basic", "Shared"] });
-
 Area.prototype.publish("xAxisBaselineColor", null, "html-color", "Specifies The Color of The Baseline For The Horizontal Axis", null, { tags: ["Intermediate", "Shared"] });
 Area.prototype.publish("yAxisBaselineColor", null, "html-color", "Specifies The Color of The Baseline For The Vertical Axis", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("xAxisTitle", "", "string", "X Axis Title", null, { tags: ["Basic", "Shared"] });
 Area.prototype.publish("yAxisTitle", "", "string", "Y Axis Title", null, { tags: ["Basic", "Shared"] });
-
 Area.prototype.publish("xAxisTitleFontColor", null, "html-color", "Horizontal Axis Title Text Style (Color)", null, { tags: ["Intermediate", "Shared"] });
 Area.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical Axis Title Text Style (Color)", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("xAxisTitleFontSize", null, "number", "Horizontal Axis Titletext Style (Font Size)", null, { tags: ["Intermediate", "Shared"] });
 Area.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Titletext Style (Font Size)", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal Axis Title Text Style (Font Name)", null, { tags: ["Intermediate", "Shared"] });
 Area.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle", null, { tags: ["Intermediate", "Shared"] });
-
 Area.prototype.publish("smoothLines", true, "boolean", "Causes chart data lines to draw smoothly", null, { tags: ["Basic"] });
-
 Area.prototype.publish("dataOpacity", 1.0, "number", "Transparency of Data Points", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("selectionMode", "single", "set", "Select Multiple Data Points", ["single", "multiple"], { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisBaseline", null, "number", "The Baseline For The Horizontal Axis", null, { tags: ["Intermediate"] });
 Area.prototype.publish("yAxisBaseline", null, "number", "The Vaseline For The Verical Axis", null, { tags: ["Intermediate"] });
-
 Area.prototype.publish("xAxisInversed", false, "boolean", "The Direction In Which The Values Along The Horizontal Axis Grow.", null, { tags: ["Advanced"] });
 Area.prototype.publish("yAxisInversed", false, "boolean", "The Direction In Which The Values Along The Vertical Axis Grow.", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisFormatType", "", "set", "Format String For Numeric Axis Labels", ["", "decimal", "scientific", "currency", "percent", "short", "long"], { tags: ["Intermediate"] });
 Area.prototype.publish("yAxisFormatType", "", "set", "Format String For Numeric Axis Labels", ["", "decimal", "scientific", "currency", "percent", "short", "long"], { tags: ["Intermediate"] });
-
 Area.prototype.publish("xAxisGridlinesCount", 5, "number", "The Number of Horizontal Gridlines Between Two Regular Gridlines", null, { tags: ["Intermediate"] });
 Area.prototype.publish("yAxisGridlinesCount", 5, "number", "The Number of Vertical Gridlines Between Two Regular Gridlines", null, { tags: ["Intermediate"] });
-
 Area.prototype.publish("xAxisGridlinesColor", null, "html-color", "The Color of The Horizontal Gridlines Inside The Chart Area", null, { tags: ["Basic"] });
 Area.prototype.publish("yAxisGridlinesColor", null, "html-color", "The Color of The Vertical Gridlines Inside The Chart Area", null, { tags: ["Basic"] });
-
 Area.prototype.publish("xAxisMinorGridlinesCount", 0, "number", "The Number of Horizontal Minor Gridlines Between Two Regular Gridlines", null, { tags: ["Intermediate"] });
 Area.prototype.publish("yAxisMinorGridlinesCount", 0, "number", "The Number of Vertical Minor Gridlines Between Two Regular Gridlines", null, { tags: ["Intermediate"] });
-
 Area.prototype.publish("xAxisMinorGridlinesColor", null, "html-color", "The Color of The Horizontal Minor Gridlines Inside The Chart Area", null, { tags: ["Intermediate"] });
 Area.prototype.publish("yAxisMinorGridlinesColor", null, "html-color", "The Color of The Vertical Minor Gridlines Inside The Chart Area", null, { tags: ["Intermediate"] });
-
 Area.prototype.publish("xAxisLogScale", false, "boolean", "Makes Horizontal Axis A log Scale", null, { tags: ["Advanced"] });
 Area.prototype.publish("yAxisLogScale", false, "boolean", "Makes Vertical Axis A Log Scale", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisTextPosition", "out", "set", "Position of The Horizontal Axis Text, Relative To The Chart Area", ["out", "in", "none"], { tags: ["Advanced"] });
 Area.prototype.publish("yAxisTextPosition", "out", "set", "Position of The Vertical Axis Text, Relative To The Chart Area", ["out", "in", "none"], { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisTicks", [], "array", "Replaces The Automatically Generated X-Axis Ticks With The Specified Array", null, { tags: ["Private"] });
 Area.prototype.publish("yAxisTicks", [], "array", "Replaces The Automatically Generated Y-Axis Ticks With The Specified Array", null, { tags: ["Private"] });
-
 Area.prototype.publish("yAxisMaxValue", null, "number", "Moves The Max Value of The Vertical Axis To The Specified Value", null, { tags: ["Advanced"] });
 Area.prototype.publish("xAxisMaxValue", null, "number", "Moves The Max Value of The Horizontal Axis To The Specified Value", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisMinValue", null, "number", "Moves The Min Value of The Horizontal Axis To The Specified Value", null, { tags: ["Advanced"] });
 Area.prototype.publish("yAxisMinValue", null, "number", "Moves The Min Value of The Vertical Axis To The Specified Value", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisViewWindowMode", "pretty", "set", "Specifies How To Scale The Horizontal Axis To Render The values Within The Chart Area", ["pretty", "maximized", "explicit"], { tags: ["Advanced"] });
 Area.prototype.publish("yAxisViewWindowMode", "pretty", "set", "Specifies How To Scale The Vertical Axis To Render The Values Within The Chart Area", ["pretty", "maximized", "explicit"], { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisViewWindowMax", null, "number", "The Maximum Horizontal Data Value To Render", null, { tags: ["Advanced"] });
 Area.prototype.publish("yAxisViewWindowMax", null, "number", "The Maximum Vertical Data Value To Render", null, { tags: ["Advanced"] });
-
 Area.prototype.publish("xAxisViewWindowMin", null, "number", "The Minimum Horizontal Data Value To Render", null, { tags: ["Advanced"] });
 Area.prototype.publish("yAxisViewWindowMin", null, "number", "The Minimum Vertical Data Value To Render", null, { tags: ["Advanced"] });
-
 // Area.prototype.publish("xAxisAllowContainerBoundaryTextCutoff", false, "boolean", "Hide outermost labels rather than allow them to be cropped by the chart container.",null,{tags:["Advanced"]});
-
 Area.prototype.publish("xAxisMaxAlternation", 2, "number", "Maximum Number of Levels of Horizontal Axis Text", null, { tags: ["Advanced"] });
 Area.prototype.publish("xAxisMaxTextLines", null, "number", "Maximum Number of Lines Allowed For the Text Labels", null, { tags: ["Advanced"] });
 Area.prototype.publish("xAxisMinTextSpacing", null, "number", "Minimum Horizontal Spacing, In Pixels, Allowed Between Two Adjacent Text Labels", null, { tags: ["Advanced"] });

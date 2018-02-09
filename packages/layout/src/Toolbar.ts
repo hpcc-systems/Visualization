@@ -12,19 +12,6 @@ Toolbar.prototype = Object.create(HTMLWidget.prototype);
 Toolbar.prototype.constructor = Toolbar;
 Toolbar.prototype._class += " layout_Toolbar";
 
-Toolbar.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
-
-Toolbar.prototype.publish("fontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
-Toolbar.prototype.publish("fontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
-Toolbar.prototype.publish("fontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
-Toolbar.prototype.publish("fontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
-Toolbar.prototype.publish("backgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
-
-Toolbar.prototype.publish("responsive", true, "boolean", "Adapts to pixel width", null, { tags: ["Basic"] });
-
-Toolbar.prototype.publish("widgets", [], "widgetArray", "Child widgets of the toolbar", null, { tags: ["Basic"] });
-Toolbar.prototype.publish("widgetClasses", [], "array", "Array of Html Element classes to be assigned to the child widgets (shares index with widgets param)", null, { tags: ["Basic"] });
-
 Toolbar.prototype.enter = function (domNode, element) {
     HTMLWidget.prototype.enter.apply(this, arguments);
 };
@@ -96,3 +83,33 @@ Toolbar.prototype.exit = function (domNode, element) {
         w.target(null);
     });
 };
+
+export interface Toolbar {
+    title(): string;
+    title(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontColor(): string;
+    fontColor(_: string): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontBold(): boolean;
+    fontBold(_: boolean): this;
+    backgroundColor(): string;
+    backgroundColor(_: string): this;
+    responsive(): boolean;
+    responsive(_: boolean): this;
+    widgets(): any[];
+    widgets(_: any[]): this;
+    widgetClasses(): any[];
+    widgetClasses(_: any[]): this;
+}
+Toolbar.prototype.publish("title", "", "string", "Title", null, { tags: ["Intermediate"] });
+Toolbar.prototype.publish("fontSize", null, "number", "Title Font Size (px)", null, { tags: ["Advanced"], optional: true });
+Toolbar.prototype.publish("fontColor", null, "html-color", "Title Font Color", null, { tags: ["Advanced"], optional: true });
+Toolbar.prototype.publish("fontFamily", null, "string", "Title Font Family", null, { tags: ["Advanced"], optional: true });
+Toolbar.prototype.publish("fontBold", true, "boolean", "Enable Bold Title Font", null, { tags: ["Advanced"], optional: true });
+Toolbar.prototype.publish("backgroundColor", null, "html-color", "Background Color", null, { tags: ["Intermediate"], optional: true });
+Toolbar.prototype.publish("responsive", true, "boolean", "Adapts to pixel width", null, { tags: ["Basic"] });
+Toolbar.prototype.publish("widgets", [], "widgetArray", "Child widgets of the toolbar", null, { tags: ["Basic"] });
+Toolbar.prototype.publish("widgetClasses", [], "array", "Array of Html Element classes to be assigned to the child widgets (shares index with widgets param)", null, { tags: ["Basic"] });

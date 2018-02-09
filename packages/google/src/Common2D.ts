@@ -24,16 +24,11 @@ export class Common2D extends Common {
         Common.prototype.update.apply(this, arguments);
     }
 
-    paletteID: { (): string; (_: string): Common2D };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): Common2D };
     useClonedPalette_exists: () => boolean;
 }
 Common2D.prototype._class += " google_Common2D";
 Common2D.prototype.implements(I2DChart.prototype);
-
-Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
-Common2D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 function initSeries(num) {
     const series = [];
@@ -42,3 +37,12 @@ function initSeries(num) {
     }
     return series;
 }
+
+export interface Common2D {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
+Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Common2D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

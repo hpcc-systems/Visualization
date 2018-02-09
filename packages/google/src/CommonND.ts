@@ -24,16 +24,11 @@ export class CommonND extends Common {
         Common.prototype.update.apply(this, arguments);
     }
 
-    paletteID: { (): string; (_: string): CommonND };
     paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): CommonND };
     useClonedPalette_exists: () => boolean;
 }
 CommonND.prototype._class += " google_CommonND";
 CommonND.prototype.implements(INDChart.prototype);
-
-CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
-CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 function initSeries(num) {
     const series = [];
@@ -42,3 +37,12 @@ function initSeries(num) {
     }
     return series;
 }
+
+export interface CommonND {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
+CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

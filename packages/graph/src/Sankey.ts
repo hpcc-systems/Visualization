@@ -38,17 +38,8 @@ export class SankeyColumn extends PropertyExt {
                 });
         }
     }
-
-    column: { (): string; (_: string): SankeyColumn; };
-    aggrType: { (): string; (_: string): SankeyColumn; };
-    aggrColumn: { (): string; (_: string): SankeyColumn; };
-
 }
 SankeyColumn.prototype._class += " graph_Sankey.SankeyColumn";
-
-SankeyColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-SankeyColumn.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true, disable: w => !w._owner || w._owner.mappings().indexOf(w) === 0 });
-SankeyColumn.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true, disable: w => !w._owner || !w.aggrType() || w._owner.mappings().indexOf(w) === 0 });
 
 export class Sankey extends SVGWidget {
     Column;
@@ -230,13 +221,6 @@ export class Sankey extends SVGWidget {
         */
     }
 
-    paletteID: { (): string; (_: string): Sankey; };
-    mappings: { (): SankeyColumn[]; (_: SankeyColumn[]): Sankey; };
-    vertexWidth: { (): number; (_: number): Sankey; };
-    vertexPadding: { (): number; (_: number): Sankey; };
-    xAxisMovement: { (): boolean; (_: boolean): Sankey; };
-    yAxisMovement: { (): boolean; (_: boolean): Sankey; };
-
     exit(domNode, element) {
         super.exit(domNode, element);
     }
@@ -256,6 +240,32 @@ Sankey.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Sankey.prototype._palette = Palette.ordinal("default");
 
+export interface SankeyColumn {
+    column(): string;
+    column(_: string): this;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+}
+SankeyColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+SankeyColumn.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true, disable: w => !w._owner || w._owner.mappings().indexOf(w) === 0 });
+SankeyColumn.prototype.publish("aggrColumn", null, "set", "Aggregation Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true, disable: w => !w._owner || !w.aggrType() || w._owner.mappings().indexOf(w) === 0 });
+
+export interface Sankey {
+    paletteID(): string;
+    paletteID(_: string): this;
+    mappings(): SankeyColumn[];
+    mappings(_: SankeyColumn[]): this;
+    vertexWidth(): number;
+    vertexWidth(_: number): this;
+    vertexPadding(): number;
+    vertexPadding(_: number): this;
+    xAxisMovement(): boolean;
+    xAxisMovement(_: boolean): this;
+    yAxisMovement(): boolean;
+    yAxisMovement(_: boolean): this;
+}
 Sankey.prototype.publish("paletteID", "default", "set", "Palette ID", Sankey.prototype._palette.switch());
 Sankey.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: SankeyColumn });
 Sankey.prototype.publish("vertexWidth", 36, "number", "Vertex Width");

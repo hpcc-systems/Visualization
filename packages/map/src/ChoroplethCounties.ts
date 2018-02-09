@@ -98,9 +98,12 @@ export class ChoroplethCounties extends Choropleth {
         return this._topoJsonPromise;
     }
 
-    onClickFormatFIPS: { (): boolean; (_: boolean): ChoroplethCounties };
     onClickFormatFIPS_exists: () => boolean;
 }
 ChoroplethCounties.prototype._class += " map_ChoroplethCounties";
 
+export interface ChoroplethCounties {
+    onClickFormatFIPS(): boolean;
+    onClickFormatFIPS(_: boolean): this;
+}
 ChoroplethCounties.prototype.publish("onClickFormatFIPS", false, "boolean", "format FIPS code as a String on Click");

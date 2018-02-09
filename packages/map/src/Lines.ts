@@ -67,9 +67,11 @@ export class Lines extends Layer {
             .attr("stroke-width", `${0.5 / base.zoomScale()}px`)
             ;
     }
-
-    opacity: { (): number; (_: number): Lines };
 }
 Lines.prototype._class += " map_Lines";
 
+export interface Lines {
+    opacity(): number;
+    opacity(_: number): this;
+}
 Lines.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });

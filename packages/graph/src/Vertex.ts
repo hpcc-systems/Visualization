@@ -135,21 +135,11 @@ export class Vertex extends SVGWidget {
     icon_shape_colorStroke: { (): string; (_: string): Vertex; };
     icon_image_colorFill: { (): string; (_: string): Vertex; };
 
-    centroid: { (): boolean; (_: boolean): Vertex; };
-
     text: { (): string; (_: string): Vertex; };
     anchor: { (): string; (_: string): Vertex; };
     textbox_shape_colorStroke: { (): string; (_: string): Vertex; };
     textbox_shape_colorFill: { (): string; (_: string): Vertex; };
     textbox_text_colorFill: { (): string; (_: string): Vertex; };
-
-    iconAnchor: { (): string; (_: string): Vertex; };
-
-    tooltip: { (): string; (_: string): Vertex; };
-
-    annotationDiameter: { (): number; (_: number): Vertex; };
-    annotationSpacing: { (): number; (_: number): Vertex; };
-    annotationIcons: { (): any[]; (_: any[]): Vertex; };
 }
 Vertex.prototype._class += " graph_Vertex";
 
@@ -159,19 +149,29 @@ Vertex.prototype.publishProxy("icon_shape_diameter", "_icon", "diameter");
 Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
 Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
 Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");
-
-Vertex.prototype.publish("centroid", false, "boolean", "Centroid Vertex");
-
 Vertex.prototype.publishProxy("text", "_textBox");
 Vertex.prototype.publishProxy("anchor", "_textBox");
 Vertex.prototype.publishProxy("textbox_shape_colorStroke", "_textBox", "shape_colorStroke");
 Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
 Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
+export interface Vertex {
+    centroid(): boolean;
+    centroid(_: boolean): this;
+    iconAnchor(): string;
+    iconAnchor(_: string): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+    annotationDiameter(): number;
+    annotationDiameter(_: number): this;
+    annotationSpacing(): number;
+    annotationSpacing(_: number): this;
+    annotationIcons(): any[];
+    annotationIcons(_: any[]): this;
+}
+Vertex.prototype.publish("centroid", false, "boolean", "Centroid Vertex");
 Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"], { tags: ["Basic"] });
-
 Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
-
 Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter", null, { tags: ["Private"] });
 Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing", null, { tags: ["Private"] });
 Vertex.prototype.publish("annotationIcons", [], "array", "Annotations", null, { tags: ["Private"] });

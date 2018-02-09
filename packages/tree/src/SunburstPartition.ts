@@ -136,9 +136,6 @@ export class SunburstPartition extends SVGWidget {
             .attrTween("d", function (d2) { return function () { return context.arc(d2); }; });
     }
 
-    paletteID: (_?: string) => string | SunburstPartition;
-    useClonedPalette: (_?: boolean) => boolean | SunburstPartition;
-
     //  ITree
     _palette;
     click: (row, column, selected) => void;
@@ -147,5 +144,11 @@ export class SunburstPartition extends SVGWidget {
 SunburstPartition.prototype._class += " tree_SunburstPartition";
 SunburstPartition.prototype.implements(ITree.prototype);
 
+export interface SunburstPartition {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+}
 SunburstPartition.prototype.publish("paletteID", "default", "set", "Palette ID", SunburstPartition.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 SunburstPartition.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

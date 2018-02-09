@@ -10,13 +10,9 @@ export class TreemapColumn extends PropertyExt {
         super();
         this._owner = owner;
     }
-    column: { (): string; (_: string): TreemapColumn; };
 }
 TreemapColumn.prototype._class += " tree_Dendrogram.TreemapColumn";
 
-TreemapColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-
-// ===
 export class Treemap extends HTMLWidget {
     Column;
     protected _d3Treemap;
@@ -160,14 +156,7 @@ export class Treemap extends HTMLWidget {
         super.exit(domNode, element);
     }
 
-    paletteID: { (): string[]; (_: string[]): Treemap; };
-    useClonedPalette: { (): boolean[]; (_: boolean[]): Treemap; };
-    mappings: { (): TreemapColumn[]; (_: TreemapColumn[]): Treemap; };
-    aggrType: { (): string; (_: string): Treemap; };
-    aggrColumn: { (): string; (_: string): Treemap; };
-    fontSize: { (): number; (_: number): Treemap; };
     fontSize_exists: () => boolean;
-    transitionDuration: { (): number[]; (_: number[]): Treemap; };
 
     //  ITree
     _palette;
@@ -179,6 +168,28 @@ Treemap.prototype.implements(ITree.prototype);
 Treemap.prototype.mixin(Utility.SimpleSelectionMixin);
 Treemap.prototype.Column = TreemapColumn;
 
+export interface TreemapColumn {
+    column(): string;
+    column(_: string): this;
+}
+TreemapColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+
+export interface Treemap {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    mappings(): TreemapColumn[];
+    mappings(_: TreemapColumn[]): this;
+    aggrType(): string;
+    aggrType(_: string): this;
+    aggrColumn(): string;
+    aggrColumn(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    transitionDuration(): number;
+    transitionDuration(_: number): this;
+}
 Treemap.prototype.publish("paletteID", "default", "set", "Palette ID", Treemap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Treemap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Treemap.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: TreemapColumn });

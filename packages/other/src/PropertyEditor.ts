@@ -675,36 +675,9 @@ export class PropertyEditor extends HTMLWidget {
         }
     }
 
-    showFields: { (): boolean; (_: boolean): PropertyEditor; };
-    showData: { (): boolean; (_: boolean): PropertyEditor; };
-
-    sorting: { (): string; (_: string): PropertyEditor; };
     sorting_options: () => string[];
-
-    hideNonWidgets: { (): boolean; (_: boolean): PropertyEditor; };
-
-    label: { (): string; (_: string): PropertyEditor; };
-    filterTags: { (): string; (_: string): PropertyEditor; };
-    excludeTags: { (): string[]; (_: string[]): PropertyEditor; };
-    excludeParams: { (): string[]; (_: string[]): PropertyEditor; };
-
-    widget: { (): PropertyExt; (_: PropertyExt): PropertyEditor };
 }
 PropertyEditor.prototype._class += " other_PropertyEditor";
-
-PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
-PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
-
-PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type", ["none", "A-Z", "Z-A", "type"], { tags: ["Basic"], icons: ["fa-sort", "fa-sort-alpha-asc", "fa-sort-alpha-desc", "fa-sort-amount-asc"] });
-
-PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)", null, { tags: ["Basic"] });
-
-PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table", null, { tags: ["Basic"] });
-PropertyEditor.prototype.publish("filterTags", "", "set", "Only show Publish Params of this type", ["Basic", "Intermediate", "Advance", ""], {});
-PropertyEditor.prototype.publish("excludeTags", [], "array", "Exclude this array of tags", null, {});
-PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)", null, {});
-
-PropertyEditor.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"], render: false });
 
 const _widgetOrig = PropertyEditor.prototype.widget;
 (PropertyEditor.prototype as any).widget = function (_?: Widget): Widget | PropertyEditor {
@@ -722,3 +695,33 @@ const _widgetOrig = PropertyEditor.prototype.widget;
     }
     return retVal;
 };
+
+export interface PropertyEditor {
+    showFields(): boolean;
+    showFields(_: boolean): this;
+    showData(): boolean;
+    showData(_: boolean): this;
+    sorting(): string;
+    sorting(_: string): this;
+    hideNonWidgets(): boolean;
+    hideNonWidgets(_: boolean): this;
+    label(): string;
+    label(_: string): this;
+    filterTags(): string;
+    filterTags(_: string): this;
+    excludeTags(): any[];
+    excludeTags(_: any[]): this;
+    excludeParams(): any[];
+    excludeParams(_: any[]): this;
+    widget(): PropertyExt;
+    widget(_: PropertyExt): this;
+}
+PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
+PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
+PropertyEditor.prototype.publish("sorting", "none", "set", "Specify the sorting type", ["none", "A-Z", "Z-A", "type"], { tags: ["Basic"], icons: ["fa-sort", "fa-sort-alpha-asc", "fa-sort-alpha-desc", "fa-sort-amount-asc"] });
+PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-widget params (at this tier only)", null, { tags: ["Basic"] });
+PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table", null, { tags: ["Basic"] });
+PropertyEditor.prototype.publish("filterTags", "", "set", "Only show Publish Params of this type", ["Basic", "Intermediate", "Advance", ""], {});
+PropertyEditor.prototype.publish("excludeTags", [], "array", "Exclude this array of tags", null, {});
+PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)", null, {});
+PropertyEditor.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"], render: false });

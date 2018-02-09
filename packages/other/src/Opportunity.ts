@@ -11,7 +11,6 @@ function Column(owner) {
 Column.prototype = Object.create(PropertyExt.prototype);
 Column.prototype.constructor = Column;
 Column.prototype._class += " other_Opportunity.Column";
-Column.prototype.publish("headerLabel", null, "string", "Header value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
 function MouseHoverColumn(owner) {
     PropertyExt.call(this);
     this._owner = owner;
@@ -19,8 +18,6 @@ function MouseHoverColumn(owner) {
 MouseHoverColumn.prototype = Object.create(PropertyExt.prototype);
 MouseHoverColumn.prototype.constructor = MouseHoverColumn;
 MouseHoverColumn.prototype._class += " other_Opportunity.MouseHoverColumn";
-MouseHoverColumn.prototype.publish("hoverValue", null, "string", "Hover value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
-MouseHoverColumn.prototype.publish("hoverList", null, "set", "Hover value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true });
 function ColumnDropdown(owner) {
     PropertyExt.call(this);
     this._owner = owner;
@@ -28,8 +25,6 @@ function ColumnDropdown(owner) {
 ColumnDropdown.prototype = Object.create(PropertyExt.prototype);
 ColumnDropdown.prototype.constructor = ColumnDropdown;
 ColumnDropdown.prototype._class += " other_Opportunity.ColumnDropdown";
-ColumnDropdown.prototype.publish("columnIndex", null, "number", "Column index for display context data based on column dropdown list selction", {}, { tags: ["Basic", "Shared"], });
-ColumnDropdown.prototype.publish("ColumnDropdownList", null, "set", "column value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true, });
 
 export class Opportunity extends SVGWidget {
     groupCount;
@@ -363,25 +358,15 @@ export class Opportunity extends SVGWidget {
         dropdownList.unshift("default");
         return dropdownList;
     }
-    previousGroup: { (): string; (_: string): Opportunity };
     previousGroup_exists: () => boolean;
-    currentGroup: { (): string; (_: string): Opportunity };
     currentGroup_exists: () => boolean;
-    opportunityId: { (): string; (_: string): Opportunity };
     opportunityId_exists: () => boolean;
-    url: { (): string; (_: string): Opportunity };
     url_exists: () => boolean;
-    // width: { (): number; (_: number): Opportunity };
     width_exists: () => boolean;
-    addColumn: { (): string; (_: string): Opportunity };
     addColumn_exists: () => boolean;
-    removeColumn: { (): string; (_: string): Opportunity };
     removeColumn_exists: () => boolean;
-    headerLabels: { (): any[]; (_: any[]): Opportunity };
     headerLabels_exists: () => boolean;
-    mouseHover: { (): any[]; (_: any[]): Opportunity };
     mouseHover_exists: () => boolean;
-    columnData: { (): any[]; (_: any[]): Opportunity };
     columnData_exists: () => boolean;
 }
 Opportunity.prototype._class += " other_Opportunity";
@@ -389,13 +374,49 @@ Opportunity.prototype.Column = Column;
 Opportunity.prototype.MouseHoverColumn = MouseHoverColumn;
 Opportunity.prototype.ColumnDropdown = ColumnDropdown;
 
+export interface Opportunity {
+    headerLabel(): string;
+    headerLabel(_: string): this;
+    hoverValue(): string;
+    hoverValue(_: string): this;
+    hoverList(): string;
+    hoverList(_: string): this;
+    columnIndex(): number;
+    columnIndex(_: number): this;
+    ColumnDropdownList(): string;
+    ColumnDropdownList(_: string): this;
+    previousGroup(): string;
+    previousGroup(_: string): this;
+    currentGroup(): string;
+    currentGroup(_: string): this;
+    opportunityId(): string;
+    opportunityId(_: string): this;
+    url(): string;
+    url(_: string): this;
+    width(): number;
+    width(_: number): this;
+    addColumn(): string;
+    addColumn(_: string): this;
+    removeColumn(): string;
+    removeColumn(_: string): this;
+    headerLabels(): any[];
+    headerLabels(_: any[]): this;
+    mouseHover(): any[];
+    mouseHover(_: any[]): this;
+    columnData(): any[];
+    columnData(_: any[]): this;
+}
+Column.prototype.publish("headerLabel", null, "string", "Header value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
+MouseHoverColumn.prototype.publish("hoverValue", null, "string", "Hover value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
+MouseHoverColumn.prototype.publish("hoverList", null, "set", "Hover value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true });
+ColumnDropdown.prototype.publish("columnIndex", null, "number", "Column index for display context data based on column dropdown list selction", {}, { tags: ["Basic", "Shared"], });
+ColumnDropdown.prototype.publish("ColumnDropdownList", null, "set", "column value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true, });
 Opportunity.prototype.publish("previousGroup", "", "set", "label in Opportunity", function () { return this.getIds(); }, { tags: ["Basic", "Shared"] });
 Opportunity.prototype.publish("currentGroup", "", "set", "label in Opportunity", function () { return this.getIds(); }, { tags: ["Basic", "Shared"] });
 Opportunity.prototype.publish("opportunityId", "id", "set", "Id for label in Opportunity", function () { return this.getIds(); }, { tags: ["Basic", "Shared"] });
 Opportunity.prototype.publish("url", null, "string", "URL in Opportunity", {}, { tags: ["Basic", "Shared"] });
 Opportunity.prototype.publish("width", 1100, "number", "label in Opportunity", {}, { tags: ["Basic", "Shared"] });
-Opportunity.prototype.publish("addColumn", null, "string", "number of columns in a table", {}, {
-    tags: ["Basic", "Shared"],
+Opportunity.prototype.publish("addColumn", null, "string", "number of columns in a table", {}, { tags: ["Basic", "Shared"],
     editor_input: (context, widget, cell, param) => {
         cell.append("button")
             .attr("id", context.id() + "_addColumn" + param.id)
@@ -408,8 +429,7 @@ Opportunity.prototype.publish("addColumn", null, "string", "number of columns in
             });
     }
 });
-Opportunity.prototype.publish("removeColumn", null, "string", "number of columns in a table", function () { return this.columns(); }, {
-    tags: ["Basic", "Shared"],
+Opportunity.prototype.publish("removeColumn", null, "string", "number of columns in a table", function () { return this.columns(); }, { tags: ["Basic", "Shared"],
     editor_input: (context, widget, cell, param) => {
         cell.append("button")
             .attr("id", context.id() + "_removeColumn" + param.id)

@@ -65,10 +65,6 @@ export class HexBin extends XYAxis {
     exit(_domNode, _element) {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
-
-    paletteID: { (): string; (_: string): HexBin; };
-    useClonedPalette: { (): boolean; (_: boolean): HexBin; };
-    binSize: { (): number; (_: number): HexBin; };
 }
 HexBin.prototype._class += " chart_HexBin";
 HexBin.prototype.implements(INDChart.prototype);
@@ -76,6 +72,14 @@ HexBin.prototype.implements(ITooltip.prototype);
 
 HexBin.prototype._palette = Palette.rainbow("default");
 
+export interface HexBin {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    binSize(): number;
+    binSize(_: number): this;
+}
 HexBin.prototype.publish("paletteID", "Blues", "set", "Palette ID", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 HexBin.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 HexBin.prototype.publish("binSize", 20, "number", "Bin radius", null, { range: { min: 1, max: 300, step: 1 } });

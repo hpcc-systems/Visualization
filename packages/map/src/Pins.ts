@@ -254,50 +254,72 @@ export class Pins extends Layer {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
-    latColumn: { (): string; (_: string): Pins };
     latColumn_exists: () => boolean;
-    longColumn: { (): string; (_: string): Pins };
     longColumn_exists: () => boolean;
-    geohashColumn: { (): string; (_: string): Pins };
     geohashColumn_exists: () => boolean;
-    tooltipColumn: { (): string; (_: string): Pins };
     tooltipColumn_exists: () => boolean;
-    opacity: { (): number; (_: number): Pins };
     opacity_exists: () => boolean;
-    fillColor: { (): string; (_: string): Pins };
     fillColor_exists: () => boolean;
-    omitNullLatLong: { (): boolean; (_: boolean): Pins };
     omitNullLatLong_exists: () => boolean;
-    strokeWidth: { (): number; (_: number): Pins };
     strokeWidth_exists: () => boolean;
-    strokeColor: { (): string; (_: string): Pins };
     strokeColor_exists: () => boolean;
-    fontSize: { (): number; (_: number): Pins };
     fontSize_exists: () => boolean;
-    fontFamily: { (): string; (_: string): Pins };
     fontFamily_exists: () => boolean;
-    fontColor: { (): string; (_: string): Pins };
     fontColor_exists: () => boolean;
-    pinType: { (): string; (_: string): Pins };
     pinType_exists: () => boolean;
-    arrowWidth: { (): number; (_: number): Pins };
     arrowWidth_exists: () => boolean;
-    arrowHeight: { (): number; (_: number): Pins };
     arrowHeight_exists: () => boolean;
-    pinWidth: { (): number; (_: number): Pins };
     pinWidth_exists: () => boolean;
-    pinHeight: { (): number; (_: number): Pins };
     pinHeight_exists: () => boolean;
-    cornerRadius: { (): number; (_: number): Pins };
     cornerRadius_exists: () => boolean;
-    pinRadius: { (): number; (_: number): Pins };
     pinRadius_exists: () => boolean;
-    textBaseline: { (): string; (_: string): Pins };
     textBaseline_exists: () => boolean;
 }
 Pins.prototype._class += " map_Pins";
 Pins.prototype.mixin(Utility.SimpleSelectionMixin);
 
+export interface Pins {
+    geohashColumn(): string;
+    geohashColumn(_: string): this;
+    tooltipColumn(): string;
+    tooltipColumn(_: string): this;
+    latColumn(): string;
+    latColumn(_: string): this;
+    longColumn(): string;
+    longColumn(_: string): this;
+    opacity(): number;
+    opacity(_: number): this;
+    fillColor(): string;
+    fillColor(_: string): this;
+    omitNullLatLong(): boolean;
+    omitNullLatLong(_: boolean): this;
+    strokeWidth(): number;
+    strokeWidth(_: number): this;
+    strokeColor(): string;
+    strokeColor(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontColor(): string;
+    fontColor(_: string): this;
+    pinType(): string;
+    pinType(_: string): this;
+    arrowWidth(): number;
+    arrowWidth(_: number): this;
+    arrowHeight(): number;
+    arrowHeight(_: number): this;
+    pinWidth(): number;
+    pinWidth(_: number): this;
+    pinHeight(): number;
+    pinHeight(_: number): this;
+    cornerRadius(): number;
+    cornerRadius(_: number): this;
+    pinRadius(): number;
+    pinRadius(_: number): this;
+    textBaseline(): string;
+    textBaseline(_: string): this;
+}
 Pins.prototype.publish("geohashColumn", null, "set", "Geohash column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("tooltipColumn", null, "set", "Tooltip column", function () { return this.columns(); }, { optional: true });
 Pins.prototype.publish("latColumn", null, "set", "Latitude column", function () { return this.columns(); }, { optional: true });
@@ -305,22 +327,16 @@ Pins.prototype.publish("longColumn", null, "set", "Longtitude column", function 
 Pins.prototype.publish("opacity", 1.0, "number", "Opacity", null, { tags: ["Advanced"] });
 Pins.prototype.publish("fillColor", "#00FFDD", "html-color", "Pin Color", null, { optional: true });
 Pins.prototype.publish("omitNullLatLong", false, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });
-
 Pins.prototype.publish("strokeWidth", 0.5, "number", "Pin Border Thickness (pixels)", null, { tags: ["Basic"] });
 Pins.prototype.publish("strokeColor", "black", "html-color", "Pin Border Color", null, { optional: true });
-
 Pins.prototype.publish("fontSize", 18, "number", "Font Size", null, { tags: ["Basic", "Shared"] });
 Pins.prototype.publish("fontFamily", "Verdana", "string", "Font Name", null, { tags: ["Basic", "Shared", "Shared"] });
 Pins.prototype.publish("fontColor", "#000000", "html-color", "Font Color", null, { tags: ["Basic", "Shared"] });
-
 Pins.prototype.publish("pinType", "pin", "set", "Pin Type", ["pin", "circle", "rectangle", "rectangle-pin"], { tags: ["Basic"] });
 Pins.prototype.publish("arrowWidth", 8, "number", "Pin arrow width (pixels)", null, { tags: ["Basic"], disable: w => ["pin", "rectangle-pin"].indexOf(w.pinType()) === -1 });
 Pins.prototype.publish("arrowHeight", 12, "number", "Pin arrow height (pixels)", null, { tags: ["Basic"], disable: w => ["pin", "rectangle-pin"].indexOf(w.pinType()) === -1 });
-
 Pins.prototype.publish("pinWidth", 20, "number", "Width of pin (pixels)", null, { tags: ["Basic"], disable: w => ["rectangle", "rectangle-pin"].indexOf(w.pinType()) === -1 });
 Pins.prototype.publish("pinHeight", 20, "number", "Height of pin (pixels) (not including arrow)", null, { tags: ["Basic"], disable: w => ["rectangle", "rectangle-pin"].indexOf(w.pinType()) === -1 });
 Pins.prototype.publish("cornerRadius", 10, "number", "Radius of rectangular pin corners (pixels)", null, { tags: ["Basic"], disable: w => ["rectangle", "rectangle-pin"].indexOf(w.pinType()) === -1 });
-
 Pins.prototype.publish("pinRadius", 12, "number", "Radius of circle (pixels)", null, { tags: ["Basic"], disable: w => w.pinType() !== "circle" });
-
 Pins.prototype.publish("textBaseline", "central", "set", "Pin text vertical alignment", ["auto", "use-script", "no-change", "reset-size", "ideographic", "alphabetic", "hanging", "mathematical", "central", "middle", "text-after-edge", "text-before-edge", "inherit"], { tags: ["Basic"] });

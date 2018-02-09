@@ -12,14 +12,9 @@ export class DendrogramColumn extends PropertyExt {
         super();
         this._owner = owner;
     }
-
-    column: { (): string; (_: string): Dendrogram; };
 }
 DendrogramColumn.prototype._class += " tree_Dendrogram.DendrogramColumn";
 
-DendrogramColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-
-// ===
 export class Dendrogram extends SVGZoomWidget {
     Column;
     _d3LayoutCluster;
@@ -232,16 +227,6 @@ export class Dendrogram extends SVGZoomWidget {
         }
     }
 
-    paletteID: { (): string; (_: string): Dendrogram; };
-    useClonedPalette: { (): boolean; (_: boolean): Dendrogram; };
-    mappings: { (): DendrogramColumn[]; (_: DendrogramColumn[]): Dendrogram; };
-
-    circleRadius: { (): number; (_: number): Dendrogram; };
-    separation: { (): number; (_: number): Dendrogram; };
-    dendrogram: { (): boolean; (_: boolean): Dendrogram; };
-    radial: { (): boolean; (_: boolean): Dendrogram; };
-    orientation: { (): string; (_: string): Dendrogram; };
-
     //  ITree
     _palette;
     click: (row, column, selected) => void;
@@ -255,10 +240,33 @@ Dendrogram.prototype.implements(ITree.prototype);
 Dendrogram.prototype.mixin(Utility.SimpleSelectionMixin);
 Dendrogram.prototype.Column = DendrogramColumn;
 
+export interface DendrogramColumn {
+    column(): string;
+    column(_: string): this;
+}
+DendrogramColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+
+export interface Dendrogram {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    mappings(): DendrogramColumn[];
+    mappings(_: DendrogramColumn[]): this;
+    circleRadius(): number;
+    circleRadius(_: number): this;
+    separation(): number;
+    separation(_: number): this;
+    dendrogram(): boolean;
+    dendrogram(_: boolean): this;
+    radial(): boolean;
+    radial(_: boolean): this;
+    orientation(): string;
+    orientation(_: string): this;
+}
 Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Dendrogram.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: DendrogramColumn });
-
 Dendrogram.prototype.publish("circleRadius", 4.5, "number", "Text offset from circle");
 Dendrogram.prototype.publish("separation", 240, "number", "Leaf Separation");
 Dendrogram.prototype.publish("dendrogram", true, "boolean", "Dendrogram");

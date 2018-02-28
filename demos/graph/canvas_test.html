@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Graph Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/canvas_test.css">
+    <script src="http://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
+    <script src="../../src/loader.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/9.6.0/build.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        require.config({
+            paths: {
+                "test": "../../test"
+            }
+        });
+        try {
+            var get_param_string = window.location.search.substr(1);
+            window.g_params = {};
+            get_param_string.split('&').forEach(n => {
+                g_params[n.split('=')[0]] = n.split('=')[1];
+            });
+        } catch (e) {
+            console.error(e);
+        }
+        if (!g_params.n) {
+            g_params.n = 10;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                <a>Graph Compare Page</a>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a title="Data: Randomize" onclick="toggleLogs()">Logs</a>
+                    </li>
+                    <li>
+                        <a title="Data: Randomize" onclick="doRandom()">R</a>
+                    </li>
+                    <li>
+                        <a title="Layout: Circle" onclick="doLayout('Circle')">C</a>
+                    </li>
+                    <li>
+                        <a title="Layout: ForceDirected" onclick="doLayout('ForceDirected')">F</a>
+                    </li>
+                    <li>
+                        <a title="Layout: Force Directed (Animated)" onclick="doLayout('ForceDirected2')">F2</a>
+                    </li>
+                    <li>
+                        <a title="Layout: Hierarchy" onclick="doLayout('Hierarchy')">H</a>
+                    </li>
+                    <li>
+                        <a title="Zoom: Fit" onclick="doZoom('all')">Z F</a>
+                    </li>
+                    <li>
+                        <a title="Zoom: Width" onclick="doZoom('width')">Z W</a>
+                    </li>
+                    <li>
+                        <a title="Zoom: Selection" onclick="doZoom('selection')">Z S</a>
+                    </li>
+                    <li>
+                        <a title="Zoom: 100%" onclick="doZoom('100%')">Z 100%</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="graph1" style="position:fixed;top:40px;left:0px;bottom:0px;right:50%;"></div>
+    <div id="log1" style="position:fixed;top:40px;left:30%;bottom:0px;right:50%;display: none;"></div>
+    <div id="log2" style="position:fixed;top:40px;left:50%;bottom:0px;right:30%;display: none;"></div>
+    <div id="graph2" style="position:fixed;top:40px;left:50%;bottom:0px;right:0px;"></div>
+    <script src="canvas_test.js"></script>
+    <script>
+        function toggleLogs() {
+            if (log1.style.display === "none") {
+                log1.style.display = "block";
+                log2.style.display = "block";
+            } else {
+                log1.style.display = "none";
+                log2.style.display = "none";
+            }
+        }
+        
+        function doRandom() {
+            var rand_data = random_graph_data(g_params.n);
+            window.g1.data(sample_data(rand_data, g_Vertex, g_Edge)).render();
+            window.g2.data(sample_data(rand_data, g_VertexC, g_EdgeC)).render();
+        }
+
+        function doLayout(layout_type) {
+            window.g1.layout(layout_type).render();
+            window.g2.layout(layout_type).render();
+        }
+
+        function doZoom(zoom_type) {
+            window.g1.zoomTo(zoom_type);
+            window.g2.zoomTo(zoom_type);
+        }
+        setInterval(function () {
+            try {
+                if (g1 && g1.log) document.getElementById('log1').innerText = `${_dump_log(g1.log, true)}`;
+                if (g2 && g2.log) document.getElementById('log2').innerText = `${_dump_log(g2.log)}`;
+            } catch (e) {
+                console.error(e);
+            }
+        }, 1000);
+
+        function _dump_log(log_obj, invert) {
+            var ret = '';
+            for (var i in log_obj) {
+                ret += invert ? log_obj[i] + ' :' + i + '\n' : i + ': ' + log_obj[i] + '\n';
+            }
+            return ret;
+        }
+    </script>
+</body>
+
+</html>

@@ -34,6 +34,7 @@
     Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"],{tags:["Basic"]});
     
     Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
+    Vertex.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });
 
     Vertex.prototype.publish("annotationDiameter", 14, "number", "Annotation Diameter", null, { tags: ["Private"] });
     Vertex.prototype.publish("annotationSpacing", 3, "number", "Annotation Spacing",null,{tags:["Private"]});
@@ -57,7 +58,7 @@
         element.classed("centroid", this.centroid());
         element.style("filter", this.centroid() ? "url(#" + this._graphID +"_glow)" : null);
         this._icon
-            .tooltip(this.tooltip())
+            .tooltip(this.iconTooltip() ? this.iconTooltip() : this.tooltip())
             .render()
         ;
         var iconClientSize = this._icon.getBBox(true);

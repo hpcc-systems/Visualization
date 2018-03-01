@@ -31,17 +31,17 @@
                         return [item.county, item.weight];
                     });
 
-                    this._openStreet = new OpenStreet()
+                    this._openStreetLayer = new OpenStreet()
                         .tileProvider("OpenStreetMap")
                         ;
-                    this._continents = new ChoroplethContinents()
+                    this._continentsLayer = new ChoroplethContinents()
                         .meshStrokeWidth(0.5)
                         ;
-                    this._states = new ChoroplethStates()
+                    this._statesLayer = new ChoroplethStates()
                         .meshStrokeWidth(0.5)
                         ;
                     this._topoIdx = {};
-                    this._topo = topoArr.map(function (region) {
+                    this._topoLayer = topoArr.map(function (region) {
                         var retVal = new TopoJSONChoropleth()
                             .region(region)
                             .meshStrokeWidth(0.5)
@@ -49,53 +49,53 @@
                         this._topoIdx[region] = retVal;
                         return retVal;
                     }, this);
-                    this._states = new ChoroplethStates()
+                    this._statesLayer = new ChoroplethStates()
                         .meshStrokeWidth(0.5)
                         ;
-                    this._countries = new ChoroplethCountries()
+                    this._countriesLayer = new ChoroplethCountries()
                         .opacity(0.25)
                         .meshVisible(true)
                         .meshStrokeWidth(0.75)
                         .columns(DataFactory.Countries.simple.columns)
                         .data(DataFactory.Countries.simple.rawData)
                         ;
-                    this._counties = new ChoroplethCounties()
+                    this._countiesLayer = new ChoroplethCounties()
                         .meshVisible(false)
                         .opacity(0.5)
                         .columns(DataFactory.Counties.simple.columns)
                         .data(countyData)
                         ;
-                    this._geoHash = new GeoHash()
+                    this._geoHashLayer = new GeoHash()
                         .paletteID("PuOr")
                         .opacity(0.75)
                         .columns(["geohash", "weight"])
                         .data(geoHashData.map(function (row) { return [row.term, row.count]; }))
                         ;
-                    this._heat = new Heat()
+                    this._heatLayer = new Heat()
                         .columns(DataFactory.GMap.heat.columns)
                         .data(DataFactory.GMap.heat.data)
                         ;
-                    this._graph_pins = new Pins()
+                    this._graph_pinsLayer = new Pins()
                         .opacity(0.75)
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
                         ;
-                    this._graticule = new Graticule()
+                    this._graticuleLayer = new Graticule()
                         .opacity(0.5)
                         .meshStrokeWidth(0.75)
                         ;
                     var layers = [
-                        this._openStreet,
-                        this._continents,
-                        this._states,
-                        this._countries,
-                        this._counties,
-                        this._geoHash,
-                        this._counties,
-                        this._heat,
-                        this._graph_pins,
-                        this._graticule
-                    ].concat(this._topo);
+                        this._openStreetLayer,
+                        this._continentsLayer,
+                        this._statesLayer,
+                        this._countriesLayer,
+                        this._countiesLayer,
+                        this._geoHashLayer,
+                        this._countiesLayer,
+                        this._heatLayer,
+                        this._graph_pinsLayer,
+                        this._graticuleLayer
+                    ].concat(this._topoLayer);
                     this.layers(layers)
                 }
                 Sample.prototype = Object.create(Base.prototype);
@@ -113,15 +113,15 @@
                 Sample.prototype.publish("heat", opts.heat, "boolean", "Heat");
 
                 Sample.prototype.update = function (domNode, element) {
-                    this._openStreet.visible(this.openStreet());
-                    this._continents.visible(this.continents());
-                    this._countries.visible(this.countries());
-                    this._states.visible(this.states());
-                    this._counties.visible(this.counties());
-                    this._geoHash.visible(this.geoHash());
-                    this._heat.visible(this.heat());
-                    this._graph_pins.visible(this.graph_pins());
-                    this._graticule.visible(this.graticule());
+                    this._openStreetLayer.visible(this.openStreet());
+                    this._continentsLayer.visible(this.continents());
+                    this._countriesLayer.visible(this.countries());
+                    this._statesLayer.visible(this.states());
+                    this._countiesLayer.visible(this.counties());
+                    this._geoHashLayer.visible(this.geoHash());
+                    this._heatLayer.visible(this.heat());
+                    this._graph_pinsLayer.visible(this.graph_pins());
+                    this._graticuleLayer.visible(this.graticule());
                     Base.prototype.update.apply(this, arguments);
                 };
                 callback(new Sample());
@@ -187,38 +187,33 @@
                 });
             },
             pins: function (callback) {
-                legacyRequire(["test/DataFactory", "src/map/ChoroplethStates", "src/map/Pins"], function (DataFactory, ChoroplethStates, Pins) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/ChoroplethStates", "src/map/Pins"], function (DataFactory, Layered, ChoroplethStates, Pins) {
+                    var choro = new ChoroplethStates()
+                        .columns(["State", "Weight"])
+                        .data([["AL", 4779736], ["FL", 710231]])
+                        ;
                     var pins = new Pins()
                         .columns(DataFactory.GMap.simple.columns)
                         .data(DataFactory.GMap.simple.data)
                         ;
-                    var choro = new ChoroplethStates()
-                        .columns(["State", "Weight"])
-                        .data([["AL", 4779736], ["FL", 710231]])
-                        .layers([pins])
-                        ;
-                    pins.render();
-                    callback(choro);
-                    setTimeout(function () { pins.render(); }, 2000)
+                    callback(new Layered()
+                        .layers([choro, pins])
+                    );
                 });
             },
             heat: function (callback) {
-                legacyRequire(["test/DataFactory", "src/layout/Layered", "src/layout/AbsoluteSurface", "src/other/HeatMap"], function (DataFactory, Layered, AbsoluteSurface, HeatMap) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/ChoroplethStates", "src/map/Heat"], function (DataFactory, Layered, ChoroplethStates, Heat) {
                     mapFactory.ChoroplethStates.simple(function (map) {
-                        var heat = new HeatMap();
-                        var heatData = DataFactory.States.heatmap.heatData;
-
-                        var origRender = heat.render;
-                        heat.render = function () {
-                            this.data(heatData.map(function (row) {
-                                var pos = map.project(row[0], row[1]);
-                                return [pos[0], pos[1], row[2]];
-                            }));
-                            origRender.apply(this, arguments);
-                        };
+                        var choro = new ChoroplethStates()
+                            .columns(["State", "Weight"])
+                            .data([["AL", 4779736], ["FL", 710231]])
+                            ;
+                        var heat = new Heat()
+                            .columns(DataFactory.GMap.heat.columns)
+                            .data(DataFactory.GMap.heat.data)
+                            ;
                         callback(new Layered()
-                            .addLayer(new AbsoluteSurface().widget(map))
-                            .addLayer(new AbsoluteSurface().widget(heat))
+                            .layers([choro, heat])
                         );
                     });
                 });
@@ -297,12 +292,12 @@
                         .longtitudeColumn("dest_long")
                         .tooltipColumn("dest_airport")
                         .columns(DataFactory.Sample.FlightPath.columns)
-                        .data(DataFactory.Sample.FlightPath.data.map(function(n){
+                        .data(DataFactory.Sample.FlightPath.data.map(function (n) {
                             var dest_airport_idx = DataFactory.Sample.FlightPath.columns.indexOf('dest_airport');
                             var dest_iata_idx = DataFactory.Sample.FlightPath.columns.indexOf('dest_iata');
                             var dest_airport = n[dest_airport_idx];
                             var dest_iata = n[dest_iata_idx];
-                            n[dest_airport_idx] = '<b style="font-size: 20px">'+dest_iata+'</b><br/><i>'+dest_airport+'</i>';
+                            n[dest_airport_idx] = '<b style="font-size: 20px">' + dest_iata + '</b><br/><i>' + dest_airport + '</i>';
                             return n;
                         }))
                     );

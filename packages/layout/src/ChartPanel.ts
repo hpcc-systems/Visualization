@@ -1,5 +1,5 @@
 import { IHighlight } from "@hpcc-js/api";
-import { publish, publishProxy, Text, Utility, Widget } from "@hpcc-js/common";
+import { ProgressBar, publish, publishProxy, Text, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 
 import { Border2 } from "./Border2";
@@ -11,6 +11,7 @@ import "../src/ChartPanel.css";
 export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
+    protected _progressBar = new ProgressBar();
     private _modal = new Modal();
     private _highlight: boolean;
 
@@ -106,6 +107,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     constructor() {
         super();
         this._tag = "div";
+        this._titleBar.buttons([this._buttonDownload, new Spacer(), this._toggleLegend]);
     }
 
     columns(): string[];
@@ -128,6 +130,14 @@ export class ChartPanel extends Border2 implements IHighlight {
         if (!arguments.length) return this._highlight;
         this._highlight = _;
         return this;
+    }
+
+    startProgress() {
+        this._progressBar.start();
+    }
+
+    finishProgress() {
+        this._progressBar.finish();
     }
 
     buttons(): Widget[];
@@ -182,6 +192,8 @@ export class ChartPanel extends Border2 implements IHighlight {
             .title("")
             .visible(false)
             ;
+
+        this._progressBar.enter(domNode, element);
     }
 
     private _prevChartDataFamily;
@@ -204,6 +216,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     exit(domNode, element) {
+        this._progressBar.exit(domNode, element);
         super.exit(domNode, element);
     }
 
@@ -252,3 +265,11 @@ export interface ChartPanel {
 
 ChartPanel.prototype.publish("highlightSize", 4, "number");
 ChartPanel.prototype.publish("highlightColor", "#e67e22", "html-color");
+ChartPanel.prototype.publishProxy("progress_halfLife", "_progressBar", "halfLife");
+ChartPanel.prototype.publishProxy("progress_decay", "_progressBar", "decay");
+ChartPanel.prototype.publishProxy("progress_size", "_progressBar", "size");
+ChartPanel.prototype.publishProxy("progress_color", "_progressBar", "color");
+ChartPanel.prototype.publishProxy("progress_blurBar", "_progressBar", "blurBar");
+ChartPanel.prototype.publishProxy("progress_blurSize", "_progressBar", "blurSize");
+ChartPanel.prototype.publishProxy("progress_blurColor", "_progressBar", "blurColor");
+ChartPanel.prototype.publishProxy("progress_blurOpacity", "_progressBar", "blurOpacity");

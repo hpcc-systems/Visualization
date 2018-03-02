@@ -72,7 +72,10 @@ export class MultiChartPanel extends ChartPanel {
     }
 
     update(domNode, element) {
-        this._legend.dataFamily(this._widget.getChartDataFamily());
+        super.update(domNode, element);
+        if (this._widget instanceof MultiChart) {
+            this._legend.dataFamily(this._widget.getChartDataFamily());
+        }
         super.update(domNode, element);
     }
 }

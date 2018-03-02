@@ -112,6 +112,20 @@
                     );
                 });
             },
+            progress_bar: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/other/Html"], function (DataFactory, MultiChartPanel, Html) {
+                    callback(new MultiChartPanel()
+                        .title("My Multi Chart Panel")
+                        .widget(new Html()
+                            .html(
+                                '<div id="that_example_div" style="display:inline-block;position:relative;height:100px;line-height:100px;width:320px;border:1px solid black;">That</div><br/>' +
+                                '<button style="font-size: 14px;margin-top:8px;width:320px" onclick="app._main.startProgress();">ChartPanel.startProgress()</button><br/>' +
+                                '<button style="font-size: 14px;margin-top:8px;width:320px" onclick="app._main.finishProgress();">ChartPanel.finishProgress()</button><br/>'
+                            )
+                        )
+                    );
+                });
+            },
             choro: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel"], function (DataFactory, MultiChartPanel) {
                     var mc = new MultiChartPanel()

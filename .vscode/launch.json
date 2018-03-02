@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "file:///${workspaceRoot}/demos/dermatology.html?src/graph/GraphC",
+            "webRoot": "${workspaceRoot}",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--allow-file-access",
+            ]
+        }
+    ]
+}

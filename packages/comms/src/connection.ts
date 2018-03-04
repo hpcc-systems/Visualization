@@ -76,8 +76,10 @@ export function serializeRequest(obj: any, prefix: string = ""): string {
                 } else {
                     str.push(serializeRequest(obj[key], prefix + encodeURIComponent(key)));
                 }
-            } else {
+            } else if (obj[key] !== undefined) {
                 str.push(prefix + encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
+            } else {
+                str.push(prefix + encodeURIComponent(key));
             }
         }
     }

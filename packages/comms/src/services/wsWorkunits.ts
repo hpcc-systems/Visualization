@@ -2435,7 +2435,7 @@ export class WorkunitsService {
     }
 
     WUUpdate(request: WUUpdate.Request): Promise<WUUpdate.Response> {
-        return this._connection.send("WUUpdate", request);
+        return this._connection.send("WUUpdate", request, "json", true);
     }
 
     WUSubmit(request: WUSubmit.Request): Promise<WUSubmit.Response> {

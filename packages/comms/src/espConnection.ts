@@ -106,10 +106,12 @@ export class ESPConnection implements IConnection {
         }
         return this._connection.send(serviceAction, request, responseType).then((response) => {
             if (espResponseType === "json") {
-                if (response.Exceptions) {
+                let retVal;
+                if (response && response.Exceptions) {
                     throw new ESPExceptions(action, request, response.Exceptions);
+                } else if (response) {
+                    retVal = response[`${action === "WUCDebug" ? "WUDebug" : action}Response`];
                 }
-                const retVal = response[`${action === "WUCDebug" ? "WUDebug" : action}Response`];
                 if (!retVal) {
                     throw new ESPExceptions(action, request, {
                         Source: "ESPConnection.transmit",

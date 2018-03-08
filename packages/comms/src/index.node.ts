@@ -3,10 +3,11 @@ import { root } from "@hpcc-js/util";
 import { DOMParser } from "xmldom";
 root.DOMParser = DOMParser;
 
-//  XHR polyfill  ---
-import * as nodeRequest from "request";
-import { initNodeRequest } from "./connection";
-initNodeRequest(nodeRequest);
+//  fetch polyfill  ---
+import fetch from "node-fetch";
+if (typeof root.fetch === "undefined") {
+    root.fetch = fetch;
+}
 
 //  btoa polyfill  ---
 import { Buffer } from "safe-buffer";

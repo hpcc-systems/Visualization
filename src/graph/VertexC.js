@@ -163,6 +163,7 @@
     };
 
     VertexC.prototype.drawPolyTooltip = function (poly_obj, ctx) {
+        if(!poly_obj[4].tooltip)return;
         var _x = poly_obj[0] + (poly_obj[2] / 2);
         var _y = poly_obj[1] + (poly_obj[3] / 2);
         var direction = poly_obj[4].direction ? poly_obj[4].direction : "up";

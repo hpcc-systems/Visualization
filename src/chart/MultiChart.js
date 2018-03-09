@@ -31,7 +31,8 @@
     MultiChart.prototype.implements(IGraph.prototype);
 
     MultiChart.prototype._GraphChartTypes = [
-        { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" }
+        { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" },
+        { id: "GRAPHC", display: "GraphC", widgetClass: "graph_GraphC" }
     ].map(function (item) { item.family = "GRAPH"; return item; });
     MultiChart.prototype._1DChartTypes = [
         { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }

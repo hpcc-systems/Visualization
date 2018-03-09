@@ -202,6 +202,7 @@
         CanvasWidget.prototype.enter.apply(this, arguments);
         var context = this;
         element.on("mousemove", function () {
+            if(typeof context.data().vertices === "undefined")return;
             var ctx = context.ctx;
             context.draw();
             var x = (d3.event.layerX - context._translate[0]) / context.zoom.scale();

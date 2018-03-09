@@ -8,6 +8,15 @@
 }(this, function () {
     return {
         HTML: {
+            graphc: function (callback) {
+                var marshaller;
+                require(["test/DataFactory", "src/other/Persist"], function (DataFactory, Persist) {
+                    var layout_json = DataFactory.Marshaller.graphc;
+                    Persist.create(layout_json,function(widget){
+                        callback(widget);
+                    });
+                });
+            },
             with_114_GRAPH: function (callback) {
                 var marshaller;
                 require(["test/DataFactory", "src/other/Persist"], function (DataFactory, Persist) {

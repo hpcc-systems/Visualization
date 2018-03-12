@@ -18,13 +18,13 @@ export interface IDatasource {
 
     outFields: () => IField[];
     total: () => number;
-    fetch: (from: number, count: number) => Promise<any[]>;
+    fetch: (from: number, count: number) => Promise<ReadonlyArray<object>>;
 }
 
 export class DatasourceCache implements IDatasource {
     protected _datasource: IDatasource;
     _prevHash: string;
-    _fetchCache: { [key: string]: Promise<any[]> } = {};
+    _fetchCache: { [key: string]: Promise<ReadonlyArray<object>> } = {};
 
     constructor(datasource: IDatasource) {
         this._datasource = datasource;
@@ -44,7 +44,7 @@ export class DatasourceCache implements IDatasource {
 
     outFields() { return this._datasource.outFields(); }
     total() { return this._datasource.total(); }
-    fetch(from: number, count: number) {
+    fetch(from: number, count: number): Promise<ReadonlyArray<object>> {
         this.validateCache();
         const cacheID = `${from}->${count}`;
         let retVal = this._fetchCache[cacheID];

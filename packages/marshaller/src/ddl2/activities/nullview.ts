@@ -6,7 +6,7 @@ export class NullView extends HipiePipeline {
         return super.hash();
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         return [];
     }
 

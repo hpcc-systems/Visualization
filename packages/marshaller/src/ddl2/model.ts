@@ -1,9 +1,9 @@
 import { PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
-import { MultiChartPanel } from "@hpcc-js/composite";
+import { MultiChart, MultiChartPanel } from "@hpcc-js/composite";
 import { DDL1 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
-import { Activity } from "./activities/activity";
+import { Activity, rowID } from "./activities/activity";
 import { HipiePipeline } from "./activities/hipiepipeline";
 import { DDL2, DDLAdapter } from "./ddl";
 import { DDLImport } from "./ddlimport";
@@ -15,7 +15,7 @@ export class State extends PropertyExt {
         this.selection([]);
     }
 
-    removeInvalid(data: object[]) {
+    removeInvalid(data: ReadonlyArray<object>) {
         const newSelection: object[] = [];
         for (const selRow of this.selection()) {
             if (find(data, (row: { [key: string]: any }, index): boolean => {
@@ -57,7 +57,7 @@ export class Element extends PropertyExt {
         this._widget = _;
         this._widget
             .on("click", (row: any, col: string, sel: boolean) => {
-                this.state().selection(sel ? [row.__lparam ? row.__lparam : row] : []);
+                this.state().selection(sel ? [this.hipiePipeline().mappings().inRow(rowID(row))] : []);
             })
             ;
         return this;
@@ -103,6 +103,18 @@ export class Element extends PropertyExt {
         return retVal;
     }
 
+    chartType(): string {
+        return this._MultiChartPanel.chartType();
+    }
+
+    chart(): Widget {
+        let widget = this._MultiChartPanel.widget();
+        if (widget instanceof MultiChart) {
+            widget = widget.chart();
+        }
+        return widget;
+    }
+
     pipeline(activities: Activity[]): this {
         this.hipiePipeline().activities(activities);
         return this;
@@ -126,17 +138,15 @@ export class Element extends PropertyExt {
         const columns = view.mappings().outFields().map(field => field.label);
         // const fields = view.outFields().map(field => new Field());
         await view.mappings().exec();
-        const data = view.mappings().pullData();
+        const data = view.mappings().outData();
         const mappedData = data.map((row: any) => {
             const retVal = [];
             for (const column of columns) {
                 retVal.push(row[column]);
             }
-            if (row.__lparam) {
-                retVal.push(row.__lparam);
-            }
             return retVal;
         });
+
         this.chartPanel()
             .columns(columns)
             .data(mappedData)

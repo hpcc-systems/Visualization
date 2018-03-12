@@ -100,7 +100,7 @@ export class HipiePipeline extends ActivityPipeline {
         this._project = new Project(false);
         this._groupBy = new GroupBy();
         this._sort = new Sort();
-        this._mappings = new Project(true);
+        this._mappings = new Project(true).trim(true);
         this._limit = new Limit();
         this.updateSequence();
     }

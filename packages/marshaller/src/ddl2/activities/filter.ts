@@ -288,8 +288,9 @@ export class Filters extends Activity {
         return super.exec();
     }
 
-    pullData(): object[] {
-        const data = super.pullData();
+    computeData(): ReadonlyArray<object> {
+        const data = super.computeData();
+        if (data.length === 0 || !this.exists()) return data;
         const filters = this.validFilters().map(filter => filter.createFilter());
         return data.filter(row => {
             return filters.every(filter => filter(row));

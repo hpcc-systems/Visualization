@@ -36,12 +36,10 @@ export class Limit extends Activity {
         return this.rows_exists() && this.rows() > 0;
     }
 
-    pullData(): object[] {
-        const data = super.pullData();
-        if (this.exists()) {
-            data.length = Math.min(this.rows(), data.length);
-        }
-        return data;
+    computeData(): ReadonlyArray<object> {
+        const data = super.computeData();
+        if (data.length === 0 || !this.exists()) return data;
+        return data.slice(0, Math.min(this.rows(), data.length));
     }
 }
 Limit.prototype._class += " Limit";

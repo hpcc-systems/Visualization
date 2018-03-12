@@ -40,8 +40,14 @@ export interface IActivityError {
     msg: string;
 }
 
+const ROW_ID = "__##__";  //  TODO:  Should be Symbol
+export function rowID(row: Readonly<object>): number {
+    return row[ROW_ID];
+}
+
 export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
+    private _calcRowNum: boolean = false;
 
     fixInt64(data) {
         const int64Fields = this.outFields().filter(field => {
@@ -101,8 +107,24 @@ export abstract class Activity extends PropertyExt {
         return this._sourceActivity ? this._sourceActivity.outFields() : [];
     }
 
-    outFields(): IField[] {
+    computeFields(): IField[] {
         return this.inFields();
+    }
+    outFields(): IField[] {
+        const retVal = this.computeFields();
+        if (retVal.length && retVal[retVal.length - 1].id !== ROW_ID) {
+            this._calcRowNum = true;
+            retVal.push({
+                id: ROW_ID,
+                label: ROW_ID,
+                type: "number",
+                default: undefined,
+                children: null
+            });
+        } else {
+            this._calcRowNum = false;
+        }
+        return retVal;
     }
 
     localFields(): IField[] {
@@ -149,8 +171,28 @@ export abstract class Activity extends PropertyExt {
         return this._sourceActivity ? this._sourceActivity.exec() : Promise.resolve();
     }
 
-    pullData(): object[] {
-        return this._sourceActivity ? this._sourceActivity.pullData() || [] : [];
+    inData(): ReadonlyArray<object> {
+        return this._sourceActivity ? this._sourceActivity.outData() || [] : [];
+    }
+    computeData(): ReadonlyArray<object> {
+        return this.inData();
+    }
+    outData(): ReadonlyArray<object> {
+        if (this._calcRowNum) {
+            return this.computeData().map((row, idx) => {
+                return {
+                    ...row,
+                    ROW_ID: idx
+                };
+            });
+        }
+        return this.computeData();
+    }
+    inRow(idx: number) {
+        return this.inData().filter(row => row[ROW_ID] === idx)[0];
+    }
+    outRow(idx: number) {
+        return this.outData().filter(row => row[ROW_ID] === idx)[0];
     }
 }
 
@@ -209,13 +251,10 @@ export class ActivityPipeline extends ActivityArray {
         return retVal;
     }
 
-    fetch(from: number = 0, count: number = Number.MAX_VALUE): Promise<any[]> {
+    fetch(from: number = 0, count: number = Number.MAX_VALUE): Promise<ReadonlyArray<object>> {
         return this.exec().then(() => {
-            const data = this.pullData();
+            const data = this.outData();
             if (from === 0 && data.length <= count) {
-                return data;
-            } else if (from === 0) {
-                data.length = count;
                 return data;
             }
             return data.slice(from, from + count);
@@ -274,8 +313,8 @@ export class ActivityPipeline extends ActivityArray {
         return this.last().exec();
     }
 
-    pullData(): object[] {
-        return this.last().pullData();
+    outData(): ReadonlyArray<object> {
+        return this.last().outData();
     }
 }
 ActivityPipeline.prototype._class += " ActivitySequence";
@@ -350,8 +389,8 @@ export class ActivitySelection extends ActivityArray {
         return this.selection().exec();
     }
 
-    pullData(): object[] {
-        return this.selection().pullData();
+    outData(): ReadonlyArray<object> {
+        return this.selection().outData();
     }
 }
 ActivitySelection.prototype._class += " ActivitySelection";
@@ -380,14 +419,11 @@ export class DatasourceAdapt implements IDatasource {
         return this._activity.outFields();
     }
     total(): number {
-        return this._activity.pullData().length;
+        return this._activity.outData().length;
     }
-    fetch(from: number, count: number): Promise<any[]> {
-        const data = this._activity.pullData();
+    fetch(from: number, count: number): Promise<ReadonlyArray<object>> {
+        const data = this._activity.outData();
         if (from === 0 && data.length <= count) {
-            return Promise.resolve(data);
-        } else if (from === 0) {
-            data.length = count;
             return Promise.resolve(data);
         }
         return Promise.resolve(data.slice(from, from + count));

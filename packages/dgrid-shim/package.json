@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GordonSmith/hpcc-js-drgid.git"
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
   },
   "keywords": [
     "dojo",
@@ -48,7 +48,7 @@
   "author": "Gordon Smith",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/GordonSmith/hpcc-js-dgrid/issues"
+    "url": "https://github.com/hpcc-systems/Visualization/issues"
   },
-  "homepage": "https://github.com/GordonSmith/hpcc-js-dgrid#readme"
+  "homepage": "https://github.com/hpcc-systems/Visualization#readme"
 }

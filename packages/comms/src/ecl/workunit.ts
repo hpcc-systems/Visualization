@@ -434,6 +434,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.Exceptions.ECLException;
     }
 
+    fetchECLExceptions(): Promise<WsWorkunits.WUInfo.ECLException[]> {
+        return this.WUInfo({ IncludeExceptions: true }).then(() => {
+            return this.eclExceptions();
+        });
+    }
+
     fetchResults(): Promise<Result[]> {
         return this.WUInfo({ IncludeResults: true }).then(() => {
             return this.CResults;

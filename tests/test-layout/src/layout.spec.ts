@@ -1,7 +1,7 @@
 import { Bar, Column, Line, Pie, Step } from "@hpcc-js/chart";
 import { Class, HTMLWidget, Icon, SVGWidget } from "@hpcc-js/common";
 import * as layout from "@hpcc-js/layout";
-import { AbsoluteSurface, Accordion, Border, Border2, Cell, ChartPanel, Grid, Layered, Modal, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
+import { AbsoluteSurface, Accordion, Border, Border2, Carousel, Cell, ChartPanel, Grid, Layered, Modal, Popup, Surface, Tabbed, Toolbar } from "@hpcc-js/layout";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -55,13 +55,13 @@ describe("@hpcc-js/layout", function () {
                                                 .data(data.ND.subjects.data)
                                             )
                                             .pushListItem(
-                                            new Surface()
-                                                .size({ height: 200, width: 200 })
-                                                .title("Hello and Welcome!")
-                                                .widget(new Line()
-                                                    .columns(data.ND.subjects.columns)
-                                                    .data(data.ND.subjects.data)
-                                                )
+                                                new Surface()
+                                                    .size({ height: 200, width: 200 })
+                                                    .title("Hello and Welcome!")
+                                                    .widget(new Line()
+                                                        .columns(data.ND.subjects.columns)
+                                                        .data(data.ND.subjects.data)
+                                                    )
                                             )
                                         )
                                 );
@@ -108,6 +108,15 @@ describe("@hpcc-js/layout", function () {
                                         .data(data.ND.subjects.data)
                                     ));
                                 break;
+                            case Carousel:
+                                render(new Carousel()
+                                    .widgets([
+                                        new Pie().columns(data.ND.subjects.columns).data(data.ND.subjects.data),
+                                        new Line().columns(data.ND.subjects.columns).data(data.ND.subjects.data),
+                                        new Column().columns(data.ND.subjects.columns).data(data.ND.subjects.data),
+                                        new Step().columns(data.ND.subjects.columns).data(data.ND.subjects.data)
+                                    ]));
+                                break;
                             case Cell:
                                 render(new Cell()
                                     .title("Hello and Welcome!")
@@ -142,12 +151,12 @@ describe("@hpcc-js/layout", function () {
                                     .setContent(0, 4, new Line()
                                         .columns(data.ND.subjects.columns)
                                         .data(data.ND.subjects.data)
-                                    , "Title AAA", 4, 4
+                                        , "Title AAA", 4, 4
                                     )
                                     .setContent(4, 0, new Bar()
                                         .columns(data.ND.subjects.columns)
                                         .data(data.ND.subjects.data)
-                                    , "Title BBB", 4, 8
+                                        , "Title BBB", 4, 8
                                     )
                                 );
 
@@ -218,28 +227,28 @@ describe("@hpcc-js/layout", function () {
                                     .addTab(new Pie()
                                         .columns(data.TwoD.subjects.columns)
                                         .data(data.TwoD.subjects.data)
-                                    , "Pie Chart", true)
+                                        , "Pie Chart", true)
                                     .addTab(
-                                    new Line()
-                                        .columns(data.ND.subjects.columns)
-                                        .data(data.TwoD.subjects.data)
-                                    , "Line Chart")
+                                        new Line()
+                                            .columns(data.ND.subjects.columns)
+                                            .data(data.TwoD.subjects.data)
+                                        , "Line Chart")
                                     .addTab(
-                                    new Column()
-                                        .columns(data.ND.subjects.columns)
-                                        .data(data.ND.subjects.data)
-                                    , "Column Chart"
+                                        new Column()
+                                            .columns(data.ND.subjects.columns)
+                                            .data(data.ND.subjects.data)
+                                        , "Column Chart"
                                     )
                                     .addTab(new Tabbed()
                                         .addTab(new Step()
                                             .columns(data.ND.subjects.columns)
                                             .data(data.ND.subjects.data)
-                                        , "Step Chart"
+                                            , "Step Chart"
                                         )
                                         .addTab(new Pie()
                                             .columns(data.TwoD.subjects.columns)
                                             .data(data.TwoD.subjects.data)
-                                        , "Pie Chart", true), "Nested Example"
+                                            , "Pie Chart", true), "Nested Example"
                                     )
                                 );
                                 break;

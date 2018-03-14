@@ -116,6 +116,24 @@
                 });
             }
         },
+        Carousel: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Carousel", "src/chart/Pie", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Carousel, Pie, Line, Column, Step) {
+                    var carousel = new Carousel()
+                        .widgets([
+                            new Pie().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data),
+                            new Line().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data),
+                            new Column().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data),
+                            new Step().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data)
+                        ])
+                    var active = 0;
+                    setInterval(() => {
+                        carousel.active(++active % 4).render();
+                    }, 3000);
+                    callback(carousel);
+                });
+            }
+        },
         Cell: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/Cell", "src/chart/Line"], function (DataFactory, Cell, Line) {

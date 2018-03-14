@@ -2,6 +2,7 @@ export * from "./AbsoluteSurface";
 export * from "./Accordion";
 export * from "./Border";
 export * from "./Border2";
+export * from "./Carousel";
 export * from "./Cell";
 export * from "./ChartPanel";
 export * from "./Grid";

@@ -4,7 +4,7 @@ import { Widget } from "./Widget";
 export class HTMLWidget extends Widget {
 
     private observer;
-    protected _drawStartPos;
+    protected _drawStartPos: "origin" | "center";
     protected _boundingBox;
 
     constructor() {

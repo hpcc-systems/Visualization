@@ -35,6 +35,7 @@ export class TextBox extends SVGWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        delete this._prevHash;
         this._shape
             .target(domNode)
             .tooltip(this.tooltip())
@@ -46,39 +47,44 @@ export class TextBox extends SVGWidget {
             ;
     }
 
+    _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
-        this._text
-            .render()
-            ;
-        const textBBox = this._text.getBBox(true);
-        const size = {
-            width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
-            height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
-        };
-        this._shape
-            .width(size.width)
-            .height(size.height)
-            .render()
-            ;
-        if (this.fixedSize()) {
-            switch (this.anchor()) {
-                case "start":
-                    this._text
-                        .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.paddingLeft() + this.paddingRight()) / 2)
-                        .render()
-                        ;
-                    break;
-                case "end":
-                    this._text
-                        .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.paddingLeft() + this.paddingRight()) / 2)
-                        .render()
-                        ;
-                    break;
+        const hash = this.hash();
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
+            this._text
+                .render()
+                ;
+            const textBBox = this._text.getBBox(true);
+            const size = {
+                width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
+                height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
+            };
+            this._shape
+                .width(size.width)
+                .height(size.height)
+                .render()
+                ;
+            if (this.fixedSize()) {
+                switch (this.anchor()) {
+                    case "start":
+                        this._text
+                            .x(-this.fixedSize().width / 2 + textBBox.width / 2 + (this.paddingLeft() + this.paddingRight()) / 2)
+                            .render()
+                            ;
+                        break;
+                    case "end":
+                        this._text
+                            .x(this.fixedSize().width / 2 - textBBox.width / 2 - (this.paddingLeft() + this.paddingRight()) / 2)
+                            .render()
+                            ;
+                        break;
+                }
             }
+            const bbox = this._text.getBBox();
+            this._text.visible(bbox.width <= size.width && bbox.height <= size.height);
         }
-        const bbox = this._text.getBBox();
-        this._text.visible(bbox.width <= size.width && bbox.height <= size.height);
     }
 
     exit(domNode, element) {

@@ -1,3 +1,4 @@
+import { hashSum } from "@hpcc-js/util";
 import { event as d3Event } from "d3-selection";
 import { Class } from "./Class";
 
@@ -217,6 +218,10 @@ class MetaProxy {
     }
 }
 
+function isMetaProxy(meta: Meta | MetaProxy): meta is MetaProxy {
+    return meta.type === "proxy";
+}
+
 export interface IMonitorHandle {
     remove(): void;
 }
@@ -226,9 +231,11 @@ export class PropertyExt extends Class {
     protected _id: string;
     private _watchArrIdx: number;
     private _watchArr: any;
+    private _publishedProperties: Meta[] = [];
 
     constructor() {
         super();
+        this.calcPublishedProperties();
 
         this._id = "_pe" + (++propExtID);
         this._watchArrIdx = 0;
@@ -254,8 +261,8 @@ export class PropertyExt extends Class {
     }
 
     // Publish Properties  ---
-    publishedProperties(includePrivate = false, expandProxies = false): Meta[] {
-        const retVal = [];
+    calcPublishedProperties(includePrivate = false, expandProxies = false): void {
+        this._publishedProperties = [];
         const protoStack = [];
         let __proto__ = Object.getPrototypeOf(this);
         while (__proto__) {
@@ -268,26 +275,30 @@ export class PropertyExt extends Class {
         for (__proto__ of protoStack) {
             for (const key in __proto__) {
                 if (__proto__.hasOwnProperty(key)) {
-                    if (isMeta(key) && (includePrivate || !isPrivate(this, key))) {
-                        let meta: any = this[key];
-                        if (expandProxies && meta.type) {
-                            let item = this;
-                            while (meta.type === "proxy") {
-                                item = item[meta.proxy];
-                                meta = item.publishedProperty(meta.method);
-                            }
-                            const selfProp: any = this[key];
-                            if (meta.id !== selfProp.id) {
-                                meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
-                                meta.id = selfProp.id;
-                            }
-                        }
-                        retVal.push(meta);
+                    if (isMeta(key)) {
+                        this._publishedProperties.push(this[key]);
                     }
                 }
             }
         }
-        return retVal;
+    }
+
+    publishedProperties(includePrivate = false, expandProxies = false): Meta[] {
+        return this._publishedProperties.filter(meta => includePrivate || !isPrivate(this, meta.id)).map(meta => {
+            if (expandProxies && isMetaProxy(meta)) {
+                const selfProp = meta;
+                let item = this;
+                while (meta.type === "proxy") {
+                    item = item[(meta as any).proxy];
+                    meta = item.publishedProperty((meta as any).method);
+                }
+                if (meta.id !== selfProp.id) {
+                    meta = JSON.parse(JSON.stringify(meta));  //  Clone meta so we can safely replace the id.
+                    meta.id = selfProp.id;
+                }
+            }
+            return meta;
+        });
     }
 
     propertyWalker(filter, visitor) {
@@ -574,6 +585,16 @@ export class PropertyExt extends Class {
             }
         });
         return this;
+    }
+
+    hash(ignore: string[] = []): string {
+        const props: { [key: string]: any } = {};
+        this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
+            if (this[meta.id + "_exists"]()) {
+                props[meta.id] = this[meta.id]();
+            }
+        });
+        return hashSum(props);
     }
 
     //  Events  ---

@@ -130,8 +130,8 @@ export interface Border2 {
     bottom(): Widget;
     bottom(_: Widget): this;
 }
-Border2.prototype.publish("top", null, "widget", "Top Widget");
-Border2.prototype.publish("left", null, "widget", "Left Widget");
-Border2.prototype.publish("center", null, "widget", "Center Widget");
-Border2.prototype.publish("right", null, "widget", "Right Widget");
-Border2.prototype.publish("bottom", null, "widget", "Bottom Widget");
+Border2.prototype.publish("top", null, "widget", "Top Widget", undefined, { render: false });
+Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { render: false });
+Border2.prototype.publish("center", null, "widget", "Center Widget", undefined, { render: false });
+Border2.prototype.publish("right", null, "widget", "Right Widget", undefined, { render: false });
+Border2.prototype.publish("bottom", null, "widget", "Bottom Widget", undefined, { render: false });

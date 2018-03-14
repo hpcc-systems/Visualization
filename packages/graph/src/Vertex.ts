@@ -19,6 +19,7 @@ export class Vertex extends SVGWidget {
 
     enter(domNode, _element) {
         SVGWidget.prototype.enter.apply(this, arguments);
+        delete this._prevHash;
         this._icon
             .target(domNode)
             .render()
@@ -29,92 +30,103 @@ export class Vertex extends SVGWidget {
             ;
     }
 
+    _prevHash;
     update(_domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        element.classed("centroid", this.centroid());
-        element.style("filter", this.centroid() ? "url(#" + this._graphID + "_glow)" : null);
-        this._icon
-            .tooltip(this.tooltip())
-            .render()
-            ;
-        const iconClientSize = this._icon.getBBox(true);
-        this._textBox
-            .tooltip(this.tooltip())
-            .render()
-            ;
-        const bbox = this._textBox.getBBox(true);
-        switch (this.iconAnchor()) {
-            case "start":
-                this._icon
-                    .move({
-                        x: -(bbox.width / 2) + (iconClientSize.width / 3),
-                        y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                    });
-                break;
-            case "middle":
-                this._icon
-                    .move({
-                        x: 0,
-                        y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                    });
-                break;
-            case "end":
-                this._icon
-                    .move({
-                        x: (bbox.width / 2) - (iconClientSize.width / 3),
-                        y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                    });
-                break;
-            default:
-        }
+        const hash = this.hash();
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
+            element.classed("centroid", this.centroid());
+            element.style("filter", this.centroid() ? "url(#" + this._graphID + "_glow)" : null);
+            this._icon
+                .tooltip(this.tooltip())
+                .render()
+                ;
+            const iconClientSize = this._icon.getBBox(true);
+            this._textBox
+                .tooltip(this.tooltip())
+                .render()
+                ;
+            const bbox = this._textBox.getBBox(true);
+            switch (this.iconAnchor()) {
+                case "start":
+                    this._icon
+                        .move({
+                            x: -(bbox.width / 2) + (iconClientSize.width / 3),
+                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
+                        });
+                    break;
+                case "middle":
+                    this._icon
+                        .move({
+                            x: 0,
+                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
+                        });
+                    break;
+                case "end":
+                    this._icon
+                        .move({
+                            x: (bbox.width / 2) - (iconClientSize.width / 3),
+                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
+                        });
+                    break;
+                default:
+            }
 
-        const context = this;
-        const annotations = element.selectAll(".annotation").data(this.annotationIcons());
-        const annotationsEnter = annotations.enter().append("g")
-            .attr("class", "annotation")
-            .each(function (_d, idx) {
-                context._annotationWidgets[idx] = new Icon()
-                    .target(this)
-                    .shape("square")
-                    ;
-            })
-            ;
-        let xOffset = bbox.width / 2;
-        const yOffset = bbox.height / 2;
-        annotationsEnter.merge(annotations)
-            .each(function (d, idx) {
-                const annotationWidget = context._annotationWidgets[idx];
-                annotationWidget
-                    .diameter(context.annotationDiameter())
-                    .shape_colorFill(context.textbox_shape_colorFill())
-                    .shape_colorStroke(context.textbox_shape_colorStroke())
-                    ;
-                for (const key in d) {
-                    if (annotationWidget[key]) {
-                        annotationWidget[key](d[key]);
-                    } else if ((window as any).__hpcc_debug) {
-                        console.log("Invalid annotation property:  " + key);
+            const context = this;
+            const annotations = element.selectAll(".annotation").data(this.annotationIcons());
+            const annotationsEnter = annotations.enter().append("g")
+                .attr("class", "annotation")
+                .each(function (_d, idx) {
+                    context._annotationWidgets[idx] = new Icon()
+                        .target(this)
+                        .shape("square")
+                        ;
+                })
+                ;
+            let xOffset = bbox.width / 2;
+            const yOffset = bbox.height / 2;
+            annotationsEnter.merge(annotations)
+                .each(function (d, idx) {
+                    const annotationWidget = context._annotationWidgets[idx];
+                    annotationWidget
+                        .diameter(context.annotationDiameter())
+                        .shape_colorFill(context.textbox_shape_colorFill())
+                        .shape_colorStroke(context.textbox_shape_colorStroke())
+                        ;
+                    for (const key in d) {
+                        if (annotationWidget[key]) {
+                            annotationWidget[key](d[key]);
+                        } else if ((window as any).__hpcc_debug) {
+                            console.log("Invalid annotation property:  " + key);
+                        }
                     }
-                }
-                annotationWidget.render();
+                    annotationWidget.render();
 
-                const aBBox = annotationWidget.getBBox(true);
-                annotationWidget
-                    .move({
-                        x: xOffset - aBBox.width / 2 + 4,
-                        y: yOffset + aBBox.height / 2 - 4
-                    })
-                    ;
-                xOffset -= aBBox.width + context.annotationSpacing();
-            })
-            ;
-        annotations.exit()
-            .each(function (_d, idx) {
-                const element2 = d3Select(this);
-                delete context._annotationWidgets[idx];
-                element2.remove();
-            })
-            ;
+                    const aBBox = annotationWidget.getBBox(true);
+                    annotationWidget
+                        .move({
+                            x: xOffset - aBBox.width / 2 + 4,
+                            y: yOffset + aBBox.height / 2 - 4
+                        })
+                        ;
+                    xOffset -= aBBox.width + context.annotationSpacing();
+                })
+                ;
+            annotations.exit()
+                .each(function (_d, idx) {
+                    const element2 = d3Select(this);
+                    delete context._annotationWidgets[idx];
+                    element2.remove();
+                })
+                ;
+        }
+    }
+
+    exit(domNode, _element) {
+        super.exit.apply(this, arguments);
+        this._icon.target(null);
+        this._textBox.target(null);
     }
 
     //  Methods  ---

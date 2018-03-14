@@ -25,6 +25,7 @@ export class Icon extends SVGWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        delete this._prevHash;
         this._defs = element.append("defs");
         this._defs.append("clipPath")
             .attr("id", "clip_" + this.id() + "_circle")
@@ -65,45 +66,50 @@ export class Icon extends SVGWidget {
         console.log("Double clicked the icon");
     }
 
+    _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
+        const hash = this.hash();
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
 
-        const diameter = this.diameter();
-        const radius = diameter / 2;
-        this._defs.select("circle")
-            .attr("r", radius)
-            ;
-        this._defs.select("rect")
-            .attr("x", -radius)
-            .attr("y", -radius)
-            .attr("width", diameter)
-            .attr("height", diameter)
-            ;
-        this._faChar
-            .fontSize(diameter * (100 - this.paddingPercent()) / 100)
-            .render()
-            ;
-        this._shapeWidget
-            .shape(this.shape())
-            .width(diameter)
-            .height(diameter)
-            .render()
-            ;
-        const image = this._root.selectAll("image").data(this.imageUrl() ? [this.imageUrl()] : [], function (d) { return d; });
-        image.enter()
-            .append("image")
-            .attr("xlink:href", this.imageUrl())
-            .merge(image)
-            .attr("clip-path", "url(#clip_" + this.id() + "_" + this.shape() + ")")
-            .attr("x", -radius)
-            .attr("y", -radius)
-            .attr("width", diameter)
-            .attr("height", diameter)
-            ;
-        image.exit()
-            .remove()
-            ;
-        this._tooltipElement.text(this.tooltip());
+            const diameter = this.diameter();
+            const radius = diameter / 2;
+            this._defs.select("circle")
+                .attr("r", radius)
+                ;
+            this._defs.select("rect")
+                .attr("x", -radius)
+                .attr("y", -radius)
+                .attr("width", diameter)
+                .attr("height", diameter)
+                ;
+            this._faChar
+                .fontSize(diameter * (100 - this.paddingPercent()) / 100)
+                .render()
+                ;
+            this._shapeWidget
+                .shape(this.shape())
+                .width(diameter)
+                .height(diameter)
+                .render()
+                ;
+            const image = this._root.selectAll("image").data(this.imageUrl() ? [this.imageUrl()] : [], function (d) { return d; });
+            image.enter()
+                .append("image")
+                .attr("xlink:href", this.imageUrl())
+                .merge(image)
+                .attr("clip-path", "url(#clip_" + this.id() + "_" + this.shape() + ")")
+                .attr("x", -radius)
+                .attr("y", -radius)
+                .attr("width", diameter)
+                .attr("height", diameter)
+                ;
+            image.exit()
+                .remove()
+                ;
+            this._tooltipElement.text(this.tooltip());
+        }
     }
 
     exit(domNode, element) {

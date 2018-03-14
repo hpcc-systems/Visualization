@@ -3,7 +3,7 @@
   "name": "@hpcc-js/test-util",
   "version": "0.0.55",
   "dependencies": {
-    "@hpcc-js/util": "^0.0.72",
+    "@hpcc-js/util": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2"

@@ -8,6 +8,7 @@
     "uninstall": "lerna clean",
     "clean": "lerna run clean",
     "compile-es6": "lerna run --ignore \"@hpcc-js/test-*\" compile-es6",
+    "compile-es6-watch": "lerna run --nosort --stream --ignore \"@hpcc-js/test-*\" compile-es6-watch",
     "compile-umd": "lerna run --ignore \"@hpcc-js/test-*\" compile-umd",
     "build-shims": "lerna run --scope \"@hpcc-js/*-shim\" build",
     "build-loader": "lerna run --scope \"@hpcc-js/loader\" build",

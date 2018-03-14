@@ -3,8 +3,8 @@
   "name": "@hpcc-js/test-comms",
   "version": "0.0.59",
   "dependencies": {
-    "@hpcc-js/comms": "^0.0.77",
-    "@hpcc-js/util": "^0.0.70",
+    "@hpcc-js/comms": "*",
+    "@hpcc-js/util": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2"

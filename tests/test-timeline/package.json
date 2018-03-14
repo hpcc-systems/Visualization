@@ -3,9 +3,9 @@
   "name": "@hpcc-js/test-timeline",
   "version": "0.0.57",
   "dependencies": {
-    "@hpcc-js/common": "^0.0.72",
-    "@hpcc-js/sample-data": "^0.0.35",
-    "@hpcc-js/timeline": "^0.0.74",
+    "@hpcc-js/common": "*",
+    "@hpcc-js/sample-data": "*",
+    "@hpcc-js/timeline": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2",

@@ -196,16 +196,16 @@ export abstract class Widget extends PropertyExt {
     }
 
     x(): number;
-    x(_): Widget;
-    x(_?): number | Widget {
+    x(_): this;
+    x(_?): number | this {
         if (!arguments.length) return this._pos.x;
         this.pos({ x: _, y: this._pos.y });
         return this;
     }
 
     y(): number;
-    y(_): Widget;
-    y(_?): number | Widget {
+    y(_): this;
+    y(_?): number | this {
         if (!arguments.length) return this._pos.y;
         this.pos({ x: this._pos.x, y: _ });
         return this;

@@ -19,7 +19,7 @@ export interface IOverflow {
 export class Axis extends SVGWidget {
     protected parser;
     protected parserInvert;
-    protected formatter;
+    protected formatter: (date: Date) => string;
     protected d3Scale;
     protected d3Axis;
     protected d3Guides;

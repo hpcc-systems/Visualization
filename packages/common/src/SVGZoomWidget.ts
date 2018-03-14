@@ -83,6 +83,19 @@ export class SVGZoomWidget extends SVGWidget {
             ;
     }
 
+    centerOnBBox(bbox, transitionDuration?) {
+        if (bbox.width && bbox.height) {
+            const x = bbox.x + bbox.width / 2;
+            const y = bbox.y + bbox.height / 2;
+            const width = this.width();
+            const height = this.height();
+
+            const scale = this.zoomScale();
+            const translate = [width / 2 - scale * x, height / 2 - scale * y];
+            this.zoomTo(translate, scale, transitionDuration);
+        }
+    }
+
     zoomToBBox(bbox, transitionDuration?) {
         if (bbox.width && bbox.height) {
             const x = bbox.x + bbox.width / 2;

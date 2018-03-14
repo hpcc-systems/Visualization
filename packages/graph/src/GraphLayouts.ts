@@ -12,8 +12,8 @@ export function Circle(graphData?, width?, height?, radius?) {
     let currStep = -Math.PI / 2;
     const step = 2 * Math.PI / order;
     graphData.eachNode(function (u, value) {
-        const size = value.getBBox(true);
-        const maxSize = Math.max(size.width, size.height);
+        const size = value.getBBox();
+        const maxSize = 0; // Math.max(size.width, size.height);
         context.pos[u] = {
             x: value.fixed ? value.x : width / 2 + Math.cos(currStep) * (radius - maxSize),
             y: value.fixed ? value.y : height / 2 + Math.sin(currStep) * (radius - maxSize),
@@ -59,7 +59,7 @@ export function ForceDirected(graphData, width, height, options) {
     this.vertexMap = {};
     graphData.eachNode(function (u) {
         const vertex = graphData.node(u);
-        const size = vertex.getBBox(true);
+        const size = vertex.getBBox();
         const newItem = {
             id: u,
             x: vertex.pos().x,
@@ -152,19 +152,19 @@ export function Hierarchy(graphData, _width, _height, options) {
     graphData.eachNode(function (u) {
         digraph.setParent(u, graphData.parent(u));
     });
-    this.dagreLayout = layout(digraph);
+    this.dagreLayout = layout(digraph, { debugTiming: false });
     const deltaX = -digraph.graph().width / 2;
     const deltaY = -digraph.graph().height / 2;
     digraph.nodes().forEach(function (u) {
         const value = digraph.node(u);
-        value.x += deltaX;
-        value.y += deltaY;
+        value.x += deltaX + _width / 2;
+        value.y += deltaY + _height / 2;
     });
     digraph.edges().forEach(function (e) {
         const value = digraph.edge(e);
         for (let i = 0; i < value.points.length; ++i) {
-            value.points[i].x += deltaX;
-            value.points[i].y += deltaY;
+            value.points[i].x += deltaX + _width / 2;
+            value.points[i].y += deltaY + _height / 2;
         }
     });
     this.digraph = digraph;

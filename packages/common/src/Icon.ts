@@ -19,6 +19,10 @@ export class Icon extends SVGWidget {
         this._faChar = new FAChar();
     }
 
+    contains(point) {
+        return this._shapeWidget.contains(point);
+    }
+
     intersection(pointA, pointB) {
         return this._shapeWidget.intersection(pointA, pointB);
     }

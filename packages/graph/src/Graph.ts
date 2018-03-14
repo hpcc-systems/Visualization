@@ -1,10 +1,11 @@
-﻿import { IGraph } from "@hpcc-js/api";
-import { ISize, Platform, SVGZoomWidget, Utility, Widget } from "@hpcc-js/common";
+﻿import { IGraph, ITooltip } from "@hpcc-js/api";
+import { ISize, Platform, Spacer, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
 import { Edge } from "./Edge";
 import { GraphData } from "./GraphData";
 import * as GraphLayouts from "./GraphLayouts";
+import { Subgraph } from "./Subgraph";
 import { Vertex } from "./Vertex";
 
 import "../src/Graph.css";
@@ -14,17 +15,24 @@ export interface Lineage {
     child: Widget;
 }
 export interface IGraphData {
+    subgraphs?: Widget[];
     vertices: Widget[];
     edges: Edge[];
     hierarchy?: Lineage[];
-    merge?: boolean;
 }
+export type GraphLayoutType = "Hierarchy" | "ForceDirected" | "ForceDirected2" | "Circle" | "None";
 
 export class Graph extends SVGZoomWidget {
-    Vertex;
-    Edge;
+    static Subgraph = Subgraph;
+    static Vertex = Vertex;
+    static Edge = Edge;
 
-    protected graphData;
+    private _toggleHierarchy = new ToggleButton("fa-sitemap", "Hierarchy").on("click", () => this.layoutClick("Hierarchy"));
+    private _toggleForceDirected = new ToggleButton("fa-expand", "Force Directed").on("click", () => this.layoutClick("ForceDirected"));
+    private _toggleForceDirected2 = new ToggleButton("fa-arrows", "Spring").on("click", () => this.layoutClick("ForceDirected2"));
+    private _toggleCircle = new ToggleButton("fa-circle-o", "Circle").on("click", () => this.layoutClick("Circle"));
+
+    protected _graphData: GraphData;
     protected highlight;
     protected _selection;
     protected _dragging;
@@ -35,15 +43,27 @@ export class Graph extends SVGZoomWidget {
     protected svgC;
     protected svgE;
     protected svgV;
+    protected svgStatus;
 
     constructor() {
         super();
+        IGraph.call(this);
+        ITooltip.call(this);
+        this.tooltipHTML(function (d: Vertex) {
+            return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
+        });
 
         this._drawStartPos = "origin";
 
-        IGraph.call(this);
+        const buttons: Widget[] = [
+            this._toggleHierarchy,
+            this._toggleForceDirected,
+            this._toggleForceDirected2,
+            this._toggleCircle,
+            new Spacer()];
+        this._iconBar.buttons(buttons.concat(this._iconBar.buttons()));
 
-        this.graphData = new GraphData();
+        this._graphData = new GraphData();
         this.highlight = {
             zoom: 1.1,
             opacity: 0.33,
@@ -51,6 +71,31 @@ export class Graph extends SVGZoomWidget {
         };
         this._selection = new Utility.Selection();
         this.zoomToFitLimit(1);
+    }
+
+    iconBarButtons(): Widget[] {
+        return this._iconBar.buttons();
+    }
+
+    layoutClick(layout: GraphLayoutType) {
+        this.layout(layout);
+        if (layout !== "ForceDirected2") this.applyScaleOnLayout(true);
+        this
+            .layout(layout)
+            .render(w => {
+                this.applyScaleOnLayout(false);
+            });
+    }
+
+    statusText(_: string) {
+        if (this.svgStatus) {
+            this.svgStatus
+                .attr("transform", `translate(${this.width() / 2}, ${this.height() / 2})`)
+                .attr("display", _ !== "" ? null : "none")
+                .text(_)
+                ;
+            this.svg.style("opacity", _ ? 0.10 : null);
+        }
     }
 
     //  Properties  ---
@@ -66,19 +111,23 @@ export class Graph extends SVGZoomWidget {
     }
 
     clear() {
-        this.data({ vertices: [], edges: [], hierarchy: [], merge: false });
+        this.data({ subgraphs: [], vertices: [], edges: [], hierarchy: [] }, false);
     }
 
-    data(): any;
-    data(_: any): Graph;
-    data(_?: any): any | Graph {
-        const retVal = SVGZoomWidget.prototype.data.apply(this, arguments);
+    _dataHash = 0;
+    data(): IGraphData;
+    data(_: IGraphData, merge?: boolean): this;
+    data(_?: IGraphData, merge?: boolean): IGraphData | this {
+        const retVal = super.data.apply(this, arguments);
         if (arguments.length) {
-            if (!_.merge) {
-                this.graphData = new GraphData();
+            if (!merge) {
+                this._graphData = new GraphData();
                 this._renderCount = 0;
             }
-            const data = this.graphData.setData(_.vertices || [], _.edges || [], _.hierarchy || [], _.merge || false);
+            const data = this._graphData.setData(_.subgraphs || [], _.vertices || [], _.edges || [], _.hierarchy || [], merge || false);
+            if (data.addedVertices.length) {
+                this._dataHash++;
+            }
 
             const context = this;
             data.addedVertices.forEach(function (item) {
@@ -94,7 +143,7 @@ export class Graph extends SVGZoomWidget {
 
             //  Recalculate edge arcs  ---
             const dupMap = {};
-            this.graphData.edgeValues().forEach(function (item) {
+            this._graphData.edgeValues().forEach(function (item) {
                 if (!dupMap[item._sourceVertex._id]) {
                     dupMap[item._sourceVertex._id] = {};
                 }
@@ -114,9 +163,8 @@ export class Graph extends SVGZoomWidget {
         return this;
     }
 
-    enter(domNode, _element) {
-        super.enter(domNode, _element);
-
+    enter(domNode, element) {
+        super.enter(domNode, element);
         const context = this;
 
         //  Drag  ---
@@ -132,8 +180,8 @@ export class Graph extends SVGZoomWidget {
                     forceNode.fy = forceNode.y;
                 }
                 if (Platform.svgMarkerGlitch) {
-                    context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                        const edge = context.graphData.edge(id);
+                    context._graphData.nodeEdges(d.id()).forEach(function (id) {
+                        const edge = context._graphData.edge(id);
                         context._pushMarkers(edge.element());
                     });
                 }
@@ -168,8 +216,8 @@ export class Graph extends SVGZoomWidget {
                     forceNode.fy = null;
                 }
                 if (Platform.svgMarkerGlitch) {
-                    context.graphData.nodeEdges(d.id()).forEach(function (id) {
-                        const edge = context.graphData.edge(id);
+                    context._graphData.nodeEdges(d.id()).forEach(function (id) {
+                        const edge = context._graphData.edge(id);
                         context._popMarkers(edge.element());
                     });
                 }
@@ -188,17 +236,22 @@ export class Graph extends SVGZoomWidget {
         this.addMarkers();
 
         // element.call(this.zoom);
-
-        this.svg = this._renderElement.append("g");
+        this.svg = this._renderElement.append("svg:g");
         // this._svgBrush = this.svg.append("g").attr("class", "selectionBrush").call(this.brush);
         // this._svgBrush.select(".background").style("cursor", null);
         // context._svgBrush.call(context.brush.clear());
         this.svgC = this.svg.append("g").attr("id", this._id + "C");
         this.svgE = this.svg.append("g").attr("id", this._id + "E");
         this.svgV = this.svg.append("g").attr("id", this._id + "V");
+        this.svgStatus = element.append("text")
+            .attr("font-size", 48)
+            .style("text-anchor", "middle")
+            .style("fill", "darkgrey")
+            .text("Load...")
+            ;
     }
 
-    getBounds(items, layoutEngine) {
+    getBounds(items, layoutEngine?) {
         const vBounds = [[null, null], [null, null]];
         items.forEach(function (item) {
             const pos = layoutEngine ? layoutEngine.nodePos(item._id) : { x: item.x(), y: item.y(), width: item.width(), height: item.height() };
@@ -223,27 +276,67 @@ export class Graph extends SVGZoomWidget {
     }
 
     getVertexBounds(layoutEngine) {
-        return this.getBounds(this.graphData.nodeValues(), layoutEngine);
+        return this.getBounds(this._graphData.nodeValues(), layoutEngine);
     }
 
     getSelectionBounds(layoutEngine) {
         return this.getBounds(this._selection.get(), layoutEngine);
     }
 
-    centerOn(bounds, transitionDuration) {
+    centerOn(bounds, transitionDuration?) {
         const x = (bounds[0][0] + bounds[1][0]) / 2;
         const y = (bounds[0][1] + bounds[1][1]) / 2;
         const translate = [x, y];
         this.zoomTo(translate, 1, transitionDuration);
     }
 
+    centerOnItem(item: Widget) {
+        const bbox = item.getBBox(true);
+        const deltaX = bbox.x + bbox.width / 2;
+        const deltaY = bbox.y + bbox.height / 2;
+        const itemBBox = {
+            x: item.x() + deltaX - bbox.width / 2,
+            y: item.y() + deltaY - bbox.height / 2,
+            width: bbox.width,
+            height: bbox.height
+        };
+        this.centerOnBBox(itemBBox);
+    }
+
+    zoomToItem(item: Widget) {
+        const bbox = item.getBBox(true);
+        const deltaX = bbox.x + bbox.width / 2;
+        const deltaY = bbox.y + bbox.height / 2;
+        const itemBBox = {
+            x: item.x() + deltaX - bbox.width / 2,
+            y: item.y() + deltaY - bbox.height / 2,
+            width: bbox.width,
+            height: bbox.height
+        };
+        this.zoomToBBox(itemBBox);
+    }
+
     //  Render  ---
     update(domNode, element) {
         super.update(domNode, element);
-        const context = this;
+        this.tooltip.hide();
+
+        //  IconBar  ---
+        const layout = this.layout();
+        this._toggleHierarchy.selected(layout === "Hierarchy").render();
+        this._toggleForceDirected.selected(layout === "ForceDirected").render();
+        this._toggleForceDirected2.selected(layout === "ForceDirected2").render();
+        this._toggleCircle.selected(layout === "Circle").render();
+
+        //  Status Text  ---
+        this.svgStatus.attr("transform", `translate(${this.width() / 2}, ${this.height() / 2})`);
 
         //  Create  ---
-        const vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this.graphData.nodeValues(), function (d) { return d.id(); });
+        const width = this.width();
+        const height = this.height();
+        const context = this;
+
+        const vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this._graphData.nodeValues().filter(v => this.layout() === "Hierarchy" ? true : !(v instanceof Subgraph)), function (d) { return d.id(); });
         vertexElements.enter().append("g")
             .attr("class", "graphVertex")
             .style("opacity", 1e-6)
@@ -281,6 +374,8 @@ export class Graph extends SVGZoomWidget {
                     vertex: d
                 });
             })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
             .on("mouseover", function (d) {
                 if (context._dragging)
                     return;
@@ -299,7 +394,8 @@ export class Graph extends SVGZoomWidget {
         function createV(d) {
             d
                 .target(this)
-                .render()
+                .pos({ x: width / 2, y: height / 2 })
+                .animationFrameRender()
                 ;
             d.element()
                 .call(context.drag)
@@ -329,7 +425,7 @@ export class Graph extends SVGZoomWidget {
             }
         }
 
-        const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this.graphData.edgeValues() : [], function (d) { return d.id(); });
+        const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this._graphData.edgeValues() : [], function (d) { return d.id(); });
         edgeElements.enter().append("g")
             .attr("class", "graphEdge")
             .style("opacity", 1e-6)
@@ -356,6 +452,8 @@ export class Graph extends SVGZoomWidget {
                     edge: d
                 });
             })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
             .on("mouseover", function (d) {
                 if (context._dragging)
                     return;
@@ -374,7 +472,7 @@ export class Graph extends SVGZoomWidget {
         function createE(d) {
             d
                 .target(this)
-                .render()
+                .animationFrameRender()
                 ;
         }
 
@@ -384,7 +482,7 @@ export class Graph extends SVGZoomWidget {
             ;
         function updateV(d) {
             d
-                .render()
+                .animationFrameRender()
                 ;
         }
 
@@ -393,19 +491,25 @@ export class Graph extends SVGZoomWidget {
             ;
         function updateE(d) {
             d
-                .render()
+                .animationFrameRender()
                 ;
         }
 
         //  Exit  ---
         vertexElements.exit()
-            .each(function (d) { d.target(null); })
+            .each(function (d) {
+                d.target(null);
+            })
             .remove()
             ;
         edgeElements.exit()
-            .each(function (d) { d.target(null); })
+            .each(function (d) {
+                d.target(null);
+            })
             .remove()
             ;
+
+        vertexElements.order();
 
         if (!this._renderCount) {
             this._renderCount++;
@@ -413,13 +517,127 @@ export class Graph extends SVGZoomWidget {
         }
     }
 
+    static profileID = 0;
+    render(callback?: (w: Widget) => void): this {
+        const timeID = `total - ${++Graph.profileID}`;
+        console.time(timeID);
+        this.statusText("Render...");
+        console.time("render");
+        super.render(w => {
+            requestAnimationFrame(() => {
+                console.timeEnd("render");
+                this.statusText("Layout...");
+                this.doLayout().then(() => {
+                    requestAnimationFrame(() => {
+                        this.statusText("");
+                        d3Select("body").classed("waiting", false);
+                        if (callback) {
+                            callback(w);
+                        }
+                        console.timeEnd(timeID);
+                    });
+                });
+            });
+        });
+        return this;
+    }
+
     //  Methods  ---
+    _prevLayout;
+    _prevDataHash;
+    doLayout(transitionDuration = 0): Promise<void> {
+        return new Promise((resolve, reject) => {
+            requestAnimationFrame(() => {
+                if (this._prevLayout !== this.layout() || this._prevDataHash !== this._dataHash) {
+                    this._prevLayout = this.layout();
+                    this._prevDataHash = this._dataHash;
+                    this._doLayout(transitionDuration);
+                }
+                resolve();
+            });
+        });
+    }
+
+    _doLayout(transitionDuration = 0) {
+        if (this.forceLayout) {
+            this.forceLayout.force.stop();
+            this.forceLayout = null;
+        }
+
+        const context = this;
+        console.time("doLayout");
+        const layoutEngine = this.getLayoutEngine();
+        console.timeEnd("doLayout");
+        if (this.layout() === "ForceDirected2") {
+            this.forceLayout = layoutEngine;
+            this.forceLayout.force.on("tick", function () {
+                layoutEngine.vertices.forEach(function (item) {
+                    if (item.fixed) {
+                        // item.x = item.px;
+                        // item.y = item.py;
+                    } else {
+                        // item.px = item.x;
+                        // item.py = item.y;
+
+                        //  Might have been cleared ---
+                        const vertex = context._graphData.node(item.id);
+                        if (vertex) {
+                            vertex
+                                .move({ x: item.x, y: item.y })
+                                ;
+                        }
+                    }
+                });
+                context._graphData.edgeValues().forEach(function (item) {
+                    item
+                        .points([], false, false)
+                        ;
+                });
+                if (context.applyScaleOnLayout()) {
+                    // const vBounds = context.getVertexBounds(layoutEngine);
+                    // context.shrinkToFit(vBounds);
+                }
+            });
+            this.forceLayout.force.restart();
+        } else if (layoutEngine) {
+            console.time("render2");
+            this.forceLayout = null;
+            context._dragging = true;
+            context._graphData.nodeValues().forEach(function (item) {
+                const pos = layoutEngine.nodePos(item._id);
+                if (item instanceof Graph.Subgraph) {
+                    item
+                        .pos({ x: pos.x, y: pos.y })
+                        .size({ width: pos.width, height: pos.height })
+                        .animationFrameRender()
+                        ;
+                } else {
+                    item.move({ x: pos.x, y: pos.y });
+                }
+            });
+            context._graphData.edgeValues().forEach(function (item) {
+                const points = layoutEngine.edgePoints(item);
+                item.points(points, transitionDuration);
+            });
+            if (context.applyScaleOnLayout()) {
+                requestAnimationFrame(() => {
+                    context.zoomToFit();
+                });
+            }
+            this._fixIEMarkers();
+            setTimeout(function () {
+                context._dragging = false;
+            }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
+            console.timeEnd("render2");
+        }
+    }
+
     getLayoutEngine() {
         switch (this.layout()) {
             case "Circle":
-                return new GraphLayouts.Circle(this.graphData, this._size.width, this._size.height);
+                return new GraphLayouts.Circle(this._graphData, this._size.width, this._size.height);
             case "ForceDirected":
-                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height, {
+                return new GraphLayouts.ForceDirected(this._graphData, this._size.width, this._size.height, {
                     oneShot: true,
                     linkDistance: this.forceDirectedLinkDistance(),
                     linkStrength: this.forceDirectedLinkStrength(),
@@ -430,7 +648,7 @@ export class Graph extends SVGZoomWidget {
                     gravity: this.forceDirectedGravity()
                 });
             case "ForceDirected2":
-                return new GraphLayouts.ForceDirected(this.graphData, this._size.width, this._size.height, {
+                return new GraphLayouts.ForceDirected(this._graphData, this._size.width, this._size.height, {
                     linkDistance: this.forceDirectedLinkDistance(),
                     linkStrength: this.forceDirectedLinkStrength(),
                     friction: this.forceDirectedFriction(),
@@ -440,7 +658,7 @@ export class Graph extends SVGZoomWidget {
                     gravity: this.forceDirectedGravity()
                 });
             case "Hierarchy":
-                return new GraphLayouts.Hierarchy(this.graphData, this._size.width, this._size.height, {
+                return new GraphLayouts.Hierarchy(this._graphData, this._size.width, this._size.height, {
                     rankdir: this.hierarchyRankDirection(),
                     nodesep: this.hierarchyNodeSeparation(),
                     edgesep: this.hierarchyEdgeSeparation(),
@@ -456,9 +674,9 @@ export class Graph extends SVGZoomWidget {
         const edges = {};
 
         if (vertex) {
-            const nedges = this.graphData.nodeEdges(vertex.id());
+            const nedges = this._graphData.nodeEdges(vertex.id());
             for (let i = 0; i < nedges.length; ++i) {
-                const edge = this.graphData.edge(nedges[i]);
+                const edge = this._graphData.edge(nedges[i]);
                 edges[edge.id()] = edge;
                 if (edge._sourceVertex.id() !== vertex.id()) {
                     vertices[edge._sourceVertex.id()] = edge._sourceVertex;
@@ -552,8 +770,8 @@ export class Graph extends SVGZoomWidget {
 
     refreshIncidentEdges(d, skipPushMarkers) {
         const context = this;
-        this.graphData.nodeEdges(d.id()).forEach(function (id) {
-            const edge = context.graphData.edge(id);
+        this._graphData.nodeEdges(d.id()).forEach(function (id) {
+            const edge = context._graphData.edge(id);
             edge
                 .points([], false, skipPushMarkers)
                 ;
@@ -673,7 +891,7 @@ export class Graph extends SVGZoomWidget {
     }
 
     allowDragging: { (): boolean; (_: boolean): Graph; };
-    layout: { (): string; (_: string): Graph; };
+    layout: { (): GraphLayoutType; (_: GraphLayoutType): Graph; };
     // scale: { (): string; (_: string): Graph; };
     applyScaleOnLayout: { (): boolean; (_: boolean): Graph; };
     highlightOnMouseOverVertex: { (): boolean; (_: boolean): Graph; };
@@ -698,12 +916,15 @@ export class Graph extends SVGZoomWidget {
     //  IGraph  ---
     edge_click: (_row, _col, _sel, _more) => void;
     edge_dblclick: (_row, _col, _sel, _more) => void;
+
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML: (_) => string;
+    tooltipFormat: (_) => string;
 }
 Graph.prototype._class += " graph_Graph";
 Graph.prototype.implements(IGraph.prototype);
-
-Graph.prototype.Vertex = Vertex;
-Graph.prototype.Edge = Edge;
+Graph.prototype.implements(ITooltip.prototype);
 
 Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
 Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });
@@ -733,83 +954,6 @@ Graph.prototype.scale = function (_?, transitionDuration?) {
     const retVal = _origScale.apply(this, arguments);
     if (arguments.length) {
         this.zoomTo(_, transitionDuration);
-    }
-    return retVal;
-};
-
-const _origLayout = Graph.prototype.layout;
-Graph.prototype.layout = function (_?, transitionDuration?) {
-    const retVal = _origLayout.apply(this, arguments);
-    if (arguments.length) {
-        if (this._renderCount) {
-            if (this.forceLayout) {
-                this.forceLayout.force.stop();
-                this.forceLayout = null;
-            }
-
-            const context = this;
-            const layoutEngine = this.getLayoutEngine();
-            if (this.layout() === "ForceDirected2") {
-                this.forceLayout = layoutEngine;
-                this.forceLayout.force.on("tick", function () {
-                    layoutEngine.vertices.forEach(function (item) {
-                        if (item.fixed) {
-                            // item.x = item.px;
-                            // item.y = item.py;
-                        } else {
-                            // item.px = item.x;
-                            // item.py = item.y;
-
-                            //  Might have been cleared ---
-                            const vertex = context.graphData.node(item.id);
-                            if (vertex) {
-                                vertex
-                                    .move({ x: item.x, y: item.y })
-                                    ;
-                            }
-                        }
-                    });
-                    context.graphData.edgeValues().forEach(function (item) {
-                        item
-                            .points([], false, false)
-                            ;
-                    });
-                    if (context.applyScaleOnLayout()) {
-                        // const vBounds = context.getVertexBounds(layoutEngine);
-                        // context.shrinkToFit(vBounds);
-                    }
-                });
-                this.forceLayout.force.restart();
-            } else if (layoutEngine) {
-                this.forceLayout = null;
-                context._dragging = true;
-                context.graphData.nodeValues().forEach(function (item) {
-                    const pos = layoutEngine.nodePos(item._id);
-                    item.move({ x: pos.x, y: pos.y }, transitionDuration);
-                    if (pos.width && pos.height && !item.width() && !item.height()) {
-                        item
-                            .width(pos.width)
-                            .height(pos.height)
-                            .render()
-                            ;
-                    }
-                });
-                context.graphData.edgeValues().forEach(function (item) {
-                    const points = layoutEngine.edgePoints(item);
-                    item
-                        .points(points, transitionDuration)
-                        ;
-                });
-
-                if (context.applyScaleOnLayout()) {
-                    context.zoomToFit();
-                }
-                this._fixIEMarkers();
-                setTimeout(function () {
-                    context._dragging = false;
-                }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
-            }
-        }
     }
     return retVal;
 };

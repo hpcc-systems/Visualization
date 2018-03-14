@@ -164,7 +164,7 @@ export class Dashy extends SplitPanel {
 
     loadGraph(refresh: boolean = false) {
         this._pipeline
-            .data({ ...this._graphAdapter.createGraph(), merge: false })
+            .data({ ...this._graphAdapter.createGraph() }, false)
             ;
         if (refresh && this._tabLHS.active() === this._pipeline) {
             this._pipeline

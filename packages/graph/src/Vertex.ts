@@ -3,6 +3,14 @@ import { select as d3Select } from "d3-selection";
 
 import "../src/Vertex.css";
 
+export interface IAnnotation {
+    faChar: string;
+    tooltip: string;
+    shape_colorFill: string;
+    shape_colorStroke: string;
+    image_colorFill: string;
+}
+
 export class Vertex extends SVGWidget {
     protected _icon: Icon;
     protected _textBox: TextBox;
@@ -70,6 +78,13 @@ export class Vertex extends SVGWidget {
                             y: -(bbox.height / 2) - (iconClientSize.height / 3)
                         });
                     break;
+                case "left":
+                    this._icon
+                        .move({
+                            x: -(bbox.width / 2) - iconClientSize.width / 2,
+                            y: 0
+                        });
+                    break;
                 default:
             }
 
@@ -130,6 +145,10 @@ export class Vertex extends SVGWidget {
     }
 
     //  Methods  ---
+    contains(point): boolean {
+        return this._icon.contains(point) || this._textBox.contains(point);
+    }
+
     intersection(pointA, pointB) {
         const i1 = this._icon.intersection(pointA, pointB);
         if (i1)
@@ -162,7 +181,7 @@ export class Vertex extends SVGWidget {
 
     annotationDiameter: { (): number; (_: number): Vertex; };
     annotationSpacing: { (): number; (_: number): Vertex; };
-    annotationIcons: { (): any[]; (_: any[]): Vertex; };
+    annotationIcons: { (): IAnnotation[]; (_: IAnnotation[]): Vertex; };
 }
 Vertex.prototype._class += " graph_Vertex";
 
@@ -181,7 +200,7 @@ Vertex.prototype.publishProxy("textbox_shape_colorStroke", "_textBox", "shape_co
 Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colorFill");
 Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
-Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"], { tags: ["Basic"] });
+Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end", "left"], { tags: ["Basic"] });
 Vertex.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });
 
 Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });

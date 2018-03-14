@@ -304,7 +304,7 @@ export class SVGWidget extends Widget {
     }
 
     //  IE Fixers  ---
-    _pushMarkers(element) {
+    _pushMarkers(element?) {
         if (svgMarkerGlitch) {
             element = element || this._element;
             element.selectAll("path[marker-start],path[marker-end]")
@@ -316,7 +316,7 @@ export class SVGWidget extends Widget {
         }
     }
 
-    _popMarkers(element) {
+    _popMarkers(element?) {
         if (svgMarkerGlitch) {
             element = element || this._element;
             element.selectAll("path[fixme-start],path[fixme-end]")
@@ -330,16 +330,16 @@ export class SVGWidget extends Widget {
         }
     }
 
-    _popMarkersDebounced = debounce(function (element, d) {
+    _popMarkersDebounced = debounce(function (element) {
         if (svgMarkerGlitch) {
-            this._popMarkers(element, d);
+            this._popMarkers(element);
         }
     }, 250);
 
-    _fixIEMarkers(element, d) {
+    _fixIEMarkers(element?) {
         if (svgMarkerGlitch) {
             this._pushMarkers(element);
-            this._popMarkersDebounced(element, d);
+            this._popMarkersDebounced(element);
         }
     }
 }

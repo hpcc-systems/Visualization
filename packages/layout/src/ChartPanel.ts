@@ -1,11 +1,9 @@
 import { IHighlight } from "@hpcc-js/api";
-import { ProgressBar, publish, publishProxy, Text, Utility, Widget } from "@hpcc-js/common";
+import { Button, ProgressBar, publish, publishProxy, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
-
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
 import { Modal } from "./Modal";
-import { Button, Spacer, TitleBar, ToggleButton } from "./TitleBar";
 
 import "../src/ChartPanel.css";
 export class ChartPanel extends Border2 implements IHighlight {
@@ -90,7 +88,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     titleIconFontSize: publish<this, number>;
     @publish("")
     description: publish<this, string>;
-    @publish(null, "widget", "Multi Chart")
+    @publish(null, "widget", "Widget", undefined, { render: false })
     _widget: Widget;
     widget(): Widget;
     widget(_: Widget): this;
@@ -225,6 +223,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     preUpdateTiny(element) {
         element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "none");
     }
+
     preUpdateSmall(element) {
         const scale_x = this.size().width / this._resolutions.small.width;
         const scale_y = this.size().height / this._resolutions.small.height;
@@ -240,6 +239,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         element.selectAll("div.data-count").style("visibility", "hidden");
         element.style("transform", `scale(${this._scale})`);
     }
+
     preUpdateRegular(element) {
         element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
         element.selectAll("div.data-count").style("visibility", "hidden");
@@ -320,6 +320,7 @@ export class ChartPanel extends Border2 implements IHighlight {
                 ;
         }
     }
+
     postUpdateSmall(element) {
         element.selectAll("lhs").style("display", "none"); // TODO: a bug in Border2?
         element.selectAll("div.title-icon").style("position", "static");
@@ -329,6 +330,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         const parentRect = element.node().parentElement.getBoundingClientRect();
         element.style("transform", `translate(${parentRect.x - rect.x}px, ${parentRect.y - rect.y}px) scale(${this._scale})`);
     }
+
     postUpdateRegular(element) {
         element.selectAll("div.title-icon").style("position", "static");
         element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");

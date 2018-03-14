@@ -23,6 +23,7 @@ export * from "./SVGWidget";
 export * from "./SVGZoomWidget";
 export * from "./Text";
 export * from "./TextBox";
+export * from "./TitleBar";
 import * as Utility from "./Utility";
 export { Utility };
 export * from "./Widget";

@@ -1,5 +1,5 @@
 import * as common from "@hpcc-js/common";
-import { Class, FAChar, HTMLWidget, Icon, Image, List, Menu, ResizeSurface, Shape, Surface, SVGWidget, SVGZoomWidget, Text, TextBox } from "@hpcc-js/common";
+import { Button, Class, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, Shape, Spacer, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderIcon, renderMedium, renderSmall } from "./coreTests";
 
@@ -69,7 +69,14 @@ describe("@hpcc-js/common", () => {
                                         .text("I\nam\nResizale!")
                                     ));
                                 break;
+                            case Button:
+                            case ToggleButton:
+                            case Spacer:
+                            case IconBar:
+                            case TitleBar:
+                                break;
                             case SVGZoomWidget:
+                                renderMedium(new SVGZoomWidget());
                                 break;
                             default:
                                 it("Has render test", () => {

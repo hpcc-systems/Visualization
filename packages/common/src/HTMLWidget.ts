@@ -92,6 +92,15 @@ export class HTMLWidget extends Widget {
         };
     }
 
+    reposition(pos?) {
+        // const retVal = super.reposition(pos);
+        this._placeholderElement
+            .style("left", pos.x + "px")
+            .style("top", pos.y + "px")
+            ;
+        return this;
+    }
+
     resize(size?) {
         const retVal = super.resize(size);
         this._placeholderElement

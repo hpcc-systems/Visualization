@@ -1,3 +1,4 @@
+var HasJsPlugin = require('webpack-hasjs-plugin');
 var DojoWebpackPlugin = require("dojo-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ScopedDojoRequire = require("./util/ScopedDojoRequire")
@@ -34,6 +35,17 @@ module.exports = {
             }]
     },
     plugins: [
+        new HasJsPlugin({
+            features: {
+                "touch": false,
+                'dojo-config-api': false,
+                "dojo-trace-api": false,
+                "dojo-log-api": false,
+                'dojo-publish-privates': false,
+                'dojo-sync-loader': false,
+                'dojo-test-sniff': false
+            }
+        }),
         new DojoWebpackPlugin({
             loaderConfig: require.resolve("./src/loaderConfig"),
             environment: { dojoRoot: "./dist" },	// used at run time for non-packed resources (e.g. blank.gif)

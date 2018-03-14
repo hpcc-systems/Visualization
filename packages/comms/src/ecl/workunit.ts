@@ -1,14 +1,11 @@
-import {
-    Cache, deepMixinT, Graph, IECLDefintion, IEvent, scopedLogger,
-    StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode
-} from "@hpcc-js/util";
+import { Cache, deepMixinT, IEvent, scopedLogger, StateCallback, StateEvents, StateObject, StatePropCallback, StringAnyMap, XMLNode } from "@hpcc-js/util";
 import { utcFormat, utcParse } from "d3-time-format";
 import { IConnection, IOptions } from "../connection";
 import { ESPExceptions } from "../espConnection";
 import { SMCActivity } from "../services/wsSMC";
 import * as WsTopology from "../services/wsTopology";
 import * as WsWorkunits from "../services/wsWorkunits";
-import { createXGMMLGraph, ECLGraph, GraphCache } from "./graph";
+import { createXGMMLGraph, ECLGraph, GraphCache, XGMMLGraph, XGMMLVertex } from "./graph";
 import { Resource } from "./resource";
 import { Result, ResultCache } from "./result";
 import { Scope } from "./scope";
@@ -452,6 +449,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
+    fetchDetailsRaw(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<WsWorkunits.WUDetails.Scope[]> {
+        return this.WUDetails(request).then(response => response.Scopes.Scope);
+    }
+
     fetchDetails(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<Scope[]> {
         return this.WUDetails(request).then((response) => {
             return response.Scopes.Scope.map((rawScope) => {
@@ -467,12 +468,12 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             //  Recreate Scope Hierarchy and dedup  ---
             const scopeMap: { [key: string]: Scope } = {};
             response.Scopes.Scope.forEach((rawScope) => {
-                if (scopeMap[rawScope.Scope]) {
-                    scopeMap[rawScope.Scope].update(rawScope);
+                if (scopeMap[rawScope.ScopeName]) {
+                    scopeMap[rawScope.ScopeName].update(rawScope);
                     return null;
                 } else {
                     const scope = new Scope(this, rawScope);
-                    scopeMap[scope.Scope] = scope;
+                    scopeMap[scope.ScopeName] = scope;
                     return scope;
                 }
             });
@@ -494,25 +495,25 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     fetchTimeElapsed(): Promise<ITimeElapsed[]> {
         return this.fetchDetails({
-            Filter: {
-                AttributeFilters: {
-                    AttributeFilter: [{ Name: "TimeElapsed" }]
+            ScopeFilter: {
+                PropertyFilters: {
+                    PropertyFilter: [{ Name: "TimeElapsed" }]
                 }
             }
         }).then((scopes) => {
             const scopeInfo: { [key: string]: ITimeElapsed } = {};
             scopes.forEach((scope) => {
-                scopeInfo[scope.Scope] = scopeInfo[scope.Scope] || {
-                    scope: scope.Scope,
+                scopeInfo[scope.ScopeName] = scopeInfo[scope.ScopeName] || {
+                    scope: scope.ScopeName,
                     start: null,
                     elapsed: null,
                     finish: null
                 };
                 scope.CAttributes.forEach((attr) => {
                     if (attr.Name === "TimeElapsed") {
-                        scopeInfo[scope.Scope].elapsed = +attr.RawValue;
+                        scopeInfo[scope.ScopeName].elapsed = +attr.RawValue;
                     } else if (attr.Measure === "ts" && attr.Name.indexOf("Started") >= 0) {
-                        scopeInfo[scope.Scope].start = attr.Formatted;
+                        scopeInfo[scope.ScopeName].start = attr.Formatted;
                     }
                 });
             });
@@ -698,19 +699,22 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     protected WUDetails(request: Partial<WsWorkunits.WUDetails.Request>): Promise<WsWorkunits.WUDetails.Response> {
         return this.connection.WUDetails(deepMixinT<WsWorkunits.WUDetails.Request>({
+            ScopeFilter: {
+                MaxDepth: 9999
+            },
             ScopeOptions: {
                 IncludeMatchedScopesInResults: true,
                 IncludeScope: true,
-                IncludeId: true,
-                IncludeScopeType: true
+                IncludeId: false,
+                IncludeScopeType: false
             },
-            AttributeOptions: {
+            PropertyOptions: {
                 IncludeName: true,
-                IncludeRawValue: true,
+                IncludeRawValue: false,
                 IncludeFormatted: true,
                 IncludeMeasure: true,
-                IncludeCreator: true,
-                IncludeCreatorType: true
+                IncludeCreator: false,
+                IncludeCreatorType: false
             }
         }, request, { WUID: this.Wuid })).then((response) => {
             return deepMixinT<WsWorkunits.WUDetails.Response>({
@@ -829,7 +833,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
-    debugGraph(): Promise<Graph> {
+    debugGraph(): Promise<XGMMLGraph> {
         if (this._debugAllGraph && this.DebugState["_prevGraphSequenceNum"] === this.DebugState["graphSequenceNum"]) {
             return Promise.resolve(this._debugAllGraph);
         }
@@ -842,7 +846,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     debugBreakpointValid(path: string): Promise<IECLDefintion[]> {
         return this.debugGraph().then((graph) => {
-            return graph.breakpointLocations(path);
+            return breakpointLocations(graph, path);
         });
     }
 
@@ -861,4 +865,47 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             });
         });
     }
+}
+
+export interface IECLDefintion {
+    id: string;
+    file: string;
+    line: number;
+    column: number;
+}
+
+const ATTR_DEFINITION = "definition";
+
+function hasECLDefinition(vertex: XGMMLVertex): boolean {
+    return vertex._![ATTR_DEFINITION] !== undefined;
+}
+
+function getECLDefinition(vertex: XGMMLVertex): IECLDefintion {
+    const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\)/.exec(vertex._![ATTR_DEFINITION]);
+    if (match) {
+        const [, _file, _row, _col] = match;
+        _file.replace("/./", "/");
+        return {
+            id: vertex._!["id"],
+            file: _file,
+            line: +_row,
+            column: +_col
+        };
+    }
+    throw new Error(`Bad definition:  ${vertex._![ATTR_DEFINITION]}`);
+}
+
+function breakpointLocations(graph: XGMMLGraph, path?: string): IECLDefintion[] {
+    const retVal: IECLDefintion[] = [];
+    for (const vertex of graph.vertices) {
+        if (hasECLDefinition(vertex)) {
+            const definition = getECLDefinition(vertex);
+            if (definition && !path || path === definition.file) {
+                retVal.push(definition);
+            }
+        }
+    }
+    return retVal.sort((l, r) => {
+        return l.line - r.line;
+    });
 }

@@ -1,232 +1,135 @@
-import { Dictionary, StringAnyMap } from "./dictionary";
+export class GraphItem<S, V, E> {
+    protected _graph: Graph<S, V, E>;
+    readonly parent: Subgraph<S, V, E> | null;
+    readonly props: { [key: string]: any } = {};
 
-const ATTR_DEFINITION = "definition";
-
-export interface IECLDefintion {
-    id: string;
-    file: string;
-    line: number;
-    column: number;
-}
-
-export interface IGraphItem {
-    className(): string;
-    id(): string;
-    attrs(): Dictionary<any>;
-    parent(): ISubgraph | null;
-    getNearestDefinition(backwards?: boolean): IECLDefintion | null;
-}
-
-class GraphItem {
-    protected _graph: Graph;
-    protected _parent: Subgraph | null;
-    protected readonly _id: string;
-    readonly _attrs: Dictionary<any>;
-
-    constructor(graph: Graph, parent: Subgraph | null, id: string, attrs?: StringAnyMap) {
+    constructor(graph: Graph<S, V, E>, parent: Subgraph<S, V, E> | null) {
         this._graph = graph;
-        this._parent = parent;
-        this._id = id;
-        this._attrs = new Dictionary<any>(attrs);
-    }
-
-    className(): "Graph" | "Subgraph" | "Vertex" | "Edge" {
-        return (this.constructor as any).name;
-    }
-
-    id(): string {
-        return this._id;
-    }
-
-    attrs(): Dictionary<any> {
-        return this._attrs;
-    }
-
-    parent(): ISubgraph {
-        return this._parent as ISubgraph;
-    }
-
-    hasECLDefinition(): boolean {
-        return this._attrs.get(ATTR_DEFINITION) !== undefined;
-    }
-
-    getECLDefinition(): IECLDefintion {
-        const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\)/.exec(this._attrs.get(ATTR_DEFINITION));
-        if (match) {
-            const [, _file, _row, _col] = match;
-            _file.replace("/./", "/");
-            return {
-                id: this.id(),
-                file: _file,
-                line: +_row,
-                column: +_col
-            };
-        }
-        throw new Error(`Bad definition:  ${this._attrs.get(ATTR_DEFINITION)}`);
+        this.parent = parent;
     }
 }
 
-export interface ISubgraph extends IGraphItem {
-    remove(): void;
-    subgraphs(): ISubgraph[];
-    vertices(): IVertex[];
-    edges(): IEdge[];
-}
+export class Subgraph<S, V, E> extends GraphItem<S, V, E> {
+    readonly subgraphs: Array<Subgraph<S, V, E>> = [];
+    readonly vertices: Array<Vertex<S, V, E>> = [];
+    readonly edges: Array<Edge<S, V, E>> = [];
+    readonly _?: S;
 
-class Subgraph extends GraphItem implements ISubgraph {
-    protected _subgraphs = new Dictionary<Subgraph>();
-    protected _vertices = new Dictionary<Vertex>();
-    protected _edges = new Dictionary<Edge>();
-
-    constructor(graph: Graph, parent: Subgraph | null, id: string, attrs: StringAnyMap = {}) {
-        super(graph, parent, id, attrs);
+    constructor(graph: Graph<S, V, E>, parent: Subgraph<S, V, E> | null, _?: S) {
+        super(graph, parent);
         if (parent) {  //  Only needed for dummy root
-            parent.addSubgraph(this);
+            parent._addSubgraph(this);
         }
+        this._ = _;
     }
 
-    destroy() {
-        if (this._parent) {
-            this._parent.removeSubgraph(this);
-        }
-        this._edges.values().forEach(edge => this._graph.destroyEdge(edge));
-        this._vertices.values().forEach(vertex => this._graph.destroyVertex(vertex));
-        this._subgraphs.values().forEach(subgraph => this._graph.destroySubgraph(subgraph));
+    remove(full: boolean = true): void {
+        this._graph.removeSubgraph(this, full);
     }
 
-    remove(): void {
-        this._graph.destroySubgraph(this);
+    createSubgraph(_?: S): Subgraph<S, V, E> {
+        return this._graph.createSubgraph(this, _);
     }
 
-    createSubgraph(id: string, attrs?: StringAnyMap): ISubgraph {
-        return this._graph.createSubgraph(this, id, attrs);
-    }
-
-    addSubgraph(subgraph: Subgraph) {
-        if (this._subgraphs.has(subgraph.id())) {
+    _addSubgraph(subgraph: Subgraph<S, V, E>) {
+        if (this.subgraphs.indexOf(subgraph) >= 0) {
             throw new Error("Subgraph already exists");
         }
-        this._subgraphs.set(subgraph.id(), subgraph);
+        this.subgraphs.push(subgraph);
     }
 
-    removeSubgraph(subgraph: Subgraph) {
-        if (!this._subgraphs.has(subgraph.id())) {
+    _removeSubgraph(subgraph: Subgraph<S, V, E>) {
+        const idx = this.subgraphs.indexOf(subgraph);
+        if (idx < 0) {
             throw new Error("Subgraph does not exist");
         }
-        this._subgraphs.remove(subgraph.id());
+        this.subgraphs.splice(idx, 1);
     }
 
-    createVertex(id: string, label: string, attrs?: StringAnyMap): IVertex {
-        return this._graph.createVertex(this, id, label, attrs);
+    removeAllSubgraphs() {
+        for (let i = this.subgraphs.length - 1; i >= 0; --i) {
+            this._graph.removeSubgraph(this.subgraphs[i], true);
+        }
     }
 
-    addVertex(vertex: Vertex) {
-        if (this._vertices.has(vertex.id())) {
+    createVertex(_?: V): Vertex<S, V, E> {
+        return this._graph.createVertex(this, _);
+    }
+
+    _addVertex(vertex: Vertex<S, V, E>) {
+        if (this.vertices.indexOf(vertex) >= 0) {
             throw new Error("Vertex already exists");
         }
-        this._vertices.set(vertex.id(), vertex);
+        this.vertices.push(vertex);
     }
 
-    removeVertex(vertex: Vertex) {
-        if (!this._vertices.has(vertex.id())) {
+    _removeVertex(vertex: Vertex<S, V, E>) {
+        const idx = this.vertices.indexOf(vertex);
+        if (idx < 0) {
             throw new Error("Vertex does not exist");
         }
-        this._vertices.remove(vertex.id());
+        this.vertices.splice(idx, 1);
     }
 
-    createEdge(id: string, sourceID: string, targetID: string, attrs?: StringAnyMap): IEdge {
-        return this._graph.createEdge(this, id, sourceID, targetID, attrs);
+    removeAllVertices() {
+        for (let i = this.vertices.length - 1; i >= 0; --i) {
+            this._graph.removeVertex(this.vertices[i], true);
+        }
     }
 
-    addEdge(edge: Edge) {
-        if (this._edges.has(edge.id())) {
+    createEdge(source: Vertex<S, V, E>, target: Vertex<S, V, E>, _?: E): Edge<S, V, E> {
+        return this._graph.createEdge(this, source, target, _);
+    }
+
+    _addEdge(edge: Edge<S, V, E>) {
+        if (this.edges.indexOf(edge) >= 0) {
             throw new Error("Edge already exists");
         }
-        this._edges.set(edge.id(), edge);
+        this.edges.push(edge);
     }
 
-    removeEdge(edge: Edge) {
-        if (!this._edges.has(edge.id())) {
+    _removeEdge(edge: Edge<S, V, E>) {
+        const idx = this.edges.indexOf(edge);
+        if (idx < 0) {
             throw new Error("Edge does not exist");
         }
-        this._edges.remove(edge.id());
+        this.edges.splice(idx, 1);
     }
 
-    add(item: Subgraph | Vertex | Edge) {
+    _add(item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) {
         if (item instanceof Subgraph) {
-            this.addSubgraph(item);
+            this._addSubgraph(item);
         } else if (item instanceof Vertex) {
-            this.addVertex(item);
+            this._addVertex(item);
         } else {
-            this.addEdge(item);
+            this._addEdge(item);
         }
-    }
-
-    subgraphs(): ISubgraph[] {
-        return this._subgraphs.values() as ISubgraph[];
-    }
-
-    vertices(): Vertex[] {
-        return this._vertices.values();
-    }
-
-    edges(): Edge[] {
-        return this._edges.values();
-    }
-
-    getNearestDefinition(backwards: boolean = false): IECLDefintion | null {
-        //  Todo - order is incorrect...
-        if (this.hasECLDefinition()) {
-            return this.getECLDefinition();
-        }
-        let vertices = this.vertices();
-        if (backwards) {
-            vertices = vertices.reverse();
-        }
-        let retVal: IECLDefintion | null = null;
-        vertices.some((vertex) => {
-            retVal = vertex.getNearestDefinition(backwards);
-            if (retVal) {
-                return true;
-            }
-            return false;
-        });
-        return retVal;
     }
 }
 
-export interface IVertex extends IGraphItem {
-    label(): string;
-}
+export class Vertex<S, V, E> extends GraphItem<S, V, E> {
+    readonly inEdges: Array<Edge<S, V, E>> = [];
+    readonly outEdges: Array<Edge<S, V, E>> = [];
+    get edges(): ReadonlyArray<Edge<S, V, E>> {
+        return [...this.inEdges, ...this.outEdges];
+    }
+    readonly _?: V;
 
-class Vertex extends GraphItem implements IVertex {
-    protected _label: string;
-    inEdges: Edge[] = [];
-    outEdges: Edge[] = [];
-
-    constructor(graph: Graph, parent: Subgraph, id: string, label: string, attrs?: StringAnyMap) {
-        super(graph, parent, id, attrs);
-        this._label = label;
-        parent.addVertex(this);
+    constructor(graph: Graph<S, V, E>, parent: Subgraph<S, V, E>, _?: V) {
+        super(graph, parent);
+        parent._addVertex(this);
+        this._ = _;
     }
 
-    destroy() {
-        if (this._parent) {
-            this._parent.removeVertex(this);
-        }
-        this.inEdges.forEach(edge => this._graph.destroyEdge(edge));
-        this.outEdges.forEach(edge => this._graph.destroyEdge(edge));
+    remove(full: boolean = true, _?: (source: V, target: V) => E) {
+        return this._graph.removeVertex(this, full, _);
     }
 
-    label(): string {
-        return this._label;
-    }
-
-    addInEdge(edge: Edge) {
+    addInEdge(edge: Edge<S, V, E>) {
         this.inEdges.push(edge);
     }
 
-    removeInEdge(edge: Edge) {
+    removeInEdge(edge: Edge<S, V, E>) {
         const idx = this.inEdges.indexOf(edge);
         if (idx < 0) {
             throw new Error("In edge does not exist");
@@ -234,219 +137,217 @@ class Vertex extends GraphItem implements IVertex {
         this.inEdges.splice(idx, 1);
     }
 
-    addOutEdge(edge: Edge) {
+    addOutEdge(edge: Edge<S, V, E>) {
         this.outEdges.push(edge);
     }
 
-    removeOutEdge(edge: Edge) {
+    removeOutEdge(edge: Edge<S, V, E>) {
         const idx = this.outEdges.indexOf(edge);
         if (idx < 0) {
             throw new Error("Out edge does not exist");
         }
         this.outEdges.splice(idx, 1);
     }
-
-    getNearestDefinition(backwards: boolean = true): IECLDefintion | null {
-        if (this.hasECLDefinition()) {
-            return this.getECLDefinition();
-        }
-        let retVal: IECLDefintion | null = null;
-        this.inEdges.some((edge) => {
-            retVal = edge.getNearestDefinition(backwards);
-            if (retVal) {
-                return true;
-            }
-            return false;
-        });
-        return retVal;
-    }
 }
 
-export interface IEdge extends IGraphItem {
-    sourceID(): string;
-}
+export class Edge<S, V, E> extends GraphItem<S, V, E> {
+    readonly source: Vertex<S, V, E>;
+    readonly target: Vertex<S, V, E>;
+    readonly _?: E;
 
-class Edge extends Subgraph implements IEdge {
-    source: Vertex;
-    target: Vertex;
-
-    constructor(graph: Graph, parent: Subgraph, id: string, source: Vertex, target: Vertex, attrs?: StringAnyMap) {
-        super(graph, parent, id, attrs);
+    constructor(graph: Graph<S, V, E>, parent: Subgraph<S, V, E>, source: Vertex<S, V, E>, target: Vertex<S, V, E>, _?: E) {
+        super(graph, parent);
         if (!source) {
             throw new Error("Missing source vertex");
         }
         if (!target) {
             throw new Error("Missing target vertex");
         }
-        parent.addEdge(this);
+        parent._addEdge(this);
         this.source = source;
         this.source.addOutEdge(this);
         this.target = target;
         this.target.addInEdge(this);
-    }
-
-    sourceID(): string {
-        return this.source.id();
-    }
-
-    targetID(): string {
-        return this.target.id();
-    }
-
-    destroy() {
-        if (this._parent) {
-            this._parent.removeEdge(this);
-        }
-        this.source.removeOutEdge(this);
-        this.target.removeInEdge(this);
-    }
-
-    getNearestDefinition(backwards: boolean = false): IECLDefintion | null {
-        if (this.hasECLDefinition()) {
-            return this.getECLDefinition();
-        }
-        return this.source.getNearestDefinition(backwards);
-    }
-}
-
-export class Graph implements ISubgraph {
-    private _root: Subgraph;
-    private _allSubgraphs = new Dictionary<Subgraph>();
-    private _allVertices = new Dictionary<Vertex>();
-    private _allEdges = new Dictionary<Edge>();
-    private _attrs = new Dictionary<any>();
-
-    constructor(id: string, attrs?: StringAnyMap) {
-        this._root = new Subgraph(this, null, id, attrs);
-        this._allSubgraphs.set(id, this._root);
-    }
-
-    className(): string {
-        return "Graph";
-    }
-
-    id(): string {
-        return this._root.id();
-    }
-
-    attrs(): Dictionary<any> {
-        return this._attrs;
-    }
-
-    parent(): ISubgraph | null {
-        return null;
+        this._ = _;
     }
 
     remove(): void {
-        //  Do nothing  ---
+        this._graph.removeEdge(this);
+    }
+}
+
+export class Graph<S = undefined, V = undefined, E = undefined> {
+    readonly root: Subgraph<S, V, E>;
+    private _allSubgraphs: Array<Subgraph<S, V, E>> = [];
+    private _allSubgraphsMap: { [id: string]: Subgraph<S, V, E> } = {};
+    private _allVertices: Array<Vertex<S, V, E>> = [];
+    private _allVerticesMap: { [id: string]: Vertex<S, V, E> } = {};
+    private _allEdges: Array<Edge<S, V, E>> = [];
+    private _allEdgesMap: { [id: string]: Edge<S, V, E> } = {};
+
+    idOf: (item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) => string;
+
+    constructor(idOf: (item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) => string = item => "" + item._, _?: S) {
+        this.root = new Subgraph(this, null, _);
+        this.idOf = idOf;
     }
 
-    subgraphs(): ISubgraph[] {
-        return this._root.subgraphs();
-    }
-
-    vertices(): IVertex[] {
-        return this._root.vertices();
-    }
-
-    edges(): IEdge[] {
-        return this._root.edges();
-    }
-
-    createSubgraph(parent: ISubgraph, id: string, attrs?: StringAnyMap): ISubgraph {
-        if (this._allSubgraphs.has(id)) {
-            throw new Error("Subgraph already exists");
-        }
-        const retVal = new Subgraph(this, this._allSubgraphs.get(parent.id()), id, attrs);
-        this._allSubgraphs.set(id, retVal);
+    createSubgraph(parent?: Subgraph<S, V, E>, _?: S): Subgraph<S, V, E> {
+        const retVal = new Subgraph(this, parent || this.root, _);
+        this._allSubgraphs.push(retVal);
+        this._allSubgraphsMap[this.idOf(retVal)] = retVal;
         return retVal;
     }
 
-    destroySubgraph(_subgraph: ISubgraph) {
-        const subgraph = this._allSubgraphs.get(_subgraph.id());
-        if (!subgraph) {
+    removeSubgraph(subgraph: Subgraph<S, V, E>, full: boolean = true) {
+        const idx = this._allSubgraphs.indexOf(subgraph);
+        if (idx < 0) {
             throw new Error("Subgraph does not exist");
         }
-        this._allSubgraphs.remove(subgraph.id());
-        subgraph.destroy();
+        this._allSubgraphs.splice(idx, 1);
+        delete this._allSubgraphsMap[this.idOf(subgraph)];
+        if (subgraph.parent) {
+            subgraph.parent._removeSubgraph(subgraph);
+        }
+        subgraph.edges.forEach(edge => full ? this.removeEdge(edge) : subgraph.parent!._addEdge(edge));
+        subgraph.vertices.forEach(vertex => full ? this.removeVertex(vertex, full) : subgraph.parent!._addVertex(vertex));
+        subgraph.subgraphs.forEach(childSubgraph => full ? this.removeSubgraph(childSubgraph, full) : subgraph.parent!._addSubgraph(childSubgraph)
+        );
     }
 
-    createVertex(parent: ISubgraph, id: string, label: string, attrs?: StringAnyMap): IVertex {
-        if (this._allVertices.has(id)) {
-            throw new Error("Vertex already exists");
-        }
-        const retVal = new Vertex(this, this._allSubgraphs.get(parent.id()), id, label, attrs);
-        this._allVertices.set(id, retVal);
+    get subgraphs(): ReadonlyArray<Subgraph<S, V, E>> {
+        return this._allSubgraphs;
+    }
+
+    subgraph(id: string): Subgraph<S, V, E> {
+        return this._allSubgraphsMap[id];
+    }
+
+    createVertex(parent: Subgraph<S, V, E>, _?: V): Vertex<S, V, E> {
+        const retVal = new Vertex(this, parent, _);
+        this._allVertices.push(retVal);
+        this._allVerticesMap[this.idOf(retVal)] = retVal;
         return retVal;
     }
 
-    destroyVertex(_vertex: IVertex) {
-        const vertex = this._allVertices.get(_vertex.id());
-        if (!vertex) {
+    removeVertex(vertex: Vertex<S, V, E>, full: boolean = true, _?: (source: V, target: V) => E) {
+        const idx = this._allVertices.indexOf(vertex);
+        if (idx < 0) {
             throw new Error("Vertex does not exist");
         }
-        this._allVertices.remove(vertex.id());
-        vertex.destroy();
+        this._allVertices.splice(idx, 1);
+        delete this._allVerticesMap[this.idOf(vertex)];
+        if (vertex.parent) {
+            vertex.parent._removeVertex(vertex);
+        }
+        if (!full) {
+            vertex.inEdges.forEach(inEdge => {
+                vertex.outEdges.forEach(outEdge => {
+                    this.createEdge(this.root, inEdge.source, outEdge.target, _ ? _(inEdge.source._!, outEdge.target._!) : undefined);
+                });
+            });
+        }
+        vertex.inEdges.forEach(edge => this.removeEdge(edge));
+        vertex.outEdges.forEach(edge => this.removeEdge(edge));
     }
 
-    createEdge(parent: ISubgraph, id: string, sourceID: string, targetID: string, attrs?: StringAnyMap): IEdge {
-        if (this._allEdges.has(id)) {
-            throw new Error("Edge already exists");
-        }
-        const retVal = new Edge(this, this._allSubgraphs.get(parent.id()), id, this._allVertices.get(sourceID), this._allVertices.get(targetID), attrs);
-        this._allEdges.set(id, retVal);
+    get vertices(): ReadonlyArray<Vertex<S, V, E>> {
+        return this._allVertices;
+    }
+
+    vertex(id: string): Vertex<S, V, E> {
+        return this._allVerticesMap[id];
+    }
+
+    createEdge(parent: Subgraph<S, V, E>, source: Vertex<S, V, E>, target: Vertex<S, V, E>, _?: E): Edge<S, V, E> {
+        const retVal = new Edge<S, V, E>(this, parent, source, target, _);
+        this._allEdges.push(retVal);
+        this._allEdgesMap[this.idOf(retVal)] = retVal;
         return retVal;
     }
 
-    destroyEdge(_edge: IEdge) {
-        const edge = this._allEdges.get(_edge.id());
-        if (!edge) {
+    removeEdge(edge: Edge<S, V, E>) {
+        const idx = this._allEdges.indexOf(edge);
+        if (idx < 0) {
             throw new Error("Edge does not exist");
         }
-        this._allEdges.remove(edge.id());
-        edge.destroy();
+        this._allEdges.splice(idx, 1);
+        delete this._allEdgesMap[this.idOf(edge)];
+        if (edge.parent) {
+            edge.parent._removeEdge(edge);
+        }
+        edge.source.removeOutEdge(edge);
+        edge.target.removeInEdge(edge);
     }
 
-    allSubgraph(id: string): ISubgraph {
-        return this._allSubgraphs.get(id);
+    get edges(): ReadonlyArray<Edge<S, V, E>> {
+        return this._allEdges;
     }
 
-    allSubgraphs(): ISubgraph[] {
-        return this._allSubgraphs.values().filter(subgraph => subgraph !== this._root);
+    edge(id: string): Edge<S, V, E> {
+        return this._allEdgesMap[id];
     }
 
-    allVertex(id: string): IVertex {
-        return this._allVertices.get(id);
-    }
-
-    allVertices(): IVertex[] {
-        return this._allVertices.values();
-    }
-
-    allEdge(id: string): IEdge {
-        return this._allEdges.get(id);
-    }
-
-    allEdges(): IEdge[] {
-        return this._allEdges.values();
-    }
-
-    getNearestDefinition(backwards: boolean = false): IECLDefintion | null {
-        return this._root.getNearestDefinition(backwards);
-    }
-
-    breakpointLocations(path?: string): IECLDefintion[] {
-        const retVal: IECLDefintion[] = [];
-        for (const vertex of this._allVertices.values()) {
-            if (vertex.hasECLDefinition()) {
-                const definition = vertex.getECLDefinition();
-                if (definition && !path || path === definition.file) {
-                    retVal.push(definition);
-                }
+    private _walk(parent: Subgraph<S, V, E>, visitor: (item: GraphItem<S, V, E>) => "abort" | "stepover" | void): true | false | void {
+        for (const subgraph of parent.subgraphs) {
+            switch (visitor(subgraph)) {
+                case "abort":
+                    return true;
+                case "stepover":
+                    break;
+                default:
+                    if (this._walk(subgraph, visitor)) return true;
             }
         }
-        return retVal.sort((l, r) => {
-            return l.line - r.line;
-        });
+        for (const vertex of parent.vertices) {
+            if (visitor(vertex) === "abort") return true;
+        }
     }
+
+    walk(visitor: (visitor: GraphItem<S, V, E>) => "abort" | "stepover" | void) {
+        this._walk(this.root, visitor);
+        for (const edge of this._allEdges) {
+            if (visitor(edge) === "abort") return true;
+        }
+    }
+
+    clone(): Graph<S, V, E> {
+        const ctor: { new(idOf: (item: Subgraph<S, V, E> | Vertex<S, V, E> | Edge<S, V, E>) => string, _?: S): Graph<S, V, E> } = this.constructor as any;
+        const retVal = new ctor(this.idOf, this.root._);
+        const map = ObjMap();
+        map.put(this.root, retVal.root);
+        this.walk(item => {
+            const parent = map.get(item.parent);
+            if (item instanceof Subgraph) {
+                map.put(item, parent.createSubgraph(item._));
+            } else if (item instanceof Vertex) {
+                map.put(item, parent.createVertex(item._));
+            } else if (item instanceof Edge) {
+                const source = map.get(item.source);
+                const target = map.get(item.target);
+                parent.createEdge(source, target, item._);
+            }
+        });
+        return retVal;
+    }
+}
+
+function ObjMap() {
+    const keys: any[] = [];
+    const values: any[] = [];
+
+    return {
+        put(key: any, value: any) {
+            const index = keys.indexOf(key);
+            if (index === -1) {
+                keys.push(key);
+                values.push(value);
+            } else {
+                values[index] = value;
+            }
+        },
+        get(key: any) {
+            return values[keys.indexOf(key)];
+        }
+    };
 }

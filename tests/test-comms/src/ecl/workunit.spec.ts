@@ -61,7 +61,10 @@ describe("test/esp/ecl/Workunit", function () {
             }).then((wu) => {
                 expect(wu.isFailed()).to.be.true;
                 expect(wu.ErrorCount).to.be.greaterThan(0);
-                return wu;
+                return wu.fetchECLExceptions().then((eclExceptions) => {
+                    expect(eclExceptions.length).to.be.greaterThan(0);
+                    return wu;
+                });
             }).then((wu) => {
                 return wu.delete();
             });

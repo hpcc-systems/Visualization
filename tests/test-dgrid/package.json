@@ -26,6 +26,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf lib*",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle-umd": "webpack",
     "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
     "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",

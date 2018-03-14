@@ -188,5 +188,4 @@ export class Store {
             totalLength: retVal.then(response => response.totalLength)
         });
     }
-
 }

@@ -25,7 +25,7 @@ export class Vertex extends SVGWidget {
         this._annotationWidgets = {};
     }
 
-    enter(domNode, _element) {
+    enter(domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         delete this._prevHash;
         this._icon
@@ -35,6 +35,10 @@ export class Vertex extends SVGWidget {
         this._textBox
             .target(domNode)
             .render()
+            ;
+        element
+            .on("mouseover", d => this.mouseover(d.data()))
+            .on("mouseout", d => this.mouseout(d.data()))
             ;
     }
 
@@ -157,6 +161,13 @@ export class Vertex extends SVGWidget {
         if (i2)
             return i2;
         return null;
+    }
+
+    // Events ---
+    mouseover(d) {
+    }
+
+    mouseout(d) {
     }
 
     faChar: { (): string; (_: string): Vertex; };

@@ -105,7 +105,7 @@ export class MiniGantt extends SVGWidget {
             .attr("opacity", 0)
             .on("dblclick", () => {
                 d3Event.stopPropagation();
-                this.dblclick();
+                this.dblclick(undefined, d3Event);
             })
             ;
         this.svg = element.append("g")
@@ -266,8 +266,11 @@ export class MiniGantt extends SVGWidget {
                 const text = new TextBox()
                     .target(this)
                     .anchor("center")
+                    .on("click", () => {
+                        context.click(d, d3Event);
+                    }, true)
                     .on("dblclick", () => {
-                        context.dblclick(d);
+                        context.dblclick(d, d3Event);
                     }, true)
                     ;
                 context.localText.set(this, text);
@@ -308,7 +311,10 @@ export class MiniGantt extends SVGWidget {
     }
 
     //  Events  ---
-    dblclick(d?) {
+    click(d, e) {
+    }
+
+    dblclick(d?, e?) {
         if (d) {
             this.rootExtent = d;
         } else {

@@ -609,6 +609,7 @@ export class PropertyExt extends Class {
                 if (d3Event) {
                     d3Event.stopPropagation();
                 }
+                [].push.call(args, origFunc);
             } else {
                 retVal = origFunc.apply(context, args);
             }

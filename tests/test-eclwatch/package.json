@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "name": "@hpcc-js/test-eclwatch",
+  "version": "0.0.59",
+  "dependencies": {
+    "@hpcc-js/common": "*",
+    "@hpcc-js/eclwatch": "*",
+    "chai": "4.0.0",
+    "es6-promise": "4.2.4",
+    "mocha": "3.4.2",
+    "simulate-event": "1.4.0"
+  },
+  "devDependencies": {
+    "@types/chai": "3.5.2",
+    "@types/mocha": "2.2.41",
+    "cpx": "1.5.0",
+    "css-loader": "0.26.1",
+    "file-loader": "1.1.5",
+    "mocha-chrome": "1.0.3",
+    "rimraf": "2.6.2",
+    "source-map-loader": "0.2.1",
+    "style-loader": "0.19.0",
+    "typescript": "2.8.3",
+    "webpack": "3.11.0"
+  },
+  "scripts": {
+    "clean": "rimraf lib* && rimraf types && rimraf dist",
+    "compile-es6": "tsc --module es6 --outDir ./lib-es6",
+    "compile-es6-watch": "npm run compile-es6 -- -w",
+    "bundle-umd": "webpack",
+    "copy-resources": "cpx ./node_modules/@hpcc-js/eclwatch/node_modules/@hpcc-js/dgrid/node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
+    "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",
+    "test": "mocha-chrome ./test.html"
+  }
+}

@@ -36,12 +36,12 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
         this.set({ Time: duration, ...eclGraph });
     }
 
-    fetchDetails(): Promise<BaseScope[]> {
+    fetchDetails(rootID: string, rootType: string): Promise<BaseScope[]> {
         return this.wu.fetchDetails({
             ScopeFilter: {
                 MaxDepth: 999999,
-                Ids: [this.Name],
-                ScopeTypes: ["graph"]
+                Ids: [rootID],
+                ScopeTypes: [rootType]
             },
             NestedFilter: {
                 Depth: 999999,
@@ -68,8 +68,13 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
         });
     }
 
-    fetchScopeGraph(): Promise<ScopeGraph> {
-        return this.fetchDetails().then((scopes) => {
+    fetchScopeGraph(subgraphID?: string): Promise<ScopeGraph> {
+        if (subgraphID) {
+            return this.fetchDetails(subgraphID, "subgraph").then((scopes) => {
+                return createGraph(scopes);
+            });
+        }
+        return this.fetchDetails(this.Name, "graph").then((scopes) => {
             return createGraph(scopes);
         });
     }
@@ -154,7 +159,7 @@ function createGraph(scopes: BaseScope[]): ScopeGraph {
     const subgraphs: { [scopeName: string]: ScopeSubgraph } = {};
     const edges: { [scopeName: string]: BaseScope } = {};
 
-    let graph: ScopeGraph;
+    let graph: ScopeGraph | undefined;
     for (const scope of scopes) {
         switch (scope.ScopeType) {
             case "graph":
@@ -162,9 +167,13 @@ function createGraph(scopes: BaseScope[]): ScopeGraph {
                 subgraphs[scope.ScopeName] = graph.root;
                 break;
             case "subgraph":
+                if (!graph) {
+                    graph = new ScopeGraph(item => item._!.Id, scope);
+                    subgraphs[scope.ScopeName] = graph.root;
+                }
                 const scopeStack = scope.parentScope().split(":");
                 let scopeParent1 = subgraphs[scope.parentScope()];
-                while (!scopeParent1) {
+                while (scopeStack.length && !scopeParent1) {
                     scopeParent1 = subgraphs[scopeStack.join(":")];
                     scopeStack.pop();
                 }

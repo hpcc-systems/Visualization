@@ -10,6 +10,14 @@ export class Shape extends SVGWidget {
         super();
     }
 
+    contains(point) {
+        switch (this.shape()) {
+            case "circle":
+                return this.containsCircle(this.radius(), point);
+        }
+        return SVGWidget.prototype.intersection.apply(this, arguments);
+    }
+
     intersection(pointA, pointB) {
         switch (this.shape()) {
             case "circle":

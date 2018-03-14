@@ -7,6 +7,7 @@ export * from "./Cell";
 export * from "./ChartPanel";
 export * from "./Grid";
 export * from "./Layered";
+export * from "./Legend";
 export * from "./Modal";
 export * from "./Popup";
 export * from "./Surface";

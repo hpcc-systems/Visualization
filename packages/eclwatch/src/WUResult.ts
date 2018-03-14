@@ -12,7 +12,7 @@ export class WUResult extends Common {
     }
 
     @publish(undefined, "string", "URL to WsWorkunits")
-    wsWorkunitsUrl: { (): string, (_: string): WUResult };
+    baseUrl: { (): string, (_: string): WUResult };
     @publish(undefined, "string", "Workunit ID")
     wuid: { (): string, (_: string): WUResult };
     @publish(undefined, "string", "Result Name")
@@ -24,11 +24,11 @@ export class WUResult extends Common {
 
     calcResult(): Result | null {
         if (this.wuid() && this.resultName()) {
-            return new Result({ baseUrl: this.wsWorkunitsUrl() }, this.wuid(), this.resultName());
+            return new Result({ baseUrl: this.baseUrl() }, this.wuid(), this.resultName());
         } else if (this.wuid() && this.sequence() !== undefined) {
-            return new Result({ baseUrl: this.wsWorkunitsUrl() }, this.wuid(), this.sequence());
+            return new Result({ baseUrl: this.baseUrl() }, this.wuid(), this.sequence());
         } else if (this.logicalFile()) {
-            return new Result({ baseUrl: this.wsWorkunitsUrl() }, this.logicalFile());
+            return new Result({ baseUrl: this.baseUrl() }, this.logicalFile());
         }
         return null;
     }
@@ -36,7 +36,7 @@ export class WUResult extends Common {
     update(domNode, element) {
         super.update(domNode, element);
         const hash = hashSum({
-            wsWorkunitsUrl: this.wsWorkunitsUrl(),
+            wsWorkunitsUrl: this.baseUrl(),
             wuid: this.wuid(),
             resultName: this.resultName(),
             sequence: this.sequence(),
@@ -58,4 +58,4 @@ export class WUResult extends Common {
     click(row, col, sel) {
     }
 }
-WUResult.prototype._class += " dgrid_WUResult";
+WUResult.prototype._class += " eclwatch_WUResult";

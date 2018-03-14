@@ -1,0 +1,7 @@
+.eclwatch_WUGraphLegend .graph_Vertex  {
+    cursor: auto;
+}
+
+.eclwatch_WUGraphLegend .graph_Vertex .common_Icon {
+    cursor: pointer;
+}

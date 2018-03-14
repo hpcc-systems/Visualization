@@ -106,6 +106,66 @@
                     callback(graph);
                 });
             },
+            wu: function (callback) {
+                legacyRequire(["test/DataFactory", "src/comms/Workunit", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Workunit, Graph, Palette, Vertex, Edge) {
+                    var graph = new Graph()
+                        .allowDragging(false)
+                        .layout("Hierarchy")
+                        ;
+                    const wu = Workunit.attach({ baseUrl: "http://192.168.3.22:8010/" }, "W20180302-141550");
+                    wu.fetchGraphs().then(graphs => {
+                        if (graphs.length) {
+                            return graphs[0].fetchScopeGraph();
+                        }
+                        return undefined;
+                    }).then(scopeGraph => {
+                        if (scopeGraph) {
+                            var hierarchy = [];
+                            var vertices = [];
+                            var verticesMap = {};
+                            var edges = [];
+                            for (const subgraph of scopeGraph.allSubgraphs()) {
+                                const sg = new Graph.Subgraph()
+                                    .title(subgraph.id())
+                                    ;
+                                vertices.push(sg);
+                                verticesMap[subgraph.id()] = sg;
+                                const parent = verticesMap[subgraph.parent().id()];
+                                if (parent) {
+                                    hierarchy.push({ parent, child: sg });
+                                }
+                            }
+                            for (const vertex of scopeGraph.allVertices()) {
+                                const v = new Vertex()
+                                    .text(vertex.label())
+                                    ;
+                                vertices.push(v);
+                                verticesMap[vertex.id()] = v;
+                                const parent = verticesMap[vertex.parent().id()];
+                                if (parent) {
+                                    hierarchy.push({ parent, child: v });
+                                }
+                            }
+                            for (const edge of scopeGraph.allEdges()) {
+                                const sourceV = verticesMap[edge.sourceID()];
+                                const targetV = verticesMap[edge.targetID()];
+                                if (sourceV && targetV) {
+                                    const e = new Edge()
+                                        .sourceVertex(sourceV)
+                                        .targetVertex(targetV)
+                                        .sourceMarker("circle")
+                                        .targetMarker("arrow")
+                                        .text("")
+                                        ;
+                                    edges.push(e);
+                                }
+                            }
+                            graph.data({ vertices, edges, hierarchy });
+                        }
+                        callback(graph);
+                    });
+                });
+            },
             restyle: function (callback) {
                 legacyRequire(["test/DataFactory", "src/graph/Graph", "src/common/Palette", "src/graph/Vertex", "src/graph/Edge"], function (DataFactory, Graph, Palette, Vertex, Edge) {
                     var graph = new Graph();

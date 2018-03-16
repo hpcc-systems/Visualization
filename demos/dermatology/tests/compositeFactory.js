@@ -7,6 +7,18 @@
     }
 }(this, function () {
     var compositeFactory = {
+        DuoPanel: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/DuoPanel"], function (DataFactory, DuoPanel) {
+                    callback(new DuoPanel()
+                        .title("Simple DuoPanel")
+                        .columns(["Letter","Lat","Lng","Date"])
+                        .data([["a",42.54033871399491,-117.27921714218161,1057408000337],["b",40.23742451463947,-109.09879280401691,1151024922901],["c",34.15551160335133,-103.85911728706185,925276476770],["d",37.95146766971099,-118.17864903956257,1192457759293],["e",47.37754910828018,-102.2352964308588,846686422481]])
+                        .absoluteColumns(["Date"])
+                    );
+                });
+            }
+        },
         MegaChart: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MegaChart"], function (DataFactory, MegaChart) {

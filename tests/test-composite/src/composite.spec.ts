@@ -1,5 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { Dermatology, MegaChart, MultiChart, MultiChartPanel } from "@hpcc-js/composite";
+import { Dermatology, DuoPanel, MegaChart, MultiChart, MultiChartPanel } from "@hpcc-js/composite";
 import * as composite from "@hpcc-js/composite";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
@@ -25,6 +25,7 @@ describe("@hpcc-js/composite", () => {
                                     .chartType("COLUMN")
                                 );
                             case Dermatology:
+                            case DuoPanel:
                             case MegaChart:
                             case MultiChartPanel:
                                 break;

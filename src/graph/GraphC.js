@@ -201,6 +201,30 @@
     GraphC.prototype.enter = function (domNode, element) {
         CanvasWidget.prototype.enter.apply(this, arguments);
         var context = this;
+        element.on("click", function () {
+            var x = (d3.event.layerX - context._translate[0]) / context.zoom.scale();
+            var y = (d3.event.layerY - context._translate[1]) / context.zoom.scale();
+            context.data().vertices.forEach(function (vertex) {
+                var hovered_arr = vertex.getHoveredPolygons(x, y);
+                if (hovered_arr.length > 0) {
+                    context.vertex_click(context.rowToObj(vertex.data(),"",true,{
+                        vertex: vertex
+                    }));
+                }
+            });
+        });
+        element.on("dblclick", function () {
+            var x = (d3.event.layerX - context._translate[0]) / context.zoom.scale();
+            var y = (d3.event.layerY - context._translate[1]) / context.zoom.scale();
+            context.data().vertices.forEach(function (vertex) {
+                var hovered_arr = vertex.getHoveredPolygons(x, y);
+                if (hovered_arr.length > 0) {
+                    context.vertex_dblclick(context.rowToObj(vertex.data(),"",true,{
+                        vertex: vertex
+                    }));
+                }
+            });
+        });
         element.on("mousemove", function () {
             if(typeof context.data().vertices === "undefined")return;
             var ctx = context.ctx;

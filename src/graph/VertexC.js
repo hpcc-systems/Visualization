@@ -140,13 +140,13 @@
             var _y = y;
             var _anno_width_sum = 0;
             ctx.textAlign = 'left';
-            ctx.font = label_font_size + 'px ' + label_font_family;
             context.annotationIcons().forEach(function (anno_obj) {
                 var poly_info_obj = {
                     vertex: context,
                     tooltip: anno_obj.tooltip,
                     direction: "down"
                 };
+                ctx.font = label_font_size + 'px ' + anno_obj.font;
                 ctx.beginPath();
                 ctx.strokeStyle = "#777";
                 ctx.rect(_x - _anno_width_sum - center_x_offset, _y, annotations_h, annotations_h);

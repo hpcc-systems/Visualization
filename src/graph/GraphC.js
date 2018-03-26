@@ -246,6 +246,7 @@
         this.zoom = d3.behavior.zoom()
             .scaleExtent([0.01, 4])
             .on("zoomstart", function (args) {
+                if(context.draggedVertex)return;
                 context.prevTranslate = context.zoom.translate();
                 context.prevScale = context.zoom.scale();
                 if (d3.event.sourceEvent && d3.event.sourceEvent.shiftKey && d3.event.sourceEvent.ctrlKey) {
@@ -268,6 +269,7 @@
                 }
             })
             .on("zoomend", function (args) {
+                if(context.draggedVertex)return;
                 switch (context._zoomMode) {
                     case "selection":
                         context.zoom.translate(context.prevTranslate);
@@ -278,6 +280,7 @@
                 }
             })
             .on("zoom", function (d) {
+                if(context.draggedVertex)return;
                 switch (context._zoomMode) {
                     case "selection":
                         break;
@@ -287,13 +290,40 @@
                 }
                 context.draw();
             });
-
+        this.drag = d3.behavior.drag()
+            .on("dragstart", function (args) {
+                if(typeof context.data().vertices === "undefined")return;
+                var x = (d3.event.sourceEvent.layerX - context._translate[0]) / context.zoom.scale();
+                var y = (d3.event.sourceEvent.layerY - context._translate[1]) / context.zoom.scale();
+                context.data().vertices.forEach(function (vertex) {
+                    var hovered_arr = vertex.getHoveredPolygons(x, y);
+                    if (hovered_arr.length > 0) {
+                        hovered_arr.forEach(function (n) {
+                            context.draggedVertex = n[4].vertex;
+                        });
+                    }
+                });
+            })
+            .on("drag", function (args) {
+                if(context.draggedVertex){
+                    var x = (d3.event.sourceEvent.layerX - context._translate[0]) / context.zoom.scale();
+                    var y = (d3.event.sourceEvent.layerY - context._translate[1]) / context.zoom.scale();
+                    context.draggedVertex.x(x);
+                    context.draggedVertex.y(y);
+                }
+            })
+            .on("dragend", function (d) {
+                if(context.draggedVertex){
+                    delete context.draggedVertex;
+                }
+            });
         element
             .attr("width", this._size.width)
             .attr("height", this._size.height);
         this.ctx = domNode.getContext('2d');
 
         element.call(this.zoom);
+        element.call(this.drag);
         this.draw();
 
         setTimeout(function () {

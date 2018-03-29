@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hpcc-systems/Visualization"
+    "url": "git+https://github.com/hpcc-systems/Visualization.git"
   },
   "author": "HPCC Systems",
   "license": "Apache-2.0",

@@ -29,7 +29,7 @@ export class Table extends Common {
         }
         if (this._prevChecksum !== dataHash) {
             this._prevChecksum = dataHash;
-            this._store.setData(store.fetchAll());
+            this._store.setData(data);
             changed = true;
         }
         if (changed) {

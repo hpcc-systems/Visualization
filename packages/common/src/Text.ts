@@ -12,54 +12,60 @@ export class Text extends SVGWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
+        delete this._prevHash;
         this._textElement = element.append("text");
     }
 
+    _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
-        const context = this;
-        this._textElement
-            .attr("font-family", this.fontFamily())
-            .attr("font-size", this.fontSize())
-            ;
-        const textParts = this.text().split("\n");
-        const textLine = this._textElement.selectAll("tspan").data(textParts);
-        textLine.enter().append("tspan")
-            .attr("class", function (_d, i) { return "tspan_" + i; })
-            .attr("dy", "1em")
-            .attr("x", "0")
-            .merge(textLine)
-            .style("fill", this.colorFill())
-            .text(function (d) { return d; })
-            ;
-        textLine.exit()
-            .remove()
-            ;
+        const hash = this.hash();
+        if (this._prevHash !== hash) {
+            this._prevHash = hash;
 
-        let bbox: any = { width: 0, height: 0 };
-        try {   //  https://bugzilla.mozilla.org/show_bug.cgi?id=612118
-            bbox = this._textElement.node().getBBox();
-        } catch (e) {
+            this._textElement
+                .attr("font-family", this.fontFamily())
+                .attr("font-size", this.fontSize())
+                .style("text-anchor", this.anchor())
+                ;
+            const textParts = this.text().split("\n");
+            const textLine = this._textElement.selectAll("tspan").data(textParts);
+            textLine.enter().append("tspan")
+                .attr("class", function (_d, i) { return "tspan_" + i; })
+                .attr("dy", "1em")
+                .attr("x", "0")
+                .merge(textLine)
+                .style("fill", this.colorFill())
+                .text(d => d)
+                ;
+            textLine.exit()
+                .remove()
+                ;
+
+            let bbox: any = { width: 0, height: 0 };
+            try {   //  https://bugzilla.mozilla.org/show_bug.cgi?id=612118
+                bbox = this._textElement.node().getBBox();
+            } catch (e) {
+            }
+            let xOffset = -(bbox.x + bbox.width / 2);
+            let yOffset = -(bbox.y + bbox.height / 2);
+            switch (this.anchor()) {
+                case "start":
+                    xOffset = -bbox.x;
+                    break;
+                case "end":
+                    xOffset = bbox.x + bbox.width / 2;
+                    break;
+            }
+
+            const theta = -this.rotation() * Math.PI / 180;
+            xOffset = -1 * Math.abs(xOffset * Math.cos(theta) + yOffset * Math.sin(theta));
+            yOffset = -1 * Math.abs(xOffset * Math.sin(theta) + yOffset * Math.cos(theta));
+
+            this._textElement
+                .attr("transform", function (_d) { return "translate(" + xOffset + "," + yOffset + ")"; })// rotate(" + context.rotation() + ")"; })
+                ;
         }
-        let xOffset = -(bbox.x + bbox.width / 2);
-        let yOffset = -(bbox.y + bbox.height / 2);
-        switch (this.anchor()) {
-            case "start":
-                xOffset = -bbox.x + bbox.width / 2;
-                break;
-            case "end":
-                xOffset = bbox.x + bbox.width / 2;
-                break;
-        }
-
-        const theta = -this.rotation() * Math.PI / 180;
-        xOffset = -1 * Math.abs(xOffset * Math.cos(theta) + yOffset * Math.sin(theta));
-        yOffset = -1 * Math.abs(xOffset * Math.sin(theta) + yOffset * Math.cos(theta));
-
-        this._textElement
-            .style("text-anchor", this.anchor())
-            .attr("transform", function (_d) { return "translate(" + xOffset + "," + yOffset + ")rotate(" + context.rotation() + ")"; })
-            ;
     }
 
     text: { (): string; (_: string): Text; };

@@ -58,7 +58,9 @@ export class Edge extends SVGWidget {
         return this;
     }
 
-    points(_, transitionDuration, skipPushMarkers) {
+    points(_): any[];
+    points(_: any[]): this;
+    points(_?: any[], transitionDuration?, skipPushMarkers?): any[] | this {
         if (!arguments.length) return this._points;
         this._points = _;
         if (this._elementPath) {

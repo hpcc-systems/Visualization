@@ -1,0 +1,8 @@
+.layout_AbsoluteSurface {
+    pointer-events: none !important;
+}
+.layout_AbsoluteSurface > .placeholder {
+    position: relative;
+    overflow: hidden;
+    pointer-events: all;
+}

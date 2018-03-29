@@ -1,0 +1,8 @@
+.layout_Carousel > div  {
+    position: relative;
+    overflow: hidden;
+}
+
+.layout_Carousel > div > .carouselItem {
+    position: absolute;
+}

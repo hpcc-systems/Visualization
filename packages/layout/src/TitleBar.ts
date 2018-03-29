@@ -93,7 +93,8 @@ Spacer.prototype._class += " layout_Spacer";
 export class TitleBar extends HTMLWidget {
     _divMain: d3SelectionType;
     _divIconBar: d3SelectionType;
-    _divTitle: d3SelectionType;
+    _divTitleIcon: d3SelectionType;
+    _divTitleText: d3SelectionType;
     _buttons: Widget[] = [];
 
     constructor() {
@@ -102,8 +103,19 @@ export class TitleBar extends HTMLWidget {
 
     enter(domNode, element: d3SelectionType) {
         super.enter(domNode, element);
-        this._divTitle = element.append<HTMLElement>("div")
-            .attr("class", "title")
+        this._divTitleIcon = element.append<HTMLElement>("div")
+            .attr("class", "title-icon")
+            .style("font-family", this.titleIconFont())
+            .style("font-size", `${this.titleIconFontSize()}px`)
+            .style("width", `${this.titleIconFontSize()}px`)
+            ;
+        element.append<HTMLElement>("div")
+            .attr("class", "data-count")
+            ;
+        this._divTitleText = element.append<HTMLElement>("div")
+            .attr("class", "title-text")
+            .style("font-family", this.titleFont())
+            .style("font-size", `${this.titleFontSize()}px`)
             ;
         this._divIconBar = element.append<HTMLElement>("div")
             .attr("class", "icon-bar")
@@ -121,7 +133,11 @@ export class TitleBar extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        this._divTitle.text(this.title());
+        this._divTitleIcon
+            .text(this.titleIcon())
+            .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
+            ;
+        this._divTitleText.text(this.title());
 
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
         icons.enter().append("div")
@@ -148,6 +164,21 @@ TitleBar.prototype._class += " layout_TitleBar";
 export interface TitleBar {
     title(): string;
     title(_: string): this;
+    titleIcon(): string;
+    titleIcon(_: string): this;
+    titleIconFont(): string;
+    titleIconFont(_: string): this;
+    titleFont(): string;
+    titleFont(_: string): this;
+    titleIconFontSize(): number;
+    titleIconFontSize(_: number): this;
+    titleFontSize(): number;
+    titleFontSize(_: number): this;
 }
 TitleBar.prototype.publish("title", "", "string");
+TitleBar.prototype.publish("titleIcon", "", "string");
+TitleBar.prototype.publish("titleIconFont", "", "string");
+TitleBar.prototype.publish("titleIconFontSize", 28, "number");
+TitleBar.prototype.publish("titleFont", "", "string");
+TitleBar.prototype.publish("titleFontSize", 20, "number");
 TitleBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });

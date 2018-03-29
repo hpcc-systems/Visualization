@@ -12,8 +12,13 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
     protected _progressBar = new ProgressBar();
+    protected _resolutions = {
+        tiny: { width: 100, height: 100 },
+        small: { width: 300, height: 300 }
+    };
     private _modal = new Modal();
     private _highlight: boolean;
+    private _scale: number;
 
     private _toggleInfo = new ToggleButton("fa-info-circle", ".Description")
         .selected(false)
@@ -71,6 +76,18 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     title: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleFont: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleFontSize: publish<this, number>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleFontColor: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleIcon: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleIconFont: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleIconFontSize: publish<this, number>;
     @publish("")
     description: publish<this, string>;
     @publish(null, "widget", "Multi Chart")
@@ -175,6 +192,15 @@ export class ChartPanel extends Border2 implements IHighlight {
         return this;
     }
 
+    getResponsiveMode(): "tiny" | "small" | "regular" {
+        if (this.size().width <= this._resolutions.tiny.width || this.size().height <= this._resolutions.tiny.height) {
+            return "tiny";
+        } else if (this.size().width <= this._resolutions.small.width || this.size().height <= this._resolutions.small.height) {
+            return "small";
+        }
+        return "regular";
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         this._modal
@@ -196,8 +222,46 @@ export class ChartPanel extends Border2 implements IHighlight {
         this._progressBar.enter(domNode, element);
     }
 
+    preUpdateTiny(element) {
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "none");
+    }
+    preUpdateSmall(element) {
+        const scale_x = this.size().width / this._resolutions.small.width;
+        const scale_y = this.size().height / this._resolutions.small.height;
+        this._scale = Math.min(scale_x, scale_y);
+        const x_is_smaller = this._scale === scale_x;
+        this.size({
+            width: x_is_smaller ? this._resolutions.small.width : this.size().width * (1 / this._scale),
+            height: !x_is_smaller ? this._resolutions.small.height : this.size().height * (1 / this._scale)
+        });
+        element.select("div.title-icon").style("position", "static");
+        element.selectAll("lhs").style("display", "none");
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
+        element.selectAll("div.data-count").style("visibility", "hidden");
+        element.style("transform", `scale(${this._scale})`);
+    }
+    preUpdateRegular(element) {
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
+        element.selectAll("div.data-count").style("visibility", "hidden");
+        element.select("div.title-icon").style("position", "static");
+        element.style("transform", `translate(0px,0px) scale(1)`);
+    }
+
     private _prevChartDataFamily;
     update(domNode, element) {
+        const _responsiveMode = this.getResponsiveMode();
+        switch (_responsiveMode) {
+            case "tiny":
+                this.preUpdateTiny(element);
+                break;
+            case "small":
+                this.preUpdateSmall(element);
+                break;
+            case "regular":
+                this.preUpdateRegular(element);
+                break;
+        }
+
         this._widget
             .columns(this._legend.filteredColumns())
             .data(this._legend.filteredData())
@@ -213,6 +277,62 @@ export class ChartPanel extends Border2 implements IHighlight {
         }
         element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
         super.update(domNode, element);
+
+        switch (_responsiveMode) {
+            case "tiny":
+                this.postUpdateTiny(element);
+                break;
+            case "small":
+                this.postUpdateSmall(element);
+                break;
+            case "regular":
+                this.postUpdateRegular(element);
+                break;
+        }
+    }
+
+    postUpdateTiny(element) {
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "none");
+        element.selectAll("div.data-count")
+            .style("visibility", "visible")
+            .style("font-size", (this.titleIconFontSize() / 3) + "px")
+            .style("line-height", (this.titleIconFontSize() / 3) + "px")
+            .style("left", this.titleIconFontSize() + "px")
+            .text(this.data().length)
+            ;
+        element.style("transform", `translate(0px,0px) scale(1)`);
+        const iconDiv = element.selectAll("div.title-icon");
+        const _node = iconDiv.node();
+        const _container = element.node().parentElement;
+        const containerRect = _container.getBoundingClientRect();
+        if (_node) {
+            const rect = iconDiv.node().getBoundingClientRect();
+            const icon_top = containerRect.height / 2;
+            iconDiv
+                .style("position", "absolute")
+                .style("left", `calc(50% - ${rect.width / 2}px)`)
+                .style("top", `${icon_top - (rect.height / 2)}px`)
+                ;
+            element.selectAll("div.data-count")
+                .style("position", "absolute")
+                .style("left", `calc(50% + ${rect.width / 2}px)`)
+                .style("top", `${icon_top - (rect.height / 2)}px`)
+                ;
+        }
+    }
+    postUpdateSmall(element) {
+        element.selectAll("lhs").style("display", "none"); // TODO: a bug in Border2?
+        element.selectAll("div.title-icon").style("position", "static");
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
+        element.selectAll("div.data-count").style("visibility", "hidden");
+        const rect = element.node().getBoundingClientRect();
+        const parentRect = element.node().parentElement.getBoundingClientRect();
+        element.style("transform", `translate(${parentRect.x - rect.x}px, ${parentRect.y - rect.y}px) scale(${this._scale})`);
+    }
+    postUpdateRegular(element) {
+        element.selectAll("div.title-icon").style("position", "static");
+        element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
+        element.selectAll("div.data-count").style("visibility", "hidden");
     }
 
     exit(domNode, element) {

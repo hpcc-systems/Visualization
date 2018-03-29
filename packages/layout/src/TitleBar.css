@@ -1,11 +1,12 @@
 .layout_TitleBar {
+    position: relative;
     display: flex;
     flex-flow: row;    
-    justify-content: space-between;    
+    justify-content: space-between;
 }
 
-.layout_TitleBar .title {
-    padding:4px;
+.layout_TitleBar .title-text {
+    padding: 4px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -13,12 +14,25 @@
     font-weight: bold;
 }
 
+.layout_TitleBar .title-icon{
+    padding: 4px 0;
+    position: static;
+
+}
+.layout_TitleBar .data-count{
+    position: absolute;
+    visibility: hidden;
+}
+
 .layout_TitleBar .icon-bar {
     display: flex;
-    flex-flow: row;    
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
     margin:4px;
     white-space: nowrap;
     line-height: 28px;
+    flex-grow: 1;
 }
 
 .layout_TitleBar .icon-bar a {

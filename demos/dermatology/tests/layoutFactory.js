@@ -35,6 +35,38 @@
                     );
                 });
             },
+            responsive: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/dgrid/Table", "src/phosphor/DockPanel"], function (DataFactory, ChartPanel, Column, DockPanel) {
+                    let cp1 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp2 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp3 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp4 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp5 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp6 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let cp7 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")
+                        .columns(DataFactory.ND.subjects.columns).data(DataFactory.Table.large.data);
+                    let _dirs = ["top", "right", "bottom", "left"];
+                    let dp = new DockPanel()
+                        .addWidget(cp1, "Chart Panel (cp1)")
+                        .addWidget(cp2, "Chart Panel (cp2)", `split-${arr_rand(_dirs)}`, cp1)
+                        .addWidget(cp3, "Chart Panel (cp3)", `split-${arr_rand(_dirs)}`, cp2)
+                        .addWidget(cp4, "Chart Panel (cp4)", `split-${arr_rand(_dirs)}`, cp3)
+                        .addWidget(cp5, "Chart Panel (cp5)", `split-${arr_rand(_dirs)}`, cp4)
+                        .addWidget(cp6, "Chart Panel (cp6)", `split-${arr_rand(_dirs)}`, cp5)
+                        .addWidget(cp7, "Chart Panel (cp7)", `split-${arr_rand(_dirs)}`, cp6)
+                        ;
+                    callback(dp);
+                    function arr_rand(arr) {
+                        return arr[Math.floor(arr.length * Math.random())];
+                    }
+                });
+            },
             choro: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/map/ChoroplethStates"], function (DataFactory, ChartPanel, ChoroplethStates) {
                     var mc = new ChartPanel()
@@ -156,12 +188,12 @@
                         .setContent(0, 4, new Line()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
-                        , "Title AAA", 4, 4
+                            , "Title AAA", 4, 4
                         )
                         .setContent(4, 0, new MultiChartSurface()
                             .columns(DataFactory.ND.subjects.columns)
                             .data(DataFactory.ND.subjects.data)
-                        , "Title BBB", 4, 8
+                            , "Title BBB", 4, 8
                         )
                     );
                 });
@@ -206,9 +238,9 @@
                                 .data(DataFactory.GMap.simple.data), "", 2, 2)
                             .setContent(2, 0, new Area().columns(c).data(d))
                             .setContent(2, 1,
-                            new Grid()
-                                .setContent(0, 0, new Line().data(d).columns(c))
-                                .setContent(0, 1, new Area().data(d).columns(c))
+                                new Grid()
+                                    .setContent(0, 0, new Line().data(d).columns(c))
+                                    .setContent(0, 1, new Area().data(d).columns(c))
                             )
                             .setContent(3, 0, new Table().columns(["Col 1", "Col 2", "Col 3"]).data([[1, 2, 3], [4, 5, 6]]))
                             .setContent(3, 1, new Pie()
@@ -364,33 +396,33 @@
                 legacyRequire(["test/DataFactory", "src/layout/Tabbed", "src/chart/Pie", "src/chart/MultiChartSurface", "src/chart/Line", "src/chart/Column", "src/chart/Step"], function (DataFactory, Tabbed, Pie, MultiChartSurface, Line, Column, Step) {
                     callback(new Tabbed()
                         .addTab(
-                        new Pie()
-                            .columns(DataFactory.TwoD.subjects.columns)
-                            .data(DataFactory.TwoD.subjects.data)
-                        , "Pie Chart", true)
-                        .addTab(
-                        new Line()
-                            .columns(DataFactory.ND.subjects.columns)
-                            .data(DataFactory.TwoD.subjects.data)
-                        , "Line Chart")
-                        .addTab(
-                        new Column()
-                            .columns(DataFactory.ND.subjects.columns)
-                            .data(DataFactory.ND.subjects.data)
-                        , "Column Chart"
-                        )
-                        .addTab(new Tabbed()
-                            .addTab(
-                            new Step()
-                                .columns(DataFactory.ND.subjects.columns)
-                                .data(DataFactory.ND.subjects.data)
-                            , "Step Chart"
-                            )
-                            .addTab(
                             new Pie()
                                 .columns(DataFactory.TwoD.subjects.columns)
                                 .data(DataFactory.TwoD.subjects.data)
-                            , "Pie Chart", true), "Nested Example"
+                            , "Pie Chart", true)
+                        .addTab(
+                            new Line()
+                                .columns(DataFactory.ND.subjects.columns)
+                                .data(DataFactory.TwoD.subjects.data)
+                            , "Line Chart")
+                        .addTab(
+                            new Column()
+                                .columns(DataFactory.ND.subjects.columns)
+                                .data(DataFactory.ND.subjects.data)
+                            , "Column Chart"
+                        )
+                        .addTab(new Tabbed()
+                            .addTab(
+                                new Step()
+                                    .columns(DataFactory.ND.subjects.columns)
+                                    .data(DataFactory.ND.subjects.data)
+                                , "Step Chart"
+                            )
+                            .addTab(
+                                new Pie()
+                                    .columns(DataFactory.TwoD.subjects.columns)
+                                    .data(DataFactory.TwoD.subjects.data)
+                                , "Pie Chart", true), "Nested Example"
                         )
                     );
                 });

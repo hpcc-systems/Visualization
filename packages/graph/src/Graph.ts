@@ -50,6 +50,7 @@ export class Graph extends SVGZoomWidget {
             edge: "1.25px"
         };
         this._selection = new Utility.Selection();
+        this.zoomToFitLimit(1);
     }
 
     //  Properties  ---
@@ -647,10 +648,10 @@ export class Graph extends SVGZoomWidget {
             .attr("width", "130%")
             .attr("height", "130%")
             .html(
-            '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
-            '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
-            '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
-            '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
+                '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
+                '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
+                '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
+                '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
             )
             ;
     }

@@ -1,0 +1,88 @@
+.common_IconBar {
+//    position: relative;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.common_IconBar .icon-bar {
+    display: flex;
+    // flex-direction: row;
+    flex-wrap: nowrap;
+    // justify-content: flex-end;
+    margin: 4px;
+    white-space: nowrap;
+    line-height: 28px;
+    // flex-grow: 1;
+    z-index:1;
+}
+
+.common_IconBar .icon-bar a {
+    text-align: center; /* Center-align text */
+    padding-top: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 4px;
+    transition: all 0.3s ease; /* Add transition for hover effects */
+    color: darkgray; /* White text color */
+}
+
+.common_IconBar .icon-bar a.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    color: darkgray; 
+}
+
+.common_IconBar .icon-bar a:hover {
+    background-color: whitesmoke; /* Add a hover color */
+}
+
+.common_IconBar .icon-bar a {
+    background-color: white
+}
+
+.common_IconBar .icon-bar a.selected {
+    background-color: #efe5e5; /* Add a hover color */
+}
+
+.common_IconBar .icon-bar div.spacer {
+    text-align: center; /* Center-align text */
+    height:28px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: transparent;
+    padding-top: 0px;
+    padding-left: 2px;  
+    margin-left: 2px;  
+    padding-bottom: 0px;
+}
+
+.common_IconBar .icon-bar div.spacer.vline {
+    border-left-color: darkgray;
+    padding-left: 4px;  
+    margin-left: 4px;  
+}
+
+.common_IconBar .icon-bar a.spacer:hover {
+    background-color: transparent;
+}
+
+.common_TitleBar .title-icon{
+    padding: 4px 0;
+    position: static;
+
+}
+.common_TitleBar .data-count{
+    position: absolute;
+    visibility: hidden;
+}
+
+.common_TitleBar .title-text {
+    padding: 4px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size:20px;
+    font-weight: bold;
+}
+

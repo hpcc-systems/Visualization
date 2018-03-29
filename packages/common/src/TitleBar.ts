@@ -1,4 +1,5 @@
-import { d3SelectionType, HTMLWidget, Widget } from "@hpcc-js/common";
+import { HTMLWidget } from "./HTMLWidget";
+import { d3SelectionType, Widget } from "./Widget";
 
 import "../src/TitleBar.css";
 
@@ -50,7 +51,7 @@ export class Button extends HTMLWidget {
         return true;
     }
 }
-Button.prototype._class += " layout_Button";
+Button.prototype._class += " common_Button";
 
 //  Toggle button  ---
 export class ToggleButton extends Button {
@@ -68,7 +69,7 @@ export class ToggleButton extends Button {
         element.classed("selected", this.selected());
     }
 }
-ToggleButton.prototype._class += " layout_ToggleButton";
+ToggleButton.prototype._class += " common_ToggleButton";
 export interface ToggleButton {
     selected(): boolean;
     selected(_: boolean): this;
@@ -81,20 +82,23 @@ export class Spacer extends HTMLWidget {
     enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
         element
-            .attr("class", "spacer")
+            .attr("class", this.vline() ? "spacer vline" : "spacer")
             .attr("href", "#")
             .append("i")
             ;
     }
 }
-Spacer.prototype._class += " layout_Spacer";
+Spacer.prototype._class += " common_Spacer";
 
-//  Titlebar  ---
-export class TitleBar extends HTMLWidget {
-    _divMain: d3SelectionType;
+export interface Spacer {
+    vline(): boolean;
+    vline(_: boolean): this;
+}
+Spacer.prototype.publish("vline", true, "boolean");
+
+//  IconBar  ---
+export class IconBar extends HTMLWidget {
     _divIconBar: d3SelectionType;
-    _divTitleIcon: d3SelectionType;
-    _divTitleText: d3SelectionType;
     _buttons: Widget[] = [];
 
     constructor() {
@@ -103,41 +107,13 @@ export class TitleBar extends HTMLWidget {
 
     enter(domNode, element: d3SelectionType) {
         super.enter(domNode, element);
-        this._divTitleIcon = element.append<HTMLElement>("div")
-            .attr("class", "title-icon")
-            .style("font-family", this.titleIconFont())
-            .style("font-size", `${this.titleIconFontSize()}px`)
-            .style("width", `${this.titleIconFontSize()}px`)
-            ;
-        element.append<HTMLElement>("div")
-            .attr("class", "data-count")
-            ;
-        this._divTitleText = element.append<HTMLElement>("div")
-            .attr("class", "title-text")
-            .style("font-family", this.titleFont())
-            .style("font-size", `${this.titleFontSize()}px`)
-            ;
         this._divIconBar = element.append<HTMLElement>("div")
             .attr("class", "icon-bar")
             ;
     }
 
-    buttons(): Widget[];
-    buttons(_: Widget[]): this;
-    buttons(_?: Widget[]): this | Widget[] {
-        if (!arguments.length) return this._buttons;
-        this._buttons = _;
-        return this;
-    }
-
     update(domNode, element) {
         super.update(domNode, element);
-
-        this._divTitleIcon
-            .text(this.titleIcon())
-            .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
-            ;
-        this._divTitleText.text(this.title());
 
         const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
         icons.enter().append("div")
@@ -159,7 +135,56 @@ export class TitleBar extends HTMLWidget {
         icons.order();
     }
 }
-TitleBar.prototype._class += " layout_TitleBar";
+IconBar.prototype._class += " common_IconBar";
+
+export interface IconBar {
+    buttons(): Widget[];
+    buttons(_: Widget[]): this;
+}
+IconBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });
+
+//  Titlebar  ---
+export class TitleBar extends IconBar {
+
+    _div: d3SelectionType;
+    _divTitleIcon: d3SelectionType;
+    _divTitleText: d3SelectionType;
+
+    constructor() {
+        super();
+    }
+
+    enter(domNode, element: d3SelectionType) {
+        this._div = element.append("div");
+        this._divTitleIcon = this._div.append<HTMLElement>("div")
+            .attr("class", "title-icon")
+            .style("font-family", this.titleIconFont())
+            .style("font-size", `${this.titleIconFontSize()}px`)
+            .style("width", `${this.titleIconFontSize()}px`)
+            ;
+        this._div.append<HTMLElement>("div")
+            .attr("class", "data-count")
+            ;
+        this._divTitleText = this._div.append<HTMLElement>("div")
+            .attr("class", "title-text")
+            .style("font-family", this.titleFont())
+            .style("font-size", `${this.titleFontSize()}px`)
+            ;
+
+        super.enter(domNode, element);
+    }
+
+    update(domNode, element) {
+        this._divTitleIcon
+            .text(this.titleIcon())
+            .style("display", this.titleIcon() !== "" ? "inline-block" : "none")
+            ;
+        this._divTitleText.text(this.title());
+
+        super.update(domNode, element);
+    }
+}
+TitleBar.prototype._class += " common_TitleBar";
 
 export interface TitleBar {
     title(): string;
@@ -181,4 +206,3 @@ TitleBar.prototype.publish("titleIconFont", "", "string");
 TitleBar.prototype.publish("titleIconFontSize", 28, "number");
 TitleBar.prototype.publish("titleFont", "", "string");
 TitleBar.prototype.publish("titleFontSize", 20, "number");
-TitleBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });

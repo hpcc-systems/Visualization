@@ -31,6 +31,7 @@ export const npmPackages = {
     "d3-shape": "d3-shape/build/d3-shape",
     "d3-sankey": "d3-sankey/build/d3-sankey",
     "d3-selection": "d3-selection/build/d3-selection",
+    "d3-svg-annotation": "d3-svg-annotation/indexRollup",
     "d3-svg-legend": "d3-svg-legend/indexRollup",
     "d3-time": "d3-time/build/d3-time",
     "d3-timer": "d3-timer/build/d3-timer",

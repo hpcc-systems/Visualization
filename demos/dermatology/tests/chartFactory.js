@@ -263,6 +263,29 @@
                 });
             }
         },
+        Gauge: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/Gauge"], function (DataFactory, Gauge) {
+                    var gauge = new Gauge()
+                        .title("My Gauge")
+                        .titleDescription("@hpcc-js/chart")
+                        .value(.66)
+                        .valueDescription("Main")
+                        .showTick(true)
+                        .tickValue(.33)
+                        .tickValueDescription("Average")
+                        ;
+                    callback(gauge);
+                    setInterval(() => {
+                        gauge
+                            .value(Math.random())
+                            .tickValue(Math.random())
+                            .lazyRender()
+                            ;
+                    }, 3000);
+                });
+            }
+        },
         Summary: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Summary"], function (DataFactory, Summary) {

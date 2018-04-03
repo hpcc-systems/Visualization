@@ -1,8 +1,8 @@
 import * as chart from "@hpcc-js/chart";
-import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, HexBin, Line, Pie, Scatter, Step, Summary, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Scatter, Step, Summary, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
-import { classDef, renderMedium, renderShort, renderWide } from "./coreTests";
+import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "./coreTests";
 
 const urlSearch: string = window.location.href.split("?")[1];
 const simple = {
@@ -106,6 +106,19 @@ describe("@hpcc-js/chart", () => {
                                 );
 
                                 break;
+
+                            case Gauge:
+                                renderSmall(new Gauge()
+                                    .title("My Gauge")
+                                    .titleDescription("@hpcc-js/chart")
+                                    .value(.66)
+                                    .valueDescription("Main")
+                                    .showTick(true)
+                                    .tickValue(.33)
+                                    .tickValueDescription("Average")
+                                );
+                                break;
+
                             case XYAxis:
                                 break;
 

@@ -39,7 +39,7 @@ export class Range extends HTMLWidget {
                     context._inputElement[0].property("value", context._inputElement[1].property("value"));
                     context.value(d3Rgb(context._inputElement[1].property("value")).toString());
                 }
-                w.change(w);
+                w.change(w, true);
             });
         });
     }

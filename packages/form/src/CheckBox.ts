@@ -42,7 +42,7 @@ export class CheckBox extends HTMLWidget {
                     }
                 });
                 context.value(vals);
-                w.change(w);
+                w.change(w, true);
             });
         });
     }

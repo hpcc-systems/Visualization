@@ -49,7 +49,7 @@ export abstract class IInput extends Widget {
     }
     dblclick(_w) {
     }
-    change(_w) {
+    change(_w, complete: boolean) {
     }
 
     resetValue(w) {

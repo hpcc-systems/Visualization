@@ -158,8 +158,10 @@ export class Main {
             .label("Location 1")
             .type("textarea")
             .value(20007)
-            .on("change", function (w) {
-                context.refreshLocations();
+            .on("change", function (w, complete) {
+                if (complete) {
+                    context.refreshLocations();
+                }
             })
             ;
         this.formZip2 = new Input()
@@ -167,8 +169,10 @@ export class Main {
             .label("Location 2")
             .type("textarea")
             .value(99501)
-            .on("change", function (w) {
-                context.refreshLocations();
+            .on("change", function (w, complete) {
+                if (complete) {
+                    context.refreshLocations();
+                }
             })
             ;
         this.formZip3 = new Input()
@@ -176,8 +180,10 @@ export class Main {
             .label("Location 3")
             .type("textarea")
             .value("")
-            .on("change", function (w) {
-                context.refreshLocations();
+            .on("change", function (w, complete) {
+                if (complete) {
+                    context.refreshLocations();
+                }
             })
             ;
         this.form = new Form()
@@ -191,24 +197,30 @@ export class Main {
                             .label("Date")
                             .type("date")
                             .value("2005-10-05")
-                            .on("change", function (w) {
-                                context.formatDate(w);
+                            .on("change", function (w, complete) {
+                                if (complete) {
+                                    context.formatDate(w);
+                                }
                             }),
                         new Input()
                             .name("zip1DateRange")
                             .label("+/- Months")
                             .type("number")
                             .value(4)
-                            .on("change", function (w) {
-                                context.refreshLocations(w);
+                            .on("change", function (w, complete) {
+                                if (complete) {
+                                    context.refreshLocations(w);
+                                }
                             }),
                         new Input()
                             .name("zip1DistRange")
                             .label("Radius")
                             .type("number")
                             .value(5)
-                            .on("change", function (w) {
-                                context.refreshLocations(w);
+                            .on("change", function (w, complete) {
+                                if (complete) {
+                                    context.refreshLocations(w);
+                                }
                             })
                     ]), new WidgetArray()
                         .content([
@@ -218,24 +230,30 @@ export class Main {
                                 .label("Date")
                                 .type("date")
                                 .value("2008-08-24")
-                                .on("change", function (w) {
-                                    context.formatDate(w);
+                                .on("change", function (w, complete) {
+                                    if (complete) {
+                                        context.formatDate(w);
+                                    }
                                 }),
                             new Input()
                                 .name("zip2DateRange")
                                 .label("+/- Months")
                                 .type("number")
                                 .value(4)
-                                .on("change", function (w) {
-                                    context.refreshLocations(w);
+                                .on("change", function (w, complete) {
+                                    if (complete) {
+                                        context.refreshLocations(w);
+                                    }
                                 }),
                             new Input()
                                 .name("zip2DistRange")
                                 .label("Radius")
                                 .type("number")
                                 .value(5)
-                                .on("change", function (w) {
-                                    context.refreshLocations(w);
+                                .on("change", function (w, complete) {
+                                    if (complete) {
+                                        context.refreshLocations(w);
+                                    }
                                 })
                         ]), new WidgetArray()
                             .content([
@@ -245,24 +263,30 @@ export class Main {
                                     .label("Date")
                                     .type("date")
                                     .value("")
-                                    .on("change", function (w) {
-                                        context.formatDate(w);
+                                    .on("change", function (w, complete) {
+                                        if (complete) {
+                                            context.formatDate(w);
+                                        }
                                     }),
                                 new Input()
                                     .name("zip3DateRange")
                                     .label("+/- Months")
                                     .type("number")
                                     .value(4)
-                                    .on("change", function (w) {
-                                        context.refreshLocations(w);
+                                    .on("change", function (w, complete) {
+                                        if (complete) {
+                                            context.refreshLocations(w);
+                                        }
                                     }),
                                 new Input()
                                     .name("zip3DistRange")
                                     .label("Radius")
                                     .type("number")
                                     .value(5)
-                                    .on("change", function (w) {
-                                        context.refreshLocations(w);
+                                    .on("change", function (w, complete) {
+                                        if (complete) {
+                                            context.refreshLocations(w);
+                                        }
                                     })
                             ]),
                 (new Slider()
@@ -315,15 +339,15 @@ export class Main {
                 context.mainRequest.agelow = request.age[0];
                 context.mainRequest.agehigh = request.age[1];
                 context.mainRequest.demomode = demomode;
-                context.mainRequest.bestfitmax = 10;
+                context.mainRequest.bestfitmax = 25;
                 const tmp = JSON.stringify(context.mainRequest);
                 console.log(tmp);
                 // @ts-ignore
                 const newRequestXXX = {
-                    "zip1": "19146", "date1": "19980101", "zip1lowyyyymm": "199703", "zip1highyyyymm": "199811", "zip2": "80528", "date2": "20020101",
-                    "zip2lowyyyymm": "200103", "zip2highyyyymm": "200211", "radius": 10, "agelow": 40, "agehigh": 55, "demomode": false, "bestfitmax": 10
+                    zip1: "19146", date1: "19980101", zip1lowyyyymm: "199703", zip1highyyyymm: "199811", zip2: "80528", date2: "20020101",
+                    zip2lowyyyymm: "200103", zip2highyyyymm: "200211", radius: 10, agelow: 40, agehigh: 55, demomode: false, bestfitmax: 10
                 };
-                context.connWeCare.send("wecares.serialoffenderfinderservice/json", newRequestXXX/*context.mainRequest*/).then(function (response) {
+                context.connWeCare.send("wecares.serialoffenderfinderservice/json", context.mainRequest).then(function (response) {
                     const bestFit = response["wecares.serialoffenderfinderserviceResponse"].Results.BestFit.Row;
                     context.loadDebugTable(bestFit);
                     context.individuals = [];

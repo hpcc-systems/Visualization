@@ -9,3 +9,4 @@ lib-es6/
 lib-test/
 lib-umd/
 tmp/
+.idea/

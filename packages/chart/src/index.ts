@@ -6,6 +6,7 @@ export * from "./Bullet";
 export * from "./Column";
 export * from "./Contour";
 export * from "./Gantt";
+export * from "./Gauge";
 export * from "./HexBin";
 export * from "./Line";
 export * from "./Pie";

@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-amchart",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "dependencies": {
-    "@hpcc-js/amchart": "^0.0.70",
-    "@hpcc-js/common": "^0.0.70",
-    "@hpcc-js/sample-data": "^0.0.32",
+    "@hpcc-js/amchart": "^0.0.71",
+    "@hpcc-js/common": "^0.0.71",
+    "@hpcc-js/sample-data": "^0.0.33",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
     "mocha": "3.4.2",

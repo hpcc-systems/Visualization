@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-map",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "dependencies": {
-    "@hpcc-js/common": "^0.0.70",
-    "@hpcc-js/map": "^0.0.75",
-    "@hpcc-js/sample-data": "^0.0.32",
+    "@hpcc-js/common": "^0.0.71",
+    "@hpcc-js/map": "^0.0.76",
+    "@hpcc-js/sample-data": "^0.0.33",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
     "mocha": "3.4.2",

@@ -991,15 +991,18 @@ export function Visualization(this: any, dashboard, visualization, parentVisuali
                         ;
                     if (visualization.range) {
                         let selectionLabel = "";
-                        for (const key in visualization.source.mappings) {
-                            selectionLabel = key;
-                            break;
+                        if (Utility.exists("events.click.updates", visualization) && visualization.events.click.updates.length) {
+                            for (const key in visualization.events.click.updates[0].mappings) {
+                                selectionLabel = key;
+                                break;
+                            }
                         }
                         widget
                             .low_default(+visualization.range[0])
                             .high_default(+visualization.range[1])
                             .step_default(+visualization.range[2])
                             .selectionLabel_default(selectionLabel)
+                            .selectionLabel(selectionLabel)
                             ;
                     }
                 } catch (e) {

@@ -233,6 +233,7 @@ export interface ChartMeta {
 }
 export interface MultiChart {
     _otherChartTypes: ChartMeta[];
+    _graphChartTypes: ChartMeta[];
     _1DChartTypes: ChartMeta[];
     _2DChartTypes: ChartMeta[];
     _NDChartTypes: ChartMeta[];
@@ -260,9 +261,12 @@ export interface MultiChart {
 }
 
 MultiChart.prototype._otherChartTypes = [
-    { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" },
     { id: "FORM", display: "Form", widgetClass: "form_Form" }
 ].map(function (item: any) { item.family = "other"; return item; });
+MultiChart.prototype._graphChartTypes = [
+    { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" },
+    { id: "GRAPHC", display: "GraphC", widgetClass: "graph_GraphC" }
+].map(function (item: any) { item.family = "GRAPH"; return item; });
 MultiChart.prototype._1DChartTypes = [
     { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
 ].map(function (item: any) { item.family = "1D"; return item; });
@@ -327,16 +331,19 @@ MultiChart.prototype._anyChartTypes = [
     { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
     { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },
     { id: "TABLE_GMAP_PIN", display: "Table driven Google Map (pins)", widgetClass: "map_GMapPin" },
-    { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" }
+    { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" },
+    { id: "TABLE_XML_TREE", display: "Table driven XML Tree", widgetClass: "tree_Indented" },
+    { id: "TABLE_ORB", display: "Pivot Table (orb.js)", widgetClass: "react_Orb" }
 ].map(function (item: any) { item.family = "any"; return item; });
 MultiChart.prototype._allChartTypes =
     MultiChart.prototype._otherChartTypes.concat(
-        MultiChart.prototype._1DChartTypes.concat(
-            MultiChart.prototype._2DChartTypes.concat(
-                MultiChart.prototype._NDChartTypes.concat(
-                    MultiChart.prototype._mapChartTypes.concat(
-                        MultiChart.prototype._anyChartTypes
-                    )))));
+        MultiChart.prototype._graphChartTypes.concat(
+            MultiChart.prototype._1DChartTypes.concat(
+                MultiChart.prototype._2DChartTypes.concat(
+                    MultiChart.prototype._NDChartTypes.concat(
+                        MultiChart.prototype._mapChartTypes.concat(
+                            MultiChart.prototype._anyChartTypes
+                        ))))));
 MultiChart.prototype._allMap = d3Map(MultiChart.prototype._allChartTypes, function (item: any) { return item.family; });
 MultiChart.prototype._allFamilies = MultiChart.prototype._allMap.keys();
 MultiChart.prototype._allChartTypesMap = {};

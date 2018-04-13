@@ -39,7 +39,7 @@ export class Vertex extends SVGWidget {
             element.classed("centroid", this.centroid());
             element.style("filter", this.centroid() ? "url(#" + this._graphID + "_glow)" : null);
             this._icon
-                .tooltip(this.tooltip())
+                .tooltip(this.iconTooltip() ? this.iconTooltip() : this.tooltip())
                 .render()
                 ;
             const iconClientSize = this._icon.getBBox(true);
@@ -156,6 +156,7 @@ export class Vertex extends SVGWidget {
     textbox_text_colorFill: { (): string; (_: string): Vertex; };
 
     iconAnchor: { (): string; (_: string): Vertex; };
+    iconTooltip: { (): string; (_: string): Vertex; };
 
     tooltip: { (): string; (_: string): Vertex; };
 
@@ -181,6 +182,7 @@ Vertex.prototype.publishProxy("textbox_shape_colorFill", "_textBox", "shape_colo
 Vertex.prototype.publishProxy("textbox_text_colorFill", "_textBox", "text_colorFill");
 
 Vertex.prototype.publish("iconAnchor", "start", "set", "Icon Anchor Position", ["", "start", "middle", "end"], { tags: ["Basic"] });
+Vertex.prototype.publish("iconTooltip", "", "string", "iconTooltip", null, { tags: ["Private"] });
 
 Vertex.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 

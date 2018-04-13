@@ -1,5 +1,5 @@
 import * as common from "@hpcc-js/common";
-import { Button, Class, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, Shape, Spacer, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
+import { Button, CanvasWidget, Class, FAChar, HTMLWidget, Icon, IconBar, Image, List, Menu, ResizeSurface, Shape, Spacer, Surface, SVGWidget, SVGZoomWidget, Text, TextBox, TitleBar, ToggleButton } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderIcon, renderMedium, renderSmall } from "./coreTests";
 
@@ -74,6 +74,9 @@ describe("@hpcc-js/common", () => {
                             case Spacer:
                             case IconBar:
                             case TitleBar:
+                                break;
+                            case CanvasWidget:
+                                renderMedium(new CanvasWidget());
                                 break;
                             case SVGZoomWidget:
                                 renderMedium(new SVGZoomWidget());

@@ -33,3 +33,5 @@ packages/**/package-lock.json
 tests/**/package-lock.json
 packages/ddl-shim/src/ddlSchema.ts
 packages/ddl-shim/src/ddl2Schema.ts
+tmp/
+.idea/

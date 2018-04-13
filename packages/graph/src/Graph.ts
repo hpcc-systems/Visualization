@@ -643,16 +643,32 @@ export class Graph extends SVGZoomWidget {
             .attr("cy", 5)
             .attr("r", 4)
             ;
-        this.defs.append("filter")
+        const filter = this.defs.append("filter")
             .attr("id", this._id + "_glow")
             .attr("width", "130%")
             .attr("height", "130%")
-            .html(
-                '<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>' +
-                '<feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0" />' +
-                '<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"></feGaussianBlur>' +
-                '<feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>'
-            )
+            ;
+        filter.append("feOffset")
+            .attr("result", "offOut")
+            .attr("in", "SourceGraphic")
+            .attr("dx", "0")
+            .attr("dy", "0")
+            ;
+        filter.append("feColorMatrix")
+            .attr("result", "matrixOut")
+            .attr("in", "offOut")
+            .attr("type", "matrix")
+            .attr("values", "0.2 0 0 0 0 0 0.2 0 0 1 0 0 0.2 0 0 0 0 0 1 0")
+            ;
+        filter.append("feGaussianBlur")
+            .attr("result", "blurOut")
+            .attr("in", "matrixOut")
+            .attr("stdDeviation", "3")
+            ;
+        filter.append("feBlend")
+            .attr("in", "SourceGraphic")
+            .attr("in2", "blurOut")
+            .attr("mode", "normal")
             ;
     }
 

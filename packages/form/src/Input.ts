@@ -52,19 +52,19 @@ export class Input extends HTMLWidget {
 
         this._inputElement.forEach(function (e, idx) {
             e.attr("name", context.name());
-            e.on("click", function (w) {
+            e.on("click", function (w: Input) {
                 w.click(w);
             });
-            e.on("blur", function (w) {
+            e.on("blur", function (w: Input) {
                 w.blur(w);
             });
-            e.on("change", function (w) {
+            e.on("change", function (w: Input) {
                 context.value([e.property("value")]);
-                w.change(w);
+                w.change(w, true);
             });
-            e.on("keyup", function (w) {
+            e.on("keyup", function (w: Input) {
                 context.value([e.property("value")]);
-                w.change(w);
+                w.change(w, false);
             });
         });
     }
@@ -105,6 +105,12 @@ export class Input extends HTMLWidget {
     value_exists: () => boolean;
     validate: { (): string; (_: string): Input };
     validate_exists: () => boolean;
+
+    //  IInput Events ---
+    blur: (w: Input) => void;
+    click: (w: Input) => void;
+    dblclick: (w: Input) => void;
+    change: (w: Input, complete: boolean) => void;
 }
 Input.prototype._class += " form_Input";
 Input.prototype.implements(IInput.prototype);

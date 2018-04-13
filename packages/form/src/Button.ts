@@ -26,7 +26,7 @@ export class Button extends HTMLWidget {
             })
             .on("change", function (w) {
                 context.value([context._inputElement[0].property("value")]);
-                w.change(w);
+                w.change(w, true);
             })
             ;
     }

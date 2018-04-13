@@ -36,7 +36,7 @@ export class OnOff extends HTMLWidget {
                     }
                 });
                 context.value(vals);
-                w.change(w);
+                w.change(w, true);
             })
             ;
         const label = element.append("label")

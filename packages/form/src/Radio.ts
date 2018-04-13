@@ -36,7 +36,7 @@ export class Radio extends HTMLWidget {
             });
             e.on("change", function (w) {
                 context.value([e.property("value")]);
-                w.change(w);
+                w.change(w, true);
             });
         });
     }

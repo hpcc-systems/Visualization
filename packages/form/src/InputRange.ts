@@ -42,7 +42,7 @@ export class InputRange extends HTMLWidget {
             e.on("change", function (w) {
                 context._rangeData[idx] = e.property("value");
                 context.value(context._rangeData);
-                w.change(w);
+                w.change(w, true);
             });
         });
     }

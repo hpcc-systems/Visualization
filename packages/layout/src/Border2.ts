@@ -4,10 +4,19 @@ import "../src/Border2.css";
 
 export class WidgetDiv {
     private _div: d3SelectionType;
+    private _overlay: boolean = false;
     private _widget: Widget;
 
     constructor(div: d3SelectionType) {
         this._div = div;
+    }
+
+    overlay(): boolean;
+    overlay(_: boolean): this;
+    overlay(_?: boolean): boolean | this {
+        if (!arguments.length) return this._overlay;
+        this._overlay = _;
+        return this;
     }
 
     element(): d3SelectionType {
@@ -42,12 +51,21 @@ export class WidgetDiv {
     }
 
     render(getBBox?): this | BBox {
+        this._div
+            .style("height", this.overlay() ? "0px" : null)
+            .style("overflow", this.overlay() ? "visible" : null)
+            ;
+
         if (this._widget) {
             this._widget.render();
             if (getBBox && this._widget.visible()) {
                 const retVal = this._widget.getBBox();
                 retVal.width += 8;
-                retVal.height += 8;
+                if (this.overlay()) {
+                    retVal.height = 0;
+                } else {
+                    retVal.height += 8;
+                }
                 return retVal;
             }
         }
@@ -84,7 +102,11 @@ export class Border2 extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        const topBBox: BBox = this._topWA.widget(this.top()).render(true) as BBox;
+        const topBBox: BBox = this._topWA
+            .widget(this.top())
+            .overlay(this.topOverlay())
+            .render(true) as BBox
+            ;
         const leftBBox: BBox = this._leftWA.widget(this.left()).render(true) as BBox;
         const rightBBox: BBox = this._rightWA.widget(this.right()).render(true) as BBox;
         const bottomBBox: BBox = this._bottomWA.widget(this.bottom()).render(true) as BBox;
@@ -121,6 +143,8 @@ Border2.prototype._class += " layout_Border2";
 export interface Border2 {
     top(): Widget;
     top(_: Widget): this;
+    topOverlay(): boolean;
+    topOverlay(_: boolean): this;
     left(): Widget;
     left(_: Widget): this;
     center(): Widget;
@@ -131,6 +155,7 @@ export interface Border2 {
     bottom(_: Widget): this;
 }
 Border2.prototype.publish("top", null, "widget", "Top Widget", undefined, { render: false });
+Border2.prototype.publish("topOverlay", false, "boolean", "Overlay Top Widget");
 Border2.prototype.publish("left", null, "widget", "Left Widget", undefined, { render: false });
 Border2.prototype.publish("center", null, "widget", "Center Widget", undefined, { render: false });
 Border2.prototype.publish("right", null, "widget", "Right Widget", undefined, { render: false });

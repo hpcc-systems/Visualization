@@ -75,17 +75,15 @@ export class ChartPanel extends Border2 implements IHighlight {
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     title: publish<this, string>;
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleFont: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleFontSize: publish<this, number>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleFontColor: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
     titleIcon: publish<this, string>;
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     titleIconFont: publish<this, string>;
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleFont: publish<this, string>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
     titleIconFontSize: publish<this, number>;
+    @publishProxy("_titleBar", undefined, undefined, { reset: true })
+    titleFontSize: publish<this, number>;
     @publish("")
     description: publish<this, string>;
     @publish(null, "widget", "Widget", undefined, { render: false })

@@ -21,6 +21,10 @@
     order: 3;
 }
 
-header, footer {
+.layout_Border2 > header {
+    display: block;
+}
+
+.layout_Border2 > footer {
     display: block;
 }

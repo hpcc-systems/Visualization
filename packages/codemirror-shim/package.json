@@ -33,7 +33,7 @@
     "rollup-plugin-postcss": "0.5.5",
     "rollup-plugin-sourcemaps": "0.4.2",
     "tslint": "5.8.0",
-    "typescript": "2.6.1"
+    "typescript": "2.8.1"
   },
   "repository": {
     "type": "git",

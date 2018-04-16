@@ -40,7 +40,7 @@ export class SAXStackParser {
     constructor() {
     }
 
-    private walkDoc(node: Node) {
+    private walkDoc(node: any) {
         const xmlNode = this._startXMLNode(node);
         if (node.attributes) {
             for (let i = 0; i < node.attributes.length; ++i) {

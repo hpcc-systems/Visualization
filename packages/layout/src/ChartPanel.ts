@@ -10,6 +10,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
     protected _progressBar = new ProgressBar();
+    protected _autoScale = false;
     protected _resolutions = {
         tiny: { width: 100, height: 100 },
         small: { width: 300, height: 300 }
@@ -189,6 +190,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     getResponsiveMode(): "tiny" | "small" | "regular" {
+        if (!this._autoScale) return "regular";
         if (this.size().width <= this._resolutions.tiny.width || this.size().height <= this._resolutions.tiny.height) {
             return "tiny";
         } else if (this.size().width <= this._resolutions.small.width || this.size().height <= this._resolutions.small.height) {

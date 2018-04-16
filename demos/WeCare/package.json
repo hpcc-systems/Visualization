@@ -30,7 +30,7 @@
     "rimraf": "2.6.2",
     "rollup": "0.54.0",
     "source-map-loader": "0.2.1",
-    "typescript": "2.6.1",
+    "typescript": "2.8.1",
     "webpack": "3.10.0"
   }
 }

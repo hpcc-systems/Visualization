@@ -753,42 +753,61 @@ export class GMap extends HTMLWidget {
                 JSON.stringify(this._userShapes.save()));
         }
     }
-
-    type: { (): string; (_: string): GMap };
-    type_exists: () => boolean;
-    centerLat: { (): number; (_: number): GMap };
-    centerLat_exists: () => boolean;
-    centerLong: { (): number; (_: number): GMap };
-    centerLong_exists: () => boolean;
-    centerAddress: { (): string; (_: string): GMap };
-    centerAddress_exists: () => boolean;
-    zoom: { (): number; (_: number): GMap };
-    zoom_exists: () => boolean;
-    singleZoomToMaxZoom: { (): number; (_: number): GMap };
-    panControl: { (): boolean; (_: boolean): GMap };
-    panControl_exists: () => boolean;
-    zoomControl: { (): boolean; (_: boolean): GMap };
-    zoomControl_exists: () => boolean;
-    scaleControl: { (): boolean; (_: boolean): GMap };
-    scaleControl_exists: () => boolean;
-    mapTypeControl: { (): boolean; (_: boolean): GMap };
-    mapTypeControl_exists: () => boolean;
-    fullscreenControl: { (): boolean; (_: boolean): GMap };
-    fullscreenControl_exists: () => boolean;
-    streetViewControl: { (): boolean; (_: boolean): GMap };
-    streetViewControl_exists: () => boolean;
-    overviewMapControl: { (): boolean; (_: boolean): GMap };
-    overviewMapControl_exists: () => boolean;
-    streetView: { (): boolean; (_: boolean): GMap };
-    streetView_exists: () => boolean;
-    drawingTools: { (): boolean; (_: boolean): GMap };
-    drawingTools_exists: () => boolean;
-    drawingState: { (): string; (_: string): GMap };
-    drawingState_exists: () => boolean;
-    googleMapStyles: { (): object; (_: object): GMap };
-    googleMapStyles_exists: () => boolean;
 }
 GMap.prototype._class += " map_GMap";
+
+export interface GMap {
+    type(): string;
+    type(_: string): this;
+    type_exists(): boolean;
+    centerLat(): number;
+    centerLat(_: number);
+    centerLat_exists(): boolean;
+    centerLong(): number;
+    centerLong(_: number): this;
+    centerLong_exists(): boolean;
+    centerAddress(): string;
+    centerAddress(_: string): this;
+    centerAddress_exists(): boolean;
+    zoom(): number;
+    zoom(_: number): this;
+    zoom_exists(): boolean;
+    singleZoomToMaxZoom(): number;
+    singleZoomToMaxZoom(_: number): this;
+    panControl(): boolean;
+    panControl(_: boolean): this;
+    panControl_exists(): boolean;
+    zoomControl(): boolean;
+    zoomControl(_: boolean): this;
+    zoomControl_exists(): boolean;
+    scaleControl(): boolean;
+    scaleControl(_: boolean): this;
+    scaleControl_exists(): boolean;
+    mapTypeControl(): boolean;
+    mapTypeControl(_: boolean): this;
+    mapTypeControl_exists(): boolean;
+    fullscreenControl(): boolean;
+    fullscreenControl(_: boolean): this;
+    fullscreenControl_exists(): boolean;
+    streetViewControl(): boolean;
+    streetViewControl(_: boolean): this;
+    streetViewControl_exists(): boolean;
+    overviewMapControl(): boolean;
+    overviewMapControl(_: boolean): this;
+    overviewMapControl_exists(): boolean;
+    streetView(): boolean;
+    streetView(_: boolean): this;
+    streetView_exists(): boolean;
+    drawingTools(): boolean;
+    drawingTools(_: boolean): this;
+    drawingTools_exists(): boolean;
+    drawingState(): string;
+    drawingState(_: string): this;
+    drawingState_exists(): boolean;
+    googleMapStyles(): object;
+    googleMapStyles(_: object): this;
+    googleMapStyles_exists(): boolean;
+}
 
 GMap.prototype.publish("type", "road", "set", "Map Type", ["terrain", "road", "satellite", "hybrid"], { tags: ["Basic"] });
 GMap.prototype.publish("centerLat", 42.877742, "number", "Center Latitude", null, { tags: ["Basic"] });

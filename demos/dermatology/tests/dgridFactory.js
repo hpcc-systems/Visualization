@@ -13,7 +13,7 @@
                     var table = new Table()
                         .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
                         .data([
-                            ["Width 2 undefined", , 83, , 72],
+                            ["with 2 undefined", , 83, , 72],
                             ["English II", 17, 43, 83, 93],
                             ["English III", 6, 43, 64, 93],
                             ["Width Blank", 7, "", 52, 83],
@@ -41,8 +41,8 @@
         },
         NestedTable: {
             simple: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, NestedTable) {
-                    callback(new NestedTable()
+                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, Table) {
+                    callback(new Table()
                         .columns(["Mother", "Father", { label: "Children", columns: ["Name", "sex", "age"] }, { label: "Pets", columns: ["Name", "type"] }])
                         .data([
                             ["Jane", "John", [["Mary", "f", 4], ["Bob", "m", 6], ["Tim", "m", 1]], [["Spot", "dog"], ["Smelly", "cat"], ["Goldie", "Fish"], ["Hammy", "Hamster"]]],
@@ -54,21 +54,27 @@
                 });
             },
             regularColumns: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, NestedTable) {
-                    callback(new NestedTable()
+                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, Table) {
+                    callback(new Table()
                         .columns(["Mother", "Father", "Children"])
                         .data([
-                            ["Geography", 75, [["Geography", 75, 68, 65],
-                            ["English", 45, 55, 52],
-                            ["Math", 98, 92, 90],
-                            ["Science", 66, 60, 72]], 65],
+                            ["Geography", 75, [
+                                ["Geography", 75, 68, 65],
+                                ["English", 45, 55, 52],
+                                ["Math", 98, 92, 90],
+                                ["Science", 66, 60, 72]
+                            ], 65],
                             ["English", 45, [], 52],
-                            ["Math", 98, [["Geography", 75, 68, 65],
-                            ["English", 45, 55, 52],
-                            ["Science", 66, 60, 72]], 90],
-                            ["Science", 66, [["Geography", 75, 68, 65],
-                            ["Math", 98, 92, 90],
-                            ["Science", 66, 60, 72]], 72]
+                            ["Math", 98, [
+                                ["Geography", 75, 68, 65],
+                                ["English", 45, 55, 52],
+                                ["Science", 66, 60, 72]
+                            ], 90],
+                            ["Science", 66, [
+                                ["Geography", 75, 68, 65],
+                                ["Math", 98, 92, 90],
+                                ["Science", 66, 60, 72]
+                            ], 72]
                         ])
                     );
                 });
@@ -76,8 +82,8 @@
         },
         WUResult: {
             Nested: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/WUResult"], function (DataFactory, Table) {
-                    callback(new Table()
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUResult"], function (DataFactory, WUResult) {
+                    callback(new WUResult()
                         .wsWorkunitsUrl("http://192.168.3.22:8010")
                         .wuid("W20170627-102820")
                         .resultName("NestedChildDataset")
@@ -85,8 +91,8 @@
                 });
             },
             Nested2: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/WUResult"], function (DataFactory, Table) {
-                    callback(new Table()
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUResult"], function (DataFactory, WUResult) {
+                    callback(new WUResult()
                         .wsWorkunitsUrl("http://192.168.3.22:8010")
                         .wuid("W20170630-090707")
                         .resultName("All")
@@ -94,8 +100,8 @@
                 });
             },
             LargeBySeq: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/WUResult"], function (DataFactory, Table) {
-                    callback(new Table()
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUResult"], function (DataFactory, WUResult) {
+                    callback(new WUResult()
                         .wsWorkunitsUrl("http://192.168.3.22:8010")
                         .wuid("W20170424-070701")
                         .sequence(1)
@@ -103,8 +109,8 @@
                 });
             },
             LargeByName: function (callback) {
-                legacyRequire(["test/DataFactory", "src/dgrid/WUResult"], function (DataFactory, Table) {
-                    callback(new Table()
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUResult"], function (DataFactory, WUResult) {
+                    callback(new WUResult()
                         .wsWorkunitsUrl("http://192.168.3.22:8010")
                         .wuid("W20170424-070701")
                         .resultName("Result 1")

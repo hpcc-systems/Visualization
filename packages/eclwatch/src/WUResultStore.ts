@@ -1,5 +1,5 @@
 import { Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
-import { Deferred, domConstruct, QueryResults } from "@hpcc-js/dgrid-shim";
+import { Deferred, domConstruct, IColumn, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
 
 import "../src/WUResultStore.css";
 
@@ -21,105 +21,6 @@ function safeEncode(item) {
     return item;
 }
 
-const LINE_SPLITTER = `<br><hr class='dgrid-fakeline'>`;
-const LINE_SPLITTER2 = `<br><hr class='dgrid-fakeline' style='visibility: hidden'>`;
-
-class RowFormatter {
-    private _columns;
-    private _flattenedColumns = [];
-    private _columnIdx = {};
-    private _formattedRow = {};
-    private _grid = {};
-
-    constructor(columns) {
-        this._columns = columns;
-        this.flattenColumns(columns);
-    }
-
-    flattenColumns(columns) {
-        for (const column of columns) this.flattenColumn(column);
-
-    }
-
-    flattenColumn(column) {
-        if (column.children) {
-            for (const childColumn of column.children) this.flattenColumn(childColumn);
-        } else {
-            this._columnIdx[column.field] = this._flattenedColumns.length;
-            this._flattenedColumns.push(column.field);
-        }
-    }
-
-    format(row) {
-        this._formattedRow = {};
-        this._grid = {};
-        this.formatRow(this._columns, row);
-        return this.row();
-    }
-
-    formatRow(columns, row: any = {}, rowIdx: number = 0) {
-        let maxChildLen = 0;
-        const colLenBefore = {};
-        for (const column of columns) {
-            if (!column.children && this._formattedRow[column.field] !== undefined) {
-                colLenBefore[column.field] = ("" + this._formattedRow[column.field]).split(LINE_SPLITTER).length;
-            }
-            const rowArr = row instanceof Array ? row : [row];
-            for (const r of rowArr) {
-                maxChildLen = Math.max(maxChildLen, this.formatCell(column, column.isRawHTML ? r[column.leafID] : safeEncode(r[column.leafID]), rowIdx));
-            }
-        }
-        for (const column of columns) {
-            if (!column.children) {
-                const cellLength = ("" + this._formattedRow[column.field]).split(LINE_SPLITTER).length - (colLenBefore[column.field] || 0);
-                const delta = maxChildLen - cellLength;
-                if (delta > 0) {
-                    const paddingArr = [];
-                    paddingArr.length = delta + 1;
-                    const padding = paddingArr.join(LINE_SPLITTER2);
-                    this._formattedRow[column.field] += padding;
-                }
-            }
-        }
-        return maxChildLen;
-    }
-
-    formatCell(column, cell, rowIdx) {
-        let internalRows = 0;
-        if (column.children) {
-            const children = cell && cell.Row ? cell.Row : [cell];
-            if (children.length === 0) {
-                children.push({});
-            }
-            for (let idx = 0, _children = children; idx < _children.length; ++idx) {
-                const row = _children[idx];
-                internalRows += this.formatRow(column.children, row, rowIdx + idx) + 1;
-            }
-            return children.length;
-        }
-        if (this._formattedRow[column.field] === undefined) {
-            this._formattedRow[column.field] = cell === undefined ? "" : cell;
-            ++internalRows;
-        } else {
-            this._formattedRow[column.field] += LINE_SPLITTER + (cell === undefined ? "" : cell);
-            ++internalRows;
-        }
-        if (!this._grid[rowIdx]) {
-            this._grid[rowIdx] = {};
-        }
-        this._grid[rowIdx][column.field] = cell;
-        return internalRows;
-    }
-
-    row() {
-        const retVal = {};
-        for (const column of this._flattenedColumns) {
-            retVal[column] = this._formattedRow[column];
-        }
-        return retVal;
-    }
-}
-
 export class Store {
     protected wuResult: Result;
     protected schema: XSDSchema;
@@ -138,23 +39,24 @@ export class Store {
         return this._columns;
     }
 
-    schema2Columns(parentNode: XSDXMLNode, prefix: string = ""): any[] {
+    schema2Columns(parentNode: XSDXMLNode, prefix: string = ""): IColumn[] {
         if (!parentNode) return [];
-        return parentNode.children().filter(node => node.name.indexOf("__hidden", node.name.length - "__hidden".length) === -1).map(node => {
+        return parentNode.children().filter(node => node.name.indexOf("__hidden", node.name.length - "__hidden".length) === -1).map((node, idx) => {
             const label = node.name;
             const keyed = node.attrs["hpcc:keyed"];
-            const column: any = {
-                label: label + (keyed ? " (i)" : ""),
-                leafID: label,
+            const column: IColumn = {
                 field: prefix + label,
+                leafID: label,
+                idx,
+                label: label + (keyed ? " (i)" : ""),
                 className: "resultGridCell",
                 sortable: false,
                 width: keyed ? 16 : 0
             };
             const children = this.schema2Columns(node, prefix + label + "_");
             if (children.length) {
-                column.width += 10 + children.reduce((childNode, prev) => {
-                    return prev + childNode.width;
+                column.width += 10 + children.reduce((prev: number, childNode: IColumn) => {
+                    return prev + childNode.width!;
                 }, 0);
                 column.children = children;
             } else {
@@ -163,6 +65,8 @@ export class Store {
                     switch (typeof cell) {
                         case "string":
                             return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+                        case "undefined":
+                            return "";
                     }
                     return cell;
                 };

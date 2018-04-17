@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as dgrid from "@hpcc-js/dgrid";
-import { DatasourceTable, Table, WUResult } from "@hpcc-js/dgrid";
+import { DatasourceTable, Table } from "@hpcc-js/dgrid";
 import { expect } from "chai";
 import { classDef, renderMedium /*, renderShort, renderWide*/ } from "./coreTests";
 
@@ -42,8 +42,6 @@ describe("@hpcc-js/dgrid", () => {
                                     .columns(simple.ND.columns)
                                     .data(simple.ND.data)
                                 );
-                                break;
-                            case WUResult:
                                 break;
                             default:
                                 it("Has render test", () => {

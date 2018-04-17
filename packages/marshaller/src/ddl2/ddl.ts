@@ -1,3 +1,4 @@
+import { MultiChartPanel } from "@hpcc-js/composite";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { IField } from "@hpcc-js/dgrid";
 import { Activity, ActivityPipeline, ReferencedFields } from "./activities/activity";
@@ -326,6 +327,38 @@ export class DDLAdapter {
         }).filter(activity => !!activity);
     }
 
+    writeVisualizationProperties(element: Element): DDL2.IWidgetProperties {
+        const retVal: DDL2.IWidgetProperties = {
+        };
+        const chart = element.chart();
+        for (const prop of chart.publishedProperties()) {
+            if (prop.id === "fields") continue;
+            if ((chart as any)[`${prop.id}_modified`]()) {
+                retVal[prop.id] = (chart as any)[`${prop.id}`]();
+            }
+        }
+        return retVal;
+    }
+
+    writeVisualization(element: Element): DDL2.IVisualization {
+        return {
+            title: element.chartPanel().title(),
+            description: element.chartPanel().description(),
+            chartType: element.chartType(),
+            properties: this.writeVisualizationProperties(element)
+        };
+    }
+
+    readVisualization(ddlViz: DDL2.IVisualization, chartPanel: MultiChartPanel): this {
+        chartPanel
+            .title(ddlViz.title)
+            .description(ddlViz.description)
+            .chartType(ddlViz.chartType)
+            .chartTypeDefaults(ddlViz.properties)
+            ;
+        return this;
+    }
+
     mergeFieldArray(targetArr: DDL2.FieldType[], sourceArr: DDL2.FieldType[]): DDL2.FieldType[] {
         const existing: string[] = targetArr.map(f => f.id);
         return targetArr.concat(sourceArr.filter(f => existing.indexOf(f.id) < 0));
@@ -353,13 +386,14 @@ export class DDLAdapter {
         for (const viz of this._elementContainer.elements()) {
             viz.hipiePipeline().referencedFields(refs);
         }
-        return this._elementContainer.elements().map(viz => {
-            const view = viz.hipiePipeline();
+        return this._elementContainer.elements().map(element => {
+            const view = element.hipiePipeline();
             const ds = view.dataSource();
             const retVal = {
-                id: viz.id(),
+                id: element.id(),
                 datasource: this.writeDatasourceRef(ds, refs),
-                activities: this.writeActivities(view)
+                activities: this.writeActivities(view),
+                visualization: this.writeVisualization(element)
             };
             this.updateDSFields(ds, refs);
             return retVal;
@@ -370,35 +404,36 @@ export class DDLAdapter {
         for (const ddlView of ddlViews) {
             const element = new Element(this._elementContainer).id(ddlView.id).title(ddlView.id);
             this._elementContainer.append(element);
-            const view = element.hipiePipeline();
-            this.readDatasourceRef(ddlView.datasource, view.dataSource(), this._elementContainer);
+            const hipiePipeline = element.hipiePipeline();
+            this.readDatasourceRef(ddlView.datasource, hipiePipeline.dataSource(), this._elementContainer);
             for (const activity of ddlView.activities) {
                 if (DDL2.isProjectActivity(activity)) {
                     const project = this.readProject(activity);
-                    view.project(project);
+                    hipiePipeline.project(project);
                 }
                 if (DDL2.isFilterActivity(activity)) {
                     const filters = this.readFilters(activity, this._elementContainer);
-                    view.filters(filters);
+                    hipiePipeline.filters(filters);
                 }
                 if (DDL2.isGroupByActivity(activity)) {
                     const groupBy = this.readGroupBy(activity);
-                    view.groupBy(groupBy);
+                    hipiePipeline.groupBy(groupBy);
                 }
                 if (DDL2.isSortActivity(activity)) {
                     const sort = this.readSort(activity);
-                    view.sort(sort);
+                    hipiePipeline.sort(sort);
                 }
                 if (DDL2.isLimitActivity(activity)) {
                     const limit = this.readLimit(activity);
-                    view.limit(limit);
+                    hipiePipeline.limit(limit);
                 }
                 if (DDL2.isMappingsActivity(activity)) {
                     const project = this.readProject(activity);
                     project.trim(true);
-                    view.mappings(project);
+                    hipiePipeline.mappings(project);
                 }
             }
+            this.readVisualization(ddlView.visualization, element.multiChartPanel());
         }
         // this._dashboard.syncWidgets();
     }
@@ -406,7 +441,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.19",
+            version: "0.0.20",
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews()
         };

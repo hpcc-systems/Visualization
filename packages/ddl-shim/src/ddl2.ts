@@ -224,16 +224,29 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
     return activity.type === "limit";
 }
 
+//  Visualization  ============================================================
+export type IWidgetProperties = { [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] };
+export interface IWidget {
+    chartType: string;
+    properties: IWidgetProperties;
+}
+
+export interface IVisualization extends IWidget {
+    title: string;
+    description: string;
+}
+
 //  View  =====================================================================
 export interface IView {
     id: string;
     datasource: IDatasourceRef | IRoxieServiceRef;
     activities: ActivityType[];
+    visualization: IVisualization;
 }
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.19";
+    version: "0.0.20";
     datasources: DatasourceType[];
     dataviews: IView[];
 }

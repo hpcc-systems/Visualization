@@ -146,7 +146,7 @@ export class GraphAdapter {
                     prevID = this.createDatasource(viz, view, { viz: undefined, activity });
                 } else if (activity === view.mappings()) {
                     this.createActivity(prevID, viz, view, activity, "Mappings");
-                    const surface: Surface = this.createSurface(`${view.mappings().id()}`, `Visualization`, { viz, view });
+                    const surface: Surface = this.createSurface(`${view.mappings().id()}`, `Visualization`, { viz, view, activity: viz.multiChartPanel() });
                     this.hierarchy.push({
                         parent: this.subgraphMap[view.id()],
                         child: surface
@@ -171,7 +171,7 @@ export class GraphAdapter {
                         ;
                     this.createEdge(prevID, stateVertexID);
                     this.hierarchy.push({
-                        parent: surface,
+                        parent: this.subgraphMap[view.id()],
                         child: stateVertex
                     });
                     prevID = stateVertexID;

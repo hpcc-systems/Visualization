@@ -1,5 +1,5 @@
 import { IHighlight } from "@hpcc-js/api";
-import { Button, ProgressBar, publish, publishProxy, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { Button, Database, ProgressBar, publish, publishProxy, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
@@ -122,6 +122,14 @@ export class ChartPanel extends Border2 implements IHighlight {
         super();
         this._tag = "div";
         this._titleBar.buttons([this._buttonDownload, new Spacer(), this._toggleLegend]);
+    }
+
+    fields(): Database.Field[];
+    fields(_: Database.Field[]): this;
+    fields(_?: Database.Field[]): this | Database.Field[] {
+        if (!arguments.length) return this._widget.fields();
+        this._legend.fields(_);
+        return this;
     }
 
     columns(): string[];
@@ -263,7 +271,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         }
 
         this._widget
-            .columns(this._legend.filteredColumns())
+            .fields(this._legend.filteredFields())
             .data(this._legend.filteredData())
             ;
         if (this._prevChartDataFamily !== this._legend.dataFamily()) {

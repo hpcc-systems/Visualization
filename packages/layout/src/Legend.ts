@@ -1,5 +1,5 @@
 import { instanceOfIHighlight } from "@hpcc-js/api";
-import { Palette, SVGWidget, Widget } from "@hpcc-js/common";
+import { Database, Palette, SVGWidget, Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleOrdinal as d3ScaleOrdinal } from "d3-scale";
 import { symbol as d3Symbol, symbolCircle as d3SymbolCircle } from "d3-shape";
@@ -35,8 +35,23 @@ export class Legend extends SVGWidget {
             ;
     }
 
-    isDisabled(d: string): boolean {
-        return this._disabled.indexOf(d) >= 0;
+    isDisabled(d: string | Database.Field): boolean {
+        if (typeof d === "undefined") {
+            return false;
+        } else if (typeof d === "string") {
+            return d.indexOf("__") === 0 || this._disabled.indexOf(d) >= 0;
+        }
+        return d.id().indexOf("__") === 0 || this._disabled.indexOf(d.id()) >= 0;
+    }
+
+    filteredFields(): Database.Field[] {
+        switch (this.dataFamily()) {
+            case "2D":
+                return this.fields();
+            case "ND":
+                return this.fields().filter(d => !this.isDisabled(d));
+        }
+        return this.fields();
     }
 
     filteredColumns(): string[] {
@@ -145,7 +160,7 @@ export class Legend extends SVGWidget {
                             }, this);
                             break;
                         case "ND":
-                            const widgetColumns = this.columns();
+                            const widgetColumns = this.columns().filter(col => col.indexOf("__") !== 0);
                             dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
                                 return [palette(n), n];
                             }, this);

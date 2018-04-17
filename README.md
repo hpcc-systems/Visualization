@@ -1,60 +1,141 @@
-# Visualization Framework 
+# @hpcc-js (*aka Viz Framework 2.0*)
 
 [![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master)](https://travis-ci.org/hpcc-systems/Visualization)
 [![Join the chat at https://gitter.im/hpcc-systems/Visualization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hpcc-systems/Visualization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Dependency Status](https://gemnasium.com/hpcc-systems/Visualization.svg)](https://gemnasium.com/hpcc-systems/Visualization)
-* _[Demo/Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/test.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/test.html)_
-* _[Dermatology Test Page](http://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology.html) and its [source](https://github.com/hpcc-systems/Visualization/blob/master/demos/dermatology.html)_
-* _[Wiki] (https://github.com/hpcc-systems/Visualization/wiki)_
-* _[Quick Start] (https://github.com/hpcc-systems/Visualization/wiki/My-First-Visualization)_
 
-The goal of the HPCC Visualisation Framework is to provide a comprehensive set of visualizations, adhering to a consistent set of interfaces. It includes wrappers for third party chart libraries (Google, C3 Charts, AM Charts etc.) as well as home grown visualizations (watch this space). It also adds a set of connectors and marshallers to make connecting visualizations to the HPCC Platform a trivial excercise.
+The "@hpcc-js" repository contains several packages which fall into two main categories:
+* Visualizations
+* HPCC Platform browser/node.js connectors and utilities
 
-### The obligatory Hello World [example](http://rawgit.com/hpcc-systems/Visualization/master/demos/HelloWorld/index.html)
+All packages are available for use independently and are published to the NPM repository under the "@hpcc-js" scope name.  They have also been designed to be "unpkg", "AMD", "commonjs" and "IIFE" friendly (where possible).
+
+## Hello World Example
+
+The simplest example pulls the pre-built packages directly from NPM via unpkg and loads them into the the global namespace ("IIFE" style), when used this way you have to manually include all dependencies and need to be careful about global namespace pollution...
+
 ```html
-﻿<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-viz.js"></script>
-    <script src="http://viz.hpccsystems.com/v1.6.6/dist-amd/hpcc-bundles.js"></script>
+    <title>Simple Bar Chart</title>
+    <script src="https://unpkg.com/@hpcc-js/common"></script>
+    <script src="https://unpkg.com/@hpcc-js/api"></script>
+    <script src="https://unpkg.com/@hpcc-js/chart"></script>
     <script>
-        require.config({
-            paths: {
-                "src": "http://viz.hpccsystems.com/v1.6.6/dist-amd",
-                "font-awesome": "http://viz.hpccsystems.com/v1.6.6/dist-amd/font-awesome/css/font-awesome.min"
-            }
-        });
+        var hpccChart = window["@hpcc-js/chart"];
     </script>
 </head>
+
 <body>
-    <div id="helloWorld" style="width:100%; height:100vh">
-    </div>
+    <div id="placeholder" style="width:800px; height:600px;"></div>
     <script>
-        require(["src/common/TextBox"], function (TextBox) {
-            var helloWorld = new TextBox()
-                .target("helloWorld")
-                .text("Hello\nWorld!")
-                .render()
+        var chart = new hpccChart.Bar()
+            .target("placeholder")
+            .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+            .data([
+                ["Geography", 75, 68, 65],
+                ["English", 45, 55, -52],
+                ["Math", 98, 92, 90],
+                ["Science", 66, 60, 72]
+            ])
+            .render()
             ;
-        });
     </script>
 </body>
+
 </html>
 ```
 
-### Standing on the back of giants 
-None of this would would be possible without the great work of others.  The widgets/lib folder includes the work from:
-* [requirejs](http://requirejs.org/)
-* [D3](http://d3js.org/)
-* [Topojson](https://github.com/mbostock/topojson)
-* [dagre](https://github.com/cpettitt/dagre)
-* [Font-Awesome](http://fortawesome.github.io/Font-Awesome/) 
-* [ColorBrewer](http://colorbrewer2.org/)
-* [C3](http://c3js.org/)
-* [AM Charts](http://www.amcharts.com/)
-* [d3-cloud](https://github.com/jasondavies/d3-cloud)
+## Installing via npm
 
-While widgets/src also includes wrappers for CDN hosted visualizations:
-* [Google Maps](https://developers.google.com/maps/)
-* [Google Charts](https://developers.google.com/chart/)
+To install via npm, simply use `npm install` as you would normally.  Each package is "scoped" with "@hpcc-js" and you will need to specify each required package specifically, for example:  
+
+```
+npm install @hpcc-js/chart @hpcc-js/map
+```
+
+You can see the current status of each package here:  [https://www.npmjs.com/](https://www.npmjs.com/search?q=maintainer:hpcc-js)
+
+## Referencing in your application
+
+@hpcc-js is written using TypeScript and generates ES2015 + UMD JavaScript modules which can be included into your normal development flow as is (this includes compatibility with both WebPack + Rollup.js).  
+
+To import @hpcc-js packages into an ES2015 application, simply import the required symbols from any @hpcc-js package:
+
+```javascript
+import { Bar } from "@hpcc-js/chart";
+
+const chart = new Bar()
+    .target("placeholder")
+    .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+    .data([
+        ["Geography", 75, 68, 65],
+        ["English", 45, 55, -52],
+        ["Math", 98, 92, 90],
+        ["Science", 66, 60, 72]
+    ])
+    .render()
+    ;
+```
+
+Using AMD
+
+```javascript
+require(["@hpcc-js/chart"], function(hpccChart) {
+    var chart = new hpccChart.Bar()
+        .target("placeholder")
+        .columns(["Subject", "Year 1", "Year 2", "Year 3"])
+        .data([
+            ["Geography", 75, 68, 65],
+            ["English", 45, 55, -52],
+            ["Math", 98, 92, 90],
+            ["Science", 66, 60, 72]
+        ])
+        .render()
+        ;
+});
+```
+
+## Building a development environment
+
+These are the recommended steps for creating a development environment (you will need to have installed NodeJS - as of writing 8.x LTS):
+
+```
+git clone https://github.com/hpcc-systems/Visualization.git hpcc-js
+cd hpcc-js
+npm install
+npm run build-dev
+```
+
+At which point the "demos" should now load.
+
+Note:  In this development mode, there is no need to create any webpack or rollupjs bundles, but you will need to ensure that any modifications to the TypeScript files are re-compiled into JavaScript.  The simplest way to do this is to run the TypeScript compiler in "watch" mode for the package you are editing:
+
+```
+cd ./packages/chart
+tsc -w
+```
+
+## Building a release
+
+Building a local release with min files
+
+```
+npm run build-min
+```
+
+Running lint + unit tests
+
+```
+npm run lint
+npm run build-all
+npm run test
+```
+
+Publishing a full release to NPM
+
+```
+npm run publish
+```

@@ -113,7 +113,7 @@ export interface ISource {
     id: string;
     output: string;
     sort?: string[];
-    first?: number;
+    first?: string | number;
     reverse?: boolean;
     properties?: StringStringDict;  //  TODO Needed?
 }
@@ -150,7 +150,7 @@ export interface IChoroSource extends ISource {
 
 //  Visualization  ============================================================
 export type VisualizationType = "PIE" | "LINE" | "BAR" | "TABLE" | "CHORO" | "GRAPH" | "HEAT_MAP" | "SLIDER" | "FORM" | "2DCHART" | "WORD_CLOUD" | "BUBBLE";
-export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "unsigned" | "float" | "double" | "real" | "string" | "date" | "time" | "geohash" | "dataset" | "visualization";
+export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "integer4" | "integer8" | "unsigned" | "unsigned4" | "unsigned8" | "float" | "double" | "real" | "real4" | "real8" | "string" | "date" | "time" | "geohash" | "dataset" | "visualization";
 export type VisualizationFieldType = VisualizationFieldDataType | "range";
 export type VisualizationFieldFuncitonType = "SUM" | "AVE" | "MIN" | "MAX" | "SCALE";
 

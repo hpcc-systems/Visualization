@@ -42,7 +42,7 @@
     "pure-css": "1.0.4",
     "rimraf": "2.6.2",
     "rollup": "0.54.0",
-    "typescript": "2.6.1",
+    "typescript": "2.8.1",
     "webpack": "3.10.0"
   }
 }

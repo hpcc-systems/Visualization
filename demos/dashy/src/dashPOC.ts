@@ -1,3 +1,4 @@
+// tslint:disable
 
 import { Column } from "@hpcc-js/chart";
 import { Select } from "@hpcc-js/other";

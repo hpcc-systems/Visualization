@@ -352,7 +352,9 @@ export class PropertyExt extends Class {
                     jsType = "any[]";
                     break;
             }
-            console.log(`${id}: {(): ${jsType};(_: ${jsType}): ${PropertyExt.prevClassID}};\n${id}_exists: () => boolean;`);
+            console.log(`    ${id}(): ${jsType};
+    ${id}(_: ${jsType}): this;
+    ${id}_exists(): boolean;`);
         }
         if (id.indexOf("_") === 0) {
             id = id.slice(1);

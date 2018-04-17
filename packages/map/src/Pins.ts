@@ -74,7 +74,7 @@ export class Pins extends Layer {
 
         this.pinsPaths = this._pinsTransform.selectAll(".pin").data(this.visible() ? this.pinsData() : []);
         const context = this;
-        this.pinsPaths = this.pinsPaths.enter().append("g")
+        const updatesPaths = this.pinsPaths.enter().append("g")
             .attr("class", "pin")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
@@ -107,7 +107,7 @@ export class Pins extends Layer {
                     .attr("text-anchor", "middle")
                     ;
             }).merge(this.pinsPaths);
-        this.pinsPaths.selectAll("text")
+        updatesPaths.selectAll("text")
             .style("stroke", this.fontColor())
             .style("fill", this.fontColor())
             .style("font-size", this.fontSize())
@@ -119,7 +119,7 @@ export class Pins extends Layer {
                 return d.ext && d.ext.text ? d.ext.text : "";
             });
         const svgPath = this.svgPinPath();
-        this.pinsPaths.selectAll("path.data")
+        updatesPaths.selectAll("path.data")
             .attr("d", svgPath)
             .attr("stroke-width", this.strokeWidth() + "px")
             .style("display", function (d) {
@@ -235,14 +235,8 @@ export class Pins extends Layer {
     }
 
     circlePath() {
-        const radius = this.pinRadius();
-        const x = radius / 2;
-        const y = 0;
-        const a_dx = radius / 2;
-        const a_dy = radius / 2;
-        return "M" + x + "," + y +
-            "a " + a_dx + " " + a_dy + " 0 1 0 0 0.01 0" +
-            "z";
+        const radius = +this.pinRadius();
+        return `M 0, 0 m ${-radius}, 0 a ${radius},${radius} 0 1,0 ${radius * 2},0 a ${radius},${radius} 0 1,0 ${-radius * 2},0`;
     }
 
     //  Events  ---

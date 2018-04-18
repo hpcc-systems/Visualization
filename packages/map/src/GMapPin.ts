@@ -13,6 +13,7 @@ export class GMapPin extends GMapLayered {
             .columns(["lat", "long", "ext"])
             .on("click", function (row, col, sel) {
                 context.click(context.rowToObj(row.ext.origRow), "", sel);
+                context.clickStreetView(context.rowToObj(row.ext.origRow), "", sel);
             })
             .on("dblclick", function (row, col, sel) {
                 context.dblclick(context.rowToObj(row.ext.origRow), "", sel);
@@ -58,6 +59,10 @@ export class GMapPin extends GMapLayered {
     }
 
     click(row, column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + "," + selected);
+    }
+
+    clickStreetView(row, column, selected) {
         if (this.streetViewOnClick()) {
             this.streetViewAt({
                 lat: +row[this.latitudeColumn()],

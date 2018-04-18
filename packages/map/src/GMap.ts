@@ -405,6 +405,7 @@ export class GMap extends HTMLWidget {
             context._googleMapPanorama.setPosition({ lat: context.centerLat(), lng: context.centerLong() });
             context.zoom(context._googleMap.getZoom());
             context._prevZoom = context.zoom();
+            context._overlay.draw();
         });
         this._googleMap.addListener("zoom_changed", function () {
             context.zoom(context._googleMap.zoom);

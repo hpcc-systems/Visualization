@@ -1,6 +1,6 @@
-import { Class, HTMLWidget, SVGWidget, WidgetArray } from "@hpcc-js/common";
+import { Class, Database, HTMLWidget, SVGWidget, WidgetArray } from "@hpcc-js/common";
 import * as form from "@hpcc-js/form";
-import { Button, CheckBox, ColorInput, Form, Input, InputRange, OnOff, Radio, Range, Select, Slider, TextArea } from "@hpcc-js/form";
+import { Button, CheckBox, ColorInput, FieldForm, Form, Input, InputRange, OnOff, Radio, Range, Select, Slider, TextArea } from "@hpcc-js/form";
 import { data } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -29,6 +29,16 @@ describe("@hpcc-js/form", () => {
                             case Radio:
                                 break;
                             case CheckBox:
+                                break;
+                            case FieldForm:
+                                render(new FieldForm()
+                                    .fields([
+                                        new Database.Field().id("fname").label("First Name"),
+                                        new Database.Field().id("lname").label("Last Name"),
+                                        new Database.Field().id("age").label("Age")
+                                    ])
+                                    .data([["Joe", "Bloggs", 42]])
+                                );
                                 break;
                             case Form:
                                 render(new Form()

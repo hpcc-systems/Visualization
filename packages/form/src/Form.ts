@@ -1,6 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { SVGWidget } from "@hpcc-js/common";
-import { WidgetArray } from "@hpcc-js/common";
+import { HTMLWidget, SVGWidget, Widget, WidgetArray } from "@hpcc-js/common";
 import { event as d3Event, select as d3Select } from "d3-selection";
 import { Button } from "./Button";
 
@@ -50,6 +48,14 @@ export class Form extends HTMLWidget {
                 }
             });
         });
+    }
+
+    inputsMap(): { [name: string]: Widget } {
+        const retVal: { [name: string]: Widget } = {};
+        this.inputs().forEach(function (inp) {
+            retVal[inp.name()] = inp;
+        });
+        return retVal;
     }
 
     calcMaxColumns() {

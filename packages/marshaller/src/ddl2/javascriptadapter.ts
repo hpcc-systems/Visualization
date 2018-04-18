@@ -88,7 +88,7 @@ const ds_${ds.id()} = new LogicalFile()
 `.trim();
         } else if (dsDetails instanceof HipieRequest) {
             return `
-const ds_${ds.id()} = new HipieRequest(ec)
+const ds_${ds.id()}_${dsDetails.resultName()} = new HipieRequest(ec)
     .url("${dsDetails.url()}")
     .querySet("${dsDetails.querySet()}")
     .queryID("${dsDetails.queryID()}")
@@ -98,7 +98,7 @@ const ds_${ds.id()} = new HipieRequest(ec)
 `.trim();
         } else if (dsDetails instanceof RoxieRequest) {
             return `
-const ds_${ds.id()} = new RoxieRequest(ec)
+const ds_${ds.id()}_${dsDetails.resultName()} = new RoxieRequest(ec)
     .url("${dsDetails.url()}")
     .querySet("${dsDetails.querySet()}")
     .queryID("${dsDetails.queryID()}")
@@ -142,7 +142,7 @@ const ds_${ds.id()} = TODO-writeDSActivity: ${dsDetails.classID()}
         } else if (activity instanceof Filters) {
             return `new Filters(ec).conditions(${stringify(activity.conditions())})`;
         } else if (activity instanceof Project) {
-            return `new Project().trim(${activity.trim()}).transformations(${stringify(activity.transformations())})`;
+            return `new Project(${activity._isMappings}).trim(${activity.trim()}).transformations(${stringify(activity.transformations())})`;
         } else if (activity instanceof Limit) {
             return `new Limit().rows(${activity.rows()})`;
         }
@@ -182,7 +182,12 @@ const cp_${vizID} = new ChartPanel()
         for (const activity of element.hipiePipeline().activities()) {
             if (activity.exists()) {
                 if (isDatasource(activity)) {
-                    activities.push(`ds_${this._dsDedup[activity.hash()].id()}`);
+                    const dsDetails = activity instanceof DSPicker ? activity.details() : activity;
+                    if (dsDetails instanceof HipieRequest || dsDetails instanceof RoxieRequest) {
+                        activities.push(`ds_${this._dsDedup[activity.hash()].id()}_${dsDetails.resultName()}`);
+                    } else {
+                        activities.push(`ds_${this._dsDedup[activity.hash()].id()}`);
+                    }
                 } else {
                     activities.push(this.writeActivity(activity));
                 }
@@ -253,9 +258,10 @@ ec.append(elem_${element.id()});
     createJavaScript(): string {
         const widgets = this.writeWidgets();
 
-        return `
+        return `// tslint:disable
 ${widgets.widgetImports}
 import { ChartPanel } from "@hpcc-js/layout";
+// @ts-ignore
 import { Dashboard, Databomb, Element, ElementContainer, Filters, Form, GroupBy, HipieRequest, Limit, LogicalFile, Project, RoxieRequest, Sort, WUResult } from "@hpcc-js/marshaller";
 
 //  Dashboard Element Container (Model)  ---

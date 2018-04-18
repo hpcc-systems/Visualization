@@ -12,7 +12,7 @@ export class ComputedField extends PropertyExt {
     label: publish<this, string>;
     @publish("mapping", "set", "Project type", ["=", "*", "/", "+", "-", "scale", "template"], { optional: true, disable: w => !w.label() })
     type: publish<this, ComputedType>;
-    @publish(null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, { optional: false, disable: (w: ComputedField) => w.disableColumn1() })
+    @publish(null, "set", "Param 1", function (this: ComputedField) { return this.columns(); }, { optional: true, disable: (w: ComputedField) => w.disableColumn1() })
     column1: publish<this, string>;
     @publish(null, "set", "Param 2", function (this: ComputedField) { return this.columns(); }, { optional: true, disable: (w: ComputedField) => w.disableColumn2() })
     column2: publish<this, string>;
@@ -34,13 +34,13 @@ export class ComputedField extends PropertyExt {
         if (!this.disableColumn1() && this.columns().indexOf(this.column1()) < 0) {
             retVal.push({
                 source: `ComputedField:  ${this.id()}`,
-                msg: `Invalid column1:  ${this.column1()}`
+                msg: `Invalid column1 for ${this.label()}:  ${this.column1()}`
             });
         }
         if (!this.disableColumn2() && this.columns().indexOf(this.column2()) < 0) {
             retVal.push({
                 source: `ComputedField:  ${this.id()}`,
-                msg: `Invalid column2:  ${this.column2()}`
+                msg: `Invalid column2 for ${this.label()}:  ${this.column2()}`
             });
         }
         return retVal;
@@ -152,7 +152,7 @@ export class ComputedField extends PropertyExt {
 ComputedField.prototype._class += " AggregateField";
 //  ===========================================================================
 export class Project extends Activity {
-    _isMappings: false;
+    _isMappings: boolean = false;
 
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
     computedFields: publish<this, ComputedField[]>;
@@ -167,7 +167,7 @@ export class Project extends Activity {
         return retVal;
     }
 
-    constructor(isMappings) {
+    constructor(isMappings: boolean) {
         super();
         this._isMappings = isMappings;
     }
@@ -186,7 +186,7 @@ export class Project extends Activity {
     }
 
     static fromDDL(ddl: DDL2.IProject | DDL2.IMappings): Project {
-        return new Project(ddl.type)
+        return new Project(ddl.type === "mappings")
             .transformations(ddl.transformations)
             ;
     }
@@ -220,6 +220,10 @@ export class Project extends Activity {
             }
         }
         return null;
+    }
+
+    clearComputedFields() {
+        this.computedFields([]);
     }
 
     appendComputedFields(computedFields: [{ label: string, type: ComputedType, column?: string }]): this {

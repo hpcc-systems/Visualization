@@ -39,7 +39,7 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../ddl-shim/dist/index.js": ["DDL1", "DDL2", "validate2"]
+                "../ddl-shim/dist/index.js": ["DDL1", "DDL2", "ddl2Schema", "upgrade", "validate2"]
             }
         }),
         alias({

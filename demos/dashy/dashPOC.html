@@ -10,7 +10,8 @@
 
     <!--  Dev Loader  
     -->
-    <script src="../../packages/loader/build/index.js"></script>
+    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
+    <script src="../../packages/loader/dist/index.js"></script>
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
         var require = hpccLoader.dev("../../../packages", { "test": "../tests" }, "../../../node_modules");
@@ -32,7 +33,8 @@
     <script>
         var app = null;
         if (require) {
-            require(["lib-umd/dashPOC", "lib-umd/dashComms"], dashPOC => {
+            require(["lib-umd/dashPOC", "lib-umd/dashComms"], (dashPOC, dashComms) => {
+                // dashComms.doHook();
                 app = dashPOC.dashboard;
                 doResize();
             });

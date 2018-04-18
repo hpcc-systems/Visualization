@@ -76,31 +76,6 @@
                 });
             }
         },
-        ChartPanel: {
-            simple: function (callback) {
-                legacyRequire(["test/DataFactory", "src/composite/ChartPanel", "src/chart/Column"], function (DataFactory, ChartPanel, Column) {
-                    callback(new ChartPanel()
-                        .widget(new Column())
-                        .title("Hello and Welcome!")
-                        .description("Sample description for the chart being displayed...")
-                        .columns(DataFactory.ND.subjects.columns)
-                        .data(DataFactory.ND.subjects.data)
-                    );
-                });
-            },
-            choro: function (callback) {
-                legacyRequire(["test/DataFactory", "src/composite/ChartPanel"], function (DataFactory, ChartPanel) {
-                    var mc = new ChartPanel()
-                        .chartType("CHORO_USSTATES")
-                        // .legendPosition("bottom")
-                        .title("US States Choropleth")
-                        .columns(DataFactory.States.simple.columns)
-                        .data(DataFactory.States.simple.data)
-                        ;
-                    callback(mc);
-                });
-            }
-        },
         MultiChartPanel: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel"], function (DataFactory, MultiChartPanel) {

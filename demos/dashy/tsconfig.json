@@ -10,11 +10,11 @@
         "declarationDir": "./types",
         "noEmitOnError": false,
         "strictNullChecks": true,
-        "importHelpers": true,
+        "importHelpers": false,
         "experimentalDecorators": true,
         "downlevelIteration": true,
         "skipLibCheck": true,
-        "noImplicitThis": true,
+        "noUnusedLocals": true,
         "lib": [
             "dom",
             "es5",

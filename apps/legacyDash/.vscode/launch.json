@@ -8,7 +8,7 @@
             "name": "Legacy Dash",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180109-010415&ResultName=qwer7_Comp_Ins015_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180109-010415&ResultName=qwer7_Comp_Ins015_DDL",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

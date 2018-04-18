@@ -212,6 +212,7 @@ export class RoxieRequest extends Activity {
     hash(): string {
         return hashSum({
             source: this.sourceHash(),
+            resultName: this.resultName(),
             params: this.request().map(param => param.hash())
         });
     }

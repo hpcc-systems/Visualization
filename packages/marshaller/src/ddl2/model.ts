@@ -1,9 +1,10 @@
-import { PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
+import { Database, PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
 import { MultiChart, MultiChartPanel } from "@hpcc-js/composite";
 import { DDL1 } from "@hpcc-js/ddl-shim";
+import { IField } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
-import { Activity, rowID } from "./activities/activity";
+import { Activity, ROW_ID, rowID } from "./activities/activity";
 import { HipiePipeline } from "./activities/hipiepipeline";
 import { DDL2, DDLAdapter } from "./ddl";
 import { DDLImport } from "./ddlimport";
@@ -57,7 +58,13 @@ export class Element extends PropertyExt {
         this._widget = _;
         this._widget
             .on("click", (row: any, col: string, sel: boolean) => {
-                this.state().selection(sel ? [this.hipiePipeline().mappings().inRow(rowID(row))] : []);
+                const rowIdx = rowID(row);
+                if (rowIdx) {
+                    this.state().selection(sel ? [this.hipiePipeline().last(true).outRow(rowID(row))] : []);
+                } else {
+                    //  Normally a form...
+                    this.state().selection(sel ? [row] : []);
+                }
             })
             ;
         return this;
@@ -116,7 +123,9 @@ export class Element extends PropertyExt {
     }
 
     pipeline(activities: Activity[]): this {
-        this.hipiePipeline().activities(activities);
+        this.hipiePipeline()
+            .activities(activities)
+            ;
         return this;
     }
 
@@ -132,25 +141,51 @@ export class Element extends PropertyExt {
         return this.state();
     }
 
-    async refresh() {
-        const view = this.hipiePipeline();
-        await view.refreshMeta();
-        const columns = view.mappings().outFields().map(field => field.label);
-        // const fields = view.outFields().map(field => new Field());
-        await view.mappings().exec();
-        const data = view.mappings().outData();
-        const mappedData = data.map((row: any) => {
+    toFields(fields: IField[]): Database.Field[] {
+        const retVal: Database.Field[] = [];
+        for (const field of fields) {
+            const f = new Database.Field()
+                .id(field.id)
+                .label(field.label)
+                ;
+            if (field.children) {
+                f.children(this.toFields(field.children));
+            }
+            retVal.push(f);
+        }
+        return retVal;
+    }
+
+    toData(fields: Database.Field[], data) {
+        return data.map((row: any) => {
             const retVal = [];
-            for (const column of columns) {
-                retVal.push(row[column]);
+            for (const field of fields) {
+                if (field.type() === "nested") {
+                    retVal.push(this.toData(field.children() as Database.Field[], row[field.id()].Row || row[field.id()]));
+                } else {
+                    retVal.push(row[field.label()]);
+                }
             }
             return retVal;
         });
+    }
 
+    async refresh(includeMeta: boolean = false) {
+        // TODO - just wrong for DashPOC  ---
+        this.chartPanel().startProgress();
+        const view = this.hipiePipeline();
+        await view.refreshMeta();
+        const mappings = view.last();
+        const fields = this.toFields(mappings.outFields());
+        await mappings.exec();
+        const data = mappings.outData();
+        const mappedData = this.toData(fields, data);
+
+        this.chartPanel().finishProgress();
         this.chartPanel()
-            .columns(columns)
+            .fields(fields.filter(f => f.label() !== ROW_ID))
             .data(mappedData)
-            .lazyRender()
+            .render()
             ;
         this.state().removeInvalid(data);
     }

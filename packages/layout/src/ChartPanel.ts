@@ -18,6 +18,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     private _modal = new Modal();
     private _highlight: boolean;
     private _scale: number;
+    private _orig_size: any;
 
     private _toggleInfo = new ToggleButton("fa-info-circle", ".Description")
         .selected(false)
@@ -197,7 +198,8 @@ export class ChartPanel extends Border2 implements IHighlight {
         return this;
     }
 
-    getResponsiveMode(): "tiny" | "small" | "regular" {
+    getResponsiveMode(): "tiny" | "small" | "regular" | "none" {
+        if (!this.enableAutoscaling()) return "none";
         if (!this._autoScale) return "regular";
         if (this.size().width <= this._resolutions.tiny.width || this.size().height <= this._resolutions.tiny.height) {
             return "tiny";
@@ -205,6 +207,10 @@ export class ChartPanel extends Border2 implements IHighlight {
             return "small";
         }
         return "regular";
+    }
+
+    setOrigSize() {
+        this._orig_size = JSON.parse(JSON.stringify(this.size()));
     }
 
     enter(domNode, element) {
@@ -226,6 +232,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             ;
 
         this._progressBar.enter(domNode, element);
+        this.setOrigSize();
     }
 
     preUpdateTiny(element) {
@@ -233,13 +240,13 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     preUpdateSmall(element) {
-        const scale_x = this.size().width / this._resolutions.small.width;
-        const scale_y = this.size().height / this._resolutions.small.height;
+        const scale_x = this._orig_size.width / this._resolutions.small.width;
+        const scale_y = this._orig_size.height / this._resolutions.small.height;
         this._scale = Math.min(scale_x, scale_y);
         const x_is_smaller = this._scale === scale_x;
         this.size({
-            width: x_is_smaller ? this._resolutions.small.width : this.size().width * (1 / this._scale),
-            height: !x_is_smaller ? this._resolutions.small.height : this.size().height * (1 / this._scale)
+            width: x_is_smaller ? this._resolutions.small.width : this._orig_size.width * (1 / this._scale),
+            height: !x_is_smaller ? this._resolutions.small.height : this._orig_size.height * (1 / this._scale)
         });
         element.select("div.title-icon").style("position", "static");
         element.selectAll("lhs").style("display", "none");
@@ -387,12 +394,15 @@ export class ChartPanel extends Border2 implements IHighlight {
 ChartPanel.prototype._class += " layout_ChartPanel";
 
 export interface ChartPanel {
+    enableAutoscaling(): boolean;
+    enableAutoscaling(_: boolean): this;
     highlightSize(): number;
     highlightSize(_: number): this;
     highlightColor(): string;
     highlightColor(_: string): this;
 }
 
+ChartPanel.prototype.publish("enableAutoscaling", true, "boolean");
 ChartPanel.prototype.publish("highlightSize", 4, "number");
 ChartPanel.prototype.publish("highlightColor", "#e67e22", "html-color");
 ChartPanel.prototype.publishProxy("progress_halfLife", "_progressBar", "halfLife");

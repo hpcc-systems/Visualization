@@ -3,12 +3,26 @@ import { Common } from "./Common";
 
 export class Table extends Common {
     private _prevColsHash;
+    private _prevFieldsHash;
     private _prevDataHash;
     _colsRefresh = false;
     _forceRefresh = false;
 
     constructor() {
         super();
+    }
+
+    fields(_?: any): any | this {
+        const retVal = super.fields.apply(this, arguments);
+        if (arguments.length) {
+            const hash = hashSum(_); // TODO - Should be a more efficent way.
+            if (this._prevFieldsHash !== hash) {
+                this._prevFieldsHash = hash;
+                this._colsRefresh = true;
+                this._forceRefresh = true;
+            }
+        }
+        return retVal;
     }
 
     columns(_?: any): any | this {

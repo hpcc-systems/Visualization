@@ -3,7 +3,6 @@ import { join, promiseTimeout, scopedLogger } from "@hpcc-js/util";
 const logger = scopedLogger("comms/connection.ts");
 
 export type RequestType = "post" | "get" | "jsonp";
-
 export type ResponseType = "json" | "text";
 
 export interface IOptions {
@@ -121,6 +120,8 @@ function authHeader(opts: IOptions): object {
     return opts.userID ? { Authorization: `Basic ${btoa(`${opts.userID}:${opts.password}`)}` } : {};
 }
 
+//  _omitMap is a workaround for older HPCC-Platform instances without credentials ---
+const _omitMap: { [baseUrl: string]: boolean } = {};
 function doFetch(opts: IOptions, action: string, requestInit: RequestInit, headersInit: HeadersInit, responseType: string) {
     headersInit = {
         ...authHeader(opts),
@@ -128,12 +129,12 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
     };
 
     requestInit = {
-        credentials: opts.userID ? "include" : "omit",
+        credentials: _omitMap[opts.baseUrl] ? "omit" : "include",
         ...requestInit,
         headers: headersInit
     };
 
-    function handleResponse(response: Response) {
+    function handleResponse(response: Response): Promise<any> {
         if (response.ok) {
             return responseType === "json" ? response.json() : response.text();
         }
@@ -141,10 +142,16 @@ function doFetch(opts: IOptions, action: string, requestInit: RequestInit, heade
     }
 
     return promiseTimeout(opts.timeoutSecs! * 1000, fetch(join(opts.baseUrl, action), requestInit)
-        .then(handleResponse).catch(e => {
-            //  Try again with included credentials  ---
-            requestInit.credentials = "include";
-            return fetch(join(opts.baseUrl, action), requestInit).then(handleResponse);
+        .then(handleResponse)
+        .catch(e => {
+            //  Try again with the opposite credentials mode  ---
+            requestInit.credentials = !_omitMap[opts.baseUrl] ? "omit" : "include";
+            return fetch(join(opts.baseUrl, action), requestInit)
+                .then(handleResponse)
+                .then(responseBody => {
+                    _omitMap[opts.baseUrl] = !_omitMap[opts.baseUrl];  // The "opposite" credentials mode is known to work  ---
+                    return responseBody;
+                });
         })
     );
 }

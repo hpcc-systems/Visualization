@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-composite",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "dependencies": {
     "@hpcc-js/common": "^0.0.72",
     "@hpcc-js/composite": "^0.0.78",
-    "@hpcc-js/sample-data": "^0.0.34",
+    "@hpcc-js/sample-data": "^0.0.35",
     "chai": "4.0.0",
     "es6-promise": "4.1.1",
     "mocha": "3.4.2",

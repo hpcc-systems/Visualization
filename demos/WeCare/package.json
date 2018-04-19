@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-wecare",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "scripts": {
     "clean": "rimraf lib* && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",

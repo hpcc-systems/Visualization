@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/test-chart",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "dependencies": {
     "@hpcc-js/chart": "^0.0.74",
     "@hpcc-js/common": "^0.0.72",

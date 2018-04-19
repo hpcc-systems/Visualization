@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",

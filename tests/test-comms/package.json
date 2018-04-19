@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/test-comms",
-  "version": "0.0.58",
+  "version": "0.0.59",
   "dependencies": {
     "@hpcc-js/comms": "^0.0.77",
     "@hpcc-js/util": "^0.0.70",

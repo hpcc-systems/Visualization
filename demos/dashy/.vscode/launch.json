@@ -21,7 +21,8 @@
             // "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180130-120353&ResultName=issue_1396_wuidavg_Comp_Ins006_DDL",
             */
             "runtimeArgs": [
-                //                "--allow-file-access-from-files",
+                // "--allow-file-access-from-files"
+                // "--allow-file-access-from-files",
                 // "--allow-file-access",
                 // "--allow-cross-origin-auth-prompt",
                 "--disable-web-security"
@@ -66,7 +67,7 @@
             "request": "launch",
             "url": "file:///${workspaceRoot}/dashPOC.html",
             "runtimeArgs": [
-                "--allow-file-access-from-files"
+                "--disable-web-security"
             ],
             "webRoot": "${workspaceRoot}",
             "sourceMapPathOverrides": {

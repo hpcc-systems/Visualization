@@ -47,5 +47,8 @@ export function promiseTimeout<T>(ms: number, promise: Promise<T>) {
     ]).then(response => {
         clearTimeout(id);
         return response;
+    }).catch(e => {
+        clearTimeout(id);
+        throw e;
     });
 }

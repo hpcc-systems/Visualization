@@ -72,7 +72,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         .on("click", () => {
             this.downloadCSV();
         });
-    private _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
+    protected _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
 
     @publishProxy("_titleBar", undefined, undefined, { reset: true })
     title: publish<this, string>;

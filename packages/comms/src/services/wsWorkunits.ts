@@ -2251,88 +2251,86 @@ export namespace WUDetails {
             id: string[];
         }
 
-        export interface ScopeTypes {
-            ScopeType: string[];
-        }
-
-        export interface AttributeFilter {
+        export interface PropertyFilter {
             Name?: string;
             ExactValue?: string;
             MinValue?: string;
             MaxValue?: string;
         }
 
-        export interface AttributeFilters {
-            AttributeFilter: AttributeFilter[];
+        export interface PropertyFilters {
+            PropertyFilter: PropertyFilter[];
         }
 
-        export interface Filter {
+        export interface ScopeFilter {
             MaxDepth?: number;
             Scopes?: Scopes;
-            Ids?: Ids;
-            ScopeTypes?: ScopeTypes;
-            AttributeFilters?: AttributeFilters;
+            Ids?: string[];
+            ScopeTypes?: string[];
+            PropertyFilters?: PropertyFilters;
         }
 
         export interface ScopeTypes2 {
             ScopeType: string[];
         }
 
-        export interface Nested {
+        export interface NestedFilter {
             Depth?: number;
-            ScopeTypes: ScopeTypes2;
+            ScopeTypes: string[];
         }
 
-        // tslint:disable-next-line:no-shadowed-variable
-        export interface Attributes {
-            Attribute: string[];
+        export interface Properties {
+            Property: string[];
         }
 
-        export interface Attributes2 {
-            Attribute: string[];
+        export interface Properties2 {
+            Property: string[];
         }
 
-        export interface ScopeOverride {
+        export interface Extra {
             scopeType: string;
-            Attributes: Attributes2;
+            Properties: Properties2;
         }
 
-        export interface ScopeOverrides {
-            ScopeOverride: ScopeOverride[];
+        export interface ExtraProperties {
+            Extra: Extra[];
         }
 
-        export interface AttributeToReturn {
-            OnlyDynamic?: boolean;
+        export interface PropertiesToReturn {
+            AllStatistics?: boolean;
+            AllProperties?: boolean;
+            AllHints?: boolean;
             MinVersion?: string;
-            Measure: string;
-            Attributes: Attributes;
-            ScopeOverrides?: ScopeOverrides;
+            Measure?: string;
+            Properties?: string[];
+            ExtraProperties?: ExtraProperties;
         }
 
         export interface ScopeOptions {
-            IncludeMatchedScopesInResults: boolean;
-            IncludeScope: boolean;
-            IncludeId: boolean;
-            IncludeScopeType: boolean;
+            IncludeMatchedScopesInResults?: boolean;
+            IncludeScope?: boolean;
+            IncludeId?: boolean;
+            IncludeScopeType?: boolean;
         }
 
-        export interface AttributeOptions {
-            IncludeName: boolean;
-            IncludeRawValue: boolean;
-            IncludeFormatted: boolean;
-            IncludeMeasure: boolean;
-            IncludeCreator: boolean;
-            IncludeCreatorType: boolean;
+        export interface PropertyOptions {
+            IncludeName?: boolean;
+            IncludeRawValue?: boolean;
+            IncludeFormatted?: boolean;
+            IncludeMeasure?: boolean;
+            IncludeCreator?: boolean;
+            IncludeCreatorType?: boolean;
         }
     }
 
     export interface Request {
         WUID: string;
-        Filter?: RequestNS.Filter;
-        Nested?: RequestNS.Nested;
-        AttributeToReturn: RequestNS.AttributeToReturn;
+        ScopeFilter?: RequestNS.ScopeFilter;
+        NestedFilter?: RequestNS.NestedFilter;
+        PropertiesToReturn: RequestNS.PropertiesToReturn;
+        Filter?: string;
         ScopeOptions: RequestNS.ScopeOptions;
-        AttributeOptions: RequestNS.AttributeOptions;
+        PropertyOptions: RequestNS.PropertyOptions;
     }
 
     export interface Exception {
@@ -2347,7 +2345,7 @@ export namespace WUDetails {
         Exception: Exception[];
     }
 
-    export interface Attribute {
+    export interface Property {
         Name: string;
         RawValue: string;
         Formatted: string;
@@ -2356,15 +2354,15 @@ export namespace WUDetails {
         CreatorType: string;
     }
 
-    export interface Attributes {
-        Attribute: Attribute[];
+    export interface Properties {
+        Property: Property[];
     }
 
     export interface Scope {
-        Scope: string;
+        ScopeName: string;
         Id: string;
         ScopeType: string;
-        Attributes: Attributes;
+        Properties: Properties;
     }
 
     export interface Scopes {

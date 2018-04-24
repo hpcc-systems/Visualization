@@ -1,10 +1,8 @@
-import { Cache, Graph as Digraph, ISubgraph, scopedLogger, Stack, StateObject, StringAnyMap, XMLNode } from "@hpcc-js/util";
+import { Cache, Edge, Graph, StateObject, StringAnyMap, Subgraph, Vertex, XMLNode } from "@hpcc-js/util";
 import { WUInfo } from "../services/wsWorkunits";
-import { Scope } from "./scope";
+import { BaseScope } from "./scope";
 import { Timer } from "./timer";
 import { Workunit } from "./workunit";
-
-const logger = scopedLogger("ecl/egraph");
 
 export interface ECLGraphEx extends WUInfo.ECLGraph {
     Time: number;
@@ -38,21 +36,41 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
         this.set({ Time: duration, ...eclGraph });
     }
 
-    fetchDetails(): Promise<Digraph> {
-        return this.wu.fetchDetailsHierarchy({
-            Filter: {
-                Scopes: {
-                    Scope: [this.Name]
-                }
+    fetchDetails(): Promise<BaseScope[]> {
+        return this.wu.fetchDetails({
+            ScopeFilter: {
+                MaxDepth: 999999,
+                Ids: [this.Name],
+                ScopeTypes: ["graph"]
             },
-            Nested: {
-                ScopeTypes: {
-                    ScopeType: ["graph", "subgraph", "activity", "edge"]
-                }
+            NestedFilter: {
+                Depth: 999999,
+                ScopeTypes: ["graph", "subgraph", "activity", "edge"]
+            },
+            PropertiesToReturn: {
+                AllProperties: true,
+                AllStatistics: true,
+                AllHints: true
+            },
+            ScopeOptions: {
+                IncludeId: true,
+                IncludeScope: true,
+                IncludeScopeType: true
+            },
+            PropertyOptions: {
+                IncludeName: true,
+                IncludeRawValue: true,
+                IncludeFormatted: true,
+                IncludeMeasure: true,
+                IncludeCreator: false,
+                IncludeCreatorType: false
             }
-        }).then((scopes) => {
-            const retVal = scopes.map((scope) => createGraph(scope));
-            return retVal[0];
+        });
+    }
+
+    fetchScopeGraph(): Promise<ScopeGraph> {
+        return this.fetchDetails().then((scopes) => {
+            return createGraph(scopes);
         });
     }
 }
@@ -86,10 +104,21 @@ function flattenAtt(nodes: XMLNode[]): StringAnyMap {
     return retVal;
 }
 
-export function createXGMMLGraph(id: string, graphs: XMLNode): Digraph {
-    const graph = new Digraph(id);
+export class XGMMLGraph extends Graph<StringAnyMap, StringAnyMap, StringAnyMap> { }
+export class XGMMLSubgraph extends Subgraph<StringAnyMap, StringAnyMap, StringAnyMap> { }
+export class XGMMLVertex extends Vertex<StringAnyMap, StringAnyMap, StringAnyMap> { }
+export class XGMMLEdge extends Edge<StringAnyMap, StringAnyMap, StringAnyMap> { }
 
-    const stack: ISubgraph[] = [graph];
+export function createXGMMLGraph(id: string, graphs: XMLNode): XGMMLGraph {
+    const subgraphs: { [id: string]: XGMMLSubgraph } = {};
+    const vertices: { [id: string]: XGMMLVertex } = {};
+    const edges: { [id: string]: XGMMLEdge } = {};
+
+    const graph = new XGMMLGraph((item) => {
+        return item._!["id"];
+    });
+
+    const stack: XGMMLSubgraph[] = [graph.root];
     walkXmlJson(graphs, (tag: string, attributes: StringAnyMap, childNodes: XMLNode[], _stack) => {
         const top = stack[stack.length - 1];
         switch (tag) {
@@ -97,15 +126,18 @@ export function createXGMMLGraph(id: string, graphs: XMLNode): Digraph {
                 break;
             case "node":
                 if (childNodes.length && childNodes[0].children().length && childNodes[0].children()[0].name === "graph") {
-                    const subgraph = graph.createSubgraph(top, `graph${attributes["id"]}`, flattenAtt(childNodes));
+                    const subgraph = top.createSubgraph(flattenAtt(childNodes));
                     stack.push(subgraph);
+                    subgraphs[attributes["id"]] = subgraph;
                 } else {
                 }
                 // TODO:  Is this really a node when its also a subgraph?
-                graph.createVertex(top, attributes["id"], attributes["label"], flattenAtt(childNodes));
+                const vertex = top.createVertex(flattenAtt(childNodes));
+                vertices[attributes["id"]] = vertex;
                 break;
             case "edge":
-                graph.createEdge(top, attributes["id"], attributes["source"], attributes["target"], flattenAtt(childNodes));
+                const edge = top.createEdge(vertices[attributes["source"]], vertices[attributes["target"]], flattenAtt(childNodes));
+                edges[attributes["id"]] = edge;
                 break;
             default:
         }
@@ -113,56 +145,66 @@ export function createXGMMLGraph(id: string, graphs: XMLNode): Digraph {
     return graph;
 }
 
-interface IEdgeRef {
-    subgraph: ISubgraph;
-    edge: Scope;
-}
+export class ScopeGraph extends Graph<BaseScope, BaseScope, BaseScope> { }
+export class ScopeSubgraph extends Subgraph<BaseScope, BaseScope, BaseScope> { }
+export class ScopeVertex extends Vertex<BaseScope, BaseScope, BaseScope> { }
+export class ScopeEdge extends Edge<BaseScope, BaseScope, BaseScope> { }
 
-function createGraph(scope: Scope): Digraph {
-    const graph = new Digraph(scope.Id);
-    const stack: Stack<ISubgraph> = new Stack<ISubgraph>();
-    stack.push(graph);
-    const edges: IEdgeRef[] = [];
-    scope.walk({
-        start: (scope2): boolean => {
-            logger.debug(scope2.Id);
-            switch (scope2.ScopeType) {
-                case "subgraph":
-                    stack.push(graph.createSubgraph(stack.top()!, scope2.Id));
-                    break;
-                case "activity":
-                    graph.createVertex(stack.top()!, scope2.Id, scope2.Id);
-                    break;
-                case "edge":
-                    edges.push({ subgraph: stack.top()!, edge: scope2 });
-                    break;
-                default:
-            }
-            return false;
-        },
-        end: (scope2): boolean => {
-            switch (scope2.ScopeType) {
-                case "subgraph":
-                    stack.pop();
-                    break;
-                default:
-            }
-            return false;
+function createGraph(scopes: BaseScope[]): ScopeGraph {
+    const subgraphs: { [scopeName: string]: ScopeSubgraph } = {};
+    const edges: { [scopeName: string]: BaseScope } = {};
+
+    let graph: ScopeGraph;
+    for (const scope of scopes) {
+        switch (scope.ScopeType) {
+            case "graph":
+                graph = new ScopeGraph(item => item._!.Id, scope);
+                subgraphs[scope.ScopeName] = graph.root;
+                break;
+            case "subgraph":
+                const scopeStack = scope.parentScope().split(":");
+                let scopeParent1 = subgraphs[scope.parentScope()];
+                while (!scopeParent1) {
+                    scopeParent1 = subgraphs[scopeStack.join(":")];
+                    scopeStack.pop();
+                }
+                if (!scopeParent1) {
+                    console.log(`Missing SG:Parent (${scope.Id}): ${scope.parentScope()}`);
+                } else {
+                    const parent1: ScopeSubgraph = scopeParent1;
+                    subgraphs[scope.ScopeName] = parent1.createSubgraph(scope);
+                }
+                break;
+            case "activity":
+                const scopeParent2 = subgraphs[scope.parentScope()];
+                if (!scopeParent2) {
+                    console.log(`Missing A:Parent (${scope.Id}): ${scope.parentScope()}`);
+                } else {
+                    scopeParent2.createVertex(scope);
+                }
+                break;
+            case "edge":
+                edges[scope.ScopeName] = scope;
+                break;
         }
-    });
-    edges.forEach(edgeRef => {
-        const source = edgeRef.edge.attr("Source").Formatted;
-        const target = edgeRef.edge.attr("Target").Formatted;
-        if (source && target) {
-            try {
-                graph.createEdge(edgeRef.subgraph, edgeRef.edge.Id, "a" + source, "a" + target);
-            } catch (e) {
-
-            }
+    }
+    for (const id in edges) {
+        const scope = edges[id];
+        const scopeParent3 = subgraphs[scope.parentScope()];
+        if (!scopeParent3) {
+            console.log(`Missing E:Parent (${scope.Id}): ${scope.parentScope()}`);
         } else {
-            logger.debug(`Bad edge:  ${edgeRef.edge.Id}`);
+            const parent3: ScopeSubgraph = scopeParent3;
+            try {
+                const source = graph!.vertex(scope.attr("IdSource").RawValue);
+                const target = graph!.vertex(scope.attr("IdTarget").RawValue);
+                parent3.createEdge(source, target, scope);
+            } catch (e) {
+                // const sourceIndex = scope.attr("SourceIndex").RawValue;
+                // const targetIndex = scope.attr("TargetIndex").RawValue;
+                console.log(`Invalid Edge: ${id}`);
+            }
         }
-    });
-
-    return graph;
+    }
+    return graph!;
 }

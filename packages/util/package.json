@@ -26,17 +26,17 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "devDependencies": {
-    "concurrently": "3.5.0",
-    "es6-promise": "4.1.1",
+    "concurrently": "3.5.1",
+    "es6-promise": "4.2.4",
     "rimraf": "2.6.2",
-    "rollup": "0.54.0",
-    "rollup-plugin-commonjs": "8.2.6",
-    "rollup-plugin-node-resolve": "3.0.0",
-    "tslib": "1.8.0",
-    "tslint": "5.8.0",
+    "rollup": "0.58.2",
+    "rollup-plugin-commonjs": "9.1.0",
+    "rollup-plugin-node-resolve": "3.3.0",
+    "tslib": "1.9.0",
+    "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.8.1",
-    "uglify-es": "3.2.0"
+    "typescript": "2.8.3",
+    "uglify-es": "3.3.9"
   },
   "repository": {
     "type": "git",

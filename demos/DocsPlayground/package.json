@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/demo-docsPlayground",
+  "name": "@hpcc-js/demo-DocsPlayground",
   "version": "0.0.57",
   "scripts": {
     "clean": "rimraf lib* && rimraf dist && rimraf dist",
@@ -16,12 +16,12 @@
     "@hpcc-js/dgrid": "^0.0.83",
     "@hpcc-js/dgrid-shim": "^0.0.60",
     "d3-selection": "1.1.0",
-    "tslib": "1.8.0"
+    "tslib": "1.9.0"
   },
   "devDependencies": {
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
-    "typescript": "2.8.1",
-    "webpack": "3.10.0"
+    "typescript": "2.8.3",
+    "webpack": "3.11.0"
   }
 }

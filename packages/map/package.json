@@ -33,7 +33,7 @@
     "@hpcc-js/other": "^0.0.74"
   },
   "devDependencies": {
-    "concurrently": "3.5.0",
+    "concurrently": "3.5.1",
     "d3-collection": "1.0.4",
     "d3-format": "1.2.0",
     "d3-geo": "1.6.4",
@@ -42,14 +42,14 @@
     "d3-tile": "0.0.4",
     "google-maps": "3.2.1",
     "rimraf": "2.6.2",
-    "rollup": "0.54.0",
-    "rollup-plugin-postcss": "0.5.5",
+    "rollup": "0.58.2",
+    "rollup-plugin-postcss": "1.6.1",
     "topojson": "3.0.2",
-    "tslib": "1.8.0",
-    "tslint": "5.8.0",
+    "tslib": "1.9.0",
+    "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.8.1",
-    "uglify-es": "3.2.0"
+    "typescript": "2.8.3",
+    "uglify-es": "3.3.9"
   },
   "repository": {
     "type": "git",

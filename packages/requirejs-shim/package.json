@@ -16,7 +16,7 @@
   "devDependencies": {
     "requirejs": "2.3.3",
     "rimraf": "2.6.2",
-    "rollup": "0.54.0"
+    "rollup": "0.58.2"
   },
   "repository": {
     "type": "git",

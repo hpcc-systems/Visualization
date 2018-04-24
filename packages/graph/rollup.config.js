@@ -43,7 +43,6 @@ export default {
         }),
         commonjs({
             namedExports: {
-                "../../node_modules/dagre/index.js": ["graphlib", "layout"]
             }
         }),
         postcss({

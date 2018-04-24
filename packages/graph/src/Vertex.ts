@@ -5,10 +5,10 @@ import "../src/Vertex.css";
 
 export interface IAnnotation {
     faChar: string;
-    tooltip: string;
-    shape_colorFill: string;
-    shape_colorStroke: string;
-    image_colorFill: string;
+    tooltip?: string;
+    shape_colorFill?: string;
+    shape_colorStroke?: string;
+    image_colorFill?: string;
 }
 
 export class Vertex extends SVGWidget {

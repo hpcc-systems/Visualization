@@ -1,0 +1,10 @@
+.graph_Subgraph .border {
+    fill: none;
+    stroke: #1f77b4;
+    stroke-width: 1.0px;
+    pointer-events: none;
+}
+
+.graph_Subgraph.selected > rect {
+    stroke:red !important;
+}

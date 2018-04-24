@@ -1,7 +1,15 @@
 import { Platform, SVGWidget, TextBox, Widget } from "@hpcc-js/common";
-import { curveBundle as d3CurveBundle, line as d3Line } from "d3-shape";
+import { curveBasis as d3CurveBasis, curveBundle as d3CurveBundle, curveCardinal as d3CurveCardinal, curveCatmullRom as d3CurveCatmullRom, curveLinear as d3CurveLinear, line as d3Line } from "d3-shape";
 
 import "../src/Edge.css";
+
+const Curve = {
+    basis: d3CurveBasis,
+    bundle: d3CurveBundle,
+    cardinal: d3CurveCardinal,
+    catmullRom: d3CurveCatmullRom,
+    linear: d3CurveLinear
+};
 
 export class Edge extends SVGWidget {
     protected _points: any[];
@@ -12,7 +20,6 @@ export class Edge extends SVGWidget {
     protected _sourceVertex: Widget;
     protected _targetVertex: Widget;
     protected _elementPath;
-    protected _tooltipElement;
     protected _graphID;
 
     constructor() {
@@ -86,7 +93,6 @@ export class Edge extends SVGWidget {
     enter(domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         this._elementPath = element.append("path");
-        this._tooltipElement = this._elementPath.append("title");
 
         if (this._textBox.text()) {
             this._textBox
@@ -99,6 +105,7 @@ export class Edge extends SVGWidget {
 
     update(_domNode, element, transitionDuration?, skipPushMarkers?) {
         SVGWidget.prototype.update.apply(this, arguments);
+
         const context = this;
         if (Platform.svgMarkerGlitch && !skipPushMarkers) {
             element.transition().duration((transitionDuration ? transitionDuration : 0) + 100)
@@ -111,10 +118,21 @@ export class Edge extends SVGWidget {
                 ;
         }
         const points = context._calculateEdgePoints(this._sourceVertex, this._targetVertex, this._points);
+        const svgPoints = element.selectAll(".point2").data(this.showControlPoints() ? points : []);
+        svgPoints.enter().append("circle")
+            .attr("class", "point2")
+            .style("stroke", "red")
+            .merge(svgPoints)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 1)
+            ;
+        svgPoints.exit().remove();
+
         const line = d3Line()
             .x(function (d: any) { return d.x; })
             .y(function (d: any) { return d.y; })
-            .curve(d3CurveBundle)
+            .curve(Curve.basis)
             // .tension(0.75)
             (points)
             ;
@@ -130,12 +148,20 @@ export class Edge extends SVGWidget {
             .attr("stroke-dasharray", this.strokeDasharray_exists() ? this.strokeDasharray() : null)
             .attr("d", line)
             ;
-        this._tooltipElement.text(this.tooltip());
 
         if (this._textBox.text()) {
             this._textBox
                 .tooltip(this.tooltip())
                 .move(this._findMidPoint(points), transitionDuration)
+                ;
+        }
+    }
+
+    exit(domNode, element) {
+        SVGWidget.prototype.exit.apply(this, arguments);
+        if (this._textBox.text()) {
+            this._textBox
+                .target(null)
                 ;
         }
     }
@@ -156,7 +182,7 @@ export class Edge extends SVGWidget {
         if (!source || !target) {
             return [{ x: 0, y: 0 }, { x: 0, y: 0 }];
         }
-        let points = _points ? _points.slice() : [];
+        let points = _points ? _points.filter(p => !source.contains(p) && !target.contains(p)) : [];
         const p0 = points.length === 0 ? target.pos() : points[0];
         const p1 = points.length === 0 ? source.pos() : points[points.length - 1];
 
@@ -169,7 +195,7 @@ export class Edge extends SVGWidget {
             points[points.length - 1] = target._pos;
         }
 
-        if (points.length === 2 && points[0] && points[1]) {
+        if ((!_points || _points.length === 0) && points.length === 2 && points[0] && points[1]) {
             const dx = points[0].x - points[1].x;
             const dy = points[0].y - points[1].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -187,6 +213,7 @@ export class Edge extends SVGWidget {
     }
 
     arcDepth: { (): number; (_: number): Edge; };
+    showControlPoints: { (): boolean; (_: boolean): Edge; };
     showArc: { (): boolean; (_: boolean): Edge; };
     tooltip: { (): string; (_: string): Edge; };
 
@@ -202,6 +229,7 @@ export class Edge extends SVGWidget {
 Edge.prototype._class += " graph_Edge";
 
 Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
+Edge.prototype.publish("showControlPoints", false, "boolean", "Show/Hide Control Points", null, { tags: ["Basic"] });
 Edge.prototype.publish("showArc", true, "boolean", "Show/Hide Arc", null, { tags: ["Basic"] });
 Edge.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 

@@ -588,6 +588,18 @@ export abstract class Widget extends PropertyExt {
         this.render();
     }, 100);
 
+    animationFrameRender() {
+        if (requestAnimationFrame) {
+            requestAnimationFrame(() => {
+                this.render();
+            });
+        } else {
+            //  Not a real replacement for requestAnimationFrame  ---
+            this.renderPromise();
+        }
+        return this;
+    }
+
     enter(_domNode: HTMLElement, _element: d3SelectionType) { }
     preUpdate(_domNode: HTMLElement, _element: d3SelectionType) { }
     update(_domNode: HTMLElement, _element: d3SelectionType) { }

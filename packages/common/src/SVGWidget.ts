@@ -257,6 +257,20 @@ export class SVGWidget extends Widget {
     }
 
     //  Intersections  ---
+    contains(point): boolean {
+        return this.containsRect(point);
+    }
+
+    containsRect(point): boolean {
+        const size = this.getBBox();
+        return point.x >= size.x && point.x <= size.x + size.width && point.y >= size.y && point.y <= size.y + size.height;
+    }
+
+    containsCircle(radius, point) {
+        const center = this.getOffsetPos();
+        return this.distance(center, point) <= radius;
+    }
+
     intersection(pointA, pointB) {
         return this.intersectRect(pointA, pointB);
     }

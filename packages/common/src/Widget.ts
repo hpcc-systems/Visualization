@@ -277,8 +277,8 @@ export abstract class Widget extends PropertyExt {
     visible(_?): boolean | this {
         if (!arguments.length) return this._visible;
         this._visible = _;
-        if (this._placeholderElement) {
-            this._placeholderElement
+        if (this._element) {
+            this._element
                 .style("visibility", this._visible ? null : "hidden")
                 .style("opacity", this._visible ? null : 0)
                 ;

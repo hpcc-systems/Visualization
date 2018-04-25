@@ -29,7 +29,7 @@ class Mapping extends PropertyExt {
 Mapping.prototype._class += " react_Orb.Mapping";
 
 Mapping.prototype.publish("addField", "", "set", "Show Toolbox or not", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
-Mapping.prototype.publish("location", true, "set", "Data Location", ["row", "column", "data", "remove"], { tags: ["basic"] });
+Mapping.prototype.publish("location", true, "set", "Data Location", ["row", "column", "data", "remove"], { tags: ["Basic"] });
 Mapping.prototype.publish("aggregateFunc", "", "set", "Aggregate Function type", ["sum", "count", "min", "max", "avg", "prod", "var", "varp", "stdev", "stdevp"], { optional: true });
 Mapping.prototype.publish("formatFunction", "", "string", "Format function");
 
@@ -333,11 +333,11 @@ Orb.prototype.Mapping = Mapping;
 Orb.prototype._OrbTypes = [{ id: "PIVOT", display: "Pivot Table", widgetClass: "react_Orb" }];
 
 Orb.prototype.publish("stringProp", "defaultValue", "string", "Sample Property");
-Orb.prototype.publish("tableWidth", 2000, "number", "Table width", null, { tags: ["basic"] });
-Orb.prototype.publish("tableHeight", 711, "number", "Table height", null, { tags: ["basic"] });
+Orb.prototype.publish("tableWidth", 2000, "number", "Table width", null, { tags: ["Basic"] });
+Orb.prototype.publish("tableHeight", 711, "number", "Table height", null, { tags: ["Basic"] });
 
-Orb.prototype.publish("toolbar", true, "boolean", "Show Toolbox or not", null, { tags: ["basic"] });
-Orb.prototype.publish("themeColor", "blue", "set", "Theme color", ["blue", "red", "black", "green"], { tags: ["basic"] });
+Orb.prototype.publish("toolbar", true, "boolean", "Show Toolbox or not", null, { tags: ["Basic"] });
+Orb.prototype.publish("themeColor", "blue", "set", "Theme color", ["blue", "red", "black", "green"], { tags: ["Basic"] });
 Orb.prototype.publish("newField", [], "propertyArray", "Source Columns", null, { autoExpand: Mapping });
 
 Orb.prototype.publish("columnGrandTotal", true, "boolean", "Show Grand total or not");

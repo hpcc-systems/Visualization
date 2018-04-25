@@ -62,12 +62,13 @@ function isPrivate(obj, key) {
     return obj[__private_ + key];
 }
 
+export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial";
 export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
 export interface IPublishExt {
     override?: boolean;
     disable?: (w) => boolean;
     optional?: boolean;
-    tags?: string[];
+    tags?: TagTypes[];
     autoExpand?;
     render?: boolean;
     icons?: string[];

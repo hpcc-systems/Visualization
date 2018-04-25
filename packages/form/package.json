@@ -30,20 +30,20 @@
     "@hpcc-js/common": "^0.0.74"
   },
   "devDependencies": {
-    "concurrently": "3.5.0",
+    "concurrently": "3.5.1",
     "d3-brush": "1.0.4",
     "d3-color": "1.0.3",
     "d3-drag": "1.2.1",
     "d3-scale": "1.0.6",
     "d3-selection": "1.1.0",
     "rimraf": "2.6.2",
-    "rollup": "0.54.0",
-    "rollup-plugin-postcss": "0.5.5",
-    "tslib": "1.8.0",
-    "tslint": "5.8.0",
+    "rollup": "0.58.2",
+    "rollup-plugin-postcss": "1.6.1",
+    "tslib": "1.9.0",
+    "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.8.1",
-    "uglify-es": "3.2.0"
+    "typescript": "2.8.3",
+    "uglify-es": "3.3.9"
   },
   "repository": {
     "type": "git",

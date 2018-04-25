@@ -5,7 +5,7 @@
   "dependencies": {
     "@hpcc-js/util": "^0.0.72",
     "chai": "4.0.0",
-    "es6-promise": "4.1.1",
+    "es6-promise": "4.2.4",
     "mocha": "3.4.2"
   },
   "devDependencies": {
@@ -16,8 +16,8 @@
     "mocha-chrome": "1.0.3",
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
-    "typescript": "~2.7.0",
-    "webpack": "3.10.0"
+    "typescript": "2.8.3",
+    "webpack": "3.11.0"
   },
   "scripts": {
     "clean": "rimraf lib* && rimraf types && rimraf dist",

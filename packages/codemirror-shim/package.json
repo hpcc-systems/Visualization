@@ -24,16 +24,16 @@
   },
   "devDependencies": {
     "codemirror": "5.26.0",
-    "concurrently": "3.5.0",
+    "concurrently": "3.5.1",
     "rimraf": "2.6.2",
-    "rollup": "0.54.0",
+    "rollup": "0.58.2",
     "rollup-plugin-alias": "1.4.0",
-    "rollup-plugin-commonjs": "8.2.6",
-    "rollup-plugin-node-resolve": "3.0.0",
-    "rollup-plugin-postcss": "0.5.5",
+    "rollup-plugin-commonjs": "9.1.0",
+    "rollup-plugin-node-resolve": "3.3.0",
+    "rollup-plugin-postcss": "1.6.1",
     "rollup-plugin-sourcemaps": "0.4.2",
-    "tslint": "5.8.0",
-    "typescript": "2.8.1"
+    "tslint": "5.9.1",
+    "typescript": "2.8.3"
   },
   "repository": {
     "type": "git",

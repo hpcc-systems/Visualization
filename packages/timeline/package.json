@@ -25,6 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
+    "@hpcc-js/api": "^0.0.74",
     "@hpcc-js/chart": "^0.0.76",
     "@hpcc-js/common": "^0.0.74"
   },
@@ -35,6 +36,9 @@
     "d3-selection": "1.1.0",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
+    "rollup-plugin-alias": "1.4.0",
+    "rollup-plugin-commonjs": "9.1.0",
+    "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-postcss": "1.6.1",
     "tslib": "1.9.0",
     "tslint": "5.9.1",

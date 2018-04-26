@@ -21,6 +21,7 @@
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.3",
     "rimraf": "2.6.2",
+    "source-map-loader": "0.2.1",
     "style-loader": "0.19.0",
     "typescript": "2.8.3",
     "webpack": "3.11.0"

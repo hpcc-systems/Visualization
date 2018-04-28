@@ -16,7 +16,7 @@
 function getConfig(env) {
 	// env is set by the 'buildEnvronment' and/or 'environment' plugin options (see webpack.config.js),
 	// or by the code at the end of this file if using without webpack 
-	dojoConfig = {
+	const dojoConfig = {
 		baseUrl: '.',
 		packages: [
 			{
@@ -64,6 +64,8 @@ function getConfig(env) {
 		async: true,
 
 		has: { 'dojo-config-api': false },
+
+		selectorEngine: 'lite',
 
 		fixupUrl: function (url) {
 			// Load the uncompressed versions of dojo/dijit/dojox javascript files when using the dojo loader.

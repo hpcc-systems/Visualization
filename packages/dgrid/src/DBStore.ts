@@ -1,5 +1,5 @@
 import { Database } from "@hpcc-js/common";
-import { hashSum } from "@hpcc-js/util";
+import { Deferred } from "@hpcc-js/dgrid-shim";
 import { IColumn, RowFormatter } from "./RowFormatter";
 
 export class DBStore {
@@ -22,7 +22,8 @@ export class DBStore {
                 field: prefix + idx,
                 idx,
                 className: "resultGridCell",
-                sortable: true
+                sortable: true,
+                width: 240
             };
             switch (field.type()) {
                 case "nested":
@@ -53,16 +54,18 @@ export class DBStore {
 
     fetchRange(opts: { start: number, end: number }): Promise<object[]> {
         const rowFormatter = new RowFormatter(this.columns());
-        const data = this._db.data().slice(opts.start, opts.end).map((row, i) => {
+        const data = this._db.data().slice(opts.start, opts.end).map((row, idx) => {
             const formattedRow: any = rowFormatter.format(row);
             return {
                 ...formattedRow,
-                __hpcc_id: hashSum(row),
+                __hpcc_id: opts.start + idx,
                 __origRow: row
             };
         });
-        const retVal = Promise.resolve(data);
-        (retVal as any).totalLength = Promise.resolve(this._db.length() - 1);
+        const retVal = new Deferred();
+        retVal.totalLength = new Deferred();
+        retVal.resolve(data);
+        retVal.totalLength.resolve(this._db.length() - 1);
         return retVal;
     }
 

@@ -29,6 +29,7 @@
     "dojo-themes": "1.13.0",
     "dojo-util": "1.13.0",
     "dojo-webpack-plugin": "2.4.1",
+    "webpack-hasjs-plugin": "1.0.0",
     "dojox": "1.13.0",
     "rimraf": "2.6.2",
     "style-loader": "0.19.0",

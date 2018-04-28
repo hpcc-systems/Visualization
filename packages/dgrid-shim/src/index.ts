@@ -10,17 +10,11 @@ export {
 };
 
 //  dstore  ---
-import * as Cache from "dojo-dstore/Cache";
 import * as Memory from "dojo-dstore/Memory";
 import * as QueryResults from "dojo-dstore/QueryResults";
-import * as SimpleQuery from "dojo-dstore/SimpleQuery";
-import * as Store from "dojo-dstore/Store";
 export {
-    Cache,
     Memory,
-    QueryResults,
-    SimpleQuery,
-    Store
+    QueryResults
 };
 
 //  dgrid  ---

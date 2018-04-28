@@ -34,12 +34,12 @@ export default {
         name: pkg.name
     }],
     plugins: [
+        alias({
+        }),
         nodeResolve({
             preferBuiltins: true
         }),
         commonjs({
-        }),
-        alias({
         }),
         postcss({
             extensions: [".css"]

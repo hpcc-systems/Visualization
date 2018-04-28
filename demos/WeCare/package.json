@@ -22,7 +22,8 @@
     "@hpcc-js/map": "^0.0.77",
     "d3-selection": "1.1.0",
     "d3-time-format": "2.1.0",
-    "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI"
+    "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI",
+    "tslib": "1.9.0"
   },
   "devDependencies": {
     "@types/d3": "4.9.0",

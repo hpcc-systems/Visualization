@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
-import { Edge, Graph, Sankey, SankeyColumn, Vertex } from "@hpcc-js/graph";
+import { Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { dataBreach } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -115,6 +115,11 @@ describe("@hpcc-js/graph", () => {
                                     .columns(dataBreach.columns)
                                     .data(dataBreach.data)
                                     .mappings([new SankeyColumn().column("Covered Entity Type"), new SankeyColumn().column("Type of Breach")])
+                                );
+                                break;
+                            case Subgraph:
+                                render(new Subgraph()
+                                    .title("Hello and Welcome!")
                                 );
                                 break;
                             case Vertex:

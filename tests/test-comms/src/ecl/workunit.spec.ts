@@ -49,8 +49,8 @@ describe("test/esp/ecl/Workunit", function () {
         });
         it("delete", function () {
             return wu1.delete().then(function (response) {
-                expect(wu1.isComplete()).is.true;
-                expect(wu1.isDeleted()).is.true;
+                expect(wu1.isComplete(), "isComplete").is.true;
+                expect(wu1.isDeleted(), "isDeleted").is.true;
                 return response;
             });
         });

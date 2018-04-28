@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as dgrid from "@hpcc-js/dgrid";
-import { DatasourceTable, Table } from "@hpcc-js/dgrid";
+import { Common, DatasourceTable, Table } from "@hpcc-js/dgrid";
 import { expect } from "chai";
 import { classDef, renderMedium /*, renderShort, renderWide*/ } from "./coreTests";
 
@@ -27,7 +27,7 @@ const simple = {
 describe("@hpcc-js/dgrid", () => {
     for (const key in dgrid) {
         const item = (dgrid as any)[key];
-        if (item) {
+        if (item && item.prototype) {
             if (!urlSearch || urlSearch === item.prototype.constructor.name) {
                 describe(`${item.prototype.constructor.name}`, () => {
                     if (item.prototype instanceof Class) {
@@ -35,6 +35,7 @@ describe("@hpcc-js/dgrid", () => {
                     }
                     if (item.prototype instanceof HTMLWidget || item.prototype instanceof SVGWidget) {
                         switch (item.prototype.constructor) {
+                            case Common:
                             case DatasourceTable:
                                 break;
                             case Table:

@@ -1,5 +1,5 @@
 import * as chart from "@hpcc-js/chart";
-import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Scatter, Step, Summary, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Scatter, Step, Summary, SummaryC, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "./coreTests";
@@ -46,6 +46,7 @@ describe("@hpcc-js/chart", () => {
                             case Scatter:
                             case Step:
                             case Summary:
+                            case SummaryC:
                                 renderMedium(new item.prototype.constructor()
                                     .columns(simple.ND.columns)
                                     .data(simple.ND.data)

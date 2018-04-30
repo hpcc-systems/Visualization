@@ -53,7 +53,7 @@ export class GraphAdapter {
             retVal = new Vertex()
                 .columns(["DS"])
                 .data([[data]])
-                .icon_shape_diameter(0)
+                .icon_diameter(0)
                 .textbox_shape_colorFill(fillColor)
                 .tooltip(tooltip)
                 ;

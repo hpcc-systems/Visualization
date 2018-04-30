@@ -161,7 +161,8 @@ export class Vertex extends SVGWidget {
 
     faChar: { (): string; (_: string): Vertex; };
     imageUrl: { (): string; (_: string): Vertex; };
-    icon_shape_diameter: { (): number; (_: number): Vertex; };
+    icon_diameter: { (): number; (_: number): Vertex; };
+    icon_paddingPercent: { (): number; (_: number): Vertex; };
     icon_shape_colorFill: { (): string; (_: string): Vertex; };
     icon_shape_colorStroke: { (): string; (_: string): Vertex; };
     icon_image_colorFill: { (): string; (_: string): Vertex; };
@@ -174,7 +175,7 @@ export class Vertex extends SVGWidget {
     textbox_shape_colorFill: { (): string; (_: string): Vertex; };
     textbox_text_colorFill: { (): string; (_: string): Vertex; };
 
-    iconAnchor: { (): string; (_: string): Vertex; };
+    iconAnchor: { (): "" | "start" | "middle" | "end" | "left"; (_: "" | "start" | "middle" | "end" | "left"): Vertex; };
     iconTooltip: { (): string; (_: string): Vertex; };
 
     tooltip: { (): string; (_: string): Vertex; };
@@ -187,7 +188,8 @@ Vertex.prototype._class += " graph_Vertex";
 
 Vertex.prototype.publishProxy("faChar", "_icon");
 Vertex.prototype.publishProxy("imageUrl", "_icon");
-Vertex.prototype.publishProxy("icon_shape_diameter", "_icon", "diameter");
+Vertex.prototype.publishProxy("icon_diameter", "_icon", "diameter");
+Vertex.prototype.publishProxy("icon_paddingPercent", "_icon", "paddingPercent");
 Vertex.prototype.publishProxy("icon_shape_colorFill", "_icon", "shape_colorFill");
 Vertex.prototype.publishProxy("icon_shape_colorStroke", "_icon", "shape_colorStroke");
 Vertex.prototype.publishProxy("icon_image_colorFill", "_icon", "image_colorFill");

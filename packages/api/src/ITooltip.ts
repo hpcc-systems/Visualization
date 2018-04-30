@@ -11,7 +11,7 @@ export abstract class ITooltip extends Widget {
     layerEnter;
     layerUpdate;
     layerExit;
-    tooltip;
+    tooltip = tip().attr("class", "d3-tip");
 
     constructor() {
         super();
@@ -57,22 +57,19 @@ export abstract class ITooltip extends Widget {
     abstract target(_: any): this;
 
     tooltipEnter(element) {
-        const context = this;
-        this.tooltip = tip()
-            .attr("class", "d3-tip")
-            .offset(function () {
-                switch (context.tooltip.direction()()) {
-                    case "e":
-                        return [0, context.tooltipOffset()];
-                    default:
-                        return [-context.tooltipOffset(), 0];
-                }
-            })
-            ;
         element.call(this.tooltip);
     }
 
     tooltipUpdate() {
+        this.tooltip.offset(() => {
+            switch (this.tooltip.direction()()) {
+                case "e":
+                    return [0, this.tooltipOffset()];
+                default:
+                    return [-this.tooltipOffset(), 0];
+            }
+        });
+
         let classed = this.tooltip.attr("class");
         if (classed) {
             classed = classed.split(" notick").join("") + (this.tooltipTick() ? "" : " notick") + (this.tooltipStyle() === "none" ? " hidden" : "");

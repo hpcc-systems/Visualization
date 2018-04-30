@@ -1,19 +1,24 @@
+import { ITooltip } from "@hpcc-js/api";
 import { Axis } from "@hpcc-js/chart";
 import { publish, SVGWidget, TextBox } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
-import { local as d3Local } from "d3-selection";
+import { event as d3Event, local as d3Local } from "d3-selection";
+import { timeFormat as d3TimeFormat } from "d3-time-format";
+import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 
 import "../src/MiniGantt.css";
 
 export class MiniGantt extends SVGWidget {
-    protected topAxis: Axis;
-    protected bottomAxis: Axis;
+    protected tlAxis: Axis;
+    protected brAxis: Axis;
     protected verticalBands;
     protected svgEvents;
+    protected _zoom;
     protected svg;
     protected svgGuide;
     private localText = d3Local<TextBox>();
+    private tooltipFormatter: (date: Date) => string;
 
     protected rootExtent;
 
@@ -21,17 +26,24 @@ export class MiniGantt extends SVGWidget {
     timePattern: publish<this, string>;
     @publish("%Y-%m-%d", "string", "Tick Format", null, { optional: true })
     tickFormat: publish<this, string>;
+    @publish("%Y-%m-%d", "string", "Tooltip Format", null, { optional: true })
+    tooltipTimeFormat: publish<this, string>;
     @publish(2, "number", "Force new lane if start/end is within X pixels")
     overlapTolerence: publish<this, number>;
     @publish("horizontal", "set", "Orientation", ["horizontal", "vertical"])
-    orientation: publish<this, string>;
+    orientation: publish<this, "horizontal" | "vertical">;
 
     constructor() {
         super();
-        this.topAxis = new Axis()
+        ITooltip.call(this);
+
+        this._drawStartPos = "origin";
+        this.tooltipHTML((d: any) => `<center>${d[0]}</center><br>${this.tooltipFormatter(this.brAxis.parse(d[1]))} -> ${this.tooltipFormatter(this.brAxis.parse(d[2]))}`);
+
+        this.tlAxis = new Axis()
             .type("time")
             ;
-        this.bottomAxis = new Axis()
+        this.brAxis = new Axis()
             .type("time")
             ;
         this.verticalBands = d3ScaleBand()
@@ -57,59 +69,93 @@ export class MiniGantt extends SVGWidget {
     }
 
     dataStartPos(d) {
-        return this.bottomAxis.scalePos(d[1]);
+        return this.brAxis.scalePos(d[1]);
     }
 
     dataEndPos(d) {
-        return this.bottomAxis.scalePos(d[2]);
+        return this.brAxis.scalePos(d[2]);
     }
 
     dataWidth(d) {
         return this.dataEndPos(d) - this.dataStartPos(d);
     }
 
+    private transform;
+    resetZoom() {
+        //  Triggers a "zoomed" event ---
+        this._zoom.transform(this.element(), d3ZoomIdentity.translate(0, this.isHorizontal() ? 0 : this.height()));
+    }
+
+    zoomed() {
+        this.transform = d3Event.transform;
+        this.render();
+    }
+
     private background;
     enter(domNode, element) {
         super.enter(domNode, element);
+        this._zoom = d3Zoom()
+            .on("zoom", () => {
+                this.zoomed();
+            })
+            ;
+
         this.background = element.append("rect")
             .attr("fill", "white")
             .attr("opacity", 0)
             .on("dblclick", () => {
-                delete this.rootExtent;
-                this.lazyRender();
+                d3Event.stopPropagation();
+                this.dblclick();
             })
             ;
         this.svg = element.append("g")
             ;
         this.svgGuide = this.svg.append("g");
         this.svgEvents = this.svg.append("g");
-        this.topAxis
+        this.tlAxis
             .target(this.svg.node())
             .guideTarget(this.svgGuide.node())
             .shrinkToFit("none")
             .overlapMode("stagger")
+            .extend(0.1)
             ;
-        this.bottomAxis
+        this.brAxis
             .target(this.svg.node())
             .guideTarget(this.svgGuide.node())
             .shrinkToFit("none")
+            .extend(0.1)
             ;
+
+        element.call(this._zoom);
     }
 
+    private _prevIsHorizontal;
     update(domNode, element) {
         super.update(domNode, element);
-        this.background
-            .attr("x", this.x() + this._drawStartPos === "origin" ? 0 : -this.width() / 2)
-            .attr("y", this.y() + this._drawStartPos === "origin" ? 0 : -this.height() / 2)
-            .attr("width", this.width())
-            .attr("height", this.height())
-            ;
+
+        if (this._prevIsHorizontal !== this.isHorizontal()) {
+            this._prevIsHorizontal = this.isHorizontal();
+            this.resetZoom();
+            return;
+        }
+
+        this.tooltipFormatter = d3TimeFormat(this.tooltipTimeFormat());
 
         const width = this.width();
         const height = this.height();
+
+        this.background
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height)
+            ;
+
         const extent = this.extent();
 
-        this.topAxis
+        this.tlAxis
+            .x(width / 2)
+            .y(height / 2)
             .orientation(this.isHorizontal() ? "top" : "left")
             .reverse(!this.isHorizontal())
             .timePattern(this.timePattern())    //  "%Y-%m-%dT%H:%M:%S.%LZ"
@@ -121,11 +167,12 @@ export class MiniGantt extends SVGWidget {
             .updateScale()
             ;
 
-        this.bottomAxis
+        this.brAxis
+            .x(width / 2)
+            .y(height / 2)
             .orientation(this.isHorizontal() ? "bottom" : "right")
             .reverse(!this.isHorizontal())
             .timePattern(this.timePattern())    //  "%Y-%m-%dT%H:%M:%S.%LZ"
-            .tickFormat(this.tickFormat())      //  "%H:%M:%S"
             .width(width - 1)
             .height(height)
             .low(extent[0])
@@ -133,10 +180,31 @@ export class MiniGantt extends SVGWidget {
             .updateScale()
             ;
 
+        if (this.transform) {
+            let low;
+            let hi;
+            if (this.isHorizontal()) {
+                low = this.tlAxis.parseInvert(this.tlAxis.invert(this.transform.invertX(0)));
+                hi = this.tlAxis.parseInvert(this.tlAxis.invert(this.transform.invertX(width - 1)));
+            } else {
+                low = this.tlAxis.parseInvert(this.tlAxis.invert(- this.transform.invertY(0)));
+                hi = this.tlAxis.parseInvert(this.tlAxis.invert(- this.transform.invertY(height - 1)));
+            }
+            this.tlAxis
+                .low(low)
+                .high(hi)
+                .updateScale()
+                ;
+            this.brAxis
+                .low(low)
+                .high(hi)
+                .updateScale()
+                ;
+        }
         const data = this.data().sort(this.isHorizontal() ? (l, r) => {
-            return this.bottomAxis.scalePos(l[1]) - this.bottomAxis.scalePos(r[1]);
+            return this.brAxis.scalePos(l[1]) - this.brAxis.scalePos(r[1]);
         } : (l, r) => {
-            return this.bottomAxis.scalePos(r[1]) - this.bottomAxis.scalePos(l[1]);
+            return this.brAxis.scalePos(r[1]) - this.brAxis.scalePos(l[1]);
         });
         const events = data.filter(d => !d[2]);
         const ranges = data.filter(d => !!d[2]);
@@ -147,16 +215,16 @@ export class MiniGantt extends SVGWidget {
             };
         });
 
-        this.topAxis
+        this.tlAxis
             .ticks(eventTicks)
             .render()
             ;
-        const topAxisBBox = this.topAxis.getBBox();
+        const tlAxisBBox = this.tlAxis.getBBox();
 
-        this.bottomAxis
+        this.brAxis
             .render()
             ;
-        const bottomAxisBBox = this.bottomAxis.getBBox();
+        const brAxisBBox = this.brAxis.getBBox();
 
         interface BucketInfo {
             endPos: number;
@@ -181,8 +249,8 @@ export class MiniGantt extends SVGWidget {
             }
         }
 
-        const vbLower = this.isHorizontal() ? -height / 2 + topAxisBBox.height : -width / 2 + topAxisBBox.width;
-        const vbHigher = this.isHorizontal() ? height / 2 - bottomAxisBBox.height : width / 2 - bottomAxisBBox.width;
+        const vbLower = this.isHorizontal() ? 0 + tlAxisBBox.height : 0 + tlAxisBBox.width;
+        const vbHigher = this.isHorizontal() ? height - brAxisBBox.height : width - brAxisBBox.width;
 
         this.verticalBands
             .range([vbLower, vbHigher])
@@ -190,6 +258,7 @@ export class MiniGantt extends SVGWidget {
             ;
 
         const context = this;
+
         const buckets = this.svgEvents.selectAll(".buckets").data(ranges, d => d[0]);
         buckets.enter().append("g")
             .attr("class", "buckets")
@@ -198,27 +267,27 @@ export class MiniGantt extends SVGWidget {
                     .target(this)
                     .anchor("center")
                     .on("dblclick", () => {
-                        context.rootExtent = d;
-                        context.lazyRender();
+                        context.dblclick(d);
                     }, true)
                     ;
                 context.localText.set(this, text);
             })
+            .on("mouseout.tooltip", this.tooltip.hide)
+            .on("mousemove.tooltip", this.tooltip.show)
             .merge(buckets)
             .attr("transform", d => context.isHorizontal() ?
-                `translate(${this.dataStartPos(d) - width / 2}, ${this.verticalBands(bucketIndex[d])})` :
-                `translate(${this.verticalBands(bucketIndex[d])}, ${this.dataStartPos(d) - height / 2})`)
+                `translate(${this.dataStartPos(d)}, ${this.verticalBands(bucketIndex[d])}) ` :
+                `translate(${this.verticalBands(bucketIndex[d])}, ${this.dataStartPos(d)}) `)
             .each(function (d) {
                 const textBox = context.localText.get(this);
                 const x = context.dataWidth(d) / 2;
                 const y = context.verticalBands.bandwidth() / 2;
-                const textBoxWidth = context.dataWidth(d);
-                const textBoxHeight = context.verticalBands.bandwidth();
+                const textBoxWidth = Math.max(context.dataWidth(d), 2);
+                const textBoxHeight = Math.max(context.verticalBands.bandwidth(), 2);
                 textBox
                     .pos(context.isHorizontal() ? { x, y } : { x: y, y: x })
                     .fixedSize(context.isHorizontal() ? { width: textBoxWidth, height: textBoxHeight } : { width: textBoxHeight, height: textBoxWidth })
                     .text(d[0])
-                    .tooltip(`${d[0]} [${context.bottomAxis.parseFormat(d[1])}->${context.bottomAxis.parseFormat(d[2])}]`)
                     .render()
                     ;
             });
@@ -230,12 +299,28 @@ export class MiniGantt extends SVGWidget {
         lines.enter().append("line")
             .attr("class", "line")
             .merge(lines)
-            .attr("x1", d => this.dataStartPos(d) - width / 2)
-            .attr("x2", d => this.dataStartPos(d) - width / 2)
-            .attr("y1", -height / 2 + topAxisBBox.height)
-            .attr("y2", height / 2 - bottomAxisBBox.height)
+            .attr(this.isHorizontal() ? "x1" : "y1", d => this.dataStartPos(d) - 0)
+            .attr(this.isHorizontal() ? "x2" : "y2", d => this.dataStartPos(d) - 0)
+            .attr(this.isHorizontal() ? "y1" : "x1", this.isHorizontal() ? brAxisBBox.height : tlAxisBBox.width)
+            .attr(this.isHorizontal() ? "y2" : "x2", this.isHorizontal() ? height - tlAxisBBox.height : width - brAxisBBox.width)
             ;
         lines.exit().remove();
     }
+
+    //  Events  ---
+    dblclick(d?) {
+        if (d) {
+            this.rootExtent = d;
+        } else {
+            delete this.rootExtent;
+        }
+        this.resetZoom();
+    }
+
+    //  ITooltip  ---
+    tooltip;
+    tooltipHTML: (_) => string;
+    tooltipFormat: (_) => string;
 }
 MiniGantt.prototype._class += " timeline_MiniGantt";
+MiniGantt.prototype.implements(ITooltip.prototype);

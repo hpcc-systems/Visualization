@@ -61,6 +61,49 @@ export class SVGZoomWidget extends SVGWidget {
             ;
     }
 
+    getScreenBBox(target: any) {
+        let targetel = target;
+
+        while (targetel.getScreenCTM == null && targetel.parentNode == null) {
+            targetel = targetel.parentNode;
+        }
+
+        const bbox: any = {};
+        const matrix = targetel.getScreenCTM();
+        const tbbox = targetel.getBBox();
+        const width = tbbox.width;
+        const height = tbbox.height;
+        const x = tbbox.x;
+        const y = tbbox.y;
+        const point = this._placeholderElement.node().createSVGPoint();
+        point.x = x;
+        point.y = y;
+
+        bbox.nw = point.matrixTransform(matrix);
+        point.x += width;
+        bbox.ne = point.matrixTransform(matrix);
+        point.y += height;
+        bbox.se = point.matrixTransform(matrix);
+        point.x -= width;
+        bbox.sw = point.matrixTransform(matrix);
+        point.y -= height / 2;
+        bbox.w = point.matrixTransform(matrix);
+        point.x += width;
+        bbox.e = point.matrixTransform(matrix);
+        point.x -= width / 2;
+        point.y -= height / 2;
+        bbox.n = point.matrixTransform(matrix);
+        point.y += height;
+        bbox.s = point.matrixTransform(matrix);
+
+        return {
+            x: bbox.nw.x,
+            y: bbox.nw.y,
+            width: bbox.se.x - bbox.nw.x,
+            height: bbox.se.y - bbox.nw.y
+        };
+    }
+
     zoomScale(): number {
         return this._zoomScale;
     }
@@ -73,7 +116,7 @@ export class SVGZoomWidget extends SVGWidget {
         this._currZoom.scaleExtent(range);
     }
 
-    zoomTo(translate, scale, transitionDuration = 250) {
+    zoomTo(translate?, scale?, transitionDuration = 250) {
         translate = translate || this._zoomTranslate;
         scale = scale || this._zoomScale;
         transitionDuration = transitionDuration === undefined ? this.zoomDuration() : transitionDuration;
@@ -115,8 +158,10 @@ export class SVGZoomWidget extends SVGWidget {
     }
 
     zoomToFit(transitionDuration?) {
-        const bbox = this._renderElement.node().getBBox();
-        this.zoomToBBox(bbox);
+        if (this._renderElement) {
+            const bbox = this._renderElement.node().getBBox();
+            this.zoomToBBox(bbox);
+        }
     }
 
     onZoomed() {

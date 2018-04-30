@@ -2,6 +2,7 @@
 import { ISize, Platform, Spacer, SVGZoomWidget, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
+import "d3-transition";
 import { Edge } from "./Edge";
 import { GraphData } from "./GraphData";
 import * as GraphLayouts from "./GraphLayouts";
@@ -39,6 +40,7 @@ export class Graph extends SVGZoomWidget {
     protected forceLayout;
     protected drag;
     protected defs;
+    protected svgFragment;
     protected svg;
     protected svgC;
     protected svgE;
@@ -87,15 +89,16 @@ export class Graph extends SVGZoomWidget {
             });
     }
 
-    statusText(_: string) {
+    statusText(_: string): this {
         if (this.svgStatus) {
             this.svgStatus
                 .attr("transform", `translate(${this.width() / 2}, ${this.height() / 2})`)
                 .attr("display", _ !== "" ? null : "none")
                 .text(_)
                 ;
-            this.svg.style("opacity", _ ? 0.10 : null);
+            this.svg.style("opacity", _ ? 0.90 : null);
         }
+        return this;
     }
 
     //  Properties  ---
@@ -693,13 +696,14 @@ export class Graph extends SVGZoomWidget {
         };
     }
 
-    highlightVerticies(vertexMap) {
+    highlightVerticies(vertexMap?: { [id: string]: boolean }) {
         const context = this;
         const vertexElements = this.svgV.selectAll(".graphVertex");
         vertexElements
-            .classed("graphVertex-highlighted", function (d) { return !vertexMap || vertexMap[d.id()]; })
+            .classed("graphVertex-highlighted", d => !vertexMap || vertexMap[d.id()])
+            .style("filter", d => vertexMap && vertexMap[d.id()] ? "url(#" + this.id() + "_glow)" : null)
             .transition().duration(this.transitionDuration())
-            .each("end", function (d) {
+            .on("end", function (d) {
                 if (vertexMap && vertexMap[d.id()]) {
                     if (d._placeholderElement.node() && d._placeholderElement.node().parentNode) {
                         d._placeholderElement.node().parentNode.appendChild(d._placeholderElement.node());

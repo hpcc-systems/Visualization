@@ -1,0 +1,40 @@
+.eclwatch_WUGraph .graph_Vertex  {
+    cursor: auto;
+}
+
+.eclwatch_WUGraph .marker {
+    fill: #656565;
+    stroke: none;
+    stroke-width: 1.0px;
+}
+
+.eclwatch_WUGraph .zoom {
+    fill: none;
+    pointer-events: all;
+}
+
+.eclwatch_WUGraph .selectionBrush {
+    fill: none;
+    stroke: darkgray;
+}
+
+.d3-tip .eclwatch_WUGraph_Tooltip h3 {
+    margin:0px;
+}
+
+.d3-tip .eclwatch_WUGraph_Tooltip h4 {
+    margin:0px;
+}
+
+.d3-tip .eclwatch_WUGraph_Tooltip table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.d3-tip .eclwatch_WUGraph_Tooltip table .key {
+    font-weight: bold;
+}
+
+.d3-tip .eclwatch_WUGraph_Tooltip table .value {
+    font-weight: normal;
+}

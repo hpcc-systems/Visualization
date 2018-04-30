@@ -7,6 +7,48 @@
     }
 }(this, function () {
     return {
+        WU: {
+            Graph: function (callback) {
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUGraph"], function (DataFactory, WUGraph) {
+                    var graph = new WUGraph()
+                        .baseUrl("http://192.168.3.22:8010/")
+                        //.wuid("W20180421-040152")  // GenData - hthor
+                        .wuid("W20180329-153028") // sqagg-multiPart(true)
+                        //.wuid("W20180329-152400")
+                        //.wuid("W20180329-153043")
+                        //.wuid("W20180317-091825")  // BadWordSearch
+                        .graphID("graph1")
+                        ;
+                    callback(graph);
+                });
+            },
+            Timeline: function (callback) {
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUTimeline"], function (DataFactory, WUTimeline) {
+                    var timeline = new WUTimeline()
+                        .baseUrl("http://192.168.3.22:8010/")
+                        // .wuid("W20180421-040152")  // GenData - hthor
+                        .wuid("W20180329-153028") // sqagg-multiPart(true)
+                        //.wuid("W20180329-152400")
+                        //.wuid("W20180329-153043")
+                        //.wuid("W20180317-091825")  // BadWordSearch
+                        ;
+                    callback(timeline);
+                });
+            },
+            Grid: function (callback) {
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUResult"], function (DataFactory, WUResult) {
+                    callback(new WUResult()
+                        .wsWorkunitsUrl("http://192.168.3.22:8010")
+                        .wuid("W20180421-040152")  // GenData - hthor
+                        //.wuid("W20180329-153028") // sqagg-multiPart(true)
+                        //.wuid("W20180329-152400")
+                        //.wuid("W20180329-153043")
+                        //.wuid("W20180317-091825")  // BadWordSearch
+                        .sequence(1)
+                    );
+                });
+            }
+        },
         WUResult: {
             Nested: function (callback) {
                 legacyRequire(["src/eclwatch/WUResult"], function (WUResult) {

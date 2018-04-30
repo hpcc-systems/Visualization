@@ -138,7 +138,7 @@ export class Legend extends SVGWidget {
         return Palette.ordinal("default");
     }
 
-    private _g;
+    protected _g;
     enter(domNode, element) {
         super.enter.apply(domNode, element);
         this._g = element.append("g")
@@ -293,7 +293,7 @@ export class Legend extends SVGWidget {
     }
 
 }
-Legend.prototype._class += " composite_Legend";
+Legend.prototype._class += " layout_Legend";
 
 export interface Legend {
     title(): string;
@@ -313,6 +313,6 @@ export interface Legend {
 }
 Legend.prototype.publish("title", "", "string", "Title");
 Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
-Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "any"], { tags: ["Private"] });
+Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "graph", "any"], { tags: ["Private"] });
 Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });
 Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: w => !w.isRainbow() });

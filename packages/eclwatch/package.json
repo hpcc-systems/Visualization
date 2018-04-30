@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/eclwatch",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "hpcc-js - ECL Watch",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,13 +25,13 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.0.74",
-    "@hpcc-js/comms": "^0.0.79",
-    "@hpcc-js/dgrid": "^0.0.85",
-    "@hpcc-js/graph": "^0.0.75",
-    "@hpcc-js/layout": "^0.0.74",
-    "@hpcc-js/timeline": "^0.0.76",
-    "@hpcc-js/util": "^0.0.72"
+    "@hpcc-js/common": "^0.0.75",
+    "@hpcc-js/comms": "^0.0.80",
+    "@hpcc-js/dgrid": "^0.0.86",
+    "@hpcc-js/graph": "^0.0.76",
+    "@hpcc-js/layout": "^0.0.75",
+    "@hpcc-js/timeline": "^0.0.77",
+    "@hpcc-js/util": "^0.0.73"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

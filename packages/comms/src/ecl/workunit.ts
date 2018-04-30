@@ -303,6 +303,7 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
 
     isFailed() {
         switch (this.StateID) {
+            case WUStateID.Aborted:
             case WUStateID.Failed:
                 return true;
             default:

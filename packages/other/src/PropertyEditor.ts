@@ -701,7 +701,7 @@ PropertyEditor.prototype.publish("hideNonWidgets", false, "boolean", "Hides non-
 
 PropertyEditor.prototype.publish("label", "", "string", "Label to display in header of property editor table", null, { tags: ["Basic"] });
 PropertyEditor.prototype.publish("filterTags", "", "set", "Only show Publish Params of this type", ["Basic", "Intermediate", "Advance", ""], {});
-PropertyEditor.prototype.publish("excludeTags", [], "array", "Exclude this array of tags", null, {});
+PropertyEditor.prototype.publish("excludeTags", ["Private"], "array", "Exclude this array of tags", null, {});
 PropertyEditor.prototype.publish("excludeParams", [], "array", "Exclude this array of params (widget.param)", null, {});
 
 PropertyEditor.prototype.publish("widget", null, "widget", "Widget", null, { tags: ["Basic"], render: false });

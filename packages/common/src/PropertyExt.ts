@@ -2,6 +2,8 @@ import { hashSum } from "@hpcc-js/util";
 import { event as d3Event } from "d3-selection";
 import { Class } from "./Class";
 
+const GEN_PUB_STUBS: boolean = false;
+
 function deepEqual(a, b) {
     if (a === b) return true;
 
@@ -47,7 +49,6 @@ function deepEqual(a, b) {
     return false;
 }
 
-const GEN_PUB_STUBS: boolean = false;
 const __meta_ = "__meta_";
 const __private_ = "__private_";
 const __prop_ = "_";
@@ -59,7 +60,7 @@ function isMeta(key) {
 }
 
 function isPrivate(obj, key) {
-    return obj[__private_ + key];
+    return obj[__private_ + key] || obj[__private_ + __meta_ + key];
 }
 
 export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial";

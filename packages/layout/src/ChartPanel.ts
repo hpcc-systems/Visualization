@@ -1,5 +1,5 @@
 import { IHighlight } from "@hpcc-js/api";
-import { Button, Database, ProgressBar, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { Button, Database, IconBar, ProgressBar, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
@@ -72,14 +72,13 @@ export class ChartPanel extends Border2 implements IHighlight {
         .on("click", () => {
             this.downloadCSV();
         });
-    private _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
+    private _titleBar = new TitleBar().buttons([this._buttonDownload, new Spacer(), this._toggleLegend]);
 
     protected _widget: Widget;
 
     constructor() {
         super();
         this._tag = "div";
-        this._titleBar.buttons([this._buttonDownload, new Spacer(), this._toggleLegend]);
     }
 
     fields(): Database.Field[];
@@ -220,6 +219,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     }
 
     private _prevChartDataFamily;
+    private _prevChart;
+    private _prevButtons;
     update(domNode, element) {
         const _responsiveMode = this.getResponsiveMode();
         switch (_responsiveMode) {
@@ -248,6 +249,25 @@ export class ChartPanel extends Border2 implements IHighlight {
             }
         }
         element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
+
+        const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
+        if (this._prevChart !== chart) {
+            this._prevChart = chart;
+            const widgetIconBar = chart ? chart["_titleBar"] || chart["_iconBar"] : undefined;
+            if (widgetIconBar && widgetIconBar instanceof IconBar) {
+                this._prevButtons = this._prevButtons || [...this.buttons()];
+                const buttons: Widget[] = [
+                    ...widgetIconBar.buttons(),
+                    new Spacer(),
+                    ...this._prevButtons
+                ];
+                widgetIconBar.buttons([]).render();
+                this.buttons(buttons);
+            } else if (this._prevButtons) {
+                this.buttons(this._prevButtons);
+            }
+        }
+
         super.update(domNode, element);
 
         switch (_responsiveMode) {

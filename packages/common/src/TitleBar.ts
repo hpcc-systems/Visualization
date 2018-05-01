@@ -115,7 +115,7 @@ export class IconBar extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons());
+        const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons(), (d: Widget) => d.id());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
             .each(function (this: HTMLElement, d: Widget) {
@@ -133,6 +133,10 @@ export class IconBar extends HTMLWidget {
             .remove()
             ;
         icons.order();
+    }
+
+    exit(domNode, element) {
+        super.exit(domNode, element);
     }
 }
 IconBar.prototype._class += " common_IconBar";

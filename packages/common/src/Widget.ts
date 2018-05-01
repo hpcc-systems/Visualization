@@ -588,7 +588,7 @@ export abstract class Widget extends PropertyExt {
         this.render();
     }, 100);
 
-    animationFrameRender() {
+    animationFrameRender(): this {
         if (requestAnimationFrame) {
             requestAnimationFrame(() => {
                 this.render();

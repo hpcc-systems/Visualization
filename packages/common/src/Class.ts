@@ -12,7 +12,7 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 export interface ClassMeta {
     moduleName: string;
     className: string;
-    memberName: string;
+    memberName?: string;
 }
 
 export class Class {

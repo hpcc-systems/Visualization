@@ -9,7 +9,7 @@ describe("test/esp/ecl/query", function () {
         const resultNames = await query.resultNames();
         expect(resultNames.length).to.be.greaterThan(0);
         for (const resultName of resultNames) {
-            const fields = await query.fields(resultName);
+            const fields = await query.resultFields(resultName);
             expect(fields).has.length;
             expect(fields.length).to.be.greaterThan(0);
         }

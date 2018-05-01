@@ -91,6 +91,10 @@ export class ESPConnection implements IConnection {
         let serviceAction: string;
         let responseType: ResponseType = "json";
         switch (espResponseType) {
+            case "text":
+                serviceAction = join(this._service, action);
+                responseType = "text";
+                break;
             case "xsd":
                 serviceAction = join(this._service, action + ".xsd");
                 responseType = "text";

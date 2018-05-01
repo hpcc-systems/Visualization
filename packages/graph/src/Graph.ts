@@ -51,8 +51,15 @@ export class Graph extends SVGZoomWidget {
         super();
         IGraph.call(this);
         ITooltip.call(this);
-        this.tooltipHTML(function (d: Vertex) {
-            return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
+        this.tooltipHTML(function (d: any) {
+            if (d instanceof Subgraph) {
+                return `<p style="text-align:center">${d.title().replace("\n", "<br>")}</p>`;
+            } else if (d instanceof Vertex) {
+                return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
+            } else if (d instanceof Edge) {
+                return `<p style="text-align:center">${d.text().replace("\n", "<br>")}</p>`;
+            }
+            return "";
         });
 
         this._drawStartPos = "origin";

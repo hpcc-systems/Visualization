@@ -450,8 +450,88 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         });
     }
 
+    fetchDetailsMeta(request: Partial<WsWorkunits.WUDetailsMeta.Request> = {}): Promise<WsWorkunits.WUDetailsMeta.Response> {
+        return this.WUDetailsMeta(request);
+    }
+
     fetchDetailsRaw(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<WsWorkunits.WUDetails.Scope[]> {
         return this.WUDetails(request).then(response => response.Scopes.Scope);
+    }
+
+    fetchDetailsNormalized(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<{ meta: WsWorkunits.WUDetailsMeta.Response, columns: { [id: string]: any }, data: object[] }> {
+        return Promise.all([this.fetchDetailsMeta(), this.fetchDetailsRaw(request)]).then(promises => {
+            const meta = promises[0];
+            const scopes = promises[1];
+            const columns: { [id: string]: any } = {
+                id: {
+                    Measure: "label"
+                },
+                name: {
+                    Measure: "label"
+                },
+                type: {
+                    Measure: "label"
+                }
+            };
+            const data: object[] = [];
+            for (const scope of scopes) {
+                const props = {};
+                if (scope && scope.Id && scope.Properties && scope.Properties.Property) {
+                    for (const key in scope.Properties.Property) {
+                        const scopeProperty = scope.Properties.Property[key];
+                        if (scopeProperty.Measure === "ns") {
+                            scopeProperty.Measure = "s";
+                        }
+                        columns[scopeProperty.Name] = { ...scopeProperty };
+                        delete columns[scopeProperty.Name].RawValue;
+                        delete columns[scopeProperty.Name].Formatted;
+                        switch (scopeProperty.Measure) {
+                            case "bool":
+                                props[scopeProperty.Name] = !!+scopeProperty.RawValue;
+                                break;
+                            case "sz":
+                                props[scopeProperty.Name] = +scopeProperty.RawValue;
+                                break;
+                            case "s":
+                                props[scopeProperty.Name] = +scopeProperty.RawValue / 1000000000;
+                                break;
+                            case "ns":
+                                props[scopeProperty.Name] = +scopeProperty.RawValue;
+                                break;
+                            case "ts":
+                                props[scopeProperty.Name] = new Date(+scopeProperty.RawValue / 1000).toISOString();
+                                break;
+                            case "cnt":
+                                props[scopeProperty.Name] = +scopeProperty.RawValue;
+                                break;
+                            case "cpu":
+                            case "skw":
+                            case "node":
+                            case "ppm":
+                            case "ip":
+                            case "cy":
+                            case "en":
+                            case "txt":
+                            case "id":
+                            case "fname":
+                            default:
+                                props[scopeProperty.Name] = scopeProperty.RawValue;
+                        }
+                    }
+                    data.push({
+                        id: scope.Id,
+                        name: scope.ScopeName,
+                        type: scope.ScopeType,
+                        ...props
+                    });
+                }
+            }
+            return {
+                meta,
+                columns,
+                data
+            };
+        });
     }
 
     fetchDetails(request: Partial<WsWorkunits.WUDetails.Request> = {}): Promise<Scope[]> {
@@ -696,6 +776,10 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
         return this.connection.WUResubmit(deepMixinT<WsWorkunits.WUResubmit.Request>({}, request, {
             Wuids: [this.Wuid]
         }));
+    }
+
+    protected WUDetailsMeta(request: Partial<WsWorkunits.WUDetailsMeta.Request>): Promise<WsWorkunits.WUDetailsMeta.Response> {
+        return this.connection.WUDetailsMeta(request);
     }
 
     protected WUDetails(request: Partial<WsWorkunits.WUDetails.Request>): Promise<WsWorkunits.WUDetails.Response> {

@@ -2203,7 +2203,6 @@ export namespace WUCDebug {
 }
 
 export namespace WUDetailsMeta {
-
     export interface Request {
     }
 
@@ -2500,6 +2499,14 @@ export class WorkunitsService {
 
     WUGetStats(request: WUGetStats.Request): Promise<WUGetStats.Response> {
         return this._connection.send("WUGetStats", request);
+    }
+
+    private _WUDetailsMetaPromise: Promise<WUDetailsMeta.Response>;
+    WUDetailsMeta(request: WUDetailsMeta.Request): Promise<WUDetailsMeta.Response> {
+        if (!this._WUDetailsMetaPromise) {
+            this._WUDetailsMetaPromise = this._connection.send("WUDetailsMeta", request);
+        }
+        return this._WUDetailsMetaPromise;
     }
 
     WUDetails(request: WUDetails.Request): Promise<WUDetails.Response> {

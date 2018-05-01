@@ -31,7 +31,7 @@
   "devDependencies": {
     "@hpcc-js/c3-shim": "^0.0.51",
     "concurrently": "3.5.1",
-    "d3-format": "1.2.0",
+    "d3-format": "1.3.0",
     "d3-time-format": "2.1.0",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

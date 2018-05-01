@@ -9,6 +9,7 @@ export class WUTimeline extends MiniGantt {
     constructor() {
         super();
         this
+            .columns(["label", "start", "end"])
             .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
             .tickFormat("%H:%M")
             .tooltipTimeFormat("%H:%M:%S.%L")
@@ -19,6 +20,10 @@ export class WUTimeline extends MiniGantt {
     }
 
     private _prevHashSum;
+    clear(): this {
+        delete this._prevHashSum;
+        return this;
+    }
     fetchScopes() {
         const hash = hashSum({
             baseUrl: this.baseUrl(),
@@ -29,7 +34,7 @@ export class WUTimeline extends MiniGantt {
             this._prevHashSum = hash;
             const wu = Workunit.attach({ baseUrl: this.baseUrl() }, this.wuid());
             wu.fetchDetails(this.request()).then(scopes => {
-                return scopes.filter(scope => scope.attr("WhenStarted").RawValue).map((scope: Scope) => {
+                return scopes.filter(scope => scope.Id && scope.attr("WhenStarted").RawValue).map((scope: Scope) => {
                     const whenStarted = +scope.attr("WhenStarted").RawValue / 1000;
                     const timeElapsed = +scope.attr("TimeElapsed").RawValue / 1000000;
                     return [

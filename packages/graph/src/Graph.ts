@@ -167,7 +167,9 @@ export class Graph extends SVGZoomWidget {
         return retVal;
     }
 
-    selection(_) {
+    selection(_: Widget[]): this;
+    selection(): Widget[];
+    selection(_?: Widget[]): Widget[] | this {
         if (!arguments.length) return this._selection.get();
         this._selection.set(_);
         return this;

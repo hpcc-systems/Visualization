@@ -20,7 +20,7 @@ class DDLUpgrade {
     _visualizations: { [id: string]: DDL1.IAnyVisualization } = {};
 
     _ddl2Datasources: { [id: string]: DDL2.DatasourceType } = {};
-    _ddl2DatasourceFields: { [dsid: string]: { [outputID: string]: { [fieldID: string]: DDL2.FieldType } } } = {};
+    _ddl2DatasourceFields: { [dsid: string]: { [outputID: string]: { [fieldID: string]: DDL2.IField } } } = {};
 
     _ddl2Dataviews: { [id: string]: DDL2.IView } = {};
     _ddl2DataviewActivities: {
@@ -126,7 +126,7 @@ class DDLUpgrade {
             } else if (DDL1.isDatabombDatasource(ds)) {
             } else {
                 const urlParts = ds.URL!.split("/WsEcl/submit/query/");
-                const hostParts = urlParts[0].replace(":18002", ":18010").replace(":8002", ":8010");
+                const hostParts = urlParts[0];
                 const roxieParts = urlParts[1].split("/");
                 const ddl2DS: DDL2.IHipieService = {
                     type: "hipie",
@@ -405,7 +405,7 @@ class DDLUpgrade {
             limit,
             mappings
         };
-        const datasourceRef: DDL2.IDatasourceRef | DDL2.IRoxieServiceRef = this.isVizDatasourceRoxie(viz) ? {
+        const datasourceRef: DDL2.IDatasourceBaseRef | DDL2.IRoxieServiceRef = this.isVizDatasourceRoxie(viz) ? {
             id: this._datasourceUpdates[viz.id].id,
             request: [],
             output: this._datasourceUpdates[viz.id].output
@@ -425,57 +425,68 @@ class DDLUpgrade {
                 mappings
             ],
             visualization: {
+                id: viz.id,
                 title: viz.title,
                 description: "",
-                chartType: this.type2chartType(viz.type),
+                chartType: viz.type,
+                ...this.type2chartType(viz.type),
                 properties: viz.properties as DDL2.IWidgetProperties
             }
         };
     }
 
-    type2chartType(chartType: DDL1.VisualizationType): string {
+    type2chartType(chartType: DDL1.VisualizationType): { moduleName: string, className: string, memberName?: string } {
         switch (chartType) {
-            case "BUBBLE":
-            case "PIE":
             case "LINE":
+                return { moduleName: "@hpcc-js/chart", className: "Line" };
+            case "BUBBLE":
+                return { moduleName: "@hpcc-js/chart", className: "Bubble" };
+            case "PIE":
+                return { moduleName: "@hpcc-js/chart", className: "Pie" };
             case "BAR":
+                return { moduleName: "@hpcc-js/chart", className: "Column" };
             case "FORM":
+                return { moduleName: "@hpcc-js/form", className: "Form" };
             case "WORD_CLOUD":
-                return chartType;
+                return { moduleName: "@hpcc-js/other", className: "WordCloud" };
             case "CHORO":
-                return "CHORO_USSTATES";
+                return { moduleName: "@hpcc-js/map", className: "ChoroUSStates" };
             case "SLIDER":
-            case "TABLE":
+                return { moduleName: "@hpcc-js/form", className: "Slider" };
             case "HEAT_MAP":
+                return { moduleName: "@hpcc-js/other", className: "HeatMap" };
             case "2DCHART":
+                return { moduleName: "@hpcc-js/chart", className: "Column" };
             case "GRAPH":
+                return { moduleName: "@hpcc-js/graph", className: "Graph" };
+            case "TABLE":
             default:
-                return "TABLE";
+                return { moduleName: "@hpcc-js/grid", className: "Table" };
         }
     }
 
-    vizFields2field2(fields?: DDL1.IVisualizationField[]): DDL2.FieldType[] {
+    vizFields2field2(fields?: DDL1.IVisualizationField[]): DDL2.IField[] {
         if (!fields) return [];
         return fields.map(field => {
             switch (field.properties.type) {
                 case "range":
                     return {
-                        type: "range",
+                        type: "range" as DDL2.IFieldType,
                         id: field.id,
-                        default: field.properties.default ? field.properties.default as [any, any] : [null, null]
-                    } as DDL2.IRangeField;
+                        default: field.properties.default ? field.properties.default as [DDL2.IPrimativeFieldType, DDL2.IPrimativeFieldType] : [undefined, undefined]
+                    };
                 case "dataset":
                     return {
-                        type: "dataset",
+                        type: "dataset" as DDL2.IFieldType,
                         id: field.id,
                         default: []
-                    } as DDL2.IDatasetField;
+                    };
                 default:
                     return {
                         type: this.vizFieldType2fieldType(field.properties.datatype),
                         id: field.id,
                         default: field.properties.default ? field.properties.default[0] : null
-                    } as DDL2.IPrimativeField;
+                    };
             }
         });
     }
@@ -503,7 +514,7 @@ class DDLUpgrade {
         };
     }
 
-    filters2fields(filters?: DDL1.IFilter[]): DDL2.FieldType[] {
+    filters2fields(filters?: DDL1.IFilter[]): DDL2.IField[] {
         if (!filters) return [];
         return filters.filter(filter => {
             const idParts = filter.fieldid.split("-");
@@ -511,14 +522,14 @@ class DDLUpgrade {
         }).map(filter => {
             const idParts = filter.fieldid.split("-");
             return {
-                type: "string",
+                type: "string" as DDL2.IFieldType,
                 id: idParts[0],
                 default: ""
-            } as DDL2.IPrimativeField;
+            };
         });
     }
 
-    getVizField(vizID: string, fieldID: string): DDL2.IPrimativeField {
+    getVizField(vizID: string, fieldID: string): DDL2.IField {
         return {
             type: "string",
             id: "",
@@ -544,7 +555,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.20",
+            version: "0.0.21",
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews()
         };

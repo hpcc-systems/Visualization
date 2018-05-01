@@ -1,22 +1,14 @@
 import { d3SelectionType, Widget } from "@hpcc-js/common";
-import { MultiChartPanel } from "@hpcc-js/composite";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { DockPanel } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { DDLAdapter } from "./ddl";
-import { createProps, JavaScriptAdapter } from "./javascriptadapter";
+import { JavaScriptAdapter } from "./javascriptadapter";
 import { Element, ElementContainer } from "./model";
-
-export interface ICPPersist {
-    id: string;
-    type: string;
-    props: object;
-}
 
 export interface IDashboardPersist {
     ddl: DDL2.Schema;
-    widgets: ICPPersist[];
-    layout: object;
+    layout?: object;
 }
 
 export class Dashboard extends DockPanel {
@@ -32,33 +24,29 @@ export class Dashboard extends DockPanel {
         return this._ec;
     }
 
+    ddl(): DDL2.Schema;
+    ddl(_: DDL2.Schema): this;
+    ddl(_?: DDL2.Schema): DDL2.Schema | this {
+        const ddlAdapter = new DDLAdapter(this);
+        if (!arguments.length) return ddlAdapter.write();
+        this._ec.clear();
+        ddlAdapter.read(_);
+        return this;
+    }
+
     save(): IDashboardPersist {
-        const ddlAdapter = new DDLAdapter(this._ec);
+        const ddlAdapter = new DDLAdapter(this);
         return {
             ddl: ddlAdapter.write(),
-            widgets: this.widgets().map(_cp => {
-                const cp: MultiChartPanel = _cp as MultiChartPanel;
-                return {
-                    id: cp.id(),
-                    type: cp.chartType(),
-                    props: createProps((cp as MultiChartPanel).chart())
-                };
-            }),
             layout: this.layout()
         };
     }
 
+    _delayLayout;
     restore(_: IDashboardPersist): this {
-        const ddlAdapter = new DDLAdapter(this._ec);
+        const ddlAdapter = new DDLAdapter(this);
         ddlAdapter.read(_.ddl);
-        this.syncWidgets();
-        for (const w of _.widgets) {
-            this._ec.element(w.id).multiChartPanel()
-                .chartType(w.type)
-                .chartTypeProperties(w.props)
-                ;
-        }
-        // this.layout(_.layout);
+        this._delayLayout = _.layout;
         return this;
     }
 
@@ -75,17 +63,29 @@ export class Dashboard extends DockPanel {
         }
         for (const w of diff.added) {
             const element: Element = this._ec.element(w);
-            this.addWidget(w, element.title(), "split-bottom");
+            this.addWidget(w, element.chartPanel().title(), "split-bottom");
         }
         for (const w of diff.unchanged) {
             const wa: any = this.getWidgetAdapter(w);
-            wa.title.label = this._ec.element(w).title();
+            wa.title.label = this._ec.element(w).chartPanel().title();
         }
     }
 
     update(domNode: HTMLElement, element: d3SelectionType) {
         this.syncWidgets();
         super.update(domNode, element);
+    }
+
+    render(callback?: (w: Widget) => void): this {
+        return super.render(w => {
+            if (this._delayLayout) {
+                this.layout(this._delayLayout);
+                delete this._delayLayout;
+            }
+            if (callback) {
+                callback(w);
+            }
+        });
     }
 
     //  Events  ---

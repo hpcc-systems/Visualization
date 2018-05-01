@@ -1,21 +1,14 @@
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Deferred } from "@hpcc-js/dgrid-shim";
 import { QueryResults } from "@hpcc-js/dgrid-shim";
 import { IColumn, RowFormatter } from "./RowFormatter";
-
-export interface IField {
-    id: string;
-    label: string;
-    type: "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function" | "xs:integer" | "xs:integer8";
-    default: any;
-    children: IField[] | null;
-}
 
 export interface IDatasource {
     id: () => string;
     hash: () => string;
     label: () => string;
 
-    outFields: () => IField[];
+    outFields: () => DDL2.IField[];
     total: () => number;
     fetch: (from: number, count: number) => Promise<ReadonlyArray<object>>;
 }
@@ -96,13 +89,13 @@ export class DatasourceStore {
         return this._columns;
     }
 
-    db2Columns(fields: IField[], prefix = ""): IColumn[] {
+    db2Columns(fields: DDL2.IField[], prefix = ""): IColumn[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
             const column: IColumn = {
                 field: prefix + field.id,
                 leafID: field.id,
-                label: field.label,
+                label: field.id,
                 idx,
                 className: "resultGridCell",
                 sortable: true

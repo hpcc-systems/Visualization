@@ -40,7 +40,7 @@ export class Common extends HTMLWidget {
                 columns: this._columns,
                 collection: this._store,
                 selectionMode: "single",
-                deselectOnRefresh: false,
+                deselectOnRefresh: true,
                 cellNavigation: false,
                 pagingLinks: 1,
                 pagingTextBox: true,

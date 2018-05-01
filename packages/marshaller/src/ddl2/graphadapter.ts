@@ -1,5 +1,5 @@
-import { Surface, Widget } from "@hpcc-js/common";
-import { Edge, IGraphData, Lineage, Vertex } from "@hpcc-js/graph";
+import { Widget } from "@hpcc-js/common";
+import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
 import { Activity } from "./activities/activity";
 import { DSPicker, isDatasource } from "./activities/dspicker";
 import { HipiePipeline } from "./activities/hipiepipeline";
@@ -9,7 +9,7 @@ import { Element, ElementContainer } from "./model";
 
 export class GraphAdapter {
     private _elementContainer: ElementContainer;
-    private subgraphMap: { [key: string]: Surface } = {};
+    private subgraphMap: { [key: string]: Subgraph } = {};
     private vertexMap: { [key: string]: Vertex } = {};
     private edgeMap: { [key: string]: Edge } = {};
     private hierarchy: Lineage[] = [];
@@ -30,12 +30,12 @@ export class GraphAdapter {
         this.edges = [];
     }
 
-    createSurface(id: string, label: string, data: any): Surface {
-        let retVal: Surface = this.subgraphMap[id];
+    createSubgraph(id: string, label: string, data: any): Subgraph {
+        let retVal: Subgraph = this.subgraphMap[id];
         if (!retVal) {
-            retVal = new Surface()
-                .classed({ subgraph: true })
-                .showIcon(false)
+            retVal = new Subgraph()
+                // .classed({ subgraph: true })
+                // .showIcon(false)
                 .columns(["DS"])
                 .data([[data]])
                 ;
@@ -85,7 +85,7 @@ export class GraphAdapter {
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof WUResult) {
             const surfaceID = `${dsDetails.url()}/${dsDetails.wuid()}`;
-            const surface: Surface = this.createSurface(surfaceID, `${dsDetails.wuid()}`, { viz, view });
+            const surface: Subgraph = this.createSubgraph(surfaceID, `${dsDetails.wuid()}`, { viz, view });
 
             const id = `${surfaceID}/${dsDetails.resultName()}`;
             const vertex: Vertex = this.createVertex(id, dsDetails.resultName(), data);
@@ -93,7 +93,7 @@ export class GraphAdapter {
             return id;
         } else if (dsDetails instanceof RoxieRequest) {
             const surfaceID = dsDetails.roxieServiceID(); // `${dsDetails.url()}/${dsDetails.querySet()}`;
-            const surface: Surface = this.createSurface(surfaceID, dsDetails.querySet(), { viz, view });
+            const surface: Subgraph = this.createSubgraph(surfaceID, dsDetails.querySet(), { viz, view });
             const roxieID = surfaceID;
             this.hierarchy.push({
                 parent: surface,
@@ -114,7 +114,7 @@ export class GraphAdapter {
     }
 
     createActivity(sourceID: string, viz: Element, view: HipiePipeline, activity: Activity, label?: string): string {
-        const surface: Surface = this.createSurface(view.id(), `${viz.id()}`, { viz, view });
+        const surface: Subgraph = this.createSubgraph(view.id(), `${viz.id()}`, { viz, view });
         let fillColor = null;
         let tooltip = "";
         if (activity.exists()) {
@@ -146,7 +146,7 @@ export class GraphAdapter {
                     prevID = this.createDatasource(viz, view, { viz: undefined, activity });
                 } else if (activity === view.mappings()) {
                     this.createActivity(prevID, viz, view, activity, "Mappings");
-                    const surface: Surface = this.createSurface(`${view.mappings().id()}`, `Visualization`, { viz, view, activity: viz.multiChartPanel() });
+                    const surface: Subgraph = this.createSubgraph(`${view.mappings().id()}`, `Visualization`, { viz, view, activity: viz.multiChartPanel() });
                     this.hierarchy.push({
                         parent: this.subgraphMap[view.id()],
                         child: surface

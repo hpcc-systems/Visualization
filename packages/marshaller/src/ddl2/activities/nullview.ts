@@ -1,4 +1,4 @@
-import { IField } from "@hpcc-js/dgrid";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { HipiePipeline } from "./hipiepipeline";
 
 export class NullView extends HipiePipeline {
@@ -6,7 +6,7 @@ export class NullView extends HipiePipeline {
         return super.hash();
     }
 
-    computeFields(): IField[] {
+    computeFields(): DDL2.IField[] {
         return [];
     }
 

@@ -1,13 +1,10 @@
-import { Database, PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
+import { Database, PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { MultiChart, MultiChartPanel } from "@hpcc-js/composite";
-import { DDL1 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
-import { Activity, ROW_ID, rowID } from "./activities/activity";
+import { Activity } from "./activities/activity";
 import { HipiePipeline } from "./activities/hipiepipeline";
-import { DDL2, DDLAdapter } from "./ddl";
-import { DDLImport } from "./ddlimport";
 
 export class State extends PropertyExt {
 
@@ -45,8 +42,8 @@ export class Element extends PropertyExt {
     private _elementContainer: ElementContainer;
     private _MultiChartPanel: MultiChartPanel = new MultiChartPanel();
 
-    @publishProxy("_MultiChartPanel")
-    title: publish<this, string>;
+    // @publishProxy("_MultiChartPanel")
+    // title: publish<this, string>;
     @publish(null, "widget", "Data View")
     hipiePipeline: publish<this, HipiePipeline>;
     @publish(null, "widget", "Visualization")
@@ -58,12 +55,10 @@ export class Element extends PropertyExt {
         this._widget = _;
         this._widget
             .on("click", (row: any, col: string, sel: boolean) => {
-                const rowIdx = rowID(row);
-                if (rowIdx) {
-                    this.state().selection(sel ? [this.hipiePipeline().last(true).outRow(rowID(row))] : []);
+                if (sel) {
+                    this.state().selection([row.__lparam || row]);
                 } else {
-                    //  Normally a form...
-                    this.state().selection(sel ? [row] : []);
+                    this.state().selection([]);
                 }
             })
             ;
@@ -88,11 +83,11 @@ export class Element extends PropertyExt {
         super();
         this._elementContainer = ec;
         vizID++;
-        this._id = `element_${vizID}`;
-        const view = new HipiePipeline(ec, `pipeline_${vizID}`);
+        this._id = `e_${vizID}`;
+        const view = new HipiePipeline(ec, `p_${vizID}`);
         this.hipiePipeline(view);
         this._MultiChartPanel
-            .id(`viz_${vizID}`)
+            .id(`cp_${vizID}`)
             .title(this.id())
             .chartType("TABLE")
             ;
@@ -141,27 +136,27 @@ export class Element extends PropertyExt {
         return this.state();
     }
 
-    toFields(fields: IField[]): Database.Field[] {
+    toDBFields(fields: DDL2.IField[]): Database.Field[] {
         const retVal: Database.Field[] = [];
         for (const field of fields) {
             const f = new Database.Field()
                 .id(field.id)
-                .label(field.label)
+                .label(field.id)
                 ;
-            if (field.children) {
-                f.children(this.toFields(field.children));
+            if ((field).children) {
+                f.children(this.toDBFields(field.children));
             }
             retVal.push(f);
         }
         return retVal;
     }
 
-    toData(fields: Database.Field[], data) {
+    toDBData(fields: Database.Field[], data) {
         return data.map((row: any) => {
             const retVal = [];
             for (const field of fields) {
                 if (field.type() === "nested") {
-                    retVal.push(this.toData(field.children() as Database.Field[], row[field.id()].Row || row[field.id()]));
+                    retVal.push(this.toDBData(field.children() as Database.Field[], row[field.id()].Row || row[field.id()]));
                 } else {
                     retVal.push(row[field.label()]);
                 }
@@ -170,20 +165,20 @@ export class Element extends PropertyExt {
         });
     }
 
-    async refresh(includeMeta: boolean = false) {
+    async refresh(localMeta: boolean = false) {
         // TODO - just wrong for DashPOC  ---
         this.chartPanel().startProgress();
         const view = this.hipiePipeline();
         await view.refreshMeta();
         const mappings = view.last();
-        const fields = this.toFields(mappings.outFields());
+        const fields = this.toDBFields(mappings.outFields());
         await mappings.exec();
         const data = mappings.outData();
-        const mappedData = this.toData(fields, data);
+        const mappedData = this.toDBData(fields, data);
 
         this.chartPanel().finishProgress();
         this.chartPanel()
-            .fields(fields.filter(f => f.label() !== ROW_ID))
+            .fields(fields.filter(f => f.id() !== "__lparam"))
             .data(mappedData)
             .render()
             ;
@@ -193,7 +188,7 @@ export class Element extends PropertyExt {
     //  Events  ---
     selectionChanged() {
         const promises: Array<Promise<void>> = [];
-        for (const filteredViz of this._elementContainer.filteredBy(this)) {
+        for (const filteredViz of this._elementContainer.filteredBy(this.id())) {
             promises.push(filteredViz.refresh());
         }
         Promise.all(promises).then(() => {
@@ -220,7 +215,7 @@ export class ElementContainer extends PropertyExt {
         this._elements = [];
     }
 
-    elements() {
+    elements(): Element[] {
         return [...this._elements];
     }
 
@@ -249,10 +244,10 @@ export class ElementContainer extends PropertyExt {
         return this;
     }
 
-    filteredBy(viz: Element): Element[] {
+    filteredBy(vizID: string): Element[] {
         return this._elements.filter(otherViz => {
             const filterIDs = otherViz.hipiePipeline().updatedBy();
-            return filterIDs.indexOf(viz.id()) >= 0;
+            return filterIDs.indexOf(vizID) >= 0;
         });
     }
 
@@ -262,42 +257,6 @@ export class ElementContainer extends PropertyExt {
 
     view(id: string): HipiePipeline | undefined {
         return this.views().filter(view => view.id() === id)[0];
-    }
-
-    ddl(): DDL2.Schema;
-    ddl(_: DDL2.Schema): this;
-    ddl(_?: DDL2.Schema): DDL2.Schema | this {
-        const ddlAdapter = new DDLAdapter(this);
-        if (!arguments.length) return ddlAdapter.write();
-        this.clear();
-        ddlAdapter.read(_);
-        return this;
-    }
-
-    importV1DDL(url: string, ddlObj: DDL1.DDLSchema, seri?: object) {
-        const ddl = new DDLImport(this, url, ddlObj);
-        if (seri) {
-            // try {
-            const props = this.normalizePersist(seri);
-            for (const element of this.elements()) {
-                const mcp = element.multiChartPanel();
-                const mc = mcp.multiChart();
-                const _props = props[mcp.id()];
-                let _chartType;
-                for (const n in mc._allChartTypesMap) {
-                    _chartType = mc._allChartTypesMap[n].widgetClass === `${_props.package}_${_props.object}` ? mc._allChartTypesMap[n].id : _chartType;
-                }
-                _chartType = _chartType === "TABLE_LEGACY" ? "TABLE" : _chartType;
-                if (_chartType) {
-                    mcp
-                        .chartType(_chartType)
-                        .chartTypeProperties(_props.widget)
-                        ;
-                }
-            }
-            // } catch (e) { }
-        }
-        ddl;
     }
 
     normalizePersist(seri: any): { [key: string]: { [key: string]: any } } {
@@ -327,8 +286,8 @@ export class ElementContainer extends PropertyExt {
         }
     }
 
-    async refresh(): Promise<this> {
-        await Promise.all(this.elements().map(viz => viz.refresh()));
+    async refresh(localMeta: boolean = false): Promise<this> {
+        await Promise.all(this.elements().map(viz => viz.refresh(localMeta)));
         return this;
     }
 

@@ -1,5 +1,7 @@
 import { IMonitorHandle, PropertyExt } from "@hpcc-js/common";
-import { IDatasource, IField } from "@hpcc-js/dgrid";
+import { IField as WsEclField } from "@hpcc-js/comms";
+import { DDL2 } from "@hpcc-js/ddl-shim";
+import { IDatasource } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 
 export function stringify(obj_from_json) {
@@ -20,14 +22,54 @@ export function stringify(obj_from_json) {
     return `{ ${props} }`;
 }
 
-export function schemaRow2IField(row: any): IField {
-    return {
-        id: row.name,
-        label: row.name,
-        type: row.type,
-        default: undefined,
-        children: (row._children && row._children.length) ? row._children.map(schemaRow2IField) : null
-    };
+export function schemaType2IFieldType(type): DDL2.IFieldType {
+    switch (type) {
+        case "boolean":
+            return "boolean";
+        case "xs:byte":
+        case "xs:double":
+        case "xs:decimal":
+        case "xs:float":
+        case "xs:int":
+        case "xs:short":
+        case "xs:unsignedInt":
+        case "xs:unsignedShort":
+        case "xs:unsignedByte":
+        case "number":
+            return "number";
+        case "xs:integer":
+        case "xs:long":
+        case "xs:negativeInteger":
+        case "xs:nonNegativeInteger":
+        case "xs:nonPositiveInteger":
+        case "xs:positiveInteger":
+        case "xs:unsignedLong":
+            return "number64";
+        case "string":
+            return "string";
+        case "range":
+            return "range";
+    }
+    return "string";
+}
+
+export function schemaRow2IField(row: any): DDL2.IField {
+    if (row._children && row._children.length) {
+        return {
+            id: row.name,
+            type: "dataset",
+            children: row._children.map(schemaRow2IField)
+        };
+    } else {
+        return {
+            id: row.name,
+            type: schemaType2IFieldType(row.type)
+        };
+    }
+}
+
+export function wsEclSchemaRow2IField(row: WsEclField): DDL2.IField {
+    return row;
 }
 
 export type ReferencedFields = {
@@ -40,20 +82,20 @@ export interface IActivityError {
     msg: string;
 }
 
+/*
 export const ROW_ID = "__##__";  //  TODO:  Should be Symbol
-export function rowID(row: Readonly<object>): number {
+export function rowID(row: Readonly<object>): undefined | number {
     return row[ROW_ID] || row["__lparam"];
 }
+*/
 
 export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
-    private _calcRowNum: boolean = false;
 
     fixInt64(data) {
         const int64Fields = this.outFields().filter(field => {
             switch (field.type) {
-                case "xs:integer":
-                case "xs:integer8":
+                case "number64":
                     return true;
             }
             return false;
@@ -103,31 +145,19 @@ export abstract class Activity extends PropertyExt {
         return [];
     }
 
-    inFields(): IField[] {
+    inFields(): DDL2.IField[] {
         return this._sourceActivity ? this._sourceActivity.outFields() : [];
     }
 
-    computeFields(): IField[] {
+    computeFields(): DDL2.IField[] {
         return this.inFields();
     }
-    outFields(): IField[] {
-        const retVal = this.computeFields();
-        if (retVal.length && retVal[retVal.length - 1].id !== ROW_ID) {
-            this._calcRowNum = true;
-            retVal.push({
-                id: ROW_ID,
-                label: ROW_ID,
-                type: "number",
-                default: undefined,
-                children: null
-            });
-        } else {
-            this._calcRowNum = false;
-        }
-        return retVal;
+
+    outFields(): DDL2.IField[] {
+        return this.computeFields();
     }
 
-    localFields(): IField[] {
+    localFields(): DDL2.IField[] {
         const inFieldIDs = this.inFields().map(field => field.id);
         return this.outFields().filter(field => inFieldIDs.indexOf(field.id) < 0);
     }
@@ -180,17 +210,10 @@ export abstract class Activity extends PropertyExt {
     }
 
     outData(): ReadonlyArray<object> {
-        if (this._calcRowNum) {
-            return this.computeData().map((row, idx) => {
-                return {
-                    ...row,
-                    [ROW_ID]: idx
-                };
-            });
-        }
         return this.computeData();
     }
 
+    /*
     inRow(idx: number) {
         return this.inData().filter(row => row[ROW_ID] === idx)[0];
     }
@@ -198,6 +221,7 @@ export abstract class Activity extends PropertyExt {
     outRow(idx: number) {
         return this.outData().filter(row => row[ROW_ID] === idx)[0];
     }
+    */
 }
 
 export class ActivityArray extends Activity {
@@ -285,15 +309,15 @@ export class ActivityPipeline extends ActivityArray {
         return retVal;
     }
 
-    inFields(): IField[] {
+    inFields(): DDL2.IField[] {
         return this.first().inFields();
     }
 
-    outFields(): IField[] {
+    outFields(): DDL2.IField[] {
         return this.last().outFields();
     }
 
-    localFields(): IField[] {
+    localFields(): DDL2.IField[] {
         return this.last().localFields();
     }
 
@@ -361,15 +385,15 @@ export class ActivitySelection extends ActivityArray {
         return this.selection().updatedBy();
     }
 
-    inFields(): IField[] {
+    inFields(): DDL2.IField[] {
         return this.selection().inFields();
     }
 
-    outFields(): IField[] {
+    outFields(): DDL2.IField[] {
         return this.selection().outFields();
     }
 
-    localFields(): IField[] {
+    localFields(): DDL2.IField[] {
         return this.selection().localFields();
     }
 
@@ -419,7 +443,7 @@ export class DatasourceAdapt implements IDatasource {
     label(): string {
         return this._activity.label();
     }
-    outFields(): IField[] {
+    outFields(): DDL2.IField[] {
         return this._activity.outFields();
     }
     total(): number {

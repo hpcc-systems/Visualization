@@ -1,17 +1,11 @@
 import { ClassMeta, PropertyExt } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity, stringify } from "./activities/activity";
-import { Databomb, Form } from "./activities/databomb";
-import { DSPicker, isDatasource } from "./activities/dspicker";
-import { Filters } from "./activities/filter";
-import { GroupBy } from "./activities/groupby";
-import { Limit } from "./activities/limit";
-import { LogicalFile } from "./activities/logicalfile";
-import { Project } from "./activities/project";
-import { HipieRequest, RoxieRequest } from "./activities/roxie";
-import { Sort } from "./activities/sort";
-import { WUResult } from "./activities/wuresult";
+import { Databomb } from "./activities/databomb";
+import { DSPicker } from "./activities/dspicker";
 import { Dashboard } from "./dashboard";
-import { Element, ElementContainer } from "./model";
+import { DDLAdapter } from "./ddl";
+import { ElementContainer } from "./model";
 
 export function createProps(pe: PropertyExt): { [key: string]: any } {
     const retVal: { [key: string]: any } = {};
@@ -27,18 +21,26 @@ interface WidgetMeta extends ClassMeta {
     js: string;
 }
 
-function joinWithPrefix(arr: string[], joinStr: string, postFix: string = ""): string {
-    return arr.length ? `${joinStr}${arr.join(joinStr)}${postFix}` : "";
+function joinWithPrefix(props: DDL2.IWidgetProperties, joinStr: string, postFix: string = ""): string {
+    let retVal: string = "";
+    for (const prop in props) {
+        retVal += `${joinStr}.${prop}(${JSON.stringify(props[prop])})${postFix}`;
+
+    }
+    return retVal;
 }
 
 export class JavaScriptAdapter {
     private _dashboard: Dashboard;
     private _elementContainer: ElementContainer;
-    private _dsDedup: { [key: string]: Activity } = {};
+    private _ddlAdapter: DDLAdapter;
+    private _ddlSchema: DDL2.Schema;
 
     constructor(dashboard: Dashboard) {
         this._dashboard = dashboard;
-        this._elementContainer = dashboard.elementContainer();
+        this._elementContainer = this._dashboard.elementContainer();
+        this._ddlAdapter = new DDLAdapter(this._dashboard);
+        this._ddlSchema = this._ddlAdapter.write();
     }
 
     createProps(prefix: string, pe: PropertyExt, postfix: string = ""): string[] {
@@ -69,87 +71,121 @@ export class JavaScriptAdapter {
         return retVal;
     }
 
-    writeDSActivity(ds: Activity): string {
-        const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
-        if (dsDetails instanceof WUResult) {
-            return `
-const ds_${ds.id()} = new WUResult()
-    .url("${dsDetails.url()}")
-    .wuid("${dsDetails.wuid()}")
-    .resultName("${dsDetails.resultName()}")
-    ;
-`.trim();
-        } else if (dsDetails instanceof LogicalFile) {
-            return `
-const ds_${ds.id()} = new LogicalFile()
-    .url("${dsDetails.url()}")
-    .logicalFile("${dsDetails.logicalFile()}")
-    ;
-`.trim();
-        } else if (dsDetails instanceof HipieRequest) {
-            return `
-const ds_${ds.id()}_${dsDetails.resultName()} = new HipieRequest(ec)
-    .url("${dsDetails.url()}")
-    .querySet("${dsDetails.querySet()}")
-    .queryID("${dsDetails.queryID()}")
-    .resultName("${dsDetails.resultName()}")
-    .requestFields(${stringify(dsDetails.requestFields())})
-    ;
-`.trim();
-        } else if (dsDetails instanceof RoxieRequest) {
-            return `
-const ds_${ds.id()}_${dsDetails.resultName()} = new RoxieRequest(ec)
-    .url("${dsDetails.url()}")
-    .querySet("${dsDetails.querySet()}")
-    .queryID("${dsDetails.queryID()}")
-    .resultName("${dsDetails.resultName()}")
-    .requestFields(${stringify(dsDetails.requestFields())})
-    ;
-`.trim();
-        } else if (dsDetails instanceof Databomb) {
-            return `
-const ds_${ds.id()} = new Databomb()
-    .payload(${stringify(dsDetails.payload())})
-    ;
-`.trim();
-        } else if (dsDetails instanceof Form) {
-            return `
-const ds_${ds.id()} = new Form()
-    .payload(${JSON.stringify(dsDetails.payload())})
-    ;
-`.trim();
-        }
-        return `
-const ds_${ds.id()} = TODO-writeDSActivity: ${dsDetails.classID()}
-`.trim();
+    writeMeta(dsDetails: Activity) {
+        return "";
     }
 
-    writeDatasource(element: Element): string[] {
-        const dataSources: string[] = [];
-        const ds = element.hipiePipeline().dataSource();
-        if (!this._dsDedup[ds.hash()]) {
-            this._dsDedup[ds.hash()] = ds;
-            dataSources.push(this.writeDSActivity(ds));
-        }
-        return dataSources;
+    private safeID(id: string): string {
+        return id.replace(" ", "_");
     }
 
-    writeActivity(activity: Activity): string {
-        if (activity instanceof GroupBy) {
-            return `new GroupBy().fieldIDs(${JSON.stringify(activity.fieldIDs())}).aggregates(${stringify(activity.aggregates())})`;
-        } else if (activity instanceof Sort) {
-            return `new Sort().conditions(${stringify(activity.conditions())})`;
-        } else if (activity instanceof Filters) {
-            return `new Filters(ec).conditions(${stringify(activity.conditions())})`;
-        } else if (activity instanceof Project) {
-            return `new Project(${activity._isMappings}).trim(${activity.trim()}).transformations(${stringify(activity.transformations())})`;
-        } else if (activity instanceof Limit) {
-            return `new Limit().rows(${activity.rows()})`;
+    private datasourceRefID(datasource: DDL2.IDatasourceRef | DDL2.IWUResultRef | DDL2.IRoxieServiceRef): string {
+        if (DDL2.isWUResultRef(datasource) || DDL2.isRoxieServiceRef(datasource)) {
+            return `${datasource.id}_${this.safeID(datasource.output)}`;
         }
-        return `TODO-writeActivity: ${activity.classID()}`;
+        return `${datasource.id}`;
     }
 
-    private writeWidgetProps(pe: PropertyExt): string[] {
+    _dedup: { [key: string]: boolean } = {};
+    private writeDatasource(datasourceRef: DDL2.IDatasourceRef): string[] {
+        if (this._dedup[datasourceRef.id]) return;
+        this._dedup[datasourceRef.id] = true;
+        const datasource = this._ddlSchema.datasources.filter(ds => ds.id === datasourceRef.id)[0];
+        const retVal: string[] = [];
+        switch (datasource.type) {
+            case "wuresult":
+                for (const output in datasource.outputs) {
+                    retVal.push(`
+const ${datasource.id}_${this.safeID(output)} = new marshaller.WUResult()
+    .url("${datasource.url}")
+    .wuid("${datasource.wuid}")
+    .resultName("${output}")
+    .meta(${stringify(datasource.outputs[output].fields)})
+    ;
+`.trim());
+                }
+                break;
+            case "logicalfile":
+                retVal.push(`
+const ${datasource.id} = new marshaller.LogicalFile()
+    .url("${datasource.url}")
+    .logicalFile("${datasource.logicalFile}")
+    .meta(${stringify(datasource.fields)})
+    ;
+`.trim());
+                break;
+            case "hipie":
+                for (const output in datasource.outputs) {
+                    retVal.push(`
+const ${datasource.id}_${this.safeID(output)} = new marshaller.HipieRequest(ec)
+    .url("${datasource.url}")
+    .querySet("${datasource.querySet}")
+    .queryID("${datasource.queryID}")
+    .resultName("${output}")
+    .requestFields(${stringify(datasource.inputs)})
+    .responseFields(${stringify(datasource.outputs[output].fields)})
+    .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+    ;
+`.trim());
+                }
+                break;
+            case "roxie":
+                for (const output in datasource.outputs) {
+                    retVal.push(`
+const ${datasource.id}_${this.safeID(output)} = new marshaller.RoxieRequest(ec)
+    .url("${datasource.url}")
+    .querySet("${datasource.querySet}")
+    .queryID("${datasource.queryID}")
+    .resultName("${output}")
+    .requestFields(${stringify(datasource.inputs)})
+    .responseFields(${stringify(datasource.outputs[output].fields)})
+    .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+    ;
+`.trim());
+                }
+                break;
+            case "databomb":
+                let payload = [];
+                const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
+                if (ds.length) {
+                    payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();
+
+                }
+                retVal.push(`
+const ${datasource.id} = new marshaller.Databomb()
+    .payload(${JSON.stringify(payload)})
+    ;
+`.trim());
+                break;
+            case "form":
+                retVal.push(`
+const ${datasource.id} = new marshaller.Form()
+    .payload(${JSON.stringify(datasource.fields)})
+    ;
+`.trim());
+                break;
+        }
+        return retVal;
+    }
+
+    private writeActivity(activity: DDL2.ActivityType): string {
+        switch (activity.type) {
+            case "filter":
+                return `new marshaller.Filters(ec).conditions(${stringify(activity.conditions)})`;
+            case "project":
+                return `new marshaller.Project().transformations(${stringify(activity.transformations)})`;
+            case "groupby":
+                return `new marshaller.GroupBy().fieldIDs(${JSON.stringify(activity.groupByIDs)}).aggregates(${stringify(activity.aggregates)})`;
+            case "sort":
+                return `new marshaller.Sort().conditions(${stringify(activity.conditions)})`;
+            case "limit":
+                return `new marshaller.Limit().rows(${activity.limit})`;
+            case "mappings":
+                return `new marshaller.Mappings().transformations(${stringify(activity.transformations)})`;
+        }
+    }
+
+    writeWidgetProps(pe: PropertyExt): string[] {
         const retVal: string[] = [];
         for (const meta of pe.publishedProperties()) {
             if ((pe as any)[meta.id + "_modified"]() && meta.id !== "fields") {
@@ -159,73 +195,65 @@ const ds_${ds.id()} = TODO-writeDSActivity: ${dsDetails.classID()}
         return retVal;
     }
 
-    private writeWidget(element: Element): WidgetMeta {
-        const multiChartPanel = element.multiChartPanel();
+    private writeWidget(dataview: DDL2.IView): WidgetMeta {
+        /*
+        const multiChartPanel = dataview.multiChartPanel();
         const chart = multiChartPanel.chart();
         const meta = chart.classMeta();
         const props = this.writeWidgetProps(chart);
         const vizID = multiChartPanel.id();
+        */
         return {
-            ...chart.classMeta(),
+            moduleName: dataview.visualization.moduleName,
+            className: dataview.visualization.className,
+            memberName: dataview.visualization.memberName,
             js: `
-const cp_${vizID} = new ChartPanel()
-    .id("${vizID}")
-    .title("${element.chartPanel().title()}")
-    .widget(new ${meta.className}()${joinWithPrefix(props, "\n        ", "\n    ")})
+const ${dataview.visualization.id} = new ChartPanel()
+    .id("${dataview.visualization.id}")
+    .title("${dataview.visualization.title}")
+    .widget(new ${dataview.visualization.className}()${joinWithPrefix(dataview.visualization.properties, "\n        ", "\n    ")})
     ;
 `.trim()
         };
     }
 
-    writeElement(element: Element) {
-        const activities: string[] = [];
-        for (const activity of element.hipiePipeline().activities()) {
-            if (activity.exists()) {
-                if (isDatasource(activity)) {
-                    const dsDetails = activity instanceof DSPicker ? activity.details() : activity;
-                    if (dsDetails instanceof HipieRequest || dsDetails instanceof RoxieRequest) {
-                        activities.push(`ds_${this._dsDedup[activity.hash()].id()}_${dsDetails.resultName()}`);
-                    } else {
-                        activities.push(`ds_${this._dsDedup[activity.hash()].id()}`);
-                    }
-                } else {
-                    activities.push(this.writeActivity(activity));
-                }
-            }
+    private writeElement(dataview: DDL2.IView) {
+        const activities: string[] = [this.datasourceRefID(dataview.datasource)];
+        for (const activity of dataview.activities) {
+            activities.push(this.writeActivity(activity));
         }
         const updates: string[] = [];
-        for (const filteredViz of this._elementContainer.filteredBy(element)) {
-            updates.push(`elem_${filteredViz.id()}.refresh();`);
+        for (const filteredViz of this._elementContainer.filteredBy(dataview.id)) {
+            updates.push(`${filteredViz.id()}.refresh();`);
         }
-        const vizID = element.chartPanel().id();
         return `
-const elem_${element.id()} = new Element(ec)
-    .id("${element.id()}")
+const ${dataview.id} = new marshaller.Element(ec)
+    .id("${dataview.id}")
     .pipeline([
         ${activities.join(",\n        ")}
     ])
-    .chartPanel(cp_${vizID})
+    .chartPanel(${dataview.visualization.id})
     .on("selectionChanged", () => {
         ${updates.join("\n        ")}
     }, true)
     ;
-ec.append(elem_${element.id()});
+ec.append(${dataview.id});
 `;
     }
 
-    writeDatasources(): string[] {
+    private writeDatasources(): string[] {
         let retVal: string[] = [];
-        for (const element of this._elementContainer.elements()) {
-            retVal = retVal.concat(this.writeDatasource(element));
+        for (const dataview of this._ddlSchema.dataviews) {
+            retVal = retVal.concat(this.writeDatasource(dataview.datasource));
         }
         return retVal;
     }
 
-    writeWidgets(): { widgetImports: string, widgetDefs: string } {
-        const widgetImport: { [moduleID: string]: { [classID: string]: boolean } } = {};
+    private writeWidgets(): { widgetImports: string, widgetDefs: string } {
         const jsDef: string[] = [];
-        for (const element of this._elementContainer.elements()) {
-            const widgetMeta = this.writeWidget(element);
+        const widgetImport: { [moduleID: string]: { [classID: string]: boolean } } = {};
+        for (const dataview of this._ddlSchema.dataviews) {
+            const widgetMeta = this.writeWidget(dataview);
             if (!widgetImport[widgetMeta.moduleName]) {
                 widgetImport[widgetMeta.moduleName] = {};
             }
@@ -247,10 +275,10 @@ ec.append(elem_${element.id()});
         };
     }
 
-    writeElements(): string {
+    private writeElements(): string {
         let retVal = "";
-        for (const element of this._elementContainer.elements()) {
-            retVal += this.writeElement(element);
+        for (const dataview of this._ddlSchema.dataviews) {
+            retVal += this.writeElement(dataview);
         }
         return retVal;
     }
@@ -261,11 +289,10 @@ ec.append(elem_${element.id()});
         return `// tslint:disable
 ${widgets.widgetImports}
 import { ChartPanel } from "@hpcc-js/layout";
-// @ts-ignore
-import { Dashboard, Databomb, Element, ElementContainer, Filters, Form, GroupBy, HipieRequest, Limit, LogicalFile, Project, RoxieRequest, Sort, WUResult } from "@hpcc-js/marshaller";
+import * as marshaller from "@hpcc-js/marshaller";
 
 //  Dashboard Element Container (Model)  ---
-const ec = new ElementContainer();
+const ec = new marshaller.ElementContainer();
 
 //  Data Sources  ---
 ${this.writeDatasources().join("\n").trim()}
@@ -279,10 +306,13 @@ ${this.writeElements().trim()}
 ec.refresh();
 
 //  Dashboard (optional) ---
-export const dashboard = new Dashboard(ec)
+export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
     .render(w => {
-        (w as Dashboard).layout(${stringify(this._dashboard.layout())});
+        (w as marshaller.Dashboard)
+            .layout(${stringify(this._dashboard.layout())})
+            .hideSingleTabs(true)
+            ;
     })
     ;
 `;

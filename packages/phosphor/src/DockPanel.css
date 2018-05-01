@@ -81,3 +81,11 @@
   transform: translateX(-40%) translateY(-58%);
 }
 
+.p-Widget.p-TabBar.p-DockPanel-tabBar.hide {
+  min-height: 1px !important;
+  max-height: 1px !important;
+}
+
+.p-Widget.p-TabBar.p-DockPanel-tabBar.hide .p-TabBar-tab.p-mod-current {
+  display: none;
+}

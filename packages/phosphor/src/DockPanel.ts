@@ -1,6 +1,7 @@
 import { HTMLWidget } from "@hpcc-js/common";
 import { Widget } from "@hpcc-js/common";
 import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
+import { select as d3Select } from "d3-selection";
 import { PDockPanel } from "./PDockPanel";
 import { Msg, WidgetAdapter } from "./WidgetAdapter";
 
@@ -68,13 +69,33 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         PWidget.attach(this._dock, domNode);
     }
 
+    _prevHideSingleTabs;
     update(domNode, element) {
         super.update(domNode, element);
+
         element.select(".p-Widget")
             .style("width", this.width() + "px")
             .style("height", this.height() + "px")
             ;
+
         this._dock.update();
+
+        if (this._prevHideSingleTabs !== this.hideSingleTabs()) {
+            this._prevHideSingleTabs = this.hideSingleTabs();
+            const context = this;
+            setTimeout(() => {
+                const tabBars = element.selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
+                tabBars.each(function () {
+                    const tabBar = d3Select(this);
+                    const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
+                    tabBar
+                        .classed("hide", context.hideSingleTabs() && tabsCount === 1)
+                        .classed(`hide-${tabsCount}`)
+                        ;
+                });
+                this._dock.fit();
+            }, 0);
+        }
     }
 
     exit(domNode, element) {
@@ -110,3 +131,10 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     }
 }
 DockPanel.prototype._class += " phosphor_DockPanel";
+
+export interface DockPanel {
+    hideSingleTabs(): boolean;
+    hideSingleTabs(_: boolean): this;
+}
+
+DockPanel.prototype.publish("hideSingleTabs", false, "boolean");

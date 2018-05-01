@@ -307,7 +307,7 @@ export class Axis extends SVGWidget {
             ;
         this.d3Guides
             .scale(this.d3Scale)
-            .tickSize(-this.tickLength())
+            .tickSize(this.tickLength_exists() ? -this.tickLength() : 0)
             .tickFormat("")
             .ticks(this.tickCount())
             ;
@@ -652,6 +652,7 @@ export class Axis extends SVGWidget {
     tickFormat: { (): string; (_: string): Axis; };
     tickFormat_exists: () => boolean;
     tickLength: { (): number; (_: number): Axis; };
+    tickLength_exists: () => boolean;
     ticks: { (): Array<{ value: string, label: string }>; (_: Array<{ value: string, label: string }>): Axis; };
     xAxisDomainLow: { (): string; (_: string): Axis; };
     xAxisDomainHigh: { (): string; (_: string): Axis; };

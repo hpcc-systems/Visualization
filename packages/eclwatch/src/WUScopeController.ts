@@ -494,32 +494,6 @@ export class WUScopeController {
         return { columns, data };
     }
 
-    calcTooltip(scope: BaseScope, parentScope?: BaseScope) {
-        let label = "";
-        const rows = [];
-        label = scope.Id;
-        rows.push(`<tr><td class="key">ID:</td><td class="value">${scope.Id}</td></tr>`);
-        if (parentScope) {
-            rows.push(`<tr><td class="key">Parent ID:</td><td class="value">${parentScope.Id}</td></tr>`);
-        }
-        rows.push(`<tr><td class="key">Scope:</td><td class="value">${scope.ScopeName}</td></tr>`);
-        const attrs = scope.formattedAttrs();
-        for (const key in attrs) {
-            if (key === "Label") {
-                label = attrs[key];
-            } else {
-                rows.push(`<tr><td class="key">${key}</td><td class="value">${attrs[key]}</td></tr>`);
-            }
-        }
-
-        return `<div class="eclwatch_WUGraph_Tooltip" style="max-width:480px">
-            <h4 align="center">${label}</h4>
-            <table>
-                ${rows.join("")}
-            </table>
-        </div>`;
-    }
-
     calcGraphTooltip(item: VertexType | Edge) {
         let scope;
         let parentScope;
@@ -537,7 +511,7 @@ export class WUScopeController {
             parentScope = edge.parent._;
         }
         if (scope) {
-            return this.calcTooltip(scope, parentScope);
+            return scope.calcTooltip(parentScope);
         }
         return "";
     }

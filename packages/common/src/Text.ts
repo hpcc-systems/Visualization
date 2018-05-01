@@ -71,7 +71,7 @@ export class Text extends SVGWidget {
     text: { (): string; (_: string): Text; };
     fontFamily: { (): string; (_: string): Text; };
     fontSize: { (): number; (_: number): Text; };
-    anchor: { (): string; (_: string): Text; };
+    anchor: { (): "start" | "middle" | "end"; (_: "start" | "middle" | "end"): Text; };
     colorFill: { (): string; (_: string): Text; };
     rotation: { (): number; (_: number): Text; };
 }

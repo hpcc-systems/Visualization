@@ -22,7 +22,7 @@
                     callback(graph);
                 });
             },
-            Timeline: function (callback) {
+            TimelineGraphs: function (callback) {
                 legacyRequire(["test/DataFactory", "src/eclwatch/WUTimeline"], function (DataFactory, WUTimeline) {
                     var timeline = new WUTimeline()
                         .baseUrl("http://192.168.3.22:8010/")
@@ -31,6 +31,48 @@
                         //.wuid("W20180329-152400")
                         //.wuid("W20180329-153043")
                         //.wuid("W20180317-091825")  // BadWordSearch
+                        ;
+                    callback(timeline);
+                });
+            },
+            TimelineAll: function (callback) {
+                legacyRequire(["test/DataFactory", "src/eclwatch/WUTimeline"], function (DataFactory, WUTimeline) {
+                    var timeline = new WUTimeline()
+                        .baseUrl("http://192.168.3.22:8010/")
+                        .wuid("W20180421-040152")  // GenData - hthor
+                        //.wuid("W20180329-153028") // sqagg-multiPart(true)
+                        //.wuid("W20180329-152400")
+                        //.wuid("W20180329-153043")
+                        //.wuid("W20180317-091825")  // BadWordSearch
+                        .request({
+                            ScopeFilter: {
+                                MaxDepth: 1,
+                                ScopeTypes: []
+                            },
+                            NestedFilter: {
+                                Depth: 1,
+                                ScopeTypes: []
+                            },
+                            PropertiesToReturn: {
+                                AllProperties: true,
+                                AllStatistics: true,
+                                AllHints: true,
+                                Properties: ["WhenStarted", "TimeElapsed"]
+                            },
+                            ScopeOptions: {
+                                IncludeId: true,
+                                IncludeScope: true,
+                                IncludeScopeType: true
+                            },
+                            PropertyOptions: {
+                                IncludeName: true,
+                                IncludeRawValue: true,
+                                IncludeFormatted: true,
+                                IncludeMeasure: true,
+                                IncludeCreator: false,
+                                IncludeCreatorType: false
+                            }
+                        })
                         ;
                     callback(timeline);
                 });

@@ -111,7 +111,7 @@ export class TextBox extends SVGWidget {
     paddingRight: { (): number; (_: number): TextBox; };
     paddingTop: { (): number; (_: number): TextBox; };
     paddingBottom: { (): number; (_: number): TextBox; };
-    anchor: { (): string; (_: string): TextBox; };
+    anchor: { (): "start" | "middle" | "end"; (_: "start" | "middle" | "end"): TextBox; };
     fixedSize: { (): ISize; (_: ISize): TextBox; };
     tooltip: { (): string; (_: string): TextBox; };
 }

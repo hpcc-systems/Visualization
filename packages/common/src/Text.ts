@@ -13,7 +13,14 @@ export class Text extends SVGWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
         delete this._prevHash;
-        this._textElement = element.append("text");
+        this._textElement = element.append("text")
+            .on("click", () => {
+                this.click();
+            })
+            .on("dblclick", () => {
+                this.dblclick();
+            })
+            ;
     }
 
     _prevHash;
@@ -68,14 +75,30 @@ export class Text extends SVGWidget {
         }
     }
 
-    text: { (): string; (_: string): Text; };
-    fontFamily: { (): string; (_: string): Text; };
-    fontSize: { (): number; (_: number): Text; };
-    anchor: { (): "start" | "middle" | "end"; (_: "start" | "middle" | "end"): Text; };
-    colorFill: { (): string; (_: string): Text; };
-    rotation: { (): number; (_: number): Text; };
+    click() {
+    }
+
+    dblclick() {
+    }
 }
 Text.prototype._class += " common_Text";
+
+export interface Text {
+    text(): string;
+    text(_: string): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    anchor(): "start" | "middle" | "end";
+    anchor(_: "start" | "middle" | "end"): this;
+    colorFill(): string;
+    colorFill(_: string): this;
+    colorFill_default(): string;
+    colorFill_default(_: string): this;
+    rotation(): number;
+    rotation(_: number): Text;
+}
 
 Text.prototype.publish("text", "", "string", "Display Text", null, { tags: ["Basic"] });
 Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags: ["Intermediate"], optional: true });

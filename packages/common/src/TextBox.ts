@@ -1,3 +1,4 @@
+import { textColor } from "./Palette";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
@@ -22,7 +23,14 @@ export class TextBox extends SVGWidget {
                 this.dblclick();
             })
             ;
-        this._text = new Text();
+        this._text = new Text()
+            .on("click", () => {
+                this.click();
+            })
+            .on("dblclick", () => {
+                this.dblclick();
+            })
+            ;
     }
 
     padding(_) {
@@ -54,6 +62,7 @@ export class TextBox extends SVGWidget {
         if (this._prevHash !== hash) {
             this._prevHash = hash;
             this._text
+                .colorFill_default(this._shape.colorFill_exists() ? textColor(this._shape.colorFill()) : undefined)
                 .render()
                 ;
             const textBBox = this._text.getBBox(true);

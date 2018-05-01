@@ -584,11 +584,9 @@ export abstract class Widget extends PropertyExt {
         });
     }
 
-    lazyRender = function (debouncedCallback?: (w: Widget) => void) {
-        return debounce(function () {
-            this.render(debouncedCallback);
-        }, 100);
-    };
+    lazyRender = debounce(function (debouncedCallback?: (w: Widget) => void) {
+        this.render(debouncedCallback);
+    }, 100);
 
     animationFrameRender(): this {
         if (requestAnimationFrame) {

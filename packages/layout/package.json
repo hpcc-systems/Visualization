@@ -26,7 +26,8 @@
   },
   "dependencies": {
     "@hpcc-js/api": "^0.0.76",
-    "@hpcc-js/common": "^0.0.76"
+    "@hpcc-js/common": "^0.0.76",
+    "@hpcc-js/dgrid": "^0.0.87"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

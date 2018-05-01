@@ -1,11 +1,14 @@
 import { IHighlight } from "@hpcc-js/api";
 import { Button, Database, ProgressBar, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { Table } from "@hpcc-js/dgrid";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
+import { Carousel } from "./Carousel";
 import { Legend } from "./Legend";
 import { Modal } from "./Modal";
 
 import "../src/ChartPanel.css";
+
 export class ChartPanel extends Border2 implements IHighlight {
 
     protected _legend = new Legend(this);
@@ -58,6 +61,22 @@ export class ChartPanel extends Border2 implements IHighlight {
             }
             */
         });
+
+    private _toggleData = new ToggleButton("fa-table", "Data")
+        .on("click", () => {
+            if (this._toggleData.selected()) {
+                this._carousel.active(1);
+            } else {
+                this._carousel.active(0);
+            }
+            this.render();
+        });
+
+    private _buttonDownload = new Button("fa-download", "Download")
+        .on("click", () => {
+            this.downloadCSV();
+        });
+
     private _toggleLegend = new ToggleButton("fa-list-ul", "Legend")
         .selected(false)
         .on("click", () => {
@@ -68,18 +87,15 @@ export class ChartPanel extends Border2 implements IHighlight {
             }
             this.render();
         });
-    private _buttonDownload = new Button("fa-download", "Download")
-        .on("click", () => {
-            this.downloadCSV();
-        });
-    private _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
+    _titleBar = new TitleBar().buttons([this._toggleData, this._buttonDownload, new Spacer(), this._toggleLegend]);
 
+    protected _carousel = new Carousel();
+    protected _table = new Table();
     protected _widget: Widget;
 
     constructor() {
         super();
         this._tag = "div";
-        this._titleBar.buttons([this._buttonDownload, new Spacer(), this._toggleLegend]);
     }
 
     fields(): Database.Field[];
@@ -178,7 +194,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             ;
 
         this.top(this._titleBar);
-        this.center(this._widget);
+        this.center(this._carousel);
         this.right(this._legend);
 
         this._legend
@@ -234,6 +250,10 @@ export class ChartPanel extends Border2 implements IHighlight {
                 break;
         }
 
+        this._table
+            .fields(this.fields())
+            .data(this.data())
+            ;
         this._widget
             .fields(this._legend.filteredFields())
             .data(this._legend.filteredData())
@@ -400,6 +420,7 @@ ChartPanel.prototype.publishProxy("progress_blurOpacity", "_progressBar", "blurO
 
 ChartPanel.prototype.widget = function (_?) {
     if (!arguments.length) return this._widget;
+    this._carousel.widgets([_, this._table]);
     this._widget = _;
 
     const context = this;

@@ -384,6 +384,13 @@
                 });
             }
         },
+        HPCCBadge: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/other/HPCCBadge"], function (DataFactory, HPCCBadge) {
+                    callback(new HPCCBadge());
+                });
+            }
+        },
         Opportunity: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/other/Opportunity"], function (DataFactory, Opportunity) {

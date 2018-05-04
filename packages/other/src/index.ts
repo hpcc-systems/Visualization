@@ -5,6 +5,7 @@ import * as Comms from "./Comms";
 export { Comms };
 export * from "./ESP";
 export * from "./HeatMap";
+export * from "./HPCCBadge";
 export * from "./Html";
 export * from "./Legend";
 export * from "./MorphText";

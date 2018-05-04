@@ -319,27 +319,7 @@ export class ClientTools {
 }
 
 const allClientToolsCache: ClientTools[] = [];
-export function locateAllClientTools() {
-    if (allClientToolsCache.length) return Promise.resolve(allClientToolsCache);
-    let rootFolder = "";
-    switch (os.type()) {
-        case "Windows_NT":
-            rootFolder = process.env["ProgramFiles(x86)"] || "";
-            if (!rootFolder) {
-                rootFolder = process.env["ProgramFiles"] || "";
-            }
-            if (!rootFolder) {
-                rootFolder = "c:\Program Files (x86)";
-            }
-            break;
-        case "Linux":
-        case "Darwin":
-            rootFolder = "/opt";
-            break;
-        default:
-            break;
-    }
-
+function locateClientToolsInFolder(rootFolder: string): Array<Promise<any>> {
     const promiseArray: Array<Promise<any>> = [];
     if (rootFolder) {
         const hpccSystemsFolder = path.join(rootFolder, "HPCCSystems");
@@ -365,6 +345,34 @@ export function locateAllClientTools() {
             });
         }
     }
+    return promiseArray;
+}
+
+export function locateAllClientTools() {
+    if (allClientToolsCache.length) return Promise.resolve(allClientToolsCache);
+    let promiseArray: Array<Promise<any>> = [];
+    switch (os.type()) {
+        case "Windows_NT":
+            const rootFolder86 = process.env["ProgramFiles(x86)"] || "";
+            if (rootFolder86) {
+                promiseArray = promiseArray.concat(locateClientToolsInFolder(rootFolder86));
+            }
+            const rootFolder = process.env["ProgramFiles"] || "";
+            if (rootFolder) {
+                promiseArray = promiseArray.concat(locateClientToolsInFolder(rootFolder));
+            }
+            if (!rootFolder86 && !rootFolder) {
+                promiseArray = promiseArray.concat(locateClientToolsInFolder("c:\\Program Files (x86)"));
+            }
+            break;
+        case "Linux":
+        case "Darwin":
+            promiseArray = promiseArray.concat(locateClientToolsInFolder("/opt"));
+            break;
+        default:
+            break;
+    }
+
     return Promise.all(promiseArray).then(() => {
         allClientToolsCache.sort((l: ClientTools, r: ClientTools) => {
             return semver.compare(r.versionSync(), l.versionSync());

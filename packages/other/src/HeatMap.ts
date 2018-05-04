@@ -68,7 +68,7 @@ export class HeatMap extends CanvasWidget {
         const context = this;
         const retArr = [];
         const arr = this.data();
-        const box = this.element().node().getBoundingClientRect();
+        const box = this.size();
 
         const coordsWidth = this.bottomRightX() - this.topLeftX();
         const coordsHeight = this.bottomRightY() - this.topLeftY();

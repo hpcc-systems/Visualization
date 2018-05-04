@@ -11,10 +11,10 @@
     "build": "npm run compile-es6 && npm run bundle"
   },
   "dependencies": {
-    "@hpcc-js/codemirror": "^0.0.86",
-    "@hpcc-js/comms": "^0.0.77",
-    "@hpcc-js/dgrid": "^0.0.83",
-    "@hpcc-js/dgrid-shim": "^0.0.60",
+    "@hpcc-js/codemirror": "*",
+    "@hpcc-js/comms": "*",
+    "@hpcc-js/dgrid": "*",
+    "@hpcc-js/dgrid-shim": "*",
     "d3-selection": "1.1.0",
     "tslib": "1.9.0"
   },

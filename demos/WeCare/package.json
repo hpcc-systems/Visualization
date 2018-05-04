@@ -14,12 +14,12 @@
     "watch": "concurrently --kill-others \"npm run compile-es6-watch\" \"npm run bundle-watch\""
   },
   "dependencies": {
-    "@hpcc-js/chart": "^0.0.74",
-    "@hpcc-js/common": "^0.0.72",
-    "@hpcc-js/comms": "^0.0.77",
-    "@hpcc-js/dgrid": "^0.0.83",
-    "@hpcc-js/form": "^0.0.74",
-    "@hpcc-js/map": "^0.0.77",
+    "@hpcc-js/chart": "*",
+    "@hpcc-js/common": "*",
+    "@hpcc-js/comms": "*",
+    "@hpcc-js/dgrid": "*",
+    "@hpcc-js/form": "*",
+    "@hpcc-js/map": "*",
     "d3-selection": "1.1.0",
     "d3-time-format": "2.1.0",
     "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI",

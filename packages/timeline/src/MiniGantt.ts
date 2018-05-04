@@ -265,7 +265,7 @@ export class MiniGantt extends SVGWidget {
             .each(function (d) {
                 const text = new TextBox()
                     .target(this)
-                    .anchor("center")
+                    .anchor("middle")
                     .on("click", () => {
                         context.click(d, d3Event);
                     }, true)
@@ -304,8 +304,8 @@ export class MiniGantt extends SVGWidget {
             .merge(lines)
             .attr(this.isHorizontal() ? "x1" : "y1", d => this.dataStartPos(d) - 0)
             .attr(this.isHorizontal() ? "x2" : "y2", d => this.dataStartPos(d) - 0)
-            .attr(this.isHorizontal() ? "y1" : "x1", this.isHorizontal() ? brAxisBBox.height : tlAxisBBox.width)
-            .attr(this.isHorizontal() ? "y2" : "x2", this.isHorizontal() ? height - tlAxisBBox.height : width - brAxisBBox.width)
+            .attr(this.isHorizontal() ? "y1" : "x1", this.isHorizontal() ? tlAxisBBox.height : tlAxisBBox.width)
+            .attr(this.isHorizontal() ? "y2" : "x2", this.isHorizontal() ? height - brAxisBBox.height : width - brAxisBBox.width)
             ;
         lines.exit().remove();
     }

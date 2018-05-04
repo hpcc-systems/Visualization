@@ -152,6 +152,32 @@ export class BaseScope extends StateObject<ScopeEx, ScopeEx> implements ScopeEx 
     attrMeasure(name: string): string {
         return this._attributeMap[name].Measure;
     }
+
+    calcTooltip(parentScope?: BaseScope) {
+        let label = "";
+        const rows: string[] = [];
+        label = this.Id;
+        rows.push(`<tr><td class="key">ID:</td><td class="value">${this.Id}</td></tr>`);
+        if (parentScope) {
+            rows.push(`<tr><td class="key">Parent ID:</td><td class="value">${parentScope.Id}</td></tr>`);
+        }
+        rows.push(`<tr><td class="key">Scope:</td><td class="value">${this.ScopeName}</td></tr>`);
+        const attrs = this.formattedAttrs();
+        for (const key in attrs) {
+            if (key === "Label") {
+                label = attrs[key];
+            } else {
+                rows.push(`<tr><td class="key">${key}</td><td class="value">${attrs[key]}</td></tr>`);
+            }
+        }
+
+        return `<div class="eclwatch_WUGraph_Tooltip" style="max-width:480px">
+            <h4 align="center">${label}</h4>
+            <table>
+                ${rows.join("")}
+            </table>
+        </div>`;
+    }
 }
 
 export class Scope extends BaseScope {

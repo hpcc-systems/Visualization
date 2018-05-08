@@ -18,7 +18,7 @@ interface IExecFile {
     stdout: string;
 }
 
-export interface IECLError {
+export interface IECLErrorWarning {
     filePath: string;
     line: number;
     col: number;
@@ -26,19 +26,77 @@ export interface IECLError {
     severity: string;
 }
 
-export interface IEclccError {
-    msg: string;
-    severity: string;
-}
+const ERROR = "error";
+const WARN = "warning";
 
-/*
-function correctBinname(binname: string) {
-    if (process.platform === "win32")
-        return binname + ".exe";
-    else
-        return binname;
+export class EclccErrors {
+    private errWarn: IECLErrorWarning[] = [];
+    private errOther: string[] = [];
+
+    constructor(stdErr: string) {
+        if (stdErr && stdErr.length) {
+            for (const errLine of stdErr.split(os.EOL)) {
+                let match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): (error|warning|info) C(\d*): (.*)/.exec(errLine);
+                if (match) {
+                    const [, filePath, row, _col, severity, code, _msg] = match;
+                    const line: number = +row;
+                    const col: number = +_col;
+                    const msg = code + ":  " + _msg;
+                    this.errWarn.push({ filePath, line, col, msg, severity });
+                    continue;
+                }
+                match = /(error|warning|info): (.*)/i.exec(errLine);
+                if (match) {
+                    const [, severity, msg] = match;
+                    this.errWarn.push({ filePath: "", line: 0, col: 0, msg, severity });
+                    continue;
+                }
+                match = /\d error(s?), \d warning(s?)/.exec(errLine);
+                if (match) {
+                    continue;
+                }
+                logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
+                this.errOther.push(errLine);
+            }
+        }
+    }
+
+    all(): IECLErrorWarning[] {
+        return this.errWarn;
+    }
+
+    errors(): IECLErrorWarning[] {
+        return this.errWarn.filter(e => e.severity === ERROR);
+    }
+
+    hasError(): boolean {
+        return this.errors().length > 0;
+    }
+
+    warnings(): IECLErrorWarning[] {
+        return this.errWarn.filter(e => e.severity === WARN);
+    }
+
+    hasWarning(): boolean {
+        return this.warnings().length > 0;
+    }
+
+    info(): IECLErrorWarning[] {
+        return this.errWarn.filter(e => [ERROR, WARN].indexOf(e.severity) < 0);
+    }
+
+    hasOther(): boolean {
+        return this.info().length > 0;
+    }
+
+    unknown(): string[] {
+        return this.errOther;
+    }
+
+    hasUnknown(): boolean {
+        return this.unknown().length > 0;
+    }
 }
-*/
 
 export function walkXmlJson(node: any, callback: (key: string, childNode: any, stack: any[]) => void, stack?: any[]) {
     stack = stack || [];
@@ -94,7 +152,7 @@ export class LocalWorkunit {
 
 export interface IArchive {
     content: string;
-    err: IECLError[];
+    err: EclccErrors;
 }
 
 export class ClientTools {
@@ -208,60 +266,14 @@ export class ClientTools {
         });
     }
 
-    parseEclccErrors(err?: string): IEclccError[] {
-        const retVal: IEclccError[] = [];
-        if (err && err.length) {
-            for (const line of err.split(os.EOL)) {
-                const match = /(error|warning|info): (.*)/i.exec(line);
-                if (match) {
-                    const [, severity, msg] = match;
-                    retVal.push({ msg, severity });
-                }
-            }
-        }
-        return retVal;
-    }
-
     createArchive(filename: string): Promise<IArchive> {
         const args = ["-E"].concat([filename]);
         return this.execFile(this.eclccPath, this.cwd, this.args(args), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile): IArchive => {
             return {
                 content: response.stdout,
-                err: this.parseEclccErrors(response.stderr).map(err => {
-                    return {
-                        filePath: "",
-                        line: 0,
-                        col: 0,
-                        msg: err.msg,
-                        severity: err.severity
-                    };
-                })
+                err: new EclccErrors(response.stderr)
             };
         });
-    }
-
-    parseECLErrors(err?: string): [IECLError[], string[]] {
-        const retVal: IECLError[] = [];
-        const retVal2: string[] = [];
-        if (err && err.length) {
-            for (const errLine of err.split(os.EOL)) {
-                const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): (error|warning|info) C(\d*): (.*)/.exec(errLine);
-                if (match) {
-                    const [, filePath, row, _col, severity, code, _msg] = match;
-                    const line: number = +row;
-                    const col: number = +_col;
-                    const msg = code + ":  " + _msg;
-                    retVal.push({ filePath, line, col, msg, severity });
-                } else {
-                    const match = /\d error(s?), \d warning(s?)/.exec(errLine);
-                    if (!match) {
-                        logger.warning(`parseECLErrors:  Unable to parse "${errLine}"`);
-                        retVal2.push(errLine);
-                    }
-                }
-            }
-        }
-        return [retVal, retVal2];
     }
 
     attachWorkspace(): Workspace {
@@ -280,19 +292,15 @@ export class ClientTools {
         });
     }
 
-    syntaxCheck(filePath: string, args: string[] = ["-syntax"]): Promise<[IECLError[], string[]]> {
+    syntaxCheck(filePath: string, args: string[] = ["-syntax"]): Promise<EclccErrors> {
         return Promise.all([
             attachWorkspace(this.cwd),
             this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
         ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
-            let retVal: [IECLError[], string[]] = [[], []];
-            if (execFileResponse) {
-                retVal = this.parseECLErrors(execFileResponse.stderr);
-            }
             if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
                 metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
-            return retVal;
+            return new EclccErrors(execFileResponse ? execFileResponse.stderr : "");
         });
     }
 

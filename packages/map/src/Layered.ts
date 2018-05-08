@@ -152,21 +152,29 @@ export class Layered extends SVGZoomWidget {
                 break;
         }
     }
-
-    projection: (_?: string) => string | this;
-    projection_exists: () => boolean;
-    centerLat: { (): number; (_: number): Layered };
-    centerLat_exists: () => boolean;
-    centerLong: { (): number; (_: number): Layered };
-    centerLong_exists: () => boolean;
-    zoom: { (): number; (_: number): Layered };
-    zoom_exists: () => boolean;
-    autoScaleMode: { (): string; (_: string): Layered };
-    autoScaleMode_exists: () => boolean;
-    layers: { (): any[]; (_: any[]): Layered };
-    layers_exists: () => boolean;
 }
 Layered.prototype._class += " map_Layered";
+
+export interface Layered {
+    projection(): string;
+    projection(_: string): this;
+    projection_exists(): boolean;
+    centerLat(): number;
+    centerLat(_: number): this;
+    centerLat_exists(): boolean;
+    centerLong(): number;
+    centerLong(_: number): this;
+    centerLong_exists(): boolean;
+    zoom(): number;
+    zoom(_: number): this;
+    zoom_exists(): boolean;
+    autoScaleMode(): string;
+    autoScaleMode(_: string): this;
+    autoScaleMode_exists(): boolean;
+    layers(): any[];
+    layers(_: any[]): this;
+    layers_exists(): boolean;
+}
 
 Layered.prototype.publish("projection", null, "set", "Map projection type", projectionTypes);
 Layered.prototype.publish("centerLat", 0, "number", "Center Latitude", null, { tags: ["Basic"] });
@@ -176,7 +184,7 @@ Layered.prototype.publish("autoScaleMode", "all", "set", "Auto Scale", ["none", 
 Layered.prototype.publish("layers", [], "widgetArray", "Layers", null, { render: false });
 
 const projection_orig = Layered.prototype.projection;
-Layered.prototype.projection = function (_) {
+Layered.prototype.projection = function (_?) {
     const retVal = projection_orig.apply(this, arguments);
     if (arguments.length) {
         this._d3GeoProjection = resolve(_)

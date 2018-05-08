@@ -153,11 +153,15 @@ export class Choropleth extends Layer {
     meshStrokeWidth_exists: () => boolean;
     internalOnly: { (): boolean; (_: boolean): Choropleth };
     internalOnly_exists: () => boolean;
-    autoScaleMode: { (): string; (_: string): Choropleth };
-    autoScaleMode_exists: () => boolean;
 }
 Choropleth.prototype._class += " map_Choropleth";
 Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface Choropleth {
+    autoScaleMode(): string;
+    autoScaleMode(_: string): this;
+    autoScaleMode_exists(): boolean;
+}
 
 Choropleth.prototype._palette = Palette.rainbow("default");
 

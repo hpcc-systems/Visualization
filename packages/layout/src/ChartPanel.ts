@@ -1,5 +1,5 @@
 import { IHighlight } from "@hpcc-js/api";
-import { Button, Database, ProgressBar, publish, publishProxy, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
+import { Button, Database, ProgressBar, Spacer, Text, TitleBar, ToggleButton, Utility, Widget } from "@hpcc-js/common";
 import { select as d3Select } from "d3-selection";
 import { Border2 } from "./Border2";
 import { Legend } from "./Legend";
@@ -74,50 +74,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         });
     private _titleBar = new TitleBar().buttons([this._buttonDownload, this._toggleLegend, new Spacer(), this._toggleInfo]);
 
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    title: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleIcon: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleIconFont: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleFont: publish<this, string>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleIconFontSize: publish<this, number>;
-    @publishProxy("_titleBar", undefined, undefined, { reset: true })
-    titleFontSize: publish<this, number>;
-    @publish("")
-    description: publish<this, string>;
-    @publish(null, "widget", "Widget", undefined, { render: false })
-    _widget: Widget;
-    widget(): Widget;
-    widget(_: Widget): this;
-    widget(_?: Widget): Widget | this {
-        if (!arguments.length) return this._widget;
-        this._widget = _;
-
-        const context = this;
-        const tmpAny = this._widget as any;
-        tmpAny.click = function () {
-            context.click.apply(context, arguments);
-        };
-        tmpAny.dblclick = function () {
-            context.dblclick.apply(context, arguments);
-        };
-        tmpAny.vertex_click = function () {
-            context.vertex_click.apply(context, arguments);
-        };
-        tmpAny.vertex_dblclick = function () {
-            context.vertex_dblclick.apply(context, arguments);
-        };
-        tmpAny.edge_click = function () {
-            context.edge_click.apply(context, arguments);
-        };
-        tmpAny.edge_dblclick = function () {
-            context.edge_dblclick.apply(context, arguments);
-        };
-        return this;
-    }
+    protected _widget: Widget;
 
     constructor() {
         super();
@@ -394,14 +351,41 @@ export class ChartPanel extends Border2 implements IHighlight {
 ChartPanel.prototype._class += " layout_ChartPanel";
 
 export interface ChartPanel {
+    title(): string;
+    title(_: string): this;
+    title_exists(): boolean;
+    titleFontSize(): number;
+    titleFontSize(_: number): this;
+    titleFontSize_exists(): boolean;
+    titleIconFontSize(): number;
+    titleIconFontSize(_: number): this;
+    titleIconFontSize_exists(): boolean;
+    description(): string;
+    description(_: string): this;
+    description_exists(): boolean;
+    widget(): Widget;
+    widget(_: Widget): this;
+    widget_exists(): boolean;
     enableAutoscaling(): boolean;
     enableAutoscaling(_: boolean): this;
+    enableAutoscaling_exists(): boolean;
     highlightSize(): number;
     highlightSize(_: number): this;
+    highlightSize_exists(): boolean;
     highlightColor(): string;
     highlightColor(_: string): this;
+    highlightColor_exists(): boolean;
 }
 
+ChartPanel.prototype.publishReset();
+ChartPanel.prototype.publishProxy("title", "_titleBar");
+ChartPanel.prototype.publishProxy("titleIcon", "_titleBar");
+ChartPanel.prototype.publishProxy("titleIconFont", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFont", "_titleBar");
+ChartPanel.prototype.publishProxy("titleIconFontSize", "_titleBar");
+ChartPanel.prototype.publishProxy("titleFontSize", "_titleBar");
+ChartPanel.prototype.publish("description", "", "string");
+ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });
 ChartPanel.prototype.publish("enableAutoscaling", true, "boolean");
 ChartPanel.prototype.publish("highlightSize", 4, "number");
 ChartPanel.prototype.publish("highlightColor", "#e67e22", "html-color");
@@ -413,3 +397,30 @@ ChartPanel.prototype.publishProxy("progress_blurBar", "_progressBar", "blurBar")
 ChartPanel.prototype.publishProxy("progress_blurSize", "_progressBar", "blurSize");
 ChartPanel.prototype.publishProxy("progress_blurColor", "_progressBar", "blurColor");
 ChartPanel.prototype.publishProxy("progress_blurOpacity", "_progressBar", "blurOpacity");
+
+ChartPanel.prototype.widget = function (_?) {
+    if (!arguments.length) return this._widget;
+    this._widget = _;
+
+    const context = this;
+    const tmpAny = this._widget as any;
+    tmpAny.click = function () {
+        context.click.apply(context, arguments);
+    };
+    tmpAny.dblclick = function () {
+        context.dblclick.apply(context, arguments);
+    };
+    tmpAny.vertex_click = function () {
+        context.vertex_click.apply(context, arguments);
+    };
+    tmpAny.vertex_dblclick = function () {
+        context.vertex_dblclick.apply(context, arguments);
+    };
+    tmpAny.edge_click = function () {
+        context.edge_click.apply(context, arguments);
+    };
+    tmpAny.edge_dblclick = function () {
+        context.edge_dblclick.apply(context, arguments);
+    };
+    return this;
+};

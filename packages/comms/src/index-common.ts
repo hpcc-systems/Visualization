@@ -1,4 +1,5 @@
 export * from "./services/wsDFU";
+export * from "./services/wsEcl";
 export * from "./services/wsMachine";
 export * from "./services/wsSMC";
 export * from "./services/wsTopology";

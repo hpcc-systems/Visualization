@@ -1,10 +1,7 @@
 import { AsyncCache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { EclService } from "../services/wsEcl";
+import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
 import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
-import { Topology } from "./topology";
-import { Workunit } from "./workunit";
-import { parseXSD, parseXSD2, XSDSchema, XSDXMLNode } from "./xsdParser";
 
 export interface QueryEx extends WUQueryDetails.Response {
 }
@@ -19,13 +16,12 @@ class QueryCache extends AsyncCache<QueryEx, Query> {
 const _queries = new QueryCache();
 
 export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
-    protected connection: WorkunitsService;
-    protected _topology: Topology;
-    protected _wsEcl: EclService;
-    protected _wu: Workunit;
-    protected _requestSchema: XSDSchema;
-    protected _resultNames: string[] = [];
-    protected _resultSchemas: { [resultName: string]: XSDSchema } = {};
+    protected connection: EclService;
+    // protected _topology: Topology;
+    protected _wsWorkunits: WorkunitsService;
+    // protected _wu: Workunit;
+    protected _requestSchema: IWsEclRequest;
+    protected _responseSchema: IWsEclResponse;
 
     get properties(): WUQueryDetails.Response { return this.get(); }
     get Exceptions(): WUQueryDetails.Exceptions { return this.get("Exceptions"); }
@@ -53,14 +49,14 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     get WUGraphs(): WUQueryDetails.WUGraphs { return this.get("WUGraphs"); }
     get WUTimers(): WUQueryDetails.WUTimers { return this.get("WUTimers"); }
 
-    private constructor(optsConnection: IOptions | IConnection | WorkunitsService, querySet: string, queryID: string, queryDetails?: WUQueryDetails.Response) {
+    private constructor(optsConnection: IOptions | IConnection | EclService, querySet: string, queryID: string, queryDetails?: WUQueryDetails.Response) {
         super();
-        if (optsConnection instanceof WorkunitsService) {
+        if (optsConnection instanceof EclService) {
             this.connection = optsConnection;
-            this._topology = new Topology(this.connection.opts());
+            // this._topology = new Topology(this.connection.opts());
         } else {
-            this.connection = new WorkunitsService(optsConnection);
-            this._topology = new Topology(optsConnection);
+            this.connection = new EclService(optsConnection);
+            // this._topology = new Topology(optsConnection);
         }
         this.set({
             QuerySet: querySet,
@@ -69,48 +65,32 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         } as QueryEx);
     }
 
-    static async attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string): Promise<Query> {
+    static async attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string, skipRefresh: boolean = false): Promise<Query> {
         let newQuery: Query | undefined;
         const retVal: Query = await _queries.get({ QuerySet: querySet, QueryId: queryId } as WUQueryDetails.Response, async () => {
             newQuery = new Query(optsConnection, querySet, queryId);
-            await Promise.all([newQuery.refresh(), newQuery.resolveWsEcl()]);
-            await Promise.all([newQuery.fetchRequestSchema(), newQuery.fetchResponseSchemas()]);
+            if (!skipRefresh) {
+                await newQuery.refresh();
+            }
             return newQuery;
         });
         return retVal;
     }
 
-    private async resolveWsEcl() {
-        const baseUrl = await this._topology.GetESPServiceBaseURL("ws_ecl");
-        this._wsEcl = new EclService({ baseUrl });
-    }
-
-    private async fetchResultNames(): Promise<string[]> {
-        const results = await this._wu.fetchResults();
-        this._resultNames = results.map(result => result.Name);
-        return this._resultNames;
-    }
-
     private async fetchRequestSchema(): Promise<void> {
-        const response = await this._wsEcl.requestSchema(this.QuerySet, this.QueryId);
-        this._requestSchema = parseXSD2(response, `${this.QueryId}Request`);
+        this._requestSchema = await this.connection.requestJson(this.QuerySet, this.QueryId);
     }
 
-    private async fetchResponseSchema(resultName: string): Promise<void> {
-        const response = await this._wsEcl.responseSchema(this.QuerySet, this.QueryId, resultName);
-        this._resultSchemas[resultName] = parseXSD(response);
+    private async fetchResponseSchema(): Promise<void> {
+        this._responseSchema = await this.connection.responseJson(this.QuerySet, this.QueryId);
     }
 
-    private async fetchResponseSchemas(): Promise<void> {
-        const resultNames = await this.fetchResultNames();
-        await Promise.all(resultNames.map(resultName => {
-            return this.fetchResponseSchema(resultName);
-        }));
-        return;
+    private async fetchSchema(): Promise<void> {
+        await Promise.all([this.fetchRequestSchema(), this.fetchResponseSchema()]);
     }
 
     submit(request: object): Promise<Array<{ [key: string]: object[] }>> {
-        return this._wsEcl.submit(this.QuerySet, this.QueryId, request).then(results => {
+        return this.connection.submit(this.QuerySet, this.QueryId, request).then(results => {
             for (const key in results) {
                 results[key] = results[key].Row;
             }
@@ -119,25 +99,33 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
     }
 
     async refresh(): Promise<this> {
-        await this.WUQueryDetails();
-        this._wu = Workunit.attach(this.connection.opts(), this.Wuid);
-        return this;
+        return this.fetchSchema().then(schema => this);
     }
 
-    requestFields(): XSDXMLNode[] {
+    requestFields(): IWsEclRequest {
         if (!this._requestSchema) return [];
-        return this._requestSchema.root.children();
+        return this._requestSchema;
+    }
+
+    responseFields(): IWsEclResponse {
+        if (!this._responseSchema) return {};
+        return this._responseSchema;
     }
 
     resultNames(): string[] {
-        return this._resultNames;
+        const retVal: string[] = [];
+        for (const key in this.responseFields()) {
+            retVal.push(key);
+        }
+        return retVal;
     }
 
-    fields(resultName: string): XSDXMLNode[] {
-        if (!this._resultSchemas[resultName]) return [];
-        return this._resultSchemas[resultName].root.children();
+    resultFields(resultName: string): IWsEclResult {
+        if (!this._responseSchema[resultName]) return [];
+        return this._responseSchema[resultName];
     }
 
+    /*
     protected WUQueryDetails(): Promise<WUQueryDetails.Response> {
         const request: WUQueryDetails.Request = {} as WUQueryDetails.Request;
         request.QueryId = this.QueryId;
@@ -149,4 +137,5 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
             return response;
         });
     }
+    */
 }

@@ -132,7 +132,7 @@ export class RoxieService extends PropertyExt {
 
     outFields(resultName: string): IField[] {
         if (this._query) {
-            const responseSchema = this._query.fields(resultName);
+            const responseSchema = this._query.resultFields(resultName);
             return responseSchema.map(schemaRow2IField);
         }
         return [];

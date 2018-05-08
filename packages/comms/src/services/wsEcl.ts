@@ -1,5 +1,50 @@
 import { IConnection, IOptions } from "../connection";
 import { ESPConnection } from "../espConnection";
+
+export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
+export type IFieldType = IPrimativeFieldType | "range" | "dataset";
+export interface IField {
+    id: string;
+    type: IFieldType;
+    default?: boolean | number | string | [undefined | IPrimativeFieldType, undefined | IPrimativeFieldType] | IField[];
+    children?: IField[];
+}
+
+export type IWsEclRequest = IField[];
+export type IWsEclResult = IField[];
+export type IWsEclResponse = { [id: string]: IField[] };
+
+function jsonToIField(id: string, item: any): IField {
+    const type = typeof item;
+    switch (type) {
+        case "boolean":
+        case "number":
+        case "string":
+            return { id, type };
+        case "object":
+            if (item instanceof Array) {
+                return {
+                    id,
+                    type: "dataset",
+                    children: jsonToIFieldArr(item[0])
+                };
+            }
+        default:
+            throw new Error("Unknown field type");
+    }
+}
+
+function jsonToIFieldArr(json: any): IField[] {
+    if (json.Row && json.Row instanceof Array) {
+        json = json.Row[0];
+    }
+    const retVal: IField[] = [];
+    for (const key in json) {
+        retVal.push(jsonToIField(key, json[key]));
+    }
+    return retVal;
+}
+
 export class EclService {
     private _connection: ESPConnection;
 
@@ -7,12 +52,36 @@ export class EclService {
         this._connection = new ESPConnection(optsConnection, "WsEcl", "0");
     }
 
-    requestSchema(querySet: string, queryId: string) {
-        return this._connection.send(`definitions/query/${querySet}/${queryId}/main/${queryId}`, {}, "xsd");
+    opts() {
+        return this._connection.opts();
     }
 
-    responseSchema(querySet: string, queryId: string, resultName: string) {
-        return this._connection.send(`definitions/query/${querySet}/${queryId}/result/${resultName}`, {}, "xsd");
+    requestJson(querySet: string, queryId: string): Promise<IWsEclRequest> {
+        // http://192.168.3.22:8002/WsEcl/example/request/query/roxie/peopleaccounts/json?display
+        return this._connection.send(`example/request/query/${querySet}/${queryId}/json`, {}, "text").then(response => {
+            const requestSchema = JSON.parse(response);
+            for (const key in requestSchema) {
+                return requestSchema[key];
+            }
+            return {};
+        }).then(jsonToIFieldArr);
+    }
+
+    responseJson(querySet: string, queryId: string): Promise<IWsEclResponse> {
+        // http://192.168.3.22:8002/WsEcl/example/response/query/roxie/peopleaccounts/json?display
+        return this._connection.send(`example/response/query/${querySet}/${queryId}/json`, {}, "text").then(response => {
+            const responseSchema = JSON.parse(response);
+            for (const key in responseSchema) {
+                return responseSchema[key].Results;
+            }
+            return {};
+        }).then(resultsJson => {
+            const retVal: IWsEclResponse = {};
+            for (const key in resultsJson) {
+                retVal[key] = jsonToIFieldArr(resultsJson[key]);
+            }
+            return retVal;
+        });
     }
 
     submit(querySet: string, queryId: string, request: object) {

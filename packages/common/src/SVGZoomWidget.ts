@@ -28,7 +28,7 @@ export class SVGZoomWidget extends SVGWidget {
     protected _buttonMinus;
     protected _buttonLast;
 
-    protected _iconBar = new IconBar()
+    _iconBar = new IconBar()
         .buttons([
             new Button("fa-arrows-alt", "Zoom to fit")
                 .on("click", () => {

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/dgrid",
-  "version": "0.0.87",
+  "version": "0.0.88",
   "description": "hpcc-js - Viz DGrid",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.0.76",
+    "@hpcc-js/common": "^0.0.77",
     "@hpcc-js/dgrid-shim": "^0.0.61",
     "@hpcc-js/util": "^0.0.73"
   },

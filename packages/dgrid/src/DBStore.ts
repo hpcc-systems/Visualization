@@ -23,7 +23,6 @@ export class DBStore {
                 idx,
                 className: "resultGridCell",
                 sortable: true,
-                width: 240
             };
             switch (field.type()) {
                 case "nested":
@@ -45,16 +44,16 @@ export class DBStore {
     }
 
     columns() {
-        return this.db2Columns(this._db.fields());
+        return this.db2Columns(this._db.fields(), "");
     }
 
     getIdentity(object) {
         return object.__hpcc_id;
     }
 
-    fetchRange(opts: { start: number, end: number }): Promise<object[]> {
+    _fetchRange(opts: { start: number, end: number }): object[] {
         const rowFormatter = new RowFormatter(this.columns());
-        const data = this._db.data().slice(opts.start, opts.end).map((row, idx) => {
+        return this._db.data().slice(opts.start, opts.end).map((row, idx) => {
             const formattedRow: any = rowFormatter.format(row);
             return {
                 ...formattedRow,
@@ -62,7 +61,11 @@ export class DBStore {
                 __origRow: row
             };
         });
-        const retVal = new Deferred();
+    }
+
+    fetchRange(opts: { start: number, end: number }): Promise<object[]> {
+        const data = this._fetchRange(opts);
+        const retVal: any = new Deferred();
         retVal.totalLength = new Deferred();
         retVal.resolve(data);
         retVal.totalLength.resolve(this._db.length() - 1);

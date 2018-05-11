@@ -1,5 +1,6 @@
+import { Widget } from "@hpcc-js/common";
 import { AbsoluteSurface } from "@hpcc-js/layout";
-import { GMap } from "./GMap";
+import { GMap, google } from "./GMap";
 import { Layered } from "./Layered";
 
 // tslint:disable-next-line:no-bitwise
@@ -14,12 +15,20 @@ class OverlayLayered extends Layered {
         this.gmap = gmap;
         this.surface = surface;
         this.autoScaleMode("none");
-        this.zoomable(false);
+        this
+            .zoomable(false)
+            .zoomDuration(10)
+            ;
+
+    }
+
+    getProjection() {
+        return this.gmap._overlay.getProjection();
     }
 
     render(callback?: any): this {
         super.render((w) => {
-            const projection = this.gmap._overlay.getProjection();
+            const projection = this.getProjection();
             if (projection) {
                 // TODO - global usage should not be used - see GMap.ts
                 const center = new (window as any).google.maps.LatLng(0, 0);
@@ -40,7 +49,7 @@ class OverlayLayered extends Layered {
 }
 
 export class GMapLayered extends GMap {
-    layered;
+    private layered: OverlayLayered;
 
     constructor() {
         super();
@@ -48,9 +57,25 @@ export class GMapLayered extends GMap {
         this._viewportSurface.widget(this.layered);
     }
 
+    invert(x: number, y: number): { lat: number, lng: number } | undefined {
+        return this.layered.invert(x, y);
+    }
+
+    rproject(x: number, y: number): { lat: number, lng: number } | undefined {
+        const projection = this.layered.getProjection();
+        const latLng = projection.fromDivPixelToLatLng(new google.maps.Point(x, y));
+        return {
+            lat: latLng.lat(),
+            lng: latLng.lng()
+        };
+    }
+
     updateCircles() { }
     updatePins() { }
-    layers(_) {
+
+    layers(): Widget[];
+    layers(_: Widget[]): this;
+    layers(_?: Widget[]): Widget[] | this {
         if (!arguments.length) return this.layered.layers();
         this.layered.layers(_);
         return this;
@@ -59,10 +84,11 @@ export class GMapLayered extends GMap {
     render(callback?) {
         return super.render(w => {
             this.layered.preRender().then(() => {
-                this.layered.render();
-                if (callback) {
-                    callback(w);
-                }
+                this.layered.render(w => {
+                    if (callback) {
+                        callback(w);
+                    }
+                });
             });
         });
     }

@@ -18,9 +18,10 @@
 
 .map_Layered .data {
     stroke: none;
+    stroke-width: 0.25;
 }
 
-.map_Layered .data.selected {
+.map_Layered .data .shape.selected {
     stroke: red;
     stroke-width: 1.25px;
 }

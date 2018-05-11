@@ -47,150 +47,194 @@ function _naturalSort(a, b, order, idx, sortCaseSensitive) {
 }
 
 //  Selection Bag(s)  ---
-export function SelectionBag() {
-    this.items = {};
-}
+export class SelectionBase {
+    protected __widget;
+    private __svgGlowID: string;
 
-SelectionBag.prototype.clear = function () {
-    for (const key in this.items) {
-        this.items[key].element().classed("selected", false);
+    constructor(widget) {
+        //  Can't import Widget or SVGWidget as it breaks AMD loading...
+        this.__widget = widget;
     }
-    this.items = {};
-};
 
-SelectionBag.prototype.isEmpty = function () {
-    for (const _key in this.items) { // jshint ignore:line
-        return false;
-    }
-    return true;
-};
-
-SelectionBag.prototype.append = function (item) {
-    this.items[item._id] = item;
-    item.element().classed("selected", true);
-};
-
-SelectionBag.prototype.remove = function (item) {
-    this.items[item._id].element().classed("selected", false);
-    delete this.items[item._id];
-};
-
-SelectionBag.prototype.isSelected = function (item) {
-    return this.items[item._id] !== undefined;
-};
-
-SelectionBag.prototype.get = function () {
-    const retVal = [];
-    for (const key in this.items) {
-        retVal.push(this.items[key]);
-    }
-    return retVal;
-};
-
-SelectionBag.prototype.set = function (itemArray) {
-    this.clear();
-    itemArray.forEach(function (item) {
-        this.append(item);
-    }, this);
-};
-
-SelectionBag.prototype.click = function (item, d3Event) {
-    if (d3Event.ctrlKey) {
-        if (this.items[item._id]) {
-            this.remove(item);
-        } else {
-            this.append(item);
+    svgGlowID(): string {
+        if (this.__svgGlowID === undefined) {
+            this.__svgGlowID = this.__widget.svgGlowID && this.__widget.svgGlowID() || "";
         }
-    } else {
-        this.clear();
-        this.append(item);
+        return this.__svgGlowID;
     }
-};
-
-export function SimpleSelection(widgetElement, skipBringToTop?) {
-    this.widgetElement(widgetElement);
-    this.skipBringToTop(skipBringToTop);
 }
-SimpleSelection.prototype.widgetElement = function (_) {
-    if (!arguments.length) return this._widgetElement;
-    this._widgetElement = _;
-    return this;
-};
-SimpleSelection.prototype.skipBringToTop = function (_) {
-    if (!arguments.length) return this._skipBringToTop;
-    this._skipBringToTop = _;
-    return this;
-};
-SimpleSelection.prototype.enter = function (elements) {
-    const context = this;
-    elements
-        .each(function (d) {
-            const selected = context._initialSelection ? context._initialSelection.indexOf(JSON.stringify(d)) >= 0 : false;
-            d3Select(this)
-                .classed("selected", selected)
-                .classed("deselected", !selected)
-                ;
-        })
-        .on("click.SimpleSelection", function () {
-            if (!context._skipBringToTop) {
-                this.parentNode.appendChild(this);
-            }
-            const element = d3Select(this);
-            const wasSelected = element.classed("selected");
-            context._widgetElement.selectAll(".selected")
+
+export class SelectionBag extends SelectionBase {
+    items;
+    constructor(widget) {
+        super(widget);
+        this.items = {};
+    }
+
+    clear() {
+        for (const key in this.items) {
+            this.items[key].element()
                 .classed("selected", false)
-                .classed("deselected", true)
+                .attr("filter", null)
                 ;
-            if (!wasSelected) {
-                element
-                    .classed("selected", true)
-                    .classed("deselected", false)
-                    ;
-            }
-        })
-        .on("mouseover.SimpleSelection", function () {
-            d3Select(this)
-                .classed("over", true)
-                ;
-        })
-        .on("mouseout.SimpleSelection", function () {
-            d3Select(this)
-                .classed("over", null)
-                ;
-        })
-        ;
-};
-SimpleSelection.prototype.selected = function (domNode) {
-    return d3Select(domNode).classed("selected");
-};
-SimpleSelection.prototype.selection = function (_) {
-    if (!arguments.length) {
+        }
+        this.items = {};
+    }
+
+    isEmpty() {
+        for (const _key in this.items) { // jshint ignore:line
+            return false;
+        }
+        return true;
+    }
+
+    append(item) {
+        this.items[item._id] = item;
+        item.element()
+            .classed("selected", true)
+            .attr("filter", this.svgGlowID() ? `url(#${this.svgGlowID()})` : null)
+            ;
+    }
+
+    remove(item) {
+        this.items[item._id].element()
+            .classed("selected", false)
+            .attr("filter", null)
+            ;
+        delete this.items[item._id];
+    }
+
+    isSelected(item) {
+        return this.items[item._id] !== undefined;
+    }
+
+    get() {
         const retVal = [];
-        if (this._widgetElement) {
-            this._widgetElement.selectAll(".selected")
-                .each(function (d) { retVal.push(JSON.stringify(d)); })
-                ;
+        for (const key in this.items) {
+            retVal.push(this.items[key]);
         }
         return retVal;
     }
-    if (this._widgetElement) {
-        this._widgetElement.selectAll(".selected,.deselected")
+
+    set(itemArray) {
+        this.clear();
+        itemArray.forEach(function (item) {
+            this.append(item);
+        }, this);
+    }
+
+    click = function (item, d3Event) {
+        if (d3Event.ctrlKey) {
+            if (this.items[item._id]) {
+                this.remove(item);
+            } else {
+                this.append(item);
+            }
+        } else {
+            this.clear();
+            this.append(item);
+        }
+    };
+}
+
+export class SimpleSelection extends SelectionBase {
+    constructor(widget, widgetElement, skipBringToTop?) {
+        super(widget);
+        this.widgetElement(widgetElement);
+        this.skipBringToTop(skipBringToTop);
+    }
+
+    _widgetElement;
+    widgetElement(_) {
+        if (!arguments.length) return this._widgetElement;
+        this._widgetElement = _;
+        return this;
+    }
+
+    _skipBringToTop;
+    skipBringToTop(_) {
+        if (!arguments.length) return this._skipBringToTop;
+        this._skipBringToTop = _;
+        return this;
+    }
+
+    _initialSelection;
+    enter(elements) {
+        const context = this;
+        elements
             .each(function (d) {
-                const selected = _.indexOf(JSON.stringify(d)) >= 0;
+                const selected = context._initialSelection ? context._initialSelection.indexOf(JSON.stringify(d)) >= 0 : false;
                 d3Select(this)
                     .classed("selected", selected)
                     .classed("deselected", !selected)
+                    .attr("filter", context.svgGlowID() && selected ? `url(#${context.svgGlowID()})` : null)
+                    ;
+            })
+            .on("click.SimpleSelection", function () {
+                if (!context._skipBringToTop) {
+                    this.parentNode.appendChild(this);
+                }
+                const element = d3Select(this);
+                const wasSelected = element.classed("selected");
+                context._widgetElement.selectAll(".selected")
+                    .classed("selected", false)
+                    .classed("deselected", true)
+                    .attr("filter", null)
+                    ;
+                if (!wasSelected) {
+                    element
+                        .classed("selected", true)
+                        .classed("deselected", false)
+                        .attr("filter", context.svgGlowID() ? `url(#${context.svgGlowID()})` : null)
+                        ;
+                }
+            })
+            .on("mouseover.SimpleSelection", function () {
+                d3Select(this)
+                    .classed("over", true)
+                    ;
+            })
+            .on("mouseout.SimpleSelection", function () {
+                d3Select(this)
+                    .classed("over", null)
                     ;
             })
             ;
-    } else {
-        this._initialSelection = _;
     }
-    return this;
-};
+    selected(domNode) {
+        return d3Select(domNode).classed("selected");
+    }
+    selection(_) {
+        if (!arguments.length) {
+            const retVal = [];
+            if (this._widgetElement) {
+                this._widgetElement.selectAll(".selected")
+                    .each(function (d) { retVal.push(JSON.stringify(d)); })
+                    ;
+            }
+            return retVal;
+        }
+        if (this._widgetElement) {
+            const context = this;
+            this._widgetElement.selectAll(".selected,.deselected")
+                .each(function (d) {
+                    const selected = _.indexOf(JSON.stringify(d)) >= 0;
+                    d3Select(this)
+                        .classed("selected", selected)
+                        .classed("deselected", !selected)
+                        .attr("filter", context.svgGlowID() ? `url(#${context.svgGlowID()})` : null)
+                        ;
+                })
+                ;
+        } else {
+            this._initialSelection = _;
+        }
+        return this;
+    }
+}
 
 export function SimpleSelectionMixin(skipBringToTop) {
-    this._selection = new SimpleSelection(null, skipBringToTop);
+    this._selection = new SimpleSelection(this, null, skipBringToTop);
 }
 
 SimpleSelectionMixin.prototype.serializeState = function () {

@@ -1,4 +1,3 @@
-import { format as d3Format } from "d3-format";
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson";
@@ -7,7 +6,6 @@ import { Choropleth, topoJsonFolder } from "./Choropleth";
 let usCounties = null;
 let features = null;
 let rFeatures = null;
-const fipsFormatter = d3Format("05d");
 
 export class ChoroplethCounties extends Choropleth {
     _selection;
@@ -29,40 +27,36 @@ export class ChoroplethCounties extends Choropleth {
         const context = this;
         this
             .tooltipHTML(function (d) {
-                return context.tooltipFormat({ label: usCounties.countyNames[+d[0]], value: context._dataMap[d[0]] ? context._dataMap[d[0]][1] : "N/A" });
+                const code = d[0];
+                return context.tooltipFormat({ label: usCounties.countyNames[code], value: context._dataMap[code] ? context._dataMap[code][1] : "N/A" });
             })
             ;
     }
 
     layerUpdate(base) {
         Choropleth.prototype.layerUpdate.apply(this, arguments);
-        this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
+
+        this._choroplethData
+            .style("stroke", this.meshVisible() ? null : "black")
+            ;
+
+        this.choroPaths = this._choroplethData.selectAll(".shape").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         const context = this;
-
-        function eventRow(d) {
-            return context.onClickFormatFIPS() ? context._dataMap[d[0]].map(function (cell, idx) {
-                return context.onClickFormatFIPS() && idx === 0 ? fipsFormatter(cell) : cell;
-            }) : context._dataMap[d[0]];
-        }
-
         this.choroPaths.enter().append("path")
-            .attr("class", "data")
+            .attr("class", "shape")
+            .attr("vector-effect", "non-scaling-stroke")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
-                if (context._dataMap[d[0]]) {
-                    context.click(context.rowToObj(eventRow(d)), "weight", context._selection.selected(this));
-                }
+                context.click(context.rowToObj(d), "weight", context._selection.selected(this));
             })
             .on("dblclick", function (d) {
-                if (context._dataMap[d[0]]) {
-                    context.dblclick(context.rowToObj(eventRow(d)), "weight", context._selection.selected(this));
-                }
+                context.dblclick(context.rowToObj(d), "weight", context._selection.selected(this));
             })
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
             .merge(this.choroPaths)
             .attr("d", function (d) {
-                const retVal = base._d3GeoPath(rFeatures[+d[0]]);  //  Global "fix" for leading zero is not wanted here.  Should really fix in JSON file (id) but file is too big to edit.
+                const retVal = base._d3GeoPath(rFeatures[d[0]]);
                 if (!retVal) {
                     console.log("Unknown US County:  " + d[0]);
                 }

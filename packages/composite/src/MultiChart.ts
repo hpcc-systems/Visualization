@@ -314,6 +314,7 @@ MultiChart.prototype._mapChartTypes = [
     { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
     { id: "CHORO_USCOUNTIES", display: "US County Choropleth", widgetClass: "map_ChoroplethCounties" },
     { id: "CHORO_COUNTRIES", display: "Country Choropleth", widgetClass: "map_ChoroplethCountries" },
+    { id: "GMAP_CHORO_USCOUNTIES", display: "Google Map US County  Choropleth", widgetClass: "map_GMapCounties" },
     { id: "GOOGLE_MAP", display: "Google Map", widgetClass: "map_GMapLayered" },
     { id: "OPENSTREET", display: "Open Street Map", widgetClass: "map_OpenStreet" }
 ].map(function (item: any) { item.family = "map"; return item; });

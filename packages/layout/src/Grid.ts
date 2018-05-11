@@ -27,7 +27,7 @@ export class Grid extends HTMLWidget {
         super();
 
         this._tag = "div";
-        this._selectionBag = new Utility.Selection();
+        this._selectionBag = new Utility.Selection(this);
 
         this.content([]);
     }

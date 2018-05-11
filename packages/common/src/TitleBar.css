@@ -1,5 +1,4 @@
 .common_IconBar {
-//    position: relative;
     display: flex;
     flex-flow: row;
     justify-content: space-between;
@@ -7,13 +6,12 @@
 
 .common_IconBar .icon-bar {
     display: flex;
-    // flex-direction: row;
+    background-color: white;
+    opacity: 0.95;
     flex-wrap: nowrap;
-    // justify-content: flex-end;
     margin: 4px;
     white-space: nowrap;
     line-height: 28px;
-    // flex-grow: 1;
     z-index:1;
 }
 
@@ -38,7 +36,7 @@
 }
 
 .common_IconBar .icon-bar a {
-    background-color: white
+    background-color: white;
 }
 
 .common_IconBar .icon-bar a.selected {

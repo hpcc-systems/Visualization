@@ -75,7 +75,7 @@ export class Table extends HTMLWidget {
         super();
         this._tag = "div";
 
-        this._selectionBag = new Utility.Selection();
+        this._selectionBag = new Utility.Selection(this);
         this._widgetCache = {};
         this._widgetCache2 = {};
     }

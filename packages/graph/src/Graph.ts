@@ -78,7 +78,7 @@ export class Graph extends SVGZoomWidget {
             opacity: 0.33,
             edge: "1.25px"
         };
-        this._selection = new Utility.Selection();
+        this._selection = new Utility.Selection(this);
         this.zoomToFitLimit(1);
     }
 

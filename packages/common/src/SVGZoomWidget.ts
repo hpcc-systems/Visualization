@@ -202,12 +202,14 @@ export class SVGZoomWidget extends SVGWidget {
         d3Select(window)
             .on("keydown", () => {
                 if (this._mouseCapture && d3Event.ctrlKey) {
+                    /*  TODO:  GH-2555
                     this._mouseDownMode = "selection";
                     element.on(".zoom", null);
                     element.select(".overlay")
                         .attr("cursor", "crosshair")
                         ;
                     element.call(this._brush);
+                    */
                 }
             })
             .on("keyup", () => {

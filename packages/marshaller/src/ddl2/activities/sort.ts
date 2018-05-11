@@ -12,12 +12,13 @@ export class SortColumn extends PropertyExt {
     @publish(false, "boolean", "Sort Field")
     descending: publish<this, boolean>;
 
-    validate(): IActivityError[] {
+    validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
         if (this.fieldIDs().indexOf(this.fieldID()) < 0) {
             retVal.push({
-                source: `SortColumn:  ${this.id()}`,
-                msg: `Invalid fieldID:  ${this.fieldID()}`
+                source: `${prefix}.fieldID`,
+                msg: `Invalid fieldID:  ${this.fieldID()}`,
+                hint: `expected ${JSON.stringify(this.fieldIDs())}`
             });
         }
         return retVal;
@@ -70,7 +71,7 @@ export class Sort extends Activity {
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
         for (const sb of this.validSortBy()) {
-            retVal = retVal.concat(sb.validate());
+            retVal = retVal.concat(sb.validate("Sort.column"));
         }
         return retVal;
     }

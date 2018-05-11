@@ -265,6 +265,7 @@ MultiChart.prototype._otherChartTypes = [
 ].map(function (item: any) { item.family = "other"; return item; });
 MultiChart.prototype._graphChartTypes = [
     { id: "GRAPH", display: "Graph", widgetClass: "graph_Graph" },
+    { id: "ADJACENCY_GRAPH", display: "Graph", widgetClass: "graph_AdjacencyGraph" },
     { id: "GRAPHC", display: "GraphC", widgetClass: "graph_GraphC" }
 ].map(function (item: any) { item.family = "GRAPH"; return item; });
 MultiChart.prototype._1DChartTypes = [

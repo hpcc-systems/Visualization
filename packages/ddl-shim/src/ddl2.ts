@@ -6,7 +6,7 @@ export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb"
 export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
 
 export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
-export type IFieldType = IPrimativeFieldType | "range" | "dataset";
+export type IFieldType = IPrimativeFieldType | "range" | "dataset" | "object";
 export interface IField {
     id: string;
     type: IFieldType;
@@ -131,18 +131,24 @@ export function isFilterActivity(activity: IActivity): activity is IFilter {
 }
 
 //  Project  ==================================================================
-export type ICalculatedType = "=" | "+" | "-" | "*" | "/";
+export interface IEquals {
+    fieldID: string;
+    type: "=";
+    sourceFieldID: string;
+    transformations?: TransformationType[];
+}
+export type ICalculatedType = "+" | "-" | "*" | "/";
 export interface ICalculated {
     fieldID: string;
     type: ICalculatedType;
-    param1: string;
-    param2: string | undefined;
+    sourceFieldID1: string;
+    sourceFieldID2: string;
 }
 
 export interface IScale {
     fieldID: string;
     type: "scale";
-    param1: string;
+    sourceFieldID: string;
     factor: number;
 }
 
@@ -152,7 +158,20 @@ export interface ITemplate {
     template: string;
 }
 
-export type TransformationType = ICalculated | IScale | ITemplate;
+export interface IMapMapping {
+    value: any;
+    newValue: any;
+}
+
+export interface IMap {
+    fieldID: string;
+    type: "map";
+    sourceFieldID: string;
+    default: any;
+    mappings: IMapMapping[];
+}
+
+export type TransformationType = IEquals | ICalculated | IScale | ITemplate | IMap;
 
 export interface IProject extends IActivity {
     type: "project";

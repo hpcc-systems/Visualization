@@ -230,10 +230,16 @@ export function isSliderVisualization(viz: IAnyVisualization): viz is ISliderVis
     return (viz as ISliderVisualization).type === "SLIDER";
 }
 
+export interface IIcon {
+    [id: string]: string | number | boolean;
+}
+
+export type IValueMappings = { [key: string]: IIcon; };
+
 export interface IVisualizationIcon {
-    faChar: string;
-    fieldid?: string;
-    valuemappings?: StringStringDict;
+    fieldid: string;
+    faChar?: string;
+    valuemappings?: IValueMappings;
 }
 
 export interface IGraphVisualization extends IVisualization {

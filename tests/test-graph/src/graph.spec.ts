@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
-import { Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
+import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { dataBreach } from "@hpcc-js/sample-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -74,6 +74,12 @@ describe("@hpcc-js/graph", () => {
 
                                 graph.data({ vertices, edges });
                                 render(graph);
+                                break;
+                            case AdjacencyGraph:
+                                render(new AdjacencyGraph()
+                                    .columns(["uid", "label", "links"])
+                                    .data([[1, "Yea 1", []]] as any)
+                                );
                                 break;
                             case Graph:
                                 const graph2 = new Graph();

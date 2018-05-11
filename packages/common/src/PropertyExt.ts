@@ -114,8 +114,8 @@ export class Meta {
             case "set":
                 this.checkedAssign = function (_) {
                     const options = typeof set === "function" ? set.call(this) : set;
-                    if (!options || options.indexOf(_) < 0) {
-                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + type);
+                    if (options && options.length && options.indexOf(_) < 0) {
+                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + JSON.stringify(options));
                     }
                     return _;
                 };

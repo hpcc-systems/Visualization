@@ -1,3 +1,4 @@
+export * from "./AdjacencyGraph";
 export * from "./Edge";
 export * from "./Graph";
 export * from "./Sankey";

@@ -69,7 +69,7 @@ export class DSPicker extends ActivitySelection {
         this.activities([
             new WUResult()
                 .url("http://52.51.90.23:8010")
-                .wuid("W20171220-053645")
+                .wuid("W20180513-082149")
                 .resultName("Result 1")
             ,
             new LogicalFile()

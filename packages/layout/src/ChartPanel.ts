@@ -104,6 +104,8 @@ export class ChartPanel extends Border2 implements IHighlight {
     fields(_?: Database.Field[]): this | Database.Field[] {
         if (!arguments.length) return this._widget.fields();
         this._legend.fields(_);
+        this._widget.fields(this._legend.filteredFields());
+        this._table.fields(this._legend.filteredFields());
         return this;
     }
 
@@ -112,12 +114,16 @@ export class ChartPanel extends Border2 implements IHighlight {
     columns(_?: string[], asDefault?: boolean): string[] | this {
         if (!arguments.length) return this._widget.columns();
         this._legend.columns(_, asDefault);
+        this._widget.columns(this._legend.filteredColumns());
+        this._table.columns(this._legend.filteredColumns());
         return this;
     }
 
     data(_?) {
         if (!arguments.length) return this._widget.data();
         this._legend.data(_);
+        this._widget.data(this._legend.filteredData());
+        this._table.data(this._legend.filteredData());
         return this;
     }
 
@@ -252,15 +258,6 @@ export class ChartPanel extends Border2 implements IHighlight {
                 this.preUpdateRegular(element);
                 break;
         }
-
-        this._table
-            .fields(this.fields())
-            .data(this.data())
-            ;
-        this._widget
-            .fields(this._legend.filteredFields())
-            .data(this._legend.filteredData())
-            ;
         if (this._prevChartDataFamily !== this._legend.dataFamily()) {
             this._prevChartDataFamily = this._legend.dataFamily();
             switch (this._prevChartDataFamily) {
@@ -359,34 +356,34 @@ export class ChartPanel extends Border2 implements IHighlight {
     //  Event Handlers  ---
     //  Events  ---
     click(row, column, selected) {
-        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+        // console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     dblclick(row, column, selected) {
-        console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+        // console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
 
     vertex_click(row, col, sel, more) {
         if (more && more.vertex) {
-            console.log("Vertex click: " + more.vertex.id());
+            // console.log("Vertex click: " + more.vertex.id());
         }
     }
 
     vertex_dblclick(row, col, sel, more) {
         if (more && more.vertex) {
-            console.log("Vertex double click: " + more.vertex.id());
+            // console.log("Vertex double click: " + more.vertex.id());
         }
     }
 
     edge_click(row, col, sel, more) {
         if (more && more.edge) {
-            console.log("Edge click: " + more.edge.id());
+            // console.log("Edge click: " + more.edge.id());
         }
     }
 
     edge_dblclick(row, col, sel, more) {
         if (more && more.edge) {
-            console.log("Edge double click: " + more.edge.id());
+            // console.log("Edge double click: " + more.edge.id());
         }
     }
 }
@@ -428,7 +425,7 @@ ChartPanel.prototype.publishProxy("titleIconFontSize", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFontSize", "_titleBar");
 ChartPanel.prototype.publish("description", "", "string");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });
-ChartPanel.prototype.publish("enableAutoscaling", true, "boolean");
+ChartPanel.prototype.publish("enableAutoscaling", false, "boolean");
 ChartPanel.prototype.publish("highlightSize", 4, "number");
 ChartPanel.prototype.publish("highlightColor", "#e67e22", "html-color");
 ChartPanel.prototype.publishProxy("progress_halfLife", "_progressBar", "halfLife");

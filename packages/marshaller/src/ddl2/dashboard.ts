@@ -55,6 +55,13 @@ export class Dashboard extends DockPanel {
         return jsAdapter.createJavaScript();
     }
 
+    tabTitle(element: Element): string {
+        if (this.hideSingleTabs()) {
+            return element.chartPanel().title ? element.chartPanel().title() : element.chartPanel().id();
+        }
+        return element.id();
+    }
+
     syncWidgets() {
         const previous = this.widgets();
         const diff = compare(previous, this._ec.elements().map(viz => viz.chartPanel()));
@@ -63,11 +70,11 @@ export class Dashboard extends DockPanel {
         }
         for (const w of diff.added) {
             const element: Element = this._ec.element(w);
-            this.addWidget(w, element.chartPanel().title(), "split-bottom");
+            this.addWidget(w, this.tabTitle(element), "split-bottom");
         }
         for (const w of diff.unchanged) {
             const wa: any = this.getWidgetAdapter(w);
-            wa.title.label = this._ec.element(w).chartPanel().title();
+            wa.title.label = this.tabTitle(this._ec.element(w));
         }
     }
 

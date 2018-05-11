@@ -13,6 +13,35 @@ import { Element, ElementContainer } from "./ddl2/model";
 
 import "../src/dashy.css";
 
+class Palette extends PropertyExt {
+    constructor() {
+        super();
+    }
+}
+Palette.prototype._class += " Palette";
+interface Palette {
+    paletteID(): string;
+    paletteID(_: string): this;
+    colors(): { [color: string]: string[] };
+    colors(_: { [color: string]: string[] }): this;
+}
+Palette.prototype.publish("paletteID", "", "string", "ID", null, { optional: true });
+Palette.prototype.publish("colors", {}, "object", "Custom Palette");
+
+class Palettes extends PropertyExt {
+    constructor() {
+        super();
+    }
+}
+Palettes.prototype._class += " Palettes";
+interface Palettes {
+    palette(): Palette[];
+    palette(_: Palette[]): this;
+}
+Palettes.prototype.publish("palette", [], "propertyArray", "Custom Palettes", null, { autoExpand: Palette });
+
+const palettes = new Palettes();
+
 export class Dashy extends SplitPanel {
 
     private _elementContainer: ElementContainer = new ElementContainer();
@@ -58,6 +87,10 @@ export class Dashy extends SplitPanel {
         ;
     private _preview = new DatasourceTable();
     private _vizProperties: PropertyEditor = new PropertyEditor()
+        .show_settings(false)
+        .showFields(false)
+        ;
+    private _paletteProperties: PropertyEditor = new PropertyEditor()
         .show_settings(false)
         .showFields(false)
         ;
@@ -111,19 +144,19 @@ export class Dashy extends SplitPanel {
 
     private _currViz: Element | undefined;
     private _currActivity: Activity | undefined;
-    selectionChanged(viz?: Element, activity?: Activity) {
+    selectionChanged(elem?: Element, activity?: Activity) {
         if (activity && (this._currActivity !== activity)) {
             this.loadDataProps(activity);
             if (activity instanceof Activity) {
                 this.loadPreview(activity);
             }
-        } else if (viz && (this._currViz !== viz || this._currActivity !== activity)) {
-            this.loadDataProps(viz.hipiePipeline());
-            this.loadWidgetProps(viz.multiChartPanel());
-            this.loadStateProps(viz.state());
-            this.loadPreview(viz.hipiePipeline()!.last()!);
+        } else if (elem && (this._currViz !== elem || this._currActivity !== activity)) {
+            this.loadDataProps(elem.hipiePipeline());
+            this.loadWidgetProps(elem.multiChartPanel());
+            this.loadStateProps(elem.state());
+            this.loadPreview(elem.hipiePipeline()!.last()!);
         }
-        this._currViz = viz;
+        this._currViz = elem;
         this._currActivity = activity;
     }
 
@@ -137,6 +170,13 @@ export class Dashy extends SplitPanel {
     loadWidgetProps(w: Widget) {
         this._vizProperties
             .widget(w)
+            .render()
+            ;
+    }
+
+    loadPaletteProps(pe: PropertyExt) {
+        this._paletteProperties
+            .widget(pe)
             .render()
             ;
     }
@@ -326,6 +366,7 @@ export class Dashy extends SplitPanel {
         this._tabRHS
             .addWidget(this._splitData, "Data")
             .addWidget(this._vizProperties, "Widget")
+            .addWidget(this._paletteProperties, "Palette")
             .addWidget(this._stateProperties, "State")
             .addWidget(this._clone, "Clone")
             .on("childActivation", (w: Widget) => {
@@ -402,6 +443,8 @@ export class Dashy extends SplitPanel {
                 }
             })
             ;
+
+        this.loadPaletteProps(palettes);
     }
 
     update(domNode, element) {

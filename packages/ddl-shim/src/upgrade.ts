@@ -10,6 +10,13 @@ interface IDatasourceOutputFilter extends IDatasourceOutput {
     filter: DDL1.IFilter;
 }
 
+function faCharFix(faChar: string): string {
+    if (faChar) {
+        return String.fromCharCode(parseInt(faChar));
+    }
+    return faChar;
+}
+
 class DDLUpgrade {
     _ddl: DDL1.IDDL;
     _baseUrl: string;
@@ -171,7 +178,7 @@ class DDLUpgrade {
                     const groupByColumns: string[] = [];
                     const aggrFields: DDL2.IAggregate[] = [];
                     for (const field of viz.fields) {
-                        if (field.properties.function) {
+                        if (field.properties && field.properties.function) {
                             switch (field.properties.function) {
                                 case "SUM":
                                 case "MIN":
@@ -234,6 +241,8 @@ class DDLUpgrade {
                     this.readLineMappings(viz);
                 } else if (DDL1.isTableVisualization(viz)) {
                     this.readTableMappings(viz);
+                } else if (DDL1.isGraphVisualization(viz)) {
+                    this.readGraphMappings(viz);
                 } else {
                     throw new Error(`Unkown DDL1 mapping type:  ${viz.type}`);
                 }
@@ -246,13 +255,13 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            param1: viz.source.mappings.label.toLowerCase()
-        } as DDL2.ICalculated);
+            sourceFieldID: viz.source.mappings.label.toLowerCase()
+        });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            param1: viz.source.mappings.weight[0].toLowerCase()
-        } as DDL2.ICalculated);
+            sourceFieldID: viz.source.mappings.weight[0].toLowerCase()
+        });
     }
 
     readChoroMappings(viz: DDL1.IChoroVisualization) {
@@ -260,13 +269,13 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            param1: this.anyChoroMapping2label(viz.source.mappings).toLowerCase()
-        } as DDL2.ICalculated);
+            sourceFieldID: this.anyChoroMapping2label(viz.source.mappings).toLowerCase()
+        });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            param1: viz.source.mappings.weight[0].toLowerCase()
-        } as DDL2.ICalculated);
+            sourceFieldID: viz.source.mappings.weight[0].toLowerCase()
+        });
     }
 
     anyChoroMapping2label(mapping: any) {
@@ -278,14 +287,14 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: viz.source.mappings.x[0],
             type: "=",
-            param1: viz.source.mappings.x[0].toLowerCase()
-        } as DDL2.ICalculated);
+            sourceFieldID: viz.source.mappings.x[0].toLowerCase()
+        });
         for (let i = 0; i < viz.source.mappings.y.length; ++i) {
             mappings.transformations.push({
                 fieldID: viz.source.mappings.y[i],
                 type: "=",
-                param1: viz.source.mappings.y[i].toLowerCase()
-            } as DDL2.ICalculated);
+                sourceFieldID: viz.source.mappings.y[i].toLowerCase()
+            });
         }
     }
 
@@ -295,9 +304,72 @@ class DDLUpgrade {
             mappings.transformations.push({
                 fieldID: viz.label[i],
                 type: "=",
-                param1: viz.source.mappings.value[i].toLowerCase()
-            } as DDL2.ICalculated);
+                sourceFieldID: viz.source.mappings.value[i].toLowerCase()
+            });
         }
+    }
+
+    readGraphEnums(valueMappings: DDL1.IValueMappings, annotation: boolean = false): DDL2.IMapMapping[] {
+        const retVal: DDL2.IMapMapping[] = [];
+        for (const value in valueMappings) {
+            const newValue: { [key: string]: string | number | boolean } = {};
+            for (const key in valueMappings[value]) {
+                if (key === "faChar") {
+                    newValue[key] = faCharFix(valueMappings[value][key] as string);
+                } else if (annotation && key.indexOf("icon_") === 0) {
+                    console.log("Deprecated flag property:  " + key);
+                    newValue[key.split("icon_")[1]] = valueMappings[value][key];
+                } else {
+                    newValue[key] = valueMappings[value][key];
+                }
+            }
+            retVal.push({
+                value,
+                newValue
+            });
+        }
+        return retVal;
+    }
+
+    readGraphMappings(viz: DDL1.IGraphVisualization) {
+        const mappings = this._ddl2DataviewActivities[viz.id].mappings;
+        mappings.transformations.push({
+            fieldID: "uid",
+            type: "=",
+            sourceFieldID: viz.source.mappings.uid.toLowerCase()
+        });
+        mappings.transformations.push({
+            fieldID: "label",
+            type: "=",
+            sourceFieldID: viz.source.mappings.label.toLowerCase()
+        });
+        mappings.transformations.push({
+            fieldID: "icon",
+            type: "map",
+            sourceFieldID: viz.icon.fieldid.toLowerCase(),
+            default: { fachar: faCharFix(viz.icon.faChar) },
+            mappings: this.readGraphEnums(viz.icon.valuemappings)
+        });
+        let idx = 0;
+        for (const flag of viz.flag) {
+            mappings.transformations.push({
+                fieldID: `annotation_${idx++}`,
+                type: "map",
+                sourceFieldID: flag.fieldid.toLowerCase(),
+                default: {},
+                mappings: this.readGraphEnums(flag.valuemappings, true)
+            });
+        }
+        mappings.transformations.push({
+            fieldID: "links",
+            type: "=",
+            sourceFieldID: viz.source.link.childfile.toLowerCase(),
+            transformations: [{
+                fieldID: "uid",
+                type: "=",
+                sourceFieldID: viz.source.link.mappings.uid.toLowerCase()
+            }]
+        });
     }
 
     readFilters() {
@@ -315,7 +387,7 @@ class DDLUpgrade {
                                         otherViz.datasource.request.push({
                                             source: viz.id,
                                             remoteFieldID: key.toLowerCase(),
-                                            localFieldID: key.toLowerCase()
+                                            localFieldID: update.mappings[key].toLowerCase()
                                         } as DDL2.IRequestField);
                                     }
                                 } else {
@@ -328,7 +400,7 @@ class DDLUpgrade {
                                         const dsFilter = dsFilters[mapping].filter;
                                         condition.mappings.push({
                                             remoteFieldID: key.toLowerCase(),
-                                            localFieldID: key.toLowerCase(),
+                                            localFieldID: update.mappings[key].toLowerCase(),
                                             condition: dsFilter.rule,
                                             nullable: dsFilter.nullable
                                         } as DDL2.IMapping);
@@ -428,40 +500,39 @@ class DDLUpgrade {
                 id: viz.id,
                 title: viz.title,
                 description: "",
-                chartType: viz.type,
                 ...this.type2chartType(viz.type),
                 properties: viz.properties as DDL2.IWidgetProperties
             }
         };
     }
 
-    type2chartType(chartType: DDL1.VisualizationType): { moduleName: string, className: string, memberName?: string } {
+    type2chartType(chartType: DDL1.VisualizationType): { chartType: string, moduleName: string, className: string, memberName?: string } {
         switch (chartType) {
             case "LINE":
-                return { moduleName: "@hpcc-js/chart", className: "Line" };
+                return { chartType, moduleName: "@hpcc-js/chart", className: "Line" };
             case "BUBBLE":
-                return { moduleName: "@hpcc-js/chart", className: "Bubble" };
+                return { chartType, moduleName: "@hpcc-js/chart", className: "Bubble" };
             case "PIE":
-                return { moduleName: "@hpcc-js/chart", className: "Pie" };
+                return { chartType, moduleName: "@hpcc-js/chart", className: "Pie" };
             case "BAR":
-                return { moduleName: "@hpcc-js/chart", className: "Column" };
+                return { chartType, moduleName: "@hpcc-js/chart", className: "Column" };
             case "FORM":
-                return { moduleName: "@hpcc-js/form", className: "Form" };
+                return { chartType, moduleName: "@hpcc-js/form", className: "Form" };
             case "WORD_CLOUD":
-                return { moduleName: "@hpcc-js/other", className: "WordCloud" };
+                return { chartType, moduleName: "@hpcc-js/other", className: "WordCloud" };
             case "CHORO":
-                return { moduleName: "@hpcc-js/map", className: "ChoroUSStates" };
+                return { chartType, moduleName: "@hpcc-js/map", className: "ChoroUSStates" };
             case "SLIDER":
-                return { moduleName: "@hpcc-js/form", className: "Slider" };
+                return { chartType, moduleName: "@hpcc-js/form", className: "Slider" };
             case "HEAT_MAP":
-                return { moduleName: "@hpcc-js/other", className: "HeatMap" };
+                return { chartType, moduleName: "@hpcc-js/other", className: "HeatMap" };
             case "2DCHART":
-                return { moduleName: "@hpcc-js/chart", className: "Column" };
+                return { chartType, moduleName: "@hpcc-js/chart", className: "Column" };
             case "GRAPH":
-                return { moduleName: "@hpcc-js/graph", className: "Graph" };
+                return { chartType: "ADJACENCY_GRAPH", moduleName: "@hpcc-js/graph", className: "AdjacencyGraph" };
             case "TABLE":
             default:
-                return { moduleName: "@hpcc-js/grid", className: "Table" };
+                return { chartType, moduleName: "@hpcc-js/grid", className: "Table" };
         }
     }
 

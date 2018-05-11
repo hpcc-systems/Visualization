@@ -11,12 +11,13 @@ export class GroupByColumn extends PropertyExt {
     @publish(undefined, "set", "Field", function (this: GroupByColumn) { return this.columns(); }, { optional: true })
     label: publish<this, string>;
 
-    validate(): IActivityError[] {
+    validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
         if (this.columns().indexOf(this.label()) < 0) {
             retVal.push({
-                source: `GroupByColumn:  ${this.id()}`,
-                msg: `Invalid label:  ${this.label()}`
+                source: `${prefix}.label`,
+                msg: `Invalid label:  "${this.label()}"`,
+                hint: `expected ${JSON.stringify(this.columns())}`
             });
         }
         return retVal;
@@ -86,18 +87,20 @@ export class AggregateField extends PropertyExt {
         return !this.fieldID() || !this.aggrType() || this.aggrType() !== "mean";
     }
 
-    validate(): IActivityError[] {
+    validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
         if (!this.disableAggrColumn() && this.columns().indexOf(this.aggrColumn()) < 0) {
             retVal.push({
-                source: `AggregateField:  ${this.id()}`,
-                msg: `Invalid aggrColumn:  ${this.aggrColumn()}`
+                source: `${prefix}.${this.fieldID()}.aggrColumn`,
+                msg: `Invalid aggrColumn:  "${this.aggrColumn()}"`,
+                hint: `expected ${JSON.stringify(this.columns())}`
             });
         }
         if (!this.disableBaseCountColumn() && this.baseCountColumn() !== undefined && this.columns().indexOf(this.baseCountColumn()) < 0) {
             retVal.push({
-                source: `AggregateField:  ${this.id()}`,
-                msg: `Invalid baseCountColumn:  ${this.baseCountColumn()}`
+                source: `${prefix}.${this.fieldID()}.aggrColumn`,
+                msg: `Invalid baseCountColumn:  "${this.baseCountColumn()}"`,
+                hint: `expected ${JSON.stringify(this.columns())}`
             });
         }
         return retVal;
@@ -187,10 +190,10 @@ export class GroupBy extends Activity {
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
         for (const gbColumn of this.validGroupBy()) {
-            retVal = retVal.concat(gbColumn.validate());
+            retVal = retVal.concat(gbColumn.validate("GroupBy.column"));
         }
         for (const cfs of this.validComputedFields()) {
-            retVal = retVal.concat(cfs.validate());
+            retVal = retVal.concat(cfs.validate("GroupBy.computedFields"));
         }
         return retVal;
     }

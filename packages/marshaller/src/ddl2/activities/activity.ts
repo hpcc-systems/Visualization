@@ -80,6 +80,7 @@ export type ReferencedFields = {
 export interface IActivityError {
     source: string;
     msg: string;
+    hint: string;
 }
 
 /*
@@ -93,8 +94,12 @@ export abstract class Activity extends PropertyExt {
     private _sourceActivity: Activity;
 
     fixInt64(data) {
+        if (data.length === 0) return data;
         const int64Fields = this.outFields().filter(field => {
             switch (field.type) {
+                case "number":
+                    //  Test actual data for integer64 cases.
+                    return typeof data[0][field.id] !== "number";
                 case "number64":
                     return true;
             }

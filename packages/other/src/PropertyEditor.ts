@@ -436,8 +436,9 @@ export class PropertyEditor extends HTMLWidget {
                 row._owner = widget;
                 return lastModified || idx === widgetArr.length - 1;
             }, this);
+            const widgetDisabled = widget[param.id + "_disabled"] && widget[param.id + "_disabled"]();
             let changed = !!(widgetArr.length - noEmpties.length);
-            if (lastModified) {
+            if (lastModified && !widgetDisabled) {
                 changed = true;
                 const autoExpandWidget = new param.ext.autoExpand(widget);
                 // autoExpandWidget.monitor((id, newVal, oldVal, source) => {

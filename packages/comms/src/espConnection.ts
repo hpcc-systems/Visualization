@@ -30,6 +30,9 @@ export class ESPExceptions extends Error implements Exceptions {
         this.request = request;
         this.Source = exceptions.Source;
         this.Exception = exceptions.Exception;
+        if (exceptions.Exception.length) {
+            this.message = `${exceptions.Exception[0].Code}:  ${exceptions.Exception[0].Message}`;
+        }
     }
 }
 

@@ -4,33 +4,23 @@ export type RowType = { [key: string]: any; };
 export type IServiceType = "wuresult" | "hipie" | "roxie";
 export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb";
 export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
-export type FieldType = IPrimativeField | IRangeField | IDatasetField;
 
-export interface IPrimativeField {
+export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
+export type IFieldType = IPrimativeFieldType | "range" | "dataset";
+export interface IField {
     id: string;
-    type: "string" | "number" | "boolean";
-    default: string | number | boolean;
-}
-
-export interface IRangeField {
-    id: string;
-    type: "range";
-    default: [any, any];
-}
-
-export interface IDatasetField {
-    id: string;
-    type: "dataset";
-    default: FieldType[];
+    type: IFieldType;
+    default?: boolean | number | string | [undefined | IPrimativeFieldType, undefined | IPrimativeFieldType] | IField[];
+    children?: IField[];
 }
 
 export interface IDatasource {
     type: IDatasourceType;
     id: string;
-    fields: FieldType[];
+    fields: IField[];
 }
 
-export interface IDatasourceRef {
+export interface IDatasourceBaseRef {
     id: string;
 }
 
@@ -45,7 +35,7 @@ export interface IService {
 }
 
 export interface IOutput {
-    fields: FieldType[];
+    fields: IField[];
 }
 
 export type OutputDict = { [key: string]: IOutput };
@@ -65,7 +55,7 @@ export interface IRoxieService extends IService {
     type: "roxie";
     querySet: string;
     queryID: string;
-    inputs: FieldType[];
+    inputs: IField[];
     outputs: OutputDict;
 }
 
@@ -73,7 +63,7 @@ export interface IHipieService extends IService {
     type: "hipie";
     querySet: string;
     queryID: string;
-    inputs: FieldType[];
+    inputs: IField[];
     outputs: OutputDict;
 }
 
@@ -83,20 +73,22 @@ export interface IRequestField {
     localFieldID: string;
 }
 
-export interface IWUResultRef extends IDatasourceRef {
+export interface IWUResultRef extends IDatasourceBaseRef {
     output: string;
 }
 
-export function isWUResultRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IWUResultRef {
-    return (ref as IWUResultRef).output !== undefined && (ref as IRoxieServiceRef).request === undefined;
-}
-
-export interface IRoxieServiceRef extends IDatasourceRef {
+export interface IRoxieServiceRef extends IDatasourceBaseRef {
     request: IRequestField[];
     output: string;
 }
 
-export function isRoxieServiceRef(ref: IDatasourceRef | IWUResultRef | IRoxieServiceRef): ref is IRoxieServiceRef {
+export type IDatasourceRef = IDatasourceBaseRef | IWUResultRef | IRoxieServiceRef;
+
+export function isWUResultRef(ref: IDatasourceRef): ref is IWUResultRef {
+    return (ref as IWUResultRef).output !== undefined && (ref as IRoxieServiceRef).request === undefined;
+}
+
+export function isRoxieServiceRef(ref: IDatasourceRef): ref is IRoxieServiceRef {
     return (ref as IRoxieServiceRef).request !== undefined;
 }
 
@@ -182,7 +174,7 @@ export interface IAggregate {
     fieldID: string;
     type: IAggregateType;
     inFieldID: string;
-    baseCountFieldID: string;
+    baseCountFieldID?: string;
 }
 
 export interface ICount {
@@ -226,8 +218,13 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 
 //  Visualization  ============================================================
 export type IWidgetProperties = { [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] };
+
 export interface IWidget {
+    id: string;
     chartType: string;
+    moduleName: string;
+    className: string;
+    memberName?: string;
     properties: IWidgetProperties;
 }
 
@@ -239,14 +236,14 @@ export interface IVisualization extends IWidget {
 //  View  =====================================================================
 export interface IView {
     id: string;
-    datasource: IDatasourceRef | IRoxieServiceRef;
+    datasource: IDatasourceRef;
     activities: ActivityType[];
     visualization: IVisualization;
 }
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.20";
+    version: "0.0.21";
     datasources: DatasourceType[];
     dataviews: IView[];
 }

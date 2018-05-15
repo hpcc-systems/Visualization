@@ -1,10 +1,9 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { compare, debounce, hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model";
-import { Activity, ReferencedFields, schemaRow2IField } from "./activity";
+import { Activity, ReferencedFields } from "./activity";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {
     // "http://10.241.100.157:8002/WsEcl/submit/query/roxie/carmigjx_govbisgsavi.Ins4621360_Service_00000006/json",
@@ -68,15 +67,15 @@ export class Param extends PropertyExt {
     }
 
     sourceFields() {
-        return this.sourceOutFields().map(field => field.label);
+        return this.sourceOutFields().map(field => field.id);
     }
 
     sourceViz(): Element {
         return this._elementContainer.element(this.source());
     }
 
-    sourceOutFields(): IField[] {
-        return this.sourceViz().hipiePipeline().outFields();
+    sourceOutFields(): DDL2.IField[] {
+        return this.sourceViz().hipiePipeline().selectionFields();
     }
 
     sourceSelection(): any[] {
@@ -91,8 +90,10 @@ Param.prototype._class += " ColumnMapping";
 
 export class RoxieService extends PropertyExt {
     private _query: CommsQuery;
+    private _requestFields: DDL2.IField[];
+    private _responseFields: { [outputID: string]: DDL2.IField[] } = {};
 
-    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
+    @publish("", "string", "ESP Url (http://x.x.x.x:8002)")
     url: publish<this, string>;
     @publish("", "string", "Query Set")
     querySet: publish<this, string>;
@@ -123,32 +124,39 @@ export class RoxieService extends PropertyExt {
             delete this.refreshMetaPromise;
         }
         if (!this.refreshMetaPromise) {
-            this.refreshMetaPromise = CommsQuery.attach({ baseUrl: this.url(), type: "jsonp" }, this.querySet(), this.queryID()).then((query) => {
+            const skipMeta = !!this._requestFields;
+            this.refreshMetaPromise = CommsQuery.attach({ baseUrl: this.url() }, this.querySet(), this.queryID(), skipMeta).then((query) => {
                 this._query = query;
+                if (!skipMeta) {
+                    this._requestFields = query.requestFields();
+                    for (const resultName of query.resultNames()) {
+                        this._responseFields[resultName] = query.resultFields(resultName);
+                    }
+                }
             });
         }
         return this.refreshMetaPromise;
     }
 
-    outFields(resultName: string): IField[] {
-        if (this._query) {
-            const responseSchema = this._query.resultFields(resultName);
-            return responseSchema.map(schemaRow2IField);
-        }
-        return [];
+    requestFields(): DDL2.IField[];
+    requestFields(_: DDL2.IField[]): this;
+    requestFields(_?: DDL2.IField[]): DDL2.IField[] | this {
+        if (!arguments.length) return this._requestFields || [];
+        this._requestFields = _;
+        return this;
+    }
+
+    responseFields(resultName: string): DDL2.IField[];
+    responseFields(resultName: string, _: DDL2.IField[]): this;
+    responseFields(resultName: string, _?: DDL2.IField[]): DDL2.IField[] | this {
+        if (arguments.length === 1) return this._responseFields[resultName] || [];
+        this._responseFields[resultName] = _;
+        return this;
     }
 
     submit = debounce((request: { [key: string]: any }): Promise<{ [key: string]: any }> => {
         return this._query.submit(request);
     });
-
-    requestFields(): IField[] {
-        if (this._query) {
-            const responseSchema = this._query.requestFields();
-            return responseSchema.map(schemaRow2IField);
-        }
-        return [];
-    }
 }
 RoxieService.prototype._class += " RoxieService";
 
@@ -174,7 +182,7 @@ export class RoxieRequest extends Activity {
     }
     private _data: any[] = [];
 
-    @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
+    @publish("", "string", "ESP Url (http://x.x.x.x:8002)")
     url: publish<this, string>;
     @publish("", "string", "Query Set")
     querySet: publish<this, string>;
@@ -201,11 +209,27 @@ export class RoxieRequest extends Activity {
         return this._roxieService.hash();
     }
 
-    requestFields(): DDL2.IRequestField[];
-    requestFields(_: DDL2.IRequestField[]): this;
-    requestFields(_?: DDL2.IRequestField[]): DDL2.IRequestField[] | this {
+    requestFieldRefs(): DDL2.IRequestField[];
+    requestFieldRefs(_: DDL2.IRequestField[]): this;
+    requestFieldRefs(_?: DDL2.IRequestField[]): DDL2.IRequestField[] | this {
         if (!arguments.length) return this.validParams().map(param => param.toDDL());
         this.request(_.map(fc => Param.fromDDL(this._elementContainer, fc)));
+        return this;
+    }
+
+    requestFields(): DDL2.IField[];
+    requestFields(_: DDL2.IField[]): this;
+    requestFields(_?: DDL2.IField[]): DDL2.IField[] | this {
+        if (!arguments.length) return this._roxieService.requestFields();
+        this._roxieService.requestFields(_);
+        return this;
+    }
+
+    responseFields(): DDL2.IField[];
+    responseFields(_: DDL2.IField[]): this;
+    responseFields(_?: DDL2.IField[]): DDL2.IField[] | this {
+        if (!arguments.length) return this._roxieService.responseFields(this.resultName());
+        this._roxieService.responseFields(this.resultName(), _);
         return this;
     }
 
@@ -261,7 +285,7 @@ export class RoxieRequest extends Activity {
     refreshMeta(): Promise<void> {
         return this._roxieService.refreshMeta().then(() => {
             const oldParams = this.request();
-            const diffs = compare(oldParams.map(p => p.localField()), this._roxieService.requestFields().map(ff => ff.label));
+            const diffs = compare(oldParams.map(p => p.localField()), this._roxieService.requestFields().map(ff => ff.id));
             const newParams = oldParams.filter(op => diffs.unchanged.indexOf(op.localField()) >= 0);
             this.request(newParams.concat(diffs.added.map(label => new Param(this._elementContainer).localField(label))));
         });
@@ -271,8 +295,8 @@ export class RoxieRequest extends Activity {
         return this.validParams().map(param => param.source());
     }
 
-    computeFields(): IField[] {
-        return this._roxieService.outFields(this.resultName());
+    computeFields(): DDL2.IField[] {
+        return this._roxieService.responseFields(this.resultName());
     }
 
     formatRequest(): { [key: string]: any } {

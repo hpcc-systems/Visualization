@@ -1,6 +1,5 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
@@ -67,11 +66,11 @@ export class ColumnMapping extends PropertyExt {
     }
 
     localFields() {
-        return this._owner.inFields().map(field => field.label);
+        return this._owner.inFields().map(field => field.id);
     }
 
     sourceOutFields() {
-        return this._owner.sourceOutFields().map(field => field.label);
+        return this._owner.sourceOutFields().map(field => field.id);
     }
 
     createFilter(filterSelection: any[]): (localRow: any) => boolean {
@@ -184,7 +183,7 @@ export class Filter extends PropertyExt {
         return this;
     }
 
-    inFields(): IField[] {
+    inFields(): DDL2.IField[] {
         return this._owner.inFields();
     }
 
@@ -192,8 +191,8 @@ export class Filter extends PropertyExt {
         return this._owner.visualization(this.source());
     }
 
-    sourceOutFields(): IField[] {
-        return this.sourceViz().hipiePipeline().outFields();
+    sourceOutFields(): DDL2.IField[] {
+        return this.sourceViz().hipiePipeline().selectionFields();
     }
 
     sourceSelection(): any[] {

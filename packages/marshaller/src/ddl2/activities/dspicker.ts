@@ -79,7 +79,7 @@ export class DSPicker extends ActivitySelection {
             new HipieRequest(this._view._elementContainer)
             ,
             new RoxieRequest(this._view._elementContainer)
-                .url("http://52.51.90.23:8010")
+                .url("http://52.51.90.23:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 .resultName("Accounts"),
@@ -108,7 +108,7 @@ export class DSPicker extends ActivitySelection {
                 .logicalFile("progguide::exampledata::peopleaccts")
             ,
             new RoxieRequest(this._view._elementContainer)
-                .url("http://192.168.3.22:8010")
+                .url("http://192.168.3.22:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 .resultName("Accounts"),

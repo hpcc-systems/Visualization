@@ -1,6 +1,5 @@
 import { MultiChartPanel } from "@hpcc-js/composite";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { Activity, ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb, Form } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
@@ -8,31 +7,16 @@ import { Filters } from "./activities/filter";
 import { GroupBy } from "./activities/groupby";
 import { Limit } from "./activities/limit";
 import { LogicalFile } from "./activities/logicalfile";
-import { Project } from "./activities/project";
+import { Mappings, Project } from "./activities/project";
 import { HipieRequest, Param, RoxieRequest } from "./activities/roxie";
 import { Sort } from "./activities/sort";
 import { WUResult } from "./activities/wuresult";
+import { Dashboard } from "./dashboard";
 import { Element, ElementContainer } from "./model";
 
-export { DDL2 };
-
-function writeFields(fields: IField[]): DDL2.FieldType[] {
-    return fields.map(field => {
-        if (field.children && field.children.length) {
-            return {
-                id: field.id,
-                type: "dataset",
-                default: [],
-                children: this.writeFields(field.children)
-            } as DDL2.IDatasetField;
-        } else {
-            return {
-                id: field.id,
-                type: field.type as any,  //  TODO Align DGrid field type and DDL2 field type
-                default: undefined
-            } as DDL2.IPrimativeField;
-        }
-    });
+function mergeFieldArray(targetArr: DDL2.IField[], sourceArr: DDL2.IField[]): DDL2.IField[] {
+    const existing: string[] = targetArr.map(f => f.id);
+    return targetArr.concat(sourceArr.filter(f => existing.indexOf(f.id) < 0));
 }
 
 class DDLDatasourceAdapter {
@@ -42,7 +26,7 @@ class DDLDatasourceAdapter {
     constructor() {
     }
 
-    private id(ds: Activity): string {
+    private hash(ds: Activity): string {
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof RoxieRequest || dsDetails instanceof WUResult) {
             return dsDetails.sourceHash();
@@ -50,7 +34,7 @@ class DDLDatasourceAdapter {
         return dsDetails.hash();
     }
 
-    private writeDatasource(ds: Activity, refs: ReferencedFields): DDL2.DatasourceType {
+    private writeDatasource(ds: Activity): DDL2.DatasourceType {
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof WUResult) {
             const ddl: DDL2.IWUResult = {
@@ -67,27 +51,21 @@ class DDLDatasourceAdapter {
                 id: ds.id(),
                 url: dsDetails.url(),
                 logicalFile: dsDetails.logicalFile(),
-                fields: writeFields(dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0))
+                fields: []
             };
             return ddl;
         } else if (dsDetails instanceof Form) {
             const ddl: DDL2.IForm = {
                 type: "form",
                 id: ds.id(),
-                fields: dsDetails.outFields().map((field): DDL2.FieldType => {
-                    return {
-                        id: field.id,
-                        type: field.type as any,
-                        default: field.default
-                    };
-                })
+                fields: []
             };
             return ddl;
         } else if (dsDetails instanceof Databomb) {
             const ddl: DDL2.IDatabomb = {
                 type: "databomb",
                 id: ds.id(),
-                fields: writeFields(dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0))
+                fields: []
             };
             return ddl;
         } else if (dsDetails instanceof HipieRequest) {
@@ -126,11 +104,11 @@ class DDLDatasourceAdapter {
         this._dsDedupID[ds.id] = ds;
     }
 
-    get(ds: Activity, refs: ReferencedFields = { inputs: {}, outputs: {} }): DDL2.DatasourceType {
-        const dsID = this.id(ds);
+    get(ds: Activity): DDL2.DatasourceType {
+        const dsID = this.hash(ds);
         let retVal: DDL2.DatasourceType = this._dsDedup[dsID];
         if (!retVal) {
-            retVal = this.writeDatasource(ds, refs);
+            retVal = this.writeDatasource(ds);
             this._dsDedup[dsID] = retVal;
         }
         this._dsDedupID[ds.id()] = retVal;
@@ -148,14 +126,33 @@ class DDLDatasourceAdapter {
         }
         return retVal;
     }
+
+    updateDSFields(ds: Activity, refs: ReferencedFields) {
+        const ddlDatasource = this.getByID(ds.id());
+        const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
+        if (dsDetails instanceof RoxieRequest) {
+            const inFields = dsDetails.localFields().filter(field => refs.inputs[dsDetails.id()] && refs.inputs[dsDetails.id()].indexOf(field.id) >= 0);
+            (ddlDatasource as DDL2.IRoxieService).inputs = mergeFieldArray((ddlDatasource as DDL2.IRoxieService).inputs, inFields);
+        }
+        const outFields = dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0);
+        if (dsDetails instanceof RoxieRequest || dsDetails instanceof WUResult) {
+            const result: DDL2.IOutput = (ddlDatasource as DDL2.IRoxieService).outputs[dsDetails.resultName()] || { fields: [] };
+            result.fields = mergeFieldArray(result.fields, outFields);
+            (ddlDatasource as DDL2.IRoxieService).outputs[dsDetails.resultName()] = result;
+        } else {
+            (ddlDatasource as DDL2.IDatasource).fields = mergeFieldArray((ddlDatasource as DDL2.IDatasource).fields, outFields);
+        }
+    }
 }
 
 export class DDLAdapter {
+    private _dashboard: Dashboard;
     private _elementContainer: ElementContainer;
     private _dsDedup: DDLDatasourceAdapter = new DDLDatasourceAdapter();
 
-    constructor(dashboard: ElementContainer) {
-        this._elementContainer = dashboard;
+    constructor(dashboard: Dashboard) {
+        this._dashboard = dashboard;
+        this._elementContainer = this._dashboard.elementContainer();
     }
 
     readDatasource(_ddlDS: DDL2.DatasourceType, ds: Activity): this {
@@ -227,13 +224,22 @@ export class DDLAdapter {
         return Filters.fromDDL(ec, ddlFilter);
     }
 
-    writeProject(project: Project): DDL2.IProject | DDL2.IMappings {
+    writeProject(project: Project): DDL2.IProject {
         if (!project.exists()) return undefined;
         return project.toDDL();
     }
 
-    readProject(ddlProject: DDL2.IProject | DDL2.IMappings): Project {
+    readProject(ddlProject: DDL2.IProject): Project {
         return Project.fromDDL(ddlProject);
+    }
+
+    writeMappings(mappings: Mappings): DDL2.IMappings {
+        if (!mappings.exists()) return undefined;
+        return mappings.toDDL();
+    }
+
+    readMappings(ddlProject: DDL2.IMappings): Mappings {
+        return Mappings.fromDDL(ddlProject);
     }
 
     writeGroupBy(gb: GroupBy): DDL2.IGroupBy {
@@ -263,7 +269,7 @@ export class DDLAdapter {
         return Limit.fromDDL(ddlLimit);
     }
 
-    writeDatasourceRef(ds: Activity, refs: ReferencedFields): DDL2.IWUResultRef | DDL2.IRoxieServiceRef | DDL2.IDatasourceRef {
+    writeDatasourceRef(ds: Activity): DDL2.IWUResultRef | DDL2.IRoxieServiceRef | DDL2.IDatasourceRef {
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof RoxieRequest) {
             const retVal: DDL2.IRoxieServiceRef = {
@@ -321,6 +327,8 @@ export class DDLAdapter {
                 return this.writeSort(activity);
             } else if (activity instanceof Limit) {
                 return this.writeLimit(activity);
+            } else if (activity instanceof Mappings) {
+                return this.writeMappings(activity);
             } else {
                 console.log(`Unknown activity type:  ${activity.classID()}`);
             }
@@ -334,7 +342,10 @@ export class DDLAdapter {
         for (const prop of chart.publishedProperties()) {
             if (prop.id === "fields") continue;
             if ((chart as any)[`${prop.id}_modified`]()) {
-                retVal[prop.id] = (chart as any)[`${prop.id}`]();
+                const val = (chart as any)[`${prop.id}`]();
+                if (!(val instanceof Object)) {
+                    retVal[prop.id] = (chart as any)[`${prop.id}`]();
+                }
             }
         }
         return retVal;
@@ -342,15 +353,18 @@ export class DDLAdapter {
 
     writeVisualization(element: Element): DDL2.IVisualization {
         return {
+            id: element.chartPanel().id(),
             title: element.chartPanel().title(),
             description: element.chartPanel().description(),
             chartType: element.chartType(),
+            ...element.chart().classMeta(),
             properties: this.writeVisualizationProperties(element)
         };
     }
 
     readVisualization(ddlViz: DDL2.IVisualization, chartPanel: MultiChartPanel): this {
         chartPanel
+            .id(ddlViz.id)
             .title(ddlViz.title)
             .description(ddlViz.description)
             .chartType(ddlViz.chartType)
@@ -359,50 +373,30 @@ export class DDLAdapter {
         return this;
     }
 
-    mergeFieldArray(targetArr: DDL2.FieldType[], sourceArr: DDL2.FieldType[]): DDL2.FieldType[] {
-        const existing: string[] = targetArr.map(f => f.id);
-        return targetArr.concat(sourceArr.filter(f => existing.indexOf(f.id) < 0));
-    }
-
-    updateDSFields(ds: Activity, refs: ReferencedFields) {
-        const ddlDatasource = this._dsDedup.getByID(ds.id());
-        const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
-        if (dsDetails instanceof RoxieRequest) {
-            const inFields = writeFields(dsDetails.localFields().filter(field => refs.inputs[dsDetails.id()] && refs.inputs[dsDetails.id()].indexOf(field.id) >= 0));
-            (ddlDatasource as DDL2.IRoxieService).inputs = this.mergeFieldArray((ddlDatasource as DDL2.IRoxieService).inputs, inFields);
-        }
-        const outFields = writeFields(dsDetails.localFields().filter(field => refs.outputs[dsDetails.id()] && refs.outputs[dsDetails.id()].indexOf(field.id) >= 0));
-        if (dsDetails instanceof RoxieRequest || dsDetails instanceof WUResult) {
-            const result: DDL2.IOutput = (ddlDatasource as DDL2.IRoxieService).outputs[dsDetails.resultName()] || { fields: [] };
-            result.fields = this.mergeFieldArray(result.fields, outFields);
-            (ddlDatasource as DDL2.IRoxieService).outputs[dsDetails.resultName()] = result;
-        } else {
-            (ddlDatasource as DDL2.IDatasource).fields = this.mergeFieldArray((ddlDatasource as DDL2.IDatasource).fields, outFields);
-        }
-    }
-
     writeDDLViews(): DDL2.IView[] {
-        const refs: ReferencedFields = { inputs: {}, outputs: {} };
+        //  Gather referenced fields  ---
+        const refFields: ReferencedFields = { inputs: {}, outputs: {} };
         for (const viz of this._elementContainer.elements()) {
-            viz.hipiePipeline().referencedFields(refs);
+            viz.hipiePipeline().referencedFields(refFields);
         }
+
         return this._elementContainer.elements().map(element => {
             const view = element.hipiePipeline();
             const ds = view.dataSource();
             const retVal = {
                 id: element.id(),
-                datasource: this.writeDatasourceRef(ds, refs),
+                datasource: this.writeDatasourceRef(ds),
                 activities: this.writeActivities(view),
                 visualization: this.writeVisualization(element)
             };
-            this.updateDSFields(ds, refs);
+            this._dsDedup.updateDSFields(ds, refFields);
             return retVal;
         });
     }
 
     readDDLViews(ddlViews: DDL2.IView[]) {
         for (const ddlView of ddlViews) {
-            const element = new Element(this._elementContainer).id(ddlView.id).title(ddlView.id);
+            const element = new Element(this._elementContainer).id(ddlView.id);
             this._elementContainer.append(element);
             const hipiePipeline = element.hipiePipeline();
             this.readDatasourceRef(ddlView.datasource, hipiePipeline.dataSource(), this._elementContainer);
@@ -428,20 +422,19 @@ export class DDLAdapter {
                     hipiePipeline.limit(limit);
                 }
                 if (DDL2.isMappingsActivity(activity)) {
-                    const project = this.readProject(activity);
-                    project.trim(true);
-                    hipiePipeline.mappings(project);
+                    const mappings = this.readMappings(activity);
+                    mappings.trim(true);
+                    hipiePipeline.mappings(mappings);
                 }
             }
             this.readVisualization(ddlView.visualization, element.multiChartPanel());
         }
-        // this._dashboard.syncWidgets();
     }
 
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.20",
+            version: "0.0.21",
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews()
         };

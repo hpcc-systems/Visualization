@@ -1,223 +1,148 @@
 // tslint:disable
-
-import { Line, Summary } from "@hpcc-js/chart";
-import { CalendarHeatMap } from "@hpcc-js/other";
-import { GMapPin } from "@hpcc-js/map";
-import { FieldForm } from "@hpcc-js/form";
+import { ChoroplethStates } from "@hpcc-js/map";
+import { Area, Bubble, Column } from "@hpcc-js/chart";
+import { Table } from "@hpcc-js/dgrid";
 import { ChartPanel } from "@hpcc-js/layout";
-// @ts-ignore:  Activities may not be read
-import { Dashboard, Databomb, Element, ElementContainer, Filters, Form, GroupBy, HipieRequest, Limit, LogicalFile, Project, RoxieRequest, Sort, WUResult } from "@hpcc-js/marshaller";
+import * as marshaller from "@hpcc-js/marshaller";
 
 //  Dashboard Element Container (Model)  ---
-const ec = new ElementContainer();
+const ec = new marshaller.ElementContainer();
 
 //  Data Sources  ---
-const ds_Ins109_dsOutput1_View_CustomerIdentityStats = new HipieRequest(ec)
-    .url("http://10.241.100.159:8010")
-    .querySet("roxie")
-    .queryID("prichajx_govottocustomerstats.Ins109_Service_1")
-    .resultName("View_CustomerIdentityStats")
-    .requestFields([{ source: "govottocustomerstatsFORM", remoteFieldID: "customer_id_", localFieldID: "customer_id_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "industry_type_", localFieldID: "industry_type_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "source_customer_", localFieldID: "source_customer_" }])
+const ds_3_Result_1 = new marshaller.WUResult()
+    .url("http://192.168.3.22:8010")
+    .wuid("W20171201-153452")
+    .resultName("Result 1")
+    .meta([{ id: "state", type: "string" }, { id: "zip", type: "string" }, { id: "gender", type: "string" }, { id: "personid", type: "number64" }, { id: "firstname", type: "string" }, { id: "lastname", type: "string" }])
     ;
-const ds_Ins109_dsOutput2_View_AddressIdentityCountDistribution = new HipieRequest(ec)
-    .url("http://10.241.100.159:8010")
+
+
+const ds_6_Accounts = new marshaller.RoxieRequest(ec)
+    .url("http://192.168.3.22:8002")
     .querySet("roxie")
-    .queryID("prichajx_govottocustomerstats.Ins109_Service_1")
-    .resultName("View_AddressIdentityCountDistribution")
-    .requestFields([{ source: "govottocustomerstatsFORM", remoteFieldID: "customer_id_", localFieldID: "customer_id_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "industry_type_", localFieldID: "industry_type_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "source_customer_", localFieldID: "source_customer_" }])
-    ;
-const ds_Ins109_dsOutput3_View_CalendarHeatmap = new HipieRequest(ec)
-    .url("http://10.241.100.159:8010")
-    .querySet("roxie")
-    .queryID("prichajx_govottocustomerstats.Ins109_Service_1")
-    .resultName("View_CalendarHeatmap")
-    .requestFields([{ source: "govottocustomerstatsFORM", remoteFieldID: "customer_id_", localFieldID: "customer_id_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "industry_type_", localFieldID: "industry_type_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "source_customer_", localFieldID: "source_customer_" }])
-    ;
-const ds_Ins109_dsOutput3_View_EventTrend = new HipieRequest(ec)
-    .url("http://10.241.100.159:8010")
-    .querySet("roxie")
-    .queryID("prichajx_govottocustomerstats.Ins109_Service_1")
-    .resultName("View_EventTrend")
-    .requestFields([{ source: "govottocustomerstatsFORM", remoteFieldID: "customer_id_", localFieldID: "customer_id_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "industry_type_", localFieldID: "industry_type_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "source_customer_", localFieldID: "source_customer_" }])
-    ;
-const ds_Ins109_dsOutput4_View_TopLocations = new HipieRequest(ec)
-    .url("http://10.241.100.159:8010")
-    .querySet("roxie")
-    .queryID("prichajx_govottocustomerstats.Ins109_Service_1")
-    .resultName("View_TopLocations")
-    .requestFields([{ source: "EventTrend", remoteFieldID: "event_year_month_", localFieldID: "event_year_month_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "customer_id_", localFieldID: "customer_id_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "industry_type_", localFieldID: "industry_type_" }, { source: "govottocustomerstatsFORM", remoteFieldID: "source_customer_", localFieldID: "source_customer_" }])
-    ;
-const ds_govottocustomerstatsFORM = new Form()
-    .payload({ "customer_id_": "247949891", "industry_type_": "0", "source_customer_": "272" })
+    .queryID("peopleaccounts")
+    .resultName("Accounts")
+    .requestFields([{ id: "personid", type: "number" }])
+    .responseFields([{ id: "account", type: "string" }, { id: "highcredit", type: "number" }, { id: "balance", type: "number" }, { id: "personid", type: "number" }])
+    .requestFieldRefs([{ source: "e_5", remoteFieldID: "personid", localFieldID: "personid" }])
     ;
 
 //  Visualization Widgets (View) ---
-const cp_CustomerIdentityStats = new ChartPanel()
-    .id("CustomerIdentityStats")
-    .title("Customer Identity Stats")
-    .widget(new Summary()
-        .iconColumn("icon")
-        .valueColumn("summaryvalue")
-        .moreIconColumn("moreicon")
-        .moreTextColumn("moredescription")
-        .fixedSize(false)
-        .playInterval(3000)
+const cp_3 = new ChartPanel()
+    .id("cp_3")
+    .title("States")
+    .widget(new ChoroplethStates()
+        .projection("AlbersUsaPr")
     )
     ;
 
-const cp_AddressIdentityCountDistribution = new ChartPanel()
-    .id("AddressIdentityCountDistribution")
-    .title("Address Identity Count Distribution")
-    .widget(new Line()
-        .xAxisType("linear")
-        .xAxisDomainHigh("600")
-        .yAxisType("pow")
-        .yAxisTypePowExponent(0.3)
-        .pointShape("rectangle")
-        .pointSize(4)
-    )
+const cp_4 = new ChartPanel()
+    .id("cp_4")
+    .title("Gender")
+    .widget(new Bubble())
     ;
 
-const cp_CalendarHeatmap = new ChartPanel()
-    .id("CalendarHeatmap")
-    .title("Calendar Heatmap")
-    .widget(new CalendarHeatMap()
-        .dateColumn("event_date_")
-        .datePattern("%Y%m%d")
-        .aggrType("sum")
-        .aggrColumn("rowcount")
-    )
+const cp_5 = new ChartPanel()
+    .id("cp_5")
+    .title("People")
+    .widget(new Table())
     ;
 
-const cp_EventTrend = new ChartPanel()
-    .id("EventTrend")
-    .title("Event Trend")
-    .widget(new Line()
-        .xAxisType("time")
-        .xAxisTypeTimePattern("%Y%m")
-        .interpolate("catmullRom")
-        .interpolateFill(true)
-    )
+const cp_6 = new ChartPanel()
+    .id("cp_6")
+    .title("AC Summary")
+    .widget(new Area())
     ;
 
-const cp_TopLocations = new ChartPanel()
-    .id("TopLocations")
-    .title("Top Locations")
-    .widget(new GMapPin()
-        .centerLat(27.817652450092126)
-        .centerLong(-83.67903000000001)
-        .zoom(6)
-        .streetViewOnClick(true)
-        .autoScale(true)
-        .pinColor("#ff8080")
-        .pinType("circle")
-        .pinRadius(2.5)
-        .omitNullLatLong(true)
-        .latitudeColumn("latitude_")
-        .longtitudeColumn("longitude_")
-        .tooltipColumn("full_address_")
+const cp_7 = new ChartPanel()
+    .id("cp_7")
+    .title("Credit Summary")
+    .widget(new Column()
+        .xAxisHidden(true)
+        .paletteID("category10")
     )
-    ;
-
-const cp_govottocustomerstatsFORM = new ChartPanel()
-    .id("govottocustomerstatsFORM")
-    .title("GOV-Otto-CustomerStats Filter")
-    .widget(new FieldForm())
     ;
 
 //  Dashboard Elements  (Controller) ---
-const elem_CustomerIdentityStats = new Element(ec)
-    .id("CustomerIdentityStats")
+const e_3 = new marshaller.Element(ec)
+    .id("e_3")
     .pipeline([
-        ds_Ins109_dsOutput1_View_CustomerIdentityStats,
-        new Project(true).trim(true).transformations([{ fieldID: "description", type: "=", param1: "description", param2: undefined }, { fieldID: "summaryvalue", type: "=", param1: "summaryvalue", param2: undefined }, { fieldID: "icon", type: "=", param1: "icon", param2: undefined }, { fieldID: "moredescription", type: "=", param1: "moredescription", param2: undefined }, { fieldID: "moreicon", type: "=", param1: "moreicon", param2: undefined }])
+        ds_3_Result_1,
+        new marshaller.GroupBy().fieldIDs(["state"]).aggregates([{ fieldID: "meanZip", type: "mean", inFieldID: "zip", baseCountFieldID: undefined }])
     ])
-    .chartPanel(cp_CustomerIdentityStats)
+    .chartPanel(cp_3)
+    .on("selectionChanged", () => {
+        e_5.refresh();
+    }, true)
+    ;
+ec.append(e_3);
+
+const e_4 = new marshaller.Element(ec)
+    .id("e_4")
+    .pipeline([
+        ds_3_Result_1,
+        new marshaller.GroupBy().fieldIDs(["gender"]).aggregates([{ fieldID: "Row Count", type: "count" }]),
+        new marshaller.Sort().conditions([{ fieldID: "gender", descending: true }])
+    ])
+    .chartPanel(cp_4)
+    .on("selectionChanged", () => {
+        e_5.refresh();
+    }, true)
+    ;
+ec.append(e_4);
+
+const e_5 = new marshaller.Element(ec)
+    .id("e_5")
+    .pipeline([
+        ds_3_Result_1,
+        new marshaller.Filters(ec).conditions([{ viewID: "e_3", mappings: [{ remoteFieldID: "state", localFieldID: "state", condition: "==", nullable: false }] }, { viewID: "e_4", mappings: [{ remoteFieldID: "gender", localFieldID: "gender", condition: "==", nullable: true }] }]),
+        new marshaller.Sort().conditions([{ fieldID: "lastname", descending: false }, { fieldID: "firstname", descending: false }]),
+        new marshaller.Mappings().transformations([{ fieldID: "Last", type: "=", param1: "lastname", param2: undefined }, { fieldID: "First", type: "=", param1: "firstname", param2: undefined }])
+    ])
+    .chartPanel(cp_5)
+    .on("selectionChanged", () => {
+        e_6.refresh();
+        e_7.refresh();
+    }, true)
+    ;
+ec.append(e_5);
+
+const e_6 = new marshaller.Element(ec)
+    .id("e_6")
+    .pipeline([
+        ds_6_Accounts,
+        new marshaller.Sort().conditions([{ fieldID: "highcredit", descending: false }]),
+        new marshaller.Mappings().transformations([{ fieldID: "AC", type: "=", param1: "account", param2: undefined }, { fieldID: "Balance", type: "=", param1: "balance", param2: undefined }, { fieldID: "High Credit", type: "=", param1: "highcredit", param2: undefined }])
+    ])
+    .chartPanel(cp_6)
     .on("selectionChanged", () => {
 
     }, true)
     ;
-ec.append(elem_CustomerIdentityStats);
+ec.append(e_6);
 
-const elem_AddressIdentityCountDistribution = new Element(ec)
-    .id("AddressIdentityCountDistribution")
+const e_7 = new marshaller.Element(ec)
+    .id("e_7")
     .pipeline([
-        ds_Ins109_dsOutput2_View_AddressIdentityCountDistribution,
-        new Sort().conditions([{ fieldID: "person_count_", descending: false }]),
-        new Project(true).trim(true).transformations([{ fieldID: "Person Count", type: "=", param1: "person_count_", param2: undefined }, { fieldID: "## People", type: "=", param1: "base_count", param2: undefined }])
+        ds_6_Accounts,
+        new marshaller.GroupBy().fieldIDs(["personid"]).aggregates([{ fieldID: "Total Credit", type: "sum", inFieldID: "highcredit", baseCountFieldID: undefined }, { fieldID: "Total Balance", type: "sum", inFieldID: "balance", baseCountFieldID: undefined }])
     ])
-    .chartPanel(cp_AddressIdentityCountDistribution)
+    .chartPanel(cp_7)
     .on("selectionChanged", () => {
 
     }, true)
     ;
-ec.append(elem_AddressIdentityCountDistribution);
-
-const elem_CalendarHeatmap = new Element(ec)
-    .id("CalendarHeatmap")
-    .pipeline([
-        ds_Ins109_dsOutput3_View_CalendarHeatmap,
-        new Sort().conditions([{ fieldID: "event_date_", descending: false }]),
-        new Project(true).trim(true).transformations([{ fieldID: "event_date_", type: "=", param1: "event_date_", param2: undefined }, { fieldID: "rowcount", type: "=", param1: "base_count", param2: undefined }])
-    ])
-    .chartPanel(cp_CalendarHeatmap)
-    .on("selectionChanged", () => {
-
-    }, true)
-    ;
-ec.append(elem_CalendarHeatmap);
-
-const elem_EventTrend = new Element(ec)
-    .id("EventTrend")
-    .pipeline([
-        ds_Ins109_dsOutput3_View_EventTrend,
-        new Sort().conditions([{ fieldID: "event_year_month_", descending: false }]),
-        new Project(true).trim(true).transformations([{ fieldID: "Year Month", type: "=", param1: "event_year_month_", param2: undefined }, { fieldID: "Address Count", type: "=", param1: "base_count", param2: undefined }])
-    ])
-    .chartPanel(cp_EventTrend)
-    .on("selectionChanged", () => {
-        elem_TopLocations.refresh();
-    }, true)
-    ;
-ec.append(elem_EventTrend);
-
-const elem_TopLocations = new Element(ec)
-    .id("TopLocations")
-    .pipeline([
-        ds_Ins109_dsOutput4_View_TopLocations,
-        new Sort().conditions([{ fieldID: "base_count", descending: true }]),
-        new Limit().rows(200),
-        new Project(true).trim(true).transformations([{ fieldID: "lat_long_id_", type: "=", param1: "lat_long_id_", param2: undefined }, { fieldID: "latitude_", type: "=", param1: "latitude_", param2: undefined }, { fieldID: "longitude_", type: "=", param1: "longitude_", param2: undefined }, { fieldID: "full_address_", type: "=", param1: "full_address_", param2: undefined }, { fieldID: "rowcount", type: "=", param1: "base_count", param2: undefined }])
-    ])
-    .chartPanel(cp_TopLocations)
-    .on("selectionChanged", () => {
-
-    }, true)
-    ;
-ec.append(elem_TopLocations);
-
-const elem_govottocustomerstatsFORM = new Element(ec)
-    .id("govottocustomerstatsFORM")
-    .pipeline([
-        ds_govottocustomerstatsFORM
-    ])
-    .chartPanel(cp_govottocustomerstatsFORM)
-    .on("selectionChanged", () => {
-        elem_CustomerIdentityStats.refresh();
-        elem_AddressIdentityCountDistribution.refresh();
-        elem_CalendarHeatmap.refresh();
-        elem_EventTrend.refresh();
-        elem_TopLocations.refresh();
-    }, true)
-    ;
-ec.append(elem_govottocustomerstatsFORM);
+ec.append(e_7);
 
 ec.refresh();
 
 //  Dashboard (optional) ---
-export const dashboard = new Dashboard(ec)
+export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
     .render(w => {
-        (w as Dashboard).layout({ main: { type: "split-area", orientation: "vertical", children: [{ type: "split-area", orientation: "horizontal", children: [{ type: "tab-area", widgets: [{ __id: "govottocustomerstatsFORM" }], currentIndex: 0 }, { type: "tab-area", widgets: [{ __id: "CustomerIdentityStats" }], currentIndex: 0 }], sizes: [0.5, 0.5] }, { type: "split-area", orientation: "horizontal", children: [{ type: "tab-area", widgets: [{ __id: "CalendarHeatmap" }], currentIndex: 0 }, { type: "split-area", orientation: "vertical", children: [{ type: "tab-area", widgets: [{ __id: "AddressIdentityCountDistribution" }], currentIndex: 0 }, { type: "tab-area", widgets: [{ __id: "EventTrend" }], currentIndex: 0 }], sizes: [0.5, 0.5] }], sizes: [0.5, 0.5] }, { type: "tab-area", widgets: [{ __id: "TopLocations" }], currentIndex: 0 }], sizes: [0.3293000775647055, 0.3279209829106161, 0.34277893952467847] } });
+        (w as marshaller.Dashboard)
+            .layout({ main: { type: "split-area", orientation: "vertical", children: [{ type: "split-area", orientation: "horizontal", children: [{ type: "tab-area", widgets: [{ __id: "cp_3" }], currentIndex: 0 }, { type: "tab-area", widgets: [{ __id: "cp_4" }], currentIndex: 0 }], sizes: [0.6053857821901089, 0.3946142178098911] }, { type: "tab-area", widgets: [{ __id: "cp_5" }], currentIndex: 0 }, { type: "split-area", orientation: "horizontal", children: [{ type: "tab-area", widgets: [{ __id: "cp_6" }], currentIndex: 0 }, { type: "tab-area", widgets: [{ __id: "cp_7" }], currentIndex: 0 }], sizes: [0.5, 0.5] }], sizes: [0.204392305217966, 0.3527826895577317, 0.4428250052243024] } })
+            .hideSingleTabs(true)
+            ;
     })
     ;

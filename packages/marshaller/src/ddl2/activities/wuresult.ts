@@ -1,12 +1,13 @@
 import { publish } from "@hpcc-js/common";
 import { Result, XSDXMLNode } from "@hpcc-js/comms";
-import { IField } from "@hpcc-js/dgrid";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { debounce, hashSum } from "@hpcc-js/util";
 import { Activity, schemaRow2IField } from "./activity";
 
 export abstract class ESPResult extends Activity {
     protected _result: Result;
     protected _schema: XSDXMLNode[] = [];
+    protected _meta: DDL2.IField[] = [];
     protected _total: number;
     private _data: any[];
 
@@ -46,20 +47,38 @@ export abstract class ESPResult extends Activity {
             }).then(result => {
                 this._total = result.Total;
                 this._schema = result.fields();
+                this._meta = this._schema.map(schemaRow2IField);
             }).catch(e => {
                 this._total = 0;
                 this._schema = [];
+                this._meta = [];
             });
         }
         return this.refreshMetaPromise;
     }
 
-    computeFields(): IField[] {
-        if (this._result) {
-            const responseSchema = this._result.fields();
-            return responseSchema.map(schemaRow2IField);
-        }
-        return [];
+    meta(): DDL2.IField[];
+    meta(_: DDL2.IField[]): this;
+    meta(_?: DDL2.IField[]): ReadonlyArray<DDL2.IField> | this {
+        if (!arguments.length) return this._meta;
+        this._meta = _;
+        //  Prevent refreshMeta from triggering...
+        this._prevHash = this.hash();
+        this._result = this._createResult();
+        this.refreshMetaPromise = this._result.refresh().then(result => {
+            this._total = result.Total;
+            this._schema = result.fields();
+            this._meta = this._schema.map(schemaRow2IField);
+        }).catch(e => {
+            this._total = 0;
+            this._schema = [];
+            this._meta = [];
+        });
+        return this;
+    }
+
+    computeFields(): DDL2.IField[] {
+        return this.meta();
     }
 
     exec(): Promise<void> {

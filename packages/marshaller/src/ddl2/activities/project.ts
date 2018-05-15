@@ -1,12 +1,11 @@
 import { PropertyExt, publish, Utility } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export type ComputedType = "=" | "*" | "/" | "+" | "-" | "scale" | "template";
 export class ComputedField extends PropertyExt {
-    private _owner: Project;
+    private _owner: ProjectBase;
 
     @publish(null, "string", "Label", null, { optional: true })
     label: publish<this, string>;
@@ -46,7 +45,7 @@ export class ComputedField extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: Project) {
+    constructor(owner: ProjectBase) {
         super();
         this._owner = owner;
     }
@@ -74,7 +73,7 @@ export class ComputedField extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: Project, ddl: DDL2.TransformationType): ComputedField {
+    static fromDDL(owner: ProjectBase, ddl: DDL2.TransformationType): ComputedField {
         const retVal = new ComputedField(owner)
             .label(ddl.fieldID)
             .type(ddl.type)
@@ -151,9 +150,7 @@ export class ComputedField extends PropertyExt {
 }
 ComputedField.prototype._class += " AggregateField";
 //  ===========================================================================
-export class Project extends Activity {
-    _isMappings: boolean = false;
-
+export class ProjectBase extends Activity {
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
     computedFields: publish<this, ComputedField[]>;
     @publish(false, "boolean", "trim", null, { autoExpand: ComputedField })
@@ -167,28 +164,8 @@ export class Project extends Activity {
         return retVal;
     }
 
-    constructor(isMappings: boolean) {
+    constructor() {
         super();
-        this._isMappings = isMappings;
-    }
-
-    toDDL(): DDL2.IProject | DDL2.IMappings {
-        if (this._isMappings) {
-            return {
-                type: "mappings",
-                transformations: this.transformations()
-            };
-        }
-        return {
-            type: "project",
-            transformations: this.transformations()
-        };
-    }
-
-    static fromDDL(ddl: DDL2.IProject | DDL2.IMappings): Project {
-        return new Project(ddl.type === "mappings")
-            .transformations(ddl.transformations)
-            ;
     }
 
     transformations(): DDL2.TransformationType[];
@@ -213,7 +190,7 @@ export class Project extends Activity {
         return this.inFields().map(field => field.id);
     }
 
-    field(fieldID: string): IField | null {
+    field(fieldID: string): DDL2.IField | null {
         for (const field of this.inFields()) {
             if (field.id === fieldID) {
                 return field;
@@ -248,24 +225,30 @@ export class Project extends Activity {
         return this.validComputedFields().length;
     }
 
-    computeFields(): IField[] {
+    computeFields(): DDL2.IField[] {
         if (!this.exists()) return super.computeFields();
-        const retVal: IField[] = [];
+        const retVal: DDL2.IField[] = [];
         const retValMap: { [key: string]: boolean } = {};
         for (const cf of this.computedFields()) {
             if (cf.label()) {
-                const computedField: IField = {
+                const computedField: DDL2.IField = {
                     id: cf.label(),
-                    label: cf.label(),
-                    type: "string",
-                    default: undefined,
-                    children: null
+                    type: "string"
                 };
                 retVal.push(computedField);
                 retValMap[computedField.id] = true;
             }
         }
-        return this.trim() && this.hasComputedFields() ? retVal : retVal.concat(super.computeFields().filter(field => !retValMap[field.id]));
+        if (this.trim() && this.hasComputedFields()) {
+            const computedField: DDL2.IField = {
+                id: "__lparam",
+                type: "dataset"
+            };
+            retVal.push(computedField);
+            retValMap[computedField.id] = true;
+            return retVal;
+        }
+        return retVal.concat(super.computeFields().filter(field => !retValMap[field.id]));
     }
 
     referencedFields(refs: ReferencedFields): void {
@@ -294,6 +277,9 @@ export class Project extends Activity {
             for (const cf of computedFields) {
                 retVal[cf.label] = cf.func(row);
             }
+            if (trim && hasComputedFields) {
+                retVal["__lparam"] = row;
+            }
             return retVal;
         };
     }
@@ -304,4 +290,50 @@ export class Project extends Activity {
         return data.map(this.projection());
     }
 }
+
+export class Project extends ProjectBase {
+
+    toDDL(): DDL2.IProject {
+        return {
+            type: "project",
+            transformations: this.transformations()
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IProject): Project {
+        return new Project()
+            .transformations(ddl.transformations)
+            ;
+    }
+}
 Project.prototype._class += " Project";
+
+export class Mappings extends ProjectBase {
+
+    constructor() {
+        super();
+        this.trim(true);
+    }
+
+    toDDL(): DDL2.IMappings {
+        return {
+            type: "mappings",
+            transformations: this.transformations()
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IMappings): Mappings {
+        return new Mappings()
+            .transformations(ddl.transformations)
+            ;
+    }
+
+    referencedFields(refs: ReferencedFields): void {
+        super.referencedFields(refs);
+        if (this.hasComputedFields()) {
+            return super.referencedFields(refs);
+        }
+        this.resolveInFields(refs, this.inFields().filter(f => f.id !== "__lparam").map(f => f.id));
+    }
+}
+Mappings.prototype._class += " Mappings";

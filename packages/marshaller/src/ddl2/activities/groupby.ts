@@ -1,6 +1,5 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { deviation as d3Deviation, max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum, variance as d3Variance } from "d3-array";
 import { nest as d3Nest } from "d3-collection";
@@ -260,7 +259,7 @@ export class GroupBy extends Activity {
         return this.inFields().map(field => field.id);
     }
 
-    field(fieldID: string): IField | null {
+    field(fieldID: string): DDL2.IField | null {
         for (const field of this.inFields()) {
             if (field.id === fieldID) {
                 return field;
@@ -291,41 +290,33 @@ export class GroupBy extends Activity {
         return this.validComputedFields().length;
     }
 
-    computeFields(): IField[] {
+    computeFields(): DDL2.IField[] {
         if (!this.exists()) return super.computeFields();
-        const retVal: IField[] = [];
+        const retVal: DDL2.IField[] = [];
         const groups: GroupByColumn[] = this.validGroupBy();
         for (const groupBy of groups) {
             const groupByField = this.field(groupBy.label());
-            const field: IField = {
+            const field: DDL2.IField = {
                 id: groupBy.label(),
-                label: groupBy.label(),
-                type: groupByField ? groupByField.type : undefined,
-                default: undefined,
-                children: null
+                type: groupByField ? groupByField.type : "string"
             };
             retVal.push(field);
         }
         for (const cf of this.computedFields()) {
             if (cf.fieldID()) {
-                const computedField: IField = {
+                const computedField: DDL2.IField = {
                     id: cf.fieldID(),
-                    label: cf.fieldID(),
-                    type: "number",
-                    default: undefined,
-                    children: null
+                    type: "number"
                 };
                 retVal.push(computedField);
             }
         }
         if (this.details()) {
-            let detailsTarget: IField[] = retVal;
+            let detailsTarget: DDL2.IField[] = retVal;
             if (this.exists()) {
-                const rows: IField = {
+                const rows: DDL2.IField = {
                     id: "values",
-                    label: "details",
-                    type: "object",
-                    default: undefined,
+                    type: "dataset",
                     children: []
                 };
                 retVal.push(rows);

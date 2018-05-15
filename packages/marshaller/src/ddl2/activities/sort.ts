@@ -1,6 +1,5 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IField } from "@hpcc-js/dgrid";
 import { hashSum } from "@hpcc-js/util";
 import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
@@ -54,7 +53,7 @@ export class SortColumn extends PropertyExt {
         return this._owner.fieldIDs();
     }
 
-    field(id: string): IField | undefined {
+    field(id: string): DDL2.IField | undefined {
         return this._owner.inFields().filter(field =>
             field.id === id
         )[0];

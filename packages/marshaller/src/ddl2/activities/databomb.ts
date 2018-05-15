@@ -1,5 +1,5 @@
 import { publish } from "@hpcc-js/common";
-import { IField } from "@hpcc-js/dgrid";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity } from "./activity";
 
 export class Databomb extends Activity {
@@ -26,19 +26,16 @@ export class Databomb extends Activity {
         return `Databomb`;
     }
 
-    computeFields(): IField[] {
+    computeFields(): DDL2.IField[] {
         let row0: any;
         for (row0 of this.payload()) {
-            const retVal: IField[] = [];
+            const retVal: DDL2.IField[] = [];
             for (const key in row0) {
-                retVal.push(
-                    {
-                        id: key,
-                        label: key,
-                        type: typeof row0[key],
-                        default: undefined,
-                        children: null
-                    });
+                const rowType: DDL2.IPrimativeFieldType = typeof row0[key] as DDL2.IPrimativeFieldType;
+                retVal.push({
+                    id: key,
+                    type: rowType
+                });
             }
             return retVal;
         }
@@ -83,17 +80,15 @@ export class Form extends Activity {
         return "Form";
     }
 
-    computeFields(): IField[] {
-        const retVal: IField[] = [];
+    computeFields(): DDL2.IField[] {
+        const retVal: DDL2.IField[] = [];
         const row0: any = this.payload();
         for (const key in row0) {
             retVal.push(
                 {
                     id: key,
-                    label: key,
-                    type: typeof row0[key],
-                    default: row0[key],
-                    children: null
+                    type: typeof row0[key] as DDL2.IPrimativeFieldType,
+                    default: row0[key]
                 });
         }
         return retVal;

@@ -1,12 +1,12 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
-import { PropertyExt, Widget } from "@hpcc-js/common";
+import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
 import { DDL1, ddl2Schema, upgrade as ddlUpgrade } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
 import { PropertyEditor } from "@hpcc-js/other";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel } from "@hpcc-js/phosphor";
 import { Activity, DatasourceAdapt } from "./ddl2/activities/activity";
-import { Dashboard } from "./ddl2/dashboard";
+import { Dashboard, IDashboardPersist } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { GraphAdapter } from "./ddl2/graphadapter";
 import { Element, ElementContainer } from "./ddl2/model";
@@ -23,7 +23,7 @@ export class Dashy extends SplitPanel {
             this.selectionChanged(viz);
         })
         .on("vizStateChanged", (viz: Element) => {
-            for (const filteredViz of this._elementContainer.filteredBy(viz)) {
+            for (const filteredViz of this._elementContainer.filteredBy(viz.id())) {
                 if (this._currViz === filteredViz) {
                     this.refreshPreview();
                 }
@@ -66,7 +66,8 @@ export class Dashy extends SplitPanel {
         .showFields(false)
         ;
     private _cloneEC: ElementContainer = new ElementContainer();
-    private _clone: Dashboard = new Dashboard(this._cloneEC);
+    private _clone: Dashboard = new Dashboard(this._cloneEC).hideSingleTabs(true);
+    private _fileOpen;
 
     constructor() {
         super("horizontal");
@@ -78,6 +79,13 @@ export class Dashy extends SplitPanel {
         this._elementContainer.refresh();
     }
 
+    restore(json: IDashboardPersist) {
+        this._elementContainer.clear();
+        this._dashboard.restore(json);
+        this._elementContainer.refresh();
+        this._dashboard.render();
+    }
+
     importV1DDL(ddl: DDL1.DDLSchema, baseUrl: string, wuid?: string) {
         this._ddlv1.json(ddl);
         const ddl2 = ddlUpgrade(ddl, baseUrl, wuid);
@@ -86,11 +94,7 @@ export class Dashy extends SplitPanel {
             .addWidget(this._ddlv1, "v1")
             .addWidget(this._ddlv2, "v1->v2")
             ;
-        this._elementContainer.clear();
-        this._dashboard.restore({ ddl: ddl2, widgets: [], layout: {} });
-        this._elementContainer.refresh().then(() => {
-            this._dashboard.render();
-        });
+        this.restore({ ddl: ddl2 });
     }
 
     refreshPreview() {
@@ -115,7 +119,7 @@ export class Dashy extends SplitPanel {
             }
         } else if (viz && (this._currViz !== viz || this._currActivity !== activity)) {
             this.loadDataProps(viz.hipiePipeline());
-            this.loadWidgetProps(viz.multiChartPanel().widget());
+            this.loadWidgetProps(viz.multiChartPanel());
             this.loadStateProps(viz.state());
             this.loadPreview(viz.hipiePipeline()!.last()!);
         }
@@ -176,7 +180,7 @@ export class Dashy extends SplitPanel {
 
     loadDDL(refresh: boolean = false) {
         this._ddlEditor
-            .ddl(this._elementContainer.ddl())
+            .ddl(this._dashboard.ddl())
             ;
         if (refresh && this._tabLHS.active() === this._tabDDL && this._tabDDL.active() === this._ddlEditor) {
             this._ddlEditor
@@ -210,9 +214,8 @@ export class Dashy extends SplitPanel {
     loadClone() {
         this._cloneEC.clear();
         this._clone.restore(this._dashboard.save());
-        this._clone.render(w => {
-            this._cloneEC.refresh();
-        });
+        this._cloneEC.refresh();
+        this._clone.render();
     }
 
     initMenu() {
@@ -238,21 +241,21 @@ export class Dashy extends SplitPanel {
             }
         });
 
-        /*
         commands.addCommand("dash_save", {
             label: "Save",
             execute: () => {
-                this._elementContainer.save();
+                const text = JSON.stringify(this._dashboard.save(), null, "  ");
+                Utility.downloadBlob("JSON", text, "dashy", "json");
             }
         });
 
         commands.addCommand("dash_load", {
-            label: "Load",
+            label: "Open",
             execute: () => {
-                this._elementContainer.load();
+                this._fileOpen.property("accept", ".json");
+                this._fileOpen.node().click();
             }
         });
-        */
 
         //  Model Commands  ---
         const palette = new CommandPalette({ commands });
@@ -264,8 +267,11 @@ export class Dashy extends SplitPanel {
         const contextMenu = new ContextMenu({ commands });
 
         contextMenu.addItem({ command: "dash_add", selector: `#${this._dashboard.id()}` });
-        contextMenu.addItem({ command: "dash_add_ddl", selector: `#${this._dashboard.id()}` });
         contextMenu.addItem({ command: "dash_clear", selector: `#${this._dashboard.id()}` });
+        contextMenu.addItem({ type: "separator", selector: `#${this._dashboard.id()}` });
+
+        contextMenu.addItem({ command: "dash_load", selector: `#${this.id()}` });
+        contextMenu.addItem({ command: "dash_save", selector: `#${this.id()}` });
 
         document.addEventListener("contextmenu", (event: MouseEvent) => {
             if (contextMenu.open(event)) {
@@ -363,6 +369,39 @@ export class Dashy extends SplitPanel {
                 }
             }
         });
+
+        const context = this;
+        this._fileOpen = element.append("input")
+            .attr("type", "file")
+            .property("accept", ".json")
+            .style("display", "none")
+            .on("change", function () {
+                let i = 0;
+                let f = this.files[i];
+                while (f) {
+                    const reader = new FileReader();
+                    reader.onload = (function (theFile) {
+                        return function (e) {
+                            console.log("e readAsText = ", e);
+                            console.log("e readAsText target = ", e.target);
+                            try {
+                                const json = JSON.parse(e.target.result);
+                                if (json.visualizationversion) {
+                                    context.importV1DDL(json, "localhost:8010");
+                                } else {
+                                    context.restore(json);
+                                }
+                            } catch (ex) {
+                                alert("ex when trying to parse json = " + ex);
+                            }
+                        };
+                    })(f);
+                    reader.readAsText(f);
+                    f = this.files[++i];
+                    break;
+                }
+            })
+            ;
     }
 
     update(domNode, element) {

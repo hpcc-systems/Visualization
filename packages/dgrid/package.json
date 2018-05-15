@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@hpcc-js/common": "^0.0.77",
+    "@hpcc-js/ddl-shim": "^0.0.35",
     "@hpcc-js/dgrid-shim": "^0.0.61",
     "@hpcc-js/util": "^0.0.73"
   },

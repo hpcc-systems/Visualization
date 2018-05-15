@@ -1,11 +1,12 @@
 import { publish } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ElementContainer } from "../model";
 import { Activity, ActivityPipeline } from "./activity";
 import { DSPicker } from "./dspicker";
 import { Filters } from "./filter";
 import { GroupBy } from "./groupby";
 import { Limit } from "./limit";
-import { Project } from "./project";
+import { Mappings, Project } from "./project";
 import { Sort } from "./sort";
 
 export class HipiePipeline extends ActivityPipeline {
@@ -78,10 +79,10 @@ export class HipiePipeline extends ActivityPipeline {
     }
 
     @publish(null, "widget", "Mappings")
-    _mappings: Project;
-    mappings(): Project;
-    mappings(_: Project): this;
-    mappings(_?: Project): Project | this {
+    _mappings: Mappings;
+    mappings(): Mappings;
+    mappings(_: Mappings): this;
+    mappings(_?: Mappings): Mappings | this {
         if (!arguments.length) return this._mappings;
         this._mappings = _;
         this.updateSequence();
@@ -97,10 +98,10 @@ export class HipiePipeline extends ActivityPipeline {
             this.broadcast(id, newVal, oldVal, this.dataSource());
         });
         this._filters = new Filters(model);
-        this._project = new Project(false);
+        this._project = new Project();
         this._groupBy = new GroupBy();
         this._sort = new Sort();
-        this._mappings = new Project(true).trim(true);
+        this._mappings = new Mappings().trim(true);
         this._limit = new Limit();
         this.updateSequence();
     }
@@ -124,12 +125,16 @@ export class HipiePipeline extends ActivityPipeline {
         ]);
     }
 
+    selectionFields(): DDL2.IField[] {
+        return this.last(true).outFields();
+    }
+
     //  Mappings is only for the visualization and not the data flow.
     last(skipMappings: boolean = false): Activity | undefined {
         const activities = this.activities();
         for (let i = activities.length - 1; i >= 0; --i) {
             const activity = activities[i];
-            if (skipMappings && activity instanceof Project && activity._isMappings) {
+            if (skipMappings && activity instanceof Mappings) {
                 continue;
             }
             return activity;

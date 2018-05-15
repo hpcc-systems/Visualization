@@ -371,6 +371,43 @@
         Layered: {
             simple: function (callback) {
                 createMap(false, [], null, callback);
+            },
+            simple_cluster: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/CanvasPinLayer", "src/map/OpenStreet"], function (DataFactory, Layered, CanvasPinLayer, OpenStreet) {
+                    var layered = new Layered();
+                    layered.layers([
+                        new OpenStreet().tileProvider("OpenStreetMap"),
+                        new CanvasPinLayer()
+                        .columns(DataFactory.GMap.simple.columns)
+                        .data(DataFactory.GMap.simple.data)
+                    ]);
+                    callback(layered);
+                });
+            },
+            cluster: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/CanvasPinLayer", "src/map/OpenStreet"], function (DataFactory, Layered, CanvasPinLayer, OpenStreet) {
+                    var layered = new Layered();
+                    layered
+                        .centerLat(40)
+                        .centerLong(-100)
+                        .autoScaleMode("none")
+                        .layers([
+                            new OpenStreet()
+                            .tileProvider("OpenStreetMap"),
+                            new CanvasPinLayer()
+                            .columns(["lat", "long", "weight"])
+                            .clusterMode("grid")
+                            .weightColumn("weight")
+                            .useWeightedRadius(true)
+                            .data(Array(300).fill('').map(n => {
+                                const lat = 40 + Math.pow(Math.random(), 3);
+                                const long = -100 + Math.pow(Math.random(), 3);
+                                const weight = Math.floor(100 * Math.random());
+                                return [lat, long, weight];
+                            }))
+                        ]);
+                    callback(layered);
+                });
             }
         },
         OpenStreet: {

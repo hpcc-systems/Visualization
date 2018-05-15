@@ -1,3 +1,5 @@
+export * from "./CanvasPinLayer";
+export * from "./CanvasPins";
 export * from "./Choropleth";
 export * from "./ChoroplethContinents";
 export * from "./ChoroplethCounties";

@@ -80,22 +80,23 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
 
         this._dock.update();
 
-        if (this._prevHideSingleTabs !== this.hideSingleTabs()) {
-            this._prevHideSingleTabs = this.hideSingleTabs();
-            const context = this;
-            setTimeout(() => {
-                const tabBars = element.selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
-                tabBars.each(function () {
-                    const tabBar = d3Select(this);
-                    const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
-                    tabBar
-                        .classed("hide", context.hideSingleTabs() && tabsCount === 1)
-                        .classed(`hide-${tabsCount}`)
-                        ;
-                });
+        const context = this;
+        setTimeout(() => {
+            const tabBars = element.selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
+            let refit = false;
+            tabBars.each(function () {
+                const tabBar = d3Select(this);
+                const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
+                const hide = context.hideSingleTabs() && tabsCount === 1;
+                if (hide !== tabBar.classed("hide")) {
+                    tabBar.classed("hide", hide);
+                    refit = true;
+                }
+            });
+            if (refit) {
                 this._dock.fit();
-            }, 0);
-        }
+            }
+        }, 0);
     }
 
     exit(domNode, element) {

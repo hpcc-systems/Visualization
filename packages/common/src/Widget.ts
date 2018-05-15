@@ -478,6 +478,12 @@ export abstract class Widget extends PropertyExt {
         return this;
     }
 
+    isDOMHidden(): boolean {
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+        // Note:  Will return false for visible===hidden (which is ok as it still takes up space on the page)
+        return this._placeholderElement.node().offsetParent === null;
+    }
+
     //  Render  ---
     private _prevNow = 0;
     render(callback?: (w: Widget) => void) {
@@ -490,7 +496,7 @@ export abstract class Widget extends PropertyExt {
         }
 
         callback = callback || function () { };
-        if (!this._placeholderElement || !this.visible()) {
+        if (!this._placeholderElement || !this.visible() || this.isDOMHidden()) {
             callback(this);
             return this;
         }

@@ -6,12 +6,13 @@
   "unpkg": "dist/index.min.js",
   "types": "types/index.d.ts",
   "files": [
+    "bin/*",
     "dist/*",
-    "types/*",
+    "lib-cli/**/*",
     "src/*.css",
-    "lib-cli/**/*"
+    "types/*"
   ],
-  "bin": "./lib-cli/cli/index.js",
+  "bin": "./bin/index.js",
   "scripts": {
     "clean": "rimraf ./src/ddl*Schema*.ts && rimraf lib* && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",

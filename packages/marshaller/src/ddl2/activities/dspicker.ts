@@ -84,7 +84,7 @@ export class DSPicker extends ActivitySelection {
                 .queryID("peopleaccounts")
                 .resultName("Accounts"),
             new Databomb()
-                .payload(sampleData)
+                .payload(JSON.stringify(sampleData))
             ,
             new Form()
                 .payload({

@@ -40,8 +40,11 @@ export class GeoHash extends Layer {
         Layer.prototype.layerEnter.apply(this, arguments);
 
         this.geohash = new Utility.Geohash();
-        this._geoHashTransform = svgElement.append("g");
-        this._selection = new CommonUtility.SimpleSelection(this._geoHashTransform);
+        this._geoHashTransform = svgElement
+            .append("g")
+            .attr("class", "map_GeoHash")
+            ;
+        this._selection = new CommonUtility.SimpleSelection(this, this._geoHashTransform);
         this.geoHashPaths = d3Select(null);
     }
 

@@ -9,7 +9,7 @@ import "../src/GMap.css";
 
 GoogleMapsLoader.KEY = (window as any).__hpcc_gmap_apikey || "AIzaSyDwGn2i1i_pMZvnqYJN1BksD_tjYaCOWKg";
 GoogleMapsLoader.LIBRARIES = ["geometry", "drawing"];
-let google: any = null;
+export let google: any = null;
 
 function createOverlay(map, worldSurface, viewportSurface) {
     function Overlay(map2, worldSurface2, viewportSurface2) {

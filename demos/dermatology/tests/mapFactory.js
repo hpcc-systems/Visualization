@@ -285,6 +285,18 @@
                     );
                 });
             },
+            counties: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/GMapCounties"], function (DataFactory, GMapCounties) {
+                    var rawData = DataFactory.Counties.simple.rawData;
+                    var countyData = rawData.map(function (item) {
+                        return [item.county, item.weight];
+                    });
+                    callback(new GMapCounties()
+                        .columns(DataFactory.Counties.simple.columns)
+                        .data(countyData)
+                    );
+                });
+            },
             pins: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/GMapPin"], function (DataFactory, GMapPin) {
                     callback(new GMapPin()
@@ -378,8 +390,8 @@
                     layered.layers([
                         new OpenStreet().tileProvider("OpenStreetMap"),
                         new CanvasPinLayer()
-                        .columns(DataFactory.GMap.simple.columns)
-                        .data(DataFactory.GMap.simple.data)
+                            .columns(DataFactory.GMap.simple.columns)
+                            .data(DataFactory.GMap.simple.data)
                     ]);
                     callback(layered);
                 });
@@ -393,18 +405,18 @@
                         .autoScaleMode("none")
                         .layers([
                             new OpenStreet()
-                            .tileProvider("OpenStreetMap"),
+                                .tileProvider("OpenStreetMap"),
                             new CanvasPinLayer()
-                            .columns(["lat", "long", "weight"])
-                            .clusterMode("grid")
-                            .weightColumn("weight")
-                            .useWeightedRadius(true)
-                            .data(Array(300).fill('').map(n => {
-                                const lat = 40 + Math.pow(Math.random(), 3);
-                                const long = -100 + Math.pow(Math.random(), 3);
-                                const weight = Math.floor(100 * Math.random());
-                                return [lat, long, weight];
-                            }))
+                                .columns(["lat", "long", "weight"])
+                                .clusterMode("grid")
+                                .weightColumn("weight")
+                                .useWeightedRadius(true)
+                                .data(Array(300).fill('').map(n => {
+                                    const lat = 40 + Math.pow(Math.random(), 3);
+                                    const long = -100 + Math.pow(Math.random(), 3);
+                                    const weight = Math.floor(100 * Math.random());
+                                    return [lat, long, weight];
+                                }))
                         ]);
                     callback(layered);
                 });

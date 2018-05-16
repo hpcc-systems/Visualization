@@ -8,6 +8,7 @@ export * from "./ChoroplethStates";
 export * from "./ChoroplethStatesHeat";
 export * from "./GeoHash";
 export * from "./GMap";
+export * from "./GMapCounties";
 export * from "./GMapGraph";
 export * from "./GMapHeat";
 export * from "./GMapLayered";

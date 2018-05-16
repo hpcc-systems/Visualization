@@ -43,7 +43,7 @@ export class Table extends HTMLWidget {
         this._tag = "div";
         this.columns([]);
         this._paginator = new Paginator();
-        this._selectionBag = new Utility.Selection();
+        this._selectionBag = new Utility.Selection(this);
         this._selectionPrevClick = null;
         this._paginatorTableSpacing = 4;
     }

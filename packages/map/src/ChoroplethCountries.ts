@@ -37,10 +37,15 @@ export class ChoroplethCountries extends Choropleth {
     layerUpdate(base) {
         Choropleth.prototype.layerUpdate.apply(this, arguments);
 
-        this.choroPaths = this._choroplethData.selectAll(".data").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
+        this._choroplethData
+            .style("stroke", this.meshVisible() ? null : "black")
+            ;
+
+        this.choroPaths = this._choroplethData.selectAll(".shape").data(this.visible() ? this.data() : [], function (d) { return d[0]; });
         const context = this;
         this.choroPaths.enter().append("path")
-            .attr("class", "data")
+            .attr("class", "shape")
+            .attr("vector-effect", "non-scaling-stroke")
             .call(this._selection.enter.bind(this._selection))
             .on("click", function (d) {
                 if (context._dataMap[d[0]]) {

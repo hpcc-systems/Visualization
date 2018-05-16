@@ -1,15 +1,15 @@
-.map_Layered .data {
+.map_Layered .map_GeoHash .data {
     stroke: none;
 }
 
-.map_Layered .data.selected {
+.map_Layered .map_GeoHash .data.selected {
     stroke: red;
 }
 
-.map_Layered .data.over {
+.map_Layered .map_GeoHash .data.over {
     stroke: orange;
 }
 
-.map_Layered .data.selected.over {
+.map_Layered .map_GeoHash .data.selected.over {
     stroke: red;
 }

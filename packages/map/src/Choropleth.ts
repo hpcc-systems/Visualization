@@ -89,12 +89,12 @@ export class Choropleth extends Layer {
 
     layerEnter(base, svgElement, domElement) {
         Layer.prototype.layerEnter.apply(this, arguments);
-
         this._choroplethTransform = svgElement;
-        this._choroplethData = this._choroplethTransform.append("g");
+        this._choroplethData = this._choroplethTransform.append("g")
+            .attr("class", "data")
+            ;
         this._choropleth = this._choroplethTransform.append("path")
             .attr("class", "mesh")
-            .attr("vector-effect", "non-scaling-stroke")
             ;
     }
 
@@ -105,6 +105,11 @@ export class Choropleth extends Layer {
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+
+        this._choroplethTransform
+            .style("stroke", this.meshColor())
+            .style("opacity", this.opacity())
+            ;
 
         if (!this.visible() || !this.meshVisible()) {
             this._choropleth.attr("d", "");
@@ -119,15 +124,18 @@ export class Choropleth extends Layer {
             this._prevProjection = base.projection();
             this._prevInternalOnly = this.internalOnly();
         }
-        this._choroplethTransform
-            .style("opacity", this.opacity())
-            .style("stroke", this.meshColor())
-            ;
     }
 
     layerExit(base) {
         delete this._prevProjection;
         delete this._prevInternalOnly;
+    }
+
+    layerZoomed(base) {
+        super.layerZoomed.apply(this, arguments);
+        this._choroplethData
+            .style("stroke-width", this.meshVisible() ? `0px` : `${0.5 / base.zoomScale()}px`)
+            ;
     }
 
     //  Events  ---
@@ -138,32 +146,38 @@ export class Choropleth extends Layer {
     dblclick(row, column, selected) {
         console.log("Double click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
-
-    paletteID: { (): string; (_: string): Choropleth };
-    paletteID_exists: () => boolean;
-    useClonedPalette: { (): boolean; (_: boolean): Choropleth };
-    useClonedPalette_exists: () => boolean;
-    opacity: { (): number; (_: number): Choropleth };
-    opacity_exists: () => boolean;
-    meshVisible: { (): boolean; (_: boolean): Choropleth };
-    meshVisible_exists: () => boolean;
-    meshColor: { (): string; (_: string): Choropleth };
-    meshColor_exists: () => boolean;
-    meshStrokeWidth: { (): number; (_: number): Choropleth };
-    meshStrokeWidth_exists: () => boolean;
-    internalOnly: { (): boolean; (_: boolean): Choropleth };
-    internalOnly_exists: () => boolean;
 }
 Choropleth.prototype._class += " map_Choropleth";
 Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
+
+Choropleth.prototype._palette = Palette.rainbow("default");
 
 export interface Choropleth {
     autoScaleMode(): string;
     autoScaleMode(_: string): this;
     autoScaleMode_exists(): boolean;
+    paletteID(): string;
+    paletteID(_: string): this;
+    paletteID_exists(): boolean;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    useClonedPalette_exists(): boolean;
+    opacity(): number;
+    opacity(_: number): this;
+    opacity_exists(): boolean;
+    meshVisible(): boolean;
+    meshVisible(_: boolean): this;
+    meshVisible_exists(): boolean;
+    meshColor(): string;
+    meshColor(_: string): this;
+    meshColor_exists(): boolean;
+    meshStrokeWidth(): number;
+    meshStrokeWidth(_: number): this;
+    meshStrokeWidth_exists(): boolean;
+    internalOnly(): boolean;
+    internalOnly(_: boolean): this;
+    internalOnly_exists(): boolean;
 }
-
-Choropleth.prototype._palette = Palette.rainbow("default");
 
 Choropleth.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", Choropleth.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Choropleth.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

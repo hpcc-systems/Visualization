@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as map from "@hpcc-js/map";
 import {
-    ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graticule,
+    ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graticule,
     Layered, Lines, OpenStreet, Pins
 } from "@hpcc-js/map";
 import { flightPath, geo } from "@hpcc-js/sample-data";
@@ -53,6 +53,11 @@ describe("@hpcc-js/map", () => {
                                     .columns(geo.GMap.simple.columns)
                                     .data(geo.GMap.simple.data)
                                 );
+                                break;
+                            case GMapCounties:
+                                render(new GMapCounties()
+                                    .columns(geo.Counties.simple.columns)
+                                    .data(geo.Counties.simple.rawData));
                                 break;
                             case GMapGraph:
                                 render(new GMapGraph()

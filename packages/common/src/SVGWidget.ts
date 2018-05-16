@@ -159,6 +159,16 @@ export class SVGWidget extends Widget {
         return retVal;
     }
 
+    svgGlowID(): string | undefined {
+        try {
+            const node = this.locateSVGNode(this._placeholderElement.node());
+            const filter = d3Select(node).select("defs > filter");
+            return filter.attr("id");
+        } catch (e) {
+            return undefined;
+        }
+    }
+
     target(): null | HTMLElement | SVGElement;
     target(_: null | string | HTMLElement | SVGElement): this;
     target(_?: null | string | HTMLElement | SVGElement): null | HTMLElement | SVGElement | this {
@@ -181,12 +191,44 @@ export class SVGWidget extends Widget {
                     .style("top", 0)
                     .style("left", 0)
                     ;
+                const svgDefs = this._placeholderElement.append("defs");
+                const filter = svgDefs.append("filter")
+                    .attr("id", `sel${this.id()}_glow`)
+                    .attr("width", "130%")
+                    .attr("height", "130%")
+                    ;
+                filter.append("feOffset")
+                    .attr("result", "offOut")
+                    .attr("in", "SourceGraphic")
+                    .attr("dx", "0")
+                    .attr("dy", "0")
+                    ;
+                filter.append("feColorMatrix")
+                    .attr("result", "matrixOut")
+                    .attr("in", "offOut")
+                    .attr("type", "matrix")
+                    .attr("values", "1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0")
+                    ;
+                filter.append("feGaussianBlur")
+                    .attr("result", "blurOut")
+                    .attr("in", "matrixOut")
+                    .attr("stdDeviation", "3")
+                    ;
+                filter.append("feBlend")
+                    .attr("in", "SourceGraphic")
+                    .attr("in2", "blurOut")
+                    .attr("mode", "normal")
+                    ;
                 this._parentOverlay = this._parentRelativeDiv.append("div")
                     .style("position", "absolute")
                     .style("top", 0)
                     .style("left", 0)
                     ;
-                this.resize(this._size);
+                if (this._size.width && this._size.height) {
+                    this.resize(this._size);
+                } else {
+                    this.resize({ width: 0, height: 0 });
+                }
             }
         }
         return retVal;

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "0.0.77",
+  "version": "0.1.0",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",

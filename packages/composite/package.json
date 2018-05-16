@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/composite",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "hpcc-js - Viz Composite",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -28,12 +28,12 @@
     "@hpcc-js/api": "^0.0.78",
     "@hpcc-js/chart": "^0.1.0",
     "@hpcc-js/common": "^0.1.0",
-    "@hpcc-js/dgrid": "^0.1.4",
+    "@hpcc-js/dgrid": "^0.1.5",
     "@hpcc-js/form": "^0.0.80",
     "@hpcc-js/html": "^0.0.78",
-    "@hpcc-js/layout": "^0.1.4",
-    "@hpcc-js/other": "^0.1.4",
-    "@hpcc-js/phosphor": "^0.0.85"
+    "@hpcc-js/layout": "^0.1.5",
+    "@hpcc-js/other": "^0.1.5",
+    "@hpcc-js/phosphor": "^0.0.86"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

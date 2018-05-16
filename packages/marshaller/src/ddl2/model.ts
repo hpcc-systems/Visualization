@@ -61,6 +61,13 @@ export class Element extends PropertyExt {
                     this.state().selection([]);
                 }
             })
+            .on("vertex_click", (row: any, col: string, sel: boolean) => {
+                if (sel) {
+                    this.state().selection([row.__lparam || row]);
+                } else {
+                    this.state().selection([]);
+                }
+            })
             ;
         return this;
     }
@@ -143,7 +150,7 @@ export class Element extends PropertyExt {
                 .id(field.id)
                 .label(field.id)
                 ;
-            if ((field).children) {
+            if (field.children) {
                 f.children(this.toDBFields(field.children));
             }
             retVal.push(f);
@@ -167,7 +174,7 @@ export class Element extends PropertyExt {
 
     async refresh(localMeta: boolean = false) {
         // TODO - just wrong for DashPOC  ---
-        this.chartPanel().startProgress();
+        this.chartPanel().startProgress && this.chartPanel().startProgress();
         const view = this.hipiePipeline();
         await view.refreshMeta();
         const mappings = view.last();
@@ -176,7 +183,7 @@ export class Element extends PropertyExt {
         const data = mappings.outData();
         const mappedData = this.toDBData(fields, data);
 
-        this.chartPanel().finishProgress();
+        this.chartPanel().finishProgress && this.chartPanel().finishProgress();
         this.chartPanel()
             .fields(fields.filter(f => f.id() !== "__lparam"))
             .data(mappedData)
@@ -284,6 +291,22 @@ export class ElementContainer extends PropertyExt {
                 .forEach(n => ret[n] = _o.__properties[n]);
             return ret;
         }
+    }
+
+    validate() {
+        const retVal: Array<{ elementID: string, source: string, msg: string, hint: string }> = [];
+        for (const element of this._elements) {
+            const pipeline = element.hipiePipeline();
+            for (const activity of pipeline.activities()) {
+                for (const error of activity.validate()) {
+                    retVal.push({
+                        elementID: element.id(),
+                        ...error
+                    });
+                }
+            }
+        }
+        return retVal;
     }
 
     async refresh(localMeta: boolean = false): Promise<this> {

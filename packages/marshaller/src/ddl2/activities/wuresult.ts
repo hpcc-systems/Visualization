@@ -57,9 +57,9 @@ export abstract class ESPResult extends Activity {
         return this.refreshMetaPromise;
     }
 
-    meta(): DDL2.IField[];
-    meta(_: DDL2.IField[]): this;
-    meta(_?: DDL2.IField[]): ReadonlyArray<DDL2.IField> | this {
+    responseFields(): DDL2.IField[];
+    responseFields(_: DDL2.IField[]): this;
+    responseFields(_?: DDL2.IField[]): ReadonlyArray<DDL2.IField> | this {
         if (!arguments.length) return this._meta;
         this._meta = _;
         //  Prevent refreshMeta from triggering...
@@ -78,7 +78,7 @@ export abstract class ESPResult extends Activity {
     }
 
     computeFields(): DDL2.IField[] {
-        return this.meta();
+        return this.responseFields();
     }
 
     exec(): Promise<void> {

@@ -335,8 +335,8 @@
                                 .icon_shape_colorStroke(palette(node.group))
                                 .icon_shape_colorFill(palette(node.group))
                                 .faChar(node.icon)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -348,8 +348,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -379,8 +379,8 @@
                                 .textbox_text_colorFill("#333333")
                                 .iconAnchor("middle")
                                 .faChar(node.icon)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -392,8 +392,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -418,8 +418,8 @@
                                 .icon_shape_colorStroke(palette(node.group))
                                 .icon_shape_colorFill(palette(node.group))
                                 .faChar(node.name[0])
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     rawData.links.forEach(function (link, idx) {
@@ -431,8 +431,8 @@
                                 .targetMarker("arrow")
                                 .text("")
                                 .weight(link.value)
-                            )
-                        ;
+                        )
+                            ;
                     }, graph);
 
                     graph.data({ vertices: vertices, edges: edges });
@@ -495,7 +495,7 @@
                             .sourceMarker("circle")
                             .targetMarker("arrow")
                             .text(label || "")
-                        ;
+                            ;
                     }
                     rawData.links.forEach(function (link, idx) {
                         edges.push(createEdge(vertices[link.source], vertices[link.target]).weight(link.value));

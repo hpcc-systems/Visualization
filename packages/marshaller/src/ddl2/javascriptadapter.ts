@@ -25,7 +25,6 @@ function joinWithPrefix(props: DDL2.IWidgetProperties, joinStr: string, postFix:
     let retVal: string = "";
     for (const prop in props) {
         retVal += `${joinStr}.${prop}(${JSON.stringify(props[prop])})${postFix}`;
-
     }
     return retVal;
 }
@@ -76,6 +75,7 @@ export class JavaScriptAdapter {
     }
 
     private safeID(id: string): string {
+        if (!id) return id;
         return id.replace(" ", "_");
     }
 
@@ -88,82 +88,66 @@ export class JavaScriptAdapter {
 
     _dedup: { [key: string]: boolean } = {};
     private writeDatasource(datasourceRef: DDL2.IDatasourceRef): string[] {
-        if (this._dedup[datasourceRef.id]) return;
-        this._dedup[datasourceRef.id] = true;
-        const datasource = this._ddlSchema.datasources.filter(ds => ds.id === datasourceRef.id)[0];
         const retVal: string[] = [];
-        switch (datasource.type) {
-            case "wuresult":
-                for (const output in datasource.outputs) {
-                    retVal.push(`
-const ${datasource.id}_${this.safeID(output)} = new marshaller.WUResult()
-    .url("${datasource.url}")
-    .wuid("${datasource.wuid}")
-    .resultName("${output}")
-    .meta(${stringify(datasource.outputs[output].fields)})
-    ;
-`.trim());
-                }
-                break;
-            case "logicalfile":
-                retVal.push(`
-const ${datasource.id} = new marshaller.LogicalFile()
-    .url("${datasource.url}")
-    .logicalFile("${datasource.logicalFile}")
-    .meta(${stringify(datasource.fields)})
-    ;
-`.trim());
-                break;
-            case "hipie":
-                for (const output in datasource.outputs) {
-                    retVal.push(`
-const ${datasource.id}_${this.safeID(output)} = new marshaller.HipieRequest(ec)
-    .url("${datasource.url}")
-    .querySet("${datasource.querySet}")
-    .queryID("${datasource.queryID}")
-    .resultName("${output}")
-    .requestFields(${stringify(datasource.inputs)})
-    .responseFields(${stringify(datasource.outputs[output].fields)})
-    .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
-    ;
-`.trim());
-                }
-                break;
-            case "roxie":
-                for (const output in datasource.outputs) {
-                    retVal.push(`
-const ${datasource.id}_${this.safeID(output)} = new marshaller.RoxieRequest(ec)
-    .url("${datasource.url}")
-    .querySet("${datasource.querySet}")
-    .queryID("${datasource.queryID}")
-    .resultName("${output}")
-    .requestFields(${stringify(datasource.inputs)})
-    .responseFields(${stringify(datasource.outputs[output].fields)})
-    .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
-    ;
-`.trim());
-                }
-                break;
-            case "databomb":
-                let payload = [];
-                const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
-                if (ds.length) {
-                    payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();
-
-                }
-                retVal.push(`
-const ${datasource.id} = new marshaller.Databomb()
-    .payload(${JSON.stringify(payload)})
-    ;
-`.trim());
-                break;
-            case "form":
-                retVal.push(`
-const ${datasource.id} = new marshaller.Form()
-    .payload(${JSON.stringify(datasource.fields)})
-    ;
-`.trim());
-                break;
+        const datasource = this._ddlSchema.datasources.filter(ds => ds.id === datasourceRef.id)[0];
+        const outputID = (datasourceRef as any).output;
+        const id = outputID ? `${datasource.id}_${this.safeID(outputID)}` : `${datasource.id}`;
+        if (!this._dedup[id]) {
+            this._dedup[id] = true;
+            switch (datasource.type) {
+                case "wuresult":
+                    retVal.push(`    export const ${id} = new marshaller.WUResult()
+        .url("${datasource.url}")
+        .wuid("${datasource.wuid}")
+        .resultName("${outputID}")
+        .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        ;`);
+                    break;
+                case "logicalfile":
+                    retVal.push(`    export const ${id} = new marshaller.LogicalFile()
+        .url("${datasource.url}")
+        .logicalFile("${datasource.logicalFile}")
+        .responseFields(${stringify(datasource.fields)})
+        ;`);
+                    break;
+                case "hipie":
+                    retVal.push(`    export const ${id} = new marshaller.HipieRequest(ec)
+        .url("${datasource.url}")
+        .querySet("${datasource.querySet}")
+        .queryID("${datasource.queryID}")
+        .resultName("${outputID}")
+        .requestFields(${stringify(datasource.inputs)})
+        .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+        ;`);
+                    break;
+                case "roxie":
+                    retVal.push(`    export const ${id} = new marshaller.RoxieRequest(ec)
+        .url("${datasource.url}")
+        .querySet("${datasource.querySet}")
+        .queryID("${datasource.queryID}")
+        .resultName("${outputID}")
+        .requestFields(${stringify(datasource.inputs)})
+        .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+        ;`);
+                    break;
+                case "databomb":
+                    let payload = [];
+                    const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
+                    if (ds.length) {
+                        payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();
+                    }
+                    retVal.push(`    export const ${datasource.id} = new marshaller.Databomb()
+        .payload(${JSON.stringify(payload)})
+        ;`);
+                    break;
+                case "form":
+                    retVal.push(`    export const ${datasource.id} = new marshaller.Form()
+        .payload(${JSON.stringify(datasource.fields[0])})
+        ;`);
+                    break;
+            }
         }
         return retVal;
     }
@@ -207,18 +191,16 @@ const ${datasource.id} = new marshaller.Form()
             moduleName: dataview.visualization.moduleName,
             className: dataview.visualization.className,
             memberName: dataview.visualization.memberName,
-            js: `
-const ${dataview.visualization.id} = new ChartPanel()
-    .id("${dataview.visualization.id}")
-    .title("${dataview.visualization.title}")
-    .widget(new ${dataview.visualization.className}()${joinWithPrefix(dataview.visualization.properties, "\n        ", "\n    ")})
-    ;
-`.trim()
+            js: `    export const ${dataview.visualization.id} = new ChartPanel()
+        .id("${dataview.visualization.id}")
+        .title("${dataview.visualization.title}")
+        .widget(new ${dataview.visualization.className}()${joinWithPrefix(dataview.visualization.properties, "\n            ", "")})
+        ;`
         };
     }
 
     private writeElement(dataview: DDL2.IView) {
-        const activities: string[] = [this.datasourceRefID(dataview.datasource)];
+        const activities: string[] = [`data.${this.datasourceRefID(dataview.datasource)}`];
         for (const activity of dataview.activities) {
             activities.push(this.writeActivity(activity));
         }
@@ -232,7 +214,7 @@ const ${dataview.id} = new marshaller.Element(ec)
     .pipeline([
         ${activities.join(",\n        ")}
     ])
-    .chartPanel(${dataview.visualization.id})
+    .chartPanel(viz.${dataview.visualization.id})
     .on("selectionChanged", () => {
         ${updates.join("\n        ")}
     }, true)
@@ -294,18 +276,25 @@ import * as marshaller from "@hpcc-js/marshaller";
 //  Dashboard Element Container (Model)  ---
 const ec = new marshaller.ElementContainer();
 
-//  Data Sources  ---
-${this.writeDatasources().join("\n").trim()}
+namespace data {
+${this.writeDatasources().join("\n")}
+}
 
-//  Visualization Widgets (View) ---
+namespace viz {
 ${widgets.widgetDefs}
+}
 
 //  Dashboard Elements  (Controller) ---
 ${this.writeElements().trim()}
 
 ec.refresh();
 
-//  Dashboard (optional) ---
+//  Optional  ---
+const errors = ec.validate();
+for (const error of errors) {
+    console.error(error.elementID + " (" + error.source + "):  " + error.msg);
+}
+
 export const dashboard = new marshaller.Dashboard(ec)
     .target("placeholder")
     .render(w => {

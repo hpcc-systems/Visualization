@@ -121,7 +121,7 @@ export class GraphAdapter {
             const errors = activity.validate();
             if (errors.length) {
                 fillColor = "pink";
-                tooltip = errors.map(error => `${error.msg}`).join("\n");
+                tooltip = errors.map(error => `${error.source}:  ${error.msg}`).join("\n");
             }
         } else {
             fillColor = "lightgrey";

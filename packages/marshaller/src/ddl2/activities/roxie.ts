@@ -292,7 +292,8 @@ export class RoxieRequest extends Activity {
     }
 
     updatedBy(): string[] {
-        return this.validParams().map(param => param.source());
+        const retVal = this.validParams().map(param => param.source());
+        return retVal;
     }
 
     computeFields(): DDL2.IField[] {
@@ -348,7 +349,6 @@ export class HipieRequest extends RoxieRequest {
         if (!hasRequest) {
             request.refresh = true;
         }
-        console.log(request);
         return request;
     }
 }

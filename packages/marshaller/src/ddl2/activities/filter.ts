@@ -16,18 +16,20 @@ export class ColumnMapping extends PropertyExt {
     @publish(false, "boolean", "Ignore null filters")
     nullable: publish<this, boolean>;
 
-    validate(): IActivityError[] {
+    validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
         if (this.sourceOutFields().indexOf(this.remoteField()) < 0) {
             retVal.push({
-                source: `ColumnMapping:  ${this.id()}`,
-                msg: `Invalid remoteField:  ${this.remoteField()}`
+                source: `${prefix}.remoteField`,
+                msg: `Invalid remoteField:  "${this.remoteField()}"`,
+                hint: `expected:  ${JSON.stringify(this.sourceOutFields())}`
             });
         }
         if (this.localFields().indexOf(this.localField()) < 0) {
             retVal.push({
-                source: `ColumnMapping:  ${this.id()}`,
-                msg: `Invalid localField:  ${this.localField()}`
+                source: `${prefix}.localField`,
+                msg: `Invalid localField:  "${this.localField()}"`,
+                hint: `expected:  ${JSON.stringify(this.localFields())}`
             });
         }
         return retVal;
@@ -120,12 +122,13 @@ export class Filter extends PropertyExt {
         let retVal: IActivityError[] = [];
         if (this.visualizationIDs().indexOf(this.source()) < 0) {
             retVal.push({
-                source: `Filter:  ${this.id()}`,
-                msg: `Invalid source:  ${this.source()}`
+                source: `filter.source.${this.source()}`,
+                msg: `Invalid source:  "${this.source()}"`,
+                hint: `expected:  ${JSON.stringify(this.visualizationIDs())}`
             });
         }
         for (const mapping of this.validMappings()) {
-            retVal = retVal.concat(mapping.validate());
+            retVal = retVal.concat(mapping.validate(`filter.${this.source}.mappings`));
         }
         return retVal;
     }

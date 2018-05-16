@@ -78,6 +78,12 @@ export class Modal extends HTMLWidget {
         }
     }
 
+    resize(size?: any): this {
+        super.resize();
+        this.setModalSizeLimits();
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         this._fade = element.append("div")
@@ -147,7 +153,7 @@ export class Modal extends HTMLWidget {
             if (!this._widget.target()) {
                 this._widget.target(this._modalBody.node());
             }
-            this._widget.render();
+            this._widget.resize().render();
         } else {
             this._widget
                 .target(null)

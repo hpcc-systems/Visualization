@@ -1,5 +1,5 @@
 import { IConnection, IOptions } from "../connection";
-import { ESPConnection } from "../espConnection";
+import { ESPConnection, ESPExceptions } from "../espConnection";
 
 export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
 export type IFieldType = IPrimativeFieldType | "range" | "dataset";
@@ -22,6 +22,9 @@ function jsonToIField(id: string, item: any): IField {
         case "string":
             return { id, type };
         case "object":
+            if (item.Row instanceof Array) {
+                item = item.Row;
+            }
             if (item instanceof Array) {
                 return {
                     id,
@@ -29,6 +32,7 @@ function jsonToIField(id: string, item: any): IField {
                     children: jsonToIFieldArr(item[0])
                 };
             }
+        // Fall through  ---
         default:
             throw new Error("Unknown field type");
     }
@@ -86,7 +90,14 @@ export class EclService {
 
     submit(querySet: string, queryId: string, request: object) {
         // http://192.168.3.22:8002/WsEcl/submit/query/roxie/peopleaccounts.1/json
-        return this._connection.send(`submit/query/${querySet}/${queryId}`, request, "json2").then(response => {
+        const action = `submit/query/${querySet}/${queryId}`;
+        return this._connection.send(action, request, "json2").then(response => {
+            if (response.Results && response.Results.Exception) {
+                throw new ESPExceptions(action, request, {
+                    Source: "wsEcl.submit",
+                    Exception: response.Results.Exception
+                });
+            }
             return response.Results;
         });
     }

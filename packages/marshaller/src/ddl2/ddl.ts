@@ -341,6 +341,7 @@ export class DDLAdapter {
         const chart = element.chart();
         for (const prop of chart.publishedProperties()) {
             if (prop.id === "fields") continue;
+            console.log(`${prop.id}=>${(chart as any)[`${prop.id}`]()}`);
             if ((chart as any)[`${prop.id}_modified`]()) {
                 const val = (chart as any)[`${prop.id}`]();
                 if (!(val instanceof Object)) {
@@ -368,7 +369,7 @@ export class DDLAdapter {
             .title(ddlViz.title)
             .description(ddlViz.description)
             .chartType(ddlViz.chartType)
-            .chartTypeDefaults(ddlViz.properties)
+            .chartTypeProperties(ddlViz.properties)
             ;
         return this;
     }

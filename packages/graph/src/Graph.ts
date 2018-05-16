@@ -529,13 +529,9 @@ export class Graph extends SVGZoomWidget {
 
     static profileID = 0;
     render(callback?: (w: Widget) => void): this {
-        const timeID = `total - ${++Graph.profileID}`;
-        console.time(timeID);
         this.statusText("Render...");
-        console.time("render");
         super.render(w => {
             requestAnimationFrame(() => {
-                console.timeEnd("render");
                 this.statusText("Layout...");
                 this.doLayout().then(() => {
                     requestAnimationFrame(() => {
@@ -544,7 +540,6 @@ export class Graph extends SVGZoomWidget {
                         if (callback) {
                             callback(w);
                         }
-                        console.timeEnd(timeID);
                     });
                 });
             });
@@ -575,9 +570,7 @@ export class Graph extends SVGZoomWidget {
         }
 
         const context = this;
-        console.time("doLayout");
         const layoutEngine = this.getLayoutEngine();
-        console.timeEnd("doLayout");
         if (this.layout() === "ForceDirected2") {
             this.forceLayout = layoutEngine;
             this.forceLayout.force.on("tick", function () {
@@ -610,7 +603,6 @@ export class Graph extends SVGZoomWidget {
             });
             this.forceLayout.force.restart();
         } else if (layoutEngine) {
-            console.time("render2");
             this.forceLayout = null;
             context._dragging = true;
             context._graphData.nodeValues().forEach(function (item) {
@@ -638,7 +630,6 @@ export class Graph extends SVGZoomWidget {
             setTimeout(function () {
                 context._dragging = false;
             }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
-            console.timeEnd("render2");
         }
     }
 

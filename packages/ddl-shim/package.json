@@ -8,17 +8,20 @@
   "files": [
     "dist/*",
     "types/*",
-    "src/*.css"
+    "src/*.css",
+    "lib-cli/**/*"
   ],
   "scripts": {
     "clean": "rimraf ./src/ddl*Schema*.ts && rimraf lib* && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
+    "compile-cli": "tsc -p ./tsconfig-cli.json",
     "compile-util": "tsc -p ./tsconfig-util.json",
     "generate": "node ./lib-util/createSchema.js",
+    "cli": "node ./lib-cli/cli/index.js",
     "bundle": "webpack",
     "bundle-watch": "npm run bundle -- --watch",
-    "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run bundle",
+    "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run compile-cli && npm run bundle",
     "watch": "concurrently --kill-others \"npm run compile-es6-watch\" \"npm run bundle-watch\"",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."

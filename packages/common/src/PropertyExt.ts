@@ -85,6 +85,7 @@ export interface IPublishExt {
     inputType?: string;
     internal?: boolean;
     range?: { min: number, max: number, step: number };
+    multiline?: boolean;
 }
 
 export class Meta {

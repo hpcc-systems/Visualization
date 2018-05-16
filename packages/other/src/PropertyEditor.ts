@@ -618,7 +618,7 @@ export class PropertyEditor extends HTMLWidget {
                         })
                         ;
                 } else {
-                    cell.append("input")
+                    cell.append(param.ext && param.ext.multiline ? "textarea" : "input")
                         .attr("id", this.id() + "_" + param.id)
                         .classed("property-input", true)
                         .on("change", function () {

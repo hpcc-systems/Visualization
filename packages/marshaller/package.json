@@ -43,6 +43,7 @@
     "concurrently": "3.5.1",
     "d3-array": "1.2.1",
     "d3-collection": "1.0.4",
+    "d3-dsv": "1.0.8",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
     "rollup-plugin-alias": "1.4.0",

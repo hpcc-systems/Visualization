@@ -133,7 +133,7 @@ export class JavaScriptAdapter {
         ;`);
                     break;
                 case "databomb":
-                    let payload = [];
+                    let payload = "";
                     const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
                     if (ds.length) {
                         payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();

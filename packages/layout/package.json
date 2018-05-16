@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/layout",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "hpcc-js - Viz Layout",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@hpcc-js/api": "^0.0.78",
     "@hpcc-js/common": "^0.1.0",
-    "@hpcc-js/dgrid": "^0.1.1"
+    "@hpcc-js/dgrid": "^0.1.2"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

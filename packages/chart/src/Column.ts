@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, publish } from "@hpcc-js/common";
+import { d3SelectionType, local as d3Local, Text } from "@hpcc-js/common";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -8,7 +8,8 @@ import { XYAxis } from "./XYAxis";
 import "../src/Column.css";
 
 export class Column extends XYAxis {
-    _linearGap: number;
+    protected _linearGap: number;
+    private textLocal = d3Local<Text>();
 
     constructor() {
         super();
@@ -92,7 +93,7 @@ export class Column extends XYAxis {
             .each(function (dataRow, dataRowIdx) {
                 const element = d3Select(this);
 
-                const columnRect = element.selectAll("rect").data(dataRow.filter(function (_d, i) { return i < context.layerColumns(host).length; }).map(function (d, i) {
+                const columnGRect = element.selectAll(".dataCell").data(dataRow.filter(function (_d, i) { return i < context.layerColumns(host).length; }).map(function (d, i) {
                     return {
                         column: context.layerColumns(host)[i],
                         row: dataRow,
@@ -102,63 +103,86 @@ export class Column extends XYAxis {
                     };
                 }).filter(function (d) { return d.value !== null && d.idx > 0; }), (d: any) => d.column);
 
-                const columnRectEnter = columnRect
-                    .enter().append("rect")
-                    .attr("class", (d, i) => "columnRect series series-" + context.cssTag(d.column))
-                    .call(host._selection.enter.bind(host._selection))
-                    .on("mouseout.tooltip", context.tooltip.hide)
-                    .on("mousemove.tooltip", context.tooltip.show)
-                    .on("click", function (d: any) {
-                        context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
+                const columnGEnter = columnGRect
+                    .enter().append("g")
+                    .attr("class", "dataCell")
+                    .style("opacity", 0)
+                    .each(function (this: SVGElement, d) {
+                        const element = d3Select(this);
+                        element.append("rect")
+                            .attr("class", "columnRect series series-" + context.cssTag(d.column))
+                            .call(host._selection.enter.bind(host._selection))
+                            .on("mouseout.tooltip", context.tooltip.hide)
+                            .on("mousemove.tooltip", context.tooltip.show)
+                            .on("click", function (d: any) {
+                                context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
+                            })
+                            .on("dblclick", function (d: any) {
+                                context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
+                            })
+                            ;
                     })
-                    .on("dblclick", function (d: any) {
-                        context.dblclick(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
-                    })
+                    ;
+                columnGEnter.transition().duration(duration)
+                    .style("opacity", 1)
                     ;
 
                 const domainLength = host.yAxisStacked() ? dataLen : columnScale.bandwidth();
-                renderRect(columnRectEnter, true);
-                renderRect(columnRectEnter.merge(columnRect).transition().duration(duration), false);
+                columnGEnter.merge(columnGRect).each(function (this: SVGElement, d) {
+                    const element = d3Select(this);
+                    const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
+                    const upperValue = d.value instanceof Array ? d.value[1] : d.value;
+                    const upperValuePos = host.valuePos(upperValue);
+                    const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
+                    const valuePos = Math.min(lowerValuePos, upperValuePos);
+                    const valueLength = Math.abs(upperValuePos - lowerValuePos);
+                    element.select("rect").transition().duration(duration)
+                        .attr(isHorizontal ? "x" : "y", domainPos)
+                        .attr(isHorizontal ? "y" : "x", valuePos)
+                        .attr(isHorizontal ? "width" : "height", domainLength)
+                        .attr(isHorizontal ? "height" : "width", valueLength)
+                        .style("fill", (d: any) => context._palette(d.column))
+                        ;
 
-                columnRect.exit().transition().duration(duration)
+                    const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
+                    const dataTextEnter = dataText.enter().append("g")
+                        .attr("class", "dataText")
+                        .each(function (this: SVGElement, d) {
+                            context.textLocal.set(this, new Text().target(this));
+                        });
+                    dataTextEnter.merge(dataText)
+                        .each(function (this: SVGElement, d) {
+                            const isPositive = upperValue >= 0;
+                            context.textLocal.get(this)
+                                .pos(isHorizontal ?
+                                    {
+                                        x: domainPos + domainLength / 2,
+                                        y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
+                                    } : {
+                                        x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
+                                        y: domainPos + domainLength / 2
+                                    })
+                                .anchor(isHorizontal ? "middle" : "start")
+                                .text(`${upperValue}`)
+                                .visible(context.showValue())
+                                .render()
+                                ;
+                        });
+                    dataText.exit()
+                        .each(function (this: SVGElement, d) {
+                            context.textLocal.get(this).target(null);
+                        })
+                        .remove()
+                        ;
+                });
+                columnGRect.exit().transition().duration(duration)
                     .style("opacity", 0)
                     .remove()
                     ;
-
-                function renderRect(selection, enterFlag) {
-                    selection
-                        .each(function (d) {
-                            const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
-                            const upperValuePos = host.valuePos(d.value instanceof Array ? d.value[1] : d.value);
-                            const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
-                            const valuePos = Math.min(lowerValuePos, upperValuePos);
-                            const valueLength = Math.abs(upperValuePos - lowerValuePos);
-                            d3Select(this)
-                                .attr(isHorizontal ? "x" : "y", domainPos)
-                                .attr(isHorizontal ? "y" : "x", valuePos)
-                                .attr(isHorizontal ? "width" : "height", domainLength)
-                                .attr(isHorizontal ? "height" : "width", valueLength)
-                                .style("fill", (d: any) => context._palette(d.column))
-                                .style("opacity", enterFlag ? 0 : 1)
-                                ;
-                        });
-                }
-
             });
-
         column.exit().transition().duration(duration)
             .remove()
             ;
-    }
-
-    @publish("default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] })
-    paletteID: publish<this, string>;
-    @publish(false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] })
-    _useClonedPalette: boolean;
-    useClonedPalette(_?: boolean): boolean | this {
-        if (!arguments.length) return this._useClonedPalette;
-        this._useClonedPalette = _;
-        return this;
     }
 
     //  INDChart  ---
@@ -174,3 +198,26 @@ export class Column extends XYAxis {
 Column.prototype._class += " chart_Column";
 Column.prototype.implements(INDChart.prototype);
 Column.prototype.implements(ITooltip.prototype);
+
+export interface Column {
+    paletteID(): string;
+    paletteID(_: string): this;
+    useClonedPalette(): boolean;
+    useClonedPalette(_: boolean): this;
+    showValue(): boolean;
+    showValue(_: boolean): this;
+}
+
+Column.prototype.publish("paletteID", "default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
+Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
+/*
+const origUseClonedPalette = Column.prototype.useClonedPalette;
+Column.prototype.useClonedPalette = function (this: Column, _?) {
+    const retVal = origUseClonedPalette.apply(this, arguments);
+    if (arguments.length) {
+        this._useClonedPalette = _;
+    }
+    return retVal;;
+}
+*/

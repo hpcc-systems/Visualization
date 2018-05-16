@@ -35,5 +35,5 @@ where <command> is one of:
     --schema:  output DDL2 schmea.
     --upgrade ddl1:  updgrade ddl version 1 to ddl version 2 (stdin, stdout).
     --help:  this message.
-        `);
+`);
 }

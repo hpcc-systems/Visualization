@@ -11,6 +11,7 @@
     "src/*.css",
     "lib-cli/**/*"
   ],
+  "bin": "./lib-cli/cli/index.js",
   "scripts": {
     "clean": "rimraf ./src/ddl*Schema*.ts && rimraf lib* && rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",

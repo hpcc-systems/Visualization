@@ -1,5 +1,5 @@
 import { define, require as requirejs } from "@hpcc-js/requirejs-shim";
-import { npmPackages, packages, rawgitPackages, shims } from "./meta";
+import { npmPackages, packages, shims } from "./meta";
 
 function guessScriptURL() {
     if (document && document.currentScript) {
@@ -13,7 +13,7 @@ function guessScriptURL() {
 const scriptUrl = guessScriptURL();
 
 function parseScriptUrl(forceLocal: boolean) {
-    const scriptUrlParts = scriptUrl.split("/loader/dist/index.js");
+    const scriptUrlParts = scriptUrl.split("/loader/dist/index");
     const isLocal = forceLocal || scriptUrl.indexOf("file://") === 0;
     return {
         isLocal,
@@ -68,7 +68,9 @@ requirejs.load = function (context, moduleId, url) {
         const newUrl = url.substring(0, url.length - 3);
         addCssToDoc(newUrl);
         url = hostUrl + "/loader/rjs.noop.js";
-    } else if (url.length >= 26 && url.indexOf("/common/dist/common.min.js") === url.length - 26) {
+    }
+    /*
+    else if (url.length >= 26 && url.indexOf("/common/dist/common.min.js") === url.length - 26) {
         addCssToDoc(url.replace("/common/dist/common.min.js", "/common/font-awesome/css/font-awesome.min.css"));
     } else if (url.length >= 22 && url.indexOf("/common/dist/common.js") === url.length - 22) {
         addCssToDoc(url.replace("/common/dist/common.js", "/common/font-awesome/css/font-awesome.min.css"));
@@ -78,6 +80,7 @@ requirejs.load = function (context, moduleId, url) {
     if (moduleId.indexOf("@hpcc-js/") === 0 && moduleId.indexOf("/dist/") > 0) {
         // addCssToDoc(url.replace(".js", ".css"));
     }
+    */
     return load(context, moduleId, url);
 };
 
@@ -85,14 +88,14 @@ if (!(window as any).define) {
     (window as any).define = define;
 }
 
-export function bundle(url: string, additionalPaths: { [key: string]: string } = {}, min: boolean = true): any {
+export function cdn(url: string, min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
+    const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
         "amchartsImg": `${url}/amchart/images/`,
+        "@hpcc-js/dgrid-shim": `${url}/dgrid-shim/dist/index${minStr}`,
         ...additionalPaths
     };
-    const minStr = min ? ".min" : "";
-    shims.forEach(shim => { paths[`@hpcc-js/${shim}`] = `${url}/${shim}/dist/index`; });
     packages.forEach(pckg => {
         paths[`@hpcc-js/${pckg}`] = `${url}/${pckg}/dist/index${minStr}`;
     });
@@ -102,21 +105,15 @@ export function bundle(url: string, additionalPaths: { [key: string]: string } =
     });
 }
 
-export function cdn(version?: string, additionalPaths: { [key: string]: string } = {}, min: boolean = true): any {
-    const url = version === void 0 ? hostUrl : `https://viz.hpccsystems.com/${version}`;
-    return bundle(url, additionalPaths, min);
+export function unpkg(min: boolean = true, additionalPaths: { [key: string]: string } = {}): any {
+    return cdn("https://unpkg.com/@hpcc-js", min, additionalPaths);
 }
 
-function local(devMode: boolean, additionalPaths: { [key: string]: string }, min: boolean = false): any {
-    const config = parseScriptUrl(devMode);
+function local(additionalPaths: { [key: string]: string }, min: boolean = false): any {
+    const config = parseScriptUrl(true);
     const thirdPartyPaths: { [key: string]: string } = {};
     for (const key in npmPackages) {
         thirdPartyPaths[key] = `${config.node_modulesUrl}/${npmPackages[key]}`;
-    }
-    if (!config.isLocal) {
-        for (const key in rawgitPackages) {
-            thirdPartyPaths[key] = `https://cdn.rawgit.com/${rawgitPackages[key]}`;
-        }
     }
     const paths: { [key: string]: string } = {
         ...thirdPartyPaths,
@@ -130,7 +127,7 @@ function local(devMode: boolean, additionalPaths: { [key: string]: string }, min
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
         rjsPackages.push({
             name: `@hpcc-js/${pckg}`,
-            main: devMode && config.isLocal ? `lib-umd/index` : `dist/index.min`
+            main: "lib-umd/index"
         });
         paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
     });
@@ -142,13 +139,5 @@ function local(devMode: boolean, additionalPaths: { [key: string]: string }, min
 }
 
 export function dev(additionalPaths: { [key: string]: string } = {}): any {
-    return local(true, additionalPaths);
-}
-
-export function amd(additionalPaths: { [key: string]: string } = {}): any {
-    return local(false, additionalPaths);
-}
-
-export function npm(additionalPaths: { [key: string]: string } = {}): any {
-    return local(false, additionalPaths);
+    return local(additionalPaths);
 }

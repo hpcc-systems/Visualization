@@ -5,27 +5,40 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dashy",
+            "name": "Dashy-dev",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",
             /*
-            "url": "file:///${workspaceRoot}/index.html",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Protocol=http&Hostname=10.241.100.159&Port=8002&QuerySet=roxie&QueryID=prichajx_govottocustomerstats.ins109_service_1",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180109-010415&ResultName=qwer7_Comp_Ins015_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=127.0.0.1&Port=8080&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-080259&ResultName=hcwidrugsocializationhighriskproviders_Comp_Ins4638351_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins144312_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
-            "url": "file:///${workspaceRoot}/index.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180130-120353&ResultName=issue_1396_wuidavg_Comp_Ins006_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Protocol=http&Hostname=10.241.100.159&Port=8002&QuerySet=roxie&QueryID=prichajx_govottocustomerstats.ins109_service_1",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180109-010415&ResultName=qwer7_Comp_Ins015_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=127.0.0.1&Port=8080&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-113911&ResultName=bizdataenhancement1_Comp_Ins481_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180125-080259&ResultName=hcwidrugsocializationhighriskproviders_Comp_Ins4638351_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins144312_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.173.147.1&Port=8010&Protocol=http&Wuid=W20180130-120353&ResultName=issue_1396_wuidavg_Comp_Ins006_DDL",
             */
             "runtimeArgs": [
                 // "--allow-file-access-from-files"
                 // "--allow-file-access-from-files",
                 // "--allow-file-access",
                 // "--allow-cross-origin-auth-prompt",
+                "--disable-web-security"
+            ],
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+                "webpack:///C:/Users/{{username}}/git/hpcc-js/": "C:/Users/{{username}}/git/hpcc-js/"
+            }
+        },
+        {
+            "name": "Dashy-unpkg",
+            "type": "chrome",
+            "request": "launch",
+            "url": "file:///${workspaceRoot}/index.html",
+            "runtimeArgs": [
                 "--disable-web-security"
             ],
             "webRoot": "${workspaceRoot}",
@@ -53,7 +66,7 @@
             "name": "CORS",
             "type": "chrome",
             "request": "launch",
-            "url": "http://127.0.0.1:8080/demos/dashy/index.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
+            "url": "http://127.0.0.1:8080/demos/dashy/index-dev.html?Hostname=10.241.100.157&Port=8010&Protocol=http&Wuid=W20180124-100848&ResultName=hpccsummitdemo2016qaraw_Comp_Ins145924_DDL",
             "runtimeArgs": [
                 "--disable-web-security"
             ],

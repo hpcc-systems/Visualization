@@ -50,10 +50,9 @@ export class Databomb extends Activity {
         for (row0 of this._jasonData) {
             const retVal: DDL2.IField[] = [];
             for (const key in row0) {
-                const rowType: DDL2.IPrimativeFieldType = typeof row0[key] as DDL2.IPrimativeFieldType;
                 retVal.push({
                     id: key,
-                    type: rowType
+                    type: typeof row0[key] as DDL2.IFieldType
                 });
             }
             return retVal;
@@ -134,7 +133,7 @@ export class Form extends Activity {
             retVal.push(
                 {
                     id: key,
-                    type: typeof row0[key] as DDL2.IPrimativeFieldType,
+                    type: typeof row0[key] as DDL2.IFieldType,
                     default: row0[key]
                 });
         }

@@ -136,7 +136,6 @@ export class Sort extends Activity {
         }
 
         if (sortByArr.length) {
-            console.log("Sort Len:  " + data.length);
             return [...data].sort((l: any, r: any) => {
                 for (const item of sortByArr) {
                     const retVal2 = item.compare(l[item.id], r[item.id]);

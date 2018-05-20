@@ -544,7 +544,7 @@ class DDLUpgrade {
                     return {
                         type: "range" as DDL2.IFieldType,
                         id: field.id,
-                        default: field.properties.default ? field.properties.default as [DDL2.IPrimativeFieldType, DDL2.IPrimativeFieldType] : [undefined, undefined]
+                        default: field.properties.default ? field.properties.default as [DDL2.IPrimative, DDL2.IPrimative] : [undefined, undefined]
                     };
                 case "dataset":
                     return {
@@ -581,7 +581,7 @@ class DDLUpgrade {
 
     output2output(output: DDL1.IOutput, target: DDL2.OutputDict) {
         target[output.id] = {
-            fields: []// this.filters2fields(output.filter)
+            fields: this.filters2fields(output.filter)
         };
     }
 
@@ -592,11 +592,11 @@ class DDLUpgrade {
             return idParts.length === 1 || idParts[1] === "range";
         }).map(filter => {
             const idParts = filter.fieldid.split("-");
-            return {
-                type: "string" as DDL2.IFieldType,
+            const retVal: DDL2.IField = {
                 id: idParts[0],
-                default: ""
+                type: "string"
             };
+            return retVal;
         });
     }
 
@@ -626,7 +626,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.21",
+            version: "0.0.22",
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews()
         };

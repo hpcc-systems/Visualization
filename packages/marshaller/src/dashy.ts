@@ -1,15 +1,18 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
-import { DDL1, ddl2Schema, upgrade as ddlUpgrade } from "@hpcc-js/ddl-shim";
+import { DDL1, ddl2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
 import { PropertyEditor } from "@hpcc-js/other";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel } from "@hpcc-js/phosphor";
+import { scopedLogger } from "@hpcc-js/util";
 import { Activity, DatasourceAdapt } from "./ddl2/activities/activity";
 import { Dashboard, IDashboardPersist } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { GraphAdapter } from "./ddl2/graphadapter";
 import { Element, ElementContainer } from "./ddl2/model";
+
+const logger = scopedLogger("marshaller/dashy");
 
 import "../src/dashy.css";
 
@@ -112,16 +115,22 @@ export class Dashy extends SplitPanel {
         this._elementContainer.refresh();
     }
 
-    restore(json: IDashboardPersist) {
+    restore(json: IDashboardPersist): Promise<void> {
         this._elementContainer.clear();
         this._dashboard.restore(json);
-        this._elementContainer.refresh();
-        this._dashboard.render();
+        return Promise.all([
+            this._elementContainer.refresh(),
+            this._dashboard.renderPromise()
+        ]).then(promises => {
+            for (const error of this._elementContainer.validate()) {
+                logger.warning(error.elementID + " (" + error.source + "):  " + error.msg);
+            }
+        });
     }
 
     importV1DDL(ddl: DDL1.DDLSchema, baseUrl: string, wuid?: string) {
         this._ddlv1.json(ddl);
-        const ddl2 = ddlUpgrade(ddl, baseUrl, wuid);
+        const ddl2 = upgrade(ddl, baseUrl, wuid);
         this._ddlv2.json(ddl2);
         this._tabDDL
             .addWidget(this._ddlv1, "v1")
@@ -423,8 +432,6 @@ export class Dashy extends SplitPanel {
                     const reader = new FileReader();
                     reader.onload = (function (theFile) {
                         return function (e) {
-                            console.log("e readAsText = ", e);
-                            console.log("e readAsText target = ", e.target);
                             try {
                                 const json = JSON.parse(e.target.result);
                                 if (json.visualizationversion) {

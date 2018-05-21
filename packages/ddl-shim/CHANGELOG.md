@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.1.6...@hpcc-js/ddl-shim@0.1.7) (2018-05-21)
+
+
+### Bug Fixes
+
+*  Add extra references to assist the DDL2 schema generation ([5138367](https://github.com/hpcc-systems/Visualization/commit/5138367))
+
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.1.4...@hpcc-js/ddl-shim@0.1.6) (2018-05-16)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@0.0.13...@hpcc-js/eclwatch@0.1.0) (2018-05-21)
+
+
+### Bug Fixes
+
+* MiniGantt click event was non standard ([988012a](https://github.com/hpcc-systems/Visualization/commit/988012a))
+
+
+### Features
+
+*  Add ability to get a normalized array of WUDetail scopes ([752ada0](https://github.com/hpcc-systems/Visualization/commit/752ada0))
+
+
+
+
 <a name="0.0.13"></a>
 ## [0.0.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@0.0.12...@hpcc-js/eclwatch@0.0.13) (2018-05-16)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@0.1.5...@hpcc-js/dgrid@0.1.6) (2018-05-21)
+
+
+### Bug Fixes
+
+*  DGrid table sorting fails when undefined cells exist ([19864cb](https://github.com/hpcc-systems/Visualization/commit/19864cb))
+
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@0.1.4...@hpcc-js/dgrid@0.1.5) (2018-05-16)
 

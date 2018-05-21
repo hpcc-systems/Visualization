@@ -592,9 +592,9 @@ export class XYAxis extends SVGWidget {
     @publishProxy("domainAxis", "timePattern")
     xAxisTypeTimePattern: publish<this, string>;
     @publish(null, "string", "X-Axis Low", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
-    xAxisDomainLow: publish<this, string>;
+    xAxisDomainLow: publish<this, number | string>;
     @publish(null, "string", "X-Axis High", null, { optional: true, disable: (w: any) => w.xAxisType() === "ordinal" })
-    xAxisDomainHigh: publish<this, string>;
+    xAxisDomainHigh: publish<this, number | string>;
 
     @publishProxy("domainAxis", "overlapMode")
     xAxisOverlapMode: publish<this, string>;
@@ -630,9 +630,9 @@ export class XYAxis extends SVGWidget {
     @publish(false, "boolean", "Stacked Chart", null, { tags: ["Basic"], disable: (w: any) => w.xAxisType() !== "ordinal" || w._class.indexOf("chart_Column") < 0 })
     yAxisStacked: publish<this, boolean>;
     @publish(null, "string", "Y-Axis Low", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" })
-    yAxisDomainLow: publish<this, string>;
+    yAxisDomainLow: publish<this, number | string>;
     @publish(null, "string", "Y-Axis High", null, { optional: true, disable: (w: any) => w.yAxisType() === "ordinal" })
-    yAxisDomainHigh: publish<this, string>;
+    yAxisDomainHigh: publish<this, number | string>;
     @publishProxy("valueAxis", "extend")
     yAxisDomainPadding: publish<this, number>;
     @publish(true, "boolean", "Y-Axis Guide Lines")

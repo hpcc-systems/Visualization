@@ -76,8 +76,8 @@ export class DBStore {
         this._db.data().sort((l, r) => {
             for (const item of opts) {
                 const idx = item.property;
-                if (l[idx] < r[idx]) return item.descending ? 1 : -1;
-                if (l[idx] > r[idx]) return item.descending ? -1 : 1;
+                if ((l[idx] === undefined && r[idx] !== undefined) || l[idx] < r[idx]) return item.descending ? 1 : -1;
+                if ((l[idx] !== undefined && r[idx] === undefined) || l[idx] > r[idx]) return item.descending ? -1 : 1;
             }
             return 0;
         });

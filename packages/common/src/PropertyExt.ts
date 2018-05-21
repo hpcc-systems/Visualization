@@ -411,7 +411,9 @@ export class PropertyExt extends Class {
             return this[__prop_data_ + id] !== undefined;
         };
         this[id + "_exists"] = function () {
-            return this[__prop_data_ + id] !== undefined || this[id + "_default"]() !== undefined;
+            if (this[__prop_data_ + id] != null && !(this[__prop_data_ + id] === "" && ext.optional === true)) return true;
+            if (this[id + "_default"]() != null && !(this[id + "_default"]() === "" && ext.optional === true)) return true;
+            return false;
         };
         this[id + "_default"] = function (_) {
             if (!arguments.length) return this[__default_ + id] !== undefined ? this[__default_ + id] : meta.defaultValue;

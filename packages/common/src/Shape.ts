@@ -100,20 +100,28 @@ export class Shape extends SVGWidget {
     dblclick() {
     }
 
-    shape: { (): string; (_: string): Shape; };
-    colorStroke: { (): number; (_: number): Shape; };
-    colorFill: { (): string; (_: string): Shape; };
-    radius: { (): number; (_: number): Shape; };
-    tooltip: { (): string; (_: string): Shape; };
-
 }
 Shape.prototype._class += " common_Shape";
+
+export interface Shape {
+    shape(): string;
+    shape(_: string): this;
+    colorStroke(): number;
+    colorStroke(_: number): this;
+    colorFill(): string;
+    colorFill(_: string): this;
+    colorFill_exists(): boolean;
+    radius(): number;
+    radius(_: number): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+}
 
 Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse"], { tags: ["Private"] });
 Shape.prototype.publish("width", 24, "number", "Width", null, { tags: ["Private"] });
 Shape.prototype.publish("height", 24, "number", "Height", null, { tags: ["Private"] });
-Shape.prototype.publish("colorStroke", null, "html-color", "Stroke Color", null, { tags: ["Private"] });
-Shape.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Private"] });
+Shape.prototype.publish("colorStroke", "", "html-color", "Stroke Color", null, { optional: true });
+Shape.prototype.publish("colorFill", "", "html-color", "Fill Color", null, { optional: true });
 Shape.prototype.publish("radius", null, "number", "Radius", null, { tags: ["Private"] });
 Shape.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 

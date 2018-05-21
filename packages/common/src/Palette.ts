@@ -1,5 +1,6 @@
 import * as _colorbrewer from "colorbrewer";
 import { values as d3Values } from "d3-collection";
+import { rgb as d3RGB } from "d3-color";
 import { interpolateLab as d3InterpolateLab } from "d3-interpolate";
 import { interpolateInferno as d3InterpolateInferno, interpolateMagma as d3InterpolateMagma, interpolatePlasma as d3InterpolatePlasma, interpolateViridis as d3InterpolateViridis, scaleLinear as d3ScaleLinear, scaleOrdinal as d3ScaleOrdinal, scaleQuantize as d3ScaleQuantize, scaleSequential as d3ScaleSequential, schemeCategory10 as d3SchemeCategory10, schemeCategory20 as d3SchemeCategory20, schemeCategory20b as d3SchemeCategory20b, schemeCategory20c as d3SchemeCategory20c } from "d3-scale";
 import { select as d3Select } from "d3-selection";
@@ -289,3 +290,7 @@ m_colorbrewer.RdWhGr = {
 
 export const ordinal = fetchOrdinalItem;
 export const rainbow = fetchRainbowItem;
+export function textColor(backgroundColor: string): string {
+    const rgb = d3RGB(backgroundColor);
+    return ((rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 149) ? "black" : "white";
+}

@@ -66,14 +66,7 @@ module.exports = {
             /^css!/, function (data) {
                 data.request = data.request.replace(/^css!/, "!style-loader!css-loader!")
             }
-        ),
-        new webpack.optimize.UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-            output: { comments: false },
-            compress: { warnings: false },
-            sourceMap: true
-        })
+        )
     ],
     resolveLoader: {
         modules: [

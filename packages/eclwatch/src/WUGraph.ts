@@ -237,6 +237,15 @@ export class WUGraph extends ChartPanel {
         }
         return this;
     }
+
+    selection(_?) {
+        if (!arguments.length) return this._graph.selection();
+        const item = this._gc.vertex(_) || this._gc.edge(_) || this._gc.subgraph(_);
+        if (item) {
+            this._graph.selection([item]);
+        }
+        return this;
+    }
 }
 WUGraph.prototype._class += " eclwatch_WUGraph";
 

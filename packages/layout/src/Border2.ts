@@ -50,29 +50,28 @@ export class WidgetDiv {
         return this;
     }
 
-    render(getBBox?): this | BBox {
+    async render(getBBox?): Promise<BBox | undefined> {
         this._div
             .style("height", this.overlay() ? "0px" : null)
             .style("overflow", this.overlay() ? "visible" : null)
             ;
 
         if (this._widget) {
-            this._widget.render();
-            if (getBBox && this._widget.visible()) {
-                const retVal = this._widget.getBBox();
-                retVal.width += 8;
-                if (this.overlay()) {
-                    retVal.height = 0;
-                } else {
-                    retVal.height += 8;
+            return this._widget.renderPromise().then(w => {
+                if (getBBox && this._widget.visible()) {
+                    const retVal = this._widget.getBBox();
+                    retVal.width += 8;
+                    if (this.overlay()) {
+                        retVal.height = 0;
+                    } else {
+                        retVal.height += 8;
+                    }
+                    return retVal;
                 }
-                return retVal;
-            }
+                return getBBox ? { x: 0, y: 0, width: 0, height: 0 } : undefined;
+            });
         }
-        if (getBBox) {
-            return { x: 0, y: 0, width: 0, height: 0 };
-        }
-        return this;
+        return Promise.resolve(getBBox ? { x: 0, y: 0, width: 0, height: 0 } : undefined);
     }
 }
 
@@ -102,40 +101,50 @@ export class Border2 extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-        const topBBox: BBox = this._topWA
-            .widget(this.top())
-            .overlay(this.topOverlay())
-            .render(true) as BBox
-            ;
-        const leftBBox: BBox = this._leftWA.widget(this.left()).render(true) as BBox;
-        const rightBBox: BBox = this._rightWA.widget(this.right()).render(true) as BBox;
-        const bottomBBox: BBox = this._bottomWA.widget(this.bottom()).render(true) as BBox;
-
-        this._topWA
-            .resize({ width: this.width(), height: topBBox.height })
-            .render()
-            ;
-        this._leftWA
-            .resize({ width: leftBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
-            .render()
-            ;
-        this._rightWA
-            .resize({ width: rightBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
-            .render()
-            ;
-        this._centerWA
-            .widget(this.center())
-            .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
-            .render()
-            ;
-        this._bottomWA
-            .resize({ width: this.width(), height: bottomBBox.height })
-            .render()
-            ;
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    render(callback?: (w: Widget) => void): this {
+        const retVal = super.render(w => {
+
+            this._topWA
+                .widget(this.top())
+                .overlay(this.topOverlay())
+                .render(true).then(async topBBox => {
+                    const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true) as BBox;
+                    const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true) as BBox;
+                    const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true) as BBox;
+
+                    const promises = [
+                        this._topWA
+                            .resize({ width: this.width(), height: topBBox.height })
+                            .render(),
+                        this._leftWA
+                            .resize({ width: leftBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
+                            .render(),
+                        this._rightWA
+                            .resize({ width: rightBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
+                            .render(),
+                        this._centerWA
+                            .widget(this.center())
+                            .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
+                            .render(),
+                        this._bottomWA
+                            .resize({ width: this.width(), height: bottomBBox.height })
+                            .render()
+                    ];
+                    Promise.all(promises).then(promises => {
+                        if (callback) {
+                            callback(this);
+                        }
+                    });
+                })
+                ;
+        });
+        return retVal;
     }
 }
 Border2.prototype._class += " layout_Border2";

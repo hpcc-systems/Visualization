@@ -1,10 +1,13 @@
-﻿import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
+﻿import { Palette, TextBox } from "@hpcc-js/common";
+import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
 import { MiniGantt } from "@hpcc-js/timeline";
 import { hashSum } from "@hpcc-js/util";
 
 import "../src/WUGraph.css";
 
 export class WUTimeline extends MiniGantt {
+
+    protected _palette = Palette.ordinal("default");
 
     constructor() {
         super();
@@ -64,6 +67,14 @@ export class WUTimeline extends MiniGantt {
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    enterTextBox(textBox: TextBox, d) {
+        const color = this._palette(d.ScopeType);
+        textBox.shape_colorFill(color);
+    }
+
+    updateTextBox(textBox: TextBox, d) {
     }
 }
 WUTimeline.prototype._class += " eclwatch_WUTimeline";

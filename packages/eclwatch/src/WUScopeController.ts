@@ -516,6 +516,18 @@ export class WUScopeController {
         return "";
     }
 
+    subgraph(id: string): Subgraph | undefined {
+        return this.subgraphsMap[id];
+    }
+
+    vertex(id: string): VertexType | undefined {
+        return this.verticesMap[id];
+    }
+
+    edge(id: string): Edge {
+        return this.edgesMap[id];
+    }
+
     //  Events  ---
     minClick(sg: Subgraph) {
     }

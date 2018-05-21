@@ -4,13 +4,17 @@
   opacity: 0.7;
 }
 
-.timeline_MiniGantt .rect {
+.timeline_MiniGantt .common_TextBox .rect {
   fill: lightskyblue;
   stroke: blue;
   opacity: 0.5;
 }
 
-.timeline_MiniGantt .rect text {
+.timeline_MiniGantt .buckets.selected .common_TextBox .common_Shape {
+  stroke: red;
+}
+
+.timeline_MiniGantt .common_TextBox .rect text {
   fill: black;
   stroke: none;
 }

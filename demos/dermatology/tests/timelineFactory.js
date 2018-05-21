@@ -11,6 +11,7 @@
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
                     callback(new MiniGantt()
+                        .columns(["Label", "start", "end"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
                         .tickFormat("%H:%M")
                         .data([

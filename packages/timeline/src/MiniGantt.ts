@@ -1,6 +1,6 @@
 import { ITooltip } from "@hpcc-js/api";
 import { Axis } from "@hpcc-js/chart";
-import { publish, SVGWidget, TextBox } from "@hpcc-js/common";
+import { publish, SVGWidget, TextBox, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { event as d3Event, local as d3Local } from "d3-selection";
@@ -36,6 +36,7 @@ export class MiniGantt extends SVGWidget {
     constructor() {
         super();
         ITooltip.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this._drawStartPos = "origin";
         this.tooltipHTML((d: any) => `<center>${d[0]}</center><br>${this.tooltipFormatter(this.brAxis.parse(d[1]))} -> ${this.tooltipFormatter(this.brAxis.parse(d[2]))}`);
@@ -105,11 +106,11 @@ export class MiniGantt extends SVGWidget {
             .attr("opacity", 0)
             .on("dblclick", () => {
                 d3Event.stopPropagation();
-                this.dblclick(undefined, d3Event);
+                delete this.rootExtent;
+                this.resetZoom();
             })
             ;
-        this.svg = element.append("g")
-            ;
+        this.svg = element.append("g");
         this.svgGuide = this.svg.append("g");
         this.svgEvents = this.svg.append("g");
         this.tlAxis
@@ -127,6 +128,7 @@ export class MiniGantt extends SVGWidget {
             ;
 
         element.call(this._zoom);
+        this._selection.widgetElement(this.svg);
     }
 
     private _prevIsHorizontal;
@@ -262,19 +264,23 @@ export class MiniGantt extends SVGWidget {
         const buckets = this.svgEvents.selectAll(".buckets").data(ranges, d => d[0]);
         buckets.enter().append("g")
             .attr("class", "buckets")
+            .call(this._selection.enter.bind(this._selection))
             .each(function (d) {
                 const text = new TextBox()
                     .target(this)
                     .anchor("middle")
-                    .on("click", () => {
-                        context.click(d, d3Event);
-                    }, true)
-                    .on("dblclick", () => {
-                        context.dblclick(d, d3Event);
-                    }, true)
                     ;
                 context.localText.set(this, text);
+                context.enterTextBox(text, d[3]);
             })
+            .on("click", function (d) {
+                context.click(context.rowToObj(d), "range", context._selection.selected(this));
+            }, false)
+            .on("dblclick", function (d) {
+                context.rootExtent = d;
+                context.resetZoom();
+                context.dblclick(context.rowToObj(d), "range", context._selection.selected(this));
+            }, true)
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
             .merge(buckets)
@@ -291,6 +297,9 @@ export class MiniGantt extends SVGWidget {
                     .pos(context.isHorizontal() ? { x, y } : { x: y, y: x })
                     .fixedSize(context.isHorizontal() ? { width: textBoxWidth, height: textBoxHeight } : { width: textBoxHeight, height: textBoxWidth })
                     .text(d[0])
+                    ;
+                context.updateTextBox(textBox, d[3]);
+                textBox
                     .render()
                     ;
             });
@@ -311,22 +320,26 @@ export class MiniGantt extends SVGWidget {
     }
 
     //  Events  ---
-    click(d, e) {
+    click(row, col, sel) {
     }
 
-    dblclick(d?, e?) {
-        if (d) {
-            this.rootExtent = d;
-        } else {
-            delete this.rootExtent;
-        }
-        this.resetZoom();
+    dblclick(row, col, sel) {
+    }
+
+    enterTextBox(textbox: TextBox, d) {
+    }
+
+    updateTextBox(textbox: TextBox, d) {
     }
 
     //  ITooltip  ---
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+
+    //  SimpleSelectionMixin
+    _selection;
 }
 MiniGantt.prototype._class += " timeline_MiniGantt";
 MiniGantt.prototype.implements(ITooltip.prototype);
+MiniGantt.prototype.mixin(Utility.SimpleSelectionMixin);

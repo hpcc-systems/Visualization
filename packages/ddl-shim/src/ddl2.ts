@@ -5,12 +5,13 @@ export type IServiceType = "wuresult" | "hipie" | "roxie";
 export type IDatasourceType = IServiceType | "logicalfile" | "form" | "databomb";
 export type DatasourceType = ILogicalFile | IForm | IDatabomb | IWUResult | IHipieService | IRoxieService;
 
-export type IPrimativeFieldType = "boolean" | "number" | "number64" | "string";
-export type IFieldType = IPrimativeFieldType | "range" | "dataset" | "object";
+export type IPrimative = boolean | number | string;
+export type IRange = [undefined | IPrimative, undefined | IPrimative];
+export type IFieldType = "boolean" | "number" | "number64" | "string" | "range" | "dataset" | "object";
 export interface IField {
     id: string;
     type: IFieldType;
-    default?: boolean | number | string | [undefined | IPrimativeFieldType, undefined | IPrimativeFieldType] | IField[];
+    default?: IPrimative | IRange | IField[];
     children?: IField[];
 }
 
@@ -262,7 +263,47 @@ export interface IView {
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.21";
+    version: "0.0.22";
     datasources: DatasourceType[];
     dataviews: IView[];
+    //  The following defs are only provided to assist the Java code generation (from the the generated schema)  ---
+    defs?: {
+        fieldTypes: {
+            field: IField;
+            primative: IPrimative;
+            range: IRange;
+        };
+        datasourceTypes: {
+            datasource: IDatasource;
+            logicalFile: ILogicalFile;
+            form: IForm;
+            databomb: IDatabomb;
+            wuresult: IWUResult;
+            hipieService: IHipieService;
+            roxieService: IRoxieService;
+        };
+        datasourceRefTypes: {
+            wuResultRef: IWUResultRef;
+            roxieServiceRef: IRoxieServiceRef;
+        };
+        activityTypes: {
+            filter: IFilter;
+            project: IProject;
+            groupby: IGroupBy;
+            sort: ISort;
+            limit: ILimit;
+            mappings: IMappings;
+        };
+        aggregateTypes: {
+            aggregate: IAggregate;
+            count: ICount;
+        };
+        transformationTypes: {
+            equals: IEquals;
+            calculated: ICalculated;
+            scale: IScale;
+            template: ITemplate;
+            map: IMap;
+        };
+    };
 }

@@ -1,5 +1,6 @@
 import { MultiChartPanel } from "@hpcc-js/composite";
 import { DDL2 } from "@hpcc-js/ddl-shim";
+import { scopedLogger } from "@hpcc-js/util";
 import { Activity, ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb, Form } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
@@ -13,6 +14,8 @@ import { Sort } from "./activities/sort";
 import { WUResult } from "./activities/wuresult";
 import { Dashboard } from "./dashboard";
 import { Element, ElementContainer } from "./model";
+
+const logger = scopedLogger("marshaller/ddl2/ddl");
 
 function mergeFieldArray(targetArr: DDL2.IField[], sourceArr: DDL2.IField[]): DDL2.IField[] {
     const existing: string[] = targetArr.map(f => f.id);
@@ -301,16 +304,22 @@ export class DDLAdapter {
         this.readDatasource(ddlDS, ds);
         const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
         if (dsDetails instanceof WUResult && DDL2.isWUResultRef(ddlDSRef)) {
-            dsDetails.resultName(ddlDSRef.output);
+            dsDetails
+                .resultName(ddlDSRef.output)
+                .responseFields((ddlDS as DDL2.IWUResult).outputs[ddlDSRef.output].fields)
+                ;
         } else if (dsDetails instanceof RoxieRequest && DDL2.isRoxieServiceRef(ddlDSRef)) {
-            dsDetails.resultName(ddlDSRef.output);
-            dsDetails.request(ddlDSRef.request.map(rf => {
-                return new Param(this._elementContainer)
-                    .source(rf.source)
-                    .remoteField(rf.remoteFieldID)
-                    .localField(rf.localFieldID)
-                    ;
-            }));
+            dsDetails
+                .resultName(ddlDSRef.output)
+                .request(ddlDSRef.request.map(rf => {
+                    return new Param(this._elementContainer)
+                        .source(rf.source)
+                        .remoteField(rf.remoteFieldID)
+                        .localField(rf.localFieldID)
+                        ;
+                }))
+                .responseFields((ddlDS as DDL2.IRoxieService).outputs[ddlDSRef.output].fields)
+                ;
         }
         return this;
     }
@@ -330,7 +339,7 @@ export class DDLAdapter {
             } else if (activity instanceof Mappings) {
                 return this.writeMappings(activity);
             } else {
-                console.log(`Unknown activity type:  ${activity.classID()}`);
+                logger.warning(`Unknown activity type:  ${activity.classID()}`);
             }
         }).filter(activity => !!activity);
     }
@@ -341,7 +350,7 @@ export class DDLAdapter {
         const chart = element.chart();
         for (const prop of chart.publishedProperties()) {
             if (prop.id === "fields") continue;
-            console.log(`${prop.id}=>${(chart as any)[`${prop.id}`]()}`);
+            logger.debug(`${prop.id}=>${(chart as any)[`${prop.id}`]()}`);
             if ((chart as any)[`${prop.id}_modified`]()) {
                 const val = (chart as any)[`${prop.id}`]();
                 if (!(val instanceof Object)) {
@@ -435,7 +444,7 @@ export class DDLAdapter {
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.21",
+            version: "0.0.22",
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews()
         };

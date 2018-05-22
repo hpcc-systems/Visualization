@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as chart from "@hpcc-js/google";
 import { Area, Bar, Column, Combo, Common, Common2D, CommonND, Line, MaterialBar, MaterialGantt, Pie, Scatter, Timeline, TreeMap } from "@hpcc-js/google";
-import { data } from "@hpcc-js/sample-data";
+import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

@@ -1,7 +1,7 @@
 import { Area, Bar, Column, Combo, CommonFunnel, CommonRadar, CommonSerial, CommonXY, Funnel, Gantt, Gauge, Line, Pie, Polar, Pyramid, Scatter } from "@hpcc-js/amchart";
 import * as amchart from "@hpcc-js/amchart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { data } from "@hpcc-js/sample-data";
+import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

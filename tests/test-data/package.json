@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/sample-data",
+  "name": "@hpcc-js/test-data",
   "version": "0.0.36",
   "description": "hpcc-js - Test Data",
   "main": "lib-umd/index.js",

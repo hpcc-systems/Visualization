@@ -4,7 +4,7 @@
   "version": "0.0.57",
   "dependencies": {
     "@hpcc-js/common": "*",
-    "@hpcc-js/sample-data": "*",
+    "@hpcc-js/test-data": "*",
     "@hpcc-js/timeline": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",

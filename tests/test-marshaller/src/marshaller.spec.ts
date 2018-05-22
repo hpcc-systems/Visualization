@@ -1,6 +1,6 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import * as marshaller from "@hpcc-js/marshaller";
-import { } from "@hpcc-js/sample-data";
+import { } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef } from "./coreTests";
 

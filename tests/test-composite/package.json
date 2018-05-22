@@ -6,7 +6,7 @@
     "@hpcc-js/common": "*",
     "@hpcc-js/composite": "*",
     "@hpcc-js/dgrid-shim": "*",
-    "@hpcc-js/sample-data": "*",
+    "@hpcc-js/test-data": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2",

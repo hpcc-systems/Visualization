@@ -1,7 +1,7 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Dermatology, MegaChart, MultiChart, MultiChartPanel } from "@hpcc-js/composite";
 import * as composite from "@hpcc-js/composite";
-import { data } from "@hpcc-js/sample-data";
+import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

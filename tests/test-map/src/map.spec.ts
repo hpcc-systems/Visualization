@@ -4,7 +4,7 @@ import {
     ChoroplethContinents, ChoroplethCounties, ChoroplethCountries, ChoroplethStates, GeoHash, GMap, GMapCounties, GMapGraph, GMapLayered, GMapPin, GMapPinLine, Graticule,
     Layered, Lines, OpenStreet, Pins
 } from "@hpcc-js/map";
-import { flightPath, geo } from "@hpcc-js/sample-data";
+import { flightPath, geo } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

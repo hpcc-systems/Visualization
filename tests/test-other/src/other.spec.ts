@@ -3,7 +3,7 @@ import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
 import { AutoCompleteText, HeatMap, Html, Legend, Select, Table, WordCloud } from "@hpcc-js/other";
-import { data } from "@hpcc-js/sample-data";
+import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

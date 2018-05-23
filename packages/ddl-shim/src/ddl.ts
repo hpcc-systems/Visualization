@@ -108,6 +108,9 @@ export interface IHeatMapMapping {
     weight: string;
 }
 
+export interface ISliderMapping {
+    label: string;
+}
 //  Source  ===================================================================
 export interface ISource {
     id: string;
@@ -146,6 +149,10 @@ export interface IHeatMapSource extends ISource {
 
 export interface IChoroSource extends ISource {
     mappings: IAnyChoroMapping;
+}
+
+export interface ISliderSource extends ISource {
+    mappings: ISliderMapping;
 }
 
 //  Visualization  ============================================================
@@ -224,6 +231,7 @@ export function isTableVisualization(viz: IAnyVisualization): viz is ITableVisua
 
 export interface ISliderVisualization extends IVisualization {
     type: "SLIDER";
+    source: ISliderSource;
     range?: number[];
 }
 export function isSliderVisualization(viz: IAnyVisualization): viz is ISliderVisualization {

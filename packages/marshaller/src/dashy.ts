@@ -128,7 +128,7 @@ export class Dashy extends SplitPanel {
         });
     }
 
-    importV1DDL(ddl: DDL1.DDLSchema, baseUrl: string, wuid?: string) {
+    importV1DDL(ddl: DDL1.DDLSchema, baseUrl?: string, wuid?: string) {
         this._ddlv1.json(ddl);
         const ddl2 = upgrade(ddl, baseUrl, wuid);
         this._ddlv2.json(ddl2);
@@ -435,7 +435,7 @@ export class Dashy extends SplitPanel {
                             try {
                                 const json = JSON.parse(e.target.result);
                                 if (json.visualizationversion) {
-                                    context.importV1DDL(json, "localhost:8010");
+                                    context.importV1DDL(json);
                                 } else {
                                     context.restore(json);
                                 }

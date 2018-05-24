@@ -171,7 +171,7 @@ export interface IVisualizationField {
 
 export interface IVisualization {
     id: string;
-    title: string;
+    title?: string;
     type: VisualizationType;
     fields?: IVisualizationField[];
     properties?: {

@@ -498,10 +498,10 @@ class DDLUpgrade {
             ],
             visualization: {
                 id: viz.id,
-                title: viz.title,
+                title: viz.title || "",
                 description: "",
                 ...this.type2chartType(viz.type),
-                properties: viz.properties as DDL2.IWidgetProperties
+                properties: viz.properties as DDL2.IWidgetProperties || {}
             }
         };
     }

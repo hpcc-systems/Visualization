@@ -133,19 +133,21 @@ export class JavaScriptAdapter {
         ;`);
                     break;
                 case "databomb":
+                case "form":
                     let payload = "";
                     const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
                     if (ds.length) {
                         payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();
                     }
-                    retVal.push(`    export const ${datasource.id} = new marshaller.Databomb()
+                    if (datasource.type === "databomb") {
+                        retVal.push(`    export const ${datasource.id} = new marshaller.Databomb()
         .payload(${JSON.stringify(payload)})
         ;`);
-                    break;
-                case "form":
-                    retVal.push(`    export const ${datasource.id} = new marshaller.Form()
-        .payload(${JSON.stringify(datasource.fields[0])})
+                    } else {
+                        retVal.push(`    export const ${datasource.id} = new marshaller.Form()
+        .payload(${JSON.stringify(payload)})
         ;`);
+                    }
                     break;
             }
         }

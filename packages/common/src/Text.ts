@@ -10,6 +10,31 @@ export class Text extends SVGWidget {
         super();
     }
 
+    getBBox(refresh = false, round = false) {
+        const textParts = this.text().split("\n");
+        const lineHeight = this.fontSize() || 12;
+        const height = lineHeight * textParts.length;
+        const widths: number[] = textParts.map(line => {
+            return this.getFontSize(lineHeight, this.fontFamily() || "Verdana", line).width;
+        });
+        const width = Math.max(...widths);
+        const retVal = {
+            x: - width / 2,
+            y: - height / 2 - lineHeight / (this.fontFamily() === "FontAwesome" ? 4 : 6), // baseLine offset
+            width,
+            height
+        };
+        switch (this.anchor()) {
+            case "start":
+                retVal.x = 0;
+                break;
+            case "end":
+                retVal.x = -width;
+                break;
+        }
+        return retVal;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         delete this._prevHash;
@@ -30,11 +55,15 @@ export class Text extends SVGWidget {
         if (this._prevHash !== hash) {
             this._prevHash = hash;
 
+            const bbox = this.getBBox();
+
             this._textElement
                 .attr("font-family", this.fontFamily())
                 .attr("font-size", this.fontSize())
                 .style("text-anchor", this.anchor())
+                .attr("transform", d => `rotate(${this.rotation()}) translate(0,${bbox.y})`)
                 ;
+
             const textParts = this.text().split("\n");
             const textLine = this._textElement.selectAll("tspan").data(textParts);
             textLine.enter().append("tspan")
@@ -49,29 +78,6 @@ export class Text extends SVGWidget {
                 .remove()
                 ;
 
-            let bbox: any = { width: 0, height: 0 };
-            try {   //  https://bugzilla.mozilla.org/show_bug.cgi?id=612118
-                bbox = this._textElement.node().getBBox();
-            } catch (e) {
-            }
-            let xOffset = -(bbox.x + bbox.width / 2);
-            let yOffset = -(bbox.y + bbox.height / 2);
-            switch (this.anchor()) {
-                case "start":
-                    xOffset = -bbox.x;
-                    break;
-                case "end":
-                    xOffset = bbox.x + bbox.width / 2;
-                    break;
-            }
-
-            const theta = -this.rotation() * Math.PI / 180;
-            xOffset = -1 * Math.abs(xOffset * Math.cos(theta) + yOffset * Math.sin(theta));
-            yOffset = -1 * Math.abs(xOffset * Math.sin(theta) + yOffset * Math.cos(theta));
-
-            this._textElement
-                .attr("transform", function (_d) { return "translate(" + xOffset + "," + yOffset + ")"; })// rotate(" + context.rotation() + ")"; })
-                ;
         }
     }
 
@@ -105,5 +111,4 @@ Text.prototype.publish("fontFamily", null, "string", "Font Family", null, { tags
 Text.prototype.publish("fontSize", null, "number", "Font Size (px)", null, { tags: ["Intermediate"] });
 Text.prototype.publish("anchor", "middle", "set", "Anchor Position", ["start", "middle", "end"], { tags: ["Intermediate"] });
 Text.prototype.publish("colorFill", null, "html-color", "Fill Color", null, { tags: ["Basic"] });
-
 Text.prototype.publish("rotation", 0, "number", "Degrees of rotation", null, { tags: ["Basic"] });

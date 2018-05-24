@@ -25,16 +25,71 @@ export class Vertex extends SVGWidget {
         this._annotationWidgets = {};
     }
 
+    getIconBBox() {
+        const iconBBox = this._icon.getBBox(true);
+        const textBoxBBox = this._textBox.getBBox(true);
+        switch (this.iconAnchor()) {
+            case "start":
+                return {
+                    x: -(textBoxBBox.width / 2) + (iconBBox.width / 3),
+                    y: -(textBoxBBox.height / 2) - (iconBBox.height / 3),
+                    width: iconBBox.width,
+                    height: iconBBox.height
+                };
+            case "middle":
+                return {
+                    x: 0,
+                    y: -(textBoxBBox.height / 2) - (iconBBox.height / 3),
+                    width: iconBBox.width,
+                    height: iconBBox.height
+                };
+            case "end":
+                return {
+                    x: (textBoxBBox.width / 2) - (iconBBox.width / 3),
+                    y: -(textBoxBBox.height / 2) - (iconBBox.height / 3),
+                    width: iconBBox.width,
+                    height: iconBBox.height
+                };
+            case "left":
+                return {
+                    x: -(textBoxBBox.width / 2) - iconBBox.width / 2,
+                    y: 0,
+                    width: iconBBox.width,
+                    height: iconBBox.height
+                };
+            default:
+        }
+        return {
+            x: 0,
+            y: 0,
+            width: iconBBox.width,
+            height: iconBBox.height
+        };
+    }
+
+    getBBox(refresh = false, round = false) {
+        const iconBBox = this.getIconBBox();
+        const textBoxBBox = this._textBox.getBBox(true);
+        const x = Math.min(iconBBox.x, textBoxBBox.x);
+        const y = Math.min(iconBBox.y, textBoxBBox.y);
+        const right = Math.max(iconBBox.x + iconBBox.width, textBoxBBox.x + textBoxBBox.width);
+        const bottom = Math.max(iconBBox.y + iconBBox.height, textBoxBBox.y + textBoxBBox.height);
+        return {
+            x,
+            y,
+            width: right - x,
+            height: bottom - y
+        };
+    }
+
     enter(domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         delete this._prevHash;
         this._icon
             .target(domNode)
-            .render()
             ;
         this._textBox
             .target(domNode)
-            .render()
             ;
         element
             .on("mouseover", d => this.mouseover(d.data()))
@@ -54,43 +109,13 @@ export class Vertex extends SVGWidget {
                 .tooltip(this.iconTooltip() ? this.iconTooltip() : this.tooltip())
                 .render()
                 ;
-            const iconClientSize = this._icon.getBBox(true);
             this._textBox
                 .tooltip(this.tooltip())
                 .render()
                 ;
-            const bbox = this._textBox.getBBox(true);
-            switch (this.iconAnchor()) {
-                case "start":
-                    this._icon
-                        .move({
-                            x: -(bbox.width / 2) + (iconClientSize.width / 3),
-                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                        });
-                    break;
-                case "middle":
-                    this._icon
-                        .move({
-                            x: 0,
-                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                        });
-                    break;
-                case "end":
-                    this._icon
-                        .move({
-                            x: (bbox.width / 2) - (iconClientSize.width / 3),
-                            y: -(bbox.height / 2) - (iconClientSize.height / 3)
-                        });
-                    break;
-                case "left":
-                    this._icon
-                        .move({
-                            x: -(bbox.width / 2) - iconClientSize.width / 2,
-                            y: 0
-                        });
-                    break;
-                default:
-            }
+
+            const iconBBox = this.getIconBBox();
+            this._icon.move(iconBBox);
 
             const context = this;
             const annotations = element.selectAll(".annotation").data(this.annotationIcons());
@@ -103,6 +128,7 @@ export class Vertex extends SVGWidget {
                         ;
                 })
                 ;
+            const bbox = this._textBox.getBBox(true);
             let xOffset = bbox.width / 2;
             const yOffset = bbox.height / 2;
             annotationsEnter.merge(annotations)

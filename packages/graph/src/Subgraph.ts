@@ -49,6 +49,17 @@ export class Subgraph extends SVGWidget {
         }
     }
 
+    getBBox(refresh = false, round = false) {
+        const width = this.width();
+        const height = this.height();
+        return {
+            x: -width / 2,
+            y: -height / 2 - TITLE_SIZE,
+            width,
+            height
+        };
+    }
+
     enter(domNode, element) {
         super.enter.apply(this, arguments);
         this._border = element.append("rect").attr("class", "border");
@@ -59,25 +70,24 @@ export class Subgraph extends SVGWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        const width = this.width();
-        const height = this.height();
+        const bbox = this.getBBox();
 
         this._border
-            .attr("x", -width / 2)
-            .attr("y", -height / 2 - TITLE_SIZE)
-            .attr("width", width)
-            .attr("height", height)
+            .attr("x", bbox.x)
+            .attr("y", bbox.y)
+            .attr("width", bbox.width)
+            .attr("height", bbox.height)
             ;
 
         this._textWidget
-            .pos({ x: -width / 2 + 4, y: -height / 2 - 4 })
+            .pos({ x: bbox.x + 4, y: bbox.y + TITLE_SIZE })
             .text(this.showTitle() ? this.title() : "")
             .render()
             ;
 
         this._buttonMin
             .visible(this.showMinMax())
-            .pos({ x: width / 2 - (MINMAX_SIZE / 2 + 4), y: -height / 2 - TITLE_SIZE + (MINMAX_SIZE / 2 + 4) })
+            .pos({ x: bbox.x + bbox.width - (MINMAX_SIZE / 2 + 4), y: bbox.y + (MINMAX_SIZE / 2 + 4) })
             .faChar(this.calcIcon())
             .render()
             ;

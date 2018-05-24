@@ -175,6 +175,7 @@ export class SVGWidget extends Widget {
         const retVal = super.target.apply(this, arguments);
         if (arguments.length) {
             if (this._target instanceof SVGElement) {
+                this._isRootNode = false;
                 this._placeholderElement = d3Select(this._target);
                 this._parentWidget = this._placeholderElement.datum();
                 if (!this._parentWidget || this._parentWidget._id === this._id) {

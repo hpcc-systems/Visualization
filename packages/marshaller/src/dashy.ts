@@ -111,8 +111,9 @@ export class Dashy extends SplitPanel {
 
     clear() {
         this._elementContainer.clear();
-        this.loadDashboard();
-        this._elementContainer.refresh();
+        this.loadDashboard().then(() => {
+            this._elementContainer.refresh();
+        });
     }
 
     restore(json: IDashboardPersist): Promise<void> {
@@ -209,10 +210,11 @@ export class Dashy extends SplitPanel {
         //        this._editor.ddl(serialize(this._model) as object);
     }
 
-    loadDashboard(refresh: boolean = true) {
+    loadDashboard(refresh: boolean = true): Promise<Widget | undefined> {
         if (refresh && this._tabLHS.active() === this._dashboard) {
-            this._dashboard.lazyRender();
+            return this._dashboard.renderPromise();
         }
+        return Promise.resolve(undefined);
     }
 
     loadGraph(refresh: boolean = false) {
@@ -276,9 +278,10 @@ export class Dashy extends SplitPanel {
             execute: () => {
                 const viz = new Element(this._elementContainer);
                 this._elementContainer.append(viz);
-                this.loadDashboard();
-                viz.refresh().then(() => {
-                    this.selectionChanged(viz);
+                this.loadDashboard().then(() => {
+                    viz.refresh().then(() => {
+                        this.selectionChanged(viz);
+                    });
                 });
             }
         });

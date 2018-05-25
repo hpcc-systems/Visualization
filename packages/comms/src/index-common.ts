@@ -1,3 +1,4 @@
+export * from "./services/wsAccount";
 export * from "./services/wsDFU";
 export * from "./services/wsEcl";
 export * from "./services/wsMachine";

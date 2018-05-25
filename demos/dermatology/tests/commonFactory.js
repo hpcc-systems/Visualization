@@ -7,6 +7,88 @@
     }
 }(this, function () {
     var commonFactory = {
+        Entity: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/Entity"], function (DataFactory, Entity) {
+                    callback(new Entity()
+                        .icon("")
+                        .iconColor("#2c3e50")
+                        .iconDiameter(30)
+                        .iconPaddingPercent(0)
+                    );
+                });
+            },
+            vertex: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/EntityVertex"], function (DataFactory, EntityVertex) {
+                    callback(new EntityVertex()
+                        .icon("")
+                        .title("SomeTitle")
+                        .iconColor("#2c3e50")
+                        .iconColorFill("#ecf0f1")
+                        .iconColorStroke("#2c3e50")
+                        .textboxColorFill("#ecf0f1")
+                        .textboxColorStroke("#2c3e50")
+                        .annotationIcons([
+                            { faChar: "A", image_colorFill: "#2c3e50", shape_colorFill: "#f1c40f", shape_colorStroke: "#2c3e50" },
+                            { faChar: "B", image_colorFill: "#2c3e50", shape_colorFill: "#e67e22", shape_colorStroke: "#2c3e50" },
+                            { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "#2c3e50" },
+                        ])
+                    );
+                });
+            },
+            pin: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/EntityPin"], function (DataFactory, EntityPin) {
+                    callback(new EntityPin()
+                        .icon("")
+                        .iconDiameter(18)
+                        .iconPaddingPercent(1)
+                        .title("SomeTitle")
+                        .titleColor("#E3151A")
+                        .titleFontSize(24)
+                        .description("SomeDescription")
+                        .descriptionColor("#000000")
+                        .descriptionFontSize(15)
+                        .iconColor("#E3151A")
+                        .titleColor("#E3151A")
+                        .descriptionColor("#E3151A")
+                        .backgroundShape("pin")
+                        .backgroundColorFill("#F8F8F8")
+                        .backgroundColorStroke("#CCCCCC")
+                        .cornerRadius(5)
+                        .arrowHeight(10)
+                        .arrowWidth(16)
+                        .annotationIcons([
+                            { faChar: "A", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
+                            { faChar: "B", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
+                            { faChar: "C", image_colorFill: "#E3151A", shape_colorFill: "none", shape_colorStroke: "#E3151A", shape: "circle" },
+                        ])
+                    );
+                });
+            },
+            card: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/EntityCard"], function (DataFactory, EntityCard) {
+                    callback(new EntityCard()
+                        .icon("")
+                        .iconDiameter(28)
+                        .iconPaddingPercent(0)
+                        .title("SomeTitle")
+                        .titleFontSize(28)
+                        .titleColor("#ecf0f1")
+                        .description("SomeDescription")
+                        .descriptionColor("#ecf0f1")
+                        .iconColor("#ecf0f1")
+                        .backgroundShape("rect")
+                        .backgroundColorFill("#2980b9")
+                        .backgroundColorStroke("#2c3e50")
+                        .annotationIcons([
+                            { faChar: "A", image_colorFill: "#2c3e50", shape_colorFill: "#f1c40f", shape_colorStroke: "none" },
+                            { faChar: "B", image_colorFill: "#2c3e50", shape_colorFill: "#e67e22", shape_colorStroke: "none" },
+                            { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "none" },
+                        ])
+                    );
+                });
+            }
+        },
         Text: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/common/Text"], function (DataFactory, Text) {

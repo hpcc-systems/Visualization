@@ -2,7 +2,6 @@ import * as cp from "child_process";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import * as semver from "semver";
 import * as tmp from "tmp";
 
 import { scopedLogger } from "@hpcc-js/util";
@@ -12,6 +11,50 @@ import { attachWorkspace, Workspace } from "./eclMeta";
 
 const logger = scopedLogger("clienttools/eclcc");
 const exeExt = os.type() === "Windows_NT" ? ".exe" : "";
+
+export class Version {
+    readonly prefix: string = "";
+    readonly major: number = 0;
+    readonly minor: number = 0;
+    readonly patch: number = 0;
+    readonly postfix: string = "";
+
+    constructor(build: string) {
+        const parts = build.split(" ");
+        if (parts.length) {
+            const match = /(?:(\w+)_)?(\d+)\.(\d+)\.(\d+)(?:-(.*))?/.exec(parts[parts.length - 1]);
+            if (match) {
+                this.prefix = match[1] || "";
+                this.major = +match[2] || 0;
+                this.minor = +match[3] || 0;
+                this.patch = +match[4] || 0;
+                this.postfix = match[5] || "";
+            }
+        }
+    }
+
+    parse(build: string) {
+    }
+
+    exists(): boolean {
+        return this.major !== 0 || this.minor !== 0 || this.patch !== 0 || this.postfix !== "";
+    }
+
+    compare(other: Version): number {
+        if (this.major > other.major) return 1;
+        if (this.major < other.major) return -1;
+        if (this.minor > other.minor) return 1;
+        if (this.minor < other.minor) return -1;
+        if (this.patch > other.patch) return 1;
+        if (this.patch < other.patch) return -1;
+        if (this.postfix === "" && other.postfix !== "") return 1;
+        return this.postfix.localeCompare(other.postfix);
+    }
+
+    toString(): string {
+        return `${this.prefix}_${this.major}.${this.minor}.${this.patch}-${this.postfix}`;
+    }
+}
 
 interface IExecFile {
     stderr: string;
@@ -162,20 +205,20 @@ export class ClientTools {
     protected includeFolders: string[];
     protected _legacyMode: boolean;
     protected _args: string[];
-    protected _versionPrefix: string;
-    protected _version: string;
+    protected _version: Version;
 
-    constructor(eclccPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = []) {
+    constructor(eclccPath: string, cwd?: string, includeFolders: string[] = [], legacyMode: boolean = false, args: string[] = [], version?: Version) {
         this.eclccPath = eclccPath;
         this.binPath = path.dirname(this.eclccPath);
         this.cwd = path.normalize(cwd || this.binPath);
         this.includeFolders = includeFolders;
         this._legacyMode = legacyMode;
         this._args = args;
+        this._version = version!;
     }
 
     clone(cwd?: string, includeFolders?: string[], legacyMode: boolean = false, args: string[] = []) {
-        return new ClientTools(this.eclccPath, cwd, includeFolders, legacyMode, args);
+        return new ClientTools(this.eclccPath, cwd, includeFolders, legacyMode, args, this._version);
     }
 
     exists(filePath: string) {
@@ -196,34 +239,17 @@ export class ClientTools {
         })).concat(additionalItems);
     }
 
-    version() {
+    version(): Promise<Version> {
         if (this._version) {
             return Promise.resolve(this._version);
         }
-        return this.execFile(this.eclccPath, this.binPath, this.args(["--version"]), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile) => {
-            if (response && response.stdout && response.stdout.length) {
-                const versions = response.stdout.split(" ");
-                if (versions.length > 1) {
-                    const fullVersionParts = versions[1].split("_");
-                    if (fullVersionParts.length > 1) {
-                        const versionPrefix = fullVersionParts.shift();
-                        const version = fullVersionParts.join("_");
-                        if (semver.valid(version)) {
-                            this._versionPrefix = versionPrefix!;
-                            this._version = version;
-                        }
-                    }
-                } else if (versions.length) {
-                    if (semver.valid(versions[0])) {
-                        this._version = versions[0];
-                    }
-                }
-            }
+        return this.execFile(this.eclccPath, this.binPath, this.args(["--version"]), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile): Version => {
+            this._version = new Version(response.stdout);
             return this._version;
         });
     }
 
-    versionSync() {
+    versionSync(): Version {
         return this._version;
     }
 
@@ -326,67 +352,63 @@ export class ClientTools {
     }
 }
 
-const allClientToolsCache: ClientTools[] = [];
-function locateClientToolsInFolder(rootFolder: string): Array<Promise<any>> {
-    const promiseArray: Array<Promise<any>> = [];
+function locateClientToolsInFolder(rootFolder: string, clientTools: ClientTools[]) {
     if (rootFolder) {
         const hpccSystemsFolder = path.join(rootFolder, "HPCCSystems");
         if (fs.existsSync(hpccSystemsFolder) && fs.statSync(hpccSystemsFolder).isDirectory()) {
             if (os.type() !== "Windows_NT") {
                 const eclccPath = path.join(hpccSystemsFolder, "bin", "eclcc");
                 if (fs.existsSync(eclccPath)) {
-                    const clientTools = new ClientTools(eclccPath);
-                    allClientToolsCache.push(clientTools);
-                    promiseArray.push(clientTools.version());
+                    clientTools.push(new ClientTools(eclccPath));
                 }
             }
             fs.readdirSync(hpccSystemsFolder).forEach((versionFolder) => {
                 const eclccPath = path.join(hpccSystemsFolder, versionFolder, "clienttools", "bin", "eclcc" + exeExt);
                 if (fs.existsSync(eclccPath)) {
                     const name = path.basename(versionFolder);
-                    if (semver.valid(name)) {
-                        const clientTools = new ClientTools(eclccPath);
-                        allClientToolsCache.push(clientTools);
-                        promiseArray.push(clientTools.version());
+                    const version = new Version(name);
+                    if (version.exists()) {
+                        clientTools.push(new ClientTools(eclccPath));
                     }
                 }
             });
         }
     }
-    return promiseArray;
 }
 
+let allClientToolsCache: Promise<ClientTools[]>;
 export function locateAllClientTools() {
-    if (allClientToolsCache.length) return Promise.resolve(allClientToolsCache);
-    let promiseArray: Array<Promise<any>> = [];
+    if (allClientToolsCache) return allClientToolsCache;
+    const clientTools: ClientTools[] = [];
     switch (os.type()) {
         case "Windows_NT":
             const rootFolder86 = process.env["ProgramFiles(x86)"] || "";
             if (rootFolder86) {
-                promiseArray = promiseArray.concat(locateClientToolsInFolder(rootFolder86));
+                locateClientToolsInFolder(rootFolder86, clientTools);
             }
             const rootFolder = process.env["ProgramFiles"] || "";
             if (rootFolder) {
-                promiseArray = promiseArray.concat(locateClientToolsInFolder(rootFolder));
+                locateClientToolsInFolder(rootFolder, clientTools);
             }
             if (!rootFolder86 && !rootFolder) {
-                promiseArray = promiseArray.concat(locateClientToolsInFolder("c:\\Program Files (x86)"));
+                locateClientToolsInFolder("c:\\Program Files (x86)", clientTools);
             }
             break;
         case "Linux":
         case "Darwin":
-            promiseArray = promiseArray.concat(locateClientToolsInFolder("/opt"));
+            locateClientToolsInFolder("/opt", clientTools);
             break;
         default:
             break;
     }
 
-    return Promise.all(promiseArray).then(() => {
-        allClientToolsCache.sort((l: ClientTools, r: ClientTools) => {
-            return semver.compare(r.versionSync(), l.versionSync());
+    allClientToolsCache = Promise.all(clientTools.map(ct => ct.version())).then(() => {
+        clientTools.sort((l: ClientTools, r: ClientTools) => {
+            return r.versionSync().compare(l.versionSync());
         });
-        return allClientToolsCache;
+        return clientTools;
     });
+    return allClientToolsCache;
 }
 
 let eclccPathMsg = "";
@@ -398,17 +420,26 @@ function logEclccPath(eclccPath: string) {
     }
 }
 
-export function locateClientTools(overridePath: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
+export function locateClientTools(overridePath: string = "", build: string = "", cwd: string = ".", includeFolders: string[] = [], legacyMode: boolean = false): Promise<ClientTools> {
     if (overridePath && fs.existsSync(overridePath)) {
         logEclccPath(overridePath);
         return Promise.resolve(new ClientTools(overridePath, cwd, includeFolders, legacyMode));
     }
     return locateAllClientTools().then((allClientToolsCache2) => {
-        //  TODO find best match  ---
         if (!allClientToolsCache2.length) {
             throw new Error("Unable to locate ECL Client Tools.");
         }
-        logEclccPath(allClientToolsCache2[0].eclccPath);
-        return allClientToolsCache2[0].clone(cwd, includeFolders, legacyMode);
+        const buildVersion = new Version(build);
+        let latest: ClientTools | undefined;
+        let bestMajor: ClientTools | undefined;
+        for (const ct of allClientToolsCache2) {
+            const ctVersion = ct.versionSync();
+            if (!latest) latest = ct;
+            if (!bestMajor && buildVersion.major === ctVersion.major) bestMajor = ct;
+            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct;
+        }
+        const best: ClientTools = bestMajor || latest!;
+        logEclccPath(best.eclccPath);
+        return best.clone(cwd, includeFolders, legacyMode);
     });
 }

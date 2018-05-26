@@ -41,7 +41,7 @@ class DDLUpgrade {
         }
     } = {};
 
-    constructor(ddl: DDL1.IDDL, baseUrl: string, wuid?: string) {
+    constructor(ddl: DDL1.IDDL, baseUrl: string = "http://localhost:8010", wuid: string = "WUID") {
         this._ddl = ddl;
         this._baseUrl = baseUrl;
         this._wuid = wuid;
@@ -108,7 +108,7 @@ class DDLUpgrade {
                     for (const notify of output.notify) {
                         this._datasourceUpdates[notify] = {
                             id: ds.id,
-                            output: output.from
+                            output: output.id
                         };
                     }
                 }
@@ -123,7 +123,7 @@ class DDLUpgrade {
                     type: "wuresult",
                     id: ds.id,
                     url: this._baseUrl,
-                    wuid: this._wuid!,
+                    wuid: this._wuid,
                     outputs: {}
                 };
                 for (const output of ds.outputs) {
@@ -156,7 +156,14 @@ class DDLUpgrade {
                     this._ddl2Datasources[viz.id] = {
                         type: "form",
                         id: viz.id,
-                        fields: this.vizFields2field2(viz.fields)
+                        fields: this.formFields2field(viz.fields)
+                    };
+                    this._datasourceUpdates[viz.id] = { id: viz.id };
+                } else if (viz.type === "SLIDER") {
+                    this._ddl2Datasources[viz.id] = {
+                        type: "form",
+                        id: viz.id,
+                        fields: this.formFields2field(viz.fields, true)
                     };
                     this._datasourceUpdates[viz.id] = { id: viz.id };
                 }
@@ -243,6 +250,8 @@ class DDLUpgrade {
                     this.readTableMappings(viz);
                 } else if (DDL1.isGraphVisualization(viz)) {
                     this.readGraphMappings(viz);
+                } else if (DDL1.isSliderVisualization(viz)) {
+                    this.readSliderMappings(viz);
                 } else {
                     throw new Error(`Unkown DDL1 mapping type:  ${viz.type}`);
                 }
@@ -369,6 +378,15 @@ class DDLUpgrade {
                 type: "=",
                 sourceFieldID: viz.source.link.mappings.uid.toLowerCase()
             }]
+        });
+    }
+
+    readSliderMappings(viz: DDL1.ISliderVisualization) {
+        const mappings = this._ddl2DataviewActivities[viz.id].mappings;
+        mappings.transformations.push({
+            fieldID: "label",
+            type: "=",
+            sourceFieldID: viz.source.mappings.label.toLowerCase()
         });
     }
 
@@ -523,7 +541,7 @@ class DDLUpgrade {
             case "CHORO":
                 return { chartType, moduleName: "@hpcc-js/map", className: "ChoroUSStates" };
             case "SLIDER":
-                return { chartType, moduleName: "@hpcc-js/form", className: "Slider" };
+                return { chartType: "FORM", moduleName: "@hpcc-js/form", className: "Form" };
             case "HEAT_MAP":
                 return { chartType, moduleName: "@hpcc-js/other", className: "HeatMap" };
             case "2DCHART":
@@ -536,7 +554,7 @@ class DDLUpgrade {
         }
     }
 
-    vizFields2field2(fields?: DDL1.IVisualizationField[]): DDL2.IField[] {
+    formFields2field(fields?: DDL1.IVisualizationField[], slider: boolean = false): DDL2.IField[] {
         if (!fields) return [];
         return fields.map(field => {
             switch (field.properties.type) {
@@ -554,15 +572,15 @@ class DDLUpgrade {
                     };
                 default:
                     return {
-                        type: this.vizFieldType2fieldType(field.properties.datatype),
+                        type: this.formFieldType2fieldType(field.properties.datatype, slider),
                         id: field.id,
-                        default: field.properties.default ? field.properties.default[0] : null
+                        default: field.properties.default ? field.properties.default[0] : undefined
                     };
             }
         });
     }
 
-    vizFieldType2fieldType(fieldType: DDL1.VisualizationFieldType): "string" | "number" | "boolean" {
+    formFieldType2fieldType(fieldType: DDL1.VisualizationFieldType, slider: boolean): "string" | "number" | "boolean" {
         switch (fieldType) {
             case "bool":
             case "boolean":
@@ -574,8 +592,9 @@ class DDLUpgrade {
             case "real":
                 return "number";
             case "string":
-            default:
                 return "string";
+            default:
+                return slider ? "number" : "string";
         }
     }
 
@@ -633,7 +652,7 @@ class DDLUpgrade {
     }
 }
 
-export function upgrade(ddl: DDL1.IDDL, baseUrl: string, wuid?: string): DDL2.Schema {
+export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string): DDL2.Schema {
     const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid);
     return ddlUp.write();
 }

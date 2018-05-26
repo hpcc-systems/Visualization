@@ -304,6 +304,9 @@ export const dashboard = new marshaller.Dashboard(ec)
             ;
     })
     ;
+
+// @ts-ignore
+const ddl = ${JSON.stringify(this._ddlSchema)};
 `;
     }
 }

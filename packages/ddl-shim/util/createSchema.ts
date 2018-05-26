@@ -14,6 +14,12 @@ function genSchema(src: string, dest: string, type: string) {
     });
     const ddlSchema = TJS.generateSchema(ddl, type, settings);
 
+    fs.writeFile(`src/${dest}.json`, JSON.stringify(ddlSchema), function (err) {
+        if (err) {
+            return console.error(err);
+        }
+    });
+
     const tpl = `/* tslint:disable */\n` +
         `export const ${dest} =  \n` +
         JSON.stringify(ddlSchema, null, "    ") +

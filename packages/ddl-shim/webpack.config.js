@@ -19,6 +19,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.?Schema.json$/,
+                loader: 'ajv-pack-loader'
+            },
+            {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     use: 'css-loader'

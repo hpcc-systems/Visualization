@@ -1,9 +1,9 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3-selection", "d3-collection", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/other", "test/Factory"], factory);
+        define(["d3-selection", "d3-collection", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/other", "@hpcc-js/composite", "test/Factory"], factory);
     }
-}(this, function (d3Selection, d3Collection, hpccCommon, hpccLayout, hpccOther, testFactory) {
+}(this, function (d3Selection, d3Collection, hpccCommon, hpccLayout, hpccOther, hpccComposite, testFactory) {
     var d3 = {
         select: d3Selection.select,
         map: d3Collection.map
@@ -11,7 +11,8 @@
     var Utility = hpccCommon.Utility;
     var Surface = hpccLayout.Surface;
     var Grid = hpccLayout.Grid;
-    var Persist = hpccOther.Persist;
+    var OtherPersist = hpccOther.Persist;
+    var CompositePersist = hpccComposite.Persist;
     var PropertyEditor = hpccOther.PropertyEditor;
 
 
@@ -86,13 +87,13 @@
 
     Main.prototype.openWidget = function (json) {
         var context = this;
-        Persist.create(json, function (widget) {
+        CompositePersist.create(json, function (widget) {
             context.showWidget(widget);
         });
     };
 
     Main.prototype.saveWidget = function (includeState) {
-        var text = JSON.stringify(Persist.serializeToObject(this._currWidget, null, false, includeState), null, "  ");
+        var text = JSON.stringify(OtherPersist.serializeToObject(this._currWidget, null, false, includeState), null, "  ");
         Utility.downloadBlob("JSON", text, this._currWidget.classID(), "persist");
     };
 
@@ -142,7 +143,7 @@
     };
 
     Main.prototype.cloneWidget = function (func) {
-        Persist.clone(this._currWidget, func);
+        CompositePersist.clone(this._currWidget, func);
     };
 
     Main.prototype.propertiesVisible = function () {
@@ -198,7 +199,7 @@
 
     Main.prototype.openTheme = function (json) {
         var context = this;
-        Persist.applyTheme(this._currWidget, json, function () {
+        OtherPersist.applyTheme(this._currWidget, json, function () {
             context._currWidget.render(function (w) {
                 context.showSpinner(false);
             });
@@ -206,13 +207,13 @@
     };
 
     Main.prototype.saveTheme = function () {
-        var text = JSON.stringify(Persist.serializeThemeToObject(this._currWidget), null, "  ");
+        var text = JSON.stringify(OtherPersist.serializeThemeToObject(this._currWidget), null, "  ");
         Utility.downloadBlob("JSON", text, null, "theme");
     };
 
     Main.prototype.resetTheme = function () {
         var context = this;
-        Persist.removeTheme(this._currWidget, function () {
+        OtherPersist.removeTheme(this._currWidget, function () {
             context._currWidget.render(function (w) { context.showSpinner(false); });
         });
     };

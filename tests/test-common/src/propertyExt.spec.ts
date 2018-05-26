@@ -21,7 +21,7 @@ TestClass.prototype.publish("optStr2", null, "string", "Optional String", undefi
 TestClass.prototype.publish("optStr3", undefined, "string", "Optional String", undefined, { optional: true });
 
 describe("@hpcc-js/common", () => {
-    describe.only("PropertyExt", () => {
+    describe("PropertyExt", () => {
         function testProp(propID: string, defValue: any, newValue: any) {
             const testClass: any = new TestClass();
             expect(testClass[propID + "_modified"](), `${propID}: 1`).to.be.false;

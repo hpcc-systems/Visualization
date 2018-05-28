@@ -443,7 +443,7 @@ export function locateClientTools(overridePath: string = "", build: string = "",
             const ctVersion = ct.versionSync();
             if (!latest) latest = ct;
             if (!bestMajor && buildVersion.major === ctVersion.major) bestMajor = ct;
-            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct;
+            if (buildVersion.major === ctVersion.major && buildVersion.minor === ctVersion.minor) return ct.clone(cwd, includeFolders, legacyMode);
         }
         const best: ClientTools = bestMajor || latest!;
         logEclccPath(best.eclccPath);

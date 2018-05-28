@@ -405,10 +405,11 @@ export class Workspace {
         }
     }
 
-    parseMetaXML(metaXML: string): void {
+    parseMetaXML(metaXML: string): string[] {
         const metaParser = new MetaParser();
         metaParser.parse(metaXML);
         this.parseSources(metaParser.sources);
+        return metaParser.sources.map(source => path.normalize(source.$.sourcePath));
     }
 
     resolveQualifiedID(filePath: string, qualifiedID: string, charOffset?: number): ECLScope | undefined {

@@ -30,10 +30,11 @@ const ERROR = "error";
 const WARN = "warning";
 
 export class EclccErrors {
+    private _checked: string[];
     private errWarn: IECLErrorWarning[] = [];
     private errOther: string[] = [];
 
-    constructor(stdErr: string) {
+    constructor(stdErr: string, checked: string[]) {
         if (stdErr && stdErr.length) {
             for (const errLine of stdErr.split(os.EOL)) {
                 let match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): (error|warning|info) C(\d*): (.*)/.exec(errLine);
@@ -59,6 +60,11 @@ export class EclccErrors {
                 this.errOther.push(errLine);
             }
         }
+        this._checked = checked;
+    }
+
+    checked(): string[] {
+        return this._checked;
     }
 
     all(): IECLErrorWarning[] {
@@ -271,7 +277,7 @@ export class ClientTools {
         return this.execFile(this.eclccPath, this.cwd, this.args(args), "eclcc", `Cannot find ${this.eclccPath}`).then((response: IExecFile): IArchive => {
             return {
                 content: response.stdout,
-                err: new EclccErrors(response.stderr)
+                err: new EclccErrors(response.stderr, [])
             };
         });
     }
@@ -297,10 +303,11 @@ export class ClientTools {
             attachWorkspace(this.cwd),
             this.execFile(this.eclccPath, this.cwd, this.args([...args, "-M", filePath]), "eclcc", `Cannot find ${this.eclccPath}`)
         ]).then(([metaWorkspace, execFileResponse]: [Workspace, IExecFile]) => {
+            let checked: string[] = [];
             if (execFileResponse && execFileResponse.stdout && execFileResponse.stdout.length) {
-                metaWorkspace.parseMetaXML(execFileResponse.stdout);
+                checked = metaWorkspace.parseMetaXML(execFileResponse.stdout);
             }
-            return new EclccErrors(execFileResponse ? execFileResponse.stderr : "");
+            return new EclccErrors(execFileResponse ? execFileResponse.stderr : "", checked);
         });
     }
 

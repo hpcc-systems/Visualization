@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.1.6...@hpcc-js/marshaller@0.1.7) (2018-05-28)
+
+
+### Bug Fixes
+
+* Dashy calls render prior to the widget being added to the DOM ([351fd18](https://github.com/hpcc-systems/Visualization/commit/351fd18))
+* DDL upgrade failing on SLIDER ([fbb355c](https://github.com/hpcc-systems/Visualization/commit/fbb355c)), closes [#2579](https://github.com/hpcc-systems/Visualization/issues/2579)
+* TS Form generation was invalid ([e8e0252](https://github.com/hpcc-systems/Visualization/commit/e8e0252))
+
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.1.5...@hpcc-js/marshaller@0.1.6) (2018-05-21)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.4.0...@hpcc-js/comms@0.4.1) (2018-05-28)
+
+
+### Bug Fixes
+
+* locate client tools fails when exact match ([e1cabff](https://github.com/hpcc-systems/Visualization/commit/e1cabff))
+
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.3.0...@hpcc-js/comms@0.4.0) (2018-05-28)
 

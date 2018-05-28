@@ -291,7 +291,7 @@ export class Workspace {
     }
 
     primeClientTools(): Promise<this> {
-        return locateClientTools(this._eclccPath, this._workspacePath).then(clientTools => {
+        return locateClientTools(this._eclccPath, "", this._workspacePath).then(clientTools => {
             this._clientTools = clientTools;
             return clientTools.paths();
         }).then(paths => {

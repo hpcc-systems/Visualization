@@ -1,6 +1,7 @@
 import { IGraph, INDChart } from "@hpcc-js/api";
 import { Database, HTMLWidget, Utility, Widget } from "@hpcc-js/common";
 import { map as d3Map } from "d3-collection";
+import { requireWidget } from "./Utility";
 
 declare const require: any;
 export class MultiChart extends HTMLWidget {
@@ -108,7 +109,7 @@ export class MultiChart extends HTMLWidget {
                 });
                 break;
             default:
-                Utility.requireWidget(this._allCharts[chartType].widgetClass).then(function (WidgetClass: any) {
+                requireWidget(this._allCharts[chartType].widgetClass).then(function (WidgetClass: any) {
                     callback(new WidgetClass());
                 });
         }

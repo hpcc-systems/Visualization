@@ -10,6 +10,7 @@
     "dist/*",
     "lib-cli/**/*",
     "src/*.css",
+    "src/*.json",
     "types/*"
   ],
   "bin": "./bin/index.js",
@@ -33,12 +34,15 @@
   },
   "devDependencies": {
     "@types/node": "8.0.51",
-    "ajv": "4.11.3",
+    "ajv": "6.5.0",
+    "ajv-cli": "3.0.0",
+    "ajv-pack": "0.3.1",
+    "ajv-pack-loader": "2.2.0",
     "concurrently": "3.5.1",
     "extract-text-webpack-plugin": "2.1.0",
     "reflect-metadata": "0.1.10",
     "rimraf": "2.6.2",
-    "typescript-json-schema": "0.18.0",
+    "typescript-json-schema": "0.24.1",
     "webpack": "3.11.0"
   },
   "repository": {

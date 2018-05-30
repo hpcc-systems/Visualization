@@ -19,6 +19,16 @@ export class Icon extends SVGWidget {
         this._faChar = new FAChar();
     }
 
+    getBBox(refresh = false, round = false) {
+        const diameter = this.diameter();
+        return {
+            x: - diameter / 2,
+            y: - diameter / 2,
+            width: diameter,
+            height: diameter
+        };
+    }
+
     contains(point) {
         return this._shapeWidget.contains(point);
     }
@@ -44,11 +54,9 @@ export class Icon extends SVGWidget {
         this._root = element.append("g");
         this._shapeWidget
             .target(this._root.node())
-            .render()
             ;
         this._faChar
             .target(element.node())
-            .render()
             ;
         this._tooltipElement = element.append("title");
         const context = this;

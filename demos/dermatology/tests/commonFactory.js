@@ -14,6 +14,21 @@
                         .text(DataFactory.Text.simple.text)
                     );
                 });
+            },
+            rotation: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/Text"], function (DataFactory, Text) {
+                    const text = new Text()
+                        .text(DataFactory.Text.simple.text)
+                        ;
+                    callback(text);
+                    let r = 0;
+                    setInterval(() => {
+                        text
+                            .rotation(r)
+                            .render();
+                        r += 10;
+                    }, 50)
+                });
             }
         },
         Shape: {

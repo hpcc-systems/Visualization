@@ -41,17 +41,37 @@ export class TextBox extends SVGWidget {
         return this;
     }
 
+    getTextX(width) {
+        switch (this.anchor()) {
+            case "start":
+                return -width / 2;
+            case "end":
+                return width / 2;
+        }
+        return 0;
+    }
+
+    getBBox(refresh = false, round = false) {
+        const textBBox = this._text.getBBox(true);
+        const width = this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight();
+        const height = this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom();
+        return {
+            x: -width - 2,
+            y: -height - 2,
+            width,
+            height
+        };
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         delete this._prevHash;
         this._shape
             .target(domNode)
             .tooltip(this.tooltip())
-            .render()
             ;
         this._text
-            .target(element.append("g").node())
-            .render()
+            .target(domNode)
             ;
     }
 
@@ -61,20 +81,25 @@ export class TextBox extends SVGWidget {
         const hash = this.hash();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
-            this._text
-                .colorFill_default(this._shape.colorFill_exists() ? textColor(this._shape.colorFill()) : undefined)
-                .render()
-                ;
+
             const textBBox = this._text.getBBox(true);
             const size = {
                 width: this.fixedSize() ? this.fixedSize().width : textBBox.width + this.paddingLeft() + this.paddingRight(),
                 height: this.fixedSize() ? this.fixedSize().height : textBBox.height + this.paddingTop() + this.paddingBottom()
             };
+
             this._shape
                 .width(size.width)
                 .height(size.height)
                 .render()
                 ;
+
+            this._text
+                .x(this.getTextX(textBBox.width))
+                .colorFill_default(this._shape.colorFill_exists() ? textColor(this._shape.colorFill()) : undefined)
+                .render()
+                ;
+
             if (this.fixedSize()) {
                 switch (this.anchor()) {
                     case "start":
@@ -91,8 +116,7 @@ export class TextBox extends SVGWidget {
                         break;
                 }
             }
-            const bbox = this._text.getBBox();
-            this._text.visible(bbox.width <= size.width && bbox.height <= size.height);
+            this._text.visible(textBBox.width <= size.width && textBBox.height <= size.height);
         }
     }
 

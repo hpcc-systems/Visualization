@@ -26,11 +26,15 @@ export interface BBox {
     height: number;
 }
 
+let g_fontSizeContext: CanvasRenderingContext2D;
+const g_fontSizeContextCache: { [key: string]: ISize } = {};
+
 let widgetID = 0;
 export abstract class Widget extends PropertyExt {
     _idSeed: string;
 
     protected _tag: string;
+    protected _isRootNode: boolean = true;
 
     protected _db = new Grid();
     protected _pos;
@@ -452,6 +456,29 @@ export abstract class Widget extends PropertyExt {
         };
     }
 
+    getFontSize(fontSize: number, fontName: string, text: string): ISize {
+        if (!g_fontSizeContext) {
+            let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
+            if (fontSizeCalc.empty()) {
+                fontSizeCalc = d3Select("body").append("canvas")
+                    .attr("id", "hpcc_js_font_size")
+                    ;
+            }
+            g_fontSizeContext = (fontSizeCalc.node() as HTMLCanvasElement).getContext("2d");
+        }
+        const hash = `${fontSize}::${fontName}::${text}`;
+        let retVal = g_fontSizeContextCache[hash];
+        if (!retVal) {
+            g_fontSizeContext.font = `${fontSize}px ${fontName}`;
+            const fontMetrics = g_fontSizeContext.measureText(text);
+            g_fontSizeContextCache[hash] = retVal = {
+                width: fontMetrics.width,
+                height: fontSize
+            };
+        }
+        return retVal;
+    }
+
     element() {
         return this._element;
     }
@@ -481,7 +508,7 @@ export abstract class Widget extends PropertyExt {
     isDOMHidden(): boolean {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
         // Note:  Will return false for visible===hidden (which is ok as it still takes up space on the page)
-        return this._placeholderElement.node().offsetParent === null;
+        return this._isRootNode && this._placeholderElement.node().offsetParent === null;
     }
 
     //  Render  ---

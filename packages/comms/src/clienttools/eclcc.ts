@@ -80,7 +80,7 @@ export class EclccErrors {
     constructor(stdErr: string, checked: string[]) {
         if (stdErr && stdErr.length) {
             for (const errLine of stdErr.split(os.EOL)) {
-                let match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): (error|warning|info) C(\d*): (.*)/.exec(errLine);
+                let match = /([a-z,A-Z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\): ?(error|warning|info) C(\d*): ?(.*)/.exec(errLine);
                 if (match) {
                     const [, filePath, row, _col, severity, code, _msg] = match;
                     const line: number = +row;
@@ -182,7 +182,7 @@ export class LocalWorkunit {
                     id = item.id;
                 }
                 if (key === "$" && item.name === "definition") {
-                    const match = /([a-z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\)/.exec(item.value);
+                    const match = /([a-z,A-Z]:\\(?:[-\w\.\d]+\\)*(?:[-\w\.\d]+)?|(?:\/[\w\.\-]+)+)\((\d*),(\d*)\)/.exec(item.value);
                     if (match) {
                         const [, file, row, _col] = match;
                         const line: number = +row;

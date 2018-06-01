@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.2.1...@hpcc-js/common@0.3.0) (2018-06-01)
+
+
+### Bug Fixes
+
+* Optimize getBBox calls ([5114bb2](https://github.com/hpcc-systems/Visualization/commit/5114bb2)), closes [#2567](https://github.com/hpcc-systems/Visualization/issues/2567)
+
+
+### Features
+
+* **entity:** Adds Entity, EntityCard, EntityPin, EntityVertexSigned-off-by: Jaman <jbrundage372@gmail.com> ([1f73572](https://github.com/hpcc-systems/Visualization/commit/1f73572))
+
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.2.0...@hpcc-js/common@0.2.1) (2018-05-28)
 

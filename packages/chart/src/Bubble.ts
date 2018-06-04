@@ -1,5 +1,5 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { FAChar, InputField, ISize, SVGWidget, Text, Utility } from "@hpcc-js/common";
+import { FAChar, InputField, ISize, Palette, SVGWidget, Text, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -128,16 +128,11 @@ export class Bubble extends SVGWidget {
                         .render()
                         ;
                 } else {
-                    let label = d.data[0];
-                    const labelWidth = context.labelWidgets[label].getBBox().width;
-                    if (d.r * 2 < 16) {
-                        label = "";
-                    } else if (d.r * 2 < labelWidth) {
-                        label = label[0] + "...";
-                    }
                     context.labelWidgets[d.data[0]]
                         .pos(pos)
-                        .text(label)
+                        .colorFill_default(Palette.textColor(context._palette(d.data[0])))
+                        .width(d.r * 2)
+                        .text(d.data[0])
                         .render()
                         ;
                 }

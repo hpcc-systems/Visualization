@@ -39,9 +39,6 @@
             }
         ],
         "curly": false,
-        "member-ordering": [
-            true
-        ],
         "max-classes-per-file": [
             false
         ],

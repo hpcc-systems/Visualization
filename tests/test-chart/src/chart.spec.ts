@@ -1,5 +1,5 @@
 import * as chart from "@hpcc-js/chart";
-import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Scatter, Step, Summary, SummaryC, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "./coreTests";
@@ -22,6 +22,10 @@ const simple = {
             ["Math II", 76, 30, 34, 6],
             ["Math III", 80, 30, 27, 8]
         ]
+    },
+    WordCloud: {
+        columns: ["Word", "Weight"],
+        words: ["Myriel", "Napoleon", "Mlle.Baptistine", "Mme.Magloire", "CountessdeLo", "Geborand", "Champtercier", "Cravatte", "Count", "OldMan", "Labarre", "Valjean", "Marguerite", "Mme.deR", "Isabeau", "Gervais", "Tholomyes", "Listolier", "Fameuil", "Blacheville", "Favourite", "Dahlia", "Zephine", "Fantine", "Mme.Thenardier", "Thenardier", "Cosette", "Javert", "Fauchelevent", "Bamatabois", "Perpetue", "Simplice", "Scaufflaire", "Woman1", "Judge", "Champmathieu", "Brevet", "Chenildieu", "Cochepaille", "Pontmercy", "Boulatruelle", "Eponine", "Anzelma", "Woman2", "MotherInnocent", "Gribier", "Jondrette", "Mme.Burgon", "Gavroche", "Gillenormand", "Magnon", "Mlle.Gillenormand", "Mme.Pontmercy", "Mlle.Vaubois", "Lt.Gillenormand", "Marius", "BaronessT", "Mabeuf", "Enjolras", "Combeferre", "Prouvaire", "Feuilly", "Courfeyrac", "Bahorel", "Bossuet", "Joly", "Grantaire", "MotherPlutarch", "Gueulemer", "Babet", "Claquesous", "Montparnasse", "Toussaint", "Child1", "Child2", "Brujon", "Mme.Hucheloup"]
     }
 };
 describe("@hpcc-js/chart", () => {
@@ -117,6 +121,16 @@ describe("@hpcc-js/chart", () => {
                                     .showTick(true)
                                     .tickValue(.33)
                                     .tickValueDescription("Average")
+                                );
+                                break;
+
+                            case WordCloud:
+                                const words = simple.WordCloud.words.map(function (d) {
+                                    return [d, 1 + Math.random() * 100];
+                                });
+                                renderMedium(new WordCloud()
+                                    .columns(simple.WordCloud.columns)
+                                    .data(words)
                                 );
                                 break;
 

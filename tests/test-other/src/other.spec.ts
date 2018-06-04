@@ -2,7 +2,7 @@ import { Line } from "@hpcc-js/chart";
 import { CanvasWidget, Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { Border } from "@hpcc-js/layout";
 import * as other from "@hpcc-js/other";
-import { AutoCompleteText, HeatMap, Html, Legend, Select, Table, WordCloud } from "@hpcc-js/other";
+import { AutoCompleteText, HeatMap, Html, Legend, Select, Table } from "@hpcc-js/other";
 import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
@@ -25,17 +25,6 @@ describe("@hpcc-js/other", () => {
                                     .columns(data.HeatMap.simple.columns)
                                     .data(data.HeatMap.simple.data)
                                 );
-                                break;
-                            case WordCloud:
-                                /*
-                                const words = data.WordCloud.simple.words.map(function (d) {
-                                    return [d, 1 + Math.random() * 100];
-                                });
-                                render(new WordCloud()
-                                    .columns(data.WordCloud.simple.columns)
-                                    .data(words)
-                                );
-                                */
                                 break;
                             case Table:
                                 const table = new Table()

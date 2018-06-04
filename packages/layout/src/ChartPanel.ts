@@ -450,6 +450,10 @@ ChartPanel.prototype.widget = function (_?) {
     if (!arguments.length) return this._widget;
     this._carousel.widgets([_, this._table]);
     this._widget = _;
+    this._widget
+        .fields(this._legend.filteredFields())
+        .data(this._legend.filteredData())
+        ;
 
     const context = this;
     const tmpAny = this._widget as any;

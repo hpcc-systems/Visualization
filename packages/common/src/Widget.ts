@@ -7,6 +7,16 @@ import { debounce } from "./Utility";
 
 import "../src/Widget.css";
 
+export type IPrimative = boolean | number | string | object;
+export type IFieldType = "boolean" | "number" | "string" | "dataset" | "object" | "any";
+export interface InputField {
+    id: string;
+    type: IFieldType;
+    multi?: boolean;
+    default?: IPrimative | InputField[];
+    children?: InputField[];
+}
+
 export type d3SelectionType = d3Selection<SVGElement | HTMLElement, {}, SVGElement | HTMLElement, any>;
 
 export interface IPos {
@@ -125,6 +135,10 @@ export abstract class Widget extends PropertyExt {
             watchArray.push(pNode);
             pNode = pNode.parentNode;
         }
+    }
+
+    renderCount(): number {
+        return this._renderCount;
     }
 
     //  Implementation  ---

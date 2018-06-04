@@ -1,10 +1,10 @@
-import { Database, PropertyExt, publish, Widget } from "@hpcc-js/common";
-import { MultiChart, MultiChartPanel } from "@hpcc-js/composite";
+import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
-import { Activity } from "./activities/activity";
-import { HipiePipeline } from "./activities/hipiepipeline";
+import { Activity } from "../activities/activity";
+import { HipiePipeline } from "../activities/hipiepipeline";
+import { Visualization } from "./visualization";
 
 export class State extends PropertyExt {
 
@@ -40,20 +40,20 @@ State.prototype.publish("selection", [], "array", "State");
 let vizID = 0;
 export class Element extends PropertyExt {
     private _elementContainer: ElementContainer;
-    private _MultiChartPanel: MultiChartPanel = new MultiChartPanel();
+    private _vizChartPanel: Visualization;
 
     // @publishProxy("_MultiChartPanel")
     // title: publish<this, string>;
     @publish(null, "widget", "Data View")
     hipiePipeline: publish<this, HipiePipeline>;
     @publish(null, "widget", "Visualization")
-    _widget: ChartPanel;
-    chartPanel(): ChartPanel;
-    chartPanel(_: ChartPanel): this;
-    chartPanel(_?: ChartPanel): ChartPanel | this {
-        if (!arguments.length) return this._widget;
-        this._widget = _;
-        this._widget
+    _visualization: Visualization;
+    visualization(): Visualization;
+    visualization(_: Visualization): this;
+    visualization(_?: Visualization): Visualization | this {
+        if (!arguments.length) return this._visualization;
+        this._visualization = _;
+        this._visualization.chartPanel()
             .on("click", (row: any, col: string, sel: boolean) => {
                 if (sel) {
                     this.state().selection([row.__lparam || row]);
@@ -71,18 +71,6 @@ export class Element extends PropertyExt {
             ;
         return this;
     }
-    multiChartPanel(): MultiChartPanel;
-    multiChartPanel(_: MultiChartPanel): this;
-    multiChartPanel(_?: MultiChartPanel): MultiChartPanel | this {
-        if (!arguments.length) return this._widget as MultiChartPanel;
-        this._widget = _;
-        this._widget
-            .on("click", (row: object, col: string, sel: boolean) => {
-                this.state().selection(sel ? [row] : []);
-            })
-            ;
-        return this;
-    }
     @publish(null, "widget", "State")
     state: publish<this, State>;
 
@@ -91,14 +79,14 @@ export class Element extends PropertyExt {
         this._elementContainer = ec;
         vizID++;
         this._id = `e_${vizID}`;
-        const view = new HipiePipeline(ec, `p_${vizID}`);
+        const view = new HipiePipeline(ec, this._id);
         this.hipiePipeline(view);
-        this._MultiChartPanel
-            .id(`cp_${vizID}`)
-            .title(this.id())
-            .chartType("TABLE")
+        this._vizChartPanel = new Visualization(this.hipiePipeline())
+            .id(`viz_${vizID}`)
+            .title(`Element ${vizID}`)
             ;
-        this.chartPanel(this._MultiChartPanel);
+        this._vizChartPanel.chartPanel().id(`cp_${vizID}`);
+        this.visualization(this._vizChartPanel);
         this.state(new State());
     }
 
@@ -107,21 +95,25 @@ export class Element extends PropertyExt {
     id(_?: string): string | this {
         const retVal = super.id.apply(this, arguments);
         if (arguments.length) {
-            this._MultiChartPanel.id(_);
+            this._vizChartPanel.id(_);
         }
         return retVal;
     }
 
     chartType(): string {
-        return this._MultiChartPanel.chartType();
+        return this._vizChartPanel.chartType();
+    }
+
+    chartPanel(): ChartPanel;
+    chartPanel(_: ChartPanel): this;
+    chartPanel(_?: ChartPanel): ChartPanel | this {
+        if (!arguments.length) return this._vizChartPanel.chartPanel();
+        this._vizChartPanel.chartPanel(_);
+        return this;
     }
 
     chart(): Widget {
-        let widget = this._MultiChartPanel.widget();
-        if (widget instanceof MultiChart) {
-            widget = widget.chart();
-        }
-        return widget;
+        return this._vizChartPanel.chartPanel().widget();
     }
 
     pipeline(activities: Activity[]): this {
@@ -136,59 +128,16 @@ export class Element extends PropertyExt {
     }
 
     vizProps(): Widget {
-        return this.chartPanel();
+        return this.visualization().chartPanel();
     }
 
     stateProps(): PropertyExt {
         return this.state();
     }
 
-    toDBFields(fields: DDL2.IField[]): Database.Field[] {
-        const retVal: Database.Field[] = [];
-        for (const field of fields) {
-            const f = new Database.Field()
-                .id(field.id)
-                .label(field.id)
-                ;
-            if (field.children) {
-                f.children(this.toDBFields(field.children));
-            }
-            retVal.push(f);
-        }
-        return retVal;
-    }
-
-    toDBData(fields: Database.Field[], data) {
-        return data.map((row: any) => {
-            const retVal = [];
-            for (const field of fields) {
-                if (field.type() === "nested") {
-                    retVal.push(this.toDBData(field.children() as Database.Field[], row[field.id()].Row || row[field.id()]));
-                } else {
-                    retVal.push(row[field.label()]);
-                }
-            }
-            return retVal;
-        });
-    }
-
-    async refresh(localMeta: boolean = false) {
-        // TODO - just wrong for DashPOC  ---
-        this.chartPanel().startProgress && this.chartPanel().startProgress();
-        const view = this.hipiePipeline();
-        await view.refreshMeta();
-        const mappings = view.last();
-        const fields = this.toDBFields(mappings.outFields());
-        await mappings.exec();
-        const data = mappings.outData();
-        const mappedData = this.toDBData(fields, data);
-
-        this.chartPanel().finishProgress && this.chartPanel().finishProgress();
-        this.chartPanel()
-            .fields(fields.filter(f => f.id() !== "__lparam"))
-            .data(mappedData)
-            .render()
-            ;
+    async refresh() {
+        await this.visualization().refresh();
+        const data = this.hipiePipeline().outData();
         this.state().removeInvalid(data);
     }
 
@@ -309,8 +258,8 @@ export class ElementContainer extends PropertyExt {
         return retVal;
     }
 
-    async refresh(localMeta: boolean = false): Promise<this> {
-        await Promise.all(this.elements().map(viz => viz.refresh(localMeta)));
+    async refresh(): Promise<this> {
+        await Promise.all(this.elements().map(element => element.refresh()));
         return this;
     }
 

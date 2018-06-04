@@ -97,8 +97,10 @@ export interface IForm extends IDatasource {
     type: "form";
 }
 
+export type IDatabombFormat = "csv" | "tsv" | "json";
 export interface IDatabomb extends IDatasource {
     type: "databomb";
+    format: IDatabombFormat;
 }
 
 //  Activities  ===============================================================
@@ -136,7 +138,7 @@ export interface IEquals {
     fieldID: string;
     type: "=";
     sourceFieldID: string;
-    transformations?: TransformationType[];
+    transformations?: MultiTransformationType[];
 }
 export type ICalculatedType = "+" | "-" | "*" | "/";
 export interface ICalculated {
@@ -172,18 +174,24 @@ export interface IMap {
     mappings: IMapMapping[];
 }
 
-export type TransformationType = IEquals | ICalculated | IScale | ITemplate | IMap;
+export type MultiTransformationType = IEquals | ICalculated | IScale | ITemplate | IMap;
+export interface IMulti {
+    fieldID: string;
+    type: "multi";
+    transformations: MultiTransformationType[];
+}
 
+export type ProjectTransformationType = MultiTransformationType | IMulti;
 export interface IProject extends IActivity {
     type: "project";
-    transformations: TransformationType[];
+    transformations: ProjectTransformationType[];
 }
 export function isProjectActivity(activity: IActivity): activity is IProject {
     return activity.type === "project";
 }
 export interface IMappings extends IActivity {
     type: "mappings";
-    transformations: TransformationType[];
+    transformations: ProjectTransformationType[];
 }
 export function isMappingsActivity(activity: IActivity): activity is IMappings {
     return activity.type === "mappings";
@@ -251,6 +259,7 @@ export interface IWidget {
 export interface IVisualization extends IWidget {
     title: string;
     description: string;
+    mappings: IMappings;
 }
 
 //  View  =====================================================================
@@ -263,7 +272,7 @@ export interface IView {
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.22";
+    version: "0.0.24";
     datasources: DatasourceType[];
     dataviews: IView[];
     //  The following defs are only provided to assist the Java code generation (from the the generated schema)  ---
@@ -304,6 +313,7 @@ export interface Schema {
             scale: IScale;
             template: ITemplate;
             map: IMap;
+            multi: IMulti;
         };
     };
 }

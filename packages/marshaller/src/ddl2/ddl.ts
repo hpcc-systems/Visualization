@@ -1,4 +1,3 @@
-import { MultiChartPanel } from "@hpcc-js/composite";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity, ActivityPipeline, ReferencedFields } from "./activities/activity";
@@ -13,7 +12,8 @@ import { HipieRequest, Param, RoxieRequest } from "./activities/roxie";
 import { Sort } from "./activities/sort";
 import { WUResult } from "./activities/wuresult";
 import { Dashboard } from "./dashboard";
-import { Element, ElementContainer } from "./model";
+import { Element, ElementContainer } from "./model/element";
+import { Visualization } from "./model/visualization";
 
 const logger = scopedLogger("marshaller/ddl2/ddl");
 
@@ -68,7 +68,8 @@ class DDLDatasourceAdapter {
             const ddl: DDL2.IDatabomb = {
                 type: "databomb",
                 id: ds.id(),
-                fields: []
+                fields: [],
+                format: dsDetails.format()
             };
             return ddl;
         } else if (dsDetails instanceof HipieRequest) {
@@ -197,6 +198,8 @@ export class DDLAdapter {
             }
             dsDetails.payload(payload);
         } else if (dsDetails instanceof Databomb) {
+            const ddlDS = _ddlDS as DDL2.IDatabomb;
+            dsDetails.format(ddlDS.format);
         } else if (dsDetails instanceof RoxieRequest) {
             const ddlDS = _ddlDS as DDL2.IRoxieService;
             dsDetails
@@ -344,10 +347,9 @@ export class DDLAdapter {
         }).filter(activity => !!activity);
     }
 
-    writeVisualizationProperties(element: Element): DDL2.IWidgetProperties {
-        const retVal: DDL2.IWidgetProperties = {
-        };
-        const chart = element.chart();
+    writeVisualizationProperties(element: Visualization): DDL2.IWidgetProperties {
+        const retVal: DDL2.IWidgetProperties = {};
+        const chart = element.chartPanel().widget();
         for (const prop of chart.publishedProperties()) {
             if (prop.id === "fields") continue;
             logger.debug(`${prop.id}=>${(chart as any)[`${prop.id}`]()}`);
@@ -361,24 +363,27 @@ export class DDLAdapter {
         return retVal;
     }
 
-    writeVisualization(element: Element): DDL2.IVisualization {
+    writeVisualization(visualization: Visualization): DDL2.IVisualization {
         return {
-            id: element.chartPanel().id(),
-            title: element.chartPanel().title(),
-            description: element.chartPanel().description(),
-            chartType: element.chartType(),
-            ...element.chart().classMeta(),
-            properties: this.writeVisualizationProperties(element)
+            id: visualization.chartPanel().id(),
+            title: visualization.title(),
+            description: visualization.description(),
+            chartType: visualization.chartType(),
+            mappings: this.writeMappings(visualization.mappings()),
+            ...visualization.chartPanel().widget().classMeta(),
+            properties: this.writeVisualizationProperties(visualization)
         };
     }
 
-    readVisualization(ddlViz: DDL2.IVisualization, chartPanel: MultiChartPanel): this {
-        chartPanel
-            .id(ddlViz.id)
+    readVisualization(ddlViz: DDL2.IVisualization, visualization: Visualization): this {
+        const mappings = this.readMappings(ddlViz.mappings);
+        mappings.trim(true);
+        visualization.chartPanel().id(ddlViz.id);
+        visualization
             .title(ddlViz.title)
             .description(ddlViz.description)
-            .chartType(ddlViz.chartType)
-            .chartTypeProperties(ddlViz.properties)
+            .chartType(ddlViz.chartType as any, ddlViz.properties)
+            .mappings(mappings)
             ;
         return this;
     }
@@ -386,8 +391,8 @@ export class DDLAdapter {
     writeDDLViews(): DDL2.IView[] {
         //  Gather referenced fields  ---
         const refFields: ReferencedFields = { inputs: {}, outputs: {} };
-        for (const viz of this._elementContainer.elements()) {
-            viz.hipiePipeline().referencedFields(refFields);
+        for (const element of this._elementContainer.elements()) {
+            element.visualization().mappings().referencedFields(refFields);
         }
 
         return this._elementContainer.elements().map(element => {
@@ -397,7 +402,7 @@ export class DDLAdapter {
                 id: element.id(),
                 datasource: this.writeDatasourceRef(ds),
                 activities: this.writeActivities(view),
-                visualization: this.writeVisualization(element)
+                visualization: this.writeVisualization(element.visualization())
             };
             this._dsDedup.updateDSFields(ds, refFields);
             return retVal;
@@ -431,20 +436,15 @@ export class DDLAdapter {
                     const limit = this.readLimit(activity);
                     hipiePipeline.limit(limit);
                 }
-                if (DDL2.isMappingsActivity(activity)) {
-                    const mappings = this.readMappings(activity);
-                    mappings.trim(true);
-                    hipiePipeline.mappings(mappings);
-                }
             }
-            this.readVisualization(ddlView.visualization, element.multiChartPanel());
+            this.readVisualization(ddlView.visualization, element.visualization());
         }
     }
 
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
-            version: "0.0.22",
+            version: "0.0.24",
             datasources: this.writeDatasources(),
             dataviews: this.writeDDLViews()
         };

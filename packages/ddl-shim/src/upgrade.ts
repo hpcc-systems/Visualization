@@ -511,15 +511,16 @@ class DDLUpgrade {
                 filters,
                 sort,
                 groupBy,
-                limit,
-                mappings
+                limit
             ],
             visualization: {
                 id: viz.id,
                 title: viz.title || "",
                 description: "",
                 ...this.type2chartType(viz.type),
+                mappings,
                 properties: viz.properties as DDL2.IWidgetProperties || {}
+
             }
         };
     }
@@ -645,7 +646,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.22",
+            version: "0.0.24",
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews()
         };

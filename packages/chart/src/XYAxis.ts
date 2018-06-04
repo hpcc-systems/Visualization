@@ -644,8 +644,6 @@ export class XYAxis extends SVGWidget {
 
     @publish([], "array", "Regions")
     regions: publish<this, object[]>;
-    @publish("", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"])
-    sampleData: publish<this, string>;
 
     @publish([], "widgetArray", "Layers", null, { render: false })
     layers: publish<this, XYAxis[]>;

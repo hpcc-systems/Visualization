@@ -171,34 +171,43 @@ export class SimpleSelection extends SelectionBase {
                     ;
             })
             .on("click.SimpleSelection", function () {
-                if (!context._skipBringToTop) {
-                    this.parentNode.appendChild(this);
-                }
-                const element = d3Select(this);
-                const wasSelected = element.classed("selected");
-                context._widgetElement.selectAll(".selected")
-                    .classed("selected", false)
-                    .classed("deselected", true)
-                    .attr("filter", null)
-                    ;
-                if (!wasSelected) {
-                    element
-                        .classed("selected", true)
-                        .classed("deselected", false)
-                        .attr("filter", context.svgGlowID() ? `url(#${context.svgGlowID()})` : null)
-                        ;
-                }
+                context.click(this);
             })
             .on("mouseover.SimpleSelection", function () {
-                d3Select(this)
-                    .classed("over", true)
-                    ;
+                context.mouseOver(this);
             })
             .on("mouseout.SimpleSelection", function () {
-                d3Select(this)
-                    .classed("over", null)
-                    ;
+                context.mouseOut(this);
             })
+            ;
+    }
+    click(domNode) {
+        if (!this._skipBringToTop) {
+            domNode.parentNode.appendChild(domNode);
+        }
+        const element = d3Select(domNode);
+        const wasSelected = element.classed("selected");
+        this._widgetElement.selectAll(".selected")
+            .classed("selected", false)
+            .classed("deselected", true)
+            .attr("filter", null)
+            ;
+        if (!wasSelected) {
+            element
+                .classed("selected", true)
+                .classed("deselected", false)
+                .attr("filter", this.svgGlowID() ? `url(#${this.svgGlowID()})` : null)
+                ;
+        }
+    }
+    mouseOver(domNode) {
+        d3Select(domNode)
+            .classed("over", true)
+            ;
+    }
+    mouseOut(domNode) {
+        d3Select(domNode)
+            .classed("over", null)
             ;
     }
     selected(domNode) {

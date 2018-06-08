@@ -108,7 +108,7 @@ class DDLUpgrade {
                     for (const notify of output.notify) {
                         this._datasourceUpdates[notify] = {
                             id: ds.id,
-                            output: output.id
+                            output: output.from
                         };
                     }
                 }

@@ -116,6 +116,10 @@ export class Dashy extends SplitPanel {
         });
     }
 
+    save(): IDashboardPersist {
+        return this._dashboard.save();
+    }
+
     restore(json: IDashboardPersist): Promise<void> {
         this._elementContainer.clear();
         this._dashboard.restore(json);
@@ -264,7 +268,7 @@ export class Dashy extends SplitPanel {
 
     loadClone() {
         this._cloneEC.clear();
-        this._clone.restore(this._dashboard.save());
+        this._clone.restore(this.save());
         this._cloneEC.refresh();
         this._clone.render();
     }
@@ -296,7 +300,7 @@ export class Dashy extends SplitPanel {
         commands.addCommand("dash_save", {
             label: "Save",
             execute: () => {
-                const text = JSON.stringify(this._dashboard.save(), null, "  ");
+                const text = JSON.stringify(this.save(), null, "  ");
                 Utility.downloadBlob("JSON", text, "dashy", "json");
             }
         });

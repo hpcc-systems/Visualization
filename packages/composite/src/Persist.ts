@@ -127,5 +127,5 @@ export function create(state: any): Promise<Widget> {
 }
 
 export function clone(widget) {
-    create(Persist.serializeToObject(widget, [], true, true));
+    create(Persist.serializeToObject(widget, undefined, true, true));
 }

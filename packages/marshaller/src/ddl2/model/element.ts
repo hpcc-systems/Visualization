@@ -4,6 +4,7 @@ import { ChartPanel } from "@hpcc-js/layout";
 import { find } from "@hpcc-js/util";
 import { Activity } from "../activities/activity";
 import { HipiePipeline } from "../activities/hipiepipeline";
+import { Mappings } from "../activities/project";
 import { Visualization } from "./visualization";
 
 export class State extends PropertyExt {
@@ -53,7 +54,7 @@ export class Element extends PropertyExt {
     visualization(_?: Visualization): Visualization | this {
         if (!arguments.length) return this._visualization;
         this._visualization = _;
-        this._visualization.chartPanel()
+        this._visualization
             .on("click", (row: any, col: string, sel: boolean) => {
                 if (sel) {
                     this.state().selection([row.__lparam || row]);
@@ -114,6 +115,14 @@ export class Element extends PropertyExt {
 
     chart(): Widget {
         return this._vizChartPanel.chartPanel().widget();
+    }
+
+    mappings(): Mappings;
+    mappings(_: Mappings): this;
+    mappings(_?: Mappings): Mappings | this {
+        if (!arguments.length) return this._vizChartPanel.mappings();
+        this._vizChartPanel.mappings(_);
+        return this;
     }
 
     pipeline(activities: Activity[]): this {

@@ -1,3 +1,5 @@
+import { classID2Meta, ClassMeta } from "@hpcc-js/util";
+
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
     baseCtors.forEach(baseCtor => {
         Object.getOwnPropertyNames(baseCtor).forEach(name => {
@@ -7,12 +9,6 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
             }
         });
     });
-}
-
-export interface ClassMeta {
-    moduleName: string;
-    className: string;
-    memberName?: string;
 }
 
 export class Class {
@@ -31,13 +27,7 @@ export class Class {
     }
 
     classMeta(): ClassMeta {
-        const info = this.classID().split("_");
-        const classInfo = info[1].split(".");
-        return {
-            moduleName: `@hpcc-js/${info[0]}`,
-            className: classInfo[0],
-            memberName: classInfo[1]
-        };
+        return classID2Meta(this.classID());
     }
 
     implements(source) {

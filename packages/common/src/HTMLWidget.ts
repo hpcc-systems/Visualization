@@ -94,19 +94,23 @@ export class HTMLWidget extends Widget {
 
     reposition(pos?) {
         // const retVal = super.reposition(pos);
-        this._placeholderElement
-            .style("left", pos.x + "px")
-            .style("top", pos.y + "px")
-            ;
+        if (this._placeholderElement) {
+            this._placeholderElement
+                .style("left", pos.x + "px")
+                .style("top", pos.y + "px")
+                ;
+        }
         return this;
     }
 
     resize(size?) {
         const retVal = super.resize(size);
-        this._placeholderElement
-            .style("width", this._size.width + "px")
-            .style("height", this._size.height + "px")
-            ;
+        if (this._placeholderElement) {
+            this._placeholderElement
+                .style("width", this._size.width + "px")
+                .style("height", this._size.height + "px")
+                ;
+        }
         return retVal;
     }
 

@@ -5,16 +5,19 @@ import { hierarchy as d3Hierarchy, treemap as d3Treemap } from "d3-hierarchy";
 import "../src/Treemap.css";
 
 export class TreemapColumn extends PropertyExt {
-    _owner;
-    constructor(owner) {
+    constructor(readonly _owner: Treemap) {
         super();
-        this._owner = owner;
     }
+
+    valid(): boolean {
+        return !!this.column();
+    }
+
     column: { (): string; (_: string): TreemapColumn; };
 }
 TreemapColumn.prototype._class += " tree_Dendrogram.TreemapColumn";
 
-TreemapColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+TreemapColumn.prototype.publish("column", null, "set", "Field", function (this: TreemapColumn) { return this._owner ? this._owner.columns() : []; }, { optional: true });
 
 // ===
 export class Treemap extends HTMLWidget {
@@ -29,7 +32,7 @@ export class Treemap extends HTMLWidget {
     }
 
     treemapData() {
-        if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
+        if (!this.mappings().filter(mapping => mapping.valid()).length) {
             return this.data();
         }
 

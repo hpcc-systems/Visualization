@@ -24,6 +24,10 @@ export class SankeyColumn extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.column();
+    }
+
     aggregate(values) {
         switch (this.aggrType()) {
             case null:
@@ -71,7 +75,7 @@ export class Sankey extends SVGWidget {
         };
         if (this.data().length === 0) return retVal;
         const vertexIndex = {};
-        const mappings = this.mappings().filter(function (mapping) { return mapping.column(); });
+        const mappings = this.mappings().filter(mapping => mapping.valid());
         mappings.forEach(function (mapping, idx) {
             const view = this._db.rollupView([mapping.column()]);
             view.entries().forEach(function (row) {

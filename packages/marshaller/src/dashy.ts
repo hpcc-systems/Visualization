@@ -17,8 +17,13 @@ const logger = scopedLogger("marshaller/dashy");
 import "../src/dashy.css";
 
 class Palette extends PropertyExt {
-    constructor() {
+
+    constructor(readonly _owner: Palettes) {
         super();
+    }
+
+    valid(): boolean {
+        return false;
     }
 }
 Palette.prototype._class += " Palette";

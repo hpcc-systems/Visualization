@@ -4,30 +4,61 @@ import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "
 
 import "../src/Opportunity.css";
 
-function Column(owner) {
-    PropertyExt.call(this);
-    this._owner = owner;
+export class Column extends PropertyExt {
+
+    constructor(readonly _owner) {
+        super();
+    }
+
+    valid(): boolean {
+        return !!this.headerLabel();
+    }
 }
-Column.prototype = Object.create(PropertyExt.prototype);
-Column.prototype.constructor = Column;
 Column.prototype._class += " other_Opportunity.Column";
-Column.prototype.publish("headerLabel", null, "string", "Header value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
-function MouseHoverColumn(owner) {
-    PropertyExt.call(this);
-    this._owner = owner;
+
+export interface Column {
+    headerLabel(): string;
+    headerLabel(_: string): this;
 }
-MouseHoverColumn.prototype = Object.create(PropertyExt.prototype);
-MouseHoverColumn.prototype.constructor = MouseHoverColumn;
+Column.prototype.publish("headerLabel", null, "string", "Header value of a table", function (this: Column) { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
+
+export class MouseHoverColumn extends PropertyExt {
+    constructor(readonly _owner) {
+        super();
+    }
+
+    valid(): boolean {
+        return !!this.hoverValue() && !!this.hoverList();
+    }
+}
 MouseHoverColumn.prototype._class += " other_Opportunity.MouseHoverColumn";
+
+export interface MouseHoverColumn {
+    hoverValue(): string;
+    hoverValue(_: string): this;
+    hoverList(): string;
+    hoverList(_: string): this;
+}
 MouseHoverColumn.prototype.publish("hoverValue", null, "string", "Hover value of a table", function () { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
 MouseHoverColumn.prototype.publish("hoverList", null, "set", "Hover value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true });
-function ColumnDropdown(owner) {
-    PropertyExt.call(this);
-    this._owner = owner;
+
+export class ColumnDropdown extends PropertyExt {
+    constructor(readonly _owner) {
+        super();
+    }
+
+    valid(): boolean {
+        return !!this.columnIndex() && !!this.ColumnDropdownList();
+    }
 }
-ColumnDropdown.prototype = Object.create(PropertyExt.prototype);
-ColumnDropdown.prototype.constructor = ColumnDropdown;
 ColumnDropdown.prototype._class += " other_Opportunity.ColumnDropdown";
+
+export interface ColumnDropdown {
+    columnIndex(): number;
+    columnIndex(_: number): this;
+    ColumnDropdownList(): string;
+    ColumnDropdownList(_: string): this;
+}
 ColumnDropdown.prototype.publish("columnIndex", null, "number", "Column index for display context data based on column dropdown list selction", {}, { tags: ["Basic", "Shared"], });
 ColumnDropdown.prototype.publish("ColumnDropdownList", null, "set", "column value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true, });
 

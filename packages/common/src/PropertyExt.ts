@@ -63,6 +63,11 @@ function isPrivate(obj, key) {
     return obj[__private_ + key] || obj[__private_ + __meta_ + key];
 }
 
+export interface IAutoExpand extends PropertyExt {
+    //  AutoExpand items may have "incomplete" instances while the user is editing them in the PropertyEditor
+    valid(): boolean;
+}
+
 export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial";
 export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
 export interface IPublishExt {
@@ -70,7 +75,7 @@ export interface IPublishExt {
     disable?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
-    autoExpand?;
+    autoExpand?: { new(owner: PropertyExt): IAutoExpand };
     render?: boolean;
     icons?: string[];
     editor_input?: (context, widget, cell, param) => void;
@@ -304,13 +309,82 @@ export class PropertyExt extends Class {
         });
     }
 
-    propertyWalker(filter, visitor) {
+    widgetWalker(visitor: (item: PropertyExt) => void) {
+        visitor(this);
+        this.publishedProperties(false, true).forEach(publishItem => {
+            switch (publishItem.type) {
+                case "widget":
+                    const widget: PropertyExt = this[publishItem.id]();
+                    if (widget) {
+                        widget.widgetWalker(visitor);
+                    }
+                    break;
+                case "widgetArray":
+                case "propertyArray":
+                    const widgets: PropertyExt[] = this[publishItem.id]();
+                    if (widgets) {
+                        widgets.forEach((widget) => {
+                            widget.widgetWalker(visitor);
+                        });
+                    }
+                    break;
+            }
+        });
+    }
+
+    propertyWalker(visitor: (context: this, publishItem: Meta) => void, filter?: (context: this, publishItem: Meta) => boolean) {
         const context = this;
         this.publishedProperties(false, true).forEach(function (publishItem) {
-            if (typeof (filter) !== "function" || !filter(context, publishItem)) {
+            if (typeof (filter) !== "function" || filter(context, publishItem)) {
                 visitor(context, publishItem);
             }
         });
+    }
+
+    serialize(): {} | undefined {
+        const retVal = {
+            __class: this.classID()
+        };
+        for (const prop of this.publishedProperties()) {
+            if (prop.id === "fields") continue;
+            const val = (this as any)[prop.id]();
+            switch (prop.type) {
+                case "propertyArray":
+                    if ((this as any)[`${prop.id}_modified`]()) {
+                    }
+                    const serialization = val.map(item => item.serialize()).filter(item => item !== undefined);
+                    if (serialization) {
+                        retVal[prop.id] = serialization;
+                    }
+                    break;
+                default:
+                    if ((this as any)[`${prop.id}_modified`]()) {
+                        if (!(val instanceof Object)) {
+                            retVal[prop.id] = val;
+                        }
+                    }
+            }
+        }
+        return retVal;
+    }
+
+    deserialize(props): this {
+        if (!props) return this;
+        for (const prop of this.publishedProperties()) {
+            const val = props[prop.id];
+            if (val !== undefined) {
+                switch (prop.type) {
+                    case "propertyArray":
+                        if (prop.ext && prop.ext.autoExpand) {
+                            this[`${prop.id}`](val.map(item => new prop.ext.autoExpand(this).deserialize(item)));
+                        }
+                        break;
+                    default:
+                        this[`${prop.id}`](val);
+                }
+            }
+        }
+        return this;
     }
 
     publishedProperty(id) {
@@ -406,7 +480,7 @@ export class PropertyExt extends Class {
         };
         this[id + "_modified"] = function () {
             if (type === "propertyArray") {
-                return this[__prop_data_ + id] && (this[__prop_data_ + id].length > (ext.autoExpand ? 1 : 0));
+                return this[__prop_data_ + id] && (this[__prop_data_ + id].some(item => item.valid()));
             }
             return this[__prop_data_ + id] !== undefined;
         };

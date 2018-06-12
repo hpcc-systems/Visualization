@@ -6,18 +6,20 @@ import { select as d3Select } from "d3-selection";
 import "../src/Indented.css";
 
 export class IndentedColumn extends PropertyExt {
-    _owner;
 
-    constructor(owner) {
+    constructor(readonly _owner: Indented) {
         super();
-        this._owner = owner;
+    }
+
+    valid(): boolean {
+        return !!this.column();
     }
 
     column: (_?: string) => string | IndentedColumn;
 }
 IndentedColumn.prototype._class += " tree_Dendrogram.IndentedColumn";
 
-IndentedColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+IndentedColumn.prototype.publish("column", null, "set", "Field", function (this: IndentedColumn) { return this._owner ? this._owner.columns() : []; }, { optional: true });
 
 // ===
 export class Indented extends SVGZoomWidget {
@@ -67,7 +69,7 @@ export class Indented extends SVGZoomWidget {
             };
             return retVal.children.length === 1 ? retVal.children[0] : retVal;
         } else {
-            if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
+            if (!this.mappings().filter(mapping => mapping.valid()).length) {
                 return this.data();
             }
             const view = this._db.rollupView(this.mappings().map(function (mapping) { return mapping.column(); }));

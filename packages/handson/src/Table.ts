@@ -13,6 +13,10 @@ class Column extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.label();
+    }
+
     label: { (): string; (_: string): Column };
     label_exists: () => boolean;
     minRange: { (): number; (_: number): Column };

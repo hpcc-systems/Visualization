@@ -28,6 +28,10 @@ export class GroupByColumn extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.label();
+    }
+
     toDDL(): string {
         return this.label();
     }
@@ -109,6 +113,10 @@ export class AggregateField extends PropertyExt {
     constructor(owner: GroupBy) {
         super();
         this._owner = owner;
+    }
+
+    valid(): boolean {
+        return !!this.fieldID();
     }
 
     toDDL(): DDL2.IAggregate | DDL2.ICount {
@@ -251,7 +259,7 @@ export class GroupBy extends Activity {
     }
 
     validGroupBy(): GroupByColumn[] {
-        return this.column().filter(groupBy => !!groupBy.label());
+        return this.column().filter(groupBy => groupBy.valid());
     }
 
     exists(): boolean {
@@ -286,11 +294,11 @@ export class GroupBy extends Activity {
     }
 
     validComputedFields() {
-        return this.computedFields().filter(computedField => computedField.fieldID());
+        return this.computedFields().filter(computedField => computedField.valid());
     }
 
-    hasComputedFields() {
-        return this.validComputedFields().length;
+    hasComputedFields(): boolean {
+        return this.validComputedFields().length > 0;
     }
 
     computeFields(): DDL2.IField[] {

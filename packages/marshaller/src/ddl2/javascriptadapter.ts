@@ -1,5 +1,6 @@
-import { ClassMeta, PropertyExt } from "@hpcc-js/common";
+import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
+import { classID2Meta, ClassMeta, isArray } from "@hpcc-js/util";
 import { Activity, stringify } from "./activities/activity";
 import { Databomb, Form } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
@@ -7,24 +8,48 @@ import { Dashboard } from "./dashboard";
 import { DDLAdapter } from "./ddl";
 import { ElementContainer } from "./model/element";
 
+type WidgetImport = { [moduleID: string]: { [classID: string]: boolean } };
+
+class Imports {
+    _moduleMap: WidgetImport = {};
+
+    append(widgetMeta: ClassMeta) {
+        if (!this._moduleMap[widgetMeta.module]) {
+            this._moduleMap[widgetMeta.module] = {};
+        }
+        this._moduleMap[widgetMeta.module][widgetMeta.class] = true;
+    }
+
+    write(): string {
+        const importJS: string[] = [];
+        for (const moduleID in this._moduleMap) {
+            const classIDs: string[] = [];
+            for (const classID in this._moduleMap[moduleID]) {
+                classIDs.push(classID);
+            }
+            classIDs.sort();
+            importJS.push(`import { ${classIDs.join(", ")} } from "${moduleID}";`);
+        }
+        return importJS.join("\n");
+    }
+}
+
 export function createProps(pe: PropertyExt): { [key: string]: any } {
     const retVal: { [key: string]: any } = {};
     for (const meta of pe.publishedProperties()) {
-        if ((pe as any)[meta.id + "_modified"]() && meta.id !== "fields") {
-            retVal[meta.id] = (pe as any)[meta.id]();
+        if (pe[meta.id + "_modified"]() && meta.id !== "fields") {
+            const val = pe[meta.id]();
+            switch (meta.type) {
+                case "propertyArray":
+                    const serialization = val.map(item => createProps(item));
+                    if (serialization) {
+                        retVal[meta.id] = serialization;
+                    }
+                    break;
+                default:
+                    retVal[meta.id] = val;
+            }
         }
-    }
-    return retVal;
-}
-
-interface WidgetMeta extends ClassMeta {
-    js: string;
-}
-
-function joinWithPrefix(props: DDL2.IWidgetProperties, joinStr: string, postFix: string = ""): string {
-    let retVal: string = "";
-    for (const prop in props) {
-        retVal += `${joinStr}.${prop}(${JSON.stringify(props[prop])})${postFix}`;
     }
     return retVal;
 }
@@ -193,24 +218,38 @@ export class JavaScriptAdapter {
         return retVal;
     }
 
-    private writeWidget(dataview: DDL2.IView): WidgetMeta {
-        /*
-        const multiChartPanel = dataview.multiChartPanel();
-        const chart = multiChartPanel.chart();
-        const meta = chart.classMeta();
-        const props = this.writeWidgetProps(chart);
-        const vizID = multiChartPanel.id();
-        */
-        return {
-            moduleName: dataview.visualization.moduleName,
-            className: dataview.visualization.className,
-            memberName: dataview.visualization.memberName,
-            js: `    export const ${dataview.visualization.id} = new ChartPanel()
+    private joinWithPrefix(props: DDL2.IWidgetProperties, imports: Imports, owner: string, joinStr: string, postFix: string = ""): string {
+        let retVal: string = "";
+        let meta: ClassMeta;
+        if (props.__class) {
+            meta = classID2Meta(props.__class);
+            imports.append(meta);
+            retVal += `((${owner}) => {${joinStr}const retVal = new ${meta.class}(${owner});${joinStr}return retVal`;
+        }
+        for (const prop in props) {
+            if (prop === "__class") {
+            } else if (isArray(props[prop])) {
+                const arr = `${(props[prop] as any[]).map(item => this.joinWithPrefix(item, imports, props.__class ? "owner" : "", joinStr + "    "))}`;
+                if (arr) {
+                    retVal += `${joinStr}    .${prop}([${arr}])${postFix}`;
+                }
+            } else {
+                retVal += `${joinStr}    .${prop}(${JSON.stringify(props[prop])})${postFix}`;
+            }
+        }
+        if (props.__class) {
+            retVal += `;
+            })(${owner ? "retVal" : ""})`;
+        }
+        return retVal;
+    }
+
+    private writeWidget(dataview: DDL2.IView, imports: Imports): string {
+        return `    export const ${dataview.visualization.id} = new ChartPanel()
         .id("${dataview.visualization.id}")
         .title("${dataview.visualization.title}")
-        .widget(new ${dataview.visualization.className}()${joinWithPrefix(dataview.visualization.properties, "\n            ", "")})
-        ;`
-        };
+        .widget(${this.joinWithPrefix(dataview.visualization.properties, imports, "", "\n            ", "")})
+        ;`;
     }
 
     private writeElement(dataview: DDL2.IView) {
@@ -228,6 +267,7 @@ const ${dataview.id} = new marshaller.Element(ec)
     .pipeline([
         ${activities.join(",\n        ")}
     ])
+    .mappings(new marshaller.Mappings().transformations(${stringify(dataview.visualization.mappings.transformations)}))
     .chartPanel(viz.${dataview.visualization.id})
     .on("selectionChanged", () => {
         ${updates.join("\n        ")}
@@ -247,26 +287,12 @@ ec.append(${dataview.id});
 
     private writeWidgets(): { widgetImports: string, widgetDefs: string } {
         const jsDef: string[] = [];
-        const widgetImport: { [moduleID: string]: { [classID: string]: boolean } } = {};
+        const imports = new Imports();
         for (const dataview of this._ddlSchema.dataviews) {
-            const widgetMeta = this.writeWidget(dataview);
-            if (!widgetImport[widgetMeta.moduleName]) {
-                widgetImport[widgetMeta.moduleName] = {};
-            }
-            widgetImport[widgetMeta.moduleName][widgetMeta.className] = true;
-            jsDef.push(widgetMeta.js);
-        }
-        const importJS: string[] = [];
-        for (const moduleID in widgetImport) {
-            const classIDs: string[] = [];
-            for (const classID in widgetImport[moduleID]) {
-                classIDs.push(classID);
-            }
-            classIDs.sort();
-            importJS.push(`import { ${classIDs.join(", ")} } from "${moduleID}";`);
+            jsDef.push(this.writeWidget(dataview, imports));
         }
         return {
-            widgetImports: importJS.join("\n"),
+            widgetImports: imports.write(),
             widgetDefs: jsDef.join("\n\n")
         };
     }

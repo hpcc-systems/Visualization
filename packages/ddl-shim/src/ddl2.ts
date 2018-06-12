@@ -245,14 +245,15 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 }
 
 //  Visualization  ============================================================
-export type IWidgetProperties = { [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] };
+export type IWidgetProperties = {
+    __class?: string;
+    [propID: string]: string | string[] | number | boolean | IWidget | IWidget[]
+};
 
 export interface IWidget {
     id: string;
     chartType: string;
-    moduleName: string;
-    className: string;
-    memberName?: string;
+    __class: string;
     properties: IWidgetProperties;
 }
 

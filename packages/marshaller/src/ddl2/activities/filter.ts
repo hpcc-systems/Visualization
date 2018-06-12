@@ -40,6 +40,10 @@ export class ColumnMapping extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.localField() && !!this.remoteField();
+    }
+
     toDDL(): DDL2.IMapping {
         return {
             remoteFieldID: this.remoteField(),
@@ -138,6 +142,10 @@ export class Filter extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.source() && this.validMappings().length > 0;
+    }
+
     toDDL(): DDL2.IFilterCondition {
         return {
             viewID: this.source(),
@@ -172,7 +180,7 @@ export class Filter extends PropertyExt {
     }
 
     validMappings(): ColumnMapping[] {
-        return this.mappings().filter(mapping => !!mapping.localField() && !!mapping.remoteField());
+        return this.mappings().filter(mapping => mapping.valid());
     }
 
     appendMappings(mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {

@@ -109,40 +109,42 @@ export class Border2 extends HTMLWidget {
 
     render(callback?: (w: Widget) => void): this {
         const retVal = super.render(w => {
+            if (this._topWA) {
 
-            this._topWA
-                .widget(this.top())
-                .overlay(this.topOverlay())
-                .render(true).then(async topBBox => {
-                    const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true) as BBox;
-                    const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true) as BBox;
-                    const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true) as BBox;
+                this._topWA
+                    .widget(this.top())
+                    .overlay(this.topOverlay())
+                    .render(true).then(async topBBox => {
+                        const leftBBox: BBox = await this._leftWA.widget(this.left()).render(true) as BBox;
+                        const rightBBox: BBox = await this._rightWA.widget(this.right()).render(true) as BBox;
+                        const bottomBBox: BBox = await this._bottomWA.widget(this.bottom()).render(true) as BBox;
 
-                    const promises = [
-                        this._topWA
-                            .resize({ width: this.width(), height: topBBox.height })
-                            .render(),
-                        this._leftWA
-                            .resize({ width: leftBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
-                            .render(),
-                        this._rightWA
-                            .resize({ width: rightBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
-                            .render(),
-                        this._centerWA
-                            .widget(this.center())
-                            .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
-                            .render(),
-                        this._bottomWA
-                            .resize({ width: this.width(), height: bottomBBox.height })
-                            .render()
-                    ];
-                    Promise.all(promises).then(promises => {
-                        if (callback) {
-                            callback(this);
-                        }
-                    });
-                })
-                ;
+                        const promises = [
+                            this._topWA
+                                .resize({ width: this.width(), height: topBBox.height })
+                                .render(),
+                            this._leftWA
+                                .resize({ width: leftBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
+                                .render(),
+                            this._rightWA
+                                .resize({ width: rightBBox.width, height: this.height() - (topBBox.height + bottomBBox.height) })
+                                .render(),
+                            this._centerWA
+                                .widget(this.center())
+                                .resize({ width: this.width() - (leftBBox.width + rightBBox.width), height: this.height() - (topBBox.height + bottomBBox.height) })
+                                .render(),
+                            this._bottomWA
+                                .resize({ width: this.width(), height: bottomBBox.height })
+                                .render()
+                        ];
+                        Promise.all(promises).then(promises => {
+                            if (callback) {
+                                callback(this);
+                            }
+                        });
+                    })
+                    ;
+            }
         });
         return retVal;
     }

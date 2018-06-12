@@ -28,7 +28,7 @@ export class Carousel extends HTMLWidget {
             .style("width", `${width}px`)
             .style("height", `${this.height()}px`)
             ;
-        const widgetElements = this._root.selectAll(`#${this.id()}_root > .carouselItem`).data(this.widgets());
+        const widgetElements = this._root.selectAll(`#${this.id()}_root > .carouselItem`).data(this.widgets(), d => d.id());
         const update = widgetElements.enter().append("div")
             .attr("class", "carouselItem")
             .each(function (w) {

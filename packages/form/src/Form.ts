@@ -207,7 +207,6 @@ export class Form extends HTMLWidget {
                 inputWidgetArray.forEach(function (inputWidget2, idx) {
                     element2.append("td")
                         .attr("class", "prompt")
-                        .text(inputWidget2.label() + ":")
                         ;
                     const input = element2.append("td")
                         .attr("class", "input")
@@ -239,6 +238,16 @@ export class Form extends HTMLWidget {
                             });
                         });
                     }
+                });
+            })
+            .merge(rows)
+            .each(function (inputWidget, i) {
+                const element2 = d3Select(this);
+                const inputWidgetArray = inputWidget instanceof WidgetArray ? inputWidget.content() : [inputWidget];
+                inputWidgetArray.forEach(function (inputWidget2, idx) {
+                    element2.select("td.prompt")
+                        .text(inputWidget2.label() + ":")
+                        ;
                 });
             })
             ;
@@ -299,7 +308,7 @@ export class Form extends HTMLWidget {
 Form.prototype._class += " form_Form";
 
 Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
-Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets");
+Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets", null, { render: false });
 Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
 Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
 Form.prototype.publish("allowEmptyRequest", false, "boolean", "Allow Blank Form to be Submitted");

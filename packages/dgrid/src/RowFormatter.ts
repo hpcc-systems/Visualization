@@ -1,7 +1,7 @@
 const LINE_SPLITTER = `<br><hr class='dgrid-fakeline'>`;
 const LINE_SPLITTER2 = `<br><hr class='dgrid-fakeline' style='visibility: hidden'>`;
 
-export interface IColumn {
+export interface ColumnType {
     field: string;
     leafID: string;
     label: string;
@@ -9,28 +9,36 @@ export interface IColumn {
     className: string;
     sortable: boolean;
     width?: number;
-    formatter?: (cell: any, row: object) => string;
-    children?: IColumn[];
+    formatter?: CellFormatter;
+    renderCell?: CellRenderer;
+    children?: ColumnType[];
 }
+export interface RowType {
+    __hpcc_id: number;
+    __origRow: any[];
+    [colIdx: number]: any;
+}
+export type CellFormatter = (this: ColumnType, cell: any, row: RowType) => string;
+export type CellRenderer = (this: ColumnType, row: RowType, cell: any, cellElement: HTMLElement) => HTMLElement | void;
 
 export class RowFormatter {
-    private _columns: IColumn[];
+    private _columns: ColumnType[];
     private _flattenedColumns = [];
     private _columnIdx = {};
     private _formattedRow = {};
 
-    constructor(columns: IColumn[]) {
+    constructor(columns: ColumnType[]) {
         this._columns = columns;
         this.flattenColumns(columns);
     }
 
-    flattenColumns(columns: IColumn[]) {
+    flattenColumns(columns: ColumnType[]) {
         for (const column of columns) {
             this.flattenColumn(column);
         }
     }
 
-    flattenColumn(column: IColumn) {
+    flattenColumn(column: ColumnType) {
         if (column.children) {
             for (const childColumn of column.children) this.flattenColumn(childColumn);
         } else {
@@ -45,7 +53,7 @@ export class RowFormatter {
         return this.row();
     }
 
-    calcDepth(columns: IColumn[], row) {
+    calcDepth(columns: ColumnType[], row) {
         let maxChildDepth = 1;
         for (const column of columns) {
             if (column.children) {
@@ -61,7 +69,7 @@ export class RowFormatter {
         return maxChildDepth;
     }
 
-    formatCell(column: IColumn, cell, maxChildDepth) {
+    formatCell(column: ColumnType, cell, maxChildDepth) {
         if (column.children) {
             let childDepth = 0;
             if (!(cell instanceof Array)) {
@@ -90,7 +98,7 @@ export class RowFormatter {
         }
     }
 
-    formatRow(columns: IColumn[], row: { [key: string]: any } = [], rowIdx: number = 0) {
+    formatRow(columns: ColumnType[], row: { [key: string]: any } = [], rowIdx: number = 0) {
         const maxChildDepth = this.calcDepth(columns, row);
         for (const column of columns) {
             this.formatCell(column, row[column.leafID], maxChildDepth);

@@ -1,5 +1,5 @@
 import { Result, XSDSchema, XSDXMLNode } from "@hpcc-js/comms";
-import { Deferred, domConstruct, IColumn, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
+import { ColumnType, Deferred, domConstruct, QueryResults, RowFormatter } from "@hpcc-js/dgrid";
 
 function entitiesEncode(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -37,12 +37,12 @@ export class Store {
         return this._columns;
     }
 
-    schema2Columns(parentNode: XSDXMLNode, prefix: string = ""): IColumn[] {
+    schema2Columns(parentNode: XSDXMLNode, prefix: string = ""): ColumnType[] {
         if (!parentNode) return [];
         return parentNode.children().filter(node => node.name.indexOf("__hidden", node.name.length - "__hidden".length) === -1).map((node, idx) => {
             const label = node.name;
             const keyed = node.attrs["hpcc:keyed"];
-            const column: IColumn = {
+            const column: ColumnType = {
                 field: prefix + label,
                 leafID: label,
                 idx,
@@ -53,7 +53,7 @@ export class Store {
             };
             const children = this.schema2Columns(node, prefix + label + "_");
             if (children.length) {
-                column.width += 10 + children.reduce((prev: number, childNode: IColumn) => {
+                column.width += 10 + children.reduce((prev: number, childNode: ColumnType) => {
                     return prev + childNode.width!;
                 }, 0);
                 column.children = children;

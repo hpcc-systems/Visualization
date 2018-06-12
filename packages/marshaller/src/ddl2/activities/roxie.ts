@@ -2,7 +2,7 @@ import { PropertyExt, publish } from "@hpcc-js/common";
 import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { compare, debounce, hashSum } from "@hpcc-js/util";
-import { Element, ElementContainer } from "../model";
+import { Element, ElementContainer } from "../model/element";
 import { Activity, ReferencedFields } from "./activity";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {

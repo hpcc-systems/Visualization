@@ -1,7 +1,7 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { SVGWidget } from "@hpcc-js/common";
+import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
-import * as D3Cloud from "d3-cloud";
+import D3Cloud from "d3-cloud";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { event as d3Event } from "d3-selection";
 import { zoom as d3Zoom } from "d3-zoom";
@@ -9,10 +9,17 @@ import { zoom as d3Zoom } from "d3-zoom";
 import "../src/WordCloud.css";
 
 export class WordCloud extends SVGWidget {
+    static __inputs: InputField[] = [{
+        id: "label",
+        type: "string"
+    }, {
+        id: "value",
+        type: "number"
+    }];
+
     private _prevOffsetX;
     private _prevOffsetY;
     private _prevZoom;
-    private _vizData;
     private _root;
     private _canvas;
     private _d3Cloud;
@@ -22,31 +29,26 @@ export class WordCloud extends SVGWidget {
         super();
         I2DChart.call(this);
         ITooltip.call(this);
+        Utility.SimpleSelectionMixin.call(this);
 
         this._prevOffsetX = this.offsetX();
         this._prevOffsetY = this.offsetY();
         this._prevZoom = this.zoom();
-        this._vizData = [];
     }
 
-    data(): any;
-    data(_: any): this;
-    data(_?: any): this | any {
-        const retVal = SVGWidget.prototype.data.apply(this, arguments);
-        if (arguments.length) {
-            this._vizData = _.map(function (row) {
-                const retVal2 = {};
-                for (const key in row) {
-                    retVal2["__viz_" + key] = row[key];
-                }
-                return retVal2;
-            });
-        }
-        return retVal;
+    calcData() {
+        return this.data().map(row => {
+            return {
+                __viz_0: row[0],
+                __viz_1: row[1],
+                __viz_2: row[2]
+            };
+        });
     }
 
     enter(domNode, element) {
-        SVGWidget.prototype.enter.apply(this, arguments);
+        super.enter(domNode, element);
+        this._selection.widgetElement(element);
 
         this._root = element.append("g");
         this._canvas = document.createElement("canvas");
@@ -64,10 +66,6 @@ export class WordCloud extends SVGWidget {
             ;
         element.call(this._d3Zoom);
 
-        this._d3Cloud = new D3Cloud()
-            .canvas(this._canvas)
-            ;
-
         this
             .tooltipHTML(function (d) {
                 const columns = context.columns();
@@ -78,17 +76,22 @@ export class WordCloud extends SVGWidget {
     }
 
     update(domNode, element) {
-        SVGWidget.prototype.update.apply(this, arguments);
+        super.update(domNode, element);
 
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
 
+        this._d3Cloud = D3Cloud()
+            .canvas(() => this._canvas)
+            ;
+
         this.zoomed(this, [this.offsetX(), this.offsetY()], this.zoom());
 
+        const data = this.calcData();
         const context = this;
-        const extent = d3Extent(this._vizData, function (d: any) { return d.__viz_1; });
+        const extent = d3Extent(data, function (d: any) { return d.__viz_1; });
         let scaler;
         switch (this.scaleMode()) {
             case "log":
@@ -110,18 +113,19 @@ export class WordCloud extends SVGWidget {
 
         this._d3Cloud.stop()
             .size([this.width(), this.height()])
-            .words(this._vizData)
+            .words(data)
             .font(this.fontFamily())
             .padding(this.padding())
             .spiral(this.spiral())
             .text(function (d) {
-                return d.__viz_0;
+                return d.__viz_0.trim();
             })
             .fontSize(function (d) {
                 return scale(d.__viz_1);
             })
-            // tslint:disable-next-line:no-bitwise
-            .rotate(function () { return angleDomain(~~(Math.random() * context.angleCount())); })
+            .rotate((d, i) => angleDomain(i % context.angleCount()))
+            .on("word", w => {
+            })
             .on("end", draw)
             .start()
             ;
@@ -132,6 +136,7 @@ export class WordCloud extends SVGWidget {
                 ;
             text.enter().append("text")
                 .attr("text-anchor", "middle")
+                .call(context._selection.enter.bind(context._selection))
                 .text(function (d) { return d.__viz_0; })
                 .on("click", function (d) {
                     context.click({ label: d.__viz_0, weight: d.__viz_1 }, "", true);
@@ -234,10 +239,13 @@ export class WordCloud extends SVGWidget {
     tooltipOffset: { (): number; (_: number): WordCloud };
     tooltipOffset_exists: () => boolean;
 
+    //  SimpleSelectionMixin
+    _selection: Utility.SimpleSelection;
 }
-WordCloud.prototype._class += " other_WordCloud";
+WordCloud.prototype._class += " chart_WordCloud";
 WordCloud.prototype.implements(I2DChart.prototype);
 WordCloud.prototype.implements(ITooltip.prototype);
+WordCloud.prototype.mixin(Utility.SimpleSelectionMixin);
 
 WordCloud.prototype.publish("paletteID", "default", "set", "Palette ID", WordCloud.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 WordCloud.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

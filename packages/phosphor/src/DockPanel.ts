@@ -52,6 +52,10 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return this.getWidgetAdapter(widget).isVisible;
     }
 
+    widgetAdapters(): WidgetAdapter[] {
+        return this._dock.content();
+    }
+
     widgets(): Widget[] {
         return this._dock.content().map(wa => wa.widget);
     }
@@ -79,28 +83,35 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             ;
 
         this._dock.update();
-
-        const context = this;
-        setTimeout(() => {
-            const tabBars = element.selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
-            let refit = false;
-            tabBars.each(function () {
-                const tabBar = d3Select(this);
-                const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
-                const hide = context.hideSingleTabs() && tabsCount === 1;
-                if (hide !== tabBar.classed("hide")) {
-                    tabBar.classed("hide", hide);
-                    refit = true;
-                }
-            });
-            if (refit) {
-                this._dock.fit();
-            }
-        }, 0);
     }
 
     exit(domNode, element) {
         super.exit(domNode, element);
+    }
+
+    render(callback) {
+        const context = this;
+        return super.render((w) => {
+            setTimeout(() => {
+                const tabBars = this.element().selectAll(".p-Widget.p-TabBar.p-DockPanel-tabBar");
+                let refit = false;
+                tabBars.each(function () {
+                    const tabBar = d3Select(this);
+                    const tabsCount = (tabBar.node() as HTMLElement).childNodes[0].childNodes.length;
+                    const hide = context.hideSingleTabs() && tabsCount === 1;
+                    if (hide !== tabBar.classed("hide")) {
+                        tabBar.classed("hide", hide);
+                        refit = true;
+                    }
+                });
+                if (refit) {
+                    this._dock.fit();
+                }
+                if (callback) {
+                    callback(this);
+                }
+            }, 0);
+        });
     }
 
     //  Phosphor Messaging  ---
@@ -115,16 +126,17 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
     processMessage(msg: Message): void {
         switch (msg.type) {
             case "wa-activate-request":
-                const widget = (msg as Msg.WAActivateRequest).wa.widget;
+                const wa = (msg as Msg.WAActivateRequest).wa;
+                const widget = wa.widget;
                 if (this._prevActive !== widget) {
                     this._prevActive = widget;
-                    this.childActivation(widget);
+                    this.childActivation(widget, wa);
                 }
                 break;
         }
     }
 
-    childActivation(w: Widget) {
+    childActivation(w: Widget, wa: WidgetAdapter) {
     }
 
     active(): Widget {

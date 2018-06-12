@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, SVGWidget } from "@hpcc-js/common";
+import { d3SelectionType, InputField, SVGWidget } from "@hpcc-js/common";
 import { hsl as d3Hsl } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import {
@@ -13,6 +13,14 @@ import { XYAxis } from "./XYAxis";
 import "../src/Scatter.css";
 
 export class Scatter extends XYAxis {
+    static __inputs: InputField[] = [{
+        id: "label",
+        type: "any"
+    }, {
+        id: "values",
+        type: "number",
+        multi: true
+    }];
 
     constructor() {
         super();

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.9"></a>
+## [0.1.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.1.8...@hpcc-js/ddl-shim@0.1.9) (2018-06-01)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/ddl-shim
+
+<a name="0.1.8"></a>
+## [0.1.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.1.7...@hpcc-js/ddl-shim@0.1.8) (2018-05-28)
+
+
+### Bug Fixes
+
+* DDL upgrade failing on SLIDER ([fbb355c](https://github.com/hpcc-systems/Visualization/commit/fbb355c)), closes [#2579](https://github.com/hpcc-systems/Visualization/issues/2579)
+* DDL Upgrade Title and Properties are optional ([8de579b](https://github.com/hpcc-systems/Visualization/commit/8de579b)), closes [#2586](https://github.com/hpcc-systems/Visualization/issues/2586)
+
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.1.6...@hpcc-js/ddl-shim@0.1.7) (2018-05-21)
 

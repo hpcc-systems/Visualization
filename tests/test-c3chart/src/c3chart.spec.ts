@@ -1,7 +1,7 @@
 import * as c3chart from "@hpcc-js/c3chart";
 import { Area, Bar, Column, Combo, Common, Common1D, Common2D, CommonND, Donut, Gauge, Pie, Line, Scatter, Step } from "@hpcc-js/c3chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { data } from "@hpcc-js/sample-data";
+import { data } from "@hpcc-js/test-data";
 import { expect } from "chai";
 import { classDef, render } from "./coreTests";
 

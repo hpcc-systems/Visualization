@@ -14,10 +14,12 @@ switch (args[0]) {
     case "--upgrade":
         const srcPath = args[1];
         const destPath = args[2];
+        const baseUrl = args[3];
+        const wuid = args[4];
         if (srcPath && destPath && srcPath !== destPath) {
             fs.readFile(srcPath, "utf8", function (err, data) {
                 if (err) throw err;
-                const ddl2 = upgrade(JSON.parse(data), "localhost");
+                const ddl2 = upgrade(JSON.parse(data), baseUrl || "http://localhost:8010", wuid || "WUID");
                 fs.writeFile(destPath, JSON.stringify(ddl2), function (err) {
                     if (err) throw err;
                     console.log("complete");
@@ -33,7 +35,7 @@ Usage:  <command>
 
 where <command> is one of:
     --schema:  output DDL2 schmea.
-    --upgrade ddl1:  updgrade ddl version 1 to ddl version 2 (stdin, stdout).
+    --upgrade ddl1 [baseUrl wuid]:  updgrade ddl version 1 to ddl version 2.
     --help:  this message.
 `);
 }

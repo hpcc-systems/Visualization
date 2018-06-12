@@ -108,6 +108,9 @@ export interface IHeatMapMapping {
     weight: string;
 }
 
+export interface ISliderMapping {
+    label: string;
+}
 //  Source  ===================================================================
 export interface ISource {
     id: string;
@@ -148,6 +151,10 @@ export interface IChoroSource extends ISource {
     mappings: IAnyChoroMapping;
 }
 
+export interface ISliderSource extends ISource {
+    mappings: ISliderMapping;
+}
+
 //  Visualization  ============================================================
 export type VisualizationType = "PIE" | "LINE" | "BAR" | "TABLE" | "CHORO" | "GRAPH" | "HEAT_MAP" | "SLIDER" | "FORM" | "2DCHART" | "WORD_CLOUD" | "BUBBLE";
 export type VisualizationFieldDataType = "bool" | "boolean" | "integer" | "integer4" | "integer8" | "unsigned" | "unsigned4" | "unsigned8" | "float" | "double" | "real" | "real4" | "real8" | "string" | "date" | "time" | "geohash" | "dataset" | "visualization";
@@ -171,7 +178,7 @@ export interface IVisualizationField {
 
 export interface IVisualization {
     id: string;
-    title: string;
+    title?: string;
     type: VisualizationType;
     fields?: IVisualizationField[];
     properties?: {
@@ -224,6 +231,7 @@ export function isTableVisualization(viz: IAnyVisualization): viz is ITableVisua
 
 export interface ISliderVisualization extends IVisualization {
     type: "SLIDER";
+    source: ISliderSource;
     range?: number[];
 }
 export function isSliderVisualization(viz: IAnyVisualization): viz is ISliderVisualization {

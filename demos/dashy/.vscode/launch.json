@@ -8,7 +8,7 @@
             "name": "Dashy-dev",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",
+            "url": "file:///${workspaceRoot}/index-dev.html",
             /*
             "url": "file:///${workspaceRoot}/index-dev.html",
             "url": "file:///${workspaceRoot}/index-dev.html?Hostname=10.241.100.159&Port=8010&Protocol=http&Wuid=W20180509-160522&ResultName=govottotopsuspiciousaddresses_Comp_Ins4637373_DDL",

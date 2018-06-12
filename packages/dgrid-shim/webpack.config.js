@@ -43,7 +43,11 @@ module.exports = {
                 "dojo-log-api": false,
                 'dojo-publish-privates': false,
                 'dojo-sync-loader': false,
-                'dojo-test-sniff': false
+                'dojo-test-sniff': false,
+                'dijit-legacy-requires': false,
+                "dojo-loader": false,
+                "bug-for-in-skips-shadowed": false,
+                "dojo-debug-messages": false
             }
         }),
         new DojoWebpackPlugin({

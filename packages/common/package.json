@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,9 +27,10 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^0.0.73"
+    "@hpcc-js/util": "^0.0.74"
   },
   "devDependencies": {
+    "@types/d3-dsv": "1",
     "@types/d3-scale": "1",
     "colorbrewer": "1.0.0",
     "concurrently": "3.5.1",
@@ -59,7 +60,7 @@
     "tslib": "1.9.0",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.8.3",
+    "typescript": "2.9.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

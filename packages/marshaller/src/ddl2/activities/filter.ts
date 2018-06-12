@@ -1,7 +1,7 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
-import { Element, ElementContainer } from "../model";
+import { Element, ElementContainer } from "../model/element";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class ColumnMapping extends PropertyExt {
@@ -118,17 +118,17 @@ export class Filter extends PropertyExt {
     @publish([], "propertyArray", "Mappings", null, { autoExpand: ColumnMapping })
     mappings: publish<this, ColumnMapping[]>;
 
-    validate(): IActivityError[] {
+    validate(prefix: string): IActivityError[] {
         let retVal: IActivityError[] = [];
         if (this.visualizationIDs().indexOf(this.source()) < 0) {
             retVal.push({
-                source: `filter.source.${this.source()}`,
+                source: `${prefix}.source.${this.source()}`,
                 msg: `Invalid source:  "${this.source()}"`,
                 hint: `expected:  ${JSON.stringify(this.visualizationIDs())}`
             });
         }
         for (const mapping of this.validMappings()) {
-            retVal = retVal.concat(mapping.validate(`filter.${this.source}.mappings`));
+            retVal = retVal.concat(mapping.validate(`${prefix}.${this.source()}.mappings`));
         }
         return retVal;
     }
@@ -219,7 +219,7 @@ export class Filters extends Activity {
     validate(): IActivityError[] {
         let retVal: IActivityError[] = [];
         for (const filter of this.validFilters()) {
-            retVal = retVal.concat(filter.validate());
+            retVal = retVal.concat(filter.validate("filter"));
         }
         return retVal;
     }

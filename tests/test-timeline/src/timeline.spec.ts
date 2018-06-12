@@ -1,5 +1,5 @@
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
-import { } from "@hpcc-js/sample-data";
+import { } from "@hpcc-js/test-data";
 import * as layout from "@hpcc-js/timeline";
 import { MiniGantt } from "@hpcc-js/timeline";
 import { expect } from "chai";

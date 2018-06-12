@@ -1,3 +1,4 @@
+import { InputField } from "@hpcc-js/common";
 import { json as d3Json } from "d3-request";
 import { select as d3Select } from "d3-selection";
 import * as topojson from "topojson";
@@ -8,6 +9,14 @@ let features = null;
 let rFeatures = null;
 
 export class ChoroplethStates extends Choropleth {
+    static __inputs: InputField[] = [{
+        id: "state",
+        type: "string"
+    }, {
+        id: "value",
+        type: "number"
+    }];
+
     _selection;
     choroPaths;
 

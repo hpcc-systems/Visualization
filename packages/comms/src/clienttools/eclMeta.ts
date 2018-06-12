@@ -291,7 +291,7 @@ export class Workspace {
     }
 
     primeClientTools(): Promise<this> {
-        return locateClientTools(this._eclccPath, this._workspacePath).then(clientTools => {
+        return locateClientTools(this._eclccPath, "", this._workspacePath).then(clientTools => {
             this._clientTools = clientTools;
             return clientTools.paths();
         }).then(paths => {
@@ -405,10 +405,11 @@ export class Workspace {
         }
     }
 
-    parseMetaXML(metaXML: string): void {
+    parseMetaXML(metaXML: string): string[] {
         const metaParser = new MetaParser();
         metaParser.parse(metaXML);
         this.parseSources(metaParser.sources);
+        return metaParser.sources.map(source => path.normalize(source.$.sourcePath));
     }
 
     resolveQualifiedID(filePath: string, qualifiedID: string, charOffset?: number): ECLScope | undefined {

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/sample-data",
+  "name": "@hpcc-js/test-data",
   "version": "0.0.36",
   "description": "hpcc-js - Test Data",
   "main": "lib-umd/index.js",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "rimraf": "2.6.2",
-    "typescript": "2.8.3"
+    "typescript": "2.9.1"
   },
   "repository": {
     "type": "git",

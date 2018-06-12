@@ -471,6 +471,19 @@
                     );
                 });
             }
+        },
+        WordCloud: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/other/WordCloud"], function (DataFactory, WordCloud) {
+                    var words = DataFactory.WordCloud.simple.words.map(function (d) {
+                        return [d, 1 + Math.random() * 100];
+                    });
+                    callback(new WordCloud()
+                        .columns(DataFactory.WordCloud.simple.columns)
+                        .data(words)
+                    );
+                });
+            }
         }
     };
 

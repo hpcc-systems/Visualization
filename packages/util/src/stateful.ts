@@ -48,10 +48,10 @@ export class StateObject<U, I> {
         const oldCacheVal = this._espStateCache[(key as string)];
         const newCacheVal = hashSum(newVal);
         if (oldCacheVal !== newCacheVal) {
-            this._espStateCache[key] = newCacheVal;
+            this._espStateCache[key as string] = newCacheVal;
             const oldVal = this._espState[key];
             this._espState[key] = newVal;
-            const changedInfo: IEvent = { id: key, oldValue: oldVal, newValue: newVal };
+            const changedInfo: IEvent = { id: key as string, oldValue: oldVal, newValue: newVal };
             if (!batchMode) {
                 this._events.dispatchEvent("propChanged", changedInfo);
                 this._events.dispatchEvent("changed", [changedInfo]);

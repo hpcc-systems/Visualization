@@ -150,7 +150,7 @@ export class ComputedField extends PropertyExt {
         return this.validChildFields().length;
     }
 
-    toDDL(): DDL2.TransformationType {
+    toDDL(): DDL2.MultiTransformationType {
         switch (this.type()) {
             case "scale":
                 return {
@@ -191,7 +191,7 @@ export class ComputedField extends PropertyExt {
         }
     }
 
-    static fromDDL(owner: IComputedFieldOwner, ddl: DDL2.TransformationType): ComputedField {
+    static fromDDL(owner: IComputedFieldOwner, ddl: DDL2.MultiTransformationType): ComputedField {
         const retVal = new ComputedField(owner)
             .label(ddl.fieldID)
             .type(ddl.type)
@@ -361,9 +361,68 @@ export class ComputedField extends PropertyExt {
 }
 ComputedField.prototype._class += " ComputedField";
 //  ===========================================================================
+export class MultiField extends PropertyExt implements IComputedFieldOwner {
+    private _owner: IComputedFieldOwner;
+
+    @publish("", "string", "Label")
+    label: publish<this, string>;
+    @publish([], "propertyArray", "Multi Fields", null, { autoExpand: ComputedField })
+    multiFields: publish<this, ComputedField[]>;
+
+    constructor(owner: IComputedFieldOwner) {
+        super();
+        this._owner = owner;
+    }
+
+    validate(prefix: string): IActivityError[] {
+        let retVal: IActivityError[] = [];
+        for (const cf of this.validMultiFields()) {
+            retVal = retVal.concat(cf.validate(`${prefix}.computedFields`));
+        }
+        return retVal;
+    }
+
+    toDDL(): DDL2.IMulti {
+        return {
+            fieldID: this.label(),
+            type: "multi",
+            transformations: this.transformations()
+        };
+    }
+
+    static fromDDL(owner: IComputedFieldOwner, ddl: DDL2.IMulti): MultiField {
+        return new MultiField(owner)
+            .label(ddl.fieldID)
+            .transformations(ddl.transformations)
+            ;
+    }
+
+    validMultiFields(): ComputedField[] {
+        return this.multiFields().filter(computedField => !!computedField.label());
+    }
+
+    transformations(): DDL2.MultiTransformationType[];
+    transformations(_: DDL2.MultiTransformationType[]): this;
+    transformations(_?: DDL2.MultiTransformationType[]): DDL2.MultiTransformationType[] | this {
+        if (!arguments.length) return this.validMultiFields().map(cf => cf.toDDL());
+        this.multiFields(_.map(transformation => ComputedField.fromDDL(this, transformation)));
+        return this;
+    }
+
+    //  IComputedFieldOwner  ---
+    fieldIDs(): string[] {
+        return this._owner.fieldIDs();
+    }
+
+    field(fieldID: string): DDL2.IField | null {
+        return this._owner.field(fieldID);
+    }
+}
+MultiField.prototype._class += " MultiField";
+//  ===========================================================================
 export class ProjectBase extends Activity {
     @publish([], "propertyArray", "Computed Fields", null, { autoExpand: ComputedField })
-    computedFields: publish<this, ComputedField[]>;
+    computedFields: publish<this, Array<ComputedField | MultiField>>;
     @publish(false, "boolean", "trim", null, { autoExpand: ComputedField })
     trim: publish<this, boolean>;
 
@@ -379,11 +438,18 @@ export class ProjectBase extends Activity {
         super();
     }
 
-    transformations(): DDL2.TransformationType[];
-    transformations(_: DDL2.TransformationType[]): this;
-    transformations(_?: DDL2.TransformationType[]): DDL2.TransformationType[] | this {
+    transformations(): DDL2.ProjectTransformationType[];
+    transformations(_: DDL2.ProjectTransformationType[]): this;
+    transformations(_?: DDL2.ProjectTransformationType[]): DDL2.ProjectTransformationType[] | this {
         if (!arguments.length) return this.validComputedFields().map(cf => cf.toDDL());
-        this.computedFields(_.map(transformation => ComputedField.fromDDL(this, transformation)));
+        this.computedFields(_.map(transformation => {
+            switch (transformation.type) {
+                case "multi":
+                    return MultiField.fromDDL(this, transformation);
+                default:
+                    return ComputedField.fromDDL(this, transformation);
+            }
+        }));
         return this;
     }
 
@@ -431,7 +497,12 @@ export class ProjectBase extends Activity {
     }
 
     validComputedFields() {
-        return this.computedFields().filter(computedField => computedField.label());
+        return this.computedFields().filter(computedField => {
+            if (computedField instanceof MultiField) {
+                return computedField.validMultiFields().length > 0;
+            }
+            return computedField.label();
+        });
     }
 
     hasComputedFields() {
@@ -442,8 +513,14 @@ export class ProjectBase extends Activity {
         if (!this.exists()) return super.computeFields();
         const retVal: DDL2.IField[] = [];
         const retValMap: { [key: string]: boolean } = {};
-        for (const cf of this.computedFields()) {
-            if (cf.label()) {
+        for (const cf of this.validComputedFields()) {
+            if (cf instanceof MultiField) {
+                for (const cf2 of cf.validMultiFields()) {
+                    const computedField = cf2.computedField();
+                    retVal.push(computedField);
+                    retValMap[computedField.id] = true;
+                }
+            } else {
                 const computedField = cf.computedField();
                 retVal.push(computedField);
                 retValMap[computedField.id] = true;
@@ -465,9 +542,18 @@ export class ProjectBase extends Activity {
         super.referencedFields(refs);
         const fieldIDs: string[] = [];
         for (const cf of this.validComputedFields()) {
-            fieldIDs.push(cf.column1());
-            if (cf.column2()) {
-                fieldIDs.push(cf.column2());
+            if (cf instanceof MultiField) {
+                for (const cf2 of cf.validMultiFields()) {
+                    fieldIDs.push(cf2.column1());
+                    if (cf2.column2()) {
+                        fieldIDs.push(cf2.column2());
+                    }
+                }
+            } else {
+                fieldIDs.push(cf.column1());
+                if (cf.column2()) {
+                    fieldIDs.push(cf.column2());
+                }
             }
         }
         super.resolveInFields(refs, fieldIDs);
@@ -476,12 +562,22 @@ export class ProjectBase extends Activity {
     projection(): (row: object) => object {
         const trim = this.trim();
         const hasComputedFields = this.hasComputedFields();
-        const computedFields = this.validComputedFields().map(cf => {
-            return {
-                label: cf.label(),
-                func: cf.computeFunc(trim)
-            };
-        });
+        const computedFields = [];
+        for (const cf of this.validComputedFields()) {
+            if (cf instanceof MultiField) {
+                for (const cf2 of cf.validMultiFields()) {
+                    computedFields.push({
+                        label: cf2.label(),
+                        func: cf2.computeFunc(trim)
+                    });
+                }
+            } else {
+                computedFields.push({
+                    label: cf.label(),
+                    func: cf.computeFunc(trim)
+                });
+            }
+        }
         return (row: object) => {
             const retVal = trim && hasComputedFields ? {} : { ...row };
             for (const cf of computedFields) {
@@ -532,7 +628,8 @@ export class Mappings extends ProjectBase {
         };
     }
 
-    static fromDDL(ddl: DDL2.IMappings): Mappings {
+    static fromDDL(_ddl: DDL2.IMappings): Mappings {
+        const ddl = _ddl || { transformations: [] };
         return new Mappings()
             .transformations(ddl.transformations)
             ;

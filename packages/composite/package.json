@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/composite",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "hpcc-js - Viz Composite",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,15 +25,15 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.1.0",
-    "@hpcc-js/chart": "^0.2.0",
-    "@hpcc-js/common": "^0.2.0",
-    "@hpcc-js/dgrid": "^0.1.6",
-    "@hpcc-js/form": "^0.0.81",
-    "@hpcc-js/html": "^0.0.79",
-    "@hpcc-js/layout": "^0.1.6",
-    "@hpcc-js/other": "^0.2.0",
-    "@hpcc-js/phosphor": "^0.0.87"
+    "@hpcc-js/api": "^0.1.2",
+    "@hpcc-js/chart": "^0.2.2",
+    "@hpcc-js/common": "^0.3.0",
+    "@hpcc-js/dgrid": "^0.1.8",
+    "@hpcc-js/form": "^0.0.83",
+    "@hpcc-js/html": "^0.0.81",
+    "@hpcc-js/layout": "^0.2.0",
+    "@hpcc-js/other": "^0.2.2",
+    "@hpcc-js/phosphor": "^0.0.89"
   },
   "devDependencies": {
     "concurrently": "3.5.1",
@@ -49,7 +49,7 @@
     "tslib": "1.9.0",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.8.3",
+    "typescript": "2.9.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

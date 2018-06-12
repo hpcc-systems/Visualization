@@ -118,6 +118,7 @@ export class HTMLWidget extends Widget {
         if (arguments.length) {
             if (this._target instanceof SVGElement) {
                 //  Target is a SVG Node, so create an item in the Overlay and force it "over" the overlay element (cough)  ---
+                this._isRootNode = false;
                 const overlay = this.locateOverlayNode();
                 this._placeholderElement = overlay.append("div")
                     .style("position", "absolute")

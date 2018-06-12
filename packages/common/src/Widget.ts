@@ -486,7 +486,7 @@ export abstract class Widget extends PropertyExt {
         if (!retVal) {
             g_fontSizeContext.font = `${fontSize}px ${fontName}`;
             g_fontSizeContextCache[hash] = retVal = {
-                width: Math.max(...text.map(t => g_fontSizeContext.measureText(t.trim()).width)),
+                width: Math.max(...text.map(t => g_fontSizeContext.measureText(("" + t).trim()).width)),
                 height: fontSize * text.length
             };
         }

@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { Palette, SVGWidget } from "@hpcc-js/common";
+import { InputField, Palette, SVGWidget } from "@hpcc-js/common";
 import { max as d3Max } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
 import { XYAxis } from "./XYAxis";
@@ -7,6 +7,14 @@ import { XYAxis } from "./XYAxis";
 import "../src/HexBin.css";
 
 export class HexBin extends XYAxis {
+    static __inputs: InputField[] = [{
+        id: "x",
+        type: "any"
+    }, {
+        id: "y",
+        type: "number"
+    }];
+
     _hexbin;
     constructor() {
         super();

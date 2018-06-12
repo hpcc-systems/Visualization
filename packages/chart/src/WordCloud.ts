@@ -1,5 +1,5 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { SVGWidget, Utility } from "@hpcc-js/common";
+import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import D3Cloud from "d3-cloud";
 import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
@@ -9,6 +9,14 @@ import { zoom as d3Zoom } from "d3-zoom";
 import "../src/WordCloud.css";
 
 export class WordCloud extends SVGWidget {
+    static __inputs: InputField[] = [{
+        id: "label",
+        type: "string"
+    }, {
+        id: "value",
+        type: "number"
+    }];
+
     private _prevOffsetX;
     private _prevOffsetY;
     private _prevZoom;

@@ -1,11 +1,11 @@
 import { ClassMeta, PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Activity, stringify } from "./activities/activity";
-import { Databomb } from "./activities/databomb";
+import { Databomb, Form } from "./activities/databomb";
 import { DSPicker } from "./activities/dspicker";
 import { Dashboard } from "./dashboard";
 import { DDLAdapter } from "./ddl";
-import { ElementContainer } from "./model";
+import { ElementContainer } from "./model/element";
 
 export function createProps(pe: PropertyExt): { [key: string]: any } {
     const retVal: { [key: string]: any } = {};
@@ -133,17 +133,29 @@ export class JavaScriptAdapter {
         ;`);
                     break;
                 case "databomb":
-                case "form":
-                    let payload = "";
-                    const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
-                    if (ds.length) {
-                        payload = ((ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb).payload();
-                    }
-                    if (datasource.type === "databomb") {
+                    {
+                        let format = "json";
+                        let payload = "";
+                        const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
+                        if (ds.length) {
+                            const databomb = (ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb;
+                            format = databomb.format();
+                            payload = databomb.payload();
+                        }
                         retVal.push(`    export const ${datasource.id} = new marshaller.Databomb()
+        .format("${format}")
         .payload(${JSON.stringify(payload)})
         ;`);
-                    } else {
+                    }
+                    break;
+                case "form":
+                    {
+                        let payload = {};
+                        const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
+                        if (ds.length) {
+                            const form = (ds[0].hipiePipeline().dataSource() as DSPicker).details() as Form;
+                            payload = form.payload();
+                        }
                         retVal.push(`    export const ${datasource.id} = new marshaller.Form()
         .payload(${JSON.stringify(payload)})
         ;`);

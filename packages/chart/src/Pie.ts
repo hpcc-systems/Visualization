@@ -1,5 +1,5 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { SVGWidget, Utility } from "@hpcc-js/common";
+import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { select as d3Select } from "d3-selection";
 import { arc as d3Arc, pie as d3Pie } from "d3-shape";
@@ -7,7 +7,15 @@ import { arc as d3Arc, pie as d3Pie } from "d3-shape";
 import "../src/Pie.css";
 
 export class Pie extends SVGWidget {
+    static __inputs: InputField[] = [{
+        id: "label",
+        type: "string"
+    }, {
+        id: "value",
+        type: "number"
+    }];
 
+    labelWidgets;
     d3Pie;
     d3Arc;
     d3LabelArc;

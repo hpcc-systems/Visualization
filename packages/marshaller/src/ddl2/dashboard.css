@@ -1,0 +1,7 @@
+.p-Widget.phosphor_WidgetAdapter.p-DockPanel-widget.active {
+    border-color:red;
+}
+
+.p-TabBar-tab.p-mod-current.active {
+    border-color:red;
+}

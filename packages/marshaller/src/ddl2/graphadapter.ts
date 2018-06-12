@@ -5,7 +5,7 @@ import { DSPicker, isDatasource } from "./activities/dspicker";
 import { HipiePipeline } from "./activities/hipiepipeline";
 import { RoxieRequest } from "./activities/roxie";
 import { WUResult } from "./activities/wuresult";
-import { Element, ElementContainer } from "./model";
+import { Element, ElementContainer } from "./model/element";
 
 export class GraphAdapter {
     private _elementContainer: ElementContainer;
@@ -138,48 +138,48 @@ export class GraphAdapter {
         this.clear();
 
         const lastID: { [key: string]: string } = {};
-        for (const viz of this._elementContainer.elements()) {
-            const view = viz.hipiePipeline();
+        for (const element of this._elementContainer.elements()) {
+            const view = element.hipiePipeline();
             let prevID = "";
             for (const activity of view.activities()) {
                 if (isDatasource(activity)) {
-                    prevID = this.createDatasource(viz, view, { viz: undefined, activity });
-                } else if (activity === view.mappings()) {
-                    this.createActivity(prevID, viz, view, activity, "Mappings");
-                    const surface: Subgraph = this.createSubgraph(`${view.mappings().id()}`, `Visualization`, { viz, view, activity: viz.multiChartPanel() });
-                    this.hierarchy.push({
-                        parent: this.subgraphMap[view.id()],
-                        child: surface
-                    });
-                    this.hierarchy.push({
-                        parent: surface,
-                        child: this.vertexMap[view.mappings().id()]
-                    });
-                    const vizVertexID = `${activity.id()}-viz`;
-                    const widgetVertex: Vertex = this.createVertex(vizVertexID, viz.multiChartPanel().chart().classID(), { viz, view, activity: viz.multiChartPanel() });
-                    this.createEdge(activity.id(), vizVertexID);
-                    this.hierarchy.push({
-                        parent: surface,
-                        child: widgetVertex
-                    });
-                    const stateVertexID = `${activity.id()}-state`;
-                    const stateVertex: Vertex = this.createVertex(stateVertexID, "Selection", { viz, view, activity: viz.state() });
-                    this.createEdge(vizVertexID, stateVertexID)
-                        .weight(10)
-                        .strokeDasharray("1,5")
-                        .text("updates")
-                        ;
-                    this.createEdge(prevID, stateVertexID);
-                    this.hierarchy.push({
-                        parent: this.subgraphMap[view.id()],
-                        child: stateVertex
-                    });
-                    prevID = stateVertexID;
+                    prevID = this.createDatasource(element, view, { viz: undefined, activity });
                 } else {
-                    prevID = this.createActivity(prevID, viz, view, activity);
+                    prevID = this.createActivity(prevID, element, view, activity);
                 }
             }
-
+            const visualization = element.visualization();
+            const mappings = visualization.mappings();
+            const mappingVertexID = this.createActivity(prevID, element, view, mappings, "Mappings");
+            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, `Visualization`, { element, view, activity: visualization });
+            this.hierarchy.push({
+                parent: this.subgraphMap[view.id()],
+                child: surface
+            });
+            this.hierarchy.push({
+                parent: surface,
+                child: this.vertexMap[mappings.id()]
+            });
+            const vizVertexID = `${visualization.id()}-viz`;
+            const widgetVertex: Vertex = this.createVertex(vizVertexID, visualization.chartPanel().widget().classID(), { element, view, activity: visualization });
+            this.createEdge(mappingVertexID, vizVertexID);
+            this.hierarchy.push({
+                parent: surface,
+                child: widgetVertex
+            });
+            const stateVertexID = `${visualization.id()}-state`;
+            const stateVertex: Vertex = this.createVertex(stateVertexID, "Selection", { element, view, activity: element.state() });
+            this.createEdge(vizVertexID, stateVertexID)
+                .weight(10)
+                .strokeDasharray("1,5")
+                .text("updates")
+                ;
+            this.createEdge(prevID, stateVertexID);
+            this.hierarchy.push({
+                parent: this.subgraphMap[view.id()],
+                child: stateVertex
+            });
+            prevID = stateVertexID;
             lastID[view.id()] = prevID;
         }
 

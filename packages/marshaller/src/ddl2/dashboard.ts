@@ -1,10 +1,12 @@
 import { d3SelectionType, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { DockPanel } from "@hpcc-js/phosphor";
+import { DockPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { DDLAdapter } from "./ddl";
 import { JavaScriptAdapter } from "./javascriptadapter";
-import { Element, ElementContainer } from "./model";
+import { Element, ElementContainer } from "./model/element";
+
+import "../../src/ddl2/dashboard.css";
 
 export interface IDashboardPersist {
     ddl: DDL2.Schema;
@@ -57,14 +59,19 @@ export class Dashboard extends DockPanel {
 
     tabTitle(element: Element): string {
         if (this.hideSingleTabs()) {
-            return element.chartPanel().title ? element.chartPanel().title() : element.chartPanel().id();
+            return element.visualization().title ? element.visualization().title() : element.visualization().id();
         }
         return element.id();
     }
 
+    activate(element: Element) {
+        const wa = this.getWidgetAdapter(element.visualization().chartPanel());
+        wa.activate();
+    }
+
     syncWidgets() {
         const previous = this.widgets();
-        const diff = compare(previous, this._ec.elements().map(viz => viz.chartPanel()));
+        const diff = compare(previous, this._ec.elements().map(viz => viz.visualization().chartPanel()));
         for (const w of diff.removed) {
             this.removeWidget(w);
         }
@@ -96,9 +103,20 @@ export class Dashboard extends DockPanel {
     }
 
     //  Events  ---
-    childActivation(w: Widget) {
-        super.childActivation(w);
+    childActivation(w: Widget, wa: WidgetAdapter) {
+        super.childActivation(w, wa);
         this.vizActivation(this._ec.element(w));
+        for (const wa2 of this.widgetAdapters()) {
+            if (wa2 === wa) {
+                wa2.addClass("active");
+                wa2.title.className = "active";
+                wa2.title.iconClass = "active";
+            } else {
+                wa2.removeClass("active");
+                wa2.title.className = "";
+                wa2.title.iconClass = "";
+            }
+        }
     }
 
     vizActivation(viz: Element) {

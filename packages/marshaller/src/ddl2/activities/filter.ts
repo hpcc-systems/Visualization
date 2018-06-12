@@ -1,7 +1,7 @@
 import { PropertyExt, publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { hashSum } from "@hpcc-js/util";
-import { Element, ElementContainer } from "../model";
+import { Element, ElementContainer } from "../model/element";
 import { Activity, IActivityError, ReferencedFields } from "./activity";
 
 export class ColumnMapping extends PropertyExt {

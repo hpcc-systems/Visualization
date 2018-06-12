@@ -1,0 +1,15 @@
+.chart_Radar .pointShape,
+.chart_Radar .area {
+    pointer-events: none;
+}
+
+.chart_Radar .point .pointSelection {
+    fill: none;
+    stroke: none;
+    pointer-events: all;
+}
+
+.chart_Radar .point .pointSelection.selected {
+    fill: none;
+    stroke: red;
+}

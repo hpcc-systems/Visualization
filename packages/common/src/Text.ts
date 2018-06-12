@@ -15,7 +15,7 @@ export class Text extends SVGWidget {
         const lineHeight = this.fontSize() || 12;
         const height = lineHeight * textParts.length;
         const widths: number[] = textParts.map(line => {
-            return this.getFontSize(lineHeight, this.fontFamily() || "Verdana", line).width;
+            return this.textSize(line, this.fontFamily() || "Verdana", lineHeight).width;
         });
         const width = Math.max(...widths);
         const retVal = {
@@ -51,7 +51,7 @@ export class Text extends SVGWidget {
     _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
-        const hash = this.hash();
+        const hash = this.hash([], { width: this.width() });
         if (this._prevHash !== hash) {
             this._prevHash = hash;
 
@@ -64,6 +64,8 @@ export class Text extends SVGWidget {
                 .attr("transform", d => `rotate(${this.rotation()}) translate(0,${bbox.y})`)
                 ;
 
+            const width = this.width();
+            const context = this;
             const textParts = this.text().split("\n");
             const textLine = this._textElement.selectAll("tspan").data(textParts);
             textLine.enter().append("tspan")
@@ -72,7 +74,16 @@ export class Text extends SVGWidget {
                 .attr("x", "0")
                 .merge(textLine)
                 .style("fill", this.colorFill())
-                .text(d => d)
+                .text((d: string) => {
+                    if (!width) return d;
+                    let retVal = d;
+                    const lineHeight = context.fontSize() || 12;
+                    let clipPos = retVal.length - 1;
+                    while (clipPos > -3 && this.textSize(retVal, this.fontFamily() || "Verdana", lineHeight).width > width) {
+                        retVal = retVal.substr(0, --clipPos) + "...".substr(0, clipPos + 3);
+                    }
+                    return retVal;
+                })
                 ;
             textLine.exit()
                 .remove()

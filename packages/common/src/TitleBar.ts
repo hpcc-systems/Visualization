@@ -1,3 +1,4 @@
+import { event as d3Event } from "d3-selection";
 import { HTMLWidget } from "./HTMLWidget";
 import { d3SelectionType, Widget } from "./Widget";
 
@@ -21,10 +22,14 @@ export class Button extends HTMLWidget {
 
     enter(domNode: HTMLElement, element) {
         super.enter(domNode, element);
+        const context = this;
         element
             .attr("href", "#")
             .attr("title", this._tooltip)
-            .on("click", this.click)
+            .on("click", function () {
+                context.click();
+                d3Event.preventDefault();
+            })
             .on("mousemove", this.mouseMove)
             .on("mouseout", this.mouseOut)
             .append("i")
@@ -38,7 +43,7 @@ export class Button extends HTMLWidget {
     }
 
     //  Events  ---
-    click(d, idx, groups) {
+    click() {
     }
 
     mouseMove(d, idx, groups) {
@@ -60,6 +65,7 @@ export class ToggleButton extends Button {
         element.on("click.sel", (d, idx, groups) => {
             this.selected(!this.selected());
             this.render();
+            d3Event.preventDefault();
         });
         super.enter(domNode, element);
     }

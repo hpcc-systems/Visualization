@@ -19,4 +19,3 @@ export * from "./RadioCheckbox";
 export * from "./Select";
 export * from "./Table";
 export * from "./ThemeEditor";
-export * from "./WordCloud";

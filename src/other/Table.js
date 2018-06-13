@@ -197,7 +197,7 @@
                     ;
                 })
             .on("click", function (column, idx) {
-                context.headerClick(column, idx);
+                context.headerClick(column, idx, this);
             })
         ;
         th
@@ -465,21 +465,21 @@
         fixedColTh
             .enter()
             .append("th")
-                .each(function (d) {
-                    var element = d3.select(this);
-                    element
-                        .append("span")
-                            .attr("class", "thText")
-                    ;
-                    element
-                        .append("span")
-                            .attr("class", "thIcon")
-                    ;
-                })
-            .on("click", function (column, idx) {
-                context.headerClick(column, idx);
+            .each(function (d) {
+                var element = d3.select(this);
+                element
+                    .append("span")
+                        .attr("class", "thText")
+                ;
+                element
+                    .append("span")
+                        .attr("class", "thIcon")
+                ;
             })
-        ;
+            .on("click", function (column, idx) {
+                context.headerClick(column, idx, this);
+            })
+            ;
         fixedColTh
             .style("background-color",this.theadRowBackgroundColor())
             .style("border-color",this.theadCellBorderColor())
@@ -939,11 +939,24 @@
         console.log("dblclick:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     };
 
-    Table.prototype.headerClick = function (column, idx) {
+    Table.prototype.headerClick = function (column, idx, clicked_elm) {
+        var tableDiv = this.tableDiv.node();
+        var clicked_rect_before = clicked_elm.getBoundingClientRect();
+        var old_th_width = clicked_rect_before.width;
+        var old_th_left = clicked_rect_before.left;
         this
             .sort(idx)
-            .render()
-        ;
+            .render(function(){
+                setTimeout(function(){
+                    var clicked_rect_after = clicked_elm.getBoundingClientRect();
+                    var new_th_width = clicked_rect_after.width;
+                    var new_th_left = clicked_rect_after.left;
+                    var l_diff = new_th_left - old_th_left;
+                    var w_diff = new_th_width - old_th_width;
+                    tableDiv.scrollLeft += l_diff + w_diff;
+                },0);
+            })
+            ;
     };
 
     return Table;

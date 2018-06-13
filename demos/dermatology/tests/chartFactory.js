@@ -11,6 +11,19 @@
         range: d3Array.range
     };
     var chartFactory = {
+        Radar: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/Radar"], function (DataFactory, Radar) {
+                    callback(new Radar()
+                        .columns(DataFactory.Radar.columns)
+                        .data(DataFactory.Radar.data)
+                        .paletteID("Dark2")
+                        .pointShape("circle")
+                        .tooltipValueFormat(",.0f")
+                    );
+                });
+            }
+        },
         Column: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {

@@ -16,16 +16,51 @@
                         .tickFormat("%H:%M")
                         .data([
                             ["Start", "2016-07-01T09:12:15.0Z"],
-                            ["item-1", "2016-07-01T09:10:00.0Z", "2016-07-01T09:45:00.0Z"],
-                            ["item-2", "2016-07-01T11:00:00.0Z", "2016-07-01T12:00:00.0Z"],
-                            ["item-3", "2016-07-01T09:20:00.0Z", "2016-07-01T12:20:00.0Z"],
-                            ["Credit Fraud", "2016-07-01T11:45:45.0Z"],
-                            ["item-4", "2016-07-01T09:15:00.0Z", "2016-07-01T12:20:00.0Z"],
+                            ["Credit\nFraud", "2016-07-01T11:45:45.0Z"],
                             ["Credit Fraud", "2016-07-01T11:55:45.0Z"],
-                            ["item-6", "2016-07-01T10:00:00.0Z", "2016-07-01T10:50:00.0Z"],
-                            ["item-7", "2016-07-01T10:30:01.0Z", "2016-07-01T10:40:00.0Z"],
                             ["Finish", "2016-07-01T12:30:45.0Z"]
                         ])
+                    );
+                });
+            },
+            heavy: function (callback) {
+                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    const label_arr = ["Event", "Short Range", "Long Range"];
+                    const icon_arr = [""];
+                    callback(new MiniGantt()
+                        .columns(["Label", "start", "end"])
+                        .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                        .tickFormat("%H:%M")
+                        .data(Array(300).fill("").map((row, row_idx) => {
+                            const yyyy = 2004 + Math.floor(Math.random() * 15);
+                            const mm = 1 + Math.floor(Math.random() * 12);
+                            const dd = 1 + Math.floor(Math.random() * 28);
+                            const hh = 1 + Math.floor(Math.random() * 23);
+                            const min = 1 + Math.floor(Math.random() * 60);
+                            const sec = 0 + Math.floor(Math.random() * 60);
+                            const d1 = `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}T${hh < 10 ? '0' + hh : hh}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}.0Z`;
+                            if (Math.random() > 0.1) {
+                                return [`Random Event #${row_idx}`, d1];
+                            }
+                            const yyyy2 = 2004 + Math.floor(Math.random() * 15);
+                            const mm2 = 1 + Math.floor(Math.random() * 12);
+                            const dd2 = 1 + Math.floor(Math.random() * 28);
+                            const hh2 = 1 + Math.floor(Math.random() * 23);
+                            const min2 = 1 + Math.floor(Math.random() * 60);
+                            const sec2 = 0 + Math.floor(Math.random() * 60);
+                            const d2 = `${yyyy2}-${mm2 < 10 ? '0' + mm2 : mm2}-${dd2 < 10 ? '0' + dd2 : dd2}T${hh2 < 10 ? '0' + hh2 : hh2}:${min2 < 10 ? '0' + min2 : min2}:${sec2 < 10 ? '0' + sec2 : sec2}.0Z`;
+                            return new Date(d1) - new Date(d2) > 0 ? [`Random Range a #${row_idx}`, d2, d1] : [`Random Range b #${row_idx}`, d1, d2];
+                        }))
+                    );
+                });
+            },
+            all_events: function (callback) {
+                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    callback(new MiniGantt()
+                        .columns(DataFactory.TimeLine.columns)
+                        .timePattern("%Y-%m-%d")
+                        .tickFormat("%H:%M")
+                        .data(DataFactory.TimeLine.data)
                     );
                 });
             },

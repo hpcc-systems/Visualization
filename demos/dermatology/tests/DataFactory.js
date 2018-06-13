@@ -7970,6 +7970,10 @@
                         ["1990-01-02", "2753.20", "2811.65", "2732.51", "2810.15", "162070000", "2810.15"]]
             }
         },
+        Radar: {
+            columns: ["Category", "Series 1", "Series 2", "Series 3"],
+            data: [["A",104,26,26],["B",105,28,30],["C",104,28,32],["D",108,30,36],["E",103,26,34],["F",109,33,33],["G",105,27,29],["H",106,29,33],["I",101,25,31],["J",27,105,35],["K",31,110,32],["L",32,112,36],["M",24,102,28],["N",25,104,32],["O",24,104,34],["P",33,111,33],["Q",28,107,31],["R",29,109,35],["S",25,25,109],["T",26,27,113],["U",26,28,106],["V",30,30,110],["W",29,30,112],["X",30,32,116],["Y",22,22,108],["Z",28,29,107]]
+        },
         Lorem_ipsum: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     };
     return DataFactory;

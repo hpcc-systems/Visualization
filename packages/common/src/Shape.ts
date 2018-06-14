@@ -114,7 +114,7 @@ export class Shape extends SVGWidget {
         const width = this.width();
         const height = this.height() - arrow_h;
         const x = 0 - width / 2;
-        const y = 0 - height - arrow_h;
+        const y = 0 - height;
         const arrow_b = (width - radius * 2 - arrow_w) / 2;
         return "M" + x + "," + y +
             "a" + -radius + "," + -radius + " 0 0 1 " + radius + "," + -radius +

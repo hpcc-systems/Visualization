@@ -9,25 +9,51 @@ export class EntityPin extends Entity {
     enter(domNode, element) {
         super.enter(domNode, element);
     }
-    update() {
+    update(domNode, element) {
         super.update.apply(this, arguments);
+
+        const is_hovering = element.classed("hovering");
 
         this._icon_widget.render();
         this._desc_widget.render();
         this._title_widget.render();
-        const title_bbox = this._title_widget.getBBox(true);
-        const icon_bbox = this._icon_widget.getBBox(true);
-        const desc_bbox = this._desc_widget.getBBox(true);
-        const _anno_h = this.annotationIcons().length > 0 ? this.annotationDiameter() + this.padding() : 0;
+        const title_bbox = !this.titleOnlyShowOnHover() || is_hovering ? this._title_widget.getBBox(true) : { height: 0, width: 0 };
+        const icon_bbox = !this.iconOnlyShowOnHover() || is_hovering ? this._icon_widget.getBBox(true) : { height: 0, width: 0 };
+        const desc_bbox = !this.descriptionOnlyShowOnHover() || is_hovering ? this._desc_widget.getBBox(true) : { height: 0, width: 0 };
+        const _anno_h = !this.annotationOnlyShowOnHover() || is_hovering ? this.annotationIcons().length > 0 ? this.annotationDiameter() + this.padding() : 0 : 0;
+        const content_width = Math.max(title_bbox.width, icon_bbox.width, desc_bbox.width);
         const background_bbox = {
-            width: title_bbox.width + (this.padding() * 2),
+            width: content_width + (this.padding() * 2),
             height: icon_bbox.height + title_bbox.height + _anno_h + this.arrowHeight() + desc_bbox.height + (this.padding() * 5)
         };
+        let remove_padding = 0;
+        if (this.titleOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+            this._title_widget.display(false);
+        } else {
+            this._title_widget.display(true);
+        }
+        if (this.iconOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+            this._icon_widget.display(false);
+        } else {
+            this._icon_widget.display(true);
+        }
+        if (this.descriptionOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+            this._desc_widget.display(false);
+        } else {
+            this._desc_widget.display(true);
+        }
+        if (this.annotationIcons().length === 0 || this.annotationOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+        }
+        background_bbox.height -= remove_padding;
 
         this._background_widget
             .height(background_bbox.height)
             .width(background_bbox.width);
-        const icon_y = -background_bbox.height + (icon_bbox.height / 2) + this.padding();
+        const icon_y = -background_bbox.height + icon_bbox.height + (this.padding() / 2);
         const title_y = icon_y + (icon_bbox.height / 2) + (title_bbox.height / 2) + this.padding();
         const desc_y = title_y + (title_bbox.height / 2) + (desc_bbox.height / 2) + this.padding();
         const anno_y = desc_y + (desc_bbox.height / 2) + this.padding();
@@ -44,6 +70,23 @@ export class EntityPin extends Entity {
             y: icon_y
         });
         this.moveAnnotations(background_bbox.width / 2, anno_y);
+
     }
 }
 EntityPin.prototype._class += " common_EntityPin";
+
+export interface EntityPin {
+    titleOnlyShowOnHover(): boolean;
+    titleOnlyShowOnHover(_: boolean): this;
+    iconOnlyShowOnHover(): boolean;
+    iconOnlyShowOnHover(_: boolean): this;
+    descriptionOnlyShowOnHover(): boolean;
+    descriptionOnlyShowOnHover(_: boolean): this;
+    annotationOnlyShowOnHover(): boolean;
+    annotationOnlyShowOnHover(_: boolean): this;
+}
+
+EntityPin.prototype.publish("titleOnlyShowOnHover", false, "boolean", "titleOnlyShowOnHover");
+EntityPin.prototype.publish("iconOnlyShowOnHover", false, "boolean", "iconOnlyShowOnHover");
+EntityPin.prototype.publish("descriptionOnlyShowOnHover", false, "boolean", "descriptionOnlyShowOnHover");
+EntityPin.prototype.publish("annotationOnlyShowOnHover", false, "boolean", "annotationOnlyShowOnHover");

@@ -18,7 +18,7 @@ export class Entity extends SVGWidget {
     protected _background_widget: Shape;
     protected _title_widget: Text;
     protected _desc_widget: Text;
-    protected _annotation_widgets: {[idx: number]: {widget: SVGWidget, bbox: {x: number, y: number, width: number, height: number }}};
+    protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: { x: number, y: number, width: number, height: number } } };
     protected _element_anno: d3SelectionType;
     protected _element_background: d3SelectionType;
     protected _element_desc: d3SelectionType;
@@ -79,6 +79,16 @@ export class Entity extends SVGWidget {
                     bbox: anno.getBBox(true)
                 };
             });
+        element
+            .on("mouseover", function () {
+                element.classed("hovering", true);
+                context.render();
+            })
+            .on("mouseout", function () {
+                element.classed("hovering", false);
+                context.render();
+            })
+            ;
     }
     moveAnnotations(x_offset: number, y_offset: number) {
         let anno_w_sum = 0;

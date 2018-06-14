@@ -123,13 +123,16 @@ export class Summary extends HTMLWidget {
             .style("color", row.stroke)
             .style("min-width", this.minWidth_exists() ? this.minWidth() + "px" : null)
             .style("min-height", this.minHeight_exists() ? this.minHeight() + "px" : null)
+            .style("font-size", this.iconFontSize() + "px")
             ;
         this._headerDiv
             .transition()
             .style("color", row.stroke)
+            .style("font-size", this.headerFontSize() + "px")
         [this.valueHTML() ? HTML : TEXT](row.value)
             ;
         this._textDiv
+            .style("font-size", this.textFontSize() + "px")
         [this.labelHTML() ? HTML : TEXT](row.label)
             ;
         const context = this;
@@ -145,6 +148,7 @@ export class Summary extends HTMLWidget {
                 element2.append("i");
                 element2.append("span");
             }).merge(moreDivs)
+            .style("font-size", this.moreFontSize() + "px")
             .transition()
             .style("background-color", d3Rgb(row.fill).darker(0.75).toString())
             ;
@@ -174,6 +178,15 @@ export interface Summary {
     icon(): string;
     icon(_: string): this;
     icon_exists(): boolean;
+
+    headerFontSize(): number;
+    headerFontSize(_: number): this;
+    textFontSize(): number;
+    textFontSize(_: number): this;
+    moreFontSize(): number;
+    moreFontSize(_: number): this;
+    iconFontSize(): number;
+    iconFontSize(_: number): this;
 
     hideLabel(): boolean;
     hideLabel(_: boolean): this;
@@ -244,6 +257,11 @@ export interface Summary {
 
 Summary.prototype.publish("iconColumn", null, "set", "Select Icon Column", function () { return this.columns(); }, { optional: true });
 Summary.prototype.publish("icon", "fa-briefcase", "string", "FA Char icon class", null, { disable: (w) => w.iconColumn() });
+
+Summary.prototype.publish("headerFontSize", null, "number", "headerFontSize");
+Summary.prototype.publish("textFontSize", null, "number", "textFontSize");
+Summary.prototype.publish("moreFontSize", null, "number", "moreFontSize");
+Summary.prototype.publish("iconFontSize", null, "number", "iconFontSize");
 
 Summary.prototype.publish("hideLabel", false, "boolean", "Hide label column");
 Summary.prototype.publish("labelColumn", null, "set", "Select display value", function () { return this.columns(); }, { optional: true, disable: (w) => w.hideLabel() });

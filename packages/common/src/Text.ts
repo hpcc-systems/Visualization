@@ -15,7 +15,7 @@ export class Text extends SVGWidget {
         const lineHeight = this.fontSize() || 12;
         const height = lineHeight * textParts.length;
         const widths: number[] = textParts.map(line => {
-            return this.getFontSize(lineHeight, this.fontFamily() || "Verdana", line).width;
+            return this.textSize(line, this.fontFamily() || "Verdana", lineHeight).width;
         });
         const width = Math.max(...widths);
         const retVal = {

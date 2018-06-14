@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.2.2...@hpcc-js/chart@0.3.0) (2018-06-14)
+
+
+### Features
+
+* **Radar:** Adds Radar widget Signed-off-by: Jaman <jbrundage372@gmail.com> ([4d0bd10](https://github.com/hpcc-systems/Visualization/commit/4d0bd10))
+
+
+
+
 <a name="0.2.2"></a>
 ## [0.2.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.2.1...@hpcc-js/chart@0.2.2) (2018-06-01)
 

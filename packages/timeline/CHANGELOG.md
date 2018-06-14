@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.0.83...@hpcc-js/timeline@0.1.0) (2018-06-14)
+
+
+### Features
+
+* **timeline:** Add EntityPin to timeline ([25ce344](https://github.com/hpcc-systems/Visualization/commit/25ce344))
+
+
+
+
 <a name="0.0.83"></a>
 ## [0.0.83](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.0.82...@hpcc-js/timeline@0.0.83) (2018-06-01)
 

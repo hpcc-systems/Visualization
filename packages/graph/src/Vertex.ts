@@ -181,12 +181,11 @@ export class Vertex extends SVGWidget {
 
     intersection(pointA, pointB) {
         const i1 = this._icon.intersection(pointA, pointB);
-        if (i1)
-            return i1;
         const i2 = this._textBox.intersection(pointA, pointB);
-        if (i2)
-            return i2;
-        return null;
+        if (i1 && i2) {
+            return this.distance(i1, pointB) < this.distance(i2, pointB) ? i1 : i2;
+        }
+        return i1 || i2;
     }
 
     // Events ---

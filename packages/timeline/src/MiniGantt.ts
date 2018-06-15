@@ -34,6 +34,16 @@ export class MiniGantt extends SVGWidget {
     overlapTolerence: publish<this, number>;
     @publish("horizontal", "set", "Orientation", ["horizontal", "vertical"])
     orientation: publish<this, "horizontal" | "vertical">;
+    @publish(16, "number", "maxZoom")
+    maxZoom: publish<this, number>;
+    @publish(false, "boolean", "hideIconWhenCollapsed")
+    hideIconWhenCollapsed: publish<this, boolean>;
+    @publish(false, "boolean", "hideTitleWhenCollapsed")
+    hideTitleWhenCollapsed: publish<this, boolean>;
+    @publish(true, "boolean", "hideDescriptionWhenCollapsed")
+    hideDescriptionWhenCollapsed: publish<this, boolean>;
+    @publish(true, "boolean", "hideAnnotationsWhenCollapsed")
+    hideAnnotationsWhenCollapsed: publish<this, boolean>;
 
     constructor() {
         super();
@@ -98,6 +108,7 @@ export class MiniGantt extends SVGWidget {
     enter(domNode, element) {
         super.enter(domNode, element);
         this._zoom = d3Zoom()
+            .scaleExtent([0, this.maxZoom()])
             .on("zoom", () => {
                 this.zoomed();
             })
@@ -291,10 +302,10 @@ export class MiniGantt extends SVGWidget {
                 const entityPin = new EntityPin()
                     .target(this)
                     .icon("")
-                    .iconOnlyShowOnHover(false)
-                    .titleOnlyShowOnHover(true)
-                    .descriptionOnlyShowOnHover(true)
-                    .annotationOnlyShowOnHover(true)
+                    .iconOnlyShowOnHover(context.hideIconWhenCollapsed())
+                    .titleOnlyShowOnHover(context.hideTitleWhenCollapsed())
+                    .descriptionOnlyShowOnHover(context.hideDescriptionWhenCollapsed())
+                    .annotationOnlyShowOnHover(context.hideAnnotationsWhenCollapsed())
                     .iconDiameter(18)
                     .iconPaddingPercent(1)
                     .titleColor("#E3151A")
@@ -322,6 +333,10 @@ export class MiniGantt extends SVGWidget {
                     entityPin
                         .x(context.dataStartPos(d) - 0)
                         .y(0)
+                        .iconOnlyShowOnHover(context.hideIconWhenCollapsed())
+                        .titleOnlyShowOnHover(context.hideTitleWhenCollapsed())
+                        .descriptionOnlyShowOnHover(context.hideDescriptionWhenCollapsed())
+                        .annotationOnlyShowOnHover(context.hideAnnotationsWhenCollapsed())
                         .title(d[0])
                         .description(formatted_start_time)
                         .animationFrameRender()

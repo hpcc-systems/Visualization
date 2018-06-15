@@ -150,7 +150,7 @@ export class Column extends XYAxis {
                         .attr(isHorizontal ? "y" : "x", valuePos)
                         .attr(isHorizontal ? "width" : "height", domainLength)
                         .attr(isHorizontal ? "height" : "width", valueLength)
-                        .style("fill", (d: any) => context._palette(d.column))
+                        .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
                         ;
 
                     const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
@@ -196,6 +196,8 @@ export class Column extends XYAxis {
 
     //  INDChart  ---
     _palette;
+    fillColor: (row, column, value) => string;
+    textColor: (row, column, value) => string;
     click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 

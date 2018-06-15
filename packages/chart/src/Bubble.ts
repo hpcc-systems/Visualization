@@ -1,5 +1,5 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
-import { FAChar, InputField, ISize, Palette, SVGWidget, Text, Utility } from "@hpcc-js/common";
+import { FAChar, InputField, ISize, SVGWidget, Text, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
@@ -117,7 +117,7 @@ export class Bubble extends SVGWidget {
                 const pos = { x: d.x, y: d.y };
                 element2.select("circle").transition()
                     .attr("transform", "translate(" + pos.x + "," + pos.y + ")")
-                    .style("fill", context._palette(d.data[0]))
+                    .style("fill", context.fillColor(d.data, context.columns()[1], d.data[1]))
                     .attr("r", d.r)
                     .select("title")
                     .text(d.data[0] + " (" + d.data[1] + ")")
@@ -130,7 +130,7 @@ export class Bubble extends SVGWidget {
                 } else {
                     context.labelWidgets[d.data[0]]
                         .pos(pos)
-                        .colorFill_default(Palette.textColor(context._palette(d.data[0])))
+                        .colorFill_default(context.textColor(d.data, context.columns()[1], d.data[1]))
                         .width(d.r * 2)
                         .text(d.data[0])
                         .render()
@@ -155,6 +155,8 @@ export class Bubble extends SVGWidget {
 
     //  I2DChart
     _palette;
+    fillColor: (row: any[], column: string, value: number) => string;
+    textColor: (row: any[], column: string, value: number) => string;
     click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 

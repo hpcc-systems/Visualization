@@ -109,7 +109,7 @@ export class Bubble extends SVGWidget {
                 const pos = { x: d.x, y: d.y };
                 element2.select("circle").transition()
                     .attr("transform", "translate(" + pos.x + "," + pos.y + ")")
-                    .style("fill", context._palette(d.data[0]))
+                    .style("fill", context.fillColor(d.data, context.columns()[1], d.data[1]))
                     .attr("r", d.r)
                     .select("title")
                     .text(d.data[0] + " (" + d.data[1] + ")")
@@ -152,6 +152,8 @@ export class Bubble extends SVGWidget {
 
     //  I2DChart
     _palette;
+    fillColor: (row: any[], column: string, value: number) => string;
+    textColor: (row: any[], column: string, value: number) => string;
     click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 

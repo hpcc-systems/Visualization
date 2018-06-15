@@ -607,7 +607,8 @@ export class PropertyExt extends Class {
     //  Events  ---
     on(eventID, func, stopPropagation = false): this {
         const context = this;
-        this.overrideMethod(eventID, function (origFunc, args) {
+        this.overrideMethod(eventID, function (...args: any[]) {
+            const origFunc = args[args.length - 1];
             let retVal;
             if (stopPropagation) {
                 if (d3Event) {

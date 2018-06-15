@@ -52,13 +52,15 @@ export class Class {
         }
     }
 
-    overrideMethod(methodID, newMethod) {
+    overrideMethod(methodID: string, newMethod: (...args: any[]) => any): this {
         if (this[methodID] === undefined) {
             throw new Error("Method:  " + methodID + " does not exist.");
         }
         const origMethod = this[methodID];
         this[methodID] = function () {
-            return newMethod(origMethod, arguments);
+            arguments[arguments.length] = origMethod;
+            arguments.length++;
+            return newMethod.apply(this, arguments);
         };
         return this;
     }

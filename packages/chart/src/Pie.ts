@@ -145,7 +145,7 @@ export class Pie extends SVGWidget {
                 const element2 = d3Select(this);
                 element2.select("path").transition()
                     .attr("d", context.d3Arc)
-                    .style("fill", function (d2: any) { return context._palette(d2.data[0]); })
+                    .style("fill", context.fillColor(d.data, context.columns()[1], d.data[1]))
                     ;
                 context.labelWidgets[d.data[0]]
                     .pos(pos)
@@ -205,6 +205,8 @@ export class Pie extends SVGWidget {
 
     //  I2DChart
     _palette;
+    fillColor: (row: any[], column: string, value: number) => string;
+    textColor: (row: any[], column: string, value: number) => string;
     click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 

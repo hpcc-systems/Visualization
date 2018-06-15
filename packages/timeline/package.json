@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/timeline",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "hpcc-js - Viz Timeline",
   "main": "dist/index.js",
   "module": "dist/index.es6",

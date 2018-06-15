@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/eclwatch",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "hpcc-js - ECL Watch",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -30,7 +30,7 @@
     "@hpcc-js/dgrid": "^0.1.10",
     "@hpcc-js/graph": "^0.1.5",
     "@hpcc-js/layout": "^0.2.2",
-    "@hpcc-js/timeline": "^0.1.1",
+    "@hpcc-js/timeline": "^0.2.0",
     "@hpcc-js/util": "^0.0.74"
   },
   "devDependencies": {

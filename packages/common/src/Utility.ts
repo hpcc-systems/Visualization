@@ -1,3 +1,4 @@
+import { isArray } from "@hpcc-js/util";
 import { ascending as d3Ascending, descending as d3Descending } from "d3-array";
 import { select as d3Select } from "d3-selection";
 import { timeFormat as d3TimeFormat } from "d3-time-format";
@@ -265,10 +266,6 @@ SimpleSelectionMixin.prototype.deserializeState = function (state) {
 
 const perf: any = window.performance;
 const now = perf && (perf.now || perf.mozNow || perf.msNow || perf.oNow || perf.webkitNow);
-
-export function isArray(obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
-}
 
 //  Template   ---
 //  https://github.com/Matt-Esch/string-template (MIT)

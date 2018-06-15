@@ -6,18 +6,20 @@ import { select as d3Select } from "d3-selection";
 import "../src/Dendrogram.css";
 
 export class DendrogramColumn extends PropertyExt {
-    _owner;
 
-    constructor(owner) {
+    constructor(readonly _owner: Dendrogram) {
         super();
-        this._owner = owner;
+    }
+
+    valid(): boolean {
+        return !!this.column();
     }
 
     column: { (): string; (_: string): Dendrogram; };
 }
 DendrogramColumn.prototype._class += " tree_Dendrogram.DendrogramColumn";
 
-DendrogramColumn.prototype.publish("column", null, "set", "Field", function () { return this._owner ? this._owner.columns() : []; }, { optional: true });
+DendrogramColumn.prototype.publish("column", null, "set", "Field", function (this: DendrogramColumn) { return this._owner ? this._owner.columns() : []; }, { optional: true });
 
 // ===
 export class Dendrogram extends SVGZoomWidget {
@@ -39,7 +41,7 @@ export class Dendrogram extends SVGZoomWidget {
 
     dendrogramData() {
         if (this.data().length === 0) return [];
-        if (!this.mappings().filter(function (mapping) { return mapping.column(); }).length) {
+        if (!this.mappings().filter(mapping => mapping.valid()).length) {
             return this.data();
         }
         const view = this._db.rollupView(this.mappings().map(function (mapping) { return mapping.column(); }));

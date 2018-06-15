@@ -2,39 +2,17 @@ export function discover(widget) {
     return widget.publishedProperties(false, true);
 }
 
-export function widgetWalker(widget, visitor) {
-    if (!widget)
-        return;
-    visitor(widget);
-    discover(widget).forEach(function (publishItem) {
-        switch (publishItem.type) {
-            case "widget":
-                widgetWalker(widget[publishItem.id](), visitor);
-                break;
-            case "widgetArray":
-            case "propertyArray":
-                widgetArrayWalker(widget[publishItem.id](), visitor);
-                break;
-            default:
-        }
-    });
-}
-
 export function widgetArrayWalker(widgets, visitor) {
     if (!widgets)
         return;
     widgets.forEach(function (widget) {
-        widgetWalker(widget, visitor);
+        widget.widgetWalker(visitor);
     });
 }
 
-export function propertyWalker(widget, filter, visitor) {
-    widget.propertyWalker(filter, visitor);
-}
-
-export function widgetPropertyWalker(widget2, filter, visitor) {
-    widgetWalker(widget2, function (widget) {
-        propertyWalker(widget, filter, visitor);
+export function widgetPropertyWalker(widget2, visitor, filter?) {
+    widget2.widgetWalker(function (widget) {
+        widget.propertyWalker(visitor, filter);
     });
 }
 
@@ -123,7 +101,7 @@ export function serializeToObject(widget, filter?, includeData?, includeState?) 
     }
     retVal.__properties = {};
 
-    propertyWalker(widget, filter, (childWwidget2, item) => {
+    widget.propertyWalker((childWwidget2, item) => {
         if (childWwidget2[item.id + "_modified"]()) {
             switch (item.type) {
                 case "widget":
@@ -142,7 +120,7 @@ export function serializeToObject(widget, filter?, includeData?, includeState?) 
                     break;
             }
         }
-    });
+    }, filter);
 
     if (widget.classID() === "marshaller_Graph") {
         const vertices = widget.data().vertices;

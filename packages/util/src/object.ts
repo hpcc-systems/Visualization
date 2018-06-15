@@ -90,3 +90,26 @@ export function safeStringify(obj: object) {
         return value;
     });
 }
+
+export function isArray(arg: any): arg is any[] {
+    if (Array.isArray !== undefined) {
+        return Array.isArray(arg);
+    }
+    return Object.prototype.toString.call(arg) === "[object Array]";
+}
+
+export interface ClassMeta {
+    module: string;
+    file: string;
+    class: string;
+}
+
+export function classID2Meta(classID: string): ClassMeta {
+    const info = classID.split("_");
+    const classInfo = info[1].split(".");
+    return {
+        module: `@hpcc-js/${info[0]}`,
+        file: classInfo[0],
+        class: classInfo[1] || classInfo[0]
+    };
+}

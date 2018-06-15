@@ -29,6 +29,10 @@ export class SortColumn extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.fieldID();
+    }
+
     toDDL(): DDL2.ISortCondition {
         return {
             fieldID: this.fieldID(),

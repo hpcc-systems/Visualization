@@ -11,11 +11,6 @@ export class ComputedMapping extends PropertyExt {
     @publish(null, "object", "New Value")
     newValue: publish<this, any>;
 
-    constructor(owner: ComputedField) {
-        super();
-        this._owner = owner;
-    }
-
     validate(prefix: string): IActivityError[] {
         const retVal: IActivityError[] = [];
         if (!this.value()) {
@@ -33,6 +28,15 @@ export class ComputedMapping extends PropertyExt {
             });
         }
         return retVal;
+    }
+
+    constructor(owner: ComputedField) {
+        super();
+        this._owner = owner;
+    }
+
+    valid(): boolean {
+        return !!this.value() && !!this.newValue();
     }
 
     toDDL(): DDL2.IMapMapping {
@@ -54,7 +58,7 @@ ComputedMapping.prototype._class += " ComputedMapping";
 
 export type ComputedType = "=" | "*" | "/" | "+" | "-" | "scale" | "template" | "map";
 
-export interface IComputedFieldOwner {
+export interface IComputedFieldOwner extends PropertyExt {
     fieldIDs(): string[];
     field(fieldID: string): DDL2.IField | null;
 }
@@ -138,12 +142,16 @@ export class ComputedField extends PropertyExt {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.label();
+    }
+
     validComputedMappings(): ComputedMapping[] {
-        return this.mapping().filter(cf => cf.value());
+        return this.mapping().filter(cf => cf.valid());
     }
 
     validChildFields() {
-        return this.childField().filter(cf => cf.label());
+        return this.childField().filter(cf => cf.valid());
     }
 
     hasChildFields() {
@@ -374,6 +382,10 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
         this._owner = owner;
     }
 
+    valid(): boolean {
+        return !!this.label() && this.validMultiFields().length > 0;
+    }
+
     validate(prefix: string): IActivityError[] {
         let retVal: IActivityError[] = [];
         for (const cf of this.validMultiFields()) {
@@ -398,7 +410,7 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
     }
 
     validMultiFields(): ComputedField[] {
-        return this.multiFields().filter(computedField => !!computedField.label());
+        return this.multiFields().filter(computedField => computedField.valid());
     }
 
     transformations(): DDL2.MultiTransformationType[];
@@ -497,12 +509,7 @@ export class ProjectBase extends Activity {
     }
 
     validComputedFields() {
-        return this.computedFields().filter(computedField => {
-            if (computedField instanceof MultiField) {
-                return computedField.validMultiFields().length > 0;
-            }
-            return computedField.label();
-        });
+        return this.computedFields().filter(computedField => computedField.valid());
     }
 
     hasComputedFields() {

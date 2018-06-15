@@ -12,11 +12,16 @@ import "../src/Orb.css";
 class Mapping extends PropertyExt {
     _owner;
 
-    constructor(owner) {
+    constructor(owner: Orb) {
         super();
 
         this._owner = owner;
     }
+
+    valid(): boolean {
+        return !!this.addField();
+    }
+
     addField: { (): string; (_: string): Mapping };
     addField_exists: () => boolean;
     location: { (): string; (_: string): Mapping };

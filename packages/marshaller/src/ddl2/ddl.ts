@@ -240,7 +240,7 @@ export class DDLAdapter {
     }
 
     writeMappings(mappings: Mappings): DDL2.IMappings {
-        if (!mappings.exists()) return undefined;
+        if (!mappings.exists()) return { type: "mappings", transformations: [] };
         return mappings.toDDL();
     }
 
@@ -347,31 +347,15 @@ export class DDLAdapter {
         }).filter(activity => !!activity);
     }
 
-    writeVisualizationProperties(element: Visualization): DDL2.IWidgetProperties {
-        const retVal: DDL2.IWidgetProperties = {};
-        const chart = element.chartPanel().widget();
-        for (const prop of chart.publishedProperties()) {
-            if (prop.id === "fields") continue;
-            logger.debug(`${prop.id}=>${(chart as any)[`${prop.id}`]()}`);
-            if ((chart as any)[`${prop.id}_modified`]()) {
-                const val = (chart as any)[`${prop.id}`]();
-                if (!(val instanceof Object)) {
-                    retVal[prop.id] = (chart as any)[`${prop.id}`]();
-                }
-            }
-        }
-        return retVal;
-    }
-
     writeVisualization(visualization: Visualization): DDL2.IVisualization {
         return {
             id: visualization.chartPanel().id(),
             title: visualization.title(),
             description: visualization.description(),
             chartType: visualization.chartType(),
+            __class: visualization.chartPanel().widget().classID(),
             mappings: this.writeMappings(visualization.mappings()),
-            ...visualization.chartPanel().widget().classMeta(),
-            properties: this.writeVisualizationProperties(visualization)
+            properties: visualization.properties()
         };
     }
 
@@ -382,7 +366,8 @@ export class DDLAdapter {
         visualization
             .title(ddlViz.title)
             .description(ddlViz.description)
-            .chartType(ddlViz.chartType as any, ddlViz.properties)
+            .chartType(ddlViz.chartType as any)
+            .properties(ddlViz.properties)
             .mappings(mappings)
             ;
         return this;

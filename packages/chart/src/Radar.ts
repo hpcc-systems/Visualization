@@ -1,6 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
 import { SVGWidget, Utility } from "@hpcc-js/common";
-import { hsl as d3Hsl } from "d3-color";
 import { select as d3Select } from "d3-selection";
 
 import "../src/Radar.css";
@@ -32,7 +31,7 @@ export class Radar extends SVGWidget {
                 element
                     .attr("width", context.pointSize())
                     .attr("height", context.pointSize())
-                    .style("fill", function (d: any, _idx) { return context._palette(d.column); })
+                    .style("fill", d => this.strokeColor(d.data, d.column, d.value))
                     ;
                 break;
             case "circle":
@@ -40,7 +39,7 @@ export class Radar extends SVGWidget {
                     .attr("r", context.pointSize() / 2)
                     .attr("cx", x)
                     .attr("cy", y)
-                    .style("fill", function (d: any, _idx) { return context._palette(d.column); })
+                    .style("fill", d => this.strokeColor(d.data, d.column, d.value))
                     ;
                 break;
             case "path":
@@ -52,7 +51,7 @@ export class Radar extends SVGWidget {
                             "M" + (x - half_size) + " " + (y + half_size) + " " +
                             "L" + (x + half_size) + " " + (y - half_size);
                     })
-                    .style("stroke", function (d: any) { return context._palette(d.column); })
+                    .style("stroke", d => this.strokeColor(d.data, d.column, d.value))
                     ;
                 break;
             default:
@@ -77,25 +76,28 @@ export class Radar extends SVGWidget {
         const half_h = (h / 2);
         const half_w = (w / 2);
 
-        const data = this.flattenData(this.columns(), this.data()).map((d: any) => {
+        const columns = this.columns();
+        const data = this.data();
+        const flatData = this.flattenData(columns, data).map((d: any, idx: number) => {
             d.shape = this.mapShape(this.pointShape());
-            d.column = this.columns()[d.colIdx];
+            d.column = columns[d.colIdx];
+            d.row = data[idx];
             return d;
         });
         const domain_points = [];
         const arc = this.degrees2radians(360 / this.data().length);
         const max_label_h = this.fontSize();
         let max_label_w = 0;
-        data.filter(n => n.colIdx === 1).forEach(n => {
+        flatData.filter(n => n.colIdx === 1).forEach(n => {
             const isize = super.textSize(n.label, `${this.fontFamily()}`, this.fontSize());
             if (max_label_w < isize.width) max_label_w = isize.width;
         });
         const radius = Math.min(half_h - max_label_h, half_w - max_label_w);
         const labels = element
             .selectAll(".label")
-            .data(data.filter(n => n.colIdx === 1))
+            .data(flatData.filter(n => n.colIdx === 1))
             ;
-        const max_val = Math.max.apply(context, data.map(n => n.value));
+        const max_val = Math.max.apply(context, flatData.map(n => n.value));
         labels.enter()
             .append("text")
             .attr("class", "label")
@@ -119,7 +121,7 @@ export class Radar extends SVGWidget {
         labels.exit().remove();
         const domains = element
             .selectAll(".domain")
-            .data(data.filter(n => n.colIdx === 1));
+            .data(flatData.filter(n => n.colIdx === 1));
         domains.enter()
             .append("line")
             .classed("domain", true)
@@ -178,9 +180,6 @@ export class Radar extends SVGWidget {
         value_guides.exit().remove();
 
         //  Polygon shapes  ---
-        const columns = this.columns();
-        const data2 = this.data();
-
         const series_polygons = element
             .selectAll(".area")
             .data(columns.filter((n, i) => i > 0));
@@ -190,12 +189,12 @@ export class Radar extends SVGWidget {
             .style("stroke-opacity", "0.75")
             .style("stroke-width", "0.3px")
             .merge(series_polygons)
-            .style("stroke", d => this._palette(d))
-            .style("fill", d => d3Hsl(this._palette(d)).brighter().toString())
+            .style("stroke", d => this.strokeColor([], d, 0))
+            .style("fill", d => this.fillColor([], d, 0))
             .style("fill-opacity", this.fillOpacity())
             .attr("points", (d, col_idx) => {
                 return domain_points.map((domain_point, row_idx) => {
-                    const val = data2[row_idx][col_idx + 1];
+                    const val = data[row_idx][col_idx + 1];
                     const val_mult = val === 0 ? 0 : val / max_val;
                     return domain_point[0] * val_mult + "," + domain_point[1] * val_mult;
                 }).join(" ");
@@ -205,7 +204,7 @@ export class Radar extends SVGWidget {
         //  Points  ---
         const point_elm = element
             .selectAll(".point")
-            .data(data);
+            .data(flatData);
         point_elm.enter()
             .append("g")
             .attr("class", "point")
@@ -247,8 +246,8 @@ export class Radar extends SVGWidget {
                     ;
 
                 const pointElement = element.select(".pointShape")
-                    .style("stroke", context._palette(columns[d.colIdx]))
-                    .style("fill", d3Hsl(context._palette(columns[d.colIdx])).darker().toString())
+                    .style("stroke", context.strokeColor(d.row, d.column, d.value))
+                    .style("fill", context.fillColor(d.row, d.column, d.value))
                     ;
                 context.setPointAttributes(pointElement, x, y);
             })
@@ -286,6 +285,9 @@ export class Radar extends SVGWidget {
 
     //  INDChart
     _palette;
+    fillColor: (row, column, value) => string;
+    strokeColor: (row, column, value) => string;
+    textColor: (row, column, value) => string;
     click: (row, column, selected) => void;
     dblclick: (row, column, selected) => void;
 
@@ -327,7 +329,7 @@ export interface Radar {
 Radar.prototype.publish("paletteID", "default", "set", "paletteID", Radar.prototype._palette.switch());
 Radar.prototype.publish("pointShape", "cross", "set", "pointShape", ["circle", "rectangle", "cross"]);
 Radar.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });
-Radar.prototype.publish("valueGuideRatios", [0.2, 0.4, 0.6, 0.8], "array", "valueGuideRatios");
+Radar.prototype.publish("valueGuideRatios", [0.2, 0.4, 0.6, 0.8, 1], "array", "valueGuideRatios");
 Radar.prototype.publish("fillOpacity", 0.66, "number", "fillOpacity");
 Radar.prototype.publish("fontFamily", "", "string", "fontFamily");
 Radar.prototype.publish("fontSize", 16, "number", "fontSize");

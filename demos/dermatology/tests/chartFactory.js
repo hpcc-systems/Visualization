@@ -33,8 +33,21 @@
                     );
                 });
             },
+            customColor: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
+                    callback(new Column()
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(DataFactory.ND.subjects.data)
+                        .overrideMethod("fillColor", function (row, column, value, orig) {
+                            if (value < 0) return "red";
+                            if (value < 80) return "grey";
+                            return orig.apply(this, arguments);
+                        })
+                    );
+                });
+            },
             lineOverlay: function (callback) {
-                legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Column", "src/chart/Area", "src/chart/Line"], function (DataFactory, XYAxis, Column, Area, Line) {
+                legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Column", "src/chart/Area", "src/chart/Step"], function (DataFactory, XYAxis, Column, Area, Step) {
                     const columns = DataFactory.ND.subjects.columns;
                     const column = new XYAxis()
                         .columns(columns)
@@ -42,7 +55,7 @@
                         ;
                     column._layers.push(new Column().columns([columns[1]]));
                     column._layers.push(new Area().columns([columns[2]]));
-                    column._layers.push(new Line().columns([columns[3]]));
+                    column._layers.push(new Step().columns([columns[3]]));
                     callback(column);
                 });
             },
@@ -145,6 +158,19 @@
                     callback(new Bubble()
                         .columns(DataFactory.TwoD.subjects.columns)
                         .data(DataFactory.TwoD.subjects.data)
+                    );
+                });
+            },
+            customColor: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/Bubble"], function (DataFactory, Bubble) {
+                    callback(new Bubble()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                        .overrideMethod("fillColor", function (row, column, value, orig) {
+                            if (row[1] < 50) return "black";
+                            if (row[1] > 80) return "lightgrey";
+                            return orig.apply(this, arguments);
+                        })
                     );
                 });
             }

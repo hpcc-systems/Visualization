@@ -1,6 +1,6 @@
 import { Database } from "@hpcc-js/common";
 import { Deferred } from "@hpcc-js/dgrid-shim";
-import { IColumn, RowFormatter } from "./RowFormatter";
+import { CellFormatter, CellRenderer, ColumnType, RowFormatter } from "./RowFormatter";
 
 export class DBStore {
     private _db: Database.Grid;
@@ -12,11 +12,11 @@ export class DBStore {
         this._db = db;
     }
 
-    db2Columns(fields: Database.Field[], prefix = ""): IColumn[] {
+    db2Columns(fields: Database.Field[], prefix = "", formatter?: CellFormatter, renderCell?: CellRenderer): ColumnType[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
             const label = field.label();
-            const column: IColumn = {
+            const column: ColumnType = {
                 label,
                 leafID: "" + idx,
                 field: prefix + idx,
@@ -26,25 +26,18 @@ export class DBStore {
             };
             switch (field.type()) {
                 case "nested":
-                    column.children = this.db2Columns(field.children(), prefix + idx + "_");
+                    column.children = this.db2Columns(field.children(), prefix + idx + "_", formatter);
                     break;
                 default:
-                    column.formatter = (cell, row) => {
-                        switch (typeof cell) {
-                            case "string":
-                                return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-                            case "undefined":
-                                return "";
-                        }
-                        return cell;
-                    };
+                    column.formatter = formatter;
+                    column.renderCell = renderCell;
             }
             return column;
         });
     }
 
-    columns() {
-        return this.db2Columns(this._db.fields(), "");
+    columns(formatter?: CellFormatter, renderCell?: CellRenderer) {
+        return this.db2Columns(this._db.fields(), "", formatter, renderCell);
     }
 
     getIdentity(object) {

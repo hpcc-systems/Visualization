@@ -1,7 +1,7 @@
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Deferred } from "@hpcc-js/dgrid-shim";
 import { QueryResults } from "@hpcc-js/dgrid-shim";
-import { IColumn, RowFormatter } from "./RowFormatter";
+import { ColumnType, RowFormatter } from "./RowFormatter";
 
 export interface IDatasource {
     id: () => string;
@@ -89,10 +89,10 @@ export class DatasourceStore {
         return this._columns;
     }
 
-    db2Columns(fields: DDL2.IField[], prefix = ""): IColumn[] {
+    db2Columns(fields: DDL2.IField[], prefix = ""): ColumnType[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
-            const column: IColumn = {
+            const column: ColumnType = {
                 field: prefix + field.id,
                 leafID: field.id,
                 label: field.id,

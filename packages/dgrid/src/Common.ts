@@ -17,7 +17,7 @@ export class Common extends HTMLWidget {
     }
 
     @publish(false, "boolean", "Enable paging")
-    pagination: { (): boolean, (_: boolean): Common };
+    pagination: publish<this, boolean>;
 
     enter(domNode, element) {
         super.enter(domNode, element);

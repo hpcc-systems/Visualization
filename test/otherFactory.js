@@ -89,20 +89,20 @@
                     var table = new Table()
                         .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
                         .data([
-                            ["Width 2 undefined", , 83, , 72],
-                            ["English II", 17, 43, 83, 93],
-                            ["English III", 6, 43, 64, 93],
+                            ["Width 2 undefined", , "", , 72],
+                            ["English II", 17, "", 83, 93],
+                            ["English III", 6, "", 64, 93],
                             ["Width Blank", 7, "", 52, 83],
-                            ["Geography II", 16, 73, 52, 83],
-                            ["Width 2 undefined", , 83, , 72],
-                            ["Science", 66, 60, 85, 6],
-                            ["Science II", 46, 20, 53, 7],
-                            ["With 2 NULL", null, 20, null, 7],
-                            ["Math", 98, 30, 23, 13],
-                            ["Math II", 76, 30, 34, 6],
-                            ["Math III", 80, 30, 27, 8]
+                            ["Geography II", 16, "", 52, 83],
+                            ["Width 2 undefined", , "", , 72],
+                            ["Science", 66, "", 85, 6],
+                            ["Science II", 46, "", 53, 7],
+                            ["With 2 NULL", null, "", null, 7],
+                            ["Math", 98, "", 23, 13],
+                            ["Math II", 76, "", 34, 6],
+                            ["Math III", 80, "", 27, 8]
                         ])
-                    ;
+                        ;
                     callback(table);
                 });
             },

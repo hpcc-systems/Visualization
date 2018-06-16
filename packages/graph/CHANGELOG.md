@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.1.4...@hpcc-js/graph@0.1.5) (2018-06-15)
+
+
+### Bug Fixes
+
+* **Graph:** Edge flicker when intersecting with Icon and TextBox ([a8926c6](https://github.com/hpcc-systems/Visualization/commit/a8926c6))
+
+
+
+
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.1.3...@hpcc-js/graph@0.1.4) (2018-06-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/graph
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.1.2...@hpcc-js/graph@0.1.3) (2018-06-01)
 

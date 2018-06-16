@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@0.1.3...@hpcc-js/api@0.2.0) (2018-06-15)
+
+
+### Features
+
+* **chart:** Support runtime colour calculations ([820ff4f](https://github.com/hpcc-systems/Visualization/commit/820ff4f))
+
+
+
+
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@0.1.2...@hpcc-js/api@0.1.3) (2018-06-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/api
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@0.1.1...@hpcc-js/api@0.1.2) (2018-06-01)
 

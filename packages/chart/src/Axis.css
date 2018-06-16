@@ -28,4 +28,7 @@
   stroke-width: 1;
   stroke-dasharray: 3 5;
 }
-  
+.chart_Axis line,
+.chart_Axis path{
+  shape-rendering: crispEdges;
+}

@@ -7,12 +7,19 @@ import "handsontable/dist/handsontable.css";
 import "../src/Table.css";
 
 class Column extends PropertyExt {
-    _owner;
-    constructor(owner) {
+    private _owner: Table;
+
+    constructor() {
         super();
-        this._owner = owner;
     }
 
+    owner(): Table;
+    owner(_: Table): this;
+    owner(_?: Table): Table | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
+    }
     valid(): boolean {
         return !!this.label();
     }

@@ -6,11 +6,19 @@ import { select as d3Select } from "d3-selection";
 import "../src/Indented.css";
 
 export class IndentedColumn extends PropertyExt {
+    _owner: Indented;
 
-    constructor(readonly _owner: Indented) {
+    constructor() {
         super();
     }
 
+    owner(): Indented;
+    owner(_: Indented): this;
+    owner(_?: Indented): Indented | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
+    }
     valid(): boolean {
         return !!this.column();
     }

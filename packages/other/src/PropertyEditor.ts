@@ -432,7 +432,7 @@ export class PropertyEditor extends HTMLWidget {
             //  remove empties and ensure last row is an empty  ---
             let lastModified = true;
             const noEmpties = widgetArr.filter(function (row, idx) {
-                lastModified = row.publishedModified();
+                lastModified = row.valid();
                 row._owner = widget;
                 return lastModified || idx === widgetArr.length - 1;
             }, this);
@@ -440,7 +440,9 @@ export class PropertyEditor extends HTMLWidget {
             let changed = !!(widgetArr.length - noEmpties.length);
             if (lastModified && !widgetDisabled) {
                 changed = true;
-                const autoExpandWidget = new param.ext.autoExpand(widget);
+                const autoExpandWidget = new param.ext.autoExpand()
+                    .owner(widget)
+                    ;
                 // autoExpandWidget.monitor((id, newVal, oldVal, source) => {
                 // widget.broadcast(param.id, newVal, oldVal, source);
                 // });

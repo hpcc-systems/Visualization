@@ -5,9 +5,18 @@ import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "
 import "../src/Opportunity.css";
 
 export class Column extends PropertyExt {
+    _owner: Opportunity;
 
-    constructor(readonly _owner) {
+    constructor() {
         super();
+    }
+
+    owner(): Opportunity;
+    owner(_: Opportunity): this;
+    owner(_?: Opportunity): Opportunity | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -23,8 +32,18 @@ export interface Column {
 Column.prototype.publish("headerLabel", null, "string", "Header value of a table", function (this: Column) { return this._owner ? this._owner.columns() : []; }, { tags: ["Basic"], optional: true });
 
 export class MouseHoverColumn extends PropertyExt {
-    constructor(readonly _owner) {
+    _owner: Opportunity;
+
+    constructor() {
         super();
+    }
+
+    owner(): Opportunity;
+    owner(_: Opportunity): this;
+    owner(_?: Opportunity): Opportunity | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -43,8 +62,18 @@ MouseHoverColumn.prototype.publish("hoverValue", null, "string", "Hover value of
 MouseHoverColumn.prototype.publish("hoverList", null, "set", "Hover value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true });
 
 export class ColumnDropdown extends PropertyExt {
-    constructor(readonly _owner) {
+    _owner: Opportunity;
+
+    constructor() {
         super();
+    }
+
+    owner(): Opportunity;
+    owner(_: Opportunity): this;
+    owner(_?: Opportunity): Opportunity | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {

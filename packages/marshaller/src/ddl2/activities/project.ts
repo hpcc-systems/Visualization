@@ -30,9 +30,16 @@ export class ComputedMapping extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: ComputedField) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): ComputedField;
+    owner(_: ComputedField): this;
+    owner(_?: ComputedField): ComputedField | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -46,8 +53,8 @@ export class ComputedMapping extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: ComputedField, ddl: DDL2.IMapMapping): ComputedMapping {
-        const retVal = new ComputedMapping(owner)
+    static fromDDL(ddl: DDL2.IMapMapping): ComputedMapping {
+        const retVal = new ComputedMapping()
             .value(ddl.value)
             .newValue(ddl.newValue)
             ;
@@ -137,9 +144,16 @@ export class ComputedField extends PropertyExt {
         return false;
     }
 
-    constructor(owner: IComputedFieldOwner) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): IComputedFieldOwner;
+    owner(_: IComputedFieldOwner): this;
+    owner(_?: IComputedFieldOwner): IComputedFieldOwner | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -199,8 +213,8 @@ export class ComputedField extends PropertyExt {
         }
     }
 
-    static fromDDL(owner: IComputedFieldOwner, ddl: DDL2.MultiTransformationType): ComputedField {
-        const retVal = new ComputedField(owner)
+    static fromDDL(ddl: DDL2.MultiTransformationType): ComputedField {
+        const retVal = new ComputedField()
             .label(ddl.fieldID)
             .type(ddl.type)
             ;
@@ -219,14 +233,14 @@ export class ComputedField extends PropertyExt {
             case "=":
                 retVal
                     .column1(ddl.sourceFieldID)
-                    .childField(ddl.transformations ? ddl.transformations.map(transformation => ComputedField.fromDDL(retVal, transformation)) : [])
+                    .childField(ddl.transformations ? ddl.transformations.map(transformation => ComputedField.fromDDL(transformation)) : [])
                     ;
                 break;
             case "map":
                 retVal
                     .column1(ddl.sourceFieldID)
                     .default(ddl.default)
-                    .mapping(ddl.mappings ? ddl.mappings.map(mapping => ComputedMapping.fromDDL(retVal, mapping)) : [])
+                    .mapping(ddl.mappings ? ddl.mappings.map(mapping => ComputedMapping.fromDDL(mapping)) : [])
                     ;
                 break;
             default:
@@ -377,9 +391,16 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
     @publish([], "propertyArray", "Multi Fields", null, { autoExpand: ComputedField })
     multiFields: publish<this, ComputedField[]>;
 
-    constructor(owner: IComputedFieldOwner) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): IComputedFieldOwner;
+    owner(_: IComputedFieldOwner): this;
+    owner(_?: IComputedFieldOwner): IComputedFieldOwner | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -402,8 +423,8 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
         };
     }
 
-    static fromDDL(owner: IComputedFieldOwner, ddl: DDL2.IMulti): MultiField {
-        return new MultiField(owner)
+    static fromDDL(ddl: DDL2.IMulti): MultiField {
+        return new MultiField()
             .label(ddl.fieldID)
             .transformations(ddl.transformations)
             ;
@@ -417,7 +438,7 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
     transformations(_: DDL2.MultiTransformationType[]): this;
     transformations(_?: DDL2.MultiTransformationType[]): DDL2.MultiTransformationType[] | this {
         if (!arguments.length) return this.validMultiFields().map(cf => cf.toDDL());
-        this.multiFields(_.map(transformation => ComputedField.fromDDL(this, transformation)));
+        this.multiFields(_.map(transformation => ComputedField.fromDDL(transformation)));
         return this;
     }
 
@@ -457,9 +478,9 @@ export class ProjectBase extends Activity {
         this.computedFields(_.map(transformation => {
             switch (transformation.type) {
                 case "multi":
-                    return MultiField.fromDDL(this, transformation);
+                    return MultiField.fromDDL(transformation);
                 default:
-                    return ComputedField.fromDDL(this, transformation);
+                    return ComputedField.fromDDL(transformation);
             }
         }));
         return this;
@@ -496,7 +517,8 @@ export class ProjectBase extends Activity {
 
     appendComputedFields(computedFields: [{ label: string, type: ComputedType, column?: string }]): this {
         for (const aggregateField of computedFields) {
-            const aggrField = new ComputedField(this)
+            const aggrField = new ComputedField()
+                .owner(this)
                 .label(aggregateField.label)
                 .type(aggregateField.type)
                 ;

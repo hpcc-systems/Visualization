@@ -24,9 +24,16 @@ export class SortColumn extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: Sort) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): Sort;
+    owner(_: Sort): this;
+    owner(_?: Sort): Sort | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -40,8 +47,8 @@ export class SortColumn extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: Sort, condition: DDL2.ISortCondition): SortColumn {
-        return new SortColumn(owner)
+    static fromDDL(condition: DDL2.ISortCondition): SortColumn {
+        return new SortColumn()
             .fieldID(condition.fieldID)
             .descending(condition.descending)
             ;
@@ -101,7 +108,7 @@ export class Sort extends Activity {
     conditions(_: DDL2.ISortCondition[]): this;
     conditions(_?: DDL2.ISortCondition[]): DDL2.ISortCondition[] | this {
         if (!arguments.length) return this.validSortBy().map(column => column.toDDL());
-        this.column(_.map(condition => SortColumn.fromDDL(this, condition)));
+        this.column(_.map(condition => SortColumn.fromDDL(condition)));
         return this;
     }
 

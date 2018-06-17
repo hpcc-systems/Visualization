@@ -17,11 +17,18 @@ const d3Aggr = {
 };
 
 export class SankeyColumn extends PropertyExt {
-    _owner;
+    _owner: Sankey;
 
-    constructor(owner?) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): Sankey;
+    owner(_: Sankey): this;
+    owner(_?: Sankey): Sankey | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {

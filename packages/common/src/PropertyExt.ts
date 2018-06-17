@@ -65,6 +65,8 @@ function isPrivate(obj, key) {
 
 export interface IAutoExpand extends PropertyExt {
     //  AutoExpand items may have "incomplete" instances while the user is editing them in the PropertyEditor
+    owner(): PropertyExt;
+    owner(_: PropertyExt): this;
     valid(): boolean;
 }
 
@@ -75,7 +77,7 @@ export interface IPublishExt {
     disable?: (w) => boolean;
     optional?: boolean;
     tags?: TagTypes[];
-    autoExpand?: { new(owner: PropertyExt): IAutoExpand };
+    autoExpand?: { new(): IAutoExpand };
     render?: boolean;
     icons?: string[];
     editor_input?: (context, widget, cell, param) => void;
@@ -119,9 +121,11 @@ export class Meta {
                 break;
             case "set":
                 this.checkedAssign = function (_) {
-                    const options = typeof set === "function" ? set.call(this) : set;
-                    if (options && options.length && options.indexOf(_) < 0) {
-                        console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + JSON.stringify(options));
+                    if ((window as any).__hpcc_debug) {
+                        const options = typeof set === "function" ? set.call(this) : set;
+                        if (options && options.length && options.indexOf(_) < 0) {
+                            console.error("Invalid value for '" + this.classID() + "." + id + "':  " + _ + " expected " + JSON.stringify(options));
+                        }
                     }
                     return _;
                 };
@@ -352,7 +356,7 @@ export class PropertyExt extends Class {
                 case "propertyArray":
                     if ((this as any)[`${prop.id}_modified`]()) {
                     }
-                    const serialization = val.map(item => item.serialize()).filter(item => item !== undefined);
+                    const serialization = val.filter(item => item.valid()).map(item => item.serialize()).filter(item => item !== undefined);
                     if (serialization) {
                         retVal[prop.id] = serialization;
                     }
@@ -376,7 +380,7 @@ export class PropertyExt extends Class {
                 switch (prop.type) {
                     case "propertyArray":
                         if (prop.ext && prop.ext.autoExpand) {
-                            this[`${prop.id}`](val.map(item => new prop.ext.autoExpand(this).deserialize(item)));
+                            this[`${prop.id}`](val.map(item => new prop.ext.autoExpand().deserialize(item)));
                         }
                         break;
                     default:
@@ -469,11 +473,20 @@ export class PropertyExt extends Class {
         });
         if (this[id]) {
         } else {
-            this[id] = function (_) {
-                if (!arguments.length) return this[__prop_ + id];
-                this[__prop_ + id] = _;
-                return this;
-            };
+            if (type === "propertyArray") {
+                this[id] = function (_) {
+                    if (!arguments.length) return this[__prop_ + id];
+                    _.forEach(item => item.owner(this));
+                    this[__prop_ + id] = _;
+                    return this;
+                };
+            } else {
+                this[id] = function (_) {
+                    if (!arguments.length) return this[__prop_ + id];
+                    this[__prop_ + id] = _;
+                    return this;
+                };
+            }
         }
         this[id + "_disabled"] = function () {
             return ext && ext.disable ? !!ext.disable(this) : false;
@@ -670,7 +683,7 @@ export class PropertyExt extends Class {
 
     hash(ignore: string[] = [], more = {}): string {
         const props: { [key: string]: any } = more;
-        this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
+        this.publishedProperties(false).filter(meta => meta.id !== "fields" && ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 props[meta.id] = this[meta.id]();
             }

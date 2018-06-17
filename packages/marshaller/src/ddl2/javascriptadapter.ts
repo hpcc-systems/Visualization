@@ -218,28 +218,24 @@ export class JavaScriptAdapter {
         return retVal;
     }
 
-    private joinWithPrefix(props: DDL2.IWidgetProperties, imports: Imports, owner: string, joinStr: string, postFix: string = ""): string {
+    private joinWithPrefix(props: DDL2.IWidgetProperties, imports: Imports, joinStr: string, postFix: string): string {
         let retVal: string = "";
         let meta: ClassMeta;
         if (props.__class) {
             meta = classID2Meta(props.__class);
             imports.append(meta);
-            retVal += `((${owner}) => {${joinStr}const retVal = new ${meta.class}(${owner});${joinStr}return retVal`;
+            retVal += `new ${meta.class}()`;
         }
         for (const prop in props) {
             if (prop === "__class") {
             } else if (isArray(props[prop])) {
-                const arr = `${(props[prop] as any[]).map(item => this.joinWithPrefix(item, imports, props.__class ? "owner" : "", joinStr + "    "))}`;
+                const arr = `${(props[prop] as any[]).map(item => this.joinWithPrefix(item, imports, joinStr + "        ", "")).join(`,${joinStr}        `)}`;
                 if (arr) {
-                    retVal += `${joinStr}    .${prop}([${arr}])${postFix}`;
+                    retVal += `${joinStr}    .${prop}([${joinStr}        ${arr}${joinStr}    ])${postFix}`;
                 }
             } else {
                 retVal += `${joinStr}    .${prop}(${JSON.stringify(props[prop])})${postFix}`;
             }
-        }
-        if (props.__class) {
-            retVal += `;
-            })(${owner ? "retVal" : ""})`;
         }
         return retVal;
     }
@@ -248,7 +244,7 @@ export class JavaScriptAdapter {
         return `    export const ${dataview.visualization.id} = new ChartPanel()
         .id("${dataview.visualization.id}")
         .title("${dataview.visualization.title}")
-        .widget(${this.joinWithPrefix(dataview.visualization.properties, imports, "", "\n            ", "")})
+        .widget(${this.joinWithPrefix(dataview.visualization.properties, imports, "\n        ", "")})
         ;`;
     }
 

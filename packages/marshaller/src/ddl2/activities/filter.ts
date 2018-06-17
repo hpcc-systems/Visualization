@@ -35,9 +35,16 @@ export class ColumnMapping extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: Filter) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): Filter;
+    owner(_: Filter): this;
+    owner(_?: Filter): Filter | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -53,8 +60,8 @@ export class ColumnMapping extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: Filter, ddl: DDL2.IMapping): ColumnMapping {
-        return new ColumnMapping(owner)
+    static fromDDL(ddl: DDL2.IMapping): ColumnMapping {
+        return new ColumnMapping()
             .remoteField(ddl.remoteFieldID)
             .localField(ddl.localFieldID)
             .condition(ddl.condition)
@@ -137,9 +144,16 @@ export class Filter extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: Filters) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): Filters;
+    owner(_: Filters): this;
+    owner(_?: Filters): Filters | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -153,8 +167,8 @@ export class Filter extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: Filters, ddl: DDL2.IFilterCondition): Filter {
-        return new Filter(owner)
+    static fromDDL(ddl: DDL2.IFilterCondition): Filter {
+        return new Filter()
             .source(ddl.viewID)
             .ddlMappings(ddl.mappings)
             ;
@@ -164,7 +178,7 @@ export class Filter extends PropertyExt {
     ddlMappings(_: DDL2.IMapping[]): this;
     ddlMappings(_?: DDL2.IMapping[]): DDL2.IMapping[] | this {
         if (!arguments.length) return this.validMappings().map(mapping => mapping.toDDL());
-        this.mappings(_.map(mapping => ColumnMapping.fromDDL(this, mapping)));
+        this.mappings(_.map(mapping => ColumnMapping.fromDDL(mapping)));
         return this;
     }
 
@@ -185,7 +199,8 @@ export class Filter extends PropertyExt {
 
     appendMappings(mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {
         for (const mapping of mappings) {
-            this.mappings().push(new ColumnMapping(this)
+            this.mappings().push(new ColumnMapping()
+                .owner(this)
                 .remoteField(mapping.remoteField)
                 .localField(mapping.localField)
                 .condition(mapping.condition)
@@ -254,7 +269,7 @@ export class Filters extends Activity {
     conditions(_: DDL2.IFilterCondition[]): this;
     conditions(_?: DDL2.IFilterCondition[]): DDL2.IFilterCondition[] | this {
         if (!arguments.length) return this.validFilters().map(filter => filter.toDDL());
-        this.filter(_.map(fc => Filter.fromDDL(this, fc)));
+        this.filter(_.map(fc => Filter.fromDDL(fc)));
         return this;
     }
 
@@ -313,7 +328,8 @@ export class Filters extends Activity {
     }
 
     appendFilter(source: Element, mappings: Array<{ remoteField: string, localField: string, condition: DDL2.IMappingConditionType }>): this {
-        this.filter().push(new Filter(this)
+        this.filter().push(new Filter()
+            .owner(this)
             .source(source.id())
             .appendMappings(mappings));
         return this;

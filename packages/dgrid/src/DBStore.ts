@@ -12,7 +12,7 @@ export class DBStore {
         this._db = db;
     }
 
-    db2Columns(fields: Database.Field[], prefix = "", formatter?: CellFormatter, renderCell?: CellRenderer): ColumnType[] {
+    db2Columns(sortable: boolean, fields: Database.Field[], prefix = "", formatter?: CellFormatter, renderCell?: CellRenderer): ColumnType[] {
         if (!fields) return [];
         return fields.map((field, idx) => {
             const label = field.label();
@@ -22,11 +22,12 @@ export class DBStore {
                 field: prefix + idx,
                 idx,
                 className: "resultGridCell",
-                sortable: true,
+                sortable,
             };
             switch (field.type()) {
                 case "nested":
-                    column.children = this.db2Columns(field.children(), prefix + idx + "_", formatter);
+                    column.children = this.db2Columns(false, field.children(), prefix + idx + "_", formatter);
+                    column.sortable = false;
                     break;
                 default:
                     column.formatter = formatter;
@@ -36,8 +37,8 @@ export class DBStore {
         });
     }
 
-    columns(formatter?: CellFormatter, renderCell?: CellRenderer) {
-        return this.db2Columns(this._db.fields(), "", formatter, renderCell);
+    columns(sortable: boolean, formatter?: CellFormatter, renderCell?: CellRenderer) {
+        return this.db2Columns(sortable, this._db.fields(), "", formatter, renderCell);
     }
 
     getIdentity(object) {
@@ -45,7 +46,7 @@ export class DBStore {
     }
 
     _fetchRange(opts: { start: number, end: number }): object[] {
-        const rowFormatter = new RowFormatter(this.columns());
+        const rowFormatter = new RowFormatter(this.columns(false));
         return this._db.data().slice(opts.start, opts.end).map((row, idx) => {
             const formattedRow: any = rowFormatter.format(row);
             return {

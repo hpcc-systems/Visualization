@@ -646,7 +646,7 @@ class DDLUpgrade {
 
     write(): DDL2.Schema {
         return {
-            version: "0.0.24",
+            version: "0.0.22",
             datasources: this.writeDatasources(),
             dataviews: this.writeDataviews()
         };

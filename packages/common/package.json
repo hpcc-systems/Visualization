@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,7 +27,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^0.1.0"
+    "@hpcc-js/util": "^0.1.1"
   },
   "devDependencies": {
     "@types/d3-dsv": "1",

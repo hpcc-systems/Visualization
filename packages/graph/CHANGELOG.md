@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.1.5...@hpcc-js/graph@0.2.0) (2018-06-19)
+
+
+### Bug Fixes
+
+* **Graph:** Edge flicker when intersecting with Icon and TextBox ([f730f3e](https://github.com/hpcc-systems/Visualization/commit/f730f3e))
+
+
+### Features
+
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5f))
+
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.1.4...@hpcc-js/graph@0.1.5) (2018-06-15)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@0.0.85...@hpcc-js/form@0.1.0) (2018-06-19)
+
+
+### Bug Fixes
+
+* Forms do not update when dashy changes ([4b8ba62](https://github.com/hpcc-systems/Visualization/commit/4b8ba62))
+
+
+### Features
+
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5f))
+
+
+
+
 <a name="0.0.85"></a>
 ## [0.0.85](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@0.0.84...@hpcc-js/form@0.0.85) (2018-06-15)
 

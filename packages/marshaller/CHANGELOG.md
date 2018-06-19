@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.1.12...@hpcc-js/marshaller@0.2.0) (2018-06-19)
+
+
+### Bug Fixes
+
+* Add missing save method to dashy ([4c5228a](https://github.com/hpcc-systems/Visualization/commit/4c5228a))
+
+
+### Features
+
+* **dashy:** Add [@hpcc-js](https://github.com/hpcc-js)/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523))
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5f))
+
+
+
+
 <a name="0.1.12"></a>
 ## [0.1.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.1.11...@hpcc-js/marshaller@0.1.12) (2018-06-15)
 

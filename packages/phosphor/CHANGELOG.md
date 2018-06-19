@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@0.0.91...@hpcc-js/phosphor@0.1.0) (2018-06-19)
+
+
+### Features
+
+* **dashy:** Add [@hpcc-js](https://github.com/hpcc-js)/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523))
+
+
+
+
 <a name="0.0.91"></a>
 ## [0.0.91](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@0.0.90...@hpcc-js/phosphor@0.0.91) (2018-06-15)
 

@@ -18,6 +18,8 @@ export class Common extends HTMLWidget {
 
     @publish(false, "boolean", "Enable paging")
     pagination: publish<this, boolean>;
+    @publish(false, "boolean", "Enable sorting by column")
+    sortable: publish<this, boolean>;
 
     enter(domNode, element) {
         super.enter(domNode, element);

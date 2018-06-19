@@ -11,9 +11,22 @@ export const GridHelper = declare(null, {
     postCreate: function fn(inherited) {
         this.inherited(fn, arguments);
 
+        this.__hpcc_tooltip_header = new Tooltip({
+            connectId: [this.id],
+            selector: ".dgrid-resize-header-container",
+            showDelay: 400,
+            getContent(node) {
+                if (node.offsetWidth < node.scrollWidth - 4) {
+                    return node.innerHTML;
+                }
+                return "";
+            }
+        });
+        this.__hpcc_tooltip_header.position = ["above-centered", "below-centered", "before-centered", "after-centered"];
+
         this.__hpcc_tooltip = new Tooltip({
             connectId: [this.id],
-            selector: "td,.dgrid-resize-header-container",
+            selector: "td",
             showDelay: 400,
             getContent(node) {
                 if (node.offsetWidth <= node.scrollWidth) {
@@ -22,6 +35,7 @@ export const GridHelper = declare(null, {
                 return "";
             }
         });
+        this.__hpcc_tooltip.position = ["above-centered", "below-centered", "before-centered", "after-centered"];
     }/*,
 
     _onNotify(object, existingId) {

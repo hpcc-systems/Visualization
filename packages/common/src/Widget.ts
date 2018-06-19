@@ -470,7 +470,7 @@ export abstract class Widget extends PropertyExt {
         };
     }
 
-    textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12): ISize {
+    textSize(_text: string | string[], fontName: string = "Verdana", fontSize: number = 12, bold: boolean = false): ISize {
         if (!g_fontSizeContext) {
             let fontSizeCalc = d3Select("body > #hpcc_js_font_size");
             if (fontSizeCalc.empty()) {
@@ -484,7 +484,7 @@ export abstract class Widget extends PropertyExt {
         const hash = `${fontSize}::${fontName}::${text.join("::")}`;
         let retVal = g_fontSizeContextCache[hash];
         if (!retVal) {
-            g_fontSizeContext.font = `${fontSize}px ${fontName}`;
+            g_fontSizeContext.font = `${bold ? "bold " : ""}${fontSize}px ${fontName}`;
             g_fontSizeContextCache[hash] = retVal = {
                 width: Math.max(...text.map(t => g_fontSizeContext.measureText(("" + t).trim()).width)),
                 height: fontSize * text.length

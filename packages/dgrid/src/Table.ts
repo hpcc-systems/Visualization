@@ -1,86 +1,94 @@
 ﻿import { Palette, PropertyExt } from "@hpcc-js/common";
 import { hashSum } from "@hpcc-js/util";
+import { format as d3Format } from "d3-format";
 import { select as d3Select } from "d3-selection";
 import { Common } from "./Common";
-import { CellRenderer, ColumnType, RowType } from "./RowFormatter";
-
-function charW(w, c) {
-    if (c === "W" || c === "M") w += 15;
-    else if (c === "w" || c === "m") w += 12;
-    else if (c === "I" || c === "i" || c === "l" || c === "t" || c === "f") w += 4;
-    else if (c === "r") w += 8;
-    else if (c === c.toUpperCase()) w += 12;
-    else w += 10;
-    return w;
-}
-
-function textWidth(s) {
-    return s.split("").reduce(charW, 0);
-}
-
-function defaultFormatter(this: ColumnType, cell: any, row: RowType) {
-    switch (typeof cell) {
-        case "string":
-            return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-        case "undefined":
-            return "";
-    }
-    return cell;
-}
-
-function createCellRenderer(columns: string[], columnPalettes: ColumnPalette[]): CellRenderer {
-    const palettes = {};
-    columnPalettes.forEach((columnPalette, idx) => {
-        if (columnPalette.column()) {
-            palettes[columns.indexOf(columnPalette.column())] = {
-                palette: Palette.rainbow(columnPalette.paletteID()),
-                min: columnPalette.min(),
-                max: columnPalette.max()
-            };
-        }
-    });
-    return function (this: ColumnType, row: RowType, cell: any, cellElement: HTMLElement): HTMLElement | void {
-        const pal = palettes[this.idx];
-        if (pal) {
-            const background = pal.palette(cell, pal.min, pal.max);
-            d3Select(cellElement)
-                .style("background", background)
-                .style("color", Palette.textColor(background))
-                ;
-        }
-        cellElement.innerText = defaultFormatter.call(this, cell, row);
-    };
-}
+import { CellFormatter, CellRenderer, ColumnType, RowType } from "./RowFormatter";
 
 //  ColumnPalette ---
-export class ColumnPalette extends PropertyExt {
+export class ColumnFormat extends PropertyExt {
     _owner: Table;
 
-    constructor(owner: Table) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): Table;
+    owner(_: Table): this;
+    owner(_?: Table): Table | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
         return !!this.column();
     }
-}
-ColumnPalette.prototype._class += " dgrid_Table.ColumnPalette";
 
-export interface ColumnPalette {
+    formatterFunc(): CellFormatter | undefined {
+        const defaultFormatter = this._owner.formatterFunc();
+        if (this.valid() && this.format()) {
+            const numberFormatter = d3Format(this.format());
+
+            return function (this: ColumnType, cell: any, row: RowType): string {
+                if (typeof cell === "number")
+                    return numberFormatter(cell);
+                return defaultFormatter.call(this, cell, row);
+            };
+        }
+        return defaultFormatter;
+    }
+
+    renderCellFunc(): CellRenderer | undefined {
+        const defaultRenderCell = this._owner.renderCellFunc();
+        const defaultFormatter = this.formatterFunc();
+        if (this.valid() && this.paletteID()) {
+            const columns = this._owner.columns();
+            const palette = Palette.rainbow(this.paletteID());
+            const min = this.min();
+            const max = this.max();
+            const valueColIdx = this.valueColumn() ? columns.indexOf(this.valueColumn()) : undefined;
+            return function (this: ColumnType, row: RowType, cell: any, cellElement: HTMLElement): HTMLElement | void {
+                if (defaultRenderCell) {
+                    defaultRenderCell.call(this, row, cell, cellElement);
+                }
+                const value = valueColIdx ? row.__origRow[valueColIdx] : cell;
+                const background = palette(value, min, max);
+                d3Select(cellElement)
+                    .style("background", background)
+                    .style("color", Palette.textColor(background))
+                    .text(defaultFormatter.call(this, cell, row))
+                    ;
+            };
+        }
+        return defaultRenderCell;
+    }
+}
+ColumnFormat.prototype._class += " dgrid_Table.ColumnFormat";
+
+export interface ColumnFormat {
     column(): string;
     column(_: string): this;
+    width(): number;
+    width(_: number): this;
+    format(): string;
+    format(_: string): this;
     paletteID(): string;
     paletteID(_: string): this;
     min(): number;
     min(_: number): this;
     max(): number;
     max(_: number): this;
+    valueColumn(): string;
+    valueColumn(_: string): this;
 }
-ColumnPalette.prototype.publish("column", null, "set", "Column", function (this: ColumnPalette) { return this._owner.columns(); }, { optional: true });
-ColumnPalette.prototype.publish("paletteID", "default", "set", "Palette ID", Palette.rainbow("default").switch());
-ColumnPalette.prototype.publish("min", 0, "number", "Min Value");
-ColumnPalette.prototype.publish("max", 100, "number", "Max Value");
+ColumnFormat.prototype.publish("column", null, "set", "Column", function (this: ColumnFormat) { return this._owner.columns(); }, { optional: true });
+ColumnFormat.prototype.publish("width", null, "number", "Width", null, { optional: true });
+ColumnFormat.prototype.publish("format", null, "string", "Format (d3-format)", null, { optional: true });
+ColumnFormat.prototype.publish("paletteID", null, "set", "Palette ID", ["", ...Palette.rainbow("default").switch()], { optional: true });
+ColumnFormat.prototype.publish("min", 0, "number", "Min Value", null, { disable: (cf: ColumnFormat) => !cf.paletteID() });
+ColumnFormat.prototype.publish("max", 100, "number", "Max Value", null, { disable: (cf: ColumnFormat) => !cf.paletteID() });
+ColumnFormat.prototype.publish("valueColumn", null, "set", "Column", function (this: ColumnFormat) { return this._owner.columns(); }, { optional: true, disable: (cf: ColumnFormat) => !cf.paletteID() });
 
 //  Table ---
 export class Table extends Common {
@@ -137,18 +145,19 @@ export class Table extends Common {
     }
 
     guessWidth(columns, data) {
+        const sortablePadding = this.sortable() ? 12 : 0;
         for (const column of columns) {
             if (column.children) {
-                const sampleData = [];
+                let sampleData = [];
                 for (let i = 0; i < Math.min(3, data.length); ++i) {
-                    sampleData.push(data[i][column.idx]);
+                    sampleData = sampleData.concat(data[i][column.idx]);
                 }
                 this.guessWidth(column.children, sampleData);
             } else {
                 column.width = data.reduce((prevVal: number, row) => {
                     const cell = ("" + row[column.idx]).trim();
-                    return Math.max(prevVal, textWidth(cell));
-                }, textWidth("" + column.label));
+                    return Math.max(prevVal, this.textSize(cell).width);
+                }, this.textSize("" + column.label, undefined, undefined, true).width + sortablePadding) + 8; // +12 for the sort icon, +8 for the cell padding.
             }
         }
     }
@@ -163,12 +172,24 @@ export class Table extends Common {
             this._forceRefresh = true;
         }
         if (this._colsRefresh) {
-            this._columns = this._store.columns(defaultFormatter, createCellRenderer(this.columns(), this.columnPalettes()));
+            this._columns = this._store.columns(this.sortable(), this.formatterFunc(), this.renderCellFunc());
             switch (this.columnWidth()) {
                 case "auto":
-                    const data = this.data().filter((row, idx) => idx < 10);
-                    this.guessWidth(this._columns, data);
+                    const tenRows = this.data().filter((row, idx) => idx < 10);
+                    this.guessWidth(this._columns, tenRows);
                     break;
+            }
+            const columns = this.columns();
+            for (const columnFormat of this.columnFormats()) {
+                if (columnFormat.valid()) {
+                    const colIdx = columns.indexOf(columnFormat.column());
+                    if (this._columns[colIdx]) {
+                        this._columns[colIdx].hidden = columnFormat.width() === 0;
+                        this._columns[colIdx].width = columnFormat.width() || this._columns[colIdx].width;
+                        this._columns[colIdx].formatter = columnFormat.formatterFunc();
+                        this._columns[colIdx].renderCell = columnFormat.renderCellFunc();
+                    }
+                }
             }
             this._dgrid.set("columns", this._columns);
             this._colsRefresh = false;
@@ -179,6 +200,24 @@ export class Table extends Common {
         }
     }
 
+    //  Cell  ---
+    formatterFunc(): CellFormatter | undefined {
+        return function (this: ColumnType, cell: any, row: RowType): string {
+            switch (typeof cell) {
+                case "string":
+                    return cell.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;").trim();
+                case "undefined":
+                    return "";
+            }
+            return cell;
+        };
+    }
+
+    renderCellFunc(): CellRenderer | undefined {
+        return undefined;  //  Undefined will defualt to formatter  ---
+    }
+
+    //  Events  ---
     click(row, col, sel) {
     }
 }
@@ -187,9 +226,9 @@ Table.prototype._class += " dgrid_Table";
 export interface Table {
     columnWidth(): "auto" | "none";
     columnWidth(_: "auto" | "none"): this;
-    columnPalettes(): ColumnPalette[];
-    columnPalettes(_: ColumnPalette[]): this;
+    columnFormats(): ColumnFormat[];
+    columnFormats(_: ColumnFormat[]): this;
 }
 
 Table.prototype.publish("columnWidth", "auto", "set", "Default column width", ["auto", "none"]);
-Table.prototype.publish("columnPalettes", [], "propertyArray", "Source Columns", null, { autoExpand: ColumnPalette });
+Table.prototype.publish("columnFormats", [], "propertyArray", "Source Columns", null, { autoExpand: ColumnFormat });

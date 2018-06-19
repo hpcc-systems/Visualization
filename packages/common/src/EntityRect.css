@@ -10,3 +10,7 @@
     stroke-width: 4px;
     shape-rendering: geometricPrecision;
 }
+
+.common_EntityRect .entity_shape > g > rect {
+    shape-rendering: geometricPrecision;
+}

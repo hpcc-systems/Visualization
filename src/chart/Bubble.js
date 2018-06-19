@@ -123,7 +123,10 @@
                     if (d.r * 2 < 16) {
                         label = "";
                     } else if (d.r * 2 < labelWidth) {
-                        label = label[0] + "...";
+                        var overlap = labelWidth - (d.r * 2);
+                        var overlapRatio = overlap / labelWidth;
+                        var underlapString = label.slice(0,Math.floor(label.length - (label.length * overlapRatio)));
+                        label = underlapString.slice(0,-3) + "...";
                     }
                     context.labelWidgets[d[0]]
                         .pos(pos)

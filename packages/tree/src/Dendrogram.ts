@@ -6,11 +6,19 @@ import { select as d3Select } from "d3-selection";
 import "../src/Dendrogram.css";
 
 export class DendrogramColumn extends PropertyExt {
+    _owner: Dendrogram;
 
-    constructor(readonly _owner: Dendrogram) {
+    constructor() {
         super();
     }
 
+    owner(): Dendrogram;
+    owner(_: Dendrogram): this;
+    owner(_?: Dendrogram): Dendrogram | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
+    }
     valid(): boolean {
         return !!this.column();
     }

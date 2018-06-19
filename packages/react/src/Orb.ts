@@ -12,10 +12,16 @@ import "../src/Orb.css";
 class Mapping extends PropertyExt {
     _owner;
 
-    constructor(owner: Orb) {
+    constructor() {
         super();
+    }
 
-        this._owner = owner;
+    owner(): Orb;
+    owner(_: Orb): this;
+    owner(_?: Orb): Orb | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {

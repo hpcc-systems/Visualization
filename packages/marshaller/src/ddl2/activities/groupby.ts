@@ -23,9 +23,16 @@ export class GroupByColumn extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: GroupBy) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): GroupBy;
+    owner(_: GroupBy): this;
+    owner(_?: GroupBy): GroupBy | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -36,8 +43,8 @@ export class GroupByColumn extends PropertyExt {
         return this.label();
     }
 
-    static fromDDL(owner: GroupBy, label: string): GroupByColumn {
-        return new GroupByColumn(owner)
+    static fromDDL(label: string): GroupByColumn {
+        return new GroupByColumn()
             .label(label)
             ;
     }
@@ -110,9 +117,16 @@ export class AggregateField extends PropertyExt {
         return retVal;
     }
 
-    constructor(owner: GroupBy) {
+    constructor() {
         super();
-        this._owner = owner;
+    }
+
+    owner(): GroupBy;
+    owner(_: GroupBy): this;
+    owner(_?: GroupBy): GroupBy | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {
@@ -134,8 +148,8 @@ export class AggregateField extends PropertyExt {
         };
     }
 
-    static fromDDL(owner: GroupBy, ddl: DDL2.IAggregate | DDL2.ICount): AggregateField {
-        const retVal = new AggregateField(owner)
+    static fromDDL(ddl: DDL2.IAggregate | DDL2.ICount): AggregateField {
+        const retVal = new AggregateField()
             .fieldID(ddl.fieldID)
             .aggrType(ddl.type)
             ;
@@ -229,7 +243,7 @@ export class GroupBy extends Activity {
     fieldIDs(_: string[]): this;
     fieldIDs(_?: string[]): string[] | this {
         if (!arguments.length) return this.validGroupBy().map(gb => gb.toDDL());
-        this.column(_.map(fieldID => GroupByColumn.fromDDL(this, fieldID)));
+        this.column(_.map(fieldID => GroupByColumn.fromDDL(fieldID)));
         return this;
     }
 
@@ -237,7 +251,7 @@ export class GroupBy extends Activity {
     aggregates(_: DDL2.AggregateType[]): this;
     aggregates(_?: DDL2.AggregateType[]): DDL2.AggregateType[] | this {
         if (!arguments.length) return this.validComputedFields().map(cf => cf.toDDL());
-        this.computedFields(_.map(aggrType => AggregateField.fromDDL(this, aggrType)));
+        this.computedFields(_.map(aggrType => AggregateField.fromDDL(aggrType)));
         return this;
     }
 
@@ -251,7 +265,8 @@ export class GroupBy extends Activity {
 
     appendGroupBys(columns: [{ field: string }]): this {
         for (const column of columns) {
-            this.column().push(new GroupByColumn(this)
+            this.column().push(new GroupByColumn()
+                .owner(this)
                 .label(column.field)
             );
         }
@@ -281,7 +296,8 @@ export class GroupBy extends Activity {
 
     appendComputedFields(aggregateFields: [{ label: string, type: AggregateType, column?: string }]): this {
         for (const aggregateField of aggregateFields) {
-            const aggrField = new AggregateField(this)
+            const aggrField = new AggregateField()
+                .owner(this)
                 .fieldID(aggregateField.label)
                 .aggrType(aggregateField.type)
                 ;

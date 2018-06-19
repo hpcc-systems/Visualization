@@ -18,8 +18,18 @@ import "../src/dashy.css";
 
 class Palette extends PropertyExt {
 
-    constructor(readonly _owner: Palettes) {
+    private _owner: Palettes;
+
+    constructor() {
         super();
+    }
+
+    owner(): Palettes;
+    owner(_: Palettes): this;
+    owner(_?: Palettes): Palettes | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {

@@ -25,6 +25,7 @@ export interface INestedColumn {
 
 //  Field  ---
 export class Field extends PropertyExt {
+    private _owner: Grid;
     idx: number;
     protected _children: Field[] = [];
 
@@ -33,6 +34,14 @@ export class Field extends PropertyExt {
         PropertyExt.call(this);
 
         this._id = id || this._id;
+    }
+
+    owner(): Grid;
+    owner(_: Grid): this;
+    owner(_?: Grid): Grid | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     checksum(): string {

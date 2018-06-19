@@ -5,8 +5,18 @@ import { hierarchy as d3Hierarchy, treemap as d3Treemap } from "d3-hierarchy";
 import "../src/Treemap.css";
 
 export class TreemapColumn extends PropertyExt {
-    constructor(readonly _owner: Treemap) {
+    _owner: Treemap;
+
+    constructor() {
         super();
+    }
+
+    owner(): Treemap;
+    owner(_: Treemap): this;
+    owner(_?: Treemap): Treemap | this {
+        if (!arguments.length) return this._owner;
+        this._owner = _;
+        return this;
     }
 
     valid(): boolean {

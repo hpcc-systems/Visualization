@@ -114,12 +114,15 @@ export class Visualization extends PropertyExt {
                 }
             } else {
                 if (input.multi) {
-                    retVal = new MultiField(mappings).label(input.id);
+                    retVal = new MultiField()
+                        .owner(mappings)
+                        .label(input.id)
+                        ;
                     const computedFields: ComputedField[] = [];
                     for (const inField of inFields) {
                         if ((input.type === "any" || input.type === inField.type) && !taken[inField.id]) {
                             taken[inField.id] = true;
-                            computedFields.push(new ComputedField(retVal)
+                            computedFields.push(new ComputedField()
                                 .label(inField.id)
                                 .type("=")
                                 .column1(inField.id)
@@ -128,7 +131,8 @@ export class Visualization extends PropertyExt {
                     }
                     retVal.multiFields(computedFields);
                 } else {
-                    retVal = new ComputedField(mappings)
+                    retVal = new ComputedField()
+                        .owner(mappings)
                         .label(input.id)
                         .type("=")
                         ;

@@ -13,7 +13,15 @@
         this._pins = new Pins()
             .columns(["lat", "long", "ext"])
             .on("click", function (row, col, sel) {
-                context.click(context.rowToObj(row.ext.origRow), "", sel);
+                if (window.event.ctrlKey && context.streetViewOnClick()) {
+                    var _row = context.rowToObj(row.ext.origRow);
+                    context.streetViewAt({
+                        lat: +_row[context.latitudeColumn()],
+                        lng: +_row[context.longtitudeColumn()]
+                    });
+                } else {
+                    context.click(context.rowToObj(row.ext.origRow), "", sel);
+                }
             })
             .on("dblclick", function (row, col, sel) {
                 context.dblclick(context.rowToObj(row.ext.origRow), "", sel);

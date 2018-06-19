@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.5.0...@hpcc-js/common@0.6.0) (2018-06-19)
+
+
+### Bug Fixes
+
+* Icon bar buttons should not cause navigation ([3cd7081](https://github.com/hpcc-systems/Visualization/commit/3cd7081))
+* textSize should work with coerced strings ([cfab0cd](https://github.com/hpcc-systems/Visualization/commit/cfab0cd))
+
+
+### Features
+
+* Add lite serialize/deserialize ([799fa5f](https://github.com/hpcc-systems/Visualization/commit/799fa5f))
+* Simplify Pie labels ([8506b4d](https://github.com/hpcc-systems/Visualization/commit/8506b4d))
+* **chart:** Support runtime colour calculations ([18ceed4](https://github.com/hpcc-systems/Visualization/commit/18ceed4))
+* **dashy:** Add [@hpcc-js](https://github.com/hpcc-js)/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523))
+* **Table:** Add cell formatting ([aa067d3](https://github.com/hpcc-systems/Visualization/commit/aa067d3))
+* **timeline:** Add EntityPin to timeline ([bab1b06](https://github.com/hpcc-systems/Visualization/commit/bab1b06))
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.4.0...@hpcc-js/common@0.5.0) (2018-06-15)
 

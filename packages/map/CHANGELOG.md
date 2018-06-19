@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@0.2.4...@hpcc-js/map@0.3.0) (2018-06-19)
+
+
+### Features
+
+* **dashy:** Add [@hpcc-js](https://github.com/hpcc-js)/chart input mapping meta ([fb9e523](https://github.com/hpcc-systems/Visualization/commit/fb9e523))
+
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@0.2.3...@hpcc-js/map@0.2.4) (2018-06-15)
 

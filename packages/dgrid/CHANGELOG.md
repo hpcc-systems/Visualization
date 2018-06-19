@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@0.1.10...@hpcc-js/dgrid@0.2.0) (2018-06-19)
+
+
+### Features
+
+* **dgrid:** Data-driven cell colours ([44ba508](https://github.com/hpcc-systems/Visualization/commit/44ba508))
+* **Table:** Add cell formatting ([aa067d3](https://github.com/hpcc-systems/Visualization/commit/aa067d3))
+
+
+
+
 <a name="0.1.10"></a>
 ## [0.1.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid@0.1.9...@hpcc-js/dgrid@0.1.10) (2018-06-15)
 

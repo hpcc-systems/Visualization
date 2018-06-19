@@ -273,7 +273,7 @@ export interface IView {
 
 //  DDL  ======================================================================
 export interface Schema {
-    version: "0.0.24";
+    version: "0.0.22";
     datasources: DatasourceType[];
     dataviews: IView[];
     //  The following defs are only provided to assist the Java code generation (from the the generated schema)  ---

@@ -33,6 +33,8 @@
     Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection", null, { tags: ["Basic"] });
 
     Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
+
+    Table.prototype.publish("hideEmptyColumns", false, "boolean", "Hide columns with all empty cells");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });
@@ -130,6 +132,25 @@
         return this.fields()[colIdx];
     };
 
+    Table.prototype.getEmptyColumnIdxArr = function(columns,data){
+        var ret_arr = [];
+        if (this.hideEmptyColumns()) {
+            for (var col_idx = 0; col_idx < columns.length; col_idx++) {
+                var column_is_empty = true;
+                for (var row_idx = 0; row_idx < data.length; row_idx++) {
+                    if (["",null,undefined].indexOf(data[row_idx][col_idx]) === -1) {
+                        column_is_empty = false;
+                        break;
+                    }
+                }
+                if (column_is_empty) {
+                    ret_arr.push(col_idx);
+                }
+            }
+        }
+        return ret_arr;
+    };
+
     Table.prototype.enter = function (domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._parentElement.style("overflow", "hidden");
@@ -161,6 +182,8 @@
         var columns = context.tableColumns();
         var data = context.tableData();
 
+        var empty_col_idx_arr = this.getEmptyColumnIdxArr(columns,data);
+
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
         if (this.sortByFieldIndex_exists() && (this._prevSortByFieldIndex !== this.sortByFieldIndex() || this._prevDescending !== this.descending())) {
@@ -180,7 +203,7 @@
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         var th = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
-            return !context.isHidden(idx);
+            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
         }) : []);
         th
             .enter()
@@ -197,7 +220,7 @@
                     ;
                 })
             .on("click", function (column, idx) {
-                context.headerClick(column, idx);
+                context.headerClick(column, idx, this);
             })
         ;
         th
@@ -362,7 +385,7 @@
 
         var cells = rows.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) {
-                return idx < columns.length && !context.isHidden(idx);
+                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
             }).map(function (cell, idx) {
                 return {
                     rowInfo: _d,
@@ -465,21 +488,21 @@
         fixedColTh
             .enter()
             .append("th")
-                .each(function (d) {
-                    var element = d3.select(this);
-                    element
-                        .append("span")
-                            .attr("class", "thText")
-                    ;
-                    element
-                        .append("span")
-                            .attr("class", "thIcon")
-                    ;
-                })
-            .on("click", function (column, idx) {
-                context.headerClick(column, idx);
+            .each(function (d) {
+                var element = d3.select(this);
+                element
+                    .append("span")
+                        .attr("class", "thText")
+                ;
+                element
+                    .append("span")
+                        .attr("class", "thIcon")
+                ;
             })
-        ;
+            .on("click", function (column, idx) {
+                context.headerClick(column, idx, this);
+            })
+            ;
         fixedColTh
             .style("background-color",this.theadRowBackgroundColor())
             .style("border-color",this.theadCellBorderColor())
@@ -939,11 +962,24 @@
         console.log("dblclick:  " + JSON.stringify(row, replacer) + ", " + column + "," + selected);
     };
 
-    Table.prototype.headerClick = function (column, idx) {
+    Table.prototype.headerClick = function (column, idx, clicked_elm) {
+        var tableDiv = this.tableDiv.node();
+        var clicked_rect_before = clicked_elm.getBoundingClientRect();
+        var old_th_width = clicked_rect_before.width;
+        var old_th_left = clicked_rect_before.left;
         this
             .sort(idx)
-            .render()
-        ;
+            .render(function(){
+                setTimeout(function(){
+                    var clicked_rect_after = clicked_elm.getBoundingClientRect();
+                    var new_th_width = clicked_rect_after.width;
+                    var new_th_left = clicked_rect_after.left;
+                    var l_diff = new_th_left - old_th_left;
+                    var w_diff = new_th_width - old_th_width;
+                    tableDiv.scrollLeft += l_diff + w_diff;
+                },0);
+            })
+            ;
     };
 
     return Table;

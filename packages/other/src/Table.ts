@@ -106,6 +106,25 @@ export class Table extends HTMLWidget {
         return this.fields()[colIdx];
     }
 
+    getEmptyColumnIdxArr(columns, data) {
+        const ret_arr = [];
+        if (this.hideEmptyColumns()) {
+            for (let col_idx = 0; col_idx < columns.length; col_idx++) {
+                let column_is_empty = true;
+                for (let row_idx = 0; row_idx < data.length; row_idx++) {
+                    if (["", null, undefined].indexOf(data[row_idx][col_idx]) === -1) {
+                        column_is_empty = false;
+                        break;
+                    }
+                }
+                if (column_is_empty) {
+                    ret_arr.push(col_idx);
+                }
+            }
+        }
+        return ret_arr;
+    }
+
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
         this._placeholderElement.style("overflow", "hidden");
@@ -137,6 +156,8 @@ export class Table extends HTMLWidget {
         const columns = context.tableColumns();
         const data = context.tableData();
 
+        const empty_col_idx_arr = this.getEmptyColumnIdxArr(columns, data);
+
         this.element().selectAll("table,tbody,th,td").style("width", null);
 
         if (this.sortByFieldIndex_exists() && (this._prevSortByFieldIndex !== this.sortByFieldIndex() || this._prevDescending !== this.descending())) {
@@ -156,7 +177,7 @@ export class Table extends HTMLWidget {
         this.unfixedThead.style("display", this.fixedHeader() ? "none" : "table-row");
 
         const thSel = this.thead.selectAll("th").data(this.showHeader() ? columns.filter(function (col, idx) {
-            return !context.isHidden(idx);
+            return !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
         }) : []);
         const thUpdate = thSel.enter().append("th")
             .each(function (d) {
@@ -332,7 +353,7 @@ export class Table extends HTMLWidget {
 
         const cellsSel = rowsUpdate.selectAll(".td_" + this.id()).data(function (_d, _trIdx) {
             return _d.row.filter(function (cell, idx) {
-                return idx < columns.length && !context.isHidden(idx);
+                return idx < columns.length && !context.isHidden(idx) && empty_col_idx_arr.indexOf(idx) === -1;
             }).map(function (cell, idx) {
                 return {
                     rowInfo: _d,
@@ -565,6 +586,8 @@ export class Table extends HTMLWidget {
             const node = d3Select(".tableDiv > table").node();
             if (node) {
                 box = (node as any).getBoundingClientRect();
+                let newTableHeight;
+                let finalWidth;
                 if (box.width !== 0 && box.height !== 0) {
                     calcWidth();
                     calcHeight();
@@ -910,6 +933,8 @@ export class Table extends HTMLWidget {
 
     fixedSize: { (): boolean; (_: boolean): Table; };
 
+    hideEmptyColumns: { (): boolean; (_: boolean): Table; };
+
     theadFontSize: { (): string; (_: string): Table; };
     tbodyFontSize: { (): string; (_: string): Table; };
     tfootFontSize: { (): string; (_: string): Table; };
@@ -968,6 +993,8 @@ Table.prototype.publish("fixedColumn", false, "boolean", "Enable or disable fixe
 Table.prototype.publish("multiSelect", false, "boolean", "Multiple Selection", null, { tags: ["Basic"] });
 
 Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
+
+Table.prototype.publish("hideEmptyColumns", false, "boolean", "Hide columns with all empty cells");
 
 Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
 Table.prototype.publish("tbodyFontSize", null, "string", "Table body font size", null, { tags: ["Basic"], optional: true });

@@ -409,7 +409,7 @@ export class Graph extends SVGZoomWidget {
                 .pos({ x: width / 2, y: height / 2 })
                 .animationFrameRender()
                 ;
-            d.element()
+            d3Select(this)
                 .call(context.drag)
                 ;
             if (d.dispatch) {
@@ -493,6 +493,7 @@ export class Graph extends SVGZoomWidget {
             .each(updateV)
             ;
         function updateV(d) {
+            d3Select(this).style("pointer-events", context.allowDragging() ? null : "none");
             d
                 .animationFrameRender()
                 ;

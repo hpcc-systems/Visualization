@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.5.1...@hpcc-js/chart@0.5.2) (2018-06-20)
+
+
+### Bug Fixes
+
+* **Axis:** Edge case when only one data point is present ([0e559dc](https://github.com/hpcc-systems/Visualization/commit/0e559dc))
+
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.5.0...@hpcc-js/chart@0.5.1) (2018-06-19)
 

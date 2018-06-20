@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.6.1...@hpcc-js/common@0.6.2) (2018-06-20)
+
+
+### Bug Fixes
+
+* Widget flattenData now allows falsey values ([c71b3c3](https://github.com/hpcc-systems/Visualization/commit/c71b3c3)), closes [#2647](https://github.com/hpcc-systems/Visualization/issues/2647)
+* **database.field:** Missing valid method ([0d8f02e](https://github.com/hpcc-systems/Visualization/commit/0d8f02e))
+
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.6.0...@hpcc-js/common@0.6.1) (2018-06-19)
 

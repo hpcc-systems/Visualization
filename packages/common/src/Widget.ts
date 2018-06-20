@@ -175,7 +175,7 @@ export abstract class Widget extends PropertyExt {
         data.forEach(function (row, rowIdx) {
             columns.filter(function (_col, idx) { return idx > 0; }).forEach(function (_col, idx) {
                 const val = row[idx + 1];
-                if (val) {
+                if (typeof val !== "undefined") {
                     const newItem = {
                         rowIdx,
                         colIdx: idx + 1,

@@ -290,6 +290,12 @@ export class Axis extends SVGWidget {
                         high = this.d3Scale.invert(0);
                         newHigh = this.d3Scale.invert(-delta);
                     }
+                    if (newLow === low) { //  Edge case when there is only one item in the domain  ---
+                        newLow = low - low * this.extend() / 100;
+                    }
+                    if (newHigh === high) { //  Edge case when there is only one item in the domain  ---
+                        newHigh = high + high * this.extend() / 100;
+                    }
                     if ((Math as any).sign(low) !== (Math as any).sign(newLow)) {
                         newLow = 0;
                     }

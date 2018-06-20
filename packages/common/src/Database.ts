@@ -44,6 +44,10 @@ export class Field extends PropertyExt {
         return this;
     }
 
+    valid(): boolean {
+        return !!this.label();
+    }
+
     checksum(): string {
         return Utility.checksum(this.label() + this.type() + this.mask() + this.format());
     }

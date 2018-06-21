@@ -1,5 +1,7 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
 import { d3SelectionType, InputField, SVGWidget } from "@hpcc-js/common";
+import { extent as d3Extent } from "d3-array";
+import { scaleLinear as d3ScaleLinear, scaleLog as d3ScaleLog, scalePow as d3ScalePow, scaleSqrt as d3ScaleSqrt } from "d3-scale";
 import { select as d3Select } from "d3-selection";
 import {
     area as d3Area,
@@ -65,11 +67,24 @@ export class Scatter extends XYAxis {
         }
     }
 
+    getScale() {
+        switch (this.pointSizeScale()) {
+            case "linear":
+                return d3ScaleLinear();
+            case "pow":
+                return d3ScalePow().exponent(2);
+            case "log":
+                return d3ScaleLog();
+            case "sqrt":
+                return d3ScaleSqrt();
+        }
+    }
+
     layerEnter(host: XYAxis, element: d3SelectionType, duration: number = 250) {
         super.layerEnter(host, element, duration);
         const context = this;
         this
-            .tooltipHTML(function (d) {
+            .tooltipHTML(function(d) {
                 return context.tooltipFormat({ label: d.label, series: d.column, value: d.value });
             })
             ;
@@ -103,19 +118,33 @@ export class Scatter extends XYAxis {
                 default:
             }
         }
-
+        const usePointSizeColumn = this.pointSizeColumn() !== null;
+        let pointSizeColumnIdx;
+        let extent;
+        let scale;
+        if (usePointSizeColumn) {
+            pointSizeColumnIdx = this.columns().indexOf(this.pointSizeColumn());
+            extent = d3Extent(this.data(), d => d[pointSizeColumnIdx]);
+            scale = this.getScale().domain(extent);
+        }
         const layerColumns = this.layerColumns(host);
         const layerData = this.layerData(host);
-        const flatData = this.flattenData(layerColumns, layerData).map(function (d) {
+        const flatData = this.flattenData(layerColumns, layerData).map(function(d) {
             d.shape = mapShape(context.pointShape());
             d.column = layerColumns[d.colIdx];
             d.row = layerData[d.rowIdx];
-            return d;
-        });
+            if (extent) {
+                d.size = scale(d.row[pointSizeColumnIdx]) * (context.maxPointSize() - context.minPointSize()) + context.minPointSize();
+                return d.column === context.pointSizeColumn() ? false : d;
+            } else {
+                d.size = context.pointSize();
+                return d;
+            }
 
-        const points = element.selectAll(".point").data(flatData, function (d, idx) { return d.shape + "_" + idx; });
+        }).filter(d => d);
+        const points = element.selectAll(".point").data(flatData, function(d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .each(function (d2) {
+            .each(function(d2) {
                 const element = d3Select(this);
                 element
                     .append("circle")
@@ -123,10 +152,10 @@ export class Scatter extends XYAxis {
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))
-                    .on("click", function (d: any, _idx) {
+                    .on("click", function(d: any, _idx) {
                         context.click(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
-                    .on("dblclick", function (d: any, _idx) {
+                    .on("dblclick", function(d: any, _idx) {
                         context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
                     ;
@@ -137,40 +166,40 @@ export class Scatter extends XYAxis {
             })
             .merge(points)
             .attr("class", d => "point series series-" + this.cssTag(d.column))
-            .each(function (d2) {
+            .each(function(d2) {
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
-                    .attr("cx", function (d) { return context.xPos(host, d); })
-                    .attr("cy", function (d) { return context.yPos(host, d); })
-                    .attr("r", context.pointSize())
+                    .attr("cx", function(d) { return context.xPos(host, d); })
+                    .attr("cy", function(d) { return context.yPos(host, d); })
+                    .attr("r", d2.size)
                     ;
 
                 const element = d3Select(this).select(".pointShape");
                 switch (d2.shape) {
                     case "rect":
                         element
-                            .attr("x", function (d) { return context.xPos(host, d) - context.pointSize() / 2; })
-                            .attr("y", function (d) { return context.yPos(host, d) - context.pointSize() / 2; })
-                            .attr("width", context.pointSize())
-                            .attr("height", context.pointSize())
+                            .attr("x", function(d) { return context.xPos(host, d) - d2.size / 2; })
+                            .attr("y", function(d) { return context.yPos(host, d) - d2.size / 2; })
+                            .attr("width", d2.size)
+                            .attr("height", d2.size)
                             .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     case "circle":
                         element
-                            .attr("cx", function (d) { return context.xPos(host, d); })
-                            .attr("cy", function (d) { return context.yPos(host, d); })
-                            .attr("r", context.pointSize() / 2)
+                            .attr("cx", function(d) { return context.xPos(host, d); })
+                            .attr("cy", function(d) { return context.yPos(host, d); })
+                            .attr("r", d2.size * 0.9)
                             .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     case "path":
                         element
-                            .attr("d", function (d: any) {
-                                return "M" + (context.xPos(host, d) - context.pointSize() / 2) + " " + (context.yPos(host, d) - context.pointSize() / 2) + " " +
-                                    "L" + (context.xPos(host, d) + context.pointSize() / 2) + " " + (context.yPos(host, d) + context.pointSize() / 2) + " " +
-                                    "M" + (context.xPos(host, d) - context.pointSize() / 2) + " " + (context.yPos(host, d) + context.pointSize() / 2) + " " +
-                                    "L" + (context.xPos(host, d) + context.pointSize() / 2) + " " + (context.yPos(host, d) - context.pointSize() / 2);
+                            .attr("d", function(d: any) {
+                                return "M" + (context.xPos(host, d) - d2.size / 2) + " " + (context.yPos(host, d) - d2.size / 2) + " " +
+                                    "L" + (context.xPos(host, d) + d2.size / 2) + " " + (context.yPos(host, d) + d2.size / 2) + " " +
+                                    "M" + (context.xPos(host, d) - d2.size / 2) + " " + (context.yPos(host, d) + d2.size / 2) + " " +
+                                    "L" + (context.xPos(host, d) + d2.size / 2) + " " + (context.yPos(host, d) - d2.size / 2);
                             })
                             .style("stroke", context.strokeColor(d2.row, d2.column, d2.value))
                             ;
@@ -183,30 +212,30 @@ export class Scatter extends XYAxis {
             .remove()
             ;
 
-        const areas = element.selectAll(".area").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
+        const areas = element.selectAll(".area").data(layerColumns.filter(function(_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         const areasEnter = areas.enter().append("path");
         const area = d3Area()
             .curve(this.curve())
             ;
         if (isHorizontal) {
             area
-                .x(function (d) { return context.xPos(host, d); })
+                .x(function(d) { return context.xPos(host, d); })
                 .y0(Math.min(height, this.yPos(host, { value: 0 })))
-                .y1(function (d) { return context.yPos(host, d); })
+                .y1(function(d) { return context.yPos(host, d); })
                 ;
         } else {
             area
-                .y(function (d) { return context.yPos(host, d); })
+                .y(function(d) { return context.yPos(host, d); })
                 .x0(Math.max(0, this.xPos(host, { value: 0 })))
-                .x1(function (d) { return context.xPos(host, d); })
+                .x1(function(d) { return context.xPos(host, d); })
                 ;
         }
         areasEnter.merge(areas)
             .attr("class", d => "area series series-" + this.cssTag(d))
-            .each(function (_d, idx) {
+            .each(function(_d, idx) {
                 const element = d3Select(this);
                 element
-                    .attr("d", area(flatData.filter(function (d2) { return d2.colIdx === idx + 1; })))
+                    .attr("d", area(flatData.filter(function(d2) { return d2.colIdx === idx + 1; })))
                     .style("opacity", context.interpolateFillOpacity())
                     .style("stroke", "none")
                     .style("fill", context.fillColor([], _d, undefined))
@@ -214,18 +243,18 @@ export class Scatter extends XYAxis {
             });
         areas.exit().remove();
 
-        const lines = element.selectAll(".line").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
+        const lines = element.selectAll(".line").data(layerColumns.filter(function(_d, idx) { return context.interpolate() && idx > 0; }));
         const linesEnter = lines.enter().append("path");
         const line = d3Line()
-            .x(function (d) { return context.xPos(host, d); })
-            .y(function (d) { return context.yPos(host, d); })
+            .x(function(d) { return context.xPos(host, d); })
+            .y(function(d) { return context.yPos(host, d); })
             .curve(this.curve())
             ;
         linesEnter.merge(lines)
             .attr("class", d => "line series series-" + this.cssTag(d))
-            .each(function (_d, idx) {
+            .each(function(_d, idx) {
                 const element = d3Select(this);
-                const data2 = flatData.filter(function (d2) { return d2.colIdx === idx + 1; });
+                const data2 = flatData.filter(function(d2) { return d2.colIdx === idx + 1; });
                 element
                     .attr("d", line(data2))
                     .style("stroke", context.strokeColor([], _d, undefined))
@@ -241,6 +270,7 @@ export class Scatter extends XYAxis {
 
     paletteID: { (): string; (_: string): Scatter; };
     useClonedPalette: { (): boolean; (_: boolean): Scatter; };
+    pointSizeScale: { (): string; (_: string): Scatter; };
     pointShape: { (): string; (_: string): Scatter; };
     pointSize: { (): number; (_: number): Scatter; };
     interpolate: { (): string; (_: string): Scatter; };
@@ -267,6 +297,7 @@ Scatter.prototype.implements(INDChart.prototype);
 Scatter.prototype.implements(ITooltip.prototype);
 
 Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
 Scatter.prototype.publish("pointSize", 6, "number", "Point Size", null, { range: { min: 1, step: 1, max: 200 } });
 Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "linear", "step", "step-before", "step-after", "basis", "bundle", "cardinal", "catmullRom", "natural", "monotone"]);

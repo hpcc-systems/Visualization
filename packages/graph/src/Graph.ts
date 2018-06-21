@@ -404,14 +404,17 @@ export class Graph extends SVGZoomWidget {
             .style("opacity", 1)
             ;
         function createV(d) {
+            d3Select(this).style("cursor", context.allowDragging() ? "move" : "pointer");
             d
                 .target(this)
                 .pos({ x: width / 2, y: height / 2 })
                 .animationFrameRender()
                 ;
-            d3Select(this)
-                .call(context.drag)
-                ;
+            if (context.allowDragging()) {
+                d3Select(this)
+                    .call(context.drag)
+                    ;
+            }
             if (d.dispatch) {
                 d.dispatch.on("sizestart", function (d2) {
                     d2.allowResize(context.allowDragging());
@@ -493,7 +496,6 @@ export class Graph extends SVGZoomWidget {
             .each(updateV)
             ;
         function updateV(d) {
-            d3Select(this).style("pointer-events", context.allowDragging() ? null : "none");
             d
                 .animationFrameRender()
                 ;

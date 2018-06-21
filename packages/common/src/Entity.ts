@@ -1,3 +1,4 @@
+import { local as d3Local } from "d3-selection";
 import { Icon } from "./Icon";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
@@ -18,12 +19,14 @@ export class Entity extends SVGWidget {
     protected _background_widget: Shape;
     protected _title_widget: Text;
     protected _desc_widget: Text;
-    protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: { x: number, y: number, width: number, height: number } } };
+    protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: SVGRect } };
     protected _element_anno: d3SelectionType;
     protected _element_background: d3SelectionType;
     protected _element_desc: d3SelectionType;
     protected _element_icon: d3SelectionType;
     protected _element_title: d3SelectionType;
+
+    protected _annotationLocal = d3Local<Icon>();
 
     constructor() {
         super();
@@ -36,6 +39,17 @@ export class Entity extends SVGWidget {
     }
     enter(dn, element) {
         super.enter.apply(this, arguments);
+        element
+            .on("mouseover", () => {
+                element.classed("hovering", true);
+                this.render();
+            })
+            .on("mouseout", () => {
+                element.classed("hovering", false);
+                this.render();
+            })
+            ;
+
         this._element_background = element.append("g").attr("class", "entity_shape");
         this._element_icon = element.append("g").attr("class", "entity_icon");
         this._element_title = element.append("g").attr("class", "entity_title");
@@ -58,7 +72,9 @@ export class Entity extends SVGWidget {
         this._desc_widget
             .fontSize(this.descriptionFontSize());
         const context = this;
-        const annotations = this._element_anno.selectAll(".annotation").data(this.annotationIcons().reverse());
+        this._annotation_widgets = {};
+        let annoXPos = 0;
+        const annotations = this._element_anno.selectAll(".annotation").data([...this.annotationIcons()].reverse());
         annotations.enter().append("g")
             .attr("class", "annotation")
             .each(function (this: HTMLElement, d, idx) {
@@ -68,39 +84,37 @@ export class Entity extends SVGWidget {
                     .target(this)
                     .shape("square")
                     ;
+                context._annotationLocal.set(this, anno);
+            })
+            .merge(annotations)
+            .each(function (this: HTMLElement, d, idx) {
+                const anno = context._annotationLocal.get(this);
                 if (typeof d.faChar !== "undefined") anno.faChar(d.faChar);
                 if (typeof d.shape !== "undefined") anno.shape(d.shape);
                 if (typeof d.image_colorFill !== "undefined") anno.image_colorFill(d.image_colorFill);
                 if (typeof d.shape_colorFill !== "undefined") anno.shape_colorFill(d.shape_colorFill);
                 if (typeof d.shape_colorStroke !== "undefined") anno.shape_colorStroke(d.shape_colorStroke);
-                anno.render();
+                const annoDiam = anno.diameter();
+                anno
+                    .x(annoXPos - annoDiam)
+                    .y(annoDiam / 2)
+                    .render()
+                    ;
+                annoXPos -= annoDiam + context.annotationSpacing();
                 context._annotation_widgets[idx] = {
                     widget: anno,
                     bbox: anno.getBBox(true)
                 };
             });
-        element
-            .on("mouseover", function () {
-                element.classed("hovering", true);
-                context.render();
+        annotations.exit()
+            .each(function (this: HTMLElement, d, idx) {
+                const anno = context._annotationLocal.get(this);
+                anno.target(null);
             })
-            .on("mouseout", function () {
-                element.classed("hovering", false);
-                context.render();
-            })
-            ;
+            .remove();
     }
     moveAnnotations(x_offset: number, y_offset: number) {
-        let anno_w_sum = 0;
-        const anno_gap = this.annotationSpacing();
-        for (const i in this._annotation_widgets) {
-            const anno_bbox = this._annotation_widgets[i].bbox;
-            this._annotation_widgets[i].widget.move({
-                x: -anno_w_sum + x_offset - anno_bbox.width,
-                y: y_offset + (anno_bbox.height / 2)
-            });
-            anno_w_sum += anno_bbox.width + anno_gap;
-        }
+        this._element_anno.attr("transform", `translate(${x_offset}, ${y_offset})`);
     }
     render(callback?: (w: Widget) => void) {
         return super.render(w => {

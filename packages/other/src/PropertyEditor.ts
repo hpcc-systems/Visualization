@@ -592,7 +592,13 @@ export class PropertyEditor extends HTMLWidget {
                     .attr("autocapitalize", "off")
                     .attr("spellcheck", "false")
                     .on("change", function () {
-                        context.setProperty(widget, param.id, JSON.parse(this.value));
+                        let value;
+                        try {
+                            value = JSON.parse(this.value);
+                        } catch (e) {
+                            value = this.value;
+                        }
+                        context.setProperty(widget, param.id, value);
                     })
                     ;
                 break;

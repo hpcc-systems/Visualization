@@ -79,7 +79,7 @@ export class Param extends PropertyExt {
     }
 
     sourceSelection(): any[] {
-        return this.sourceViz().state().selection();
+        return this.sourceViz().selection();
     }
 
     exists(): boolean {
@@ -217,14 +217,6 @@ export class RoxieRequest extends Activity {
         return this;
     }
 
-    requestFields(): DDL2.IField[];
-    requestFields(_: DDL2.IField[]): this;
-    requestFields(_?: DDL2.IField[]): DDL2.IField[] | this {
-        if (!arguments.length) return this._roxieService.requestFields();
-        this._roxieService.requestFields(_);
-        return this;
-    }
-
     responseFields(): DDL2.IField[];
     responseFields(_: DDL2.IField[]): this;
     responseFields(_?: DDL2.IField[]): DDL2.IField[] | this {
@@ -311,11 +303,19 @@ export class RoxieRequest extends Activity {
         return request;
     }
 
+    _prevRequestHash;
+    _prevRequestPromise;
     exec(): Promise<void> {
         return super.exec().then(() => {
-            return this._roxieService.submit(this.formatRequest());
-        }).then((response: { [key: string]: any }) => {
-            this._data = this.fixInt64(response[this.resultName()]);
+            const request = this.formatRequest();
+            const requestHash = hashSum({ hash: this.hash(), request });
+            if (this._prevRequestHash !== requestHash) {
+                this._prevRequestHash = requestHash;
+                this._prevRequestPromise = this._roxieService.submit(request).then((response: { [key: string]: any }) => this.fixInt64(response[this.resultName()]));
+            }
+            return this._prevRequestPromise;
+        }).then(data => {
+            this._data = data;
         });
     }
 

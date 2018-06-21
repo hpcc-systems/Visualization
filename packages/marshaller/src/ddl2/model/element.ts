@@ -1,7 +1,7 @@
 import { PropertyExt, publish, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
-import { find } from "@hpcc-js/util";
+import { find, isArray } from "@hpcc-js/util";
 import { Activity } from "../activities/activity";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { Mappings } from "../activities/project";
@@ -14,9 +14,10 @@ export class State extends PropertyExt {
         this.selection([]);
     }
 
-    removeInvalid(data: ReadonlyArray<object>) {
+    removeInvalid(data: ReadonlyArray<object>): boolean {
+        const currSelection = this.selection();
         const newSelection: object[] = [];
-        for (const selRow of this.selection()) {
+        for (const selRow of currSelection) {
             if (find(data, (row: { [key: string]: any }, index): boolean => {
                 for (const column in selRow) {
                     if (selRow[column] !== row[column]) {
@@ -28,7 +29,11 @@ export class State extends PropertyExt {
                 newSelection.push(selRow);
             }
         }
-        this.selection(newSelection);
+        if (newSelection.length !== currSelection.length) {
+            this.selection(newSelection);
+            return true;
+        }
+        return false;
     }
 }
 State.prototype._class += " State";
@@ -55,19 +60,13 @@ export class Element extends PropertyExt {
         if (!arguments.length) return this._visualization;
         this._visualization = _;
         this._visualization
-            .on("click", (row: any, col: string, sel: boolean) => {
-                if (sel) {
-                    this.state().selection([row.__lparam || row]);
-                } else {
-                    this.state().selection([]);
-                }
+            .on("click", (_row: object | object[], col: string, sel: boolean) => {
+                const row: any[] = isArray(_row) ? _row : [_row];
+                this.selection(sel ? row.map(r => r.__lparam || r) : []);
             })
-            .on("vertex_click", (row: any, col: string, sel: boolean) => {
-                if (sel) {
-                    this.state().selection([row.__lparam || row]);
-                } else {
-                    this.state().selection([]);
-                }
+            .on("vertex_click", (_row: object | object[], col: string, sel: boolean) => {
+                const row: any[] = isArray(_row) ? _row : [_row];
+                this.selection(sel ? row.map(r => r.__lparam || r) : []);
             })
             ;
         return this;
@@ -147,7 +146,19 @@ export class Element extends PropertyExt {
     async refresh() {
         await this.visualization().refresh();
         const data = this.hipiePipeline().outData();
-        this.state().removeInvalid(data);
+        if (this.state().removeInvalid(data)) {
+            this.selectionChanged();
+        }
+    }
+
+    //  Selection  ---
+    selection(): object[];
+    selection(_: object[]): this;
+    selection(_?: object[]): object[] | this {
+        if (!arguments.length) return this.state().selection();
+        this.state().selection(_);
+        this.selectionChanged();
+        return this;
     }
 
     //  Events  ---
@@ -203,9 +214,6 @@ export class ElementContainer extends PropertyExt {
 
     append(element: Element): this {
         this._elements.push(element);
-        element.state().monitorProperty("selection", () => {
-            element.selectionChanged();
-        });
         return this;
     }
 

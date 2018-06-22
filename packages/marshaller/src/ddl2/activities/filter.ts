@@ -222,7 +222,7 @@ export class Filter extends PropertyExt {
     }
 
     sourceSelection(): any[] {
-        return this.sourceViz().state().selection();
+        return this.sourceViz().selection();
     }
 
     createFilter(): (localRow: any) => boolean {

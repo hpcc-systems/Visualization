@@ -141,7 +141,6 @@ export class JavaScriptAdapter {
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
         .resultName("${outputID}")
-        .requestFields(${stringify(datasource.inputs)})
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
         ;`);
@@ -152,7 +151,6 @@ export class JavaScriptAdapter {
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
         .resultName("${outputID}")
-        .requestFields(${stringify(datasource.inputs)})
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
         ;`);

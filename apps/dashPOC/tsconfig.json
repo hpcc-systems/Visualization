@@ -13,7 +13,7 @@
         "importHelpers": false,
         "experimentalDecorators": true,
         "downlevelIteration": true,
-        "skipLibCheck": true,
+        
         "noUnusedLocals": true,
         "lib": [
             "dom",

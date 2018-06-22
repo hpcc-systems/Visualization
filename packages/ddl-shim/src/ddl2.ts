@@ -247,7 +247,7 @@ export function isLimitActivity(activity: IActivity): activity is ILimit {
 //  Visualization  ============================================================
 export type IWidgetProperties = {
     __class?: string;
-    [propID: string]: string | string[] | number | boolean | IWidget | IWidget[]
+    [propID: string]: string | string[] | number | boolean | IWidget | IWidget[] | undefined;
 };
 
 export interface IWidget {

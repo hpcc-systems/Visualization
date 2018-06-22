@@ -33,7 +33,7 @@ export class Graph extends SVGZoomWidget {
     private _toggleForceDirected2 = new ToggleButton("fa-arrows", "Spring").on("click", () => this.layoutClick("ForceDirected2"));
     private _toggleCircle = new ToggleButton("fa-circle-o", "Circle").on("click", () => this.layoutClick("Circle"));
 
-    protected _graphData: GraphData;
+    private _graphData: GraphData;
     protected highlight;
     protected _selection;
     protected _dragging;

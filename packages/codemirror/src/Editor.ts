@@ -4,7 +4,7 @@ import { HTMLWidget } from "@hpcc-js/common";
 import "../src/Editor.css";
 
 export class Editor extends HTMLWidget {
-    protected _codemirror: CodeMirror.EditorFromTextArea;
+    private _codemirror: CodeMirror.EditorFromTextArea;
     protected _initialText: string = "";
 
     options(): any {

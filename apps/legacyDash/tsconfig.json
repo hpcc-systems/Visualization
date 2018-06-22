@@ -13,7 +13,6 @@
         // "importHelpers": true,
         "experimentalDecorators": true,
         "downlevelIteration": true,
-        "skipLibCheck": true,
         "noImplicitThis": true,
         "noImplicitAny": false,
         "lib": [

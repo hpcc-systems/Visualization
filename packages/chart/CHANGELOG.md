@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.5.2...@hpcc-js/chart@0.6.0) (2018-06-22)
+
+
+### Features
+
+* **HexBin:** Add selection support ([c5591c3](https://github.com/hpcc-systems/Visualization/commit/c5591c3))
+
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.5.1...@hpcc-js/chart@0.5.2) (2018-06-20)
 

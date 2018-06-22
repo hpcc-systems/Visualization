@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.3.3...@hpcc-js/other@0.4.0) (2018-06-22)
+
+
+### Features
+
+* **EntityRect:** Add EntityRect and EntityRectList ([34cceb3](https://github.com/hpcc-systems/Visualization/commit/34cceb3))
+
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.3.2...@hpcc-js/other@0.3.3) (2018-06-20)
 

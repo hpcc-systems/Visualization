@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.3.2...@hpcc-js/timeline@0.4.0) (2018-06-22)
+
+
+### Features
+
+* **timeline:** Add event color parameters ([00791dd](https://github.com/hpcc-systems/Visualization/commit/00791dd)), closes [#2654](https://github.com/hpcc-systems/Visualization/issues/2654)
+
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.3.1...@hpcc-js/timeline@0.3.2) (2018-06-20)
 

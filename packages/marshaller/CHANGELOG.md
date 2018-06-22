@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.2.3...@hpcc-js/marshaller@0.3.0) (2018-06-22)
+
+
+### Bug Fixes
+
+* **marshaller:** Multiselection not quite working ([056ad8e](https://github.com/hpcc-systems/Visualization/commit/056ad8e))
+
+
+### Features
+
+* **EntityRect:** Add EntityRect and EntityRectList ([34cceb3](https://github.com/hpcc-systems/Visualization/commit/34cceb3))
+
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.2.2...@hpcc-js/marshaller@0.2.3) (2018-06-20)
 

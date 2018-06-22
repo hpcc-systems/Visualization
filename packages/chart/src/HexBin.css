@@ -3,3 +3,7 @@
   stroke: #000;
   stroke-width: .5px;
 }
+
+.chart_HexBin .hexagon.selected {
+  stroke: red;
+}

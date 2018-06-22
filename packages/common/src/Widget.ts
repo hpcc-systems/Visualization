@@ -481,7 +481,7 @@ export abstract class Widget extends PropertyExt {
             g_fontSizeContext = (fontSizeCalc.node() as HTMLCanvasElement).getContext("2d");
         }
         const text = _text instanceof Array ? _text : [_text];
-        const hash = `${fontSize}::${fontName}::${text.join("::")}`;
+        const hash = `${bold}::${fontSize}::${fontName}::${text.join("::")}`;
         let retVal = g_fontSizeContextCache[hash];
         if (!retVal) {
             g_fontSizeContext.font = `${bold ? "bold " : ""}${fontSize}px ${fontName}`;

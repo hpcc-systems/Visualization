@@ -5,6 +5,7 @@ export { Database };
 export * from "./Entity";
 export * from "./EntityCard";
 export * from "./EntityPin";
+export * from "./EntityRect";
 export * from "./EntityVertex";
 export * from "./FAChar";
 export * from "./HTMLWidget";

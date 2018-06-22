@@ -69,6 +69,8 @@ export class Shape extends SVGWidget {
                             element2
                                 .attr("x", -width / 2)
                                 .attr("y", -width / 2)
+                                .attr("rx", context.cornerRadius())
+                                .attr("ry", context.cornerRadius())
                                 .attr("width", width)
                                 .attr("height", width)
                                 ;
@@ -77,6 +79,8 @@ export class Shape extends SVGWidget {
                             element2
                                 .attr("x", -context.width() / 2)
                                 .attr("y", -context.height() / 2)
+                                .attr("rx", context.cornerRadius())
+                                .attr("ry", context.cornerRadius())
                                 .attr("width", context.width())
                                 .attr("height", context.height())
                                 ;

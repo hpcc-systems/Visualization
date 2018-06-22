@@ -87,6 +87,45 @@
                         ])
                     );
                 });
+            },
+            rect: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/EntityRect"], function (DataFactory, EntityRect) {
+                    callback(new EntityRect()
+                        .fixedWidth(140)
+                        .icon("")
+                        .iconDiameter(20)
+                        .iconPaddingPercent(0)
+                        .title("SomeTitle")
+                        .titleFontSize(18)
+                        .titleColor("#ecf0f1")
+                        .description("SomeDescription")
+                        .descriptionColor("#ecf0f1")
+                        .iconColor("#ecf0f1")
+                        .backgroundShape("rect")
+                        .backgroundColorFill("#2980b9")
+                        .backgroundColorStroke("#2c3e50")
+                        .annotationIcons([
+                            { faChar: "A", image_colorFill: "#2c3e50", shape_colorFill: "#f1c40f", shape_colorStroke: "none" },
+                            { faChar: "B", image_colorFill: "#2c3e50", shape_colorFill: "#e67e22", shape_colorStroke: "none" },
+                            { faChar: "C", image_colorFill: "#2c3e50", shape_colorFill: "#e74c3c", shape_colorStroke: "none" },
+                        ])
+                    );
+                });
+            },
+            rectList: function (callback) {
+                legacyRequire(["test/DataFactory", "src/common/EntityRectList"], function (DataFactory, EntityRectList) {
+                    callback(new EntityRectList()
+                        .columns(["Icon", "IconColor", "Title"])
+                        .data([
+                            ["", "red", "Event Type 1 - Event Type 1 - Event Type 1 - Event Type 1 - "],
+                            ["", "yellow", "Event Type 1 - Event Type 1 - "],
+                            ["", "green", "Event Type 3"],
+                        ])
+                        .iconColumn("Icon")
+                        .iconColorColumn("IconColor")
+                        .titleColumn("Title")
+                    );
+                });
             }
         },
         Text: {

@@ -682,8 +682,9 @@ export class PropertyExt extends Class {
     }
 
     hash(ignore: string[] = [], more = {}): string {
+        ignore = [...ignore, "fields", "classed"];
         const props: { [key: string]: any } = more;
-        this.publishedProperties(false).filter(meta => meta.id !== "fields" && ignore.indexOf(meta.id) < 0).forEach(meta => {
+        this.publishedProperties(false).filter(meta => ignore.indexOf(meta.id) < 0).forEach(meta => {
             if (this[meta.id + "_exists"]()) {
                 props[meta.id] = this[meta.id]();
             }

@@ -1,5 +1,5 @@
-import { INDChart, ITooltip } from "@hpcc-js/api";
-import { InputField, Palette, SVGWidget } from "@hpcc-js/common";
+import { I2DAggrChart, ITooltip } from "@hpcc-js/api";
+import { InputField, SVGWidget } from "@hpcc-js/common";
 import { max as d3Max } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
 import { XYAxis } from "./XYAxis";
@@ -18,9 +18,12 @@ export class HexBin extends XYAxis {
     _hexbin;
     constructor() {
         super();
-        INDChart.call(this);
+        I2DAggrChart.call(this);
         ITooltip.call(this);
-        this._hexbin = d3HexBin();
+        this._hexbin = d3HexBin()
+            .x(d => d.x)
+            .y(d => d.y)
+            ;
 
         this
             .xAxisGuideLines_default(false)
@@ -50,14 +53,28 @@ export class HexBin extends XYAxis {
             .radius(this.binSize())
             ;
 
-        const data = this.flattenData();
-        const dataPoints = data.map(function (d) { return [context.xPos(host, d), context.yPos(host, d)]; });
+        const data = this.data();
+        const flatData = this.flattenData();
+        const dataPoints = flatData.map(d => {
+            return {
+                x: context.xPos(host, d),
+                y: context.yPos(host, d),
+                origRow: d
+            };
+        });
         const hexBinPoints = this._hexbin(dataPoints);
         const maxBinPoints = d3Max(hexBinPoints, function (d: any) { return d.length; });
 
         const points = element.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
         points.enter().append("path")
             .attr("class", "hexagon")
+            .call(host._selection.enter.bind(host._selection))
+            .on("click", function (d: any) {
+                context.click(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
+            })
+            .on("dblclick", function (d: any) {
+                context.dblclick(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
+            })
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
             .merge(points).transition().duration(duration)
             .attr("d", this._hexbin.hexagon())
@@ -74,15 +91,21 @@ export class HexBin extends XYAxis {
         SVGWidget.prototype.exit.apply(this, arguments);
     }
 
+    //  Events  ---
+    click(row: object[], column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    }
+    dblclick(row: object[], column, selected) {
+        console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
+    }
+
     paletteID: { (): string; (_: string): HexBin; };
     useClonedPalette: { (): boolean; (_: boolean): HexBin; };
     binSize: { (): number; (_: number): HexBin; };
 }
 HexBin.prototype._class += " chart_HexBin";
-HexBin.prototype.implements(INDChart.prototype);
+HexBin.prototype.implements(I2DAggrChart.prototype);
 HexBin.prototype.implements(ITooltip.prototype);
-
-HexBin.prototype._palette = Palette.rainbow("default");
 
 HexBin.prototype.publish("paletteID", "Blues", "set", "Palette ID", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 HexBin.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

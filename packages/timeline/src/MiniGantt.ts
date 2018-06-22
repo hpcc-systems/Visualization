@@ -293,6 +293,9 @@ export class MiniGantt extends SVGWidget {
     updateEntityPins(events) {
         const context = this;
         const entityPins = this.gUpper.selectAll(".entity_pin").data(events, d => d[0] + ":" + d[1]);
+        const eventFontColor_idx = this.eventFontColorColumn() ? this.columns().indexOf(this.eventFontColorColumn()) : -1;
+        const eventBorderColor_idx = this.eventBorderColorColumn() ? this.columns().indexOf(this.eventBorderColorColumn()) : -1;
+        const eventBackgroundColor_idx = this.eventBackgroundColorColumn() ? this.columns().indexOf(this.eventBackgroundColorColumn()) : -1;
         entityPins.enter().append("g")
             .attr("class", "entity_pin")
             .on("mouseover", function (d) {
@@ -312,12 +315,12 @@ export class MiniGantt extends SVGWidget {
                     .titleFontSize(14)
                     .descriptionColor("#000000")
                     .descriptionFontSize(15)
-                    .iconColor("#E3151A")
-                    .titleColor("#E3151A")
-                    .descriptionColor("#E3151A")
+                    .iconColor(eventFontColor_idx === -1 ? "#333" : d[eventFontColor_idx])
+                    .titleColor(eventFontColor_idx === -1 ? "#333" : d[eventFontColor_idx])
+                    .descriptionColor(eventFontColor_idx === -1 ? "#333" : d[eventFontColor_idx])
                     .backgroundShape("pin")
-                    .backgroundColorFill("#F8F8F8")
-                    .backgroundColorStroke("#CCCCCC")
+                    .backgroundColorFill(eventFontColor_idx === -1 ? "#f8f8f8" : d[eventBackgroundColor_idx])
+                    .backgroundColorStroke(eventFontColor_idx === -1 ? "#ccc" : d[eventBorderColor_idx])
                     .cornerRadius(5)
                     .arrowHeight(10)
                     .arrowWidth(16)
@@ -440,3 +443,16 @@ export class MiniGantt extends SVGWidget {
 MiniGantt.prototype._class += " timeline_MiniGantt";
 MiniGantt.prototype.implements(ITooltip.prototype);
 MiniGantt.prototype.mixin(Utility.SimpleSelectionMixin);
+
+export interface MiniGantt {
+    eventFontColorColumn(): string;
+    eventFontColorColumn(_: string): this;
+    eventBorderColorColumn(): string;
+    eventBorderColorColumn(_: string): this;
+    eventBackgroundColorColumn(): string;
+    eventBackgroundColorColumn(_: string): this;
+}
+
+MiniGantt.prototype.publish("eventFontColorColumn", null, "string", "eventFontColorColumn");
+MiniGantt.prototype.publish("eventBorderColorColumn", null, "string", "eventBorderColorColumn");
+MiniGantt.prototype.publish("eventBackgroundColorColumn", null, "string", "eventBackgroundColorColumn");

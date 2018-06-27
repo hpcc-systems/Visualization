@@ -175,6 +175,24 @@ export class Graph extends SVGZoomWidget {
         return this;
     }
 
+    private _linkcolor: string;
+    linkcolor_default(): string;
+    linkcolor_default(_: string): this;
+    linkcolor_default(_?: string): string | this {
+        if (!arguments.length) return this._linkcolor;
+        this._linkcolor = _;
+        return this;
+    }
+
+    private _linktooltip: string;
+    linktooltip_default(): string;
+    linktooltip_default(_: string): this;
+    linktooltip_default(_?: string): string | this {
+        if (!arguments.length) return this._linktooltip;
+        this._linktooltip = _;
+        return this;
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         const context = this;

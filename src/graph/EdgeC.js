@@ -26,7 +26,7 @@
     EdgeC.prototype.publish("sourceMarker", "circle", "set", "Source Marker", ["circle"], { optional: true });
     EdgeC.prototype.publish("targetMarker", "arrow", "set", "Source Marker", ["arrow", "circle"], { optional: true });
     EdgeC.prototype.publish("strokeDasharray", null, "string", "Stroke Dash Array", null, { optional: true });
-    EdgeC.prototype.publish("strokeColor", null, "html-color", "Stroke Color", null, { optional: true });
+    EdgeC.prototype.publish("strokeColor", "#777", "html-color", "Stroke Color", null, { optional: true });
 
     EdgeC.prototype.sourceVertex = function (_) {
         if (!arguments.length) return this._sourceVertex;
@@ -67,7 +67,7 @@
     EdgeC.prototype.drawSelf = function (ctx, canvas) {
         var n = this;
         ctx.beginPath();
-        ctx.strokeStyle = "#777";
+        ctx.strokeStyle = this.strokeColor();
         ctx.moveTo(n._sourceVertex.x(), n._sourceVertex.y());
         ctx.lineTo(n._targetVertex.x(), n._targetVertex.y());
         // this.points().forEach(function (_point, _i) {

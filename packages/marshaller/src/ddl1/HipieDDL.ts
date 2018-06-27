@@ -449,6 +449,14 @@ GraphMappings.prototype.doMapAll = function (db) {
                         .text(childMappedItem[1] ? childMappedItem[1] : "")
                         .data(childMappedItem)
                         ;
+                    const linkcolor = graph.linkcolor_default();
+                    if (linkcolor && linkcolor.fieldid) {
+                        edge.strokeColor(childItem[linkcolor.fieldid]);
+                    }
+                    const linktooltip = graph.linkcolor_default();
+                    if (linktooltip && linktooltip.fieldid) {
+                        edge.tooltip(childItem[linktooltip.fieldid]);
+                    }
                     edges.push(edge);
                 }
             });

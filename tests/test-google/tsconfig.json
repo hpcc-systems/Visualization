@@ -5,7 +5,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "skipLibCheck": true,
     "noImplicitThis": true,
     "declaration": false,
     "noImplicitAny": true,

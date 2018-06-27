@@ -26,7 +26,7 @@ export class Entity extends SVGWidget {
     protected _element_icon: d3SelectionType;
     protected _element_title: d3SelectionType;
 
-    protected _annotationLocal = d3Local<Icon>();
+    private _annotationLocal = d3Local<Icon>();
 
     constructor() {
         super();

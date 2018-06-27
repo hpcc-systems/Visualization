@@ -10,7 +10,6 @@
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "strictNullChecks": true,
-    "skipLibCheck": true,
     "noImplicitThis": true,
     "lib": [
       "dom",

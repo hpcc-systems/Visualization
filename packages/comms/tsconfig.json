@@ -12,7 +12,6 @@
         "noUnusedLocals": true,
         "strictNullChecks": true,
         "importHelpers": true,
-        "skipLibCheck": true,
         "noImplicitThis": true,
         "lib": [
             "dom",

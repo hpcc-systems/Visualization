@@ -63,14 +63,21 @@
             roxie: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.173.147.1:8010/WsWorkunits/WUResult.json?Wuid=W20170728-163544&ResultName=a2745broxie_Comp_Ins18354_DDL")
+                        .ddlUrl_default("http://10.241.100.159:8002/WsEcl/submit/query/roxie/periassx_testsagraph.ins4637826_service_1.1/json")
                     );
                 });
             },
             wu: function (callback) {
                 require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
                     callback(new HTML()
-                        .ddlUrl_default("http://10.241.100.157:8010/WsWorkunits/WUResult.json?Wuid=W20170817-124520&ResultName=govbisgsavi_Comp_Ins4621360_DDL")
+                        .ddlUrl_default("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid=W20180614-151251&ResultName=saattributesproviderv3_Comp_Ins3824969_DDL")
+                    );
+                });
+            },
+            wu2: function (callback) {
+                require(["test/DataFactory", "src/marshaller/HTML"], function (DataFactory, HTML) {
+                    callback(new HTML()
+                        .ddlUrl_default("http://10.241.100.159:8010/WsWorkunits/WUResult.json?Wuid= W20180627-133635&ResultName=saattributesproviderv3test_Comp_Ins5201541_DDL")
                     );
                 });
             },

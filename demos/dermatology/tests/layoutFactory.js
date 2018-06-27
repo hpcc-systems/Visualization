@@ -350,6 +350,69 @@
                         })
                     );
                 });
+            },
+            fixed_size: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Modal", "src/chart/Line"], function (DataFactory, Modal, Line) {
+                    callback(new Modal()
+                        .relativeTargetId("cellSurface")
+                        .title('A Simple Modal')
+                        .fixedWidth("300px")
+                        .fixedHeight("300px")
+                        .widget(new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .on("closeModal", function () {
+                            console.log("closeModal hook");
+                        })
+                    );
+                });
+            },
+            multi: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/Modal", "src/chart/Line"], function (DataFactory, Modal, Line) {
+                    if(surface){
+                        const row_count = 3;
+                        const col_count = 5;
+                        const target_rect = surface.getBoundingClientRect();
+                        const h_padding = target_rect.height/100;
+                        const w_padding = target_rect.width/100;
+                        const h = ((target_rect.height - h_padding)/row_count) - h_padding;
+                        const w = ((target_rect.width - w_padding)/col_count) - w_padding;
+                        Array(row_count).fill("").forEach((n,ri)=>{
+                            Array(col_count).fill("").forEach((n,ci)=>{
+                                const t = (h*ri) + (h_padding*(ri+1));
+                                const l = (w*ci) + (w_padding*(ci+1));
+                                new Modal()
+                                    .target(surface)
+                                    .relativeTargetId("cellSurface")
+                                    .title('A Simple Modal')
+                                    .fixedTop(`${t}px`)
+                                    .fixedLeft(`${l}px`)
+                                    .fixedHeight(`${h}px`)
+                                    .fixedWidth(`${w}px`)
+                                    .widget(new Line()
+                                        .columns(DataFactory.ND.subjects.columns)
+                                        .data(DataFactory.ND.subjects.data)
+                                    )
+                                    .render();
+                            })
+                        })
+                    }
+                    callback(new Modal()
+                        .relativeTargetId("cellSurface")
+                        .title('A Simple Modal')
+                        .fixedWidth("300px")
+                        .fixedHeight("300px")
+                        .widget(new Line()
+                            .columns(DataFactory.ND.subjects.columns)
+                            .data(DataFactory.ND.subjects.data)
+                        )
+                        .visible(!surface)
+                        .on("closeModal", function () {
+                            console.log("closeModal hook");
+                        })
+                    );
+                });
             }
         },
         Popup: {

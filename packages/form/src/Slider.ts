@@ -1,8 +1,10 @@
 import { IInput } from "@hpcc-js/api";
 import { SVGWidget } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
+import { format as d3Format } from "d3-format";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { event as d3Event } from "d3-selection";
+import { event as d3Event, select as d3Select } from "d3-selection";
+import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
 
 import "../src/Slider.css";
 
@@ -56,7 +58,6 @@ export class Slider extends SVGWidget {
                     } else {
                         this.moveMode = "right";
                     }
-                    console.log(this.moveMode);
                     this.moveHandleTo(d3Event.x);
                 })
                 .on("drag", () => {
@@ -69,7 +70,7 @@ export class Slider extends SVGWidget {
 
         this.slider.insert("g", ".track-overlay")
             .attr("class", "ticks")
-            .attr("transform", "translate(0," + 18 + ")")
+            .attr("transform", `translate(0, ${this.fontSize() + (this.tickHeight() / 2)})`)
             ;
 
         this.handleRight = this.slider.insert("path", ".track-overlay")
@@ -83,6 +84,7 @@ export class Slider extends SVGWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+        const context = this;
         this.xScale
             .domain([this.low(), this.high()])
             .range([0, this.width() - this.padding() * 2])
@@ -91,18 +93,63 @@ export class Slider extends SVGWidget {
         this.slider
             .attr("transform", "translate(" + (-this.width() / 2 + this.padding()) + "," + 0 + ")");
 
-        this.slider.selectAll("line")
+        this.slider.selectAll("line.track,line.track-inset,line.track-overlay")
             .attr("x1", this.xScale.range()[0])
             .attr("x2", this.xScale.range()[1])
             ;
+        let tickText;
+        const x_distance = (this.width() - (this.padding() * 2)) / (this.tickCount() - 1);
+        const tick_text_arr = [];
+        if (this.tickDateFormat() !== null) {
+            const Q_parser = d3TimeParse("%Q");
+            const time_formatter = d3TimeFormat(this.tickDateFormat());
+            const time_segment = (this.high() - this.low()) / (this.tickCount() - 1);
+            for (let i = 0; i < this.tickCount(); i++) {
+                const parsed_date = Q_parser("" + (this.low() + (time_segment * i)));
+                tick_text_arr.push(time_formatter(parsed_date));
+            }
+            tickText = this.slider.select("g").selectAll("text").data(tick_text_arr);
+        } else {
+            const value_formatter = d3Format(this.tickValueFormat());
+            const value_segment = (this.high() - this.low()) / (this.tickCount() - 1);
+            for (let i = 0; i < this.tickCount(); i++) {
+                const tick_value = this.low() + (value_segment * i);
+                tick_text_arr.push(value_formatter(tick_value));
+            }
+            tickText = this.slider.select("g").selectAll("text").data(tick_text_arr);
+        }
+        const tickTextEnter = tickText.enter().append("g");
 
-        const tickText = this.slider.select("g").selectAll("text").data(this.xScale.ticks(10));
-        tickText.enter()
-            .append("text")
+        tickTextEnter.append("text");
+        tickTextEnter.append("line");
+        tickTextEnter
             .merge(tickText)
-            .attr("x", this.xScale)
-            .attr("text-anchor", "middle")
-            .text(d => d);
+            .each(function (d, i) {
+                const x = x_distance * i;
+                d3Select(this).select("text")
+                    .style("font-size", context.fontSize())
+                    .attr("x", function () {
+                        if (i === 0) return x - 2;
+                        return i === context.tickCount() - 1 ? x + 2 : x;
+                    })
+                    .attr("y", context.tickHeight())
+                    .attr("text-basline", "text-before-edge")
+                    .attr("text-anchor", function () {
+                        if (i === 0) return "start";
+                        return i === context.tickCount() - 1 ? "end" : "middle";
+                    })
+                    .text(() => d)
+                    ;
+
+                d3Select(this).select("line")
+                    .attr("x1", x)
+                    .attr("x2", x)
+                    .attr("y1", context.tickOffset() - 1)
+                    .attr("y2", context.tickOffset() + context.tickHeight())
+                    .style("stroke", "#000")
+                    .style("stroke-width", 1)
+                    ;
+            });
 
         this.handleLeftPos = this.lowPos();
         this.handleRightPos = this.highPos();
@@ -111,22 +158,23 @@ export class Slider extends SVGWidget {
 
     updateHandles() {
         this.handleLeft
-            .attr("transform", "translate(" + this.handleLeftPos + ", -28)")
+            .attr("transform", `translate(${this.handleLeftPos}, -28)`)
             .attr("d", (d) => this.handlePath("l"))
             ;
         this.handleRight
-            .attr("transform", "translate(" + this.handleRightPos + ", -28)")
+            .attr("transform", `translate(${this.handleRightPos}, -28)`)
             .attr("d", (d) => this.handlePath("r"))
             ;
     }
 
     lowPos(): number {
-        const data = this.data() || [[this.low(), this.high()]];
+        const data = this.data().length > 0 ? this.data() : [[this.low(), this.high()]];
         return this.xScale(data[0][0]);
     }
 
     highPos(): number {
-        const data = this.data() || [[this.low(), this.high()]];
+
+        const data = this.data().length > 0 ? this.data() : [[this.low(), this.high()]];
         return this.xScale(data[0][this.allowRange() ? 1 : 0]);
     }
 
@@ -197,53 +245,66 @@ export class Slider extends SVGWidget {
         return retVal;
     };
 
-    padding: { (): number; (_: number): Slider };
-    padding_exists: () => boolean;
-    fontSize: { (): number; (_: number): Slider };
-    fontSize_exists: () => boolean;
-    fontFamily: { (): string; (_: string): Slider };
-    fontFamily_exists: () => boolean;
-    fontColor: { (): string; (_: string): Slider };
-    fontColor_exists: () => boolean;
-    allowRange: { (): boolean; (_: boolean): Slider };
-    allowRange_exists: () => boolean;
-    low: { (): number; (_: number): Slider };
-    low_exists: () => boolean;
-    high: { (): number; (_: number): Slider };
-    high_exists: () => boolean;
-    step: { (): number; (_: number): Slider };
-    step_exists: () => boolean;
-    selectionLabel: { (): string; (_: string): Slider };
-    selectionLabel_exists: () => boolean;
-
-    /*
-    type: { (): string; (_: string): Axis };
-    type_exists: () => boolean; showPlay: { (): boolean; (_: boolean): Slider };
-
-    showPlay_exists: () => boolean;
-    playInterval: { (): number; (_: number): Slider };
-    playInterval_exists: () => boolean;
-    playGutter: { (): number; (_: number): Slider };
-    playGutter_exists: () => boolean;
-    loopGutter: { (): number; (_: number): Slider };
-    loopGutter_exists: () => boolean;
-    */
-
-    //  IInput  ---
     name: (_?: string) => string | this;
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Slider };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Slider };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Slider };
-    validate_exists: () => boolean;
 }
 Slider.prototype._class += " form_Slider";
 Slider.prototype.implements(IInput.prototype);
 
+export interface Slider {
+    padding(): number;
+    padding(_: number): this;
+    fontSize(): number;
+    fontSize(_: number): this;
+    fontFamily(): string;
+    fontFamily(_: string): this;
+    fontColor(): string;
+    fontColor(_: string): this;
+    allowRange(): boolean;
+    allowRange(_: boolean): this;
+    low(): number;
+    low(_: number): this;
+    high(): number;
+    high(_: number): this;
+    step(): number;
+    step(_: number): this;
+    selectionLabel(): string;
+    selectionLabel(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+    tickCount(): number;
+    tickCount(_: number): this;
+    tickOffset(): number;
+    tickOffset(_: number): this;
+    tickHeight(): number;
+    tickHeight(_: number): this;
+    tickDateFormat(): string;
+    tickDateFormat(_: string): this;
+    tickValueFormat(): string;
+    tickValueFormat(_: string): this;
+    dateParseFormat(): string;
+    dateParseFormat(_: string): this;
+
+    padding_exists(): boolean;
+    fontSize_exists(): boolean;
+    fontFamily_exists(): boolean;
+    fontColor_exists(): boolean;
+    allowRange_exists(): boolean;
+    low_exists(): boolean;
+    step_exists(): boolean;
+    high_exists(): boolean;
+    selectionLabel_exists(): boolean;
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+}
+
 Slider.prototype.publish("padding", 16, "number", "Outer Padding", null, { tags: ["Basic"] });
-Slider.prototype.publish("fontSize", null, "number", "Font Size", null, { tags: ["Basic"] });
+Slider.prototype.publish("fontSize", 12, "number", "Font Size", null, { tags: ["Basic"] });
 Slider.prototype.publish("fontFamily", null, "string", "Font Name", null, { tags: ["Basic"] });
 Slider.prototype.publish("fontColor", null, "html-color", "Font Color", null, { tags: ["Basic"] });
 
@@ -252,23 +313,13 @@ Slider.prototype.publish("low", 0, "number", "Low", null, { tags: ["Intermediate
 Slider.prototype.publish("high", 100, "number", "High", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("step", 10, "number", "Step", null, { tags: ["Intermediate"] });
 Slider.prototype.publish("selectionLabel", "", "string", "Selection Label", null, { tags: ["Intermediate"] });
-/*
-Slider.prototype.publishProxy("tickCount", "axis", "tickCount");
-Slider.prototype.publishProxy("tickFormat", "axis", "tickFormat");
-Slider.prototype.publishProxy("type", "axis");
-Slider.prototype.publishProxy("timePattern", "axis");
-Slider.prototype.publishProxy("powExponent", "axis", "powExponent");
-Slider.prototype.publishProxy("logBase", "axis", "logBase");
-Slider.prototype.publishProxy("overlapMode", "axis");
-Slider.prototype.publishProxy("labelRotation", "axis");
 
-Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
-Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
-Slider.prototype.publishProxy("playDiameter", "_playIcon", "diameter", 32);
-Slider.prototype.publish("playGutter", 4, "number", "Play Gutter");
-Slider.prototype.publishProxy("loopDiameter", "_loopIcon", "diameter", 24);
-Slider.prototype.publish("loopGutter", 4, "number", "Play Gutter");
-*/
+Slider.prototype.publish("tickCount", 10, "number");
+Slider.prototype.publish("tickOffset", -10, "number");
+Slider.prototype.publish("tickHeight", 8, "number");
+Slider.prototype.publish("tickDateFormat", null, "string");
+Slider.prototype.publish("tickValueFormat", ",.0f", "string");
+Slider.prototype.publish("dateParseFormat", null, "string");
 
 const name = Slider.prototype.name;
 Slider.prototype.name = function (_: any): any {

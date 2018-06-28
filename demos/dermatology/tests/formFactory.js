@@ -109,12 +109,12 @@
                 legacyRequire(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .allowRange(true)
-                        .type("time")
-                        .low("1995-01-01")
-                        .high("2004-12-31")
+                        .tickDateFormat("%Y")
+                        .low(new Date("1995-01-01").getTime())
+                        .high(new Date("2004-12-31").getTime())
                         .step(1)
                         .columns(["Date/Time"])
-                        .data(["1999-07-03", "2001-05-24"])
+                        .data([[new Date("1999-07-03").getTime(), new Date("2001-05-24").getTime()]])
                     );
                 });
             }

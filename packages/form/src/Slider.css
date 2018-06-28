@@ -32,3 +32,10 @@
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
 }
+
+.form_Slider .ticks line {
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}

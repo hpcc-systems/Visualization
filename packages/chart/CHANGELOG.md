@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.6.0...@hpcc-js/chart@0.7.0) (2018-06-28)
+
+
+### Features
+
+* Add BubbleXY ([5c61c39](https://github.com/hpcc-systems/Visualization/commit/5c61c39))
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.5.2...@hpcc-js/chart@0.6.0) (2018-06-22)
 

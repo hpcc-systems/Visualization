@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.8"></a>
+## [0.2.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.7...@hpcc-js/layout@0.2.8) (2018-06-28)
+
+
+### Bug Fixes
+
+* **modal:** Add fixedHeight and fixedWidth to v2 ([ac01f4e](https://github.com/hpcc-systems/Visualization/commit/ac01f4e))
+
+
+
+
 <a name="0.2.7"></a>
 ## [0.2.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.6...@hpcc-js/layout@0.2.7) (2018-06-22)
 

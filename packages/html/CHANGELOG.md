@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.88"></a>
+## [0.0.88](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@0.0.87...@hpcc-js/html@0.0.88) (2018-06-28)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/html
+
 <a name="0.0.87"></a>
 ## [0.0.87](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/html@0.0.86...@hpcc-js/html@0.0.87) (2018-06-22)
 

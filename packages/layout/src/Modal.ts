@@ -41,8 +41,17 @@ export class Modal extends HTMLWidget {
         return document.body;
     }
 
-    setModalSizeLimits() {
-        if (this.minHeight() || this.minWidth()) {
+    setModalSize() {
+        if (this.fixedHeight() !== null && this.fixedWidth() !== null) {
+            this._modal
+                .style("height", this.fixedHeight())
+                .style("width", this.fixedWidth())
+                .style("min-height", null)
+                .style("min-width", null)
+                .style("max-height", null)
+                .style("max-width", null)
+                ;
+        } else if (this.minHeight() || this.minWidth()) {
             this._modal
                 .style("min-height", this.minHeight())
                 .style("min-width", this.minWidth())
@@ -50,6 +59,13 @@ export class Modal extends HTMLWidget {
                 .style("max-width", this.maxWidth())
                 ;
         }
+        const modalRect = this._modal.node().getBoundingClientRect();
+        const headerRect = this._modalHeader.node().getBoundingClientRect();
+        this._modalBody
+            .style("height", (modalRect.height - headerRect.height) + "px")
+            .style("width", modalRect.width);
+
+        return modalRect;
     }
 
     setFadePosition(rect) {
@@ -62,25 +78,29 @@ export class Modal extends HTMLWidget {
     }
 
     setModalPosition(rect) {
-        const contentRect = this._modal.node().getBoundingClientRect();
-        this._modal
-            .style("position", "fixed")
-            .style("top", (rect.top + (rect.height / 2) - (contentRect.height / 2)) + "px")
-            .style("left", (rect.left + (rect.width / 2) - (contentRect.width / 2)) + "px")
-            .style("width", contentRect.width + "px")
-            .style("height", contentRect.height + "px")
-            ;
-        if (this.minHeight() || this.minWidth()) {
+        const modalRect = this.setModalSize();
+        if (this.fixedTop() !== null && this.fixedLeft() !== null) {
             this._modal
-                .style("min-height", this.minHeight())
-                .style("min-width", this.minWidth())
+                .style("top", `calc(${this.fixedTop()} + ${rect.top}px)`)
+                .style("left", `calc(${this.fixedLeft()} + ${rect.left}px)`)
+                ;
+        } else if (this.fixedHeight() !== null && this.fixedWidth() !== null) {
+            this._modal
+                .style("top", (rect.top + (rect.height / 2) - (modalRect.height / 2)) + "px")
+                .style("left", (rect.left + (rect.width / 2) - (modalRect.width / 2)) + "px")
+                ;
+        } else if (this.minHeight() || this.minWidth()) {
+            const contentRect = this._modal.node().getBoundingClientRect();
+            this._modal
+                .style("top", (rect.top + (rect.height / 2) - (contentRect.height / 2)) + "px")
+                .style("left", (rect.left + (rect.width / 2) - (contentRect.width / 2)) + "px")
                 ;
         }
     }
 
     resize(size?: any): this {
         super.resize();
-        this.setModalSizeLimits();
+        if (this._modal)this.setModalSize();
         return this;
     }
 
@@ -134,8 +154,6 @@ export class Modal extends HTMLWidget {
                 this.closeModal();
             }
         });
-
-        this.setModalSizeLimits();
     }
 
     update(domNode, element) {
@@ -144,7 +162,7 @@ export class Modal extends HTMLWidget {
         this._fade.classed("layout_Modal-fade-hidden", !this.showFade());
         this._relativeTarget = this.getRelativeTarget();
 
-        this.setModalSizeLimits();
+        this.setModalSize();
         const rect = this._relativeTarget.getBoundingClientRect();
         this.setFadePosition(rect);
         this.setModalPosition(rect);
@@ -185,6 +203,14 @@ export interface Modal {
     maxWidth(_: string): this;
     maxHeight(): string;
     maxHeight(_: string): this;
+    fixedWidth(): string;
+    fixedWidth(_: string): this;
+    fixedHeight(): string;
+    fixedHeight(_: string): this;
+    fixedTop(): string;
+    fixedTop(_: string): this;
+    fixedLeft(): string;
+    fixedLeft(_: string): this;
     relativeTargetId(): string;
     relativeTargetId(_: string): this;
     widget(): Widget;
@@ -205,3 +231,7 @@ Modal.prototype.publish("minWidth", "400px", "string", "minWidth");
 Modal.prototype.publish("minHeight", "400px", "string", "minHeight");
 Modal.prototype.publish("maxWidth", "800px", "string", "maxWidth");
 Modal.prototype.publish("maxHeight", "800px", "string", "maxHeight");
+Modal.prototype.publish("fixedWidth", null, "string", "fixedWidth");
+Modal.prototype.publish("fixedHeight", null, "string", "fixedHeight");
+Modal.prototype.publish("fixedTop", null, "string", "fixedTop");
+Modal.prototype.publish("fixedLeft", null, "string", "fixedLeft");

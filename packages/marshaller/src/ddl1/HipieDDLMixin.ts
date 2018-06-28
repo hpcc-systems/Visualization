@@ -1,7 +1,8 @@
 import { Platform, PropertyExt, Utility } from "@hpcc-js/common";
-import { Surface } from "@hpcc-js/layout";
+import { Modal, Surface } from "@hpcc-js/layout";
 import { Persist } from "@hpcc-js/other";
 import { map as d3Map } from "d3-collection";
+import { select as d3Select } from "d3-selection";
 import { FlyoutButton } from "./FlyoutButton";
 import * as HipieDDL from "./HipieDDL";
 
@@ -28,6 +29,7 @@ export class HipieDDLMixin extends PropertyExt {
     _ddlVisualizations;
     _ddlPopupVisualizations;
     _ddlLayerVisualizations;
+    _ddlModalVisualizations;
     _prev_ddlUrl;
     _prev_databomb;
     _marshaller;
@@ -47,6 +49,7 @@ export class HipieDDLMixin extends PropertyExt {
         this._ddlVisualizations = [];
         this._ddlPopupVisualizations = [];
         this._ddlLayerVisualizations = [];
+        this._ddlModalVisualizations = [];
         const context = this;
         let curr = null;
         marshaller.accept({
@@ -55,8 +58,9 @@ export class HipieDDLMixin extends PropertyExt {
                     curr = {
                         dashboard: item,
                         visualizations: [],
+                        popupVisualizations: [],
                         layerVisualizations: [],
-                        popupVisualizations: []
+                        modalVisualizations: []
                     };
                     context._ddlDashboards.push(curr);
                 } else if (item instanceof HipieDDL.Datasource) {
@@ -75,6 +79,9 @@ export class HipieDDLMixin extends PropertyExt {
                         } else if (item.parentVisualization) {
                             curr.layerVisualizations.push(item);
                             context._ddlLayerVisualizations.push(item);
+                        } else if (item.properties.modalIfData) {
+                            curr.modalVisualizations.push(item);
+                            context._ddlModalVisualizations.push(item);
                         } else {
                             curr.visualizations.push(item);
                             context._ddlVisualizations.push(item);
@@ -185,6 +192,42 @@ export class HipieDDLMixin extends PropertyExt {
                             break;
                     }
                 });
+            });
+            context._ddlModalVisualizations.forEach(function (viz) {
+                if (viz.widget.showToolbar) {
+                    viz.widget.showToolbar(false);
+                }
+                viz._modalTarget = d3Select("body").append("div").node();
+                viz._modal = new Modal().target(viz._modalTarget);
+                viz._modal._widget = viz.widget;
+                const origRender = viz.widget.render;
+                viz.widget.render = function (callback) {
+                    if (this.__inModal) {
+                        return origRender.apply(this, arguments);
+                    }
+                    if (this.data().length) {
+                        this.__inModal = true;
+                        const widgetContext = this;
+                        viz._modal
+                            .title(viz.widget.title())
+                            .visible(true)
+                            .fixedWidth("80%")
+                            .fixedHeight("80%")
+                            .render(function (w) {
+                                if (callback) {
+                                    callback(widgetContext);
+                                }
+                                setTimeout(function () {
+                                    widgetContext.__inModal = false;
+                                }, 300);  //  Must be longer than debounce timeout...
+                            });
+                    } else {
+                        if (callback) {
+                            callback(this);
+                        }
+                    }
+                    return this;
+                };
             });
             removedMap.each(function (key, value) {
                 context.clearContent(value);

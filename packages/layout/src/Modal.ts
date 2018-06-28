@@ -22,8 +22,7 @@ export class Modal extends HTMLWidget {
     }
 
     closeModal() {
-        this.show(false).render();
-        if (this._close) this._close();
+        this.visible(false);
     }
 
     getRelativeTarget() {
@@ -34,9 +33,11 @@ export class Modal extends HTMLWidget {
                 return relativeTarget;
             }
         }
-        relativeTarget = this.locateAncestor("layout_Grid");
-        if (relativeTarget) {
-            return relativeTarget.element().node();
+        if (!relativeTarget) {
+            relativeTarget = this.locateAncestor('layout_Grid');
+            if (relativeTarget && relativeTarget.element) {
+                return relativeTarget.element().node();
+            }
         }
         return document.body;
     }
@@ -100,7 +101,7 @@ export class Modal extends HTMLWidget {
 
     resize(size?: any): this {
         super.resize();
-        if (this._modal)this.setModalSize();
+        if (this._modal) this.setModalSize();
         return this;
     }
 
@@ -178,6 +179,11 @@ export class Modal extends HTMLWidget {
                 .render()
                 ;
         }
+    }
+
+    exit(domNode, element) {
+        super.exit(domNode, element);
+        this._widget.target(null);
     }
 }
 Modal.prototype._class += " layout_Modal";

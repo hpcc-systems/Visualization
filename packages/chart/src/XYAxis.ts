@@ -580,6 +580,13 @@ export class XYAxis extends SVGWidget {
     orientation: publish<this, string>;
     orientation_default: publish<this, string>;
 
+    @publish(null, "string", "pointSizeColumn")
+    pointSizeColumn: publish<this, string>;
+    @publish(6, "number", "minPointSize")
+    minPointSize: publish<this, number>;
+    @publish(26, "number", "maxPointSize")
+    maxPointSize: publish<this, number>;
+
     @publish(false, "boolean", "Range Selector")
     selectionMode: publish<this, boolean>;
     @publishProxy("domainAxis", "tickCount")

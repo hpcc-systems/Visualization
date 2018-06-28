@@ -11,6 +11,35 @@
         range: d3Array.range
     };
     var chartFactory = {
+        BubbleXY: {
+            simple: function (callback) {
+                legacyRequire(["src/chart/BubbleXY"], function (BubbleXY) {
+                    callback(new BubbleXY()
+                        .columns(["Category", "Value 1", "Value 2"])
+                        .data(Array(20).fill("").map((n, i) => [
+                            String.fromCharCode(65 + i), Math.random(), Math.random()
+                        ]))
+                        .pointShape("circle")
+                        .minPointSize(10)
+                        .maxPointSize(30)
+                    );
+                });
+            },
+            col_1: function (callback) {
+                legacyRequire(["src/chart/BubbleXY"], function (BubbleXY) {
+                    callback(new BubbleXY()
+                        .columns(["Category", "Value 1", "Value 2"])
+                        .data(Array(20).fill("").map((n, i) => [
+                            String.fromCharCode(65 + i), Math.random(), Math.random()
+                        ]))
+                        .pointSizeColumn("Value 1")
+                        .pointShape("rectangle")
+                        .minPointSize(10)
+                        .maxPointSize(30)
+                    );
+                });
+            }
+        },
         Radar: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Radar"], function (DataFactory, Radar) {

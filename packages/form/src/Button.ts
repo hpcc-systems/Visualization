@@ -36,16 +36,22 @@ export class Button extends HTMLWidget {
 
         this._inputElement[0].text(this.value());
     }
-
-    //  IInput  ---
-    name: { (): string; (_: string): Button };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Button };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Button };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Button };
-    validate_exists: () => boolean;
 }
 Button.prototype._class += " form_Button";
 Button.prototype.implements(IInput.prototype);
+
+export interface Button {
+    name(): string;
+    name(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+}

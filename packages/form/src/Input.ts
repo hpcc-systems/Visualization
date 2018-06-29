@@ -90,22 +90,6 @@ export class Input extends HTMLWidget {
         }
     }
 
-    type: { (): string; (_: string): Input };
-    type_exists: () => boolean;
-    type_default: { (): string; (_: string): Input };
-    inlineLabel: { (): string; (_: string): Input };
-    inlineLabel_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Input };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Input };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Input };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Input };
-    validate_exists: () => boolean;
-
     //  IInput Events ---
     blur: (w: Input) => void;
     click: (w: Input) => void;
@@ -114,6 +98,31 @@ export class Input extends HTMLWidget {
 }
 Input.prototype._class += " form_Input";
 Input.prototype.implements(IInput.prototype);
+
+export interface Input {
+    name(): string;
+    name(_: string): this;
+    type(): string;
+    type(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+
+    name_exists(): boolean;
+    type_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+    inlineLabel_exists(): boolean;
+
+    type_default(): string;
+    type_default(_: string): this;
+}
 
 Input.prototype.publish("type", "text", "set", "Input type", ["number", "button", "checkbox", "date", "text", "textarea", "search", "email", "time", "datetime", "hidden"]);
 Input.prototype.publish("inlineLabel", null, "string", "Input Label", null, { optional: true });

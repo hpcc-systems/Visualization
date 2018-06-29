@@ -62,25 +62,30 @@ export class InputRange extends HTMLWidget {
                 .property("value", this._rangeData.length > idx ? this._rangeData[idx] : "");
         }, this);
     }
-
-    type: { (): string; (_: string): InputRange };
-    type_exists: () => boolean;
-    inlineLabel: { (): string; (_: string): InputRange };
-    inlineLabel_exists: () => boolean;
-    value: { (): any[]; (_: any[]): InputRange };
-    value_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): InputRange };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): InputRange };
-    label_exists: () => boolean;
-    validate: { (): string; (_: string): InputRange };
-    validate_exists: () => boolean;
 }
 InputRange.prototype._class += " form_InputRange";
 InputRange.prototype.implements(IInput.prototype);
 
+export interface InputRange {
+    name(): string;
+    name(_: string): this;
+    type(): string;
+    type(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): [any, any];
+    value(_: [any, any]): this;
+    validate(): string;
+    validate(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+    inlineLabel_exists(): boolean;
+}
+
 InputRange.prototype.publish("type", "text", "set", "InputRange type", ["number", "date", "text", "time", "datetime", "hidden"]);
 InputRange.prototype.publish("inlineLabel", null, "string", "InputRange Label", null, { optional: true });
-InputRange.prototype.publish("value", ["", ""], "array", "Input Current Value", null, { override: true });

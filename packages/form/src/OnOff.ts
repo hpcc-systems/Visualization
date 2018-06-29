@@ -57,16 +57,28 @@ export class OnOff extends HTMLWidget {
             .attr("name", this.name())
             ;
     }
-
-    //  IInput  ---
-    name: { (): string; (_: string): OnOff };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): OnOff };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): OnOff };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): OnOff };
-    validate_exists: () => boolean;
 }
 OnOff.prototype._class += " form_OnOff";
 OnOff.prototype.implements(IInput.prototype);
+
+export interface OnOff {
+    name(): string;
+    name(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+    inlineLabel_exists(): boolean;
+}
+
+OnOff.prototype.publish("type", "text", "set", "InputRange type", ["number", "date", "text", "time", "datetime", "hidden"]);
+OnOff.prototype.publish("inlineLabel", null, "string", "InputRange Label", null, { optional: true });

@@ -26,20 +26,29 @@ export class TextArea extends Input {
             .style("height", this.calcHeight() + "px")
             ;
     }
-
-    rows: { (): number; (_: number): TextArea };
-    rows_exists: () => boolean;
-    cols: { (): number; (_: number): TextArea };
-    cols_exists: () => boolean;
-    wrap: { (): string; (_: string): TextArea };
-    wrap_exists: () => boolean;
-    minHeight: { (): number; (_: number): TextArea };
-    minHeight_exists: () => boolean;
-    spellcheck: { (): boolean; (_: boolean): TextArea };
-    spellcheck_exists: () => boolean;
-    value: { (): any; (_: any): TextArea };
 }
 TextArea.prototype._class += " form_TextArea";
+
+export interface TextArea {
+    rows(): number;
+    rows(_: number): this;
+    cols(): number;
+    cols(_: number): this;
+    wrap(): string;
+    wrap(_: string): this;
+    value(): any;
+    value(_: any): this;
+    minHeight(): number;
+    minHeight(_: number): this;
+    spellcheck(): boolean;
+    spellcheck(_: boolean): this;
+
+    rows_exists(): boolean;
+    cols_exists(): boolean;
+    wrap_exists(): boolean;
+    minHeight_exists(): boolean;
+    spellcheck_exists(): boolean;
+}
 
 TextArea.prototype.publish("rows", null, "number", "Rows", null, { optional: true });
 TextArea.prototype.publish("cols", null, "number", "Columns", null, { optional: true });

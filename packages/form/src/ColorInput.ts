@@ -60,16 +60,22 @@ export class ColorInput extends HTMLWidget {
         this._inputElement[1].style("height", (bbox.height - 2) + "px");
 
     }
-
-    //  IInput  ---
-    name: { (): string; (_: string): ColorInput };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): ColorInput };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): ColorInput };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): ColorInput };
-    validate_exists: () => boolean;
 }
 ColorInput.prototype._class += " form_ColorInput";
 ColorInput.prototype.implements(IInput.prototype);
+
+export interface ColorInput {
+    name(): string;
+    name(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+}

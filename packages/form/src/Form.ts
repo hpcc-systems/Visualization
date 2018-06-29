@@ -292,23 +292,33 @@ export class Form extends HTMLWidget {
     click(row, col, sel) {
         console.log("Clicked Submit: " + JSON.stringify(row));
     }
-
-    validate: { (): boolean; (_: boolean): Form };
-    validate_exists: () => boolean;
-    inputs: { (): any[]; (_: any[]): Form };
-    inputs_exists: () => boolean;
-    inputs_reset: () => void;
-    showSubmit: { (): boolean; (_: boolean): Form };
-    showSubmit_exists: () => boolean;
-    omitBlank: { (): boolean; (_: boolean): Form };
-    omitBlank_exists: () => boolean;
-    allowEmptyRequest: { (): boolean; (_: boolean): Form };
-    allowEmptyRequest_exists: () => boolean;
 }
 Form.prototype._class += " form_Form";
 
-Form.prototype.publish("validate", true, "boolean", "Enable/Disable input validation");
+export interface Form {
+    validate(): string;
+    validate(_: string): this;
+    showSubmit(): boolean;
+    showSubmit(_: boolean): this;
+    omitBlank(): boolean;
+    omitBlank(_: boolean): this;
+    inputs(): any[];
+    inputs(_: any[]): this;
+    allowEmptyRequest(): boolean;
+    allowEmptyRequest(_: boolean): this;
+
+    inputs_reset(): any;
+    validate_exists(): boolean;
+    inputs_exists(): boolean;
+    showSubmit_exists(): boolean;
+    omitBlank_exists(): boolean;
+    allowEmptyRequest_exists(): boolean;
+}
+
 Form.prototype.publish("inputs", [], "widgetArray", "Array of input widgets", null, { render: false });
+
+Form.prototype.publish("validate", null, "string");
+
 Form.prototype.publish("showSubmit", true, "boolean", "Show Submit/Cancel Controls");
 Form.prototype.publish("omitBlank", false, "boolean", "Drop Blank Fields From Submit");
 Form.prototype.publish("allowEmptyRequest", false, "boolean", "Allow Blank Form to be Submitted");

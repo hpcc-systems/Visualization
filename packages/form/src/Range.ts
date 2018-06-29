@@ -72,33 +72,44 @@ export class Range extends HTMLWidget {
         }
         this._inputElement[0].html(optionHTML);
     }
-
-    type: { (): string; (_: string): Range };
-    type_exists: () => boolean;
-    selectOptions: { (): any[]; (_: any[]): Range };
-    selectOptions_exists: () => boolean;
-    low: { (): number; (_: number): Range };
-    low_exists: () => boolean;
-    high: { (): number; (_: number): Range };
-    high_exists: () => boolean;
-    step: { (): number; (_: number): Range };
-    step_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Range };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Range };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Range };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Range };
-    validate_exists: () => boolean;
 }
 Range.prototype._class += " form_Range";
 Range.prototype.implements(IInput.prototype);
 
-Range.prototype.publish("type", "text", "set", "Input type", ["html-color", "number", "checkbox", "button", "select", "textarea", "date", "text", "range", "search", "email", "time", "datetime"]);
+export interface Range {
+    low(): number;
+    low(_: number): this;
+    name(): string;
+    name(_: string): this;
+    high(): number;
+    high(_: number): this;
+    type(): string;
+    type(_: string): this;
+    step(): string;
+    step(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+
+    low_exists(): boolean;
+    high_exists(): boolean;
+    name_exists(): boolean;
+    step_exists(): boolean;
+    type_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+    selectOptions_exists(): boolean;
+}
+
+Range.prototype.publish("inlineLabel", null, "string", "InputRange Label", null, { optional: true });
 Range.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");
+Range.prototype.publish("type", "text", "set", "Input type", ["html-color", "number", "checkbox", "button", "select", "textarea", "date", "text", "range", "search", "email", "time", "datetime"]);
 Range.prototype.publish("low", null, "number", "Minimum value for Range input");
 Range.prototype.publish("high", null, "number", "Maximum value for Range input");
 Range.prototype.publish("step", null, "number", "Step value for Range input");

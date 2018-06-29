@@ -55,21 +55,33 @@ export class Radio extends HTMLWidget {
             }
         });
     }
-
-    selectOptions: { (): any[]; (_: any[]): Radio };
-    selectOptions_exists: () => boolean;
-
-    //  IInput  ---
-    name: { (): string; (_: string): Radio };
-    name_exists: () => boolean;
-    label: { (): string; (_: string): Radio };
-    label_exists: () => boolean;
-    value: { (): any; (_: any): Radio };
-    value_exists: () => boolean;
-    validate: { (): string; (_: string): Radio };
-    validate_exists: () => boolean;
 }
 Radio.prototype._class += " form_Radio";
 Radio.prototype.implements(IInput.prototype);
+
+export interface Radio {
+    name(): string;
+    name(_: string): this;
+    label(): string;
+    label(_: string): this;
+    value(): any;
+    value(_: any): this;
+    validate(): string;
+    validate(_: string): this;
+    inlineLabel(): string;
+    inlineLabel(_: string): this;
+    selectOptions(): any[];
+    selectOptions(_: any[]): this;
+
+    name_exists(): boolean;
+    label_exists(): boolean;
+    value_exists(): boolean;
+    validate_exists(): boolean;
+    inlineLabel_exists(): boolean;
+    selectOptions_exists(): boolean;
+}
+
+Radio.prototype.publish("type", "text", "set", "InputRange type", ["number", "date", "text", "time", "datetime", "hidden"]);
+Radio.prototype.publish("inlineLabel", null, "string", "InputRange Label", null, { optional: true });
 
 Radio.prototype.publish("selectOptions", [], "array", "Array of options used to fill a dropdown list");

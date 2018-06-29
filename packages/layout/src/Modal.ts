@@ -34,7 +34,7 @@ export class Modal extends HTMLWidget {
             }
         }
         if (!relativeTarget) {
-            relativeTarget = this.locateAncestor('layout_Grid');
+            relativeTarget = this.locateAncestor("layout_Grid");
             if (relativeTarget && relativeTarget.element) {
                 return relativeTarget.element().node();
             }

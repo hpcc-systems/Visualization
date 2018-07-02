@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.9"></a>
+## [0.2.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.8...@hpcc-js/layout@0.2.9) (2018-07-02)
+
+
+### Bug Fixes
+
+* **lint:** Fixed lint issue with Modal.ts ([85e987b](https://github.com/hpcc-systems/Visualization/commit/85e987b))
+
+
+
+
 <a name="0.2.8"></a>
 ## [0.2.8](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.7...@hpcc-js/layout@0.2.8) (2018-06-28)
 

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/codemirror",
-  "version": "0.0.108",
+  "version": "0.0.109",
   "description": "hpcc-js - Viz Code Mirror",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -28,7 +28,7 @@
     "@hpcc-js/common": "^0.7.1",
     "@hpcc-js/dgrid": "^0.2.5",
     "@hpcc-js/html": "^0.0.88",
-    "@hpcc-js/phosphor": "^0.1.5",
+    "@hpcc-js/phosphor": "^0.1.6",
     "@hpcc-js/util": "^0.1.2"
   },
   "devDependencies": {

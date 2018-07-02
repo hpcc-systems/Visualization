@@ -217,6 +217,14 @@ export class RoxieRequest extends Activity {
         return this;
     }
 
+    requestFields(): DDL2.IField[];
+    requestFields(_: DDL2.IField[]): this;
+    requestFields(_?: DDL2.IField[]): DDL2.IField[] | this {
+        if (!arguments.length) return this._roxieService.requestFields();
+        this._roxieService.requestFields(_);
+        return this;
+    }
+
     responseFields(): DDL2.IField[];
     responseFields(_: DDL2.IField[]): this;
     responseFields(_?: DDL2.IField[]): DDL2.IField[] | this {

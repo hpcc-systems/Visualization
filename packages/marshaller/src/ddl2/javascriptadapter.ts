@@ -141,8 +141,9 @@ export class JavaScriptAdapter {
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
         .resultName("${outputID}")
-        .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        .requestFields(${stringify(datasource.inputs)})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+        .responseFields(${stringify(datasource.outputs[outputID].fields)})
         ;`);
                     break;
                 case "roxie":
@@ -151,8 +152,9 @@ export class JavaScriptAdapter {
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
         .resultName("${outputID}")
-        .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        .requestFields(${stringify(datasource.inputs)})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+        .responseFields(${stringify(datasource.outputs[outputID].fields)})
         ;`);
                     break;
                 case "databomb":

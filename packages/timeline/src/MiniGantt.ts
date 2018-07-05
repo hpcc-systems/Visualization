@@ -234,14 +234,17 @@ export class MiniGantt extends SVGWidget {
         const brAxisBBox = this.brAxis.getBBox();
 
         const upperContentHeight = this.updateEntityPins(events);
-        const upperAxisHeight = this.gUpperAxis.node().getBBox().height;
+        const lowerAxisHeight = this.gLowerAxis.node().getBBox().height;
         const lowerHeight = height - upperContentHeight;
-
         if (events.length > 0 && ranges.length === 0) {
             // ONLY EVENTS
             this.gUpperAxis.attr("display", "none");
-            this.gUpperContent.attr("transform", `translate(0, ${(height / 2) + (upperContentHeight / 2)})`);
-            this.gLowerAxis.attr("transform", `translate(0, -${(height / 2) - upperAxisHeight - (upperContentHeight / 2)})`);
+            let y_offset = upperContentHeight / 4;
+            if (y_offset > (height / 2) - lowerAxisHeight) {
+                y_offset = (height / 2) - lowerAxisHeight;
+            }
+            this.gUpperContent.attr("transform", `translate(0, ${(height / 2) + y_offset})`);
+            this.gLowerAxis.attr("transform", `translate(0, ${((height / 2) - lowerAxisHeight - y_offset) * -1})`);
         } else if (events.length === 0 && ranges.length > 0) {
             // ONLY RANGES
             this.gUpperAxis.attr("display", "block");
@@ -254,7 +257,6 @@ export class MiniGantt extends SVGWidget {
             this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
             this.gMiddleContent.attr("transform", `translate(0, ${upperContentHeight})`);
         }
-
         this.tlAxis
             .render()
             ;

@@ -4,8 +4,19 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
+            "name": "Dermatology (Chrome)",
             "url": "file:///${workspaceRoot}/demos/dermatology/www/index-dev.html",
+            "webRoot": "${workspaceRoot}",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--allow-file-access",
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Dashy (Chrome)",
+            "url": "file:///${workspaceRoot}/demos/dashy/index-dev.html",
             "webRoot": "${workspaceRoot}",
             "runtimeArgs": [
                 "--allow-file-access-from-files",

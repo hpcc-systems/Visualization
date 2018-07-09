@@ -119,6 +119,8 @@ export class Dashy extends SplitPanel {
     private _cloneEC: ElementContainer = new ElementContainer();
     private _clone: Dashboard = new Dashboard(this._cloneEC).hideSingleTabs(true);
     private _fileOpen;
+    protected _history = [];
+    protected _history_idx = -1;
 
     constructor() {
         super("horizontal");
@@ -133,6 +135,10 @@ export class Dashy extends SplitPanel {
 
     save(): IDashboardPersist {
         return this._dashboard.save();
+    }
+
+    stringify(indent?: string): string {
+        return JSON.stringify(this.save(), null, indent ? indent : "");
     }
 
     restore(json: IDashboardPersist): Promise<void> {
@@ -288,6 +294,43 @@ export class Dashy extends SplitPanel {
         });
     }
 
+    undo() {
+        try {
+            if (typeof this._history[this._history_idx - 1] !== "undefined") {
+                this._history_idx--;
+                this.restore(JSON.parse(this._history[this._history_idx]));
+            } else {
+                console.warn("Previous history state does not exist.");
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    redo() {
+        try {
+            if (typeof this._history[this._history_idx + 1] !== "undefined") {
+                this._history_idx++;
+                this.restore(JSON.parse(this._history[this._history_idx]));
+            } else {
+                console.warn("Next history state does not exist.");
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    pushHistory() {
+        try {
+            const not_viewing_latest = this._history.length - 1 !== this._history_idx;
+            this._history_idx++;
+            if (not_viewing_latest) {
+                this._history = this._history.slice(0, this._history_idx);
+            }
+            this._history.push(this.stringify());
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     initMenu() {
         const commands = new CommandRegistry();
 
@@ -300,6 +343,7 @@ export class Dashy extends SplitPanel {
                 this.loadDashboard().then(() => {
                     newElem.refresh().then(() => {
                         this._dashboard.activate(newElem);
+                        this.pushHistory();
                     });
                 });
             }
@@ -309,6 +353,21 @@ export class Dashy extends SplitPanel {
             label: "Clear",
             execute: () => {
                 this.clear();
+                this.pushHistory();
+            }
+        });
+
+        commands.addCommand("dash_undo", {
+            label: "Undo",
+            execute: () => {
+                this.undo();
+            }
+        });
+
+        commands.addCommand("dash_redo", {
+            label: "Redo",
+            execute: () => {
+                this.redo();
             }
         });
 
@@ -325,6 +384,7 @@ export class Dashy extends SplitPanel {
             execute: () => {
                 this._fileOpen.property("accept", ".json");
                 this._fileOpen.node().click();
+                this.pushHistory();
             }
         });
 
@@ -341,6 +401,8 @@ export class Dashy extends SplitPanel {
         contextMenu.addItem({ command: "dash_clear", selector: `#${this._dashboard.id()}` });
         contextMenu.addItem({ type: "separator", selector: `#${this._dashboard.id()}` });
 
+        contextMenu.addItem({ command: "dash_undo", selector: `#${this.id()}` });
+        contextMenu.addItem({ command: "dash_redo", selector: `#${this.id()}` });
         contextMenu.addItem({ command: "dash_load", selector: `#${this.id()}` });
         contextMenu.addItem({ command: "dash_save", selector: `#${this.id()}` });
 

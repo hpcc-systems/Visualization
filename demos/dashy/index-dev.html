@@ -17,11 +17,10 @@
 </head>
 
 <body>
-    <div id="placeholder">
-    </div>
+    <div id="placeholder"></div>
     <script>
         require(["lib-umd/index"], function (dashy) {
-            dashy.load("placeholder");
+            window.app = dashy.load("placeholder");
         })
     </script>
 </body>

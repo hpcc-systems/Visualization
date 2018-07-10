@@ -120,12 +120,14 @@ export class Dashy extends SplitPanel {
     private _clone: Dashboard = new Dashboard(this._cloneEC).hideSingleTabs(true);
     private _fileOpen;
 
+    private _contextmenu_event;
+
     constructor() {
         super("horizontal");
     }
 
-    clear() {
-        this._elementContainer.clear();
+    clear(eid?: string) {
+        this._elementContainer.clear(eid);
         this.loadDashboard().then(() => {
             this._elementContainer.refresh();
         });
@@ -328,6 +330,17 @@ export class Dashy extends SplitPanel {
             }
         });
 
+        commands.addCommand("dash_remove", {
+            label: "Remove Element",
+            execute: () => {
+                const elm = this._contextmenu_event.path.find(n => n.className && n.className.split(" ").indexOf("layout_ChartPanel") !== -1);
+                const cp_id = elm.id;
+                const id = cp_id.split("_")[1];
+                const e_id = "e_" + id;
+                this.clear(e_id);
+            }
+        });
+
         //  Model Commands  ---
         const palette = new CommandPalette({ commands });
         palette.addItem({ command: "addWUResult", category: "Notebook" });
@@ -338,6 +351,7 @@ export class Dashy extends SplitPanel {
         const contextMenu = new ContextMenu({ commands });
 
         contextMenu.addItem({ command: "dash_add", selector: `#${this._dashboard.id()}` });
+        contextMenu.addItem({ command: "dash_remove", selector: `#${this._dashboard.id()} .layout_ChartPanel` });
         contextMenu.addItem({ command: "dash_clear", selector: `#${this._dashboard.id()}` });
         contextMenu.addItem({ type: "separator", selector: `#${this._dashboard.id()}` });
 
@@ -345,6 +359,7 @@ export class Dashy extends SplitPanel {
         contextMenu.addItem({ command: "dash_save", selector: `#${this.id()}` });
 
         document.addEventListener("contextmenu", (event: MouseEvent) => {
+            this._contextmenu_event = event;
             if (contextMenu.open(event)) {
                 event.preventDefault();
             }

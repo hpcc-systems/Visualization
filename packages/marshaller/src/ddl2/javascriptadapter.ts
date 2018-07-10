@@ -2,8 +2,6 @@ import { PropertyExt } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { classID2Meta, ClassMeta, isArray } from "@hpcc-js/util";
 import { Activity, stringify } from "./activities/activity";
-import { Databomb, Form } from "./activities/databomb";
-import { DSPicker } from "./activities/dspicker";
 import { Dashboard } from "./dashboard";
 import { DDLAdapter } from "./ddl";
 import { ElementContainer } from "./model/element";
@@ -101,15 +99,15 @@ export class JavaScriptAdapter {
 
     private safeID(id: string): string {
         if (!id) return id;
-        return id.replace(" ", "_");
+        return id.replace(" ", "_").replace(".", "_");
     }
 
     private datasourceRefID(view: DDL2.IView): string {
         const datasourceRef = view.datasource;
-        if (DDL2.isWUResultRef(datasourceRef) || DDL2.isRoxieServiceRef(datasourceRef)) {
-            return `${datasourceRef.id}_${this.safeID(datasourceRef.output)}_${view.id}`;
+        if (DDL2.isRoxieServiceRef(datasourceRef)) {
+            return `${this.safeID(datasourceRef.id)}_${this.safeID(datasourceRef.output)}_${this.safeID(view.id)}`;
         }
-        return `${datasourceRef.id}`;
+        return `${this.safeID(datasourceRef.id)}`;
     }
 
     _dedup: { [key: string]: boolean } = {};
@@ -149,42 +147,42 @@ export class JavaScriptAdapter {
         ;`);
                     break;
                 case "roxie":
-                    retVal.push(`    export const ${id} = new marshaller.RoxieRequest(ec)
+                    const serviceID = this.safeID(view.datasource.id);
+                    if (!this._dedup[serviceID]) {
+                        this._dedup[serviceID] = true;
+                        retVal.push(`    export const ${serviceID} = new marshaller.RoxieService()
         .url("${datasource.url}")
         .querySet("${datasource.querySet}")
         .queryID("${datasource.queryID}")
-        .resultName("${outputID}")
         .requestFields(${stringify(datasource.inputs)})
-        .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
+        ;`);
+                    }
+                    const resultID = serviceID + "_" + this.safeID(outputID);
+                    if (!this._dedup[resultID]) {
+                        this._dedup[resultID] = true;
+                        retVal.push(`    export const ${resultID} = new marshaller.RoxieResult(ec)
+        .service(${serviceID})
+        .resultName("${outputID}")
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
+        ;`);
+                    }
+                    retVal.push(`    export const ${id} = new marshaller.RoxieResultRef(ec)
+        .datasource(${resultID})
+        .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
         ;`);
                     break;
                 case "databomb":
                     {
-                        let format = "json";
-                        let payload = "";
-                        const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
-                        if (ds.length) {
-                            const databomb = (ds[0].hipiePipeline().dataSource() as DSPicker).details() as Databomb;
-                            format = databomb.format();
-                            payload = databomb.payload();
-                        }
-                        retVal.push(`    export const ${datasource.id} = new marshaller.Databomb()
-        .format("${format}")
-        .payload(${JSON.stringify(payload)})
+                        retVal.push(`    export const ${id} = new marshaller.Databomb()
+        .format("${datasource.format}")
+        .payload(${JSON.stringify(datasource.payload)})
         ;`);
                     }
                     break;
                 case "form":
                     {
-                        let payload = {};
-                        const ds = this._elementContainer.elements().filter(e => e.hipiePipeline().dataSource().id() === datasource.id);
-                        if (ds.length) {
-                            const form = (ds[0].hipiePipeline().dataSource() as DSPicker).details() as Form;
-                            payload = form.payload();
-                        }
-                        retVal.push(`    export const ${datasource.id} = new marshaller.Form()
-        .payload(${JSON.stringify(payload)})
+                        retVal.push(`    export const ${id} = new marshaller.Form()
+        //.payload(${datasource.fields})
         ;`);
                     }
                     break;

@@ -187,8 +187,24 @@ export class ElementContainer extends PropertyExt {
     private _elements: Element[] = [];
     private _nullElement = new Element(this);
 
-    clear() {
-        this._elements = [];
+    clear(eid?: string) {
+        if (typeof eid === "undefined") {
+            this._elements = [];
+        } else {
+            let element_idx;
+            for (const _element of this._elements) {
+                if (_element.id() === eid) {
+                    element_idx = this._elements.indexOf(_element);
+                }
+            }
+            if (typeof element_idx !== "undefined") {
+                this._elements = this._elements
+                    .slice(0, element_idx)
+                    .concat(
+                        this._elements.slice(element_idx + 1)
+                    );
+            }
+        }
     }
 
     elements(): Element[] {

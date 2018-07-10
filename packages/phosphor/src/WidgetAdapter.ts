@@ -24,6 +24,10 @@ export namespace Msg {
     }
 }
 
+export interface IClosable {
+    canClose(e: Widget, wa: WidgetAdapter): boolean;
+}
+
 export class WidgetAdapter extends PWidget {
     protected _owner;
     protected _element;
@@ -34,8 +38,9 @@ export class WidgetAdapter extends PWidget {
     padding: number = 0;
     _width: number = 0;
     _height: number = 0;
+    private _closable: IClosable;
 
-    constructor(owner?: Widget, widget?: Widget | object, lparam: object = {}) {
+    constructor(owner?: Widget, widget?: Widget | object, lparam: object = {}, closable?: IClosable) {
         super();
         this._owner = owner;
         this._element = d3Select(this.node);
@@ -43,7 +48,8 @@ export class WidgetAdapter extends PWidget {
         this.addClass("phosphor_WidgetAdapter");
         // this.addClass(name.toLowerCase());
         this.title.label = "";
-        this.title.closable = false;
+        this._closable = closable;
+        this.title.closable = closable ? true : false;
         this.title.caption = `Long description for: ${name}`;
 
         if (widget instanceof Widget) {
@@ -105,6 +111,12 @@ export class WidgetAdapter extends PWidget {
                 }
             });
             */
+        }
+    }
+
+    protected onCloseRequest(msg: Message): void {
+        if (this._closable.canClose(this._widget, this)) {
+            this.dispose();
         }
     }
 }

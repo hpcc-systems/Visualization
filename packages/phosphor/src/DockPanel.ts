@@ -3,7 +3,7 @@ import { Widget } from "@hpcc-js/common";
 import { DockPanel as PhosphorDockPanel, IMessageHandler, IMessageHook, Message, MessageLoop, Widget as PWidget } from "@hpcc-js/phosphor-shim";
 import { select as d3Select } from "d3-selection";
 import { PDockPanel } from "./PDockPanel";
-import { Msg, WidgetAdapter } from "./WidgetAdapter";
+import { IClosable, Msg, WidgetAdapter } from "./WidgetAdapter";
 
 import "../src/DockPanel.css";
 
@@ -29,9 +29,9 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         return retVal;
     }
 
-    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget) {
+    addWidget(widget: Widget, title: string, location: PhosphorDockPanel.InsertMode = "split-right", refWidget?: Widget, closable?: IClosable) {
         const addMode: PhosphorDockPanel.IAddOptions = { mode: location, ref: this.getWidgetAdapter(refWidget) };
-        const wa = new WidgetAdapter(this, widget);
+        const wa = new WidgetAdapter(this, widget, {}, closable);
         wa.title.label = title;
         wa.padding = 8;
         this._dock.addWidget(wa, addMode);

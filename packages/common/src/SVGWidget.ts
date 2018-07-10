@@ -152,10 +152,8 @@ export class SVGWidget extends Widget {
                     break;
             }
         }
-        this._placeholderElement
-            .attr("width", this._size.width)
-            .attr("height", this._size.height)
-            ;
+        if (!isNaN(this._size.width))this._placeholderElement.attr("width", this._size.width);
+        if (!isNaN(this._size.height))this._placeholderElement.attr("height", this._size.height);
         return retVal;
     }
 

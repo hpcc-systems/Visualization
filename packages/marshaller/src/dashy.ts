@@ -119,6 +119,7 @@ export class Dashy extends SplitPanel {
     private _cloneEC: ElementContainer = new ElementContainer();
     private _clone: Dashboard = new Dashboard(this._cloneEC).hideSingleTabs(true);
     private _fileOpen;
+    private _modal;
 
     constructor() {
         super("horizontal");
@@ -145,6 +146,10 @@ export class Dashy extends SplitPanel {
                 logger.warning(error.elementID + " (" + error.source + "):  " + error.msg);
             }
         });
+    }
+
+    stringify(indent?: string): string {
+        return JSON.stringify(this.save(), null, indent ? indent : "");
     }
 
     importV1DDL(ddl: DDL1.DDLSchema, baseUrl?: string, wuid?: string) {
@@ -328,6 +333,45 @@ export class Dashy extends SplitPanel {
             }
         });
 
+        commands.addCommand("dash_visualstate", {
+            label: "Visualize State",
+            execute: () => {
+                window["require"](["../../packages/layout/lib-umd/index", "../../packages/tree/lib-umd/index"], (layout, tree) => {
+                    const w = new tree.Dendrogram().radial(true);
+                    w.data(this.obj_to_tree({label: "app._dashy.save()"}, this.save()));
+                    this._modal = new layout.Modal()
+                        .target("placeholder")
+                        .title("Visualizing Save Output")
+                        .minWidth("90%")
+                        .minHeight("62%")// TODO: this causes a bug with modal 'top'
+                        .widget(w)
+                        .render()
+                        ;
+                });
+            }
+        });
+
+        commands.addCommand("dash_visualddl", {
+            label: "Visualize DDL",
+            execute: () => {
+                window["require"](["../../packages/layout/lib-umd/index", "../../packages/tree/lib-umd/index"], (layout, tree) => {
+                    const w = new tree.Dendrogram()
+                        .separation(160)
+                        .dendrogram(false)
+                        .radial(true);
+                    w.data(this.obj_to_tree({label: "app._dashy.save()"}, this.save().ddl));
+                    this._modal = new layout.Modal()
+                        .target("placeholder")
+                        .title("Visualizing Save Output")
+                        .minWidth("90%")
+                        .minHeight("62%")// TODO: this causes a bug with modal 'top'
+                        .widget(w)
+                        .render()
+                        ;
+                });
+            }
+        });
+
         //  Model Commands  ---
         const palette = new CommandPalette({ commands });
         palette.addItem({ command: "addWUResult", category: "Notebook" });
@@ -339,6 +383,8 @@ export class Dashy extends SplitPanel {
 
         contextMenu.addItem({ command: "dash_add", selector: `#${this._dashboard.id()}` });
         contextMenu.addItem({ command: "dash_clear", selector: `#${this._dashboard.id()}` });
+        contextMenu.addItem({ command: "dash_visualstate", selector: `#${this._dashboard.id()}` });
+        contextMenu.addItem({ command: "dash_visualddl", selector: `#${this._dashboard.id()}` });
         contextMenu.addItem({ type: "separator", selector: `#${this._dashboard.id()}` });
 
         contextMenu.addItem({ command: "dash_load", selector: `#${this.id()}` });
@@ -500,6 +546,34 @@ export class Dashy extends SplitPanel {
 
     update(domNode, element) {
         super.update(domNode, element);
+    }
+
+    obj_to_tree(visitor, _data) {
+        switch (typeof _data) {
+            case "object":
+                if (_data !== null) {
+                    if (_data instanceof Array) {
+                        visitor.children = _data.map((row, row_idx) => {
+                            return this.obj_to_tree({label: row_idx}, row);
+                        });
+                    } else {
+                        visitor.children = [];
+                        for (const obj_idx in _data) {
+                            const row = _data[obj_idx];
+                            visitor.children.push(this.obj_to_tree({label: obj_idx}, row));
+                        }
+                    }
+                }
+                break;
+            case "number":
+            case "string":
+                if (typeof visitor.children === "undefined") {
+                    visitor.label += ` (${("" + _data)})`;
+                    visitor.size = ("" + _data).length;
+                }
+                break;
+        }
+        return visitor;
     }
 }
 Dashy.prototype._class += " composite_Dashy";

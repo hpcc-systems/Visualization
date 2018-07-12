@@ -179,7 +179,10 @@
                 });
             });
             context._ddlModalVisualizations.forEach(function (viz) {
-                if (viz.widget.showToolbar) {
+                if (viz.widget.showCSV) {
+                    viz.widget.showToolbar(true);
+                }
+                else if (viz.widget.showToolbar) {
                     viz.widget.showToolbar(false);
                 }
                 viz._modalTarget = d3.select("body").append("div").node();
@@ -193,8 +196,12 @@
                     if (this.data().length) {
                         this.__inModal = true;
                         var widgetContext = this;
+                        var modalTitle = viz.widget.title();
+                        if(viz.widget.showToolbar()){
+                            viz.widget.title("");
+                        }
                         viz._modal
-                            .title(viz.widget.title())
+                            .title(modalTitle)
                             .visible(true)
                             .fixedWidth("80%")
                             .fixedHeight("80%")

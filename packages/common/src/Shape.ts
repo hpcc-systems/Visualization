@@ -1,10 +1,12 @@
 import { select as d3Select } from "d3-selection";
+import { ShapePalette } from "./ShapePalette";
 import { SVGWidget } from "./SVGWidget";
 
 import "../src/Shape.css";
 
 export class Shape extends SVGWidget {
     protected _tooltipElement;
+    protected _ordinalShapePalette;
 
     constructor() {
         super();
@@ -39,7 +41,20 @@ export class Shape extends SVGWidget {
             this._prevHash = hash;
 
             const context = this;
-            shape.enter().append(this.getShapeElementTag(this.shape()))
+            let _shape = this.shape();
+            let _palette_shape;
+            if (this.shapePalette() && this.shapePaletteKey()) {
+                this._ordinalShapePalette = ShapePalette(this.shapePalette());
+                const _key = this[this.shapePaletteKey()];
+                _palette_shape = this._ordinalShapePalette(typeof _key === "function" ? this[this.shapePaletteKey()]() : _key);
+                console.log("_palette_shape", _palette_shape);
+                if (this["__meta_shape"]["set"]["indexOf"](_palette_shape) !== -1) {
+                    _shape = _palette_shape;
+                } else {
+                    _shape = "polygon";
+                }
+            }
+            shape.enter().append(this.getShapeElementTag(_shape))
                 .attr("class", "common_Shape")
                 .each(function () {
                     const element2 = d3Select(this);
@@ -57,7 +72,7 @@ export class Shape extends SVGWidget {
                 .each(function () {
                     const element2 = d3Select(this);
                     context._tooltipElement.text(context.tooltip());
-                    switch (context.shape()) {
+                    switch (_shape) {
                         case "circle":
                             const radius = context.radius();
                             element2
@@ -96,7 +111,7 @@ export class Shape extends SVGWidget {
                             const x = -size / 2;
                             const y = -size / 2;
                             element2
-                                .attr("points", context.polygonPoints(x, y, size, size, context.polygonSerial()))
+                                .attr("points", context.polygonPoints(x, y, size, size, _palette_shape ? _palette_shape : context.polygonSerial()))
                                 ;
                             break;
                         case "pin":
@@ -204,6 +219,10 @@ export interface Shape {
     tooltip(_: string): this;
     polygonSerial(): string;
     polygonSerial(_: string): this;
+    shapePalette(): string;
+    shapePalette(_: string): this;
+    shapePaletteKey(): string;
+    shapePaletteKey(_: string): this;
 }
 
 Shape.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square", "rect", "ellipse", "pin", "polygon"], { tags: ["Private"] });
@@ -217,6 +236,8 @@ Shape.prototype.publish("arrowHeight", 5, "number", "arrowHeight");
 Shape.prototype.publish("arrowWidth", 10, "number", "arrowWidth");
 Shape.prototype.publish("tooltip", "", "string", "Tooltip", null, { tags: ["Private"] });
 Shape.prototype.publish("polygonSerial", null, "string", "polygonSerial", null, { tags: ["Private"] });
+Shape.prototype.publish("shapePalette", null, "set", "shapePalette", ShapePalette(), { tags: ["Private"] });
+Shape.prototype.publish("shapePaletteKey", "id", "string", "shapePaletteKey");
 
 const _origRadius = Shape.prototype.radius;
 Shape.prototype.radius = function (_?) {

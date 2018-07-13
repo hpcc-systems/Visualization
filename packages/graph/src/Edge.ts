@@ -109,10 +109,10 @@ export class Edge extends SVGWidget {
         const context = this;
         if (Platform.svgMarkerGlitch && !skipPushMarkers) {
             element.transition().duration((transitionDuration ? transitionDuration : 0) + 100)
-                .each("start", function () {
+                .each(function () {
                     context._pushMarkers(element);
                 })
-                .each("end", function () {
+                .each(function () {
                     context._popMarkers(element);
                 })
                 ;

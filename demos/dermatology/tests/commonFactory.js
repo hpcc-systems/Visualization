@@ -155,8 +155,42 @@
         Shape: {
             simple: function (callback) {
                 legacyRequire(["src/common/Shape"], function (Shape) {
-                    callback(new Shape()
-                    );
+                    callback(new Shape());
+                });
+            },
+            hex: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("6:1:1:0.25:0.25:0"));
+                });
+            },
+            hex2: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("6:1:1:0.25:0.25:0.5"));
+                });
+            },
+            star5: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("10:2:2:0.3:0.2:0.5"));
+                });
+            },
+            polygon_a: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("30:2:3:0.16:0.22:1.398"));
+                });
+            },
+            polygon_b: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("30:4:2:0.28:0.28:0"));
+                });
+            },
+            polygon_c: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("6:3:2:0.18:0.24:0"));
+                });
+            },
+            polygon_d: function (callback) {
+                legacyRequire(["src/common/Shape"], function (Shape) {
+                    callback(new Shape().shape("polygon").polygonSerial("6:2:2:0.3:0.2:0.5"));
                 });
             }
         },

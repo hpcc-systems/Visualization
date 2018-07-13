@@ -1,4 +1,5 @@
 import { FAChar } from "./FAChar";
+import { IconPalette } from "./IconPalette";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 
@@ -11,6 +12,7 @@ export class Icon extends SVGWidget {
     protected _defs;
     protected _root;
     protected _tooltipElement;
+    protected _ordinalIconPalette;
 
     constructor() {
         super();
@@ -96,7 +98,16 @@ export class Icon extends SVGWidget {
                 .attr("width", diameter)
                 .attr("height", diameter)
                 ;
+            if (this.iconPalette()) {
+                this._ordinalIconPalette = IconPalette(this.iconPalette());
+            }
+            let char = this._faChar.char();
+            if (this.iconPalette() && this.iconPaletteKey()) {
+                const _key = this[this.iconPaletteKey()];
+                char = this._ordinalIconPalette(typeof _key === "function" ? this[this.iconPaletteKey()]() : _key);
+            }
             this._faChar
+                .char(char)
                 .fontSize(diameter * (100 - this.paddingPercent()) / 100)
                 .render()
                 ;
@@ -134,6 +145,8 @@ export class Icon extends SVGWidget {
             ;
     }
 
+    iconPalette: { (): string; (_: string): Icon; };
+    iconPaletteKey: { (): string; (_: string): Icon; };
     shape: { (): string; (_: string): Icon; };
     faChar: { (): string; (_: string): Icon; };
     imageUrl: { (): string; (_: string): Icon; };
@@ -146,6 +159,8 @@ export class Icon extends SVGWidget {
 }
 Icon.prototype._class += " common_Icon";
 
+Icon.prototype.publish("iconPalette", null, "set", "iconPalette", IconPalette(), { tags: ["Private"] });
+Icon.prototype.publish("iconPaletteKey", "_id", "string", "iconPaletteKey");
 Icon.prototype.publish("shape", "circle", "set", "Shape Type", ["circle", "square"], { tags: ["Private"] });
 Icon.prototype.publishProxy("faChar", "_faChar", "char");
 Icon.prototype.publish("imageUrl", null, "string", "Image URL", null, { optional: true });

@@ -1,0 +1,62 @@
+<head>
+    <title>Simple Include</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+
+    <script src="../../packages/util/dist/index.js"></script>
+    <script src="../../packages/common/dist/index.js"></script>
+    <script src="../../packages/api/dist/index.js"></script>
+    <script src="../../packages/other/dist/index.js"></script>
+    <script src="../../packages/chart/dist/index.js"></script>
+    <script src="../../packages/form/dist/index.js"></script>
+    <script src="../../packages/layout/dist/index.js"></script>
+    <script src="../../packages/phosphor/dist/index.js"></script>
+
+    <script src="hpccjs.js"></script>
+</head>
+
+<body style="margin:0;overflow:hidden">
+    <script>
+        let d3body = d3.select("body");
+        Array(310).fill("").forEach(function (n, i) {
+            let _div_id1 = `icon_div_${i}_1`;
+            let _div_id2 = `icon_div_${i}_2`;
+            d3body.append("div")
+                .attr("id", _div_id1)
+                .style("float", "left")
+                .style("height", "40px")
+                .style("width", "40px")
+                .style("margin-top", "8px")
+                .style("margin-left", "8px")
+                ;
+            d3body.append("div")
+                .attr("id", _div_id2)
+                .style("float", "left")
+                .style("height", "40px")
+                .style("width", "40px")
+                .style("margin-top", "8px")
+                .style("margin-left", "8px")
+                ;
+            new hpccjs.Icon()
+                .target(_div_id1)
+                .diameter(38)
+                .shape_colorFill("#000")
+                .shape_colorStroke("#333")
+                .iconPalette("alphabet")
+                .iconPaletteKey("id")
+                .render()
+                ;
+            new hpccjs.Icon()
+                .target(_div_id2)
+                .diameter(38)
+                .shape_colorFill("#ed1c24")
+                .shape_colorStroke("#333")
+                .iconPalette("alphabet")
+                .iconPaletteKey("id")
+                .render()
+                ;
+        })
+    </script>
+</body>
+
+</html>

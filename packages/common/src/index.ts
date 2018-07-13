@@ -10,6 +10,7 @@ export * from "./EntityVertex";
 export * from "./FAChar";
 export * from "./HTMLWidget";
 export * from "./Icon";
+export * from "./IconPalette";
 export * from "./IList";
 export * from "./Image";
 export * from "./IMenu";

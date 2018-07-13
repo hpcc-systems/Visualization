@@ -141,6 +141,18 @@
         this.brush.y(d3.scale.identity().domain([(-this.prevTranslate[1] - this._size.height / 2) * 1 / this.zoom.scale(), (-this.prevTranslate[1] + this._size.height / 2) * 1 / this.zoom.scale()]));
     };
 
+    Graph.prototype.linkcolor_default = function (_) {
+        if (!arguments.length) return this._linkcolor;
+        this._linkcolor = _;
+        return this;
+    }
+
+    Graph.prototype.linktooltip_default = function (_) {
+        if (!arguments.length) return this._linktooltip;
+        this._linktooltip = _;
+        return this;
+    }
+
     Graph.prototype.enter = function (domNode, element) {
         SVGWidget.prototype.enter.apply(this, arguments);
         var context = this;

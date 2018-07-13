@@ -4,8 +4,19 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "file:///${workspaceRoot}/demos/dermatology.html?src/graph/GraphC",
+            "name": "Roxie DDL",
+            "url": "file:///${workspaceRoot}/demos/dermatology.html?src/marshaller/HTML.roxie",
+            "webRoot": "${workspaceRoot}",
+            "runtimeArgs": [
+                "--allow-file-access-from-files",
+                "--allow-file-access",
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "WU DDL",
+            "url": "file:///${workspaceRoot}/demos/dermatology.html?src/marshaller/HTML.wu",
             "webRoot": "${workspaceRoot}",
             "runtimeArgs": [
                 "--allow-file-access-from-files",

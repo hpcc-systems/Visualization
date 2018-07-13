@@ -1,11 +1,11 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/Class", "../common/PropertyExt", "../common/Utility", "./HipieDDL", "../other/Persist", "../layout/Surface", "./FlyoutButton"], factory);
+        define(["d3", "../common/Class", "../common/PropertyExt", "../common/Utility", "./HipieDDL", "../other/Persist", "../layout/Modal", "../layout/Surface", "./FlyoutButton"], factory);
     } else {
-        root.marshaller_HipieDDLMixin = factory(root.d3, root.common_Class, root.common_PropertyExt, root.common_PropertyExt, root.common_Utility, root.other_Persist, root.layout_Surface, root.marshaller_FlyoutButton);
+        root.marshaller_HipieDDLMixin = factory(root.d3, root.common_Class, root.common_PropertyExt, root.common_PropertyExt, root.common_Utility, root.other_Persist, root.layout_Modal, root.layout_Surface, root.marshaller_FlyoutButton);
     }
-}(this, function (d3, Class, PropertyExt, Utility, HipieDDL, Persist, Surface, FlyoutButton) {
+}(this, function (d3, Class, PropertyExt, Utility, HipieDDL, Persist, Modal, Surface, FlyoutButton) {
 
     function HipieDDLMixin() {
         Class.call(this);
@@ -34,6 +34,7 @@
         this._ddlVisualizations = [];
         this._ddlPopupVisualizations = [];
         this._ddlLayerVisualizations = [];
+        this._ddlModalVisualizations = [];
         var context = this;
         var curr = null;
         marshaller.accept({
@@ -42,8 +43,9 @@
                     curr = {
                         dashboard: item,
                         visualizations: [],
+                        popupVisualizations: [],
                         layerVisualizations: [],
-                        popupVisualizations: []
+                        modalVisualizations: []
                     };
                     context._ddlDashboards.push(curr);
                 } else if (item instanceof HipieDDL.Datasource) {
@@ -62,6 +64,9 @@
                         } else if (item.parentVisualization) {
                             curr.layerVisualizations.push(item);
                             context._ddlLayerVisualizations.push(item);
+                        } else if (item.properties.modalIfData) {
+                            curr.modalVisualizations.push(item);
+                            context._ddlModalVisualizations.push(item);
                         } else {
                             curr.visualizations.push(item);
                             context._ddlVisualizations.push(item);
@@ -164,7 +169,7 @@
                                     .title(viz.title)
                                     .widget(viz.widget)
                                     .autoClose(context.autoCloseFlyout())
-                                ;
+                                    ;
                                 targetViz.widget.toolbarWidgets().push(viz._flyoutButton);
                             } else {
                                 targetViz.widget.toolbarWidgets().push(viz._flyoutButton.reference());
@@ -172,6 +177,42 @@
                             break;
                     }
                 });
+            });
+            context._ddlModalVisualizations.forEach(function (viz) {
+                if (viz.widget.showToolbar) {
+                    viz.widget.showToolbar(false);
+                }
+                viz._modalTarget = d3.select("body").append("div").node();
+                viz._modal = new Modal().target(viz._modalTarget);
+                viz._modal._widget = viz.widget;
+                var origRender = viz.widget.render;
+                viz.widget.render = function (callback) {
+                    if (this.__inModal) {
+                        return origRender.apply(this, arguments);
+                    }
+                    if (this.data().length) {
+                        this.__inModal = true;
+                        var widgetContext = this;
+                        viz._modal
+                            .title(viz.widget.title())
+                            .visible(true)
+                            .fixedWidth("80%")
+                            .fixedHeight("80%")
+                            .render(function (w) {
+                                if (callback) {
+                                    callback(widgetContext);
+                                }
+                                setTimeout(function () {
+                                    widgetContext.__inModal = false;
+                                }, 300);  //  Must be longer than debounce timeout...
+                            });
+                    } else {
+                        if (callback) {
+                            callback(this);
+                        }
+                    }
+                    return this;
+                }
             });
             removedMap.forEach(function (key, value) {
                 context.clearContent(value);

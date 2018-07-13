@@ -449,6 +449,14 @@
                             .text(childMappedItem[1] ? childMappedItem[1] : "")
                             .data(childMappedItem)
                         ;
+                        var linkcolor = graph.linkcolor_default();
+                        if (linkcolor && linkcolor.fieldid) {
+                            edge.strokeColor(childItem[linkcolor.fieldid]);
+                        }
+                        var linktooltip = graph.linkcolor_default();
+                        if (linktooltip && linktooltip.fieldid) {
+                            edge.tooltip(childItem[linktooltip.fieldid]);
+                        }
                         edges.push(edge);
                     }
                 });
@@ -1017,11 +1025,9 @@
                             .id(visualization.id)
                             .showChartSelect_default(false)
                             .chartType_default("GRAPH")
-                            .chartTypeDefaults({
-                                layout: "ForceDirected2",
-                                applyScaleOnLayout: true
-                            })
-                        ;
+                            .layout_default("ForceDirected2")
+                            .applyScaleOnLayout_default(true)
+                            ;
                     } catch (e) {
                         console.log("Unexpected widget type:  " + widget.classID());
                     }

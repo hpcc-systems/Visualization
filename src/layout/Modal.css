@@ -1,13 +1,11 @@
-.layout_Modal * {
-    box-sizing: border-box;
-}
 .layout_Modal-header {
-    width: 100%;
     background-color: rgb(63,81,181);
+    overflow: hidden;
 }
 .layout_Modal-body {
-    width: 100%;
     background-color: #ffffff;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .layout_Modal-annotations {
     position: absolute;

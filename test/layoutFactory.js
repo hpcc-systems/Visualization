@@ -268,6 +268,50 @@
                         .html("<p>"+DataFactory.Lorem_ipsum+"</p>")
                     );
                 });
+            },
+            fixed_size: function (callback) {
+                require(["test/DataFactory", "src/layout/Modal"], function (DataFactory, Modal) {
+                    var modal = new Modal();
+                    callback(modal
+                        .relativeTargetId("cellSurface")
+                        .title('A Simple Modal')
+                        .html("<p>"+DataFactory.Lorem_ipsum+"</p>")
+                    );
+                    setInterval(function(){
+                        var h = (Math.floor(Math.random()*80))+"%";
+                        var w = (Math.floor(Math.random()*80))+"%";
+                        modal
+                            .title('H: '+h+' W: '+w)
+                            .fixedHeight(h)
+                            .fixedWidth(w)
+                            .render();
+                    },3000)
+                });
+            },
+            minmax_size: function (callback) {
+                require(["test/DataFactory", "src/layout/Modal"], function (DataFactory, Modal) {
+                    var modal = new Modal();
+                    callback(modal
+                        .relativeTargetId("cellSurface")
+                        .title('A Simple Modal')
+                        .html("<p>"+DataFactory.Lorem_ipsum+"</p>")
+                    );
+                    setInterval(function(){
+                        var rand_arr = [
+                            Math.floor(Math.random()*500),
+                            Math.floor(Math.random()*500)
+                        ];
+                        var min = Math.min.apply(this, rand_arr);
+                        var max = Math.max.apply(this, rand_arr);
+                        modal
+                            .title('Min: '+min+' Max: '+max)
+                            .minHeight(min+"px")
+                            .minWidth(min+"px")
+                            .maxHeight(max+"px")
+                            .maxWidth(max+"px")
+                            .render();
+                    },3000)
+                });
             }
         },
         Popup: {

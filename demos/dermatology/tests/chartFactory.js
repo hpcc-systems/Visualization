@@ -230,6 +230,23 @@
                     );
                 });
             },
+            legend: function(callback){
+                legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/chart/Contour"], function (DataFactory, MultiChartPanel, Contour) {
+                    var randomX = d3.random.normal(200, 80),
+                        randomY = d3.random.normal(200, 80),
+                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                    callback(new MultiChartPanel()
+                        .title("src/chart/Contour.legend")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(points)
+                        .widget(
+                            new Contour()
+                                .xAxisType("linear")
+                                .yAxisType("linear")
+                        )
+                    );
+                });
+            },
             layered: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Contour", "src/chart/Scatter"], function (DataFactory, XYAxis, Contour, Scatter) {
                     var randomX = d3.random.normal(200, 80),
@@ -266,6 +283,23 @@
                         .yAxisType("linear")
                         .columns(DataFactory.ND.subjects.columns)
                         .data(points)
+                    );
+                });
+            },
+            legend: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/chart/HexBin"], function (DataFactory, MultiChartPanel, HexBin) {
+                    var randomX = d3.random.normal(200, 80),
+                        randomY = d3.random.normal(200, 80),
+                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                    callback(new MultiChartPanel()
+                        .title("src/chart/HexBin.legend")
+                        .columns(DataFactory.ND.subjects.columns)
+                        .data(points)
+                        .widget(
+                            new HexBin()
+                                .xAxisType("linear")
+                                .yAxisType("linear")
+                        )
                     );
                 });
             }

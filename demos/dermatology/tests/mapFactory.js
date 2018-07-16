@@ -186,6 +186,18 @@
                     );
                 });
             },
+            legend: function (callback) {
+                legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/map/ChoroplethStates"], function (DataFactory, MultiChartPanel, ChoroplethStates) {
+                    callback(new MultiChartPanel()
+                        .title("My Multi Chart Panel")
+                        .columns(DataFactory.States.simple.columns)
+                        .data(DataFactory.States.simple.data)
+                        .widget(new ChoroplethStates()
+                            .autoScaleMode("data")
+                        )
+                    );
+                });
+            },
             pins: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Layered", "src/map/ChoroplethStates", "src/map/Pins"], function (DataFactory, Layered, ChoroplethStates, Pins) {
                     var choro = new ChoroplethStates()

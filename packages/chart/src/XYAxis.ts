@@ -655,6 +655,9 @@ export class XYAxis extends SVGWidget {
     @publish([], "widgetArray", "Layers", null, { render: false })
     layers: publish<this, XYAxis[]>;
 
+    @publish(false, "boolean", "paletteByRow")
+    paletteByRow: publish<this, string>;
+
     //  Selection  ---
     _selection;
 }

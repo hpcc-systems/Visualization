@@ -2,11 +2,12 @@ import { Palette } from "@hpcc-js/common";
 import { hsl as d3Hsl } from "d3-color";
 
 export function INDChart() {
+
 }
 INDChart.prototype._palette = Palette.ordinal("default");
 
 INDChart.prototype.fillColor = function (row: any[], column: string, value: number): string {
-    return this._palette(column);
+    return this._palette(this.paletteByRow && this.paletteByRow() ? row[0] : column);
 };
 
 INDChart.prototype.strokeColor = function (row: any[], column: string, value: number): string {

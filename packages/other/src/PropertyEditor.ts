@@ -366,6 +366,7 @@ export class PropertyEditor extends HTMLWidget {
 
     renderInputs(element, d) {
         const context = this;
+        if (this.paramLogging())console.group(`PE[${this._id}] update start -----------`);
         let discArr = [];
         const showFields = !this.show_settings() && this.showFields();
         if (d) {
@@ -404,6 +405,7 @@ export class PropertyEditor extends HTMLWidget {
                 }
             }).merge(rows)
             .each(function (param) {
+                if (context.paramLogging())console.log("param", param);
                 const tr = d3Select(this);
                 tr.classed("disabled", d[param.id + "_disabled"] && d[param.id + "_disabled"]());
                 tr.attr("title", param.description);
@@ -420,6 +422,7 @@ export class PropertyEditor extends HTMLWidget {
             }
         }).remove();
         rows.order();
+        if (this.paramLogging())console.groupEnd();
     }
 
     updateWidgetRow(widget: PropertyExt, element, param) {
@@ -484,6 +487,12 @@ export class PropertyEditor extends HTMLWidget {
                     // .attr("class", `property- input - cell propEditor-${context.depth() }`)
                     ;
                 context._childPE.set(this, new PropertyEditor().label(param.id).target(peDiv.node() as HTMLElement));
+
+                if (param && param.ext && param.ext.tags && param.ext.tags.indexOf("Collapsed") !== -1) {
+                    setTimeout(function() {
+                        peDiv.classed("property-table-collapsed", true);
+                    }, 100);
+                }
             })
             .merge(peInput)
             .each(function (w) {
@@ -700,6 +709,13 @@ export class PropertyEditor extends HTMLWidget {
     widget: { (): PropertyExt; (_: PropertyExt): PropertyEditor };
 }
 PropertyEditor.prototype._class += " other_PropertyEditor";
+
+export interface PropertyEditor {
+    paramLogging(): boolean;
+    paramLogging(_: boolean): this;
+}
+
+PropertyEditor.prototype.publish("paramLogging", false, "boolean", "If true, the properties will log to the console.", null, { tags: ["Basic"] });
 
 PropertyEditor.prototype.publish("showFields", false, "boolean", "If true, widget.fields() will display as if it was a publish parameter.", null, { tags: ["Basic"] });
 PropertyEditor.prototype.publish("showData", false, "boolean", "If true, widget.data() will display as if it was a publish parameter.", null, { tags: ["Basic"] });

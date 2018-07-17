@@ -93,6 +93,8 @@
                     callback(new Slider()
                         .columns(DataFactory.Slider.simple.columns)
                         .data(DataFactory.Slider.simple.data)
+                        .low(0)
+                        .high(100)
                     );
                 });
             },
@@ -100,8 +102,10 @@
                 legacyRequire(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .allowRange(true)
-                        .columns(DataFactory.Slider.simple.columns)
-                        //.data(DataFactory.Slider.simple.range)
+                        .columns(DataFactory.Slider.range.columns)
+                        .data(DataFactory.Slider.range.data)
+                        .low(0)
+                        .high(1000)
                     );
                 });
             },
@@ -109,12 +113,15 @@
                 legacyRequire(["test/DataFactory", "src/form/Slider"], function (DataFactory, Slider) {
                     callback(new Slider()
                         .allowRange(true)
-                        .type("time")
-                        .low("1995-01-01")
-                        .high("2004-12-31")
+                        .timePattern("%Y-%m-%d")
+                        .tickDateFormat("%b,%Y")
+                        .lowDatetime("1998-01-01")
+                        .highDatetime("2004-12-31")
                         .step(1)
                         .columns(["Date/Time"])
-                        .data(["1999-07-03", "2001-05-24"])
+                        .data([
+                            ["1999-07-03", "2001-05-24"]
+                        ])
                     );
                 });
             }

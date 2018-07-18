@@ -25,3 +25,4 @@ export * from "./ddl2/activities/limit";
 export * from "./ddl2/activities/logicalfile";
 export * from "./ddl2/dashboard";
 export * from "./dashy";
+export * from "./json/TreeFormat";

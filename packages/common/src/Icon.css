@@ -1,3 +1,9 @@
 .common_Icon .common_FAChar .common_Text {
     fill: white;
 }
+.common_Icon .common_FAChar .common_Text,
+.common_Icon .common_FAChar .common_Text g,
+.common_Icon .common_FAChar .common_Text text,
+.common_Icon .common_FAChar .common_Text tspan {
+    pointer-events: none;
+}

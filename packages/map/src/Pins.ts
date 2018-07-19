@@ -93,9 +93,9 @@ export class Pins extends Layer {
                     context.tooltip.hide.apply(this, arguments);
                 }
             })
-            .on("mousemove.tooltip", function (d) {
+            .on("mousemove.tooltip", function (d, i, arr) {
                 if (d.ext && d.ext.tooltip) {
-                    context.tooltip.show.apply(this, arguments);
+                    context.tooltip.show.call(this, d, arr[i]);
                 }
             })
             .each(function (d) {

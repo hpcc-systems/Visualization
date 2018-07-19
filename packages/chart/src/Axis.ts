@@ -578,8 +578,10 @@ export class Axis extends SVGWidget {
             ;
         this.adjustText(this.svgAxis, overlap.tickOverlapModulus);
 
-        const svgLine = this.svgAxis.select("path.domain");
-        const svgLineBBox = svgLine.node().getBBox();
+        const svgLineBBox = {
+            x: this.pos().x,
+            width: this.width()
+        };
         switch (this.orientation()) {
             case "left":
                 this.svgText.transition()

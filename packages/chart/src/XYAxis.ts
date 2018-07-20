@@ -592,8 +592,8 @@ export class XYAxis extends SVGWidget {
     }
 
     @publish("horizontal", "set", "Selects orientation for the axis", ["horizontal", "vertical"])
-    orientation: publish<this, string>;
-    orientation_default: publish<this, string>;
+    orientation: publish<this, "horizontal" | "vertical">;
+    orientation_default: publish<this, "horizontal" | "vertical">;
 
     @publish(null, "string", "pointSizeColumn")
     pointSizeColumn: publish<this, string>;
@@ -601,6 +601,13 @@ export class XYAxis extends SVGWidget {
     minPointSize: publish<this, number>;
     @publish(26, "number", "maxPointSize")
     maxPointSize: publish<this, number>;
+
+    @publish([], "array", "Array of row indices to display values at their points")
+    showValuesFor: publish<this, number[]>;
+    @publish("middle", "set", "text-anchor for shown value text", ["start", "middle", "end"])
+    valueAnchor: publish<this, "start" | "middle" | "end">;
+    @publish("middle", "set", "alignment-baseline for shown value text", ["auto", "baseline", "before-edge", "text-before-edge", "middle", "central", "after-edge", "text-after-edge", "ideographic", "alphabetic", "hanging", "mathematical", "inherit"])
+    valueBaseline: publish<this, "auto" | "baseline" | "before-edge" | "text-before-edge" | "middle" | "central" | "after-edge" | "text-after-edge" | "ideographic" | "alphabetic" | "hanging" | "mathematical" | "inherit">;
 
     @publish(false, "boolean", "2D Range Selector")
     use2dSelection: publish<this, boolean>;

@@ -144,8 +144,15 @@ export class Scatter extends XYAxis {
         }).filter(d => d);
         const points = element.selectAll(".point").data(flatData, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .each(function (d2) {
+            .each(function (this: SVGElement, d2) {
                 const element = d3Select(this);
+                element
+                    .append("text")
+                    .attr("class", "pointValue")
+                    .style("display", "none")
+                    .attr("text-anchor", context.valueAnchor())
+                    .attr("alignment-baseline", context.valueBaseline())
+                    ;
                 element
                     .append("circle")
                     .attr("class", "pointSelection")
@@ -166,7 +173,17 @@ export class Scatter extends XYAxis {
             })
             .merge(points)
             .attr("class", d => "point series series-" + this.cssTag(d.column))
-            .each(function (d2) {
+            .each(function (this: SVGElement, d2) {
+                const textSelection = d3Select(this).select(".pointValue");
+                textSelection
+                    .attr("x", function (d) { return context.xPos(host, d); })
+                    .attr("y", function (d) { return context.yPos(host, d); })
+                    .style("display", context.showValuesFor().indexOf(d2.colIdx) === -1 ? "none" : "block")
+                    .attr("text-anchor", context.valueAnchor())
+                    .attr("alignment-baseline", context.valueBaseline())
+                    .text(function (d) {
+                        return d["value"];
+                    });
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
                     .attr("cx", function (d) { return context.xPos(host, d); })

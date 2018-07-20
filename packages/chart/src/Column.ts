@@ -141,6 +141,7 @@ export class Column extends XYAxis {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
+                    const valueText = d.origRow[d.idx];
                     const upperValuePos = host.valuePos(upperValue);
                     const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
                     const valuePos = Math.min(lowerValuePos, upperValuePos);
@@ -152,8 +153,9 @@ export class Column extends XYAxis {
                         .attr(isHorizontal ? "height" : "width", valueLength)
                         .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
                         ;
-
-                    const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
+                    const colIdx = d.idx;
+                    const displayCenteredValues = context.centeredValues();
+                    const dataText = element.selectAll(".dataText").data(context.showValue() || context.showValuesFor().length > 0 ? [`${upperValue}`] : []);
                     const dataTextEnter = dataText.enter().append("g")
                         .attr("class", "dataText")
                         .each(function (this: SVGElement, d) {
@@ -162,18 +164,28 @@ export class Column extends XYAxis {
                     dataTextEnter.merge(dataText)
                         .each(function (this: SVGElement, d) {
                             const isPositive = upperValue >= 0;
+                            const _pos = isHorizontal ?
+                                {
+                                    x: domainPos + domainLength / 2,
+                                    y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
+                                } : {
+                                    x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
+                                    y: domainPos + domainLength / 2
+                                };
+                            let _is_visible = context.showValue() || context.showValuesFor().indexOf(colIdx) !== -1;
+                            if (displayCenteredValues) {
+                                if (isHorizontal) {
+                                    _pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                } else {
+                                    _pos.x += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                }
+                                if (context.hideCenteredValueByHeight()) _is_visible = context.hideCenteredValueByHeight() < valueLength;
+                            }
                             context.textLocal.get(this)
-                                .pos(isHorizontal ?
-                                    {
-                                        x: domainPos + domainLength / 2,
-                                        y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
-                                    } : {
-                                        x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
-                                        y: domainPos + domainLength / 2
-                                    })
-                                .anchor(isHorizontal ? "middle" : "start")
-                                .text(`${upperValue}`)
-                                .visible(context.showValue())
+                                .pos(_pos)
+                                .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
+                                .text(`${valueText}`)
+                                .visible(_is_visible)
                                 .render()
                                 ;
                         });
@@ -217,11 +229,17 @@ export interface Column {
     useClonedPalette(_: boolean): this;
     showValue(): boolean;
     showValue(_: boolean): this;
+    centeredValues(): boolean;
+    centeredValues(_: boolean): this;
+    hideCenteredValueByHeight(): number;
+    hideCenteredValueByHeight(_: number): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
+Column.prototype.publish("centeredValues", false, "boolean", "Show Value in center of column");
+Column.prototype.publish("hideCenteredValueByHeight", null, "number", "Hide centered value if the rect height is less than this value");
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;
 Column.prototype.useClonedPalette = function (this: Column, _?) {

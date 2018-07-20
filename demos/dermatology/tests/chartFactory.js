@@ -109,6 +109,16 @@
                     callback(widget);
                 });
             },
+            values: function (callback) {
+                chartFactory.Column.simple(function (widget) {
+                    widget
+                        .showValuesFor([1])
+                        .centeredValues(true)
+                        .hideCenteredValueByHeight(30)
+                        ;
+                    callback(widget);
+                });
+            },
             ordinalRange: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
                     callback(new Column()
@@ -299,6 +309,15 @@
                         .interpolate("cardinal")
                     );
                 });
+            },
+            values: function (callback) {
+                chartFactory.Line.simple(function (widget) {
+                    widget
+                        .showValuesFor([1])
+                        .valueAnchor("start")
+                        .valueBaseline("start")
+                    callback(widget);
+                })
             }
         },
         Area: {

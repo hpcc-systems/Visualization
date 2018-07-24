@@ -67,7 +67,7 @@ export class Scatter extends XYAxis {
         }
     }
 
-    getScale() {
+    private getScale() {
         switch (this.pointSizeScale()) {
             case "linear":
                 return d3ScaleLinear();
@@ -84,7 +84,7 @@ export class Scatter extends XYAxis {
         super.layerEnter(host, element, duration);
         const context = this;
         this
-            .tooltipHTML(function(d) {
+            .tooltipHTML(function (d) {
                 return context.tooltipFormat({ label: d.label, series: d.column, value: d.value });
             })
             ;
@@ -129,7 +129,7 @@ export class Scatter extends XYAxis {
         }
         const layerColumns = this.layerColumns(host);
         const layerData = this.layerData(host);
-        const flatData = this.flattenData(layerColumns, layerData).map(function(d) {
+        const flatData = this.flattenData(layerColumns, layerData).map(function (d) {
             d.shape = mapShape(context.pointShape());
             d.column = layerColumns[d.colIdx];
             d.row = layerData[d.rowIdx];
@@ -142,9 +142,9 @@ export class Scatter extends XYAxis {
             }
 
         }).filter(d => d);
-        const points = element.selectAll(".point").data(flatData, function(d, idx) { return d.shape + "_" + idx; });
+        const points = element.selectAll(".point").data(flatData, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .each(function(d2) {
+            .each(function (d2) {
                 const element = d3Select(this);
                 element
                     .append("circle")
@@ -152,10 +152,10 @@ export class Scatter extends XYAxis {
                     .on("mouseout.tooltip", context.tooltip.hide)
                     .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))
-                    .on("click", function(d: any, _idx) {
+                    .on("click", function (d: any, _idx) {
                         context.click(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
-                    .on("dblclick", function(d: any, _idx) {
+                    .on("dblclick", function (d: any, _idx) {
                         context.dblclick(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));
                     })
                     ;
@@ -166,11 +166,11 @@ export class Scatter extends XYAxis {
             })
             .merge(points)
             .attr("class", d => "point series series-" + this.cssTag(d.column))
-            .each(function(d2) {
+            .each(function (d2) {
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
-                    .attr("cx", function(d) { return context.xPos(host, d); })
-                    .attr("cy", function(d) { return context.yPos(host, d); })
+                    .attr("cx", function (d) { return context.xPos(host, d); })
+                    .attr("cy", function (d) { return context.yPos(host, d); })
                     .attr("r", d2.size)
                     ;
 
@@ -178,8 +178,8 @@ export class Scatter extends XYAxis {
                 switch (d2.shape) {
                     case "rect":
                         element
-                            .attr("x", function(d) { return context.xPos(host, d) - d2.size / 2; })
-                            .attr("y", function(d) { return context.yPos(host, d) - d2.size / 2; })
+                            .attr("x", function (d) { return context.xPos(host, d) - d2.size / 2; })
+                            .attr("y", function (d) { return context.yPos(host, d) - d2.size / 2; })
                             .attr("width", d2.size)
                             .attr("height", d2.size)
                             .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
@@ -187,15 +187,15 @@ export class Scatter extends XYAxis {
                         break;
                     case "circle":
                         element
-                            .attr("cx", function(d) { return context.xPos(host, d); })
-                            .attr("cy", function(d) { return context.yPos(host, d); })
+                            .attr("cx", function (d) { return context.xPos(host, d); })
+                            .attr("cy", function (d) { return context.yPos(host, d); })
                             .attr("r", d2.size * 0.9)
                             .style("fill", context.strokeColor(d2.row, d2.column, d2.value))
                             ;
                         break;
                     case "path":
                         element
-                            .attr("d", function(d: any) {
+                            .attr("d", function (d: any) {
                                 return "M" + (context.xPos(host, d) - d2.size / 2) + " " + (context.yPos(host, d) - d2.size / 2) + " " +
                                     "L" + (context.xPos(host, d) + d2.size / 2) + " " + (context.yPos(host, d) + d2.size / 2) + " " +
                                     "M" + (context.xPos(host, d) - d2.size / 2) + " " + (context.yPos(host, d) + d2.size / 2) + " " +
@@ -212,30 +212,30 @@ export class Scatter extends XYAxis {
             .remove()
             ;
 
-        const areas = element.selectAll(".area").data(layerColumns.filter(function(_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
+        const areas = element.selectAll(".area").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && context.interpolateFill() && idx > 0; }));
         const areasEnter = areas.enter().append("path");
         const area = d3Area()
             .curve(this.curve())
             ;
         if (isHorizontal) {
             area
-                .x(function(d) { return context.xPos(host, d); })
+                .x(function (d) { return context.xPos(host, d); })
                 .y0(Math.min(height, this.yPos(host, { value: 0 })))
-                .y1(function(d) { return context.yPos(host, d); })
+                .y1(function (d) { return context.yPos(host, d); })
                 ;
         } else {
             area
-                .y(function(d) { return context.yPos(host, d); })
+                .y(function (d) { return context.yPos(host, d); })
                 .x0(Math.max(0, this.xPos(host, { value: 0 })))
-                .x1(function(d) { return context.xPos(host, d); })
+                .x1(function (d) { return context.xPos(host, d); })
                 ;
         }
         areasEnter.merge(areas)
             .attr("class", d => "area series series-" + this.cssTag(d))
-            .each(function(_d, idx) {
+            .each(function (_d, idx) {
                 const element = d3Select(this);
                 element
-                    .attr("d", area(flatData.filter(function(d2) { return d2.colIdx === idx + 1; })))
+                    .attr("d", area(flatData.filter(function (d2) { return d2.colIdx === idx + 1; })))
                     .style("opacity", context.interpolateFillOpacity())
                     .style("stroke", "none")
                     .style("fill", context.fillColor([], _d, undefined))
@@ -243,18 +243,18 @@ export class Scatter extends XYAxis {
             });
         areas.exit().remove();
 
-        const lines = element.selectAll(".line").data(layerColumns.filter(function(_d, idx) { return context.interpolate() && idx > 0; }));
+        const lines = element.selectAll(".line").data(layerColumns.filter(function (_d, idx) { return context.interpolate() && idx > 0; }));
         const linesEnter = lines.enter().append("path");
         const line = d3Line()
-            .x(function(d) { return context.xPos(host, d); })
-            .y(function(d) { return context.yPos(host, d); })
+            .x(function (d) { return context.xPos(host, d); })
+            .y(function (d) { return context.yPos(host, d); })
             .curve(this.curve())
             ;
         linesEnter.merge(lines)
             .attr("class", d => "line series series-" + this.cssTag(d))
-            .each(function(_d, idx) {
+            .each(function (_d, idx) {
                 const element = d3Select(this);
-                const data2 = flatData.filter(function(d2) { return d2.colIdx === idx + 1; });
+                const data2 = flatData.filter(function (d2) { return d2.colIdx === idx + 1; });
                 element
                     .attr("d", line(data2))
                     .style("stroke", context.strokeColor([], _d, undefined))

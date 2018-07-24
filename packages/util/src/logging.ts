@@ -147,6 +147,8 @@ export const logger = Logging.Instance();
 
 export class ScopedLogging {
     protected _scopeID: string;
+    protected _performance_start_times: {[key: string]: number[]} = {};
+    protected _performance_end_times: {[key: string]: number[]} = {};
 
     constructor(scopeID: string) {
         this._scopeID = scopeID;
@@ -192,6 +194,29 @@ export class ScopedLogging {
     popLevel(): this {
         logger.popLevel();
         return this;
+    }
+
+    perfStart(name: string) {
+        if (typeof this._performance_start_times[name] === "undefined")this._performance_start_times[name] = [];
+        this._performance_start_times[name].push(Date.now());
+    }
+    perfEnd(name: string) {
+        if (typeof this._performance_end_times[name] === "undefined")this._performance_end_times[name] = [];
+        this._performance_end_times[name].push(Date.now());
+    }
+
+    getPerfData(ranges_only?: boolean) {
+        type perfType = [string, number, number] | [string, number];
+        const ret: perfType[] = [];
+        Object.keys(this._performance_end_times).forEach(name => {
+            this._performance_end_times[name].forEach((time2: any, i: any) => {
+                const time1 = this._performance_start_times[name][i];
+                if (!ranges_only || time1 !== time2) {
+                    ret.push(time1 === time2 ? [name, time1] : [name, time1, time2]);
+                }
+            });
+        });
+        return ret;
     }
 }
 

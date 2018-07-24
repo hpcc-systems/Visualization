@@ -1,9 +1,9 @@
 ﻿"use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3-selection", "d3-collection", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/other", "@hpcc-js/composite", "test/Factory"], factory);
+        define(["d3-selection", "d3-collection", "@hpcc-js/common", "@hpcc-js/layout", "@hpcc-js/other", "@hpcc-js/composite", "@hpcc-js/util", "test/Factory"], factory);
     }
-}(this, function (d3Selection, d3Collection, hpccCommon, hpccLayout, hpccOther, hpccComposite, testFactory) {
+}(this, function (d3Selection, d3Collection, hpccCommon, hpccLayout, hpccOther, hpccComposite, hpccUtil, testFactory) {
     var d3 = {
         select: d3Selection.select,
         map: d3Collection.map
@@ -14,7 +14,7 @@
     var OtherPersist = hpccOther.Persist;
     var CompositePersist = hpccComposite.Persist;
     var PropertyEditor = hpccOther.PropertyEditor;
-
+    var Logger = hpccUtil.scopedLogger;
 
     function Main() {
         this.showSpinner();
@@ -70,6 +70,18 @@
         var context = this;
         var func = widgetTest ? testFactory.widgets[widgetPath][widgetTest].factory : d3.map(testFactory.widgets[widgetPath]).values()[0].factory;
         func(function (widget) {
+            context._logger = Logger(`widget[${widget.id()}]`);
+            Object.keys(widget.__proto__).forEach(proto_name=>{
+                if(typeof widget[proto_name] === "function"){
+                    var orig = widget[proto_name];
+                    widget[proto_name] = function(){
+                        context._logger.perfStart(proto_name);
+                        var ret = orig.apply(widget, arguments);
+                        context._logger.perfEnd(proto_name);
+                        return ret;
+                    }
+                }
+            });
             if (params) {
                 for (var key in params) {
                     if (widget["__meta_" + key] !== undefined) {

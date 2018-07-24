@@ -367,6 +367,26 @@
             }
 
         };
+        function show_performance(){
+            legacyRequire(["src/layout/Modal", "src/timeline/MiniGantt"], function(Modal, Timeline) {
+                let _data = app._logger.getPerfData(true)
+                    .map(row=>row.length===3 ? [row[0] + ` (${row[2] - row[1]}ms)`, row[1], row[2]] : row)
+                    ;
+                const _timeline = new Timeline()
+                    .timePattern("%Q")
+                    .tickFormat("%M:%S.%L")
+                    .tooltipTimeFormat("%M:%S.%L")
+                    .columns(["A", "B", "C"])
+                    .data(_data);
+                new Modal()
+                    .relativeTargetId("cellSurface")
+                    .target("cellSurface")
+                    .title("Performance Timeline")
+                    .widget(_timeline)
+                    .render()
+                    ;
+            });
+        }
     </script>
 </body>
 

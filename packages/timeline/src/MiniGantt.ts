@@ -233,9 +233,7 @@ export class MiniGantt extends SVGWidget {
             ;
         const brAxisBBox = this.brAxis.getBBox();
 
-        this.updateEntityPins(events);
-        const upperBBox = this.gUpper.node().getBBox();
-        const upperHeight = Math.max(upperBBox.height, 100);
+        const upperHeight = Math.max(this.updateEntityPins(events), 100);
         const lowerHeight = height - upperHeight;
         const gUpperTransY = upperHeight - 5;
         this.gUpper
@@ -292,6 +290,7 @@ export class MiniGantt extends SVGWidget {
 
     updateEntityPins(events) {
         const context = this;
+        let event_height = 0;
         const entityPins = this.gUpper.selectAll(".entity_pin").data(events, d => d[0] + ":" + d[1]);
         const eventFontColor_idx = this.eventFontColorColumn() ? this.columns().indexOf(this.eventFontColorColumn()) : -1;
         const eventBorderColor_idx = this.eventBorderColorColumn() ? this.columns().indexOf(this.eventBorderColorColumn()) : -1;
@@ -347,6 +346,8 @@ export class MiniGantt extends SVGWidget {
                 } else {
                     entityPin.move({ x: context.dataStartPos(d) - 0, y: 0 });
                 }
+                const calc_height = entityPin.calcHeight();
+                if (event_height < calc_height) event_height = calc_height;
             })
             ;
         entityPins.exit()
@@ -356,6 +357,7 @@ export class MiniGantt extends SVGWidget {
 
             })
             .remove();
+        return event_height;
     }
 
     updateEventRanges(events, ranges, bucketIndex, eventRangeHeight, tlAxisBBox, brAxisBBox, width) {

@@ -14,41 +14,15 @@ export class EntityPin extends Entity {
 
         const is_hovering = element.classed("hovering");
 
-        this._icon_widget.render();
-        this._desc_widget.render();
-        this._title_widget.render();
         const title_bbox = !this.titleOnlyShowOnHover() || is_hovering ? this._title_widget.getBBox(true) : { height: 0, width: 0 };
         const icon_bbox = !this.iconOnlyShowOnHover() || is_hovering ? this._icon_widget.getBBox(true) : { height: 0, width: 0 };
         const desc_bbox = !this.descriptionOnlyShowOnHover() || is_hovering ? this._desc_widget.getBBox(true) : { height: 0, width: 0 };
         const _anno_h = !this.annotationOnlyShowOnHover() || is_hovering ? this.annotationIcons().length > 0 ? this.annotationDiameter() + this.padding() : 0 : 0;
-        const content_width = Math.max(title_bbox.width, icon_bbox.width, desc_bbox.width);
-        const background_bbox = {
-            width: content_width + (this.padding() * 2),
-            height: icon_bbox.height + title_bbox.height + _anno_h + this.arrowHeight() + desc_bbox.height + (this.padding() * 5)
-        };
-        let remove_padding = 0;
-        if (this.titleOnlyShowOnHover() && !is_hovering) {
-            remove_padding += this.padding();
-            this._title_widget.display(false);
-        } else {
-            this._title_widget.display(true);
-        }
-        if (this.iconOnlyShowOnHover() && !is_hovering) {
-            remove_padding += this.padding();
-            this._icon_widget.display(false);
-        } else {
-            this._icon_widget.display(true);
-        }
-        if (this.descriptionOnlyShowOnHover() && !is_hovering) {
-            remove_padding += this.padding();
-            this._desc_widget.display(false);
-        } else {
-            this._desc_widget.display(true);
-        }
-        if (this.annotationIcons().length === 0 || this.annotationOnlyShowOnHover() && !is_hovering) {
-            remove_padding += this.padding();
-        }
-        background_bbox.height -= remove_padding;
+        const background_bbox = this.calcBackgroundBBox(is_hovering, title_bbox, icon_bbox, desc_bbox, _anno_h);
+
+        this._title_widget.display(!this.titleOnlyShowOnHover() || is_hovering);
+        this._icon_widget.display(!this.iconOnlyShowOnHover() || is_hovering);
+        this._desc_widget.display(!this.descriptionOnlyShowOnHover() || is_hovering);
 
         this._background_widget
             .height(background_bbox.height)
@@ -71,6 +45,38 @@ export class EntityPin extends Entity {
         });
         this.moveAnnotations(background_bbox.width / 2, anno_y);
 
+    }
+    calcHeight() {
+        const is_hovering = true;
+        const title_bbox = !this.titleOnlyShowOnHover() || is_hovering ? this._title_widget.getBBox(true) : { height: 0, width: 0 };
+        const icon_bbox = !this.iconOnlyShowOnHover() || is_hovering ? this._icon_widget.getBBox(true) : { height: 0, width: 0 };
+        const desc_bbox = !this.descriptionOnlyShowOnHover() || is_hovering ? this._desc_widget.getBBox(true) : { height: 0, width: 0 };
+        const _anno_h = !this.annotationOnlyShowOnHover() || is_hovering ? this.annotationIcons().length > 0 ? this.annotationDiameter() + this.padding() : 0 : 0;
+        const background_bbox = this.calcBackgroundBBox(is_hovering, title_bbox, icon_bbox, desc_bbox, _anno_h);
+
+        return background_bbox.height;
+    }
+    calcBackgroundBBox(is_hovering, title_bbox, icon_bbox, desc_bbox, _anno_h) {
+        const content_width = Math.max(title_bbox.width, icon_bbox.width, desc_bbox.width);
+        const background_bbox = {
+            width: content_width + (this.padding() * 2),
+            height: icon_bbox.height + title_bbox.height + _anno_h + this.arrowHeight() + desc_bbox.height + (this.padding() * 5)
+        };
+        let remove_padding = 0;
+        if (this.titleOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+        }
+        if (this.iconOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+        }
+        if (this.descriptionOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+        }
+        if (this.annotationIcons().length === 0 || this.annotationOnlyShowOnHover() && !is_hovering) {
+            remove_padding += this.padding();
+        }
+        background_bbox.height -= remove_padding;
+        return background_bbox;
     }
 }
 EntityPin.prototype._class += " common_EntityPin";

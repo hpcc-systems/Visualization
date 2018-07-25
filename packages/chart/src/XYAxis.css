@@ -23,13 +23,16 @@
 }
 
 .chart_XYAxis .brush rect.background {
-    z-index: -999;
+  z-index: -999;
 }
 
 .chart_XYAxis .brush .selection {
-  stroke:none;
+  stroke: steelblue;
+  stroke-opacity: 1;
+  stroke-width: 1px;
   fill: steelblue;
   fill-opacity: .125;
+  shape-rendering: crispEdges;
 }
 
 .chart_XYAxis .brush path.handle--custom {

@@ -1,6 +1,6 @@
 import { d3SelectionType, publish, publishProxy, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, min as d3Min } from "d3-array";
-import { brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
+import { brush as d3Brush, brushSelection as d3BrushSelection, brushX as d3BrushX, brushY as d3BrushY } from "d3-brush";
 import { hsl as d3Hsl } from "d3-color";
 import { event as d3Event } from "d3-selection";
 import { Axis } from "./Axis";
@@ -12,6 +12,7 @@ export class XYAxis extends SVGWidget {
     protected valueAxis: Axis;
     protected xAxis: Axis;
     protected yAxis: Axis;
+    protected xyBrush;
     protected xBrush;
     protected yBrush;
     protected margin;
@@ -39,6 +40,14 @@ export class XYAxis extends SVGWidget {
             .shrinkToFit_default("high")
             ;
 
+        this.xyBrush = d3Brush()
+            .on("end", () => {
+                return this.brushMoved();
+            })
+            .on("start.handle brush.handle end.handle", () => {
+                return this.brushMoved2();
+            })
+            ;
         this.xBrush = d3BrushX()
             .on("end", () => {
                 return this.brushMoved();
@@ -181,20 +190,26 @@ export class XYAxis extends SVGWidget {
 
     brushMoved() {
         let selected = [];
+        const context = this;
         const currSel: any = d3BrushSelection(this.svgBrush.node());
         if (currSel) {
             selected = this.data().filter(function (d) {
-                let pos = d[0];
-                pos = this.dataPos(pos) + this.domainAxis.bandwidth() / 2;
-                return pos >= currSel[0] && pos <= currSel[1];
-            }, this);
+                const pos = context.dataPos(d[0]) + context.domainAxis.bandwidth() / 2;
+                if (context.use2dSelection()) {
+                    const pos2 = context.valuePos(d[1]) + context.valueAxis.bandwidth() / 2;
+                    return pos >= currSel[0][0] && pos <= currSel[1][0] && pos2 >= currSel[0][1] && pos2 <= currSel[1][1];
+                } else {
+                    return pos >= currSel[0] && pos <= currSel[1];
+                }
+            });
         }
         this.selection(selected);
     }
 
     brushMoved2() {
         const isHorizontal = this.orientation() === "horizontal";
-        const handlePath = this.svgBrush.selectAll(".handle--custom").data(isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }]);
+        const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
+        const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);
         const s = d3Event.selection;
         if (s == null) {
             handlePath.attr("display", "none");
@@ -376,7 +391,7 @@ export class XYAxis extends SVGWidget {
     }
 
     updateBrush(width, height, maxCurrExtent, isHorizontal) {
-        const currBrush = isHorizontal ? this.xBrush : this.yBrush;
+        const currBrush = this.use2dSelection() ? this.xyBrush : isHorizontal ? this.xBrush : this.yBrush;
         const prevBrushSel: any = d3BrushSelection(this.svgBrush.node());
         currBrush.extent([[0, 0], [width, height]]);
         this.svgBrush
@@ -384,8 +399,8 @@ export class XYAxis extends SVGWidget {
             .style("display", this.selectionMode() ? null : "none")
             .call(currBrush)
             ;
-
-        const handlePath = this.svgBrush.selectAll(".handle--custom").data(isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }]);
+        const handleTypes = this.use2dSelection() ? [] : isHorizontal ? [{ type: "w" }, { type: "e" }] : [{ type: "n" }, { type: "s" }];
+        const handlePath = this.svgBrush.selectAll(".handle--custom").data(handleTypes);
         handlePath.enter().append("path")
             .attr("class", "handle--custom")
             .merge(handlePath)
@@ -587,6 +602,8 @@ export class XYAxis extends SVGWidget {
     @publish(26, "number", "maxPointSize")
     maxPointSize: publish<this, number>;
 
+    @publish(false, "boolean", "2D Range Selector")
+    use2dSelection: publish<this, boolean>;
     @publish(false, "boolean", "Range Selector")
     selectionMode: publish<this, boolean>;
     @publishProxy("domainAxis", "tickCount")

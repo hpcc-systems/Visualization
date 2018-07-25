@@ -88,11 +88,15 @@ export class ChartPanel extends Border2 implements IHighlight {
             this.render();
         });
 
-    _titleBar = new TitleBar().buttons([this._toggleData, this._buttonDownload, new Spacer(), this._toggleLegend]);
+    protected _spacer = new Spacer();
+
+    _titleBar = new TitleBar().buttons([this._toggleData, this._buttonDownload, this._spacer, this._toggleLegend]);
 
     protected _carousel = new Carousel();
     protected _table = new Table();
     protected _widget: Widget;
+
+    protected _hideLegendToggleList = ["dgrid_Table"];
 
     constructor() {
         super();
@@ -270,6 +274,13 @@ export class ChartPanel extends Border2 implements IHighlight {
         element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
 
         const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
+        if (this._hideLegendToggleList.indexOf(chart.classID()) !== -1) {
+            this._spacer.visible(false);
+            this._toggleLegend.visible(false);
+        } else {
+            this._spacer.visible(true);
+            this._toggleLegend.visible(true);
+        }
         if (this._prevChart !== chart) {
             this._prevChart = chart;
             const widgetIconBar = chart ? chart["_titleBar"] || chart["_iconBar"] : undefined;

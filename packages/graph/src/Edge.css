@@ -13,11 +13,3 @@
     fill: white;
     stroke: none;
 }
-
-.graph_Edge.selected {
-    stroke:red !important;
-}
-
-.graph_Edge.selected .common_Text {
-    fill:red !important;
-}

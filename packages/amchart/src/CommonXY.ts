@@ -276,7 +276,7 @@ export class CommonXY extends HTMLWidget {
                     context._selected = null;
                 }
             } else {
-                data[field] = context.selectionColor();
+                data[field] = context.amchartSelectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
@@ -388,8 +388,8 @@ export class CommonXY extends HTMLWidget {
     marginTop_exists: () => boolean;
     marginBottom: { (): number; (_: number): CommonXY };
     marginBottom_exists: () => boolean;
-    selectionColor: { (): string; (_: string): CommonXY };
-    selectionColor_exists: () => boolean;
+    amchartSelectionColor: { (): string; (_: string): CommonXY };
+    amchartSelectionColor_exists: () => boolean;
     selectionMode: { (): string; (_: string): CommonXY };
     selectionMode_exists: () => boolean;
     showCursor: { (): boolean; (_: boolean): CommonXY };
@@ -452,7 +452,7 @@ CommonXY.prototype.publish("marginRight", 10, "number", "Margin (Right)", null, 
 CommonXY.prototype.publish("marginTop", 20, "number", "Margin (Top)", null, { tags: ["Intermediate"] });
 CommonXY.prototype.publish("marginBottom", 50, "number", "Margin (Bottom)", null, { tags: ["Intermediate"] });
 
-CommonXY.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+CommonXY.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
 CommonXY.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
 CommonXY.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar", null, { tags: ["Intermediate", "Shared"] });

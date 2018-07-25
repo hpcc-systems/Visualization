@@ -262,6 +262,7 @@
                         points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
 
                     callback(new HexBin()
+                        .selectionColor("#00ffff")
                         .xAxisType("linear")
                         .yAxisType("linear")
                         .columns(DataFactory.ND.subjects.columns)

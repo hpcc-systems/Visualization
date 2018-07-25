@@ -188,18 +188,38 @@ export class SimpleSelection extends SelectionBase {
         }
         const element = d3Select(domNode);
         const wasSelected = element.classed("selected");
-        this._widgetElement.selectAll(".selected")
+        const selectedElements = this._widgetElement.selectAll(".selected");
+
+        selectedElements
             .classed("selected", false)
             .classed("deselected", true)
             .attr("filter", null)
             ;
+        this.clearSelectedStyles(selectedElements);
         if (!wasSelected) {
             element
                 .classed("selected", true)
                 .classed("deselected", false)
                 .attr("filter", this.svgGlowID() ? `url(#${this.svgGlowID()})` : null)
                 ;
+            this.applySelectedStyles(element);
         }
+    }
+    clearSelectedStyles(selectedElements) {
+        if (this.__widget.selectionColor() === null) return;
+        const isSVG = !!this.__widget.svgGlowID; // TODO: Is there a standard way to determine if a widget is SVG?
+        selectedElements.merge(selectedElements.selectAll("*"))
+            .style(isSVG ? "stroke" : "border-color", null)
+            .style(isSVG ? "stroke-width" : "border-width", null)
+            ;
+    }
+    applySelectedStyles(element) {
+        if (this.__widget.selectionColor() === null) return;
+        const isSVG = !!this.__widget.svgGlowID;
+        element.merge(element.selectAll("*"))
+            .style(isSVG ? "stroke" : "border-color", this.__widget.selectionColor())
+            .style(isSVG ? "stroke-width" : "border-width", this.__widget.selectionBorderWidth())
+            ;
     }
     mouseOver(domNode) {
         d3Select(domNode)

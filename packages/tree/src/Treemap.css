@@ -6,14 +6,6 @@
     text-indent: 2px;
 }
 
-.tree_Treemap .node.selected {
-    border-color: red;
-}
-
 .tree_Treemap .node.over {
     border-color: orange;
-}
-
-.tree_Treemap .node.selected.over {
-    border-color: red;
 }

@@ -134,7 +134,7 @@ export class Gantt extends HTMLWidget {
                     context._selected = null;
                 }
             } else {
-                data[field] = context.selectionColor();
+                data[field] = context.amchartSelectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
@@ -211,8 +211,8 @@ export class Gantt extends HTMLWidget {
     useClonedPalette_exists: () => boolean;
     timePattern: (_?: string) => string | Gantt;
     timePattern_exists: () => boolean;
-    selectionColor: { (): string; (_: string): Gantt };
-    selectionColor_exists: () => boolean;
+    amchartSelectionColor: { (): string; (_: string): Gantt };
+    amchartSelectionColor_exists: () => boolean;
     brightnessStep: { (): number; (_: number): Gantt };
     brightnessStep_exists: () => boolean;
     columnWidth: { (): number; (_: number): Gantt };
@@ -261,7 +261,7 @@ Gantt.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable
 
 Gantt.prototype.publish("timePattern", "%Y-%m-%d", "string", "Time Series Pattern");
 
-Gantt.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+Gantt.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
 
 Gantt.prototype.publish("brightnessStep", 0, "number", "Brightness step", null, { tags: ["Basic"] });
 Gantt.prototype.publish("columnWidth", 0.5, "number", "column width", null, { tags: ["Basic"] });

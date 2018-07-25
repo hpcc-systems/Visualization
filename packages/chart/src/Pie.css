@@ -11,11 +11,6 @@
     stroke-width: 0.75px;
 }
 
-.chart_Pie .arc.selected path {
-    stroke: red;
-    stroke-width: 1.5px;
-}
-
 .chart_Pie polyline {
     opacity: .3;
     stroke: black;

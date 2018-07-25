@@ -2,14 +2,6 @@
     stroke: none;
 }
 
-.map_Layered .map_GeoHash .data.selected {
-    stroke: red;
-}
-
 .map_Layered .map_GeoHash .data.over {
     stroke: orange;
-}
-
-.map_Layered .map_GeoHash .data.selected.over {
-    stroke: red;
 }

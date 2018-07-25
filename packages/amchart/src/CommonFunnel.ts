@@ -119,7 +119,7 @@ export class CommonFunnel extends HTMLWidget {
                     context._selected = null;
                 }
             } else {
-                data[field] = context.selectionColor();
+                data[field] = context.amchartSelectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
@@ -241,8 +241,8 @@ export class CommonFunnel extends HTMLWidget {
     useClonedPalette_exists: () => boolean;
     selectionMode: { (): string; (_: string): CommonFunnel };
     selectionMode_exists: () => boolean;
-    selectionColor: { (): string; (_: string): CommonFunnel };
-    selectionColor_exists: () => boolean;
+    amchartSelectionColor: { (): string; (_: string): CommonFunnel };
+    amchartSelectionColor_exists: () => boolean;
 
     //  I2DChart
     _palette;
@@ -287,4 +287,4 @@ CommonFunnel.prototype.publish("Angle3D", 0, "number", "3D Angle (Deg)", null, {
 
 CommonFunnel.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 CommonFunnel.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
-CommonFunnel.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+CommonFunnel.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });

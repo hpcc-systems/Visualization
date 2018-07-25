@@ -663,5 +663,15 @@ Widget.prototype._class += " common_Widget";
 
 Widget.prototype._idSeed = "_w";
 
+export interface Widget {
+    selectionColor(): string;
+    selectionColor(_: string): this;
+    selectionBorderWidth(): number;
+    selectionBorderWidth(_: number): this;
+}
+
 Widget.prototype.publishProxy("fields", "_db", "fields");
 Widget.prototype.publish("classed", {}, "object", "HTML Classes", null, { tags: ["Private"] });
+
+Widget.prototype.publish("selectionColor", "#ed1c24", "html-color");
+Widget.prototype.publish("selectionBorderWidth", 1.5, "number");

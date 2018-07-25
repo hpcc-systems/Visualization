@@ -543,8 +543,8 @@ export class CommonSerial extends HTMLWidget {
                     }
                 } else {
                     selected = true;
-                    data[field] = context.selectionColor();
-                    data[field2] = context.selectionColor();
+                    data[field] = context.amchartSelectionColor();
+                    data[field2] = context.amchartSelectionColor();
                     if (context.selectionMode() === "simple") {
                         if (context._selected !== null) {
                             delete context._selected.data[context._selected.field];
@@ -656,7 +656,7 @@ export class CommonSerial extends HTMLWidget {
 
     axisMinPeriod: { (): string, (_: string): CommonSerial };
 
-    selectionColor: { (): string, (_: string): CommonSerial };
+    amchartSelectionColor: { (): string, (_: string): CommonSerial };
     selectionMode: { (): string, (_: string): CommonSerial };
 
     showCursor: { (): boolean, (_: boolean): CommonSerial };
@@ -774,7 +774,7 @@ CommonSerial.prototype.publish("axisMinPeriod", "MM", "string", "Minimum period 
 
 // CommonSerial.prototype.publish("balloonType", "amchart", "set", "Balloon Type", ["hpcc", "amchart"]); TODO
 
-CommonSerial.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+CommonSerial.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
 CommonSerial.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
 
 CommonSerial.prototype.publish("showCursor", false, "boolean", "Show Chart Scrollbar", null, { tags: ["Intermediate", "Shared"] });

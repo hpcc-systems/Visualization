@@ -1,3 +1,4 @@
+import { rgb as d3RGB } from "d3-color";
 import { select as d3Select } from "d3-selection";
 import { svgMarkerGlitch } from "./Platform";
 import { Transition } from "./Transition";
@@ -94,6 +95,9 @@ export class SVGWidget extends Widget {
     protected _drawStartPos: "center" | "origin";
     protected _parentRelativeDiv;
     protected _parentOverlay;
+    protected _defs;
+    protected _glowMatrix;
+    protected _glowMatrixString;
 
     constructor() {
         super();
@@ -190,8 +194,8 @@ export class SVGWidget extends Widget {
                     .style("top", 0)
                     .style("left", 0)
                     ;
-                const svgDefs = this._placeholderElement.append("defs");
-                const filter = svgDefs.append("filter")
+                this._defs = this._placeholderElement.append("defs");
+                const filter = this._defs.append("filter")
                     .attr("id", `sel${this.id()}_glow`)
                     .attr("width", "130%")
                     .attr("height", "130%")
@@ -202,11 +206,11 @@ export class SVGWidget extends Widget {
                     .attr("dx", "0")
                     .attr("dy", "0")
                     ;
-                filter.append("feColorMatrix")
+                this._glowMatrix = filter.append("feColorMatrix")
                     .attr("result", "matrixOut")
                     .attr("in", "offOut")
                     .attr("type", "matrix")
-                    .attr("values", "1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0")
+                    .attr("values", this.selectionColor() ? this.getMatrixColor(this.selectionColor()) : "1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0")
                     ;
                 filter.append("feGaussianBlur")
                     .attr("result", "blurOut")
@@ -252,6 +256,9 @@ export class SVGWidget extends Widget {
         } else {
             this._element.attr("transform", "translate(" + this._pos.x + "," + this._pos.y + ")scale(" + this._widgetScale + ")");
         }
+        if (this._glowMatrix && this.selectionColor()) {
+            this._glowMatrix.attr("values", this.getMatrixColor(this.selectionColor()));
+        }
     }
 
     exit(domNode?, element?) {
@@ -261,6 +268,14 @@ export class SVGWidget extends Widget {
             this._parentRelativeDiv.remove();
         }
         super.exit(domNode, element);
+    }
+
+    getMatrixColor(html_color: string) {
+        const color = d3RGB(html_color);
+        const r = color.r === 0 ? 0 : color.r / 255;
+        const g = color.g === 0 ? 0 : color.g / 255;
+        const b = color.b === 0 ? 0 : color.b / 255;
+        return `${r} 0 0 0 0 ${g} 0 0 0 0 ${b} 0 0 0 0 0 0 0 1 0`;
     }
 
     getOffsetPos() {

@@ -8,8 +8,3 @@
     stroke: none;
     pointer-events: all;
 }
-
-.chart_Radar .point .pointSelection.selected {
-    fill: none;
-    stroke: red;
-}

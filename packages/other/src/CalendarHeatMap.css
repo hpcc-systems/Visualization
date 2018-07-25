@@ -7,16 +7,8 @@
     stroke: #ccc;
 }
 
-.other_CalendarHeatMap .day.selected {
-    stroke: red;
-}
-
 .other_CalendarHeatMap .day.over {
     stroke: orange;
-}
-
-.other_CalendarHeatMap .day.selected.over {
-    stroke: red;
 }
 
 .other_CalendarHeatMap .month {

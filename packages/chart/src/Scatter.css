@@ -9,8 +9,3 @@
     stroke: none;
     pointer-events: all;
 }
-
-.chart_Scatter .point .pointSelection.selected {
-    fill: none;
-    stroke: red;
-}

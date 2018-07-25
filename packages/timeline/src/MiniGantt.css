@@ -14,10 +14,6 @@
   stroke: #333;
 }
 
-.timeline_MiniGantt .buckets.selected .common_EntityRect .common_Shape > rect {
-  stroke: red;
-}
-
 .timeline_MiniGantt .common_TextBox .rect text {
   fill: black;
   stroke: none;

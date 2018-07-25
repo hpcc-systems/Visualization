@@ -11,7 +11,3 @@
     stroke: transparent;
     border-width: 1.5px;
 }
-
-.chart_Column .columnRect.selected {
-    stroke: red;
-}

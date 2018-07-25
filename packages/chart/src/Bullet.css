@@ -8,16 +8,9 @@
     font: 10px sans-serif;
 }
 
-.chart_Bullet .bullet.selected {
-    border-color: red;
-}
 
 .chart_Bullet .bullet.over {
     border-color: orange;
-}
-
-.chart_Bullet .bullet.selected.over {
-    border-color: red;
 }
 
 .chart_Bullet .bullet .marker {

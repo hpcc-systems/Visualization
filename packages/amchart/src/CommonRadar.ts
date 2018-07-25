@@ -157,7 +157,7 @@ export class CommonRadar extends HTMLWidget {
                     context._selected = null;
                 }
             } else {
-                data[field] = context.selectionColor();
+                data[field] = context.amchartSelectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
@@ -273,8 +273,8 @@ export class CommonRadar extends HTMLWidget {
     useClonedPalette_exists: () => boolean;
     yAxisTickFormat: { (): string; (_: string): CommonRadar };
     yAxisTickFormat_exists: () => boolean;
-    selectionColor: { (): string; (_: string): CommonRadar };
-    selectionColor_exists: () => boolean;
+    amchartSelectionColor: { (): string; (_: string): CommonRadar };
+    amchartSelectionColor_exists: () => boolean;
     selectionMode: { (): string; (_: string): CommonRadar };
     selectionMode_exists: () => boolean;
 
@@ -356,5 +356,5 @@ CommonRadar.prototype.publish("useClonedPalette", false, "boolean", "Enable or d
 
 CommonRadar.prototype.publish("yAxisTickFormat", "", "string", "Y-Axis Tick Format", null, { optional: true });
 
-CommonRadar.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+CommonRadar.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
 CommonRadar.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });

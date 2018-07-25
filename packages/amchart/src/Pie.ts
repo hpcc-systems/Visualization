@@ -153,7 +153,7 @@ export class Pie extends HTMLWidget {
                     context._selected = null;
                 }
             } else {
-                data[field] = context.selectionColor();
+                data[field] = context.amchartSelectionColor();
                 if (context.selectionMode() === "simple") {
                     if (context._selected !== null) {
                         delete context._selected.data[context._selected.field];
@@ -297,7 +297,7 @@ export class Pie extends HTMLWidget {
     labelPosition: (_?: string) => string | Pie;
 
     selectionMode: (_?: string) => string | Pie;
-    selectionColor: (_?: string) => string | Pie;
+    amchartSelectionColor: (_?: string) => string | Pie;
 
     //  I2DChart
     _palette;
@@ -341,4 +341,4 @@ Pie.prototype.publish("pieAlpha", [], "array", "Individual Alpha per Slice", nul
 Pie.prototype.publish("labelPosition", "outside", "set", "Label Position", ["inside", "outside"], { tags: ["Intermediate"] });
 
 Pie.prototype.publish("selectionMode", "simple", "set", "Selection Mode", ["simple", "multi"], { tags: ["Intermediate"] });
-Pie.prototype.publish("selectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });
+Pie.prototype.publish("amchartSelectionColor", "#f00", "html-color", "Font Color", null, { tags: ["Basic"] });

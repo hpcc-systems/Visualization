@@ -81,4 +81,5 @@ let app: App;
 export function load(target: string) {
     app = new App(target);
     doResize();
+    return app;
 }

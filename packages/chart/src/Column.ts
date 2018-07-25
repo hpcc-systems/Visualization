@@ -122,7 +122,7 @@ export class Column extends XYAxis {
                             .attr("class", "columnRect series series-" + context.cssTag(d.column))
                             .call(host._selection.enter.bind(host._selection))
                             .on("mouseout.tooltip", context.tooltip.hide)
-                            .on("mousemove.tooltip", context.tooltip.show)
+                            .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
                             .on("click", function (d: any) {
                                 context.click(host.rowToObj(d.origRow), d.column, host._selection.selected(this));
                             })

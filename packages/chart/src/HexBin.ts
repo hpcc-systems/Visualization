@@ -70,6 +70,7 @@ export class HexBin extends XYAxis {
             .attr("class", "hexagon")
             .call(host._selection.enter.bind(host._selection))
             .on("click", function (d: any) {
+                console.log("host._selection.selected(this)", host._selection.selected(this));
                 context.click(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
             })
             .on("dblclick", function (d: any) {
@@ -80,6 +81,9 @@ export class HexBin extends XYAxis {
             .attr("d", this._hexbin.hexagon())
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(1)"; })
             .style("fill", function (d) { return context._palette(d.length, 0, maxBinPoints); })
+            .style("stroke", this.stroke())
+            .style("stroke-width", this.strokeWidth())
+            .attr("mask", this.enableFadeMask() ? `url(#${this.id()}_fade)` : null)
             ;
         points.exit().transition().duration(duration)
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
@@ -107,6 +111,18 @@ HexBin.prototype._class += " chart_HexBin";
 HexBin.prototype.implements(I2DAggrChart.prototype);
 HexBin.prototype.implements(ITooltip.prototype);
 
+export interface HexBin {
+    stroke(): string;
+    stroke(_: string): this;
+    strokeWidth(): number;
+    strokeWidth(_: number): this;
+    enableFadeMask(): boolean;
+    enableFadeMask(_: boolean): this;
+}
+
 HexBin.prototype.publish("paletteID", "Blues", "set", "Palette ID", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 HexBin.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 HexBin.prototype.publish("binSize", 20, "number", "Bin radius", null, { range: { min: 1, max: 300, step: 1 } });
+HexBin.prototype.publish("enableFadeMask", false, "boolean", "enableFadeMask");
+HexBin.prototype.publish("stroke", null, "html-color", "stroke");
+HexBin.prototype.publish("strokeWidth", 1, "number", "strokeWidth");

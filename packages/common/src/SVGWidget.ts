@@ -94,6 +94,7 @@ export class SVGWidget extends Widget {
     protected _drawStartPos: "center" | "origin";
     protected _parentRelativeDiv;
     protected _parentOverlay;
+    protected _defs;
 
     constructor() {
         super();
@@ -179,6 +180,7 @@ export class SVGWidget extends Widget {
                 if (!this._parentWidget || this._parentWidget._id === this._id) {
                     this._parentWidget = this.locateParentWidget(this._target.parentNode);
                 }
+                this._defs = this._parentWidget._defs;
                 this._parentOverlay = this.locateOverlayNode();
             } else if (this._target) {
                 //  Target is a DOM Node, so create a SVG Element  ---
@@ -190,8 +192,8 @@ export class SVGWidget extends Widget {
                     .style("top", 0)
                     .style("left", 0)
                     ;
-                const svgDefs = this._placeholderElement.append("defs");
-                const filter = svgDefs.append("filter")
+                this._defs = this._placeholderElement.append("defs");
+                const filter = this._defs.append("filter")
                     .attr("id", `sel${this.id()}_glow`)
                     .attr("width", "130%")
                     .attr("height", "130%")
@@ -222,6 +224,32 @@ export class SVGWidget extends Widget {
                     .style("position", "absolute")
                     .style("top", 0)
                     .style("left", 0)
+                    ;
+                const linearGradient = this._defs.append("linearGradient")
+                    .attr("id", `${this.id()}_grad`)
+                    .attr("y1", "1")
+                    .attr("y2", "0")
+                    .attr("x2", "0")
+                    ;
+                linearGradient.append("stop")
+                    .attr("offset", "0.1")
+                    .attr("stop-color", "white")
+                    .attr("stop-opacity", "0")
+                    ;
+                linearGradient.append("stop")
+                    .attr("offset", "1")
+                    .attr("stop-color", "white")
+                    .attr("stop-opacity", "1")
+                    ;
+                this._defs.append("mask")
+                    .attr("id", `${this.id()}_fade`)
+                    .attr("maskContentUnits", "userSpaceOnUse")
+                    .append("rect")
+                    .attr("x", "-150")
+                    .attr("y", "-150")
+                    .attr("width", "300")
+                    .attr("height", "300")
+                    .attr("fill", `url(#${this.id()}_grad)`)
                     ;
                 if (this._size.width && this._size.height) {
                     this.resize(this._size);

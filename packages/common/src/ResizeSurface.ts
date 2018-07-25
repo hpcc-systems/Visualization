@@ -140,9 +140,9 @@ export class ResizeSurface extends Surface {
     }
 
     updateHandles(_domNode, _element) {
-        const sizeHandles = this._placeholderElement.selectAll("rect").data(this.handles, function (d) { return d.loc; });
+        const sizeHandles = this._placeholderElement.selectAll("rect.resize-handle").data(this.handles, function (d) { return d.loc; });
         const sizeHandlesEnter = sizeHandles.enter().append("rect")
-            .attr("class", function (d) { return "resize" + d.loc; })
+            .attr("class", function (d) { return "resize-handle resize" + d.loc; })
             .call(this.drag)
             ;
 

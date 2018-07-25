@@ -65,6 +65,7 @@
     Table.prototype.publish("tableZebraColor", null, "html-color", "Table zebra row color", null, { tags: ["Basic"], optional: true });
     Table.prototype.publish("totalledColumns", [], "array", "Array of indices of the columns to be totalled", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot();} });
     Table.prototype.publish("totalledLabel", null, "string", "Adds a label to the first column of the 'Totalled' row", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot(); } });
+    Table.prototype.publish("hiddenColumns", [], "array", "Array of indices of the columns to be hidden", null, { tags: ["Basic"], optional: true, disable: function (w) { return w.pivot();} });
     
     Table.prototype.publish("stringAlign", "left", "set", "Cell alignment for strings", ["left", "right", "center"], { tags: ["Basic"], optional: true });
     Table.prototype.publish("numberAlign", "right", "set", "Cell alignment for numbers", ["left","right","center"], { tags: ["Basic"], optional: true });
@@ -96,9 +97,8 @@
     };
 
     Table.prototype.isHidden = function (colIdx) {
-        if (this.pivot()) {
-            return false;
-        }
+        if (this.pivot()) return false;
+        if (this.hiddenColumns().indexOf(colIdx)!==-1) return true;
         var fields = this.fields();
         if (fields && fields[colIdx] && fields[colIdx].type() === "hidden") {
             return true;

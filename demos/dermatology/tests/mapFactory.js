@@ -411,7 +411,7 @@
                                 .clusterMode("grid")
                                 .weightColumn("weight")
                                 .useWeightedRadius(true)
-                                .data(Array(300).fill('').map(n => {
+                                .data(Array(300).fill('').map(function (n) {
                                     const lat = 40 + Math.pow(Math.random(), 3);
                                     const long = -100 + Math.pow(Math.random(), 3);
                                     const weight = Math.floor(100 * Math.random());

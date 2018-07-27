@@ -16,9 +16,9 @@
                 legacyRequire(["src/chart/BubbleXY"], function (BubbleXY) {
                     callback(new BubbleXY()
                         .columns(["Category", "Value 1", "Value 2"])
-                        .data(Array(20).fill("").map((n, i) => [
-                            String.fromCharCode(65 + i), Math.random(), Math.random()
-                        ]))
+                        .data(Array(20).fill("").map(function (n, i) {
+                            return [String.fromCharCode(65 + i), Math.random(), Math.random()];
+                        }))
                         .pointShape("circle")
                         .minPointSize(10)
                         .maxPointSize(30)
@@ -29,9 +29,9 @@
                 legacyRequire(["src/chart/BubbleXY"], function (BubbleXY) {
                     callback(new BubbleXY()
                         .columns(["Category", "Value 1", "Value 2"])
-                        .data(Array(20).fill("").map((n, i) => [
-                            String.fromCharCode(65 + i), Math.random(), Math.random()
-                        ]))
+                        .data(Array(20).fill("").map(function (n, i) {
+                            return [String.fromCharCode(65 + i), Math.random(), Math.random()];
+                        }))
                         .pointSizeColumn("Value 1")
                         .pointShape("rectangle")
                         .minPointSize(10)
@@ -344,7 +344,7 @@
                         .tickValueDescription("Average")
                         ;
                     callback(gauge);
-                    setInterval(() => {
+                    setInterval(function () {
                         gauge
                             .value(Math.random())
                             .tickValue(Math.random())

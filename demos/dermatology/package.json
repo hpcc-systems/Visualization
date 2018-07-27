@@ -2,7 +2,9 @@
   "private": true,
   "name": "@hpcc-js/demo-dermatology",
   "version": "0.0.63",
-  "scripts": {},
+  "scripts": {
+    "start-dev": "ws"
+  },
   "dependencies": {
     "@hpcc-js/amchart": "*",
     "@hpcc-js/api": "*",
@@ -37,6 +39,7 @@
     "es6-promise": "4.2.4"
   },
   "devDependencies": {
+    "local-web-server": "2.6.0",
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
     "rimraf": "2.6.2",

@@ -54,12 +54,12 @@
                     let _dirs = ["top", "right", "bottom", "left"];
                     let dp = new DockPanel()
                         .addWidget(cp1, "Chart Panel (cp1)")
-                        .addWidget(cp2, "Chart Panel (cp2)", `split-${arr_rand(_dirs)}`, cp1)
-                        .addWidget(cp3, "Chart Panel (cp3)", `split-${arr_rand(_dirs)}`, cp2)
-                        .addWidget(cp4, "Chart Panel (cp4)", `split-${arr_rand(_dirs)}`, cp3)
-                        .addWidget(cp5, "Chart Panel (cp5)", `split-${arr_rand(_dirs)}`, cp4)
-                        .addWidget(cp6, "Chart Panel (cp6)", `split-${arr_rand(_dirs)}`, cp5)
-                        .addWidget(cp7, "Chart Panel (cp7)", `split-${arr_rand(_dirs)}`, cp6)
+                        .addWidget(cp2, "Chart Panel (cp2)", "split-" + arr_rand(_dirs), cp1)
+                        .addWidget(cp3, "Chart Panel (cp3)", "split-" + arr_rand(_dirs), cp2)
+                        .addWidget(cp4, "Chart Panel (cp4)", "split-" + arr_rand(_dirs), cp3)
+                        .addWidget(cp5, "Chart Panel (cp5)", "split-" + arr_rand(_dirs), cp4)
+                        .addWidget(cp6, "Chart Panel (cp6)", "split-" + arr_rand(_dirs), cp5)
+                        .addWidget(cp7, "Chart Panel (cp7)", "split-" + arr_rand(_dirs), cp6)
                         ;
                     callback(dp);
                     function arr_rand(arr) {
@@ -100,19 +100,19 @@
                             )
                             .pushListItem(new Accordion()
                                 .pushListItem(
-                                new MultiChart()
-                                    .size({ height: 200, width: 200 })
-                                    .columns(DataFactory.ND.subjects.columns)
-                                    .data(DataFactory.ND.subjects.data)
-                                )
-                                .pushListItem(
-                                new Surface()
-                                    .size({ height: 200, width: 200 })
-                                    .title(DataFactory.Surface.simple.title)
-                                    .widget(new Line()
+                                    new MultiChart()
+                                        .size({ height: 200, width: 200 })
                                         .columns(DataFactory.ND.subjects.columns)
                                         .data(DataFactory.ND.subjects.data)
-                                    )
+                                )
+                                .pushListItem(
+                                    new Surface()
+                                        .size({ height: 200, width: 200 })
+                                        .title(DataFactory.Surface.simple.title)
+                                        .widget(new Line()
+                                            .columns(DataFactory.ND.subjects.columns)
+                                            .data(DataFactory.ND.subjects.data)
+                                        )
                                 )
                             )
                     );
@@ -159,7 +159,7 @@
                             new Step().columns(DataFactory.ND.subjects.columns).data(DataFactory.ND.subjects.data)
                         ])
                     var active = 0;
-                    setInterval(() => {
+                    setInterval(function () {
                         carousel.active(++active % 4).render();
                     }, 3000);
                     callback(carousel);
@@ -370,26 +370,26 @@
             },
             multi: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/Modal", "src/chart/Line"], function (DataFactory, Modal, Line) {
-                    if(surface){
+                    if (surface) {
                         const row_count = 3;
                         const col_count = 5;
                         const target_rect = surface.getBoundingClientRect();
-                        const h_padding = target_rect.height/100;
-                        const w_padding = target_rect.width/100;
-                        const h = ((target_rect.height - h_padding)/row_count) - h_padding;
-                        const w = ((target_rect.width - w_padding)/col_count) - w_padding;
-                        Array(row_count).fill("").forEach((n,ri)=>{
-                            Array(col_count).fill("").forEach((n,ci)=>{
-                                const t = (h*ri) + (h_padding*(ri+1));
-                                const l = (w*ci) + (w_padding*(ci+1));
+                        const h_padding = target_rect.height / 100;
+                        const w_padding = target_rect.width / 100;
+                        const h = ((target_rect.height - h_padding) / row_count) - h_padding;
+                        const w = ((target_rect.width - w_padding) / col_count) - w_padding;
+                        Array(row_count).fill("").forEach(function (n, ri) {
+                            Array(col_count).fill("").forEach(function (n, ci) {
+                                const t = (h * ri) + (h_padding * (ri + 1));
+                                const l = (w * ci) + (w_padding * (ci + 1));
                                 new Modal()
                                     .target(surface)
                                     .relativeTargetId("cellSurface")
                                     .title('A Simple Modal')
-                                    .fixedTop(`${t}px`)
-                                    .fixedLeft(`${l}px`)
-                                    .fixedHeight(`${h}px`)
-                                    .fixedWidth(`${w}px`)
+                                    .fixedTop(t + "px")
+                                    .fixedLeft(l + "px")
+                                    .fixedHeight(h + "px")
+                                    .fixedWidth(w + "px")
                                     .widget(new Line()
                                         .columns(DataFactory.ND.subjects.columns)
                                         .data(DataFactory.ND.subjects.data)

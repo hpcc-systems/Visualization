@@ -143,7 +143,7 @@
                         ;
                     callback(text);
                     let r = 0;
-                    setInterval(() => {
+                    setInterval(function () {
                         text
                             .rotation(r)
                             .render();

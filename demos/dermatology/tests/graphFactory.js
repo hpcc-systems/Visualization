@@ -112,45 +112,45 @@
                         .allowDragging(false)
                         .layout("Hierarchy")
                         ;
-                    const wu = Workunit.attach({ baseUrl: "http://192.168.3.22:8010/" }, "W20180302-141550");
-                    wu.fetchGraphs().then(graphs => {
+                    var wu = Workunit.attach({ baseUrl: "http://192.168.3.22:8010/" }, "W20180302-141550");
+                    wu.fetchGraphs().then(function (graphs) {
                         if (graphs.length) {
                             return graphs[0].fetchScopeGraph();
                         }
                         return undefined;
-                    }).then(scopeGraph => {
+                    }).thenfunction(function (scopeGraph) {
                         if (scopeGraph) {
                             var hierarchy = [];
                             var vertices = [];
                             var verticesMap = {};
                             var edges = [];
-                            for (const subgraph of scopeGraph.allSubgraphs()) {
-                                const sg = new Graph.Subgraph()
+                            scopeGraph.allSubgraphs().forEach(function (subgraph) {
+                                var sg = new Graph.Subgraph()
                                     .title(subgraph.id())
                                     ;
                                 vertices.push(sg);
                                 verticesMap[subgraph.id()] = sg;
-                                const parent = verticesMap[subgraph.parent().id()];
+                                var parent = verticesMap[subgraph.parent().id()];
                                 if (parent) {
-                                    hierarchy.push({ parent, child: sg });
+                                    hierarchy.push({ parent: parent, child: sg });
                                 }
-                            }
-                            for (const vertex of scopeGraph.allVertices()) {
-                                const v = new Vertex()
+                            });
+                            scopeGraph.allVertices().forEach(function (vertex) {
+                                var v = new Vertex()
                                     .text(vertex.label())
                                     ;
                                 vertices.push(v);
                                 verticesMap[vertex.id()] = v;
-                                const parent = verticesMap[vertex.parent().id()];
+                                var parent = verticesMap[vertex.parent().id()];
                                 if (parent) {
-                                    hierarchy.push({ parent, child: v });
+                                    hierarchy.push({ parent: parent, child: v });
                                 }
-                            }
-                            for (const edge of scopeGraph.allEdges()) {
-                                const sourceV = verticesMap[edge.sourceID()];
-                                const targetV = verticesMap[edge.targetID()];
+                            });
+                            scopeGraph.allEdges().forEach(function (edge) {
+                                var sourceV = verticesMap[edge.sourceID()];
+                                var targetV = verticesMap[edge.targetID()];
                                 if (sourceV && targetV) {
-                                    const e = new Edge()
+                                    var e = new Edge()
                                         .sourceVertex(sourceV)
                                         .targetVertex(targetV)
                                         .sourceMarker("circle")
@@ -159,8 +159,8 @@
                                         ;
                                     edges.push(e);
                                 }
-                            }
-                            graph.data({ vertices, edges, hierarchy });
+                            });
+                            graph.data({ vertices: vertices, edges: edges, hierarchy: hierarchy });
                         }
                         callback(graph);
                     });

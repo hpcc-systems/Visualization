@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.5"></a>
+## [0.2.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.2.4...@hpcc-js/graph@0.2.5) (2018-07-27)
+
+
+### Bug Fixes
+
+* **graph:** Fix graph Edges in IE11 ([38ad821](https://github.com/hpcc-systems/Visualization/commit/38ad821))
+
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.2.3...@hpcc-js/graph@0.2.4) (2018-06-28)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.4.2...@hpcc-js/timeline@0.4.3) (2018-07-27)
+
+
+### Bug Fixes
+
+* **timeline:** Calc EntityPin height ([1fd4ea3](https://github.com/hpcc-systems/Visualization/commit/1fd4ea3))
+
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.4.1...@hpcc-js/timeline@0.4.2) (2018-07-02)
 

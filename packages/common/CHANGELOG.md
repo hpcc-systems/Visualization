@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.7.1...@hpcc-js/common@0.8.0) (2018-07-27)
+
+
+### Bug Fixes
+
+* **icon:** Remove pointer-events from icon text ([eea86f1](https://github.com/hpcc-systems/Visualization/commit/eea86f1)), closes [#2702](https://github.com/hpcc-systems/Visualization/issues/2702)
+* **timeline:** Calc EntityPin height ([1fd4ea3](https://github.com/hpcc-systems/Visualization/commit/1fd4ea3))
+
+
+### Features
+
+* Add Collapsed publish param tag ([4b65e73](https://github.com/hpcc-systems/Visualization/commit/4b65e73))
+
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.7.0...@hpcc-js/common@0.7.1) (2018-06-28)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.9...@hpcc-js/layout@0.3.0) (2018-07-27)
+
+
+### Features
+
+* **panel:** Add _hideToggleLegendList ([616bc77](https://github.com/hpcc-systems/Visualization/commit/616bc77))
+
+
+
+
 <a name="0.2.9"></a>
 ## [0.2.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.2.8...@hpcc-js/layout@0.2.9) (2018-07-02)
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.7.1...@hpcc-js/chart@0.8.0) (2018-07-27)
+
+
+### Bug Fixes
+
+* **axis:** Remove svgLine getBBox call ([2d0f548](https://github.com/hpcc-systems/Visualization/commit/2d0f548)), closes [#2705](https://github.com/hpcc-systems/Visualization/issues/2705)
+* **tooltip:** Add SVGElement to end of show args ([fea34a2](https://github.com/hpcc-systems/Visualization/commit/fea34a2)), closes [#2703](https://github.com/hpcc-systems/Visualization/issues/2703)
+
+
+### Features
+
+* Add 2d selection to XYAxis ([3d13227](https://github.com/hpcc-systems/Visualization/commit/3d13227))
+
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.7.0...@hpcc-js/chart@0.7.1) (2018-07-02)
 

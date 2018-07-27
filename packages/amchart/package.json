@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/amchart",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "hpcc-js - Viz AM Charts",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,8 +25,8 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.4.1",
-    "@hpcc-js/common": "^0.7.1"
+    "@hpcc-js/api": "^0.4.2",
+    "@hpcc-js/common": "^0.8.0"
   },
   "devDependencies": {
     "amcharts3": "amcharts/amcharts3#3.18.0",

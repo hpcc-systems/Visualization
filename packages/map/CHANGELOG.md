@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.7"></a>
+## [0.3.7](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@0.3.6...@hpcc-js/map@0.3.7) (2018-07-27)
+
+
+### Bug Fixes
+
+* **tooltip:** Add SVGElement to end of show args ([fea34a2](https://github.com/hpcc-systems/Visualization/commit/fea34a2)), closes [#2703](https://github.com/hpcc-systems/Visualization/issues/2703)
+
+
+
+
 <a name="0.3.6"></a>
 ## [0.3.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@0.3.5...@hpcc-js/map@0.3.6) (2018-07-02)
 

@@ -12,7 +12,7 @@ import { Sort } from "./sort";
 export class HipiePipeline extends ActivityPipeline {
     _elementContainer: ElementContainer;
 
-    @publish(null, "widget", "Data Source 2")
+    @publish(null, "widget", "Data Source 2", null, {tags: ["Collapsed"]})
     _dataSource: Activity;
     dataSource(): Activity;
     dataSource(_: Activity): this;
@@ -23,7 +23,7 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Client Filters")
+    @publish(null, "widget", "Client Filters", null, {tags: ["Collapsed"]})
     _filters: Filters;
     filters(): Filters;
     filters(_: Filters): this;
@@ -34,7 +34,7 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Project")
+    @publish(null, "widget", "Project", null, {tags: ["Collapsed"]})
     _project: Project;
     project(): Project;
     project(_: Project): this;
@@ -45,7 +45,7 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Group By")
+    @publish(null, "widget", "Group By", null, {tags: ["Collapsed"]})
     _groupBy: GroupBy;
     groupBy(): GroupBy;
     groupBy(_: GroupBy): this;
@@ -56,7 +56,7 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Sort")
+    @publish(null, "widget", "Sort", null, {tags: ["Collapsed"]})
     _sort: Sort;
     sort(): Sort;
     sort(_: Sort): this;
@@ -67,7 +67,7 @@ export class HipiePipeline extends ActivityPipeline {
         return this;
     }
 
-    @publish(null, "widget", "Limit output")
+    @publish(null, "widget", "Limit output", null, {tags: ["Collapsed"]})
     _limit: Limit;
     limit(): Limit;
     limit(_: Limit): this;

@@ -194,7 +194,9 @@ export class HipieDDLMixin extends PropertyExt {
                 });
             });
             context._ddlModalVisualizations.forEach(function (viz) {
-                if (viz.widget.showToolbar) {
+                if (viz.widget.showCSV) {
+                    viz.widget.showToolbar(true);
+                } else if (viz.widget.showToolbar) {
                     viz.widget.showToolbar(false);
                 }
                 viz._modalTarget = d3Select("body").append("div").node();
@@ -208,8 +210,12 @@ export class HipieDDLMixin extends PropertyExt {
                     if (this.data().length) {
                         this.__inModal = true;
                         const widgetContext = this;
+                        const modalTitle = viz.widget.title();
+                        if (viz.widget.showToolbar()) {
+                            viz.widget.title("");
+                        }
                         viz._modal
-                            .title(viz.widget.title())
+                            .title(modalTitle)
                             .visible(true)
                             .fixedWidth("80%")
                             .fixedHeight("80%")

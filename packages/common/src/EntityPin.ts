@@ -14,6 +14,9 @@ export class EntityPin extends Entity {
 
         const is_hovering = element.classed("hovering");
 
+        this._icon_widget.render();
+        this._desc_widget.render();
+        this._title_widget.render();
         const title_bbox = !this.titleOnlyShowOnHover() || is_hovering ? this._title_widget.getBBox(true) : { height: 0, width: 0 };
         const icon_bbox = !this.iconOnlyShowOnHover() || is_hovering ? this._icon_widget.getBBox(true) : { height: 0, width: 0 };
         const desc_bbox = !this.descriptionOnlyShowOnHover() || is_hovering ? this._desc_widget.getBBox(true) : { height: 0, width: 0 };
@@ -48,6 +51,9 @@ export class EntityPin extends Entity {
     }
     calcHeight() {
         const is_hovering = true;
+        this._icon_widget.render();
+        this._desc_widget.render();
+        this._title_widget.render();
         const title_bbox = !this.titleOnlyShowOnHover() || is_hovering ? this._title_widget.getBBox(true) : { height: 0, width: 0 };
         const icon_bbox = !this.iconOnlyShowOnHover() || is_hovering ? this._icon_widget.getBBox(true) : { height: 0, width: 0 };
         const desc_bbox = !this.descriptionOnlyShowOnHover() || is_hovering ? this._desc_widget.getBBox(true) : { height: 0, width: 0 };

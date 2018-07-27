@@ -4,7 +4,7 @@ import { EntityPin, publish, SVGWidget, TextBox, Utility } from "@hpcc-js/common
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { event as d3Event, local as d3Local, select as d3Select } from "d3-selection";
-import { timeFormat as d3TimeFormat } from "d3-time-format";
+import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 
 import "../src/MiniGantt.css";
@@ -75,10 +75,15 @@ export class MiniGantt extends SVGWidget {
     }
 
     extent() {
-        if (this.rootExtent) {
-            return [this.rootExtent[1], this.rootExtent[2]];
+        const extent = this.rootExtent ? [this.rootExtent[1], this.rootExtent[2]] : this.fullExtent();
+        if (extent[0] === extent[1]) {
+            const parser = d3TimeParse(this.timePattern());
+            const formatter = d3TimeFormat(this.timePattern());
+            const dt = parser(extent[0]);
+            extent[0] = formatter(new Date(dt.setFullYear(dt.getFullYear() - 1)));
+            extent[1] = formatter(new Date(dt.setFullYear(dt.getFullYear() + 2)));
         }
-        return this.fullExtent();
+        return extent;
     }
 
     dataStartPos(d) {
@@ -168,7 +173,6 @@ export class MiniGantt extends SVGWidget {
             ;
 
         const extent = this.extent();
-
         this.tlAxis
             .x(width / 2)
             .orientation(this.isHorizontal() ? "top" : "left")

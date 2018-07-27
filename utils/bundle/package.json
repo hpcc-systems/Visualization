@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/bundle",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "description": "hpcc-js - bundle",
   "main": "lib/index.js",
   "module": "lib-es6/index.js",

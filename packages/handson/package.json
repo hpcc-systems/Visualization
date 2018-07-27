@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/handson",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "hpcc-js - Viz Handson Grid",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.0"
+    "@hpcc-js/common": "^0.8.1"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

@@ -53,13 +53,13 @@ module.exports = {
         new DojoWebpackPlugin({
             loaderConfig: require.resolve("./src/loaderConfig"),
             environment: { dojoRoot: "./dist" },	// used at run time for non-packed resources (e.g. blank.gif)
-            buildEnvironment: { dojoRoot: "../../node_modules" }, // used at build time
+            buildEnvironment: { dojoRoot: "./node_modules" }, // used at build time
             locales: ["en"]
         }),
         new ScopedDojoRequire(),
         // Copy non-packed resources needed by the app to the release directory
         new CopyWebpackPlugin([{
-            context: "../../node_modules",
+            context: "./node_modules",
             from: "dojo/resources/blank.gif",
             to: "dojo/resources"
         }]),
@@ -74,7 +74,7 @@ module.exports = {
     ],
     resolveLoader: {
         modules: [
-            path.join(__dirname, "../../node_modules")
+            path.join(__dirname, "./node_modules")
         ]
     },
     devtool: "#source-map",

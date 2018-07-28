@@ -3,7 +3,7 @@
     appDir: "../nullDir",
     dir: "dist",
     paths: {
-        "requireLib": "../../node_modules/requirejs/require"
+        "requireLib": "../requirejs-shim/node_modules/requirejs/require"
     },
     optimize: "none",
     wrap: {

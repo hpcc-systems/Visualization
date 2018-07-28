@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/chai": "3.5.2",
     "@types/mocha": "2.2.41",
+    "@types/glob": "5.0.35",
     "css-loader": "0.26.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.3",

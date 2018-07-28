@@ -50,6 +50,7 @@
     "d3-svg-annotation": "2.2.2",
     "d3-time-format": "2.1.0",
     "d3-transition": "1.1.0",
+    "d3-zoom": "1.7.1",
     "d3v4-bullet": "1.0.6",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

@@ -8,7 +8,7 @@ const name = pkg.name.split("/").pop();
 const node_libs = ["child_process", "fs", "node-fetch", "os", "path", "semver", "safe-buffer", "tmp", "xmldom"];
 
 function external(id) {
-    return (id.indexOf("@hpcc-js") === 0 && id.indexOf("-shim") < 0) || node_libs.indexOf(id) >= 0;
+    return (id.indexOf("@hpcc-js") === 0) || node_libs.indexOf(id) >= 0;
 }
 
 function globals(id) {

@@ -337,6 +337,7 @@ export const dashboard = new marshaller.Dashboard(ec)
         (w as marshaller.Dashboard)
             .layout(${stringify(this._dashboard.layout())})
             .hideSingleTabs(true)
+            .render()
             ;
     })
     ;

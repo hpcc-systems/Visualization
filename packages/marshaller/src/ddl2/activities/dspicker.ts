@@ -4,9 +4,9 @@ import { Databomb, Form } from "./databomb";
 import { HipiePipeline } from "./hipiepipeline";
 import { LogicalFile } from "./logicalfile";
 import { HipieRequest, RoxieRequest } from "./roxie";
-import { sampleData } from "./sampledata";
 import { WUResult } from "./wuresult";
 
+const sampleData = [];
 export function isDatasource(activity: Activity) {
     return activity instanceof DSPicker ||
         activity instanceof Databomb ||

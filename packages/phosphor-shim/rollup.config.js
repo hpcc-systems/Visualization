@@ -8,7 +8,7 @@ const pkg = require("./package.json");
 const name = pkg.name.split("/").pop();
 
 function external(id) {
-    return id.indexOf("@hpcc-js") === 0 && id.indexOf("-shim") < 0;
+    return id.indexOf("@hpcc-js") === 0;
 }
 
 function globals(id) {

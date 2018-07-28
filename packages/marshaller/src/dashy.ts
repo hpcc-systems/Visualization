@@ -502,4 +502,4 @@ export class Dashy extends SplitPanel {
         super.update(domNode, element);
     }
 }
-Dashy.prototype._class += " composite_Dashy";
+Dashy.prototype._class += " marshaller_Dashy";

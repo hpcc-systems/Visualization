@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@hpcc-js/common": "^0.8.1",
+    "@hpcc-js/codemirror-shim": "^0.0.64",
     "@hpcc-js/dgrid": "^0.2.7",
     "@hpcc-js/html": "^0.0.90",
     "@hpcc-js/phosphor": "^0.1.8",
     "@hpcc-js/util": "^0.1.3"
   },
   "devDependencies": {
-    "@hpcc-js/codemirror-shim": "^0.0.64",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

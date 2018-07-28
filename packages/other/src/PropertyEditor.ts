@@ -511,11 +511,7 @@ export class PropertyEditor extends HTMLWidget {
                     .excludeParams(context.excludeParams())
                     .hideNonWidgets(context.hideNonWidgets() && w._class.indexOf("layout_") >= 0)
                     .widget(w)
-                    .render(function() {
-                        if (param && param.ext && param.ext.tags && param.ext.tags.indexOf("Collapsed") !== -1) {
-                            clickTarget.classed("property-table-collapsed", true);
-                        }
-                    })
+                    .render()
                     ;
             })
             ;

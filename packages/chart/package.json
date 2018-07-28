@@ -30,7 +30,6 @@
     "@hpcc-js/util": "^0.1.5"
   },
   "devDependencies": {
-    "@types/d3-shape": "1",
     "concurrently": "3.5.1",
     "d3-array": "1.2.1",
     "d3-axis": "1.0.8",
@@ -50,7 +49,6 @@
     "d3-svg-annotation": "2.2.2",
     "d3-time-format": "2.1.0",
     "d3-transition": "1.1.0",
-    "d3-zoom": "1.7.1",
     "d3v4-bullet": "1.0.6",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

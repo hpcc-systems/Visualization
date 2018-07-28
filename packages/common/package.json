@@ -30,11 +30,8 @@
     "@hpcc-js/util": "^0.1.5"
   },
   "devDependencies": {
-    "@types/d3-drag": "1",
     "@types/d3-dsv": "1",
     "@types/d3-scale": "1",
-    "@types/d3-selection": "1",
-    "@types/d3-transition": "1",
     "colorbrewer": "1.0.0",
     "concurrently": "3.5.1",
     "cpx": "1.5.0",

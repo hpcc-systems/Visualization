@@ -30,6 +30,7 @@
     "@hpcc-js/common": "^0.8.4",
     "@hpcc-js/comms": "^0.4.9",
     "@hpcc-js/composite": "^0.2.11",
+    "@hpcc-js/ddl-shim": "^0.2.4",
     "@hpcc-js/dgrid": "^0.2.10",
     "@hpcc-js/form": "^0.1.10",
     "@hpcc-js/graph": "^0.2.9",
@@ -40,7 +41,6 @@
     "@hpcc-js/util": "^0.1.6"
   },
   "devDependencies": {
-    "@hpcc-js/ddl-shim": "^0.2.4",
     "concurrently": "3.5.1",
     "d3-array": "1.2.1",
     "d3-collection": "1.0.4",

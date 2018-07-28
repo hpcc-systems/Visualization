@@ -1,4 +1,4 @@
-export const sampleData: object[] = [
+[
     {
         "State": "CT",
         "Covered Entity Type": "Health Plan",
@@ -16262,4 +16262,4 @@ export const sampleData: object[] = [
         "Submission DOW": "Tue",
         "Submission Day": "22"
     }
-];
+]

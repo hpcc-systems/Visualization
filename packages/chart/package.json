@@ -30,6 +30,7 @@
     "@hpcc-js/util": "^0.1.6"
   },
   "devDependencies": {
+    "@types/d3-shape": "1",
     "concurrently": "3.5.1",
     "d3-array": "1.2.1",
     "d3-axis": "1.0.8",

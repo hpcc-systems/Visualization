@@ -17,7 +17,8 @@
     "lint": "tslint --project . src/**/*.ts"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "types/*"
   ],
   "devDependencies": {
     "@types/dojo": "1.9.40",

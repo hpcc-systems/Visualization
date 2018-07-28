@@ -37,6 +37,7 @@
     "xmldom": "0.1.27"
   },
   "devDependencies": {
+    "@types/d3-time-format": "2.1.0",
     "@types/d3-request": "1.0.2",
     "@types/node": "8.0.51",
     "@types/request": "0.0.41",

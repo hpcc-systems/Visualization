@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.1"
+    "@hpcc-js/common": "^0.8.3"
   },
   "devDependencies": {
     "@hpcc-js/preact-shim": "^0.0.62",

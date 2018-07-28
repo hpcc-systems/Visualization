@@ -15,7 +15,7 @@
     "@hpcc-js/codemirror-shim": "*",
     "@hpcc-js/common": "*",
     "@hpcc-js/composite": "*",
-    "@hpcc-js/ddl": "*",
+    "@hpcc-js/ddl-shim": "*",
     "@hpcc-js/dgrid": "*",
     "@hpcc-js/dgrid-shim": "*",
     "@hpcc-js/form": "*",

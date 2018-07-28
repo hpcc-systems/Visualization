@@ -6,6 +6,7 @@
     "@hpcc-js/common": "*",
     "@hpcc-js/map": "*",
     "@hpcc-js/test-data": "*",
+    "@hpcc-js/util": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2",

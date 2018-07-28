@@ -25,9 +25,9 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.1",
+    "@hpcc-js/common": "^0.8.3",
     "@hpcc-js/dgrid": "^0.2.7",
-    "@hpcc-js/html": "^0.0.90",
+    "@hpcc-js/html": "^0.0.92",
     "@hpcc-js/phosphor": "^0.1.8",
     "@hpcc-js/util": "^0.1.3"
   },

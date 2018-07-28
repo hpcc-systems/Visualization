@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/common",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "hpcc-js - Viz Common",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -32,8 +32,8 @@
   "devDependencies": {
     "@types/d3-drag": "1",
     "@types/d3-dsv": "1",
-    "@types/d3-selection": "1",
     "@types/d3-scale": "1",
+    "@types/d3-selection": "1",
     "colorbrewer": "1.0.0",
     "concurrently": "3.5.1",
     "cpx": "1.5.0",

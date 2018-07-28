@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -37,8 +37,8 @@
     "xmldom": "0.1.27"
   },
   "devDependencies": {
-    "@types/d3-time-format": "2.1.0",
     "@types/d3-request": "1.0.2",
+    "@types/d3-time-format": "2.1.0",
     "@types/node": "8.0.51",
     "@types/request": "0.0.41",
     "@types/xmldom": "0.1.29",

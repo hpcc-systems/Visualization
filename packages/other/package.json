@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/other",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "hpcc-js - Viz Other",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@hpcc-js/api": "^0.4.6",
     "@hpcc-js/common": "^0.8.4",
-    "@hpcc-js/layout": "^0.3.4"
+    "@hpcc-js/layout": "^0.3.5"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

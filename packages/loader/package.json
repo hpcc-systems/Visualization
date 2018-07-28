@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/loader",
-  "version": "0.0.80",
+  "version": "0.0.81",
   "description": "hpcc-js - Loader",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "devDependencies": {
-    "@hpcc-js/requirejs-shim": "^0.0.61",
+    "@hpcc-js/requirejs-shim": "^0.0.62",
     "concurrently": "3.5.1",
     "es6-promise": "4.2.4",
     "rimraf": "2.6.2",

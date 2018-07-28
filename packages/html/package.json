@@ -25,10 +25,10 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.3",
-    "@hpcc-js/preact-shim": "^0.0.62"
+    "@hpcc-js/common": "^0.8.1"
   },
   "devDependencies": {
+    "@hpcc-js/preact-shim": "^0.0.62",
     "concurrently": "3.5.1",
     "d3-selection": "1.1.0",
     "rimraf": "2.6.2",

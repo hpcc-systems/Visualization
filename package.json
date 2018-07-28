@@ -3,8 +3,8 @@
   "version": "2.0.0-dev",
   "description": "HPCC Visualization Framework",
   "scripts": {
-    "install-nohoist": "lerna bootstrap",
-    "install": "lerna bootstrap --hoist",
+    "install": "lerna bootstrap",
+    "install-hoist": "lerna bootstrap --hoist",
     "uninstall": "lerna clean",
     "clean": "lerna run clean",
     "compile-es6": "lerna run --ignore \"@hpcc-js/test-*\" compile-es6",

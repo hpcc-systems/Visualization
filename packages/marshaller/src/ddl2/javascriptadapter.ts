@@ -104,19 +104,21 @@ export class JavaScriptAdapter {
         return id.replace(" ", "_");
     }
 
-    private datasourceRefID(datasource: DDL2.IDatasourceRef | DDL2.IWUResultRef | DDL2.IRoxieServiceRef): string {
-        if (DDL2.isWUResultRef(datasource) || DDL2.isRoxieServiceRef(datasource)) {
-            return `${datasource.id}_${this.safeID(datasource.output)}`;
+    private datasourceRefID(view: DDL2.IView): string {
+        const datasourceRef = view.datasource;
+        if (DDL2.isWUResultRef(datasourceRef) || DDL2.isRoxieServiceRef(datasourceRef)) {
+            return `${datasourceRef.id}_${this.safeID(datasourceRef.output)}_${view.id}`;
         }
-        return `${datasource.id}`;
+        return `${datasourceRef.id}`;
     }
 
     _dedup: { [key: string]: boolean } = {};
-    private writeDatasource(datasourceRef: DDL2.IDatasourceRef): string[] {
+    private writeDatasource(view: DDL2.IView): string[] {
+        const datasourceRef = view.datasource;
         const retVal: string[] = [];
         const datasource = this._ddlSchema.datasources.filter(ds => ds.id === datasourceRef.id)[0];
         const outputID = (datasourceRef as any).output;
-        const id = outputID ? `${datasource.id}_${this.safeID(outputID)}` : `${datasource.id}`;
+        const id = this.datasourceRefID(view);
         if (!this._dedup[id]) {
             this._dedup[id] = true;
             switch (datasource.type) {
@@ -249,7 +251,7 @@ export class JavaScriptAdapter {
     }
 
     private writeElement(dataview: DDL2.IView) {
-        const activities: string[] = [`data.${this.datasourceRefID(dataview.datasource)}`];
+        const activities: string[] = [`data.${this.datasourceRefID(dataview)}`];
         for (const activity of dataview.activities) {
             activities.push(this.writeActivity(activity));
         }
@@ -276,7 +278,7 @@ ec.append(${dataview.id});
     private writeDatasources(): string[] {
         let retVal: string[] = [];
         for (const dataview of this._ddlSchema.dataviews) {
-            retVal = retVal.concat(this.writeDatasource(dataview.datasource));
+            retVal = retVal.concat(this.writeDatasource(dataview));
         }
         return retVal;
     }

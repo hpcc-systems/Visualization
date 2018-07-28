@@ -3,8 +3,9 @@
   "version": "2.0.0-dev",
   "description": "HPCC Visualization Framework",
   "scripts": {
+    "install": "lerna bootstrap",
     "install-nohoist": "lerna bootstrap",
-    "install": "lerna bootstrap --hoist",
+    "install-hoist": "lerna bootstrap --hoist",
     "uninstall": "lerna clean",
     "clean": "lerna run clean",
     "compile-es6": "lerna run --ignore \"@hpcc-js/test-*\" compile-es6",
@@ -40,5 +41,6 @@
   },
   "author": "HPCC Systems",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/hpcc-systems/Visualization"
+  "homepage": "https://github.com/hpcc-systems/Visualization",
+  "dependencies": {}
 }

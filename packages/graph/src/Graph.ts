@@ -167,6 +167,10 @@ export class Graph extends SVGZoomWidget {
         return retVal;
     }
 
+    graphData(): Readonly<GraphData> {
+        return this._graphData;
+    }
+
     selection(_: Widget[]): this;
     selection(): Widget[];
     selection(_?: Widget[]): Widget[] | this {

@@ -4,7 +4,9 @@
   "version": "0.0.62",
   "dependencies": {
     "@hpcc-js/common": "*",
+    "@hpcc-js/dgrid-shim": "*",
     "@hpcc-js/map": "*",
+    "@hpcc-js/util": "*",
     "@hpcc-js/test-data": "*",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
@@ -14,6 +16,7 @@
   "devDependencies": {
     "@types/chai": "3.5.2",
     "@types/mocha": "2.2.41",
+    "cpx": "1.5.0",
     "css-loader": "0.26.1",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.3",
@@ -28,7 +31,8 @@
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle-umd": "webpack",
-    "build": "npm run compile-es6 && npm run bundle-umd",
-    "test": "mocha-chrome ./test.html"
+    "copy-resources": "cpx ./node_modules/@hpcc-js/dgrid-shim/dist/dojo/resources/* ./dist/dojo/resources",
+    "build": "npm run compile-es6 && npm run bundle-umd && npm run copy-resources",
+    "test-skip": "mocha-chrome ./test.html"
   }
 }

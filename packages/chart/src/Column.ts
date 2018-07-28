@@ -1,10 +1,10 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { d3SelectionType, InputField, local as d3Local, Text } from "@hpcc-js/common";
+import { d3SelectionType, InputField, Text } from "@hpcc-js/common";
 import { scaleBand as d3ScaleBand } from "d3-scale";
-import { select as d3Select } from "d3-selection";
-import "d3-transition";
+import { local as d3Local, select as d3Select } from "d3-selection";
 import { XYAxis } from "./XYAxis";
 
+import "d3-transition";
 import "../src/Column.css";
 
 export class Column extends XYAxis {

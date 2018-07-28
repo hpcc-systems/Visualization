@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.55"></a>
+## [0.0.55](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/c3-shim@0.0.54...@hpcc-js/c3-shim@0.0.55) (2018-07-28)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/c3-shim
+
 <a name="0.0.54"></a>
 ## [0.0.54](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/c3-shim@0.0.53...@hpcc-js/c3-shim@0.0.54) (2018-07-27)
 

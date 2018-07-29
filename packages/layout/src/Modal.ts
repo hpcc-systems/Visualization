@@ -1,4 +1,4 @@
-import { d3SelectionType, HTMLWidget, Widget } from "@hpcc-js/common";
+import { d3SelectionType, HTMLWidget, ISize, Widget } from "@hpcc-js/common";
 
 import "../src/Modal.css";
 
@@ -42,7 +42,7 @@ export class Modal extends HTMLWidget {
         return document.body;
     }
 
-    setModalSize() {
+    setModalSize(): ISize {
         if (this.fixedHeight() !== null && this.fixedWidth() !== null) {
             this._modal
                 .style("height", this.fixedHeight())

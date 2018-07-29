@@ -27,10 +27,10 @@
   "dependencies": {
     "@hpcc-js/common": "^0.8.7",
     "@hpcc-js/other": "^0.5.9",
+    "@hpcc-js/phosphor-shim": "^0.0.71",
     "@hpcc-js/util": "^0.1.7"
   },
   "devDependencies": {
-    "@hpcc-js/phosphor-shim": "^0.0.71",
     "concurrently": "3.5.1",
     "d3-selection": "1.1.0",
     "rimraf": "2.6.2",

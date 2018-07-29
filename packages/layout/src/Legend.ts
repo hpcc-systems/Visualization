@@ -3,7 +3,7 @@ import { Database, Palette, SVGWidget, Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
 import { scaleOrdinal as d3ScaleOrdinal } from "d3-scale";
 import { symbol as d3Symbol, symbolCircle as d3SymbolCircle } from "d3-shape";
-import { legendColor as d3LegendColor, Orientation } from "d3-svg-legend";
+import { legendColor as d3LegendColor } from "d3-svg-legend";
 import { ChartPanel } from "./ChartPanel";
 
 export class Legend extends SVGWidget {
@@ -298,8 +298,8 @@ Legend.prototype._class += " layout_Legend";
 export interface Legend {
     title(): string;
     title(_: string): this;
-    orientation(): Orientation;
-    orientation(_: Orientation): this;
+    orientation(): "vertical" | "horizontal";
+    orientation(_: "vertical" | "horizontal"): this;
     orientation_exists: () => boolean;
     dataFamily(): string;
     dataFamily(_: string): this;

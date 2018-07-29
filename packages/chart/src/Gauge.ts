@@ -57,7 +57,7 @@ function arcTween(startAngle: number, endAngle: number, arc: Arc<any, DefaultArc
 
 export class Gauge extends SVGWidget {
 
-    protected _d3Arc: Arc<any, DefaultArcObject> = d3Arc()
+    private _d3Arc: Arc<any, DefaultArcObject> = d3Arc()
         .innerRadius(85)
         .outerRadius(100)
         ;

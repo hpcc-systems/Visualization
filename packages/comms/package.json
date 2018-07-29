@@ -29,27 +29,25 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^0.1.7",
-    "node-fetch": "2.0.0",
-    "safe-buffer": "5.1.1",
-    "semver": "5.5.0",
-    "tmp": "0.0.33",
-    "xmldom": "0.1.27"
+    "@types/d3-time-format": "2.1.0",
+    "@hpcc-js/util": "^0.1.7"
   },
   "devDependencies": {
     "@types/d3-request": "1.0.2",
-    "@types/d3-time-format": "2.1.0",
     "@types/node": "8.0.51",
     "@types/request": "0.0.41",
     "@types/xmldom": "0.1.29",
     "concurrently": "3.5.1",
     "d3-time-format": "2.1.0",
+    "node-fetch": "2.0.0",
+    "safe-buffer": "5.1.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
     "rollup-plugin-alias": "1.4.0",
     "rollup-plugin-commonjs": "9.1.0",
     "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-postcss": "1.6.1",
+    "tmp": "0.0.33",
     "tslib": "1.9.0",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",

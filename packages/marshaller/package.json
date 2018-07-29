@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/marshaller",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "hpcc-js - Viz Marshaller",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -26,18 +26,18 @@
   },
   "dependencies": {
     "@hpcc-js/chart": "^0.8.8",
-    "@hpcc-js/codemirror": "^0.0.120",
+    "@hpcc-js/codemirror": "^0.0.121",
     "@hpcc-js/common": "^0.8.8",
     "@hpcc-js/comms": "^0.4.12",
-    "@hpcc-js/composite": "^0.2.17",
+    "@hpcc-js/composite": "^0.2.18",
     "@hpcc-js/ddl-shim": "^0.2.7",
     "@hpcc-js/dgrid": "^0.2.16",
     "@hpcc-js/form": "^0.1.14",
     "@hpcc-js/graph": "^0.2.13",
-    "@hpcc-js/layout": "^0.3.10",
-    "@hpcc-js/map": "^0.3.17",
-    "@hpcc-js/other": "^0.5.10",
-    "@hpcc-js/phosphor": "^0.1.17",
+    "@hpcc-js/layout": "^0.3.11",
+    "@hpcc-js/map": "^0.3.18",
+    "@hpcc-js/other": "^0.5.11",
+    "@hpcc-js/phosphor": "^0.1.18",
     "@hpcc-js/util": "^0.1.7"
   },
   "devDependencies": {

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.11"></a>
+## [0.5.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.5.10...@hpcc-js/other@0.5.11) (2018-07-29)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/other
+
 <a name="0.5.10"></a>
 ## [0.5.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.5.9...@hpcc-js/other@0.5.10) (2018-07-29)
 

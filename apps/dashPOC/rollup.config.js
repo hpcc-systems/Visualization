@@ -27,6 +27,8 @@ export default {
         name: "vizLib"
     },
     plugins: [
+        alias({
+        }),
         nodeResolve({
             preferBuiltins: true,
             jsnext: true
@@ -36,8 +38,6 @@ export default {
                 // "../../packages/dgrid-shim/dist/dgrid-shim.js": ["Deferred", "domConstruct", "QueryResults", "Memory", "PagingGrid", "Grid"]
                 // "../../node_modules/dagre/index.js": ["graphlib", "layout"]
             }
-        }),
-        alias({
         }),
         postcss({
             extensions: [".css"]

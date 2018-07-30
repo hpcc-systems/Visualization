@@ -14,7 +14,3 @@ export * from "./stack";
 export * from "./stateful";
 export * from "./string";
 export * from "./url";
-
-//  Third Party  ---
-import "es6-promise/auto";
-export * from "tslib";

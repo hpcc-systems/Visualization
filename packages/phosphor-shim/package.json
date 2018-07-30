@@ -28,6 +28,7 @@
     "@phosphor/widgets": "1.5.0"
   },
   "devDependencies": {
+    "@hpcc-js/bundle": "^0.0.42",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
     "rollup-plugin-alias": "1.4.0",

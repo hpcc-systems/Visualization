@@ -33,7 +33,3 @@ import * as Utility from "./Utility";
 export { Utility };
 export * from "./Widget";
 export * from "./WidgetArray";
-
-//  Third Party  ---
-export * from "d3-drag";
-export * from "d3-selection";

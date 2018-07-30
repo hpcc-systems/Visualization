@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "umd",
         "moduleResolution": "node",
         "declaration": true,
         "declarationDir": "./types",

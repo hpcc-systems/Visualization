@@ -2,7 +2,7 @@
   "name": "@hpcc-js/bundle",
   "version": "0.0.42",
   "description": "hpcc-js - bundle",
-  "main": "lib/index.js",
+  "main": "lib-umd/index.js",
   "module": "lib-es6/index.js",
   "types": "types/index.d.ts",
   "files": [

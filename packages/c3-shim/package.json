@@ -10,8 +10,11 @@
     "clean": "rimraf dist",
     "build": "webpack"
   },
+  "dependencies": {
+    "c3": "0.4.13"
+  },
   "devDependencies": {
-    "c3": "0.4.13",
+    "@hpcc-js/bundle": "^0.0.42",
     "css-loader": "0.26.1",
     "extract-text-webpack-plugin": "2.1.0",
     "rimraf": "2.6.2",

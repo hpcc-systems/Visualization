@@ -30,11 +30,12 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
+    "ajv": "6.5.2",
     "tslib": "1.9.0"
   },
   "devDependencies": {
+    "@hpcc-js/bundle": "^0.0.42",
     "@types/node": "8.0.51",
-    "ajv": "6.5.2",
     "ajv-cli": "3.0.0",
     "ajv-pack": "0.3.1",
     "ajv-pack-loader": "2.2.0",

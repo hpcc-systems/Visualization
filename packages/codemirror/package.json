@@ -25,14 +25,16 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
+    "@hpcc-js/codemirror-shim": "^0.0.67",
     "@hpcc-js/common": "^0.8.8",
     "@hpcc-js/dgrid": "^0.2.16",
     "@hpcc-js/html": "^0.0.97",
     "@hpcc-js/phosphor": "^0.1.18",
-    "@hpcc-js/util": "^0.1.7"
+    "@hpcc-js/util": "^0.1.7",
+    "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/codemirror-shim": "^0.0.67",
+    "@hpcc-js/bundle": "^0.0.42",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
@@ -40,7 +42,6 @@
     "rollup-plugin-commonjs": "9.1.0",
     "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-postcss": "1.6.1",
-    "tslib": "1.9.0",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
     "typescript": "2.9.1",

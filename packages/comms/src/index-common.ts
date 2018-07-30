@@ -22,6 +22,3 @@ export * from "./ecl/xsdParser";
 
 export * from "./connection";
 export * from "./espConnection";
-
-//  Third Party  ---
-export * from "d3-time-format";

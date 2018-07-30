@@ -22,8 +22,11 @@
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
+  "dependencies": {
+    "codemirror": "5.26.0"
+  },
   "devDependencies": {
-    "codemirror": "5.26.0",
+    "@hpcc-js/bundle": "^0.0.42",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

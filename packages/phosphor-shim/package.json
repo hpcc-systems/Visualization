@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/phosphor-shim",
-  "version": "0.0.72",
+  "version": "0.0.73",
   "description": "hpcc-js - Phosphor shim",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -28,7 +28,7 @@
     "@phosphor/widgets": "1.5.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.42",
+    "@hpcc-js/bundle": "^0.0.43",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",
     "rollup-plugin-alias": "1.4.0",

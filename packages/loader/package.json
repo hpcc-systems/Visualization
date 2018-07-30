@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/loader",
-  "version": "0.0.84",
+  "version": "0.0.85",
   "description": "hpcc-js - Loader",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,12 +25,12 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/requirejs-shim": "^0.0.65",
+    "@hpcc-js/requirejs-shim": "^0.0.66",
     "es6-promise": "4.2.4",
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.42",
+    "@hpcc-js/bundle": "^0.0.43",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

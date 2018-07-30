@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/html",
-  "version": "0.0.97",
+  "version": "0.0.98",
   "description": "hpcc-js - Viz HTML",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,13 +25,13 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.8",
+    "@hpcc-js/common": "^0.8.9",
     "d3-selection": "1.1.0",
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.42",
-    "@hpcc-js/preact-shim": "^0.0.65",
+    "@hpcc-js/bundle": "^0.0.43",
+    "@hpcc-js/preact-shim": "^0.0.66",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

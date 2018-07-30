@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.19"></a>
+## [0.2.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@0.2.18...@hpcc-js/composite@0.2.19) (2018-07-30)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/composite
+
 <a name="0.2.18"></a>
 ## [0.2.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/composite@0.2.17...@hpcc-js/composite@0.2.18) (2018-07-29)
 

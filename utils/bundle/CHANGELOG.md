@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.43"></a>
+## [0.0.43](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@0.0.42...@hpcc-js/bundle@0.0.43) (2018-07-30)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/bundle
+
 <a name="0.0.42"></a>
 ## [0.0.42](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@0.0.41...@hpcc-js/bundle@0.0.42) (2018-07-28)
 

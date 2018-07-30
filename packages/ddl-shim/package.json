@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -34,7 +34,7 @@
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.42",
+    "@hpcc-js/bundle": "^0.0.43",
     "@types/node": "8.0.51",
     "ajv-cli": "3.0.0",
     "ajv-pack": "0.3.1",

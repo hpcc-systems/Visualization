@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/util",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "hpcc-js - Utilities",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -30,7 +30,7 @@
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.43",
+    "@hpcc-js/bundle": "^0.0.44",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,14 +25,14 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.8.9",
+    "@hpcc-js/common": "^0.8.10",
     "d3-color": "1.2.0",
     "d3-format": "1.3.0",
     "d3-tip": "GordonSmith/d3-tip#vJSNEXT",
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.43",
+    "@hpcc-js/bundle": "^0.0.44",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

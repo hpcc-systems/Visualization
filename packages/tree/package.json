@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/tree",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "hpcc-js - Viz Tree",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,8 +25,8 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.4.11",
-    "@hpcc-js/common": "^0.8.9",
+    "@hpcc-js/api": "^0.4.12",
+    "@hpcc-js/common": "^0.8.10",
     "d3-hierarchy": "1.1.4",
     "d3-interpolate": "1.1.5",
     "d3-scale": "1.0.6",
@@ -36,7 +36,7 @@
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.43",
+    "@hpcc-js/bundle": "^0.0.44",
     "concurrently": "3.5.1",
     "rimraf": "2.6.2",
     "rollup": "0.58.2",

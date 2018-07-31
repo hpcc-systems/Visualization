@@ -18,7 +18,7 @@
     "bundle": "rollup -c",
     "bundle-watch": "npm run bundle -- -w",
     "build": "npm run compile-es6 && npm run bundle",
-    "watch": "concurrently --kill-others \"npm run compile-es6-watch\" \"npm run bundle-watch\"",
+    "watch": "run-p compile-es6-watch bundle-watch",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },

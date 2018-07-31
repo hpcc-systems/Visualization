@@ -30,7 +30,7 @@ function typeInputs(type: VizType): InputField[] {
 }
 
 export class Visualization extends PropertyExt {
-    @publish("Table", "set", "Type", VizTypeSet)
+    @publish("Table", "set", "Type", VizTypeSet, {tags: ["Thumbnails"]})
     _chartType: VizType;
     chartType(): VizType;
     chartType(_: VizType, props?: { [prop: string]: any }): this;

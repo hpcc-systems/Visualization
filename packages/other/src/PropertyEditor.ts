@@ -574,13 +574,28 @@ export class PropertyEditor extends HTMLWidget {
                     ;
                 break;
             case "set":
-                cell.append("select")
-                    .attr("id", this.id() + "_" + param.id)
-                    .classed("property-input", true)
-                    .on("change", function () {
-                        context.setProperty(widget, param.id, this.value);
-                    })
-                    ;
+                if (param.ext.tags && param.ext.tags.indexOf("Thumbnails") !== -1) {
+                    cell.append("input")
+                        .attr("id", this.id() + "_" + param.id)
+                        .attr("type", "hidden")
+                        .classed("property-input", true)
+                        .on("change", function () {
+                            context.setProperty(widget, param.id, this.value);
+                        })
+                        ;
+                    cell.append("div")
+                        .attr("id", `${this.id()}_${param.id}_wrapper`)
+                        .classed("property-thumbnail-wrapper", true)
+                        ;
+                } else {
+                    cell.append("select")
+                        .attr("id", this.id() + "_" + param.id)
+                        .classed("property-input", true)
+                        .on("change", function () {
+                            context.setProperty(widget, param.id, this.value);
+                        })
+                        ;
+                }
                 break;
             case "array":
             case "object":
@@ -657,14 +672,35 @@ export class PropertyEditor extends HTMLWidget {
                 element.property("checked", val);
                 break;
             case "set":
-                const options = element.selectAll("option").data(widget[param.id + "_options"]());
-                options.enter().append("option")
-                    .merge(options)
-                    .attr("value", d => d as any)
-                    .text(d => d as any)
-                    ;
-                options.exit().remove();
-                element.property("value", val);
+                if (param.ext.tags && param.ext.tags.indexOf("Thumbnails") !== -1) {
+                    const wrapper = d3SelectAll(`#${this.id()}_${param.id}_wrapper`);
+                    const thumbs = wrapper.selectAll(".set-thumbnail").data(widget[param.id + "_options"]());
+                    thumbs.enter().append("div")
+                        .attr("class", d => `set-thumbnail thumb_${(d as any)}`)
+                        .merge(thumbs)
+                        .attr("data-value", d => d as any)
+                        .classed("active-thumb", d => (d as any) === val)
+                        .text(d => d as any)
+                        .on("click", function() {
+                            const clicked_thumb = d3Select(this);
+                            element.property("value", clicked_thumb.attr("data-value"));
+                            element.dispatch("change");
+                            wrapper.selectAll(".active-thumb").classed("active-thumb", false);
+                            clicked_thumb.classed("active-thumb", true);
+                        })
+                        ;
+                    thumbs.exit().remove();
+                    element.property("value", val);
+                } else {
+                    const options = element.selectAll("option").data(widget[param.id + "_options"]());
+                    options.enter().append("option")
+                        .merge(options)
+                        .attr("value", d => d as any)
+                        .text(d => d as any)
+                        ;
+                    options.exit().remove();
+                    element.property("value", val);
+                }
                 break;
             case "array":
             case "object":

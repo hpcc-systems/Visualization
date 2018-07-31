@@ -70,7 +70,7 @@ export interface IAutoExpand extends PropertyExt {
     valid(): boolean;
 }
 
-export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial";
+export type TagTypes = "Private" | "Shared" | "Basic" | "Intermediate" | "Advanced" | "Theme" | "Serial" | "Thumbnails";
 export type PublishTypes = "any" | "number" | "boolean" | "string" | "set" | "array" | "object" | "widget" | "widgetArray" | "propertyArray" | "html-color";
 export interface IPublishExt {
     override?: boolean;

@@ -37,15 +37,11 @@ export class SVGZoomWidget extends SVGWidget {
             new Spacer().vline(false),
             new Button("fa-plus", "Zoom in")
                 .on("click", () => {
-                    this.element().transition()
-                        .call(this._currZoom.scaleBy, 1.33)
-                        ;
+                    this.zoomPlus();
                 }),
             new Button("fa-minus", "Zoom out")
                 .on("click", () => {
-                    this.element().transition()
-                        .call(this._currZoom.scaleBy, 1 / 1.33)
-                        ;
+                    this.zoomMinus();
                 })
         ])
         ;
@@ -126,6 +122,18 @@ export class SVGZoomWidget extends SVGWidget {
             ;
     }
 
+    zoomPlus() {
+        this.element().transition()
+            .call(this._currZoom.scaleBy, 1.33)
+            ;
+    }
+
+    zoomMinus() {
+        this.element().transition()
+            .call(this._currZoom.scaleBy, 1 / 1.33)
+            ;
+    }
+
     centerOnBBox(bbox, transitionDuration?) {
         if (bbox.width && bbox.height) {
             const x = bbox.x + bbox.width / 2;
@@ -139,7 +147,7 @@ export class SVGZoomWidget extends SVGWidget {
         }
     }
 
-    zoomToBBox(bbox, transitionDuration?) {
+    zoomToBBox(bbox, transitionDuration?, widthOnly: boolean = false, scale?: number) {
         if (bbox.width && bbox.height) {
             const x = bbox.x + bbox.width / 2;
             const y = bbox.y + bbox.height / 2;
@@ -148,19 +156,33 @@ export class SVGZoomWidget extends SVGWidget {
             const width = this.width();
             const height = this.height();
 
-            let scale = 1 / Math.max(dx / width, dy / height);
-            if (this.zoomToFitLimit_exists() && scale > this.zoomToFitLimit()) {
-                scale = this.zoomToFitLimit();
+            let newScale = scale || 1 / (widthOnly ? dx / width : Math.max(dx / width, dy / height));
+            if (this.zoomToFitLimit_exists() && newScale > this.zoomToFitLimit()) {
+                newScale = this.zoomToFitLimit();
             }
-            const translate = [width / 2 - scale * x, height / 2 - scale * y];
-            this.zoomTo(translate, scale, transitionDuration);
+            const translate = [width / 2 - newScale * x, height / 2 - newScale * y];
+            this.zoomTo(translate, newScale, transitionDuration);
+        }
+    }
+
+    zoomToScale(scale, transitionDuration?) {
+        if (this._renderElement) {
+            const bbox = this._renderElement.node().getBBox();
+            this.zoomToBBox(bbox, transitionDuration, undefined, scale);
+        }
+    }
+
+    zoomToWidth(transitionDuration?) {
+        if (this._renderElement) {
+            const bbox = this._renderElement.node().getBBox();
+            this.zoomToBBox(bbox, transitionDuration, true);
         }
     }
 
     zoomToFit(transitionDuration?) {
         if (this._renderElement) {
             const bbox = this._renderElement.node().getBBox();
-            this.zoomToBBox(bbox);
+            this.zoomToBBox(bbox, transitionDuration);
         }
     }
 

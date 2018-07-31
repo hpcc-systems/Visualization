@@ -1,4 +1,4 @@
-﻿import { Palette, TextBox } from "@hpcc-js/common";
+﻿import { Palette } from "@hpcc-js/common";
 import { Scope, Workunit, WUDetails } from "@hpcc-js/comms";
 import { MiniGantt } from "@hpcc-js/timeline";
 import { hashSum } from "@hpcc-js/util";
@@ -12,12 +12,15 @@ export class WUTimeline extends MiniGantt {
     constructor() {
         super();
         this
-            .columns(["label", "start", "end"])
+            .columns(["label", "start", "end", "icon", "color"])
+            .titleColumn("label")
+            .iconColumn("icon")
+            .colorColumn("color")
             .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
             .tickFormat("%H:%M")
             .tooltipTimeFormat("%H:%M:%S.%L")
             .tooltipHTML(d => {
-                return d[3].calcTooltip();
+                return d[5].calcTooltip();
             })
             ;
     }
@@ -44,6 +47,8 @@ export class WUTimeline extends MiniGantt {
                         scope.Id,
                         new Date(whenStarted).toISOString(),
                         timeElapsed ? new Date(whenStarted + timeElapsed).toISOString() : undefined,
+                        null,
+                        this._palette(scope.ScopeType),
                         scope
                     ];
                 });
@@ -67,14 +72,6 @@ export class WUTimeline extends MiniGantt {
 
     exit(domNode, element) {
         super.exit(domNode, element);
-    }
-
-    enterTextBox(textBox: TextBox, d) {
-        const color = this._palette(d.ScopeType);
-        textBox.shape_colorFill(color);
-    }
-
-    updateTextBox(textBox: TextBox, d) {
     }
 }
 WUTimeline.prototype._class += " eclwatch_WUTimeline";

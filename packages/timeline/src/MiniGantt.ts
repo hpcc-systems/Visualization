@@ -61,7 +61,7 @@ export class MiniGantt extends SVGWidget {
 
     extent() {
         const extent = this.rootExtent ? [this.rootExtent[1], this.rootExtent[2]] : this.fullExtent();
-        if (extent[0] === extent[1]) {
+        if (extent[0] !== undefined && extent[1] !== undefined && extent[0] === extent[1]) {
             const parser = d3TimeParse(this.timePattern());
             const formatter = d3TimeFormat(this.timePattern());
             const dt = parser(extent[0]);

@@ -48,9 +48,11 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
                 ScopeTypes: ["graph", "subgraph", "activity", "edge"]
             },
             PropertiesToReturn: {
-                AllProperties: true,
                 AllStatistics: true,
-                AllHints: true
+                AllAttributes: true,
+                AllHints: true,
+                AllProperties: true,
+                AllScopes: true
             },
             ScopeOptions: {
                 IncludeId: true,

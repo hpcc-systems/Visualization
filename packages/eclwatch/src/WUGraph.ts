@@ -225,7 +225,6 @@ export class WUGraph extends ChartPanel {
 
     render(callback?: (w: Widget) => void): this {
         if (this.wuid() && this.graphID()) {
-            this._graph.statusText("Fetching...");
             this.fetchScopeGraph().then(scopedGraph => {
                 this._gc.set(scopedGraph);
                 this._legend.data(this._gc.calcLegend());

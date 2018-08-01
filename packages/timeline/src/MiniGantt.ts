@@ -1,10 +1,10 @@
 import { ITooltip } from "@hpcc-js/api";
 import { Axis } from "@hpcc-js/chart";
-import { EntityPin, publish, SVGWidget, TextBox, Utility } from "@hpcc-js/common";
+import { EntityPin, EntityRect, SVGWidget, Utility } from "@hpcc-js/common";
 import { extent as d3Extent } from "d3-array";
 import { scaleBand as d3ScaleBand } from "d3-scale";
 import { event as d3Event, local as d3Local, select as d3Select } from "d3-selection";
-import { timeFormat as d3TimeFormat } from "d3-time-format";
+import { timeFormat as d3TimeFormat, timeParse as d3TimeParse } from "d3-time-format";
 import { zoom as d3Zoom, zoomIdentity as d3ZoomIdentity } from "d3-zoom";
 
 import "../src/MiniGantt.css";
@@ -13,37 +13,22 @@ export class MiniGantt extends SVGWidget {
     protected tlAxis: Axis;
     protected brAxis: Axis;
     protected verticalBands;
-    protected gLowerContent;
     protected _zoom;
-    protected gUpper;
-    protected gLower;
-    protected gLowerGuide;
-    private localText = d3Local<TextBox>();
+    protected gUpperContent;
+    protected gUpperAxis;
+    protected gMiddleContent;
+    protected gLowerAxis;
+    protected gLowerContent;
+    private localRect = d3Local<EntityRect>();
     private localEntityPin = d3Local<EntityPin>();
     private tooltipFormatter: (date: Date) => string;
 
     protected rootExtent;
-
-    @publish("%Y-%m-%d", "string", "Time Series Pattern")
-    timePattern: publish<this, string>;
-    @publish("%Y-%m-%d", "string", "Tick Format", null, { optional: true })
-    tickFormat: publish<this, string>;
-    @publish("%Y-%m-%d", "string", "Tooltip Format", null, { optional: true })
-    tooltipTimeFormat: publish<this, string>;
-    @publish(2, "number", "Force new lane if start/end is within X pixels")
-    overlapTolerence: publish<this, number>;
-    @publish("horizontal", "set", "Orientation", ["horizontal", "vertical"])
-    orientation: publish<this, "horizontal" | "vertical">;
-    @publish(16, "number", "maxZoom")
-    maxZoom: publish<this, number>;
-    @publish(false, "boolean", "hideIconWhenCollapsed")
-    hideIconWhenCollapsed: publish<this, boolean>;
-    @publish(false, "boolean", "hideTitleWhenCollapsed")
-    hideTitleWhenCollapsed: publish<this, boolean>;
-    @publish(true, "boolean", "hideDescriptionWhenCollapsed")
-    hideDescriptionWhenCollapsed: publish<this, boolean>;
-    @publish(true, "boolean", "hideAnnotationsWhenCollapsed")
-    hideAnnotationsWhenCollapsed: publish<this, boolean>;
+    protected _title_idx = 0;
+    protected _startDate_idx = 1;
+    protected _endDate_idx = 2;
+    protected _icon_idx = 3;
+    protected _color_idx = 4;
 
     constructor() {
         super();
@@ -51,7 +36,7 @@ export class MiniGantt extends SVGWidget {
         Utility.SimpleSelectionMixin.call(this);
 
         this._drawStartPos = "origin";
-        this.tooltipHTML((d: any) => `<center>${d[0]}</center><br>${this.tooltipFormatter(this.brAxis.parse(d[1]))} -> ${this.tooltipFormatter(this.brAxis.parse(d[2]))}`);
+        this.tooltipHTML((d: any) => `<center>${d[this._title_idx]}</center><br>${this.tooltipFormatter(this.brAxis.parse(d[this._startDate_idx]))} -> ${this.tooltipFormatter(this.brAxis.parse(d[this._endDate_idx]))}`);
 
         this.tlAxis = new Axis()
             .type("time")
@@ -70,23 +55,28 @@ export class MiniGantt extends SVGWidget {
     }
 
     fullExtent() {
-        const data = [...this.data().map(d => d[1]), ...this.data().filter(d => !!d[2]).map(d => d[2])];
+        const data = [...this.data().map(d => d[this._startDate_idx]), ...this.data().filter(d => !!d[this._endDate_idx]).map(d => d[this._endDate_idx])];
         return d3Extent(data);
     }
 
     extent() {
-        if (this.rootExtent) {
-            return [this.rootExtent[1], this.rootExtent[2]];
+        const extent = this.rootExtent ? [this.rootExtent[1], this.rootExtent[2]] : this.fullExtent();
+        if (extent[0] === extent[1]) {
+            const parser = d3TimeParse(this.timePattern());
+            const formatter = d3TimeFormat(this.timePattern());
+            const dt = parser(extent[0]);
+            extent[0] = formatter(new Date(dt.setFullYear(dt.getFullYear() - 1)));
+            extent[1] = formatter(new Date(dt.setFullYear(dt.getFullYear() + 2)));
         }
-        return this.fullExtent();
+        return extent;
     }
 
     dataStartPos(d) {
-        return this.brAxis.scalePos(d[1]);
+        return this.brAxis.scalePos(d[this._startDate_idx]);
     }
 
     dataEndPos(d) {
-        return this.brAxis.scalePos(d[2]);
+        return this.brAxis.scalePos(d[this._endDate_idx]);
     }
 
     dataWidth(d) {
@@ -123,31 +113,40 @@ export class MiniGantt extends SVGWidget {
                 this.resetZoom();
             })
             ;
-        this.gUpper = element.append("g");
-        this.gLower = element.append("g");
-        this.gLowerGuide = this.gLower.append("g");
-        this.gLowerContent = this.gLower.append("g");
+        this.gUpperContent = element.append("g").attr("class", "gUpperContent");
+        this.gUpperAxis = element.append("g").attr("class", "gUpperAxis");
+        this.gMiddleContent = element.append("g").attr("class", "gMiddleContent");
+        this.gLowerAxis = element.append("g").attr("class", "gLowerAxis");
+        this.gLowerContent = element.append("g").attr("class", "gLowerContent");
         this.tlAxis
-            .target(this.gLower.node())
-            .guideTarget(this.gLowerGuide.node())
+            .target(this.gUpperAxis.node())
+            .tickFormat(this.tickFormat())
+            .guideTarget(this.gUpperAxis.append("g").node())
             .shrinkToFit("none")
             .overlapMode("stagger")
             .extend(0.1)
             ;
         this.brAxis
-            .target(element.node())
-            .guideTarget(this.gLowerGuide.node())
+            .target(this.gLowerAxis.node())
+            .tickFormat(this.tickFormat())
+            .guideTarget(this.gLowerAxis.append("g").node())
             .shrinkToFit("none")
             .extend(0.1)
             ;
 
         element.call(this._zoom);
-        this._selection.widgetElement(this.gLower);
+        this._selection.widgetElement(this.gMiddleContent);
     }
 
     private _prevIsHorizontal;
     update(domNode, element) {
         super.update(domNode, element);
+
+        this._title_idx = this.titleColumn() !== null ? this.columns().indexOf(this.titleColumn()) : this._title_idx;
+        this._startDate_idx = this.startDateColumn() !== null ? this.columns().indexOf(this.startDateColumn()) : this._startDate_idx;
+        this._endDate_idx = this.endDateColumn() !== null ? this.columns().indexOf(this.endDateColumn()) : this._endDate_idx;
+        this._icon_idx = this.iconColumn() !== null ? this.columns().indexOf(this.iconColumn()) : this._icon_idx;
+        this._color_idx = this.colorColumn() !== null ? this.columns().indexOf(this.colorColumn()) : this._color_idx;
 
         if (this._prevIsHorizontal !== this.isHorizontal()) {
             this._prevIsHorizontal = this.isHorizontal();
@@ -168,13 +167,11 @@ export class MiniGantt extends SVGWidget {
             ;
 
         const extent = this.extent();
-
         this.tlAxis
             .x(width / 2)
             .orientation(this.isHorizontal() ? "top" : "left")
             .reverse(!this.isHorizontal())
             .timePattern(this.timePattern())    //  "%Y-%m-%dT%H:%M:%S.%LZ"
-            .tickFormat(this.tickFormat())      //  "%H:%M:%S"
             .width(width - 1)
             .low(extent[0])
             .high(extent[1])
@@ -225,32 +222,40 @@ export class MiniGantt extends SVGWidget {
         } : (l, r) => {
             return this.brAxis.scalePos(r[1]) - this.brAxis.scalePos(l[1]);
         });
-        const events = data.filter(d => !d[2]);
-        const ranges = data.filter(d => !!d[2]);
+        const events = data.filter(d => !d[this._endDate_idx]);
+        const ranges = data.filter(d => !!d[this._endDate_idx]);
 
+        this.tlAxis
+            .render()
+            ;
         this.brAxis
             .render()
             ;
         const brAxisBBox = this.brAxis.getBBox();
 
-        const upperHeight = Math.max(this.updateEntityPins(events), 100);
-        const lowerHeight = height - upperHeight;
-        const gUpperTransY = upperHeight - 5;
-        this.gUpper
-            .attr("class", "gUpper")
-            .attr("transform", `translate(0,${gUpperTransY})`)
-            ;
-        this.gLower
-            .attr("class", "gLower")
-            .attr("transform", `translate(0,${upperHeight})`)
-            ;
+        const upperContentHeight = this.updateEntityPins(events);
+        const upperAxisHeight = this.gUpperAxis.node().getBBox().height;
+        const lowerHeight = height - upperContentHeight;
+
+        if (events.length > 0 && ranges.length === 0) {
+            // ONLY EVENTS
+            this.gUpperAxis.attr("display", "none");
+            this.gUpperContent.attr("transform", `translate(0, ${(height / 2) + (upperContentHeight / 2)})`);
+            this.gLowerAxis.attr("transform", `translate(0, -${(height / 2) - upperAxisHeight - (upperContentHeight / 2)})`);
+        } else if (events.length === 0 && ranges.length > 0) {
+            // ONLY RANGES
+            this.gUpperAxis.attr("display", "block");
+            this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);
+            this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
+        } else {
+            // BOTH
+            this.gUpperAxis.attr("display", "block");
+            this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);
+            this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
+            this.gMiddleContent.attr("transform", `translate(0, ${upperContentHeight})`);
+        }
 
         this.tlAxis
-            .y(lowerHeight / 2)
-            .height(lowerHeight)
-            .ticks([])
-            .tickCount(0)
-            .hidden(true)
             .render()
             ;
         const tlAxisBBox = this.tlAxis.getBBox();
@@ -279,24 +284,36 @@ export class MiniGantt extends SVGWidget {
 
         const vbLower = this.isHorizontal() ? 0 + tlAxisBBox.height : 0 + tlAxisBBox.width;
         const vbHigher = this.isHorizontal() ? lowerHeight - brAxisBBox.height : width - brAxisBBox.width;
-
         this.verticalBands
             .range([vbLower, vbHigher])
             .domain(bucketData.map((_d, i) => i))
             ;
 
-        this.updateEventRanges(events, ranges, bucketIndex, lowerHeight, tlAxisBBox, brAxisBBox, width);
+        if (ranges.length > 0) {
+            this.updateEventRanges(events, ranges, bucketIndex, lowerHeight, tlAxisBBox, brAxisBBox, width);
+        }
     }
 
     updateEntityPins(events) {
-        const context = this;
         let event_height = 0;
-        const entityPins = this.gUpper.selectAll(".entity_pin").data(events, d => d[0] + ":" + d[1]);
+        const context = this;
+        const entityPins = this.gUpperContent.selectAll(".entity_pin").data(events, d => d[0] + ":" + d[1]);
         const eventFontColor_idx = this.eventFontColorColumn() ? this.columns().indexOf(this.eventFontColorColumn()) : -1;
         const eventBorderColor_idx = this.eventBorderColorColumn() ? this.columns().indexOf(this.eventBorderColorColumn()) : -1;
         const eventBackgroundColor_idx = this.eventBackgroundColorColumn() ? this.columns().indexOf(this.eventBackgroundColorColumn()) : -1;
-        entityPins.enter().append("g")
-            .attr("class", "entity_pin")
+        const title_counts = {};
+        for (const d of events) {
+            const type = typeof d[context._title_idx] !== "undefined" ? d[context._title_idx] : d[0];
+            title_counts[type] = title_counts[type] ? title_counts[type] + 1 : 1;
+        }
+        const title_types = Object.keys(title_counts);
+        const title_group_offset = context.eventGroupOffset();
+        const entityPinsEnter = entityPins.enter().append("g")
+            .attr("class", "entity_pin");
+        entityPinsEnter.append("line")
+            .attr("class", "entity_line");
+
+        entityPinsEnter
             .on("mouseover", function (d) {
                 d3Select(this).raise();
             })
@@ -310,9 +327,8 @@ export class MiniGantt extends SVGWidget {
                     .annotationOnlyShowOnHover(context.hideAnnotationsWhenCollapsed())
                     .iconDiameter(18)
                     .iconPaddingPercent(1)
-                    .titleColor("#E3151A")
                     .titleFontSize(14)
-                    .descriptionColor("#000000")
+                    .descriptionColor("#333")
                     .descriptionFontSize(15)
                     .iconColor(eventFontColor_idx === -1 ? "#333" : d[eventFontColor_idx])
                     .titleColor(eventFontColor_idx === -1 ? "#333" : d[eventFontColor_idx])
@@ -329,25 +345,38 @@ export class MiniGantt extends SVGWidget {
             .merge(entityPins)
             .each(function (d, i) {
                 const entityPin = context.localEntityPin.get(this);
-                if (d[0] !== entityPin.title() && d[1] !== entityPin.description()) {
-                    const parsed_start_time = context.brAxis.parse(d[1]);
+                const _title = typeof d[context._title_idx] !== "undefined" ? d[context._title_idx] : entityPin.title();
+                const x_offset = context.dataStartPos(d) - 0;
+                const y_offset = ((title_types.indexOf(_title) % context.eventGroupMod()) * title_group_offset) - 5;
+                if (d[context._title_idx] !== entityPin.title() && d[context._startDate_idx] !== entityPin.description()) {
+                    const parsed_start_time = context.brAxis.parse(d[context._startDate_idx]);
                     const formatted_start_time = context.tooltipFormatter(parsed_start_time);
                     entityPin
-                        .x(context.dataStartPos(d) - 0)
-                        .y(0)
+                        .x(x_offset)
+                        .y(y_offset)
                         .iconOnlyShowOnHover(context.hideIconWhenCollapsed())
                         .titleOnlyShowOnHover(context.hideTitleWhenCollapsed())
                         .descriptionOnlyShowOnHover(context.hideDescriptionWhenCollapsed())
                         .annotationOnlyShowOnHover(context.hideAnnotationsWhenCollapsed())
-                        .title(d[0])
+                        .icon(typeof d[context._icon_idx] !== "undefined" ? d[context._icon_idx] : entityPin.icon())
+                        .title(_title)
                         .description(formatted_start_time)
                         .animationFrameRender()
                         ;
                 } else {
-                    entityPin.move({ x: context.dataStartPos(d) - 0, y: 0 });
+                    entityPin.move({ x: x_offset, y: y_offset });
                 }
                 const calc_height = entityPin.calcHeight();
                 if (event_height < calc_height) event_height = calc_height;
+
+                d3Select(this).selectAll(".entity_line")
+                    .attr("x1", x_offset)
+                    .attr("x2", x_offset)
+                    .attr("y1", 0)
+                    .attr("y2", y_offset)
+                    .style("stroke", eventFontColor_idx === -1 ? "#ccc" : d[eventBorderColor_idx])
+                    .style("stroke-width", 1)
+                    ;
             })
             ;
         entityPins.exit()
@@ -357,23 +386,46 @@ export class MiniGantt extends SVGWidget {
 
             })
             .remove();
-        return event_height;
+        const event_offset = Math.abs(Math.min(events.length, context.eventGroupMod()) * context.eventGroupOffset());
+        return event_height + event_offset;
     }
 
     updateEventRanges(events, ranges, bucketIndex, eventRangeHeight, tlAxisBBox, brAxisBBox, width) {
         const context = this;
 
-        const buckets = this.gLowerContent.selectAll(".buckets").data(ranges, d => d[0]);
+        const lines = this.gMiddleContent.selectAll(".line").data(events, d => {
+            return d[context._title_idx];
+        });
+        lines.enter().append("line")
+            .attr("class", "line")
+            .merge(lines)
+            .attr(this.isHorizontal() ? "x1" : "y1", d => this.dataStartPos(d) - 0)
+            .attr(this.isHorizontal() ? "x2" : "y2", d => this.dataStartPos(d) - 0)
+            .attr(this.isHorizontal() ? "y1" : "x1", this.isHorizontal() ? tlAxisBBox.height : tlAxisBBox.width)
+            .attr(this.isHorizontal() ? "y2" : "x2", this.isHorizontal() ? eventRangeHeight - brAxisBBox.height : width - brAxisBBox.width)
+            ;
+        lines.exit().remove();
+        const buckets = this.gMiddleContent.selectAll(".buckets").data(ranges, d => d[context._title_idx]);
         buckets.enter().append("g")
             .attr("class", "buckets")
             .call(this._selection.enter.bind(this._selection))
             .each(function (d) {
-                const text = new TextBox()
+                const entityRect = new EntityRect()
                     .target(this)
-                    .anchor("middle")
+                    .icon(typeof d[context._icon_idx] !== "undefined" ? d[context._icon_idx] : null)
+                    .iconDiameter(28)
+                    .iconPaddingPercent(0)
+                    .title("SomeTitle")
+                    .titleFontSize(28)
+                    .titleColor(context.rangeFontColor())
+                    .descriptionColor(context.rangeFontColor())
+                    .iconColor(context.rangeFontColor())
+                    .backgroundShape("rect")
+                    .backgroundColorFill(d[context._color_idx])
+                    .backgroundColorStroke("#333")
                     ;
-                context.localText.set(this, text);
-                context.enterTextBox(text, d[3]);
+                context.localRect.set(this, entityRect);
+                context.enterEntityRect(entityRect, d);
             })
             .on("click", function (d) {
                 context.click(context.rowToObj(d), "range", context._selection.selected(this));
@@ -390,35 +442,35 @@ export class MiniGantt extends SVGWidget {
                 `translate(${this.dataStartPos(d)}, ${this.verticalBands(bucketIndex[d])}) ` :
                 `translate(${this.verticalBands(bucketIndex[d])}, ${this.dataStartPos(d)}) `)
             .each(function (d) {
-                const textBox = context.localText.get(this);
+                const textBox = context.localRect.get(this);
                 const x = context.dataWidth(d) / 2;
                 const y = context.verticalBands.bandwidth() / 2;
-                const textBoxWidth = Math.max(context.dataWidth(d), 2);
-                const textBoxHeight = Math.max(context.verticalBands.bandwidth(), 2);
+                const rectWidth = Math.max(context.dataWidth(d), 2);
+                const rectHeight = Math.max(context.verticalBands.bandwidth(), 2);
+                const fontHeightRatio = 0.618;
+                const paddingRatio = ((1 - fontHeightRatio) / 2);
+                const paddingSize = paddingRatio * rectHeight;
+                const fontSize = rectHeight * fontHeightRatio;
+                const iconSize = fontSize;
                 textBox
                     .pos(context.isHorizontal() ? { x, y } : { x: y, y: x })
-                    .fixedSize(context.isHorizontal() ? { width: textBoxWidth, height: textBoxHeight } : { width: textBoxHeight, height: textBoxWidth })
-                    .text(d[0])
+                    .fixedHeight(context.isHorizontal() ? rectHeight : rectWidth)
+                    .fixedWidth(context.isHorizontal() ? rectWidth : rectHeight)
+                    .icon(typeof d[context._icon_idx] !== "undefined" ? d[context._icon_idx] : "")
+                    .title(typeof d[context._title_idx] !== "undefined" ? d[context._title_idx] : "")
+                    .padding(paddingSize)
+                    .iconDiameter(iconSize)
+                    .titleFontSize(fontSize)
                     ;
-                context.updateTextBox(textBox, d[3]);
+                if (iconSize * 1.5 > rectWidth) {
+                    textBox.icon(null);
+                }
+                context.updateEntityRect(textBox, d[context._icon_idx]);
                 textBox
                     .render()
                     ;
             });
         buckets.exit().remove();
-
-        const lines = this.gLowerContent.selectAll(".line").data(events, d => {
-            return d[0];
-        });
-        lines.enter().append("line")
-            .attr("class", "line")
-            .merge(lines)
-            .attr(this.isHorizontal() ? "x1" : "y1", d => this.dataStartPos(d) - 0)
-            .attr(this.isHorizontal() ? "x2" : "y2", d => this.dataStartPos(d) - 0)
-            .attr(this.isHorizontal() ? "y1" : "x1", this.isHorizontal() ? tlAxisBBox.height : tlAxisBBox.width)
-            .attr(this.isHorizontal() ? "y2" : "x2", this.isHorizontal() ? eventRangeHeight - brAxisBBox.height : width - brAxisBBox.width)
-            ;
-        lines.exit().remove();
     }
 
     //  Events  ---
@@ -428,10 +480,10 @@ export class MiniGantt extends SVGWidget {
     dblclick(row, col, sel) {
     }
 
-    enterTextBox(textbox: TextBox, d) {
+    enterEntityRect(textbox: EntityRect, d) {
     }
 
-    updateTextBox(textbox: TextBox, d) {
+    updateEntityRect(textbox: EntityRect, d) {
     }
 
     //  ITooltip  ---
@@ -447,14 +499,69 @@ MiniGantt.prototype.implements(ITooltip.prototype);
 MiniGantt.prototype.mixin(Utility.SimpleSelectionMixin);
 
 export interface MiniGantt {
+    timePattern(): string;
+    timePattern(_: string): this;
+    tickFormat(): string;
+    tickFormat(_: string): this;
+    tooltipTimeFormat(): string;
+    tooltipTimeFormat(_: string): this;
+    overlapTolerence(): number;
+    overlapTolerence(_: number): this;
+    orientation(): string;
+    orientation(_: string): this;
+    rangeFontColor(): string;
+    rangeFontColor(_: string): this;
+    titleColumn(): string;
+    titleColumn(_: string): this;
+    startDateColumn(): string;
+    startDateColumn(_: string): this;
+    endDateColumn(): string;
+    endDateColumn(_: string): this;
+    iconColumn(): string;
+    iconColumn(_: string): this;
+    colorColumn(): string;
+    colorColumn(_: string): this;
+    maxZoom(): number;
+    maxZoom(_: number): this;
+    eventGroupMod(): number;
+    eventGroupMod(_: number): this;
+    eventGroupOffset(): number;
+    eventGroupOffset(_: number): this;
     eventFontColorColumn(): string;
     eventFontColorColumn(_: string): this;
     eventBorderColorColumn(): string;
     eventBorderColorColumn(_: string): this;
     eventBackgroundColorColumn(): string;
     eventBackgroundColorColumn(_: string): this;
+    hideIconWhenCollapsed(): boolean;
+    hideIconWhenCollapsed(_: boolean): this;
+    hideTitleWhenCollapsed(): boolean;
+    hideTitleWhenCollapsed(_: boolean): this;
+    hideDescriptionWhenCollapsed(): boolean;
+    hideDescriptionWhenCollapsed(_: boolean): this;
+    hideAnnotationsWhenCollapsed(): boolean;
+    hideAnnotationsWhenCollapsed(_: boolean): this;
+
 }
 
+MiniGantt.prototype.publish("timePattern", "%Y-%m-%d", "string", "timePattern");
+MiniGantt.prototype.publish("tickFormat", "%Y-%m-%d", "string", "tickFormat");
+MiniGantt.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "tooltipTimeFormat");
+MiniGantt.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
+MiniGantt.prototype.publish("orientation", "horizontal", "set", "orientation", ["horizontal", "vertical"]);
+MiniGantt.prototype.publish("rangeFontColor", "#ecf0f1", "html-color", "rangeFontColor");
+MiniGantt.prototype.publish("titleColumn", null, "string", "titleColumn");
+MiniGantt.prototype.publish("startDateColumn", null, "string", "startDateColumn");
+MiniGantt.prototype.publish("endDateColumn", null, "string", "endDateColumn");
+MiniGantt.prototype.publish("iconColumn", null, "string", "iconColumn");
+MiniGantt.prototype.publish("colorColumn", null, "string", "colorColumn");
+MiniGantt.prototype.publish("maxZoom", 16, "number", "maxZoom");
+MiniGantt.prototype.publish("eventGroupOffset", -50, "number", "eventGroupOffset");
+MiniGantt.prototype.publish("eventGroupMod", 5, "number", "eventGroupMod");
 MiniGantt.prototype.publish("eventFontColorColumn", null, "string", "eventFontColorColumn");
 MiniGantt.prototype.publish("eventBorderColorColumn", null, "string", "eventBorderColorColumn");
 MiniGantt.prototype.publish("eventBackgroundColorColumn", null, "string", "eventBackgroundColorColumn");
+MiniGantt.prototype.publish("hideIconWhenCollapsed", false, "boolean", "hideIconWhenCollapsed");
+MiniGantt.prototype.publish("hideTitleWhenCollapsed", false, "boolean", "hideTitleWhenCollapsed");
+MiniGantt.prototype.publish("hideDescriptionWhenCollapsed", false, "boolean", "hideDescriptionWhenCollapsed");
+MiniGantt.prototype.publish("hideAnnotationsWhenCollapsed", true, "boolean", "hideAnnotationsWhenCollapsed");

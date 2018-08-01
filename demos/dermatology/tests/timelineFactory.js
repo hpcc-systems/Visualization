@@ -6,64 +6,139 @@
         root.test_layoutFactory = factory();
     }
 }(this, function () {
+    function random_datetime_string() {
+        const yyyy = 2004 + Math.floor(Math.random() * 15);
+        const mm = 1 + Math.floor(Math.random() * 12);
+        const dd = 1 + Math.floor(Math.random() * 28);
+        const hh = 1 + Math.floor(Math.random() * 23);
+        const min = 1 + Math.floor(Math.random() * 59);
+        const sec = 0 + Math.floor(Math.random() * 59);
+        return `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}T${hh < 10 ? '0' + hh : hh}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}.0Z`;
+    }
+    function random_datetime_ranges(n) {
+        return Array(n).fill("").map((row, row_idx) => {
+            const d1 = random_datetime_string();
+            const d2 = random_datetime_string();
+            const icon = ["","",""][Math.floor(Math.random()*3)];
+            return new Date(d1) - new Date(d2) > 0 ? [`Random Range #${row_idx}`, d2, d1, icon] : [`Random Range #${row_idx}`, d1, d2, icon];
+        });
+    }
+    function random_datetime_events(n) {
+        return Array(n).fill("").map((row, row_idx) => {
+            return [`Random Event #${row_idx}`, random_datetime_string()];
+        });
+    }
     return {
         MiniGantt: {
             simple: function (callback) {
-                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                legacyRequire(["src/timeline/MiniGantt"], function (MiniGantt) {
+                    let _data = random_datetime_ranges(20);
+                    _data = _data.concat(random_datetime_events(20));
                     callback(new MiniGantt()
-                        .columns(["Label", "start", "end", "fontColor", "borderColor", "bgColor"])
+                        .columns(["Label", "start", "end"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-                        .eventFontColorColumn("fontColor")
-                        .eventBorderColorColumn("borderColor")
-                        .eventBackgroundColorColumn("bgColor")
-                        .hideDescriptionWhenCollapsed(false)
-                        .data([
-                            ["Start", "2016-07-01T09:12:15.0Z", undefined, "#ff00ff", "#ccc", "#f8f8f8"],
-                            ["Credit\nFraud", "2016-07-01T11:45:45.0Z", undefined, "#ff0000", "#ccc", "#f8f8f8"],
-                            ["Credit Fraud", "2016-07-01T11:55:45.0Z", undefined, "#00ffff", "#ccc", "#f8f8f8"],
-                            ["Finish", "2016-07-01T12:30:45.0Z", undefined, "#ffff00", "#ccc", "#f8f8f8"]
-                        ])
+                        // .tickFormat("%H:%M")
+                        .tickFormat('%Y %m %d')
+                        .data(_data)
                     );
                 });
             },
             heavy: function (callback) {
                 legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
-                    const label_arr = ["Event", "Short Range", "Long Range"];
-                    const icon_arr = [""];
                     callback(new MiniGantt()
                         .columns(["Label", "start", "end"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-                        .tickFormat("%H:%M")
-                        .data(Array(300).fill("").map(function (row, row_idx) {
-                            const yyyy = 2004 + Math.floor(Math.random() * 15);
-                            const mm = 1 + Math.floor(Math.random() * 12);
-                            const dd = 1 + Math.floor(Math.random() * 28);
-                            const hh = 1 + Math.floor(Math.random() * 23);
-                            const min = 1 + Math.floor(Math.random() * 60);
-                            const sec = 0 + Math.floor(Math.random() * 60);
-                            const d1 = yyyy + "-" + mm < 10 ? '0' + mm : mm + "-" + dd < 10 ? '0' + dd : dd + "T" + hh < 10 ? '0' + hh : hh + ":" + min < 10 ? '0' + min : min + ":" + sec < 10 ? '0' + sec : sec + ".0Z";
-                            if (Math.random() > 0.1) {
-                                return ["Random Event #" + row_idx, d1];
-                            }
-                            const yyyy2 = 2004 + Math.floor(Math.random() * 15);
-                            const mm2 = 1 + Math.floor(Math.random() * 12);
-                            const dd2 = 1 + Math.floor(Math.random() * 28);
-                            const hh2 = 1 + Math.floor(Math.random() * 23);
-                            const min2 = 1 + Math.floor(Math.random() * 60);
-                            const sec2 = 0 + Math.floor(Math.random() * 60);
-                            const d2 = yyyy2 + "-" + mm2 < 10 ? '0' + mm2 : mm2 + "-" + dd2 < 10 ? '0' + dd2 : dd2 + "T" + hh2 < 10 ? '0' + hh2 : hh2 + ":" + min2 < 10 ? '0' + min2 : min2 + ":" + sec2 < 10 ? '0' + sec2 : sec2 + ".0Z";
-                            return new Date(d1) - new Date(d2) > 0 ? ["Random Range a #" + row_idx, d2, d1] : ["Random Range b #" + row_idx, d1, d2];
-                        }))
+                        .tickFormat("%b,%Y")
+                        .data(random_datetime_ranges(300))
                     );
                 });
             },
-            all_events: function (callback) {
+            only_ranges: function (callback) {
                 legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
                     callback(new MiniGantt()
-                        .columns(DataFactory.TimeLine.columns)
-                        .timePattern("%Y-%m-%d")
-                        .tickFormat("%H:%M")
-                        .data(DataFactory.TimeLine.data)
+                        .columns(["Label", "start", "end", "icon"])
+                        .iconColumn("icon")
+                        .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                        .data(random_datetime_ranges(20))
+                    );
+                });
+            },
+            only_events: function (callback) {
+                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    callback(new MiniGantt()
+                        .columns(["Label", "start", "end"])
+                        .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                        .tickFormat("%b, %Y")
+                        .data(random_datetime_events(20))
+                    );
+                });
+            },
+            one_event: function (callback) {
+                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    callback(new MiniGantt()
+                        .columns(["Label", "start", "end"])
+                        .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                        .data(random_datetime_events(1))
+                    );
+                });
+            },
+            emperors: function (callback) {
+                legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    //["name","birth","death","birth.cty","birth.prv","rise","reign.start","reign.end","cause","killer","dynasty","era"]
+                    let icon_map = {
+                        "Assassination": "",
+                        "Captivity": "",
+                        "Died in Battle": "",
+                        "Execution": "",
+                        "Natural Causes": "",
+                        "Suicide": "",
+                        "Unknown": ""
+                    };
+                    let color_map = {
+                        "Constantinian": "#eb2f06",//15 de55039
+                        "Flavian": "#079992",//6 p
+                        "Gordian": "#3c6382",//22 p
+                        "Julio-Claudian": "#4b6584",//5 p
+                        "Nerva-Antonine": "#60a3bc",//7 p
+                        "Severan": "#6a89cc",//8 p
+                        "Theodosian": "#e58e26",//1 p
+                        "Valentinian": "#e55039",//4 d
+                    };
+                    let _data = [];
+                    _data.push([
+                        "Principate",
+                        "0001-01-01",
+                        // "0284-01-01",
+                        undefined,
+                        "",
+                        "#0c2461"
+                    ]);
+                    _data.push([
+                        "Dominate",
+                        "0285-01-01",
+                        // "0395-01-17",
+                        undefined,
+                        "",
+                        "#b71540"
+                    ]);
+                    _data = _data.concat(DataFactory.Emperors.data.map(row => {
+                        let dynasty = row[10];
+                        let cause = row[8];
+                        return [
+                            row[10],
+                            row[6],
+                            // row[7], 
+                            undefined,
+                            icon_map[cause],
+                            color_map[dynasty]
+                        ];
+                    }));
+                    _data.push()
+                    callback(new MiniGantt()
+                        .columns(["Label", "Range Start", "Range End", "FA Icon Char", "Color"])
+                        .timePattern("%-Y-%m-%d")
+                        .tickFormat("AD %-Y")
+                        .data(_data)
                     );
                 });
             },

@@ -27,11 +27,11 @@ export class EntityCard extends Entity {
             anno_h = anno_h > this._annotation_widgets[i].bbox.height ? anno_h : this._annotation_widgets[i].bbox.height;
         }
 
-        const _background_h = Math.max(
+        const _background_h = this.fixedHeight() !== null ? this.fixedHeight() : Math.max(
             title_bbox.height + desc_bbox.height + (this.padding() * 3),
             anno_h + icon_bbox.height + (this.padding() * 3)
         );
-        const _background_w = Math.max(
+        const _background_w = this.fixedWidth() !== null ? this.fixedWidth() : Math.max(
             title_bbox.width + icon_bbox.width + (this.padding() * 3),
             anno_w + desc_bbox.width + (this.padding() * 3)
         );
@@ -55,3 +55,13 @@ export class EntityCard extends Entity {
     }
 }
 EntityCard.prototype._class += " common_EntityCard";
+
+export interface EntityCard {
+    fixedWidth(): number;
+    fixedWidth(_: number): this;
+    fixedHeight(): number;
+    fixedHeight(_: number): this;
+}
+
+EntityCard.prototype.publish("fixedWidth", null, "number", "fixedWidth");
+EntityCard.prototype.publish("fixedHeight", null, "number", "fixedHeight");

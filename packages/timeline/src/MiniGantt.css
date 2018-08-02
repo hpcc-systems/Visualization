@@ -13,7 +13,8 @@
 .timeline_MiniGantt .buckets .entity_shape rect {
   stroke: #333;
 }
-.timeline_MiniGantt .buckets.selected .common_TextBox .common_Shape {
+
+.timeline_MiniGantt .buckets.selected .common_EntityRect .common_Shape > rect {
   stroke: red;
 }
 

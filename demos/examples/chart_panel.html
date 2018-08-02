@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chart Panel Example</title>
+
+    <script defer src="../../hpccjs.js"></script>
+    <link rel="stylesheet" type="text/css" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'></link>
+    <script>
+        window.g_columns = ["Category","A","B","C","D"];
+        window.g_data = [
+            [1,2,3,4,5],
+            [2,3,4,5,6],
+            [3,4,5,6,7],
+            [4,5,6,7,8],
+        ];
+
+        function init_page(){
+            new hpccjs.layout.ChartPanel()
+                .target("placeholder")
+                .title("TEST")
+                .widget(
+                    new hpccjs.chart.Column()
+                        .xAxisHidden(true)
+                        .yAxisStacked(true)
+                )
+                .columns(g_columns)
+                .data(g_data)
+                .render()
+        }
+    </script>
+    <style>
+        body{
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body onload="init_page()">
+    <div id="placeholder" style="height:500px;width:800px"></div>
+</body>
+
+</html>

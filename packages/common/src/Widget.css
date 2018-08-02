@@ -2,3 +2,7 @@
     font-family: Verdana, Geneva, sans-serif;
     font-size: 12px;
 }
+
+#hpcc_js_font_size {
+    display: none;
+}

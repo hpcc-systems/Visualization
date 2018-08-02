@@ -45,7 +45,6 @@ export class Graph extends SVGZoomWidget {
     protected svgC;
     protected svgE;
     protected svgV;
-    protected svgStatus;
 
     constructor() {
         super();
@@ -94,18 +93,6 @@ export class Graph extends SVGZoomWidget {
             .render(w => {
                 this.applyScaleOnLayout(false);
             });
-    }
-
-    statusText(_: string): this {
-        if (this.svgStatus) {
-            this.svgStatus
-                .attr("transform", `translate(${this.width() / 2}, ${this.height() / 2})`)
-                .attr("display", _ !== "" ? null : "none")
-                .text(_)
-                ;
-            this.svg.style("opacity", _ ? 0.90 : null);
-        }
-        return this;
     }
 
     //  Properties  ---
@@ -277,12 +264,6 @@ export class Graph extends SVGZoomWidget {
         this.svgC = this.svg.append("g").attr("id", this._id + "C");
         this.svgE = this.svg.append("g").attr("id", this._id + "E");
         this.svgV = this.svg.append("g").attr("id", this._id + "V");
-        this.svgStatus = element.append("text")
-            .attr("font-size", 48)
-            .style("text-anchor", "middle")
-            .style("fill", "darkgrey")
-            .text("Load...")
-            ;
     }
 
     getBounds(items, layoutEngine?) {
@@ -362,9 +343,6 @@ export class Graph extends SVGZoomWidget {
         this._toggleForceDirected2.selected(layout === "ForceDirected2").render();
         this._toggleCircle.selected(layout === "Circle").render();
 
-        //  Status Text  ---
-        this.svgStatus.attr("transform", `translate(${this.width() / 2}, ${this.height() / 2})`);
-
         //  Create  ---
         const width = this.width();
         const height = this.height();
@@ -378,7 +356,7 @@ export class Graph extends SVGZoomWidget {
             .on("click.selectionBag", function (d) {
                 context._selection.click(d, d3Event);
             })
-            .on("click", function (d) {
+            .on("click", function (this: SVGElement, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -388,7 +366,7 @@ export class Graph extends SVGZoomWidget {
                     vertex: d
                 });
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (this: SVGElement, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -398,7 +376,7 @@ export class Graph extends SVGZoomWidget {
                     vertex: d
                 });
             })
-            .on("contextmenu", function (d) {
+            .on("contextmenu", function (this: SVGElement, d) {
                 const vertexElement = d3Select(this).select(".graph_Vertex");
                 let selected = false;
                 if (!vertexElement.empty()) {
@@ -410,12 +388,12 @@ export class Graph extends SVGZoomWidget {
             })
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
-            .on("mouseover", function (d) {
+            .on("mouseover", function (this: SVGElement, d) {
                 if (context._dragging)
                     return;
                 context.vertex_mouseover(d3Select(this), d);
             })
-            .on("mouseout", function (d) {
+            .on("mouseout", function (this: SVGElement, d) {
                 if (context._dragging)
                     return;
                 context.vertex_mouseout(d3Select(this), d);
@@ -425,7 +403,7 @@ export class Graph extends SVGZoomWidget {
             .duration(750)
             .style("opacity", 1)
             ;
-        function createV(d) {
+        function createV(this: SVGElement, d) {
             d3Select(this).style("cursor", context.allowDragging() ? "move" : "pointer");
             d
                 .target(this)
@@ -469,7 +447,7 @@ export class Graph extends SVGZoomWidget {
             .on("click.selectionBag", function (d) {
                 context._selection.click(d, d3Event);
             })
-            .on("click", function (d) {
+            .on("click", function (this: SVGElement, d) {
                 const edgeElement = d3Select(this).select(".graph_Edge");
                 let selected = false;
                 if (!edgeElement.empty()) {
@@ -479,7 +457,7 @@ export class Graph extends SVGZoomWidget {
                     edge: d
                 });
             })
-            .on("dblclick", function (d) {
+            .on("dblclick", function (this: SVGElement, d) {
                 const edgeElement = d3Select(this).select(".graph_Edge");
                 let selected = false;
                 if (!edgeElement.empty()) {
@@ -491,12 +469,12 @@ export class Graph extends SVGZoomWidget {
             })
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
-            .on("mouseover", function (d) {
+            .on("mouseover", function (this: SVGElement, d) {
                 if (context._dragging)
                     return;
                 context.edge_mouseover(d3Select(this), d);
             })
-            .on("mouseout", function (d) {
+            .on("mouseout", function (this: SVGElement, d) {
                 if (context._dragging)
                     return;
                 context.edge_mouseout(d3Select(this), d);
@@ -506,7 +484,7 @@ export class Graph extends SVGZoomWidget {
             .duration(750)
             .style("opacity", 1)
             ;
-        function createE(d) {
+        function createE(this: SVGElement, d) {
             d
                 .target(this)
                 .animationFrameRender()
@@ -556,19 +534,13 @@ export class Graph extends SVGZoomWidget {
 
     static profileID = 0;
     render(callback?: (w: Widget) => void): this {
-        this.statusText("Render...");
+        this.progress("start");
         super.render(w => {
-            requestAnimationFrame(() => {
-                this.statusText("Layout...");
-                this.doLayout().then(() => {
-                    requestAnimationFrame(() => {
-                        this.statusText("");
-                        d3Select("body").classed("waiting", false);
-                        if (callback) {
-                            callback(w);
-                        }
-                    });
-                });
+            this.doLayout().then(() => {
+                this.progress("end");
+                if (callback) {
+                    callback(w);
+                }
             });
         });
         return this;
@@ -591,6 +563,7 @@ export class Graph extends SVGZoomWidget {
     }
 
     _doLayout(transitionDuration = 0) {
+        this.progress("layout-start");
         if (this.forceLayout) {
             this.forceLayout.force.stop();
             this.forceLayout = null;
@@ -600,34 +573,40 @@ export class Graph extends SVGZoomWidget {
         const layoutEngine = this.getLayoutEngine();
         if (this.layout() === "ForceDirected2") {
             this.forceLayout = layoutEngine;
-            this.forceLayout.force.on("tick", function () {
-                layoutEngine.vertices.forEach(function (item) {
-                    if (item.fixed) {
-                        // item.x = item.px;
-                        // item.y = item.py;
-                    } else {
-                        // item.px = item.x;
-                        // item.py = item.y;
+            this.forceLayout.force
+                .on("tick", function (this: SVGElement) {
+                    context.progress("layout-tick");
+                    layoutEngine.vertices.forEach(function (item) {
+                        if (item.fixed) {
+                            // item.x = item.px;
+                            // item.y = item.py;
+                        } else {
+                            // item.px = item.x;
+                            // item.py = item.y;
 
-                        //  Might have been cleared ---
-                        const vertex = context._graphData.node(item.id);
-                        if (vertex) {
-                            vertex
-                                .move({ x: item.x, y: item.y })
-                                ;
+                            //  Might have been cleared ---
+                            const vertex = context._graphData.node(item.id);
+                            if (vertex) {
+                                vertex
+                                    .move({ x: item.x, y: item.y })
+                                    ;
+                            }
                         }
+                    });
+                    context._graphData.edgeValues().forEach(function (item) {
+                        item
+                            .points([], false, false)
+                            ;
+                    });
+                    if (context.applyScaleOnLayout()) {
+                        // const vBounds = context.getVertexBounds(layoutEngine);
+                        // context.shrinkToFit(vBounds);
                     }
-                });
-                context._graphData.edgeValues().forEach(function (item) {
-                    item
-                        .points([], false, false)
-                        ;
-                });
-                if (context.applyScaleOnLayout()) {
-                    // const vBounds = context.getVertexBounds(layoutEngine);
-                    // context.shrinkToFit(vBounds);
-                }
-            });
+                })
+                .on("end", function (this: SVGElement) {
+                    context.progress("layout-end");
+                })
+                ;
             this.forceLayout.force.restart();
         } else if (layoutEngine) {
             this.forceLayout = null;
@@ -657,6 +636,7 @@ export class Graph extends SVGZoomWidget {
             setTimeout(function () {
                 context._dragging = false;
             }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
+            this.progress("layout-end");
         }
     }
 
@@ -950,6 +930,10 @@ export class Graph extends SVGZoomWidget {
     tooltip;
     tooltipHTML: (_) => string;
     tooltipFormat: (_) => string;
+
+    //  Progess Events ---
+    progress(what: "start" | "end" | "layout-start" | "layout-tick" | "layout-end") {
+    }
 }
 Graph.prototype._class += " graph_Graph";
 Graph.prototype.implements(IGraph.prototype);

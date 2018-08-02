@@ -33,3 +33,7 @@ import * as Utility from "./Utility";
 export { Utility };
 export * from "./Widget";
 export * from "./WidgetArray";
+
+//  d3-selection ("event" needs to be global over all the packages)  ---
+//  TODO:  Move to d3-shim
+export * from "d3-selection";

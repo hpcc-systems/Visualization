@@ -24,6 +24,7 @@ export default {
     }],
     plugins: [
         alias({
+            "d3-selection": "@hpcc-js/common"
         }),
         nodeResolve({
             preferBuiltins: true

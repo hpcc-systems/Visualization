@@ -9,5 +9,6 @@ export * from "./OnOff";
 export * from "./Radio";
 export * from "./Range";
 export * from "./Select";
+export * from "./SearchForm";
 export * from "./Slider";
 export * from "./TextArea";

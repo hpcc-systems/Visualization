@@ -73,6 +73,58 @@
                 });
             }
         },
+        SearchForm: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/form/Button", "src/form/ColorInput", "src/form/Radio", "src/form/CheckBox", "src/form/SearchForm", "src/form/Input", "src/form/InputRange", "src/form/Select", "src/form/TextArea", "src/common/WidgetArray", "src/form/Slider"], function (DataFactory, Button, ColorInput, Radio, CheckBox, SearchForm, Input, InputRange, Select, TextArea, WidgetArray, Slider) {
+                    callback(new SearchForm()
+                        .inputWidthPercentages([
+                            [30,30,20,20],
+                            [100],
+                            [40,30,10,20],
+                            [20,15],
+                            [25,30,15,15],
+                            [100]
+                        ])
+                        .inputs([
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("LAST_NAME").label("Last Name").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("FIRST_NAME").label("First Name").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("MIDDLE_NAME").label("Middle Name").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("SSN").label("SSN").type("text").validate("^[A-Za-z]+$")
+                                ]),
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("INCLUDE_NAME_VARIATIONS").label("Include name variations").type("checkbox")
+                                ]),
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("STREET_ADDRESS").label("Street Address").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("CITY").label("City").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("STATE").label("State").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("ZIP").label("ZIP").type("text").validate("^[A-Za-z]+$")
+                                ]),
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("COUNTY").label("County").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("RADIUS").label("Radius").type("text").validate("^[A-Za-z]+$")
+                                ]),
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("PHONE").label("Phone").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("DOB").label("DOB").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("AGE_MIN").label("Min Age").type("text").validate("^[A-Za-z]+$"),
+                                    new Input().name("AGE_MAX").label("Max Age").type("text").validate("^[A-Za-z]+$")
+                                ]),
+                            new WidgetArray()
+                                .content([
+                                    new Input().name("INCLUDE_BANKRUPTCIES").label("Include Bankruptcies").type("checkbox")
+                                ]),
+                        ])
+                    );
+                });
+            }
+        },
         FieldForm: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/form/FieldForm", "src/common/Database"], function (DataFactory, FieldForm, Database) {

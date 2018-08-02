@@ -1,0 +1,28 @@
+.form_SearchForm *{
+    box-sizing: border-box;
+}
+.form_SearchForm > .SearchForm-form-div{
+    position: relative;
+}
+.form_SearchForm > .SearchForm-form-div > .SearchForm-form-row{
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.form_SearchForm > .SearchForm-form-div > .SearchForm-form-row > .SearchForm-input-div{
+    float: left;
+    position: relative;
+    border: 1px solid #000;
+}
+.form_SearchForm > .SearchForm-form-div .SearchForm-input-label {
+    position: absolute;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+.form_SearchForm > .SearchForm-form-div .SearchForm-input-div input {
+    background-color: transparent;
+    border: 0;
+    width: 100%;
+}

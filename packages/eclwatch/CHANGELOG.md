@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.21"></a>
+## [0.2.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@0.2.20...@hpcc-js/eclwatch@0.2.21) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+* **graph:** Remove inline status messages. ([36030ad](https://github.com/hpcc-systems/Visualization/commit/36030ad))
+* **MiniGantt:** Fix corner case when data.length === 0 ([2e5b0de](https://github.com/hpcc-systems/Visualization/commit/2e5b0de))
+
+
+
+
 <a name="0.2.20"></a>
 ## [0.2.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/eclwatch@0.2.19...@hpcc-js/eclwatch@0.2.20) (2018-07-30)
 

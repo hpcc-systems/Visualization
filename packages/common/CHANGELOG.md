@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.8.10...@hpcc-js/common@0.9.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+* **eclwatch:** Hide canvas text Calculator ([4ed9631](https://github.com/hpcc-systems/Visualization/commit/4ed9631))
+
+
+### Features
+
+* **SVGZoomWidget:** Additional zoomTo methods ([09feedc](https://github.com/hpcc-systems/Visualization/commit/09feedc))
+* **timeline:** Improved icon handling ([25819ba](https://github.com/hpcc-systems/Visualization/commit/25819ba))
+* **timeline:** Various improvements to MiniGantt ([3a7375d](https://github.com/hpcc-systems/Visualization/commit/3a7375d)), closes [#2585](https://github.com/hpcc-systems/Visualization/issues/2585) [#2584](https://github.com/hpcc-systems/Visualization/issues/2584) [#2583](https://github.com/hpcc-systems/Visualization/issues/2583)
+
+
+
+
 <a name="0.8.10"></a>
 ## [0.8.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.8.9...@hpcc-js/common@0.8.10) (2018-07-30)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.21"></a>
+## [0.1.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/amchart@0.1.20...@hpcc-js/amchart@0.1.21) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+
+
+
+
 <a name="0.1.20"></a>
 ## [0.1.20](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/amchart@0.1.19...@hpcc-js/amchart@0.1.20) (2018-07-30)
 

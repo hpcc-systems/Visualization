@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.4.13...@hpcc-js/timeline@0.5.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+* **MiniGantt:** Fix corner case when data.length === 0 ([2e5b0de](https://github.com/hpcc-systems/Visualization/commit/2e5b0de))
+
+
+### Features
+
+* **timeline:** Improved icon handling ([25819ba](https://github.com/hpcc-systems/Visualization/commit/25819ba))
+* **timeline:** Various improvements to MiniGantt ([3a7375d](https://github.com/hpcc-systems/Visualization/commit/3a7375d)), closes [#2585](https://github.com/hpcc-systems/Visualization/issues/2585) [#2584](https://github.com/hpcc-systems/Visualization/issues/2584) [#2583](https://github.com/hpcc-systems/Visualization/issues/2583)
+
+
+
+
 <a name="0.4.13"></a>
 ## [0.4.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.4.12...@hpcc-js/timeline@0.4.13) (2018-07-30)
 

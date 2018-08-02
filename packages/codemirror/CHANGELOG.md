@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.124"></a>
+## [0.0.124](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@0.0.123...@hpcc-js/codemirror@0.0.124) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+
+
+
+
 <a name="0.0.123"></a>
 ## [0.0.123](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror@0.0.122...@hpcc-js/codemirror@0.0.123) (2018-07-30)
 

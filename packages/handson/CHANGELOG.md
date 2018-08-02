@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.16"></a>
+## [0.2.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/handson@0.2.15...@hpcc-js/handson@0.2.16) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+
+
+
+
 <a name="0.2.15"></a>
 ## [0.2.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/handson@0.2.14...@hpcc-js/handson@0.2.15) (2018-07-30)
 

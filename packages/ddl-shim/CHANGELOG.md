@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.10"></a>
+## [0.2.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.2.9...@hpcc-js/ddl-shim@0.2.10) (2018-08-02)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/ddl-shim
+
 <a name="0.2.9"></a>
 ## [0.2.9](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@0.2.8...@hpcc-js/ddl-shim@0.2.9) (2018-07-30)
 

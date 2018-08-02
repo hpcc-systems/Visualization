@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.15"></a>
+## [0.4.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.4.14...@hpcc-js/comms@0.4.15) (2018-08-02)
+
+
+### Bug Fixes
+
+* **WUDetails:** Update to latest WsWorkunits.WUDetails ([9aa5c75](https://github.com/hpcc-systems/Visualization/commit/9aa5c75))
+
+
+
+
 <a name="0.4.14"></a>
 ## [0.4.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.4.13...@hpcc-js/comms@0.4.14) (2018-07-30)
 

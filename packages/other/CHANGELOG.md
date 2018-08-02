@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.14"></a>
+## [0.5.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.5.13...@hpcc-js/other@0.5.14) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+
+
+
+
 <a name="0.5.13"></a>
 ## [0.5.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.5.12...@hpcc-js/other@0.5.13) (2018-07-30)
 

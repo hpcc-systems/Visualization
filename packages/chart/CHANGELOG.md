@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.11"></a>
+## [0.8.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.8.10...@hpcc-js/chart@0.8.11) (2018-08-02)
+
+
+### Bug Fixes
+
+* **d3-event:** d3-event is a global instance. ([92760ad](https://github.com/hpcc-systems/Visualization/commit/92760ad))
+
+
+
+
 <a name="0.8.10"></a>
 ## [0.8.10](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.8.9...@hpcc-js/chart@0.8.10) (2018-07-30)
 

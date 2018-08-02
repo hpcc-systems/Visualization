@@ -2250,6 +2250,10 @@ export namespace WUDetails {
             id: string[];
         }
 
+        export interface ScopeTypes {
+            ScopeType: string[];
+        }
+
         export interface PropertyFilter {
             Name?: string;
             ExactValue?: string;
@@ -2297,8 +2301,10 @@ export namespace WUDetails {
 
         export interface PropertiesToReturn {
             AllStatistics?: boolean;
-            AllProperties?: boolean;
+            AllAttributes?: boolean;
             AllHints?: boolean;
+            AllScopes?: boolean;
+            AllProperties?: boolean;
             MinVersion?: string;
             Measure?: string;
             Properties?: string[];

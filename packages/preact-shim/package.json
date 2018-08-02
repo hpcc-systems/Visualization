@@ -20,7 +20,7 @@
     "bundle-watch": "npm run bundle -- -w",
     "minimize": "uglifyjs dist/index.js -c -m --source-map  -o dist/index.min.js",
     "build": "npm run compile-es6 && npm run bundle",
-    "watch": "concurrently --kill-others \"npm run compile-es6-watch\" \"npm run bundle-watch\"",
+    "watch": "run-p compile-es6-watch bundle-watch",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },

@@ -27,8 +27,8 @@ export class MiniGantt extends SVGWidget {
     protected _title_idx = 0;
     protected _startDate_idx = 1;
     protected _endDate_idx = 2;
-    protected _icon_idx = 3;
-    protected _color_idx = 4;
+    protected _icon_idx = -1;
+    protected _color_idx = -1;
 
     constructor() {
         super();
@@ -412,17 +412,14 @@ export class MiniGantt extends SVGWidget {
             .each(function (d) {
                 const entityRect = new EntityRect()
                     .target(this)
-                    .icon(typeof d[context._icon_idx] !== "undefined" ? d[context._icon_idx] : null)
                     .iconDiameter(28)
                     .iconPaddingPercent(0)
-                    .title("SomeTitle")
                     .titleFontSize(28)
                     .titleColor(context.rangeFontColor())
                     .descriptionColor(context.rangeFontColor())
                     .iconColor(context.rangeFontColor())
                     .backgroundShape("rect")
                     .backgroundColorFill(d[context._color_idx])
-                    .backgroundColorStroke("#333")
                     ;
                 context.localRect.set(this, entityRect);
                 context.enterEntityRect(entityRect, d);

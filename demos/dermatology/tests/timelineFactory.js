@@ -19,7 +19,7 @@
         return Array(n).fill("").map((row, row_idx) => {
             const d1 = random_datetime_string();
             const d2 = random_datetime_string();
-            const icon = ["","",""][Math.floor(Math.random()*3)];
+            const icon = ["", "", ""][Math.floor(Math.random() * 3)];
             return new Date(d1) - new Date(d2) > 0 ? [`Random Range #${row_idx}`, d2, d1, icon] : [`Random Range #${row_idx}`, d1, d2, icon];
         });
     }
@@ -56,8 +56,7 @@
             only_ranges: function (callback) {
                 legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
                     callback(new MiniGantt()
-                        .columns(["Label", "start", "end", "icon"])
-                        .iconColumn("icon")
+                        .columns(["Label", "start", "end"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
                         .data(random_datetime_ranges(20))
                     );

@@ -3,7 +3,7 @@ import { Entity } from "./Entity";
 import { HTMLWidget } from "./HTMLWidget";
 import { publish } from "./PropertyExt";
 import * as Utility from "./Utility";
-import { d3SelectionType, InputField, Widget } from "./Widget";
+import { d3SelectionType, InputField } from "./Widget";
 
 import "../src/EntityRect.css";
 
@@ -19,9 +19,9 @@ export class EntityRect extends Entity {
         this._desc_widget.text("");
         super.update(domNode, element);
     }
-    render(callback?: (w: Widget) => void) {
-        return super.render(w => {
-            const icon_bbox = this._icon_widget.getBBox(true);
+    render(callback?: (w: EntityRect) => void) {
+        return super.render((w: EntityRect) => {
+            const icon_bbox = w.icon() === "" ? { width: 0, height: 0 } : this._icon_widget.getBBox(true);
             const title_bbox = this._title_widget.getBBox(true);
             const annotations_bbox = (this._element_anno.node() as SVGGElement).getBBox();
 
@@ -47,9 +47,8 @@ export class EntityRect extends Entity {
             });
 
             this.moveAnnotations(width / 2, -annotations_bbox.height / 2);
-
-            const iconWidth = this.padding() + icon_bbox.width + this.padding();
-            const titleX = -(width / 2) + iconWidth;
+            const iconWidth = icon_bbox.width > 0 ? icon_bbox.width + this.padding() : 0;
+            const titleX = -(width / 2) + iconWidth + this.padding();
             const annoWidth = this.padding() / 2 + annotations_bbox.width + this.padding();
             const titleW = width - iconWidth - annoWidth;
 

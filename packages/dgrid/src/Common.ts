@@ -16,6 +16,10 @@ export class Common extends HTMLWidget {
         this._tag = "div";
     }
 
+    @publish("...empty...", "string", "No Data Message")
+    noDataMessage: publish<this, boolean>;
+    @publish("loading...", "string", "Loading Message")
+    loadingMessage: publish<this, boolean>;
     @publish(false, "boolean", "Enable paging")
     pagination: publish<this, boolean>;
     @publish(false, "boolean", "Enable sorting by column")
@@ -30,6 +34,7 @@ export class Common extends HTMLWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
+
         if (this._prevPaging !== this.pagination()) {
             this._prevPaging = this.pagination();
             if (this._dgrid) {
@@ -62,6 +67,9 @@ export class Common extends HTMLWidget {
                 }
             });
         }
+        this._dgrid.noDataMessage = `<span class='dojoxGridNoData'>${this.noDataMessage()}</span>`;
+        this._dgrid.loadingMessage = `<span class='dojoxGridNoData'>${this.loadingMessage()}</span>`;
+
         this._dgridDiv
             .style("width", this.width() + "px")
             .style("height", this.height() - 2 + "px")

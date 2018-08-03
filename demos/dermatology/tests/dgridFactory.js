@@ -30,6 +30,16 @@
                     callback(table);
                 });
             },
+            empty: function (callback) {
+                legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, Table) {
+                    var table = new Table()
+                        .columns(["Subject", "Year 1", "Year 2", "Year 3", "Year 4"])
+                        .data([
+                        ])
+                        ;
+                    callback(table);
+                });
+            },
             large: function (callback) {
                 legacyRequire(["test/DataFactory", "src/dgrid/Table"], function (DataFactory, Table) {
                     callback(new Table()

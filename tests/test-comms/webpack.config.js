@@ -7,7 +7,7 @@ module.exports = {
         filename: "bundle.test.js"
     },
     target: "web",
-    devtool: "source-map",
+    mode: "development",
     module: {
         rules: [{
             enforce: 'pre',

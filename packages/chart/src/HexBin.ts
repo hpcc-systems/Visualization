@@ -19,12 +19,15 @@ export class HexBin extends XYAxis {
     constructor() {
         super();
         I2DAggrChart.call(this);
+        this.tooltipValueFormat_default(",.0f");
         ITooltip.call(this);
+        this.tooltipHTML( d => {
+            return this.tooltipFormat({ value: d.length });
+        });
         this._hexbin = d3HexBin()
             .x(d => d.x)
             .y(d => d.y)
             ;
-
         this
             .xAxisGuideLines_default(false)
             .yAxisGuideLines_default(false)
@@ -75,6 +78,8 @@ export class HexBin extends XYAxis {
             .on("dblclick", function (d: any) {
                 context.dblclick(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
             })
+            .on("mouseout.tooltip", context.tooltip.hide)
+            .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
             .merge(points).transition().duration(duration)
             .attr("d", this._hexbin.hexagon())
@@ -98,6 +103,13 @@ export class HexBin extends XYAxis {
     dblclick(row: object[], column, selected) {
         console.log("Click:  " + JSON.stringify(row) + ", " + column + ", " + selected);
     }
+
+    //  ITooltip
+    tooltip;
+    tooltipHTML: (_) => string;
+    tooltipFormat: (_) => string;
+    tooltipValueFormat: (_) => string;
+    tooltipValueFormat_default: (_) => string;
 
     paletteID: { (): string; (_: string): HexBin; };
     useClonedPalette: { (): boolean; (_: boolean): HexBin; };

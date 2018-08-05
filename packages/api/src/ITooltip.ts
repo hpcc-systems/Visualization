@@ -109,7 +109,10 @@ export abstract class ITooltip extends Widget {
                 if (opts.series) {
                     return "<span style='color:" + this.tooltipSeriesColor() + "'>" + opts.series + "</span> / <span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
                 }
-                return "<span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
+                if (opts.label !== "") {
+                    return "<span style='color:" + this.tooltipLabelColor() + "'>" + opts.label + "</span>:  <span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
+                }
+                return "<span style='color:" + this.tooltipValueColor() + "'>" + opts.value + "</span>";
         }
     }
 

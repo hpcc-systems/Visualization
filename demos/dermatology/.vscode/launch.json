@@ -8,21 +8,7 @@
             "name": "Chrome Debug Dev",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/www/index-dev.html",
-            "runtimeArgs": [
-                "--allow-file-access-from-files"
-            ],
-            "webRoot": "${workspaceRoot}",
-            "sourceMapPathOverrides": {
-                "webpack:///./*": "${workspaceRoot}/*",
-                "webpack:///*": "/*"
-            }
-        },
-        {
-            "name": "Chrome Debug Rel",
-            "type": "chrome",
-            "request": "launch",
-            "url": "file:///${workspaceRoot}/www/index.html",
+            "url": "file:///${workspaceRoot}/index.html",
             "runtimeArgs": [
                 "--allow-file-access-from-files"
             ],

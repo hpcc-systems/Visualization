@@ -6,45 +6,42 @@
     <title>Dev - Dermatology Test</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../../../packages/common/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
 
     <!-- -->
-    <link rel="stylesheet" href="../../../node_modules/material-design-lite/material.min.css">
-    <script src="../../../node_modules/material-design-lite/material.min.js"></script>
-    <link rel="stylesheet" href="../../../node_modules/pure-css/lib/menus.css">
-    <script src="../../../packages/loader/dist/index.js"></script>
+    <link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">
+    <script src="../../node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">
+    <script src="../../packages/loader/dist/index.js"></script>
+
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
-        var require = hpccLoader.dev({ "test": "../tests" });
+        var paths = {
+            "test": "tests"
+        }
+        var mode = "dev";  // "dev" | "build" | "unpkg"
+        if (mode === "unpkg") {
+            var require = hpccLoader.dev(paths);
+        } else {
+            var dermatologyDeps = ["d3-array", "d3-collection", "d3-color", "d3-dispatch", "d3-ease", "d3-interpolate", "d3-random", "d3-selection", "d3-timer", "d3-transition"];
+            dermatologyDeps.forEach(function (item) {
+                paths[item] = "../../node_modules/" + item + "/build/" + item;
+            });
+            if (mode === "unpkg") {
+                var require = hpccLoader.unpkg(true, paths);
+            } else {
+                var require = hpccLoader.cdn("../../packages", false, paths);
+            }
+        }
     </script>
-    <!--
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-    <link rel="stylesheet" href="https://rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css">
-    <script src="https://rawgit.com/jrburke/requirejs/2.2.0/require.js"></script>
-    <script src="../src/loader.js"></script>
-    -->
-    <!--
-    <link rel="stylesheet" href="../../../node_modules/material-design-lite/material.min.css">
-    <script src="../../../node_modules/material-design-lite/material.min.js"></script>
-    <link rel="stylesheet" href="../../../node_modules/pure-css/lib/menus.css">
-    <script src="../../../node_modules/requirejs/require.js"></script>
-    <script src="../src/loader.js"></script>
-    -->
-    <!--
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-    <link rel="stylesheet" href="https://rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css">
-    <script src="../dist-amd/hpcc-viz.js"></script>
-    -->
-    <link href="../style/index.css" rel="stylesheet">
+    <link href="style/index.css" rel="stylesheet">
 
     <script>
         var hpccsystems = {
             require: require
         };
     </script>
-    <script src="../src/pureMenu.js"></script>
+    <script src="src/pureMenu.js"></script>
 </head>
 
 <body onresize="doResize()">
@@ -124,7 +121,7 @@
     </div>
     <script>
         var app = null;
-        hpccsystems.require(["d3-selection", "d3-collection", "d3-transition", "../src/index"], function (d3Selection, d3Collection, d3Transition, App) {
+        hpccsystems.require(["d3-selection", "d3-collection", "d3-transition", "src/index"], function (d3Selection, d3Collection, d3Transition, App) {
             var d3 = {
                 select: d3Selection.select,
                 selectAll: d3Selection.selectAll,

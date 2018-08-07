@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chart Thumbs Example</title>
+
+    <script src="../../hpccjs.js"></script>
+    <script>
+        window.g_columns = ["A","B","C","D","E"];
+        window.g_data = [
+            [1,2,3,4,5],
+            [2,3,4,5,6],
+            [3,4,5,6,7],
+            [4,5,6,7,8],
+        ];
+        window.g_exclude_list = ["Axis","Bullet","Bubble","Summary","WordCloud","XYAxis"];
+
+        function init_page(){
+            var ph = document.getElementById("placeholder");
+            insert_divs();
+            render_widgets();
+
+            function insert_divs(){
+                Object.keys(hpccjs.chart)
+                    .forEach(function(widget_name,i){
+                        if(g_exclude_list.indexOf(widget_name)===-1){
+                            var div = document.createElement("div");
+                            div.id = "w"+i;
+                            ph.appendChild(div);
+                        }
+                });
+            }
+            function render_widgets(){
+                Object.keys(hpccjs.chart)
+                    .forEach(function(widget_name,i){
+                        if(g_exclude_list.indexOf(widget_name)===-1){
+                            new hpccjs.chart[widget_name]()
+                                .target("w"+i)
+                                .columns(g_columns)
+                                .data(g_data)
+                                .render();
+                        }
+                });
+            }
+        }
+    </script>
+    <style>
+        #placeholder{
+            position:fixed;
+            top:8px;
+            left:8px;
+            right:8px;
+            bottom:8px;
+        }
+        #placeholder > div{
+            float: left;
+            margin: 8px;
+            height: 150px;
+            width: 150px;
+        }
+    </style>
+</head>
+
+<body onload="init_page()">
+    <div id="placeholder"></div>
+</body>
+
+</html>

@@ -29,6 +29,7 @@ export class MiniGantt extends SVGWidget {
     protected _endDate_idx = 2;
     protected _icon_idx = -1;
     protected _color_idx = -1;
+    protected _yoffset_idx = -1;
 
     constructor() {
         super();
@@ -147,6 +148,7 @@ export class MiniGantt extends SVGWidget {
         this._endDate_idx = this.endDateColumn() !== null ? this.columns().indexOf(this.endDateColumn()) : this._endDate_idx;
         this._icon_idx = this.iconColumn() !== null ? this.columns().indexOf(this.iconColumn()) : this._icon_idx;
         this._color_idx = this.colorColumn() !== null ? this.columns().indexOf(this.colorColumn()) : this._color_idx;
+        this._yoffset_idx = this.yOffsetColumn() !== null ? this.columns().indexOf(this.yOffsetColumn()) : this._yoffset_idx;
 
         if (this._prevIsHorizontal !== this.isHorizontal()) {
             this._prevIsHorizontal = this.isHorizontal();
@@ -349,7 +351,8 @@ export class MiniGantt extends SVGWidget {
                 const entityPin = context.localEntityPin.get(this);
                 const _title = typeof d[context._title_idx] !== "undefined" ? d[context._title_idx] : entityPin.title();
                 const x_offset = context.dataStartPos(d) - 0;
-                const y_offset = ((title_types.indexOf(_title) % context.eventGroupMod()) * title_group_offset) - 5;
+                let y_offset = ((title_types.indexOf(_title) % context.eventGroupMod()) * title_group_offset) - 5;
+                if (typeof d[context._yoffset_idx] !== "undefined") y_offset += d[context._yoffset_idx] ? d[context._yoffset_idx] : 0;
                 if (d[context._title_idx] !== entityPin.title() && d[context._startDate_idx] !== entityPin.description()) {
                     const parsed_start_time = context.brAxis.parse(d[context._startDate_idx]);
                     const formatted_start_time = context.tooltipFormatter(parsed_start_time);
@@ -520,6 +523,8 @@ export interface MiniGantt {
     iconColumn(_: string): this;
     colorColumn(): string;
     colorColumn(_: string): this;
+    yOffsetColumn(): string;
+    yOffsetColumn(_: string): this;
     maxZoom(): number;
     maxZoom(_: number): this;
     eventGroupMod(): number;
@@ -554,6 +559,7 @@ MiniGantt.prototype.publish("startDateColumn", null, "string", "startDateColumn"
 MiniGantt.prototype.publish("endDateColumn", null, "string", "endDateColumn");
 MiniGantt.prototype.publish("iconColumn", null, "string", "iconColumn");
 MiniGantt.prototype.publish("colorColumn", null, "string", "colorColumn");
+MiniGantt.prototype.publish("yOffsetColumn", null, "string", "yOffsetColumn");
 MiniGantt.prototype.publish("maxZoom", 16, "number", "maxZoom");
 MiniGantt.prototype.publish("eventGroupOffset", -50, "number", "eventGroupOffset");
 MiniGantt.prototype.publish("eventGroupMod", 5, "number", "eventGroupMod");

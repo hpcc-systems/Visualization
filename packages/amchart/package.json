@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/amchart",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "hpcc-js - Viz AM Charts",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,7 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.4.13",
+    "@hpcc-js/api": "^0.5.0",
     "@hpcc-js/common": "^0.9.0",
     "amcharts3": "amcharts/amcharts3#3.18.0",
     "d3-array": "1.2.1",
@@ -39,11 +39,11 @@
     "@hpcc-js/bundle": "^0.0.44",
     "npm-run-all": "4.1.3",
     "rimraf": "2.6.2",
-    "rollup": "0.58.2",
+    "rollup": "0.63.5",
     "rollup-plugin-alias": "1.4.0",
-    "rollup-plugin-commonjs": "9.1.0",
+    "rollup-plugin-commonjs": "9.1.4",
     "rollup-plugin-node-resolve": "3.3.0",
-    "rollup-plugin-postcss": "1.6.1",
+    "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
     "typescript": "2.9.1",

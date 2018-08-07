@@ -41,7 +41,7 @@
     "material-design-lite": "1.2.1",
     "pure-css": "1.0.4",
     "rimraf": "2.6.2",
-    "rollup": "0.58.2",
+    "rollup": "0.63.5",
     "typescript": "2.9.1",
     "webpack": "4.16.4",
     "webpack-cli": "3.0.8"

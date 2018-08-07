@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.8.11...@hpcc-js/chart@0.9.0) (2018-08-07)
+
+
+### Features
+
+* **hexbin:** Add tooltip to HexBin.ts ([60f40d9](https://github.com/hpcc-systems/Visualization/commit/60f40d9))
+
+
+
+
 <a name="0.8.11"></a>
 ## [0.8.11](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.8.10...@hpcc-js/chart@0.8.11) (2018-08-02)
 

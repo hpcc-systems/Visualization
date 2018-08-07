@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.5.0...@hpcc-js/timeline@0.6.0) (2018-08-07)
+
+
+### Features
+
+* **timeline:** Add several features to MiniGantt ([90e8765](https://github.com/hpcc-systems/Visualization/commit/90e8765)), closes [#2676](https://github.com/hpcc-systems/Visualization/issues/2676) [#2674](https://github.com/hpcc-systems/Visualization/issues/2674)
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.4.13...@hpcc-js/timeline@0.5.0) (2018-08-02)
 

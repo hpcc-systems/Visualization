@@ -24,9 +24,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: 'css-loader'
-                })
+                use: ['style-loader', 'css-loader']
             }, {
                 test: /\.png$/,
                 loader: "url-loader",
@@ -35,10 +33,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            d3: 'd3'
-        }),
-        new ExtractTextPlugin('c3-shim.css'),
+        //new webpack.ProvidePlugin({
+        //    d3: 'd3'
+        //}),
+        // new ExtractTextPlugin('c3-shim.css'),
         //new webpack.optimize.UglifyJsPlugin({
         //sourceMap: "source-map"
         //})

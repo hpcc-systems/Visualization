@@ -18,18 +18,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.?Schema.json$/,
-                loader: 'ajv-pack-loader'
-            }, {
                 test: /\.png$/,
                 loader: "url-loader",
                 query: { mimetype: "image/png" }
             }
         ]
     },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: "source-map"
-        })
-    ]
+    plugins: []
 };

@@ -23,7 +23,7 @@ export class EntityRect extends Entity {
         return super.render((w: EntityRect) => {
             const icon_bbox = w.icon() === "" ? { width: 0, height: 0 } : this._icon_widget.getBBox(true);
             const title_bbox = this._title_widget.getBBox(true);
-            const annotations_bbox = (this._element_anno.node() as SVGGElement).getBBox();
+            const annotations_bbox = this.getAnnotationsBBox();
 
             let width = this.fixedWidth();
             if (!width) {

@@ -124,7 +124,7 @@ export class MiniGantt extends SVGWidget {
             .tickFormat(this.tickFormat())
             .guideTarget(this.gUpperAxis.append("g").node())
             .shrinkToFit("none")
-            .overlapMode("stagger")
+            .overlapMode(this.tickFormat_exists() ? "stagger" : "none")
             .extend(0.1)
             ;
         this.brAxis
@@ -132,6 +132,7 @@ export class MiniGantt extends SVGWidget {
             .tickFormat(this.tickFormat())
             .guideTarget(this.gLowerAxis.append("g").node())
             .shrinkToFit("none")
+            .overlapMode(this.tickFormat_exists() ? "stagger" : "none")
             .extend(0.1)
             ;
 
@@ -236,7 +237,7 @@ export class MiniGantt extends SVGWidget {
         const brAxisBBox = this.brAxis.getBBox();
 
         let upperContentHeight = this.updateEntityPins(events);
-        const lowerAxisHeight = this.gLowerAxis.node().getBBox().height;
+        const lowerAxisHeight = brAxisBBox.height;
         let lowerHeight = height - upperContentHeight;
         const minYOffset = this._yoffset_idx !== -1 ? Math.min.apply(undefined, this.data().filter(row => !isNaN(row[this._yoffset_idx])).map(row => row[this._yoffset_idx])) : 0;
         if (events.length > 0 && ranges.length === 0) {
@@ -511,6 +512,7 @@ export interface MiniGantt {
     timePattern(_: string): this;
     tickFormat(): string;
     tickFormat(_: string): this;
+    tickFormat_exists(): boolean;
     tooltipTimeFormat(): string;
     tooltipTimeFormat(_: string): this;
     overlapTolerence(): number;
@@ -555,7 +557,7 @@ export interface MiniGantt {
 }
 
 MiniGantt.prototype.publish("timePattern", "%Y-%m-%d", "string", "timePattern");
-MiniGantt.prototype.publish("tickFormat", "%Y-%m-%d", "string", "tickFormat");
+MiniGantt.prototype.publish("tickFormat", null, "string", "tickFormat", undefined, { optional: true });
 MiniGantt.prototype.publish("tooltipTimeFormat", "%Y-%m-%d", "string", "tooltipTimeFormat");
 MiniGantt.prototype.publish("overlapTolerence", 2, "number", "overlapTolerence");
 MiniGantt.prototype.publish("orientation", "horizontal", "set", "orientation", ["horizontal", "vertical"]);

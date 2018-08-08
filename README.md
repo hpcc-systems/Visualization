@@ -11,7 +11,25 @@ The "@hpcc-js" repository contains several packages which fall into two main cat
 * Visualizations
 * HPCC Platform browser/node.js connectors and utilities
 
-All packages are available for use independently and are published to the NPM repository under the "@hpcc-js" scope name.  They have also been designed to be "unpkg", "AMD", "commonjs", "IIFE", "WebPack", "Rollup.js" friendly (where possible).
+All packages are available for use independently and are published to the NPM repository under the [@hpcc-js](https://www.npmjs.com/~hpcc-js) scope name.  
+
+They support all modern browsers including:
+* IE 11
+* Chrome
+* Firefox 
+* Edge
+
+They support the following module formats:
+* iife
+* commonjs
+* AMD
+* UMD
+* es6
+* unpkg
+
+And work well with JavaScript bundlers:
+* WebPack
+* Rollup.js
 
 ## Hello World Example
 

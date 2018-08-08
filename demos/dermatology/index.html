@@ -6,41 +6,65 @@
     <title>Dev - Dermatology Test</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
 
-    <!-- -->
-    <link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">
-    <script src="../../node_modules/material-design-lite/material.min.js"></script>
-    <link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">
-    <script src="../../packages/loader/dist/index.js"></script>
+    <script>
+        var mode = "dev";  // "dev" | "build" | "unpkg"
+        switch (window.location.origin) {
+            case "file://":
+                mode = "dev"; // "dev" | "build"
+                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
+                document.write('<script type="text/javascript" src="../../node_modules/material-design-lite/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">');
+                document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                break
+            default:
+                mode = "unpkg";
+                document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/material-design-lite@1.2.1/material.min.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/material-design-lite@1.2.1/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/pure-css@1.0.4/lib/menus.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        }
+    </script>
 
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
+
+        var mode = "dev";  // "dev" | "build" | "unpkg"
+        switch (window.location.origin) {
+            case "file://":
+                mode = "dev"; // "dev" | "build"
+                break
+            default:
+                mode = "unpkg";
+        }
         var paths = {
             "test": "tests"
         }
-        var mode = "dev";  // "dev" | "build" | "unpkg"
-        if (mode === "unpkg") {
+
+        if (mode === "dev") {
             var require = hpccLoader.dev(paths);
         } else {
             var dermatologyDeps = ["d3-array", "d3-collection", "d3-color", "d3-dispatch", "d3-ease", "d3-interpolate", "d3-random", "d3-selection", "d3-timer", "d3-transition"];
-            dermatologyDeps.forEach(function (item) {
-                paths[item] = "../../node_modules/" + item + "/build/" + item;
-            });
             if (mode === "unpkg") {
+                dermatologyDeps.forEach(function (item) {
+                    paths[item] = ["https://unpkg.com/" + item + "/build/" + item, "https://unpkg.com/" + item + "/dist/" + item];
+                });
                 var require = hpccLoader.unpkg(true, paths);
             } else {
+                dermatologyDeps.forEach(function (item) {
+                    paths[item] = ["../../node_modules/" + item + "/build/" + item, "../../node_modules/" + item + "/dist/" + item];
+                });
                 var require = hpccLoader.cdn("../../packages", false, paths);
             }
         }
-    </script>
-    <link href="style/index.css" rel="stylesheet">
 
-    <script>
         var hpccsystems = {
             require: require
         };
     </script>
+    <link href="style/index.css" rel="stylesheet">
     <script src="src/pureMenu.js"></script>
 </head>
 

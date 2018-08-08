@@ -5,7 +5,7 @@
 
 * _[Dermatology Test Page](https://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology/index.html)_
 * _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_
-* _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/My-First-Visualization)_
+* _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_
 
 The "@hpcc-js" repository contains several packages which fall into two main categories:
 * Visualizations
@@ -51,6 +51,7 @@ The simplest example pulls the pre-built packages directly from NPM via unpkg an
 
 </html>
 ```
+To explore this example see [Dermatology-Bar](https://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology/index.html?src/chart/Bar.simple) and enable the "Properties" option (top right).
 
 ## Installing via npm
 

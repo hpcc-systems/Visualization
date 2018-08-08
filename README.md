@@ -11,7 +11,7 @@ The "@hpcc-js" repository contains several packages which fall into two main cat
 * Visualizations
 * HPCC Platform browser/node.js connectors and utilities
 
-All packages are available for use independently and are published to the NPM repository under the "@hpcc-js" scope name.  They have also been designed to be "unpkg", "AMD", "commonjs" and "IIFE" friendly (where possible).
+All packages are available for use independently and are published to the NPM repository under the "@hpcc-js" scope name.  They have also been designed to be "unpkg", "AMD", "commonjs", "IIFE", "WebPack", "Rollup.js" friendly (where possible).
 
 ## Hello World Example
 

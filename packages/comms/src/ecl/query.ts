@@ -1,4 +1,4 @@
-import { AsyncCache, StateObject } from "@hpcc-js/util";
+import { Cache, StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { EclService, IWsEclRequest, IWsEclResponse, IWsEclResult } from "../services/wsEcl";
 import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
@@ -6,10 +6,10 @@ import { WorkunitsService, WUQueryDetails } from "../services/wsWorkunits";
 export interface QueryEx extends WUQueryDetails.Response {
 }
 
-class QueryCache extends AsyncCache<QueryEx, Query> {
+class QueryCache extends Cache<QueryEx, Query> {
     constructor() {
         super((obj) => {
-            return AsyncCache.hash([obj.QueryId, obj.QuerySet]);
+            return Cache.hash([obj.QueryId, obj.QuerySet]);
         });
     }
 }
@@ -65,14 +65,9 @@ export class Query extends StateObject<QueryEx, QueryEx> implements QueryEx {
         } as QueryEx);
     }
 
-    static async attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string, skipRefresh: boolean = false): Promise<Query> {
-        let newQuery: Query | undefined;
-        const retVal: Query = await _queries.get({ QuerySet: querySet, QueryId: queryId } as WUQueryDetails.Response, async () => {
-            newQuery = new Query(optsConnection, querySet, queryId);
-            if (!skipRefresh) {
-                await newQuery.refresh();
-            }
-            return newQuery;
+    static attach(optsConnection: IOptions | IConnection, querySet: string, queryId: string): Query {
+        const retVal: Query = _queries.get({ QuerySet: querySet, QueryId: queryId } as WUQueryDetails.Response, () => {
+            return new Query(optsConnection, querySet, queryId);
         });
         return retVal;
     }

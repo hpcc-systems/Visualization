@@ -125,7 +125,13 @@ export class RoxieService extends PropertyExt {
         }
         if (!this.refreshMetaPromise) {
             const skipMeta = !!this._requestFields;
-            this.refreshMetaPromise = CommsQuery.attach({ baseUrl: this.url() }, this.querySet(), this.queryID(), skipMeta).then((query) => {
+            this.refreshMetaPromise = new Promise<CommsQuery>((resolve, reject) => {
+                const query = CommsQuery.attach({ baseUrl: this.url() }, this.querySet(), this.queryID());
+                if (skipMeta) {
+                    resolve(query);
+                }
+                resolve(query.refresh());
+            }).then((query) => {
                 this._query = query;
                 if (!skipMeta) {
                     this._requestFields = query.requestFields();

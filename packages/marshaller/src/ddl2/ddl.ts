@@ -394,6 +394,12 @@ export class DDLAdapter {
         });
     }
 
+    writeProperties(): DDL2.IWidgetProperties {
+        return {
+            layout: this._dashboard.layout() as any
+        };
+    }
+
     readDDLViews(ddlViews: DDL2.IView[]) {
         for (const ddlView of ddlViews) {
             const element = new Element(this._elementContainer).id(ddlView.id);
@@ -426,12 +432,19 @@ export class DDLAdapter {
         }
     }
 
+    readProperties(properties: DDL2.IWidgetProperties) {
+        if (properties && properties.layout) {
+            this._dashboard.layoutObj(properties.layout as object);
+        }
+    }
+
     write(): DDL2.Schema {
         this._dsDedup.clear();
         const retVal: DDL2.Schema = {
             version: "0.0.22",
             datasources: this.writeDatasources(),
-            dataviews: this.writeDDLViews()
+            dataviews: this.writeDDLViews(),
+            properties: this.writeProperties()
         };
         return retVal;
     }
@@ -442,5 +455,6 @@ export class DDLAdapter {
             this._dsDedup.set(ds);
         }
         this.readDDLViews(ddl.dataviews);
+        this.readProperties(ddl.properties);
     }
 }

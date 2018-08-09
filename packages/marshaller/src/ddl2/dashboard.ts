@@ -8,11 +8,6 @@ import { Element, ElementContainer } from "./model/element";
 
 import "../../src/ddl2/dashboard.css";
 
-export interface IDashboardPersist {
-    ddl: DDL2.Schema;
-    layout?: object;
-}
-
 export class Dashboard extends DockPanel {
     private _ec: ElementContainer;
 
@@ -36,19 +31,25 @@ export class Dashboard extends DockPanel {
         return this;
     }
 
-    save(): IDashboardPersist {
-        const ddlAdapter = new DDLAdapter(this);
-        return {
-            ddl: ddlAdapter.write(),
-            layout: this.layout()
-        };
+    //  Used to delay load a layout after a render...
+    private _layoutObj: object = null;
+    layoutObj(): object | null;
+    layoutObj(_: object | null): this;
+    layoutObj(_?: object): this | object | null {
+        if (!arguments.length) return this._layoutObj;
+        this._layoutObj = _;
+        return this;
     }
 
-    _delayLayout;
-    restore(_: IDashboardPersist): this {
+    save(): DDL2.Schema {
         const ddlAdapter = new DDLAdapter(this);
-        ddlAdapter.read(_.ddl);
-        this._delayLayout = _.layout;
+        return ddlAdapter.write();
+    }
+
+    // _delayLayout;
+    restore(_: DDL2.Schema): this {
+        const ddlAdapter = new DDLAdapter(this);
+        ddlAdapter.read(_);
         return this;
     }
 
@@ -92,9 +93,9 @@ export class Dashboard extends DockPanel {
 
     render(callback?: (w: Widget) => void): this {
         return super.render(w => {
-            if (this._delayLayout) {
-                this.layout(this._delayLayout);
-                delete this._delayLayout;
+            if (this.layoutObj() !== null) {
+                this.layout(this.layoutObj());
+                this.layoutObj(null);
             }
             if (callback) {
                 callback(w);

@@ -23,8 +23,8 @@
     "generate": "node ./lib-util/createSchema.js",
     "cli": "node ./lib-cli/cli/index.js",
     "bundle": "webpack",
-    "bundle-watch": "npm run bundle -- --watch",
-    "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run compile-cli && npm run bundle",
+    "bundle-watch": "run-s bundle -- --watch",
+    "build": "npm-run-all --serial compile-util generate --parallel compile-es6 compile-cli --serial bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."

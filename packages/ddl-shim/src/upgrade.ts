@@ -644,11 +644,16 @@ class DDLUpgrade {
         return retVal;
     }
 
+    writeProperties(): DDL2.IWidgetProperties {
+        return {};
+    }
+
     write(): DDL2.Schema {
         return {
             version: "0.0.22",
             datasources: this.writeDatasources(),
-            dataviews: this.writeDataviews()
+            dataviews: this.writeDataviews(),
+            properties: this.writeProperties()
         };
     }
 }

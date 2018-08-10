@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.4.15...@hpcc-js/marshaller@0.5.0) (2018-08-10)
+
+
+### Features
+
+* **ddl:** Move layout string into DDL 2.0 ([f1f8eb4](https://github.com/hpcc-systems/Visualization/commit/f1f8eb4)), closes [#2641](https://github.com/hpcc-systems/Visualization/issues/2641)
+
+
+
+
 <a name="0.4.15"></a>
 ## [0.4.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.4.14...@hpcc-js/marshaller@0.4.15) (2018-08-07)
 

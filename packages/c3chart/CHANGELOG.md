@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.23"></a>
+## [0.1.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/c3chart@0.1.22...@hpcc-js/c3chart@0.1.23) (2018-08-10)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/c3chart
+
 <a name="0.1.22"></a>
 ## [0.1.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/c3chart@0.1.21...@hpcc-js/c3chart@0.1.22) (2018-08-07)
 

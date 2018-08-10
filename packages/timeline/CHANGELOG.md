@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.6.0...@hpcc-js/timeline@0.7.0) (2018-08-10)
+
+
+### Features
+
+* **timeline:** Add yOffsetColumn to MiniGantt.ts ([3ffa687](https://github.com/hpcc-systems/Visualization/commit/3ffa687)), closes [#2746](https://github.com/hpcc-systems/Visualization/issues/2746)
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.5.0...@hpcc-js/timeline@0.6.0) (2018-08-07)
 

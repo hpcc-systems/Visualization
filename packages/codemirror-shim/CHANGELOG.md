@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.71"></a>
+## [0.0.71](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@0.0.70...@hpcc-js/codemirror-shim@0.0.71) (2018-08-10)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/codemirror-shim
+
 <a name="0.0.70"></a>
 ## [0.0.70](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/codemirror-shim@0.0.69...@hpcc-js/codemirror-shim@0.0.70) (2018-08-02)
 

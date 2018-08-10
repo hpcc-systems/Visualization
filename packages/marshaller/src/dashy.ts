@@ -1,5 +1,6 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { DDL1, ddl2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
@@ -7,7 +8,7 @@ import { PropertyEditor } from "@hpcc-js/other";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
 import { Activity, DatasourceAdapt } from "./ddl2/activities/activity";
-import { Dashboard, IDashboardPersist } from "./ddl2/dashboard";
+import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { GraphAdapter } from "./ddl2/graphadapter";
 import { Element, ElementContainer } from "./ddl2/model/element";
@@ -131,11 +132,11 @@ export class Dashy extends SplitPanel {
         });
     }
 
-    save(): IDashboardPersist {
+    save(): DDL2.Schema {
         return this._dashboard.save();
     }
 
-    restore(json: IDashboardPersist): Promise<void> {
+    restore(json: DDL2.Schema): Promise<void> {
         this._elementContainer.clear();
         this._dashboard.restore(json);
         return this._dashboard.renderPromise().then(() => {
@@ -155,7 +156,7 @@ export class Dashy extends SplitPanel {
             .addWidget(this._ddlv1, "v1")
             .addWidget(this._ddlv2, "v1->v2")
             ;
-        this.restore({ ddl: ddl2 });
+        this.restore(ddl2);
     }
 
     refreshPreview() {

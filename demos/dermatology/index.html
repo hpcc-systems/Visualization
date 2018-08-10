@@ -31,14 +31,6 @@
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
 
-        var mode = "dev";  // "dev" | "build" | "unpkg"
-        switch (window.location.origin) {
-            case "file://":
-                mode = "dev"; // "dev" | "build"
-                break
-            default:
-                mode = "unpkg";
-        }
         var paths = {
             "test": "tests"
         }

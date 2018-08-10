@@ -18,8 +18,9 @@
   },
   "devDependencies": {
     "rimraf": "2.6.2",
-    "rollup": "0.58.2",
-    "webpack": "3.11.0"
+    "rollup": "0.63.5",
+    "webpack": "4.16.4",
+    "webpack-cli": "3.0.8"
   },
   "author": "",
   "license": "Apache-2.0"

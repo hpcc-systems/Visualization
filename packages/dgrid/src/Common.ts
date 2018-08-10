@@ -17,9 +17,9 @@ export class Common extends HTMLWidget {
     }
 
     @publish("...empty...", "string", "No Data Message")
-    noDataMessage: publish<this, boolean>;
+    noDataMessage: publish<this, string>;
     @publish("loading...", "string", "Loading Message")
-    loadingMessage: publish<this, boolean>;
+    loadingMessage: publish<this, string>;
     @publish(false, "boolean", "Enable paging")
     pagination: publish<this, boolean>;
     @publish(false, "boolean", "Enable sorting by column")

@@ -64,11 +64,14 @@
             },
             only_events: function (callback) {
                 legacyRequire(["test/DataFactory", "src/timeline/MiniGantt"], function (DataFactory, MiniGantt) {
+                    let _data = random_datetime_events(20);
                     callback(new MiniGantt()
-                        .columns(["Label", "start", "end"])
+                        .columns(["Label", "start", "end", "yoffset"])
+                        .eventGroupOffset(0)
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
+                        .yOffsetColumn("yoffset")
                         .tickFormat("%b, %Y")
-                        .data(random_datetime_events(20))
+                        .data(_data.map(n=>n.concat([undefined,-50])))
                     );
                 });
             },

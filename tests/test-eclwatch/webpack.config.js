@@ -6,7 +6,7 @@ module.exports = {
         path: path.join(__dirname, "dist"),
         filename: 'bundle.test.js'
     },
-    devtool: "source-map",
+    mode: "development",
     module: {
         rules: [{
             enforce: 'pre',

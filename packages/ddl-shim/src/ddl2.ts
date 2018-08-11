@@ -276,6 +276,8 @@ export interface Schema {
     version: "0.0.22";
     datasources: DatasourceType[];
     dataviews: IView[];
+    properties: IWidgetProperties;
+
     //  The following defs are only provided to assist the Java code generation (from the the generated schema)  ---
     defs?: {
         fieldTypes: {

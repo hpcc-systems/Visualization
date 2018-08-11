@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -23,8 +23,8 @@
     "generate": "node ./lib-util/createSchema.js",
     "cli": "node ./lib-cli/cli/index.js",
     "bundle": "webpack",
-    "bundle-watch": "npm run bundle -- --watch",
-    "build": "npm run compile-util && npm run generate && npm run compile-es6 && npm run compile-cli && npm run bundle",
+    "bundle-watch": "run-s bundle -- --watch",
+    "build": "npm-run-all --serial compile-util generate --parallel compile-es6 compile-cli --serial bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
@@ -34,7 +34,7 @@
     "tslib": "1.9.0"
   },
   "devDependencies": {
-    "@hpcc-js/bundle": "^0.0.44",
+    "@hpcc-js/bundle": "^0.0.45",
     "@types/node": "8.0.51",
     "ajv-cli": "3.0.0",
     "ajv-pack": "0.3.1",

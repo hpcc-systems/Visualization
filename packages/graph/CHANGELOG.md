@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.18"></a>
+## [0.2.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.2.17...@hpcc-js/graph@0.2.18) (2018-08-10)
+
+
+### Bug Fixes
+
+* **graph:** FF tooltip fix for Graph ([687d6c1](https://github.com/hpcc-systems/Visualization/commit/687d6c1)), closes [#2742](https://github.com/hpcc-systems/Visualization/issues/2742)
+
+
+
+
 <a name="0.2.17"></a>
 ## [0.2.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.2.16...@hpcc-js/graph@0.2.17) (2018-08-07)
 

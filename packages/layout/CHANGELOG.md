@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.16"></a>
+## [0.3.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.3.15...@hpcc-js/layout@0.3.16) (2018-08-10)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/layout
+
 <a name="0.3.15"></a>
 ## [0.3.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.3.14...@hpcc-js/layout@0.3.15) (2018-08-07)
 

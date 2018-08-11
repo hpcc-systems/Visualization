@@ -9,8 +9,8 @@
 
     <script>
         var mode = "dev";  // "dev" | "build" | "unpkg"
-        switch (window.location.origin) {
-            case "file://":
+        switch (window.location.protocol) {
+            case "file:":
                 mode = "dev"; // "dev" | "build"
                 document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
                 document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
@@ -31,14 +31,6 @@
     <script>
         var hpccLoader = window["@hpcc-js/loader"];
 
-        var mode = "dev";  // "dev" | "build" | "unpkg"
-        switch (window.location.origin) {
-            case "file://":
-                mode = "dev"; // "dev" | "build"
-                break
-            default:
-                mode = "unpkg";
-        }
         var paths = {
             "test": "tests"
         }

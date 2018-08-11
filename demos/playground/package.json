@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/demo-demoware",
+  "name": "@hpcc-js/demo-playground",
   "version": "0.0.57",
   "scripts": {
     "clean": "rimraf lib* || rimraf dist || rimraf dist",

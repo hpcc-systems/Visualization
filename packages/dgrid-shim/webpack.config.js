@@ -67,6 +67,7 @@ module.exports = function (env) {
                 buildEnvironment: { dojoRoot: "../../node_modules" }, // used at build time
                 locales: ["en"]
             }),
+            new DojoWebpackPlugin.ScopedRequirePlugin(),
             // Copy non-packed resources needed by the app to the release directory
             new CopyWebpackPlugin([{
                 context: "../../node_modules",

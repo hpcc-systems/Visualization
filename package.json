@@ -10,7 +10,7 @@
     "compile-es6": "lerna run --ignore \"@hpcc-js/test-*\" compile-es6",
     "compile-es6-watch": "lerna run --nosort --stream --ignore \"@hpcc-js/test-*\" compile-es6-watch",
     "compile-umd": "lerna run --ignore \"@hpcc-js/test-*\" compile-umd",
-    "build-util": "lerna run --scope \"@hpcc-js/bundle\" build",
+    "build-util": "lerna run --scope \"@hpcc-js/util-*\" build",
     "build-shim": "lerna run --scope \"@hpcc-js/*-shim\" build",
     "build-loader": "lerna run --scope \"@hpcc-js/loader\" build",
     "build-dev": "npm run build-util && npm run build-shim && npm run build-loader && npm run compile-umd",

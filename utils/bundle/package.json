@@ -1,5 +1,5 @@
 {
-  "name": "@hpcc-js/bundle",
+  "name": "@hpcc-js/util-bundle",
   "version": "0.0.45",
   "description": "hpcc-js - bundle",
   "main": "lib-umd/index.js",

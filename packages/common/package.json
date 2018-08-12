@@ -13,7 +13,7 @@
     "font-awesome/**/*"
   ],
   "scripts": {
-    "clean": "rimraf lib* && rimraf types && rimraf dist",
+    "clean": "rimraf lib* || rimraf types || rimraf dist",
     "copy-resources": "cpx \"../../node_modules/font-awesome/fonts/*\" \"./font-awesome/fonts\" && cpx \"../../node_modules/font-awesome/css/*\" \"./font-awesome/css\"",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",

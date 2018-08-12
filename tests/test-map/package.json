@@ -28,7 +28,7 @@
     "webpack-cli": "3.0.8"
   },
   "scripts": {
-    "clean": "rimraf lib* && rimraf types && rimraf dist",
+    "clean": "rimraf lib* || rimraf types || rimraf dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle-umd": "webpack",

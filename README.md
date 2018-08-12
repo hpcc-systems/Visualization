@@ -5,6 +5,7 @@
 
 * _[Playground](https://rawgit.com/hpcc-systems/Visualization/master/demos/playground/index.html)_
 * _[Dermatology Test Page (legacy)](https://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology/index.html)_
+* _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start)_
 * _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_
 * _[Wiki](https://github.com/hpcc-systems/Visualization/wiki)_
 

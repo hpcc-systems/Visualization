@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.17"></a>
+## [0.4.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.4.16...@hpcc-js/comms@0.4.17) (2018-08-12)
+
+
+### Bug Fixes
+
+* **comms:** Query.attach should not return a promise. ([20cd947](https://github.com/hpcc-systems/Visualization/commit/20cd947))
+
+
+
+
 <a name="0.4.16"></a>
 ## [0.4.16](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@0.4.15...@hpcc-js/comms@0.4.16) (2018-08-10)
 

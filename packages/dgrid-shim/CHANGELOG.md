@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.13"></a>
+## [0.1.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@0.1.12...@hpcc-js/dgrid-shim@0.1.13) (2018-08-12)
+
+
+### Bug Fixes
+
+* **dgrid-shim:** Polluting global namespace with require ([73f2e97](https://github.com/hpcc-systems/Visualization/commit/73f2e97))
+
+
+
+
 <a name="0.1.12"></a>
 ## [0.1.12](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@0.1.11...@hpcc-js/dgrid-shim@0.1.12) (2018-08-10)
 

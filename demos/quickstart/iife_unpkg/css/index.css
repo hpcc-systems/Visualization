@@ -1,0 +1,14 @@
+﻿body {
+    padding:0px; 
+    margin:0px; 
+    overflow:hidden;
+}
+
+#placeholder {
+    position: absolute;
+    top:8px;
+    bottom:8px;
+    left:8px;
+    right:8px;
+}
+

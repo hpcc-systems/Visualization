@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "@hpcc-js/demo-quickstart-amd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hpcc-js/chart": "*",
+    "@hpcc-js/phosphor": "*"
+  },
+  "devDependencies": {
+    "webpack": "4.16.4",
+    "webpack-cli": "3.0.8"
+  },
+  "author": "",
+  "license": "Apache-2.0"
+}

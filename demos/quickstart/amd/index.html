@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AMD</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/index.css">
+
+    <script src="node_modules/requirejs/require.js"></script>
+
+    <script>
+        require.config({
+            baseUrl: ".",
+            paths: {
+                "@hpcc-js/common": "node_modules/@hpcc-js/common/dist/index.min",
+                "@hpcc-js/api": "node_modules/@hpcc-js/api/dist/index.min",
+                "@hpcc-js/chart": "node_modules/@hpcc-js/chart/dist/index.min",
+                "@hpcc-js/phosphor": "node_modules/@hpcc-js/phosphor/dist/index.min",
+                "@hpcc-js/util": "node_modules/@hpcc-js/util/dist/index.min"
+            }
+        });        
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder">
+    </div>
+    <script src="src/index.js"></script>
+</body>
+
+</html>

@@ -1,5 +1,8 @@
-export const root = new Function("try{return global;}catch(e){return window;}")();
+declare const process: any;
 
-export const isBrowser = new Function("try{return this===window;}catch(e){return false;}");
-export const isNode = new Function("try{return this===global;}catch(e){return false;}");
-export const isTravis = new Function("try{return process.env.TRAVIS;}catch(e){return false;}");
+//  @ts-ignore
+export const root: any = new Function("return this;")(); //  Prevent bundlers from messing with "this"
+
+export const isBrowser: boolean = typeof window !== "undefined" && root === window;
+export const isNode: boolean = typeof process !== "undefined" && process.versions != null && process.versions.node != null;
+export const isTravis: boolean = isNode && process.env != null && process.env.TRAVIS != null;

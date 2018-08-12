@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { isBrowser, isTravis } from "../testLib";
 
 import { locateClientTools, Version, Workunit } from "@hpcc-js/comms";
+import { isBrowser, isTravis } from "@hpcc-js/util";
 
 function test(build: string, prefix: string, major: number, minor: number, patch: number, postfix: string): boolean {
     const version = new Version(build);
@@ -17,7 +17,7 @@ function logVersion(build: string): Promise<void> {
 }
 
 describe("eclcc", function () {
-    if (!isBrowser()) {
+    if (!isBrowser) {
         it("basic", function () {
             expect(locateClientTools).to.be.a("function");
             return locateClientTools().then(clienttools => {
@@ -26,7 +26,7 @@ describe("eclcc", function () {
             });
         });
 
-        if (!isTravis()) {
+        if (!isTravis) {
             it("end2end", function () {
                 return locateClientTools(undefined, undefined, ".").then((clientTools) => {
                     return clientTools.createArchive("./src/clienttools/some.ecl");

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
 import { Connection, WorkunitsService, WUQuery } from "@hpcc-js/comms";
-
-import { ESP_URL, isBrowser, isTravis } from "../testLib";
+import { isBrowser, isTravis } from "@hpcc-js/util";
+import { ESP_URL } from "../testLib";
 
 describe("WsWorkunits", function () {
     describe("POST", function () {
@@ -13,7 +13,7 @@ describe("WsWorkunits", function () {
         const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: "get" }));
         doTest(wsWorkunits);
     });
-    if (isBrowser()) {
+    if (isBrowser) {
         describe("JSONP", function () {
             const wsWorkunits = new WorkunitsService(new Connection({ baseUrl: ESP_URL, type: "jsonp" }));
             doTest(wsWorkunits);
@@ -38,7 +38,7 @@ function doTest(wsWorkunits: WorkunitsService) {
             return response;
         });
     });
-    if (!isTravis()) {
+    if (!isTravis) {
         /*
         it.skip("WUDetails", function () {
             return wsWorkunits.WUDetails({ WUID: wu.Wuid }).then((response) => {

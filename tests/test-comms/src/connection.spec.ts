@@ -2,8 +2,7 @@ import { expect } from "chai";
 
 import { Connection } from "@hpcc-js/comms";
 import { isBrowser, isTravis } from "@hpcc-js/util";
-
-export const ESP_URL = isTravis() ? "http://52.51.90.23:8010/" : "http://192.168.3.22:8010/";
+import { ESP_URL } from "./testLib";
 
 describe.skip("Old Server", function () {
     it("authentication", function () {
@@ -43,7 +42,7 @@ describe("connection", function () {
     });
 
     it.skip("JSONP", function () {
-        if (!isTravis() && isBrowser()) {
+        if (!isTravis && isBrowser) {
             const transport = new Connection({ baseUrl: "http://10.241.100.159:800./wsEcl/submit/query/roxie", type: "jsonp" });
             const request = {
                 bestfitmax: 1,

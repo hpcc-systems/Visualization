@@ -2,13 +2,12 @@ import { Bar } from "@hpcc-js/chart";
 
 new Bar()
     .target("target")
-    .columns(["Subject", "Result"])
+    .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([
-        ["English", 45],
-        ["Irish", 28],
-        ["Math", 98],
-        ["Geography", 48],
-        ["Science", 82]
+        ["Geography", 75, 68, 65],
+        ["English", 45, 55, -52],
+        ["Math", 98, 92, 90],
+        ["Science", 66, 60, 72]
     ])
     .render()
     ;

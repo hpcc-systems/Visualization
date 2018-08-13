@@ -2,10 +2,8 @@
 import { Widget } from "@hpcc-js/common";
 import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel } from "@hpcc-js/phosphor";
-import { scopedLogger } from "@hpcc-js/util";
 import { DemoWidget } from "./DemoWidget";
 
-const logger = scopedLogger("index.ts");
 declare const System: any;
 
 export class App extends DockPanel {
@@ -23,7 +21,7 @@ export class App extends DockPanel {
         })
         ;
 
-    constructor() {
+    constructor(path) {
         super();
         this._propEditor.monitor((id, newValue, oldValue, source) => {
             this.changed(this._propEditor);
@@ -37,6 +35,12 @@ export class App extends DockPanel {
 
     load(fileName) {
         System.import(`./samples/${fileName}.js!./plugins/text.js`).then(text => {
+            this._editor.text(text);
+        });
+    }
+
+    loadPath(fileName) {
+        System.import(`${fileName}!./plugins/text.js`).then(text => {
             this._editor.text(text);
         });
     }

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Gallery Item</title>
+    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+    <link href="style/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/getlibs"></script>
+</head>
+
+<body>
+    <!-- Always shows a header, even in smaller screens. -->
+    <div id="target">
+    </div>
+    <script>
+        var path = location.search.split("?").pop();
+        System.import(path);
+    </script>
+</body>
+
+</html>

@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/other", "@hpcc-js/phosphor", "@hpcc-js/util", "./DemoWidget"], factory);
+        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/other", "@hpcc-js/phosphor", "./DemoWidget"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -22,12 +22,10 @@ var __extends = (this && this.__extends) || (function () {
     var codemirror_1 = require("@hpcc-js/codemirror");
     var other_1 = require("@hpcc-js/other");
     var phosphor_1 = require("@hpcc-js/phosphor");
-    var util_1 = require("@hpcc-js/util");
     var DemoWidget_1 = require("./DemoWidget");
-    var logger = util_1.scopedLogger("index.ts");
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
-        function App() {
+        function App(path) {
             var _this = _super.call(this) || this;
             _this._skipUpdate = false;
             _this._editor = new codemirror_1.JSEditor()
@@ -51,6 +49,12 @@ var __extends = (this && this.__extends) || (function () {
         App.prototype.load = function (fileName) {
             var _this = this;
             System.import("./samples/" + fileName + ".js!./plugins/text.js").then(function (text) {
+                _this._editor.text(text);
+            });
+        };
+        App.prototype.loadPath = function (fileName) {
+            var _this = this;
+            System.import(fileName + "!./plugins/text.js").then(function (text) {
                 _this._editor.text(text);
             });
         };
@@ -129,4 +133,4 @@ var __extends = (this && this.__extends) || (function () {
     }(phosphor_1.DockPanel));
     exports.App = App;
 });
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=playground.js.map

@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@hpcc-js: Gallery</title>
+    <link href="style/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/getlibs"></script>
+</head>
+
+<body onresize="doResize()">
+    <!-- Always shows a header, even in smaller screens. -->
+    <div id="placeholder">
+    </div>
+    <script>
+        var app;
+        System.import("./lib-umd/gallery.js").then(function (gallery) {
+            app = new gallery.App()
+                .target("placeholder")
+                .render()
+                ;
+        });
+        function doResize() {
+            if (app) {
+                app
+                    .resize()
+                    .render()
+                    ;
+            }
+        }
+    </script>
+</body>
+
+</html>

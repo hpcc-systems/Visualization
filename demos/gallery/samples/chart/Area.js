@@ -1,6 +1,6 @@
-import { Step } from "@hpcc-js/chart";
+import { Area } from "@hpcc-js/chart";
 
-new Step()
+new Area()
     .target("target")
     .columns(["Subject", "Year 1", "Year 2", "Year 3"])
     .data([

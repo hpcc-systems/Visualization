@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.5.0...@hpcc-js/marshaller@0.5.1) (2018-08-12)
+
+
+### Bug Fixes
+
+* **comms:** Query.attach should not return a promise. ([20cd947](https://github.com/hpcc-systems/Visualization/commit/20cd947))
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.4.15...@hpcc-js/marshaller@0.5.0) (2018-08-10)
 

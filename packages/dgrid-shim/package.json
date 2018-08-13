@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/dgrid-shim",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "dgrid shim",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -21,13 +21,6 @@
     "types/*"
   ],
   "dependencies": {
-    "dgrid": "1.2.1",
-    "dijit": "1.13.0",
-    "dojo": "1.13.0",
-    "dojo-dstore": "1.1.2",
-    "dojo-themes": "1.13.0",
-    "dojo-util": "1.13.0",
-    "dojox": "1.13.0",
     "tslib": "1.9.0"
   },
   "devDependencies": {
@@ -35,7 +28,14 @@
     "@types/dojo": "1.9.40",
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "1.0.0",
+    "dgrid": "1.2.1",
+    "dijit": "1.13.0",
+    "dojo": "1.13.0",
+    "dojo-dstore": "1.1.2",
+    "dojo-themes": "1.13.0",
+    "dojo-util": "1.13.0",
     "dojo-webpack-plugin": "2.7.4",
+    "dojox": "1.13.0",
     "rimraf": "2.6.2",
     "style-loader": "0.19.0",
     "tslint": "5.9.1",

@@ -26,7 +26,6 @@ export class Axis extends SVGWidget {
     protected _guideElement;
     protected svg;
     protected svgAxis;
-    protected svgText;
     protected svgGuides;
 
     @publish("linear", "set", "Type", ["none", "ordinal", "linear", "pow", "log", "time"])
@@ -176,8 +175,6 @@ export class Axis extends SVGWidget {
         this.svgAxis = this.svg.append("g")
             .attr("class", "axis")
             ;
-        this.svgText = this.svgAxis.append("text");
-
         this.svgGuides = (this._guideElement || element).append("g")
             .attr("class", "guide")
             ;
@@ -582,9 +579,14 @@ export class Axis extends SVGWidget {
             x: this.pos().x,
             width: this.width()
         };
+        const svgText = this.svgAxis.selectAll(".axisTitle").data(this.title() ? [this.title()] : []);
+        const svgTextUpdate = svgText.enter().append("text")
+            .attr("class", "axisTitle")
+            .merge(svgText)
+            ;
         switch (this.orientation()) {
             case "left":
-                this.svgText.transition()
+                svgTextUpdate.transition()
                     .attr("transform", "rotate(-90)")
                     .attr("x", -2)
                     .attr("y", 2)
@@ -595,7 +597,7 @@ export class Axis extends SVGWidget {
                     ;
                 break;
             case "right":
-                this.svgText.transition()
+                svgTextUpdate.transition()
                     .attr("transform", "rotate(-90)")
                     .attr("x", -2)
                     .attr("y", 4)
@@ -606,9 +608,9 @@ export class Axis extends SVGWidget {
                     ;
                 break;
             case "top":
-                this.svgText.transition()
+                svgTextUpdate.transition()
                     .attr("transform", "rotate(0)")
-                    .attr("x", svgLineBBox.x + svgLineBBox.width - 2)
+                    .attr("x", svgLineBBox.width - 2)
                     .attr("y", 2)
                     .attr("dx", null)
                     .attr("dy", ".71em")
@@ -617,9 +619,9 @@ export class Axis extends SVGWidget {
                     ;
                 break;
             case "bottom":
-                this.svgText.transition()
+                svgTextUpdate.transition()
                     .attr("transform", "rotate(0)")
-                    .attr("x", svgLineBBox.x + svgLineBBox.width - 2)
+                    .attr("x", svgLineBBox.width - 2)
                     .attr("y", -2)
                     .attr("dx", null)
                     .attr("dy", null)
@@ -629,11 +631,11 @@ export class Axis extends SVGWidget {
                 break;
             default:
         }
+        svgText.exit().remove();
         this.svgGuides
             .call(this.d3Guides)
             .selectAll(".tick").classed("guide-0", d => d === 0 && this.low() < 0)
             ;
-
     }
 
     rerender() {

@@ -47,6 +47,11 @@ export class DemoWidget extends HTMLWidget {
                 this._sampleDiv.node().innerText = e.message;
                 System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount++}!./plugins/cm.js`));
             });
+        } else if (this._widget) {
+            this._widget
+                .resize()
+                .render()
+                ;
         }
     }
 

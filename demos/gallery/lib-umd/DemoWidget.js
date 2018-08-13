@@ -60,6 +60,11 @@ var __extends = (this && this.__extends) || (function () {
                     System.registry.delete(System.normalizeSync("cm_editor_" + _this._errCount++ + "!./plugins/cm.js"));
                 });
             }
+            else if (this._widget) {
+                this._widget
+                    .resize()
+                    .render();
+            }
         };
         DemoWidget.prototype.changed = function (widget) {
         };

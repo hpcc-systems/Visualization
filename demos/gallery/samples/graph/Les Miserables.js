@@ -4,11 +4,11 @@ import { Graph, Vertex, Edge } from "@hpcc-js/graph";
 new Graph()
     .target("target")
     .data(createData())
-    .layout("ForceDirected")
+    .layout("Circle")
     .applyScaleOnLayout(true)
     .render((g) => {
         g
-            .layout("ForceDirected2")
+            .layout("ForceDirected")
             .render()
             ;
     })

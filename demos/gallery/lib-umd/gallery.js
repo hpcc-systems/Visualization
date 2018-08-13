@@ -8,6 +8,12 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
@@ -70,10 +76,13 @@ var __extends = (this && this.__extends) || (function () {
                 .style("overflow-y", "auto");
         };
         App.prototype.update = function (domNode, element) {
+            var _this = this;
             _super.prototype.update.call(this, domNode, element);
             this._body.style("height", this.height() - 40 + "px");
             if (this.renderCount() === 0) {
-                this.navChanged({ text: sampleFolders[0].name, value: sampleFolders[0].path }, "text", true);
+                var defaultRow = sampleFolders.filter(function (row) { return row.path === _this._default; })[0] || sampleFolders[0];
+                this._nav._select.node().value = defaultRow.path;
+                this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
             }
         };
         App.prototype.navChanged = function (row, col, sel) {
@@ -110,6 +119,9 @@ var __extends = (this && this.__extends) || (function () {
                 .text("playground");
             samples.exit().remove();
         };
+        __decorate([
+            common_1.publish("", "string")
+        ], App.prototype, "_default", void 0);
         return App;
     }(common_1.HTMLWidget));
     exports.App = App;

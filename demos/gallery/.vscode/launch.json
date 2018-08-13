@@ -5,7 +5,7 @@
             "name": "playground",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/graph/Bar.js",
+            "url": "file:///${workspaceRoot}/playground.html?./samples/chart/Bar.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

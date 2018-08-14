@@ -93,9 +93,11 @@ export function cdn(url: string, min: boolean = true, additionalPaths: { [key: s
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
         "amchartsImg": `${url}/amchart/images/`,
-        "@hpcc-js/dgrid-shim": `${url}/dgrid-shim/dist/index${minStr}`,
         ...additionalPaths
     };
+    shims.forEach(shim => {
+        paths[`@hpcc-js/${shim}`] = `${url}/${shim}/dist/index${minStr}`;
+    });
     packages.forEach(pckg => {
         paths[`@hpcc-js/${pckg}`] = `${url}/${pckg}/dist/index${minStr}`;
     });
@@ -129,7 +131,6 @@ function local(additionalPaths: { [key: string]: string }, min: boolean = false)
             name: `@hpcc-js/${pckg}`,
             main: "lib-umd/index"
         });
-        paths[`@hpcc-js/${pckg}`] = `${config.libUrl}/${pckg}`;
     });
     return requirejs.config({
         context: config.libUrl,

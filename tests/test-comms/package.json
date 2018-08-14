@@ -32,7 +32,7 @@
     "bundle-watch": "npm run bundle -- --watch",
     "build": "npm run compile-es6 && npm run compile-umd && npm run bundle",
     "watch": "run-p compile-es6-watch bundle-watch",
-    "test": "npm run test:node && npm run test:chrome",
+    "test": "npm run test:node",
     "test:node": "./node_modules/.bin/mocha lib-umd/index.spec.js --reporter spec",
     "test:chrome": "mocha-chrome --chrome-flags \"[\\\"--allow-file-access-from-files\\\"]\" ./test.html"
   }

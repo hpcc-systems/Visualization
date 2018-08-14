@@ -1,5 +1,3 @@
-var webpack = require("webpack");
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require("path");
 
 var entry_list = [
@@ -17,9 +15,7 @@ module.exports = {
         libraryTarget: "umd",
         library: "@hpcc-js/c3-shim"
     },
-    resolve: {
-    },
-    devtool: 'source-map',
+    mode: 'production',
     module: {
         rules: [
             {
@@ -33,12 +29,5 @@ module.exports = {
         ]
     },
     plugins: [
-        //new webpack.ProvidePlugin({
-        //    d3: 'd3'
-        //}),
-        // new ExtractTextPlugin('c3-shim.css'),
-        //new webpack.optimize.UglifyJsPlugin({
-        //sourceMap: "source-map"
-        //})
     ]
 };

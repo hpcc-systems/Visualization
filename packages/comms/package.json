@@ -35,7 +35,7 @@
     "node-fetch": "2.0.0",
     "safe-buffer": "5.1.1",
     "tmp": "0.0.33",
-    "tslib": "1.9.0",
+    "tslib": "1.9.3",
     "whatwg-fetch": "2.0.3",
     "xmldom": "0.1.27"
   },
@@ -54,7 +54,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

@@ -3,7 +3,7 @@ import { Icon } from "./Icon";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 import { Text } from "./Text";
-import { d3SelectionType, Widget } from "./Widget";
+import { BBox, d3SelectionType, Widget } from "./Widget";
 
 export interface IAnnotation {
     faChar: string;
@@ -19,7 +19,7 @@ export class Entity extends SVGWidget {
     protected _background_widget: Shape;
     protected _title_widget: Text;
     protected _desc_widget: Text;
-    protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: SVGRect } };
+    protected _annotation_widgets: { [idx: number]: { widget: SVGWidget, bbox: BBox } };
     protected _element_anno: d3SelectionType;
     protected _element_background: d3SelectionType;
     protected _element_desc: d3SelectionType;

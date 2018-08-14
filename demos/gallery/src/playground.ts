@@ -2,7 +2,7 @@
 import { Widget } from "@hpcc-js/common";
 import { PropertyEditor } from "@hpcc-js/other";
 import { DockPanel } from "@hpcc-js/phosphor";
-import { DemoWidget } from "./DemoWidget";
+import { DemoWidget } from "./DemoWidget.js";
 
 declare const System: any;
 

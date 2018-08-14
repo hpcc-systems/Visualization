@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <title>@hpcc-js: Gallery</title>
     <link href="style/index.css" rel="stylesheet">
-    <script src="https://unpkg.com/getlibs"></script>
+    <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
+    <script src="./lib-umd/config.js"></script>
+    <script>
+        SystemJS.config(config.systemjs);
+    </script>
 </head>
 
 <body onresize="doResize()">

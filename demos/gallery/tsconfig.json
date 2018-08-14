@@ -2,7 +2,7 @@
     "compilerOptions": {
         "outDir": "./lib-umd",
         "target": "es5",
-        "module": "umd",
+        "module": "es6",
         "moduleResolution": "node",
         "sourceMap": true,
         "noImplicitAny": false,

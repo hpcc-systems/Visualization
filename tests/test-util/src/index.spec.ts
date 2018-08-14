@@ -8,6 +8,7 @@ import "./graph.spec";
 import "./logging.spec";
 import "./object.spec";
 import "./observer.spec";
+import "./platform.spec";
 import "./stack.spec";
 import "./stateful.spec";
 import "./string.spec";

@@ -3,6 +3,7 @@
   "version": "0.1.13",
   "description": "dgrid shim",
   "main": "dist/index.js",
+  "unpkg": "dist/index.min.js",
   "types": "types/index.d.ts",
   "scripts": {
     "clean": "rimraf lib* && rimraf types && rimraf dist",
@@ -20,9 +21,7 @@
     "dist/**/*",
     "types/*"
   ],
-  "dependencies": {
-    "tslib": "1.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
     "@types/dojo": "1.9.40",
@@ -34,18 +33,18 @@
     "dojo-dstore": "1.1.2",
     "dojo-themes": "1.13.0",
     "dojo-util": "1.13.0",
-    "dojo-webpack-plugin": "2.7.4",
+    "dojo-webpack-plugin": "2.7.5",
     "dojox": "1.13.0",
     "rimraf": "2.6.2",
     "style-loader": "0.19.0",
     "tslint": "5.9.1",
     "typescript": "2.9.1",
-    "uglify-es": "3.3.9",
     "uglifyjs-webpack-plugin": "1.2.7",
     "url-loader": "0.6.2",
     "webpack": "4.16.4",
     "webpack-cli": "3.0.8",
-    "webpack-hasjs-plugin": "1.0.1"
+    "webpack-hasjs-plugin": "1.0.3",
+    "tslib": "1.9.0"
   },
   "repository": {
     "type": "git",

@@ -11,14 +11,17 @@ module.exports = function (env) {
 
     return {
         context: __dirname,
-        entry: "./lib-cjs/index",
+        entry: {
+            "index": "./lib-cjs/index",
+            "index.min": "./lib-cjs/index",
+        },
         output: {
             path: path.join(__dirname, "dist"),
             publicPath: "dist/",
             libraryTarget: "umd",
             library: "@hpcc-js/dgrid-shim",
             pathinfo: true,
-            filename: "index.js"
+            filename: "[name].js"
         },
         module: {
             rules: [
@@ -93,10 +96,10 @@ module.exports = function (env) {
         },
         mode: isProduction ? "production" : "development",
         optimization: {
-            // runtimeChunk: "single",
             minimizer: [
                 // we specify a custom UglifyJsPlugin here to get source maps in production
                 new UglifyJsPlugin({
+                    include: /\.min\.js$/,
                     cache: true,
                     parallel: true,
                     uglifyOptions: {

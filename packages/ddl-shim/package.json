@@ -29,13 +29,11 @@
     "lint": "tslint --project . src/**/*.ts",
     "docs": "typedoc --options tdoptions.json ."
   },
-  "dependencies": {
-    "ajv": "6.5.2",
-    "tslib": "1.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
     "@types/node": "8.0.51",
+    "ajv": "6.5.2",
     "ajv-cli": "3.0.0",
     "ajv-pack": "0.3.1",
     "ajv-pack-loader": "2.2.0",
@@ -46,8 +44,10 @@
     "tslint": "5.9.1",
     "typescript": "2.9.1",
     "typescript-json-schema": "0.24.1",
+    "uglifyjs-webpack-plugin": "1.2.7",
     "webpack": "4.16.4",
-    "webpack-cli": "3.0.8"
+    "webpack-cli": "3.0.8",
+    "tslib": "1.9.0"
   },
   "repository": {
     "type": "git",

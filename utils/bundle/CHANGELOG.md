@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# 0.1.0 (2018-08-14)
+
+
+### Features
+
+* **marshaller:** Add sample data ([c501c8b](https://github.com/hpcc-systems/Visualization/commit/c501c8b))
+
+
+
+
 <a name="0.0.45"></a>
 ## [0.0.45](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/bundle@0.0.44...@hpcc-js/bundle@0.0.45) (2018-08-10)
 

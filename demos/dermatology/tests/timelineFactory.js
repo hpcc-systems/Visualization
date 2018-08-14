@@ -33,12 +33,13 @@
             simple: function (callback) {
                 legacyRequire(["src/timeline/MiniGantt"], function (MiniGantt) {
                     let _data = random_datetime_ranges(20);
-                    _data = _data.concat(random_datetime_events(20));
+                    _data = _data.concat(random_datetime_events(20).map(n=>n.concat([undefined, -300 * Math.random()])));
                     callback(new MiniGantt()
-                        .columns(["Label", "start", "end"])
+                        .columns(["Label", "start", "end", "yoffset"])
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
-                        // .tickFormat("%H:%M")
                         .tickFormat('%Y %m %d')
+                        .yOffsetColumn("yoffset")
+                        .eventGroupOffset(0)
                         .data(_data)
                     );
                 });
@@ -71,7 +72,7 @@
                         .timePattern("%Y-%m-%dT%H:%M:%S.%LZ")
                         .yOffsetColumn("yoffset")
                         .tickFormat("%b, %Y")
-                        .data(_data.map(n=>n.concat([undefined,-50])))
+                        .data(_data.map(n=>n.concat([undefined,-300 * Math.random()])))
                     );
                 });
             },

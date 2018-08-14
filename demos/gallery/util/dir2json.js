@@ -1,5 +1,7 @@
 var fs = require('fs');
 var path = require('path');
+var pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+var systemjs = JSON.parse(fs.readFileSync('systemjs.config.json', 'utf8'));
 
 function dirTree(filename) {
     var stats = fs.lstatSync(filename);
@@ -22,7 +24,17 @@ function dirTree(filename) {
     return info;
 }
 
+for (const key in pkg.devDependencies) {
+    if (key.indexOf("@hpcc-js") === 0) {
+        const keyParts = key.split("/");
+        systemjs.map[key] = `https://unpkg.com/${key}@${pkg.devDependencies[key]}/dist/index.min.js`;
+    }
+}
+
 if (module.parent == undefined) {
-    // node dirTree.js ~/foo/bar
-    fs.writeFile("samples.json", JSON.stringify(dirTree(process.argv[2])), "utf8", () => { });
+    const config = {
+        samples: dirTree(process.argv[2]),
+        systemjs: systemjs
+    };
+    fs.writeFile('lib-umd/config.js', `var config = ${JSON.stringify(config)};`, "utf8", () => { });
 }

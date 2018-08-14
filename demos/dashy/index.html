@@ -5,22 +5,52 @@
     <meta charset="utf-8">
     <title>Dashy</title>
 
-    <link rel="stylesheet" href="style/index.css">
-
-    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
-    <script src="https://unpkg.com/@hpcc-js/loader"></script>
     <script>
-        var hpccLoader = window["@hpcc-js/loader"];
-        var require = hpccLoader.unpkg();
+        var mode = "dev";  // "dev" | "build" | "unpkg"
+        switch (window.location.protocol) {
+            case "file:":
+                mode = "dev"; // "dev" | "build"
+                document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="../../node_modules/material-design-lite/material.min.css">');
+                document.write('<script type="text/javascript" src="../../node_modules/material-design-lite/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="../../node_modules/pure-css/lib/menus.css">');
+                document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+                break
+            default:
+                mode = "unpkg";
+                document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/material-design-lite@1.2.1/material.min.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/material-design-lite@1.2.1/material.min.js" charset=\"utf-8\"><' + '/script>');
+                document.write('<link rel="stylesheet" href="https://unpkg.com/pure-css@1.0.4/lib/menus.css">');
+                document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        }
     </script>
 
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+
+        if (mode === "dev") {
+            var require = hpccLoader.dev();
+        } else {
+            if (mode === "unpkg") {
+                var require = hpccLoader.unpkg(true);
+            } else {
+                var require = hpccLoader.cdn("../../packages", false);
+            }
+        }
+
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    <link href="style/index.css" rel="stylesheet">
 </head>
 
 <body>
     <div id="placeholder">
     </div>
     <script>
-        require(["lib-umd/index"], function (dashy) {
+        hpccsystems.require(["lib-umd/index"], function (dashy) {
             dashy.load("placeholder");
         })
     </script>

@@ -23,7 +23,7 @@
     "d3-selection": "1.1.0",
     "d3-time-format": "2.1.0",
     "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@types/d3": "4.9.0",
@@ -31,7 +31,7 @@
     "rimraf": "2.6.2",
     "rollup": "0.63.5",
     "source-map-loader": "0.2.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "webpack": "4.16.4",
     "webpack-cli": "3.0.8"
   }

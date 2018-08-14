@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.15"></a>
+## [0.1.15](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@0.1.14...@hpcc-js/dgrid-shim@0.1.15) (2018-08-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/dgrid-shim
+
+<a name="0.1.14"></a>
+## [0.1.14](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@0.1.13...@hpcc-js/dgrid-shim@0.1.14) (2018-08-14)
+
+
+### Bug Fixes
+
+* **unpkg:** Webpacked shims have incorrect package.json ([1f9807f](https://github.com/hpcc-systems/Visualization/commit/1f9807f))
+
+
+
+
 <a name="0.1.13"></a>
 ## [0.1.13](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@0.1.12...@hpcc-js/dgrid-shim@0.1.13) (2018-08-12)
 

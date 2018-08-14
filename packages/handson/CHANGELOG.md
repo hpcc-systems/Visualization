@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.19"></a>
+## [0.2.19](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/handson@0.2.18...@hpcc-js/handson@0.2.19) (2018-08-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/handson
+
+<a name="0.2.18"></a>
+## [0.2.18](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/handson@0.2.17...@hpcc-js/handson@0.2.18) (2018-08-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/handson
+
 <a name="0.2.17"></a>
 ## [0.2.17](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/handson@0.2.16...@hpcc-js/handson@0.2.17) (2018-08-10)
 

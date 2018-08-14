@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/composite",
-  "version": "0.2.24",
+  "version": "0.2.26",
   "description": "hpcc-js - Viz Composite",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,19 +25,19 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.5.1",
-    "@hpcc-js/chart": "^0.9.1",
-    "@hpcc-js/common": "^0.9.1",
-    "@hpcc-js/dgrid": "^0.3.2",
-    "@hpcc-js/form": "^0.1.19",
-    "@hpcc-js/html": "^0.0.101",
-    "@hpcc-js/layout": "^0.3.17",
-    "@hpcc-js/other": "^0.5.17",
-    "@hpcc-js/phosphor": "^0.1.24",
+    "@hpcc-js/api": "^0.5.3",
+    "@hpcc-js/chart": "^0.9.3",
+    "@hpcc-js/common": "^0.9.3",
+    "@hpcc-js/dgrid": "^0.3.4",
+    "@hpcc-js/form": "^0.1.21",
+    "@hpcc-js/html": "^0.0.103",
+    "@hpcc-js/layout": "^0.3.19",
+    "@hpcc-js/other": "^0.5.19",
+    "@hpcc-js/phosphor": "^0.1.26",
     "d3-collection": "1.0.4",
     "d3-selection": "1.1.0",
     "d3-transition": "1.1.0",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -50,7 +50,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

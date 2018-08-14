@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/layout",
-  "version": "0.3.17",
+  "version": "0.3.19",
   "description": "hpcc-js - Viz Layout",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,16 +25,16 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/api": "^0.5.1",
-    "@hpcc-js/common": "^0.9.1",
-    "@hpcc-js/dgrid": "^0.3.2",
+    "@hpcc-js/api": "^0.5.3",
+    "@hpcc-js/common": "^0.9.3",
+    "@hpcc-js/dgrid": "^0.3.4",
     "d3-drag": "1.2.1",
     "d3-selection": "1.1.0",
     "d3-shape": "1.2.0",
     "d3-svg-legend": "2.25.4",
     "d3-transition": "1.1.0",
     "grid-list": "0.4.0",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -47,7 +47,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

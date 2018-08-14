@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/phosphor",
-  "version": "0.1.24",
+  "version": "0.1.26",
   "description": "hpcc-js - Viz Phosphor",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,12 +25,12 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.9.1",
-    "@hpcc-js/other": "^0.5.17",
-    "@hpcc-js/phosphor-shim": "^0.0.76",
-    "@hpcc-js/util": "^0.1.11",
+    "@hpcc-js/common": "^0.9.3",
+    "@hpcc-js/other": "^0.5.19",
+    "@hpcc-js/phosphor-shim": "^0.0.78",
+    "@hpcc-js/util": "^0.1.13",
     "d3-selection": "1.1.0",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -43,7 +43,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

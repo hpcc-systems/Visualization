@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/eclwatch",
-  "version": "0.2.24",
+  "version": "0.2.26",
   "description": "hpcc-js - ECL Watch",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,15 +25,15 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/common": "^0.9.1",
-    "@hpcc-js/comms": "^0.4.17",
-    "@hpcc-js/dgrid": "^0.3.2",
-    "@hpcc-js/graph": "^0.2.18",
-    "@hpcc-js/layout": "^0.3.17",
-    "@hpcc-js/timeline": "^0.7.0",
-    "@hpcc-js/util": "^0.1.11",
+    "@hpcc-js/common": "^0.9.3",
+    "@hpcc-js/comms": "^0.4.19",
+    "@hpcc-js/dgrid": "^0.3.4",
+    "@hpcc-js/graph": "^0.2.20",
+    "@hpcc-js/layout": "^0.3.19",
+    "@hpcc-js/timeline": "^0.7.2",
+    "@hpcc-js/util": "^0.1.13",
     "d3-selection": "1.1.0",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -46,7 +46,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

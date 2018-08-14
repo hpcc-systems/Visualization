@@ -33,7 +33,7 @@
     "d3-drag": "1.2.1",
     "d3-scale": "1.0.6",
     "d3-selection": "1.1.0",
-    "tslib": "1.9.0"
+    "tslib": "1.9.3"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",
@@ -46,7 +46,7 @@
     "rollup-plugin-postcss": "1.6.2",
     "tslint": "5.9.1",
     "typedoc": "0.7.1",
-    "typescript": "2.9.1",
+    "typescript": "3.0.1",
     "uglify-es": "3.3.9"
   },
   "repository": {

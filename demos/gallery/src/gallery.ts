@@ -1,4 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
+import { HTMLWidget, publish } from "@hpcc-js/common";
 import { Select } from "@hpcc-js/other";
 
 // @ts-ignore
@@ -23,6 +23,9 @@ function index(node: Node) {
 samples.children.forEach(index);
 
 export class App extends HTMLWidget {
+
+    @publish("", "string")
+    _default: string;
 
     _navDiv;
     _nav = new Select();
@@ -69,7 +72,9 @@ export class App extends HTMLWidget {
         this._body.style("height", `${this.height() - 40}px`);
 
         if (this.renderCount() === 0) {
-            this.navChanged({ text: sampleFolders[0].name, value: sampleFolders[0].path }, "text", true);
+            const defaultRow = sampleFolders.filter(row => row.path === this._default)[0] || sampleFolders[0];
+            this._nav._select.node().value = defaultRow.path;
+            this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
         }
     }
 

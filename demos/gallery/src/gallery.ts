@@ -1,8 +1,5 @@
-import { HTMLWidget, publish } from "@hpcc-js/common";
+import { HTMLWidget, publish, select as d3Select } from "@hpcc-js/common";
 import { Select } from "@hpcc-js/other";
-
-// @ts-ignore
-import * as samples from "../samples.json";
 
 interface Node {
     path: string;
@@ -20,7 +17,8 @@ function index(node: Node) {
         node.children.forEach(index);
     }
 }
-samples.children.forEach(index);
+// @ts-ignore
+window.config.samples.children.forEach(index);
 
 export class App extends HTMLWidget {
 
@@ -47,7 +45,7 @@ export class App extends HTMLWidget {
             ;
         this._nav
             .target(this._navDiv.node())
-            .label("Gallery:  ")
+            .label("Fetching Samples from GitHub:  ")
             .optional(false)
             .columns(["text", "value"])
             .textColumn("text")
@@ -98,7 +96,14 @@ export class App extends HTMLWidget {
             .attr("height", `${height}px`)
             .style("border-style", "none")
             .merge(samples)
-            .attr("src", d => `./galleryItem.html?${d.path}`)
+            .each(function (d, i) {
+                //  Stagger the loading ever so slightly...
+                setTimeout(() => {
+                    d3Select(this)
+                        .attr("src", `./galleryItem.html?${d.path}`)
+                        ;
+                }, i * 333);
+            })
             ;
 
         const titleDiv = samplesEnter.append("div")

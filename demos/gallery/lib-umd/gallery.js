@@ -23,15 +23,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/common", "@hpcc-js/other", "../samples.json"], factory);
+        define(["require", "exports", "@hpcc-js/common", "@hpcc-js/other"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var common_1 = require("@hpcc-js/common");
     var other_1 = require("@hpcc-js/other");
-    // @ts-ignore
-    var samples = require("../samples.json");
     var sampleIdx = {};
     var sampleFolders = [];
     function index(node) {
@@ -41,7 +39,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             node.children.forEach(index);
         }
     }
-    samples.children.forEach(index);
+    // @ts-ignore
+    window.config.samples.children.forEach(index);
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
         function App() {
@@ -61,7 +60,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 .style("height", "32px");
             this._nav
                 .target(this._navDiv.node())
-                .label("Gallery:  ")
+                .label("Fetching Samples from GitHub:  ")
                 .optional(false)
                 .columns(["text", "value"])
                 .textColumn("text")
@@ -106,7 +105,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                 .attr("height", height + "px")
                 .style("border-style", "none")
                 .merge(samples)
-                .attr("src", function (d) { return "./galleryItem.html?" + d.path; });
+                .each(function (d, i) {
+                var _this = this;
+                //  Stagger the loading ever so slightly...
+                setTimeout(function () {
+                    common_1.select(_this)
+                        .attr("src", "./galleryItem.html?" + d.path);
+                }, i * 333);
+            });
             var titleDiv = samplesEnter.append("div")
                 .style("height", "20px");
             titleDiv.append("h3")

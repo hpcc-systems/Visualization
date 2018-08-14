@@ -4,9 +4,13 @@
 <head>
     <meta charset="utf-8">
     <title>@hpcc-js: Gallery Item</title>
-    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common@0.9.3/font-awesome/css/font-awesome.min.css">
     <link href="style/index.css" rel="stylesheet">
-    <script src="https://unpkg.com/getlibs"></script>
+    <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
+    <script src="./lib-umd/config.js"></script>
+    <script>
+        SystemJS.config(config.systemjs);
+    </script>
 </head>
 
 <body>

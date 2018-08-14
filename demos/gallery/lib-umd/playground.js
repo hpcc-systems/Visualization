@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/other", "@hpcc-js/phosphor", "./DemoWidget"], factory);
+        define(["require", "exports", "@hpcc-js/codemirror", "@hpcc-js/other", "@hpcc-js/phosphor", "./DemoWidget.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -25,7 +25,7 @@ var __extends = (this && this.__extends) || (function () {
     var codemirror_1 = require("@hpcc-js/codemirror");
     var other_1 = require("@hpcc-js/other");
     var phosphor_1 = require("@hpcc-js/phosphor");
-    var DemoWidget_1 = require("./DemoWidget");
+    var DemoWidget_js_1 = require("./DemoWidget.js");
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
         function App(path) {
@@ -36,7 +36,7 @@ var __extends = (this && this.__extends) || (function () {
                 _this.changed(_this._editor);
             });
             _this._propEditor = new other_1.PropertyEditor();
-            _this._demo = new DemoWidget_1.DemoWidget()
+            _this._demo = new DemoWidget_js_1.DemoWidget()
                 .on("changed", function (widget) {
                 _this.changed(_this._demo);
             });

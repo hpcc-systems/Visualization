@@ -235,9 +235,10 @@ export class MiniGantt extends SVGWidget {
             ;
         const brAxisBBox = this.brAxis.getBBox();
 
-        const upperContentHeight = this.updateEntityPins(events);
+        let upperContentHeight = this.updateEntityPins(events);
         const lowerAxisHeight = this.gLowerAxis.node().getBBox().height;
-        const lowerHeight = height - upperContentHeight;
+        let lowerHeight = height - upperContentHeight;
+        const minYOffset = this._yoffset_idx !== -1 ? Math.min.apply(undefined, this.data().filter(row => !isNaN(row[this._yoffset_idx])).map(row => row[this._yoffset_idx])) : 0;
         if (events.length > 0 && ranges.length === 0) {
             // ONLY EVENTS
             this.gUpperAxis.attr("display", "none");
@@ -245,14 +246,19 @@ export class MiniGantt extends SVGWidget {
             if (y_offset > (height / 2) - lowerAxisHeight) {
                 y_offset = (height / 2) - lowerAxisHeight;
             }
-            this.gUpperContent.attr("transform", `translate(0, ${(height / 2) + y_offset})`);
-            this.gLowerAxis.attr("transform", `translate(0, ${((height / 2) - lowerAxisHeight - y_offset) * -1})`);
+            const upperContentYOffset = (height / 2) + y_offset;
+            const lowerAxisYOffset = ((height / 2) - lowerAxisHeight - y_offset) * -1;
+            const halfMinYOffset = minYOffset !== 0 ? minYOffset / 2 : 0;
+            this.gUpperContent.attr("transform", `translate(0, ${upperContentYOffset - halfMinYOffset})`);
+            this.gLowerAxis.attr("transform", `translate(0, ${lowerAxisYOffset - halfMinYOffset})`);
         } else if (events.length === 0 && ranges.length > 0) {
             // ONLY RANGES
             this.gUpperAxis.attr("display", "block");
             this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);
             this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
         } else {
+            upperContentHeight -= minYOffset;
+            lowerHeight += minYOffset;
             // BOTH
             this.gUpperAxis.attr("display", "block");
             this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);

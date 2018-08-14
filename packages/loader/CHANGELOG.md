@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.91"></a>
+## [0.0.91](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@0.0.90...@hpcc-js/loader@0.0.91) (2018-08-14)
+
+
+### Bug Fixes
+
+* **loader:**  Shims not loading 100% ([9f061fa](https://github.com/hpcc-systems/Visualization/commit/9f061fa))
+
+
+
+
 <a name="0.0.90"></a>
 ## [0.0.90](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/loader@0.0.89...@hpcc-js/loader@0.0.90) (2018-08-14)
 

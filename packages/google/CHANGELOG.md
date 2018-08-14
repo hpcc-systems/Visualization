@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.104"></a>
+## [0.0.104](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/google@0.0.103...@hpcc-js/google@0.0.104) (2018-08-14)
+
+
+
+
+**Note:** Version bump only for package @hpcc-js/google
+
 <a name="0.0.103"></a>
 ## [0.0.103](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/google@0.0.102...@hpcc-js/google@0.0.103) (2018-08-14)
 

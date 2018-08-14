@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/c3-shim",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "description": "hpcc-js - c3 shim",
   "main": "dist/index.js",
   "files": [

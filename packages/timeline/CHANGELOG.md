@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.3"></a>
+## [0.7.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.2...@hpcc-js/timeline@0.7.3) (2018-08-15)
+
+
+### Bug Fixes
+
+* **timeline:** Axis is adjusted according to maxYOffset ([4e8444a](https://github.com/hpcc-systems/Visualization/commit/4e8444a)), closes [#2773](https://github.com/hpcc-systems/Visualization/issues/2773)
+
+
+
+
 <a name="0.7.2"></a>
 ## [0.7.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.1...@hpcc-js/timeline@0.7.2) (2018-08-14)
 

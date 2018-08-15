@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.5.3...@hpcc-js/marshaller@0.6.0) (2018-08-15)
+
+
+### Features
+
+* **comms:** Export hookSend from marshaller ([f1d7145](https://github.com/hpcc-systems/Visualization/commit/f1d7145))
+* **dashy:** Import DDL2 from address bar ([3ec2acc](https://github.com/hpcc-systems/Visualization/commit/3ec2acc))
+
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@0.5.2...@hpcc-js/marshaller@0.5.3) (2018-08-14)
 

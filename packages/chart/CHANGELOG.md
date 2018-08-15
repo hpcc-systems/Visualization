@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.4"></a>
+## [0.9.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.9.3...@hpcc-js/chart@0.9.4) (2018-08-15)
+
+
+### Bug Fixes
+
+* **tooltip:** Workaround FF issue with getScreenCTM ([6978cfb](https://github.com/hpcc-systems/Visualization/commit/6978cfb)), closes [#2743](https://github.com/hpcc-systems/Visualization/issues/2743)
+
+
+
+
 <a name="0.9.3"></a>
 ## [0.9.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.9.2...@hpcc-js/chart@0.9.3) (2018-08-14)
 

@@ -1,4 +1,4 @@
-//  Based on  https://github.com/GordonSmith/d3-tip forked from https://github.com/Caged/d3-tip 
+//  Based on  https://github.com/GordonSmith/d3-tip forked from https://github.com/Caged/d3-tip
 
 import { map } from "d3-collection";
 import { select, selection } from "d3-selection";

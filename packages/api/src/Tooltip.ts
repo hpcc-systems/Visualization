@@ -33,10 +33,6 @@ export function tip() {
         const nodel = getNodeEl();
         let i = directions.length;
         let coords;
-        const scrollTop = document.documentElement.scrollTop ||
-            rootElement().scrollTop;
-        const scrollLeft = document.documentElement.scrollLeft ||
-            rootElement().scrollLeft;
 
         nodel.html(content)
             .style("opacity", 1).style("pointer-events", "all");
@@ -44,8 +40,8 @@ export function tip() {
         while (i--) nodel.classed(directions[i], false);
         coords = directionCallbacks.get(dir).apply(this);
         nodel.classed(dir, true)
-            .style("top", (coords.top + poffset[0]) + scrollTop + "px")
-            .style("left", (coords.left + poffset[1]) + scrollLeft + "px");
+            .style("top", (coords.top + poffset[0]) + "px")
+            .style("left", (coords.left + poffset[1]) + "px");
 
         return tip;
     };

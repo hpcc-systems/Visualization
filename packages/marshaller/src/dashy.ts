@@ -1,7 +1,6 @@
 import { JSEditor, JSONEditor } from "@hpcc-js/codemirror";
 import { PropertyExt, Utility, Widget } from "@hpcc-js/common";
-import { DDL2 } from "@hpcc-js/ddl-shim";
-import { DDL1, ddl2Schema, upgrade } from "@hpcc-js/ddl-shim";
+import { DDL1, DDL2, ddl2Schema, isDDL2Schema, upgrade } from "@hpcc-js/ddl-shim";
 import { DatasourceTable } from "@hpcc-js/dgrid";
 import { Graph } from "@hpcc-js/graph";
 import { PropertyEditor } from "@hpcc-js/other";
@@ -148,14 +147,23 @@ export class Dashy extends SplitPanel {
         });
     }
 
-    importV1DDL(ddl: DDL1.DDLSchema, baseUrl?: string, wuid?: string) {
-        this._ddlv1.json(ddl);
-        const ddl2 = upgrade(ddl, baseUrl, wuid);
-        this._ddlv2.json(ddl2);
-        this._tabDDL
-            .addWidget(this._ddlv1, "v1")
-            .addWidget(this._ddlv2, "v1->v2")
-            ;
+    importDDL(ddl: DDL1.DDLSchema | DDL2.Schema, baseUrl?: string, wuid?: string) {
+        let ddl2: DDL2.Schema;
+        if (isDDL2Schema(ddl)) {
+            ddl2 = ddl;
+            this._ddlv2.json(ddl2);
+            this._tabDDL
+                .addWidget(this._ddlv2, "imported v2")
+                ;
+        } else {
+            this._ddlv1.json(ddl);
+            ddl2 = upgrade(ddl, baseUrl, wuid);
+            this._ddlv2.json(ddl2);
+            this._tabDDL
+                .addWidget(this._ddlv1, "v1")
+                .addWidget(this._ddlv2, "v1 -> v2")
+                ;
+        }
         this.restore(ddl2);
     }
 
@@ -479,11 +487,7 @@ export class Dashy extends SplitPanel {
                         return function (e) {
                             try {
                                 const json = JSON.parse(e.target.result);
-                                if (json.visualizationversion) {
-                                    context.importV1DDL(json);
-                                } else {
-                                    context.restore(json);
-                                }
+                                context.importDDL(json);
                             } catch (ex) {
                                 alert("ex when trying to parse json = " + ex);
                             }

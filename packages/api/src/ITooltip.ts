@@ -1,6 +1,6 @@
 import { Widget } from "@hpcc-js/common";
 import { format as d3Format } from "d3-format";
-import { tip } from "d3-tip";
+import { tip } from "./Tooltip";
 
 // const tip = _tip.tip || _tip.default || _tip;
 
@@ -57,6 +57,10 @@ export abstract class ITooltip extends Widget {
     abstract target(_: any): this;
 
     tooltipEnter(element) {
+        const overlayElement = this.parentOverlay();
+        if (!overlayElement.empty()) {
+            this.tooltip.rootElement(overlayElement.node().parentNode);
+        }
         element.call(this.tooltip);
     }
 

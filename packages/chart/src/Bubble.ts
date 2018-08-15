@@ -94,7 +94,7 @@ export class Bubble extends SVGWidget {
                     .attr("transform", "translate(" + pos.x + "," + pos.y + ")")
                     .attr("r", 0)
                     .on("mouseout.tooltip", context.tooltip.hide)
-                    .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+                    .on("mousemove.tooltip", context.tooltip.show)
                     ;
                 if (d.__viz_faChar) {
                     context.labelWidgets[d.data[0]] = new FAChar()

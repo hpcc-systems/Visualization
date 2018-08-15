@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/api",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "hpcc-js - Viz api",
   "main": "dist/index.js",
   "module": "dist/index.es6",

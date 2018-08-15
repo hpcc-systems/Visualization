@@ -26,7 +26,7 @@
     "test:chrome": "lerna run test:chrome --scope \"@hpcc-js/test-*\"",
     "test:firefox": "lerna run test:firefox --scope \"@hpcc-js/test-*\"",
     "test:ie": "lerna run test:ie --concurrency 1 --scope \"@hpcc-js/test-*\"",
-    "publish-prep": "npm run lint && npm run clean && npm run build && && npm run build-gallery && npm run minimize && npm run build-test && npm run test",
+    "publish-prep": "npm run lint && npm run clean && npm run build && npm run build-gallery && npm run minimize && npm run build-test && npm run test",
     "publish-lerna": "lerna publish --conventional-commits --git-remote upstream --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/xxxx-*\" --ignore \"@hpcc-js/demo-*\" --ignore \"@hpcc-js/util-*\"",
     "publish-test": "npm run publish-lerna -- --skip-npm --skip-git",
     "publish": "npm run publish-prep && npm run publish-lerna",

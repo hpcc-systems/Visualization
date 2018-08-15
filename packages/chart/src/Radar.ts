@@ -208,10 +208,8 @@ export class Radar extends SVGWidget {
         point_elm.enter()
             .append("g")
             .attr("class", "point")
-            .on("mouseout.tooltip", d => {
-                return context.tooltip.hide(d);
-            })
-            .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+            .on("mouseout.tooltip", context.tooltip.hide)
+            .on("mousemove.tooltip", context.tooltip.show)
             .on("click", function (d: any, _idx) {
                 const data_row = context.data()[d.rowIdx];
                 const row_obj = context.rowToObj(data_row);

@@ -387,7 +387,7 @@ export class Graph extends SVGZoomWidget {
                 });
             })
             .on("mouseout.tooltip", this.tooltip.hide)
-            .on("mousemove.tooltip", (d, i, arr) => this.tooltip.show(d, arr[i]))
+            .on("mousemove.tooltip", this.tooltip.show)
             .on("mouseover", function (this: SVGElement, d) {
                 if (context._dragging)
                     return;

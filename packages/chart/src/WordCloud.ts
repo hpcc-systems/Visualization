@@ -145,7 +145,7 @@ export class WordCloud extends SVGWidget {
                     context.dblclick({ label: d.__viz_0, weight: d.__viz_1 }, "", true);
                 })
                 .on("mouseout.tooltip", context.tooltip.hide)
-                .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+                .on("mousemove.tooltip", context.tooltip.show)
                 .style("opacity", 1e-6)
                 .merge(text)
                 .style("font-size", function (d) { return scale(d.__viz_1) + "px"; })

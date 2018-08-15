@@ -9,6 +9,7 @@ export * from "./ddl1/HTML";
 export * from "./ddl1/Tabbed";
 export * from "./ddl1/TargetMarshaller";
 */
+export { hookSend } from "@hpcc-js/comms";
 export * from "./ddl2/ddl";
 export * from "./ddl2/graphadapter";
 export * from "./ddl2/javascriptadapter";

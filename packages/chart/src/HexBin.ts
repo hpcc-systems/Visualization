@@ -21,7 +21,7 @@ export class HexBin extends XYAxis {
         I2DAggrChart.call(this);
         this.tooltipValueFormat_default(",.0f");
         ITooltip.call(this);
-        this.tooltipHTML( d => {
+        this.tooltipHTML(d => {
             return this.tooltipFormat({ value: d.length });
         });
         this._hexbin = d3HexBin()
@@ -79,7 +79,7 @@ export class HexBin extends XYAxis {
                 context.dblclick(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
             })
             .on("mouseout.tooltip", context.tooltip.hide)
-            .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+            .on("mousemove.tooltip", context.tooltip.show)
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })
             .merge(points).transition().duration(duration)
             .attr("d", this._hexbin.hexagon())

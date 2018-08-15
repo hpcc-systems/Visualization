@@ -104,7 +104,7 @@ export class Pie extends SVGWidget {
                 const element2 = d3Select(this);
                 element2.append("path")
                     .on("mouseout.tooltip", context.tooltip.hide)
-                    .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .on("mouseover", arcTween(0, 0))
                     .on("mouseout", arcTween(-5, 150))
                     ;

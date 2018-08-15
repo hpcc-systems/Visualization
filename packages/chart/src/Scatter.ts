@@ -150,7 +150,7 @@ export class Scatter extends XYAxis {
                     .append("circle")
                     .attr("class", "pointSelection")
                     .on("mouseout.tooltip", context.tooltip.hide)
-                    .on("mousemove.tooltip", (d, i, arr) => context.tooltip.show(d, arr[i]))
+                    .on("mousemove.tooltip", context.tooltip.show)
                     .call(host._selection.enter.bind(host._selection))
                     .on("click", function (d: any, _idx) {
                         context.click(host.rowToObj(host.data()[d.rowIdx]), d.column, host._selection.selected(this));

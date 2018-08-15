@@ -36,7 +36,6 @@ export const npmPackages = {
     "d3-time": "d3-time/build/d3-time",
     "d3-timer": "d3-timer/build/d3-timer",
     "d3-time-format": "d3-time-format/build/d3-time-format",
-    "d3-tip": "d3-tip/lib-browser/index",
     "d3-tile": "d3-tile/build/d3-tile",
     "d3-transition": "d3-transition/build/d3-transition",
     "d3-zoom": "d3-zoom/build/d3-zoom",
@@ -59,7 +58,6 @@ export const npmPackages = {
     "whatwg-fetch": "whatwg-fetch/fetch"
 };
 export const rawgitPackages = {
-    "d3-tip": "GordonSmith/d3-tip/vJSNEXT/lib-browser/index.min"
 };
 export const localPackages = {
     ...npmPackages,

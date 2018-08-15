@@ -26,7 +26,7 @@ export class App {
             result.fetchRows().then(async (response: any[]) => {
                 const ddlStr = response[0][_url.param("ResultName")];
                 const ddl = JSON.parse(ddlStr);
-                this._dashy.importV1DDL(ddl, baseUrl, _url.param("Wuid"));
+                this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
             });
         } else if (_url.param("QueryID")) {
             // http://10.241.100.159:8002/WsEcl/submit/query/roxie/prichajx_govottocustomerstats.ins109_service_1/json
@@ -40,7 +40,7 @@ export class App {
             connection.send(action, {}).then(response => {
                 if (exists(`Results.HIPIE_DDL.Row`, response[responseID]) && response[responseID].Results.HIPIE_DDL.Row.length) {
                     const ddl = JSON.parse(response[responseID].Results.HIPIE_DDL.Row[0].HIPIE_DDL);
-                    this._dashy.importV1DDL(ddl, baseUrl, _url.param("Wuid"));
+                    this._dashy.importDDL(ddl, baseUrl, _url.param("Wuid"));
                 }
             });
         } else {

@@ -31,3 +31,7 @@ export function validate2(ddl: object): Response {
         errors: validateSchema2.errors
     };
 }
+
+export function isDDL2Schema(ref: DDL1.DDLSchema | DDL2.Schema): ref is DDL2.Schema {
+    return (ref as DDL2.Schema).version !== undefined && (ref as DDL2.Schema).datasources !== undefined && (ref as DDL2.Schema).dataviews !== undefined;
+}

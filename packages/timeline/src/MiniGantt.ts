@@ -241,7 +241,7 @@ export class MiniGantt extends SVGWidget {
         const minYOffset = this._yoffset_idx !== -1 ? Math.min.apply(undefined, this.data().filter(row => !isNaN(row[this._yoffset_idx])).map(row => row[this._yoffset_idx])) : 0;
         if (events.length > 0 && ranges.length === 0) {
             // ONLY EVENTS
-            this.gUpperAxis.attr("display", "none");
+            this.tlAxis.visible(false);
             let y_offset = upperContentHeight / 4;
             if (y_offset > (height / 2) - lowerAxisHeight) {
                 y_offset = (height / 2) - lowerAxisHeight;
@@ -253,14 +253,14 @@ export class MiniGantt extends SVGWidget {
             this.gLowerAxis.attr("transform", `translate(0, ${lowerAxisYOffset - halfMinYOffset})`);
         } else if (events.length === 0 && ranges.length > 0) {
             // ONLY RANGES
-            this.gUpperAxis.attr("display", "block");
+            this.tlAxis.visible(true);
             this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);
             this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
         } else {
             upperContentHeight -= minYOffset;
             lowerHeight += minYOffset;
             // BOTH
-            this.gUpperAxis.attr("display", "block");
+            this.tlAxis.visible(true);
             this.gUpperContent.attr("transform", `translate(0, ${upperContentHeight})`);
             this.gUpperAxis.attr("transform", `translate(0, ${upperContentHeight})`);
             this.gMiddleContent.attr("transform", `translate(0, ${upperContentHeight})`);

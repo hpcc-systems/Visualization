@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/hpcc-systems/Visualization.svg?branch=master)](https://travis-ci.org/hpcc-systems/Visualization)
 [![Join the chat at https://gitter.im/hpcc-systems/Visualization](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hpcc-systems/Visualization?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-* _[Gallery](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html)_
+* _[Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html)_ ([alt](https://rawgit.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html))
 * _[Dermatology Test Page (legacy)](https://rawgit.com/hpcc-systems/Visualization/master/demos/dermatology/index.html)_
 * _[Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start)_
 * _[Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials)_

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.4"></a>
+## [0.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.3...@hpcc-js/timeline@0.7.4) (2018-08-15)
+
+
+### Bug Fixes
+
+* **timeline:** Event Only fails on FF with ([9c47911](https://github.com/hpcc-systems/Visualization/commit/9c47911)), closes [#2754](https://github.com/hpcc-systems/Visualization/issues/2754)
+
+
+
+
 <a name="0.7.3"></a>
 ## [0.7.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.2...@hpcc-js/timeline@0.7.3) (2018-08-15)
 

@@ -4,9 +4,9 @@
   "version": "0.0.57",
   "scripts": {
     "clean": "rimraf lib* || rimraf dist || rimraf dist",
-    "compile-umd": "tsc --module umd --outDir ./lib-umd",
+    "compile-umd": "tsc --module umd --outDir ./src-umd",
     "gen-filejson": "node ./util/dir2json ./samples",
-    "build": "run-s gen-filejson compile-umd",
+    "build": "run-p gen-filejson compile-umd",
     "start-dev": "ws"
   },
   "dependencies": {

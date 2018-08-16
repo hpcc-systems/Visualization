@@ -6,7 +6,7 @@
     <title>@hpcc-js: Gallery</title>
     <link href="style/index.css" rel="stylesheet">
     <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
-    <script src="./lib-umd/config.js"></script>
+    <script src="./src-umd/config.js"></script>
     <script>
         SystemJS.config(config.systemjs);
     </script>
@@ -19,7 +19,7 @@
     <script>
         var path = location.search.split("?").pop();
         var app;
-        System.import("./lib-umd/gallery.js").then(function (gallery) {
+        System.import("./src-umd/gallery.js").then(function (gallery) {
             app = new gallery.App()
                 .target("placeholder")
                 .default(path)

@@ -43,7 +43,7 @@
     "rimraf": "2.6.2",
     "rollup": "0.63.5",
     "typescript": "3.0.1",
-    "webpack": "4.16.4",
-    "webpack-cli": "3.0.8"
+    "webpack": "4.16.5",
+    "webpack-cli": "3.1.0"
   }
 }

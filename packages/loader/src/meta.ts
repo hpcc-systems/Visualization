@@ -1,7 +1,5 @@
 export const npmPackages = {
     "ajv": "ajv/dist/ajv.bundle",
-    "amcharts3": "amcharts3",
-    "amchartsImg": "amcharts3/amcharts/images/",
     "colorbrewer": "colorbrewer/colorbrewer",
     "codemirror": "codemirror/",
     "d3-array": "d3-array/build/d3-array",
@@ -44,10 +42,7 @@ export const npmPackages = {
     "font-awesome": "font-awesome",
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
-    "handsontable": "handsontable/dist/handsontable.full",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
-    "orb-fix": "orb-fix/dist/orb",
-    "orb-fix.css": "orb-fix/dist/orb.css",
     "react": "react/dist/react.min",
     "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",
@@ -63,9 +58,9 @@ export const localPackages = {
     ...npmPackages,
     ...rawgitPackages
 };
-export const shims = ["loader", "codemirror-shim", "c3-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
+export const shims = ["loader", "codemirror-shim", "ddl-shim", "dgrid-shim", "phosphor-shim", "preact-shim"];
 export const packages = [
     "comms", "util", "common", "layout", "phosphor", "api", "dgrid", "chart", "other", "form",
-    "c3chart", "google", "amchart", "tree", "graph", "map",
-    "handson", "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
+    "tree", "graph", "map",
+    "react", "composite", "marshaller", "html", "timeline", "codemirror", "eclwatch"
 ];

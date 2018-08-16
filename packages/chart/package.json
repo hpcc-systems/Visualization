@@ -28,6 +28,9 @@
     "@hpcc-js/api": "^0.5.5",
     "@hpcc-js/common": "^0.9.3",
     "@hpcc-js/util": "^0.1.13",
+    "d3-transition": "1.1.0"
+  },
+  "devDependencies": {
     "d3-array": "1.2.1",
     "d3-axis": "1.0.8",
     "d3-brush": "1.0.4",
@@ -45,12 +48,9 @@
     "d3-shape": "1.2.0",
     "d3-svg-annotation": "2.2.2",
     "d3-time-format": "2.1.0",
-    "d3-transition": "1.1.0",
     "d3-zoom": "1.7.1",
     "d3v4-bullet": "1.0.6",
-    "tslib": "1.9.3"
-  },
-  "devDependencies": {
+    "tslib": "1.9.3",
     "@hpcc-js/bundle": "^0.0.45",
     "@types/d3-shape": "1",
     "npm-run-all": "4.1.3",

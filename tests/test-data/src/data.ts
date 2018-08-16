@@ -141,7 +141,7 @@ export const data = {
                 ["Math III", 80, 30, 27, 8]
             ]
         },
-        fivecolumn: { // amchart candle
+        fivecolumn: {
             columns: ["Subject", "low", "open", "close", "high"],
             data: [
                 ["English", 5, 43, 61, 92],

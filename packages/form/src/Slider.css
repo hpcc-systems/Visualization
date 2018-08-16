@@ -1,34 +1,41 @@
 .form_Slider .ticks {
-  font: 10px sans-serif;
-}
-
-.form_Slider .track,
-.form_Slider .track-inset,
-.form_Slider .track-overlay {
-  stroke-linecap: round;
-}
-
-.form_Slider .track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
-}
-
-.form_Slider .track-inset {
-  stroke: #ddd;
-  stroke-width: 8px;
-}
-
-.form_Slider .track-overlay {
-  pointer-events: stroke;
-  stroke-width: 50px;
-  stroke: transparent;
-  cursor: crosshair;
-}
-
-.form_Slider .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: 0.5;
-  stroke-width: 1.25px;
-}
+    font: 10px sans-serif;
+  }
+  
+  .form_Slider .track,
+  .form_Slider .track-inset,
+  .form_Slider .track-overlay {
+    stroke-linecap: round;
+  }
+  
+  .form_Slider .track {
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 10px;
+  }
+  
+  .form_Slider .track-inset {
+    stroke: #ddd;
+    stroke-width: 8px;
+  }
+  
+  .form_Slider .track-overlay {
+    pointer-events: stroke;
+    stroke-width: 50px;
+    stroke: transparent;
+    cursor: crosshair;
+  }
+  
+  .form_Slider .handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1.25px;
+  }
+  
+  .form_Slider .tick-line {
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+  }

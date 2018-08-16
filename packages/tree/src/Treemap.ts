@@ -42,20 +42,20 @@ export class Treemap extends HTMLWidget {
         Utility.SimpleSelectionMixin.call(this);
     }
 
-    getTilingMethod() {
+    private getTilingMethod() {
         switch (this.tilingMethod()) {
-             case "treemapBinary":
+            case "treemapBinary":
                 return d3treemapBinary;
-             case "treemapDice":
+            case "treemapDice":
                 return d3treemapDice;
-             case "treemapSlice":
+            case "treemapSlice":
                 return d3treemapSlice;
-             case "treemapSliceDice":
+            case "treemapSliceDice":
                 return d3treemapSliceDice;
-             case "treemapResquarify":
+            case "treemapResquarify":
                 return d3treemapResquarify;
-             case "treemapSquarify":
-             default:
+            case "treemapSquarify":
+            default:
                 return d3treemapSquarify;
         }
     }
@@ -213,7 +213,7 @@ export class Treemap extends HTMLWidget {
             .style("top", function (d) { return d.y0 + "px"; })
             .style("width", function (d) { return Math.max(0, d.x1 - d.x0) + "px"; })
             .style("height", function (d) { return Math.max(0, d.y1 - d.y0) + "px"; })
-            .each(function(d) {
+            .each(function (d) {
                 if (d.depth === 0) {
                     this.style.color = !context.showRoot() ? "transparent" : "";
                     this.style.borderColor = !context.showRoot() ? "transparent" : "";

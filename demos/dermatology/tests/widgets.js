@@ -65,33 +65,7 @@
             { path: "src/layout/Surface" },
             { path: "src/layout/Tabbed" },
             { path: "src/marshaller/HTML" },
-            { path: "src/marshaller/Graph" },
-            { path: "src/c3chart/Area" },
-            { path: "src/c3chart/Bar" },
-            { path: "src/c3chart/Column" },
-            { path: "src/c3chart/Donut" },
-            { path: "src/c3chart/Gauge" },
-            { path: "src/c3chart/Line" },
-            { path: "src/c3chart/Pie" },
-            { path: "src/c3chart/Scatter" },
-            { path: "src/c3chart/Step" },
-            { path: "src/google/Area" },
-            { path: "src/google/Bar" },
-            { path: "src/google/Column" },
-            { path: "src/google/Line" },
-            { path: "src/google/Pie" },
-            { path: "src/google/Scatter" },
-            { path: "src/google/Timeline" },
-            { path: "src/google/TreeMap" },
-            { path: "src/amchart/Area" },
-            { path: "src/amchart/Bar" },
-            { path: "src/amchart/Funnel" },
-            { path: "src/amchart/Gauge" },
-            { path: "src/amchart/Line" },
-            { path: "src/amchart/Pie" },
-            { path: "src/amchart/Polar" },
-            { path: "src/amchart/Pyramid" },
-            { path: "src/amchart/Scatter" }
+            { path: "src/marshaller/Graph" }
         ];
         allWidgets.filter(function (widget) { return !someWidgets.length || widget.path.indexOf(someWidgets) >= 0 }).forEach(function (widget) {
             var path = widget.path;
@@ -194,12 +168,6 @@
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
                                 break;
-                            case "src/handson/HandsOnTable-simple":
-                            case "src/handson/HandsOnTable-widget":
-                            case "src/handson/HandsOnTable-large":
-                            case "src/handson/HandsOnTable-formatted":
-                                it("HandsOn");
-                                break;
                             case "src/marshaller/HTML-databomb":
                             case "src/marshaller/HTML-databomb2":
                             case "src/marshaller/HTML-scale":
@@ -213,14 +181,14 @@
                                         var element = d3.select("#testWidget");
                                         var testDiv = element.append("div")
                                             .attr("class", "widgetTest")
-                                        ;
+                                            ;
                                         var widgetDiv = testDiv.append("div")
                                             .attr("class", "widget")
-                                        ;
+                                            ;
                                         testDiv.append("center")
                                             .attr("class", "title")
                                             .text(widgetPath + "-" + sample.key)
-                                        ;
+                                            ;
                                         testWidget
                                             .target(widgetDiv.node())
                                             .render(function (w) {
@@ -228,7 +196,7 @@
                                                 assert.isAbove(noSurfaceHTML.length, 0);
                                                 done();
                                             })
-                                        ;
+                                            ;
                                     });
                                 });
                         }
@@ -252,12 +220,6 @@
                             case "src/layout/Grid-hugeTables":
                                 it("Large Data");
                                 break;
-                            case "src/handson/HandsOnTable-simple":
-                            case "src/handson/HandsOnTable-widget":
-                            case "src/handson/HandsOnTable-large":
-                            case "src/handson/HandsOnTable-formatted":
-                                it("HandsOn");
-                                break;
                             case "src/marshaller/HTML-databomb":
                             case "src/marshaller/HTML-databomb2":
                             case "src/marshaller/HTML-scale":
@@ -272,14 +234,14 @@
                                             var element = d3.select("#testWidget");
                                             var testDiv = element.append("div")
                                                 .attr("class", "widgetTest")
-                                            ;
+                                                ;
                                             var widgetDiv = testDiv.append("div")
                                                 .attr("class", "widget")
-                                            ;
+                                                ;
                                             testDiv.append("center")
                                                 .attr("class", "title")
                                                 .text(widgetPath + "-" + sample.key)
-                                            ;
+                                                ;
                                             var vizWidget = new ResizeSurface()
                                                 .target(widgetDiv.node())
                                                 .content(testWidget)
@@ -288,7 +250,7 @@
                                                     assert.equal(noSurfaceHTML.length, surfaceHTML.length);
                                                     done();
                                                 })
-                                            ;
+                                                ;
                                         });
                                     });
                                 });

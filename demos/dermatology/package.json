@@ -6,10 +6,7 @@
     "start-dev": "ws"
   },
   "dependencies": {
-    "@hpcc-js/amchart": "*",
     "@hpcc-js/api": "*",
-    "@hpcc-js/c3-shim": "*",
-    "@hpcc-js/c3chart": "*",
     "@hpcc-js/chart": "*",
     "@hpcc-js/codemirror": "*",
     "@hpcc-js/codemirror-shim": "*",
@@ -19,9 +16,7 @@
     "@hpcc-js/dgrid": "*",
     "@hpcc-js/dgrid-shim": "*",
     "@hpcc-js/form": "*",
-    "@hpcc-js/google": "*",
     "@hpcc-js/graph": "*",
-    "@hpcc-js/handson": "*",
     "@hpcc-js/html": "*",
     "@hpcc-js/layout": "*",
     "@hpcc-js/loader": "*",

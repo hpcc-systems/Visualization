@@ -9,7 +9,6 @@ util/**/.vs*
 packages/**/package-lock.json
 tests/**/package-lock.json
 util/**/package-lock.json
-packages/amchart/images
 packages/common/font-awesome
 packages/ddl-shim/src/ddlSchema.*
 packages/ddl-shim/src/ddl2Schema.*

@@ -270,18 +270,11 @@ MultiChart.prototype._graphChartTypes = [
     { id: "GRAPHC", display: "GraphC", widgetClass: "graph_GraphC" }
 ].map(function (item: any) { item.family = "GRAPH"; return item; });
 MultiChart.prototype._1DChartTypes = [
-    { id: "C3_GAUGE", display: "Gauge (C3)", widgetClass: "c3chart_Gauge" }
 ].map(function (item: any) { item.family = "1D"; return item; });
 MultiChart.prototype._2DChartTypes = [
     { id: "SUMMARY", display: "Summary", widgetClass: "chart_Summary" },
     { id: "BUBBLE", display: "Bubble", widgetClass: "chart_Bubble" },
     { id: "PIE", display: "Pie", widgetClass: "chart_Pie" },
-    { id: "GOOGLE_PIE", display: "Pie (Google)", widgetClass: "google_Pie" },
-    { id: "C3_DONUT", display: "Donut (C3)", widgetClass: "c3chart_Donut" },
-    { id: "C3_PIE", display: "Pie (C3)", widgetClass: "c3chart_Pie" },
-    { id: "AM_FUNNEL", display: "Area (amCharts)", widgetClass: "amchart_Funnel" },
-    { id: "AM_PIE", display: "Pie (amCharts)", widgetClass: "amchart_Pie" },
-    { id: "AM_PYRAMID", display: "Area (amCharts)", widgetClass: "amchart_Pyramid" },
     { id: "WORD_CLOUD", display: "Word Cloud", widgetClass: "other_WordCloud" }
 ].map(function (item: any) { item.family = "2D"; return item; });
 MultiChart.prototype._NDChartTypes = [
@@ -291,26 +284,7 @@ MultiChart.prototype._NDChartTypes = [
     { id: "AREA", display: "Area", widgetClass: "chart_Area" },
     { id: "STEP", display: "Step", widgetClass: "chart_Step" },
     { id: "SCATTER", display: "Scatter", widgetClass: "chart_Scatter" },
-    { id: "HEXBIN", display: "Hex Bin", widgetClass: "chart_HexBin" },
-    { id: "GOOGLE_BAR", display: "Bar (Google)", widgetClass: "google_Bar" },
-    { id: "GOOGLE_COLUMN", display: "Column (Google)", widgetClass: "google_Column" },
-    { id: "GOOGLE_LINE", display: "Line (Google)", widgetClass: "google_Line" },
-    { id: "GOOGLE_SCATTER", display: "Scatter (Google)", widgetClass: "google_Scatter" },
-    { id: "GOOGLE_COMBO", display: "Combo (Google)", widgetClass: "google_Combo" },
-    { id: "C3_AREA", display: "Area (C3)", widgetClass: "c3chart_Area" },
-    { id: "C3_BAR", display: "Bar (C3)", widgetClass: "c3chart_Bar" },
-    { id: "C3_COLUMN", display: "Column (C3)", widgetClass: "c3chart_Column" },
-    { id: "C3_LINE", display: "Line (C3)", widgetClass: "c3chart_Line" },
-    { id: "C3_SCATTER", display: "Scatter (C3)", widgetClass: "c3chart_Scatter" },
-    { id: "C3_STEP", display: "Step (C3)", widgetClass: "c3chart_Step" },
-    { id: "C3_COMBO", display: "Combo (C3)", widgetClass: "c3chart_Combo" },
-    { id: "AM_AREA", display: "Area (amCharts)", widgetClass: "amchart_Area" },
-    { id: "AM_BAR", display: "Bar (amCharts)", widgetClass: "amchart_Bar" },
-    { id: "AM_LINE", display: "Line (amCharts)", widgetClass: "amchart_Line" },
-    { id: "AM_SCATTER", display: "Scatter (amCharts)", widgetClass: "amchart_Scatter" },
-    { id: "AM_COLUMN", display: "Column (amCharts)", widgetClass: "amchart_Column" },
-    { id: "AM_GANTT", display: "Gantt (amCharts)", widgetClass: "amchart_Gantt" },
-    { id: "AM_COMBO", display: "Combo (amCharts)", widgetClass: "amchart_Combo" },
+    { id: "HEXBIN", display: "Hex Bin", widgetClass: "chart_HexBin" }
 ].map(function (item: any) { item.family = "ND"; return item; });
 MultiChart.prototype._mapChartTypes = [
     { id: "CHORO_USSTATES", display: "US State Choropleth", widgetClass: "map_ChoroplethStates" },
@@ -328,15 +302,13 @@ MultiChart.prototype._anyChartTypes = [
     { id: "TABLE_BULLET", display: "Table driven bullet chart", widgetClass: "chart_Bullet" },
     { id: "TABLE_SELECT", display: "Table driven select", widgetClass: "other_Select" },
     { id: "TABLE_AUTOCOMPLETE", display: "Table driven auto complete", widgetClass: "other_AutoCompleteText" },
-    { id: "TABLE_HANDSON", display: "Table driven handson", widgetClass: "handson_Table" },
     { id: "TABLE_OPPORTUNITY", display: "Table driven opportunity widget", widgetClass: "graph_Opportunity" },
     { id: "TABLE_TREE", display: "Table driven tree", widgetClass: "tree_Dendrogram" },
     { id: "TABLE_TREEMAP", display: "Table driven Treemap", widgetClass: "tree_Treemap" },
     { id: "TABLE_SANKEY", display: "Table driven Sankey", widgetClass: "graph_Sankey" },
     { id: "TABLE_GMAP_PIN", display: "Table driven Google Map (pins)", widgetClass: "map_GMapPin" },
     { id: "TABLE_GMAP_PINLINE", display: "Table driven Google Map (pins/lines)", widgetClass: "map_GMapPinLine" },
-    { id: "TABLE_XML_TREE", display: "Table driven XML Tree", widgetClass: "tree_Indented" },
-    { id: "TABLE_ORB", display: "Pivot Table (orb.js)", widgetClass: "react_Orb" }
+    { id: "TABLE_XML_TREE", display: "Table driven XML Tree", widgetClass: "tree_Indented" }
 ].map(function (item: any) { item.family = "any"; return item; });
 MultiChart.prototype._allChartTypes =
     MultiChart.prototype._otherChartTypes.concat(

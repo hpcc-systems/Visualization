@@ -12,10 +12,9 @@
     "clean": "rimraf dist && rimraf lib* && rimraf tmp",
     "build": "r_js -o ./requirejs.config.js"
   },
-  "dependencies": {
-    "requirejs": "2.3.3"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "requirejs": "2.3.3",
     "@hpcc-js/bundle": "^0.0.45",
     "rimraf": "2.6.2",
     "rollup": "0.63.5"

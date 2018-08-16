@@ -182,8 +182,11 @@ export class Legend extends SVGWidget {
                     const stepWeightDiff = (weightMax - weightMin) / (steps - 1);
                     dataArr.push([palette(weightMin, weightMin, weightMax), format(weightMin)]);
                     for (let x = 1; x < steps - 1; ++x) {
-                        const mid = stepWeightDiff * x;
-                        dataArr.push([palette(mid, weightMin, weightMax), format(Math.floor(mid))]);
+                        let mid = stepWeightDiff * x;
+                        if (Math.floor(mid) > parseInt(dataArr[0][1])) {
+                            mid = Math.floor(mid);
+                        }
+                        dataArr.push([palette(mid, weightMin, weightMax), format(mid)]);
                     }
                     dataArr.push([palette(weightMax, weightMin, weightMax), format(weightMax)]);
                     break;

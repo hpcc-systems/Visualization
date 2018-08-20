@@ -37,6 +37,21 @@ export class Entity extends SVGWidget {
         this._desc_widget = new Text();
         this._annotation_widgets = {};
     }
+    getAnnotationsBBox(): BBox {
+        let retVal: BBox;
+        for (const key in this._annotation_widgets) {
+            const bbox = this._annotation_widgets[key].bbox;
+            if (!retVal) {
+                retVal = bbox;
+            } else {
+                retVal.x = Math.min(retVal.x, bbox.x);
+                retVal.y = Math.min(retVal.y, bbox.y);
+                retVal.width = Math.max(retVal.width, bbox.width);
+                retVal.height = Math.max(retVal.height, bbox.height);
+            }
+        }
+        return retVal || { x: 0, y: 0, width: 0, height: 0 };
+    }
     enter(dn, element) {
         super.enter.apply(this, arguments);
         element

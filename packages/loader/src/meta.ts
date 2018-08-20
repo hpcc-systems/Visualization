@@ -43,6 +43,7 @@ export const npmPackages = {
     "google-maps": "google-maps/lib/Google",
     "grid-list": "grid-list/src/gridList",
     "javascript-autocomplete": "javascript-autocomplete/auto-complete",
+    "p5": "p5/lib/p5",
     "react": "react/dist/react.min",
     "react-dom": "react-dom/dist/react-dom.min",
     "reflect-metadata": "reflect-metadata/Reflect",

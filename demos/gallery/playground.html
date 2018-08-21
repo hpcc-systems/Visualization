@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common@0.9.3/font-awesome/css/font-awesome.min.css">
     <link href="style/index.css" rel="stylesheet">
     <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
-    <script src="./lib-umd/config.js"></script>
+    <script src="./src-umd/config.js"></script>
     <script>
         SystemJS.config(config.systemjs);
     </script>
@@ -20,7 +20,7 @@
     <script>
         var path = location.search.split("?").pop();
         var app;
-        System.import("./lib-umd/playground.js").then(function (playground) {
+        System.import("./src-umd/playground.js").then(function (playground) {
             app = new playground.App()
                 .target("placeholder")
                 .render(function () {

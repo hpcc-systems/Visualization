@@ -36,5 +36,5 @@ if (module.parent == undefined) {
         samples: dirTree(process.argv[2]),
         systemjs: systemjs
     };
-    fs.writeFile('lib-umd/config.js', `var config = ${JSON.stringify(config)};`, "utf8", () => { });
+    fs.writeFile('src-umd/config.js', `var config = ${JSON.stringify(config)};`, "utf8", () => { });
 }

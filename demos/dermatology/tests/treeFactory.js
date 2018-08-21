@@ -93,6 +93,7 @@
                     callback(new Treemap()
                         .columns(["label", "size"])
                         .data(DataFactory.Tree.default.data)
+                        .tilingMethod("treemapBinary")
                     );
                 });
             },
@@ -101,6 +102,34 @@
                     callback(new Treemap()
                         .columns(["label", "size"])
                         .data(DataFactory.Tree.flare.data)
+                        .showRoot(true)
+                        .paddingInner(2)
+                        .paddingOuter(4)
+                        .paddingTop(18)
+                        .parentFontSize(12)
+                        .leafFontSize(10)
+                    );
+                });
+            },
+            page_html: function (callback) {
+                legacyRequire(["src/tree/Treemap"], function (Treemap) {
+                    let get_data=function(e){
+                        return {
+                            "label": e.tagName,
+                            "size": e.outerHTML.length,
+                            "children": [...e.children].map(get_data)
+                        }
+                    };
+                    var _data = get_data(document.querySelector("main"));
+                    callback(new Treemap()
+                        .columns(["label", "size"])
+                        .data(_data)
+                        .showRoot(true)
+                        .paddingInner(2)
+                        .paddingOuter(4)
+                        .paddingTop(18)
+                        .parentFontSize(12)
+                        .leafFontSize(10)
                     );
                 });
             }

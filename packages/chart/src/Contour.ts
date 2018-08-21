@@ -13,6 +13,8 @@ export class Contour extends XYAxis {
         type: "number"
     }];
 
+    protected _dataMinWeight;
+    protected _dataMaxWeight;
     constructor() {
         super();
         this
@@ -49,6 +51,8 @@ export class Contour extends XYAxis {
         const _vals = contourData.map(d => d.value);
         const minValue = Math.min.apply(this, _vals);
         const maxValue = Math.max.apply(this, _vals);
+        this._dataMinWeight = minValue;
+        this._dataMaxWeight = maxValue;
         const lines = element.selectAll("path").data(contourData);
         lines.enter().append("path")
             .merge(lines)

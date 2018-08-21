@@ -92,7 +92,6 @@ export function cdn(url: string, min: boolean = true, additionalPaths: { [key: s
     const minStr = min ? ".min" : "";
     const paths: { [key: string]: string } = {
         "@hpcc-js/map/TopoJSON": `${url}/map/TopoJSON`,
-        "amchartsImg": `${url}/amchart/images/`,
         ...additionalPaths
     };
     shims.forEach(shim => {

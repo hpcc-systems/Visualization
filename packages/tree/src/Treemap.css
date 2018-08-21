@@ -1,9 +1,11 @@
+.tree_Treemap * {
+    box-sizing: border-box;
+}
 .tree_Treemap .node {
-    border: solid 1px white;
+    border: solid 1px #333;
     overflow: hidden;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     position: absolute;
-    text-indent: 2px;
 }
 
 .tree_Treemap .node.selected {
@@ -16,4 +18,24 @@
 
 .tree_Treemap .node.selected.over {
     border-color: red;
+}
+.tree_Treemap .node > span.treemap-parent-label {
+    font-weight: bold;
+    display: inline-block;
+    margin: 4px 4px 0 4px;
+}
+.tree_Treemap .node > span.treemap-parent-value {
+    font-weight: normal;
+    font-style: italic;
+    margin: 4px 0 0 0;
+}
+.tree_Treemap .node > span.treemap-singleton-label {
+    font-weight: normal;
+    display: block;
+    margin: 4px 0 0 4px;
+}
+.tree_Treemap .node > span.treemap-singleton-value {
+    font-style: italic;
+    display: block;
+    margin: 0 0 0 4px;
 }

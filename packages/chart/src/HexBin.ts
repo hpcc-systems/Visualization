@@ -1,6 +1,6 @@
 import { I2DAggrChart, ITooltip } from "@hpcc-js/api";
 import { InputField, SVGWidget } from "@hpcc-js/common";
-import { max as d3Max } from "d3-array";
+import { max as d3Max, min as d3Min } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
 import { XYAxis } from "./XYAxis";
 
@@ -16,6 +16,8 @@ export class HexBin extends XYAxis {
     }];
 
     _hexbin;
+    protected _dataMinWeight;
+    protected _dataMaxWeight;
     constructor() {
         super();
         I2DAggrChart.call(this);
@@ -66,7 +68,10 @@ export class HexBin extends XYAxis {
             };
         });
         const hexBinPoints = this._hexbin(dataPoints);
+        const minBinPoints = d3Min(hexBinPoints, function (d: any) { return d.length; });
         const maxBinPoints = d3Max(hexBinPoints, function (d: any) { return d.length; });
+        this._dataMinWeight = minBinPoints;
+        this._dataMaxWeight = maxBinPoints;
 
         const points = element.selectAll(".hexagon").data(hexBinPoints, function (d) { return d.i + "_" + d.j; });
         points.enter().append("path")
@@ -84,7 +89,7 @@ export class HexBin extends XYAxis {
             .merge(points).transition().duration(duration)
             .attr("d", this._hexbin.hexagon())
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(1)"; })
-            .style("fill", function (d) { return context._palette(d.length, 0, maxBinPoints); })
+            .style("fill", function (d) { return context._palette(d.length, minBinPoints, maxBinPoints); })
             ;
         points.exit().transition().duration(duration)
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")scale(0)"; })

@@ -19,7 +19,7 @@ const externals: string[] = [];
 const globals: { [key: string]: string } = {};
 const deps: { [key: string]: any } = {};
 
-const webpackShims = ["@hpcc-js/dgrid-shim", "@hpcc-js/ddl-shim", "@hpcc-js/c3-shim"];
+const webpackShims = ["@hpcc-js/dgrid-shim", "@hpcc-js/ddl-shim"];
 
 function walkDependencies(folder: string, depth: number = 0) {
     const pkg = require(path.join(folder, "package.json"));

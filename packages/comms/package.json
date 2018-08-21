@@ -30,17 +30,17 @@
   },
   "dependencies": {
     "@hpcc-js/util": "^0.1.13",
-    "@types/d3-time-format": "2.1.0",
+    "whatwg-fetch": "2.0.3"
+  },
+  "devDependencies": {
     "d3-time-format": "2.1.0",
     "node-fetch": "2.0.0",
     "safe-buffer": "5.1.1",
     "tmp": "0.0.33",
     "tslib": "1.9.3",
-    "whatwg-fetch": "2.0.3",
-    "xmldom": "0.1.27"
-  },
-  "devDependencies": {
+    "xmldom": "0.1.27",
     "@hpcc-js/bundle": "^0.0.45",
+    "@types/d3-time-format": "2.1.0",
     "@types/d3-request": "1.0.2",
     "@types/node": "8.0.51",
     "@types/request": "0.0.41",

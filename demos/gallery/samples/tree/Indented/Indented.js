@@ -1,6 +1,7 @@
 import { Indented } from '@hpcc-js/tree';
 
 new Indented()
+    .target("target")
     .data(getData())
     .render()
     ;

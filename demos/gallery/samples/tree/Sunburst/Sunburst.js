@@ -1,6 +1,7 @@
 import { SunburstPartition } from '@hpcc-js/tree';
 
 new SunburstPartition()
+    .target("target")
     .data(getData())
     .render()
     ;

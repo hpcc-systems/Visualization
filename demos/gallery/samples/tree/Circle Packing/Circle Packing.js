@@ -1,6 +1,7 @@
 import { CirclePacking } from '@hpcc-js/tree';
 
 new CirclePacking()
+    .target("target")
     .data(getData())
     .render()
     ;

@@ -1,6 +1,7 @@
 import { Dendrogram } from '@hpcc-js/tree';
 
 new Dendrogram()
+    .target("target")
     .data(getData())
     .render()
     ;

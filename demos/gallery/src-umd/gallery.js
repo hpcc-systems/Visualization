@@ -11,6 +11,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,53 +34,67 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/common", "@hpcc-js/other"], factory);
+        define(["require", "exports", "@hpcc-js/common"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var common_1 = require("@hpcc-js/common");
-    var other_1 = require("@hpcc-js/other");
     var sampleIdx = {};
     var sampleFolders = [];
-    function index(node) {
+    var sampleFiles = [];
+    function index(node, parentName) {
+        if (parentName === void 0) { parentName = ""; }
+        var fullName = parentName ? parentName + "/" + node.name : node.name;
         sampleIdx[node.path] = node;
-        if (node.type === "folder") {
-            sampleFolders.push(node);
-            node.children.forEach(index);
+        switch (node.type) {
+            case "file":
+                sampleFiles.push(node);
+                break;
+            case "folder":
+                sampleFolders.push(__assign({}, node, { name: fullName }));
+                node.children.forEach(function (row) { return index(row, fullName); });
+                break;
         }
     }
     // @ts-ignore
-    window.config.samples.children.forEach(index);
+    index(window.config.samples);
+    function href(html, path, name, style) {
+        if (style === void 0) { style = ""; }
+        var total = sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
+        return "<a href=\"./" + html + ".html?" + path + "\" style=\"" + style + "\">" + name + " (" + total + ")</a>";
+    }
+    function hrefPath(path, depth) {
+        if (depth === void 0) { depth = 1; }
+        var folders = path.split("/");
+        var file = folders.pop();
+        var baseUrl = [];
+        var retVal = [];
+        folders.forEach(function (folder, idx) {
+            if (idx >= depth) {
+                retVal.push(href("gallery", baseUrl.join("/") + "/" + folder, folder));
+            }
+            baseUrl.push(folder);
+        });
+        var total = sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
+        retVal.push(total > 1 ? file + " (" + total + ")" : file);
+        return retVal.join(" > ");
+    }
     var App = /** @class */ (function (_super) {
         __extends(App, _super);
         function App() {
             var _this = _super.call(this) || this;
-            _this._nav = new other_1.Select();
             _this._selectionStack = [];
             return _this;
         }
         App.prototype.enter = function (domNode, element) {
-            var _this = this;
             _super.prototype.enter.call(this, domNode, element);
-            this._navDiv = element.append("div")
+            this._navDiv = element.append("h3")
                 .style("position", "absolute")
                 .style("left", "0px")
                 .style("top", "0px")
                 .style("right", "0px")
                 .style("height", "32px");
-            this._nav
-                .target(this._navDiv.node())
-                .label("Fetching Samples from GitHub:  ")
-                .optional(false)
-                .columns(["text", "value"])
-                .textColumn("text")
-                .valueColumn("value")
-                .data(sampleFolders.map(function (n) { return [n.name, n.path]; }))
-                .on("click", function (row, col, sel) {
-                _this.navChanged(row, col, sel);
-            })
-                .render();
             this._body = element.append("div")
                 .style("position", "absolute")
                 .style("left", "0px")
@@ -82,14 +107,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             _super.prototype.update.call(this, domNode, element);
             this._body.style("height", this.height() - 40 + "px");
             if (this.renderCount() === 0) {
-                var defaultRow = sampleFolders.filter(function (row) { return row.path === _this._default; })[0] || sampleFolders[0];
-                this._nav._select.node().value = defaultRow.path;
+                var defaultRow = sampleFolders.filter(function (row) { return row.path.indexOf(_this._default) === 0; })[0] || sampleFolders[0];
                 this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
             }
         };
         App.prototype.navChanged = function (row, col, sel) {
             var node = sampleIdx[row.value];
-            var samples = this._body.selectAll(".sampleItem").data(node.children.filter(function (d) { return d.type === "file"; }), function (d) { return d.path; });
+            this._navDiv.html(hrefPath(row.value));
+            var depth = row.value.split("/").length;
+            history.pushState(undefined, undefined, "gallery.html?" + node.path);
+            var data = node.children.map(function (d) {
+                switch (d.type) {
+                    case "file":
+                        return d;
+                    case "folder":
+                        var childFiles = sampleFiles.filter(function (file) { return file.path.indexOf(d.path) === 0; });
+                        var idx = Math.floor(Math.random() * childFiles.length);
+                        return __assign({}, childFiles[idx], { children: d.children });
+                }
+                return undefined;
+            }).filter(function (d) { return !!d; });
+            var samples = this._body.selectAll(".sampleItem").data(data, function (d) { return d.path; });
             var width = 480;
             var height = 360;
             var samplesEnter = samples.enter().append("div")
@@ -115,12 +153,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             });
             var titleDiv = samplesEnter.append("div")
                 .style("height", "20px");
-            titleDiv.append("h3")
+            titleDiv.append("h4")
                 .style("float", "left")
                 .style("margin-top", "0px")
                 .style("margin-left", "4px")
                 .style("margin-bottom", "0px")
-                .text(function (d) { return d.name; });
+                .html(function (d) { return hrefPath(d.path, depth); });
             titleDiv.append("a")
                 .style("float", "right")
                 .style("margin-right", "4px")

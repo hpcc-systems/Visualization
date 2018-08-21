@@ -22,7 +22,7 @@
         System.import("./src-umd/gallery.js").then(function (gallery) {
             app = new gallery.App()
                 .target("placeholder")
-                .default(path)
+                .default(decodeURI(path))
                 .render()
                 ;
         });

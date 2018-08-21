@@ -1,5 +1,4 @@
 import { HTMLWidget, publish, select as d3Select } from "@hpcc-js/common";
-import { Select } from "@hpcc-js/other";
 
 interface Node {
     path: string;
@@ -10,15 +9,46 @@ interface Node {
 
 const sampleIdx: { [path: string]: Node } = {};
 const sampleFolders: Node[] = [];
-function index(node: Node) {
+const sampleFiles = [];
+function index(node: Node, parentName: string = "") {
+    const fullName = parentName ? `${parentName}/${node.name}` : node.name;
     sampleIdx[node.path] = node;
-    if (node.type === "folder") {
-        sampleFolders.push(node);
-        node.children.forEach(index);
+    switch (node.type) {
+        case "file":
+            sampleFiles.push(node);
+            break;
+        case "folder":
+            sampleFolders.push({
+                ...node,
+                name: fullName
+            });
+            node.children.forEach(row => index(row, fullName));
+            break;
     }
 }
 // @ts-ignore
-window.config.samples.children.forEach(index);
+index(window.config.samples);
+
+function href(html, path, name, style = "") {
+    const total = sampleFiles.filter(file => file.path.indexOf(path) === 0).length;
+    return `<a href="./${html}.html?${path}" style="${style}">${name} (${total})</a>`;
+}
+
+function hrefPath(path: string, depth = 1) {
+    const folders = path.split("/");
+    const file = folders.pop();
+    const baseUrl: string[] = [];
+    const retVal: string[] = [];
+    folders.forEach((folder, idx) => {
+        if (idx >= depth) {
+            retVal.push(href("gallery", `${baseUrl.join("/")}/${folder}`, folder));
+        }
+        baseUrl.push(folder);
+    });
+    const total = sampleFiles.filter(file => file.path.indexOf(path) === 0).length;
+    retVal.push(total > 1 ? `${file} (${total})` : file);
+    return retVal.join(" > ");
+}
 
 export class App extends HTMLWidget {
 
@@ -26,7 +56,6 @@ export class App extends HTMLWidget {
     _default: string;
 
     _navDiv;
-    _nav = new Select();
     _body;
     _selectionStack = [];
 
@@ -36,25 +65,12 @@ export class App extends HTMLWidget {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this._navDiv = element.append("div")
+        this._navDiv = element.append("h3")
             .style("position", "absolute")
             .style("left", "0px")
             .style("top", "0px")
             .style("right", "0px")
             .style("height", "32px")
-            ;
-        this._nav
-            .target(this._navDiv.node())
-            .label("Fetching Samples from GitHub:  ")
-            .optional(false)
-            .columns(["text", "value"])
-            .textColumn("text")
-            .valueColumn("value")
-            .data(sampleFolders.map(n => [n.name, n.path]))
-            .on("click", (row, col, sel) => {
-                this.navChanged(row, col, sel);
-            })
-            .render()
             ;
         this._body = element.append("div")
             .style("position", "absolute")
@@ -70,15 +86,31 @@ export class App extends HTMLWidget {
         this._body.style("height", `${this.height() - 40}px`);
 
         if (this.renderCount() === 0) {
-            const defaultRow = sampleFolders.filter(row => row.path === this._default)[0] || sampleFolders[0];
-            this._nav._select.node().value = defaultRow.path;
+            const defaultRow = sampleFolders.filter(row => row.path.indexOf(this._default) === 0)[0] || sampleFolders[0];
             this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
         }
     }
 
     navChanged(row, col, sel) {
         const node = sampleIdx[row.value];
-        const samples = this._body.selectAll(".sampleItem").data(node.children.filter(d => d.type === "file"), d => d.path);
+        this._navDiv.html(hrefPath(row.value));
+        const depth = row.value.split("/").length;
+        history.pushState(undefined, undefined, `gallery.html?${node.path}`);
+        const data = node.children.map(d => {
+            switch (d.type) {
+                case "file":
+                    return d;
+                case "folder":
+                    const childFiles = sampleFiles.filter(file => file.path.indexOf(d.path) === 0);
+                    const idx = Math.floor(Math.random() * childFiles.length);
+                    return {
+                        ...childFiles[idx],
+                        children: d.children
+                    };
+            }
+            return undefined;
+        }).filter(d => !!d);
+        const samples = this._body.selectAll(".sampleItem").data(data, d => d.path);
         const width = 480;
         const height = 360;
         const samplesEnter = samples.enter().append("div")
@@ -109,12 +141,12 @@ export class App extends HTMLWidget {
         const titleDiv = samplesEnter.append("div")
             .style("height", "20px")
             ;
-        titleDiv.append("h3")
+        titleDiv.append("h4")
             .style("float", "left")
             .style("margin-top", "0px")
             .style("margin-left", "4px")
             .style("margin-bottom", "0px")
-            .text(d => d.name)
+            .html(d => hrefPath(d.path, depth))
             ;
 
         titleDiv.append("a")

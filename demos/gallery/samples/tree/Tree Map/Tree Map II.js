@@ -1,6 +1,7 @@
 import { Treemap } from '@hpcc-js/tree';
 
 new Treemap()
+    .target("target")
     .data(getData())
     .showRoot(true)
     .paddingInner(2)

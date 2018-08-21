@@ -86,7 +86,6 @@
             }
 
         },
-
         Treemap: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/tree/Treemap"], function (DataFactory, Treemap) {
@@ -113,7 +112,7 @@
             },
             page_html: function (callback) {
                 legacyRequire(["src/tree/Treemap"], function (Treemap) {
-                    let get_data=function(e){
+                    let get_data = function (e) {
                         return {
                             "label": e.tagName,
                             "size": e.outerHTML.length,
@@ -130,6 +129,51 @@
                         .paddingTop(18)
                         .parentFontSize(12)
                         .leafFontSize(10)
+                    );
+                });
+            }
+        },
+        Treemap3D: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/tree/Treemap3D"], function (DataFactory, Treemap3D) {
+                    callback(new Treemap3D()
+                        .columns(["label", "size"])
+                        .data({
+                            label: "root",
+                            children: [{
+                                label: "A",
+                                children: [{
+                                    label: "AA",
+                                    children: [{
+                                        label: "AAA",
+                                        size: 162 * 1.618,
+                                        size2: 32
+                                    }]
+                                }, {
+                                    label: "AB",
+                                    children: [{
+                                        label: "ABA",
+                                        size: 162,
+                                        size2: 45,
+                                    }]
+                                }]
+                            }, {
+                                label: "B",
+                                children: [{
+                                    label: "BA",
+                                    children: [{
+                                        label: "BAA",
+                                        size: 100,
+                                        size2: 123
+                                    }]
+                                }, {
+                                    label: "BB",
+                                    size: 62,
+                                    size2: 234
+                                }]
+                            }]
+                        })
+                        .tilingMethod("treemapBinary")
                     );
                 });
             }

@@ -58,6 +58,8 @@ export class App extends HTMLWidget {
     _navDiv;
     _body;
     _selectionStack = [];
+    _maxSampleSize = [480, 360];
+    _sampleMode = "large";
 
     constructor() {
         super();
@@ -91,6 +93,28 @@ export class App extends HTMLWidget {
         }
     }
 
+    resize(size) {
+        const retVal = super.resize(size);
+        const sampleSize = this.getSampleItemSizes();
+        this._body.selectAll(".sampleItem").each(function() {
+            d3Select(this)
+                .style("width", `${sampleSize[0]}px`)
+                .select("iframe")
+                .attr("width", `${sampleSize[0]}px`)
+                .attr("height", `${sampleSize[1]}px`);
+        });
+        return retVal;
+    }
+
+    getSampleItemSizes() {
+        if (this._sampleMode === "large") {
+            return [(this._size.width * 0.38), (this._size.height * 0.38)];
+        } else if (this._sampleMode === "small") {
+            return [(this._size.width * 0.38 * 0.62), (this._size.height * 0.38 * 0.62)];
+        }
+        return [this._size.width * 0.1, this._size.height * 0.1];
+    }
+
     navChanged(row, col, sel) {
         const node = sampleIdx[row.value];
         this._navDiv.html(hrefPath(row.value));
@@ -111,13 +135,14 @@ export class App extends HTMLWidget {
             return undefined;
         }).filter(d => !!d);
         const samples = this._body.selectAll(".sampleItem").data(data, d => d.path);
-        const width = 480;
-        const height = 360;
+        const size = this.getSampleItemSizes();
+        const width = size[0];
+        const height = size[1];
         const samplesEnter = samples.enter().append("div")
             .attr("class", "sampleItem")
             .style("display", "inline-block")
             .style("margin", "4px")
-            .style("width", `${width + 8}px`)
+            .style("width", `${width}px`)
             .style("border", "solid")
             .style("border-width", "1px")
             ;

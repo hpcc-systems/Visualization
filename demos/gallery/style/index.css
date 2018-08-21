@@ -1,6 +1,6 @@
 ﻿body {
     padding:0px; 
-    margin:8px; 
+    margin:0px; 
     overflow:hidden;
 }
 
@@ -195,4 +195,29 @@
   color: #9E9E9E;
   font-size: 11px;
   font-weight: 400;
+}
+#options{
+    position: fixed;
+    top: 8px;
+    right: 8px;
+}
+.option-btn{
+    height: 22px;
+    float: left;
+    margin-left: 8px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.option-btn:hover{
+    opacity: 0.8;
+    background: #1A99D5;
+    color: #fff;
+}
+.option-btn:active{
+    opacity: 0.5;
+}
+.option-btn.selected{
+    background: #1A99D5;
+    color: #fff;
 }

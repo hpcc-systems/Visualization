@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>@hpcc-js: Gallery</title>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet"></link>
     <link href="style/index.css" rel="stylesheet">
     <script src="https://unpkg.com/systemjs@0.21.4/dist/system.src.js"></script>
     <script src="./src-umd/config.js"></script>
@@ -15,6 +16,10 @@
 <body onresize="doResize()">
     <!-- Always shows a header, even in smaller screens. -->
     <div id="placeholder">
+    </div>
+    <div id="options">
+        <button class="option-btn fa fa-th-large selected" onclick="setSampleMode(this,'large')"></button>
+        <button class="option-btn fa fa-th" onclick="setSampleMode(this,'small')"></button>
     </div>
     <script>
         var path = location.search.split("?").pop();
@@ -33,6 +38,13 @@
                     .render()
                     ;
             }
+        }
+        function setSampleMode(btn,mode){
+            let selected = document.querySelector(".option-btn.selected");
+            selected.className = selected.className.replace("selected","");
+            btn.className += " selected";
+            app._sampleMode = mode;
+            app.resize().render();
         }
     </script>
 </body>

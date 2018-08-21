@@ -16,12 +16,14 @@
 <body>
     <!-- Always shows a header, even in smaller screens. -->
     <div id="target" class="placeholder">
-        <div id="loading">...loading...</div>
+        <div id="loading">...fetching sample from GitHub...</div>
     </div>
     <script>
         var path = location.search.split("?").pop();
         System.import(path).then(function () {
             document.getElementById("loading").remove();
+        }).catch(e => {
+            document.getElementById("loading").innerText = "...fetching sample from GitHub (FAILED)...";
         });
     </script>
 </body>

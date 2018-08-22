@@ -53,6 +53,24 @@
                 });
             }
         },
+        RadialBar: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    callback(new RadialBar()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    );
+                });
+            },
+            many_rows: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    callback(new RadialBar()
+                        .columns(DataFactory.Radar.columns)
+                        .data(DataFactory.Radar.data)
+                    );
+                });
+            }
+        },
         Column: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
@@ -80,8 +98,7 @@
                     const columns = DataFactory.ND.subjects.columns;
                     const column = new XYAxis()
                         .columns(columns)
-                        .data(DataFactory.ND.subjects.data)
-                        ;
+                        .data(DataFactory.ND.subjects.data);
                     column._layers.push(new Column().columns([columns[1]]));
                     column._layers.push(new Area().columns([columns[2]]));
                     column._layers.push(new Step().columns([columns[3]]));
@@ -219,7 +236,9 @@
                 legacyRequire(["test/DataFactory", "src/chart/Contour"], function (DataFactory, Contour) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function () {
+                            return [randomX(), randomY()];
+                        });
 
                     callback(new Contour()
                         .xAxisType("linear")
@@ -230,19 +249,21 @@
                     );
                 });
             },
-            legend: function(callback){
+            legend: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/chart/Contour"], function (DataFactory, MultiChartPanel, Contour) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function () {
+                            return [randomX(), randomY()];
+                        });
                     callback(new MultiChartPanel()
                         .title("src/chart/Contour.legend")
                         .columns(DataFactory.ND.subjects.columns)
                         .data(points)
                         .widget(
                             new Contour()
-                                .xAxisType("linear")
-                                .yAxisType("linear")
+                            .xAxisType("linear")
+                            .yAxisType("linear")
                         )
                     );
                 });
@@ -251,13 +272,14 @@
                 legacyRequire(["test/DataFactory", "src/chart/XYAxis", "src/chart/Contour", "src/chart/Scatter"], function (DataFactory, XYAxis, Contour, Scatter) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function () {
+                            return [randomX(), randomY()];
+                        });
                     const xy = new XYAxis()
                         .xAxisType("linear")
                         .yAxisType("linear")
                         .columns(DataFactory.ND.subjects.columns)
-                        .data(points)
-                        ;
+                        .data(points);
                     xy._layers.push(new Contour()
                         .contourStrokeColor("#777")
                         .contourBandwidth(15)
@@ -276,7 +298,9 @@
                 legacyRequire(["test/DataFactory", "src/chart/HexBin"], function (DataFactory, HexBin) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function () {
+                            return [randomX(), randomY()];
+                        });
 
                     callback(new HexBin()
                         .xAxisType("linear")
@@ -290,15 +314,17 @@
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/chart/HexBin"], function (DataFactory, MultiChartPanel, HexBin) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),
-                        points = d3.range(2000).map(function () { return [randomX(), randomY()]; });
+                        points = d3.range(2000).map(function () {
+                            return [randomX(), randomY()];
+                        });
                     callback(new MultiChartPanel()
                         .title("src/chart/HexBin.legend")
                         .columns(DataFactory.ND.subjects.columns)
                         .data(points)
                         .widget(
                             new HexBin()
-                                .xAxisType("linear")
-                                .yAxisType("linear")
+                            .xAxisType("linear")
+                            .yAxisType("linear")
                         )
                     );
                 });
@@ -375,15 +401,13 @@
                         .valueDescription("Main")
                         .showTick(true)
                         .tickValue(.33)
-                        .tickValueDescription("Average")
-                        ;
+                        .tickValueDescription("Average");
                     callback(gauge);
                     setInterval(function () {
                         gauge
                             .value(Math.random())
                             .tickValue(Math.random())
-                            .lazyRender()
-                            ;
+                            .lazyRender();
                     }, 3000);
                 });
             }
@@ -530,11 +554,25 @@
                     callback(new Bullet()
                         .columns(["title", "subtitle", "ranges", "measures", "markers"])
                         .data([
-                            ["Revenue", "US$, in thousands", [150, 225, 300], [220, 270], [250, 25]],
-                            ["Profit  ", "%", [20, 25, 30], [21, 23], [26]],
-                            ["Order Size", "US$, average", [350, 500, 600], [100, 320], [550]],
-                            ["New Customers", "count", [1400, 2000, 2500], [1000, 1650], 2100],
-                            ["Satisfaction", "out of 5", [3.5, 4.25, 5], [3.2, 4.7], [4.4]]
+                            ["Revenue", "US$, in thousands", [150, 225, 300],
+                                [220, 270],
+                                [250, 25]
+                            ],
+                            ["Profit  ", "%", [20, 25, 30],
+                                [21, 23],
+                                [26]
+                            ],
+                            ["Order Size", "US$, average", [350, 500, 600],
+                                [100, 320],
+                                [550]
+                            ],
+                            ["New Customers", "count", [1400, 2000, 2500],
+                                [1000, 1650], 2100
+                            ],
+                            ["Satisfaction", "out of 5", [3.5, 4.25, 5],
+                                [3.2, 4.7],
+                                [4.4]
+                            ]
                         ])
                         .titleColumn("title")
                         .subtitleColumn("subtitle")

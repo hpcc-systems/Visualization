@@ -1,6 +1,7 @@
 import { I2DChart, ITooltip } from "@hpcc-js/api";
 import { FAChar, InputField, ISize, SVGWidget, Text, Utility } from "@hpcc-js/common";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
+import { interpolate as d3Interpolate } from "d3-interpolate";
 import { select as d3Select } from "d3-selection";
 import "d3-transition";
 
@@ -65,13 +66,20 @@ export class Bubble extends SVGWidget {
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
-
         const root = d3Hierarchy({ children: this.cloneData() })
             .sum(function (d) { return d[1]; })
             .sort(function (b, a) {
                 return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
             })
             ;
+        if (this.minRadius_exists() && this.maxRadius_exists()) {
+            const interp = d3Interpolate(this.minRadius(), this.maxRadius());
+            const minVal = Math.min.apply(undefined, root.children.map(n => n.value));
+            const maxVal = Math.max.apply(undefined, root.children.map(n => n.value));
+            this.d3Pack.radius(function (n) {
+                return n.value === minVal ? context.minRadius() : interp((n.value - minVal) / (maxVal - minVal));
+            });
+        }
         this.d3Pack(root);
 
         const node = element.selectAll(".node").data(root.children || [], d => d.data[0]);
@@ -152,6 +160,10 @@ export class Bubble extends SVGWidget {
 
     paletteID: { (): string; (_: string): Bubble; };
     useClonedPalette: { (): boolean; (_: boolean): Bubble; };
+    minRadius: { (): number; (_: number): Bubble; };
+    maxRadius: { (): number; (_: number): Bubble; };
+    minRadius_exists: { (): boolean; (_: boolean): Bubble; };
+    maxRadius_exists: { (): boolean; (_: boolean): Bubble; };
 
     //  I2DChart
     _palette;
@@ -175,3 +187,5 @@ Bubble.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Bubble.prototype.publish("paletteID", "default", "set", "Palette ID", Bubble.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Bubble.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
+Bubble.prototype.publish("minRadius", null, "number", "Minimum radius of bubble (px)", null, { optional: true });
+Bubble.prototype.publish("maxRadius", null, "number", "Maximum radius of bubble (px)", null, { optional: true });

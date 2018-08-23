@@ -21,6 +21,9 @@ export abstract class ITooltip extends Widget {
         if (this.layerEnter) {
             const layerEnter = this.layerEnter;
             this.layerEnter = function (_base, svgElement, _domElement) {
+                if (!this._parentOverlay) {
+                    this._parentOverlay = _base._parentOverlay;
+                }
                 this.tooltipEnter(svgElement);
                 layerEnter.apply(this, arguments);
             };

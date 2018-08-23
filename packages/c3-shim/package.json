@@ -1,11 +1,9 @@
 {
   "name": "@hpcc-js/c3-shim",
-  "version": "0.0.60",
+  "version": "0.0.61",
   "description": "hpcc-js - c3 shim",
   "files": [],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

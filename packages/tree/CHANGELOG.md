@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@0.1.22...@hpcc-js/tree@0.2.0) (2018-08-23)
+
+
+### Features
+
+* **treemap:** Treemap improvements and gallery sample ([e2453cf](https://github.com/hpcc-systems/Visualization/commit/e2453cf))
+
+
+
+
 <a name="0.1.22"></a>
 ## [0.1.22](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@0.1.21...@hpcc-js/tree@0.1.22) (2018-08-15)
 

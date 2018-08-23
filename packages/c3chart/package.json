@@ -1,11 +1,9 @@
 {
   "name": "@hpcc-js/c3chart",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "hpcc-js - Viz C3 Charts",
   "files": [],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

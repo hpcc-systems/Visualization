@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.3.21...@hpcc-js/layout@0.4.0) (2018-08-23)
+
+
+### Features
+
+* **legend:** Add legend for HexBin and Contour ([21a2ee8](https://github.com/hpcc-systems/Visualization/commit/21a2ee8))
+
+
+
+
 <a name="0.3.21"></a>
 ## [0.3.21](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.3.20...@hpcc-js/layout@0.3.21) (2018-08-15)
 

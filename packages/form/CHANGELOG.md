@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@0.1.23...@hpcc-js/form@0.2.0) (2018-08-23)
+
+
+### Features
+
+* **slider:** Refactored Slider.ts ([38e050b](https://github.com/hpcc-systems/Visualization/commit/38e050b))
+
+
+
+
 <a name="0.1.23"></a>
 ## [0.1.23](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@0.1.22...@hpcc-js/form@0.1.23) (2018-08-15)
 

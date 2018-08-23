@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/phosphor-shim",
-  "version": "0.0.78",
+  "version": "0.0.79",
   "description": "hpcc-js - Phosphor shim",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "@phosphor/algorithm": "1.1.2",
-    "@phosphor/messaging": "1.2.2",
     "@phosphor/commands": "1.5.0",
+    "@phosphor/messaging": "1.2.2",
     "@phosphor/widgets": "1.6.0"
   },
   "devDependencies": {

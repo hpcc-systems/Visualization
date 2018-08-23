@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.9.5...@hpcc-js/chart@0.10.0) (2018-08-23)
+
+
+### Features
+
+* **legend:** Add legend for HexBin and Contour ([21a2ee8](https://github.com/hpcc-systems/Visualization/commit/21a2ee8))
+
+
+
+
 <a name="0.9.5"></a>
 ## [0.9.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@0.9.4...@hpcc-js/chart@0.9.5) (2018-08-15)
 

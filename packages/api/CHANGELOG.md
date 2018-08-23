@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.6"></a>
+## [0.5.6](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@0.5.5...@hpcc-js/api@0.5.6) (2018-08-23)
+
+
+### Bug Fixes
+
+* **GMapPin:** Tooltips broken on layered surfaces ([d0e4b9c](https://github.com/hpcc-systems/Visualization/commit/d0e4b9c)), closes [#2796](https://github.com/hpcc-systems/Visualization/issues/2796)
+
+
+
+
 <a name="0.5.5"></a>
 ## [0.5.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@0.5.4...@hpcc-js/api@0.5.5) (2018-08-15)
 

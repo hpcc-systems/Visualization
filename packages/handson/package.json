@@ -1,11 +1,9 @@
 {
   "name": "@hpcc-js/handson",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "description": "hpcc-js - Viz Handson Grid",
   "files": [],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

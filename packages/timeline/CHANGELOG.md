@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.5"></a>
+## [0.7.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.4...@hpcc-js/timeline@0.7.5) (2018-08-23)
+
+
+### Bug Fixes
+
+* **timeline:** Revert to "nice" tick formats ([2835a92](https://github.com/hpcc-systems/Visualization/commit/2835a92))
+
+
+
+
 <a name="0.7.4"></a>
 ## [0.7.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/timeline@0.7.3...@hpcc-js/timeline@0.7.4) (2018-08-15)
 

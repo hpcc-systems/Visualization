@@ -1,11 +1,9 @@
 {
   "name": "@hpcc-js/amchart",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "hpcc-js - Viz AM Charts",
   "files": [],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

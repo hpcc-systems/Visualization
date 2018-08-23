@@ -1,11 +1,9 @@
 {
   "name": "@hpcc-js/google",
-  "version": "0.0.106",
+  "version": "0.0.107",
   "description": "hpcc-js - Viz Google",
   "files": [],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hpcc-systems/Visualization.git"

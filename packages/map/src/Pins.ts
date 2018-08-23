@@ -30,10 +30,11 @@ export class Pins extends Layer {
                 return false;
             }
             return true;
-        }).map(function (row) {
+        }).map(function (row, idx) {
             const lat = latField ? row[latField.idx] : row[0];
             const long = longField ? row[longField.idx] : row[1];
             const retVal = {
+                idx,
                 lat,
                 long,
                 ext: row[2] instanceof Object ? row[2] : {},
@@ -72,7 +73,7 @@ export class Pins extends Layer {
             .style("opacity", this.opacity())
             ;
 
-        this.pinsPaths = this._pinsTransform.selectAll(".pin").data(this.visible() ? this.pinsData() : []);
+        this.pinsPaths = this._pinsTransform.selectAll(".pin").data(this.visible() ? this.pinsData() : [], d => d.idx);
         const context = this;
         const updatesPaths = this.pinsPaths.enter().append("g")
             .attr("class", "pin")
@@ -301,7 +302,7 @@ Pins.prototype.publish("fillColor", "#00FFDD", "html-color", "Pin Color", null, 
 Pins.prototype.publish("omitNullLatLong", false, "boolean", "Remove lat=0,lng=0 from pinsData", null, { tags: ["Basic"] });
 
 Pins.prototype.publish("strokeWidth", 0.5, "number", "Pin Border Thickness (pixels)", null, { tags: ["Basic"] });
-Pins.prototype.publish("strokeColor", "black", "html-color", "Pin Border Color", null, { optional: true });
+Pins.prototype.publish("strokeColor", "", "html-color", "Pin Border Color", null, { optional: true });
 
 Pins.prototype.publish("fontSize", 18, "number", "Font Size", null, { tags: ["Basic", "Shared"] });
 Pins.prototype.publish("fontFamily", "Verdana", "string", "Font Name", null, { tags: ["Basic", "Shared", "Shared"] });

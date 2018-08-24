@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/handson",
-  "version": "0.2.20",
+  "version": "2.0.0-rc.0",
   "description": "hpcc-js - Viz Handson Grid",
   "files": [],
   "scripts": {},

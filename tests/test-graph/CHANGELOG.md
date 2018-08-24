@@ -1,0 +1,24 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-graph@0.0.58...@hpcc-js/test-graph@2.0.0) (2018-08-24)
+
+
+### Features
+
+* Graph support in the marshaller ([bcc2290](https://github.com/GordonSmith/Visualization/commit/bcc2290)), closes [#2559](https://github.com/GordonSmith/Visualization/issues/2559)
+
+
+
+
+
+<a name="2.0.0-rc.0"></a>
+# [2.0.0-rc.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-graph@0.0.58...@hpcc-js/test-graph@2.0.0-rc.0) (2018-08-24)
+
+
+### Features
+
+* Graph support in the marshaller ([bcc2290](https://github.com/GordonSmith/Visualization/commit/bcc2290)), closes [#2559](https://github.com/GordonSmith/Visualization/issues/2559)

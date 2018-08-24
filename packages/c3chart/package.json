@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/c3chart",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0",
   "description": "hpcc-js - Viz C3 Charts",
   "files": [],
   "scripts": {},

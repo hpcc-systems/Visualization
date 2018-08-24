@@ -1,17 +1,17 @@
 {
   "private": true,
   "name": "@hpcc-js/test-util",
-  "version": "0.0.55",
+  "version": "2.0.0",
   "dependencies": {
-    "@hpcc-js/util": "*",
+    "@hpcc-js/util": "^2.0.0",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2"
   },
   "devDependencies": {
     "@types/chai": "3.5.2",
-    "@types/mocha": "2.2.41",
     "@types/glob": "5.0.35",
+    "@types/mocha": "2.2.41",
     "css-loader": "1.0.0",
     "file-loader": "1.1.5",
     "mocha-chrome": "1.0.3",

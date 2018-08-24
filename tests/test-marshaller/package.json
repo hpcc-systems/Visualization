@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "@hpcc-js/test-marshaller",
-  "version": "0.0.66",
+  "version": "2.0.0",
   "dependencies": {
-    "@hpcc-js/common": "*",
-    "@hpcc-js/dgrid-shim": "*",
-    "@hpcc-js/marshaller": "*",
+    "@hpcc-js/common": "^2.0.0",
+    "@hpcc-js/dgrid-shim": "^2.0.0",
+    "@hpcc-js/marshaller": "^2.0.0",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
     "mocha": "3.4.2",

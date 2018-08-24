@@ -11,9 +11,12 @@
       "gitRemote": "upstream",
       "ignoreChanges": [
         "*.md"
-      ]
+      ],
+      "preid": "rc"
     },
-    "publish": {}
+    "publish": {
+      "npmTag": "next"
+    }
   },
   "version": "independent",
   "npmClient": "npm",

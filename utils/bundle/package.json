@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/bundle",
-  "version": "0.2.2",
+  "version": "2.0.0-rc.0",
   "description": "hpcc-js - bundle",
   "main": "lib-umd/index.js",
   "module": "lib-es6/index.js",

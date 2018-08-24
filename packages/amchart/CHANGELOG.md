@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0-rc.0"></a>
+# [2.0.0-rc.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/amchart@0.1.28...@hpcc-js/amchart@2.0.0-rc.0) (2018-08-24)
+
+**Note:** Version bump only for package @hpcc-js/amchart
+
+
+
+
+
 <a name="0.1.28"></a>
 ## [0.1.28](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/amchart@0.1.27...@hpcc-js/amchart@0.1.28) (2018-08-23)
 

@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/codemirror",
-  "version": "0.1.6",
+  "version": "2.0.0-rc.0",
   "description": "hpcc-js - Viz Code Mirror",
   "main": "dist/index.js",
   "module": "dist/index.es6",
@@ -25,12 +25,12 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/codemirror-shim": "^0.0.74",
-    "@hpcc-js/common": "^0.9.4",
-    "@hpcc-js/dgrid": "^0.3.6",
-    "@hpcc-js/html": "^0.0.104",
-    "@hpcc-js/phosphor": "^0.1.29",
-    "@hpcc-js/util": "^0.1.14"
+    "@hpcc-js/codemirror-shim": "^2.0.0-rc.0",
+    "@hpcc-js/common": "^2.0.0-rc.0",
+    "@hpcc-js/dgrid": "^2.0.0-rc.0",
+    "@hpcc-js/html": "^2.0.0-rc.0",
+    "@hpcc-js/phosphor": "^2.0.0-rc.0",
+    "@hpcc-js/util": "^2.0.0-rc.0"
   },
   "devDependencies": {
     "@hpcc-js/bundle": "^0.0.45",

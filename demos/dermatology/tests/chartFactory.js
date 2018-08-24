@@ -53,6 +53,24 @@
                 });
             }
         },
+        RadialBar: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    callback(new RadialBar()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    );
+                });
+            },
+            many_rows: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    callback(new RadialBar()
+                        .columns(DataFactory.Radar.columns)
+                        .data(DataFactory.Radar.data)
+                    );
+                });
+            }
+        },
         Column: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {

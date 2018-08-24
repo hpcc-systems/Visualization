@@ -1,11 +1,24 @@
 {
-  "lerna": "2.11.0",
   "packages": [
     "packages/*",
     "tests/*",
     "utils/*",
     "demos/*"
   ],
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "gitRemote": "upstream",
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "preid": "rc"
+    },
+    "publish": {
+      "npmTag": "next"
+    }
+  },
   "version": "independent",
-  "npmClient": "npm"
+  "npmClient": "npm",
+  "lerna": "3.1.4"
 }

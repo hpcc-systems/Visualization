@@ -16,7 +16,6 @@ new Pie()
         ["C1_9", 62]
     ])
     .innerRadius(90)
-    .outerText(true)
     .paletteID("category10")
     .useClonedPalette(true)
     .render()

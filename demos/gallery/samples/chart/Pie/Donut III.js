@@ -12,7 +12,6 @@ new Pie()
         ["F", 13]
     ])
     .innerRadius(90)
-    .outerText(true)
     .paletteID("category10")
     .render()
     ;

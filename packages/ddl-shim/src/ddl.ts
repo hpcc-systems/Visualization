@@ -12,7 +12,7 @@ export interface IFilter {
 
 export interface IOutput {
     id: string;
-    from: string;
+    from?: string;
     filter?: IFilter[];
     notify?: string[];
 }
@@ -245,7 +245,7 @@ export interface IIcon {
 export type IValueMappings = { [key: string]: IIcon; };
 
 export interface IVisualizationIcon {
-    fieldid: string;
+    fieldid?: string;
     faChar?: string;
     valuemappings?: IValueMappings;
 }

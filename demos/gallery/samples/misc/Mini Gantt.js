@@ -10,7 +10,7 @@ new MiniGantt()
 
 
 function random_datetime_string() {
-    const yyyy = 2004 + Math.floor(Math.random() * 15);
+    const yyyy = 2004 + Math.floor(Math.random() * 2);
     const mm = 1 + Math.floor(Math.random() * 12);
     const dd = 1 + Math.floor(Math.random() * 28);
     const hh = 1 + Math.floor(Math.random() * 23);

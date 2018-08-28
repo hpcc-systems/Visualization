@@ -2,15 +2,29 @@ import { Workunit, WUStateID } from "@hpcc-js/comms";
 import { Edge, Graph, Vertex } from "@hpcc-js/graph";
 import { hashSum, IObserverHandle } from "@hpcc-js/util";
 
+export enum STATUS {
+    CREATE = "Created",
+    COMPILE = "Compiled",
+    EXECUTE = "Executed",
+    COMPLETE = "Completed"
+}
+
+export enum STATUS_ACTIVE {
+    CREATE = "Creating",
+    COMPILE = "Compiling",
+    EXECUTE = "Executing",
+    COMPLETE = "Completed"
+}
+
 export class WUStatus extends Graph {
 
     protected _wu: Workunit;
     protected _wuHandle: IObserverHandle;
 
-    private created: Vertex;
-    private compiled: Vertex;
-    private executed: Vertex;
-    private complete: Vertex;
+    protected _create: Vertex;
+    protected _compile: Vertex;
+    protected _execute: Vertex;
+    protected _complete: Vertex;
 
     constructor() {
         super();
@@ -42,7 +56,7 @@ export class WUStatus extends Graph {
         }
     }
 
-    createVertex(faChar: string, text: string) {
+    createVertex(faChar: string) {
         return new Vertex()
             .icon_diameter(32)
             .icon_shape_colorFill("none")
@@ -53,7 +67,6 @@ export class WUStatus extends Graph {
             .textbox_shape_colorStroke("none")
             .textbox_text_colorFill("darkgray")
             .faChar(faChar)
-            .text(text)
             ;
     }
 
@@ -66,38 +79,45 @@ export class WUStatus extends Graph {
 
     updateVertexStatus(level: 0 | 1 | 2 | 3 | 4, active: boolean = false) {
         const completeColor = this._wu.isFailed() ? "darkred" : "darkgreen";
+        this._create.text(STATUS.CREATE);
+        this._compile.text(STATUS.COMPILE);
+        this._execute.text(STATUS.EXECUTE);
+        this._complete.text(STATUS.COMPLETE);
         switch (level) {
             case 0:
-                this.updateVertex(this.created, "darkgray");
-                this.updateVertex(this.compiled, "darkgray");
-                this.updateVertex(this.executed, "darkgray");
-                this.updateVertex(this.complete, "darkgray");
+                this.updateVertex(this._create, "darkgray");
+                this.updateVertex(this._compile, "darkgray");
+                this.updateVertex(this._execute, "darkgray");
+                this.updateVertex(this._complete, "darkgray");
                 break;
             case 1:
-                this.updateVertex(this.created, active ? "orange" : completeColor);
-                this.updateVertex(this.compiled, "darkgray");
-                this.updateVertex(this.executed, "darkgray");
-                this.updateVertex(this.complete, "darkgray");
+                this._create.text(STATUS_ACTIVE.CREATE);
+                this.updateVertex(this._create, active ? "orange" : completeColor);
+                this.updateVertex(this._compile, "darkgray");
+                this.updateVertex(this._execute, "darkgray");
+                this.updateVertex(this._complete, "darkgray");
                 break;
             case 2:
-                this.updateVertex(this.created, completeColor);
-                this.updateVertex(this.compiled, active ? "orange" : completeColor);
-                this.updateVertex(this.executed, completeColor);
-                this.updateVertex(this.complete, "darkgray");
+                this._compile.text(STATUS_ACTIVE.COMPILE);
+                this.updateVertex(this._create, completeColor);
+                this.updateVertex(this._compile, active ? "orange" : completeColor);
+                this.updateVertex(this._execute, completeColor);
+                this.updateVertex(this._complete, "darkgray");
                 break;
             case 3:
-                this.updateVertex(this.created, completeColor);
-                this.updateVertex(this.compiled, completeColor);
-                this.updateVertex(this.executed, active ? "orange" : completeColor);
-                this.updateVertex(this.complete, "darkgray");
+                this._execute.text(STATUS_ACTIVE.EXECUTE);
+                this.updateVertex(this._create, completeColor);
+                this.updateVertex(this._compile, completeColor);
+                this.updateVertex(this._execute, active ? "orange" : completeColor);
+                this.updateVertex(this._complete, "darkgray");
+                break;
             case 4:
-                this.updateVertex(this.created, completeColor);
-                this.updateVertex(this.compiled, completeColor);
-                this.updateVertex(this.executed, completeColor);
-                this.updateVertex(this.complete, completeColor);
+                this.updateVertex(this._create, completeColor);
+                this.updateVertex(this._compile, completeColor);
+                this.updateVertex(this._execute, completeColor);
+                this.updateVertex(this._complete, completeColor);
                 break;
         }
-
     }
 
     createEdge(source, target) {
@@ -111,15 +131,15 @@ export class WUStatus extends Graph {
 
     enter(domNode, element) {
         super.enter(domNode, element);
-        this.created = this.createVertex("\uf11d", "Created");
-        this.compiled = this.createVertex("\uf085", "Compiled");
-        this.executed = this.createVertex("\uf275", "Executed");
-        this.complete = this.createVertex("\uf11e", "Completed");
-        const e1 = this.createEdge(this.created, this.compiled);
-        const e2 = this.createEdge(this.compiled, this.executed);
-        const e3 = this.createEdge(this.executed, this.complete);
+        this._create = this.createVertex("\uf11d");
+        this._compile = this.createVertex("\uf085");
+        this._execute = this.createVertex("\uf275");
+        this._complete = this.createVertex("\uf11e");
+        const e1 = this.createEdge(this._create, this._compile);
+        const e2 = this.createEdge(this._compile, this._execute);
+        const e3 = this.createEdge(this._execute, this._complete);
         this.data({
-            vertices: [this.created, this.compiled, this.executed, this.complete],
+            vertices: [this._create, this._compile, this._execute, this._complete],
             edges: [e1, e2, e3]
         });
     }

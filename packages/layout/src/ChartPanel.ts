@@ -274,6 +274,10 @@ export class ChartPanel extends Border2 implements IHighlight {
                 this.preUpdateRegular(element);
                 break;
         }
+
+        const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
+        this._legend.dataFamily(chart._dataFamily || "any");
+
         if (this._prevChartDataFamily !== this._legend.dataFamily()) {
             this._prevChartDataFamily = this._legend.dataFamily();
             switch (this._prevChartDataFamily) {
@@ -285,7 +289,6 @@ export class ChartPanel extends Border2 implements IHighlight {
         }
         element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
 
-        const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
         if (this._hideLegendToggleList.indexOf(chart.classID()) !== -1) {
             this._spacer.visible(false);
             this._toggleLegend.visible(false);

@@ -308,8 +308,8 @@ export interface Legend {
     orientation(): "vertical" | "horizontal";
     orientation(_: "vertical" | "horizontal"): this;
     orientation_exists: () => boolean;
-    dataFamily(): string;
-    dataFamily(_: string): this;
+    dataFamily(): "1D" | "2D" | "ND" | "map" | "graph" | "any";
+    dataFamily(_: "1D" | "2D" | "ND" | "map" | "graph" | "any"): this;
     dataFamily_exists: () => boolean;
     rainbowFormat(): string;
     rainbowFormat(_: string): this;

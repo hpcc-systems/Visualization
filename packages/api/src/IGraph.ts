@@ -1,5 +1,6 @@
 export function IGraph() {
 }
+IGraph.prototype._dataFamily = "graph";
 
 //  Events  ---
 IGraph.prototype.vertex_click = function (_row, _col, _sel, more) {

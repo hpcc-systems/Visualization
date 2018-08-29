@@ -108,6 +108,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     fields(_?: Database.Field[]): this | Database.Field[] {
         if (!arguments.length) return this._widget.fields();
         this._legend.fields(_);
+        this.refreshFields();
+        return this;
+    }
+    refreshFields() {
         this._widget.fields(this._legend.filteredFields());
         this._table.fields(this._legend.filteredFields());
         return this;
@@ -118,6 +122,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     columns(_?: string[], asDefault?: boolean): string[] | this {
         if (!arguments.length) return this._widget.columns();
         this._legend.columns(_, asDefault);
+        this.refreshColumns();
+        return this;
+    }
+    refreshColumns() {
         this._widget.columns(this._legend.filteredColumns());
         this._table.columns(this._legend.filteredColumns());
         return this;
@@ -126,6 +134,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     data(_?) {
         if (!arguments.length) return this._widget.data();
         this._legend.data(_);
+        this.refreshData();
+        return this;
+    }
+    refreshData() {
         this._widget.data(this._legend.filteredData());
         this._table.data(this._legend.filteredData());
         return this;

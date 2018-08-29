@@ -181,7 +181,7 @@
         var context = this;
         var columns = context.tableColumns();
         var data = context.tableData();
-
+        var scrollLeft = this.tableDiv.node().scrollLeft;
         var empty_col_idx_arr = this.getEmptyColumnIdxArr(columns,data);
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
@@ -669,7 +669,7 @@
                 context.size({ width: finalWidth, height: newTableHeight });
             }
         }
-
+        
         this.setOnScrollEvents(this.tableDiv.node(), tableMarginHeight);
 
         function calcWidth() {
@@ -689,7 +689,9 @@
             context._paginator
                 .right((context.hasVScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
                 .bottom((context.hasHScroll(element) ? context.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
-                .render()
+                .render(function(){
+                    context.tableDiv.node().scrollLeft = scrollLeft;
+                })
             ;
         }, 0);
     };

@@ -3,6 +3,7 @@ import { hsl as d3Hsl } from "d3-color";
 
 export function INDChart() {
 }
+INDChart.prototype._dataFamily = "ND";
 INDChart.prototype._palette = Palette.ordinal("default");
 
 INDChart.prototype.fillColor = function (row: any[], column: string, value: number): string {

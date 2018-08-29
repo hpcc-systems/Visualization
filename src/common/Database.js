@@ -653,7 +653,14 @@
     };
 
     Grid.prototype.csv = function (_) {
-        if (!arguments.length) return d3.csv.formatRows(this.grid());
+        if (!arguments.length){
+            var temp = document.createElement("div");
+            return d3.csv.formatRows(this.grid().map(function(row){
+                return row.map(function(cell){
+                    return Utility.removeHTMLFromString(cell, temp);
+                })
+            }));
+        }
         this.jsonObj(d3.csv.parse(_));
         return this;
     };

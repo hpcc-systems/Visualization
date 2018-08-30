@@ -507,6 +507,11 @@
                 minor: parseInt(_sp[1]),
                 patch: parseInt(_sp[2].split('-')[0]),
             };
+        },
+        removeHTMLFromString: function(str, div){
+            div = div ? div : document.createElement("div");
+            div.innerHTML = str;
+            return div.textContent || div.innerText || "";
         }
     };
 }));

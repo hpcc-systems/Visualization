@@ -629,6 +629,10 @@ export class PropertyEditor extends HTMLWidget {
                     cell.append(param.ext && param.ext.multiline ? "textarea" : "input")
                         .attr("id", this.id() + "_" + param.id)
                         .classed("property-input", true)
+                        .attr("autocomplete", "off")
+                        .attr("autocorrect", "off")
+                        .attr("autocapitalize", "off")
+                        .attr("spellcheck", "false")
                         .on("change", function () {
                             context.setProperty(widget, param.id, this.value);
                         })
@@ -657,11 +661,11 @@ export class PropertyEditor extends HTMLWidget {
                 element.property("checked", val);
                 break;
             case "set":
-                const options = element.selectAll("option").data(widget[param.id + "_options"]());
+                const options = element.selectAll("option").data<string | { value: string, text: string }>(widget[param.id + "_options"]());
                 options.enter().append("option")
                     .merge(options)
-                    .attr("value", d => d as any)
-                    .text(d => d as any)
+                    .attr("value", (d: any) => (d && d.value !== undefined) ? d.value : d)
+                    .text((d: any) => (d && d.text !== undefined) ? d.text : d)
                     ;
                 options.exit().remove();
                 element.property("value", val);
@@ -679,7 +683,7 @@ export class PropertyEditor extends HTMLWidget {
                 if (param.ext && param.ext.range) {
                     d3Select("#" + this.id() + "_" + param.id + "_currentVal").text("Current Value: " + val);
                 }
-                element.property("value", val);
+                element.property("value", val && val.length && val.length > 100000 ? "...too big to display..." : val);
                 break;
         }
     }

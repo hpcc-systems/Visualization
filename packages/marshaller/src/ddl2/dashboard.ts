@@ -1,6 +1,6 @@
 import { d3SelectionType, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { DockPanel, WidgetAdapter } from "@hpcc-js/phosphor";
+import { DockPanel, IClosable, WidgetAdapter } from "@hpcc-js/phosphor";
 import { compare } from "@hpcc-js/util";
 import { DDLAdapter } from "./ddl";
 import { JavaScriptAdapter } from "./javascriptadapter";
@@ -8,7 +8,7 @@ import { Element, ElementContainer } from "./model/element";
 
 import "../../src/ddl2/dashboard.css";
 
-export class Dashboard extends DockPanel {
+export class Dashboard extends DockPanel implements IClosable {
     private _ec: ElementContainer;
 
     constructor(ec: ElementContainer) {
@@ -78,7 +78,7 @@ export class Dashboard extends DockPanel {
         }
         for (const w of diff.added) {
             const element: Element = this._ec.element(w);
-            this.addWidget(w, this.tabTitle(element), "split-bottom");
+            this.addWidget(w, this.tabTitle(element), "split-bottom", undefined, this.hideSingleTabs() ? undefined : this);
         }
         for (const w of diff.unchanged) {
             const wa: any = this.getWidgetAdapter(w);
@@ -124,6 +124,16 @@ export class Dashboard extends DockPanel {
     }
 
     vizStateChanged(viz: Element) {
+    }
+
+    //  IClosable  ---
+    canClose(w: Widget, wa: WidgetAdapter): boolean {
+        const id = this._ec.element(w).id();
+        const retVal = window.confirm(`Remove Widget "${id}"?`);
+        if (retVal) {
+            this._ec.clear(id);
+        }
+        return retVal;
     }
 }
 Dashboard.prototype._class += " dashboard_dashboard";

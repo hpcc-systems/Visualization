@@ -20,5 +20,5 @@
   },
   "version": "independent",
   "npmClient": "npm",
-  "lerna": "3.1.4"
+  "lerna": "3.2.1"
 }

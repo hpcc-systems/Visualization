@@ -415,7 +415,7 @@ export class PropertyExt extends Class {
         }
     }
     static prevClassID: string = "";
-    publish(id: string, defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}): void {
+    publish(id: string, defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[] | Array<{ value: string, text: string }>) | IPublishExt, ext: IPublishExt = {}): void {
         if (GEN_PUB_STUBS) {
             if (PropertyExt.prevClassID !== (this as any).constructor.name) {
                 PropertyExt.prevClassID = (this as any).constructor.name;
@@ -714,7 +714,7 @@ export class PropertyExt extends Class {
 }
 PropertyExt.prototype._class += " common_PropertyExt";
 
-export function publish(defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[]) | IPublishExt, ext: IPublishExt = {}) {
+export function publish(defaultValue, type?: PublishTypes, description?: string, set?: string[] | (() => string[] | Array<{ value: string, text: string }>) | IPublishExt, ext: IPublishExt = {}) {
     return function (target: any, key: string) {
         if (!key) throw new Error("???");
         if (ext.reset) {

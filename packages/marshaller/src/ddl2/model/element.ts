@@ -187,8 +187,8 @@ export class ElementContainer extends PropertyExt {
     private _elements: Element[] = [];
     private _nullElement = new Element(this);
 
-    clear() {
-        this._elements = [];
+    clear(eid?: string) {
+        this._elements = eid === undefined ? [] : this._elements.filter(d => d.id() !== eid);
     }
 
     elements(): Element[] {

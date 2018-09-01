@@ -35,6 +35,17 @@
                     );
                 });
             },
+            pie: function (callback) {
+                legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/chart/Pie"], function (DataFactory, ChartPanel, Pie) {
+                    callback(new ChartPanel()
+                        .widget(new Pie())
+                        .title("Hello and Welcome!")
+                        // .description("Sample description for the chart being displayed...")
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                    );
+                });
+            },
             responsive: function (callback) {
                 legacyRequire(["test/DataFactory", "src/layout/ChartPanel", "src/dgrid/Table", "src/phosphor/DockPanel"], function (DataFactory, ChartPanel, Column, DockPanel) {
                     let cp1 = new ChartPanel().widget(new Column()).titleIcon("#").title("Responsive Chart Panel")

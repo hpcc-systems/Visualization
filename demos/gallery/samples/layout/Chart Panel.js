@@ -12,9 +12,6 @@ const cp = new ChartPanel()
     ])
     .target("target")
     .title("Exam Results 2008->10")
+    .legendVisible(true)
     .render()
     ;
-
-//  TODO:  Expose via offical API  ---
-cp.buttons()[3].selected(true);
-cp._legend.visible(true);

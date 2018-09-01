@@ -53,6 +53,32 @@
                 });
             }
         },
+        RadialBar: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    var radarBar = new RadialBar()
+                        .columns(DataFactory.TwoD.subjects.columns)
+                        .data(DataFactory.TwoD.subjects.data)
+                        .valueDomainHigh(100)
+                        ;
+                    callback(radarBar);
+                    setInterval(function () {
+                        DataFactory.TwoD.subjects.data.forEach(function (row) {
+                            row[1] = Math.random() * 100;
+                        });
+                        radarBar.render();
+                    }, 3000);
+                });
+            },
+            many_rows: function (callback) {
+                legacyRequire(["test/DataFactory", "src/chart/RadialBar"], function (DataFactory, RadialBar) {
+                    callback(new RadialBar()
+                        .columns(DataFactory.Radar.columns)
+                        .data(DataFactory.Radar.data)
+                    );
+                });
+            }
+        },
         Column: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/chart/Column"], function (DataFactory, Column) {
@@ -230,7 +256,7 @@
                     );
                 });
             },
-            legend: function(callback){
+            legend: function (callback) {
                 legacyRequire(["test/DataFactory", "src/composite/MultiChartPanel", "src/chart/Contour"], function (DataFactory, MultiChartPanel, Contour) {
                     var randomX = d3.random.normal(200, 80),
                         randomY = d3.random.normal(200, 80),

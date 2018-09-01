@@ -1,0 +1,26 @@
+.chart_RadialBar path.arc {
+    opacity: 0.9;
+    transition: opacity 0.5s;
+}
+
+.chart_RadialBar path.arc.selected {
+    stroke: red;
+}
+
+.chart_RadialBar path.arc:hover {
+    opacity: 0.7;
+}
+
+.chart_RadialBar .axis line,
+.chart_RadialBar .axis circle {
+    stroke: #cccccc;
+    stroke-width: 1px
+}
+
+.chart_RadialBar .axis circle {
+    fill: none;
+}
+
+.chart_RadialBar .r.axis text {
+    text-anchor: end
+}

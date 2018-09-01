@@ -64,11 +64,7 @@ export class ChartPanel extends Border2 implements IHighlight {
 
     private _toggleData = new ToggleButton("fa-table", "Data")
         .on("click", () => {
-            if (this._toggleData.selected()) {
-                this._carousel.active(1);
-            } else {
-                this._carousel.active(0);
-            }
+            this.dataVisible(this._toggleData.selected());
             this.render();
         });
 
@@ -80,11 +76,7 @@ export class ChartPanel extends Border2 implements IHighlight {
     private _toggleLegend = new ToggleButton("fa-list-ul", "Legend")
         .selected(false)
         .on("click", () => {
-            if (this._toggleLegend.selected()) {
-                this._legend.visible(true);
-            } else {
-                this._legend.visible(false);
-            }
+            this.legendVisible(this._toggleLegend.selected());
             this.render();
         });
 
@@ -108,6 +100,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     fields(_?: Database.Field[]): this | Database.Field[] {
         if (!arguments.length) return this._widget.fields();
         this._legend.fields(_);
+        this.refreshFields();
+        return this;
+    }
+    refreshFields() {
         this._widget.fields(this._legend.filteredFields());
         this._table.fields(this._legend.filteredFields());
         return this;
@@ -118,6 +114,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     columns(_?: string[], asDefault?: boolean): string[] | this {
         if (!arguments.length) return this._widget.columns();
         this._legend.columns(_, asDefault);
+        this.refreshColumns();
+        return this;
+    }
+    refreshColumns() {
         this._widget.columns(this._legend.filteredColumns());
         this._table.columns(this._legend.filteredColumns());
         return this;
@@ -126,6 +126,10 @@ export class ChartPanel extends Border2 implements IHighlight {
     data(_?) {
         if (!arguments.length) return this._widget.data();
         this._legend.data(_);
+        this.refreshData();
+        return this;
+    }
+    refreshData() {
         this._widget.data(this._legend.filteredData());
         this._table.data(this._legend.filteredData());
         return this;
@@ -246,10 +250,24 @@ export class ChartPanel extends Border2 implements IHighlight {
         element.style("transform", `translate(0px,0px) scale(1)`);
     }
 
+    private _prevdataVisible;
+    private _prevlegendVisible;
     private _prevChartDataFamily;
     private _prevChart;
     private _prevButtons;
     update(domNode, element) {
+        if (this._prevdataVisible !== this.dataVisible()) {
+            this._prevdataVisible = this.dataVisible();
+            this._toggleData.selected(this._prevdataVisible);
+            this._carousel.active(this._prevdataVisible ? 1 : 0);
+        }
+
+        if (this._prevlegendVisible !== this.legendVisible()) {
+            this._prevlegendVisible = this.legendVisible();
+            this._toggleLegend.selected(this._prevlegendVisible);
+            this._legend.visible(this._prevlegendVisible);
+        }
+
         const _responsiveMode = this.getResponsiveMode();
         switch (_responsiveMode) {
             case "tiny":
@@ -262,6 +280,10 @@ export class ChartPanel extends Border2 implements IHighlight {
                 this.preUpdateRegular(element);
                 break;
         }
+
+        const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
+        this._legend.dataFamily(chart._dataFamily || "any");
+
         if (this._prevChartDataFamily !== this._legend.dataFamily()) {
             this._prevChartDataFamily = this._legend.dataFamily();
             switch (this._prevChartDataFamily) {
@@ -273,7 +295,6 @@ export class ChartPanel extends Border2 implements IHighlight {
         }
         element.style("box-shadow", this.highlight() ? `inset 0px 0px 0px ${this.highlightSize()}px ${this.highlightColor()}` : "none");
 
-        const chart = this._widget.classID() === "composite_MultiChart" ? this._widget["chart"]() : this._widget;
         if (this._hideLegendToggleList.indexOf(chart.classID()) !== -1) {
             this._spacer.visible(false);
             this._toggleLegend.visible(false);
@@ -298,7 +319,14 @@ export class ChartPanel extends Border2 implements IHighlight {
             }
         }
 
-        this._titleBar.visible(this.titleVisible());
+        const hiddenButtons = [];
+        if (!this.dataButtonVisible()) hiddenButtons.push(this._toggleData);
+        if (!this.downloadButtonVisible()) hiddenButtons.push(this._buttonDownload);
+        if (!this.legendButtonVisible()) hiddenButtons.push(this._toggleLegend);
+        this._titleBar
+            .hiddenButtons(hiddenButtons)
+            .visible(this.titleVisible())
+            ;
         this.topOverlay(this.titleOverlay() || !this.titleVisible());
 
         super.update(domNode, element);
@@ -417,6 +445,16 @@ export interface ChartPanel {
     titleIconFontSize(): number;
     titleIconFontSize(_: number): this;
     titleIconFontSize_exists(): boolean;
+    dataVisible(): boolean;
+    dataVisible(_: boolean): this;
+    dataButtonVisible(): boolean;
+    dataButtonVisible(_: boolean): this;
+    downloadButtonVisible(): boolean;
+    downloadButtonVisible(_: boolean): this;
+    legendVisible(): boolean;
+    legendVisible(_: boolean): this;
+    legendButtonVisible(): boolean;
+    legendButtonVisible(_: boolean): this;
     description(): string;
     description(_: string): this;
     description_exists(): boolean;
@@ -443,6 +481,11 @@ ChartPanel.prototype.publishProxy("titleIconFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFont", "_titleBar");
 ChartPanel.prototype.publishProxy("titleIconFontSize", "_titleBar");
 ChartPanel.prototype.publishProxy("titleFontSize", "_titleBar");
+ChartPanel.prototype.publish("dataVisible", false, "boolean", "Show data table");
+ChartPanel.prototype.publish("dataButtonVisible", true, "boolean", "Show data table button");
+ChartPanel.prototype.publish("downloadButtonVisible", true, "boolean", "Show data download button");
+ChartPanel.prototype.publish("legendVisible", false, "boolean", "Show legend");
+ChartPanel.prototype.publish("legendButtonVisible", true, "boolean", "Show legend button");
 ChartPanel.prototype.publish("description", "", "string");
 ChartPanel.prototype.publish("widget", null, "widget", "Widget", undefined, { render: false });
 ChartPanel.prototype.publish("enableAutoscaling", false, "boolean");

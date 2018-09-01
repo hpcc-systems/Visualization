@@ -12,6 +12,7 @@ export * from "./HexBin";
 export * from "./Line";
 export * from "./Pie";
 export * from "./Radar";
+export * from "./RadialBar";
 export * from "./Scatter";
 export * from "./Step";
 export * from "./Summary";

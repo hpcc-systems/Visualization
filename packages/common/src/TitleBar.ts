@@ -121,7 +121,19 @@ export class IconBar extends HTMLWidget {
     update(domNode, element) {
         super.update(domNode, element);
 
-        const icons = this._divIconBar.selectAll(".icon-bar-item").data(this.buttons(), (d: Widget) => d.id());
+        let buttons = this.buttons().filter(button => this.hiddenButtons().indexOf(button) < 0);
+        buttons = buttons.reduce((prev, item, idx) => {
+            if (item instanceof Spacer) {
+                if ((prev.length === 0 || idx === buttons.length - 1)) {
+                    return prev;
+                } else if (buttons[idx + 1] instanceof Spacer) {
+                    return prev;
+                }
+            }
+            prev.push(item);
+            return prev;
+        }, []);
+        const icons = this._divIconBar.selectAll(".icon-bar-item").data(buttons, (d: Widget) => d.id());
         icons.enter().append("div")
             .attr("class", "icon-bar-item")
             .each(function (this: HTMLElement, d: Widget) {
@@ -150,8 +162,11 @@ IconBar.prototype._class += " common_IconBar";
 export interface IconBar {
     buttons(): Widget[];
     buttons(_: Widget[]): this;
+    hiddenButtons(): Widget[];
+    hiddenButtons(_: Widget[]): this;
 }
 IconBar.prototype.publish("buttons", [], "widgetArray", null, { internal: true });
+IconBar.prototype.publish("hiddenButtons", [], "widgetArray", null, { internal: true });
 
 //  Titlebar  ---
 export class TitleBar extends IconBar {

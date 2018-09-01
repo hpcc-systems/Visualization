@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@2.0.0...@hpcc-js/graph@2.0.1) (2018-09-01)
+
+
+### Bug Fixes
+
+* **graph:** Subgraph text can reach beyond edge of border. ([c8db668](https://github.com/hpcc-systems/Visualization/commit/c8db668))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/graph@0.2.23...@hpcc-js/graph@2.0.0) (2018-08-24)
 

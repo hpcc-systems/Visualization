@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.0.0...@hpcc-js/demo-gallery@2.1.0) (2018-09-01)
+
+
+### Bug Fixes
+
+* **gallery:** Make config file readable ([52424e8](https://github.com/GordonSmith/Visualization/commit/52424e8))
+
+
+### Features
+
+* **chart:** Add RadialBar chart ([58db845](https://github.com/GordonSmith/Visualization/commit/58db845))
+* **ChartPanel:**  Add API for toolbar buttons ([c87656b](https://github.com/GordonSmith/Visualization/commit/c87656b)), closes [#2813](https://github.com/GordonSmith/Visualization/issues/2813)
+* Add Bullet sample ([99d80eb](https://github.com/GordonSmith/Visualization/commit/99d80eb))
+* Add Sankey sample ([3326263](https://github.com/GordonSmith/Visualization/commit/3326263))
+* Add SankeyValues sample ([6e48788](https://github.com/GordonSmith/Visualization/commit/6e48788))
+* Add Summary sample ([82976e9](https://github.com/GordonSmith/Visualization/commit/82976e9))
+* Add SummaryC sample ([f7c5446](https://github.com/GordonSmith/Visualization/commit/f7c5446))
+
+
+
+
+
 <a name="2.0.0"></a>
 # 2.0.0 (2018-08-24)
 

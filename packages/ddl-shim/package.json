@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/ddl-shim",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "hpcc-js DDL parser",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
@@ -15,7 +15,7 @@
   ],
   "bin": "./bin/index.js",
   "scripts": {
-    "clean": "rimraf ./src/ddl*Schema*.ts || rimraf lib* || rimraf dist || rimraf types",
+    "clean": "rimraf lib* types dist ./src/ddl*Schema*.ts",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "compile-cli": "tsc -p ./tsconfig-cli.json",

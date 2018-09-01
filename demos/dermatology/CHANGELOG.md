@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.0.0...@hpcc-js/demo-dermatology@2.1.0) (2018-09-01)
+
+
+### Bug Fixes
+
+* **legend:**  Legend incorrect for 2D charts ([2aefc66](https://github.com/GordonSmith/Visualization/commit/2aefc66)), closes [#2814](https://github.com/GordonSmith/Visualization/issues/2814)
+
+
+### Features
+
+* **chart:** Add RadialBar chart ([58db845](https://github.com/GordonSmith/Visualization/commit/58db845))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@0.0.63...@hpcc-js/demo-dermatology@2.0.0) (2018-08-24)
 

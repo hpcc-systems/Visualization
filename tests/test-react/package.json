@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/xxxx-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "dependencies": {
-    "@hpcc-js/common": "^2.0.0",
-    "@hpcc-js/react": "^2.0.0",
+    "@hpcc-js/common": "^2.1.0",
+    "@hpcc-js/react": "^2.0.1",
     "@hpcc-js/test-data": "^2.0.0",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",
@@ -25,7 +25,7 @@
     "webpack-cli": "3.1.0"
   },
   "scripts": {
-    "clean": "rimraf lib* || rimraf types || rimraf dist",
+    "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
     "compile-es6-watch": "npm run compile-es6 -- -w",
     "bundle-umd": "webpack",

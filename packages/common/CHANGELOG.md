@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.0.0...@hpcc-js/common@2.1.0) (2018-09-01)
+
+
+### Features
+
+* **ChartPanel:**  Add API for toolbar buttons ([c87656b](https://github.com/hpcc-systems/Visualization/commit/c87656b)), closes [#2813](https://github.com/hpcc-systems/Visualization/issues/2813)
+* **PP:** Allow SET to optionally support text + value ([fd22216](https://github.com/hpcc-systems/Visualization/commit/fd22216))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@0.9.4...@hpcc-js/common@2.0.0) (2018-08-24)
 

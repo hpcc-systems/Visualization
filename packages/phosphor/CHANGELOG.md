@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.0.0...@hpcc-js/phosphor@2.1.0) (2018-09-01)
+
+
+### Features
+
+* **DockPanel:** Optionally show close [x] button ([96018e4](https://github.com/hpcc-systems/Visualization/commit/96018e4))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@0.1.29...@hpcc-js/phosphor@2.0.0) (2018-08-24)
 

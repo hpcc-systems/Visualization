@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.0.0...@hpcc-js/other@2.1.0) (2018-09-01)
+
+
+### Features
+
+* **PP:** Allow SET to optionally support text + value ([fd22216](https://github.com/hpcc-systems/Visualization/commit/fd22216))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@0.5.22...@hpcc-js/other@2.0.0) (2018-08-24)
 

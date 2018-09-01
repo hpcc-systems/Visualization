@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.0.0...@hpcc-js/layout@2.1.0) (2018-09-01)
+
+
+### Bug Fixes
+
+* **legend:**  Legend incorrect for 2D charts ([2aefc66](https://github.com/hpcc-systems/Visualization/commit/2aefc66)), closes [#2814](https://github.com/hpcc-systems/Visualization/issues/2814)
+* **legend:** Show/Hide series was not refreshing correctly ([61e975c](https://github.com/hpcc-systems/Visualization/commit/61e975c)), closes [#2812](https://github.com/hpcc-systems/Visualization/issues/2812)
+
+
+### Features
+
+* **ChartPanel:**  Add API for toolbar buttons ([c87656b](https://github.com/hpcc-systems/Visualization/commit/c87656b)), closes [#2813](https://github.com/hpcc-systems/Visualization/issues/2813)
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@0.4.0...@hpcc-js/layout@2.0.0) (2018-08-24)
 

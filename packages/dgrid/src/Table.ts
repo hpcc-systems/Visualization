@@ -94,7 +94,6 @@ ColumnFormat.prototype.publish("valueColumn", null, "set", "Column", function (t
 export class Table extends Common {
     private _prevColsHash;
     private _prevFieldsHash;
-    private _prevDataHash;
     _colsRefresh = false;
     _forceRefresh = false;
 
@@ -131,11 +130,7 @@ export class Table extends Common {
     data(_?: any): any | this {
         const retVal = super.data.apply(this, arguments);
         if (arguments.length) {
-            const hash = JSON.stringify(_); // TODO - Should be a more efficent way (immutable?).
-            if (this._prevDataHash !== hash) {
-                this._prevDataHash = hash;
-                this._forceRefresh = true;
-            }
+            this._forceRefresh = true;
         }
         return retVal;
     }

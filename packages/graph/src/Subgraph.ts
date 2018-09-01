@@ -81,6 +81,7 @@ export class Subgraph extends SVGWidget {
 
         this._textWidget
             .pos({ x: bbox.x + 4, y: bbox.y + TITLE_SIZE })
+            .width(this.width() - 8)
             .text(this.showTitle() ? this.title() : "")
             .render()
             ;

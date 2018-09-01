@@ -10,8 +10,8 @@ interface IDatasourceOutputFilter extends IDatasourceOutput {
     filter: DDL1.IFilter;
 }
 
-function faCharFix(faChar: string): string {
-    if (faChar) {
+function faCharFix(faChar: any): string | undefined {
+    if (typeof faChar === "string") {
         return String.fromCharCode(parseInt(faChar));
     }
     return faChar;
@@ -108,7 +108,7 @@ class DDLUpgrade {
                     for (const notify of output.notify) {
                         this._datasourceUpdates[notify] = {
                             id: ds.id,
-                            output: output.from
+                            output: output.from || output.id
                         };
                     }
                 }
@@ -123,7 +123,7 @@ class DDLUpgrade {
                     type: "wuresult",
                     id: ds.id,
                     url: this._baseUrl,
-                    wuid: this._wuid,
+                    wuid: this._wuid!,
                     outputs: {}
                 };
                 for (const output of ds.outputs) {
@@ -318,24 +318,26 @@ class DDLUpgrade {
         }
     }
 
-    readGraphEnums(valueMappings: DDL1.IValueMappings, annotation: boolean = false): DDL2.IMapMapping[] {
+    readGraphEnums(valueMappings?: DDL1.IValueMappings, annotation: boolean = false): DDL2.IMapMapping[] {
         const retVal: DDL2.IMapMapping[] = [];
-        for (const value in valueMappings) {
-            const newValue: { [key: string]: string | number | boolean } = {};
-            for (const key in valueMappings[value]) {
-                if (key === "faChar") {
-                    newValue[key] = faCharFix(valueMappings[value][key] as string);
-                } else if (annotation && key.indexOf("icon_") === 0) {
-                    console.log("Deprecated flag property:  " + key);
-                    newValue[key.split("icon_")[1]] = valueMappings[value][key];
-                } else {
-                    newValue[key] = valueMappings[value][key];
+        if (valueMappings) {
+            for (const value in valueMappings) {
+                const newValue: { [key: string]: string | number | boolean | undefined } = {};
+                for (const key in valueMappings[value]) {
+                    if (key === "faChar") {
+                        newValue[key] = faCharFix(valueMappings[value][key]);
+                    } else if (annotation && key.indexOf("icon_") === 0) {
+                        console.log("Deprecated flag property:  " + key);
+                        newValue[key.split("icon_")[1]] = valueMappings[value][key];
+                    } else {
+                        newValue[key] = valueMappings[value][key];
+                    }
                 }
+                retVal.push({
+                    value,
+                    newValue
+                });
             }
-            retVal.push({
-                value,
-                newValue
-            });
         }
         return retVal;
     }
@@ -352,22 +354,26 @@ class DDLUpgrade {
             type: "=",
             sourceFieldID: viz.source.mappings.label.toLowerCase()
         });
-        mappings.transformations.push({
-            fieldID: "icon",
-            type: "map",
-            sourceFieldID: viz.icon.fieldid.toLowerCase(),
-            default: { fachar: faCharFix(viz.icon.faChar) },
-            mappings: this.readGraphEnums(viz.icon.valuemappings)
-        });
+        if (viz.icon.fieldid) {
+            mappings.transformations.push({
+                fieldID: "icon",
+                type: "map",
+                sourceFieldID: viz.icon.fieldid.toLowerCase(),
+                default: { fachar: faCharFix(viz.icon.faChar) },
+                mappings: this.readGraphEnums(viz.icon.valuemappings)
+            });
+        }
         let idx = 0;
         for (const flag of viz.flag) {
-            mappings.transformations.push({
-                fieldID: `annotation_${idx++}`,
-                type: "map",
-                sourceFieldID: flag.fieldid.toLowerCase(),
-                default: {},
-                mappings: this.readGraphEnums(flag.valuemappings, true)
-            });
+            if (flag.fieldid) {
+                mappings.transformations.push({
+                    fieldID: `annotation_${idx++}`,
+                    type: "map",
+                    sourceFieldID: flag.fieldid.toLowerCase(),
+                    default: {},
+                    mappings: this.readGraphEnums(flag.valuemappings, true)
+                });
+            }
         }
         mappings.transformations.push({
             fieldID: "links",
@@ -419,9 +425,9 @@ class DDLUpgrade {
                                         condition.mappings.push({
                                             remoteFieldID: key.toLowerCase(),
                                             localFieldID: update.mappings[key].toLowerCase(),
-                                            condition: dsFilter.rule,
+                                            condition: this.rule2condition(dsFilter.rule),
                                             nullable: dsFilter.nullable
-                                        } as DDL2.IMapping);
+                                        });
                                     }
                                     this._ddl2DataviewActivities[otherViz.id].filters.conditions.push(condition);
                                 }
@@ -431,6 +437,16 @@ class DDLUpgrade {
                 }
             }
         }
+    }
+
+    rule2condition(_: DDL1.IFilterRule): DDL2.IMappingConditionType {
+        switch (_) {
+            case "set":
+                return "in";
+            case "notequals":
+                return "!=";
+        }
+        return _;
     }
 
     readSort() {
@@ -563,7 +579,7 @@ class DDLUpgrade {
                     return {
                         type: "range" as DDL2.IFieldType,
                         id: field.id,
-                        default: field.properties.default ? field.properties.default as [DDL2.IPrimative, DDL2.IPrimative] : [undefined, undefined]
+                        default: (field.properties.default ? field.properties.default : [undefined, undefined]) as DDL2.IRange
                     };
                 case "dataset":
                     return {
@@ -600,7 +616,7 @@ class DDLUpgrade {
     }
 
     output2output(output: DDL1.IOutput, target: DDL2.OutputDict) {
-        target[output.id] = {
+        target[output.from || output.id] = {
             fields: this.filters2fields(output.filter)
         };
     }

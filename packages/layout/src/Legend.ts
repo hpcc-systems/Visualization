@@ -238,6 +238,8 @@ export class Legend extends SVGWidget {
                         } else {
                             this._disabled.splice(disabledIdx, 1);
                         }
+                        this._owner.refreshFields();
+                        this._owner.refreshData();
                         this._owner.render();
                         break;
                 }
@@ -255,7 +257,9 @@ export class Legend extends SVGWidget {
                     switch (this.dataFamily()) {
                         case "2D":
                         case "ND":
-                            this._owner.highlightColumn(d);
+                            if (this._disabled.indexOf(d) < 0) {
+                                this._owner.highlightColumn(d);
+                            }
                             break;
                     }
                     break;
@@ -304,8 +308,8 @@ export interface Legend {
     orientation(): "vertical" | "horizontal";
     orientation(_: "vertical" | "horizontal"): this;
     orientation_exists: () => boolean;
-    dataFamily(): string;
-    dataFamily(_: string): this;
+    dataFamily(): "1D" | "2D" | "ND" | "map" | "graph" | "any";
+    dataFamily(_: "1D" | "2D" | "ND" | "map" | "graph" | "any"): this;
     dataFamily_exists: () => boolean;
     rainbowFormat(): string;
     rainbowFormat(_: string): this;

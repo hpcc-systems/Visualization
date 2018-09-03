@@ -540,6 +540,7 @@ var config = {
   },
   "systemjs": {
     "map": {
+      "plugin-css": "https://unpkg.com/systemjs-plugin-css@0.1.37/css.js",
       "plugin-json": "https://unpkg.com/systemjs-plugin-json@0.3.0/json.js",
       "plugin-babel": "https://unpkg.com/systemjs-plugin-babel@0.0.25/plugin-babel.js",
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
@@ -561,10 +562,15 @@ var config = {
       "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@2.0.0/dist/index.min.js",
       "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@2.0.0/dist/index.min.js",
       "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@2.0.0/dist/index.min.js",
+      "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@2.0.0/dist/index.min.js",
+      "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@2.0.0/dist/index.min.js",
       "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@2.0.0/dist/index.min.js",
       "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@2.0.0/dist/index.min.js"
     },
     "meta": {
+      "*.css": {
+        "loader": "plugin-css"
+      },
       "*.json": {
         "loader": "plugin-json"
       }

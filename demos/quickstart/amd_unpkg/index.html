@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AMD + UNPKG</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.css">
+
+    <script src="https://unpkg.com/requirejs/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: ".",
+            paths: {
+                "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util/dist/index.min",
+                "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common/dist/index.min",
+                "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api/dist/index.min",
+                "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart/dist/index.min",
+                "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim/dist/index.min",
+                "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid/dist/index.min",
+                "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout/dist/index.min",
+                "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor/dist/index.min"
+            }
+        });
+    </script>
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder">
+    </div>
+    <script src="src/index.js"></script>
+</body>
+
+</html>

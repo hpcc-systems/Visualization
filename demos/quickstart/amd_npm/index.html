@@ -2,23 +2,26 @@
 <html>
 
 <head>
-    <title>AMD</title>
+    <title>AMD + NPM</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="node_modules/@hpcc-js/common/font-awesome/css/font-awesome.css">
 
     <script src="node_modules/requirejs/require.js"></script>
-
     <script>
         require.config({
             baseUrl: ".",
             paths: {
+                "@hpcc-js/util": "node_modules/@hpcc-js/util/dist/index.min",
                 "@hpcc-js/common": "node_modules/@hpcc-js/common/dist/index.min",
                 "@hpcc-js/api": "node_modules/@hpcc-js/api/dist/index.min",
                 "@hpcc-js/chart": "node_modules/@hpcc-js/chart/dist/index.min",
-                "@hpcc-js/phosphor": "node_modules/@hpcc-js/phosphor/dist/index.min",
-                "@hpcc-js/util": "node_modules/@hpcc-js/util/dist/index.min"
+                "@hpcc-js/dgrid-shim": "node_modules/@hpcc-js/dgrid-shim/dist/index.min",
+                "@hpcc-js/dgrid": "node_modules/@hpcc-js/dgrid/dist/index.min",
+                "@hpcc-js/layout": "node_modules/@hpcc-js/layout/dist/index.min",
+                "@hpcc-js/phosphor": "node_modules/@hpcc-js/phosphor/dist/index.min"
             }
-        });        
+        });
     </script>
 </head>
 

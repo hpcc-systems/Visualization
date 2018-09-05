@@ -4,6 +4,7 @@ import { hsl as d3Hsl } from "d3-color";
 export function I2DAggrChart() {
 }
 I2DAggrChart.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(I2DAggrChart);
 
 I2DAggrChart.prototype.fillColor = function (row: any[][], column, value): string {
     return this._palette(row.length);

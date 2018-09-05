@@ -5,6 +5,7 @@ export function INDChart() {
 }
 INDChart.prototype._dataFamily = "ND";
 INDChart.prototype._palette = Palette.ordinal("default");
+Palette.appendOrdinalColors(INDChart);
 
 INDChart.prototype.fillColor = function (row: any[], column: string, value: number): string {
     return this._palette(column);

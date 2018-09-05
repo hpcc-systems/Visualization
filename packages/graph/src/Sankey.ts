@@ -263,6 +263,7 @@ Sankey.prototype.Column = SankeyColumn;
 Sankey.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Sankey.prototype._palette = Palette.ordinal("default");
+Palette.appendOrdinalColors(Sankey);
 
 Sankey.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Sankey.prototype._palette.switch());
 Sankey.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: SankeyColumn });

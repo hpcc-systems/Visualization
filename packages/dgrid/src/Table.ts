@@ -220,6 +220,8 @@ export class Table extends Common {
 }
 Table.prototype._class += " dgrid_Table";
 
+Palette.appendRainbowColors(Table);
+
 export interface Table {
     columnWidth(): "auto" | "none";
     columnWidth(_: "auto" | "none"): this;

@@ -13,3 +13,4 @@ export class ITree {
     }
 }
 ITree.prototype._palette = Palette.ordinal("default");
+Palette.appendOrdinalColors(ITree);

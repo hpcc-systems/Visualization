@@ -116,6 +116,7 @@ export class HeatMap extends CanvasWidget {
 }
 HeatMap.prototype._class += " other_HeatMap";
 HeatMap.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(HeatMap);
 
 HeatMap.prototype.publish("radius", 15, "number", "Set point radius", null, { tags: ["Basic"] });
 HeatMap.prototype.publish("blur", 15, "number", "Set point blur", null, { tags: ["Basic"] });

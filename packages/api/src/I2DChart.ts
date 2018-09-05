@@ -5,6 +5,7 @@ export function I2DChart() {
 }
 I2DChart.prototype._dataFamily = "2D";
 I2DChart.prototype._palette = Palette.ordinal("default");
+Palette.appendOrdinalColors(I2DChart);
 
 I2DChart.prototype.fillColor = function (row: any[], column, value): string {
     return this._palette(row[0]);

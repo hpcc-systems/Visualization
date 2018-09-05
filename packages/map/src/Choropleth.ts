@@ -157,6 +157,7 @@ Choropleth.prototype._class += " map_Choropleth";
 Choropleth.prototype.mixin(Utility.SimpleSelectionMixin);
 
 Choropleth.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(Choropleth);
 
 export interface Choropleth {
     autoScaleMode(): string;

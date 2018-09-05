@@ -116,6 +116,7 @@ export class GeoHash extends Layer {
 GeoHash.prototype._class += " map_GeoHash";
 
 GeoHash.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(GeoHash);
 
 GeoHash.prototype.publish("paletteID", "YlOrRd", "set", "Color palette for this widget", GeoHash.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 GeoHash.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

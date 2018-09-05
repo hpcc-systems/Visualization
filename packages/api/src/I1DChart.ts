@@ -4,6 +4,7 @@ export function I1DChart() {
 }
 I1DChart.prototype._dataFamily = "1D";
 I1DChart.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(I1DChart);
 
 //  Events  ---
 I1DChart.prototype.click = function (row, column, selected) {

@@ -221,6 +221,7 @@ export class CalendarHeatMap extends HTMLWidget {
 CalendarHeatMap.prototype._class += " other_CalendarHeatMap";
 CalendarHeatMap.prototype.mixin(Utility.SimpleSelectionMixin);
 CalendarHeatMap.prototype._palette = Palette.rainbow("default");
+Palette.appendRainbowColors(CalendarHeatMap);
 
 export interface CalendarHeatMap {
     dayStrokeColor(): string;

@@ -315,3 +315,19 @@ export function textColor(backgroundColor: string): string {
     const rgb = d3RGB(backgroundColor);
     return ((rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 149) ? "black" : "white";
 }
+export function appendOrdinalColors(w): void {
+    w.prototype.setColors = function (_: string[]) {
+        const paletteId = btoa(JSON.stringify(_));
+        ordinal(paletteId, _);
+        this.paletteID(paletteId);
+        return this;
+    };
+}
+export function appendRainbowColors(w): void {
+    w.prototype.setColors = function (_: string[], steps?: number) {
+        const paletteId = btoa(JSON.stringify(_)) + "_" + steps;
+        rainbow(paletteId, _, steps);
+        this.paletteID(paletteId);
+        return this;
+    };
+}

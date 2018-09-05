@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@hpcc-js/demo-quickstart-amd",
+  "name": "@hpcc-js/demo-quickstart-iife_npm",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "requirejs": "2.3.5",
     "@hpcc-js/chart": "*",
+    "@hpcc-js/layout": "*",
     "@hpcc-js/phosphor": "*"
   },
   "author": "",

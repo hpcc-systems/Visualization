@@ -1,6 +1,6 @@
 var app;
 
-require(["@hpcc-js/chart", "@hpcc-js/phosphor"], function (hpccChart, hpccPhosphor) {
+require(["@hpcc-js/chart", "@hpcc-js/layout", "@hpcc-js/phosphor"], function (hpccChart, hpccLayout, hpccPhosphor) {
     var examResults = {
         columns: ["Subject", "Year 1", "Year 2", "Year 3"],
         data: [
@@ -25,9 +25,12 @@ require(["@hpcc-js/chart", "@hpcc-js/phosphor"], function (hpccChart, hpccPhosph
         ;
 
     //  Line  ---
-    const line = new hpccChart.Line()
+    const line = new hpccLayout.ChartPanel()
+        .widget(new hpccChart.Line())
         .columns(examResults.columns)
         .data(examResults.data)
+        .title("My Line Chart")
+        .legendVisible(true)
         ;
 
     //  Hex Bin  ---

@@ -364,19 +364,19 @@ class DDLUpgrade {
             });
         }
         let idx = 0;
-		if (viz.flag) {
-			for (const flag of viz.flag) {
-				if (flag.fieldid) {
-					mappings.transformations.push({
-						fieldID: `annotation_${idx++}`,
-						type: "map",
-						sourceFieldID: flag.fieldid,
-						default: {},
-						mappings: this.readGraphEnums(flag.valuemappings, true)
-					});
-				}
-			}
-		}
+            if (viz.flag) {
+            for (const flag of viz.flag) {
+                if (flag.fieldid) {
+                    mappings.transformations.push({
+                        fieldID: `annotation_${idx++}`,
+                        type: "map",
+                        sourceFieldID: flag.fieldid,
+                        default: {},
+                        mappings: this.readGraphEnums(flag.valuemappings, true)
+                    });
+                }
+            }
+        }
         mappings.transformations.push({
             fieldID: "links",
             type: "=",
@@ -423,17 +423,17 @@ class DDLUpgrade {
                                     };
                                     for (const key in update.mappings) {
                                         const mapping = update.mappings[key];
-										if (!dsFilters[mapping]) {
-											     console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
-										} else {
-											const dsFilter = dsFilters[mapping].filter;
-											condition.mappings.push({
-												remoteFieldID: key,
-												localFieldID: update.mappings[key],
-												condition: this.rule2condition(dsFilter.rule),
-												nullable: dsFilter.nullable
-											});
-										}
+                                        if (!dsFilters[mapping]) {
+                                                 console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
+                                        } else {
+                                            const dsFilter = dsFilters[mapping].filter;
+                                            condition.mappings.push({
+                                                remoteFieldID: key,
+                                                localFieldID: update.mappings[key],
+                                                condition: this.rule2condition(dsFilter.rule),
+                                                nullable: dsFilter.nullable
+                                            });
+                                        }
                                     }
                                     this._ddl2DataviewActivities[otherViz.id].filters.conditions.push(condition);
                                 }

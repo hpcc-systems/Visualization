@@ -21,7 +21,19 @@ describe("test/esp/ecl/Workunit", function () {
         });
         it("update", function () {
             return wu1.update({
-                QueryText: "'Hello and Welcome!';"
+                QueryText: `
+Layout_Person := RECORD
+    UNSIGNED1 PersonID;
+    STRING15  FirstName;
+    STRING25  LastName;
+END;
+
+allPeople := DATASET([  {1,'Fred','Smith'},
+                        {2,'Joe','Blow'},
+                        {3,'Jane','Smith'}], Layout_Person);
+
+allPeople;
+                `
             });
         });
         it("submit", function () {
@@ -38,12 +50,30 @@ describe("test/esp/ecl/Workunit", function () {
                 }
             });
         });
-        it("results", function () {
+        it("result schema", function () {
             return wu1.fetchResults().then((results) => {
                 expect(results.length).equals(1);
                 return wu1.CResults[0].fetchXMLSchema().then((schema) => {
                     expect(schema!.root).exist;
                     return schema;
+                });
+            });
+        });
+        it("results", function () {
+            return wu1.fetchResults().then((results) => {
+                expect(results.length).equals(1);
+                return wu1.CResults[0].fetchRows().then(response => {
+                    expect(response.length).to.equal(3);
+                    return response;
+                });
+            });
+        });
+        it("results filter", function () {
+            return wu1.fetchResults().then((results) => {
+                expect(results.length).equals(1);
+                return wu1.CResults[0].fetchRows(0, 100, false, { LastName: "Smith" }).then(response => {
+                    expect(response.length).to.equal(2);
+                    return response;
                 });
             });
         });

@@ -365,16 +365,17 @@ class DDLUpgrade {
         }
         let idx = 0;
             if (viz.flag) {
-            for (const flag of viz.flag) {
-                if (flag.fieldid) {
-                    mappings.transformations.push({
-                        fieldID: `annotation_${idx++}`,
-                        type: "map",
-                        sourceFieldID: flag.fieldid,
-                        default: {},
-                        mappings: this.readGraphEnums(flag.valuemappings, true)
-                    });
-                }
+                for (const flag of viz.flag) {
+                    if (flag.fieldid) {
+                        mappings.transformations.push({
+                            fieldID: `annotation_${idx++}`,
+                            type: "map",
+                            sourceFieldID: flag.fieldid,
+                            default: {},
+                            mappings: this.readGraphEnums(flag.valuemappings, true)
+                        });
+                    }
+				}
             }
         }
         mappings.transformations.push({

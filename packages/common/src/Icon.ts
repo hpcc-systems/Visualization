@@ -1,4 +1,5 @@
 import { FAChar } from "./FAChar";
+import { textColor } from "./Palette";
 import { Shape } from "./Shape";
 import { SVGWidget } from "./SVGWidget";
 
@@ -117,6 +118,9 @@ export class Icon extends SVGWidget {
                 .attr("width", diameter)
                 .attr("height", diameter)
                 ;
+            if (this.shape_colorFill_exists() && !this.image_colorFill_exists()) {
+                this.image_colorFill(textColor(this.shape_colorFill()));
+            }
             image.exit()
                 .remove()
                 ;
@@ -138,10 +142,12 @@ export class Icon extends SVGWidget {
     faChar: { (): string; (_: string): Icon; };
     imageUrl: { (): string; (_: string): Icon; };
     image_colorFill: { (): string; (_: string): Icon; };
+    image_colorFill_exists: () => boolean;
     tooltip: { (): string; (_: string): Icon; };
     diameter: { (): number; (_: number): Icon; };
     paddingPercent: { (): number; (_: number): Icon; };
     shape_colorFill: { (): string; (_: string): Icon; };
+    shape_colorFill_exists: () => boolean;
     shape_colorStroke: { (): string; (_: string): Icon; };
 }
 Icon.prototype._class += " common_Icon";

@@ -1,5 +1,6 @@
 import { publish } from "@hpcc-js/common";
 import { Result } from "@hpcc-js/comms";
+import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ESPResult } from "./wuresult";
 
 export class LogicalFile extends ESPResult {
@@ -9,6 +10,24 @@ export class LogicalFile extends ESPResult {
 
     constructor() {
         super();
+    }
+
+    toDDL(): DDL2.ILogicalFile {
+        return {
+            type: "logicalfile",
+            id: this.id(),
+            url: this.url(),
+            logicalFile: this.logicalFile(),
+            fields: []
+        };
+    }
+
+    static fromDDL(ddl: DDL2.ILogicalFile) {
+        return new LogicalFile()
+            .id(ddl.id)
+            .url(ddl.url)
+            .logicalFile(ddl.logicalFile)
+            ;
     }
 
     _createResult(): Result {

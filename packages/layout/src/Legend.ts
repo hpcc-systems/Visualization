@@ -238,7 +238,7 @@ export class Legend extends SVGWidget {
                         } else {
                             this._disabled.splice(disabledIdx, 1);
                         }
-                        this._owner.refreshFields();
+                        this._owner.refreshColumns();
                         this._owner.refreshData();
                         this._owner.render();
                         break;

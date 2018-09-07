@@ -19,6 +19,7 @@
         "types": []
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "samples/**/*"
     ]
 }

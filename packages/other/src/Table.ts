@@ -154,7 +154,7 @@ export class Table extends HTMLWidget {
         const context = this;
         const columns = context.tableColumns();
         const data = context.tableData();
-        var scrollLeft = this.tableDiv.node().scrollLeft;
+        const scrollLeft = this.tableDiv.node().scrollLeft;
         const empty_col_idx_arr = this.getEmptyColumnIdxArr(columns, data);
 
         this.element().selectAll("table,tbody,th,td").style("width", null);

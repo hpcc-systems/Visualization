@@ -3,10 +3,10 @@
   "name": "@hpcc-js/demo-gallery",
   "version": "2.0.0",
   "scripts": {
-    "clean": "rimraf lib* types dist",
+    "clean": "rimraf src-umd types dist",
     "compile-umd": "tsc --module umd --outDir ./src-umd",
     "gen-filejson": "node ./util/dir2json ./samples",
-    "build": "run-p gen-filejson compile-umd",
+    "build": "run-s compile-umd gen-filejson",
     "start-dev": "ws"
   },
   "dependencies": {

@@ -3,6 +3,7 @@ import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ChartPanel } from "@hpcc-js/layout";
 import { find, isArray } from "@hpcc-js/util";
 import { Activity } from "../activities/activity";
+import { emptyDatabomb } from "../activities/databomb";
 import { DatasourceType } from "../activities/datasource";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { Mappings } from "../activities/project";
@@ -189,8 +190,8 @@ export class ElementContainer extends PropertyExt {
 
     private _nullElement;
 
-    private _datasources: DatasourceType[];
-    private _elements: Element[];
+    private _datasources: DatasourceType[] = [emptyDatabomb];
+    private _elements: Element[] = [];
 
     constructor() {
         super();

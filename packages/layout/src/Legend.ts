@@ -145,7 +145,13 @@ export class Legend extends SVGWidget {
     fillColorFunc() {
         const widget = this.getWidget();
         if (widget && widget.fillColor) {
-            return widget.fillColor;
+            //  Legend will render before the widget, so its possible the widgets palette will not have switched yet...
+            if (widget._palette && widget.paletteID && widget._palette.name !== widget.paletteID()) {
+                widget._palette = widget._palette.switch(widget.paletteID());
+            }
+            return (row, col, sel) => {
+                return widget.fillColor(row, col, sel);
+            };
         }
         const palette = Palette.ordinal(widget && widget.paletteID ? widget.paletteID() || "default" : "default");
         return (row, col, sel) => {

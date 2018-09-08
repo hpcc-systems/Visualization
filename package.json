@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "async": "~1.5.0",
-    "bower": "1.7.8",
+    "bower": "1.8.4",
     "gulp": "~3.9.1",
     "gulp-concat-css": "~2.2.0",
     "gulp-minify-css": "~1.2.4",

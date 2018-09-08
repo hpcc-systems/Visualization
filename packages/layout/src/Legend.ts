@@ -138,6 +138,25 @@ export class Legend extends SVGWidget {
         return Palette.ordinal("default");
     }
 
+    getPaletteType() {
+        return this.getPalette().type();
+    }
+
+    fillColorFunc() {
+        const widget = this.getWidget();
+        if (widget && widget.fillColor) {
+            return widget.fillColor;
+        }
+        const palette = Palette.ordinal(widget && widget.paletteID ? widget.paletteID() || "default" : "default");
+        return (row, col, sel) => {
+            return palette(col);
+        };
+    }
+
+    fillColor(row, col, sel) {
+        return this.fillColorFunc()(row, col, sel);
+    }
+
     protected _g;
     enter(domNode, element) {
         super.enter.apply(domNode, element);
@@ -150,30 +169,31 @@ export class Legend extends SVGWidget {
         super.update.apply(domNode, element);
         let dataArr = [];
         if (this._targetWidget) {
-            const palette = this.getPalette();
-            switch (palette.type()) {
+            switch (this.getPaletteType()) {
                 case "ordinal":
+                    const fillColor = this.fillColorFunc();
                     switch (this.dataFamily()) {
                         case "2D":
                             dataArr = this.data().map(function (n) {
-                                return [palette(n[0]), n[0]];
+                                return [fillColor(undefined, n[0], false), n[0]];
                             }, this);
                             break;
                         case "ND":
                             const widgetColumns = this.columns().filter(col => col.indexOf("__") !== 0);
                             dataArr = widgetColumns.filter(function (n, i) { return i > 0; }).map(function (n) {
-                                return [palette(n), n];
+                                return [fillColor(undefined, n, false), n];
                             }, this);
                             break;
                         default:
                             const widgetColumns2 = this.columns();
                             dataArr = widgetColumns2.map(function (n) {
-                                return [palette(n), n];
+                                return [fillColor(undefined, n, false), n];
                             }, this);
                             break;
                     }
                     break;
                 case "rainbow":
+                    const palette = this.getPalette();
                     const format = d3Format(this.rainbowFormat());
                     const widget = this.getWidget();
                     const steps = this.rainbowBins();
@@ -226,8 +246,7 @@ export class Legend extends SVGWidget {
     }
 
     onClick(d, domNode) {
-        const palette = this.getPalette();
-        switch (palette.type()) {
+        switch (this.getPaletteType()) {
             case "ordinal":
                 switch (this.dataFamily()) {
                     case "2D":
@@ -251,8 +270,7 @@ export class Legend extends SVGWidget {
 
     onOver(d, domNode) {
         if (instanceOfIHighlight(this._owner)) {
-            const palette = this.getPalette();
-            switch (palette.type()) {
+            switch (this.getPaletteType()) {
                 case "ordinal":
                     switch (this.dataFamily()) {
                         case "2D":
@@ -271,8 +289,7 @@ export class Legend extends SVGWidget {
 
     onOut(d, domNode) {
         if (instanceOfIHighlight(this._owner)) {
-            const palette = this.getPalette();
-            switch (palette.type()) {
+            switch (this.getPaletteType()) {
                 case "ordinal":
                     switch (this.dataFamily()) {
                         case "2D":

@@ -628,7 +628,14 @@ export class Grid extends PropertyExt {
     }
 
     csv(_?): string | Grid {
-        if (!arguments.length) return d3CsvFormatRows(this.grid());
+        if (!arguments.length) {
+            var temp = document.createElement("div");
+            return d3CsvFormatRows(this.grid().map(row => {
+                return row.map(cell => {
+                    return Utility.removeHTMLFromString(cell, temp);
+                });
+            }));
+        }
         this.jsonObj(d3CsvParse(_));
         return this;
     }

@@ -576,3 +576,9 @@ export function parseVersionString(versionString) {
         patch: parseInt(_sp[2].split("-")[0]),
     };
 }
+
+export function removeHTMLFromString(str: string, div?: HTMLDivElement) {
+    div = div ? div : document.createElement("div");
+    div.innerHTML = str;
+    return div.textContent || div.innerText || "";
+}

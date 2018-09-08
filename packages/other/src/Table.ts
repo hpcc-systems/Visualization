@@ -154,7 +154,7 @@ export class Table extends HTMLWidget {
         const context = this;
         const columns = context.tableColumns();
         const data = context.tableData();
-
+        var scrollLeft = this.tableDiv.node().scrollLeft;
         const empty_col_idx_arr = this.getEmptyColumnIdxArr(columns, data);
 
         this.element().selectAll("table,tbody,th,td").style("width", null);
@@ -644,7 +644,9 @@ export class Table extends HTMLWidget {
             context._paginator
                 .right((context.hasVScroll(element) ? Platform.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
                 .bottom((context.hasHScroll(element) ? Platform.getScrollbarWidth() : 0) + context._paginatorTableSpacing)
-                .render()
+                .render(function () {
+                    context.tableDiv.node().scrollLeft = scrollLeft;
+                })
                 ;
         }, 0);
     }

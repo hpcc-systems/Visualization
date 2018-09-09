@@ -372,6 +372,11 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/graph/Custom Colors.js",
+            "name": "Custom Colors.js",
+            "type": "file"
+          },
+          {
             "path": "./samples/graph/Les Miserables.js",
             "name": "Les Miserables.js",
             "type": "file"
@@ -389,6 +394,18 @@ var config = {
           {
             "path": "./samples/graph/SankeyValues.js",
             "name": "SankeyValues.js",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "path": "./samples/html",
+        "name": "html",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/html/Table.js",
+            "name": "Table.js",
             "type": "file"
           }
         ]
@@ -439,6 +456,40 @@ var config = {
             "path": "./samples/misc/Word Cloud.js",
             "name": "Word Cloud.js",
             "type": "file"
+          }
+        ]
+      },
+      {
+        "path": "./samples/palette",
+        "name": "palette",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/palette/Ordinal",
+            "name": "Ordinal",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/palette/Ordinal/Basic.js",
+                "name": "Basic.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Chart Panel.js",
+                "name": "Chart Panel.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Runtime.js",
+                "name": "Runtime.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Shared.js",
+                "name": "Shared.js",
+                "type": "file"
+              }
+            ]
           }
         ]
       },

@@ -332,23 +332,12 @@ export class Graph extends SVGZoomWidget {
     }
 
     //  Render  ---
-    update(domNode, element) {
-        super.update(domNode, element);
-        this.tooltip.hide();
-
-        //  IconBar  ---
-        const layout = this.layout();
-        this._toggleHierarchy.selected(layout === "Hierarchy").render();
-        this._toggleForceDirected.selected(layout === "ForceDirected").render();
-        this._toggleForceDirected2.selected(layout === "ForceDirected2").render();
-        this._toggleCircle.selected(layout === "Circle").render();
-
-        //  Create  ---
+    updateVertices(rootElement, rootSuffix, data) {
         const width = this.width();
         const height = this.height();
         const context = this;
 
-        const vertexElements = this.svgV.selectAll("#" + this._id + "V > .graphVertex").data(this._graphData.nodeValues().filter(v => this.layout() === "Hierarchy" ? true : !(v instanceof Subgraph)), function (d) { return d.id(); });
+        const vertexElements = rootElement.selectAll("#" + this._id + rootSuffix + " > .graphVertex").data(data, function (d) { return d.id(); });
         vertexElements.enter().append("g")
             .attr("class", "graphVertex")
             .style("opacity", 1e-6)
@@ -440,6 +429,42 @@ export class Graph extends SVGZoomWidget {
             }
         }
 
+        vertexElements
+            .each(updateV)
+            ;
+        function updateV(d) {
+            d
+                .animationFrameRender()
+                ;
+        }
+
+        vertexElements.exit()
+            .each(function (d) {
+                d.target(null);
+            })
+            .remove()
+            ;
+
+        vertexElements.order();
+    }
+
+    update(domNode, element) {
+        super.update(domNode, element);
+        this.tooltip.hide();
+
+        //  IconBar  ---
+        const layout = this.layout();
+        this._toggleHierarchy.selected(layout === "Hierarchy").render();
+        this._toggleForceDirected.selected(layout === "ForceDirected").render();
+        this._toggleForceDirected2.selected(layout === "ForceDirected2").render();
+        this._toggleCircle.selected(layout === "Circle").render();
+
+        //  Create  ---
+        const context = this;
+
+        this.updateVertices(this.svgC, "C", this._graphData.nodeValues().filter(v => this.layout() === "Hierarchy" ? (v instanceof Subgraph) : false));
+        this.updateVertices(this.svgV, "V", this._graphData.nodeValues().filter(v => !(v instanceof Subgraph)));
+
         const edgeElements = this.svgE.selectAll("#" + this._id + "E > .graphEdge").data(this.showEdges() ? this._graphData.edgeValues() : [], function (d) { return d.id(); });
         edgeElements.enter().append("g")
             .attr("class", "graphEdge")
@@ -491,16 +516,6 @@ export class Graph extends SVGZoomWidget {
                 ;
         }
 
-        //  Update  ---
-        vertexElements
-            .each(updateV)
-            ;
-        function updateV(d) {
-            d
-                .animationFrameRender()
-                ;
-        }
-
         edgeElements
             .each(updateE)
             ;
@@ -510,21 +525,12 @@ export class Graph extends SVGZoomWidget {
                 ;
         }
 
-        //  Exit  ---
-        vertexElements.exit()
-            .each(function (d) {
-                d.target(null);
-            })
-            .remove()
-            ;
         edgeElements.exit()
             .each(function (d) {
                 d.target(null);
             })
             .remove()
             ;
-
-        vertexElements.order();
 
         if (!this._renderCount) {
             this._renderCount++;

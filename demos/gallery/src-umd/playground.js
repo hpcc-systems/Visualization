@@ -95,32 +95,34 @@ var __extends = (this && this.__extends) || (function () {
             var inProps = false;
             for (var i = srcCodeLines.length - 1; i >= 0; --i) {
                 var line = srcCodeLines[i];
-                var dotIndex = line.indexOf(".");
-                var parenIndex = line.indexOf("(");
-                if (dotIndex >= 0 && parenIndex > dotIndex) {
-                    var func = line.substring(dotIndex + 1, parenIndex);
-                    switch (func) {
-                        case "render":
-                            inProps = true;
-                            renderIdx = i;
-                            break;
-                        case "target":
-                            inProps = false;
-                            break;
-                        case "columns":
-                        case "data":
-                            break;
-                        default:
-                            if (inProps) {
-                                if (props[func]) {
-                                    srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + ("(" + JSON.stringify(props[func]) + ")");
-                                    delete props[func];
+                if (line.trim().indexOf(".") === 0) {
+                    var dotIndex = line.indexOf(".");
+                    var parenIndex = line.indexOf("(");
+                    if (dotIndex >= 0 && parenIndex > dotIndex) {
+                        var func = line.substring(dotIndex + 1, parenIndex);
+                        switch (func) {
+                            case "render":
+                                inProps = true;
+                                renderIdx = i;
+                                break;
+                            case "target":
+                                inProps = false;
+                                break;
+                            case "columns":
+                            case "data":
+                                break;
+                            default:
+                                if (inProps) {
+                                    if (props[func]) {
+                                        srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + ("(" + JSON.stringify(props[func]) + ")");
+                                        delete props[func];
+                                    }
+                                    else {
+                                        srcCodeLines.splice(i, 1);
+                                        renderIdx--;
+                                    }
                                 }
-                                else {
-                                    srcCodeLines.splice(i, 1);
-                                    renderIdx--;
-                                }
-                            }
+                        }
                     }
                 }
             }

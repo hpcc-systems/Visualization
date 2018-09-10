@@ -2,14 +2,15 @@ import { publish } from "@hpcc-js/common";
 import { Result, XSDXMLNode } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { debounce, hashSum } from "@hpcc-js/util";
-import { Activity, schemaRow2IField } from "./activity";
+import { schemaRow2IField } from "./activity";
+import { Datasource, DatasourceRef } from "./datasource";
 
-export abstract class ESPResult extends Activity {
+export abstract class ESPResult extends Datasource {
     protected _result: Result;
     protected _schema: XSDXMLNode[] = [];
     protected _meta: DDL2.IField[] = [];
     protected _total: number;
-    private _data: any[];
+    private _data: ReadonlyArray<object> = [];
 
     @publish("", "string", "ESP Url (http://x.x.x.x:8010)")
     url: publish<this, string>;
@@ -33,11 +34,11 @@ export abstract class ESPResult extends Activity {
 
     abstract _createResult(): Result;
 
-    _prevHash: string;
+    _prevMetaHash: string;
     refreshMetaPromise: Promise<void>;
     refreshMeta(): Promise<void> {
-        if (this._prevHash !== this.hash()) {
-            this._prevHash = this.hash();
+        if (this._prevMetaHash !== this.hash()) {
+            this._prevMetaHash = this.hash();
             delete this.refreshMetaPromise;
         }
         if (!this.refreshMetaPromise) {
@@ -63,7 +64,7 @@ export abstract class ESPResult extends Activity {
         if (!arguments.length) return this._meta;
         this._meta = _;
         //  Prevent refreshMeta from triggering...
-        this._prevHash = this.hash();
+        this._prevMetaHash = this.hash();
         this._result = this._createResult();
         this.refreshMetaPromise = this._result.refresh().then(result => {
             this._total = result.Total;
@@ -77,8 +78,8 @@ export abstract class ESPResult extends Activity {
         return this;
     }
 
-    computeFields(): DDL2.IField[] {
-        return this.responseFields();
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        return () => this.responseFields();
     }
 
     exec(): Promise<void> {
@@ -157,6 +158,24 @@ export class WUResult extends ESPResult {
         super();
     }
 
+    toDDL(): DDL2.IWUResult {
+        return {
+            type: "wuresult",
+            id: this.id(),
+            url: this.url(),
+            wuid: this.wuid(),
+            outputs: {}
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IWUResult) {
+        return new WUResult()
+            .id(ddl.id)
+            .url(ddl.url)
+            .wuid(ddl.wuid)
+            ;
+    }
+
     _createResult(): Result {
         return new Result({ baseUrl: this.url() }, this.wuid(), this.resultName());
     }
@@ -201,3 +220,17 @@ export class WUResult extends ESPResult {
     }
 }
 WUResult.prototype._class += " WUResult";
+
+export class WUResultRef extends DatasourceRef {
+
+    datasource(): WUResult;
+    datasource(_: WUResult): this;
+    datasource(_?: WUResult): this | WUResult {
+        return super.datasource.apply(this, arguments);
+    }
+
+    resultName(): string {
+        return this.datasource().resultName();
+    }
+
+}

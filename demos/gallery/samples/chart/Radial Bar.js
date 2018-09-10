@@ -19,5 +19,5 @@ setInterval(function () {
     data.forEach(function (row) {
         row[1] = Math.random() * 100;
     });
-    radarBar.render();
+    radialBar.render();
 }, 3000);

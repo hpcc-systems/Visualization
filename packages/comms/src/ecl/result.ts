@@ -113,8 +113,8 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this;
     }
 
-    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false): Promise<any[]> {
-        return this.WUResult(from, count, !includeSchema).then((response) => {
+    fetchRows(from: number = 0, count: number = -1, includeSchema: boolean = false, filter: { [key: string]: string | number } = {}): Promise<any[]> {
+        return this.WUResult(from, count, !includeSchema, filter).then((response) => {
             const result = response.Result;
             delete response.Result; //  Do not want it in "set"
             this.set({
@@ -142,8 +142,19 @@ export class Result extends StateObject<UResulState, IResulState> implements ECL
         return this.xsdSchema.root.children();
     }
 
-    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false): Promise<WUResult.Response> {
-        const request: WUResult.Request = {} as WUResult.Request;
+    protected WUResult(start: number = 0, count: number = 1, suppressXmlSchema: boolean = false, filter: { [key: string]: string | number } = {}): Promise<WUResult.Response> {
+        const FilterBy = {
+            NamedValue: {
+                itemcount: 0
+            }
+        };
+        for (const key in filter) {
+            FilterBy.NamedValue[FilterBy.NamedValue.itemcount++] = {
+                Name: key,
+                Value: filter[key]
+            };
+        }
+        const request: WUResult.Request = { FilterBy } as WUResult.Request;
         if (this.Wuid && this.ResultName !== undefined) {
             request.Wuid = this.Wuid;
             request.ResultName = this.ResultName;

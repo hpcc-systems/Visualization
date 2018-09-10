@@ -3,7 +3,8 @@ import { Query as CommsQuery } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { compare, debounce, hashSum } from "@hpcc-js/util";
 import { Element, ElementContainer } from "../model/element";
-import { Activity, ReferencedFields } from "./activity";
+import { ReferencedFields } from "./activity";
+import { Datasource, DatasourceRef } from "./datasource";
 
 function parseUrl(_: string): { url: string, querySet: string, queryID: string } {
     // "http://10.241.100.157:8002/WsEcl/submit/query/roxie/carmigjx_govbisgsavi.Ins4621360_Service_00000006/json",
@@ -23,7 +24,7 @@ function parseUrl(_: string): { url: string, querySet: string, queryID: string }
 export class Param extends PropertyExt {
     private _elementContainer: ElementContainer;
 
-    @publish(null, "set", "Datasource", function (this: Param) { return this.visualizationIDs(); }, { optional: true })
+    @publish(null, "set", "Activity", function (this: Param) { return this.visualizationIDs(); }, { optional: true })
     source: publish<this, string>;
     source_exists: () => boolean;
     @publish(null, "set", "Source Field", function (this: Param) { return this.sourceFields(); }, { optional: true })
@@ -58,7 +59,7 @@ export class Param extends PropertyExt {
         return hashSum({
             label: this.localField(),
             source: this.source(),
-            sourceField: this.remoteField(),
+            sourceField: this.remoteField()
         });
     }
 
@@ -74,7 +75,7 @@ export class Param extends PropertyExt {
         return this._elementContainer.element(this.source());
     }
 
-    sourceOutFields(): DDL2.IField[] {
+    sourceOutFields(): ReadonlyArray<DDL2.IField> {
         return this.sourceViz().hipiePipeline().selectionFields();
     }
 
@@ -88,7 +89,7 @@ export class Param extends PropertyExt {
 }
 Param.prototype._class += " ColumnMapping";
 
-export class RoxieService extends PropertyExt {
+export class RoxieService extends Datasource {
     private _query: CommsQuery;
     private _requestFields: DDL2.IField[];
     private _responseFields: { [outputID: string]: DDL2.IField[] } = {};
@@ -102,6 +103,27 @@ export class RoxieService extends PropertyExt {
 
     constructor() {
         super();
+    }
+
+    toDDL(): DDL2.IRoxieService {
+        return {
+            type: "roxie",
+            id: this.id(),
+            url: this.url(),
+            querySet: this.querySet(),
+            queryID: this.queryID(),
+            inputs: [],
+            outputs: {}
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IRoxieService | DDL2.IHipieService) {
+        return new RoxieService()
+            .id(ddl.id)
+            .url(ddl.url)
+            .querySet(ddl.querySet)
+            .queryID(ddl.queryID)
+            ;
     }
 
     hash(): string {
@@ -166,36 +188,134 @@ export class RoxieService extends PropertyExt {
 }
 RoxieService.prototype._class += " RoxieService";
 
-const _roxiePool: { [key: string]: RoxieService } = {};
-export class RoxieRequest extends Activity {
+export class RoxieResult extends Datasource {
+    private _elementContainer: ElementContainer;
+
+    idX(): string;
+    idX(_: string): this;
+    idX(_?: string): this | string {
+        if (!arguments.length) return `${this.service().id()}_${this.resultName()}`;
+        return this;
+    }
+
+    @publish(null, "widget", "Roxie sservice")
+    _service: RoxieService;
+    service(): RoxieService;
+    service(_: RoxieService): this;
+    service(_?: RoxieService): this | RoxieService {
+        if (!arguments.length) return this._service;
+        this._service = _;
+        return this;
+    }
+
+    @publish("", "string", "Result Name")
+    resultName: publish<this, string>;
+
+    constructor(elementContainer: ElementContainer) {
+        super();
+        this._elementContainer = elementContainer;
+    }
+
+    toDDL(): DDL2.IRoxieService {
+        return this.service().toDDL();
+    }
+
+    static fromDDL(ec: ElementContainer, rs: RoxieService, resultName: string): RoxieResult {
+        return new RoxieResult(ec)
+            .id(`${rs.id()}_${resultName}`)
+            .service(rs)
+            .resultName(resultName)
+            ;
+    }
+
+    roxieServiceID(): string {
+        return `${this.service().url()}/${this.service().querySet()}/${this.service().queryID()}`;
+    }
+
+    sourceHash(): string {
+        return this.service().hash();
+    }
+
+    requestFields(): DDL2.IField[] {
+        return this.service().requestFields();
+    }
+
+    responseFields(): DDL2.IField[];
+    responseFields(_: DDL2.IField[]): this;
+    responseFields(_?: DDL2.IField[]): this | DDL2.IField[] {
+        if (!arguments.length) return this.service().responseFields(this.resultName());
+        this.service().responseFields(this.resultName(), _);
+        return this;
+    }
+
+    hash(): string {
+        return hashSum({
+            source: this.sourceHash(),
+            resultName: this.resultName()
+        });
+    }
+
+    label(): string {
+        return `${this.service().label()}\n${this.resultName()}`;
+    }
+
+    elementIDs() {
+        return this._elementContainer.elementIDs();
+    }
+
+    element(source) {
+        return this._elementContainer.element(source);
+    }
+
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        return () => this.service().responseFields(this.resultName());
+    }
+
+    refreshMeta(): Promise<void> {
+        return this.service().refreshMeta();
+    }
+
+    submit(request: { [key: string]: any }): Promise<{ [key: string]: any }> {
+        return this.service().submit(request);
+    }
+}
+RoxieResult.prototype._class += " RoxieResult";
+
+export class RoxieResultRef extends DatasourceRef {
     private _elementContainer: ElementContainer;
 
     roxieServiceID(): string {
-        return `${this.url()}/${this.querySet()}/${this.queryID()}`;
+        const ds = this.datasource() as RoxieResult;
+        return ds.roxieServiceID();
     }
 
-    protected get _roxieService(): RoxieService {
-        let retVal: RoxieService = _roxiePool[this.roxieServiceID()];
-        if (!retVal) {
-            retVal = new RoxieService()
-                .url(this.url())
-                .querySet(this.querySet())
-                .queryID(this.queryID())
-                ;
-            _roxiePool[this.roxieServiceID()] = retVal;
-        }
-        return retVal;
+    protected get _roxieResult(): RoxieResult {
+        return this.datasource() as RoxieResult;
     }
-    private _data: any[] = [];
+    private _data: ReadonlyArray<object> = [];
 
-    @publish("", "string", "ESP Url (http://x.x.x.x:8002)")
-    url: publish<this, string>;
-    @publish("", "string", "Query Set")
-    querySet: publish<this, string>;
-    @publish("", "string", "Query ID")
-    queryID: publish<this, string>;
-    @publish("", "string", "Result Name")
-    resultName: publish<this, string>;
+    datasource(): RoxieResult;
+    datasource(_: RoxieResult): this;
+    datasource(_?: RoxieResult): this | RoxieResult {
+        return super.datasource.apply(this, arguments);
+    }
+
+    url(): string {
+        return this.datasource().service().url();
+    }
+
+    querySet(): string {
+        return this.datasource().service().querySet();
+    }
+
+    queryID(): string {
+        return this.datasource().service().queryID();
+    }
+
+    resultName(): string {
+        return this.datasource().resultName();
+    }
+
     @publish([], "propertyArray", "Request Fields")
     _request: Param[];
     request(): Param[];
@@ -212,7 +332,7 @@ export class RoxieRequest extends Activity {
     }
 
     sourceHash(): string {
-        return this._roxieService.hash();
+        return this._roxieResult.hash();
     }
 
     requestFieldRefs(): DDL2.IRequestField[];
@@ -223,32 +343,25 @@ export class RoxieRequest extends Activity {
         return this;
     }
 
-    requestFields(): DDL2.IField[];
-    requestFields(_: DDL2.IField[]): this;
-    requestFields(_?: DDL2.IField[]): DDL2.IField[] | this {
-        if (!arguments.length) return this._roxieService.requestFields();
-        this._roxieService.requestFields(_);
-        return this;
+    requestFields(): DDL2.IField[] {
+        return this._roxieResult.requestFields();
     }
 
-    responseFields(): DDL2.IField[];
-    responseFields(_: DDL2.IField[]): this;
-    responseFields(_?: DDL2.IField[]): DDL2.IField[] | this {
-        if (!arguments.length) return this._roxieService.responseFields(this.resultName());
-        this._roxieService.responseFields(this.resultName(), _);
-        return this;
+    responseFields(): DDL2.IField[] {
+        return this._roxieResult.responseFields();
     }
 
     hash(): string {
         return hashSum({
             source: this.sourceHash(),
-            resultName: this.resultName(),
-            params: this.request().map(param => param.hash())
+            resultName: this._roxieResult.resultName(),
+            params: this.request().map(param => param.hash()),
+            request: this.formatRequest()
         });
     }
 
     label(): string {
-        return `${this._roxieService.label()}\n${this.resultName()}`;
+        return `${this._roxieResult.label()}\n${this._roxieResult.resultName()}`;
     }
 
     elementIDs() {
@@ -289,21 +402,20 @@ export class RoxieRequest extends Activity {
     }
 
     refreshMeta(): Promise<void> {
-        return this._roxieService.refreshMeta().then(() => {
+        return this._roxieResult.refreshMeta().then(() => {
             const oldParams = this.request();
-            const diffs = compare(oldParams.map(p => p.localField()), this._roxieService.requestFields().map(ff => ff.id));
+            const diffs = compare(oldParams.map(p => p.localField()), this._roxieResult.requestFields().map(ff => ff.id));
             const newParams = oldParams.filter(op => diffs.unchanged.indexOf(op.localField()) >= 0);
             this.request(newParams.concat(diffs.added.map(label => new Param(this._elementContainer).localField(label))));
         });
     }
 
     updatedBy(): string[] {
-        const retVal = this.validParams().map(param => param.source());
-        return retVal;
+        return this.validParams().map(param => param.source());
     }
 
-    computeFields(): DDL2.IField[] {
-        return this._roxieService.responseFields(this.resultName());
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        return () => this._roxieResult.responseFields();
     }
 
     formatRequest(): { [key: string]: any } {
@@ -325,7 +437,7 @@ export class RoxieRequest extends Activity {
             const requestHash = hashSum({ hash: this.hash(), request });
             if (this._prevRequestHash !== requestHash) {
                 this._prevRequestHash = requestHash;
-                this._prevRequestPromise = this._roxieService.submit(request).then((response: { [key: string]: any }) => this.fixInt64(response[this.resultName()]));
+                this._prevRequestPromise = this._roxieResult.submit(request).then((response: { [key: string]: any }) => this.fixInt64(response[this._roxieResult.resultName()]));
             }
             return this._prevRequestPromise;
         }).then(data => {
@@ -337,15 +449,15 @@ export class RoxieRequest extends Activity {
         return this._data;
     }
 }
-RoxieRequest.prototype._class += " RoxieRequest";
+RoxieResultRef.prototype._class += " RoxieResultRef";
 
-export class HipieRequest extends RoxieRequest {
+export class HipieRequest extends RoxieResultRef {
 
     fullUrl(_: string): this {
         const info = parseUrl(_);
-        this.url(info.url);
-        this.querySet(info.querySet);
-        this.queryID(info.queryID);
+        this._roxieResult.service().url(info.url);
+        this._roxieResult.service().querySet(info.querySet);
+        this._roxieResult.service().queryID(info.queryID);
         return this;
     }
 

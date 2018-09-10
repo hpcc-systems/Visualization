@@ -1,120 +1,83 @@
 import { publish } from "@hpcc-js/common";
-import { Activity, ActivitySelection } from "./activity";
-import { Databomb, Form } from "./databomb";
-import { HipiePipeline } from "./hipiepipeline";
+import { ElementContainer } from "../model/element";
+import { ActivitySelection } from "./activity";
+import { Databomb, emptyDatabomb, Form } from "./databomb";
+import { DatasourceRef, DatasourceType } from "./datasource";
 import { LogicalFile } from "./logicalfile";
-import { HipieRequest, RoxieRequest } from "./roxie";
-import { WUResult } from "./wuresult";
+import { RoxieResult, RoxieResultRef, RoxieService } from "./roxie";
+import { WUResult, WUResultRef } from "./wuresult";
 
-const sampleData = [];
-
-export function isDatasource(activity: Activity) {
-    return activity instanceof DSPicker ||
-        activity instanceof Databomb ||
-        activity instanceof Form ||
-        activity instanceof LogicalFile ||
-        activity instanceof RoxieRequest ||
-        activity instanceof HipieRequest ||
-        activity instanceof WUResult;
-}
-
-export type DSPickerType = "wuresult" | "wuresult-vm" | "logicalfile" | "logicalfile-vm" | "form" | "databomb" | "hipie" | "roxie" | "roxie-vm";
 let dsPickerID = 0;
 export class DSPicker extends ActivitySelection {
-    private _view: HipiePipeline;
+    private _elementContainer: ElementContainer;
+    private _nullDatasource = emptyDatabomb;
 
-    @publish("wuresult", "set", "Type", ["wuresult", "wuresult-vm", "logicalfile", "logicalfile-vm", "form", "databomb", "hipie", "roxie", "roxie-vm"])
-    _type: DSPickerType; // DDL2.IDatasourceType;
-    type(_?: DSPickerType/*DDL2.IDatasourceType*/): this | DSPickerType { // DDL2.IDatasourceType | this {
-        if (!arguments.length) return this._type;
-        this._type = _;
-        switch (_) {
-            case "wuresult":
-                this.selection(this.activities()[0]);
-                break;
-            case "wuresult-vm":
-                this.selection(this.activities()[6]);
-                break;
-            case "logicalfile":
-                this.selection(this.activities()[1]);
-                break;
-            case "logicalfile-vm":
-                this.selection(this.activities()[7]);
-                break;
-            case "hipie":
-                this.selection(this.activities()[2]);
-                break;
-            case "roxie":
-                this.selection(this.activities()[3]);
-                break;
-            case "roxie-vm":
-                this.selection(this.activities()[8]);
-                break;
-            case "databomb":
-                this.selection(this.activities()[4]);
-                break;
-            case "form":
-                this.selection(this.activities()[5]);
-                break;
+    @publish("", "set", "Activity", function (this: DSPicker) { return this.datasourceIDs(); }, { optional: false })
+    _datasourceID: string; // DDL2.IDatasourceType;
+    datasourceID(_?: string): this | string {
+        if (!arguments.length) return this._datasourceID;
+        if (this._datasourceID !== _) {
+            this._datasourceID = _;
+            this.refreshRef(_);
         }
-        this.details(this.selection());
         return this;
     }
-    @publish(null, "widget", "Data Source")
-    details: publish<this, Activity>;
 
-    constructor(view: HipiePipeline) {
+    @publish("", "widget", "Activity")
+    _datasourceRef: DatasourceRef;
+    datasourceRef(): DatasourceRef;
+    datasourceRef(_: DatasourceRef): this;
+    datasourceRef(_?: DatasourceRef): this | DatasourceRef {
+        return super.selection.apply(this, arguments);
+    }
+
+    datasource(): DatasourceType {
+        return this.datasourceRef().datasource();
+    }
+
+    refreshRef(id: string) {
+        const ds: DatasourceType = this._elementContainer.datasource(id);
+        if (ds instanceof Databomb) {
+            this.selection(new DatasourceRef().datasource(ds));
+        } else if (ds instanceof Form) {
+            this.selection(new DatasourceRef().datasource(ds));
+        } else if (ds instanceof LogicalFile) {
+            this.selection(new DatasourceRef().datasource(ds));
+        } else if (ds instanceof RoxieService) {
+            this.selection(new DatasourceRef().datasource(ds));
+        } else if (ds instanceof RoxieResult) {
+            this.selection(new RoxieResultRef(this._elementContainer).datasource(ds));
+        } else if (ds instanceof WUResult) {
+            this.selection(new WUResultRef().datasource(ds));
+        }
+    }
+
+    selection(): DatasourceRef;
+    selection(_: DatasourceRef): this;
+    selection(_?: DatasourceRef): DatasourceRef | this {
+        const retVal = super.selection.apply(this, arguments);
+        if (!arguments.length) return retVal || this._nullDatasource;
+        if (this._datasourceID !== _.datasource().id()) {
+            this._datasourceID = _.datasource().id();
+        }
+        return this;
+    }
+
+    constructor(ec: ElementContainer) {
         super();
         this._id = `ds_${++dsPickerID}`;
-        this._view = view;
-        this.activities([
-            new WUResult()
-                .url("http://52.51.90.23:8010")
-                .wuid("W20180513-082149")
-                .resultName("Result 1")
-            ,
-            new LogicalFile()
-                .url("http://52.51.90.23:8010")
-                .logicalFile("progguide::exampledata::peopleaccts")
-            ,
-            new HipieRequest(this._view._elementContainer)
-            ,
-            new RoxieRequest(this._view._elementContainer)
-                .url("http://52.51.90.23:8002")
-                .querySet("roxie")
-                .queryID("peopleaccounts")
-                .resultName("Accounts"),
-            new Databomb()
-                .payload(JSON.stringify(sampleData))
-            ,
-            new Form()
-                .payload({
-                    id: 770,
-                    fname: "TIMTOHY",
-                    lname: "SALEEMI",
-                    minitial: "",
-                    gender: "M",
-                    street: "1734 NOSTRAND AVE # 3",
-                    city: "DRACUT",
-                    st: "MA",
-                    zip: "01826"
-                }),
-            new WUResult()
-                .url("http://192.168.3.22:8010")
-                .wuid("W20171201-153452")
-                .resultName("Result 1")
-            ,
-            new LogicalFile()
-                .url("http://192.168.3.22:8010")
-                .logicalFile("progguide::exampledata::peopleaccts")
-            ,
-            new RoxieRequest(this._view._elementContainer)
-                .url("http://192.168.3.22:8002")
-                .querySet("roxie")
-                .queryID("peopleaccounts")
-                .resultName("Accounts"),
-        ]);
-        this.type("form");
+        this._elementContainer = ec;
+        const ds = this._elementContainer.datasources()[0];
+        this.datasourceID(ds.id());
+    }
+
+    datasourceIDs() {
+        return this._elementContainer.datasources().map(ds => {
+            return {
+                value: ds.id(),
+                text: ds.label()
+            };
+        });
     }
 }
 DSPicker.prototype._class += " DSPicker";

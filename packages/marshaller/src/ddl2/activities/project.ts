@@ -262,7 +262,7 @@ export class ComputedField extends PropertyExt {
         });
     }
 
-    columns() {
+    columns(): string[] {
         return this._owner.fieldIDs();
     }
 
@@ -395,6 +395,13 @@ export class MultiField extends PropertyExt implements IComputedFieldOwner {
         super();
     }
 
+    hash() {
+        return hashSum({
+            label: this.label(),
+            multiFields: this.validMultiFields().map(mf => mf.hash())
+        });
+    }
+
     owner(): IComputedFieldOwner;
     owner(_: IComputedFieldOwner): this;
     owner(_?: IComputedFieldOwner): IComputedFieldOwner | this {
@@ -488,7 +495,7 @@ export class ProjectBase extends Activity {
 
     hash(): string {
         return hashSum({
-            computedFields: this.computedFields().map(cf => cf.hash()),
+            computedFields: this.validComputedFields().map(cf => cf.hash()),
         });
     }
 
@@ -538,9 +545,9 @@ export class ProjectBase extends Activity {
         return this.validComputedFields().length;
     }
 
-    computeFields(): DDL2.IField[] {
-        if (!this.exists()) return super.computeFields();
-        const retVal: DDL2.IField[] = [];
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        if (!this.exists()) return super.computeFields(inFields);
+        let retVal: DDL2.IField[] = [];
         const retValMap: { [key: string]: boolean } = {};
         for (const cf of this.validComputedFields()) {
             if (cf instanceof MultiField) {
@@ -562,9 +569,10 @@ export class ProjectBase extends Activity {
             };
             retVal.push(computedField);
             retValMap[computedField.id] = true;
-            return retVal;
+        } else {
+            retVal = retVal.concat(inFields.filter(field => !retValMap[field.id]));
         }
-        return retVal.concat(super.computeFields().filter(field => !retValMap[field.id]));
+        return () => retVal;
     }
 
     referencedFields(refs: ReferencedFields): void {

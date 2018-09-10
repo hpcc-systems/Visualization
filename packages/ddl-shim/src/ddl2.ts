@@ -21,10 +21,6 @@ export interface IDatasource {
     fields: IField[];
 }
 
-export interface IDatasourceBaseRef {
-    id: string;
-}
-
 export interface IESPService extends IDatasource {
     url: string;
 }
@@ -68,31 +64,6 @@ export interface IHipieService extends IService {
     outputs: OutputDict;
 }
 
-export interface IRequestField {
-    source: string;
-    remoteFieldID: string;
-    localFieldID: string;
-}
-
-export interface IWUResultRef extends IDatasourceBaseRef {
-    output: string;
-}
-
-export interface IRoxieServiceRef extends IDatasourceBaseRef {
-    request: IRequestField[];
-    output: string;
-}
-
-export type IDatasourceRef = IDatasourceBaseRef | IWUResultRef | IRoxieServiceRef;
-
-export function isWUResultRef(ref: IDatasourceRef): ref is IWUResultRef {
-    return (ref as IWUResultRef).output !== undefined && (ref as IRoxieServiceRef).request === undefined;
-}
-
-export function isRoxieServiceRef(ref: IDatasourceRef): ref is IRoxieServiceRef {
-    return (ref as IRoxieServiceRef).request !== undefined;
-}
-
 export interface IForm extends IDatasource {
     type: "form";
 }
@@ -101,6 +72,44 @@ export type IDatabombFormat = "csv" | "tsv" | "json";
 export interface IDatabomb extends IDatasource {
     type: "databomb";
     format: IDatabombFormat;
+    payload?: string;
+}
+
+//  IDatasorceRef  ---
+export interface IDatasourceBaseRef {
+    id: string;
+}
+
+export interface IDatabombRef extends IDatasourceBaseRef {
+}
+
+export interface IWUResultRef extends IDatasourceBaseRef {
+    output: string;
+}
+
+export interface IRequestField {
+    source: string;
+    remoteFieldID: string;
+    localFieldID: string;
+}
+
+export interface IRoxieServiceRef extends IDatasourceBaseRef {
+    request: IRequestField[];
+    output: string;
+}
+
+export type IDatasourceRef = IDatabombRef | IWUResultRef | IRoxieServiceRef;
+
+export function isDatabombRef(ref: IDatasourceRef): ref is IDatabombRef {
+    return !isWUResultRef(ref) && !isRoxieServiceRef(ref);
+}
+
+export function isWUResultRef(ref: IDatasourceRef): ref is IWUResultRef {
+    return (ref as IWUResultRef).output !== undefined && !isRoxieServiceRef(ref);
+}
+
+export function isRoxieServiceRef(ref: IDatasourceRef): ref is IRoxieServiceRef {
+    return (ref as IRoxieServiceRef).request !== undefined;
 }
 
 //  Activities  ===============================================================

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.0.1...@hpcc-js/ddl-shim@2.1.0) (2018-09-10)
+
+
+### Bug Fixes
+
+* **ddl:** Upgrade tweaks from Drea ([f9ded6a](https://github.com/hpcc-systems/Visualization/commit/f9ded6a))
+
+
+### Features
+
+* **dashy:** Support common datasources properly ([34d6fb7](https://github.com/hpcc-systems/Visualization/commit/34d6fb7))
+
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.0.0...@hpcc-js/ddl-shim@2.0.1) (2018-09-01)
 

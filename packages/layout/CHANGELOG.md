@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.0...@hpcc-js/layout@2.1.1) (2018-09-10)
+
+
+### Bug Fixes
+
+* **ChartPanel:** Legend toggle not refreshing columns ([7841145](https://github.com/hpcc-systems/Visualization/commit/7841145)), closes [#2835](https://github.com/hpcc-systems/Visualization/issues/2835)
+* **Legend:** Legend should use "fillColor" when available ([aadb4d5](https://github.com/hpcc-systems/Visualization/commit/aadb4d5)), closes [#2842](https://github.com/hpcc-systems/Visualization/issues/2842)
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.0.0...@hpcc-js/layout@2.1.0) (2018-09-01)
 

@@ -34,34 +34,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "@hpcc-js/common"], factory);
+        define(["require", "exports", "@hpcc-js/common", "./samples.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var common_1 = require("@hpcc-js/common");
-    var sampleIdx = {};
-    var sampleFolders = [];
-    var sampleFiles = [];
-    function index(node, parentName) {
-        if (parentName === void 0) { parentName = ""; }
-        var fullName = parentName ? parentName + "/" + node.name : node.name;
-        sampleIdx[node.path] = node;
-        switch (node.type) {
-            case "file":
-                sampleFiles.push(node);
-                break;
-            case "folder":
-                sampleFolders.push(__assign({}, node, { name: fullName }));
-                node.children.forEach(function (row) { return index(row, fullName); });
-                break;
-        }
-    }
-    // @ts-ignore
-    index(window.config.samples);
+    var samples_js_1 = require("./samples.js");
     function href(html, path, name, style) {
         if (style === void 0) { style = ""; }
-        var total = sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
+        var total = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
         return "<a href=\"./" + html + ".html?" + path + "\" style=\"" + style + "\">" + name + " (" + total + ")</a>";
     }
     function hrefPath(path, depth) {
@@ -76,7 +58,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             }
             baseUrl.push(folder);
         });
-        var total = sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
+        var total = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(path) === 0; }).length;
         retVal.push(total > 1 ? file + " (" + total + ")" : file);
         return retVal.join(" > ");
     }
@@ -107,12 +89,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
             _super.prototype.update.call(this, domNode, element);
             this._body.style("height", this.height() - 40 + "px");
             if (this.renderCount() === 0) {
-                var defaultRow = sampleFolders.filter(function (row) { return row.path.indexOf(_this._default) === 0; })[0] || sampleFolders[0];
+                var defaultRow = samples_js_1.sampleFolders.filter(function (row) { return row.path.indexOf(_this._default) === 0; })[0] || samples_js_1.sampleFolders[0];
                 this.navChanged({ text: defaultRow.name, value: defaultRow.path }, "text", true);
             }
         };
         App.prototype.navChanged = function (row, col, sel) {
-            var node = sampleIdx[row.value];
+            var node = samples_js_1.sampleIdx[row.value];
             this._navDiv.html(hrefPath(row.value));
             var depth = row.value.split("/").length;
             history.pushState(undefined, undefined, "gallery.html?" + node.path);
@@ -121,7 +103,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
                     case "file":
                         return d;
                     case "folder":
-                        var childFiles = sampleFiles.filter(function (file) { return file.path.indexOf(d.path) === 0; });
+                        var childFiles = samples_js_1.sampleFiles.filter(function (file) { return file.path.indexOf(d.path) === 0; });
                         var idx = Math.floor(Math.random() * childFiles.length);
                         return __assign({}, childFiles[idx], { children: d.children });
                 }

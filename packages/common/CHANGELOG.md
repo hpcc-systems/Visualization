@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.1.0...@hpcc-js/common@2.2.0) (2018-09-10)
+
+
+### Features
+
+* **Graph:** Additional color support ([679e6b5](https://github.com/hpcc-systems/Visualization/commit/679e6b5)), closes [#2845](https://github.com/hpcc-systems/Visualization/issues/2845) [#2829](https://github.com/hpcc-systems/Visualization/issues/2829)
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/common@2.0.0...@hpcc-js/common@2.1.0) (2018-09-01)
 

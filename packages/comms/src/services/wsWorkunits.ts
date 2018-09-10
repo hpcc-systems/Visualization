@@ -2019,7 +2019,7 @@ export namespace WUResult {
         Cluster?: string;
         SuppressXmlSchema?: boolean;
         BypassCachedResult?: boolean;
-        FilterBy?: any[];
+        FilterBy?: any;
         Start: number;
         Count: number;
     }

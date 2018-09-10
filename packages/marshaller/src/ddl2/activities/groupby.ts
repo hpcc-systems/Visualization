@@ -317,8 +317,8 @@ export class GroupBy extends Activity {
         return this.validComputedFields().length > 0;
     }
 
-    computeFields(): DDL2.IField[] {
-        if (!this.exists()) return super.computeFields();
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        if (!this.exists()) return super.computeFields(inFields);
         const retVal: DDL2.IField[] = [];
         const groups: GroupByColumn[] = this.validGroupBy();
         for (const groupBy of groups) {
@@ -354,7 +354,7 @@ export class GroupBy extends Activity {
                 return this.fullDetails() || columns.indexOf(field.id) < 0;
             }));
         }
-        return retVal;
+        return () => retVal;
     }
 
     referencedFields(refs: ReferencedFields): void {

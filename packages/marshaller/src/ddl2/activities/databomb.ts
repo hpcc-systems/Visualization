@@ -1,38 +1,61 @@
 import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
+import { IDatasource } from "@hpcc-js/dgrid";
 import { csvParse as d3CsvParse, tsvParse as d3TsvParse } from "d3-dsv";
 import { Activity } from "./activity";
+import { Datasource } from "./datasource";
 
-export class Databomb extends Activity {
+export class Databomb extends Datasource {
 
-    _jasonData: object[];
+    private _jsonFields: ReadonlyArray<DDL2.IField> = [];
+    private _jsonData: ReadonlyArray<object> = [];
 
     constructor() {
         super();
+    }
+
+    toDDL(): DDL2.IDatabomb {
+        return {
+            type: "databomb",
+            id: this.id(),
+            format: this.format(),
+            payload: this.payload(),
+            fields: this._jsonFields as DDL2.IField[]
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IDatabomb) {
+        return new Databomb()
+            .id(ddl.id)
+            .format(ddl.format)
+            .payload(ddl.payload)
+            ;
     }
 
     updateJsonData() {
         try {
             switch (this.format()) {
                 case "csv":
-                    this._jasonData = d3CsvParse(this.payload());
+                    this._jsonData = d3CsvParse(this.payload());
                     break;
                 case "tsv":
-                    this._jasonData = d3TsvParse(this.payload());
+                    this._jsonData = d3TsvParse(this.payload());
                     break;
                 case "json":
                 default:
-                    this._jasonData = JSON.parse(this.payload());
+                    this._jsonData = JSON.parse(this.payload());
                     break;
             }
+            this._jsonFields = this.preCalcFields();
         } catch (e) {
-            this._jasonData = [];
+            this._jsonFields = [];
+            this._jsonData = [];
         }
     }
 
     hash(more: object): string {
         return super.hash({
-            payload: this._jasonData,
+            id: this.id(),
             ...more
         });
     }
@@ -42,22 +65,24 @@ export class Databomb extends Activity {
     }
 
     label(): string {
-        return `Databomb`;
+        return this.id();
     }
 
-    computeFields(): DDL2.IField[] {
-        let row0: any;
-        for (row0 of this._jasonData) {
-            const retVal: DDL2.IField[] = [];
-            for (const key in row0) {
-                retVal.push({
-                    id: key,
-                    type: typeof row0[key] as DDL2.IFieldType
-                });
-            }
-            return retVal;
+    private preCalcFields(): DDL2.IField[] {
+        if (this._jsonData.length === 0) return [];
+        const row0 = this._jsonData[0];
+        const retVal: DDL2.IField[] = [];
+        for (const key in row0) {
+            retVal.push({
+                id: key,
+                type: typeof row0[key] as DDL2.IFieldType
+            });
         }
-        return [];
+        return retVal;
+    }
+
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        return () => this._jsonFields;
     }
 
     exec(): Promise<void> {
@@ -65,15 +90,17 @@ export class Databomb extends Activity {
     }
 
     computeData(): ReadonlyArray<object> {
-        return this._jasonData;
+        return this._jsonData;
     }
 
     //  ===
     total(): number {
-        return this._jasonData.length;
+        return this._jsonData.length;
     }
 }
 Databomb.prototype._class += " Databomb";
+
+export const emptyDatabomb = new Databomb().id("Empty");
 
 export interface Databomb {
     format(): "json" | "csv" | "tsv";
@@ -103,7 +130,7 @@ Databomb.prototype.payload = function (this: Databomb, _?) {
     return retVal;
 };
 
-export class Form extends Activity {
+export class Form extends Datasource {
     @publish({}, "object", "Form object")
     payload: publish<this, object>;
 
@@ -111,9 +138,22 @@ export class Form extends Activity {
         super();
     }
 
+    toDDL(): DDL2.IForm {
+        return {
+            type: "form",
+            id: this.id(),
+            fields: []
+        };
+    }
+
+    static fromDDL(ddl: DDL2.IForm) {
+        return new Form()
+            .id(ddl.id)
+            ;
+    }
+
     hash(more: object): string {
         return super.hash({
-            payload: this.payload(),
             ...more
         });
     }
@@ -126,7 +166,7 @@ export class Form extends Activity {
         return "Form";
     }
 
-    computeFields(): DDL2.IField[] {
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
         const retVal: DDL2.IField[] = [];
         const row0: any = this.payload();
         for (const key in row0) {
@@ -137,7 +177,7 @@ export class Form extends Activity {
                     default: row0[key]
                 });
         }
-        return retVal;
+        return () => retVal;
     }
 
     exec(): Promise<void> {
@@ -154,3 +194,38 @@ export class Form extends Activity {
     }
 }
 Form.prototype._class += " Form";
+
+export class DatasourceAdapt implements IDatasource {
+    private _activity: Activity;
+
+    constructor(activity: Activity) {
+        this._activity = activity || emptyDatabomb;
+    }
+
+    exec(): Promise<void> {
+        return this._activity.exec();
+    }
+
+    id(): string {
+        return this._activity.id();
+    }
+    hash(): string {
+        return this._activity.hash();
+    }
+    label(): string {
+        return this._activity.label();
+    }
+    outFields(): DDL2.IField[] {
+        return this._activity && this._activity.outFields ? this._activity.outFields() as DDL2.IField[] : [];
+    }
+    total(): number {
+        return this._activity ? this._activity.outData().length : 0;
+    }
+    fetch(from: number, count: number): Promise<ReadonlyArray<object>> {
+        const data = this._activity.outData();
+        if (from === 0 && data.length <= count) {
+            return Promise.resolve(data);
+        }
+        return Promise.resolve(data.slice(from, from + count));
+    }
+}

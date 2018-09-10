@@ -1,8 +1,7 @@
 import { IMonitorHandle, PropertyExt } from "@hpcc-js/common";
 import { IField as WsEclField } from "@hpcc-js/comms";
 import { DDL2 } from "@hpcc-js/ddl-shim";
-import { IDatasource } from "@hpcc-js/dgrid";
-import { hashSum } from "@hpcc-js/util";
+import { hashSum, update } from "@hpcc-js/util";
 
 export function stringify(obj_from_json) {
     if (Array.isArray(obj_from_json)) {
@@ -150,16 +149,17 @@ export abstract class Activity extends PropertyExt {
         return [];
     }
 
-    inFields(): DDL2.IField[] {
-        return this._sourceActivity ? this._sourceActivity.outFields() : [];
+    private _emptyFields: ReadonlyArray<DDL2.IField> = [];
+    inFields(): ReadonlyArray<DDL2.IField> {
+        return this._sourceActivity ? this._sourceActivity.outFields() : this._emptyFields;
     }
 
-    computeFields(): DDL2.IField[] {
-        return this.inFields();
+    computeFields(inFields: ReadonlyArray<DDL2.IField>): () => ReadonlyArray<DDL2.IField> {
+        return () => inFields;
     }
 
-    outFields(): DDL2.IField[] {
-        return this.computeFields();
+    outFields(): ReadonlyArray<DDL2.IField> {
+        return this.computeFields(this.inFields())();
     }
 
     localFields(): DDL2.IField[] {
@@ -191,42 +191,42 @@ export abstract class Activity extends PropertyExt {
     }
 
     resolveInFields(refs: ReferencedFields, fieldIDs: string[]) {
-        if (this.sourceActivity()) {
-            this.sourceActivity().resolveFields(refs, fieldIDs);
-        }
+        return this._sourceActivity && this._sourceActivity.resolveFields(refs, fieldIDs);
     }
 
     referencedFields(refs: ReferencedFields): void {
-        if (this.sourceActivity()) {
-            this.sourceActivity().referencedFields(refs);
-        }
+        this._sourceActivity && this._sourceActivity.referencedFields(refs);
     }
 
     exec(): Promise<void> {
         return this._sourceActivity ? this._sourceActivity.exec() : Promise.resolve();
     }
 
+    _emptyData: ReadonlyArray<object> = [];
     inData(): ReadonlyArray<object> {
-        return this._sourceActivity ? this._sourceActivity.outData() || [] : [];
+        return this._sourceActivity ? this._sourceActivity.outData() || this._emptyData : this._emptyData;
     }
 
     computeData(): ReadonlyArray<object> {
         return this.inData();
     }
 
+    private _prevDataHash: string = "";
+    private _prevInData: ReadonlyArray<object> = [];
+    private _prevData: ReadonlyArray<object> = [];
+    private cachedComputeData(inData: ReadonlyArray<object>): ReadonlyArray<object> {
+        const hash = this.hash();
+        if (this._prevDataHash !== hash || this._prevInData !== inData) {
+            this._prevDataHash = hash;
+            this._prevInData = inData;
+            this._prevData = update(this._prevData, this.computeData());
+        }
+        return this._prevData;
+    }
+
     outData(): ReadonlyArray<object> {
-        return this.computeData();
+        return this.cachedComputeData(this.inData());
     }
-
-    /*
-    inRow(idx: number) {
-        return this.inData().filter(row => row[ROW_ID] === idx)[0];
-    }
-
-    outRow(idx: number) {
-        return this.outData().filter(row => row[ROW_ID] === idx)[0];
-    }
-    */
 }
 
 export class ActivityArray extends Activity {
@@ -251,7 +251,9 @@ export class ActivityPipeline extends ActivityArray {
         super.activities(_);
         let prevActivity: Activity;
         for (const activity of _) {
-            activity.sourceActivity(prevActivity);
+            if (prevActivity) {
+                activity.sourceActivity(prevActivity);
+            }
             prevActivity = activity;
         }
         return this;
@@ -267,7 +269,7 @@ export class ActivityPipeline extends ActivityArray {
         return retVal[retVal.length - 1];
     }
 
-    private calcUpdatedGraph(activity: Activity): Array<{ from: string, to: Activity }> {
+    protected calcUpdatedGraph(activity: Activity): Array<{ from: string, to: Activity }> {
         return activity.updatedBy().map(source => {
             return {
                 from: source,
@@ -314,11 +316,11 @@ export class ActivityPipeline extends ActivityArray {
         return retVal;
     }
 
-    inFields(): DDL2.IField[] {
+    inFields(): ReadonlyArray<DDL2.IField> {
         return this.first().inFields();
     }
 
-    outFields(): DDL2.IField[] {
+    outFields(): ReadonlyArray<DDL2.IField> {
         return this.last().outFields();
     }
 
@@ -390,11 +392,11 @@ export class ActivitySelection extends ActivityArray {
         return this.selection().updatedBy();
     }
 
-    inFields(): DDL2.IField[] {
+    inFields(): ReadonlyArray<DDL2.IField> {
         return this.selection().inFields();
     }
 
-    outFields(): DDL2.IField[] {
+    outFields(): ReadonlyArray<DDL2.IField> {
         return this.selection().outFields();
     }
 
@@ -427,38 +429,3 @@ export class ActivitySelection extends ActivityArray {
     }
 }
 ActivitySelection.prototype._class += " ActivitySelection";
-
-export class DatasourceAdapt implements IDatasource {
-    _activity: Activity;
-
-    constructor(activity: Activity) {
-        this._activity = activity;
-    }
-
-    exec(): Promise<void> {
-        return this._activity.exec();
-    }
-
-    id(): string {
-        return this._activity.id();
-    }
-    hash(): string {
-        return this._activity.hash();
-    }
-    label(): string {
-        return this._activity.label();
-    }
-    outFields(): DDL2.IField[] {
-        return this._activity.outFields();
-    }
-    total(): number {
-        return this._activity.outData().length;
-    }
-    fetch(from: number, count: number): Promise<ReadonlyArray<object>> {
-        const data = this._activity.outData();
-        if (from === 0 && data.length <= count) {
-            return Promise.resolve(data);
-        }
-        return Promise.resolve(data.slice(from, from + count));
-    }
-}

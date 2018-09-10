@@ -372,6 +372,11 @@ var config = {
         "type": "folder",
         "children": [
           {
+            "path": "./samples/graph/Custom Colors.js",
+            "name": "Custom Colors.js",
+            "type": "file"
+          },
+          {
             "path": "./samples/graph/Les Miserables.js",
             "name": "Les Miserables.js",
             "type": "file"
@@ -389,6 +394,18 @@ var config = {
           {
             "path": "./samples/graph/SankeyValues.js",
             "name": "SankeyValues.js",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "path": "./samples/html",
+        "name": "html",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/html/Table.js",
+            "name": "Table.js",
             "type": "file"
           }
         ]
@@ -439,6 +456,40 @@ var config = {
             "path": "./samples/misc/Word Cloud.js",
             "name": "Word Cloud.js",
             "type": "file"
+          }
+        ]
+      },
+      {
+        "path": "./samples/palette",
+        "name": "palette",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/palette/Ordinal",
+            "name": "Ordinal",
+            "type": "folder",
+            "children": [
+              {
+                "path": "./samples/palette/Ordinal/Basic.js",
+                "name": "Basic.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Chart Panel.js",
+                "name": "Chart Panel.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Runtime.js",
+                "name": "Runtime.js",
+                "type": "file"
+              },
+              {
+                "path": "./samples/palette/Ordinal/Shared.js",
+                "name": "Shared.js",
+                "type": "file"
+              }
+            ]
           }
         ]
       },
@@ -540,31 +591,37 @@ var config = {
   },
   "systemjs": {
     "map": {
+      "plugin-css": "https://unpkg.com/systemjs-plugin-css@0.1.37/css.js",
       "plugin-json": "https://unpkg.com/systemjs-plugin-json@0.3.0/json.js",
       "plugin-babel": "https://unpkg.com/systemjs-plugin-babel@0.0.25/plugin-babel.js",
       "systemjs-babel-build": "https://unpkg.com/systemjs-plugin-babel@0.0.25/systemjs-babel-browser.js",
       "d3-array": "https://unpkg.com/d3-array@1.2.1/build/d3-array.js",
       "d3-random": "https://unpkg.com/d3-random@1.1.0/build/d3-random.js",
-      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@^2.1.0/dist/index.min.js",
-      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@^2.0.1/dist/index.min.js",
-      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@^2.1.0/dist/index.min.js",
-      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@^2.0.1/dist/index.min.js",
-      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@^2.0.1/dist/index.min.js",
-      "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@^2.0.1/dist/index.min.js",
-      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@^2.0.1/dist/index.min.js",
-      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@^2.0.1/dist/index.min.js",
-      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@^2.0.1/dist/index.min.js",
-      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@^2.1.0/dist/index.min.js",
-      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@^2.0.1/dist/index.min.js",
-      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@^2.1.0/dist/index.min.js",
-      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@^2.1.0/dist/index.min.js",
-      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@^2.0.1/dist/index.min.js",
-      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@^2.0.1/dist/index.min.js",
-      "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@^2.0.1/dist/index.min.js",
-      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@^2.0.1/dist/index.min.js",
-      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@^2.0.1/dist/index.min.js"
+      "@hpcc-js/chart": "https://unpkg.com/@hpcc-js/chart@2.1.1/dist/index.min.js",
+      "@hpcc-js/codemirror": "https://unpkg.com/@hpcc-js/codemirror@2.0.2/dist/index.min.js",
+      "@hpcc-js/common": "https://unpkg.com/@hpcc-js/common@2.2.0/dist/index.min.js",
+      "@hpcc-js/comms": "https://unpkg.com/@hpcc-js/comms@2.0.2/dist/index.min.js",
+      "@hpcc-js/composite": "https://unpkg.com/@hpcc-js/composite@2.0.2/dist/index.min.js",
+      "@hpcc-js/ddl-shim": "https://unpkg.com/@hpcc-js/ddl-shim@2.1.0/dist/index.min.js",
+      "@hpcc-js/dgrid": "https://unpkg.com/@hpcc-js/dgrid@2.0.2/dist/index.min.js",
+      "@hpcc-js/form": "https://unpkg.com/@hpcc-js/form@2.0.2/dist/index.min.js",
+      "@hpcc-js/graph": "https://unpkg.com/@hpcc-js/graph@2.1.0/dist/index.min.js",
+      "@hpcc-js/layout": "https://unpkg.com/@hpcc-js/layout@2.1.1/dist/index.min.js",
+      "@hpcc-js/map": "https://unpkg.com/@hpcc-js/map@2.0.2/dist/index.min.js",
+      "@hpcc-js/other": "https://unpkg.com/@hpcc-js/other@2.1.1/dist/index.min.js",
+      "@hpcc-js/phosphor": "https://unpkg.com/@hpcc-js/phosphor@2.1.1/dist/index.min.js",
+      "@hpcc-js/util": "https://unpkg.com/@hpcc-js/util@2.1.0/dist/index.min.js",
+      "@hpcc-js/api": "https://unpkg.com/@hpcc-js/api@2.0.2/dist/index.min.js",
+      "@hpcc-js/dgrid-shim": "https://unpkg.com/@hpcc-js/dgrid-shim@2.0.1/dist/index.min.js",
+      "@hpcc-js/codemirror-shim": "https://unpkg.com/@hpcc-js/codemirror-shim@2.0.1/dist/index.min.js",
+      "@hpcc-js/phosphor-shim": "https://unpkg.com/@hpcc-js/phosphor-shim@2.0.1/dist/index.min.js",
+      "@hpcc-js/timeline": "https://unpkg.com/@hpcc-js/timeline@2.0.2/dist/index.min.js",
+      "@hpcc-js/tree": "https://unpkg.com/@hpcc-js/tree@2.0.2/dist/index.min.js"
     },
     "meta": {
+      "*.css": {
+        "loader": "plugin-css"
+      },
       "*.json": {
         "loader": "plugin-json"
       }

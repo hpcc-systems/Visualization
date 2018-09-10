@@ -1,4 +1,4 @@
-import { Icon, SVGWidget, Text } from "@hpcc-js/common";
+import { Icon, Palette, SVGWidget, Text } from "@hpcc-js/common";
 import "d3-transition";
 
 import "../src/Subgraph.css";
@@ -77,8 +77,13 @@ export class Subgraph extends SVGWidget {
             .attr("y", bbox.y)
             .attr("width", bbox.width)
             .attr("height", bbox.height)
+            .style("fill", this.border_colorFill())
+            .style("stroke", this.border_colorStroke())
             ;
 
+        if (this.border_colorFill_exists() && !this.title_colorFill_exists()) {
+            this.title_colorFill(Palette.textColor(this.border_colorFill()));
+        }
         this._textWidget
             .pos({ x: bbox.x + 4, y: bbox.y + TITLE_SIZE })
             .width(this.width() - 8)
@@ -131,14 +136,22 @@ export class Subgraph extends SVGWidget {
             ;
     }
 
+    border_colorStroke: { (): string; (_: string): Subgraph; };
+    border_colorFill: { (): string; (_: string): Subgraph; };
+    border_colorFill_exists: () => boolean;
     showTitle: { (): boolean; (_: boolean): Subgraph; };
     title: { (): string; (_: string): Subgraph; };
     titleFontSize: { (): string; (_: string): Subgraph; };
+    title_colorFill: { (): string; (_: string): Subgraph; };
+    title_colorFill_exists: () => boolean;
     showMinMax: { (): boolean; (_: boolean): Subgraph; };
 }
 Subgraph.prototype._class += " graph_Subgraph";
 
+Subgraph.prototype.publish("border_colorStroke", null, "html-color", "Stroke Color", null, { optional: true });
+Subgraph.prototype.publish("border_colorFill", null, "html-color", "Fill Color", null, { optional: true });
 Subgraph.prototype.publish("showTitle", true, "boolean", "Show Title", null, { tags: ["Basic"] });
 Subgraph.prototype.publish("title", "", "string", "Title", null, { tags: ["Basic"] });
 Subgraph.prototype.publishProxy("titleFontSize", "_textWidget", "fontSize");
+Subgraph.prototype.publishProxy("title_colorFill", "_textWidget", "colorFill");
 Subgraph.prototype.publish("showMinMax", false, "boolean", "Show Min/Max", null, { tags: ["Basic"] });

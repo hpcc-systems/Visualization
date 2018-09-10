@@ -1,9 +1,11 @@
 import { Widget } from "@hpcc-js/common";
 import { Edge, IGraphData, Lineage, Subgraph, Vertex } from "@hpcc-js/graph";
 import { Activity } from "./activities/activity";
-import { DSPicker, isDatasource } from "./activities/dspicker";
+import { Databomb } from "./activities/databomb";
+import { DSPicker } from "./activities/dspicker";
 import { HipiePipeline } from "./activities/hipiepipeline";
-import { RoxieRequest } from "./activities/roxie";
+import { LogicalFile } from "./activities/logicalfile";
+import { RoxieResult, RoxieResultRef } from "./activities/roxie";
 import { WUResult } from "./activities/wuresult";
 import { Element, ElementContainer } from "./model/element";
 
@@ -30,7 +32,7 @@ export class GraphAdapter {
         this.edges = [];
     }
 
-    createSubgraph(id: string, label: string, data: any): Subgraph {
+    createSubgraph(id: string, label: string, data?: any): Subgraph {
         let retVal: Subgraph = this.subgraphMap[id];
         if (!retVal) {
             retVal = new Subgraph()
@@ -47,7 +49,7 @@ export class GraphAdapter {
         return retVal;
     }
 
-    createVertex(id: string, label: string, data: any, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
+    createVertex(id: string, label: string, data?: any, tooltip: string = "", fillColor: string = "#dcf1ff"): Vertex {
         let retVal: Vertex = this.vertexMap[id];
         if (!retVal) {
             retVal = new Vertex()
@@ -80,35 +82,68 @@ export class GraphAdapter {
         return retVal;
     }
 
-    createDatasource(viz: Element, view: HipiePipeline, data: any): string {
-        const ds = view.dataSource();
-        const dsDetails = ds instanceof DSPicker ? ds.details() : ds;
+    createDatasource(dsDetails: Activity): string {
+        if (dsDetails instanceof DSPicker) {
+            dsDetails = dsDetails.selection().datasource();
+        }
         if (dsDetails instanceof WUResult) {
-            const surfaceID = `${dsDetails.url()}/${dsDetails.wuid()}`;
-            const surface: Subgraph = this.createSubgraph(surfaceID, `${dsDetails.wuid()}`, { viz, view });
-
-            const id = `${surfaceID}/${dsDetails.resultName()}`;
-            const vertex: Vertex = this.createVertex(id, dsDetails.resultName(), data);
-            this.hierarchy.push({ parent: surface, child: vertex });
-            return id;
-        } else if (dsDetails instanceof RoxieRequest) {
+            const serverID = `${dsDetails.url()}`;
+            const server: Subgraph = this.createSubgraph(serverID, `${serverID}`);
+            const wuID = `${dsDetails.url()}/${dsDetails.wuid()}`;
+            const wu: Subgraph = this.createSubgraph(wuID, `${dsDetails.wuid()}`);
+            this.hierarchy.push({ parent: server, child: wu });
+            const resultID = `${wuID}/${dsDetails.resultName()}`;
+            const result: Vertex = this.createVertex(resultID, dsDetails.resultName(), { datasource: dsDetails });
+            this.hierarchy.push({ parent: wu, child: result });
+            return resultID;
+        } else if (dsDetails instanceof LogicalFile) {
+            const serverID = `${dsDetails.url()}`;
+            const server: Subgraph = this.createSubgraph(serverID, `${serverID}`);
+            const lfID = `${serverID}/${dsDetails.logicalFile()}`;
+            const lf: Vertex = this.createVertex(lfID, dsDetails.logicalFile(), { datasource: dsDetails });
+            this.hierarchy.push({ parent: server, child: lf });
+            return lfID;
+        } else if (dsDetails instanceof RoxieResultRef) {
+            const serverID = `${dsDetails.url()}`;
+            const server: Subgraph = this.createSubgraph(serverID, `${serverID}`);
             const surfaceID = dsDetails.roxieServiceID(); // `${dsDetails.url()}/${dsDetails.querySet()}`;
-            const surface: Subgraph = this.createSubgraph(surfaceID, dsDetails.querySet(), { viz, view });
+            const surface: Subgraph = this.createSubgraph(surfaceID, dsDetails.querySet());
+            this.hierarchy.push({ parent: server, child: surface });
             const roxieID = surfaceID;
             this.hierarchy.push({
                 parent: surface,
-                child: this.createVertex(roxieID, dsDetails.queryID(), data)
+                child: this.createVertex(roxieID, dsDetails.queryID())
             });
             const roxieResultID = `${surfaceID}/${dsDetails.resultName()}`;
             this.hierarchy.push({
                 parent: surface,
-                child: this.createVertex(roxieResultID, dsDetails.resultName(), data)
+                child: this.createVertex(roxieResultID, dsDetails.resultName(), { datasource: dsDetails })
             });
             this.createEdge(roxieID, roxieResultID);
             return roxieResultID;
+        } else if (dsDetails instanceof RoxieResult) {
+            const serverID = `${dsDetails.service().url()}`;
+            const server: Subgraph = this.createSubgraph(serverID, `${serverID}`);
+            const querySetID = dsDetails.roxieServiceID();
+            const querySet: Subgraph = this.createSubgraph(querySetID, dsDetails.service().querySet());
+            this.hierarchy.push({ parent: server, child: querySet });
+            const queryID = `${querySetID}/${dsDetails.service().queryID()}`;
+            const query: Subgraph = this.createSubgraph(queryID, dsDetails.service().queryID());
+            this.hierarchy.push({ parent: querySet, child: query });
+            const resultID = `${queryID}/${dsDetails.resultName()}`;
+            this.hierarchy.push({
+                parent: query,
+                child: this.createVertex(resultID, dsDetails.resultName(), { datasource: dsDetails })
+            });
+            this.createEdge(queryID, resultID);
+            return resultID;
+        } else if (dsDetails instanceof Databomb) {
+            const id = dsDetails.id();
+            this.createVertex(id, dsDetails.label(), { datasource: dsDetails });
+            return id;
         } else {
-            const id = ds.hash();
-            this.createVertex(id, ds.label(), data);
+            const id = dsDetails.hash();
+            this.createVertex(id, dsDetails.label(), { datasource: dsDetails });
             return id;
         }
     }
@@ -136,17 +171,16 @@ export class GraphAdapter {
 
     createGraph(): IGraphData {
         this.clear();
+        for (const ds of this._elementContainer.datasources()) {
+            this.createDatasource(ds);
+        }
 
         const lastID: { [key: string]: string } = {};
         for (const element of this._elementContainer.elements()) {
             const view = element.hipiePipeline();
-            let prevID = "";
+            let prevID = this.createDatasource(view.datasource());
             for (const activity of view.activities()) {
-                if (isDatasource(activity)) {
-                    prevID = this.createDatasource(element, view, { viz: undefined, activity });
-                } else {
-                    prevID = this.createActivity(prevID, element, view, activity);
-                }
+                prevID = this.createActivity(prevID, element, view, activity);
             }
             const visualization = element.visualization();
             const mappings = visualization.mappings();
@@ -186,10 +220,7 @@ export class GraphAdapter {
         for (const viz of this._elementContainer.elements()) {
             const view = viz.hipiePipeline();
             for (const updateInfo of view.updatedByGraph()) {
-                if (updateInfo.to instanceof DSPicker) {
-                    updateInfo.to = updateInfo.to.details();
-                }
-                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).hipiePipeline().id()], updateInfo.to instanceof RoxieRequest ? `${updateInfo.to.roxieServiceID()}/${updateInfo.to.resultName()}` : updateInfo.to.id())
+                this.createEdge(lastID[this._elementContainer.element(updateInfo.from).hipiePipeline().id()], updateInfo.to.id())
                     .weight(10)
                     .strokeDasharray("1,5")
                     .text("updates")

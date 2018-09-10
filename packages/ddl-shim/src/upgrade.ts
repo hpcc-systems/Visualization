@@ -192,25 +192,25 @@ class DDLUpgrade {
                                 case "MAX":
                                     aggrFields.push({
                                         type: this.func2aggr(field.properties.function),
-                                        inFieldID: field.properties.params!.param1.toLowerCase(),
-                                        fieldID: field.id.toLowerCase()
+                                        inFieldID: field.properties.params!.param1,
+                                        fieldID: field.id
                                     } as DDL2.IAggregate);
                                     break;
                                 case "AVE":
                                     aggrFields.push({
                                         type: this.func2aggr(field.properties.function),
-                                        inFieldID: field.properties.params!.param1.toLowerCase(),
-                                        baseCountFieldID: field.properties.params!.param2 ? field.properties.params!.param2.toLowerCase() : undefined,
-                                        fieldID: field.id.toLowerCase()
+                                        inFieldID: field.properties.params!.param1,
+                                        baseCountFieldID: field.properties.params!.param2 ? field.properties.params!.param2 : undefined,
+                                        fieldID: field.id
                                     } as DDL2.IAggregate);
                                     break;
                                 case "SCALE":
                                 default:
-                                    groupByColumns.push(field.id.toLowerCase());
+                                    groupByColumns.push(field.id);
                                     throw new Error(`Unhandled field function: ${field.properties.function}`);
                             }
                         } else {
-                            groupByColumns.push(field.id.toLowerCase());
+                            groupByColumns.push(field.id);
                         }
                     }
                     if (aggrFields.length) {
@@ -264,12 +264,12 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label.toLowerCase()
+            sourceFieldID: viz.source.mappings.label
         });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            sourceFieldID: viz.source.mappings.weight[0].toLowerCase()
+            sourceFieldID: viz.source.mappings.weight[0]
         });
     }
 
@@ -278,12 +278,12 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: this.anyChoroMapping2label(viz.source.mappings).toLowerCase()
+            sourceFieldID: this.anyChoroMapping2label(viz.source.mappings)
         });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            sourceFieldID: viz.source.mappings.weight[0].toLowerCase()
+            sourceFieldID: viz.source.mappings.weight[0]
         });
     }
 
@@ -296,13 +296,13 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: viz.source.mappings.x[0],
             type: "=",
-            sourceFieldID: viz.source.mappings.x[0].toLowerCase()
+            sourceFieldID: viz.source.mappings.x[0]
         });
         for (let i = 0; i < viz.source.mappings.y.length; ++i) {
             mappings.transformations.push({
                 fieldID: viz.source.mappings.y[i],
                 type: "=",
-                sourceFieldID: viz.source.mappings.y[i].toLowerCase()
+                sourceFieldID: viz.source.mappings.y[i]
             });
         }
     }
@@ -313,7 +313,7 @@ class DDLUpgrade {
             mappings.transformations.push({
                 fieldID: viz.label[i],
                 type: "=",
-                sourceFieldID: viz.source.mappings.value[i].toLowerCase()
+                sourceFieldID: viz.source.mappings.value[i]
             });
         }
     }
@@ -347,42 +347,44 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "uid",
             type: "=",
-            sourceFieldID: viz.source.mappings.uid.toLowerCase()
+            sourceFieldID: viz.source.mappings.uid
         });
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label.toLowerCase()
+            sourceFieldID: viz.source.mappings.label
         });
         if (viz.icon.fieldid) {
             mappings.transformations.push({
                 fieldID: "icon",
                 type: "map",
-                sourceFieldID: viz.icon.fieldid.toLowerCase(),
+                sourceFieldID: viz.icon.fieldid,
                 default: { fachar: faCharFix(viz.icon.faChar) },
                 mappings: this.readGraphEnums(viz.icon.valuemappings)
             });
         }
         let idx = 0;
-        for (const flag of viz.flag) {
-            if (flag.fieldid) {
-                mappings.transformations.push({
-                    fieldID: `annotation_${idx++}`,
-                    type: "map",
-                    sourceFieldID: flag.fieldid.toLowerCase(),
-                    default: {},
-                    mappings: this.readGraphEnums(flag.valuemappings, true)
-                });
+        if (viz.flag) {
+            for (const flag of viz.flag) {
+                if (flag.fieldid) {
+                    mappings.transformations.push({
+                        fieldID: `annotation_${idx++}`,
+                        type: "map",
+                        sourceFieldID: flag.fieldid,
+                        default: {},
+                        mappings: this.readGraphEnums(flag.valuemappings, true)
+                    });
+                }
             }
         }
         mappings.transformations.push({
             fieldID: "links",
             type: "=",
-            sourceFieldID: viz.source.link.childfile.toLowerCase(),
+            sourceFieldID: viz.source.link.childfile,
             transformations: [{
                 fieldID: "uid",
                 type: "=",
-                sourceFieldID: viz.source.link.mappings.uid.toLowerCase()
+                sourceFieldID: viz.source.link.mappings.uid
             }]
         });
     }
@@ -392,7 +394,7 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label.toLowerCase()
+            sourceFieldID: viz.source.mappings.label
         });
     }
 
@@ -410,8 +412,8 @@ class DDLUpgrade {
                                     for (const key in update.mappings) {
                                         otherViz.datasource.request.push({
                                             source: viz.id,
-                                            remoteFieldID: key.toLowerCase(),
-                                            localFieldID: update.mappings[key].toLowerCase()
+                                            remoteFieldID: key,
+                                            localFieldID: update.mappings[key]
                                         } as DDL2.IRequestField);
                                     }
                                 } else {
@@ -422,12 +424,16 @@ class DDLUpgrade {
                                     for (const key in update.mappings) {
                                         const mapping = update.mappings[key];
                                         const dsFilter = dsFilters[mapping].filter;
-                                        condition.mappings.push({
-                                            remoteFieldID: key.toLowerCase(),
-                                            localFieldID: update.mappings[key].toLowerCase(),
-                                            condition: this.rule2condition(dsFilter.rule),
-                                            nullable: dsFilter.nullable
-                                        });
+                                        if (!dsFilter) {
+                                            console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
+                                        } else {
+                                            condition.mappings.push({
+                                                remoteFieldID: key,
+                                                localFieldID: update.mappings[key],
+                                                condition: this.rule2condition(dsFilter.rule),
+                                                nullable: dsFilter.nullable
+                                            });
+                                        }
                                     }
                                     this._ddl2DataviewActivities[otherViz.id].filters.conditions.push(condition);
                                 }
@@ -458,12 +464,12 @@ class DDLUpgrade {
                         vizSort.conditions = ((viz as any).source.sort as string[]).map(s => {
                             if (s.indexOf("-") === 0) {
                                 return {
-                                    fieldID: s.substr(1).toLowerCase(),
+                                    fieldID: s.substr(1),
                                     descending: true
                                 } as DDL2.ISortCondition;
                             }
                             return {
-                                fieldID: s.toLowerCase(),
+                                fieldID: s,
                                 descending: false
                             } as DDL2.ISortCondition;
                         });

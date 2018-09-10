@@ -81,31 +81,33 @@ export class App extends DockPanel {
         let inProps = false;
         for (let i = srcCodeLines.length - 1; i >= 0; --i) {
             const line = srcCodeLines[i];
-            const dotIndex = line.indexOf(".");
-            const parenIndex = line.indexOf("(");
-            if (dotIndex >= 0 && parenIndex > dotIndex) {
-                const func = line.substring(dotIndex + 1, parenIndex);
-                switch (func) {
-                    case "render":
-                        inProps = true;
-                        renderIdx = i;
-                        break;
-                    case "target":
-                        inProps = false;
-                        break;
-                    case "columns":
-                    case "data":
-                        break;
-                    default:
-                        if (inProps) {
-                            if (props[func]) {
-                                srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + `(${JSON.stringify(props[func])})`;
-                                delete props[func];
-                            } else {
-                                srcCodeLines.splice(i, 1);
-                                renderIdx--;
+            if (line.trim().indexOf(".") === 0) {
+                const dotIndex = line.indexOf(".");
+                const parenIndex = line.indexOf("(");
+                if (dotIndex >= 0 && parenIndex > dotIndex) {
+                    const func = line.substring(dotIndex + 1, parenIndex);
+                    switch (func) {
+                        case "render":
+                            inProps = true;
+                            renderIdx = i;
+                            break;
+                        case "target":
+                            inProps = false;
+                            break;
+                        case "columns":
+                        case "data":
+                            break;
+                        default:
+                            if (inProps) {
+                                if (props[func]) {
+                                    srcCodeLines[i] = srcCodeLines[i].substring(0, parenIndex) + `(${JSON.stringify(props[func])})`;
+                                    delete props[func];
+                                } else {
+                                    srcCodeLines.splice(i, 1);
+                                    renderIdx--;
+                                }
                             }
-                        }
+                    }
                 }
             }
         }

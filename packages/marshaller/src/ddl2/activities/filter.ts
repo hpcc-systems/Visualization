@@ -78,11 +78,11 @@ export class ColumnMapping extends PropertyExt {
         });
     }
 
-    localFields() {
+    localFields(): string[] {
         return this._owner.inFields().map(field => field.id);
     }
 
-    sourceOutFields() {
+    sourceOutFields(): string[] {
         return this._owner.sourceOutFields().map(field => field.id);
     }
 
@@ -124,7 +124,7 @@ ColumnMapping.prototype._class += " ColumnMapping";
 export class Filter extends PropertyExt {
     private _owner: Filters;
 
-    @publish(null, "set", "Datasource", function (this: Filter) { return this.visualizationIDs(); }, { optional: true })
+    @publish(null, "set", "Activity", function (this: Filter) { return this.visualizationIDs(); }, { optional: true })
     source: publish<this, string>;
     @publish([], "propertyArray", "Mappings", null, { autoExpand: ColumnMapping })
     mappings: publish<this, ColumnMapping[]>;
@@ -189,7 +189,8 @@ export class Filter extends PropertyExt {
     hash(): string {
         return hashSum({
             source: this.source(),
-            mappings: this.validMappings().map(mapping => mapping.hash())
+            mappings: this.validMappings().map(mapping => mapping.hash()),
+            selection: this.sourceSelection()
         });
     }
 
@@ -209,7 +210,7 @@ export class Filter extends PropertyExt {
         return this;
     }
 
-    inFields(): DDL2.IField[] {
+    inFields(): ReadonlyArray<DDL2.IField> {
         return this._owner.inFields();
     }
 
@@ -217,7 +218,7 @@ export class Filter extends PropertyExt {
         return this._owner.visualization(this.source());
     }
 
-    sourceOutFields(): DDL2.IField[] {
+    sourceOutFields(): ReadonlyArray<DDL2.IField> {
         return this.sourceViz().hipiePipeline().selectionFields();
     }
 
@@ -283,7 +284,12 @@ export class Filters extends Activity {
 
     //  Activity overrides  ---
     hash(): string {
-        return hashSum(this.validFilters().map(filter => filter.hash()));
+        return hashSum(this.validFilters().map(f => {
+            return {
+                filter: f.hash(),
+                selection: f.sourceSelection()
+            };
+        }));
     }
 
     exists(): boolean {

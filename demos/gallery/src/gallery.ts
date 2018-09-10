@@ -1,33 +1,5 @@
 import { HTMLWidget, publish, select as d3Select } from "@hpcc-js/common";
-
-interface Node {
-    path: string;
-    name: string;
-    type: "folder" | "file";
-    children?: Node[];
-}
-
-const sampleIdx: { [path: string]: Node } = {};
-const sampleFolders: Node[] = [];
-const sampleFiles = [];
-function index(node: Node, parentName: string = "") {
-    const fullName = parentName ? `${parentName}/${node.name}` : node.name;
-    sampleIdx[node.path] = node;
-    switch (node.type) {
-        case "file":
-            sampleFiles.push(node);
-            break;
-        case "folder":
-            sampleFolders.push({
-                ...node,
-                name: fullName
-            });
-            node.children.forEach(row => index(row, fullName));
-            break;
-    }
-}
-// @ts-ignore
-index(window.config.samples);
+import { sampleFiles, sampleFolders, sampleIdx } from "./samples.js";
 
 function href(html, path, name, style = "") {
     const total = sampleFiles.filter(file => file.path.indexOf(path) === 0).length;

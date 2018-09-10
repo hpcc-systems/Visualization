@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HPCC Systems - Test</title>
+
+    <link rel="stylesheet" href="../../node_modules/mocha/mocha.css" />
+    <link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/systemjs/dist/system.src.js"></script>
+    <script src="./src-umd/config.js"></script>
+    <script src="./src-umd/devConfig.js"></script>
+    <script>
+        mocha.setup('bdd');
+        SystemJS.config(config.systemjs);
+    </script>
+</head>
+
+<body>
+    <div id="target" style="width:640px;height:480px">
+        <div id="loading">...fetching sample from GitHub...</div>
+    </div>
+    <div id="mocha"></div>
+    <script>
+        System.import("./src-umd/test.js").then(function () {
+            mocha.run();
+        });
+    </script>
+</body>
+
+</html>

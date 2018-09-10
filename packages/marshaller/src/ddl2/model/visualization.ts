@@ -150,20 +150,40 @@ export class Visualization extends PropertyExt {
         return this;
     }
 
+    _prevFields: ReadonlyArray<DDL2.IField> = [];
+    _prevData: ReadonlyArray<object> = [];
     refreshData(): this {
         const mappings = this.mappings();
-        const fields = this.toDBFields(mappings.outFields());
+
+        const fields = mappings.outFields();
+        const dbfields = this.toDBFields(fields);
+        const fieldsChanged = this._prevFields !== fields;
+        if (fieldsChanged) {
+            this._prevFields = fields;
+            this.chartPanel().fields(dbfields.filter(f => f.id() !== "__lparam"));
+        } else {
+            console.log(`***${this.id()} Immutable Fields***`);
+        }
+
         const data = mappings.outData();
-        const mappedData = this.toDBData(fields, data);
-        this.chartPanel()
-            .fields(fields.filter(f => f.id() !== "__lparam"))
-            .data(mappedData)
-            .render()
-            ;
+        const dataChanged = this._prevData !== data;
+        if (dataChanged) {
+            this._prevData = data;
+            const mappedData = this.toDBData(dbfields, data);
+            this.chartPanel().data(mappedData);
+        } else {
+            console.log(`${this.id()} Immutable Data!`);
+        }
+
+        if (fieldsChanged || dataChanged) {
+            this.chartPanel()
+                .render()
+                ;
+        }
         return this;
     }
 
-    toDBFields(fields: DDL2.IField[]): Database.Field[] {
+    toDBFields(fields: ReadonlyArray<DDL2.IField>): Database.Field[] {
         const retVal: Database.Field[] = [];
         for (const field of fields) {
             const f = new Database.Field()
@@ -178,7 +198,7 @@ export class Visualization extends PropertyExt {
         return retVal;
     }
 
-    toDBData(fields: Database.Field[], data) {
+    toDBData(fields: Database.Field[], data: ReadonlyArray<object>) {
         return data.map((row: any) => {
             const retVal = [];
             for (const field of fields) {
@@ -192,18 +212,18 @@ export class Visualization extends PropertyExt {
         });
     }
 
-    async refresh() {
+    refresh(): Promise<void> {
         //        if (this.chartPanel().renderCount()) {
         this.chartPanel().startProgress && this.chartPanel().startProgress();
         //        }
         const mappings = this.mappings();
         mappings.sourceActivity(this._hipiePipeline);
-        await mappings.refreshMeta();
-        await mappings.exec();
-        //        if (this.chartPanel().renderCount()) {
-        this.refreshData();
-        this.chartPanel().finishProgress && this.chartPanel().finishProgress();
-        //        }
+        return mappings.refreshMeta().then(() => {
+            return mappings.exec();
+        }).then(() => {
+            this.refreshData();
+            this.chartPanel().finishProgress && this.chartPanel().finishProgress();
+        });
     }
 
     //  Events  ---

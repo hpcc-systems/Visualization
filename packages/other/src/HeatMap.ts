@@ -1,7 +1,7 @@
 import { CanvasWidget, Palette } from "@hpcc-js/common";
 import _simpleheat from "simpleheat";
 
-const simpleheat = (window as any).simpleheat || _simpleheat.default || _simpleheat;
+const simpleheat = (window as any).simpleheat || (_simpleheat && _simpleheat.default) || _simpleheat;
 
 export class HeatMap extends CanvasWidget {
     _heat;

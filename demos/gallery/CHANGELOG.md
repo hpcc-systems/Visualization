@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.1.0...@hpcc-js/demo-gallery@2.2.0) (2018-09-10)
+
+
+### Bug Fixes
+
+* **gallery:** Radial Bar not rendering on timer ([6678688](https://github.com/GordonSmith/Visualization/commit/6678688))
+* **gallery:** Sankey examples don't load ([f51f826](https://github.com/GordonSmith/Visualization/commit/f51f826))
+* **Legend:** Legend should use "fillColor" when available ([aadb4d5](https://github.com/GordonSmith/Visualization/commit/aadb4d5)), closes [#2842](https://github.com/GordonSmith/Visualization/issues/2842)
+
+
+### Features
+
+* Add dgrid Table sample ([30bfe2a](https://github.com/GordonSmith/Visualization/commit/30bfe2a))
+* **Graph:** Additional color support ([679e6b5](https://github.com/GordonSmith/Visualization/commit/679e6b5)), closes [#2845](https://github.com/GordonSmith/Visualization/issues/2845) [#2829](https://github.com/GordonSmith/Visualization/issues/2829)
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.0.0...@hpcc-js/demo-gallery@2.1.0) (2018-09-01)
 

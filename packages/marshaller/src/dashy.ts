@@ -6,11 +6,14 @@ import { Graph } from "@hpcc-js/graph";
 import { PropertyEditor } from "@hpcc-js/other";
 import { CommandPalette, CommandRegistry, ContextMenu, SplitPanel, TabPanel, WidgetAdapter } from "@hpcc-js/phosphor";
 import { scopedLogger } from "@hpcc-js/util";
-import { Activity, DatasourceAdapt } from "./ddl2/activities/activity";
+import { Activity } from "./ddl2/activities/activity";
+import { Databomb, DatasourceAdapt } from "./ddl2/activities/databomb";
+import { DSPicker } from "./ddl2/activities/dspicker";
 import { Dashboard } from "./ddl2/dashboard";
 import { DDLEditor } from "./ddl2/ddleditor";
 import { GraphAdapter } from "./ddl2/graphadapter";
 import { Element, ElementContainer } from "./ddl2/model/element";
+import { Visualization } from "./ddl2/model/visualization";
 
 const logger = scopedLogger("marshaller/dashy");
 
@@ -82,8 +85,8 @@ export class Dashy extends SplitPanel {
         .allowDragging(false)
         .applyScaleOnLayout(true)
         .on("vertex_click", (row: any, col: string, sel: boolean, ext: any) => {
-            const obj = row.__lparam[0];
-            this.selectionChanged(obj.viz, obj.activity);
+            const obj = row.__lparam[0] || {};
+            this.selectionChanged(obj.viz, obj.activity || obj.datasource);
         })
         .on("vertex_contextmenu", (row: any, col: string, sel: boolean, ext: any) => {
         })
@@ -98,12 +101,12 @@ export class Dashy extends SplitPanel {
     private _ddlv2 = new JSONEditor();
 
     private _tabRHS = new TabPanel();
-    private _splitData = new SplitPanel();
-    private _dataProperties: PropertyEditor = new PropertyEditor()
+    private _splitView = new SplitPanel();
+    private _viewProperties: PropertyEditor = new PropertyEditor()
         .show_settings(false)
         .showFields(false)
         ;
-    private _preview = new DatasourceTable();
+    private _viewPreview = new DatasourceTable().pagination(true);
     private _widgetProperties: PropertyEditor = new PropertyEditor()
         .show_settings(false)
         .showFields(false)
@@ -122,6 +125,10 @@ export class Dashy extends SplitPanel {
 
     constructor() {
         super("horizontal");
+    }
+
+    elementContainer(): ElementContainer {
+        return this._elementContainer;
     }
 
     clear() {
@@ -168,10 +175,10 @@ export class Dashy extends SplitPanel {
     }
 
     refreshPreview() {
-        const ds = this._preview.datasource() as DatasourceAdapt;
+        const ds = this._viewPreview.datasource() as DatasourceAdapt;
         if (ds) {
             ds.exec().then(() => {
-                this._preview
+                this._viewPreview
                     .invalidate()
                     .lazyRender()
                     ;
@@ -182,16 +189,35 @@ export class Dashy extends SplitPanel {
     private _currElement: Element | undefined;
     private _currActivity: Activity | undefined;
     selectionChanged(elem?: Element, activity?: Activity) {
-        if ((activity && this._currActivity !== activity) ||
-            (elem && (this._currElement !== elem || this._currActivity !== activity))) {
-            this._currElement = elem;
-            this._currActivity = activity;
-            this._tabRHS.childActivation(this._tabRHS.active());
+        if (elem && activity) {
+            if (this._currElement !== elem || this._currActivity !== activity) {
+                this._currElement = elem;
+                this._currActivity = activity;
+                this._tabRHS.childActivation(this._tabRHS.active());
+            }
+        } else if (elem) {
+            if (this._currElement !== elem) {
+                this._currElement = elem;
+                this._currActivity = activity;
+                this._tabRHS.childActivation(this._tabRHS.active());
+            }
+        } else if (activity) {
+            if (this._currActivity !== activity) {
+                this._currElement = elem;
+                this._currActivity = activity;
+                this._tabRHS.childActivation(this._tabRHS.active());
+            }
+        } else {
+            if (this._currElement !== elem || this._currActivity !== activity) {
+                this._currElement = elem;
+                this._currActivity = activity;
+                this._tabRHS.childActivation(this._tabRHS.active());
+            }
         }
     }
 
     loadDataProps(pe: PropertyExt) {
-        this._dataProperties
+        this._viewProperties
             .widget(pe)
             .render()
             ;
@@ -218,10 +244,9 @@ export class Dashy extends SplitPanel {
             ;
     }
 
-    loadPreview(activity: Activity) {
-        this._preview
-            .datasource(new DatasourceAdapt(activity))
-            // .paging(true)
+    loadPreview(activity: undefined | Activity | Visualization) {
+        this._viewPreview
+            .datasource(new DatasourceAdapt(activity instanceof Activity ? activity : undefined))
             .lazyRender()
             ;
     }
@@ -302,7 +327,7 @@ export class Dashy extends SplitPanel {
 
         //  Dashboard  Commands  ---
         commands.addCommand("dash_add", {
-            label: "Add Element",
+            label: "Add View",
             execute: () => {
                 const newElem = new Element(this._elementContainer);
                 this._elementContainer.append(newElem);
@@ -360,6 +385,22 @@ export class Dashy extends SplitPanel {
         });
     }
 
+    addDatabomb(label: string, payload: string, format: "csv" | "tsv" | "json") {
+        const databomb = new Databomb().id(label).format(format).payload(payload);
+        this._elementContainer.appendDatasource(databomb);
+        const newElem = new Element(this._elementContainer);
+        const ds = newElem.hipiePipeline().datasource();
+        if (ds instanceof DSPicker) {
+            ds.datasourceID(databomb.id());
+        }
+        this._elementContainer.append(newElem);
+        this.loadDashboard().then(() => {
+            newElem.refresh().then(() => {
+                this._dashboard.activate(newElem);
+            });
+        });
+    }
+
     enter(domNode, element) {
         super.enter(domNode, element);
         this
@@ -407,24 +448,24 @@ export class Dashy extends SplitPanel {
             })
             ;
         this._tabRHS
-            .addWidget(this._splitData, "Data")
-            .addWidget(this._widgetProperties, "Widget")
+            .addWidget(this._splitView, "Data View")
+            .addWidget(this._widgetProperties, "Viz")
             .addWidget(this._paletteProperties, "Palette")
             .addWidget(this._stateProperties, "State")
             .addWidget(this._clone, "Clone")
             .on("childActivation", (w: Widget) => {
                 switch (w) {
-                    case this._splitData:
-                        this.loadDataProps(this._currActivity || this._currElement.hipiePipeline());
-                        this.loadPreview(this._currActivity || this._currElement.hipiePipeline().last());
+                    case this._splitView:
+                        this.loadDataProps(this._currActivity || (this._currElement && this._currElement.hipiePipeline()));
+                        this.loadPreview(this._currActivity || (this._currElement && this._currElement.hipiePipeline().last()));
                         break;
                     case this._widgetProperties:
-                        this.loadWidgetProps(this._currElement.visualization());
+                        this.loadWidgetProps(this._currElement && this._currElement.visualization());
                         break;
                     case this._paletteProperties:
                         break;
                     case this._stateProperties:
-                        this.loadStateProps(this._currElement.state());
+                        this.loadStateProps(this._currElement && this._currElement.state());
                         break;
                     case this._clone:
                         this.loadClone();
@@ -432,14 +473,14 @@ export class Dashy extends SplitPanel {
                 }
             })
             ;
-        this._splitData
-            .addWidget(this._dataProperties)
-            .addWidget(this._preview)
+        this._splitView
+            .addWidget(this._viewProperties)
+            .addWidget(this._viewPreview)
             ;
 
         this.initMenu();
-        this._dataProperties.monitor((id: string, newValue: any, oldValue: any, source: PropertyExt) => {
-            if (source !== this._dataProperties && this._currElement) {
+        this._viewProperties.monitor((id: string, newValue: any, oldValue: any, source: PropertyExt) => {
+            if (source !== this._viewProperties && this._currElement) {
                 this._currElement.refresh().then(() => {
                     this.refreshPreview();
                 });

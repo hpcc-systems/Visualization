@@ -237,3 +237,7 @@ Edge.prototype.publish("sourceMarker", "circle", "set", "Source Marker", ["none"
 Edge.prototype.publish("targetMarker", "arrow", "set", "Source Marker", ["none", "arrow", "circle"], { optional: true });
 Edge.prototype.publish("strokeDasharray", null, "string", "Stroke Dash Array", null, { optional: true });
 Edge.prototype.publish("strokeColor", null, "html-color", "Stroke Color", null, { optional: true });
+Edge.prototype.publish("textColor", null, "html-color", "Text Color", null, { optional: true });
+Edge.prototype.publishProxy("text_shape_colorFill", "_textBox", "shape_colorFill");
+Edge.prototype.publishProxy("text_shape_colorStroke", "_textBox", "shape_colorStroke");
+Edge.prototype.publishProxy("text_text_colorFill", "_textBox", "text_colorFill");

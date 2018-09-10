@@ -13,10 +13,13 @@
         "strictNullChecks": false,
         "importHelpers": true,
         "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "stripInternal": false,
         "lib": [
             "dom",
             "es5",
-            "es2015.promise"
+            "es2015.promise",
+            "es2015.iterable"
         ],
         "types": []
     },

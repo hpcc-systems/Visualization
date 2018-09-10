@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-gallery",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "scripts": {
     "clean": "rimraf src-umd types dist",
     "compile-umd": "tsc --module umd --outDir ./src-umd",

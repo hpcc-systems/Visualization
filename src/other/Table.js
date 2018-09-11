@@ -34,6 +34,7 @@
 
     Table.prototype.publish("fixedSize", false, "boolean", "Fix Size to Min Width/Height");
 
+    Table.prototype.publish("quickUpdateOnClick", false, "boolean", "Avoid calling update on row select/deselect", null, { tags: ["Private"] });
     Table.prototype.publish("hideEmptyColumns", false, "boolean", "Hide columns with all empty cells");
     
     Table.prototype.publish("theadFontSize", null, "string", "Table head font size", null, { tags: ["Basic"], optional: true });
@@ -863,7 +864,17 @@
             this._selectionBag.click(selObj, { ctrlKey: this._selectionBag.isSelected(selObj) });
             this._selectionPrevClick = d;
         }
-        this.render();
+        if(!this.quickUpdateOnClick()){
+            this.render();
+        } else {
+            var context = this;
+            this.tbody.selectAll("tr.tr_" + this.id())
+                .classed("selected", function(_d){
+                    return context._selectionBag.isSelected(context._createSelectionObject(_d.row));
+                })
+                .classed("trId" + this._id, true)
+                ;
+        }
     };
 
     Table.prototype.applyHoverRowStyles = function(row){

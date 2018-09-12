@@ -64,8 +64,11 @@ export abstract class Widget extends PropertyExt {
 
     protected _overlayElement;
 
-    constructor() {
+    protected _optionsCache;
+
+    constructor(options?) {
         super();
+        if (options) this._optionsCache = options;
         this._class = Object.getPrototypeOf(this)._class;
         this._id = this._idSeed + widgetID++;
 
@@ -92,6 +95,7 @@ export abstract class Widget extends PropertyExt {
         if ((window as any).__hpcc_theme) {
             this.applyTheme((window as any).__hpcc_theme);
         }
+        if (options) this.render();
     }
 
     importJSON(_: string | object): this {
@@ -528,6 +532,13 @@ export abstract class Widget extends PropertyExt {
     //  Render  ---
     private _prevNow = 0;
     render(callback?: (w: Widget) => void) {
+        if (this._optionsCache && Object.keys(this._optionsCache)) {
+            Object.keys(this._optionsCache).forEach(option => {
+                if (typeof this[option] === "function" && !this[option + "_changed"]) {
+                    this[option](this._optionsCache[option]);
+                }
+            });
+        }
         if ((window as any).__hpcc_debug) {
             const now = Date.now();
             if (now - this._prevNow < 500) {

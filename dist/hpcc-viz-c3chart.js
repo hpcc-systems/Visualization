@@ -1,0 +1,895 @@
+if (typeof define === "function" && define.amd) {
+  define('css',[], function () { 
+    return {
+      load: function ($1, $2, load) { load() }
+    } 
+  })
+};
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Common.js',["d3", "c3", "../common/HTMLWidget", "css!c3"], factory);
+    } else {
+        root.c3chart_Common = factory(root.d3, root.c3, root.common_HTMLWidget);
+    }
+}(this, function (d3, c3, HTMLWidget) {
+    function Common(target) {
+        HTMLWidget.call(this);
+
+        var context = this;
+        this._tag = "div";
+        this._type = "unknown";
+        this._config = {
+            axis: {
+            },
+            legend: {
+                position: "bottom",
+                show: true
+            },
+            data: {}
+        };
+        this._prevColumnIDs = [];
+        
+        this._config.data.onclick = function (d, element) {
+            context.click(context.rowToObj(context.data()[d.index]), d.id, context.c3Chart.selected().length > 0);
+        };
+    }
+    Common.prototype = Object.create(HTMLWidget.prototype);
+    Common.prototype.constructor = Common;
+    Common.prototype._class += " c3chart_Common";
+
+    Common.prototype.publish("showLegend", false, "boolean", "Show/Hide Legend",null,{tags:["Basic","Shared"]});
+    Common.prototype.publish("legendFontColor", null, "html-color", "Legend Font Color",null,{tags:["Intermediate","Shared"]});
+    Common.prototype.publish("legendFontSize", null, "number", "Legend Font Size",null,{tags:["Intermediate","Shared"]});
+    Common.prototype.publish("legendFontFamily", null, "string", "Legend Font Name",null,{tags:["Private","Shared"]});
+    Common.prototype.publish("legendFontBold", false, "boolean", "Legend Font Bold",null,{tags:["Private","Shared"]});
+    Common.prototype.publish("legendFontItalic", false, "boolean", "Legend Font Italic",null,{tags:["Private","Shared"]});
+
+    Common.prototype.publish("fontSize", null, "number", "Font Size",null,{tags:["Basic","Shared"]});
+    Common.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:["Basic","Shared","Shared"]});
+    Common.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:["Basic","Shared"]});
+
+    Common.prototype.publish("legendPosition", "right", "set", "Legend Position", ["bottom", "right"],{tags:["Intermediate"]});
+    Common.prototype.publish("animationDuration", 0, "number", "Animation Duration",null,{tags:["Advanced"]});
+
+    Common.prototype.type = function (_) {
+        if (!arguments.length) return this._type;
+        this._type = _;
+        return this;
+    };
+
+    Common.prototype.getC3Series = function() {
+        return this.columns().filter(function (d, i) { return i > 0;});
+    };
+
+    Common.prototype.getC3Rows = function () {
+        var retVal = [this.columns().filter(function (item, idx) { return idx > 0; })].concat(this.data().map(function (row) {
+            return row.filter(function (cell, idx) {
+                return idx > 0;
+            });
+        }));
+        return retVal;
+    };
+
+    Common.prototype.getC3Categories = function () {
+        var retVal = this.data().map(function (row, idx) { return row[0]; });
+        return retVal;
+    };
+
+    Common.prototype.getC3Column = function (colNum) {
+        var retVal = [this.columns()[colNum]].concat(this.data().map(function (row, idx) { return row[colNum]; }));
+        return retVal;
+    };
+
+    Common.prototype.getC3Columns = function (total) {
+        if (!this.data().length) {
+            return [];
+        }
+        total = total || this.columns().length;
+        var retVal = [];
+        var s = typeof this.xAxisType === "function" && this.xAxisType() === "time" ? 0 : 1; 
+        for (var i = s; i < total; ++i) {
+            retVal.push(this.getC3Column(i));
+        }
+        return retVal;
+    };
+
+    Common.prototype.enter = function (domNode, element) {
+        HTMLWidget.prototype.enter.apply(this, arguments);
+        element.style("overflow", "hidden");
+
+        this._config.size = {
+            width: this.width(),
+            height: this.height()
+        };
+        this._config.transition = {
+            duration: this.animationDuration()
+        };
+        this._config.data.type = this._type;
+        if (this._type !== "gauge") {
+            this._config.legend = {
+                position: this.legendPosition()
+            };
+        }
+        this._config.data.selection = {
+            enabled: true,
+            multiple: false
+        };
+        this._config.bindto = element.append("div").datum(null);
+
+        this._config.data.columns = [];
+
+        this.c3Chart = c3.generate(this._config);
+    };
+
+    Common.prototype.update = function (domNode, element) {
+        HTMLWidget.prototype.update.apply(this, arguments);
+
+        if (this.showLegend()) {
+            this.c3Chart.legend.show();
+        } else {
+            this.c3Chart.legend.hide();
+        }
+
+        this.c3Chart.resize({
+            width: this.width(),
+            height: this.height()
+        });
+
+        var options = this.getChartOptions();
+        var columnIDs = options.columns.map(function (row) { return row[0]; });
+        options.unload = this._prevColumnIDs.filter(function (i) { return columnIDs.indexOf(i) < 0; });
+        this.c3Chart.load(options);
+        this._prevColumnIDs = columnIDs;
+
+        element.selectAll(".c3 text")
+                .style({
+                    "stroke": this.fontColor(),
+                    "fill": this.fontColor(),
+                    "font-size": this.fontSize_exists() ? this.fontSize() + "px" : null,
+                    "font-family": this.fontFamily(),
+                })
+                .attr("font-family",this.fontFamily());
+
+        element.selectAll(".c3 .c3-legend-item text")
+                .style({
+                    "fill": this.legendFontColor(),
+                    "font-size": this.legendFontSize_exists() ? this.legendFontSize() + "px" : null,
+                    "font-family": this.legendFontFamily(),
+                    "font-weight": this.legendFontBold() ? "bold" : "normal",
+                    "font-style": this.legendFontItalic() ? "italic" : "normal"
+                })
+                .attr("font-family",this.legendFontFamily());
+    };
+
+    Common.prototype.getChartOptions = function () {
+        return {};
+    };
+
+    return Common;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/CommonND.js',["d3", "./Common", "../api/INDChart"], factory);
+    } else {
+        root.c3chart_CommonND = factory(root.d3, root.c3chart_Common, root.api_INDChart);
+    }
+}(this, function (d3, Common, INDChart) {
+    function CommonND(target) {
+        Common.call(this);
+        INDChart.call(this);
+
+        var context = this;
+        this._config.color = {
+            pattern: this._palette.colors()
+        };
+
+        this._config.data.color = function (color, d) {
+            return context._palette(d.id ? d.id : d);
+        };
+    }
+    CommonND.prototype = Object.create(Common.prototype);
+    CommonND.prototype.constructor = CommonND;
+    CommonND.prototype._class += " c3chart_CommonND";
+    CommonND.prototype.implements(INDChart.prototype);
+
+    CommonND.prototype.publish("paletteID", "default", "set", "Palette ID", CommonND.prototype._palette.switch(), {tags:["Basic","Shared"]});
+
+    CommonND.prototype.publish("axisLineWidth", 1, "number", "Axis Line Width",null,{tags:["Intermediate","Shared"]});
+
+    CommonND.prototype.publish("xAxisBaselineColor", null, "html-color", "X Axis Baseline Color",null,{tags:["Basic","Shared"]});
+    CommonND.prototype.publish("yAxisBaselineColor", null, "html-color", "Y Axis Baseline Color",null,{tags:["Basic","Shared"]});
+
+    CommonND.prototype.publish("xAxisFontColor", null, "html-color", "X Axis Text Font Color",null,{tags:["Basic","Shared"]});
+    CommonND.prototype.publish("yAxisFontColor", null, "html-color", "Y Axis Text Font Color",null,{tags:["Basic","Shared"]});
+
+    CommonND.prototype.publish("axisFontSize", null, "number", "X/Y Axis Text Font Size",null,{tags:["Basic","Shared"]});
+    CommonND.prototype.publish("axisFontFamily", null, "string", "X/Y Axis Text Font Name",null,{tags:["Basic","Shared"]});
+
+    CommonND.prototype.publish("xAxisLabelRotation", 0, "number", "X Axis Label Angle",null,{tags:["Intermediate","Shared"]});
+
+    CommonND.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title",null,{tags:["Intermediate","Shared"]});
+    CommonND.prototype.publish("xAxisTitle", "", "string", "X-Axis Title",null,{tags:["Intermediate","Shared"]});
+
+    CommonND.prototype.publish("xAxisTitleFontColor", null, "html-color", "Horizontal Axis Title Text Style (Color)",null,{tags:["Advanced","Shared"]});
+    CommonND.prototype.publish("xAxisTitleFontFamily", null, "string", "Horizontal Axis Title Text Style (Font Name)",null,{tags:["Advanced","Shared"]});
+    CommonND.prototype.publish("xAxisTitleFontSize", null, "number", "Horizontal Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
+
+    CommonND.prototype.publish("yAxisTitleFontColor", null, "html-color", "Vertical Axis Title Text Style (Color)",null,{tags:["Advanced","Shared"]});
+    CommonND.prototype.publish("yAxisTitleFontFamily", null, "string", "Vertical Axis Title Text Style (Font Name)",null,{tags:["Advanced","Shared"]});
+    CommonND.prototype.publish("yAxisTitleFontSize", null, "number", "Vertical Axis Title Text Style (Font Size)",null,{tags:["Advanced","Shared"]});
+    
+    CommonND.prototype.publish("xAxisType", "category", "set", "X-Axis Type", ["category", "time", "indexed"],{tags:["Intermediate"]});
+
+    CommonND.prototype.publish("subchart", false, "boolean", "Show SubChart",null,{tags:["Private"]});
+
+    CommonND.prototype.publish("showXGrid", false, "boolean", "Show X Grid",null,{tags:["Intermediate"]});
+    CommonND.prototype.publish("showYGrid", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
+
+    CommonND.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    CommonND.prototype.publish("xAxisTickFormat", "", "string", "X-Axis Tick Format", null, {});
+    CommonND.prototype.publish("yAxisTickFormat", null, "string", "Y-Axis Tick Format", null, { optional:true });
+
+    CommonND.prototype.publish("xAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
+    CommonND.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern", null, {});
+
+    CommonND.prototype.publish("axisTickLabelMultiLine", false, "boolean", "Show Y Grid",null,{tags:["Intermediate"]});
+
+    CommonND.prototype.enter = function (domNode, element) {
+        if (this.subchart()) {
+            this._config.subchart = {
+                show: true, size: {
+                    height: 20
+                }
+            };
+        }
+
+        var xAxisType;
+        switch (this.xAxisType()) {
+            case "time":
+                xAxisType = "timeseries";
+                break;
+            default:
+                xAxisType = this.xAxisType();
+        }
+
+        this._config.axis.x = {
+            type: xAxisType,
+            tick: {
+                rotate: this.xAxisLabelRotation(),
+                multiline: this.axisTickLabelMultiLine()
+            },
+            label:{
+                text: this.xAxisTitle(),
+                position: "outer-center"
+            }
+        };
+        this._config.axis.y = {
+            label: {
+                text: this.yAxisTitle(),
+                position: "outer-center"
+            }
+        };
+        this._config.grid = {
+            x: {
+                show: this.showXGrid(),
+            },
+            y: {
+                show: this.showYGrid(),
+            }
+        };
+
+        switch (this.xAxisType()) {
+        case "category":
+            this._config.axis.tick = {
+                centered: true,
+                multiline: this.axisTickLabelMultiLine()
+            };
+            break;
+        case "time":
+            this.data(this.data().map(function(row, rIdx) {
+                return row.map(function(column, cIdx) {
+                    if (cIdx === 0 && typeof column === "number") {
+                        return column.toString();
+                    } else {
+                        return column;
+                    }
+                });
+            }));
+            this._config.data.x = this.columns()[0];
+            this._config.data.xFormat = this.xAxisTypeTimePattern();
+            break;
+        }
+
+        Common.prototype.enter.apply(this, arguments);
+    };
+
+    CommonND.prototype.update = function (domNode, element) {
+        Common.prototype.update.apply(this, arguments);
+
+        this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+        
+        this.c3Chart.internal.config.axis_y_tick_format = this.yAxisTickFormat() ? d3.format(this.yAxisTickFormat()) : undefined;
+        if (this.xAxisType() === "time") {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.time.format(this.xAxisTickFormat()) : "%Y-%m-%d %I:%M:%S %p";
+        } else {
+            this.c3Chart.internal.config.axis_x_tick_format = this.xAxisTickFormat() ? d3.format(this.xAxisTickFormat()) : undefined;
+        }
+                
+        Common.prototype.update.apply(this, arguments);
+        
+        element.selectAll(".c3 svg").style({ "font-size": this.axisFontSize_exists() ? this.axisFontSize() + "px" : null });
+        element.selectAll(".c3 svg text").style({ "font-family": this.axisFontFamily() });
+
+        element.selectAll(".c3 .c3-axis.c3-axis-x text").style({ "fill": this.xAxisFontColor() });
+        element.selectAll(".c3 .c3-axis.c3-axis-y text").style({ "fill": this.yAxisFontColor() });
+
+        element.selectAll(".c3 .c3-axis path").style({ "stroke-width": this.axisLineWidth_exists() ? this.axisLineWidth() + "px" : null });
+        element.selectAll(".c3 .c3-axis-x path, .c3 .c3-axis-x line").style({ "stroke": this.xAxisBaselineColor() });
+        element.selectAll(".c3 .c3-axis-y path, .c3 .c3-axis-y line").style({ "stroke": this.yAxisBaselineColor() });
+
+        element.selectAll(".c3-axis-x-label").style({
+            "font-family": this.xAxisTitleFontFamily(),
+            //"font-weight": "",
+            "font-size": this.xAxisTitleFontSize(),
+            "stroke": this.xAxisTitleFontColor()
+        });
+        element.selectAll(".c3-axis-y-label").style({
+            "font-family": this.yAxisTitleFontFamily(),
+            //"font-weight": "",
+            "font-size": this.yAxisTitleFontSize(),
+            "stroke": this.yAxisTitleFontColor()
+        });
+    };
+
+    CommonND.prototype.getChartOptions = function () {
+        var chartOptions = Common.prototype.getChartOptions.apply(this, arguments);
+
+        switch (this.xAxisType()) {
+            case "category":
+                chartOptions.categories = this.getC3Categories();
+                chartOptions.columns = this.getC3Columns();
+                break;
+            case "indexed":
+            case "time":
+                chartOptions.columns = this.getC3Columns();
+                break;
+        }
+
+        return chartOptions;
+    };
+
+    return CommonND;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Area.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Area = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Area(target) {
+        CommonND.call(this);
+
+        this._type = "area";
+    }
+    Area.prototype = Object.create(CommonND.prototype);
+    Area.prototype.constructor = Area;
+    Area.prototype._class += " c3chart_Area";
+
+    Area.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
+    Area.prototype.publish("fillOpacity", 0.2, "number", "Opacity of The Fill Color", null, { tags: ["Basic", "Shared"] });
+
+    Area.prototype.enter = function (domNode, element) {
+        CommonND.prototype.enter.apply(this, arguments);
+    };
+
+    Area.prototype.update = function (domNode, element) {
+        CommonND.prototype.update.apply(this, arguments);
+
+        if (this.stacked()) {
+            this.c3Chart.groups([this.columns().slice(1, this.columns().length)]);
+        } else {
+            this.c3Chart.groups([]);
+        }
+
+        element.selectAll(".c3-line").style({
+            "stroke-width": this.lineWidth()+"px",
+            "stroke-opacity": this.lineOpacity(),
+            "stroke-dasharray": this.lineDashStyle().toString()
+        });
+
+        element.selectAll(".c3-area").style({
+            "opacity": this.fillOpacity()
+        });
+    };
+
+    return Area;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Column.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Column = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Column(target) {
+        CommonND.call(this);
+
+        this._type = "bar";
+    }
+    Column.prototype = Object.create(CommonND.prototype);
+    Column.prototype.constructor = Column;
+    Column.prototype._class += " c3chart_Column";
+
+    Column.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic","Shared"]});
+
+    Column.prototype.enter = function (domNode, element) {
+        CommonND.prototype.enter.apply(this, arguments);
+    };
+
+    Column.prototype.update = function (domNode, element) {
+        CommonND.prototype.update.apply(this, arguments);
+
+        if (this.stacked()) {
+            this.c3Chart.groups([this.columns().slice(1, this.columns().length)]);
+        } else {
+            this.c3Chart.groups([]);
+        }
+    };
+
+    return Column;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Bar.js',["./Column"], factory);
+    } else {
+        root.c3chart_Bar = factory(root.c3chart_Column);
+    }
+}(this, function (Column) {
+    function Bar(target) {
+        Column.call(this);
+
+        this._config.axis.rotated = true;
+    }
+    Bar.prototype = Object.create(Column.prototype);
+    Bar.prototype.constructor = Bar;
+    Bar.prototype._class += " c3chart_Bar";
+
+    return Bar;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Combo.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Combo = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Combo(target) {
+        CommonND.call(this);
+
+        this._type = "bar";
+        this._previousTypes = undefined;
+    }
+    Combo.prototype = Object.create(CommonND.prototype);
+    Combo.prototype.constructor = Combo;
+    Combo.prototype._class += " c3chart_Column";
+
+    Combo.prototype.publish("stacked", false, "boolean", "Stack Chart",null,{tags:["Basic"]});
+    Combo.prototype.publish("defaultType", "bar", "set", "Default chart type", ["bar","line","spline","area","area-spline","step","area-step","scatter"],{tags:["Basic"]});
+    Combo.prototype.publish("types", [], "array", "Array of chart types (ex:bar|line|spline|area|area-spline|step|area-step|scatter)",null,{tags:["Basic"]});
+    
+    Combo.prototype.publish("areaFillOpacity", 0.4, "number", "Opacity of all 'Area' chart types in this Combo chart",null,{tags:["Basic"],number:{min:0,max:1,step:0.1,slider:false}});
+
+    Combo.prototype.enter = function (domNode, element) {
+        
+        var typesObj = {};
+        
+        var typesArr = this.types();
+        this._previousTypes = this.types().join("|");
+        for(var i in typesArr){
+            typesObj[this.columns()[parseInt(i)+1]] = typesArr[i];
+        }
+        
+        if(typesArr.length > 0){
+            this._config.data.types = typesObj;
+        }
+        CommonND.prototype.enter.apply(this, arguments);
+    };
+
+    Combo.prototype.update = function (domNode, element) {
+        CommonND.prototype.update.apply(this, arguments);
+        
+        if(this._previousTypes !== this.types().join("|")){
+            var prevTypes = this._previousTypes.split("|");
+            var curCols = this.getC3Columns();
+            for(var i in curCols){
+                if(typeof (prevTypes[i]) === "undefined" || this.types()[i] !== prevTypes[i]){
+                    this.c3Chart.unload({ids:curCols[i][0]});
+                    this.c3Chart.load({
+                        columns:[curCols[i]],
+                        type: typeof(this.types()[i])!=="undefined" ? this.types()[i] : this.defaultType()
+                    });
+                }
+            }
+            this._previousTypes = this.types().join("|");
+        }
+        if (this.stacked()) {
+            this.c3Chart.groups([this.columns().slice(1, this.columns().length)]);
+        } else {
+            this.c3Chart.groups([]);
+        }
+        
+        element.selectAll(".c3-area").style({
+            "opacity": this.areaFillOpacity()
+        });
+
+    };
+
+    return Combo;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Common1D',["./Common", "../api/I1DChart"], factory);
+    } else {
+        root.c3chart_Common1D = factory(root.c3chart_Common, root.api_I1DChart);
+    }
+}(this, function (Common, I1DChart) {
+    function Common1D(target) {
+        Common.call(this);
+        I1DChart.call(this);
+
+        var context = this;
+        this._config.color = {
+            pattern: this._palette.colors()
+        };
+
+        this._config.data.color = function (color, d) {
+            return context._palette(d.id ? d.id : d);
+        };
+    }
+    Common1D.prototype = Object.create(Common.prototype);
+    Common1D.prototype.constructor = Common1D;
+    Common1D.prototype._class += " c3chart_Common1D";
+    Common1D.prototype.implements(I1DChart.prototype);
+
+    Common1D.prototype.publish("paletteID", "default", "set", "Palette ID", Common1D.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    Common1D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    Common1D.prototype.update = function (domNode, element) {
+        this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
+        Common.prototype.update.apply(this, arguments);
+    };
+
+    return Common1D;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Common2D',["./Common", "../api/I2DChart"], factory);
+    } else {
+        root.c3chart_Common2D = factory(root.c3chart_Common, root.api_I2DChart);
+    }
+}(this, function (Common, I2DChart) {
+    function Common2D(target) {
+        Common.call(this);
+        I2DChart.call(this);
+
+        var context = this;
+        this._config.color = {
+            pattern: this._palette.colors()
+        };
+
+        this._config.data.color = function (color, d) {
+            return context._palette(d.id ? d.id : d);
+        };
+    }
+    Common2D.prototype = Object.create(Common.prototype);
+    Common2D.prototype.constructor = Common2D;
+    Common2D.prototype._class += " c3chart_Common2D";
+    Common2D.prototype.implements(I2DChart.prototype);
+
+    Common2D.prototype.publish("paletteID", "default", "set", "Palette ID", Common2D.prototype._palette.switch(), {tags:["Basic","Shared"]});
+    Common2D.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette",null,{tags:["Intermediate","Shared"]});
+
+    Common2D.prototype.update = function (domNode, element) {
+        this._palette = this._palette.switch(this.paletteID());
+        if (this.useClonedPalette()) {
+            this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
+        }
+
+        Common.prototype.update.apply(this, arguments);
+    };
+
+    return Common2D;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Donut.js',["./Common2D"], factory);
+    } else {
+        root.c3chart_Donut = factory(root.c3chart_Common2D);
+    }
+}(this, function (Common2D) {
+    function Donut(target) {
+        Common2D.call(this);
+
+        this._type = "donut";
+
+        var context = this;
+        this._config.data.onclick = function (d, element) {
+            var rows = context.data().filter(function (row) {
+                return row[0] === d.name;
+            });
+            if (rows.length === 1) {
+                context.click(context.rowToObj(rows[0]), d.id, context.c3Chart.selected().length > 0);
+            } else if (rows.length > 1) {
+                console.log("C3 sel.name matches too much data.");
+            } else {
+                console.log("C3 sel.name does not match any data.");
+            }
+        };
+    }
+    Donut.prototype = Object.create(Common2D.prototype);
+    Donut.prototype.constructor = Donut;
+    Donut.prototype._class += " c3chart_Donut";
+
+    Donut.prototype.publish("showLabel", true, "boolean", "Show Label",null,{tags:["Basic"]});
+    Donut.prototype.publish("arcWidth", 45, "number", "Arc Width",null,{tags:["Basic"]});
+    Donut.prototype.publish("expand", true, "boolean", "Arc Explode",null,{tags:["Intermediate"]});
+    Donut.prototype.publish("title", "", "string", "Center Label",null,{tags:["Intermediate"]});
+
+    Donut.prototype.enter = function (domNode, element) {
+        this._config.donut = {
+            label_show: this.showLabel(),
+            width: this.arcWidth(),
+            expand: this.expand(),
+            title: this.title()
+        };
+
+        Common2D.prototype.enter.apply(this, arguments);
+    };
+
+    Donut.prototype.update = function (domNode, element) {
+        this.c3Chart.internal.config.donut_label_show = this.showLabel();
+        this.c3Chart.internal.config.donut_width = this.arcWidth();
+        this.c3Chart.internal.config.donut_expand = this.expand();
+        this.c3Chart.internal.config.donut_title = this.title();
+
+        Common2D.prototype.update.apply(this, arguments);
+
+        element.select(".c3-chart-arcs-title")
+            .text(this.showLabel() ? this.title() : "")
+        ;
+    };
+
+    Donut.prototype.getChartOptions = function () {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+
+        var data = this.data().map(function (row, idx) {
+            return [row[0], row[1]];
+        }, this);
+
+        chartOptions.columns = data;
+
+        return chartOptions;
+    };
+
+    return Donut;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Gauge.js',["./Common1D"], factory);
+    } else {
+        root.c3chart_Gauge = factory(root.c3chart_Common1D);
+    }
+}(this, function (Common1D) {
+    function Gauge(target) {
+        Common1D.call(this);
+
+        this._type = "gauge";
+
+        var context = this;
+        this._config.data.onclick = function (d, element) {
+            var clickEvent = {};
+            clickEvent[d.id] = d.value;
+            context.click(clickEvent, d.id);
+        };
+        this._config.data.color = function (color, d) {
+            return context._palette(context.data(), context.low(), context.high());
+        };
+    }
+    Gauge.prototype = Object.create(Common1D.prototype);
+    Gauge.prototype.constructor = Gauge;
+    Gauge.prototype._class += " c3chart_Gauge";
+
+    Gauge.prototype.publish("low", 0, "number", "Gauge Lower Bound",null,{tags:["Intermediate","Shared"]});
+    Gauge.prototype.publish("high", 100, "number", "Gauge Higher Bound",null,{tags:["Intermediate","Shared"]});
+
+    Gauge.prototype.publish("valueFormat", "Percent", "set", "Value Display Format", ["Percent", "Value"],{tags:["Basic"]});
+    Gauge.prototype.publish("arcWidth", 10, "number", "Gauge Width of Arc",null,{tags:["Basic"]});
+    Gauge.prototype.publish("showLabels", true, "boolean", "Show Labels",null,{tags:["Basic"]});
+    Gauge.prototype.publish("showValueLabel", true, "boolean", "Show Value Label",null,{tags:["Basic"]});
+
+    Gauge.prototype.update = function (domNode, element) {
+        this.c3Chart.internal.config.gauge_min = this.low();
+        this.c3Chart.internal.config.gauge_max = this.high();
+        this.c3Chart.internal.config.gauge_units = this.showValueLabel() ? this.columns() : "";
+        this.c3Chart.internal.config.gauge_width = this.arcWidth();
+        this.c3Chart.internal.config.gauge_label_format = this.valueFormat() === "Percent" ? null : function (value, ratio) { return value; };
+        this.c3Chart.internal.config.gauge_label_show = this.showLabels();
+        Common1D.prototype.update.apply(this, arguments);
+    };
+
+    Gauge.prototype.getChartOptions = function () {
+        var chartOptions = Common1D.prototype.getChartOptions.apply(this, arguments);
+
+        chartOptions.columns = [[this.columns(), this.data()]];
+
+        return chartOptions;
+    };
+
+    return Gauge;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Line.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Line = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Line(target) {
+        CommonND.call(this);
+
+        this._type = "line";
+    }
+    Line.prototype = Object.create(CommonND.prototype);
+    Line.prototype.constructor = Line;
+    Line.prototype._class += " c3chart_Line";
+
+    Line.prototype.publish("lineWidth", 1.0, "number", "Line Width",null,{tags:["Basic","Shared"]});
+    Line.prototype.publish("lineDashStyle", [], "array", "Dashed Lines",null,{tags:["Basic","Shared"]});
+    Line.prototype.publish("lineOpacity", 1.0, "number", "Line Alpha",null,{tags:["Basic","Shared"]});
+    Line.prototype.publish("connectNull", true, "boolean", "Connect null data points in line",null,{tags:["Basic","Shared"]});
+
+    Line.prototype.enter = function (domNode, element) {
+        this._config.line = {
+            connectNull : this.connectNull()
+        };
+        CommonND.prototype.enter.apply(this, arguments);
+    };
+
+
+    Line.prototype.update = function (domNode, element) {
+        CommonND.prototype.update.apply(this, arguments);
+
+        element.selectAll(".c3-line").style({
+            "stroke-width": this.lineWidth_exists() ? this.lineWidth() + "px" : null,
+            "stroke-opacity": this.lineOpacity(),
+            "stroke-dasharray": this.lineDashStyle().toString(),
+        });
+    };
+
+    return Line;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Pie.js',["./Common2D"], factory);
+    } else {
+        root.c3chart_Pie = factory(root.c3chart_Common2D);
+    }
+}(this, function (Common2D) {
+    function Pie(target) {
+        Common2D.call(this);
+
+        this._type = "pie";
+
+        var context = this;
+        this._config.data.onclick = function (d, element) {
+            var rows = context.data().filter(function (row) {
+                return row[0] === d.name;
+            });
+            if (rows.length === 1) {
+                context.click(context.rowToObj(rows[0]), d.id, context.c3Chart.selected().length > 0);
+            } else if (rows.length > 1) {
+                console.log("C3 sel.name matches too much data.");
+            } else {
+                console.log("C3 sel.name does not match any data.");
+            }
+        };
+    }
+    Pie.prototype = Object.create(Common2D.prototype);
+    Pie.prototype.constructor = Pie;
+    Pie.prototype._class += " c3chart_Pie";
+
+    Pie.prototype.update = function (domNode, element) {
+        Common2D.prototype.update.apply(this, arguments);
+    };
+
+    Pie.prototype.getChartOptions = function () {
+        var chartOptions = Common2D.prototype.getChartOptions.apply(this, arguments);
+
+        var data = this.data().map(function (row, idx) {
+            return [row[0], row[1]];
+        }, this);
+
+        chartOptions.columns = data;
+
+        return chartOptions;
+    };
+
+    return Pie;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Scatter.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Scatter = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Scatter(target) {
+        CommonND.call(this);
+
+        this._type = "scatter";
+    }
+    Scatter.prototype = Object.create(CommonND.prototype);
+    Scatter.prototype.constructor = Scatter;
+    Scatter.prototype._class += " c3chart_Scatter";
+
+    return Scatter;
+}));
+
+
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define('c3chart/Step.js',["./CommonND"], factory);
+    } else {
+        root.c3chart_Step = factory(root.c3chart_CommonND);
+    }
+}(this, function (CommonND) {
+    function Step(target) {
+        CommonND.call(this);
+
+        this._type = "step";
+    }
+    Step.prototype = Object.create(CommonND.prototype);
+    Step.prototype.constructor = Step;
+    Step.prototype._class += " c3chart_Step";
+
+    return Step;
+}));
+

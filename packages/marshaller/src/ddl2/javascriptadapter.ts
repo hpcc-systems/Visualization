@@ -166,7 +166,7 @@ export class JavaScriptAdapter {
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
         ;`);
                     }
-                    retVal.push(`    export const ${id} = new marshaller.RoxieResultRef(ec)
+                    retVal.push(`    export const ${id} = new marshaller.HipieResultRef(ec)
         .datasource(${resultID})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
         ;`);

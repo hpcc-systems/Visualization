@@ -147,8 +147,13 @@ export class Form extends Datasource {
     }
 
     static fromDDL(ddl: DDL2.IForm) {
+        const payload = {};
+        for (const field of ddl.fields) {
+            payload[field.id] = field.default || "";
+        }
         return new Form()
             .id(ddl.id)
+            .payload(payload)
             ;
     }
 

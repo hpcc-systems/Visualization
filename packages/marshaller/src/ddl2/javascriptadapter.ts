@@ -181,8 +181,12 @@ export class JavaScriptAdapter {
                     break;
                 case "form":
                     {
+                        const payload = {};
+                        for (const field of datasource.fields) {
+                            payload[field.id] = field.default || "";
+                        }
                         retVal.push(`    export const ${id} = new marshaller.Form()
-        //.payload(${datasource.fields})
+        .payload(${JSON.stringify(payload)})
         ;`);
                     }
                     break;

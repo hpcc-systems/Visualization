@@ -1,15 +1,16 @@
-import { Area, Bubble, Column, Contour, HexBin, Line, Pie, Scatter, Step, WordCloud } from "@hpcc-js/chart";
+import { Area, Bar, Bubble, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud } from "@hpcc-js/chart";
 import { Database, EntityRectList, InputField, PropertyExt, publish, publishProxy, Widget } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { Table } from "@hpcc-js/dgrid";
 import { FieldForm } from "@hpcc-js/form";
+import { AdjacencyGraph } from "@hpcc-js/graph";
 import { ChartPanel } from "@hpcc-js/layout";
 import { ChoroplethCounties, ChoroplethStates } from "@hpcc-js/map";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { ComputedField, Mappings, MultiField } from "../activities/project";
 
-export type VizType = "Table" | "FieldForm" | "Area" | "Bubble" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Scatter" | "Step" | "ChoroplethCounties" | "ChoroplethStates" | "EntityRectList";
-const VizTypeMap: { [key: string]: { new(...args: any[]): {} } } = { Table, FieldForm, Area, Bubble, Column, Contour, HexBin, Line, Pie, Scatter, Step, WordCloud, ChoroplethCounties, ChoroplethStates, EntityRectList };
+export type VizType = "Table" | "FieldForm" | "Area" | "Bubble" | "Bar" | "Column" | "Contour" | "HexBin" | "Line" | "Pie" | "WordCloud" | "Radar" | "RadialBar" | "Scatter" | "Step" | "ChoroplethCounties" | "ChoroplethStates" | "EntityRectList" | "AdjacencyGraph";
+const VizTypeMap: { [key: string]: { new(...args: any[]): {} } } = { Table, FieldForm, Area, Bubble, Bar, Column, Contour, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, WordCloud, ChoroplethCounties, ChoroplethStates, EntityRectList, AdjacencyGraph };
 export const VizTypeSet = [];
 for (const key in VizTypeMap) {
     VizTypeSet.push(key);

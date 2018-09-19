@@ -46,7 +46,7 @@ WsWorkunits.prototype = Object.create(BasicComms.prototype);
 
 WsWorkunits.prototype.wuQuery = function (options) {
     const url = this.getUrl({
-        pathname: "WsWorkunits/WUQuery.json",
+        pathname: "WsWorkunits/WUQuery.json"
     });
     const request = {
         Wuid: "",
@@ -103,7 +103,7 @@ Workunit.prototype = Object.create(BasicComms.prototype);
 
 Workunit.prototype.wuInfo = function (options) {
     const url = this.getUrl({
-        pathname: "WsWorkunits/WUInfo.json",
+        pathname: "WsWorkunits/WUInfo.json"
     });
     const request = {
         Wuid: this._wuid,

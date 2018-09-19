@@ -809,7 +809,7 @@ const dateTimeFormats = [
 ];
 const dateFormats = [
     "%Y-%m-%d",
-    "%Y%m%d",
+    "%Y%m%d"
 ];
 const timeFormats = [
     "%H:%M:%S.%LZ",

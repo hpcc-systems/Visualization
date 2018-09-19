@@ -259,7 +259,7 @@ export class GroupBy extends Activity {
     hash(): string {
         return hashSum({
             groupBy: this.column().map(gb => gb.hash()),
-            computedFields: this.computedFields().map(cf => cf.hash()),
+            computedFields: this.computedFields().map(cf => cf.hash())
         });
     }
 

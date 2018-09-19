@@ -134,7 +134,7 @@ export class Choropleth extends Layer {
     layerZoomed(base) {
         super.layerZoomed.apply(this, arguments);
         this._choroplethData
-            .style("stroke-width", this.meshVisible() ? `0px` : `${0.5 / base.zoomScale()}px`)
+            .style("stroke-width", this.meshVisible() ? "0px" : `${0.5 / base.zoomScale()}px`)
             ;
     }
 

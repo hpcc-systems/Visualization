@@ -1,10 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { Dictionary, DictionaryNoCase } from "@hpcc-js/util";
-import { find } from "@hpcc-js/util";
-import { scopedLogger } from "@hpcc-js/util";
-import { SAXStackParser, XMLNode } from "@hpcc-js/util";
+import { Dictionary, DictionaryNoCase, find, SAXStackParser, scopedLogger, XMLNode } from "@hpcc-js/util";
 import { ClientTools, locateClientTools } from "./eclcc";
 
 const logger = scopedLogger("clienttools/eclmeta");

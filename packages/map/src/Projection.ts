@@ -1,5 +1,4 @@
 import * as d3Geo from "d3-geo";
-import { geoMercator } from "d3-geo";
 import { albersUsaPr } from "./Utility";
 
 // const d3Geo = _d3Geo.geo || _d3Geo.default || _d3Geo;
@@ -39,5 +38,5 @@ export function resolve(id: string): any {
         return retVal();
     }
     console.log("Unknown projection:  " + id);
-    return geoMercator();
+    return d3Geo.geoMercator();
 }

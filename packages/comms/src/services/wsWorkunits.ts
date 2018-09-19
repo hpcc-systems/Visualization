@@ -1,5 +1,4 @@
-import { deepMixin } from "@hpcc-js/util";
-import { xml2json, XMLNode } from "@hpcc-js/util";
+import { deepMixin, xml2json, XMLNode } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
 import { ESPConnection } from "../espConnection";
 

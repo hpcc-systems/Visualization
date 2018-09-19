@@ -39,7 +39,7 @@ export function createProps(pe: PropertyExt): { [key: string]: any } {
             const val = pe[meta.id]();
             switch (meta.type) {
                 case "propertyArray":
-                    const serialization = val.map(item => createProps(item));
+                    const serialization = val.map(createProps);
                     if (serialization) {
                         retVal[meta.id] = serialization;
                     }

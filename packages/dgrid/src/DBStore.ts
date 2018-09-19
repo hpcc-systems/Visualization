@@ -22,7 +22,7 @@ export class DBStore {
                 field: prefix + idx,
                 idx,
                 className: "resultGridCell",
-                sortable,
+                sortable
             };
             switch (field.type()) {
                 case "nested":

@@ -399,18 +399,6 @@ var config = {
         ]
       },
       {
-        "path": "./samples/html",
-        "name": "html",
-        "type": "folder",
-        "children": [
-          {
-            "path": "./samples/html/Table.js",
-            "name": "Table.js",
-            "type": "file"
-          }
-        ]
-      },
-      {
         "path": "./samples/layout",
         "name": "layout",
         "type": "folder",
@@ -490,6 +478,23 @@ var config = {
                 "type": "file"
               }
             ]
+          }
+        ]
+      },
+      {
+        "path": "./samples/table",
+        "name": "table",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/table/Basic.js",
+            "name": "Basic.js",
+            "type": "file"
+          },
+          {
+            "path": "./samples/table/Coloured.js",
+            "name": "Coloured.js",
+            "type": "file"
           }
         ]
       },

@@ -95,7 +95,7 @@ export class Table extends Common {
     private _prevColsHash;
     private _prevFieldsHash;
     _colsRefresh = false;
-    _forceRefresh = false;
+    _dataRefresh = false;
 
     constructor() {
         super();
@@ -108,7 +108,6 @@ export class Table extends Common {
             if (this._prevFieldsHash !== hash) {
                 this._prevFieldsHash = hash;
                 this._colsRefresh = true;
-                this._forceRefresh = true;
             }
         }
         return retVal;
@@ -121,7 +120,6 @@ export class Table extends Common {
             if (this._prevColsHash !== hash) {
                 this._prevColsHash = hash;
                 this._colsRefresh = true;
-                this._forceRefresh = true;
             }
         }
         return retVal;
@@ -130,7 +128,7 @@ export class Table extends Common {
     data(_?: any): any | this {
         const retVal = super.data.apply(this, arguments);
         if (arguments.length) {
-            this._forceRefresh = true;
+            this._dataRefresh = true;
         }
         return retVal;
     }
@@ -164,7 +162,6 @@ export class Table extends Common {
         if (this._prevHash !== hash) {
             this._prevHash = hash;
             this._colsRefresh = true;
-            this._forceRefresh = true;
         }
         if (this._colsRefresh) {
             this._columns = this._store.columns(this.sortable(), this.formatterFunc(), this.renderCellFunc());
@@ -189,9 +186,14 @@ export class Table extends Common {
             this._dgrid.set("columns", this._columns);
             this._colsRefresh = false;
         }
-        if (this._forceRefresh) {
-            this._dgrid.refresh();
-            this._forceRefresh = false;
+        if (this._colsRefresh || this._dataRefresh) {
+            if (this._colsRefresh) {
+                this._dgrid.refresh({});
+            } else {
+                this._dgrid.refresh();
+            }
+            this._colsRefresh = false;
+            this._dataRefresh = false;
         }
     }
 

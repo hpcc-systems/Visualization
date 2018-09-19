@@ -8,8 +8,8 @@ export const GridHelper = declare(null, {
     noDataMessage: "<span class='dojoxGridNoData'>...empty...</span>",
     loadingMessage: "<span class='dojoxGridNoData'>loading...</span>",
 
-    postCreate: function fn(inherited) {
-        this.inherited(fn, arguments);
+    postCreate: function postCreate(inherited) {
+        this.inherited(postCreate, arguments);
 
         this.__hpcc_tooltip_header = new Tooltip({
             connectId: [this.id],
@@ -36,6 +36,13 @@ export const GridHelper = declare(null, {
             }
         });
         this.__hpcc_tooltip.position = ["above-centered", "below-centered", "before-centered", "after-centered"];
+    },
+
+    refresh: function refresh(options) {
+        this.inherited(refresh, arguments, [options || {
+            keepScrollPosition: true,
+            keepCurrentPage: true
+        }]);
     }/*,
 
     _onNotify(object, existingId) {

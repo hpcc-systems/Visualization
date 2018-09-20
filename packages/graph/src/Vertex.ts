@@ -100,7 +100,7 @@ export class Vertex extends SVGWidget {
     _prevHash;
     update(_domNode, element) {
         SVGWidget.prototype.update.apply(this, arguments);
-        const hash = this.hash();
+        const hash = this.hashSum();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
             element.classed("centroid", this.centroid());

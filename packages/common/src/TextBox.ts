@@ -78,7 +78,7 @@ export class TextBox extends SVGWidget {
     _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
-        const hash = this.hash();
+        const hash = this.hashSum();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
 

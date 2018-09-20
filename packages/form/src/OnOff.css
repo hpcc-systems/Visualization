@@ -1,45 +1,51 @@
-﻿.onoffswitch {
-    position: relative; width: 100px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
+﻿.onoffswitch-checkbox {
     display: none;
+}
+.onoffswitch {
+    position: relative; height: 20px; width: 100px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
 .onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 20px;
+    border: 1px solid #999999;
+    height: 20px;
 }
 .onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
+    position: relative;
+    display: block;
     transition: margin 0.3s ease-in 0s;
 }
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 18px; padding: 0; line-height: 18px;
-    font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    content: "Save";
-    padding-left: 10px;
-    background-color: #34A7C1; color: #FFFFFF;
-}
-.onoffswitch-inner:after {
-    content: "Properties";
-    padding-right: 10px;
-    background-color: #EEEEEE; color: #999999;
+.onoffswitch-inner > .onoffswitch-offText{
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+    transition: all 0.3s ease-in 0s; 
+    width: 100%;
     text-align: right;
+}
+.onoffswitch-inner > .onoffswitch-onText{
+    font-weight: bold;
+    position: absolute;
+    left: -100%;
+    transition: all 0.3s ease-in 0s; 
+    width: 100%;
+    text-align: left;
 }
 .onoffswitch-switch {
     display: block; width: 20px; margin: -1px;
     background: #FFFFFF;
     position: absolute; top: 0; bottom: 0;
     right: 78px;
-    border: 2px solid #999999; border-radius: 20px;
+    border: 1px solid #999999;
     transition: all 0.3s ease-in 0s; 
+    left: 4px;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner > .onoffswitch-offText{
+    right: -100%;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner > .onoffswitch-onText{
+    left: 0;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
+    left: calc(100% - 20px);
 }

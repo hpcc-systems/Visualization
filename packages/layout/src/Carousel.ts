@@ -59,14 +59,20 @@ export class Carousel extends HTMLWidget {
 
     render(callback): this {
         return super.render(w => {
-            this.activeWidget()
-                .resize(this.size())
-                .render(w2 => {
-                    if (callback) {
-                        callback(w);
-                    }
-                })
-                ;
+            if (!this.visible() || this.isDOMHidden()) {
+                if (callback) {
+                    callback(w);
+                }
+            } else {
+                this.activeWidget()
+                    .resize(this.size())
+                    .render(w2 => {
+                        if (callback) {
+                            callback(w);
+                        }
+                    })
+                    ;
+            }
         });
     }
 }

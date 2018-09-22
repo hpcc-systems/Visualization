@@ -194,33 +194,54 @@ export class Vertex extends SVGWidget {
 
     mouseout(d) {
     }
-
-    faChar: { (): string; (_: string): Vertex; };
-    imageUrl: { (): string; (_: string): Vertex; };
-    icon_diameter: { (): number; (_: number): Vertex; };
-    icon_paddingPercent: { (): number; (_: number): Vertex; };
-    icon_shape_colorFill: { (): string; (_: string): Vertex; };
-    icon_shape_colorStroke: { (): string; (_: string): Vertex; };
-    icon_image_colorFill: { (): string; (_: string): Vertex; };
-
-    centroid: { (): boolean; (_: boolean): Vertex; };
-
-    text: { (): string; (_: string): Vertex; };
-    anchor: { (): string; (_: string): Vertex; };
-    textbox_shape_colorStroke: { (): string; (_: string): Vertex; };
-    textbox_shape_colorFill: { (): string; (_: string): Vertex; };
-    textbox_text_colorFill: { (): string; (_: string): Vertex; };
-
-    iconAnchor: { (): "" | "start" | "middle" | "end" | "left"; (_: "" | "start" | "middle" | "end" | "left"): Vertex; };
-    iconTooltip: { (): string; (_: string): Vertex; };
-
-    tooltip: { (): string; (_: string): Vertex; };
-
-    annotationDiameter: { (): number; (_: number): Vertex; };
-    annotationSpacing: { (): number; (_: number): Vertex; };
-    annotationIcons: { (): IAnnotation[]; (_: IAnnotation[]): Vertex; };
 }
 Vertex.prototype._class += " graph_Vertex";
+
+export interface Vertex {
+    faChar(): string;
+    faChar(_: string): this;
+    imageUrl(): string;
+    imageUrl(_: string): this;
+    icon_diameter(): number;
+    icon_diameter(_: number): this;
+    icon_paddingPercent(): number;
+    icon_paddingPercent(_: number): this;
+    icon_shape_colorFill(): string;
+    icon_shape_colorFill(_: string): this;
+    icon_shape_colorStroke(): string;
+    icon_shape_colorStroke(_: string): this;
+    icon_image_colorFill(): string;
+    icon_image_colorFill(_: string): this;
+
+    centroid(): boolean;
+    centroid(_: boolean): this;
+
+    text(): string;
+    text(_: string): this;
+    anchor(): string;
+    anchor(_: string): this;
+    textbox_shape_colorStroke(): string;
+    textbox_shape_colorStroke(_: string): this;
+    textbox_shape_colorFill(): string;
+    textbox_shape_colorFill(_: string): this;
+    textbox_text_colorFill(): string;
+    textbox_text_colorFill(_: string): this;
+
+    iconAnchor(): "" | "start" | "middle" | "end" | "left";
+    iconAnchor(_: "" | "start" | "middle" | "end" | "left"): this;
+    iconTooltip(): string;
+    iconTooltip(_: string): this;
+
+    tooltip(): string;
+    tooltip(_: string): this;
+
+    annotationDiameter(): number;
+    annotationDiameter(_: number): this;
+    annotationSpacing(): number;
+    annotationSpacing(_: number): this;
+    annotationIcons(): IAnnotation[];
+    annotationIcons(_: IAnnotation[]): this;
+}
 
 Vertex.prototype.publishProxy("faChar", "_icon");
 Vertex.prototype.publishProxy("imageUrl", "_icon");

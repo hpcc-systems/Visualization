@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Graphy</title>
+
+    <script>
+        var mode = "dev";  // "dev" | "build" | "unpkg"
+        if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
+            mode = "dev"; // "dev" | "build"
+            document.write('<link rel="stylesheet" href="../../packages/common/font-awesome/css/font-awesome.min.css">');
+            document.write('<script type="text/javascript" src="../../packages/loader/dist/index.js" charset=\"utf-8\"><' + '/script>');
+        } else {
+            mode = "unpkg";
+            document.write('<link rel="stylesheet" href="https://unpkg.com/@hpcc-js/common/font-awesome/css/font-awesome.min.css">');
+            document.write('<script type="text/javascript" src="https://unpkg.com/@hpcc-js/loader" charset=\"utf-8\"><' + '/script>');
+        }
+    </script>
+
+    <script>
+        var hpccLoader = window["@hpcc-js/loader"];
+
+        if (mode === "dev") {
+            var require = hpccLoader.dev();
+        } else {
+            if (mode === "unpkg") {
+                var require = hpccLoader.unpkg(true, {
+                    "d3-fetch": "https://unpkg.com/d3-fetch@1.1.2/dist/d3-fetch.min",
+                    "d3-dsv": "https://unpkg.com/d3-dsv@1.0.10/dist/d3-dsv.min"
+                });
+            } else {
+                var require = hpccLoader.cdn("../../packages", false);
+            }
+        }
+
+        var hpccsystems = {
+            require: require
+        };
+    </script>
+    <link href="style/index.css" rel="stylesheet">
+</head>
+
+<body onresize="doResize()">
+    <div id="placeholder">
+    </div>
+    <script>
+        var root = "J.J. Abrams";
+        var url = window.location.href;
+        var params = url.split('?');
+        if (params.length > 1) {
+            root = decodeURIComponent(params[1]);
+        }
+
+        var app;
+        hpccsystems.require(["src-umd/index"], function (indexMod) {
+            app = new indexMod.App()
+                .target("placeholder")
+                .root(root)
+                ;
+            doResize();
+        })
+
+        function doResize() {
+            if (app) {
+                app
+                    .resize()
+                    .lazyRender()
+                    ;
+            }
+        }
+    </script>
+</body>
+
+</html>

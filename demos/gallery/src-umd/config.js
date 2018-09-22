@@ -702,6 +702,24 @@ var config = {
             }
           },
           {
+            "path": "./samples/graph/Different Nodes.js",
+            "name": "Different Nodes.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette",
+                "Icon",
+                "TextBox",
+                "EntityCard"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
+              ]
+            }
+          },
+          {
             "path": "./samples/graph/Les Miserables.js",
             "name": "Les Miserables.js",
             "type": "file",

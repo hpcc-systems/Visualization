@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <title>hpcc-js docs</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <!--
+    <script src='https://unpkg.com/@hpcc-js/common@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/api@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/chart@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/other@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/layout@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/dgrid-shim@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/dgrid@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/phosphor@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/graph@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/form@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/html@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/codemirror@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/composite@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/map@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/tree@2.0.0'></script>
+    <script src='https://unpkg.com/@hpcc-js/timeline@2.0.0'></script>
+    -->
+
+    <!-- <script src="config.js"></script> -->
+    <script src="https://rawgit.com/hpcc-systems/Visualization/candidate-2.x.x/demos/gallery/src-umd/config.js"></script>
+    <script src="index.js"></script>
+    <script src="page_config.js"></script>
+    <script src="interactions.js"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <script>
+        let all_include_html = Object.keys(config.systemjs.map)
+            .filter(n => n.indexOf("@hpcc-js") !== -1)
+            .map(n => {
+                let s = "script";
+                return `<${s} src="${config.systemjs.map[n]}"></${s}>`
+            })
+            .join('\n')
+            ;
+        const must_load_first_arr = [
+            "@hpcc-js/common",
+        ].map(n => config.systemjs.map[n])
+            ;
+        const load_these_second_arr = [
+            "@hpcc-js/api",
+            "@hpcc-js/layout",
+            "@hpcc-js/dgrid-shim",
+            "@hpcc-js/phosphor-shim",
+        ].map(n => config.systemjs.map[n])
+            ;
+        const load_these_last_arr = Object.keys(config.systemjs.map)
+            .filter(n => n.indexOf("@hpcc-js") !== -1)
+            .filter(n => n.indexOf("@hpcc-js/comms") === -1)
+            .filter(n => n.indexOf("codemirror-shim") === -1)
+            .filter(n => n.indexOf("@hpcc-js/common") === -1)
+            .filter(n => n.indexOf("@hpcc-js/api") === -1)
+            .filter(n => n.indexOf("@hpcc-js/layout") === -1)
+            .filter(n => n.indexOf("@hpcc-js/phosphor-shim") === -1)
+            .filter(n => n.indexOf("@hpcc-js/dgrid-shim") === -1)
+            // .filter(n => n.indexOf("@hpcc-js/util") === -1)
+            .map(n => config.systemjs.map[n])
+            ;
+        load_these_js_files(must_load_first_arr, function () {
+            load_these_js_files(load_these_second_arr, function () {
+                load_these_js_files(load_these_last_arr, function () {
+                    init_page();
+                })
+            })
+        })
+
+        function load_these_js_files(arr, callback) {
+            let count = 0;
+            arr.forEach(include_js_file);
+
+            function include_js_file(file) {
+                let s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = file;
+                s.onload = n => {
+                    count++;
+                    if (arr.length === count) {
+                        console.log('arr === ', arr);
+                        callback();
+                    }
+                }
+                document.head.appendChild(s);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="content"></div>
+    <div id="logo"></div>
+    <div id="left-tabs"></div>
+    <div id="left-nav">
+        <div id="search">
+            <input id="search-input" type="text" placeholder="Search..." onkeyup="filter_list(this)">
+            <i id="search-icon" class="fa fa-search"></i>
+        </div>
+        <div id="list-label"></div>
+        <div id="list"></div>
+    </div>
+    <div id="breadcrumbs">
+        <i id="collapse-icon" class="fa fa-angle-double-left"></i>
+        <div id="breadcrumbs-list"></div>
+    </div>
+</body>
+
+</html>

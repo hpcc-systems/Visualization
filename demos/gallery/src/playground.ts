@@ -34,14 +34,14 @@ export class App extends DockPanel {
 
     load(fileName) {
         System.import(`./samples/${fileName}.js!./plugins/text.js`).then(text => {
-            this._demo._prevJS = text;
+            // this._demo._prevJS = text;
             this._editor.text(text);
         });
     }
 
     loadPath(fileName) {
         System.import(`${fileName}!./plugins/text.js`).then(text => {
-            this._demo._prevJS = text;
+            // this._demo._prevJS = text;
             this._editor.text(text);
         });
     }

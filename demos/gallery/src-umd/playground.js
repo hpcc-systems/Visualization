@@ -51,14 +51,14 @@ var __extends = (this && this.__extends) || (function () {
         App.prototype.load = function (fileName) {
             var _this = this;
             System.import("./samples/" + fileName + ".js!./plugins/text.js").then(function (text) {
-                _this._demo._prevJS = text;
+                // this._demo._prevJS = text;
                 _this._editor.text(text);
             });
         };
         App.prototype.loadPath = function (fileName) {
             var _this = this;
             System.import(fileName + "!./plugins/text.js").then(function (text) {
-                _this._demo._prevJS = text;
+                // this._demo._prevJS = text;
                 _this._editor.text(text);
             });
         };

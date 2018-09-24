@@ -45,7 +45,7 @@ var __extends = (this && this.__extends) || (function () {
                 .style("width", this.width() + "px")
                 .style("height", this.height() + "px");
             var js = window["cm_editor"].text();
-            if (window["cm_editor"].text() && this._prevJS !== js) {
+            if (js && this._prevJS !== js) {
                 this._prevJS = js;
                 this._sampleDiv.text("");
                 var loading_1 = this._sampleDiv.append("div").text("...loading...");

@@ -27,7 +27,7 @@
             "name": "playground",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///${workspaceRoot}/playground.html?./samples/misc/Word%20Cloud.js",
+            "url": "file:///${workspaceRoot}/playground.html?./samples/chart/Column/Basic.js",
             "runtimeArgs": [
                 "--allow-file-access-from-files",
                 "--disable-web-security"

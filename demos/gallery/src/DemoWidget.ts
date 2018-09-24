@@ -30,7 +30,7 @@ export class DemoWidget extends HTMLWidget {
             ;
 
         const js = window["cm_editor"].text();
-        if (window["cm_editor"].text() && this._prevJS !== js) {
+        if (js && this._prevJS !== js) {
             this._prevJS = js;
             this._sampleDiv.text("");
             const loading = this._sampleDiv.append("div").text("...loading...");

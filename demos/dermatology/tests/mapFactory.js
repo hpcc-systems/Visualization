@@ -135,6 +135,28 @@
     }
 
     var mapFactory = {
+        DeckGL: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/DeckGL"], function (DataFactory, DeckGL) {
+                    callback(
+                        new DeckGL()
+                            .columns(DataFactory.SequentialCoordinates.bike_trips.columns)
+                            .data(DataFactory.SequentialCoordinates.bike_trips.data)
+                    );
+                });
+            }
+        },
+        GMapDeckGL: {
+            simple: function (callback) {
+                legacyRequire(["test/DataFactory", "src/map/GMapDeckGL"], function (DataFactory, GMapDeckGL) {
+                    callback(
+                        new GMapDeckGL()
+                            .columns(DataFactory.SequentialCoordinates.bike_trips.columns)
+                            .data(DataFactory.SequentialCoordinates.bike_trips.data)
+                    );
+                });
+            }
+        },
         Graticule: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/map/Graticule"], function (DataFactory, Graticule) {

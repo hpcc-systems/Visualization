@@ -339,10 +339,13 @@ class DDLUpgrade {
                         newValue[key] = valueMappings[value][key];
                     }
                 }
-                retVal.push({
-                    value,
-                    newValue
-                });
+                //  remove v1.x "0" annotations as they equated to "nothing"  ---
+                if (!annotation || value !== "0") {
+                    retVal.push({
+                        value,
+                        newValue
+                    });
+                }
             }
         }
         return retVal;

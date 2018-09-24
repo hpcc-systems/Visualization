@@ -158,7 +158,7 @@ export class Table extends Common {
     _prevHash;
     update(domNode, element) {
         super.update(domNode, element);
-        const hash = this.hash();
+        const hash = this.hashSum();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
             this._colsRefresh = true;

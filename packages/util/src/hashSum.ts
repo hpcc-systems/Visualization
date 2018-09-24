@@ -22,6 +22,9 @@ function fold(hash: number, text: string): number {
 }
 
 function foldObject(hash: number, o: any, seen: any[]): number {
+    if (typeof o.hashSum === "function") {
+        return o.hashSum();
+    }
     return Object.keys(o).sort().reduce((input: any, key: string) => {
         return foldValue(input, o[key], key, seen);
     }, hash);

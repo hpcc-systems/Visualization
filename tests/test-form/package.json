@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "@hpcc-js/test-form",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "dependencies": {
-    "@hpcc-js/common": "^2.2.0",
-    "@hpcc-js/form": "^2.0.2",
+    "@hpcc-js/common": "^2.2.1",
+    "@hpcc-js/form": "^2.0.3",
     "@hpcc-js/test-data": "^2.0.0",
     "chai": "4.0.0",
     "es6-promise": "4.2.4",

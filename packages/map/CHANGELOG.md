@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.0.2...@hpcc-js/map@2.0.3) (2018-09-24)
+
+
+### Bug Fixes
+
+* **choropleth:** Using mesh color/width in update ([8e68082](https://github.com/hpcc-systems/Visualization/commit/8e68082))
+
+
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/map@2.0.1...@hpcc-js/map@2.0.2) (2018-09-10)
 

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.0.2...@hpcc-js/api@2.0.3) (2018-09-24)
+
+
+### Bug Fixes
+
+* **hexbin:** Tooltip missing label and series information ([a38805a](https://github.com/hpcc-systems/Visualization/commit/a38805a))
+* Appropriate Tooltip direction now determined ([82892a4](https://github.com/hpcc-systems/Visualization/commit/82892a4)), closes [#2833](https://github.com/hpcc-systems/Visualization/issues/2833)
+
+
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.0.1...@hpcc-js/api@2.0.2) (2018-09-10)
 

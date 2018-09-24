@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.1.0...@hpcc-js/util@2.1.1) (2018-09-24)
+
+
+### Bug Fixes
+
+* **PropertyExt:** Hash function very slow ([d846a9e](https://github.com/hpcc-systems/Visualization/commit/d846a9e))
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/util@2.0.1...@hpcc-js/util@2.1.0) (2018-09-10)
 

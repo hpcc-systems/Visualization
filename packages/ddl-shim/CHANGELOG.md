@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.1.0...@hpcc-js/ddl-shim@2.1.1) (2018-09-24)
+
+
+### Bug Fixes
+
+* **ddl:** Optionally lowercase field IDs ([05cc16b](https://github.com/hpcc-systems/Visualization/commit/05cc16b))
+* **ddl:** Remove "0" annotations during the upgrade process ([0e268ff](https://github.com/hpcc-systems/Visualization/commit/0e268ff))
+
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/ddl-shim@2.0.1...@hpcc-js/ddl-shim@2.1.0) (2018-09-10)
 

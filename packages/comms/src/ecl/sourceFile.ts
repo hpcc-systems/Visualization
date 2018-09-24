@@ -1,6 +1,6 @@
 import { StateObject } from "@hpcc-js/util";
 import { IConnection, IOptions } from "../connection";
-import { WorkunitsService, WUInfo, } from "../services/wsWorkunits";
+import { WorkunitsService, WUInfo } from "../services/wsWorkunits";
 
 export interface ECLSourceFileEx extends WUInfo.ECLSourceFile {
     Wuid: string;

@@ -247,7 +247,7 @@ export class ChartPanel extends Border2 implements IHighlight {
         element.selectAll("div.body,div.title-text,div.icon-bar").style("display", "");
         element.selectAll("div.data-count").style("visibility", "hidden");
         element.select("div.title-icon").style("position", "static");
-        element.style("transform", `translate(0px,0px) scale(1)`);
+        element.style("transform", "translate(0px,0px) scale(1)");
     }
 
     private _prevdataVisible;
@@ -353,7 +353,7 @@ export class ChartPanel extends Border2 implements IHighlight {
             .style("left", this.titleIconFontSize() + "px")
             .text(this.data().length)
             ;
-        element.style("transform", `translate(0px,0px) scale(1)`);
+        element.style("transform", "translate(0px,0px) scale(1)");
         const iconDiv = element.selectAll("div.title-icon");
         const _node = iconDiv.node();
         const _container = element.node().parentElement;

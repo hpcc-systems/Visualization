@@ -4,9 +4,7 @@ import * as os from "os";
 import * as path from "path";
 import * as tmp from "tmp";
 
-import { scopedLogger } from "@hpcc-js/util";
-import { exists } from "@hpcc-js/util";
-import { xml2json, XMLNode } from "@hpcc-js/util";
+import { exists, scopedLogger, xml2json, XMLNode } from "@hpcc-js/util";
 import { attachWorkspace, Workspace } from "./eclMeta";
 
 const logger = scopedLogger("clienttools/eclcc");

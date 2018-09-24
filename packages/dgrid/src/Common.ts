@@ -66,6 +66,7 @@ export class Common extends HTMLWidget {
                     this.click(this.rowToObj(evt.rows[0].data.__origRow), "", false);
                 }
             });
+            this._dgrid.refresh({});
         }
         this._dgrid.noDataMessage = `<span class='dojoxGridNoData'>${this.noDataMessage()}</span>`;
         this._dgrid.loadingMessage = `<span class='dojoxGridNoData'>${this.loadingMessage()}</span>`;

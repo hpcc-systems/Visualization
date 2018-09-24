@@ -18,7 +18,7 @@ export class Html extends HTMLWidget {
 
         element.style({
             "overflow-x": this.overflowX_exists() ? this.overflowX() : "",
-            "overflow-y": this.overflowY_exists() ? this.overflowY() : "",
+            "overflow-y": this.overflowY_exists() ? this.overflowY() : ""
         });
 
         const html = element.selectAll(".htmlWrapper").data(this.data().length > 0 ? this.data() : [this.html()]);

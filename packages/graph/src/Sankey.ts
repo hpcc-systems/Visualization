@@ -1,7 +1,4 @@
-﻿import { Palette } from "@hpcc-js/common";
-import { PropertyExt } from "@hpcc-js/common";
-import { SVGWidget } from "@hpcc-js/common";
-import { Utility } from "@hpcc-js/common";
+﻿import { Palette, PropertyExt, SVGWidget, Utility } from "@hpcc-js/common";
 import { max as d3Max, mean as d3Mean, median as d3Median, min as d3Min, sum as d3Sum } from "d3-array";
 import { sankey as d3Sankey, sankeyLinkHorizontal as d3SankeyLinkHorizontal } from "d3-sankey";
 import { select as d3Select } from "d3-selection";

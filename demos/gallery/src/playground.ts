@@ -8,7 +8,6 @@ declare const System: any;
 
 export class App extends DockPanel {
 
-    _skipUpdate: boolean = false;
     _editor = new JSEditor()
         .on("changes", (changes) => {
             this.changed(this._editor);
@@ -35,12 +34,14 @@ export class App extends DockPanel {
 
     load(fileName) {
         System.import(`./samples/${fileName}.js!./plugins/text.js`).then(text => {
+            this._demo._prevJS = text;
             this._editor.text(text);
         });
     }
 
     loadPath(fileName) {
         System.import(`${fileName}!./plugins/text.js`).then(text => {
+            this._demo._prevJS = text;
             this._editor.text(text);
         });
     }
@@ -54,11 +55,7 @@ export class App extends DockPanel {
                     ;
                 break;
             case this._editor:
-                if (this._skipUpdate) {
-                    this._skipUpdate = false;
-                } else {
-                    this._demo.lazyRender();
-                }
+                this._demo.lazyRender();
                 break;
             case this._propEditor:
                 if (this._editor.hasFocus()) {
@@ -116,7 +113,7 @@ export class App extends DockPanel {
                 srcCodeLines.splice(renderIdx, 0, `    .${key}(${JSON.stringify(props[key])})`);
             }
         }
-        this._skipUpdate = true;
-        this._editor.text(srcCodeLines.join("\n"));
+        this._demo._prevJS = srcCodeLines.join("\n");
+        this._editor.text(this._demo._prevJS);
     }
 }

@@ -1,5 +1,5 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
-import { SVGWidget, Utility } from "@hpcc-js/common";
+import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear } from "d3-scale";
 import { arc as d3Arc } from "d3-shape";
@@ -7,6 +7,14 @@ import { arc as d3Arc } from "d3-shape";
 import "../src/RadialBar.css";
 
 export class RadialBar extends SVGWidget {
+    static __inputs: InputField[] = [{
+        id: "label",
+        type: "any"
+    }, {
+        id: "values",
+        type: "number"
+    }];
+
     private _domainScale = d3ScaleBand();
     private _valueScale = d3ScaleLinear();
     private _d3Arc = d3Arc<[string, number]>()
@@ -45,7 +53,7 @@ export class RadialBar extends SVGWidget {
 
     update(domNode, element) {
         super.update(domNode, element);
-
+        const context = this;
         const maxValue = Math.max(this.valueDomainHigh_exists() ? this.valueDomainHigh() : 0, ...this.data().map(d => d[1]));
 
         this._valueScale
@@ -121,6 +129,7 @@ export class RadialBar extends SVGWidget {
             ;
         valueText.exit().remove();
 
+        const valueColumn = this.columns().length > 1 ? this.columns()[1] : "";
         //  Data (arcs) ---
         this._d3Arc
             .innerRadius(d => this._domainScale(d[0]))
@@ -132,6 +141,12 @@ export class RadialBar extends SVGWidget {
             .call(this._selection.enter.bind(this._selection))
             .on("mouseout.tooltip", this.tooltip.hide)
             .on("mousemove.tooltip", this.tooltip.show)
+            .on("click", function (d: any, _idx) {
+                context.click(context.rowToObj(d), valueColumn, context._selection.selected(this));
+            })
+            .on("dblclick", function (d: any, _idx) {
+                context.dblclick(context.rowToObj(d), valueColumn, context._selection.selected(this));
+            })
             .merge(arcs)
             .style("fill", (d, i) => this.fillColor(d, d[0], d[1]))
             .transition()

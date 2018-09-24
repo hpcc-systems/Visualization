@@ -1,5 +1,5 @@
-const LINE_SPLITTER = `<br><hr class='dgrid-fakeline'>`;
-const LINE_SPLITTER2 = `<br><hr class='dgrid-fakeline' style='visibility: hidden'>`;
+const LINE_SPLITTER = "<br><hr class='dgrid-fakeline'>";
+const LINE_SPLITTER2 = "<br><hr class='dgrid-fakeline' style='visibility: hidden'>";
 
 export interface ColumnType {
     field: string;

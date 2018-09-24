@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.2...@hpcc-js/comms@2.0.3) (2018-09-24)
+
+
+### Bug Fixes
+
+* **comms:**  Add option to get "all" graphs for a WU ([40900fe](https://github.com/hpcc-systems/Visualization/commit/40900fe))
+
+
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/comms@2.0.1...@hpcc-js/comms@2.0.2) (2018-09-10)
 

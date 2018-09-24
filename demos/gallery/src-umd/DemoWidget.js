@@ -44,8 +44,9 @@ var __extends = (this && this.__extends) || (function () {
             this._sampleDiv
                 .style("width", this.width() + "px")
                 .style("height", this.height() + "px");
-            if (window["cm_editor"].text() && this._prevJS !== window["cm_editor"].text()) {
-                this._prevJS = window["cm_editor"].text();
+            var js = window["cm_editor"].text();
+            if (window["cm_editor"].text() && this._prevJS !== js) {
+                this._prevJS = js;
                 this._sampleDiv.text("");
                 var loading_1 = this._sampleDiv.append("div").text("...loading...");
                 System.registry.delete(System.normalizeSync("cm_editor_" + this._errCount + "!./plugins/cm.js"));

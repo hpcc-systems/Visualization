@@ -1,6 +1,6 @@
 {
   "name": "@hpcc-js/comms",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "hpcc-js - Communications",
   "main": "dist/index.node.js",
   "module": "dist/index.es6",
@@ -29,7 +29,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
-    "@hpcc-js/util": "^2.1.0",
+    "@hpcc-js/util": "^2.1.1",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -51,10 +51,10 @@
     "safe-buffer": "5.1.1",
     "tmp": "0.0.33",
     "tslib": "1.9.3",
-    "tslint": "5.9.1",
+    "tslint": "5.11.0",
     "typedoc": "0.7.1",
     "typescript": "3.0.1",
-    "uglify-es": "3.3.9",
+    "uglify-js": "3.4.9",
     "xmldom": "0.1.27"
   },
   "repository": {

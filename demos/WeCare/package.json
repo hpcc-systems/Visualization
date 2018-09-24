@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-wecare",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "scripts": {
     "clean": "rimraf lib* types dist",
     "compile-es6": "tsc --module es6 --outDir ./lib-es6",
@@ -14,12 +14,12 @@
     "watch": "run-p compile-es6-watch bundle-watch"
   },
   "dependencies": {
-    "@hpcc-js/chart": "^2.1.1",
-    "@hpcc-js/common": "^2.2.0",
-    "@hpcc-js/comms": "^2.0.2",
-    "@hpcc-js/dgrid": "^2.0.2",
-    "@hpcc-js/form": "^2.0.2",
-    "@hpcc-js/map": "^2.0.2",
+    "@hpcc-js/chart": "^2.1.2",
+    "@hpcc-js/common": "^2.2.1",
+    "@hpcc-js/comms": "^2.0.3",
+    "@hpcc-js/dgrid": "^2.0.3",
+    "@hpcc-js/form": "^2.0.3",
+    "@hpcc-js/map": "^2.0.3",
     "d3-selection": "1.1.0",
     "d3-time-format": "2.1.0",
     "impress.js": "GordonSmith/impressjs.git#MILEHIGH_UI",

@@ -272,13 +272,13 @@ export class ThemeEditor extends HTMLWidget {
                     tableObj.rowArr.push({
                         th: camelizeString(editorParams[i].id),
                         td: editorParams[i].input,
-                        trClass: "propertyRow",
+                        trClass: "propertyRow"
                     });
                 } else if (editorParams[i].ext.tags.indexOf("Theme") !== -1) {
                     modeTableObj.rowArr.push({
                         th: camelizeString(editorParams[i].id),
                         td: editorParams[i].input,
-                        trClass: "propertyRow",
+                        trClass: "propertyRow"
                     });
                 }
             } else {
@@ -286,13 +286,13 @@ export class ThemeEditor extends HTMLWidget {
                     tableObj.rowArr.push({
                         th: camelizeString(editorParams[i].id),
                         td: editorParams[i].input,
-                        trClass: "propertyRow",
+                        trClass: "propertyRow"
                     });
                 } else if (editorParams[i].ext.tags.indexOf("Serial") !== -1) {
                     modeTableObj.rowArr.push({
                         th: camelizeString(editorParams[i].id),
                         td: editorParams[i].input,
-                        trClass: "propertyRow",
+                        trClass: "propertyRow"
                     });
                 }
             }

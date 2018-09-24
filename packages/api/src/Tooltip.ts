@@ -25,25 +25,84 @@ export function tip() {
     // Returns a tip
     tip.show = function (d, idx, arr) {
         target = arr[idx];
-
         const args = Array.prototype.slice.call(arguments);
         const content = html.apply(this, args);
         const poffset = offset.apply(this, args);
-        const dir = direction.apply(this, args);
         const nodel = getNodeEl();
         let i = directions.length;
         let coords;
-
+        const root_bbox = rootElement().getBoundingClientRect();
         nodel.html(content)
             .style("opacity", 1).style("pointer-events", "all");
 
         while (i--) nodel.classed(directions[i], false);
-        coords = directionCallbacks.get(dir).apply(this);
-        nodel.classed(dir, true)
-            .style("top", (coords.top + poffset[0]) + "px")
-            .style("left", (coords.left + poffset[1]) + "px");
-
+        let placement_success = false;
+        const placement_overflow = {};
+        let least_overflow_direction = directions[0];
+        for (let i = 0; i < directions.length; i++) {
+            placement_success = _placement_attempt(directions[i]);
+            if (placement_success) break;
+        }
+        if (!placement_success) {
+            nodel.classed("notick", true);
+            const top_offset = _vertical_adjustment(placement_overflow[least_overflow_direction]);
+            const left_offset = _horizontal_adjustment(placement_overflow[least_overflow_direction]);
+            _placement_attempt(least_overflow_direction, top_offset, left_offset);
+        } else {
+            nodel.classed("notick", false);
+        }
         return tip;
+
+        function _horizontal_adjustment(overflow_obj) {
+            if (overflow_obj.left > overflow_obj.right) {
+                return overflow_obj.left > 0 ? -overflow_obj.left : 0;
+            } else {
+                return overflow_obj.right > 0 ? overflow_obj.right : 0;
+            }
+        }
+        function _vertical_adjustment(overflow_obj) {
+            if (overflow_obj.top > overflow_obj.bottom) {
+                return overflow_obj.top > 0 ? -overflow_obj.top : 0;
+            } else {
+                return overflow_obj.bottom;
+            }
+        }
+
+        function _placement_attempt(_dir, _top_offset?, _left_offset?) {
+            _top_offset = _top_offset ? _top_offset : 0;
+            _left_offset = _left_offset ? _left_offset : 0;
+            nodel.style("white-space", "nowrap");
+            coords = directionCallbacks.get(_dir).apply(this);
+            nodel.classed(_dir, true)
+                .style("top", (coords.top + poffset[0] - _top_offset) + "px")
+                .style("left", (coords.left + poffset[1] - _left_offset) + "px");
+            const nodel_bbox = nodel.node().getBoundingClientRect();
+            const ret = nodel_bbox.top > root_bbox.top
+                && nodel_bbox.left > root_bbox.left
+                && nodel_bbox.bottom < root_bbox.bottom
+                && nodel_bbox.right < root_bbox.right
+                ;
+            placement_overflow[_dir] = {
+                top: root_bbox.top - nodel_bbox.top,
+                right: nodel_bbox.right - root_bbox.right,
+                bottom: nodel_bbox.bottom - root_bbox.bottom,
+                left: root_bbox.left - nodel_bbox.left
+            };
+            nodel.style("white-space", "normal");
+            placement_overflow[_dir].total_overflow = Object.keys(placement_overflow[_dir])
+                .filter(side => placement_overflow[_dir][side] > 0)
+                .reduce((sum, side) => {
+                    const side_overflow = placement_overflow[_dir][side];
+                    return sum + side_overflow;
+                }, 0);
+            if (placement_overflow[least_overflow_direction].total_overflow > placement_overflow[_dir].total_overflow) {
+                least_overflow_direction = _dir;
+            }
+            if (!ret) {
+                nodel.classed(_dir, false);
+            }
+            return ret;
+        }
     };
 
     // Public - hide the tooltip
@@ -178,7 +237,7 @@ export function tip() {
     function directionSouth() {
         const bbox = getScreenBBox(window);
         return {
-            top: bbox.s.y,
+            top: bbox.s.y + 8,
             left: bbox.s.x - node.offsetWidth / 2
         };
     }
@@ -187,7 +246,7 @@ export function tip() {
         const bbox = getScreenBBox(window);
         return {
             top: bbox.e.y - node.offsetHeight / 2,
-            left: bbox.e.x
+            left: bbox.e.x + 8
         };
     }
 
@@ -195,7 +254,7 @@ export function tip() {
         const bbox = getScreenBBox(window);
         return {
             top: bbox.w.y - node.offsetHeight / 2,
-            left: bbox.w.x - node.offsetWidth
+            left: bbox.w.x - node.offsetWidth - 8
         };
     }
 

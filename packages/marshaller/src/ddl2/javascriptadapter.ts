@@ -39,7 +39,7 @@ export function createProps(pe: PropertyExt): { [key: string]: any } {
             const val = pe[meta.id]();
             switch (meta.type) {
                 case "propertyArray":
-                    const serialization = val.map(item => createProps(item));
+                    const serialization = val.map(createProps);
                     if (serialization) {
                         retVal[meta.id] = serialization;
                     }
@@ -166,7 +166,7 @@ export class JavaScriptAdapter {
         .responseFields(${stringify(datasource.outputs[outputID].fields)})
         ;`);
                     }
-                    retVal.push(`    export const ${id} = new marshaller.RoxieResultRef(ec)
+                    retVal.push(`    export const ${id} = new marshaller.HipieResultRef(ec)
         .datasource(${resultID})
         .requestFieldRefs(${stringify((datasourceRef as DDL2.IRoxieServiceRef).request)})
         ;`);
@@ -181,8 +181,12 @@ export class JavaScriptAdapter {
                     break;
                 case "form":
                     {
+                        const payload = {};
+                        for (const field of datasource.fields) {
+                            payload[field.id] = field.default || "";
+                        }
                         retVal.push(`    export const ${id} = new marshaller.Form()
-        //.payload(${datasource.fields})
+        .payload(${JSON.stringify(payload)})
         ;`);
                     }
                     break;

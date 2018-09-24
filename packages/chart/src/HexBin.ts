@@ -1,6 +1,6 @@
 import { I2DAggrChart, ITooltip } from "@hpcc-js/api";
 import { InputField, SVGWidget } from "@hpcc-js/common";
-import { max as d3Max, min as d3Min } from "d3-array";
+import { extent as d3Extent, max as d3Max, min as d3Min } from "d3-array";
 import { hexbin as d3HexBin } from "d3-hexbin";
 import { XYAxis } from "./XYAxis";
 
@@ -24,7 +24,13 @@ export class HexBin extends XYAxis {
         this.tooltipValueFormat_default(",.0f");
         ITooltip.call(this);
         this.tooltipHTML(d => {
-            return this.tooltipFormat({ value: d.length });
+            const seriesExtent = d3Extent<{ label: any, value: any }>(d, d => d.label);
+            const labelExtent = d3Extent<{ label: any, value: any }>(d, d => d.value);
+            return this.tooltipFormat({
+                series: seriesExtent[0] === seriesExtent[1] ? seriesExtent[0] : `${seriesExtent[0]} -> ${seriesExtent[1]}`,
+                label: labelExtent[0] === labelExtent[1] ? labelExtent[0] : `${labelExtent[0]} -> ${labelExtent[1]}`,
+                value: d.length
+            });
         });
         this._hexbin = d3HexBin()
             .x(d => d.x)
@@ -64,6 +70,8 @@ export class HexBin extends XYAxis {
             return {
                 x: context.xPos(host, d),
                 y: context.yPos(host, d),
+                label: host.parseData(d.label),
+                value: host.parseValue(d.value),
                 origRow: d
             };
         });

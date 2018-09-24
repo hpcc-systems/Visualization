@@ -1,10 +1,12 @@
 import { HTMLWidget, Platform, Utility } from "@hpcc-js/common";
 import { drag as d3Drag } from "d3-drag";
 import { event as d3Event, select as d3Select } from "d3-selection";
-import * as GridList from "grid-list";
+import * as _GridList from "grid-list";
 import { Cell } from "./Cell";
 
 import "../src/Grid.css";
+
+const GridList = (_GridList && _GridList.default) || _GridList;
 
 export class Grid extends HTMLWidget {
     divItems;

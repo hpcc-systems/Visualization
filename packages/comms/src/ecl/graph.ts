@@ -36,47 +36,13 @@ export class ECLGraph extends StateObject<ECLGraphEx, ECLGraphEx> implements ECL
         this.set({ Time: duration, ...eclGraph });
     }
 
-    fetchDetails(rootID: string, rootType: string): Promise<BaseScope[]> {
-        return this.wu.fetchDetails({
-            ScopeFilter: {
-                MaxDepth: 999999,
-                Ids: [rootID],
-                ScopeTypes: [rootType]
-            },
-            NestedFilter: {
-                Depth: 999999,
-                ScopeTypes: ["graph", "subgraph", "activity", "edge"]
-            },
-            PropertiesToReturn: {
-                AllStatistics: true,
-                AllAttributes: true,
-                AllHints: true,
-                AllProperties: true,
-                AllScopes: true
-            },
-            ScopeOptions: {
-                IncludeId: true,
-                IncludeScope: true,
-                IncludeScopeType: true
-            },
-            PropertyOptions: {
-                IncludeName: true,
-                IncludeRawValue: true,
-                IncludeFormatted: true,
-                IncludeMeasure: true,
-                IncludeCreator: false,
-                IncludeCreatorType: false
-            }
-        });
-    }
-
     fetchScopeGraph(subgraphID?: string): Promise<ScopeGraph> {
         if (subgraphID) {
-            return this.fetchDetails(subgraphID, "subgraph").then((scopes) => {
+            return this.wu.fetchGraphDetails([subgraphID], ["subgraph"]).then((scopes) => {
                 return createGraph(scopes);
             });
         }
-        return this.fetchDetails(this.Name, "graph").then((scopes) => {
+        return this.wu.fetchGraphDetails([this.Name], ["graph"]).then((scopes) => {
             return createGraph(scopes);
         });
     }
@@ -157,7 +123,7 @@ export class ScopeSubgraph extends Subgraph<BaseScope, BaseScope, BaseScope> { }
 export class ScopeVertex extends Vertex<BaseScope, BaseScope, BaseScope> { }
 export class ScopeEdge extends Edge<BaseScope, BaseScope, BaseScope> { }
 
-function createGraph(scopes: BaseScope[]): ScopeGraph {
+export function createGraph(scopes: BaseScope[]): ScopeGraph {
     const subgraphs: { [scopeName: string]: ScopeSubgraph } = {};
     const edges: { [scopeName: string]: BaseScope } = {};
 

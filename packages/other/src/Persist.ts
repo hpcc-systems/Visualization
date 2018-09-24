@@ -91,7 +91,7 @@ export function applyTheme(widget2, themeObj, callback) {
 
 export function serializeToObject(widget, filter?, includeData?, includeState?) {
     const retVal: any = {
-        __class: widget.classID(),
+        __class: widget.classID()
     };
     if (widget._id.indexOf(widget._idSeed) !== 0) {
         retVal.__id = widget._id;

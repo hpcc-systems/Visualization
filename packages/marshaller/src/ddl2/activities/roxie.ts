@@ -451,7 +451,7 @@ export class RoxieResultRef extends DatasourceRef {
 }
 RoxieResultRef.prototype._class += " RoxieResultRef";
 
-export class HipieRequest extends RoxieResultRef {
+export class HipieResultRef extends RoxieResultRef {
 
     fullUrl(_: string): this {
         const info = parseUrl(_);
@@ -478,4 +478,4 @@ export class HipieRequest extends RoxieResultRef {
         return request;
     }
 }
-HipieRequest.prototype._class += " HipieRequest";
+HipieResultRef.prototype._class += " HipieResultRef";

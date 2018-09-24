@@ -124,6 +124,10 @@ export class Choropleth extends Layer {
             this._prevProjection = base.projection();
             this._prevInternalOnly = this.internalOnly();
         }
+        this._choropleth
+            .style("stroke-width", this.meshStrokeWidth())
+            .style("stroke", this.meshColor())
+            ;
     }
 
     layerExit(base) {
@@ -134,7 +138,7 @@ export class Choropleth extends Layer {
     layerZoomed(base) {
         super.layerZoomed.apply(this, arguments);
         this._choroplethData
-            .style("stroke-width", this.meshVisible() ? `0px` : `${0.5 / base.zoomScale()}px`)
+            .style("stroke-width", this.meshVisible() ? "0px" : `${0.5 / base.zoomScale()}px`)
             ;
     }
 

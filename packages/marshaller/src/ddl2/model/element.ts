@@ -271,7 +271,7 @@ export class ElementContainer extends PropertyExt {
                 object: _widget.__class.split("_")[1],
                 cell: _get_params(_cell, ["chart", "widget", "fields"]),
                 panel: _get_params(_panel, ["chart", "widget", "fields"]),
-                widget: _get_params(_widget, ["fields"]),
+                widget: _get_params(_widget, ["fields"])
             };
         });
         return ret;

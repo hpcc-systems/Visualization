@@ -42,24 +42,24 @@ export class Edge extends SVGWidget {
     }
 
     sourceVertex(): Widget;
-    sourceVertex(_: Widget): Edge;
-    sourceVertex(_?: Widget): Widget | Edge {
+    sourceVertex(_: Widget): this;
+    sourceVertex(_?: Widget): Widget | this {
         if (!arguments.length) return this._sourceVertex;
         this._sourceVertex = _;
         return this;
     }
 
     targetVertex(): Widget;
-    targetVertex(_: Widget): Edge;
-    targetVertex(_?: Widget): Widget | Edge {
+    targetVertex(_: Widget): this;
+    targetVertex(_?: Widget): Widget | this {
         if (!arguments.length) return this._targetVertex;
         this._targetVertex = _;
         return this;
     }
 
     weight(): number;
-    weight(_: number): Edge;
-    weight(_?: number): number | Edge {
+    weight(_: number): this;
+    weight(_?: number): number | this {
         if (!arguments.length) return this._weight;
         this._weight = _;
         return this;
@@ -83,8 +83,8 @@ export class Edge extends SVGWidget {
     }
 
     text(): string;
-    text(_: string): Edge;
-    text(_?: string): string | Edge {
+    text(_: string): this;
+    text(_?: string): string | this {
         if (!arguments.length) return this._textBox.text();
         this._textBox.text(_);
         return this;
@@ -211,22 +211,39 @@ export class Edge extends SVGWidget {
         }
         return points;
     }
-
-    arcDepth: { (): number; (_: number): Edge; };
-    showControlPoints: { (): boolean; (_: boolean): Edge; };
-    showArc: { (): boolean; (_: boolean): Edge; };
-    tooltip: { (): string; (_: string): Edge; };
-
-    sourceMarker: { (): string; (_: string): Edge; };
-    sourceMarker_exists: () => boolean;
-    targetMarker: { (): string; (_: string): Edge; };
-    targetMarker_exists: () => boolean;
-    strokeDasharray: { (): string; (_: string): Edge; };
-    strokeDasharray_exists: () => boolean;
-    strokeColor: { (): string; (_: string): Edge; };
-    strokeColor_exists: () => boolean;
 }
 Edge.prototype._class += " graph_Edge";
+
+export interface Edge {
+    arcDepth(): number;
+    arcDepth(_: number): this;
+    showControlPoints(): boolean;
+    showControlPoints(_: boolean): this;
+    showArc(): boolean;
+    showArc(_: boolean): this;
+    tooltip(): string;
+    tooltip(_: string): this;
+
+    sourceMarker(): string;
+    sourceMarker(_: string): this;
+    sourceMarker_exists: () => boolean;
+    targetMarker(): string;
+    targetMarker(_: string): this;
+    targetMarker_exists: () => boolean;
+    strokeDasharray(): string;
+    strokeDasharray(_: string): this;
+    strokeDasharray_exists: () => boolean;
+    strokeColor(): string;
+    strokeColor(_: string): this;
+    strokeColor_exists: () => boolean;
+
+    text_shape_colorFill(): string;
+    text_shape_colorFill(_: string): this;
+    text_shape_colorStroke(): string;
+    text_shape_colorStroke(_: string): this;
+    text_text_colorFill(): string;
+    text_text_colorFill(_: string): this;
+}
 
 Edge.prototype.publish("arcDepth", 16, "number", "Arc Depth", null, { tags: ["Basic"] });
 Edge.prototype.publish("showControlPoints", false, "boolean", "Show/Hide Control Points", null, { tags: ["Basic"] });

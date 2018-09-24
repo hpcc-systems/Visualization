@@ -905,29 +905,6 @@ export class Graph extends SVGZoomWidget {
             ;
     }
 
-    allowDragging: { (): boolean; (_: boolean): Graph; };
-    layout: { (): GraphLayoutType; (_: GraphLayoutType): Graph; };
-    // scale: { (): string; (_: string): Graph; };
-    applyScaleOnLayout: { (): boolean; (_: boolean): Graph; };
-    highlightOnMouseOverVertex: { (): boolean; (_: boolean): Graph; };
-    highlightOnMouseOverEdge: { (): boolean; (_: boolean): Graph; };
-    transitionDuration: { (): number; (_: number): Graph; };
-    showEdges: { (): boolean; (_: boolean): Graph; };
-    snapToGrid: { (): number; (_: number): Graph; };
-
-    hierarchyRankDirection: { (): string; (_: string): Graph; };
-    hierarchyNodeSeparation: { (): number; (_: number): Graph; };
-    hierarchyEdgeSeparation: { (): number; (_: number): Graph; };
-    hierarchyRankSeparation: { (): number; (_: number): Graph; };
-
-    forceDirectedLinkDistance: { (): number; (_: number): Graph; };
-    forceDirectedLinkStrength: { (): number; (_: number): Graph; };
-    forceDirectedFriction: { (): number; (_: number): Graph; };
-    forceDirectedCharge: { (): number; (_: number): Graph; };
-    forceDirectedChargeDistance: { (): number; (_: number): Graph; };
-    forceDirectedTheta: { (): number; (_: number): Graph; };
-    forceDirectedGravity: { (): number; (_: number): Graph; };
-
     //  IGraph  ---
     edge_click: (_row, _col, _sel, _more) => void;
     edge_dblclick: (_row, _col, _sel, _more) => void;
@@ -944,6 +921,52 @@ export class Graph extends SVGZoomWidget {
 Graph.prototype._class += " graph_Graph";
 Graph.prototype.implements(IGraph.prototype);
 Graph.prototype.implements(ITooltip.prototype);
+
+export interface Graph {
+    allowDragging(): boolean;
+    allowDragging(_: boolean): this;
+    layout(): GraphLayoutType;
+    layout(_: GraphLayoutType): this;
+    // scale: { (): string; (_: string): this; };
+    applyScaleOnLayout(): boolean;
+    applyScaleOnLayout(_: boolean): this;
+    highlightOnMouseOverVertex(): boolean;
+    highlightOnMouseOverVertex(_: boolean): this;
+    highlightOnMouseOverEdge(): boolean;
+    highlightOnMouseOverEdge(_: boolean): this;
+    transitionDuration(): number;
+    transitionDuration(_: number): this;
+    showEdges(): boolean;
+    showEdges(_: boolean): this;
+    snapToGrid(): number;
+    snapToGrid(_: number): this;
+
+    hierarchyRankDirection(): string;
+    hierarchyRankDirection(_: string): this;
+    hierarchyNodeSeparation(): number;
+    hierarchyNodeSeparation(_: number): this;
+    hierarchyEdgeSeparation(): number;
+    hierarchyEdgeSeparation(_: number): this;
+    hierarchyRankSeparation(): number;
+    hierarchyRankSeparation(_: number): this;
+    hierarchyDigraph(): boolean;
+    hierarchyDigraph(_: boolean): this;
+
+    forceDirectedLinkDistance(): number;
+    forceDirectedLinkDistance(_: number): this;
+    forceDirectedLinkStrength(): number;
+    forceDirectedLinkStrength(_: number): this;
+    forceDirectedFriction(): number;
+    forceDirectedFriction(_: number): this;
+    forceDirectedCharge(): number;
+    forceDirectedCharge(_: number): this;
+    forceDirectedChargeDistance(): number;
+    forceDirectedChargeDistance(_: number): this;
+    forceDirectedTheta(): number;
+    forceDirectedTheta(_: number): this;
+    forceDirectedGravity(): number;
+    forceDirectedGravity(_: number): this;
+}
 
 Graph.prototype.publish("allowDragging", true, "boolean", "Allow Dragging of Vertices", null, { tags: ["Advanced"] });
 Graph.prototype.publish("layout", "Circle", "set", "Default Layout", ["Circle", "ForceDirected", "ForceDirected2", "Hierarchy", "None"], { tags: ["Basic"] });

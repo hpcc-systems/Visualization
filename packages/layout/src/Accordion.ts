@@ -1,5 +1,4 @@
-import { HTMLWidget } from "@hpcc-js/common";
-import { FAChar } from "@hpcc-js/common";
+import { FAChar, HTMLWidget } from "@hpcc-js/common";
 
 import "../src/Accordion.css";
 

@@ -17,14 +17,14 @@ export class ComputedMapping extends PropertyExt {
             retVal.push({
                 source: `${prefix}.value`,
                 msg: `Invalid value:  "${this.value()}"`,
-                hint: `expected:  "any"`
+                hint: 'expected:  "any"'
             });
         }
         if (!this.newValue()) {
             retVal.push({
                 source: `${prefix}.newValue`,
                 msg: `Invalid value:  "${this.newValue()}"`,
-                hint: `expected:  "any"`
+                hint: 'expected:  "any"'
             });
         }
         return retVal;
@@ -258,7 +258,7 @@ export class ComputedField extends PropertyExt {
             type: this.type(),
             column1: this.column1(),
             column2: this.column2(),
-            constValue: this.constValue(),
+            constValue: this.constValue()
         });
     }
 
@@ -495,7 +495,7 @@ export class ProjectBase extends Activity {
 
     hash(): string {
         return hashSum({
-            computedFields: this.validComputedFields().map(cf => cf.hash()),
+            computedFields: this.validComputedFields().map(cf => cf.hash())
         });
     }
 

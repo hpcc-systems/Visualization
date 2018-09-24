@@ -100,8 +100,7 @@ export abstract class ITooltip extends Widget {
         return this.tooltip.html(_);
     }
 
-    tooltipFormat(opts) {
-        opts = opts || {};
+    tooltipFormat(opts: { label?: string | number, series?: string | number, value?: Date | string | number } = {}) {
         opts.label = opts.label === undefined ? "" : opts.label;
         opts.series = opts.series || "";
         if (opts.value instanceof Date) {

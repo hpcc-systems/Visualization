@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.1...@hpcc-js/layout@2.1.2) (2018-09-24)
+
+
+### Bug Fixes
+
+* **Carousel:** Carousel should not render when hidden ([4a08063](https://github.com/hpcc-systems/Visualization/commit/4a08063))
+* **layout:** Grid layout not rendering. ([861689b](https://github.com/hpcc-systems/Visualization/commit/861689b))
+
+
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.0...@hpcc-js/layout@2.1.1) (2018-09-10)
 

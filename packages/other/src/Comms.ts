@@ -688,7 +688,7 @@ WsWorkunits.prototype.fetchResult = function (target, callback, skipMapping) {
 
 WsWorkunits.prototype.WUQuery = function (_request, callback) {
     const url = this.getUrl({
-        pathname: "WsWorkunits/WUQuery.json",
+        pathname: "WsWorkunits/WUQuery.json"
     });
     const request = {
         Jobname: _request.jobname,
@@ -713,7 +713,7 @@ WsWorkunits.prototype.WUQuery = function (_request, callback) {
 WsWorkunits.prototype.fetchResultNames = function (callback) {
     if (!this._fetchResultNamesPromise) {
         const url = this.getUrl({
-            pathname: "WsWorkunits/WUInfo.json",
+            pathname: "WsWorkunits/WUInfo.json"
         });
         const request = {
             Wuid: this._wuid,

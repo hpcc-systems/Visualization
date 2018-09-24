@@ -16,7 +16,7 @@
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
   box-sizing: border-box;
-  display: inline;
+  display: inline-block;
   font-size: 10px;
   width: 100%;
   line-height: 1;
@@ -37,9 +37,10 @@
 /* Eastward tooltips */
 .d3-tip.e:after {
   content: "\25C0";
-  margin: -4px 0 0 0;
+  margin: -4px -4px 0 0;
   top: 50%;
   left: -8px;
+  font-size: 16px;
 }
 
 /* Southward tooltips */
@@ -54,9 +55,10 @@
 /* Westward tooltips */
 .d3-tip.w:after {
   content: "\25B6";
-  margin: -4px 0 0 -1px;
+  margin: -4px 0 0 -3px;
   top: 50%;
   left: 100%;
+  font-size: 16px;
 }
 
 .d3-tip.notick:after {

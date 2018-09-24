@@ -1,7 +1,6 @@
 import { Widget } from "@hpcc-js/common";
 import { Button } from "@hpcc-js/form";
-import { Popup } from "@hpcc-js/layout";
-import { Surface } from "@hpcc-js/layout";
+import { Popup, Surface } from "@hpcc-js/layout";
 
 export class FlyoutButton extends Button {
     _popupSurface;
@@ -23,7 +22,7 @@ export class FlyoutButton extends Button {
                     width: 20,
                     padding: "0px 5px",
                     class: "close",
-                    font: "FontAwesome",
+                    font: "FontAwesome"
                 }
             ])
             .on("click", function (ann) {

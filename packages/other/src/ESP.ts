@@ -46,7 +46,7 @@ WsWorkunits.prototype = Object.create(BasicComms.prototype);
 
 WsWorkunits.prototype.wuQuery = function (options) {
     const url = this.getUrl({
-        pathname: "WsWorkunits/WUQuery.json",
+        pathname: "WsWorkunits/WUQuery.json"
     });
     const request = {
         Wuid: "",
@@ -103,7 +103,7 @@ Workunit.prototype = Object.create(BasicComms.prototype);
 
 Workunit.prototype.wuInfo = function (options) {
     const url = this.getUrl({
-        pathname: "WsWorkunits/WUInfo.json",
+        pathname: "WsWorkunits/WUInfo.json"
     });
     const request = {
         Wuid: this._wuid,
@@ -379,7 +379,7 @@ RoxieQuery.prototype.query = function (options, filter) {
     });
 };
 
-function createResult(_espUrl, dataSource, resultName?) {
+export function createResult(_espUrl, dataSource, resultName?) {
     const espUrl = new Comms.ESPUrl()
         .url(_espUrl)
         ;
@@ -393,18 +393,16 @@ function createResult(_espUrl, dataSource, resultName?) {
     return null;
 }
 
-export function enableCache(_) {
+export function enableCache(_?: any): any | undefined {
     if (!arguments.length) return enableBasicCommsCache;
     enableBasicCommsCache = _;
     if (!_) {
         basicCommsCache = {};
     }
-    return this;
 }
-export function cache(_) {
+export function cache(_?: any): any | undefined {
     if (!arguments.length) return basicCommsCache;
     basicCommsCache = _;
-    return this;
 }
 export function createConnection(url) {
     url = url || document.URL;

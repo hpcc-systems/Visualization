@@ -185,7 +185,7 @@ export class GraphAdapter {
             const visualization = element.visualization();
             const mappings = visualization.mappings();
             const mappingVertexID = this.createActivity(prevID, element, view, mappings, "Mappings");
-            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, `Visualization`, { element, view, activity: visualization });
+            const surface: Subgraph = this.createSubgraph(`${mappings.id()}`, "Visualization", { element, view, activity: visualization });
             this.hierarchy.push({
                 parent: this.subgraphMap[view.id()],
                 child: surface

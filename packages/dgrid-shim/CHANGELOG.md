@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.1...@hpcc-js/dgrid-shim@2.0.2) (2018-09-24)
+
+
+### Bug Fixes
+
+* **dgrid:** Maintain scroll pos and pagination on refresh. ([0c15ab4](https://github.com/hpcc-systems/Visualization/commit/0c15ab4))
+
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/dgrid-shim@2.0.0...@hpcc-js/dgrid-shim@2.0.1) (2018-09-01)
 

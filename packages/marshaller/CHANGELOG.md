@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.0...@hpcc-js/marshaller@2.2.1) (2018-09-24)
+
+
+### Bug Fixes
+
+* **marshaller:** Add DDL support to Form ([8c17bf9](https://github.com/hpcc-systems/Visualization/commit/8c17bf9))
+* **marshaller:** Add missing visualizations ([0f65810](https://github.com/hpcc-systems/Visualization/commit/0f65810))
+* **marshaller:** Default to HipieResultRef ([a0fa67f](https://github.com/hpcc-systems/Visualization/commit/a0fa67f))
+
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.1.0...@hpcc-js/marshaller@2.2.0) (2018-09-10)
 

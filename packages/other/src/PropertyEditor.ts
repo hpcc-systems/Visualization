@@ -1,5 +1,4 @@
-import { HTMLWidget, Platform, PropertyExt } from "@hpcc-js/common";
-import { Widget } from "@hpcc-js/common";
+import { HTMLWidget, Platform, PropertyExt, Widget } from "@hpcc-js/common";
 import { Grid } from "@hpcc-js/layout";
 import { local as d3Local, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
 import * as Persist from "./Persist";

@@ -573,7 +573,7 @@ export function parseVersionString(versionString) {
     return {
         major: parseInt(_sp[0].replace("v", "")),
         minor: parseInt(_sp[1]),
-        patch: parseInt(_sp[2].split("-")[0]),
+        patch: parseInt(_sp[2].split("-")[0])
     };
 }
 

@@ -34,7 +34,7 @@ export class Shape extends SVGWidget {
     _prevHash;
     update(_domNode, element) {
         const shape = element.selectAll("rect,circle,ellipse,path").data([this.shape()], function (d) { return d; });
-        const hash = this.hash();
+        const hash = this.hashSum();
         if (this._prevHash !== hash) {
             this._prevHash = hash;
 

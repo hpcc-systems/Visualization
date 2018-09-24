@@ -21,6 +21,7 @@ class DDLUpgrade {
     _ddl: DDL1.IDDL;
     _baseUrl: string;
     _wuid?: string;
+    _toLowerCase: boolean;
 
     _datasources: { [id: string]: DDL1.IAnyDatasource } = {};
     _datasourceUpdates: { [id: string]: { id: string, output?: string } } = {};
@@ -41,13 +42,18 @@ class DDLUpgrade {
         }
     } = {};
 
-    constructor(ddl: DDL1.IDDL, baseUrl: string = "http://localhost:8010", wuid: string = "WUID") {
+    constructor(ddl: DDL1.IDDL, baseUrl: string = "http://localhost:8010", wuid: string = "WUID", toLowerCase = true) {
         this._ddl = ddl;
         this._baseUrl = baseUrl;
         this._wuid = wuid;
+        this._toLowerCase = toLowerCase;
 
         this.indexDDL();
         this.readDDL();
+    }
+
+    toLowerCase(s: string): string {
+        return this._toLowerCase ? s.toLowerCase() : s;
     }
 
     isVizDatasourceRoxie(viz: DDL1.IAnyVisualization): boolean {
@@ -192,25 +198,25 @@ class DDLUpgrade {
                                 case "MAX":
                                     aggrFields.push({
                                         type: this.func2aggr(field.properties.function),
-                                        inFieldID: field.properties.params!.param1,
-                                        fieldID: field.id
+                                        inFieldID: this.toLowerCase(field.properties.params!.param1),
+                                        fieldID: this.toLowerCase(field.id)
                                     } as DDL2.IAggregate);
                                     break;
                                 case "AVE":
                                     aggrFields.push({
                                         type: this.func2aggr(field.properties.function),
-                                        inFieldID: field.properties.params!.param1,
-                                        baseCountFieldID: field.properties.params!.param2 ? field.properties.params!.param2 : undefined,
-                                        fieldID: field.id
+                                        inFieldID: this.toLowerCase(field.properties.params!.param1),
+                                        baseCountFieldID: field.properties.params!.param2 ? this.toLowerCase(field.properties.params!.param2) : undefined,
+                                        fieldID: this.toLowerCase(field.id)
                                     } as DDL2.IAggregate);
                                     break;
                                 case "SCALE":
                                 default:
-                                    groupByColumns.push(field.id);
+                                    groupByColumns.push(this.toLowerCase(field.id));
                                     throw new Error(`Unhandled field function: ${field.properties.function}`);
                             }
                         } else {
-                            groupByColumns.push(field.id);
+                            groupByColumns.push(this.toLowerCase(field.id));
                         }
                     }
                     if (aggrFields.length) {
@@ -264,12 +270,12 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label
+            sourceFieldID: this.toLowerCase(viz.source.mappings.label)
         });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            sourceFieldID: viz.source.mappings.weight[0]
+            sourceFieldID: this.toLowerCase(viz.source.mappings.weight[0])
         });
     }
 
@@ -278,12 +284,12 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: this.anyChoroMapping2label(viz.source.mappings)
+            sourceFieldID: this.toLowerCase(this.anyChoroMapping2label(viz.source.mappings))
         });
         mappings.transformations.push({
             fieldID: "weight",
             type: "=",
-            sourceFieldID: viz.source.mappings.weight[0]
+            sourceFieldID: this.toLowerCase(viz.source.mappings.weight[0])
         });
     }
 
@@ -296,13 +302,13 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: viz.source.mappings.x[0],
             type: "=",
-            sourceFieldID: viz.source.mappings.x[0]
+            sourceFieldID: this.toLowerCase(viz.source.mappings.x[0])
         });
         for (let i = 0; i < viz.source.mappings.y.length; ++i) {
             mappings.transformations.push({
                 fieldID: viz.source.mappings.y[i],
                 type: "=",
-                sourceFieldID: viz.source.mappings.y[i]
+                sourceFieldID: this.toLowerCase(viz.source.mappings.y[i])
             });
         }
     }
@@ -313,7 +319,7 @@ class DDLUpgrade {
             mappings.transformations.push({
                 fieldID: viz.label[i],
                 type: "=",
-                sourceFieldID: viz.source.mappings.value[i]
+                sourceFieldID: this.toLowerCase(viz.source.mappings.value[i])
             });
         }
     }
@@ -333,10 +339,13 @@ class DDLUpgrade {
                         newValue[key] = valueMappings[value][key];
                     }
                 }
-                retVal.push({
-                    value,
-                    newValue
-                });
+                //  remove v1.x "0" annotations as they equated to "nothing"  ---
+                if (!annotation || value !== "0") {
+                    retVal.push({
+                        value,
+                        newValue
+                    });
+                }
             }
         }
         return retVal;
@@ -347,18 +356,18 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "uid",
             type: "=",
-            sourceFieldID: viz.source.mappings.uid
+            sourceFieldID: this.toLowerCase(viz.source.mappings.uid)
         });
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label
+            sourceFieldID: this.toLowerCase(viz.source.mappings.label)
         });
         if (viz.icon.fieldid) {
             mappings.transformations.push({
                 fieldID: "icon",
                 type: "map",
-                sourceFieldID: viz.icon.fieldid,
+                sourceFieldID: this.toLowerCase(viz.icon.fieldid),
                 default: { fachar: faCharFix(viz.icon.faChar) },
                 mappings: this.readGraphEnums(viz.icon.valuemappings)
             });
@@ -370,7 +379,7 @@ class DDLUpgrade {
                     mappings.transformations.push({
                         fieldID: `annotation_${idx++}`,
                         type: "map",
-                        sourceFieldID: flag.fieldid,
+                        sourceFieldID: this.toLowerCase(flag.fieldid),
                         default: {},
                         mappings: this.readGraphEnums(flag.valuemappings, true)
                     });
@@ -380,11 +389,11 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "links",
             type: "=",
-            sourceFieldID: viz.source.link.childfile,
+            sourceFieldID: this.toLowerCase(viz.source.link.childfile),
             transformations: [{
                 fieldID: "uid",
                 type: "=",
-                sourceFieldID: viz.source.link.mappings.uid
+                sourceFieldID: this.toLowerCase(viz.source.link.mappings.uid)
             }]
         });
     }
@@ -394,7 +403,7 @@ class DDLUpgrade {
         mappings.transformations.push({
             fieldID: "label",
             type: "=",
-            sourceFieldID: viz.source.mappings.label
+            sourceFieldID: this.toLowerCase(viz.source.mappings.label)
         });
     }
 
@@ -412,8 +421,8 @@ class DDLUpgrade {
                                     for (const key in update.mappings) {
                                         otherViz.datasource.request.push({
                                             source: viz.id,
-                                            remoteFieldID: key,
-                                            localFieldID: update.mappings[key]
+                                            remoteFieldID: this.toLowerCase(key),
+                                            localFieldID: this.toLowerCase(update.mappings[key])
                                         } as DDL2.IRequestField);
                                     }
                                 } else {
@@ -428,8 +437,8 @@ class DDLUpgrade {
                                             console.log("Select Mapping " + mapping + " in viz " + viz.id + " not found in filters for " + otherViz.id);
                                         } else {
                                             condition.mappings.push({
-                                                remoteFieldID: key,
-                                                localFieldID: update.mappings[key],
+                                                remoteFieldID: this.toLowerCase(key),
+                                                localFieldID: this.toLowerCase(update.mappings[key]),
                                                 condition: this.rule2condition(dsFilter.rule),
                                                 nullable: dsFilter.nullable
                                             });
@@ -464,12 +473,12 @@ class DDLUpgrade {
                         vizSort.conditions = ((viz as any).source.sort as string[]).map(s => {
                             if (s.indexOf("-") === 0) {
                                 return {
-                                    fieldID: s.substr(1),
+                                    fieldID: this.toLowerCase(s.substr(1)),
                                     descending: true
                                 } as DDL2.ISortCondition;
                             }
                             return {
-                                fieldID: s,
+                                fieldID: this.toLowerCase(s),
                                 descending: false
                             } as DDL2.ISortCondition;
                         });
@@ -680,7 +689,7 @@ class DDLUpgrade {
     }
 }
 
-export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string): DDL2.Schema {
-    const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid);
+export function upgrade(ddl: DDL1.IDDL, baseUrl?: string, wuid?: string, toLowerCase: boolean = true): DDL2.Schema {
+    const ddlUp = new DDLUpgrade(ddl, baseUrl, wuid, toLowerCase);
     return ddlUp.write();
 }

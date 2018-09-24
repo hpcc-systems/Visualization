@@ -1,5 +1,4 @@
-import { SVGWidget } from "@hpcc-js/common";
-import { PropertyExt } from "@hpcc-js/common";
+import { PropertyExt, SVGWidget } from "@hpcc-js/common";
 import { event as d3Event, select as d3Select, selectAll as d3SelectAll } from "d3-selection";
 
 import "../src/Opportunity.css";
@@ -88,8 +87,8 @@ export interface ColumnDropdown {
     ColumnDropdownList(): string;
     ColumnDropdownList(_: string): this;
 }
-ColumnDropdown.prototype.publish("columnIndex", null, "number", "Column index for display context data based on column dropdown list selction", {}, { tags: ["Basic", "Shared"], });
-ColumnDropdown.prototype.publish("ColumnDropdownList", null, "set", "column value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true, });
+ColumnDropdown.prototype.publish("columnIndex", null, "number", "Column index for display context data based on column dropdown list selction", {}, { tags: ["Basic", "Shared"] });
+ColumnDropdown.prototype.publish("ColumnDropdownList", null, "set", "column value of a table", function () { return this._owner ? this._owner.getIds() : []; }, { tags: ["Basic"], optional: true });
 
 export class Opportunity extends SVGWidget {
     groupCount;

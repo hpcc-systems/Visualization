@@ -161,7 +161,7 @@ export function post(opts: IOptions, action: string, request: any, responseType:
         method: "post",
         body: serializeRequest(request)
     }, {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded"
     } as any, responseType);
 }
 

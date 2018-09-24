@@ -5,10 +5,10 @@ import { ESPExceptions } from "../espConnection";
 import { SMCActivity } from "../services/wsSMC";
 import * as WsTopology from "../services/wsTopology";
 import * as WsWorkunits from "../services/wsWorkunits";
-import { createXGMMLGraph, ECLGraph, GraphCache, XGMMLGraph, XGMMLVertex } from "./graph";
+import { createGraph, createXGMMLGraph, ECLGraph, GraphCache, ScopeGraph, XGMMLGraph, XGMMLVertex } from "./graph";
 import { Resource } from "./resource";
 import { Result, ResultCache } from "./result";
-import { Scope } from "./scope";
+import { BaseScope, Scope } from "./scope";
 import { SourceFile } from "./sourceFile";
 import { Timer } from "./timer";
 
@@ -571,6 +571,46 @@ export class Workunit extends StateObject<UWorkunitState, IWorkunitState> implem
             }
 
             return retVal;
+        });
+    }
+
+    fetchGraphDetails(graphIDs: string[] = [], rootTypes: string[]): Promise<BaseScope[]> {
+        return this.fetchDetails({
+            ScopeFilter: {
+                MaxDepth: 999999,
+                Ids: graphIDs,
+                ScopeTypes: rootTypes
+            },
+            NestedFilter: {
+                Depth: 999999,
+                ScopeTypes: ["graph", "subgraph", "activity", "edge"]
+            },
+            PropertiesToReturn: {
+                AllStatistics: true,
+                AllAttributes: true,
+                AllHints: true,
+                AllProperties: true,
+                AllScopes: true
+            },
+            ScopeOptions: {
+                IncludeId: true,
+                IncludeScope: true,
+                IncludeScopeType: true
+            },
+            PropertyOptions: {
+                IncludeName: true,
+                IncludeRawValue: true,
+                IncludeFormatted: true,
+                IncludeMeasure: true,
+                IncludeCreator: false,
+                IncludeCreatorType: false
+            }
+        });
+    }
+
+    fetchScopeGraphs(graphIDs: string[] = []): Promise<ScopeGraph> {
+        return this.fetchGraphDetails(graphIDs, ["graph"]).then((scopes) => {
+            return createGraph(scopes);
         });
     }
 

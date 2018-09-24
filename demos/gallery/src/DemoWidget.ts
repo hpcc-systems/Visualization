@@ -29,8 +29,9 @@ export class DemoWidget extends HTMLWidget {
             .style("height", `${this.height()}px`)
             ;
 
-        if (window["cm_editor"].text() && this._prevJS !== window["cm_editor"].text()) {
-            this._prevJS = window["cm_editor"].text();
+        const js = window["cm_editor"].text();
+        if (window["cm_editor"].text() && this._prevJS !== js) {
+            this._prevJS = js;
             this._sampleDiv.text("");
             const loading = this._sampleDiv.append("div").text("...loading...");
             System.registry.delete(System.normalizeSync(`cm_editor_${this._errCount}!./plugins/cm.js`));

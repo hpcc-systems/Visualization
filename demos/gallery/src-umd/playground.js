@@ -30,7 +30,6 @@ var __extends = (this && this.__extends) || (function () {
         __extends(App, _super);
         function App(path) {
             var _this = _super.call(this) || this;
-            _this._skipUpdate = false;
             _this._editor = new codemirror_1.JSEditor()
                 .on("changes", function (changes) {
                 _this.changed(_this._editor);
@@ -52,12 +51,14 @@ var __extends = (this && this.__extends) || (function () {
         App.prototype.load = function (fileName) {
             var _this = this;
             System.import("./samples/" + fileName + ".js!./plugins/text.js").then(function (text) {
+                _this._demo._prevJS = text;
                 _this._editor.text(text);
             });
         };
         App.prototype.loadPath = function (fileName) {
             var _this = this;
             System.import(fileName + "!./plugins/text.js").then(function (text) {
+                _this._demo._prevJS = text;
                 _this._editor.text(text);
             });
         };
@@ -69,12 +70,7 @@ var __extends = (this && this.__extends) || (function () {
                         .render();
                     break;
                 case this._editor:
-                    if (this._skipUpdate) {
-                        this._skipUpdate = false;
-                    }
-                    else {
-                        this._demo.lazyRender();
-                    }
+                    this._demo.lazyRender();
                     break;
                 case this._propEditor:
                     if (this._editor.hasFocus()) {
@@ -131,8 +127,8 @@ var __extends = (this && this.__extends) || (function () {
                     srcCodeLines.splice(renderIdx, 0, "    ." + key + "(" + JSON.stringify(props[key]) + ")");
                 }
             }
-            this._skipUpdate = true;
-            this._editor.text(srcCodeLines.join("\n"));
+            this._demo._prevJS = srcCodeLines.join("\n");
+            this._editor.text(this._demo._prevJS);
         };
         return App;
     }(phosphor_1.DockPanel));

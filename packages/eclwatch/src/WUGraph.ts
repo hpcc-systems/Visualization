@@ -161,7 +161,7 @@ export class WUGraph extends ChartPanel {
             baseUrl: this.baseUrl(),
             wuid: this.wuid(),
             graphID: this.graphID(),
-            subgraphID: this.subgraphID(),
+            subgraphID: this.subgraphID()
         });
         if (!this._prevScopeGraph || this._prevHashSum !== hash) {
             this.startProgress();

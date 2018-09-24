@@ -135,18 +135,27 @@ export class Subgraph extends SVGWidget {
             .render()
             ;
     }
-
-    border_colorStroke: { (): string; (_: string): Subgraph; };
-    border_colorFill: { (): string; (_: string): Subgraph; };
-    border_colorFill_exists: () => boolean;
-    showTitle: { (): boolean; (_: boolean): Subgraph; };
-    title: { (): string; (_: string): Subgraph; };
-    titleFontSize: { (): string; (_: string): Subgraph; };
-    title_colorFill: { (): string; (_: string): Subgraph; };
-    title_colorFill_exists: () => boolean;
-    showMinMax: { (): boolean; (_: boolean): Subgraph; };
 }
 Subgraph.prototype._class += " graph_Subgraph";
+
+export interface Subgraph {
+    border_colorStroke(): string;
+    border_colorStroke(_: string): this;
+    border_colorFill(): string;
+    border_colorFill(_: string): this;
+    border_colorFill_exists: () => boolean;
+    showTitle(): boolean;
+    showTitle(_: boolean): this;
+    title(): string;
+    title(_: string): this;
+    titleFontSize(): string;
+    titleFontSize(_: string): this;
+    title_colorFill(): string;
+    title_colorFill(_: string): this;
+    title_colorFill_exists: () => boolean;
+    showMinMax(): boolean;
+    showMinMax(_: boolean): this;
+}
 
 Subgraph.prototype.publish("border_colorStroke", null, "html-color", "Stroke Color", null, { optional: true });
 Subgraph.prototype.publish("border_colorFill", null, "html-color", "Fill Color", null, { optional: true });

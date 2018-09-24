@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.1.1...@hpcc-js/chart@2.1.2) (2018-09-24)
+
+
+### Bug Fixes
+
+* **hexbin:** Tooltip missing label and series information ([a38805a](https://github.com/hpcc-systems/Visualization/commit/a38805a))
+* Add standard click events to RadialBar.ts ([4fc0162](https://github.com/hpcc-systems/Visualization/commit/4fc0162)), closes [#2863](https://github.com/hpcc-systems/Visualization/issues/2863)
+
+
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.1.0...@hpcc-js/chart@2.1.1) (2018-09-10)
 

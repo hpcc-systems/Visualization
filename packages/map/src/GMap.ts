@@ -375,7 +375,7 @@ export class GMap extends HTMLWidget {
         if (arguments.length && this._googleMapNode) {
             this._googleMapNode.style({
                 width: _.width + "px",
-                height: _.height + "px",
+                height: _.height + "px"
             });
             google.maps.event.trigger(this._googleMap, "resize");
         }
@@ -652,7 +652,7 @@ export class GMap extends HTMLWidget {
             animation: google.maps.Animation.DROP,
             title: pinObj.title || "",
             icon: this.createIcon(pinObj),
-            map: this._googleMap,
+            map: this._googleMap
         });
     }
 

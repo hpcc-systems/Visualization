@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.2.0...@hpcc-js/demo-gallery@2.3.0) (2018-09-24)
+
+
+### Bug Fixes
+
+* **dgrid:** Maintain scroll pos and pagination on refresh. ([0c15ab4](https://github.com/GordonSmith/Visualization/commit/0c15ab4))
+
+
+### Features
+
+* **gallery:** dir2json now parses imports ([dbab841](https://github.com/GordonSmith/Visualization/commit/dbab841))
+
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.1.0...@hpcc-js/demo-gallery@2.2.0) (2018-09-10)
 

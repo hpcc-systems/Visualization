@@ -1,0 +1,251 @@
+$lighterGrey: #f0f0f0
+$lightGrey: #eeeeee
+$darkGrey: #e1e1e1
+$darkerGrey: #d7d7d7
+$darkestGrey: #6c757d
+$darkestColor: #212529
+$hpccBlue: #179BD7
+$p: 6px
+$fontFamily: 'Open Sans'
+$search_height: ($p * 8) + 1px
+$listlabel_height: $search_height * 0.618
+$topnav_height: $search_height
+$leftnav_width: $p * 40
+$lefttab_size: $p * 8
+$radius: $p / 2
+$leftside_width: $leftnav_width + $lefttab_size
+$search_input_width: $leftnav_width - $p - $lefttab_size
+#content
+    width: calc(100% - #{$leftside_width})
+    position: fixed
+    right: 0
+    top: $search_height
+    height: calc(100vh - #{$topnav_height})
+    iframe
+        height: 100vh
+        width: 100%
+        border: 0
+#content.collapsed-nav
+    width: calc(100% - #{$lefttab_size})
+body
+    margin: 0
+    font-family: $fontFamily
+#logo
+    position: fixed
+    top: 0
+    left: 0
+    width: $lefttab_size
+    height: $lefttab_size
+    color: $darkerGrey
+    font-size: $p * 3
+    background-color: white
+#left-tabs
+    float: left
+    margin-top: $search_height
+    width: $lefttab_size
+    div
+        cursor: pointer
+        padding-top: $p
+        text-align: center
+        font-size: $lefttab_size - ($p * 2)
+        line-height: $lefttab_size - $p
+        width: $lefttab_size
+        height: $lefttab_size
+        border: 0
+        margin-top: $p
+        // border-top-right-radius: $radius
+        // border-bottom-right-radius: $radius
+        color: $darkestGrey
+        transform: width 400ms
+        white-space: nowrap
+        overflow: hidden
+        i, span
+            display: inline-block
+            position: relative
+            left: $p
+            top: -($p * 0.7)
+        span
+            left: $p * 2
+            visibility: hidden
+    div:hover
+        // overflow: visible
+        i
+            top: -1px
+        span
+            background-color: $darkestGrey
+            color: white
+            padding: 0 ($p*2) 0 ($p*2)
+            font-size: $p * 3
+            border-radius: $p
+            position: relative
+            // visibility: visible
+    div.selected
+        width: $lefttab_size + 1px
+        position: relative
+        top: 0px
+        left: -1px
+        // border: 1px solid $darkerGrey
+        border-left: 1px solid $lightGrey
+        background-color: $lightGrey
+#left-nav
+    background-color: $lightGrey
+    width: $leftnav_width
+    height: 100vh
+    float: left
+    opacity: 1
+    transition: 400ms width, 400ms opacity
+    #search
+        background-color: $darkGrey
+        border-bottom: 1px solid $darkerGrey
+        width: 100%
+        height: $search_height
+        #search-icon
+            position: fixed
+            left: ($p * 2) + $lefttab_size
+            top: ($p * 3) - 3px
+            color: $darkerGrey
+            font-size: $p * 3
+        input
+            width: $search_input_width
+            margin: 0
+            height: $p * 6
+            position: fixed
+            top: $p
+            left: $p + $lefttab_size
+            border-radius: $radius
+            border: 1px solid $darkerGrey
+            padding-left: $p * 6
+    #list-label
+        height: $p * 5
+        width: 100%
+        padding: $p
+        font-weight: bold
+        text-transform: uppercase
+    #list
+        >.list-item
+            background-color: $lightGrey
+    #list
+        height: calc(100vh - #{$search_height + $listlabel_height})
+        overflow: visible
+        .list-item.click_class
+            text-decoration: underline
+        .list-item
+            white-space: nowrap
+            padding: 0 $p 0 0
+            margin-top: $p
+            color: $darkestColor
+            overflow: hidden
+            .list-item-label
+                display: inline-block
+                position: relative
+                top: 1px
+                left: $p
+            .list-item-spacer
+                display: inline-block
+                width: $p * 4
+            .list-item.empty-search
+                display: none
+            .list-item-icon-btn
+                margin-left: $p
+                width: $p * 3
+                height: $p * 3
+                font-size: $p * 1.4
+                box-shadow: 0 0
+                border-radius: $p * 10
+            .list-item-icon-btn:before
+                position: relative
+                top: -2px
+                left: -1px
+                font-size: $p * 2
+            .list-item-label-btn
+                margin: 0 0 0 $p
+                min-width: calc(62% - #{($p * 6)})
+                max-width: calc(100% - #{($p * 6)})
+                text-align: left
+                line-height: ($p * 3) - 2px
+                height: $p * 3
+                padding: 0 $p 0 $p
+                box-shadow: 0 0
+                background-color: $darkestGrey
+        .list-item.list-endpoint
+            >.list-item-label-btn
+                background-color: $hpccBlue
+        .list-item:hover
+            overflow: visible
+        .list-item.list-endpoint:hover
+            span
+                background-color: $lightGrey
+        .list-item
+            >.list-item.list-endpoint
+                overflow: visible
+                span
+                    background-color: $lightGrey
+        .list-item.selected
+            >.list-item-icon-btn
+                transform: rotate(90deg)
+            >.list-item
+                display: block
+                margin-left: $p * 2
+                text-overflow: ellipsis
+        .list-endpoint
+            text-decoration: underline
+        .search-hidden
+            display: none
+        .search-shown
+            display: block
+#left-nav.collapsed
+    width: 0
+    opacity: 0
+#collapse-icon
+    position: fixed
+    left: ($p * 2) + $lefttab_size + $search_input_width
+    top: $p
+    color: $darkestGrey
+    font-size: $p * 6
+    line-height: ($p * 6) - 2px
+    height: $p * 6
+    width: $p * 6
+    text-align: center
+    transform: rotate(0deg)
+    transition: 400ms all
+#collapse-icon.collapsed
+    transform: rotate(-180deg)
+    left: $lefttab_size + $p
+#collapse-icon:hover
+    cursor: pointer
+    background-color: $darkerGrey
+    border-radius: $p * 50
+#breadcrumbs
+    position: fixed
+    top: 0
+    right: 0
+    left: $leftnav_width + $lefttab_size
+    height: $search_height
+    background-color: $darkGrey
+    transition: 400ms left
+    padding: $p
+    span
+        color: $hpccBlue
+#breadcrumbs.collapsed-nav
+    left: $lefttab_size
+    >#breadcrumbs-list
+        margin-left: $lefttab_size
+#breadcrumbs-list
+    line-height: $topnav_height
+    position: relative
+    top: $p * -0.5
+    >button
+        float: left
+        font-size: $p * 3
+    >button:disabled
+        color: $darkestColor
+        opacity: 1
+    >div
+        float: left
+    >div.breadcrumbs-spacer
+        margin-left: $p * 2
+        margin-right: $p * 2
+        margin-top: $p * -1
+    >div.breadcrumbs-spacer:before
+        content: "/"
+        position: relative

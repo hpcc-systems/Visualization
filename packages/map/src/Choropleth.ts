@@ -124,6 +124,10 @@ export class Choropleth extends Layer {
             this._prevProjection = base.projection();
             this._prevInternalOnly = this.internalOnly();
         }
+        this._choropleth
+            .style("stroke-width", this.meshStrokeWidth())
+            .style("stroke", this.meshColor())
+            ;
     }
 
     layerExit(base) {

@@ -17,24 +17,44 @@ var config = {
               {
                 "path": "./samples/chart/Area/Area.js",
                 "name": "Area.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Area"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Area/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Area"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Area/SmoothArea.js",
                 "name": "SmoothArea.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Area"
+                  ]
+                }
               }
             ]
           },
           {
             "path": "./samples/chart/Bar.js",
             "name": "Bar.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Bar"
+              ]
+            }
           },
           {
             "path": "./samples/chart/BubbleXY",
@@ -44,19 +64,34 @@ var config = {
               {
                 "path": "./samples/chart/BubbleXY/Area.js",
                 "name": "Area.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "BubbleXY"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/BubbleXY/BubbleXY.js",
                 "name": "BubbleXY.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "BubbleXY"
+                  ]
+                }
               }
             ]
           },
           {
             "path": "./samples/chart/Bullet.js",
             "name": "Bullet.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Bullet"
+              ]
+            }
           },
           {
             "path": "./samples/chart/Column",
@@ -66,27 +101,52 @@ var config = {
               {
                 "path": "./samples/chart/Column/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Column/Column Focus.js",
                 "name": "Column Focus.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Column/Column.js",
                 "name": "Column.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Column/Rotated.js",
                 "name": "Rotated.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Column/Stacked.js",
                 "name": "Stacked.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ]
+                }
               }
             ]
           },
@@ -98,22 +158,48 @@ var config = {
               {
                 "path": "./samples/chart/Contour/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "d3-random\r": [
+                    "randomNormal"
+                  ],
+                  "d3-array\r": [
+                    "range"
+                  ],
+                  "@hpcc-js/chart\r": [
+                    "Contour"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Contour/Contour Focus.js",
                 "name": "Contour Focus.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Contour"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Contour/Contour.js",
                 "name": "Contour.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Contour"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Contour/Outline.js",
                 "name": "Outline.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Contour"
+                  ]
+                }
               }
             ]
           },
@@ -125,12 +211,22 @@ var config = {
               {
                 "path": "./samples/chart/Gantt/Gantt II.js",
                 "name": "Gantt II.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Gantt"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Gantt/Gantt.js",
                 "name": "Gantt.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Gantt"
+                  ]
+                }
               }
             ]
           },
@@ -142,17 +238,38 @@ var config = {
               {
                 "path": "./samples/chart/Hex Bin/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "HexBin"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Hex Bin/Random Data II.js",
                 "name": "Random Data II.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "HexBin"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Hex Bin/Random Data.js",
                 "name": "Random Data.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "d3-random\r": [
+                    "randomNormal"
+                  ],
+                  "d3-array\r": [
+                    "range"
+                  ],
+                  "@hpcc-js/chart\r": [
+                    "HexBin"
+                  ]
+                }
               }
             ]
           },
@@ -164,24 +281,63 @@ var config = {
               {
                 "path": "./samples/chart/Layered/Column, Area and Step.js",
                 "name": "Column, Area and Step.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Area",
+                    "Column",
+                    "Step",
+                    "XYAxis"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Layered/Contour and Scatter.js",
                 "name": "Contour and Scatter.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Contour",
+                    "Scatter",
+                    "XYAxis"
+                  ],
+                  "d3-random\r": [
+                    "randomNormal"
+                  ],
+                  "d3-array\r": [
+                    "range"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Layered/Hex Bin and Scatter.js",
                 "name": "Hex Bin and Scatter.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "HexBin",
+                    "Scatter",
+                    "XYAxis"
+                  ],
+                  "d3-random\r": [
+                    "randomNormal"
+                  ],
+                  "d3-array\r": [
+                    "range"
+                  ]
+                }
               }
             ]
           },
           {
             "path": "./samples/chart/Line.js",
             "name": "Line.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Line"
+              ]
+            }
           },
           {
             "path": "./samples/chart/Pie",
@@ -191,22 +347,42 @@ var config = {
               {
                 "path": "./samples/chart/Pie/Donut II.js",
                 "name": "Donut II.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Pie"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Pie/Donut III.js",
                 "name": "Donut III.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Pie"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Pie/Donut.js",
                 "name": "Donut.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Pie"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Pie/Pie.js",
                 "name": "Pie.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Pie"
+                  ]
+                }
               }
             ]
           },
@@ -218,24 +394,44 @@ var config = {
               {
                 "path": "./samples/chart/Radar/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Radar"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Radar/Hex.js",
                 "name": "Hex.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Radar"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Radar/West World.js",
                 "name": "West World.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Radar"
+                  ]
+                }
               }
             ]
           },
           {
             "path": "./samples/chart/Radial Bar.js",
             "name": "Radial Bar.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "RadialBar"
+              ]
+            }
           },
           {
             "path": "./samples/chart/Scatter",
@@ -245,34 +441,70 @@ var config = {
               {
                 "path": "./samples/chart/Scatter/Scatter II.js",
                 "name": "Scatter II.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Scatter"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Scatter/Scatter.js",
                 "name": "Scatter.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "d3-random\r": [
+                    "randomNormal"
+                  ],
+                  "d3-array\r": [
+                    "range"
+                  ],
+                  "@hpcc-js/chart\r": [
+                    "Scatter"
+                  ]
+                }
               },
               {
                 "path": "./samples/chart/Scatter/Sized Scatter.js",
                 "name": "Sized Scatter.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Scatter"
+                  ]
+                }
               }
             ]
           },
           {
             "path": "./samples/chart/Step.js",
             "name": "Step.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Step"
+              ]
+            }
           },
           {
             "path": "./samples/chart/Summary.js",
             "name": "Summary.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Summary"
+              ]
+            }
           },
           {
             "path": "./samples/chart/SummaryC.js",
             "name": "SummaryC.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "SummaryC"
+              ]
+            }
           }
         ]
       },
@@ -289,7 +521,13 @@ var config = {
               {
                 "path": "./samples/geospatial/Choropleth/Countries.js",
                 "name": "Countries.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ChoroplethCountries",
+                    "topoJsonFolder"
+                  ]
+                }
               },
               {
                 "path": "./samples/geospatial/Choropleth/Europe",
@@ -299,19 +537,46 @@ var config = {
                   {
                     "path": "./samples/geospatial/Choropleth/Europe/British Isles.js",
                     "name": "British Isles.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "Layered",
+                        "TopoJSONChoropleth",
+                        "topoJsonFolder"
+                      ]
+                    }
                   },
                   {
                     "path": "./samples/geospatial/Choropleth/Europe/West Europe.js",
                     "name": "West Europe.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "Layered",
+                        "TopoJSONChoropleth",
+                        "topoJsonFolder"
+                      ]
+                    }
                   }
                 ]
               },
               {
                 "path": "./samples/geospatial/Choropleth/Layered.js",
                 "name": "Layered.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ChoroplethContinents",
+                    "ChoroplethCounties",
+                    "ChoroplethCountries",
+                    "ChoroplethStates",
+                    "GeoHash",
+                    "Graph",
+                    "Graticule",
+                    "Layered",
+                    "topoJsonFolder"
+                  ]
+                }
               },
               {
                 "path": "./samples/geospatial/Choropleth/USA",
@@ -321,22 +586,51 @@ var config = {
                   {
                     "path": "./samples/geospatial/Choropleth/USA/Counties.js",
                     "name": "Counties.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "ChoroplethCounties",
+                        "topoJsonFolder"
+                      ]
+                    }
                   },
                   {
                     "path": "./samples/geospatial/Choropleth/USA/Pins.js",
                     "name": "Pins.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "ChoroplethStates",
+                        "Graticule",
+                        "Pins",
+                        "Layered",
+                        "topoJsonFolder"
+                      ]
+                    }
                   },
                   {
                     "path": "./samples/geospatial/Choropleth/USA/States and Counties.js",
                     "name": "States and Counties.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "ChoroplethCounties",
+                        "ChoroplethStates",
+                        "Layered",
+                        "topoJsonFolder"
+                      ]
+                    }
                   },
                   {
                     "path": "./samples/geospatial/Choropleth/USA/States.js",
                     "name": "States.js",
-                    "type": "file"
+                    "type": "file",
+                    "imports": {
+                      "@hpcc-js/map\r": [
+                        "ChoroplethStates",
+                        "topoJsonFolder"
+                      ]
+                    }
                   }
                 ]
               }
@@ -350,17 +644,40 @@ var config = {
               {
                 "path": "./samples/geospatial/Google Maps/Layered.js",
                 "name": "Layered.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "ChoroplethContinents",
+                    "ChoroplethCounties",
+                    "ChoroplethCountries",
+                    "ChoroplethStates",
+                    "GeoHash",
+                    "Graph",
+                    "Graticule",
+                    "GMapLayered",
+                    "topoJsonFolder"
+                  ]
+                }
               },
               {
                 "path": "./samples/geospatial/Google Maps/Pin Lines.js",
                 "name": "Pin Lines.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "GMapPinLine"
+                  ]
+                }
               },
               {
                 "path": "./samples/geospatial/Google Maps/Pins.js",
                 "name": "Pins.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/map\r": [
+                    "GMapPin"
+                  ]
+                }
               }
             ]
           }
@@ -374,27 +691,67 @@ var config = {
           {
             "path": "./samples/graph/Custom Colors.js",
             "name": "Custom Colors.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Edge",
+                "Graph",
+                "Subgraph",
+                "Vertex"
+              ]
+            }
           },
           {
             "path": "./samples/graph/Les Miserables.js",
             "name": "Les Miserables.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
+              ]
+            }
           },
           {
             "path": "./samples/graph/Restyle.js",
             "name": "Restyle.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
+              ]
+            }
           },
           {
             "path": "./samples/graph/Sankey.js",
             "name": "Sankey.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Sankey",
+                "SankeyColumn"
+              ]
+            }
           },
           {
             "path": "./samples/graph/SankeyValues.js",
             "name": "SankeyValues.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/graph\r": [
+                "Sankey",
+                "SankeyColumn"
+              ]
+            }
           }
         ]
       },
@@ -406,22 +763,68 @@ var config = {
           {
             "path": "./samples/layout/Carousel.js",
             "name": "Carousel.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Column",
+                "Pie",
+                "Line",
+                "Step"
+              ],
+              "@hpcc-js/layout\r": [
+                "Carousel"
+              ]
+            }
           },
           {
             "path": "./samples/layout/Chart Panel.js",
             "name": "Chart Panel.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Column"
+              ],
+              "@hpcc-js/layout\r": [
+                "ChartPanel"
+              ]
+            }
           },
           {
             "path": "./samples/layout/Dock Panel.js",
             "name": "Dock Panel.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Area",
+                "Line",
+                "Bubble"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "DockPanel"
+              ]
+            }
           },
           {
             "path": "./samples/layout/Splitters.js",
             "name": "Splitters.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Contour",
+                "HexBin",
+                "Scatter",
+                "XYAxis"
+              ],
+              "@hpcc-js/phosphor\r": [
+                "DockPanel"
+              ],
+              "d3-random\r": [
+                "randomNormal"
+              ],
+              "d3-array\r": [
+                "range"
+              ]
+            }
           }
         ]
       },
@@ -433,17 +836,32 @@ var config = {
           {
             "path": "./samples/misc/Bubble.js",
             "name": "Bubble.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Bubble"
+              ]
+            }
           },
           {
             "path": "./samples/misc/Mini Gantt.js",
             "name": "Mini Gantt.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/timeline\r": [
+                "MiniGantt"
+              ]
+            }
           },
           {
             "path": "./samples/misc/Word Cloud.js",
             "name": "Word Cloud.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "WordCloud"
+              ]
+            }
           }
         ]
       },
@@ -460,22 +878,63 @@ var config = {
               {
                 "path": "./samples/palette/Ordinal/Basic.js",
                 "name": "Basic.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ],
+                  "@hpcc-js/common\r": [
+                    "Palette"
+                  ]
+                }
               },
               {
                 "path": "./samples/palette/Ordinal/Chart Panel.js",
                 "name": "Chart Panel.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/common\r": [
+                    "Palette"
+                  ],
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ],
+                  "@hpcc-js/layout\r": [
+                    "ChartPanel"
+                  ]
+                }
               },
               {
                 "path": "./samples/palette/Ordinal/Runtime.js",
                 "name": "Runtime.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ],
+                  "@hpcc-js/layout\r": [
+                    "ChartPanel"
+                  ]
+                }
               },
               {
                 "path": "./samples/palette/Ordinal/Shared.js",
                 "name": "Shared.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/common\r": [
+                    "Palette"
+                  ],
+                  "@hpcc-js/chart\r": [
+                    "Pie",
+                    "Bubble",
+                    "Column",
+                    "Bar"
+                  ],
+                  "@hpcc-js/phosphor\r": [
+                    "DockPanel"
+                  ]
+                }
               }
             ]
           }
@@ -489,12 +948,33 @@ var config = {
           {
             "path": "./samples/table/Basic.js",
             "name": "Basic.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/dgrid\r": [
+                "Table"
+              ]
+            }
           },
           {
-            "path": "./samples/table/Coloured.js",
-            "name": "Coloured.js",
-            "type": "file"
+            "path": "./samples/table/Colored Cells.js",
+            "name": "Colored Cells.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/dgrid\r": [
+                "ColumnFormat",
+                "Table"
+              ]
+            }
+          },
+          {
+            "path": "./samples/table/Nested Data.js",
+            "name": "Nested Data.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/dgrid\r": [
+                "Table"
+              ]
+            }
           }
         ]
       },
@@ -511,7 +991,12 @@ var config = {
               {
                 "path": "./samples/tree/Circle Packing/Circle Packing.js",
                 "name": "Circle Packing.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "CirclePacking"
+                  ]
+                }
               }
             ]
           },
@@ -523,12 +1008,22 @@ var config = {
               {
                 "path": "./samples/tree/Dendrogram/Circular.js",
                 "name": "Circular.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "Dendrogram"
+                  ]
+                }
               },
               {
                 "path": "./samples/tree/Dendrogram/Dendrogram.js",
                 "name": "Dendrogram.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "Dendrogram"
+                  ]
+                }
               }
             ]
           },
@@ -540,7 +1035,12 @@ var config = {
               {
                 "path": "./samples/tree/Indented/Indented.js",
                 "name": "Indented.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "Indented"
+                  ]
+                }
               }
             ]
           },
@@ -552,7 +1052,12 @@ var config = {
               {
                 "path": "./samples/tree/Sunburst/Sunburst.js",
                 "name": "Sunburst.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "SunburstPartition"
+                  ]
+                }
               }
             ]
           },
@@ -564,12 +1069,22 @@ var config = {
               {
                 "path": "./samples/tree/Tree Map/Tree Map II.js",
                 "name": "Tree Map II.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "'@hpcc-js/tree'\r": [
+                    "Treemap"
+                  ]
+                }
               },
               {
                 "path": "./samples/tree/Tree Map/Tree Map.js",
                 "name": "Tree Map.js",
-                "type": "file"
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/tree\r": [
+                    "Treemap"
+                  ]
+                }
               }
             ]
           }
@@ -583,12 +1098,22 @@ var config = {
           {
             "path": "./samples/widget/Gauge.js",
             "name": "Gauge.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Gauge"
+              ]
+            }
           },
           {
             "path": "./samples/widget/Text Box.js",
             "name": "Text Box.js",
-            "type": "file"
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "TextBox"
+              ]
+            }
           }
         ]
       }

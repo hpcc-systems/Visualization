@@ -95,7 +95,10 @@ function flatten_sample_config(d) {
         if (d.type === "file") {
             all_config_samples.push({
                 path: d.path,
-                name: d.name
+                name: d.name,
+                imports: Object.keys(d.imports).reduce((acc, module_name)=>{
+                    return acc.concat(d.imports[module_name]);
+                },[])
             });
         } else if (d.type === "folder") {
             all_config_folders[d.path] = {
@@ -168,11 +171,13 @@ function gallery_iframe_arr_html(path_arr) {
     })
     return $div.html();
 }
-function get_widget_sample_paths(w, prefix) {
-    prefix = prefix ? prefix : '';
-    return all_config_samples.map(sample => prefix + sample.path).filter(path => {
-        return path.indexOf(w) > -1;
-    });
+function get_widget_sample_paths(w) {
+    return all_config_samples
+        .filter(sample_obj => {
+            return sample_obj.imports.indexOf(w) !== -1;
+        })
+        .map(sample=>sample.path)
+        ;
 }
 function samples_breadcrumbs_html(meta) {
     let full_path = meta ? meta.replace('./', '') : '';

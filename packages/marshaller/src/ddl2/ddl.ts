@@ -1,8 +1,8 @@
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { scopedLogger } from "@hpcc-js/util";
-import { Activity, ActivityPipeline, ReferencedFields } from "./activities/activity";
+import { ActivityPipeline, ReferencedFields } from "./activities/activity";
 import { Databomb, Form } from "./activities/databomb";
-import { DatasourceRef, DatasourceType } from "./activities/datasource";
+import { DatasourceRef, DatasourceRefType, DatasourceType } from "./activities/datasource";
 import { DSPicker } from "./activities/dspicker";
 import { Filters } from "./activities/filter";
 import { GroupBy } from "./activities/groupby";
@@ -25,42 +25,31 @@ function mergeFieldArray(targetArr: DDL2.IField[], sourceArr: DDL2.IField[]): DD
 
 class DDLDatasourceAdapter {
     private _dsDedup: { [key: string]: DDL2.DatasourceType };
-    private _dsDedupID: { [key: string]: DDL2.DatasourceType };
 
     constructor() {
     }
 
-    private hash(ds: Activity): string {
-        const dsDetails = ds instanceof DSPicker ? ds.selection() : ds;
-        if (dsDetails instanceof RoxieResultRef || dsDetails instanceof WUResult) {
-            return dsDetails.sourceHash();
-        }
-        return dsDetails.hash();
-    }
-
     clear() {
         this._dsDedup = {};
-        this._dsDedupID = {};
     }
 
     set(ds: DDL2.DatasourceType) {
         this._dsDedup[ds.id] = ds;
-        this._dsDedupID[ds.id] = ds;
     }
 
     get(ds: DatasourceType): DDL2.DatasourceType {
-        const dsID = this.hash(ds);
+        const dsID = ds.id();
         let retVal: DDL2.DatasourceType = this._dsDedup[dsID];
         if (!retVal) {
             retVal = ds.toDDL();
             this._dsDedup[dsID] = retVal;
         }
-        this._dsDedupID[ds.id()] = retVal;
         return retVal;
     }
 
-    getByID(dsID: string): DDL2.DatasourceType {
-        return this._dsDedupID[dsID];
+    getByDatasourceRef(dsRef: DatasourceRefType): DDL2.DatasourceType {
+        const ds: DatasourceType = dsRef instanceof RoxieResult ? dsRef.service() : dsRef;
+        return this._dsDedup[ds.id()];
     }
 
     getAll(): DDL2.DatasourceType[] {
@@ -72,7 +61,7 @@ class DDLDatasourceAdapter {
     }
 
     updateDSFields(dsRef: DatasourceRef, refs: ReferencedFields) {
-        const ddlDatasource = this.getByID(dsRef.datasource().id());
+        const ddlDatasource = this.getByDatasourceRef(dsRef.datasource());
         const dsDetails = dsRef.datasource();
         if (dsRef instanceof RoxieResultRef) {
             const inFields = dsDetails.localFields().filter(field => refs.inputs[dsRef.id()] && refs.inputs[dsRef.id()].indexOf(field.id) >= 0);
@@ -101,10 +90,10 @@ export class DDLAdapter {
 
     writeDatasources(): DDL2.DatasourceType[] {
         for (const viz of this._elementContainer.elements()) {
-            const ds = viz.hipiePipeline().datasource();
-
-            //  Prime ds;
-            this._dsDedup.get(ds instanceof DSPicker ? ds.datasource() : ds);
+            const pDS: DSPicker | DatasourceRefType = viz.hipiePipeline().datasource();
+            const dsT: DatasourceRefType = pDS instanceof DSPicker ? pDS.datasource() : pDS;
+            const ds: DatasourceType = dsT instanceof RoxieResult ? dsT.service() : dsT;
+            this._dsDedup.get(ds);
         }
         return this._dsDedup.getAll();
     }

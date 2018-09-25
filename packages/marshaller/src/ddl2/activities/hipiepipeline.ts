@@ -2,7 +2,7 @@ import { publish } from "@hpcc-js/common";
 import { DDL2 } from "@hpcc-js/ddl-shim";
 import { ElementContainer } from "../model/element";
 import { Activity, ActivityPipeline } from "./activity";
-import { DatasourceType } from "./datasource";
+import { DatasourceRefType } from "./datasource";
 import { DSPicker } from "./dspicker";
 import { Filters } from "./filter";
 import { GroupBy } from "./groupby";
@@ -14,10 +14,10 @@ export class HipiePipeline extends ActivityPipeline {
     _elementContainer: ElementContainer;
 
     @publish(null, "widget", "Data Source 2")
-    _datasource: DSPicker | DatasourceType;
-    datasource(): DSPicker | DatasourceType;
-    datasource(_: DSPicker | DatasourceType): this;
-    datasource(_?: DSPicker | DatasourceType): DSPicker | DatasourceType | this {
+    _datasource: DSPicker | DatasourceRefType;
+    datasource(): DSPicker | DatasourceRefType;
+    datasource(_: DSPicker | DatasourceRefType): this;
+    datasource(_?: DSPicker | DatasourceRefType): DSPicker | DatasourceRefType | this {
         if (!arguments.length) return this._datasource;
         this._datasource = _;
         this.updateSequence();

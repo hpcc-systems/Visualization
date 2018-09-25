@@ -561,89 +561,97 @@ export class Graph extends SVGZoomWidget {
                 if (this._prevLayout !== this.layout() || this._prevDataHash !== this._dataHash) {
                     this._prevLayout = this.layout();
                     this._prevDataHash = this._dataHash;
-                    this._doLayout(transitionDuration);
+                    return this._doLayout(transitionDuration);
+                } else {
+                    resolve();
                 }
-                resolve();
             });
         });
     }
 
-    _doLayout(transitionDuration = 0) {
-        this.progress("layout-start");
-        if (this.forceLayout) {
-            this.forceLayout.force.stop();
-            this.forceLayout = null;
-        }
-
-        const context = this;
-        const layoutEngine = this.getLayoutEngine();
-        if (this.layout() === "ForceDirected2") {
-            this.forceLayout = layoutEngine;
-            this.forceLayout.force
-                .on("tick", function (this: SVGElement) {
-                    context.progress("layout-tick");
-                    layoutEngine.vertices.forEach(function (item) {
-                        if (item.fixed) {
-                            // item.x = item.px;
-                            // item.y = item.py;
-                        } else {
-                            // item.px = item.x;
-                            // item.py = item.y;
-
-                            //  Might have been cleared ---
-                            const vertex = context._graphData.node(item.id);
-                            if (vertex) {
-                                vertex
-                                    .move({ x: item.x, y: item.y })
-                                    ;
-                            }
-                        }
-                    });
-                    context._graphData.edgeValues().forEach(function (item) {
-                        item
-                            .points([], false, false)
-                            ;
-                    });
-                    if (context.applyScaleOnLayout()) {
-                        // const vBounds = context.getVertexBounds(layoutEngine);
-                        // context.shrinkToFit(vBounds);
-                    }
-                })
-                .on("end", function (this: SVGElement) {
-                    context.progress("layout-end");
-                })
-                ;
-            this.forceLayout.force.restart();
-        } else if (layoutEngine) {
-            this.forceLayout = null;
-            context._dragging = true;
-            context._graphData.nodeValues().forEach(function (item) {
-                const pos = layoutEngine.nodePos(item._id);
-                if (item instanceof Graph.Subgraph) {
-                    item
-                        .pos({ x: pos.x, y: pos.y })
-                        .size({ width: pos.width, height: pos.height })
-                        .animationFrameRender()
-                        ;
-                } else {
-                    item.move({ x: pos.x, y: pos.y });
-                }
-            });
-            context._graphData.edgeValues().forEach(function (item) {
-                const points = layoutEngine.edgePoints(item);
-                item.points(points, transitionDuration);
-            });
-            if (context.applyScaleOnLayout()) {
-                requestAnimationFrame(() => {
-                    context.zoomToFit();
-                });
+    _doLayout(transitionDuration = 0): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.progress("layout-start");
+            if (this.forceLayout) {
+                this.forceLayout.force.stop();
+                this.forceLayout = null;
             }
-            this._fixIEMarkers();
-            setTimeout(function () {
-                context._dragging = false;
-            }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
-            this.progress("layout-end");
-        }
+
+            const context = this;
+            const layoutEngine = this.getLayoutEngine();
+            if (this.layout() === "ForceDirected2") {
+                this.forceLayout = layoutEngine;
+                this.forceLayout.force
+                    .on("tick", function (this: SVGElement) {
+                        context.progress("layout-tick");
+                        layoutEngine.vertices.forEach(function (item) {
+                            if (item.fixed) {
+                                // item.x = item.px;
+                                // item.y = item.py;
+                            } else {
+                                // item.px = item.x;
+                                // item.py = item.y;
+
+                                //  Might have been cleared ---
+                                const vertex = context._graphData.node(item.id);
+                                if (vertex) {
+                                    vertex
+                                        .move({ x: item.x, y: item.y })
+                                        ;
+                                }
+                            }
+                        });
+                        context._graphData.edgeValues().forEach(function (item) {
+                            item
+                                .points([], false, false)
+                                ;
+                        });
+                        if (context.applyScaleOnLayout()) {
+                            // const vBounds = context.getVertexBounds(layoutEngine);
+                            // context.shrinkToFit(vBounds);
+                        }
+                    })
+                    .on("end", function (this: SVGElement) {
+                        context.progress("layout-end");
+                    })
+                    ;
+                this.forceLayout.force.restart();
+                resolve();
+            } else if (layoutEngine) {
+                this.forceLayout = null;
+                context._dragging = true;
+                context._graphData.nodeValues().forEach(function (item) {
+                    const pos = layoutEngine.nodePos(item._id);
+                    if (item instanceof Graph.Subgraph) {
+                        item
+                            .pos({ x: pos.x, y: pos.y })
+                            .size({ width: pos.width, height: pos.height })
+                            .animationFrameRender()
+                            ;
+                    } else {
+                        item.move({ x: pos.x, y: pos.y }, 0);
+                    }
+                });
+                context._graphData.edgeValues().forEach(function (item) {
+                    const points = layoutEngine.edgePoints(item);
+                    item.points(points, transitionDuration);
+                });
+                if (context.applyScaleOnLayout()) {
+                    requestAnimationFrame(() => {
+                        context.zoomToFit();
+                        resolve();
+                    });
+                }
+                this._fixIEMarkers();
+                setTimeout(function () {
+                    context._dragging = false;
+                }, transitionDuration ? transitionDuration + 50 : 50);  //  Prevents highlighting during morph  ---
+                this.progress("layout-end");
+                if (!context.applyScaleOnLayout()) {
+                    resolve();
+                }
+            }
+        });
     }
 
     getLayoutEngine() {
@@ -676,7 +684,8 @@ export class Graph extends SVGZoomWidget {
                     rankdir: this.hierarchyRankDirection(),
                     nodesep: this.hierarchyNodeSeparation(),
                     edgesep: this.hierarchyEdgeSeparation(),
-                    ranksep: this.hierarchyRankSeparation()
+                    ranksep: this.hierarchyRankSeparation(),
+                    digraph: this.hierarchyDigraph()
                 });
             default:
         }
@@ -982,6 +991,7 @@ Graph.prototype.publish("hierarchyRankDirection", "TB", "set", "Direction for Ra
 Graph.prototype.publish("hierarchyNodeSeparation", 50, "number", "Number of pixels that separate nodes horizontally in the layout", null, { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyEdgeSeparation", 10, "number", "Number of pixels that separate edges horizontally in the layout", null, { tags: ["Advanced"] });
 Graph.prototype.publish("hierarchyRankSeparation", 50, "number", "Number of pixels between each rank in the layout", null, { tags: ["Advanced"] });
+Graph.prototype.publish("hierarchyDigraph", true, "boolean", "Directional Graph", null, { tags: ["Advanced"] });
 
 Graph.prototype.publish("forceDirectedLinkDistance", 300, "number", "Target distance between linked nodes", null, { tags: ["Advanced"] });
 Graph.prototype.publish("forceDirectedLinkStrength", 1, "number", "Strength (rigidity) of links", null, { tags: ["Advanced"] });

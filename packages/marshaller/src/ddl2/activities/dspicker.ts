@@ -2,7 +2,7 @@ import { publish } from "@hpcc-js/common";
 import { ElementContainer } from "../model/element";
 import { ActivitySelection } from "./activity";
 import { Databomb, emptyDatabomb, Form } from "./databomb";
-import { DatasourceRef, DatasourceType } from "./datasource";
+import { DatasourceRef, DatasourceRefType } from "./datasource";
 import { LogicalFile } from "./logicalfile";
 import { HipieResultRef, RoxieResult, RoxieService } from "./roxie";
 import { WUResult, WUResultRef } from "./wuresult";
@@ -31,12 +31,12 @@ export class DSPicker extends ActivitySelection {
         return super.selection.apply(this, arguments);
     }
 
-    datasource(): DatasourceType {
+    datasource(): DatasourceRefType {
         return this.datasourceRef().datasource();
     }
 
     refreshRef(id: string) {
-        const ds: DatasourceType = this._elementContainer.datasource(id);
+        const ds: DatasourceRefType = this._elementContainer.datasource(id);
         if (ds instanceof Databomb) {
             this.selection(new DatasourceRef().datasource(ds));
         } else if (ds instanceof Form) {

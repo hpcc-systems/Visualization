@@ -4,7 +4,7 @@ import { ChartPanel } from "@hpcc-js/layout";
 import { find, isArray } from "@hpcc-js/util";
 import { Activity } from "../activities/activity";
 import { emptyDatabomb } from "../activities/databomb";
-import { DatasourceType } from "../activities/datasource";
+import { DatasourceRefType } from "../activities/datasource";
 import { HipiePipeline } from "../activities/hipiepipeline";
 import { Mappings } from "../activities/project";
 import { Visualization } from "./visualization";
@@ -190,7 +190,7 @@ export class ElementContainer extends PropertyExt {
 
     private _nullElement;
 
-    private _datasources: DatasourceType[] = [emptyDatabomb];
+    private _datasources: DatasourceRefType[] = [emptyDatabomb];
     private _elements: Element[] = [];
 
     constructor() {
@@ -203,15 +203,15 @@ export class ElementContainer extends PropertyExt {
         this._elements = eid === undefined ? [] : this._elements.filter(d => d.id() !== eid);
     }
 
-    datasources(): DatasourceType[] {
+    datasources(): DatasourceRefType[] {
         return this._datasources;
     }
 
-    datasource(id): DatasourceType {
+    datasource(id): DatasourceRefType {
         return this._datasources.filter(ds => ds.id() === id)[0];
     }
 
-    appendDatasource(ds: DatasourceType): this {
+    appendDatasource(ds: DatasourceRefType): this {
         this._datasources.push(ds);
         return this;
     }

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.1...@hpcc-js/marshaller@2.2.2) (2018-09-25)
+
+
+### Bug Fixes
+
+* **marshaller:** Distinguish between RoxieResult and RoxieService ([81c16ed](https://github.com/hpcc-systems/Visualization/commit/81c16ed))
+
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/marshaller@2.2.0...@hpcc-js/marshaller@2.2.1) (2018-09-24)
 

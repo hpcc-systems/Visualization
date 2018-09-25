@@ -2,7 +2,7 @@ import { publish } from "@hpcc-js/common";
 import { Activity } from "./activity";
 import { Databomb, Form } from "./databomb";
 import { LogicalFile } from "./logicalfile";
-import { RoxieResult } from "./roxie";
+import { RoxieResult, RoxieService } from "./roxie";
 import { WUResult } from "./wuresult";
 
 let datasourceID = 0;
@@ -14,14 +14,15 @@ export class Datasource extends Activity {
     }
 }
 
-export type DatasourceType = Databomb | Form | LogicalFile | RoxieResult | WUResult;
+export type DatasourceRefType = Databomb | Form | LogicalFile | RoxieResult | WUResult;
+export type DatasourceType = Databomb | Form | LogicalFile | RoxieService | WUResult;
 
 export class DatasourceRef extends Activity {
     @publish(null, "widget", "Datasource Reference")
-    _datasource: DatasourceType;
-    datasource(): DatasourceType;
-    datasource(_: DatasourceType): this;
-    datasource(_?: DatasourceType): this | DatasourceType {
+    _datasource: DatasourceRefType;
+    datasource(): DatasourceRefType;
+    datasource(_: DatasourceRefType): this;
+    datasource(_?: DatasourceRefType): this | DatasourceRefType {
         if (!arguments.length) return this._datasource;
         this._datasource = _;
         this.sourceActivity(_);

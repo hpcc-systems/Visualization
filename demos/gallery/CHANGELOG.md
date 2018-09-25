@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.3.0...@hpcc-js/demo-gallery@2.3.1) (2018-09-25)
+
+
+### Bug Fixes
+
+* **playground:**  Initial load does not display widget ([5f5981c](https://github.com/GordonSmith/Visualization/commit/5f5981c))
+
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.2.0...@hpcc-js/demo-gallery@2.3.0) (2018-09-24)
 

@@ -84,7 +84,6 @@ export function ForceDirected(graphData, width, height, options) {
         })
         .distance(options.linkDistance)
         .strength(options.linkStrength)
-        //        .friction(options.friction)
         ;
     const forceManyBody = d3ForceManyBody()
         .strength(function (d: any) {
@@ -96,16 +95,7 @@ export function ForceDirected(graphData, width, height, options) {
         .force("link", forceLink)
         .force("charge", forceManyBody)
         .force("center", d3ForceCenter(width / 2, height / 2))
-        // .linkDistance(options.linkDistance)
-        // .linkStrength(options.linkStrength)
-        .velocityDecay(options.friction)
-        // .charge(function (d) {
-        //    const cs = d.value.getBBox();
-        //    return options.charge * Math.max(cs.width, cs.height);
-        // })
-        // .chargeDistance(options.chargeDistance)
-        // .theta(options.theta)
-        // .gravity(options.gravity)
+        .velocityDecay(options.oneShot ? 0.1 : options.friction)
         .nodes(this.vertices)
         ;
     forceLink
@@ -148,6 +138,11 @@ export function Hierarchy(graphData, _width, _height, options) {
         digraph.setEdge(s, t, {
             weight: value.weight()
         }, value._id);
+        if (!options.digraph) {
+            digraph.setEdge(t, s, {
+                weight: value.weight()
+            }, value._id);
+        }
     });
     graphData.eachNode(function (u) {
         digraph.setParent(u, graphData.parent(u));

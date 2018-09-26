@@ -181,7 +181,7 @@ export class Legend extends SVGWidget {
                     switch (this.dataFamily()) {
                         case "2D":
                             dataArr = this.data().map(function (n) {
-                                return [fillColor(undefined, n[0], false), n[0]];
+                                return [fillColor(n, n[0], false), n[0]];
                             }, this);
                             break;
                         case "ND":

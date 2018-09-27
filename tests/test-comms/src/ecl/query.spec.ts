@@ -4,7 +4,7 @@ import { Query } from "@hpcc-js/comms";
 import { isTravis } from "@hpcc-js/util";
 import { QUERY_URL } from "../testLib";
 
-describe("test/esp/ecl/query", function () {
+describe.skip("test/esp/ecl/query", function () {
     if (!isTravis) {
         it("basic", async function () {
             const query: Query = await Query.attach({ baseUrl: QUERY_URL }, "roxie", "peopleaccounts.4").refresh();

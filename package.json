@@ -20,7 +20,7 @@
     "build-min": "run-s build minimize",
     "watch": "lerna exec --parallel --ignore \"@hpcc-js/test-*\" --ignore \"@hpcc-js/*-shim\" --ignore \"@hpcc-js/demo-*\" -- tsc -w ",
     "build-test": "lerna run --scope \"@hpcc-js/test-*\" build",
-    "build-all": "run-s build build-test",
+    "build-all": "run-s build build-gallery build-test",
     "lint": "lerna run --no-bail lint",
     "test-gallery": "lerna run test --scope \"@hpcc-js/demo-gallery\"",
     "test-webpack": "lerna run test --scope \"@hpcc-js/test-*\"",

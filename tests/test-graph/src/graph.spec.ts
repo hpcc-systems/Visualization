@@ -1,5 +1,6 @@
 import { Class, HTMLWidget, Palette, SVGWidget } from "@hpcc-js/common";
 import * as graph from "@hpcc-js/graph";
+// tslint:disable-next-line:no-duplicate-imports
 import { AdjacencyGraph, Edge, Graph, Sankey, SankeyColumn, Subgraph, Vertex } from "@hpcc-js/graph";
 import { dataBreach } from "@hpcc-js/test-data";
 import { expect } from "chai";
@@ -78,7 +79,12 @@ describe("@hpcc-js/graph", () => {
                             case AdjacencyGraph:
                                 render(new AdjacencyGraph()
                                     .columns(["uid", "label", "links"])
-                                    .data([[1, "Yea 1", []]] as any)
+                                    .data([
+                                        [1, "AdjacencyGraph 1", [[2], [3], [4]]],
+                                        [2, "AdjacencyGraph 2", []],
+                                        [3, "AdjacencyGraph 3", []],
+                                        [4, "AdjacencyGraph 4", []]
+                                    ] as any)
                                 );
                                 break;
                             case Graph:

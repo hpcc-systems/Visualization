@@ -561,7 +561,9 @@ export class Graph extends SVGZoomWidget {
                 if (this._prevLayout !== this.layout() || this._prevDataHash !== this._dataHash) {
                     this._prevLayout = this.layout();
                     this._prevDataHash = this._dataHash;
-                    return this._doLayout(transitionDuration);
+                    this._doLayout(transitionDuration).then(() => {
+                        resolve();
+                    });
                 } else {
                     resolve();
                 }

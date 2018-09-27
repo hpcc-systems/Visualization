@@ -6,7 +6,7 @@
 ## How to get started?
 1. [Quick Start](https://github.com/hpcc-systems/Visualization/wiki/Quick-Start):  Covers the basics on how to include the framework into your web application.
 2. [Tutorials](https://github.com/hpcc-systems/Visualization/wiki/Tutorials):  Starting with a simple "hello world", the tutorials walk  through the basics of instantiating the visualizations, fetching data and creating dashboards.
-3. [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html): Many many samples (and growing weekly), includes an interactive playgound + property editor for discovering the capabilities of each visualization.
+3. [Gallery](https://raw.githack.com/hpcc-systems/Visualization/master/demos/gallery/gallery.html) + [Indexed Gallery (new)](https://raw.githack.com/hpcc-systems/Visualization/master/apps/docs/index.html): Many many samples (and growing weekly), includes an interactive playgound + property editor for discovering the capabilities of each visualization.
 4. [Chat](https://gitter.im/hpcc-systems/Visualization): Join us in our chat room - all questions and suggestions welcomed!
 
 ## Whats in the "box"?

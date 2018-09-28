@@ -15,6 +15,8 @@ export class Pie extends SVGWidget {
         type: "number"
     }];
 
+    protected _totalValue: number;
+
     labelWidgets;
     d3Pie;
     d3Arc;
@@ -52,10 +54,22 @@ export class Pie extends SVGWidget {
     }
 
     calcOuterRadius() {
-        const maxTextWidth = this.textSize(this.data().map(d => d[0]), "Verdana", 12).width;
+        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d })), "Verdana", 12).width;
         return Math.min(this._size.width - maxTextWidth * 2 - 20, this._size.height - 12 * 3) / 2 - 2;
     }
-
+    calcTotalValue(): number {
+        return this.data().reduce((acc, d) => {
+            return acc + d[1];
+        }, 0);
+    }
+    getLabelText(d) {
+        if (this.showSeriesPercentage()) {
+            const perc = ((d.data[1] / this._totalValue) * 100).toFixed(1).split(".0").join("");
+            return `${d.data[0]}: ${perc}%`;
+        } else {
+            return d.data[0];
+        }
+    }
     _slices;
     _labels;
     enter(_domNode, element) {
@@ -79,6 +93,7 @@ export class Pie extends SVGWidget {
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+        this._totalValue = this.calcTotalValue();
         const innerRadius = this.calcInnerRadius();
         const outerRadius = this.calcOuterRadius();
         const labelRadius = outerRadius + 12;
@@ -136,9 +151,6 @@ export class Pie extends SVGWidget {
 
         text.enter().append("text")
             .attr("dy", ".35em")
-            .text(function (d) {
-                return d.data[0];
-            })
             .on("click", function (d) {
                 context._slices.selectAll("g").filter(function (d2) {
                     if (d.data === d2.data) {
@@ -151,6 +163,7 @@ export class Pie extends SVGWidget {
                 context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .merge(text)
+            .text(d => this.getLabelText(d))
             .transition().duration(1000)
             .attrTween("transform", function (d) {
                 this._current = this._current || d;
@@ -180,7 +193,7 @@ export class Pie extends SVGWidget {
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => d.data[0]);
+        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d));
 
         polyline.enter()
             .append("polyline")
@@ -247,7 +260,11 @@ Pie.prototype._class += " chart_Pie";
 Pie.prototype.implements(I2DChart.prototype);
 Pie.prototype.implements(ITooltip.prototype);
 Pie.prototype.mixin(Utility.SimpleSelectionMixin);
-
+export interface Pie {
+    showSeriesPercentage(): boolean;
+    showSeriesPercentage(_: boolean): this;
+}
+Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });

@@ -11,6 +11,30 @@
         range: d3Array.range
     };
     var chartFactory = {
+        HalfPie: {
+            simple: function (callback) {
+                legacyRequire(["src/chart/HalfPie"], function (HalfPie) {
+                    callback(new HalfPie()
+                        .columns(["Category", "Value 1", "Value 2"])
+                        .data(Array(20).fill("").map(function (n, i) {
+                            return [String.fromCharCode(65 + i), Math.random(), Math.random()];
+                        }))
+                    );
+                });
+            },
+        },
+        QuarterPie: {
+            simple: function (callback) {
+                legacyRequire(["src/chart/QuarterPie"], function (QuarterPie) {
+                    callback(new QuarterPie()
+                        .columns(["Category", "Value 1", "Value 2"])
+                        .data(Array(20).fill("").map(function (n, i) {
+                            return [String.fromCharCode(65 + i)+" extra label length", Math.random(), Math.random()];
+                        }))
+                    );
+                });
+            },
+        },
         BubbleXY: {
             simple: function (callback) {
                 legacyRequire(["src/chart/BubbleXY"], function (BubbleXY) {

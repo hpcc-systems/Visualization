@@ -27,15 +27,7 @@ export class Pie extends SVGWidget {
         ITooltip.call(this);
         Utility.SimpleSelectionMixin.call(this);
 
-        this.d3Pie = d3Pie()
-            .padAngle(0.0025)
-            .sort(function (b, a) {
-                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
-            })
-            .value(function (d) {
-                return d[1];
-            })
-            ;
+        this.d3Pie = d3Pie();
 
         this.d3Arc = d3Arc();
         this.d3LabelArc = d3Arc();
@@ -88,7 +80,7 @@ export class Pie extends SVGWidget {
     update(_domNode, element) {
         super.update(_domNode, element);
         const context = this;
-
+        this.updateD3Pie();
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
@@ -172,7 +164,8 @@ export class Pie extends SVGWidget {
                 return function (t) {
                     const d2 = interpolate(t);
                     const pos = context.d3LabelArc.centroid(d2);
-                    pos[0] = labelRadius * (midAngle(d2) < Math.PI ? 1 : -1);
+                    const mid_angle = midAngle(d2);
+                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
                     return "translate(" + pos + ")";
                 };
             })
@@ -182,7 +175,8 @@ export class Pie extends SVGWidget {
                 this._current = interpolate(0);
                 return function (t) {
                     const d2 = interpolate(t);
-                    return midAngle(d2) < Math.PI ? "start" : "end";
+                    const mid_angle = midAngle(d2);
+                    return mid_angle < Math.PI && mid_angle > 0 ? "start" : "end";
                 };
             });
 
@@ -208,7 +202,8 @@ export class Pie extends SVGWidget {
                     const pos = context.d3LabelArc.centroid(d2);
                     const pos1 = context.d3Arc.centroid(d2);
                     const pos2 = [...pos];
-                    pos[0] = labelRadius * (midAngle(d2) < Math.PI ? 1 : -1);
+                    const mid_angle = midAngle(d2);
+                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
                     return [pos1, pos2, pos];
                 };
             });
@@ -228,6 +223,18 @@ export class Pie extends SVGWidget {
 
     exit(_domNode, _element) {
         SVGWidget.prototype.exit.apply(this, arguments);
+    }
+
+    updateD3Pie() {
+        this.d3Pie
+            .padAngle(0.0025)
+            .sort(function (b, a) {
+                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
+            })
+            .value(function (d) {
+                return d[1];
+            })
+            ;
     }
 
     paletteID: (_?: string) => string | Pie;

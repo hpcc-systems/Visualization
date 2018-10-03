@@ -1,5 +1,6 @@
 import { ITree } from "@hpcc-js/api";
 import { PropertyExt, SVGZoomWidget, Utility } from "@hpcc-js/common";
+import { degreesToRadians } from "@hpcc-js/util";
 import { cluster as d3Cluster, hierarchy as d3Hierarchy, tree as d3Tree } from "d3-hierarchy";
 import { select as d3Select } from "d3-selection";
 
@@ -130,7 +131,7 @@ export class Dendrogram extends SVGZoomWidget {
         }
 
         function project(x, y) {
-            const angle = (x - 90) / 180 * Math.PI;
+            const angle = degreesToRadians(x - 90);
             const radius = y;
             return [radius * Math.cos(angle), radius * Math.sin(angle)];
         }

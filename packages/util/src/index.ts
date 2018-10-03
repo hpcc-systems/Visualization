@@ -3,6 +3,7 @@ export * from "./cache";
 export * from "./debounce";
 export * from "./dictionary";
 export * from "./esp";
+export * from "./geometry";
 export * from "./graph";
 export * from "./hashSum";
 export * from "./immutable";

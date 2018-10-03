@@ -25,6 +25,7 @@
     "docs": "typedoc --options tdoptions.json ."
   },
   "dependencies": {
+    "@hpcc-js/util": "^2.1.2",
     "@hpcc-js/api": "^2.1.0",
     "@hpcc-js/common": "^2.3.0",
     "d3-transition": "1.1.0"

@@ -1,5 +1,6 @@
 import { INDChart, ITooltip } from "@hpcc-js/api";
 import { InputField, SVGWidget, Utility } from "@hpcc-js/common";
+import { degreesToRadians, radiansToDegrees } from "@hpcc-js/util";
 import { interpolate as d3Interpolate } from "d3-interpolate";
 import { scaleBand as d3ScaleBand, scaleLinear as d3ScaleLinear } from "d3-scale";
 import { arc as d3Arc } from "d3-shape";
@@ -58,7 +59,7 @@ export class RadialBar extends SVGWidget {
 
         this._valueScale
             .domain([0, maxValue])
-            .range([0, this.radians(this.valueMaxAngle())])
+            .range([0, degreesToRadians(this.valueMaxAngle())])
             .nice()
             ;
 
@@ -100,8 +101,8 @@ export class RadialBar extends SVGWidget {
         const valueLines = this._axialAxis.selectAll("line").data(ticks);
         valueLines.enter().append("line")
             .merge(valueLines)
-            .attr("x2", d => chartRadius * Math.cos(this._valueScale(d) - this.radians(90)))
-            .attr("y2", d => chartRadius * Math.sin(this._valueScale(d) - this.radians(90)))
+            .attr("x2", d => chartRadius * Math.cos(this._valueScale(d) - degreesToRadians(90)))
+            .attr("y2", d => chartRadius * Math.sin(this._valueScale(d) - degreesToRadians(90)))
             ;
         valueLines.exit().remove();
 
@@ -109,11 +110,11 @@ export class RadialBar extends SVGWidget {
         valueText.enter().append("text")
             .style("dominant-baseline", "central")
             .merge(valueText)
-            .attr("x", d => (chartRadius + 10) * Math.cos(this._valueScale(d) - this.radians(90)))
-            .attr("y", d => (chartRadius + 10) * Math.sin(this._valueScale(d) - this.radians(90)))
+            .attr("x", d => (chartRadius + 10) * Math.cos(this._valueScale(d) - degreesToRadians(90)))
+            .attr("y", d => (chartRadius + 10) * Math.sin(this._valueScale(d) - degreesToRadians(90)))
             .style("text-anchor", d => {
                 const middleZone = 20;
-                const angle = this.degrees(this._valueScale(d));
+                const angle = radiansToDegrees(this._valueScale(d));
                 if (angle >= 0 && angle <= middleZone ||
                     angle >= 180 - middleZone && angle <= 180 + middleZone ||
                     angle >= 360 - middleZone && angle <= 360
@@ -159,14 +160,6 @@ export class RadialBar extends SVGWidget {
             })
             ;
         arcs.exit().remove();
-    }
-
-    degrees(radians) {
-        return radians * 180 / Math.PI;
-    }
-
-    radians(degrees) {
-        return degrees * Math.PI / 180;
     }
 
     //  INDChart

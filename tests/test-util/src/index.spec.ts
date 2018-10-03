@@ -4,6 +4,7 @@ import "./cache.spec";
 import "./debounce.spec";
 import "./dictionary.spec";
 import "./esp.spec";
+import "./geometry.spec";
 import "./graph.spec";
 import "./logging.spec";
 import "./object.spec";

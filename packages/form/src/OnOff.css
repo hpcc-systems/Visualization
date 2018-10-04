@@ -15,6 +15,10 @@
     display: block;
     transition: margin 0.3s ease-in 0s;
 }
+.onoffswitch-inner > .onoffswitch-offText,
+.onoffswitch-inner > .onoffswitch-onText{
+    height: 100%;
+}
 .onoffswitch-inner > .onoffswitch-offText{
     font-weight: bold;
     position: absolute;

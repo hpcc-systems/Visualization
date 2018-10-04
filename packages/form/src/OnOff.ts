@@ -81,6 +81,9 @@ export class OnOff extends HTMLWidget {
             .style("top", (this.gutter() * 2) + 1 + "px")
             .style("border-radius", this.switchRadius() + "px")
             ;
+        element.select(".onoffswitch-inner")
+            .style("min-height", this.minHeight() + "px")
+            ;
         element.select(".onoffswitch-label")
             .style("border-radius", this.containerRadius() + "px")
             ;

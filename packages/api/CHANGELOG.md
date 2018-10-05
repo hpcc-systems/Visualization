@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.0.3...@hpcc-js/api@2.1.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* Tooltip arrow styling issues ([0156fce](https://github.com/hpcc-systems/Visualization/commit/0156fce)), closes [#2886](https://github.com/hpcc-systems/Visualization/issues/2886)
+
+
+### Features
+
+* **tooltip:** Added key value tooltip feature ([d60462b](https://github.com/hpcc-systems/Visualization/commit/d60462b))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/api@2.0.2...@hpcc-js/api@2.0.3) (2018-09-24)
 

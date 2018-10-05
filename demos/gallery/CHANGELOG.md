@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.3.1...@hpcc-js/demo-gallery@2.4.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* Add scale to move within SVGWidget.ts ([7462e7c](https://github.com/GordonSmith/Visualization/commit/7462e7c))
+
+
+### Features
+
+* Add CalendarHeatMap sample ([281370a](https://github.com/GordonSmith/Visualization/commit/281370a))
+* **tooltip:** Added key value tooltip feature ([d60462b](https://github.com/GordonSmith/Visualization/commit/d60462b))
+* Add option to show legend values ([ccc0c6c](https://github.com/GordonSmith/Visualization/commit/ccc0c6c)), closes [#2887](https://github.com/GordonSmith/Visualization/issues/2887) [#2892](https://github.com/GordonSmith/Visualization/issues/2892)
+* Add randomized palette sample ([6c95c57](https://github.com/GordonSmith/Visualization/commit/6c95c57)), closes [#2900](https://github.com/GordonSmith/Visualization/issues/2900)
+* Add stackoverflow question tags sample ([5831b25](https://github.com/GordonSmith/Visualization/commit/5831b25))
+
+
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.3.0...@hpcc-js/demo-gallery@2.3.1) (2018-09-25)
 

@@ -112,7 +112,7 @@ export class SVGWidget extends Widget {
         const retVal = this.pos(_);
         if (arguments.length) {
             (transitionDuration ? this._element.transition().duration(transitionDuration) : this._element)
-                .attr("transform", "translate(" + _.x + " " + _.y + ")")
+                .attr("transform", `translate(${_.x} ${_.y})scale(${this._widgetScale})`)
                 ;
         }
         return retVal;

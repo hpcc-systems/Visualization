@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.3...@hpcc-js/layout@2.2.0) (2018-10-05)
+
+
+### Features
+
+* Add option to show legend values ([ccc0c6c](https://github.com/hpcc-systems/Visualization/commit/ccc0c6c)), closes [#2887](https://github.com/hpcc-systems/Visualization/issues/2887) [#2892](https://github.com/hpcc-systems/Visualization/issues/2892)
+* Add pie series percentages ([cc2493f](https://github.com/hpcc-systems/Visualization/commit/cc2493f)), closes [#2888](https://github.com/hpcc-systems/Visualization/issues/2888)
+
+
+
+
+
 <a name="2.1.3"></a>
 ## [2.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/layout@2.1.2...@hpcc-js/layout@2.1.3) (2018-09-25)
 

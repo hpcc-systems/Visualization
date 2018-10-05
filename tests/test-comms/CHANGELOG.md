@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.3...@hpcc-js/test-comms@2.0.4) (2018-10-05)
+
+
+### Bug Fixes
+
+* **graph:** Render callback not being called. ([525d325](https://github.com/GordonSmith/Visualization/commit/525d325))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-comms@2.0.2...@hpcc-js/test-comms@2.0.3) (2018-09-24)
 

@@ -3,7 +3,7 @@ import { expect } from "chai";
 
 import "../src/coreTest.css";
 
-export function classDef<T extends Class>(module: string, WidgetClass: { new (): T }) {
+export function classDef<T extends Class>(module: string, WidgetClass: { new(): T }) {
     describe("#constructor()", function () {
         it("new", function () {
             const widget = new WidgetClass();

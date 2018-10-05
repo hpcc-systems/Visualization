@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.1.3...@hpcc-js/other@2.2.0) (2018-10-05)
+
+
+### Features
+
+* Add CalendarHeatMap sample ([281370a](https://github.com/hpcc-systems/Visualization/commit/281370a))
+
+
+
+
+
 <a name="2.1.3"></a>
 ## [2.1.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/other@2.1.2...@hpcc-js/other@2.1.3) (2018-09-25)
 

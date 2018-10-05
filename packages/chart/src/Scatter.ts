@@ -144,8 +144,15 @@ export class Scatter extends XYAxis {
         }).filter(d => d);
         const points = element.selectAll(".point").data(flatData, function (d, idx) { return d.shape + "_" + idx; });
         points.enter().append("g")
-            .each(function (d2) {
+            .each(function (this: SVGElement, d2) {
                 const element = d3Select(this);
+                element
+                    .append("text")
+                    .attr("class", "pointValue")
+                    .style("display", "none")
+                    .attr("text-anchor", context.valueAnchor())
+                    .attr("alignment-baseline", context.valueBaseline())
+                    ;
                 element
                     .append("circle")
                     .attr("class", "pointSelection")
@@ -166,7 +173,18 @@ export class Scatter extends XYAxis {
             })
             .merge(points)
             .attr("class", d => "point series series-" + this.cssTag(d.column))
-            .each(function (d2) {
+            .each(function (this: SVGElement, d2) {
+                const textSelection = d3Select(this).select(".pointValue");
+                textSelection
+                    .attr("x", function (d) { return context.xPos(host, d); })
+                    .attr("y", function (d) { return context.yPos(host, d); })
+                    .style("display", context.showValue() ? "block" : "none")
+                    .attr("text-anchor", context.valueAnchor())
+                    .attr("alignment-baseline", context.valueBaseline())
+                    .text(function (d) {
+                        return d["value"];
+                    })
+                    ;
                 const elementSelection = d3Select(this).select(".pointSelection");
                 elementSelection
                     .attr("cx", function (d) { return context.xPos(host, d); })
@@ -295,7 +313,14 @@ export class Scatter extends XYAxis {
 Scatter.prototype._class += " chart_Scatter";
 Scatter.prototype.implements(INDChart.prototype);
 Scatter.prototype.implements(ITooltip.prototype);
-
+export interface Scatter {
+    valueAnchor(): string;
+    valueAnchor(_: string): this;
+    valueBaseline(): string;
+    valueBaseline(_: string): this;
+    showValue(): boolean;
+    showValue(_: boolean): this;
+}
 Scatter.prototype.publish("paletteID", "default", "set", "Palette ID", Scatter.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Scatter.prototype.publish("pointSizeScale", "linear", "set", "pointSizeScale", ["linear", "pow", "log", "sqrt"]);
 Scatter.prototype.publish("pointShape", "cross", "set", "Shape of the data points", ["circle", "rectangle", "cross"]);
@@ -304,3 +329,6 @@ Scatter.prototype.publish("interpolate", "", "set", "Interpolate Data", ["", "li
 Scatter.prototype.publish("interpolateFill", false, "boolean", "Fill Interpolation");
 Scatter.prototype.publish("interpolateFillOpacity", 0.66, "number", "Fill Interpolation Opacity", null, { range: { min: 0, step: 0.01, max: 1 } });
 Scatter.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
+Scatter.prototype.publish("showValue", false, "boolean");
+Scatter.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
+Scatter.prototype.publish("valueBaseline", "ideographic", "set", "alignment-baseline for shown value text", ["auto", "baseline", "before-edge", "text-before-edge", "middle", "central", "after-edge", "text-after-edge", "ideographic", "alphabetic", "hanging", "mathematical", "inherit"]);

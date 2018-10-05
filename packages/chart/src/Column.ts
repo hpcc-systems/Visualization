@@ -141,6 +141,7 @@ export class Column extends XYAxis {
                     const element = d3Select(this);
                     const domainPos = host.dataPos(dataRow[0]) + (host.yAxisStacked() ? 0 : columnScale(d.column)) + offset;
                     const upperValue = d.value instanceof Array ? d.value[1] : d.value;
+                    const valueText = d.origRow[d.idx];
                     const upperValuePos = host.valuePos(upperValue);
                     const lowerValuePos = host.valuePos(d.value instanceof Array ? d.value[0] : 0);
                     const valuePos = Math.min(lowerValuePos, upperValuePos);
@@ -153,6 +154,7 @@ export class Column extends XYAxis {
                         .style("fill", (d: any) => context.fillColor(d.row, d.column, d.value))
                         ;
 
+                    const valueCentered = context.valueCentered();
                     const dataText = element.selectAll(".dataText").data(context.showValue() ? [`${upperValue}`] : []);
                     const dataTextEnter = dataText.enter().append("g")
                         .attr("class", "dataText")
@@ -162,18 +164,29 @@ export class Column extends XYAxis {
                     dataTextEnter.merge(dataText)
                         .each(function (this: SVGElement, d) {
                             const isPositive = upperValue >= 0;
+                            const _pos = isHorizontal ?
+                                {
+                                    x: domainPos + domainLength / 2,
+                                    y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
+                                } : {
+                                    x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
+                                    y: domainPos + domainLength / 2
+                                };
+                            let _is_visible = context.showValue();
+                            if (valueCentered || context.yAxisStacked()) {
+                                if (isHorizontal) {
+                                    _pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                    _is_visible = context.textSize(valueText).width < valueLength || !context.yAxisStacked();
+                                } else {
+                                    _pos.x += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                    _is_visible = context.textSize(valueText).height < valueLength || !context.yAxisStacked();
+                                }
+                            }
                             context.textLocal.get(this)
-                                .pos(isHorizontal ?
-                                    {
-                                        x: domainPos + domainLength / 2,
-                                        y: isPositive ? valuePos - 12 : valuePos + valueLength + 12
-                                    } : {
-                                        x: isPositive ? valuePos + valueLength + 12 : valuePos - 12,
-                                        y: domainPos + domainLength / 2
-                                    })
-                                .anchor(isHorizontal ? "middle" : "start")
-                                .text(`${upperValue}`)
-                                .visible(context.showValue())
+                                .pos(_pos)
+                                .anchor(context.valueAnchor() ? context.valueAnchor() : isHorizontal ? "middle" : "start")
+                                .text(`${valueText}`)
+                                .visible(_is_visible)
                                 .render()
                                 ;
                         });
@@ -217,11 +230,17 @@ export interface Column {
     useClonedPalette(_: boolean): this;
     showValue(): boolean;
     showValue(_: boolean): this;
+    valueCentered(): boolean;
+    valueCentered(_: boolean): this;
+    valueAnchor(): "start" | "middle" | "end";
+    valueAnchor(_: "start" | "middle" | "end"): this;
 }
 
 Column.prototype.publish("paletteID", "default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
+Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");
+Column.prototype.publish("valueAnchor", "middle", "set", "text-anchor for shown value text", ["start", "middle", "end"]);
 /*
 const origUseClonedPalette = Column.prototype.useClonedPalette;
 Column.prototype.useClonedPalette = function (this: Column, _?) {

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.1.3...@hpcc-js/demo-dermatology@2.2.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* Add scale to move within SVGWidget.ts ([7462e7c](https://github.com/GordonSmith/Visualization/commit/7462e7c))
+
+
+### Features
+
+* **form:** Add features to OnOff.ts ([4e9ae37](https://github.com/GordonSmith/Visualization/commit/4e9ae37))
+* Add HalfDonut and QuarterDonut widgets ([ca0f80c](https://github.com/GordonSmith/Visualization/commit/ca0f80c)), closes [#2889](https://github.com/GordonSmith/Visualization/issues/2889)
+
+
+
+
+
 <a name="2.1.3"></a>
 ## [2.1.3](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-dermatology@2.1.2...@hpcc-js/demo-dermatology@2.1.3) (2018-09-25)
 

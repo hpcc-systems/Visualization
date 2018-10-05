@@ -181,7 +181,7 @@ export class Legend extends SVGWidget {
                     switch (this.dataFamily()) {
                         case "2D":
                             dataArr = this.data().map(function (n) {
-                                return [fillColor(undefined, n[0], false), n[0]];
+                                return [fillColor(n, n[0], false), n[0]];
                             }, this);
                             break;
                         case "ND":
@@ -222,11 +222,19 @@ export class Legend extends SVGWidget {
         const ordinal = d3ScaleOrdinal()
             .domain(dataArr.map(row => row[1]))
             .range(dataArr.map(row => row[0]));
-
+        let total = 0;
         this._legendOrdinal
             .orient(this.orientation())
             .title(this.title())
             .scale(ordinal)
+            .labels(d => {
+                const val = this.data()[d.i].slice(1).reduce((acc, n) => acc + n, 0);
+                const disabled = this.isDisabled(d.domain[d.i]);
+                if (!disabled) {
+                    total += val;
+                }
+                return d.domain[d.i] + (!disabled && this.showSeriesTotal() ? ` (${val})` : "");
+            })
             ;
         this._g.call(this._legendOrdinal);
 
@@ -234,8 +242,20 @@ export class Legend extends SVGWidget {
 
         const bbox = this.getBBox(true, true);
         this._g.attr("transform", `translate(${this.width() / 2 - bbox.width / 2 + 5},${this.height() / 2 - bbox.height / 2})`);
+        const legendCellsBbox = this._g.select(".legendCells").node().getBBox();
+        const legendCellHeight = legendCellsBbox.height / (dataArr.length || 1);
+        const legendTotal = this._g.selectAll(".legendTotal").data(dataArr.length && this.showLegendTotal() ? [total] : []);
+        const firstLabel = this._g.select(".label");
+        legendTotal
+            .enter()
+            .append("text")
+            .classed("legendTotal", true)
+            .merge(legendTotal)
+            .attr("transform", `${dataArr.length ? firstLabel.attr("transform").split(",")[0] : "translate(0"}, ${legendCellsBbox.height + (legendCellHeight / (3 / 2))})`)
+            .text(`Total: ${total}`)
+            ;
+        legendTotal.exit().remove();
     }
-
     updateDisabled(element, dataArr) {
         element
             .style("cursor", "pointer")
@@ -340,9 +360,15 @@ export interface Legend {
     rainbowBins(): number;
     rainbowBins(_: number): this;
     rainbowBins_exists: () => boolean;
+    showSeriesTotal(): boolean;
+    showSeriesTotal(_: boolean): this;
+    showLegendTotal(): boolean;
+    showLegendTotal(_: boolean): this;
 }
 Legend.prototype.publish("title", "", "string", "Title");
 Legend.prototype.publish("orientation", "vertical", "set", "Orientation of Legend rows", ["vertical", "horizontal"], { tags: ["Private"] });
 Legend.prototype.publish("dataFamily", "ND", "set", "Type of data", ["1D", "2D", "ND", "map", "graph", "any"], { tags: ["Private"] });
 Legend.prototype.publish("rainbowFormat", ",", "string", "Rainbow number formatting", null, { tags: ["Private"], optional: true, disable: w => !w.isRainbow() });
 Legend.prototype.publish("rainbowBins", 8, "number", "Number of rainbow bins", null, { tags: ["Private"], disable: w => !w.isRainbow() });
+Legend.prototype.publish("showSeriesTotal", false, "boolean", "Show value next to series");
+Legend.prototype.publish("showLegendTotal", false, "boolean", "Show a total of the series values under the legend", null);

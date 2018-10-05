@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.0.3...@hpcc-js/tree@2.1.0) (2018-10-05)
+
+
+### Features
+
+* Improvements to CirclePacking.ts ([22e6867](https://github.com/hpcc-systems/Visualization/commit/22e6867))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/tree@2.0.2...@hpcc-js/tree@2.0.3) (2018-09-24)
 

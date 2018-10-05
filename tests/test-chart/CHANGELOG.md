@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-chart@2.1.2...@hpcc-js/test-chart@2.2.0) (2018-10-05)
+
+
+### Features
+
+* Add HalfDonut and QuarterDonut widgets ([ca0f80c](https://github.com/GordonSmith/Visualization/commit/ca0f80c)), closes [#2889](https://github.com/GordonSmith/Visualization/issues/2889)
+
+
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/test-chart@2.1.1...@hpcc-js/test-chart@2.1.2) (2018-09-24)
 

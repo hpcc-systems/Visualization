@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.1.2...@hpcc-js/chart@2.2.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* **HexBin:** Classic closure bug with "data" ([0daeaac](https://github.com/hpcc-systems/Visualization/commit/0daeaac)), closes [#2871](https://github.com/hpcc-systems/Visualization/issues/2871)
+
+
+### Features
+
+* Add HalfDonut and QuarterDonut widgets ([ca0f80c](https://github.com/hpcc-systems/Visualization/commit/ca0f80c)), closes [#2889](https://github.com/hpcc-systems/Visualization/issues/2889)
+* Add pie series percentages ([cc2493f](https://github.com/hpcc-systems/Visualization/commit/cc2493f)), closes [#2888](https://github.com/hpcc-systems/Visualization/issues/2888)
+* Add value display options for XYAxis etc ([6cd35ea](https://github.com/hpcc-systems/Visualization/commit/6cd35ea)), closes [#2890](https://github.com/hpcc-systems/Visualization/issues/2890) [#2707](https://github.com/hpcc-systems/Visualization/issues/2707)
+
+
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.1.1...@hpcc-js/chart@2.1.2) (2018-09-24)
 

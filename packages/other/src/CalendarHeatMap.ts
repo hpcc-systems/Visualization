@@ -14,6 +14,7 @@ export class CalendarHeatMap extends HTMLWidget {
     _prevAggrColumn;
     _prevAggrDeltaColumn;
     _view;
+    _parentNode;
 
     constructor() {
         super();
@@ -51,7 +52,12 @@ export class CalendarHeatMap extends HTMLWidget {
 
     enter(domNode, element) {
         HTMLWidget.prototype.enter.apply(this, arguments);
-        d3Select(domNode.parentNode).style("overflow", "scroll");
+        d3Select(domNode.parentNode)
+            .style("overflow-y", "scroll")
+            .style("overflow-x", "hidden")
+            .style("height", "100%")
+            .style("width", "100%")
+            ;
         this._selection.widgetElement(element);
     }
 
@@ -80,9 +86,17 @@ export class CalendarHeatMap extends HTMLWidget {
                 g.append("g")
                     .attr("class", "days")
                     ;
-                g.append("g")
-                    .attr("class", "months")
-                    ;
+
+                const _d3TimeMonths = d3TimeMonths(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+                const _months = g.append("g").attr("class", "months");
+                _d3TimeMonths.forEach(function(_m) {
+                    _months.append("path")
+                        .attr("class", "month")
+                        .attr("d", calcMonthPath(_m))
+                        .style("stroke", context.monthStrokeColor())
+                        .style("stroke-width", context.monthStrokeWidth())
+                        ;
+                });
             })
             .merge(svg)
             .attr("width", width)
@@ -128,6 +142,8 @@ export class CalendarHeatMap extends HTMLWidget {
             .attr("y", function (d) { return d.getDay() * cellSize; })
             .attr("width", cellSize)
             .attr("height", cellSize)
+            .style("stroke", this.dayStrokeColor())
+            .style("stroke-width", this.dayStrokeWidth())
             ;
         dayRectUpdate.select("title")
             .text(d => d)
@@ -153,6 +169,8 @@ export class CalendarHeatMap extends HTMLWidget {
             .attr("class", "month")
             .merge(monthPath)
             .attr("d", calcMonthPath)
+            .style("stroke", this.monthStrokeColor())
+            .style("stroke-width", this.monthStrokeWidth())
             ;
         monthPath.exit().remove();
 
@@ -202,10 +220,23 @@ export class CalendarHeatMap extends HTMLWidget {
 }
 CalendarHeatMap.prototype._class += " other_CalendarHeatMap";
 CalendarHeatMap.prototype.mixin(Utility.SimpleSelectionMixin);
-
 CalendarHeatMap.prototype._palette = Palette.rainbow("default");
-CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 
+export interface CalendarHeatMap {
+    dayStrokeColor(): string;
+    dayStrokeColor(_: string): this;
+    monthStrokeColor(): string;
+    monthStrokeColor(_: string): this;
+    dayStrokeWidth(): number;
+    dayStrokeWidth(_: number): this;
+    monthStrokeWidth(): number;
+    monthStrokeWidth(_: number): this;
+}
+CalendarHeatMap.prototype.publish("paletteID", "YlOrRd", "set", "Palette ID", CalendarHeatMap.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+CalendarHeatMap.prototype.publish("dayStrokeColor", "#ccc", "html-color", "Color of day border");
+CalendarHeatMap.prototype.publish("monthStrokeColor", "#000", "html-color", "Color of month border");
+CalendarHeatMap.prototype.publish("dayStrokeWidth", 1, "number", "Pixel width of day border");
+CalendarHeatMap.prototype.publish("monthStrokeWidth", 2, "number", "Pixel width of month border");
 CalendarHeatMap.prototype.publish("dateColumn", null, "set", "Date Column", function () { return this.columns(); }, { optional: true });
 CalendarHeatMap.prototype.publish("datePattern", "%Y-%m-%d", "string", "Date Pattern");
 CalendarHeatMap.prototype.publish("aggrType", null, "set", "Aggregation Type", [null, "mean", "median", "sum", "min", "max"], { optional: true });

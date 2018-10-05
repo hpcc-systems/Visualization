@@ -73,6 +73,27 @@
                 });
             }
         },
+        OnOff: {
+            simple: function (callback) {
+                legacyRequire(["src/form/OnOff"], function (OnOff) {
+                    callback(new OnOff());
+                });
+            },
+            restyled: function (callback) {
+                legacyRequire(["src/form/OnOff"], function (OnOff) {
+                    callback(new OnOff()
+                        .minWidth(180)
+                        .containerRadius(0)
+                        .switchRadius(0)
+                        .onColor("#3498db")
+                        .offColor("#e74c3c")
+                        .offFontColor("#fff")
+                        .onText("Enabled Option")
+                        .offText("Disabled Option")
+                    );
+                });
+            },
+        },
         FieldForm: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/form/FieldForm", "src/common/Database"], function (DataFactory, FieldForm, Database) {

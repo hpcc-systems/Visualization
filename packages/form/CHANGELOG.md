@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.0.3...@hpcc-js/form@2.1.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* Add stronger height styling to OnOff.css ([06fbff2](https://github.com/hpcc-systems/Visualization/commit/06fbff2)), closes [#2907](https://github.com/hpcc-systems/Visualization/issues/2907)
+
+
+### Features
+
+* **form:** Add features to OnOff.ts ([4e9ae37](https://github.com/hpcc-systems/Visualization/commit/4e9ae37))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/form@2.0.2...@hpcc-js/form@2.0.3) (2018-09-24)
 

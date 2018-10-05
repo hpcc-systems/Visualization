@@ -15,6 +15,8 @@ export class Pie extends SVGWidget {
         type: "number"
     }];
 
+    protected _totalValue: number;
+
     labelWidgets;
     d3Pie;
     d3Arc;
@@ -25,15 +27,7 @@ export class Pie extends SVGWidget {
         ITooltip.call(this);
         Utility.SimpleSelectionMixin.call(this);
 
-        this.d3Pie = d3Pie()
-            .padAngle(0.0025)
-            .sort(function (b, a) {
-                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
-            })
-            .value(function (d) {
-                return d[1];
-            })
-            ;
+        this.d3Pie = d3Pie();
 
         this.d3Arc = d3Arc();
         this.d3LabelArc = d3Arc();
@@ -52,10 +46,22 @@ export class Pie extends SVGWidget {
     }
 
     calcOuterRadius() {
-        const maxTextWidth = this.textSize(this.data().map(d => d[0]), "Verdana", 12).width;
+        const maxTextWidth = this.textSize(this.data().map(d => this.getLabelText({ data: d })), "Verdana", 12).width;
         return Math.min(this._size.width - maxTextWidth * 2 - 20, this._size.height - 12 * 3) / 2 - 2;
     }
-
+    calcTotalValue(): number {
+        return this.data().reduce((acc, d) => {
+            return acc + d[1];
+        }, 0);
+    }
+    getLabelText(d) {
+        if (this.showSeriesPercentage()) {
+            const perc = ((d.data[1] / this._totalValue) * 100).toFixed(1).split(".0").join("");
+            return `${d.data[0]}: ${perc}%`;
+        } else {
+            return d.data[0];
+        }
+    }
     _slices;
     _labels;
     enter(_domNode, element) {
@@ -74,11 +80,12 @@ export class Pie extends SVGWidget {
     update(_domNode, element) {
         super.update(_domNode, element);
         const context = this;
-
+        this.updateD3Pie();
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
         }
+        this._totalValue = this.calcTotalValue();
         const innerRadius = this.calcInnerRadius();
         const outerRadius = this.calcOuterRadius();
         const labelRadius = outerRadius + 12;
@@ -136,9 +143,6 @@ export class Pie extends SVGWidget {
 
         text.enter().append("text")
             .attr("dy", ".35em")
-            .text(function (d) {
-                return d.data[0];
-            })
             .on("click", function (d) {
                 context._slices.selectAll("g").filter(function (d2) {
                     if (d.data === d2.data) {
@@ -151,6 +155,7 @@ export class Pie extends SVGWidget {
                 context.dblclick(context.rowToObj(d.data), context.columns()[1], context._selection.selected(this));
             })
             .merge(text)
+            .text(d => this.getLabelText(d))
             .transition().duration(1000)
             .attrTween("transform", function (d) {
                 this._current = this._current || d;
@@ -159,7 +164,8 @@ export class Pie extends SVGWidget {
                 return function (t) {
                     const d2 = interpolate(t);
                     const pos = context.d3LabelArc.centroid(d2);
-                    pos[0] = labelRadius * (midAngle(d2) < Math.PI ? 1 : -1);
+                    const mid_angle = midAngle(d2);
+                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
                     return "translate(" + pos + ")";
                 };
             })
@@ -169,7 +175,8 @@ export class Pie extends SVGWidget {
                 this._current = interpolate(0);
                 return function (t) {
                     const d2 = interpolate(t);
-                    return midAngle(d2) < Math.PI ? "start" : "end";
+                    const mid_angle = midAngle(d2);
+                    return mid_angle < Math.PI && mid_angle > 0 ? "start" : "end";
                 };
             });
 
@@ -180,7 +187,7 @@ export class Pie extends SVGWidget {
         text.exit()
             .remove();
 
-        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => d.data[0]);
+        const polyline = this._labels.selectAll("polyline").data(this.d3Pie(this.data()), d => this.getLabelText(d));
 
         polyline.enter()
             .append("polyline")
@@ -195,7 +202,8 @@ export class Pie extends SVGWidget {
                     const pos = context.d3LabelArc.centroid(d2);
                     const pos1 = context.d3Arc.centroid(d2);
                     const pos2 = [...pos];
-                    pos[0] = labelRadius * (midAngle(d2) < Math.PI ? 1 : -1);
+                    const mid_angle = midAngle(d2);
+                    pos[0] = labelRadius * (mid_angle < Math.PI && mid_angle > 0 ? 1 : -1);
                     return [pos1, pos2, pos];
                 };
             });
@@ -215,6 +223,18 @@ export class Pie extends SVGWidget {
 
     exit(_domNode, _element) {
         SVGWidget.prototype.exit.apply(this, arguments);
+    }
+
+    updateD3Pie() {
+        this.d3Pie
+            .padAngle(0.0025)
+            .sort(function (b, a) {
+                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
+            })
+            .value(function (d) {
+                return d[1];
+            })
+            ;
     }
 
     paletteID: (_?: string) => string | Pie;
@@ -247,7 +267,11 @@ Pie.prototype._class += " chart_Pie";
 Pie.prototype.implements(I2DChart.prototype);
 Pie.prototype.implements(ITooltip.prototype);
 Pie.prototype.mixin(Utility.SimpleSelectionMixin);
-
+export interface Pie {
+    showSeriesPercentage(): boolean;
+    showSeriesPercentage(_: boolean): this;
+}
+Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
 Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });

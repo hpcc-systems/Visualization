@@ -122,10 +122,29 @@ export abstract class ITooltip extends Widget {
         }
     }
 
+    tooltipKeyValueFormat(titleKey: string, obj: object): string {
+        let body = "";
+        for (const key in obj) {
+            if (key !== titleKey) {
+                const value = obj && obj[key] ? obj[key] : "";
+                body += `<tr><td style="${this.tooltipLabelColor_exists() ? "color:" + this.tooltipLabelColor() : ""}">${key}</td><td style="font-weight:normal">${value}</td></tr>`;
+            }
+        }
+        return `<table>
+                    <thead>
+                        <tr><th colspan="2" style="font-weight:bold;font-size:16px">${obj[titleKey]}</th></tr>
+                    </thead>
+                    <tbody>
+                        ${body}
+                    </tbody>
+                </table>`;
+    }
+
     tooltipStyle: { (): string; (_: string): ITooltip; };
     tooltipValueFormat: (_?) => string | ITooltip;
     tooltipSeriesColor: { (): string; (_: string): ITooltip; };
     tooltipLabelColor: { (): string; (_: string): ITooltip; };
+    tooltipLabelColor_exists: () => boolean;
     tooltipValueColor: { (): string; (_: string): ITooltip; };
     tooltipTick: { (): boolean; (_: boolean): ITooltip; };
     tooltipOffset: { (): number; (_: number): ITooltip; };

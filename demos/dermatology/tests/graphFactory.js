@@ -228,6 +228,7 @@
                                 .icon_shape_colorStroke(palette(node.group))
                                 .icon_shape_colorFill(palette(node.group))
                                 .faChar(node.name[0])
+                                .scale(node.group/4 >= 1 ? node.group/4 : 1)
                         )
                             ;
                     }, graph);

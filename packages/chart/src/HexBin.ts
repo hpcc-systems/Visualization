@@ -15,7 +15,7 @@ export class HexBin extends XYAxis {
         type: "number"
     }];
 
-    _hexbin;
+    protected _hexbin;
     protected _dataMinWeight;
     protected _dataMaxWeight;
     constructor() {
@@ -64,7 +64,6 @@ export class HexBin extends XYAxis {
             .radius(this.binSize())
             ;
 
-        const data = this.data();
         const flatData = this.flattenData();
         const dataPoints = flatData.map(d => {
             return {
@@ -86,9 +85,11 @@ export class HexBin extends XYAxis {
             .attr("class", "hexagon")
             .call(host._selection.enter.bind(host._selection))
             .on("click", function (d: any) {
+                const data = context.data();
                 context.click(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
             })
             .on("dblclick", function (d: any) {
+                const data = context.data();
                 context.dblclick(d.map(row => host.rowToObj(data[row.origRow.rowIdx])), context.columns()[1], host._selection.selected(this));
             })
             .on("mouseout.tooltip", context.tooltip.hide)

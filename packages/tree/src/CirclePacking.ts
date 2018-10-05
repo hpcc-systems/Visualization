@@ -1,5 +1,6 @@
 import { ITree } from "@hpcc-js/api";
 import { SVGWidget } from "@hpcc-js/common";
+import { rgb as d3Rgb } from "d3-color";
 import { hierarchy as d3Hierarchy, pack as d3Pack } from "d3-hierarchy";
 import { interpolateZoom as d3InterpolateZoom } from "d3-interpolate";
 import { event as d3Event } from "d3-selection";
@@ -31,12 +32,18 @@ export class CirclePacking extends SVGWidget {
 
         this.svg = element
             .append("g")
-            .attr("transform", "rotate(30)")
             ;
     }
 
     update(_domNode, _element) {
         const context = this;
+
+        this.diameter = Math.min(this.width(), this.height());
+        this.pack
+            .size([this.diameter - 4, this.diameter - 4])
+            .padding(1.5)
+            ;
+
         this._palette = this._palette.switch(this.paletteID());
         if (this.useClonedPalette()) {
             this._palette = this._palette.cloneNotExists(this.paletteID() + "_" + this.id());
@@ -46,10 +53,10 @@ export class CirclePacking extends SVGWidget {
         this.svg.selectAll("text").remove();
 
         const root: any = d3Hierarchy(this.data())
-            .sum(function () {
-                return 1;
+            .sum(function (d) {
+                return d && d.size ? d.size : 1;
             }).sort(function (a, b) {
-                return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0;
+                return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
             })
             ;
         this._focus = root;
@@ -58,7 +65,10 @@ export class CirclePacking extends SVGWidget {
         this.circle = this.svg.selectAll("circle").data(root.descendants())
             .enter().append("circle")
             .attr("class", function (d) { return d.parent ? d.children ? "node" : "node leaf" : "node root"; })
-            .style("fill", function (d) { return context._palette(d.data.label); })
+            .style("fill", function (d) {
+                d.color = context.paletteDepthLevel_exists() && d.depth > context.paletteDepthLevel() ? d3Rgb(d.parent.color)[context.paletteDepthVariant()](1) : context._palette(d.data.label);
+                return d.color;
+            })
             .on("click", function (d) { context.click(d.data, null, null); })
             .on("dblclick", function (d) {
                 if (this._focus !== d) {
@@ -74,7 +84,9 @@ export class CirclePacking extends SVGWidget {
             .attr("class", "label")
             .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
             .style("display", function (d) { return d.parent === root ? null : "none"; })
-            .text(function (d) { return d.data.label; })
+            .text(function (d) {
+                return d.data.label + (context.showSize() && typeof d.data.size !== "undefined" ? " " + d.data.size : "");
+            })
             ;
 
         this._node = this.svg.selectAll("circle,text");
@@ -120,6 +132,18 @@ export class CirclePacking extends SVGWidget {
 }
 CirclePacking.prototype._class += " tree_CirclePacking";
 CirclePacking.prototype.implements(ITree.prototype);
+export interface CirclePacking {
+    showSize(): boolean;
+    showSize(_: boolean): this;
+    paletteDepthLevel(): number;
+    paletteDepthLevel(_: number): this;
+    paletteDepthLevel_exists(): boolean;
+    paletteDepthVariant(): "brighter" | "darker";
+    paletteDepthVariant(_: "brighter" | "darker"): this;
+}
 
+CirclePacking.prototype.publish("showSize", true, "boolean", "Show size along with label");
+CirclePacking.prototype.publish("paletteDepthLevel", null, "number", "If not null then beyond this depth number the child node colors are based on parent", null, {optional: true});
+CirclePacking.prototype.publish("paletteDepthVariant", "brighter", "set", "Determines paletteDepthLevel decendant color shade variant", ["brighter", "darker"], {disable: w => w.paletteDepthLevel_exists()});
 CirclePacking.prototype.publish("paletteID", "default", "set", "Palette ID", CirclePacking.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 CirclePacking.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });

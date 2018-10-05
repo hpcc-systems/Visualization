@@ -1,5 +1,5 @@
 import * as chart from "@hpcc-js/chart";
-import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HexBin, Line, Pie, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
+import { Area, Axis, Bar, Bubble, BubbleXY, Bullet, Column, Contour, Gantt, Gauge, HalfPie, HexBin, Line, Pie, QuarterPie, Radar, RadialBar, Scatter, Step, Summary, SummaryC, WordCloud, XYAxis } from "@hpcc-js/chart";
 import { Class, HTMLWidget, SVGWidget } from "@hpcc-js/common";
 import { expect } from "chai";
 import { classDef, renderMedium, renderShort, renderSmall, renderWide } from "./coreTests";
@@ -45,9 +45,11 @@ describe("@hpcc-js/chart", () => {
                             case BubbleXY:
                             case Column:
                             case Contour:
+                            case HalfPie:
                             case HexBin:
                             case Line:
                             case Pie:
+                            case QuarterPie:
                             case Radar:
                             case RadialBar:
                             case Scatter:

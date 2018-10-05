@@ -7,6 +7,33 @@
     }
 }(this, function (DataFactory, HeatMap, WordCloud, Table) {
     return {
+        IconList: {
+            simple: function (callback) {
+                legacyRequire(["src/other/IconList"], function (IconList) {
+                    callback(new IconList()
+                        .data([
+                            ["", ["86.2%"], { icon_color: "#44bd32"}],
+                            ["", ["12.9%"], { icon_color: "#7f8fa6"}],
+                            ["", ["0.9%"], { icon_color: "#353b48"}]
+                        ])
+                    );
+                });
+            },
+            complex: function (callback) {
+                legacyRequire(["test/DataFactory","src/other/IconList"], function (DataFactory, IconList) {
+                    const words = DataFactory.Lorem_ipsum.split(' ');
+                    callback(new IconList()
+                        .data([
+                            ["", [words[0],words[1],words[2],words[3],words[4]], { icon_color: "#44bd32"}],
+                            ["", [words[5],words[6],words[7],words[8],words[9]], { icon_color: "#7f8fa6"}],
+                            ["", [words[10],words[11],words[12],words[13],words[14]], { icon_color: "#353b48"}],
+                            ["", [words[15],words[16],words[17],words[18],words[19]], { icon_color: "#353b48"}],
+                            ["", [words[20],words[21],words[22],words[23],words[24]], { icon_color: "#353b48"}],
+                        ])
+                    );
+                });
+            },
+        },
         HeatMap: {
             simple: function (callback) {
                 legacyRequire(["test/DataFactory", "src/other/HeatMap"], function (DataFactory, HeatMap) {

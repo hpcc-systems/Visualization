@@ -7,6 +7,11 @@ export class CanvasWidget extends HTMLWidget {
         this._tag = "canvas";
     }
 
+    enter(domNode, element) {
+        super.enter(domNode, element);
+        element.attr("width", this._size.width);
+        element.attr("height", this._size.height);
+    }
     resize(size) {
         const retVal = super.resize(size);
         this._element.attr("width", this._size.width);

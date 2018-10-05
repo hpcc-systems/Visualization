@@ -80,6 +80,16 @@ var config = {
                     "BubbleXY"
                   ]
                 }
+              },
+              {
+                "path": "./samples/chart/BubbleXY/CountryGDP.js",
+                "name": "CountryGDP.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "BubbleXY"
+                  ]
+                }
               }
             ]
           },
@@ -707,10 +717,12 @@ var config = {
             "type": "file",
             "imports": {
               "@hpcc-js/common\r": [
-                "Palette",
                 "Icon",
                 "TextBox",
                 "EntityCard"
+              ],
+              "@hpcc-js/chart\r": [
+                "RadialBar"
               ],
               "@hpcc-js/graph\r": [
                 "Graph",
@@ -768,6 +780,21 @@ var config = {
               "@hpcc-js/graph\r": [
                 "Sankey",
                 "SankeyColumn"
+              ]
+            }
+          },
+          {
+            "path": "./samples/graph/Scaled.js",
+            "name": "Scaled.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/common\r": [
+                "Palette"
+              ],
+              "@hpcc-js/graph\r": [
+                "Graph",
+                "Vertex",
+                "Edge"
               ]
             }
           }
@@ -847,6 +874,26 @@ var config = {
         ]
       },
       {
+        "path": "./samples/legend",
+        "name": "legend",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/legend/Values.js",
+            "name": "Values.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/chart\r": [
+                "Column"
+              ],
+              "@hpcc-js/layout\r": [
+                "ChartPanel"
+              ]
+            }
+          }
+        ]
+      },
+      {
         "path": "./samples/misc",
         "name": "misc",
         "type": "folder",
@@ -868,6 +915,22 @@ var config = {
             "imports": {
               "@hpcc-js/timeline\r": [
                 "MiniGantt"
+              ]
+            }
+          },
+          {
+            "path": "./samples/misc/StackOverflowTags.js",
+            "name": "StackOverflowTags.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/phosphor\r": [
+                "DockPanel"
+              ],
+              "@hpcc-js/layout\r": [
+                "ChartPanel"
+              ],
+              "@hpcc-js/chart\r": [
+                "Column"
               ]
             }
           },
@@ -919,6 +982,19 @@ var config = {
                   ],
                   "@hpcc-js/layout\r": [
                     "ChartPanel"
+                  ]
+                }
+              },
+              {
+                "path": "./samples/palette/Ordinal/RandomSamples.js",
+                "name": "RandomSamples.js",
+                "type": "file",
+                "imports": {
+                  "@hpcc-js/chart\r": [
+                    "Column"
+                  ],
+                  "@hpcc-js/common\r": [
+                    "Palette"
                   ]
                 }
               },
@@ -991,6 +1067,23 @@ var config = {
             "imports": {
               "@hpcc-js/dgrid\r": [
                 "Table"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "./samples/time",
+        "name": "time",
+        "type": "folder",
+        "children": [
+          {
+            "path": "./samples/time/Calendar.js",
+            "name": "Calendar.js",
+            "type": "file",
+            "imports": {
+              "@hpcc-js/other\r": [
+                "CalendarHeatMap"
               ]
             }
           }

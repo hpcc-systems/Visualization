@@ -5,18 +5,18 @@
   "dependencies": {
     "@hpcc-js/common": "^2.3.0",
     "@hpcc-js/eclwatch": "^2.0.5",
-    "chai": "4.0.0",
+    "chai": "4.2.0",
     "es6-promise": "4.2.4",
-    "mocha": "3.4.2",
+    "mocha": "5.2.0",
     "simulate-event": "1.4.0"
   },
   "devDependencies": {
-    "@types/chai": "3.5.2",
-    "@types/mocha": "2.2.41",
+    "@types/chai": "4.1.6",
+    "@types/mocha": "5.2.5",
     "cpx": "1.5.0",
     "css-loader": "1.0.0",
     "file-loader": "1.1.5",
-    "mocha-chrome": "1.0.3",
+    "mocha-chrome": "1.1.0",
     "rimraf": "2.6.2",
     "source-map-loader": "0.2.1",
     "style-loader": "0.22.1",

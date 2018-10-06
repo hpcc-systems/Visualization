@@ -31,7 +31,7 @@ describe("eclcc", function () {
                 return locateClientTools(undefined, undefined, ".").then((clientTools) => {
                     return clientTools.createArchive("./src/clienttools/some.ecl");
                 }).then(archive => {
-                    return Workunit.submit({ baseUrl: "http://52.51.90.23:8010/" }, "hthor", archive.content);
+                    return Workunit.submit({ baseUrl: "http://52.210.14.156:8010/" }, "hthor", archive.content);
                 }).then((wu) => {
                     return wu.watchUntilComplete();
                 }).then((wu) => {

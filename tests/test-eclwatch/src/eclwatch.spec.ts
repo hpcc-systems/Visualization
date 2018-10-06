@@ -4,7 +4,7 @@ import { WUGraph, WUResult, WUStatus, WUTimeline } from "@hpcc-js/eclwatch";
 import { expect } from "chai";
 import { classDef /*, render /*, renderMedium /*, renderShort, renderWide*/ } from "./coreTests";
 
-const ESP_URL = "http://52.51.90.23:8010/";
+const ESP_URL = "http://52.210.14.156:8010/";
 const WUID = "W20170510-114044";
 
 describe("@hpcc-js/eclwatch", function () {

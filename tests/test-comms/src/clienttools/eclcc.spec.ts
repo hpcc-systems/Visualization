@@ -1,7 +1,8 @@
 import { expect } from "chai";
 
 import { locateClientTools, Version, Workunit } from "@hpcc-js/comms";
-import { isBrowser, isTravis } from "@hpcc-js/util";
+import { isBrowser } from "@hpcc-js/util";
+import { isTravis } from "../testLib";
 
 function test(build: string, prefix: string, major: number, minor: number, patch: number, postfix: string): boolean {
     const version = new Version(build);

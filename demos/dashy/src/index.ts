@@ -59,7 +59,7 @@ export class App {
             const ec = this._dashy.elementContainer();
             const datasources = ec.datasources();
             const publicRoxie = new RoxieService()
-                .url("http://52.51.90.23:8002")
+                .url("http://52.210.14.156:8002")
                 .querySet("roxie")
                 .queryID("peopleaccounts")
                 ;
@@ -72,12 +72,12 @@ export class App {
 
             for (const datasource of [
                 new WUResult()
-                    .url("http://52.51.90.23:8010")
+                    .url("http://52.210.14.156:8010")
                     .wuid("W20180513-082149")
                     .resultName("Result 1")
                 ,
                 new LogicalFile()
-                    .url("http://52.51.90.23:8010")
+                    .url("http://52.210.14.156:8010")
                     .logicalFile("progguide::exampledata::peopleaccts")
                 ,
                 new RoxieResult(ec)

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
 import { Workunit } from "@hpcc-js/comms";
-import { isTravis, scopedLogger } from "@hpcc-js/util";
-import { ESP_URL } from "../testLib";
+import { scopedLogger } from "@hpcc-js/util";
+import { ESP_URL, isTravis } from "../testLib";
 
 const logger = scopedLogger("test/workunit");
 const WUID = "W20170510-114044";

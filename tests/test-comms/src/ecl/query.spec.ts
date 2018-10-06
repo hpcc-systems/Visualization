@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
 import { Query } from "@hpcc-js/comms";
-import { isTravis } from "@hpcc-js/util";
-import { QUERY_URL } from "../testLib";
+import { isTravis, QUERY_URL } from "../testLib";
 
 describe.skip("test/esp/ecl/query", function () {
     if (!isTravis) {

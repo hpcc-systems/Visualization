@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
 import { Connection } from "@hpcc-js/comms";
-import { isBrowser, isTravis } from "@hpcc-js/util";
-import { ESP_URL } from "./testLib";
+import { isBrowser } from "@hpcc-js/util";
+import { ESP_URL, isTravis } from "./testLib";
 
 describe.skip("Old Server", function () {
     it("authentication", function () {

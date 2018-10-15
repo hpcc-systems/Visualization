@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.4.0...@hpcc-js/demo-gallery@2.5.0) (2018-10-15)
+
+
+### Features
+
+* Add 3 samples to showcase CL changes ([3a1c3a8](https://github.com/GordonSmith/Visualization/commit/3a1c3a8)), closes [#2909](https://github.com/GordonSmith/Visualization/issues/2909)
+
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/GordonSmith/Visualization/compare/@hpcc-js/demo-gallery@2.3.1...@hpcc-js/demo-gallery@2.4.0) (2018-10-05)
 

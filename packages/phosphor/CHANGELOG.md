@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.5"></a>
+## [2.1.5](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.1.4...@hpcc-js/phosphor@2.1.5) (2018-10-15)
+
+
+### Bug Fixes
+
+* **DockPanel:** DockPanel.render not rendering internal widgets ([8bb5acd](https://github.com/hpcc-systems/Visualization/commit/8bb5acd))
+
+
+
+
+
 <a name="2.1.4"></a>
 ## [2.1.4](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/phosphor@2.1.3...@hpcc-js/phosphor@2.1.4) (2018-10-05)
 

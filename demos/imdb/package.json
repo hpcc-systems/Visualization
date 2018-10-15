@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@hpcc-js/demo-imdb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "clean": "rimraf lib* types dist",
     "compile-umd": "tsc --module umd --outDir ./lib-umd",
@@ -14,7 +14,7 @@
     "@hpcc-js/dgrid-shim": "2",
     "@hpcc-js/graph": "^2.2.1",
     "@hpcc-js/layout": "^2.2.0",
-    "@hpcc-js/phosphor": "^2.1.4",
+    "@hpcc-js/phosphor": "^2.1.5",
     "@hpcc-js/util": "^2.1.2",
     "d3-fetch": "1.1.2",
     "es6-promise": "4.2.4",

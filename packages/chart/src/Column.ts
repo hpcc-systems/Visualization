@@ -178,7 +178,7 @@ export class Column extends XYAxis {
                                     _pos.y += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
                                     _is_visible = context.textSize(valueText).width < valueLength || !context.yAxisStacked();
                                 } else {
-                                    _pos.x += isPositive ? (valueLength / 2) + 12 : -(valueLength / 2) - 12;
+                                    _pos.x += isPositive ? -(valueLength / 2) - 12 : (valueLength / 2) + 12;
                                     _is_visible = context.textSize(valueText).height < valueLength || !context.yAxisStacked();
                                 }
                             }

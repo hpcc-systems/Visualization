@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.2.0...@hpcc-js/chart@2.2.1) (2018-10-15)
+
+
+### Bug Fixes
+
+* valueCendered now works with Bar.ts ([5ba31ed](https://github.com/hpcc-systems/Visualization/commit/5ba31ed)), closes [#2911](https://github.com/hpcc-systems/Visualization/issues/2911)
+
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/hpcc-systems/Visualization/compare/@hpcc-js/chart@2.1.2...@hpcc-js/chart@2.2.0) (2018-10-05)
 

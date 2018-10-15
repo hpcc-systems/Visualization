@@ -81,6 +81,8 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
             .style("height", this.height() + "px")
             ;
 
+        this.widgets().forEach(w => w.render());
+
         this._dock.update();
     }
 
@@ -88,7 +90,7 @@ export class DockPanel extends HTMLWidget implements IMessageHandler, IMessageHo
         super.exit(domNode, element);
     }
 
-    render(callback) {
+    render(callback?: (w: Widget) => void): this {
         const context = this;
         return super.render((w) => {
             setTimeout(() => {

@@ -265,7 +265,7 @@ Dendrogram.prototype.implements(ITree.prototype);
 Dendrogram.prototype.mixin(Utility.SimpleSelectionMixin);
 Dendrogram.prototype.Column = DendrogramColumn;
 
-Dendrogram.prototype.publish("paletteID", "default", "set", "Palette ID", Dendrogram.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Dendrogram.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Dendrogram.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Dendrogram.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Dendrogram.prototype.publish("mappings", [], "propertyArray", "Source Columns", null, { autoExpand: DendrogramColumn });
 

@@ -126,7 +126,7 @@ HeatMap.prototype.publish("gradient", { 0.4: "blue", 0.6: "cyan", 0.7: "lime", 0
 HeatMap.prototype.publish("usePalette", false, "boolean", "If true, uses paletteID and colorCount to determine gradient", null, { tags: ["Basic"] });
 
 HeatMap.prototype.publish("colorCount", 10, "number", "Top left x-value", null, { tags: ["Basic"] });
-HeatMap.prototype.publish("paletteID", "default", "set", "Palette ID", HeatMap.prototype._palette.switch(), { tags: ["Basic"] });
+HeatMap.prototype.publish("paletteID", "default", "set", "Color palette for this widget", HeatMap.prototype._palette.switch(), { tags: ["Basic"] });
 HeatMap.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 
 HeatMap.prototype.publish("topLeftX", null, "number", "Top left x-value", null, { tags: ["Basic"], optional: true });

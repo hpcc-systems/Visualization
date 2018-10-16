@@ -272,6 +272,6 @@ export interface Pie {
     showSeriesPercentage(_: boolean): this;
 }
 Pie.prototype.publish("showSeriesPercentage", false, "boolean", "Append data series percentage next to label");
-Pie.prototype.publish("paletteID", "default", "set", "Palette ID", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Pie.prototype.publish("paletteID", "default", "set", "Color palette for this widget", Pie.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Pie.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Pie.prototype.publish("innerRadius", 0, "number", "Sets inner pie hole radius as a percentage of the radius of the pie chart", null, { tags: ["Basic"], range: { min: 0, step: 1, max: 100 } });

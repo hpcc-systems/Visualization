@@ -236,7 +236,7 @@ export interface Column {
     valueAnchor(_: "start" | "middle" | "end"): this;
 }
 
-Column.prototype.publish("paletteID", "default", "set", "Palette ID", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+Column.prototype.publish("paletteID", "default", "set", "Color palette for this widget", () => Column.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 Column.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 Column.prototype.publish("showValue", false, "boolean", "Show Value in column");
 Column.prototype.publish("valueCentered", false, "boolean", "Show Value in center of column");

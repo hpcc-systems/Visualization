@@ -133,6 +133,6 @@ HexBin.prototype._class += " chart_HexBin";
 HexBin.prototype.implements(I2DAggrChart.prototype);
 HexBin.prototype.implements(ITooltip.prototype);
 
-HexBin.prototype.publish("paletteID", "Blues", "set", "Palette ID", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
+HexBin.prototype.publish("paletteID", "Blues", "set", "Color palette for this widget", HexBin.prototype._palette.switch(), { tags: ["Basic", "Shared"] });
 HexBin.prototype.publish("useClonedPalette", false, "boolean", "Enable or disable using a cloned palette", null, { tags: ["Intermediate", "Shared"] });
 HexBin.prototype.publish("binSize", 20, "number", "Bin radius", null, { range: { min: 1, max: 300, step: 1 } });

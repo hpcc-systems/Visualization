@@ -88,10 +88,10 @@ export interface Contour {
     contourStrokeWidth(): number;
     contourStrokeWidth(_: number): this;
 }
-Contour.prototype.publish("paletteID", "YlGnBu", "string", "paletteID");
-Contour.prototype.publish("useClonedPalette", true, "boolean", "useClonedPalette");
-Contour.prototype.publish("showContourFill", true, "boolean", "showContourFill");
-Contour.prototype.publish("showContour", true, "boolean", "Show contour");
-Contour.prototype.publish("contourBandwidth", 40, "number", "contourBandwidth");
-Contour.prototype.publish("contourStrokeColor", "#2C3A47", "html-color", "contourStrokeColor");
-Contour.prototype.publish("contourStrokeWidth", 1, "number", "contourStrokeWidth");
+Contour.prototype.publish("paletteID", "YlGnBu", "string", "Color palette for this widget");
+Contour.prototype.publish("useClonedPalette", true, "boolean", "Enable or disable using a cloned palette");
+Contour.prototype.publish("showContourFill", true, "boolean", "Show/hide the contour background colors");
+Contour.prototype.publish("showContour", true, "boolean", "Show/hide the contour border lines");
+Contour.prototype.publish("contourBandwidth", 40, "number", "Controls the sensitivity of the contour grouping algorithm");
+Contour.prototype.publish("contourStrokeColor", "#2C3A47", "html-color", "Color of the contour border lines");
+Contour.prototype.publish("contourStrokeWidth", 1, "number", "Width of the contour border lines");

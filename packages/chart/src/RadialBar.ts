@@ -204,7 +204,7 @@ export interface RadialBar {
     transitionDuration(): number;
     transitionDuration(_: number): this;
 }
-RadialBar.prototype.publish("paletteID", "default", "set", "paletteID", RadialBar.prototype._palette.switch());
+RadialBar.prototype.publish("paletteID", "default", "set", "Color palette for this widget", RadialBar.prototype._palette.switch());
 RadialBar.prototype.publish("tickCount", 10, "number", "Number of ticks to display");
 RadialBar.prototype.publish("domainPadding", 0.25, "number", "Padding between chart edge and container edge (0..1)");
 RadialBar.prototype.publish("valueMaxAngle", 270, "number", "Maximum angular length of a bar (degrees)");
